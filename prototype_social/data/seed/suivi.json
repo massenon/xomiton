@@ -1,0 +1,302 @@
+[
+ {
+  "id": 1,
+  "case_code": "VBG-0024",
+  "date": "2026-09-10",
+  "step": "Suivi à 30 jours",
+  "by": "Mireille Tognifode",
+  "outcome": "Reporté",
+  "next": "2026-09-24",
+  "comment": ""
+ },
+ {
+  "id": 2,
+  "case_code": "VBG-0029",
+  "date": "2026-08-26",
+  "step": "Accueil",
+  "by": "Esther Koto",
+  "outcome": "En attente",
+  "next": "2026-09-09",
+  "comment": ""
+ },
+ {
+  "id": 3,
+  "case_code": "VBG-0063",
+  "date": "2026-05-27",
+  "step": "Suivi à 30 jours",
+  "by": "Mireille Tognifode",
+  "outcome": "Reporté",
+  "next": "2026-06-10",
+  "comment": ""
+ },
+ {
+  "id": 4,
+  "case_code": "VBG-0054",
+  "date": "2026-04-03",
+  "step": "Orientation médicale",
+  "by": "Chantal Hounkpatin",
+  "outcome": "En attente",
+  "next": "2026-04-17",
+  "comment": ""
+ },
+ {
+  "id": 5,
+  "case_code": "VBG-0008",
+  "date": "2026-08-21",
+  "step": "Appui juridique",
+  "by": "Chantal Hounkpatin",
+  "outcome": "Réalisé",
+  "next": "2026-09-04",
+  "comment": ""
+ },
+ {
+  "id": 6,
+  "case_code": "VBG-0019",
+  "date": "2025-11-14",
+  "step": "Accueil",
+  "by": "Esther Koto",
+  "outcome": "Réalisé",
+  "next": "2025-11-28",
+  "comment": ""
+ },
+ {
+  "id": 7,
+  "case_code": "VBG-0051",
+  "date": "2026-10-04",
+  "step": "Accueil",
+  "by": "Chantal Hounkpatin",
+  "outcome": "En attente",
+  "next": "2026-10-18",
+  "comment": ""
+ },
+ {
+  "id": 8,
+  "case_code": "VBG-0007",
+  "date": "2026-02-08",
+  "step": "Accueil",
+  "by": "Chantal Hounkpatin",
+  "outcome": "En attente",
+  "next": "2026-02-22",
+  "comment": ""
+ },
+ {
+  "id": 9,
+  "case_code": "VBG-0028",
+  "date": "2025-11-05",
+  "step": "Appui juridique",
+  "by": "Esther Koto",
+  "outcome": "Réalisé",
+  "next": "2025-11-19",
+  "comment": ""
+ },
+ {
+  "id": 10,
+  "case_code": "VBG-0002",
+  "date": "2026-08-14",
+  "step": "Appui psychologique",
+  "by": "Esther Koto",
+  "outcome": "Réalisé",
+  "next": "2026-08-28",
+  "comment": ""
+ },
+ {
+  "id": 11,
+  "case_code": "VBG-0039",
+  "date": "2026-09-14",
+  "step": "Appui juridique",
+  "by": "Mireille Tognifode",
+  "outcome": "En attente",
+  "next": "2026-09-28",
+  "comment": ""
+ },
+ {
+  "id": 12,
+  "case_code": "VBG-0010",
+  "date": "2026-08-30",
+  "step": "Orientation médicale",
+  "by": "Mireille Tognifode",
+  "outcome": "Reporté",
+  "next": "2026-09-13",
+  "comment": ""
+ },
+ {
+  "id": 13,
+  "case_code": "VBG-0027",
+  "date": "2026-07-25",
+  "step": "Accueil",
+  "by": "Esther Koto",
+  "outcome": "Réalisé",
+  "next": "2026-08-08",
+  "comment": ""
+ },
+ {
+  "id": 14,
+  "case_code": "VBG-0004",
+  "date": "2026-07-27",
+  "step": "Suivi à 30 jours",
+  "by": "Mireille Tognifode",
+  "outcome": "Reporté",
+  "next": "2026-08-10",
+  "comment": ""
+ },
+ {
+  "id": 15,
+  "case_code": "VBG-0046",
+  "date": "2025-11-25",
+  "step": "Écoute",
+  "by": "Mireille Tognifode",
+  "outcome": "En attente",
+  "next": "2025-12-09",
+  "comment": ""
+ },
+ {
+  "id": 16,
+  "case_code": "VBG-0059",
+  "date": "2026-02-13",
+  "step": "Appui psychologique",
+  "by": "Mireille Tognifode",
+  "outcome": "Reporté",
+  "next": "2026-02-27",
+  "comment": ""
+ },
+ {
+  "id": 17,
+  "case_code": "VBG-0012",
+  "date": "2026-06-01",
+  "step": "Écoute",
+  "by": "Esther Koto",
+  "outcome": "En attente",
+  "next": "2026-06-15",
+  "comment": ""
+ },
+ {
+  "id": 18,
+  "case_code": "VBG-0026",
+  "date": "2026-03-26",
+  "step": "Orientation médicale",
+  "by": "Mireille Tognifode",
+  "outcome": "Reporté",
+  "next": "2026-04-09",
+  "comment": ""
+ },
+ {
+  "id": 19,
+  "case_code": "VBG-0071",
+  "date": "2026-04-22",
+  "step": "Accueil",
+  "by": "Chantal Hounkpatin",
+  "outcome": "Reporté",
+  "next": "2026-05-06",
+  "comment": ""
+ },
+ {
+  "id": 20,
+  "case_code": "VBG-0058",
+  "date": "2026-09-17",
+  "step": "Écoute",
+  "by": "Chantal Hounkpatin",
+  "outcome": "Reporté",
+  "next": "2026-10-01",
+  "comment": ""
+ },
+ {
+  "id": 21,
+  "case_code": "VBG-0021",
+  "date": "2026-01-21",
+  "step": "Accueil",
+  "by": "Chantal Hounkpatin",
+  "outcome": "Reporté",
+  "next": "2026-02-04",
+  "comment": ""
+ },
+ {
+  "id": 22,
+  "case_code": "VBG-0047",
+  "date": "2026-09-09",
+  "step": "Accueil",
+  "by": "Chantal Hounkpatin",
+  "outcome": "Reporté",
+  "next": "2026-09-23",
+  "comment": ""
+ },
+ {
+  "id": 23,
+  "case_code": "VBG-0068",
+  "date": "2025-12-18",
+  "step": "Accueil",
+  "by": "Mireille Tognifode",
+  "outcome": "Réalisé",
+  "next": "2026-01-01",
+  "comment": ""
+ },
+ {
+  "id": 24,
+  "case_code": "VBG-0006",
+  "date": "2025-11-11",
+  "step": "Orientation médicale",
+  "by": "Esther Koto",
+  "outcome": "Réalisé",
+  "next": "2025-11-25",
+  "comment": ""
+ },
+ {
+  "id": 25,
+  "case_code": "VBG-0011",
+  "date": "2026-01-15",
+  "step": "Suivi à 30 jours",
+  "by": "Mireille Tognifode",
+  "outcome": "Réalisé",
+  "next": "2026-01-29",
+  "comment": ""
+ },
+ {
+  "id": 26,
+  "case_code": "VBG-0022",
+  "date": "2026-07-28",
+  "step": "Appui psychologique",
+  "by": "Esther Koto",
+  "outcome": "En attente",
+  "next": "2026-08-11",
+  "comment": ""
+ },
+ {
+  "id": 27,
+  "case_code": "VBG-0013",
+  "date": "2026-07-05",
+  "step": "Orientation médicale",
+  "by": "Esther Koto",
+  "outcome": "En attente",
+  "next": "2026-07-19",
+  "comment": ""
+ },
+ {
+  "id": 28,
+  "case_code": "VBG-0056",
+  "date": "2026-05-22",
+  "step": "Orientation médicale",
+  "by": "Esther Koto",
+  "outcome": "Réalisé",
+  "next": "2026-06-05",
+  "comment": ""
+ },
+ {
+  "id": 29,
+  "case_code": "VBG-0042",
+  "date": "2026-06-07",
+  "step": "Orientation médicale",
+  "by": "Chantal Hounkpatin",
+  "outcome": "En attente",
+  "next": "2026-06-21",
+  "comment": ""
+ },
+ {
+  "id": 30,
+  "case_code": "VBG-0034",
+  "date": "2026-01-02",
+  "step": "Orientation médicale",
+  "by": "Chantal Hounkpatin",
+  "outcome": "En attente",
+  "next": "2026-01-16",
+  "comment": ""
+ }
+]

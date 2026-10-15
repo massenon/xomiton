@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "Facebook",
+        "connected": true,
+        "since": "2026-08-12",
+        "account": "@xomiton.bj"
+    },
+    {
+        "id": 2,
+        "name": "TikTok",
+        "connected": false,
+        "since": "",
+        "account": ""
+    },
+    {
+        "id": 3,
+        "name": "Roméo",
+        "connected": false,
+        "since": "",
+        "account": ""
+    },
+    {
+        "id": 4,
+        "name": "GanXo",
+        "connected": false,
+        "since": "",
+        "account": ""
+    },
+    {
+        "id": 5,
+        "name": "Telegram",
+        "connected": true,
+        "since": "2026-08-12",
+        "account": "@xomiton.bj"
+    },
+    {
+        "id": 6,
+        "name": "Tinder",
+        "connected": false,
+        "since": "",
+        "account": ""
+    }
+]

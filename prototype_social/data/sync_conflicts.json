@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "code": "VBG-0047",
+        "field": "Statut du dossier",
+        "server": "ouvert",
+        "device": "clos",
+        "from": "Chantal H. — Porto-Novo",
+        "status": "à résoudre",
+        "resolution": "",
+        "at": "2026-10-13 15:03"
+    },
+    {
+        "id": 2,
+        "code": "VBG-0052",
+        "field": "Orientation",
+        "server": "Psychologue",
+        "device": "Juriste",
+        "from": "Aïcha B. — Natitingou",
+        "status": "à résoudre",
+        "resolution": "",
+        "at": "2026-10-13 14:03"
+    },
+    {
+        "id": 3,
+        "code": "VBG-0058",
+        "field": "Notes de suivi",
+        "server": "Premier contact effectué.",
+        "device": "Premier contact effectué ; rappel prévu jeudi.",
+        "from": "Aïcha B. — Natitingou",
+        "status": "à résoudre",
+        "resolution": "",
+        "at": "2026-10-13 13:03"
+    }
+]

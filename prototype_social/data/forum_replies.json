@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "topic": 1,
+        "user": 4,
+        "text": "Prends ton temps. Tu peux commencer par une personne de confiance et choisir un lieu où tu te sens en sécurité. Rien ne t'oblige à tout dire.",
+        "ts": 1791898534
+    },
+    {
+        "id": 2,
+        "topic": 1,
+        "user": 12,
+        "text": "Pour moi, écrire d'abord ce que je voulais dire m'a beaucoup aidée. Et j'avais prévu un plan B chez une amie.",
+        "ts": 1791902134
+    },
+    {
+        "id": 3,
+        "topic": 2,
+        "user": 4,
+        "text": "Messages, photos, certificat médical, noms des témoins et dates. Fais une copie sur une clé ou envoie-la à une personne de confiance.",
+        "ts": 1791905734
+    },
+    {
+        "id": 4,
+        "topic": 3,
+        "user": 8,
+        "text": "Demande conseil à un point focal via l'annuaire, ils connaissent les centres accueillants.",
+        "ts": 1791909334
+    },
+    {
+        "id": 5,
+        "topic": 4,
+        "user": 16,
+        "text": "Commencez par fixer des règles simples : confidentialité, écoute sans jugement, tour de parole.",
+        "ts": 1791912934
+    },
+    {
+        "id": 6,
+        "topic": 6,
+        "user": 4,
+        "text": "La respiration carrée marche bien : 4 secondes d'inspiration, 4 de pause, 4 d'expiration, 4 de pause.",
+        "ts": 1791916534
+    }
+]

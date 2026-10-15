@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Xomiton — styles des composants x-* qui n'existent pas dans le thème Social.
+   Charger après tokens.css et social-xomiton.css. Tokens uniquement.
+   ========================================================================== */
+
+/* Statut « assigné » (violet : accent catégoriel, jamais seul) */
+.xm-status--violet { background-color: var(--xm-accent-violet); color: var(--xm-bg); }
+
+/* Stepper (inscription en étapes, sauvegarde à chaque étape) */
+.xm-stepper__item { display: flex; align-items: center; gap: var(--xm-space-2); color: var(--xm-text-muted); font-weight: 600; }
+.xm-stepper__dot { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: 2px solid var(--xm-border); background: var(--xm-surface); font-weight: 800; font-size: var(--xm-fs-small); }
+.xm-stepper__item.is-current { color: var(--xm-text); }
+.xm-stepper__item.is-current .xm-stepper__dot { border-color: var(--xm-primary); background: var(--xm-primary); color: var(--xm-on-primary); }
+.xm-stepper__item.is-done .xm-stepper__dot { border-color: var(--xm-success); background: var(--xm-success); color: var(--xm-bg); }
+
+/* Avatar à initiales */
+.xm-avatar { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--xm-primary-subtle); color: var(--xm-primary-subtle-text); font-family: var(--xm-font-heading); font-weight: 800; flex: none; }
+
+/* Alpine : masque les blocs x-cloak avant initialisation (évite le clignotement) */
+[x-cloak] { display: none !important; }
+
+/* Cartes par variante : seule la bordure haute change, jamais le fond */
+.xm-card--stat { border-top: 4px solid var(--xm-primary); }
+.xm-card--event { border-top: 4px solid var(--xm-accent-violet); }
+.xm-card--contact { border-top: 4px solid var(--xm-secondary); }
+
+/* Mouvement réduit : plus d'élévation au survol */
+@media (prefers-reduced-motion: reduce) { .xm-card--interactive:hover { transform: none; } }
+
+/* Modale : flex via classe (pas d-flex, !important écraserait le display:none de x-show) */
+.xm-modal { display: flex; flex-direction: column; }
+
+/* Icône à largeur fixe (remplace fa-fw de Font Awesome) */
+.xm-fw { display: inline-block; width: 1.25em; text-align: center; }
+
+/* Bouton « Voir plus / Voir moins » d'un volet Bootstrap */
+[aria-expanded="false"] > .xm-when-expanded, [aria-expanded="true"] > .xm-when-collapsed { display: none; }

@@ -1,0 +1,56 @@
+[
+ {
+  "id": 1,
+  "name": "Cercle des sœurs – Cotonou",
+  "desc": "Espace d'écoute et d'entraide entre femmes et filles.",
+  "members": 412,
+  "privacy": "Privé",
+  "image": "hero-09.jpg",
+  "zone": "Littoral"
+ },
+ {
+  "id": 2,
+  "name": "Pairs animateur·rices du Bénin",
+  "desc": "Échange de pratiques, outils CCC, retours terrain.",
+  "members": 138,
+  "privacy": "Privé",
+  "image": "hero-12.jpg",
+  "zone": "National"
+ },
+ {
+  "id": 3,
+  "name": "Droits & recours",
+  "desc": "Questions juridiques entre pair·es, avec des juristes.",
+  "members": 290,
+  "privacy": "Public",
+  "image": "hero-13.jpg",
+  "zone": "National"
+ },
+ {
+  "id": 4,
+  "name": "Santé mentale & bien-être",
+  "desc": "Techniques de respiration, partage d'expériences.",
+  "members": 356,
+  "privacy": "Public",
+  "image": "hero-10.jpg",
+  "zone": "National"
+ },
+ {
+  "id": 5,
+  "name": "LBTQ+ Parakou",
+  "desc": "Communauté locale, rencontres et sorties safe.",
+  "members": 87,
+  "privacy": "Privé",
+  "image": "hero-04.jpg",
+  "zone": "Borgou"
+ },
+ {
+  "id": 6,
+  "name": "Entrepreneuses solidaires",
+  "desc": "Autonomisation économique, mentorat, financements.",
+  "members": 204,
+  "privacy": "Public",
+  "image": "hero-05.jpg",
+  "zone": "National"
+ }
+]

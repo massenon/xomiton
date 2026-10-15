@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="fr" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Catalogue du design system</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"><link rel="stylesheet" href="file:///C:/Projects/xomiton_laravel/design-system/tokens/tokens.css"><link rel="stylesheet" href="file:///C:/Projects/xomiton_laravel/design-system/tokens/social-xomiton.css"><link rel="stylesheet" href="file:///C:/Projects/xomiton_laravel/design-system/tokens/components.css"></head>
+<body>
+<a class="xm-skip-link" href="#contenu">Aller au contenu</a>
+<header class="sticky-top border-bottom" style="background:var(--xm-surface)">
+    <div class="container d-flex align-items-center gap-3 py-2">
+        <a href="https://xomiton.org"  aria-label="Xomiton, accueil"><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-couleur.svg" alt="Xomiton" title="Xomiton" width="120" height="31"></a>        <span class="xm-hint">Catalogue du design system · v1.0</span>
+        <button
+    type="button" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-2 ms-auto" x-data="" @click="document.documentElement.dataset.bsTheme = document.documentElement.dataset.bsTheme === 'dark' ? 'light' : 'dark'"
+        >
+            <i class="bi bi-moon-stars" aria-hidden="true"></i>
+        <span>Thème</span></button>
+        <button type="button" class="xm-quick-exit d-inline-flex align-items-center gap-2" onclick="window.xmQuickExit('https:\/\/www.wikipedia.org')">
+    <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Quitter ce site
+    <span class="visually-hidden">(ou appuie deux fois sur Échap)</span>
+</button>
+    </div>
+</header>
+
+<main id="contenu" class="container py-5" tabindex="-1">
+    <h1 class="mb-5">Composants Xomiton</h1>
+
+    <section aria-labelledby="s3" class="mb-6 mb-5">
+        <h2 id="s3" class="h3">3 · Couleur</h2>
+        <div class="row g-3">
+                            <div class="col-6 col-md-2"><div class="rounded-3 p-3 border" style="background:var(--xm-primary);min-height:80px"></div><p class="small mb-0 mt-1">Primaire<br><code>--xm-primary</code></p></div>
+                            <div class="col-6 col-md-2"><div class="rounded-3 p-3 border" style="background:var(--xm-secondary);min-height:80px"></div><p class="small mb-0 mt-1">Secondaire (attention)<br><code>--xm-secondary</code></p></div>
+                            <div class="col-6 col-md-2"><div class="rounded-3 p-3 border" style="background:var(--xm-success);min-height:80px"></div><p class="small mb-0 mt-1">Succès<br><code>--xm-success</code></p></div>
+                            <div class="col-6 col-md-2"><div class="rounded-3 p-3 border" style="background:var(--xm-info);min-height:80px"></div><p class="small mb-0 mt-1">Info<br><code>--xm-info</code></p></div>
+                            <div class="col-6 col-md-2"><div class="rounded-3 p-3 border" style="background:var(--xm-warning);min-height:80px"></div><p class="small mb-0 mt-1">Alerte<br><code>--xm-warning</code></p></div>
+                            <div class="col-6 col-md-2"><div class="rounded-3 p-3 border" style="background:var(--xm-accent-violet);min-height:80px"></div><p class="small mb-0 mt-1">Violet<br><code>--xm-accent-violet</code></p></div>
+                    </div>
+    </section>
+
+    <section aria-labelledby="s4" class="mb-5">
+        <h2 id="s4" class="h3">4 · Logo</h2>
+        <div class="d-flex flex-wrap gap-4 align-items-center">
+            <span ><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-couleur.svg" alt="Xomiton" title="Xomiton" width="160" height="41"></span>            <span class="p-3 rounded-3" style="background:#0E1020"><span ><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-sombre.svg" alt="Xomiton" title="Xomiton" width="160" height="41"></span></span>
+            <span ><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-vertical-couleur.svg" alt="Xomiton" title="Xomiton" width="120" height="69"></span>        </div>
+    </section>
+
+    <section aria-labelledby="s5" class="mb-5">
+        <h2 id="s5" class="h3">5 · Typographie</h2>
+        <p class="display-4 mb-0">Titre Montserrat</p>
+        <p class="lead xm-subtitle">Sous-titre et texte courant en Arial.</p>
+    </section>
+
+    <section aria-labelledby="s9" class="mb-5">
+        <h2 id="s9" class="h3">9 · Boutons, urgences, statuts</h2>
+        <div class="d-flex flex-wrap gap-3 mb-3">
+            <button
+    type="button" class="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2"
+        >
+        <span>Primaire</span></button>
+            <button
+    type="button" class="btn btn-secondary d-inline-flex align-items-center justify-content-center gap-2"
+        >
+            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+        <span>Signaler un abus</span></button>
+            <button
+    type="button" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center gap-2"
+        >
+        <span>Contour</span></button>
+            <button
+    type="button" class="btn btn-link text-decoration-none d-inline-flex align-items-center justify-content-center gap-2"
+        >
+        <span>Discret</span></button>
+            <button
+    type="button" class="btn btn-light d-inline-flex align-items-center justify-content-center gap-2"
+     aria-label="Notifications"     >
+            <i class="bi bi-bell" aria-hidden="true"></i>
+        </button>
+            <button
+    type="button" class="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2"
+         aria-busy="true"  disabled  >
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        <span>Envoi…</span></button>
+            <button
+    type="button" class="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2" disabled="disabled"
+        >
+        <span>Désactivé</span></button>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="xm-urgency xm-urgency--low"><i class="bi bi-info-circle" aria-hidden="true"></i><span class="visually-hidden">Urgence :</span> Faible</span>
+<span class="xm-urgency xm-urgency--medium"><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span class="visually-hidden">Urgence :</span> Moyenne</span>
+<span class="xm-urgency xm-urgency--high"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><span class="visually-hidden">Urgence :</span> Élevée</span>
+<span class="xm-urgency xm-urgency--critical"><i class="bi bi-exclamation-octagon-fill" aria-hidden="true"></i><span class="visually-hidden">Urgence :</span> Critique</span>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge d-inline-flex align-items-center gap-1 text-bg-primary"><i class="bi bi-stars" aria-hidden="true"></i>Nouveau</span>
+<span class="badge d-inline-flex align-items-center gap-1 xm-status--violet"><i class="bi bi-person-check" aria-hidden="true"></i>Assigné</span>
+<span class="badge d-inline-flex align-items-center gap-1 text-bg-info"><i class="bi bi-arrow-repeat" aria-hidden="true"></i>En cours</span>
+<span class="badge d-inline-flex align-items-center gap-1 text-bg-warning"><i class="bi bi-hourglass-split" aria-hidden="true"></i>En attente de réponse</span>
+<span class="badge d-inline-flex align-items-center gap-1 text-bg-success"><i class="bi bi-check-circle" aria-hidden="true"></i>Résolu</span>
+<span class="badge d-inline-flex align-items-center gap-1 bg-secondary-subtle text-body"><i class="bi bi-archive" aria-hidden="true"></i>Clos</span>
+<span class="badge d-inline-flex align-items-center gap-1 text-bg-danger"><i class="bi bi-x-octagon" aria-hidden="true"></i>Non résolu</span>
+        </div>
+    </section>
+
+    <section aria-labelledby="s10" class="mb-5">
+        <h2 id="s10" class="h3">10 · Indicateurs</h2>
+        <div class="row g-3">
+            <div class="col-md-4"><div class="xm-card xm-card--stat h-100">
+    <p class="xm-hint mb-1 d-flex align-items-center gap-2"><i class="bi bi-folder2-open" aria-hidden="true"></i>Cas ouverts</p>
+    <p class="mb-1" style="font-family:var(--xm-font-heading);font-weight:800;font-size:2.25rem;line-height:1.1">42</p>
+    <p class="mb-1 fw-bold small"><i class="bi bi-arrow-up-right" aria-hidden="true"></i> +12 % <span class="visually-hidden">(en hausse)</span></p>    <a href="#" class="small">Voir le détail</a></div>
+</div>
+            <div class="col-md-4"><div class="xm-card xm-card--stat h-100">
+    <p class="xm-hint mb-1 d-flex align-items-center gap-2"><i class="bi bi-clock" aria-hidden="true"></i>Délai moyen de prise en charge</p>
+    <p class="mb-1" style="font-family:var(--xm-font-heading);font-weight:800;font-size:2.25rem;line-height:1.1">3 h</p>
+    <p class="mb-1 fw-bold small"><i class="bi bi-arrow-down-right" aria-hidden="true"></i> −8 % <span class="visually-hidden">(en baisse)</span></p>    </div>
+</div>
+            <div class="col-md-4"><div class="xm-card xm-card--stat h-100">
+    <p class="xm-hint mb-1 d-flex align-items-center gap-2"><i class="bi bi-broadcast" aria-hidden="true"></i>Alertes SOS (7 j)</p>
+    <p class="mb-1" style="font-family:var(--xm-font-heading);font-weight:800;font-size:2.25rem;line-height:1.1">2</p>
+        </div>
+</div>
+        </div>
+        <p class="xm-hint mt-2">Valeurs d'exemple.</p>
+    </section>
+
+    <section aria-labelledby="s11" class="mb-5">
+        <h2 id="s11" class="h3">11 · Composition : cartes, formulaire, étapes</h2>
+        <ol class="xm-stepper list-unstyled d-flex flex-wrap gap-3 mb-4" aria-label="Étapes">
+                    <li class="xm-stepper__item is-done" >
+            <span class="xm-stepper__dot" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+            <span>Identité<span class="visually-hidden"> — terminée</span></span>
+        </li>
+                    <li class="xm-stepper__item is-current"  aria-current="step" >
+            <span class="xm-stepper__dot" aria-hidden="true">2</span>
+            <span>Contact<span class="visually-hidden"> — en cours</span></span>
+        </li>
+                    <li class="xm-stepper__item " >
+            <span class="xm-stepper__dot" aria-hidden="true">3</span>
+            <span>Confiance<span class="visually-hidden"> — à venir</span></span>
+        </li>
+    </ol>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <article class="xm-card xm-card--interactive position-relative xm-card--resource d-flex flex-column gap-3 h-100">
+        <div><span class="badge text-bg-primary">Droits</span></div>    <h3 class="h5 mb-0">
+        <a href="#" class="stretched-link text-reset text-decoration-none">Comprendre ses droits</a>    </h3>
+    <p class="xm-hint mb-0">5 min de lecture</p>    <div>Une fiche courte et sûre pour connaître ses recours.</div>    </article>
+            </div>
+            <div class="col-md-6">
+                                <div class="mb-4" >
+            <label class="form-label" for="f-email">Adresse e-mail</label>
+                    <input class="form-control" id="f-email" name="email" aria-describedby="f-email-hint" autocomplete="email" type="email" value="">
+                <div id="f-email-hint" class="form-text">Jamais partagée.</div>    </div>
+                <div class="mb-4"  x-data="{ show: false }" >
+            <label class="form-label" for="f-password">Mot de passe</label>
+                    <div class="input-group">
+                <input class="form-control" id="f-password" name="password" autocomplete="new-password" x-bind:type="show ? 'text' : 'password'" type="password">
+                <button class="btn btn-light border" type="button" @click="show = !show" x-bind:aria-pressed="show" aria-label="Afficher le mot de passe">
+                    <i class="bi" x-bind:class="show ? 'bi-eye-slash' : 'bi-eye'" aria-hidden="true"></i>
+                </button>
+            </div>
+                    </div>
+                <div class="mb-4" >
+            <label class="form-label" for="f-city">Ville <span class="xm-hint fw-normal">(facultatif)</span></label>
+                    <input class="form-control" id="f-city" name="city" type="text" value="">
+                    </div>
+                <div class="mb-4" >
+            <div class="form-check form-switch">
+            <input class="form-check-input" id="f-notif" name="notif" type="checkbox" value="1" >
+            <label class="form-check-label" for="f-notif">Recevoir les actualités</label>
+        </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <section aria-labelledby="s12" class="mb-5">
+        <h2 id="s12" class="h3">Navigation, retours et états</h2>
+        <nav aria-label="Fil d&#039;Ariane">
+    <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+                                                <li class="breadcrumb-item"><a href="/ressources">Ressources</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page">Comprendre ses droits</li>
+                        </ol>
+</nav>
+<script type="application/ld+json">{"\u003C?php $__contextArgs = [];\nif (context()-\u003Ehas($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()-\u003Eget($__contextArgs[0]); ?\u003E":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://xomiton.org"},{"@type":"ListItem","position":2,"name":"Ressources","item":"https://xomiton.org/ressources"},{"@type":"ListItem","position":3,"name":"Comprendre ses droits"}]}</script>
+        <div x-data="{ tab: new URLSearchParams(location.search).get('tab') || 'infos',
+               set(t) { this.tab = t; const u = new URL(location); u.searchParams.set('tab', t); history.replaceState(null, '', u); },
+               move(e) { const k = Object.keys(JSON.parse('{\u0022infos\u0022:\u0022Informations\u0022,\u0022notes\u0022:\u0022Notes\u0022}')); let i = k.indexOf(this.tab); i = e.key === 'ArrowRight' ? (i + 1) % k.length : (i - 1 + k.length) % k.length; this.set(k[i]); this.$nextTick(() => document.getElementById('tab-' + this.tab).focus()); } }">
+    <div class="nav nav-pills gap-2 mb-4" role="tablist" aria-label="Fiche de cas" @keydown.right.prevent="move($event)" @keydown.left.prevent="move($event)">
+                    <button type="button" role="tab" id="tab-infos" class="nav-link" aria-controls="panel-infos"
+                    x-bind:class="tab === 'infos' && 'active'" x-bind:aria-selected="tab === 'infos'" x-bind:tabindex="tab === 'infos' ? 0 : -1"
+                    @click="set('infos')">Informations</button>
+                    <button type="button" role="tab" id="tab-notes" class="nav-link" aria-controls="panel-notes"
+                    x-bind:class="tab === 'notes' && 'active'" x-bind:aria-selected="tab === 'notes'" x-bind:tabindex="tab === 'notes' ? 0 : -1"
+                    @click="set('notes')">Notes</button>
+            </div>
+            <div role="tabpanel" id="panel-infos" aria-labelledby="tab-infos" tabindex="0" x-show="tab === 'infos'" x-cloak>Contenu de l'onglet Informations.</div>
+            <div role="tabpanel" id="panel-notes" aria-labelledby="tab-notes" tabindex="0" x-show="tab === 'notes'" x-cloak>Contenu de l'onglet Notes.</div>
+    </div>
+        <div x-data="{ open: null }" class="xm-accordion my-4">
+            <div class="border-bottom">
+            <h3 class="h6 mb-0">
+                <button type="button" class="btn w-100 text-start d-flex justify-content-between align-items-center py-3 fw-bold"
+                        id="acc-h0" aria-controls="acc-p0"
+                        x-bind:aria-expanded="open === 0" @click="open = open === 0 ? null : 0">
+                    Qui peut voir mon signalement ?
+                    <i class="bi bi-chevron-down" aria-hidden="true" x-bind:class="open === 0 && 'bi-chevron-up'"></i>
+                </button>
+            </h3>
+            <div id="acc-p0" role="region" aria-labelledby="acc-h0" x-show="open === 0" x-cloak class="pb-3 xm-prose"><p>Seulement l’équipe de prise en charge.</p></div>
+        </div>
+            <div class="border-bottom">
+            <h3 class="h6 mb-0">
+                <button type="button" class="btn w-100 text-start d-flex justify-content-between align-items-center py-3 fw-bold"
+                        id="acc-h1" aria-controls="acc-p1"
+                        x-bind:aria-expanded="open === 1" @click="open = open === 1 ? null : 1">
+                    Puis-je rester anonyme ?
+                    <i class="bi bi-chevron-down" aria-hidden="true" x-bind:class="open === 1 && 'bi-chevron-up'"></i>
+                </button>
+            </h3>
+            <div id="acc-p1" role="region" aria-labelledby="acc-h1" x-show="open === 1" x-cloak class="pb-3 xm-prose"><p>Oui.</p></div>
+        </div>
+    </div>
+        <div class="alert alert-info d-flex gap-3 align-items-start" role="status">
+    <i class="bi bi-info-circle fs-5" aria-hidden="true"></i>
+    <div class="flex-grow-1"><p class="fw-bold mb-1">Information</p>Message d'information.</div>
+    </div>
+        <div class="alert alert-danger d-flex gap-3 align-items-start" role="alert">
+    <i class="bi bi-exclamation-octagon fs-5" aria-hidden="true"></i>
+    <div class="flex-grow-1"><p class="fw-bold mb-1">Erreur</p>Quelque chose a échoué, réessaie.</div>
+    </div>
+        <div class="text-center py-5 px-3">
+    <i class="bi bi-folder2-open display-4 text-body-secondary" aria-hidden="true"></i>    <p class="h5 mt-2">Aucun cas pour le moment</p>
+    <p class="xm-hint mx-auto" style="max-width:var(--xm-measure)">Les nouveaux cas apparaîtront ici.</p>    </div>
+        <div class="d-flex flex-wrap gap-3 align-items-center">
+            <span class="xm-avatar" role="img" aria-label="Ada Lovelace" style="width:40px;height:40px;font-size:16px">AL</span>
+            <button
+    type="button" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center gap-2" x-data="" @click="$dispatch('toast', { type: 'success', message: 'Enregistré' })"
+        >
+            <i class="bi bi-chat-square-text" aria-hidden="true"></i>
+        <span>Afficher un toast</span></button>
+            <button
+    type="button" class="btn btn-secondary d-inline-flex align-items-center justify-content-center gap-2" x-data="" @click="$dispatch('open-modal', 'demo-delete')"
+        >
+            <i class="bi bi-trash" aria-hidden="true"></i>
+        <span>Supprimer…</span></button>
+        </div>
+    </section>
+</main>
+
+<div x-data="{ open: false, dirty: false, word: '', opener: null,
+               close() { if (this.dirty && ! window.confirm('Abandonner les modifications ?')) return; this.open = false; this.dirty = false; this.$nextTick(() => this.opener && this.opener.focus()); } }"
+     x-on:open-modal.window="if ($event.detail === 'demo-delete') { open = true; opener = document.activeElement }"
+     x-on:keydown.escape.window="if (open) close()"
+     x-effect="document.body.classList.toggle('overflow-hidden', open)"
+          x-cloak>
+    <div x-show="open" class="position-fixed top-0 start-0 w-100 h-100" style="background:rgb(14 16 32 / .6);z-index:1050" @click="close()" aria-hidden="true"></div>
+    <div x-show="open" x-trap.noscroll="open" id="demo-delete" role="alertdialog" aria-modal="true" aria-labelledby="demo-delete-title"
+         class="position-fixed top-50 start-50 translate-middle xm-card xm-modal p-0" style="z-index:1055;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px)">
+        <div class="d-flex align-items-center justify-content-between p-4 border-bottom">
+            <h2 id="demo-delete-title" class="h5 mb-0">Supprimer ce cas ?</h2>
+            <button type="button" class="btn-close" @click="close()" aria-label="Fermer"></button>
+        </div>
+        <div class="p-4 overflow-auto">
+            <p>Le cas sera archivé, pas effacé. Cette action est tracée.</p>
+                            <label class="form-label mt-3" for="demo-delete-word">Saisis « SUPPRIMER » pour confirmer</label>
+                <input id="demo-delete-word" class="form-control" x-model="word" autocomplete="off">
+                    </div>
+        <div class="d-flex justify-content-between gap-2 p-4 border-top">
+            <button type="button" class="btn btn-light" @click="close()">Annuler</button>
+            <span  x-bind:class="word !== 'SUPPRIMER' && 'pe-none opacity-50'" x-bind:aria-disabled="word !== 'SUPPRIMER'" ><button type="button" class="btn btn-secondary">Supprimer définitivement</button></span>
+        </div>
+    </div>
+</div>
+<div x-data="{ items: [], push(d) { const t = { id: Date.now() + Math.random(), ...d }; this.items.push(t); setTimeout(() => this.drop(t.id), 6000); }, drop(id) { this.items = this.items.filter(i => i.id !== id); } }"
+     x-on:toast.window="push($event.detail)" class="position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index:1090;width:min(420px,100vw)">
+    <template x-for="t in items" x-bind:key="t.id">
+        <div class="alert d-flex align-items-start gap-2 shadow" x-bind:class="'alert-' + (t.type || 'info')" x-bind:role="t.type === 'danger' ? 'alert' : 'status'" x-bind:aria-live="t.type === 'danger' ? 'assertive' : 'polite'">
+            <span class="flex-grow-1" x-text="t.message"></span>
+            <button type="button" class="btn-close" @click="drop(t.id)" aria-label="Fermer"></button>
+        </div>
+    </template>
+</div>
+<div x-data="xmSos(null)" class="position-fixed" style="right:16px;bottom:16px;z-index:1040">
+    <button type="button" class="xm-sos" x-bind:data-holding="holding" aria-describedby="sos-help"
+            @pointerdown.prevent="start()" @pointerup="cancelHold()" @pointerleave="cancelHold()"
+            @keydown.enter.prevent="confirming = true">SOS</button>
+    <span id="sos-help" class="visually-hidden">Maintiens 2 secondes, ou appuie sur Entrée pour confirmer. Tu pourras annuler pendant 5 secondes.</span>
+
+    <div x-show="confirming || counting" x-cloak class="xm-card position-absolute bottom-100 end-0 mb-3" style="width:min(300px,calc(100vw - 32px))" role="alertdialog" aria-labelledby="sos-t" x-trap="confirming || counting">
+        <h2 id="sos-t" class="h6" x-text="counting ? 'Envoi dans' + ' ' + left + ' s' : 'Envoyer une alerte SOS ?'"></h2>
+        <div class="d-flex gap-2 mt-3">
+            <button type="button" class="btn btn-light flex-fill" @click="abort()">Annuler</button>
+            <button type="button" class="btn btn-secondary flex-fill" x-show="! counting" @click="begin()">Envoyer</button>
+        </div>
+    </div>
+    <p class="visually-hidden" aria-live="assertive" x-text="message"></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.14.1/dist/cdn.min.js"  defer ></script><script src="file:///C:/Projects/xomiton_laravel/design-system/blade/js/xomiton-ui.js" ></script><script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"  defer ></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script></body>
+</html>

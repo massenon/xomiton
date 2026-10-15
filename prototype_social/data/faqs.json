@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "q": "Qu'est-ce que Xomiton ?",
+        "a": "Xomiton est une plateforme numérique sécurisée destinée aux femmes, aux filles et aux communautés LBTQ+ au Bénin : un espace d'apprentissage, de soutien et de communauté bienveillante.",
+        "published": true
+    },
+    {
+        "id": 2,
+        "q": "Qui peut s'inscrire sur Xomiton ?",
+        "a": "Toute personne s'identifiant comme femme, fille ou faisant partie de la communauté LBTQ+. Les alliés peuvent rejoindre l'espace sous condition de respect de la charte.",
+        "published": true
+    },
+    {
+        "id": 3,
+        "q": "Quel type d'abus puis-je signaler ?",
+        "a": "Toute forme de VBG : violence physique, psychologique, sexuelle, économique, harcèlement, chantage, violences en ligne, discrimination.",
+        "published": true
+    },
+    {
+        "id": 4,
+        "q": "Que se passe-t-il après mon signalement ?",
+        "a": "Il est examiné en toute confidentialité par une équipe formée, puis orienté vers le bon interlocuteur de l'annuaire (psychologue, juriste, point focal).",
+        "published": true
+    },
+    {
+        "id": 5,
+        "q": "Dois-je porter plainte à la police ?",
+        "a": "Non. Signaler sur Xomiton est une démarche indépendante : nous vous écoutons et vous orientons, vous décidez de la suite.",
+        "published": true
+    },
+    {
+        "id": 6,
+        "q": "Comment fonctionne le chat d'assistance ?",
+        "a": "L'assistant répond 24h\/24 aux questions sur les VBG, la sexualité et les droits. En cas de danger, il vous oriente vers un humain et le bouton SOS.",
+        "published": true
+    },
+    {
+        "id": 7,
+        "q": "Comment accéder aux consultations spécialisées ?",
+        "a": "Depuis l'annuaire : psychologues, juristes et gynécologues partenaires, avec leurs disponibilités.",
+        "published": true
+    },
+    {
+        "id": 8,
+        "q": "Comment participer à un événement ou un atelier ?",
+        "a": "Rendez-vous dans « Événements », choisissez une activité et confirmez votre participation.",
+        "published": true
+    },
+    {
+        "id": 9,
+        "q": "Xomiton est-il un espace sûr pour les personnes LBTQ+ ?",
+        "a": "Oui. Tolérance zéro contre l'homophobie, la transphobie et le harcèlement ; modération active et signalement anonyme.",
+        "published": true
+    },
+    {
+        "id": 10,
+        "q": "Mes données sont-elles protégées ?",
+        "a": "Chiffrement, pseudonymes, signalement anonyme possible et consentement explicite pour tout partage de localisation.",
+        "published": true
+    }
+]

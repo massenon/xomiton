@@ -1,0 +1,16 @@
+[
+ {
+  "id": 1,
+  "from_user": 5,
+  "to_user": 3,
+  "status": "en_attente",
+  "date": 1791688713
+ },
+ {
+  "id": 2,
+  "from_user": 6,
+  "to_user": 3,
+  "status": "en_attente",
+  "date": 1791515913
+ }
+]

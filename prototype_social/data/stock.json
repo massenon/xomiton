@@ -1,0 +1,102 @@
+[
+ {
+  "id": 1,
+  "item": "Préservatifs masculins",
+  "category": "Prévention",
+  "unit": "boîte de 100",
+  "qty": 42,
+  "min": 20,
+  "location": "Cotonou",
+  "updated": "2026-10-12"
+ },
+ {
+  "id": 2,
+  "item": "Préservatifs féminins",
+  "category": "Prévention",
+  "unit": "boîte de 50",
+  "qty": 18,
+  "min": 15,
+  "location": "Cotonou",
+  "updated": "2026-09-04"
+ },
+ {
+  "id": 3,
+  "item": "Gel lubrifiant",
+  "category": "Prévention",
+  "unit": "tube",
+  "qty": 9,
+  "min": 25,
+  "location": "Porto-Novo",
+  "updated": "2026-09-02"
+ },
+ {
+  "id": 4,
+  "item": "Autotests VIH",
+  "category": "Dépistage",
+  "unit": "kit",
+  "qty": 34,
+  "min": 30,
+  "location": "Cotonou",
+  "updated": "2026-10-08"
+ },
+ {
+  "id": 5,
+  "item": "Kits de dignité (hygiène)",
+  "category": "Dignité",
+  "unit": "kit",
+  "qty": 60,
+  "min": 40,
+  "location": "Parakou",
+  "updated": "2026-10-11"
+ },
+ {
+  "id": 6,
+  "item": "Serviettes hygiéniques",
+  "category": "Dignité",
+  "unit": "paquet",
+  "qty": 120,
+  "min": 80,
+  "location": "Parakou",
+  "updated": "2026-09-28"
+ },
+ {
+  "id": 7,
+  "item": "Brochures « Mes droits »",
+  "category": "Communication",
+  "unit": "exemplaire",
+  "qty": 340,
+  "min": 150,
+  "location": "Cotonou",
+  "updated": "2026-10-06"
+ },
+ {
+  "id": 8,
+  "item": "Boîtes à images",
+  "category": "Communication",
+  "unit": "boîte",
+  "qty": 12,
+  "min": 5,
+  "location": "Bohicon",
+  "updated": "2026-09-12"
+ },
+ {
+  "id": 9,
+  "item": "Kits PEP (post-exposition)",
+  "category": "Médical",
+  "unit": "kit",
+  "qty": 6,
+  "min": 10,
+  "location": "Cotonou",
+  "updated": "2026-09-13"
+ },
+ {
+  "id": 10,
+  "item": "Alarmes personnelles",
+  "category": "Sécurité",
+  "unit": "pièce",
+  "qty": 25,
+  "min": 10,
+  "location": "Abomey-Calavi",
+  "updated": "2026-09-18"
+ }
+]

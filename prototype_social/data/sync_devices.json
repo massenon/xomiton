@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "Esther K. — Parakou",
+        "device": "Android 13 · Redmi 10",
+        "last": 1791907410,
+        "pending": 0,
+        "conflicts": 0
+    },
+    {
+        "id": 2,
+        "name": "Chantal H. — Porto-Novo",
+        "device": "Android 12 · Tecno Spark",
+        "last": 1791821010,
+        "pending": 7,
+        "conflicts": 1
+    },
+    {
+        "id": 3,
+        "name": "Rodrigue S. — Cotonou",
+        "device": "iPhone 12 · Safari",
+        "last": 1791896610,
+        "pending": 0,
+        "conflicts": 0
+    },
+    {
+        "id": 4,
+        "name": "Aïcha B. — Natitingou",
+        "device": "Android 11 · Itel",
+        "last": 1791446610,
+        "pending": 14,
+        "conflicts": 2
+    },
+    {
+        "id": 5,
+        "name": "Poste Point focal — Djougou",
+        "device": "Windows · Chrome",
+        "last": 1791911010,
+        "pending": 0,
+        "conflicts": 0
+    }
+]

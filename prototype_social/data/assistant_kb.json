@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "q": "Que faire après une agression sexuelle ?",
+        "a": "Vous n’êtes pas responsable. Si possible, ne vous lavez pas, consultez un centre de santé dans les 72 h (PEP, contraception d’urgence) et contactez un·e juriste ou psychologue de l’annuaire.",
+        "keywords": "agression, viol, attouchement",
+        "active": true
+    },
+    {
+        "id": 2,
+        "q": "Comment porter plainte ?",
+        "a": "La loi n°2011-26 réprime les violences faites aux femmes. Vous pouvez vous rendre au commissariat, à la gendarmerie ou auprès du procureur ; un·e juriste Xomiton peut vous accompagner.",
+        "keywords": "plainte, police, justice, loi",
+        "active": true
+    },
+    {
+        "id": 3,
+        "q": "Qu’est-ce que le consentement ?",
+        "a": "Un consentement libre, éclairé, enthousiaste, spécifique et réversible. Le silence, la peur ou l’alcool ne valent jamais consentement.",
+        "keywords": "consentement",
+        "active": true
+    },
+    {
+        "id": 4,
+        "q": "Contraception d’urgence",
+        "a": "À prendre le plus tôt possible, idéalement dans les 72 h. Disponible en centre de santé ou en pharmacie ; demandez conseil à un·e professionnel·le.",
+        "keywords": "contraception, pilule, grossesse",
+        "active": true
+    },
+    {
+        "id": 5,
+        "q": "Chantage à l’outing",
+        "a": "Ne répondez pas, ne payez pas, conservez les captures d’écran datées et utilisez le signalement anonyme. Un·e juriste peut agir pour faire retirer les contenus.",
+        "keywords": "outing, chantage, menace en ligne",
+        "active": true
+    },
+    {
+        "id": 6,
+        "q": "Dépistage VIH \/ IST",
+        "a": "Le dépistage est confidentiel et gratuit dans les centres partenaires. Après une prise de risque, la PEP doit démarrer dans les 72 h.",
+        "keywords": "vih, ist, dépistage, sida",
+        "active": true
+    }
+]

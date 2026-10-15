@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "title": "Prévention – consentement",
+        "text": "Le consentement est libre, enthousiaste et réversible. Besoin d’en parler ? Xomiton est là, sans jugement."
+    },
+    {
+        "id": 2,
+        "title": "Prévention – dépistage",
+        "text": "Se faire dépister, c’est prendre soin de soi. Gratuit et confidentiel dans nos centres partenaires."
+    },
+    {
+        "id": 3,
+        "title": "Aide – SOS",
+        "text": "Tu es en danger ou tu connais quelqu’un qui l’est ? Utilise le bouton SOS Xomiton : une personne de confiance te répond."
+    }
+]

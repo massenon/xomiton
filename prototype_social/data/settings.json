@@ -1,0 +1,15 @@
+[
+ {
+  "registrations_open": true,
+  "manual_validation": false,
+  "maintenance": false,
+  "offline_sync": true,
+  "gps_sos": true,
+  "anonymous_reports": true,
+  "assistant_enabled": true,
+  "site_name": "Xomiton",
+  "contact_email": "contact@xomiton.bj",
+  "platform_version": "1.4.2",
+  "last_update": "2026-09-28"
+ }
+]

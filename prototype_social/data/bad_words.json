@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "word": "sale pédé",
+        "severity": "bloquer"
+    },
+    {
+        "id": 2,
+        "word": "gouine",
+        "severity": "bloquer"
+    },
+    {
+        "id": 3,
+        "word": "va mourir",
+        "severity": "bloquer"
+    },
+    {
+        "id": 4,
+        "word": "tarée",
+        "severity": "signaler"
+    },
+    {
+        "id": 5,
+        "word": "casse-toi",
+        "severity": "signaler"
+    },
+    {
+        "id": 6,
+        "word": "argent facile",
+        "severity": "signaler"
+    },
+    {
+        "id": 7,
+        "word": "clique ici",
+        "severity": "signaler"
+    }
+]

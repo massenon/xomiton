@@ -1,0 +1,13 @@
+[
+    {
+        "at": "2026-10-13 23:18",
+        "by": "Administrateur Xomiton",
+        "title": "Rapport annuel",
+        "rtype": "annuel",
+        "period": "01\/01\/2026 – 31\/12\/2026",
+        "format": "apercu",
+        "cases": 60,
+        "dims": "departement,sexe,age",
+        "id": 1
+    }
+]

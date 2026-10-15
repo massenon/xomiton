@@ -1,0 +1,74 @@
+[
+ {
+  "id": 1,
+  "title": "Atelier « Dire non sans culpabiliser »",
+  "date": "2026-10-17",
+  "time": "15:00",
+  "place": "Porto-Novo + en ligne",
+  "image": "hero-12.jpg",
+  "description": "Jeux de rôle et exercices pour poser ses limites.",
+  "going": 34,
+  "organizer": "Chantal Hounkpatin",
+  "cat": "Atelier"
+ },
+ {
+  "id": 2,
+  "title": "Séance de self-défense",
+  "date": "2026-10-24",
+  "time": "09:00",
+  "place": "Cotonou – Stade de l'Amitié",
+  "image": "hero-10.jpg",
+  "description": "Initiation aux techniques de protection personnelle.",
+  "going": 58,
+  "organizer": "Équipe Xomiton",
+  "cat": "Self-défense"
+ },
+ {
+  "id": 3,
+  "title": "Webinaire : connaître ses droits",
+  "date": "2026-10-29",
+  "time": "18:00",
+  "place": "En ligne",
+  "image": "hero-13.jpg",
+  "description": "Avec un·e juriste : plainte, preuves, recours.",
+  "going": 121,
+  "organizer": "Me Judith Houngbo",
+  "cat": "Webinaire"
+ },
+ {
+  "id": 4,
+  "title": "Causerie : santé mentale et résilience",
+  "date": "2026-11-07",
+  "time": "16:00",
+  "place": "Parakou",
+  "image": "hero-04.jpg",
+  "description": "Échanges entre pairs et conseils d'un psychologue.",
+  "going": 42,
+  "organizer": "Brice Akplogan",
+  "cat": "Causerie"
+ },
+ {
+  "id": 5,
+  "title": "Journée de dépistage VIH/IST gratuit",
+  "date": "2026-11-14",
+  "time": "08:00",
+  "place": "Cotonou – Zogbo",
+  "image": "hero-09.jpg",
+  "description": "Dépistage confidentiel, conseils et orientation.",
+  "going": 77,
+  "organizer": "Dr Clarisse Agossou",
+  "cat": "Santé"
+ },
+ {
+  "id": 6,
+  "title": "Formation des pairs animateur·rices",
+  "date": "2026-11-21",
+  "time": "09:00",
+  "place": "Bohicon",
+  "image": "hero-05.jpg",
+  "description": "Utilisation du manuel du pair animateur et de la plateforme.",
+  "going": 25,
+  "organizer": "Équipe Xomiton",
+  "cat": "Formation"
+ }
+]

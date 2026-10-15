@@ -1,0 +1,70 @@
+# Décisions actées — 8 octobre 2026
+
+Réponses du client aux points D2, D4, D5, D6, D7 de `xomiton_implementation/12_RISQUES_ET_DECISIONS.md`, avec leurs conséquences. Statut : **actées**, sauf mention « à confirmer ».
+
+## D2 — Framework CSS : Bootstrap seul (avis demandé)
+**Recommandation retenue : Bootstrap 5.3.3, Tailwind retiré.** On ne garde pas les deux.
+
+Pourquoi Bootstrap :
+1. **Le thème Social est du Bootstrap.** Le fichier `public/assets/css/style.css` (435 Ko) est littéralement « Bootstrap v5.3.3 + composants Social » : navbar, offcanvas, cartes, avatars, `data-bs-theme` (mode sombre), grille, utilitaires. Toutes les vues existantes l'utilisent.
+2. **Tailwind obligerait à réécrire chaque composant** (le thème Social n'a pas d'équivalent Tailwind) et à abandonner la fidélité visuelle exigée pour la conversion Sunshine → Social.
+3. **Deux frameworks se battent** : le *preflight* (reset) de Tailwind et celui de Bootstrap entrent en collision, les classes homonymes (`container`, `collapse`, `hidden`, `border`) divergent, et le CSS à livrer double de poids. Sur un réseau mobile limité, c'est un coût réel.
+4. Aujourd'hui Tailwind est **installé mais inutilisé** (`resources/css/app.css` ne sert à rien) : le retirer ne coûte rien.
+5. Les **tokens `--xm-*` sont indépendants du framework** : si un jour on migre vers Tailwind, seule la couche de surcharge change.
+
+Limite connue : le thème est livré **compilé, sans source Sass**, et les couleurs des boutons y sont en dur. On ne peut donc pas simplement changer `$primary`. Solution actée : la couche `tokens/social-xomiton.css`, chargée après `style.css`, réécrit les variables `--bs-*` et les composants concernés. `style.css` n'est jamais modifié. Si on obtient les sources Sass de Social, on pourra basculer vers une compilation Sass (gain de poids), sans changer les tokens.
+Actions : supprimer `tailwindcss` et `@tailwindcss/vite` de `package.json`, retirer le plugin de `vite.config.js`, supprimer `resources/css/app.css` (remplacé par les trois fichiers de tokens).
+
+## D4 — Passerelles sociales : abandonnées
+**Décision : aucune passerelle réseau social** (Facebook, TikTok, Roméo, GanXo, Telegram, Tinder). Motif du client : inscription complexe en plusieurs étapes.
+Conséquences :
+- **Retirer** le module M16 et la phase 12 « passerelles » ; **retirer** les tables `social_channels`, `outbound_posts`, `outbound_deliveries` (domaine I de `03`).
+- **Conserver** de simples **boutons de partage par lien** (WhatsApp, Facebook, Telegram, X, copier le lien), sans compte, sans API, sans jeton.
+- L'exigence 3 de `Xomiton.txt` devient « contenus partageables par liens » ; **à faire confirmer par écrit** auprès du bailleur/commanditaire, car l'exigence d'origine parlait de « connecter » la plateforme aux réseaux.
+- **Simplifier l'inscription** (voir `xomiton/pages/authentification.md`) : une seule étape obligatoire, le profil Xomiton devient progressif.
+
+## D5 — Palette : validée
+Primaire **`#0433C3`**, secondaire **`#E30E0E`** (adoptées telles quelles).
+Contrôle de contraste : bleu sur blanc 9,26:1 (AAA) · rouge sur blanc 4,84:1 (AA, limite basse) · blanc sur rouge 4,84:1 (AA) · **bleu contre rouge 1,91:1 (interdit)** · bleu sur fond sombre 2,04:1 (inutilisable : variante `#7C97FF`) · rouge sur fond sombre 3,89:1 (insuffisant : variante `#FF6B6B`).
+Conséquences : échelles 50→900 dérivées (`tokens/`), variantes pour thème sombre, **rouge réservé à l'attention** (≤ 10 % de l'écran, jamais décoratif ni seul), neutres chauds hérités des illustrations. Détail : `charte-graphique/CHARTE_GRAPHIQUE.md` §3-4.
+Point d'attention : dans Bootstrap, `secondary` sert normalement à un gris neutre. Ici il devient le rouge de marque ; pour un texte atténué, utiliser `.text-body-secondary` (mappé sur `--xm-text-muted`). Dans les vues actuelles, `*-secondary` n'apparaît qu'une fois (`home.blade.php`) : le risque de régression est faible.
+
+## D6 — Typographie : Montserrat (titres), Arial (sous-titres) — et l'écriture inclusive reste ouverte
+La réponse porte sur la **typographie**, pas sur l'écriture inclusive que posait D6. Je consigne donc :
+- **Titres : Montserrat** (interprété comme la famille Montserrat standard ; « Classic » à confirmer). **Sous-titres : Arial.**
+- **Texte courant : Arial** (*hypothèse*, car non précisé ; à confirmer).
+- Inter (utilisée aujourd'hui par la vitrine) est abandonnée.
+- Vigilance : Arial est une police système ; sur **Android**, elle est remplacée par Roboto ou Liberation Sans. La mise en page doit être testée avec ces polices.
+- **Reste à trancher : le système d'écriture inclusive** (point médian « expert·e·s », ou formulations épicènes, ou l'actuel mélange « conseiller‑ère‑x‑s / touxtes / ielles »). **Proposition par défaut** : formulations épicènes en priorité, point médian ailleurs, pas de néologismes dans les écrans de crise ; orthographe unique du sigle (LBTQ+ ou LGBTQ+). À valider.
+
+## D7 — Hébergement : cPanel mutualisé conservé
+Le client reste sur **cPanel mutualisé** et comptera sur les **tâches cron**. C'est faisable, mais cela change l'architecture temps réel et la fiabilité du SOS. Ce qui a été constaté sur l'existant : PHP 8.2 (`ea-php82`), `memory_limit` 128 Mo, `max_execution_time` 30 s, `display_errors On` (à couper en production), projet déployé à la racine avec un `.htaccess` qui redirige vers `public/`.
+
+### Ce qu'on ne pourra pas avoir
+| Prévu | Pourquoi impossible en mutualisé | Remplacement |
+|---|---|---|
+| Redis (files, cache, sessions, limitation de débit) | Pas de service Redis | `QUEUE_CONNECTION=database`, `CACHE_STORE=database` ou `file`, `SESSION_DRIVER=database` |
+| Workers permanents (`queue:work`) | Pas de processus persistant | **Cron toutes les minutes** : `php artisan schedule:run` et `php artisan queue:work --stop-when-empty --max-time=50` |
+| Laravel Reverb / WebSockets | Pas de processus persistant ni de port ouvert | **Polling Livewire** (`wire:poll` 15-30 s pour la cloche, 10 s sur le tableau d'alertes d'un·e agent·e de garde, 4 s seulement dans une conversation ouverte) + Web Push |
+| Serveur Node de WoWonder (chat) | Pas de Node persistant | Chat par polling ; le dossier `nodejs/` est abandonné |
+| Exports PDF/Word/Excel volumineux | 128 Mo, 30 s | Génération par morceaux via cron, limite de lignes, job dédié |
+
+### SOS : conception adaptée (le point critique)
+- L'envoi des notifications d'un SOS **ne passe pas par la file** : il s'exécute **dans la requête** (après enregistrement en base), avec appels HTTP en parallèle (`Http::pool`), délai maximal 3 s par fournisseur ; les échecs sont consignés puis **rejoués par le cron chaque minute**.
+- L'**escalade** (« pas d'accusé de réception après N minutes ») est vérifiée par cron : granularité d'**une minute**, donc délai par défaut de 5 min respecté à ±1 min.
+- **Surveillance indispensable** : un cron arrêté = des SOS non escaladés. Mettre en place un « signal de vie » : le cron appelle chaque minute une URL de supervision externe gratuite (type Healthchecks.io/UptimeRobot) qui **alerte par e-mail/SMS si le signal manque**.
+- Prévoir **SMS de secours** et numéros d'urgence mis en cache hors ligne.
+- Limites d'hébergeur à vérifier : nombre de processus simultanés (« Entry Processes »), CPU/IO. Le polling multiplie les requêtes : intervalles longs, réponses légères, cache de page public. **Si les limites sont atteintes, l'option VPS redevient nécessaire.**
+
+### Déploiement et configuration
+- `public/` doit devenir la **racine web** (domaine ou sous-domaine pointé vers `xomiton/public`) ; garder la règle de repli du `.htaccess` actuel seulement si ce n'est pas possible, avec blocage des dotfiles, de `storage`, `vendor`, `composer.*`.
+- PHP **8.3** via *MultiPHP Manager* (8.2 minimum accepté par Laravel 12), `display_errors Off`, `memory_limit` ≥ 256M si le plan le permet.
+- **Compiler Vite en local** et déployer `public/build` (pas de Node sur le serveur) ; `composer install --no-dev --optimize-autoloader` en local ou par terminal cPanel ; déploiement par Git cPanel ou SFTP.
+- Sauvegardes : cPanel + `mysqldump` planifié vers un stockage externe chiffré.
+- Cache et sessions en fichier/base : purger par cron.
+
+### Garde-fou d'architecture
+Les pilotes sont **pilotés par configuration** (files, cache, sessions, diffusion). Le jour où un VPS est disponible : passage à Redis + workers + Reverb **sans modifier le code applicatif**. (Nouvel ADR-11.)
+
+### Sécurité : constat confirmé sur le serveur existant
+`xomiton/cronjdfp0i4.php` n'est **pas** une tâche cron : après décodage (sans l'exécuter), c'est une **porte dérobée chiffrée** (AES-256-GCM protégée par un mot de passe haché) qui permet d'exécuter des commandes shell, de lire/écrire/téléverser/télécharger des fichiers et d'exécuter du SQL avec des identifiants fournis. `f.php` (contenu « dsds ») est vraisemblablement un fichier de test du même auteur. **On ne sait pas qui l'a déposé.** Traiter le compte d'hébergement comme **compromis** : supprimer les deux fichiers, changer les mots de passe cPanel/FTP/base, régénérer `APP_KEY` (les sessions et données chiffrées en dépendent : prévoir la migration), consulter les journaux d'accès (requêtes POST vers `cronjdfp0i4.php`), et rechercher d'autres fichiers récents suspects dans `public/` et `storage/`.

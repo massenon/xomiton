@@ -1,0 +1,34 @@
+[
+ {
+  "id": 1,
+  "name": "Xomiton – Page officielle",
+  "category": "Organisation",
+  "followers": 2840,
+  "image": "3995814.jpg",
+  "desc": "Actualités, annonces et ressources de la plateforme."
+ },
+ {
+  "id": 2,
+  "name": "Clinique de la Paix",
+  "category": "Santé",
+  "followers": 612,
+  "image": "hero-09.jpg",
+  "desc": "Consultations psychologiques et gynécologiques."
+ },
+ {
+  "id": 3,
+  "name": "Barreau – Aide juridique",
+  "category": "Juridique",
+  "followers": 480,
+  "image": "hero-10.jpg",
+  "desc": "Permanences juridiques gratuites."
+ },
+ {
+  "id": 4,
+  "name": "Réseau des pairs – Sud",
+  "category": "Réseau",
+  "followers": 355,
+  "image": "hero-12.jpg",
+  "desc": "Activités de terrain dans le Mono et le Couffo."
+ }
+]

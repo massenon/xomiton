@@ -1,0 +1,185 @@
+﻿<!doctype html>
+<html lang="fr" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design system Xomiton — aperçu vivant</title>
+  <meta name="robots" content="noindex">
+  <!-- Aperçu local uniquement : en production Bootstrap/Social viennent de public/assets et Montserrat est auto-hébergée -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../tokens/social-xomiton.css">
+  <style>
+    body { background: var(--xm-bg); color: var(--xm-text); }
+    .sw { border-radius: var(--xm-radius-md); padding: var(--xm-space-4); min-height: 96px; display:flex; flex-direction:column; justify-content:flex-end; font-size: var(--xm-fs-small); border:1px solid var(--xm-border); }
+    .sw b { font-family: var(--xm-font-heading); }
+    section.xm-sec { padding-block: var(--xm-space-7); border-bottom: 1px solid var(--xm-border); }
+    .spec { font-family: ui-monospace, Consolas, monospace; font-size: .8rem; color: var(--xm-text-muted); }
+  </style>
+</head>
+<body>
+<a class="xm-skip-link" href="#contenu">Aller au contenu</a>
+
+<header class="sticky-top border-bottom" style="background: var(--xm-surface)">
+  <nav class="navbar navbar-expand-lg" aria-label="Navigation de l'aperçu">
+    <div class="container">
+      <a class="navbar-brand" href="#"><img src="../../images/logo.png" width="120" height="33" alt="Xomiton" title="Xomiton"></a>
+      <div class="d-flex gap-2 align-items-center ms-auto">
+        <button class="btn btn-outline-primary btn-sm" id="themeToggle" type="button" aria-pressed="false"><i class="bi bi-moon-stars" aria-hidden="true"></i> Thème sombre</button>
+        <button class="xm-quick-exit btn-sm" type="button">Quitter ce site</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="contenu" tabindex="-1">
+  <section class="xm-hero" style="background-image:url('../../images/hero-09.jpg')" aria-labelledby="hero-t">
+    <div class="container">
+      <div class="row"><div class="col-lg-8">
+        <div class="xm-hero__panel">
+          <h1 id="hero-t" class="display-4 text-white">Xomiton : votre espace safe d'apprentissage et d'appui holistique</h1>
+          <p class="lead text-white">Hero fluide : <span class="spec text-white">min-height: clamp(520px, 78vh, 780px)</span> — plus de hauteur fixe de 936 px.</p>
+          <a class="btn btn-primary btn-lg" href="#">Rejoignez-nous</a>
+          <a class="btn btn-secondary btn-lg ms-2" href="#">Signaler un abus</a>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="xm-sec"><div class="container">
+    <h2>Couleurs</h2>
+    <p class="lead xm-prose">Primaire <b>#0433C3</b> (action) · Secondaire <b>#E30E0E</b> (attention : SOS, signalement, critique). Contrastes calculés (WCAG).</p>
+    <div class="row g-3">
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-primary);color:var(--xm-on-primary)"><b>Primaire</b>#0433C3 · 9,26:1 sur blanc</div></div>
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-secondary);color:var(--xm-on-secondary)"><b>Secondaire</b>#E30E0E · 4,84:1 sur blanc</div></div>
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-primary-subtle);color:var(--xm-primary-subtle-text)"><b>Primaire doux</b>texte 11,3:1</div></div>
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-secondary-subtle);color:var(--xm-secondary-subtle-text)"><b>Secondaire doux</b>texte 7,3:1</div></div>
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-success);color:var(--xm-bg)"><b>Succès</b>#0B7A4B · 5,4:1</div></div>
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-warning);color:var(--xm-on-warning)"><b>Alerte</b>#F0A800 · texte 8,6:1</div></div>
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-info);color:var(--xm-bg)"><b>Info</b>#1864AB · 6,1:1</div></div>
+      <div class="col-6 col-md-3"><div class="sw" style="background:var(--xm-accent-violet);color:var(--xm-bg)"><b>Violet</b>#6F2C91 · 8,6:1</div></div>
+    </div>
+    <p class="mt-3 text-body-secondary"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> Interdit : bleu sur rouge ou rouge sur bleu (1,91:1). Séparer par un fond neutre.</p>
+  </div></section>
+
+  <section class="xm-sec"><div class="container">
+    <h2>Typographie</h2>
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <p class="spec mb-1">Titres — Montserrat 800/700/600</p>
+        <h1>Titre 1 — Soutenir, informer, protéger</h1>
+        <h2>Titre 2 — Que faire en cas d'agression ?</h2>
+        <h3>Titre 3 — Se mettre en sécurité</h3>
+        <h4>Titre 4 — Demander de l'aide</h4>
+      </div>
+      <div class="col-lg-5">
+        <p class="spec mb-1">Sous-titre et texte — Arial 400/700</p>
+        <p class="lead">Sous-titre : un espace d'échange, de soutien et d'actions pour votre bien-être.</p>
+        <p class="xm-prose">Texte courant en Arial 16 px, interligne 1,6, ligne limitée à 68 caractères pour la lecture. Sur Android, Arial est remplacé par Roboto : prévoir la vérification sur appareil réel.</p>
+        <p class="small text-body-secondary">Petit texte 14 px — contraste 6,98:1.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="xm-sec"><div class="container">
+    <h2>Boutons et liens</h2>
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <button class="btn btn-primary">Principal</button>
+      <button class="btn btn-secondary"><i class="bi bi-shield-exclamation" aria-hidden="true"></i> Signaler</button>
+      <button class="btn btn-outline-primary">Contour</button>
+      <button class="btn btn-outline-secondary">Contour rouge</button>
+      <button class="btn btn-light">Neutre</button>
+      <button class="btn btn-primary" disabled>Désactivé</button>
+      <button class="btn btn-primary" type="button"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Envoi…</button>
+      <a href="#">Lien dans un texte</a>
+    </div>
+    <p class="spec mt-2">Hauteur minimale 44 px · focus : anneau 3 px décalé de 2 px (tabulation pour le voir).</p>
+  </div></section>
+
+  <section class="xm-sec"><div class="container">
+    <h2>Urgence et statut (couleur + icône + texte)</h2>
+    <div class="d-flex flex-wrap gap-3">
+      <span class="xm-urgency xm-urgency--low"><i class="bi bi-info-circle-fill" aria-hidden="true"></i> Faible</span>
+      <span class="xm-urgency xm-urgency--medium"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Moyenne</span>
+      <span class="xm-urgency xm-urgency--high"><i class="bi bi-exclamation-octagon-fill" aria-hidden="true"></i> Élevée</span>
+      <span class="xm-urgency xm-urgency--critical"><i class="bi bi-bell-fill" aria-hidden="true"></i> Critique</span>
+    </div>
+  </div></section>
+
+  <section class="xm-sec"><div class="container">
+    <h2>Cartes</h2>
+    <div class="row g-4">
+      <div class="col-md-4"><article class="xm-card xm-card--interactive h-100">
+        <span class="badge text-bg-primary mb-2">Ressource</span>
+        <h3 class="h5">Santé sexuelle et reproductive</h3>
+        <p class="text-body-secondary mb-3">Des fiches claires sur vos droits et vos choix.</p>
+        <a class="btn btn-outline-primary btn-sm" href="#">Lire la fiche</a></article></div>
+      <div class="col-md-4"><article class="xm-card xm-card--interactive h-100">
+        <span class="badge text-bg-warning mb-2">Événement</span>
+        <h3 class="h5">Atelier pairs animateur·rice·s</h3>
+        <p class="text-body-secondary mb-3"><i class="bi bi-calendar-event" aria-hidden="true"></i> 12 novembre · Cotonou</p>
+        <a class="btn btn-outline-primary btn-sm" href="#">Je participe</a></article></div>
+      <div class="col-md-4"><article class="xm-card xm-card--interactive h-100">
+        <span class="badge" style="background:var(--xm-accent-violet);color:var(--xm-bg)">Annuaire</span>
+        <h3 class="h5 mt-2">Psychologue · Cotonou</h3>
+        <p class="text-body-secondary mb-3">Disponible 9 h–17 h.</p>
+        <a class="btn btn-secondary btn-sm" href="#"><i class="bi bi-telephone" aria-hidden="true"></i> Appeler</a></article></div>
+    </div>
+  </div></section>
+
+  <section class="xm-sec"><div class="container">
+    <h2>Formulaire avec résumé d'erreurs</h2>
+    <form class="row g-3" novalidate onsubmit="event.preventDefault(); const s=document.getElementById('err'); s.hidden=false; s.focus();">
+      <div class="col-12">
+        <div id="err" class="alert alert-danger" role="alert" tabindex="-1" hidden aria-labelledby="err-t">
+          <h3 id="err-t" class="h6">Il y a un problème</h3>
+          <ul class="mb-0"><li><a href="#tel">Ce numéro semble incomplet. Il doit contenir 8 chiffres.</a></li></ul>
+        </div>
+      </div>
+      <div class="col-md-6"><label class="form-label" for="alias">Pseudo <span class="xm-hint">(facultatif)</span></label>
+        <input class="form-control" id="alias" autocomplete="nickname"><div class="form-text">Tu peux rester anonyme.</div></div>
+      <div class="col-md-6"><label class="form-label" for="tel">Téléphone</label>
+        <input class="form-control is-invalid" id="tel" inputmode="tel" autocomplete="tel" aria-describedby="tel-e" value="9876">
+        <div id="tel-e" class="invalid-feedback">Ce numéro semble incomplet. Il doit contenir 8 chiffres.</div></div>
+      <div class="col-12"><button class="btn btn-primary" type="submit">Envoyer mon signalement</button></div>
+    </form>
+  </div></section>
+
+  <section class="xm-sec"><div class="container">
+    <h2>SOS, modale, onglets, accordéon</h2>
+    <div class="d-flex flex-wrap gap-4 align-items-center">
+      <div class="text-center"><button class="xm-sos" type="button" id="sos" aria-describedby="sos-h">SOS</button><div id="sos-h" class="spec mt-2">Maintenir 2 s (démo)</div></div>
+      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#del"><i class="bi bi-trash" aria-hidden="true"></i> Supprimer ce contact</button>
+    </div>
+    <ul class="nav nav-pills mt-4" role="tablist">
+      <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#t1" type="button" role="tab">Résumé</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#t2" type="button" role="tab">Chronologie</button></li>
+    </ul>
+    <div class="tab-content xm-card mt-2"><div class="tab-pane fade show active" id="t1" role="tabpanel">Contenu de l'onglet Résumé.</div><div class="tab-pane fade" id="t2" role="tabpanel">Contenu de l'onglet Chronologie.</div></div>
+    <div class="accordion mt-4" id="acc"><div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true">Mon anonymat est-il protégé ?</button></h3>
+      <div id="a1" class="accordion-collapse collapse show"><div class="accordion-body">Oui. Seules les personnes assignées à ta demande peuvent la lire.</div></div></div></div>
+  </div></section>
+</main>
+
+<div class="modal fade" id="del" tabindex="-1" aria-labelledby="del-t" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+  <div class="modal-header"><h2 class="modal-title h5" id="del-t"><i class="bi bi-exclamation-triangle-fill text-danger" aria-hidden="true"></i> Supprimer ce contact ?</h2><button class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button></div>
+  <div class="modal-body">Les alertes déjà envoyées à ce contact restent dans l'historique.</div>
+  <div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal">Garder</button><button class="btn btn-secondary">Supprimer définitivement</button></div>
+</div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const root = document.documentElement, btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', () => { const dark = root.dataset.bsTheme !== 'dark'; root.dataset.bsTheme = dark ? 'dark' : 'light'; btn.setAttribute('aria-pressed', dark); btn.lastChild.textContent = dark ? ' Thème clair' : ' Thème sombre'; });
+  const sos = document.getElementById('sos'); let t;
+  const start = () => { sos.dataset.holding = 'true'; t = setTimeout(() => { sos.textContent = '✓'; setTimeout(() => { sos.textContent = 'SOS'; }, 1500); }, 2000); };
+  const stop = () => { sos.dataset.holding = 'false'; clearTimeout(t); };
+  sos.addEventListener('pointerdown', start); ['pointerup', 'pointerleave'].forEach(e => sos.addEventListener(e, stop));
+  sos.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!t) start(); } }); sos.addEventListener('keyup', stop);
+</script>
+</body>
+</html>
+

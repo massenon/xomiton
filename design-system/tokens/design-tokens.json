@@ -1,0 +1,339 @@
+{
+  "$schema": "https://xomiton.org/design-tokens.schema.json",
+  "name": "Xomiton Design Tokens",
+  "version": "1.0.0",
+  "updated": "2026-10-08",
+  "notes": "Trois couches : primitive -> semantic -> component. Aucun composant ne référence une valeur primitive directement. Valeurs de contraste calculées (WCAG 2.x), voir charte-graphique/CHARTE_GRAPHIQUE.md §4.",
+  "primitive": {
+    "color": {
+      "blue": {
+        "50": "#EBEFFA",
+        "100": "#D7DEF5",
+        "200": "#AFBEEC",
+        "300": "#8299E1",
+        "400": "#4366D2",
+        "500": "#0433C3",
+        "600": "#032BA6",
+        "700": "#032488",
+        "800": "#021C6B",
+        "900": "#02134A",
+        "dark-accent": "#7C97FF",
+        "dark-accent-hover": "#9DB1FF"
+      },
+      "red": {
+        "50": "#FDECEC",
+        "100": "#FBD8D8",
+        "200": "#F6B2B2",
+        "300": "#F18686",
+        "400": "#EA4A4A",
+        "500": "#E30E0E",
+        "600": "#C10C0C",
+        "700": "#9F0A0A",
+        "800": "#7D0808",
+        "900": "#560505",
+        "dark-accent": "#FF6B6B",
+        "dark-accent-hover": "#FF8787"
+      },
+      "neutral": {
+        "0": "#FFFFFF",
+        "25": "#FBF7FA",
+        "100": "#F3EDF4",
+        "200": "#E4DCE6",
+        "400": "#8E88A0",
+        "600": "#5B5670",
+        "900": "#1B1630",
+        "d-0": "#0E1020",
+        "d-100": "#171A2E",
+        "d-200": "#2A2E48",
+        "d-600": "#A9A5C0",
+        "d-900": "#EDEAF7"
+      },
+      "violet": {
+        "700": "#6F2C91",
+        "dark": "#C79BE6"
+      },
+      "rose": {
+        "600": "#C2255C",
+        "dark": "#FF8FB1"
+      },
+      "orange": {
+        "700": "#B84B00",
+        "dark": "#FF9A5C"
+      },
+      "green": {
+        "700": "#0B7A4B",
+        "dark": "#4DD39D"
+      },
+      "amber": {
+        "500": "#F0A800",
+        "dark": "#FFC94D"
+      },
+      "sky": {
+        "700": "#1864AB",
+        "dark": "#7AB2FF"
+      }
+    },
+    "font": {
+      "family": {
+        "montserrat": "\"Montserrat\", \"Segoe UI\", Arial, sans-serif",
+        "arial": "Arial, \"Liberation Sans\", Helvetica, sans-serif"
+      },
+      "weight": {
+        "regular": 400,
+        "bold": 700,
+        "heading-semibold": 600,
+        "heading-bold": 700,
+        "heading-black": 800
+      }
+    },
+    "space": {
+      "0": "0",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "48px",
+      "8": "64px",
+      "9": "96px"
+    },
+    "radius": {
+      "sm": "6px",
+      "md": "8px",
+      "lg": "16px",
+      "pill": "999px"
+    },
+    "duration": {
+      "fast": "120ms",
+      "base": "200ms",
+      "slow": "300ms"
+    },
+    "easing": {
+      "out": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      "in-out": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "breakpoint": {
+      "sm": "576px",
+      "md": "768px",
+      "lg": "992px",
+      "xl": "1200px",
+      "xxl": "1400px"
+    }
+  },
+  "semantic": {
+    "light": {
+      "color.primary": "{primitive.color.blue.500}",
+      "color.primary-hover": "{primitive.color.blue.600}",
+      "color.primary-active": "{primitive.color.blue.700}",
+      "color.primary-subtle": "{primitive.color.blue.50}",
+      "color.primary-subtle-text": "{primitive.color.blue.800}",
+      "color.on-primary": "{primitive.color.neutral.0}",
+      "color.secondary": "{primitive.color.red.500}",
+      "color.secondary-hover": "{primitive.color.red.600}",
+      "color.secondary-active": "{primitive.color.red.700}",
+      "color.secondary-subtle": "{primitive.color.red.50}",
+      "color.secondary-subtle-text": "{primitive.color.red.700}",
+      "color.on-secondary": "{primitive.color.neutral.0}",
+      "color.danger": "{primitive.color.red.500}",
+      "color.success": "{primitive.color.green.700}",
+      "color.warning": "{primitive.color.amber.500}",
+      "color.on-warning": "{primitive.color.neutral.900}",
+      "color.info": "{primitive.color.sky.700}",
+      "color.accent-violet": "{primitive.color.violet.700}",
+      "color.accent-rose": "{primitive.color.rose.600}",
+      "color.accent-orange": "{primitive.color.orange.700}",
+      "color.bg": "{primitive.color.neutral.25}",
+      "color.surface": "{primitive.color.neutral.0}",
+      "color.surface-muted": "{primitive.color.neutral.100}",
+      "color.border": "{primitive.color.neutral.200}",
+      "color.text": "{primitive.color.neutral.900}",
+      "color.text-muted": "{primitive.color.neutral.600}",
+      "color.focus-ring": "{primitive.color.blue.500}"
+    },
+    "dark": {
+      "color.primary": "{primitive.color.blue.dark-accent}",
+      "color.primary-hover": "{primitive.color.blue.dark-accent-hover}",
+      "color.primary-active": "{primitive.color.blue.300}",
+      "color.primary-subtle": "#1B2347",
+      "color.primary-subtle-text": "{primitive.color.blue.dark-accent-hover}",
+      "color.on-primary": "{primitive.color.neutral.d-0}",
+      "color.secondary": "{primitive.color.red.dark-accent}",
+      "color.secondary-hover": "{primitive.color.red.dark-accent-hover}",
+      "color.secondary-active": "{primitive.color.red.300}",
+      "color.secondary-subtle": "#3A1519",
+      "color.secondary-subtle-text": "{primitive.color.red.dark-accent-hover}",
+      "color.on-secondary": "{primitive.color.neutral.d-0}",
+      "color.danger": "{primitive.color.red.dark-accent}",
+      "color.success": "{primitive.color.green.dark}",
+      "color.warning": "{primitive.color.amber.dark}",
+      "color.on-warning": "{primitive.color.neutral.d-0}",
+      "color.info": "{primitive.color.sky.dark}",
+      "color.accent-violet": "{primitive.color.violet.dark}",
+      "color.accent-rose": "{primitive.color.rose.dark}",
+      "color.accent-orange": "{primitive.color.orange.dark}",
+      "color.bg": "{primitive.color.neutral.d-0}",
+      "color.surface": "{primitive.color.neutral.d-100}",
+      "color.surface-muted": "#1F2340",
+      "color.border": "{primitive.color.neutral.d-200}",
+      "color.text": "{primitive.color.neutral.d-900}",
+      "color.text-muted": "{primitive.color.neutral.d-600}",
+      "color.focus-ring": "{primitive.color.blue.dark-accent}"
+    },
+    "typography": {
+      "font.heading": "{primitive.font.family.montserrat}",
+      "font.subtitle": "{primitive.font.family.arial}",
+      "font.body": "{primitive.font.family.arial}",
+      "size.display": "clamp(2.25rem, 1.6rem + 3vw, 3.5rem)",
+      "size.h1": "clamp(2rem, 1.5rem + 2.2vw, 2.75rem)",
+      "size.h2": "clamp(1.625rem, 1.3rem + 1.4vw, 2.125rem)",
+      "size.h3": "clamp(1.375rem, 1.2rem + 0.8vw, 1.625rem)",
+      "size.h4": "1.25rem",
+      "size.h5": "1.125rem",
+      "size.lead": "clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem)",
+      "size.body": "1rem",
+      "size.small": "0.875rem",
+      "size.caption": "0.8125rem",
+      "leading.heading": 1.2,
+      "leading.body": 1.6,
+      "tracking.display": "-0.01em",
+      "measure": "68ch"
+    },
+    "urgency": {
+      "low": {
+        "token": "color.info",
+        "icon": "info-circle-fill",
+        "label": "Faible"
+      },
+      "medium": {
+        "token": "color.warning",
+        "icon": "exclamation-triangle-fill",
+        "label": "Moyenne"
+      },
+      "high": {
+        "token": "color.accent-orange",
+        "icon": "exclamation-octagon-fill",
+        "label": "Élevée"
+      },
+      "critical": {
+        "token": "color.danger",
+        "icon": "bell-fill",
+        "label": "Critique"
+      }
+    },
+    "case-status": {
+      "new": "color.primary",
+      "assigned": "color.accent-violet",
+      "in_progress": "color.info",
+      "pending_victim_response": "color.warning",
+      "resolved": "color.success",
+      "closed": "color.text-muted",
+      "unresolved": "color.danger"
+    },
+    "chart": {
+      "light": {
+        "categorical": [
+          "#0433C3",
+          "#6F2C91",
+          "#C2255C",
+          "#B84B00",
+          "#0B7A4B",
+          "#8E88A0"
+        ],
+        "sequential": [
+          "#EBEFFA",
+          "#AFBEEC",
+          "#4366D2",
+          "#032BA6",
+          "#02134A"
+        ],
+        "diverging": [
+          "#02134A",
+          "#4366D2",
+          "#F3EDF4",
+          "#E58A8A",
+          "#9F0A0A"
+        ]
+      },
+      "dark": {
+        "categorical": [
+          "#7C97FF",
+          "#C79BE6",
+          "#FF8FB1",
+          "#FF9A5C",
+          "#4DD39D",
+          "#A9A5C0"
+        ],
+        "sequential": [
+          "#1B2347",
+          "#2F4396",
+          "#5B79E0",
+          "#9DB1FF",
+          "#D7DEFF"
+        ],
+        "diverging": [
+          "#D7DEFF",
+          "#7C97FF",
+          "#2A2E48",
+          "#FF8787",
+          "#FF4D4D"
+        ]
+      },
+      "rules": "6 couleurs catégorielles au plus ; rouge = écart ou seuil, jamais une catégorie ; effectifs < 5 masqués"
+    }
+  },
+  "component": {
+    "button": {
+      "radius": "{primitive.radius.md}",
+      "min-height": "44px",
+      "padding-x": "{primitive.space.5}",
+      "font": "{semantic.typography.font.heading}",
+      "weight": 700,
+      "primary": {
+        "bg": "color.primary",
+        "text": "color.on-primary",
+        "hover": "color.primary-hover",
+        "active": "color.primary-active"
+      },
+      "secondary": {
+        "bg": "color.secondary",
+        "text": "color.on-secondary",
+        "hover": "color.secondary-hover",
+        "active": "color.secondary-active"
+      },
+      "outline": {
+        "bg": "transparent",
+        "text": "color.primary",
+        "border": "color.primary"
+      },
+      "ghost": {
+        "bg": "transparent",
+        "text": "color.text"
+      }
+    },
+    "card": {
+      "radius": "{primitive.radius.lg}",
+      "padding": "{primitive.space.5}",
+      "border": "color.border",
+      "bg": "color.surface"
+    },
+    "field": {
+      "radius": "{primitive.radius.md}",
+      "min-height": "44px",
+      "border": "color.border",
+      "border-focus": "color.focus-ring"
+    },
+    "sos-button": {
+      "size": "64px",
+      "bg": "color.secondary",
+      "text": "color.on-secondary",
+      "hold-ms": 2000,
+      "cancel-window-s": 5
+    },
+    "focus": {
+      "width": "3px",
+      "offset": "2px",
+      "color": "color.focus-ring"
+    }
+  }
+}

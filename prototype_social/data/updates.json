@@ -1,0 +1,26 @@
+[
+ {
+  "id": 1,
+  "version": "1.4.2",
+  "date": "2026-09-28",
+  "type": "Correctif",
+  "notes": "Optimisation de la synchronisation hors ligne ; correctif géolocalisation SOS.",
+  "status": "déployée"
+ },
+ {
+  "id": 2,
+  "version": "1.4.0",
+  "date": "2026-08-30",
+  "type": "Fonctionnalité",
+  "notes": "Nouveau moteur de rapports (Excel, PDF) avec désagrégation.",
+  "status": "déployée"
+ },
+ {
+  "id": 3,
+  "version": "1.5.0",
+  "date": "2026-11-15",
+  "type": "Fonctionnalité",
+  "notes": "Passerelles Telegram et Tinder ; mode sombre amélioré.",
+  "status": "planifiée"
+ }
+]

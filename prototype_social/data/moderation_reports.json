@@ -1,0 +1,90 @@
+[
+    {
+        "id": 1,
+        "kind": "publication",
+        "target": "Message moqueur sur l’orientation d’une membre dans le fil.",
+        "user_id": 4,
+        "reason": "Homophobie",
+        "reporter": "Membre anonyme",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791903756
+    },
+    {
+        "id": 2,
+        "kind": "commentaire",
+        "target": "Commentaire insultant sous le témoignage « Retrouver confiance ».",
+        "user_id": 5,
+        "reason": "Insultes",
+        "reporter": "Pair animateur·rice",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791889356
+    },
+    {
+        "id": 3,
+        "kind": "utilisateur",
+        "target": "Profil envoyant des messages privés répétés et non sollicités.",
+        "user_id": 6,
+        "reason": "Harcèlement",
+        "reporter": "3 membres",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791842556
+    },
+    {
+        "id": 4,
+        "kind": "publication",
+        "target": "Publication partageant le numéro de téléphone d’une autre membre.",
+        "user_id": 7,
+        "reason": "Données personnelles",
+        "reporter": "Membre",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791820956
+    },
+    {
+        "id": 5,
+        "kind": "commentaire",
+        "target": "Lien suspect vers un site de rencontres payant.",
+        "user_id": 8,
+        "reason": "Spam",
+        "reporter": "Système (mots interdits)",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791806556
+    },
+    {
+        "id": 6,
+        "kind": "publication",
+        "target": "Conseil médical dangereux sur l’arrêt d’un traitement ARV.",
+        "user_id": 9,
+        "reason": "Désinformation santé",
+        "reporter": "Pair animateur·rice",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791741756
+    },
+    {
+        "id": 7,
+        "kind": "utilisateur",
+        "target": "Compte se faisant passer pour une juriste de l’annuaire.",
+        "user_id": 10,
+        "reason": "Usurpation",
+        "reporter": "Admin",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791716556
+    },
+    {
+        "id": 8,
+        "kind": "commentaire",
+        "target": "Menace voilée envers une participante d’un groupe privé.",
+        "user_id": 3,
+        "reason": "Menaces",
+        "reporter": "Membre",
+        "status": "en_attente",
+        "action": "",
+        "created": 1791662556
+    }
+]
