@@ -15,7 +15,6 @@
         <x-logo :width="120" />
         <span class="xm-hint">Catalogue du design system · v1.0</span>
         <x-button class="ms-auto" size="sm" variant="outline" icon="moon-stars" x-data @click="document.documentElement.dataset.bsTheme = document.documentElement.dataset.bsTheme === 'dark' ? 'light' : 'dark'">Thème</x-button>
-        <x-quick-exit />
     </div>
 </header>
 

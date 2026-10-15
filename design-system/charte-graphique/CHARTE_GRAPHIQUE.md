@@ -21,7 +21,7 @@ Les valeurs chiffrées (rapports de contraste, tailles minimales, durées) sont 
 | **Sûr** | peu d'éléments par écran, hiérarchie nette, bleu stable pour agir, rouge réservé à l'attention |
 | **Clair** | titres Montserrat marqués, texte Arial lisible, phrases courtes (voir `xomiton_implementation/11`) |
 | **Inclusif** | personnages divers, aucun stéréotype, écriture inclusive homogène, accessibilité WCAG 2.2 AA |
-| **Discret** | « Quitter ce site », titre d'onglet neutre possible, aucune donnée sensible à l'écran de verrouillage |
+| **Discret** | Titre d'onglet neutre possible, aucune donnée sensible à l'écran de verrouillage |
 
 ## 2. Logo
 
@@ -118,7 +118,6 @@ Breakpoints : Mobile < 768, Tablet 768-991, Laptop 992-1199, Desktop ≥ 1200 (`
 Durées : 120 ms (retours), 200 ms (transitions), 300 ms (panneaux). `prefers-reduced-motion` : toute animation supprimée. Aucun clignotement. Le son n'existe que pour l'**alerte sonore par cloche** (SOS et cas critiques destinés aux agent·e·s concerné·e·s), jamais en lecture automatique pour le public, toujours doublé d'un signal visuel et d'une vibration.
 
 ## 9. Sécurité visuelle
-- Bouton **« Quitter ce site »** toujours visible sur mobile (haut de page) et accessible au clavier (`Échap` deux fois).
 - **SOS** : cercle rouge de 64 px, libellé « SOS », maintien 2 s avec anneau de progression, annulation possible pendant 5 s ; alternative sans maintien : double appui puis confirmation.
 - Option **mode discret** : nom et icône neutres de l'application installée, titre d'onglet générique, pas de notification explicite sur écran verrouillé.
 - Aucune couleur seule ne porte l'information (urgence = couleur + icône + mot).

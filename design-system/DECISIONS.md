@@ -68,3 +68,11 @@ Les pilotes sont **pilotés par configuration** (files, cache, sessions, diffusi
 
 ### Sécurité : constat confirmé sur le serveur existant
 `xomiton/cronjdfp0i4.php` n'est **pas** une tâche cron : après décodage (sans l'exécuter), c'est une **porte dérobée chiffrée** (AES-256-GCM protégée par un mot de passe haché) qui permet d'exécuter des commandes shell, de lire/écrire/téléverser/télécharger des fichiers et d'exécuter du SQL avec des identifiants fournis. `f.php` (contenu « dsds ») est vraisemblablement un fichier de test du même auteur. **On ne sait pas qui l'a déposé.** Traiter le compte d'hébergement comme **compromis** : supprimer les deux fichiers, changer les mots de passe cPanel/FTP/base, régénérer `APP_KEY` (les sessions et données chiffrées en dépendent : prévoir la migration), consulter les journaux d'accès (requêtes POST vers `cronjdfp0i4.php`), et rechercher d'autres fichiers récents suspects dans `public/` et `storage/`.
+
+## D8 — Sortie rapide retirée, newsletter dans le pied de page (15 octobre 2026)
+**Décision du client : le bouton « Sortie rapide » / « Quitter ce site » est retiré de tout le projet.**
+Conséquences :
+- Retirés : composant Blade `x-quick-exit`, fonction Alpine `xmQuickExit` (et le raccourci `Échap` ×2), classe `.xm-quick-exit`, bouton flottant du prototype, bouton de la page Urgences, préférence « Afficher le bouton Sortie rapide » des paramètres membre.
+- Le bloc « Rester en sécurité » du pied de page public est **remplacé par l'inscription à la newsletter** (double opt-in, désinscription en un clic, conforme RGPD) ; le module Newsletter de l'administration gère abonné·es, campagnes, planification et statistiques.
+- Les autres mesures de discrétion restent : titre d'onglet neutre possible, notifications masquées sur écran verrouillé, mode discret de l'application, SOS toujours accessible.
+- La charte PDF v1.0 et ses sources (`charte-pdf/`) mentionnent encore la sortie rapide : à corriger à la prochaine régénération (v1.1).

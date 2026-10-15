@@ -21,11 +21,6 @@ function x_public_header() { ?>
 </header>
 <?php }
 
-/** Bouton « sortie rapide » pour les visiteurs (le pied de page ne l'affiche que pour les connecté·es). */
-function x_public_quick_exit() { ?>
-<a class="btn btn-dark btn-sm xm-quick-exit no-print" href="https://www.google.com" title="Quitter rapidement ce site"><i class="bi bi-box-arrow-up-right me-1"></i>Sortie rapide</a>
-<?php }
-
 /** Script d'initialisation des communes (XM.zones) – à placer après footer-scripts. */
 function x_zones_script() {
     echo '<script>XM.zones = ' . json_encode(x_zones(), JSON_UNESCAPED_UNICODE) . ';</script>' . "\n";

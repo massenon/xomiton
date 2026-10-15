@@ -7,7 +7,7 @@ $rec = store_find('users', $me['id']) ?: $me;
 $prefs = array_merge([
 	'visibility' => 'communaute', 'show_zone' => 1, 'sos_gps' => 0, 'searchable' => 1,
 	'notif_email' => 1, 'notif_push' => 1, 'notif_invit' => 1, 'notif_events' => 1, 'notif_msg' => 1, 'notif_digest' => 'hebdo',
-	'lang' => 'fr', 'quick_exit' => 1, 'pin_on' => 0, 'pin_hash' => '', 'mask_notifs' => 1,
+	'lang' => 'fr', 'pin_on' => 0, 'pin_hash' => '', 'mask_notifs' => 1,
 ], $rec['prefs'] ?? []);
 
 if (isset($_GET['download'])) {
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 		if ($act === 'language') $p['lang'] = in_array($_POST['lang'] ?? '', ['fr', 'fon', 'yo', 'en'], true) ? $_POST['lang'] : 'fr';
 		if ($act === 'security') {
-			$p['quick_exit'] = empty($_POST['quick_exit']) ? 0 : 1; $p['mask_notifs'] = empty($_POST['mask_notifs']) ? 0 : 1;
+			$p['mask_notifs'] = empty($_POST['mask_notifs']) ? 0 : 1;
 			$pin = trim($_POST['pin'] ?? '');
 			if (!empty($_POST['pin_on'])) {
 				if ($pin !== '') {
@@ -211,7 +211,6 @@ $sections = ['profil' => ['bi-person', 'Profil'], 'motdepasse' => ['bi-key', 'Mo
 								<div class="card-header border-0 pb-0"><h2 class="h6 mb-0">Sécurité</h2></div>
 								<div class="card-body">
 									<form method="post"><?= csrf_field() ?><input type="hidden" name="action" value="security">
-										<?= $sw('quick_exit', 'Afficher le bouton « Sortie rapide »', $prefs['quick_exit'], 'Quitte immédiatement le site et ouvre une page neutre.') ?>
 										<?= $sw('mask_notifs', 'Masquer le contenu sensible dans les notifications', $prefs['mask_notifs']) ?>
 										<?= $sw('pin_on', 'Verrouiller l’application avec un code PIN', $prefs['pin_on'], 'Fonction de démonstration : le code est enregistré (haché) mais ne verrouille pas encore l’application.') ?>
 										<div class="mb-3"><label class="form-label" for="s_pin">Code PIN à 4 chiffres</label><input class="form-control" style="max-width:180px" id="s_pin" name="pin" inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="<?= $prefs['pin_hash'] ? '••••  (laisser vide pour conserver)' : '0000' ?>" autocomplete="off"></div>

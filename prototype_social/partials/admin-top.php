@@ -28,6 +28,7 @@ $menu = [
         ['utilisateurs', 'bi-people', 'Utilisateurs & rôles', $pendingUsers, 'primary'],
         ['inscriptions', 'bi-person-plus', 'Inscriptions (on/off)'],
         ['contenu', 'bi-journal-text', 'Contenu : thématiques & ressources'],
+        ['newsletter', 'bi-envelope-paper', 'Newsletter'],
         ['ccc', 'bi-collection-play', 'Outils CCC'],
         ['reseau', 'bi-diagram-3', 'Réseau social'],
         ['moderation', 'bi-shield-check', 'Modération'],

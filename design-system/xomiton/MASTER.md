@@ -28,7 +28,7 @@ Base 4 px (`--xm-space-1..9`) · rayons 8/16/pastille · cible ≥ 44 px · dur�
 Boutons `btn-primary` (bleu), `btn-secondary` (rouge, **réservé** attention) · `x-card` (`.xm-card`, survol −2 px) · champs 44 px, libellé visible, erreur sous le champ **et** résumé focalisable · badge urgence `.xm-urgency--*` (couleur + icône + mot) · SOS 64 px maintien 2 s · modales à focus piégé, pied fixe, plein écran sur mobile · tableaux → cartes empilées < 768 px.
 
 ## 6. Layouts
-Public : header sticky « verre » + burger/offcanvas < 992 px, hero fluide `min-height: clamp(520px, 78vh, 780px)`, footer 4 colonnes, « Quitter ce site » et SOS en permanence. Connecté : 3 colonnes (nav · contenu · suggestions) ; mobile : barre d'onglets inférieure à 5 entrées max, SOS au centre. Admin : barre latérale repliable, fil d'Ariane, titre + actions de page.
+Public : header sticky « verre » + burger/offcanvas < 992 px, hero fluide `min-height: clamp(520px, 78vh, 780px)`, footer 4 colonnes avec inscription à la newsletter, SOS en permanence. Connecté : 3 colonnes (nav · contenu · suggestions) ; mobile : barre d'onglets inférieure à 5 entrées max, SOS au centre. Admin : barre latérale repliable, fil d'Ariane, titre + actions de page.
 
 ## 7. Accessibilité (obligatoire)
 Contraste AA · focus 3 px décalé 2 px · `scroll-padding-top` 96 px · lien d'évitement · ARIA des modales/onglets/accordéons · pas de test cognitif à la connexion · `aria-live` pour toasts et cloche · alternative visuelle et vibration au son.
