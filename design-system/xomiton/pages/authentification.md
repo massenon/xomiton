@@ -13,4 +13,4 @@
 **WCAG 2.2 (authentification accessible)** : `autocomplete="username"` / `current-password` / `new-password`, **collage autorisé**, bouton « Afficher le mot de passe », pas de CAPTCHA à image, alternative au code SMS saisi à la main (lien magique ou copier-coller du code), messages d'erreur précis sans révéler si un compte existe.
 **Mot de passe** : jauge de force (texte + couleur), minimum 10 caractères, règles affichées avant la saisie.
 **Erreurs** : résumé focalisable en haut + message sous le champ, ton bienveillant.
-**Sécurité visuelle** : « Quitter ce site » visible ; mention discrète « Aucune donnée n'est visible depuis l'écran de verrouillage ».
+**Sécurité visuelle** : mention discrète « Aucune donnée n'est visible depuis l'écran de verrouillage ».

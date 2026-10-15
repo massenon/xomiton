@@ -55,6 +55,8 @@ if ($open && $_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         
         x_log('Inscription', $email);
+        require_once __DIR__ . '/inc/x_mailer.php';
+        x_mail_send_template('bienvenue', $email, ['user_name' => $name, 'user_first_name' => explode(' ', $name)[0], 'user_pseudo' => $pseudo, 'user_email' => $email, 'login_link' => x_site_url('sign-in.php')], ['context' => 'inscription']);
         $done = $row['status'] === 'actif' ? 'actif' : 'attente';
         if ($done === 'actif') { unset($row['hash']); $_SESSION['user'] = $row; session_regenerate_id(true); }
     }
@@ -93,7 +95,7 @@ $zones = x_zones();
 			</div>
 			<div class="col-lg-7 d-flex align-items-center">
 				<div class="w-100 p-4 p-md-5 mx-auto" style="max-width:640px">
-					<a href="landing.php" class="d-lg-none d-inline-block mb-4"><img src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton" height="38"></a>
+					<a href="index.php" class="d-lg-none d-inline-block mb-4"><img src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton" height="38"></a>
 
 					<?php if (!$open): ?>
 						<div class="text-center py-5">
@@ -107,7 +109,7 @@ $zones = x_zones();
 							<div class="display-3 text-success"><i class="bi bi-patch-check-fill"></i></div>
 							<h1 class="h3 fw-bold mt-3"><?= $done === 'actif' ? 'Bienvenue sur Xomiton !' : 'Inscription enregistrée' ?></h1>
 							<p class="text-secondary"><?= $done === 'actif' ? 'Votre compte est actif.' : 'Votre compte sera activé après validation par l’équipe (24 à 48 h). Vous recevrez un e-mail.' ?></p>
-							<a href="<?= $done === 'actif' ? 'index.php' : 'sign-in.php' ?>" class="btn btn-primary"><?= $done === 'actif' ? 'Accéder à mon fil' : 'Retour à la connexion' ?></a>
+							<a href="<?= $done === 'actif' ? 'fil.php' : 'sign-in.php' ?>" class="btn btn-primary"><?= $done === 'actif' ? 'Accéder à mon fil' : 'Retour à la connexion' ?></a>
 						</div>
 					<?php else: ?>
 						<h1 class="h2 fw-bold">Créer mon compte</h1>

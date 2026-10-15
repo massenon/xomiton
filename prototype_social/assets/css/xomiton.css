@@ -17,7 +17,6 @@ body.xm-is-offline .xm-offline-bar { display:block; }
 .xm-chip { display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .65rem; border-radius:999px; font-size:.75rem; font-weight:600; background:rgba(4,51,195,.1); color:var(--xm-blue); }
 .xm-stat { border-left:4px solid var(--xm-blue); }
 .xm-stat.danger { border-color:var(--xm-red); } .xm-stat.success { border-color:#0B7A4B; } .xm-stat.warning { border-color:#F0A800; } .xm-stat.violet { border-color:var(--xm-violet); }
-.xm-quick-exit { position:fixed; left:18px; bottom:18px; z-index:1040; }
 .xm-assistant-msg { max-width:85%; }
 .xm-typing span { display:inline-block; width:6px; height:6px; margin:0 1px; border-radius:50%; background:#8E88A0; animation:xmtyping 1s infinite; } .xm-typing span:nth-child(2){animation-delay:.15s} .xm-typing span:nth-child(3){animation-delay:.3s}
 @keyframes xmtyping { 0%,80%,100%{transform:scale(.6);opacity:.5} 40%{transform:scale(1);opacity:1} }
@@ -61,7 +60,7 @@ body.xm-is-offline .xm-offline-bar { display:block; }
 }
 .xm-table-wrap { overflow-x:auto; }
 .xm-print-only { display:none; }
-@media print { .xm-admin-sidebar, .xm-admin-topbar, .no-print, .xm-sos-fab, .xm-quick-exit { display:none !important; } .xm-admin-main { margin:0 !important; } .xm-print-only { display:block; } .card { break-inside:avoid; } }
+@media print { .xm-admin-sidebar, .xm-admin-topbar, .no-print, .xm-sos-fab { display:none !important; } .xm-admin-main { margin:0 !important; } .xm-print-only { display:block; } .card { break-inside:avoid; } }
 
 /* ---------- Réseau : compléments ---------- */
 .xm-nav-section { font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--bs-secondary-color); padding:.75rem .5rem .25rem; font-weight:700; }
@@ -161,3 +160,16 @@ main:focus { outline: none; }
 .xm-dt-bar .form-select { min-width: 4.5rem; }
 .xm-dt-pager .page-link { min-width: 2rem; text-align: center; }
 @media print { .xm-dt-bar { display: none !important; } .xm-admin tr[hidden] { display: table-row !important; } }
+
+/* ---------- Sondages (fil d'actualité) ---------- */
+.xm-poll { background: var(--bs-body-bg); }
+.xm-poll-opt { cursor: pointer; min-height: 44px; transition: border-color .15s; }
+.xm-poll-opt:hover, .xm-poll-opt:focus-within { border-color: var(--bs-primary) !important; }
+li.xm-poll-opt { cursor: default; }
+.xm-poll-bar { position: absolute; inset: 0 auto 0 0; background: rgba(4, 51, 195, .10); border-radius: inherit; transition: width .5s ease; }
+.xm-poll-opt.is-lead .xm-poll-bar { background: rgba(4, 51, 195, .20); }
+.xm-poll-opt.is-lead { font-weight: 600; }
+[data-bs-theme=dark] .xm-poll-bar { background: rgba(124, 151, 255, .18); }
+[data-bs-theme=dark] .xm-poll-opt.is-lead .xm-poll-bar { background: rgba(124, 151, 255, .30); }
+.xm-poll-option-row .btn { min-width: 44px; }
+@media (prefers-reduced-motion: reduce) { .xm-poll-bar { transition: none; } }

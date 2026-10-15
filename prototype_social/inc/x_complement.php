@@ -7,7 +7,7 @@ function x_public_header() { ?>
 <header class="navbar-light fixed-top bg-mode header-static">
 	<nav class="navbar navbar-expand-lg">
 		<div class="container">
-			<a class="navbar-brand" href="<?= BASE ?>landing.php">
+			<a class="navbar-brand" href="<?= BASE ?>index.php">
 				<img class="light-mode-item navbar-brand-item" src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton, logo (mode clair)" title="Xomiton">
 				<img class="dark-mode-item navbar-brand-item" src="<?= BASE ?>assets/images/logo-dark.svg" alt="Xomiton, logo (mode sombre)" title="Xomiton">
 			</a>
@@ -19,11 +19,6 @@ function x_public_header() { ?>
 		</div>
 	</nav>
 </header>
-<?php }
-
-/** Bouton « sortie rapide » pour les visiteurs (le pied de page ne l'affiche que pour les connecté·es). */
-function x_public_quick_exit() { ?>
-<a class="btn btn-dark btn-sm xm-quick-exit no-print" href="https://www.google.com" title="Quitter rapidement ce site"><i class="bi bi-box-arrow-up-right me-1"></i>Sortie rapide</a>
 <?php }
 
 /** Script d'initialisation des communes (XM.zones) – à placer après footer-scripts. */
@@ -42,7 +37,7 @@ function x_require_pair() {
     require_login();
     if (!in_array(x_user()['role'] ?? '', ['pair', 'admin', 'superadmin'], true)) {
         $_SESSION['flash'] = ['type' => 'warning', 'msg' => 'Cet espace est réservé aux pairs animateur·rices.'];
-        header('Location: index.php'); exit;
+        header('Location: fil.php'); exit;
     }
 }
 

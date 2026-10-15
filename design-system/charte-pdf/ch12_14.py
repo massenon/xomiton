@@ -103,7 +103,7 @@ def build(doc):
     sms = shot('<div style="padding:5mm"><div style="background:#fff;border-radius:2.4mm;padding:3mm;font:400 5.4pt/1.5 Arial;width:46mm;border:.2mm solid #e4dce6">Rappel : ton rendez-vous est confirmé. Réponds OUI ou NON.</div><div class="note" style="margin-top:2mm">Notification neutre : ni nom de l\'association, ni thème.</div></div>', 70, 36, '#F6F2F7')
     doc.section(C, 'discreet', 'Supports discrets', 'Discreet materials',
         ['<p>Une personne peut vivre avec quelqu\'un qui ne doit pas savoir qu\'elle contacte Xomiton. Pour chaque envoi (courrier, SMS, notification, e-mail), on prévoit une <b>variante neutre</b> : expéditeur au nom neutre, objet sans thème, aucun logo ni mot sensible, contenu limité à l\'action à faire.</p>',
-         '<p>Par défaut, tout message adressé à une personne suivie est neutre ; la personne peut choisir de recevoir la version marquée. L\'application propose aussi une icône et un nom d\'application discrets, et le bouton « Quitter ce site » (chapitre 9 du design system).</p>'],
+         '<p>Par défaut, tout message adressé à une personne suivie est neutre ; la personne peut choisir de recevoir la version marquée. L\'application propose aussi une icône et un nom d\'application discrets (mode discret, chapitre 9 du design system).</p>'],
         row([block(good(env_std, 'Enveloppe marquée (diffusion publique)', 82, 52, '#fff', 'width:82mm'), 'Pour les envois publics et partenaires'), block(good(env_dis, 'Enveloppe neutre (envoi à une personne suivie)', 82, 52, '#fff', 'width:82mm'), 'Pour toute personne suivie'), block(sms, 'SMS ou notification neutre')], 9) + FAKE)
 
     # ---- ton et rédaction

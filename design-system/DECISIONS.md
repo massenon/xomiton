@@ -15,7 +15,7 @@ Pourquoi Bootstrap :
 Limite connue : le thème est livré **compilé, sans source Sass**, et les couleurs des boutons y sont en dur. On ne peut donc pas simplement changer `$primary`. Solution actée : la couche `tokens/social-xomiton.css`, chargée après `style.css`, réécrit les variables `--bs-*` et les composants concernés. `style.css` n'est jamais modifié. Si on obtient les sources Sass de Social, on pourra basculer vers une compilation Sass (gain de poids), sans changer les tokens.
 Actions : supprimer `tailwindcss` et `@tailwindcss/vite` de `package.json`, retirer le plugin de `vite.config.js`, supprimer `resources/css/app.css` (remplacé par les trois fichiers de tokens).
 
-## D4 — Passerelles sociales : abandonnées
+## D4 — Passerelles sociales : abandonnées *(révisée le 15 octobre 2026 : module réintégré, voir D4-bis)*
 **Décision : aucune passerelle réseau social** (Facebook, TikTok, Roméo, GanXo, Telegram, Tinder). Motif du client : inscription complexe en plusieurs étapes.
 Conséquences :
 - **Retirer** le module M16 et la phase 12 « passerelles » ; **retirer** les tables `social_channels`, `outbound_posts`, `outbound_deliveries` (domaine I de `03`).
@@ -68,3 +68,33 @@ Les pilotes sont **pilotés par configuration** (files, cache, sessions, diffusi
 
 ### Sécurité : constat confirmé sur le serveur existant
 `xomiton/cronjdfp0i4.php` n'est **pas** une tâche cron : après décodage (sans l'exécuter), c'est une **porte dérobée chiffrée** (AES-256-GCM protégée par un mot de passe haché) qui permet d'exécuter des commandes shell, de lire/écrire/téléverser/télécharger des fichiers et d'exécuter du SQL avec des identifiants fournis. `f.php` (contenu « dsds ») est vraisemblablement un fichier de test du même auteur. **On ne sait pas qui l'a déposé.** Traiter le compte d'hébergement comme **compromis** : supprimer les deux fichiers, changer les mots de passe cPanel/FTP/base, régénérer `APP_KEY` (les sessions et données chiffrées en dépendent : prévoir la migration), consulter les journaux d'accès (requêtes POST vers `cronjdfp0i4.php`), et rechercher d'autres fichiers récents suspects dans `public/` et `storage/`.
+
+## D8 — Sortie rapide retirée, newsletter dans le pied de page (15 octobre 2026)
+**Décision du client : le bouton « Sortie rapide » / « Quitter ce site » est retiré de tout le projet.**
+Conséquences :
+- Retirés : composant Blade `x-quick-exit`, fonction Alpine `xmQuickExit` (et le raccourci `Échap` ×2), classe `.xm-quick-exit`, bouton flottant du prototype, bouton de la page Urgences, préférence « Afficher le bouton Sortie rapide » des paramètres membre.
+- Le bloc « Rester en sécurité » du pied de page public est **remplacé par l'inscription à la newsletter** (double opt-in, désinscription en un clic, conforme RGPD) ; le module Newsletter de l'administration gère abonné·es, campagnes, planification et statistiques.
+- Les autres mesures de discrétion restent : titre d'onglet neutre possible, notifications masquées sur écran verrouillé, mode discret de l'application, SOS toujours accessible.
+- La charte PDF et ses sources (`charte-pdf/`) sont corrigées et régénérées (15 octobre 2026) : « Discrète » s'appuie sur le mode discret, le pictogramme « Quitter » est remplacé par « Newsletter », la superposition ne garde que le bouton SOS au-dessus des modales.
+
+## D4-bis — Passerelles réseaux sociaux : réintégrées (15 octobre 2026)
+**Décision du client : le module Passerelles réseaux sociaux est réintégré.** La partie « inscription simplifiée » de D4 reste valable (une seule étape obligatoire).
+Conséquences :
+- Le module M16 et l'écran *Administration › Plateforme › Passerelles réseaux* (`prototype_social/admin/passerelles.php`) sont conservés : connexion des comptes de l'organisation (Facebook, TikTok, Roméo, GanXo, Telegram, Tinder), file de publication planifiée (BD SSR, messages clés, message personnalisé ≤ 500 caractères), bibliothèque de messages clés, salons de discussion entre pairs.
+- Les tables `social_channels`, `outbound_posts`, `outbound_deliveries` sont rétablies dans le modèle de données, avec `gateway_templates`.
+- Les passerelles publient **au nom de l'organisation** uniquement : aucun compte personnel de membre n'est connecté, aucune donnée de membre n'est envoyée aux réseaux. Les boutons de partage par lien restent disponibles pour les membres.
+- Jetons d'accès chiffrés en base, publication par la tâche cron (lots, rejeu en cas d'échec), journal d'audit de chaque connexion et publication.
+- **Roméo, GanXo et Tinder n'ont pas d'API de publication** (confirmé par le client) : ils fonctionnent en **publication manuelle assistée** (texte et visuel prêts à copier, puis l'équipe marque la publication « publiée »). Facebook et Telegram sont publiés automatiquement par API ; TikTok selon l'accès à son API de contenu, sinon en manuel assisté.
+
+## D9 — Espace membre et pair éducateur·rice en Vue 3 (15 octobre 2026)
+**Décision du client : l'espace connecté membre et pair éducateur·rice est développé en Vue 3**, servi par Laravel avec **Inertia.js**. Les pages publiques restent en Blade (`x-*`) et l'administration en Livewire 3.
+Pourquoi :
+- interactions immédiates sur réseau mobile faible (j'aime, vote, messagerie) grâce aux mises à jour optimistes ;
+- hors connexion (brouillons, signalement, SOS) avec IndexedDB ;
+- même API `/api/v1` que l'application Flutter : la logique n'est écrite qu'une fois ;
+- compatible cPanel mutualisé (D7) : build Vite en local, aucun Node sur le serveur.
+Conséquences :
+- Pile : Vue 3 (Composition API, `<script setup>`, TypeScript recommandé), Inertia.js, Pinia, vue-i18n ; pas de bibliothèque d'interface supplémentaire.
+- Les composants Vue `Xm*` reproduisent **exactement le HTML** des composants Blade `x-*` et du prototype `prototype_social/` (thème Social, classes `xm-*`) : un seul design.
+- Les pages publiques ne chargent jamais Vue (SEO et poids) ; l'administration reste en Livewire (modales CRUD, DataTables, SweetAlert2).
+- L'équipe maintient deux technologies côté interface (Vue et Livewire) : conventions dans `docs/DEVELOPMENT_STANDARDS.md`.

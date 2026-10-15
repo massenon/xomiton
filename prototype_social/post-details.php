@@ -3,7 +3,7 @@ require __DIR__ . '/inc/bootstrap.php';
 require_login();
 require_once __DIR__ . '/inc/x_reseau.php';
 $p = store_find('posts', $_GET['id'] ?? 0);
-if (!$p) x_redirect('index.php', 'warning', 'Cette publication est introuvable.');
+if (!$p) x_redirect('fil.php', 'warning', 'Cette publication est introuvable.');
 $self = 'post-details.php?id=' . (int)$p['id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (!csrf_ok()) x_redirect($self, 'danger', 'Session expirée, veuillez réessayer.');
@@ -40,7 +40,7 @@ $nav = 'fil';
 				<?php include("partials/sidenav.php"); ?>
 				<div class="col-md-8 col-lg-6 vstack gap-4">
 					<?= flash_html() ?>
-					<a class="small" href="index.php"><i class="bi bi-arrow-left me-1"></i>Retour au fil</a>
+					<a class="small" href="fil.php"><i class="bi bi-arrow-left me-1"></i>Retour au fil</a>
 					<?= x_render_post($p) ?>
 					<div class="card" id="commentaires">
 						<div class="card-header border-0 pb-0"><h2 class="h6 mb-0"><?= count($comments) ?> commentaire<?= count($comments) > 1 ? 's' : '' ?></h2></div>

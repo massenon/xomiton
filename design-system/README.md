@@ -5,7 +5,7 @@ Version 1.0 · 8 octobre 2026. Charte graphique et design system de Xomiton, à 
 ## Ouvrir en premier
 1. **`Charte-graphique-Xomiton-v1.0.pdf`** : la charte graphique, 125 pages A4 paysage, qui suit le sommaire de `INSTRUCTION-CHARTE-GRAPHIQUE.txt` (14 chapitres : les 11 du sommaire, plus 12 Supports de communication et 13 Data visualisation ajoutés à la demande, puis Contact). PDF balisé (accessible), en français, avec 119 signets.
 2. **`preview/index.html`** : aperçu vivant des composants (palette, typographie, boutons, cartes, formulaire, SOS, modale, thème sombre).
-3. `DECISIONS.md` : D2, D4, D5, D6, D7 actées, avec conséquences (dont hébergement cPanel et sécurité).
+3. `DECISIONS.md` : D2, D4 (révisée par D4-bis), D5, D6, D7, D8, D9 actées, avec conséquences (dont hébergement cPanel et sécurité).
 
 ## Contenu
 | Chemin | Rôle |
@@ -13,7 +13,7 @@ Version 1.0 · 8 octobre 2026. Charte graphique et design system de Xomiton, à 
 | `Charte-graphique-Xomiton-v1.0.pdf` | Charte graphique complète (A4 paysage, 125 pages) |
 | `charte-pdf/` | Sources du PDF : `build.py` (assemblage et rendu), `structure.py` (sommaire), `kit.py` (mise en page), `front.py`, `ch01_03.py` à `ch10_12.py` (contenu par chapitre). Régénérer : `python build.py` |
 | `logo/` | Logos vectoriels (14 SVG) et PNG haute définition (28 fichiers, jusqu'à 6000 px) ; `build_logo.py` (vectorisation), `render_png.py` (rendu) |
-| `blade/` | **Composants Blade `x-*` implémentés** (20 : button, field, error-summary, card, img, urgency, status, alert, modal, breadcrumb+JSON-LD, accordion, tabs, stat, sos-button, quick-exit, toast, empty-state, stepper, avatar, logo), `js/xomiton-ui.js` (Alpine : SOS, sortie rapide), `styleguide.blade.php` (catalogue vivant selon le sommaire de la charte), `render-test.php` (rendu avec le vrai Blade de `xomiton/vendor` ; `cd xomiton && php ../design-system/blade/render-test.php`) |
+| `blade/` | **Composants Blade `x-*` implémentés** (19 : button, field, error-summary, card, img, urgency, status, alert, modal, breadcrumb+JSON-LD, accordion, tabs, stat, sos-button, toast, empty-state, stepper, avatar, logo), `js/xomiton-ui.js` (Alpine : SOS), `styleguide.blade.php` (catalogue vivant selon le sommaire de la charte), `render-test.php` (rendu avec le vrai Blade de `xomiton/vendor` ; `cd xomiton && php ../design-system/blade/render-test.php`) |
 | `tokens/components.css` | Styles des composants absents du thème Social (stepper, avatar, statut violet, modale, `x-cloak`) |
 | `fonts/` | Montserrat (WOFF2 variable, latin, latin étendu, vietnamien ; licence SIL OFL) |
 | `tokens/design-tokens.json` | Jetons en 3 couches (primitif → sémantique → composant), source pour Flutter |

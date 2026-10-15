@@ -141,13 +141,12 @@ html { scroll-padding-top: 96px; }          /* le header sticky ne masque jamais
 .xm-urgency--high { color: var(--xm-accent-orange); }
 .xm-urgency--critical { color: var(--xm-on-secondary); background: var(--xm-danger); border-color: var(--xm-danger); }
 
-/* ---------- SOS & sortie rapide ---------- */
+/* ---------- SOS ---------- */
 .xm-sos { width: var(--xm-sos-size); height: var(--xm-sos-size); border-radius: 50%; border: 0; background: var(--xm-secondary); color: var(--xm-on-secondary); font-family: var(--xm-font-heading); font-weight: 800; letter-spacing: .02em; box-shadow: var(--xm-shadow-lg); position: relative; }
 .xm-sos:hover { background: var(--xm-secondary-hover); }
 .xm-sos::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--xm-secondary); opacity: 0; }
 .xm-sos[data-holding="true"]::after { opacity: 1; animation: xm-sos-hold 2s linear forwards; }
 @keyframes xm-sos-hold { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-.xm-quick-exit { background: var(--xm-text); color: var(--xm-bg); border: 0; border-radius: var(--xm-radius-pill); padding: var(--xm-space-2) var(--xm-space-4); font-weight: 700; min-height: var(--xm-target-min); }
 
 /* ---------- Hero fluide (corrige height: 936px fixe de la vitrine) ---------- */
 .xm-hero { min-height: clamp(520px, 78vh, 780px); background-color: var(--xm-bg); background-size: cover; background-position: center; display: flex; align-items: center; }

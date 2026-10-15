@@ -18,15 +18,4 @@ document.addEventListener('alpine:init', () => {
     },
   }));
 
-  // Quitter ce site : remplace la page par un site neutre, sans entrée d'historique.
-  window.xmQuickExit = (url = 'https://www.wikipedia.org') => {
-    try { sessionStorage.clear(); } catch (e) { /* stockage indisponible */ }
-    window.location.replace(url);
-  };
-  let escCount = 0, escTimer;
-  window.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    escCount++; clearTimeout(escTimer); escTimer = setTimeout(() => (escCount = 0), 600);
-    if (escCount >= 2) window.xmQuickExit();
-  });
 });

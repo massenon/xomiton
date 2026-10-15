@@ -40,9 +40,6 @@ KPI : valeur Montserrat 800, libellé, tendance (flèche + texte « +12 % »), l
 ## `<x-sos-button>`
 64 px, rouge, libellé « SOS » (Montserrat 800). Interaction : maintien 2 s (anneau de progression, `data-holding`) → compte à rebours 5 s **annulable** → envoi. Alternatives accessibles : double appui + confirmation, ou activation clavier (`Espace` maintenu ou `Entrée` puis confirmation). Retour : vibration courte, message « Ton alerte est partie » `aria-live="assertive"`. Position fixe en bas à droite (public) ou au centre de la barre d'onglets (mobile). Jamais masqué par un autre élément flottant.
 
-## `<x-quick-exit>` « Quitter ce site »
-Bouton en haut de page (mobile) et dans le header (desktop), `Échap` ×2 déclenche aussi. Action : remplace la page par un site neutre (`location.replace`) et vide les données de session locales non nécessaires.
-
 ## `<x-bell>` cloche
 Icône `bi-bell` + badge numérique, panneau *Alertes · Cas · Messages · Système*. Son : uniquement SOS/cas critiques pour les destinataires concernés, boucle jusqu'à accusé de réception (SOS), volume réglable, autorisation audio demandée à la première utilisation, **alternative visuelle** (bandeau clignotant désactivé en mouvement réduit → bandeau fixe) et **vibration**. Mise à jour par polling Livewire (voir `DECISIONS.md` D7).
 

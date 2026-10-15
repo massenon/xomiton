@@ -12,7 +12,6 @@
 - Preuves facultatives, avec avertissement de suppression des métadonnées.
 - Récapitulatif relisible avant envoi ; **code de suivi** affiché en grand + copier + imprimer.
 - Un seul bouton primaire par étape (« Continuer », puis « Envoyer mon signalement »). **Pas de rouge** pour « Envoyer » (le rouge ne sert qu'à l'accès SOS) ; le bleu rassure.
-- Bouton « Quitter ce site » toujours visible.
 
 ## SOS
 - `x-sos-button` 64 px (public : bas droite ; mobile : centre de la barre d'onglets). Page `/sos` : un seul grand bouton 96 px, texte « Maintiens 2 secondes pour envoyer ton alerte », case « Partager ma position » cochée par défaut avec explication.

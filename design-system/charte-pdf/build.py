@@ -32,7 +32,12 @@ def main():
         return
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
-        b = p.chromium.launch(channel='msedge')
+        # Edge par défaut ; sinon Chromium (chemin dans XM_CHROMIUM, ou navigateur Playwright installé)
+        try:
+            b = p.chromium.launch(channel='msedge')
+        except Exception:
+            exe = os.environ.get('XM_CHROMIUM')
+            b = p.chromium.launch(executable_path=exe) if exe else p.chromium.launch()
         pg = b.new_page()
         pg.set_default_timeout(300000)
         pg.goto('file:///' + OUT_HTML.replace('\\', '/'), wait_until='load')

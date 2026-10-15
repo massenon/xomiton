@@ -14,7 +14,7 @@ x_pub_open('Do Glegbe – Gestion de l’Hygiène Menstruelle', [
 if (!$member) echo '<div class="container py-4"><div class="row"><div class="col-12 vstack gap-4">';
 ?>
 <nav aria-label="Fil d’Ariane"><ol class="breadcrumb mb-0 small">
-	<li class="breadcrumb-item"><a href="landing.php">Accueil</a></li>
+	<li class="breadcrumb-item"><a href="index.php">Accueil</a></li>
 	<li class="breadcrumb-item active" aria-current="page">Do Glegbe</li>
 </ol></nav>
 

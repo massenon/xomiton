@@ -1,0 +1,4 @@
+data/backups/
+assets/images/xomiton/uploads/
+data/mail_outbox.json
+data/mail_log.json

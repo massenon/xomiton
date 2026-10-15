@@ -13,7 +13,7 @@ $__dir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), 
 $__root = $__origin . preg_replace('#/admin$#', '', $__dir) . '/';
 $__file = basename($_SERVER['SCRIPT_NAME'] ?? 'index.php');
 $__keep = array_intersect_key($_GET, array_flip(['id', 'cat', 'forum', 'tab']));
-$__canonical = $__root . $__file . ($__keep ? '?' . http_build_query($__keep) : '');
+$__canonical = $__root . ($__file === 'index.php' && !$__keep ? '' : $__file) . ($__keep ? '?' . http_build_query($__keep) : '');
 
 $__site = 'Xomiton';
 $__title = ($pageTitle ?? 'Accueil');
@@ -29,17 +29,17 @@ $__type = $pageType ?? 'website';
 $__index = $pageIndex ?? !x_user();
 $__robots = $__index ? 'index, follow, max-image-preview:large' : 'noindex, nofollow';
 
-$__crumbs = [['Accueil', 'landing.php']];
+$__crumbs = [['Accueil', 'index.php']];
 foreach (($breadcrumb ?? [[$__title, $__file]]) as $__c) $__crumbs[] = $__c;
 $__list = [];
 foreach ($__crumbs as $__i => $__c) {
 	$__list[] = ['@type' => 'ListItem', 'position' => $__i + 1, 'name' => $__c[0], 'item' => preg_match('#^https?://#', $__c[1]) ? $__c[1] : $__root . $__c[1]];
 }
 $__graph = [
-	['@type' => 'Organization', '@id' => $__root . '#org', 'name' => $__site, 'url' => $__root . 'landing.php',
+	['@type' => 'Organization', '@id' => $__root . '#org', 'name' => $__site, 'url' => $__root . 'index.php',
 		'logo' => $__root . 'assets/images/xomiton/brand/icone-appli-bleu.svg',
 		'description' => "Espace safe d'apprentissage et d'appui holistique pour les filles et femmes LBTQ+ au Bénin."],
-	['@type' => 'WebSite', '@id' => $__root . '#site', 'url' => $__root . 'landing.php', 'name' => $__site, 'inLanguage' => 'fr-BJ',
+	['@type' => 'WebSite', '@id' => $__root . '#site', 'url' => $__root . 'index.php', 'name' => $__site, 'inLanguage' => 'fr-BJ',
 		'publisher' => ['@id' => $__root . '#org'],
 		'potentialAction' => ['@type' => 'SearchAction', 'target' => $__root . 'ressources.php?q={search_term_string}', 'query-input' => 'required name=search_term_string']],
 	['@type' => 'WebPage', '@id' => $__canonical . '#page', 'url' => $__canonical, 'name' => $__fullTitle, 'description' => $__desc, 'inLanguage' => 'fr-BJ',
@@ -63,11 +63,12 @@ if (!empty($pageSchema)) {
 <link rel="canonical" href="<?= e($__canonical) ?>">
 <link rel="manifest" href="<?= BASE ?>manifest.webmanifest">
 
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="any" href="<?= BASE ?>assets/images/favicon.png">
+<!-- Favicon : icône d'application Xomiton (rosace blanche sur bleu #0433C3, design-system/logo/icone-appli-bleu) -->
+<link rel="icon" href="<?= BASE ?>assets/images/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/svg+xml" href="<?= BASE ?>assets/images/xomiton/brand/icone-appli-bleu.svg">
-<link rel="shortcut icon" href="<?= BASE ?>assets/images/favicon.ico">
-<link rel="apple-touch-icon" href="<?= BASE ?>assets/images/favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE ?>assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= BASE ?>assets/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE ?>assets/images/apple-touch-icon.png">
 
 <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
 <meta property="og:site_name" content="<?= e($__site) ?>">

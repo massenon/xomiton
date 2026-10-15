@@ -14,5 +14,5 @@
 | 6 | Appel à l'application | Boutons stores + « Gratuit · 100 % sécurisé » |
 | + | FAQ SEO (nouveau) | Accordéon de 5-6 questions, JSON-LD `FAQPage` |
 
-**Contraintes** : image LCP = illustration du hero (préchargée, `fetchpriority="high"`) ; hauteur du hero fluide ; **supprimer** `height: 936px`, `background-size: 100%` et les styles inline ; décor flou (`elements/*.svg`) uniquement ≥ 992 px, `aria-hidden`, `loading="lazy"` ; « Quitter ce site » en haut sur mobile ; SOS flottant présent.
+**Contraintes** : image LCP = illustration du hero (préchargée, `fetchpriority="high"`) ; hauteur du hero fluide ; **supprimer** `height: 936px`, `background-size: 100%` et les styles inline ; décor flou (`elements/*.svg`) uniquement ≥ 992 px, `aria-hidden`, `loading="lazy"` ; SOS flottant présent.
 **Interdit sur cette page** : plus de 2 éléments rouges visibles simultanément (CTA signaler + SOS).

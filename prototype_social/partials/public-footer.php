@@ -11,7 +11,7 @@
 			<div class="col-6 col-lg-2">
 				<h6 class="text-white">Plateforme</h6>
 				<ul class="list-unstyled small mb-0 xm-flinks">
-					<li><a href="<?= BASE ?>landing.php#valeurs">À propos de Xomiton</a></li>
+					<li><a href="<?= BASE ?>index.php#valeurs">À propos de Xomiton</a></li>
 					<li><a href="<?= BASE ?>help.php">Support</a></li>
 					<li><a href="<?= BASE ?>do-glegbe.php">Do Glegbe</a></li>
 					<li><a href="<?= BASE ?>ressources.php">Ressources</a></li>
@@ -26,10 +26,8 @@
 					<li><a href="<?= BASE ?>privacy-and-terms.php">Confidentialité &amp; conditions</a></li>
 				</ul>
 			</div>
-			<div class="col-lg-4">
-				<h6 class="text-white">Rester en sécurité</h6>
-				<p class="small opacity-75">Besoin de quitter la page rapidement ? Utilisez la sortie rapide : elle vous redirige immédiatement vers un site neutre.</p>
-				<a class="btn btn-sm btn-light" href="https://www.google.com"><i class="bi bi-box-arrow-up-right me-1"></i>Sortie rapide</a>
+			<div class="col-lg-4" id="newsletter">
+				<?php require_once __DIR__ . '/../inc/x_newsletter.php'; echo nl_footer_form(); ?>
 			</div>
 		</div>
 		<hr class="border-light opacity-25 my-4">
@@ -44,4 +42,6 @@
 	.xm-flinks li { margin-bottom: .35rem; }
 	.xm-flinks a { color: rgba(255,255,255,.75); text-decoration: none; }
 	.xm-flinks a:hover { color: #fff; text-decoration: underline; }
+	.xm-nl-form .form-control { min-height: 44px; }
+	.xm-nl-form .form-check-input { border-color: rgba(255,255,255,.6); }
 </style>

@@ -9,5 +9,4 @@
 <script src="<?= BASE ?>assets/js/xomiton.js"></script>
 <?php if (x_user() && empty($noSosFab)): ?>
 <a class="xm-sos-fab no-print" href="<?= BASE ?>sos.php" title="Envoyer une alerte SOS avec ma position"><span class="pulse"></span> SOS</a>
-<a class="btn btn-dark btn-sm xm-quick-exit no-print" href="https://www.google.com" title="Quitter rapidement ce site"><i class="bi bi-box-arrow-up-right me-1"></i>Sortie rapide</a>
 <?php endif; ?>

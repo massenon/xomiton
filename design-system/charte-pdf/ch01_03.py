@@ -42,7 +42,7 @@ def build(doc):
              ('shield-lock-fill', 'Sûre', 'Peu d\'éléments par écran, hiérarchie nette, bleu stable pour agir, rouge réservé à l\'attention.'),
              ('chat-square-text-fill', 'Claire', 'Titres Montserrat marqués, texte Arial lisible, phrases courtes, aucun jargon.'),
              ('people-fill', 'Inclusive', 'Personnages et photographies divers, aucun stéréotype, accessibilité WCAG 2.2 AA.'),
-             ('eye-slash-fill', 'Discrète', 'Sortie rapide, titres neutres possibles, rien de sensible à l\'écran de verrouillage.')]
+             ('eye-slash-fill', 'Discrète', 'Mode discret, titres neutres possibles, rien de sensible à l\'écran de verrouillage.')]
     rows = ''.join('<div style="display:flex;gap:3.5mm;padding:2.6mm 0;border-bottom:.2mm solid #e4dce6"><div style="width:9mm;height:9mm;flex:none;border-radius:50%%;background:%s;display:flex;align-items:center;justify-content:center">%s</div><div><div class="mt" style="font:800 9.4pt/1.1 Montserrat">%s</div><div style="font-size:7.3pt;line-height:1.45;color:#3b3650;margin-top:.8mm">%s</div></div></div>' % (c, icon(i, 5, '#fff'), t, d)
                    for (i, t, d), c in zip(carac, [BRAND['rose'], BRAND['blue'], BRAND['sky'], BRAND['violet'], BRAND['ink']]))
     doc.section(C, 'characteristics', 'Caractéristiques de la marque', 'Brand characteristics',

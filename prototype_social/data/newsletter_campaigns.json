@@ -1,0 +1,344 @@
+[
+ {
+  "id": 1,
+  "subject": "Xomiton · Les nouvelles d’août",
+  "from_name": "Xomiton",
+  "reply_to": "contact@xomiton.bj",
+  "preheader": "Les nouvelles de la communauté",
+  "body": "<h2>Bonjour {{user_first_name}} 💜</h2><p>Ce mois-ci sur Xomiton : un nouvel atelier sur l’affirmation de soi, deux fiches thématiques et le retour de la causerie du samedi.</p><h3>À ne pas manquer</h3><ul><li><a href=\"https://xomiton.org/events.php\" target=\"_blank\">Atelier « Dire non sans culpabiliser » — samedi 15 h</a></li><li><a href=\"https://xomiton.org/thematiques.php\" target=\"_blank\">Nouvelle fiche : connaître ses droits face aux violences</a></li></ul><p>Prenez soin de vous,<br>L’équipe Xomiton</p>",
+  "segment": {},
+  "status": "envoyee",
+  "scheduled_at": null,
+  "started_at": "2026-08-05 18:00:00",
+  "sent_at": "2026-08-05 18:00:00",
+  "queue": [],
+  "recipients": [
+   1,
+   2,
+   3,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   15,
+   16,
+   17,
+   18,
+   19,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   38,
+   39,
+   40,
+   42
+  ],
+  "bounces": [
+   39,
+   40
+  ],
+  "opens": {
+   "35": "2026-08-05 19:00:00",
+   "7": "2026-08-06 08:00:00",
+   "34": "2026-08-08 01:00:00",
+   "17": "2026-08-06 23:00:00",
+   "33": "2026-08-06 17:00:00",
+   "25": "2026-08-08 13:00:00",
+   "23": "2026-08-08 06:00:00",
+   "9": "2026-08-06 01:00:00",
+   "27": "2026-08-08 18:00:00",
+   "30": "2026-08-07 02:00:00",
+   "16": "2026-08-06 10:00:00",
+   "19": "2026-08-08 05:00:00",
+   "28": "2026-08-06 12:00:00",
+   "10": "2026-08-08 06:00:00",
+   "38": "2026-08-08 14:00:00"
+  },
+  "clicks": {
+   "27": [
+    "https://xomiton.org/thematiques.php",
+    "https://xomiton.org/events.php"
+   ],
+   "30": [
+    "https://xomiton.org/thematiques.php",
+    "https://xomiton.org/events.php"
+   ],
+   "25": [
+    "https://xomiton.org/thematiques.php"
+   ],
+   "9": [
+    "https://xomiton.org/events.php",
+    "https://xomiton.org/thematiques.php"
+   ]
+  },
+  "unsubs": [
+   33
+  ],
+  "created": "2026-08-03 18:00:00",
+  "updated": "2026-08-05 18:00:00",
+  "created_by": "admin@xomiton.bj"
+ },
+ {
+  "id": 2,
+  "subject": "5 réflexes de sécurité numérique",
+  "from_name": "Xomiton",
+  "reply_to": "contact@xomiton.bj",
+  "preheader": "Les nouvelles de la communauté",
+  "body": "<h2>Bonjour {{user_first_name}},</h2><p>Votre sécurité numérique compte. Voici 5 réflexes simples pour protéger vos comptes et vos conversations.</p><p><a href=\"https://xomiton.org/ressources.php\" target=\"_blank\"><strong>Lire le guide complet</strong></a></p><p>L’équipe Xomiton</p>",
+  "segment": {
+   "interests": [
+    "Sécurité numérique",
+    "Ressources"
+   ]
+  },
+  "status": "envoyee",
+  "scheduled_at": null,
+  "started_at": "2026-09-06 18:00:00",
+  "sent_at": "2026-09-06 18:00:00",
+  "queue": [],
+  "recipients": [
+   1,
+   2,
+   3,
+   6,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   21,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   38,
+   39,
+   40,
+   41,
+   42
+  ],
+  "bounces": [
+   39,
+   40
+  ],
+  "opens": {
+   "38": "2026-09-07 05:00:00",
+   "18": "2026-09-09 01:00:00",
+   "23": "2026-09-07 12:00:00",
+   "17": "2026-09-09 06:00:00",
+   "19": "2026-09-07 18:00:00",
+   "1": "2026-09-07 01:00:00",
+   "16": "2026-09-08 04:00:00",
+   "14": "2026-09-08 19:00:00",
+   "27": "2026-09-08 12:00:00",
+   "31": "2026-09-07 22:00:00",
+   "33": "2026-09-09 05:00:00",
+   "9": "2026-09-08 12:00:00",
+   "41": "2026-09-08 14:00:00",
+   "8": "2026-09-08 19:00:00",
+   "25": "2026-09-08 06:00:00",
+   "42": "2026-09-09 00:00:00",
+   "34": "2026-09-08 03:00:00",
+   "29": "2026-09-07 05:00:00",
+   "24": "2026-09-09 07:00:00"
+  },
+  "clicks": {
+   "38": [
+    "https://xomiton.org/ressources.php"
+   ],
+   "29": [
+    "https://xomiton.org/ressources.php"
+   ],
+   "18": [
+    "https://xomiton.org/ressources.php"
+   ],
+   "9": [
+    "https://xomiton.org/ressources.php"
+   ],
+   "17": [
+    "https://xomiton.org/ressources.php"
+   ],
+   "33": [
+    "https://xomiton.org/ressources.php"
+   ],
+   "34": [
+    "https://xomiton.org/ressources.php"
+   ]
+  },
+  "unsubs": [],
+  "created": "2026-09-04 18:00:00",
+  "updated": "2026-09-06 18:00:00",
+  "created_by": "admin@xomiton.bj"
+ },
+ {
+  "id": 3,
+  "subject": "Merci pour la journée bien-être !",
+  "from_name": "Xomiton",
+  "reply_to": "contact@xomiton.bj",
+  "preheader": "Les nouvelles de la communauté",
+  "body": "<h2>Bonjour {{user_first_name}},</h2><p>Merci aux 120 personnes présentes à la journée bien-être de Porto-Novo ! Retrouvez les photos et les ressources partagées.</p><p><a href=\"https://xomiton.org/albums.php\" target=\"_blank\">Voir l’album</a> · <a href=\"https://xomiton.org/ressources.php\" target=\"_blank\">Les ressources</a></p>",
+  "segment": {},
+  "status": "envoyee",
+  "scheduled_at": null,
+  "started_at": "2026-10-05 18:00:00",
+  "sent_at": "2026-10-05 18:00:00",
+  "queue": [],
+  "recipients": [
+   1,
+   2,
+   3,
+   6,
+   7,
+   8,
+   9,
+   11,
+   12,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   38,
+   39,
+   40,
+   41,
+   42
+  ],
+  "bounces": [
+   39,
+   40
+  ],
+  "opens": {
+   "35": "2026-10-07 05:00:00",
+   "14": "2026-10-07 12:00:00",
+   "33": "2026-10-07 02:00:00",
+   "8": "2026-10-06 06:00:00",
+   "29": "2026-10-07 06:00:00",
+   "22": "2026-10-08 04:00:00",
+   "26": "2026-10-07 02:00:00",
+   "12": "2026-10-08 06:00:00",
+   "25": "2026-10-07 19:00:00",
+   "23": "2026-10-07 14:00:00",
+   "21": "2026-10-05 22:00:00",
+   "19": "2026-10-08 10:00:00",
+   "18": "2026-10-07 12:00:00"
+  },
+  "clicks": {
+   "33": [
+    "https://xomiton.org/ressources.php",
+    "https://xomiton.org/albums.php"
+   ],
+   "12": [
+    "https://xomiton.org/albums.php",
+    "https://xomiton.org/ressources.php"
+   ],
+   "8": [
+    "https://xomiton.org/albums.php"
+   ],
+   "22": [
+    "https://xomiton.org/ressources.php",
+    "https://xomiton.org/albums.php"
+   ]
+  },
+  "unsubs": [],
+  "created": "2026-10-03 18:00:00",
+  "updated": "2026-10-05 18:00:00",
+  "created_by": "admin@xomiton.bj"
+ },
+ {
+  "id": 4,
+  "subject": "Xomiton · Les nouvelles de novembre",
+  "from_name": "Xomiton",
+  "reply_to": "contact@xomiton.bj",
+  "preheader": "Ateliers, ressources et dates à retenir",
+  "body": "<h2>Bonjour {{user_first_name}} 💜</h2><p>Ce mois-ci sur Xomiton : un nouvel atelier sur l’affirmation de soi, deux fiches thématiques et le retour de la causerie du samedi.</p><h3>À ne pas manquer</h3><ul><li><a href=\"https://xomiton.org/events.php\" target=\"_blank\">Atelier « Dire non sans culpabiliser » — samedi 15 h</a></li><li><a href=\"https://xomiton.org/thematiques.php\" target=\"_blank\">Nouvelle fiche : connaître ses droits face aux violences</a></li></ul><p>Prenez soin de vous,<br>L’équipe Xomiton</p>",
+  "segment": {},
+  "status": "planifiee",
+  "scheduled_at": "2026-11-02 09:00:00",
+  "queue": [],
+  "recipients": [],
+  "bounces": [],
+  "opens": {},
+  "clicks": {},
+  "unsubs": [],
+  "created": "2026-10-12 10:00:00",
+  "updated": "2026-10-12 10:00:00",
+  "created_by": "admin@xomiton.bj"
+ },
+ {
+  "id": 5,
+  "subject": "Appel à pairs animateur·rices — saison 2027",
+  "from_name": "Xomiton",
+  "reply_to": "contact@xomiton.bj",
+  "preheader": "Rejoignez l’équipe",
+  "body": "<p>Bonjour {{user_first_name}},</p><p>Nous recrutons des pairs animateur·rices pour 2027.</p>",
+  "segment": {
+   "tags": [
+    "pair",
+    "partenaire"
+   ]
+  },
+  "status": "brouillon",
+  "scheduled_at": null,
+  "queue": [],
+  "recipients": [],
+  "bounces": [],
+  "opens": {},
+  "clicks": {},
+  "unsubs": [],
+  "created": "2026-10-13 16:20:00",
+  "updated": "2026-10-13 16:20:00",
+  "created_by": "admin@xomiton.bj"
+ }
+]
