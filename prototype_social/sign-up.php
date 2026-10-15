@@ -55,6 +55,8 @@ if ($open && $_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         
         x_log('Inscription', $email);
+        require_once __DIR__ . '/inc/x_mailer.php';
+        x_mail_send_template('bienvenue', $email, ['user_name' => $name, 'user_first_name' => explode(' ', $name)[0], 'user_pseudo' => $pseudo, 'user_email' => $email, 'login_link' => x_site_url('sign-in.php')], ['context' => 'inscription']);
         $done = $row['status'] === 'actif' ? 'actif' : 'attente';
         if ($done === 'actif') { unset($row['hash']); $_SESSION['user'] = $row; session_regenerate_id(true); }
     }

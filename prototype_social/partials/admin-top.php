@@ -37,6 +37,7 @@ $menu = [
     'Système' => [
         ['synchronisation', 'bi-cloud-arrow-up', 'Hors connexion & synchro'],
         ['mises-a-jour', 'bi-arrow-repeat', 'Mises à jour & optimisation'],
+        ['emails', 'bi-envelope-at', 'Templates e-mails'],
         ['parametres', 'bi-gear', 'Paramètres'],
         ['journal', 'bi-clock-history', 'Journal d’audit'],
     ],
@@ -48,6 +49,7 @@ $menu = [
 	<?php include __DIR__ . '/title-meta.php'; ?>
 	<?php include __DIR__ . '/head-css.php'; ?>
 	<script src="<?= BASE ?>assets/vendor/chartjs/chart.umd.min.js"></script>
+	<?= $adminHead ?? '' ?>
 </head>
 <body class="xm-admin">
 <div class="xm-offline-bar" id="xmOfflineBar"><i class="bi bi-wifi-off me-1"></i> Hors connexion — les modifications seront synchronisées au retour du réseau.</div>

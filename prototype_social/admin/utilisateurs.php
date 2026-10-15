@@ -27,7 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$u) xa_back('danger', 'Utilisateur introuvable.');
     $isAdminTarget = in_array($u['role'], ['admin', 'superadmin'], true);
     if ($isAdminTarget && !$super && (int)$u['id'] !== (int)$me['id']) xa_back('danger', 'Seul un·e super-admin peut modifier un compte d’administration.');
-    if ($do === 'validate') { store_update('users', $id, ['status' => 'actif']); x_log('Utilisateurs', 'Validation : ' . $u['email']); xa_back('success', 'Compte de ' . $u['name'] . ' validé.'); }
+    if ($do === 'validate') { store_update('users', $id, ['status' => 'actif']); x_log('Utilisateurs', 'Validation : ' . $u['email']);
+        require_once __DIR__ . '/../inc/x_mailer.php';
+        x_mail_send_template('compte-valide', $u['email'], ['user_name' => $u['name'], 'user_first_name' => explode(' ', $u['name'])[0], 'user_email' => $u['email'], 'login_link' => x_site_url('sign-in.php')], ['context' => 'validation']); xa_back('success', 'Compte de ' . $u['name'] . ' validé.'); }
     if ($do === 'suspend') { if ((int)$id === (int)$me['id']) xa_back('danger', 'Vous ne pouvez pas suspendre votre propre compte.'); store_update('users', $id, ['status' => 'suspendu']); x_log('Utilisateurs', 'Suspension : ' . $u['email']); xa_back('warning', 'Compte suspendu.'); }
     if ($do === 'reactivate') { store_update('users', $id, ['status' => 'actif']); x_log('Utilisateurs', 'Réactivation : ' . $u['email']); xa_back('success', 'Compte réactivé.'); }
     if ($do === 'role') {
