@@ -75,7 +75,7 @@ Conséquences :
 - Retirés : composant Blade `x-quick-exit`, fonction Alpine `xmQuickExit` (et le raccourci `Échap` ×2), classe `.xm-quick-exit`, bouton flottant du prototype, bouton de la page Urgences, préférence « Afficher le bouton Sortie rapide » des paramètres membre.
 - Le bloc « Rester en sécurité » du pied de page public est **remplacé par l'inscription à la newsletter** (double opt-in, désinscription en un clic, conforme RGPD) ; le module Newsletter de l'administration gère abonné·es, campagnes, planification et statistiques.
 - Les autres mesures de discrétion restent : titre d'onglet neutre possible, notifications masquées sur écran verrouillé, mode discret de l'application, SOS toujours accessible.
-- La charte PDF v1.0 et ses sources (`charte-pdf/`) mentionnent encore la sortie rapide : à corriger à la prochaine régénération (v1.1).
+- La charte PDF et ses sources (`charte-pdf/`) sont corrigées et régénérées (15 octobre 2026) : « Discrète » s'appuie sur le mode discret, le pictogramme « Quitter » est remplacé par « Newsletter », la superposition ne garde que le bouton SOS au-dessus des modales.
 
 ## D4-bis — Passerelles réseaux sociaux : réintégrées (15 octobre 2026)
 **Décision du client : le module Passerelles réseaux sociaux est réintégré.** La partie « inscription simplifiée » de D4 reste valable (une seule étape obligatoire).
@@ -84,7 +84,7 @@ Conséquences :
 - Les tables `social_channels`, `outbound_posts`, `outbound_deliveries` sont rétablies dans le modèle de données, avec `gateway_templates`.
 - Les passerelles publient **au nom de l'organisation** uniquement : aucun compte personnel de membre n'est connecté, aucune donnée de membre n'est envoyée aux réseaux. Les boutons de partage par lien restent disponibles pour les membres.
 - Jetons d'accès chiffrés en base, publication par la tâche cron (lots, rejeu en cas d'échec), journal d'audit de chaque connexion et publication.
-- **À faire confirmer** : la disponibilité d'une API de publication pour Roméo, GanXo et Tinder (à défaut, ces réseaux restent en publication manuelle assistée : texte et visuel prêts à copier).
+- **Roméo, GanXo et Tinder n'ont pas d'API de publication** (confirmé par le client) : ils fonctionnent en **publication manuelle assistée** (texte et visuel prêts à copier, puis l'équipe marque la publication « publiée »). Facebook et Telegram sont publiés automatiquement par API ; TikTok selon l'accès à son API de contenu, sinon en manuel assisté.
 
 ## D9 — Espace membre et pair éducateur·rice en Vue 3 (15 octobre 2026)
 **Décision du client : l'espace connecté membre et pair éducateur·rice est développé en Vue 3**, servi par Laravel avec **Inertia.js**. Les pages publiques restent en Blade (`x-*`) et l'administration en Livewire 3.

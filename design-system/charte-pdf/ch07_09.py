@@ -156,7 +156,7 @@ def build(doc):
         return f'<div style="display:grid;grid-template-columns:repeat({cols},1fr);grid-template-rows:repeat({rows},1fr);gap:3mm;padding:4mm;height:100%">{"".join(picto_card(*i) for i in items)}</div>'
     U = [('shield-check', 'Sécurité', 'Protection, confidentialité'), ('shield-exclamation', 'Signaler', 'Dénonciation, signalement'), ('telephone-fill', 'Appeler', 'Contact direct'), ('geo-alt-fill', 'Lieu', 'Position, structure proche'),
          ('chat-heart', 'Écoute', 'Chat, conseil de pair·e'), ('people-fill', 'Communauté', 'Groupes, réseau'), ('book-fill', 'Ressources', 'Fiches, manuels, BD'), ('calendar-event', 'Événements', 'Ateliers, rencontres'),
-         ('lock-fill', 'Confidentialité', 'Données protégées'), ('eye-slash-fill', 'Anonymat', 'Sans nom ni compte'), ('box-arrow-right', 'Quitter', 'Sortie rapide'), ('bell-fill', 'Alertes', 'Notifications, cloche')]
+         ('lock-fill', 'Confidentialité', 'Données protégées'), ('eye-slash-fill', 'Anonymat', 'Sans nom ni compte'), ('envelope-heart-fill', 'Newsletter', 'Actualités par e-mail'), ('bell-fill', 'Alertes', 'Notifications, cloche')]
     doc.section(C, 'universal', 'Pictogrammes universels', 'Universal pictograms',
         ['<p class="lead">Un jeu de douze pictogrammes pour les fonctions essentielles.</p>',
          '<p>Famille : <b>Bootstrap Icons</b> (déjà utilisée par le thème Social, licence MIT), traits arrondis, deux états (contour et plein). C\'est la <b>seule</b> bibliothèque autorisée : on ne mélange pas Font Awesome, émojis ou autres jeux. Le SOS n\'est pas un pictogramme : c\'est un bouton avec le mot « SOS ».</p>'],

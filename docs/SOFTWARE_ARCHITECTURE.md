@@ -145,5 +145,5 @@ Riverpod pour l'état (un provider par écran, voir le panneau du simulateur), g
 | ADR-11 | Pilotes (file, cache, session, diffusion) par configuration : passage à Redis + workers + Reverb sans changer le code applicatif |
 | ADR-12 | OTP par e-mail plutôt que SMS (coût, couverture) |
 | ADR-13 | Templates e-mails stockés en base, éditables par l'administration, slug stable référencé par le code |
-| ADR-15 | Passerelles réseaux sociaux (D4-bis) : un connecteur par réseau derrière une interface `SocialPublisher` (Facebook Graph API, Telegram Bot API ; publication manuelle assistée sinon), jetons chiffrés, comptes de l'organisation uniquement |
+| ADR-15 | Passerelles réseaux sociaux (D4-bis) : un connecteur par réseau derrière une interface `SocialPublisher` (Facebook Graph API, Telegram Bot API ; Roméo, GanXo et Tinder sans API : publication manuelle assistée), jetons chiffrés, comptes de l'organisation uniquement |
 | ADR-14 | Newsletter interne (pas de service tiers), envoi par lots via cron, suivi signé HMAC |
