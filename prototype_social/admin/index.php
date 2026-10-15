@@ -8,11 +8,10 @@ $adminPage = 'index';
 $cases = array_values(array_filter(store_all('cases'), fn($c) => $c['status'] !== 'archive'));
 $alertes = store_all('alertes');
 usort($alertes, fn($a, $b) => $b['created'] <=> $a['created']);
-$users = store_all('users'); $stock = store_all('stock'); $ann = xa_annuaire_map();
+$users = store_all('users'); $ann = xa_annuaire_map();
 $st = array_count_values(array_column($cases, 'status'));
 $nNew = count(array_filter($alertes, fn($a) => $a['status'] === 'nouveau'));
 $sosActifs = array_values(array_filter($alertes, fn($a) => $a['type'] === 'sos' && $a['status'] !== 'traite'));
-$lowStock = count(array_filter($stock, fn($s) => $s['qty'] < $s['min']));
 $syncRate = 96; /* simulé : part des enregistrements hors-ligne synchronisés */
 
 $months = xa_last_months(12);
@@ -34,7 +33,6 @@ $kpis = [
     ['Cas en cours', $st['en_cours'] ?? 0, 'warning', 'bi-hourglass-split', 'registres.php?statut=en_cours'],
     ['Cas clos', $st['clos'] ?? 0, 'success', 'bi-check2-circle', 'registres.php?statut=clos'],
     ['Utilisateurs', count($users), 'violet', 'bi-people', 'utilisateurs.php'],
-    ['Stock en alerte', $lowStock, 'warning', 'bi-box-seam', 'stock.php'],
     ['Taux de synchro', $syncRate . ' %', 'success', 'bi-cloud-check', 'synchronisation.php'],
 ];
 ?>
@@ -92,7 +90,7 @@ $kpis = [
 
 <div class="row g-4">
 	<div class="col-lg-6"><div class="card h-100"><div class="card-header"><h2 class="h6 mb-0">Raccourcis</h2></div><div class="card-body"><div class="row g-2">
-		<?php foreach ([['registres.php', 'bi-journal-plus', 'Nouveau dossier'], ['alertes.php', 'bi-bell', 'Traiter les alertes'], ['rapports.php', 'bi-file-earmark-bar-graph', 'Générer un rapport'], ['suivi.php', 'bi-person-heart', 'Suivi des victimes'], ['stock.php', 'bi-box-seam', 'Gestion de stock'], ['annuaire.php', 'bi-person-lines-fill', 'Annuaire'], ['fiches.php', 'bi-file-earmark-medical', 'Fiche de référence'], ['inscriptions.php', 'bi-person-plus', 'Inscriptions']] as $s): ?>
+		<?php foreach ([['registres.php', 'bi-journal-plus', 'Nouveau dossier'], ['alertes.php', 'bi-bell', 'Traiter les alertes'], ['rapports.php', 'bi-file-earmark-bar-graph', 'Générer un rapport'], ['suivi.php', 'bi-person-heart', 'Suivi des victimes'], ['newsletter.php', 'bi-envelope-paper', 'Newsletter'], ['annuaire.php', 'bi-person-lines-fill', 'Annuaire'], ['fiches.php', 'bi-file-earmark-medical', 'Fiche de référence'], ['inscriptions.php', 'bi-person-plus', 'Inscriptions']] as $s): ?>
 			<div class="col-6"><a class="btn btn-light w-100 text-start" href="<?= $s[0] ?>"><i class="bi <?= $s[1] ?> me-2 text-primary"></i><?= e($s[2]) ?></a></div>
 		<?php endforeach; ?></div></div></div></div>
 	<div class="col-lg-6"><div class="card h-100"><div class="card-header"><h2 class="h6 mb-0">État de la plateforme</h2></div><div class="card-body">

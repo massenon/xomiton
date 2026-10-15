@@ -10,7 +10,6 @@ $notifUnread = count(array_filter($notifs, fn($nt) => !$nt['read']));
 $adminPage = $adminPage ?? '';
 $alertNew = count(array_filter(store_all('alertes'), fn($a) => $a['status'] === 'nouveau'));
 $pendingUsers = count(array_filter(store_all('users'), fn($a) => $a['status'] === 'en_attente'));
-$lowStock = count(array_filter(store_all('stock'), fn($s) => $s['qty'] < $s['min']));
 $menu = [
     'Pilotage' => [
         ['index', 'bi-speedometer2', 'Tableau de bord'],
@@ -22,7 +21,6 @@ $menu = [
         ['registres', 'bi-journal-bookmark', 'Registres numériques'],
         ['fiches', 'bi-file-earmark-medical', 'Fiches VBG / VDH'],
         ['suivi', 'bi-person-heart', 'Suivi des victimes'],
-        ['stock', 'bi-box-seam', 'Gestion de stock', $lowStock, 'warning'],
         ['annuaire', 'bi-person-lines-fill', 'Annuaire dynamique'],
         ['validation', 'bi-patch-check', 'Règles de validation'],
     ],

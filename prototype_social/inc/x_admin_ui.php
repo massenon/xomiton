@@ -54,8 +54,6 @@ function xa_notifications() {
         $add('mo' . $m['id'], 'bi-shield-exclamation', 'warning', 'Signalement à modérer · ' . ($m['reason'] ?? ''), 'moderation.php', $m['created'], false);
     foreach (array_slice(store_all('sync_conflicts'), 0, 2) as $c)
         $add('sc' . $c['id'], 'bi-arrow-left-right', 'info', 'Conflit de synchronisation · ' . ($c['code'] ?? ''), 'synchronisation.php', strtotime($c['at'] ?? 'now'), false);
-    foreach (array_slice(array_filter(store_all('stock'), fn($s) => $s['qty'] < $s['min']), 0, 3) as $s)
-        $add('st' . $s['id'], 'bi-box-seam', 'warning', 'Stock sous le seuil · ' . $s['item'], 'stock.php', strtotime($s['updated'] ?? 'now'), false);
     usort($N, fn($a, $b) => $b['ts'] <=> $a['ts']);
     return $N;
 }

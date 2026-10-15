@@ -30,11 +30,6 @@ if (mb_strlen($q) >= 2) {
 	$G[] = ['Annuaire', 'bi-person-lines-fill', 'info', 'annuaire.php', $rows];
 
 	$rows = [];
-	foreach (store_all('stock') as $s) if ($has($s['item'] . ' ' . ($s['category'] ?? '') . ' ' . ($s['location'] ?? '')))
-		$rows[] = [$s['item'], ($s['category'] ?? '') . ' · ' . $s['qty'] . ' en stock (seuil ' . $s['min'] . ')', 'stock.php?q=' . urlencode($s['item'])];
-	$G[] = ['Stock', 'bi-box-seam', 'warning', 'stock.php', $rows];
-
-	$rows = [];
 	foreach (x_thematiques() as $t) if ($has($t['title'] . ' ' . $t['summary']))
 		$rows[] = [$t['title'], mb_strimwidth($t['summary'], 0, 110, '…'), 'contenu.php?tab=thematiques'];
 	$G[] = ['Thématiques', 'bi-journal-text', 'violet', 'contenu.php?tab=thematiques', $rows];
@@ -57,10 +52,10 @@ include __DIR__ . '/../partials/admin-top.php';
 <form class="card card-body mb-4" method="get" role="search">
 	<label class="form-label fw-semibold" for="rq">Rechercher dans toute l’administration</label>
 	<div class="input-group">
-		<input class="form-control" type="search" id="rq" name="q" value="<?= e($q) ?>" placeholder="Nom, e-mail, code dossier, thématique, stock, annuaire…" minlength="2" required autofocus>
+		<input class="form-control" type="search" id="rq" name="q" value="<?= e($q) ?>" placeholder="Nom, e-mail, code dossier, thématique, annuaire…" minlength="2" required autofocus>
 		<button class="btn btn-primary" type="submit"><i class="bi bi-search me-1"></i>Rechercher</button>
 	</div>
-	<div class="form-text">Utilisateurs, dossiers, alertes, annuaire, stock, thématiques, réseau social et journal d’audit. Raccourci : Ctrl K.</div>
+	<div class="form-text">Utilisateurs, dossiers, alertes, annuaire, thématiques, réseau social et journal d’audit. Raccourci : Ctrl K.</div>
 </form>
 
 <?php if ($q === ''): ?>

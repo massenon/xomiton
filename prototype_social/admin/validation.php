@@ -10,7 +10,7 @@ $catalog = [
     'date_not_future' => ['Date non postérieure à aujourd’hui', 'Empêche la saisie d’un événement ou d’une collecte datée du futur.', ['Collecte de données', 'Registres', 'Suivi'], '2026-01-15', '2099-01-01', 'Oui'],
     'age_range'       => ['Âge entre 10 et 99 ans', 'Valeur plausible pour les populations accompagnées.', ['Collecte de données', 'Fiches VBG/VDH'], '24', '150', 'Oui'],
     'min_len_20'      => ['Description d’au moins 20 caractères', 'Évite les signalements vides ou inexploitables.', ['Signalement', 'SOS', 'Besoins'], 'Menaces répétées par un voisin depuis une semaine.', 'Menaces', 'Oui'],
-    'positive_int'    => ['Entier positif', 'Quantités de stock, effectifs, seuils.', ['Gestion de stock', 'Indicateurs'], '12', '-3', 'Oui'],
+    'positive_int'    => ['Entier positif', 'Effectifs, seuils, cibles d’indicateurs.', ['Indicateurs', 'Paramètres'], '12', '-3', 'Oui'],
     'commune_in_zone' => ['Commune cohérente avec le département', 'La commune choisie doit appartenir au département sélectionné (liste en cascade).', ['Collecte', 'Inscription', 'Annuaire', 'Signalement'], 'Cotonou', '', 'Oui (liste fermée)'],
     'case_code'       => ['Code dossier VBG-0000', 'Format normalisé des codes de registre.', ['Registres', 'Suivi'], 'VBG-0042', 'vbg42', 'Oui'],
     'password_strong' => ['Mot de passe fort', '8 caractères minimum, une majuscule, un chiffre.', ['Inscription', 'Réinitialisation', 'Utilisateurs'], 'Xomiton2026', 'abc', 'Oui'],
@@ -133,7 +133,6 @@ include __DIR__ . '/../partials/admin-top.php';
 					<tr><td>Date postérieure à aujourd’hui</td><td>Refusée (<?= $future ?> trouvée<?= $future > 1 ? 's' : '' ?>)</td></tr>
 					<tr><td>Date de plus de <?= (int)$plaus['max_past_years'] ?> ans</td><td>Avertissement (<?= $old ?>)</td></tr>
 					<tr><td>Coordonnées GPS</td><td>Bénin : lat <?= $plaus['lat'][0] ?>–<?= $plaus['lat'][1] ?>, lng <?= $plaus['lng'][0] ?>–<?= $plaus['lng'][1] ?></td></tr>
-					<tr><td>Quantité de stock</td><td>Entier ≥ 0</td></tr>
 				</tbody></table>
 				<button class="btn btn-primary btn-sm">Enregistrer</button>
 			</form>

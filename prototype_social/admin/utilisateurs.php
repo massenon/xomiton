@@ -51,7 +51,7 @@ $cs = array_count_values(array_column($all, 'status')); $cr = array_count_values
 $pending = array_filter($all, fn($u) => $u['status'] === 'en_attente');
 $perm = [ // module => [membre, pair, admin, superadmin]
     'Réseau social (fil, chat, groupes)' => [2, 2, 2, 2], 'Signalement / SOS' => [2, 2, 2, 2], 'Ressources & outils CCC (lecture)' => [2, 2, 2, 2],
-    'Collecte de données & registres' => [0, 2, 2, 2], 'Fiches VBG / VDH' => [0, 1, 2, 2], 'Suivi des victimes' => [0, 1, 2, 2], 'Gestion de stock' => [0, 0, 2, 2],
+    'Collecte de données & registres' => [0, 2, 2, 2], 'Fiches VBG / VDH' => [0, 1, 2, 2], 'Suivi des victimes' => [0, 1, 2, 2],
     'Annuaire dynamique' => [1, 1, 2, 2], 'Rapports & indicateurs' => [0, 1, 2, 2], 'Modération & contenu' => [0, 0, 2, 2], 'Utilisateurs (membres, pairs)' => [0, 0, 2, 2],
     'Rôles d’administration' => [0, 0, 0, 2], 'Paramètres système & purge du journal' => [0, 0, 1, 2],
 ];
