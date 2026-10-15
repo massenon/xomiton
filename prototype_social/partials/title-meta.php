@@ -63,11 +63,12 @@ if (!empty($pageSchema)) {
 <link rel="canonical" href="<?= e($__canonical) ?>">
 <link rel="manifest" href="<?= BASE ?>manifest.webmanifest">
 
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="any" href="<?= BASE ?>assets/images/favicon.png">
+<!-- Favicon : icône d'application Xomiton (rosace blanche sur bleu #0433C3, design-system/logo/icone-appli-bleu) -->
+<link rel="icon" href="<?= BASE ?>assets/images/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/svg+xml" href="<?= BASE ?>assets/images/xomiton/brand/icone-appli-bleu.svg">
-<link rel="shortcut icon" href="<?= BASE ?>assets/images/favicon.ico">
-<link rel="apple-touch-icon" href="<?= BASE ?>assets/images/favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= BASE ?>assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= BASE ?>assets/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= BASE ?>assets/images/apple-touch-icon.png">
 
 <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
 <meta property="og:site_name" content="<?= e($__site) ?>">
