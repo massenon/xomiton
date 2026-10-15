@@ -20,7 +20,7 @@ Tu dois :
 |---|---|---|
 | Back-end | **Laravel 12** (PHP 8.3), MySQL 8 / MariaDB 10.6 | API `/api/v1`, domaine, files, tâches planifiées |
 | Administration | **Livewire 3** + Alpine 3 + Bootstrap 5.3.3 (thème Social) | Écrans d'administration : modales CRUD, DataTables réactives, notifications toast **SweetAlert2** |
-| Front membre et pair éducateur·rice (réseau social) | **Vue 3** (Composition API, Pinia, Vue Router ou Inertia) + Bootstrap 5.3.3 (thème Social) | Fil, messagerie, groupes, événements, profil, SOS, signalement |
+| Front membre et pair éducateur·rice (réseau social) | **Vue 3** + **Inertia.js** (Composition API, Pinia) — décision D9 + Bootstrap 5.3.3 (thème Social) | Fil, messagerie, groupes, événements, profil, SOS, signalement |
 | Pages publiques (SEO) | **Blade** + composants anonymes `x-*` | Accueil, ressources, thématiques, aide : rendu serveur indexable |
 | Mobile | **Flutter** 3 (Riverpod, go_router, Dio, Hive) | Application membre / pair, mode hors connexion, SOS |
 | Icônes | Bootstrap Icons (pas de Font Awesome dans le code neuf) | |
@@ -66,7 +66,7 @@ Pas de Tailwind (D2). Un seul framework CSS : Bootstrap 5.3.3 + couche `tokens.c
 - **Hébergement mutualisé** (D7) : file `database`, cache `file`/`database`, sessions `database`, cron `schedule:run` chaque minute, envoi SOS **dans la requête** (pas en file), polling au lieu de WebSocket.
 - **Réseau mobile limité** : pages légères (voir [PERFORMANCE.md](PERFORMANCE.md)), images WebP/AVIF, hors connexion pour la collecte, le signalement et le SOS.
 - **Langues** : français par défaut ; fon, yoruba, anglais prévus (structure `lang/` prête).
-- **Décisions actées** : D2 Bootstrap seul · D4 inscription simplifiée · D4-bis passerelles réseaux sociaux réintégrées (publication au nom de l'organisation) · D5 palette bleu `#0433C3` / rouge `#E30E0E` · D6 Montserrat + Arial · D7 cPanel mutualisé · D8 sortie rapide retirée, newsletter dans le pied de page.
+- **Décisions actées** : D2 Bootstrap seul · D4 inscription simplifiée · D4-bis passerelles réseaux sociaux réintégrées (publication au nom de l'organisation) · D5 palette bleu `#0433C3` / rouge `#E30E0E` · D6 Montserrat + Arial · D7 cPanel mutualisé · D8 sortie rapide retirée, newsletter dans le pied de page · D9 espace membre et pair en Vue 3 + Inertia.js.
 - **Modules retirés** : gestion de stock (octobre 2026), sortie rapide (D8). Ne pas les réintroduire. Les passerelles réseaux sociaux sont **réintégrées** (D4-bis).
 
 ## 6. Définition de « terminé »

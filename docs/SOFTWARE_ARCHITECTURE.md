@@ -50,11 +50,11 @@ Règles :
 | Public | Technologie | Pourquoi |
 |---|---|---|
 | Pages publiques (accueil, thématiques, ressources, aide, signalement, SOS) | Blade + composants `x-*` du design system, Alpine pour l'interactivité légère | Rendu serveur, SEO, poids minimal, fonctionne sans JS |
-| Espace membre et pair éducateur·rice (réseau social) | **Vue 3** (Composition API, Pinia) servi par Laravel (Inertia ou Vue Router + API), HTML du thème Social | Interactions riches (fil, sondages, messagerie, notifications) ; mêmes appels `/api/v1` que Flutter |
+| Espace membre et pair éducateur·rice (réseau social) | **Vue 3** (Composition API, Pinia) servi par Laravel via **Inertia.js** (D9), HTML du thème Social | Interactions riches (fil, sondages, messagerie, notifications) ; mêmes appels `/api/v1` que Flutter |
 | Administration | **Livewire 3** + Alpine + Bootstrap Social | CRUD en modales, DataTables réactives, toasts **SweetAlert2**, validation en temps réel |
 | Mobile | **Flutter** | Hors connexion, SOS natif, notifications push |
 
-> Point à faire valider (proposition D9) : le design system prévoyait des composants Blade pour l'espace connecté ; la consigne actuelle place l'espace membre en Vue 3. Les composants Vue reproduisent exactement le HTML des composants `x-*` (mêmes classes) pour garder un seul design.
+> **Décision actée D9** (`design-system/DECISIONS.md`) : l'espace membre et pair éducateur·rice est en Vue 3 + Inertia.js. Les composants Vue reproduisent exactement le HTML des composants `x-*` et du prototype (mêmes classes) pour garder un seul design ; les pages publiques restent en Blade, l'administration en Livewire.
 
 ## 4. API `/api/v1`
 
@@ -141,6 +141,7 @@ Riverpod pour l'état (un provider par écran, voir le panneau du simulateur), g
 | ADR | Décision |
 |---|---|
 | ADR-03 | Bootstrap seul, pas de Tailwind (D2) |
+| ADR-16 | Espace connecté membre et pair en Vue 3 + Inertia.js, pages publiques en Blade, administration en Livewire (D9) |
 | ADR-11 | Pilotes (file, cache, session, diffusion) par configuration : passage à Redis + workers + Reverb sans changer le code applicatif |
 | ADR-12 | OTP par e-mail plutôt que SMS (coût, couverture) |
 | ADR-13 | Templates e-mails stockés en base, éditables par l'administration, slug stable référencé par le code |

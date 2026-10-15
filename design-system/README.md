@@ -5,7 +5,7 @@ Version 1.0 · 8 octobre 2026. Charte graphique et design system de Xomiton, à 
 ## Ouvrir en premier
 1. **`Charte-graphique-Xomiton-v1.0.pdf`** : la charte graphique, 125 pages A4 paysage, qui suit le sommaire de `INSTRUCTION-CHARTE-GRAPHIQUE.txt` (14 chapitres : les 11 du sommaire, plus 12 Supports de communication et 13 Data visualisation ajoutés à la demande, puis Contact). PDF balisé (accessible), en français, avec 119 signets.
 2. **`preview/index.html`** : aperçu vivant des composants (palette, typographie, boutons, cartes, formulaire, SOS, modale, thème sombre).
-3. `DECISIONS.md` : D2, D4 (révisée par D4-bis), D5, D6, D7, D8 actées, avec conséquences (dont hébergement cPanel et sécurité).
+3. `DECISIONS.md` : D2, D4 (révisée par D4-bis), D5, D6, D7, D8, D9 actées, avec conséquences (dont hébergement cPanel et sécurité).
 
 ## Contenu
 | Chemin | Rôle |

@@ -85,3 +85,16 @@ Conséquences :
 - Les passerelles publient **au nom de l'organisation** uniquement : aucun compte personnel de membre n'est connecté, aucune donnée de membre n'est envoyée aux réseaux. Les boutons de partage par lien restent disponibles pour les membres.
 - Jetons d'accès chiffrés en base, publication par la tâche cron (lots, rejeu en cas d'échec), journal d'audit de chaque connexion et publication.
 - **À faire confirmer** : la disponibilité d'une API de publication pour Roméo, GanXo et Tinder (à défaut, ces réseaux restent en publication manuelle assistée : texte et visuel prêts à copier).
+
+## D9 — Espace membre et pair éducateur·rice en Vue 3 (15 octobre 2026)
+**Décision du client : l'espace connecté membre et pair éducateur·rice est développé en Vue 3**, servi par Laravel avec **Inertia.js**. Les pages publiques restent en Blade (`x-*`) et l'administration en Livewire 3.
+Pourquoi :
+- interactions immédiates sur réseau mobile faible (j'aime, vote, messagerie) grâce aux mises à jour optimistes ;
+- hors connexion (brouillons, signalement, SOS) avec IndexedDB ;
+- même API `/api/v1` que l'application Flutter : la logique n'est écrite qu'une fois ;
+- compatible cPanel mutualisé (D7) : build Vite en local, aucun Node sur le serveur.
+Conséquences :
+- Pile : Vue 3 (Composition API, `<script setup>`, TypeScript recommandé), Inertia.js, Pinia, vue-i18n ; pas de bibliothèque d'interface supplémentaire.
+- Les composants Vue `Xm*` reproduisent **exactement le HTML** des composants Blade `x-*` et du prototype `prototype_social/` (thème Social, classes `xm-*`) : un seul design.
+- Les pages publiques ne chargent jamais Vue (SEO et poids) ; l'administration reste en Livewire (modales CRUD, DataTables, SweetAlert2).
+- L'équipe maintient deux technologies côté interface (Vue et Livewire) : conventions dans `docs/DEVELOPMENT_STANDARDS.md`.

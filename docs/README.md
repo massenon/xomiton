@@ -47,7 +47,7 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 
 ## Sources de vérité (par ordre de priorité)
 
-1. Décisions du client : `design-system/DECISIONS.md` (D2, D4 révisée par D4-bis, D5 à D8).
+1. Décisions du client : `design-system/DECISIONS.md` (D2, D4 révisée par D4-bis, D5 à D9).
 2. Design system : `design-system/xomiton/MASTER.md` puis `design-system/xomiton/pages/*.md` (les pages priment sur MASTER), jetons `design-system/tokens/`.
 3. Prototype de référence visuelle et fonctionnelle : `prototype_social/` (web) et `prototype_mobile/` (mobile).
 4. Ces documents `docs/`.

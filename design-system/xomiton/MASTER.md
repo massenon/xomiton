@@ -4,7 +4,7 @@
 > Généré avec la méthode du skill *ui-ux-pro-max* (recherche `--design-system` : motif « Feature-Rich Showcase », style « Vibrant & Block-based »), **puis adapté** : la palette rose/bleu et les polices proposées par l'outil sont remplacées par la marque Xomiton (bleu `#0433C3`, rouge `#E30E0E`, Montserrat + Arial). Les règles retenues de l'outil : contrastes 4,5:1, focus visible, `prefers-reduced-motion`, cibles 44 px, 4 gabarits de test, pas d'émoji comme icône, `cursor: pointer` sur le cliquable.
 
 ## 1. Pile et règle de dépendance
-Laravel 12 · Livewire 3 · Alpine 3 · **Bootstrap 5.3.3 (thème Social) comme unique framework CSS** · Bootstrap Icons. Pas de Tailwind (ADR-03). Composants = **composants Blade anonymes `x-*`** (`resources/views/components/`), jamais d'`@include` pour du réutilisable ; état visuel local en Alpine, état serveur en Livewire.
+Laravel 12 · Livewire 3 · Alpine 3 · **Bootstrap 5.3.3 (thème Social) comme unique framework CSS** · Bootstrap Icons. Pas de Tailwind (ADR-03). Espace membre et pair éducateur·rice : **Vue 3 + Inertia.js** (D9), composants `Xm*` au HTML identique aux `x-*`. Composants = **composants Blade anonymes `x-*`** (`resources/views/components/`), jamais d'`@include` pour du réutilisable ; état visuel local en Alpine, état serveur en Livewire.
 Ordre de chargement CSS : `style.css` (Social) → `tokens.css` → `social-xomiton.css` → CSS de page éventuel.
 
 ## 2. Couleurs (variables)
