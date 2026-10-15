@@ -56,7 +56,7 @@ Association porteuse (équipe de coordination), pair·es éducateur·rices, memb
 5. Application mobile Flutter : 30 écrans du simulateur `prototype_mobile/`.
 
 ### 2.4 Hors périmètre
-Passerelles vers les réseaux sociaux (D4) · gestion de stock (retirée) · sortie rapide (D8) · paiement · visioconférence intégrée · géolocalisation continue.
+Gestion de stock (retirée) · sortie rapide (D8) · paiement · visioconférence intégrée · géolocalisation continue.
 
 ### 2.5 Mesures de succès (6 mois après lancement — cibles proposées, à valider avec l'association)
 - 1 500 comptes actifs, 35 % de rétention à 30 jours.
@@ -126,6 +126,7 @@ Chaque exigence porte un code, une priorité (**M** obligatoire, **S** souhaité
 |---|---|---|---|
 | FR-COM-01 | **Templates e-mails** en base (CRUD, WYSIWYG, variables, aperçu, envoi de test, suppression sécurisée des templates système) | M | `x_mail_send_template(slug, to, vars)` / `TemplateMail` |
 | FR-COM-02 | **Newsletter** : abonné·es (statuts, tags, intérêts, import/export CSV), campagnes (WYSIWYG, objet, expéditeur, réponse), test, envoi immédiat ou programmé, statistiques | M | Désinscription unique dans chaque e-mail, double opt-in |
+| FR-COM-04 | **Passerelles réseaux sociaux** (D4-bis) : connexion des comptes de l'organisation, file de publication planifiée (BD SSR, messages clés, message personnalisé), salons entre pairs | M | Publication au nom de l'organisation uniquement, jetons chiffrés, chaque publication journalisée |
 | FR-COM-03 | Notifications en application, e-mail et push | M | Voir [NOTIFICATIONS_INSTRUCTION.md](NOTIFICATIONS_INSTRUCTION.md) |
 
 ### 4.6 Plateforme

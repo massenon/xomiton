@@ -13,7 +13,7 @@ Règle d'or : **le bouton dit ce qui va se passer, le toast confirme avec le mê
 | Public | Apprendre · Communauté · Aide & protection · Signaler · Se connecter · Créer un compte |
 | Membre (sidenav) | Fil d'actualité · Mon profil · Messages · Groupes · Pages · Événements · Forums · Qui suivre et invitations · Thématiques · Ressources · Do Glegbe · Violences · Outils CCC · SOS · Signaler · Contacts d'urgence · Annuaire · Assistant · Espace pair · Collecte · Paramètres · Aide · Se déconnecter |
 | Mobile (onglets) | Accueil · Fil · Alerte (SOS) · Messages · Profil |
-| Administration | Tableau de bord · Alertes & signalements · Indicateurs · Rapports automatisés · Registres numériques · Fiches VBG / VDH · Suivi des victimes · Annuaire dynamique · Règles de validation · Utilisateurs & rôles · Inscriptions (on/off) · Contenu : thématiques & ressources · Newsletter · Outils CCC · Réseau social · Modération · Assistant LLM · Hors connexion & synchro · Mises à jour & optimisation · Templates e-mails · Paramètres · Journal d'audit |
+| Administration | Tableau de bord · Alertes & signalements · Indicateurs · Rapports automatisés · Registres numériques · Fiches VBG / VDH · Suivi des victimes · Annuaire dynamique · Règles de validation · Utilisateurs & rôles · Inscriptions (on/off) · Contenu : thématiques & ressources · Newsletter · Outils CCC · Réseau social · Modération · Assistant LLM · Passerelles réseaux · Hors connexion & synchro · Mises à jour & optimisation · Templates e-mails · Paramètres · Journal d'audit |
 
 ## 2. Boutons
 | Action | Libellé | Toast |

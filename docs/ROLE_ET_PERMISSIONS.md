@@ -51,6 +51,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | Outils CCC (édition) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Assistant LLM (base de connaissances) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Newsletter** (abonné·es, campagnes, envoi) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| **Passerelles réseaux sociaux** (connexion des comptes, file de publication) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Templates e-mails** | ❌ | ❌ | ❌ | ❌ | ✅ (sauf suppression système) | ✅ |
 | Utilisateurs (membres, pair·es) | ❌ | ❌ | ❌ | 👁 (suspendre) | ✅ | ✅ |
 | Inscriptions (ouvrir / fermer) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
@@ -71,6 +72,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `alerts.take`, `alerts.close` | | routées | | ✅ | ✅ |
 | `directory.manage` | | | | ✅ | ✅ |
 | `newsletter.manage_subscribers`, `newsletter.send` | | | | ✅ | ✅ |
+| `gateways.connect`, `gateways.publish` | | | | ✅ | ✅ |
 | `email_templates.manage` | | | | ✅ | ✅ |
 | `email_templates.delete_system` | | | | | ✅ |
 | `backups.create`, `backups.download` | | | | ✅ | ✅ |

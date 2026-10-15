@@ -15,7 +15,7 @@ Pourquoi Bootstrap :
 Limite connue : le thème est livré **compilé, sans source Sass**, et les couleurs des boutons y sont en dur. On ne peut donc pas simplement changer `$primary`. Solution actée : la couche `tokens/social-xomiton.css`, chargée après `style.css`, réécrit les variables `--bs-*` et les composants concernés. `style.css` n'est jamais modifié. Si on obtient les sources Sass de Social, on pourra basculer vers une compilation Sass (gain de poids), sans changer les tokens.
 Actions : supprimer `tailwindcss` et `@tailwindcss/vite` de `package.json`, retirer le plugin de `vite.config.js`, supprimer `resources/css/app.css` (remplacé par les trois fichiers de tokens).
 
-## D4 — Passerelles sociales : abandonnées
+## D4 — Passerelles sociales : abandonnées *(révisée le 15 octobre 2026 : module réintégré, voir D4-bis)*
 **Décision : aucune passerelle réseau social** (Facebook, TikTok, Roméo, GanXo, Telegram, Tinder). Motif du client : inscription complexe en plusieurs étapes.
 Conséquences :
 - **Retirer** le module M16 et la phase 12 « passerelles » ; **retirer** les tables `social_channels`, `outbound_posts`, `outbound_deliveries` (domaine I de `03`).
@@ -76,3 +76,12 @@ Conséquences :
 - Le bloc « Rester en sécurité » du pied de page public est **remplacé par l'inscription à la newsletter** (double opt-in, désinscription en un clic, conforme RGPD) ; le module Newsletter de l'administration gère abonné·es, campagnes, planification et statistiques.
 - Les autres mesures de discrétion restent : titre d'onglet neutre possible, notifications masquées sur écran verrouillé, mode discret de l'application, SOS toujours accessible.
 - La charte PDF v1.0 et ses sources (`charte-pdf/`) mentionnent encore la sortie rapide : à corriger à la prochaine régénération (v1.1).
+
+## D4-bis — Passerelles réseaux sociaux : réintégrées (15 octobre 2026)
+**Décision du client : le module Passerelles réseaux sociaux est réintégré.** La partie « inscription simplifiée » de D4 reste valable (une seule étape obligatoire).
+Conséquences :
+- Le module M16 et l'écran *Administration › Plateforme › Passerelles réseaux* (`prototype_social/admin/passerelles.php`) sont conservés : connexion des comptes de l'organisation (Facebook, TikTok, Roméo, GanXo, Telegram, Tinder), file de publication planifiée (BD SSR, messages clés, message personnalisé ≤ 500 caractères), bibliothèque de messages clés, salons de discussion entre pairs.
+- Les tables `social_channels`, `outbound_posts`, `outbound_deliveries` sont rétablies dans le modèle de données, avec `gateway_templates`.
+- Les passerelles publient **au nom de l'organisation** uniquement : aucun compte personnel de membre n'est connecté, aucune donnée de membre n'est envoyée aux réseaux. Les boutons de partage par lien restent disponibles pour les membres.
+- Jetons d'accès chiffrés en base, publication par la tâche cron (lots, rejeu en cas d'échec), journal d'audit de chaque connexion et publication.
+- **À faire confirmer** : la disponibilité d'une API de publication pour Roméo, GanXo et Tinder (à défaut, ces réseaux restent en publication manuelle assistée : texte et visuel prêts à copier).

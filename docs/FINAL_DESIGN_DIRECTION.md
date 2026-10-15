@@ -31,7 +31,7 @@ description: Direction de design finale de Xomiton — l'implémentation reprend
 
 - Les données fictives deviennent réelles ; les compteurs codés en dur (« 24 posts », « 182 abonné·es ») sont calculés.
 - Les accès aux fichiers JSON (`store_all`, `store_append`…) deviennent des requêtes Eloquent.
-- Les éléments retirés par décision ne reviennent pas : gestion de stock, passerelles réseaux sociaux (D4), sortie rapide (D8).
+- Les éléments retirés par décision ne reviennent pas : gestion de stock, sortie rapide (D8). Les passerelles réseaux sociaux restent (D4-bis).
 - Les écarts au design system relevés pendant l'implémentation sont corrigés **dans le design system d'abord**, puis appliqués partout.
 
 ## Procédure de vérification « à l'identique »

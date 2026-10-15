@@ -35,7 +35,7 @@ Chargement CSS : `style.css` (thème Social, jamais modifié) → `tokens.css` �
 Menu d'administration actuel :
 - **Pilotage** : Tableau de bord · Alertes & signalements · Indicateurs · Rapports automatisés
 - **Gestion des données** : Registres numériques · Fiches VBG / VDH · Suivi des victimes · Annuaire dynamique · Règles de validation
-- **Plateforme** : Utilisateurs & rôles · Inscriptions (on/off) · Contenu : thématiques & ressources · **Newsletter** · Outils CCC · Réseau social · Modération · Assistant LLM
+- **Plateforme** : Utilisateurs & rôles · Inscriptions (on/off) · Contenu : thématiques & ressources · **Newsletter** · Outils CCC · Réseau social · Modération · Assistant LLM · **Passerelles réseaux**
 - **Système** : Hors connexion & synchro · Mises à jour & optimisation · **Templates e-mails** · Paramètres · Journal d'audit
 
 ## 3. Composants

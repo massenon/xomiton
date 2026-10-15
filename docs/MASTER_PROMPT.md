@@ -66,8 +66,8 @@ Pas de Tailwind (D2). Un seul framework CSS : Bootstrap 5.3.3 + couche `tokens.c
 - **Hébergement mutualisé** (D7) : file `database`, cache `file`/`database`, sessions `database`, cron `schedule:run` chaque minute, envoi SOS **dans la requête** (pas en file), polling au lieu de WebSocket.
 - **Réseau mobile limité** : pages légères (voir [PERFORMANCE.md](PERFORMANCE.md)), images WebP/AVIF, hors connexion pour la collecte, le signalement et le SOS.
 - **Langues** : français par défaut ; fon, yoruba, anglais prévus (structure `lang/` prête).
-- **Décisions actées** : D2 Bootstrap seul · D4 pas de passerelles réseaux sociaux (simple partage par lien), inscription simplifiée · D5 palette bleu `#0433C3` / rouge `#E30E0E` · D6 Montserrat + Arial · D7 cPanel mutualisé · D8 sortie rapide retirée, newsletter dans le pied de page.
-- **Modules retirés** : gestion de stock (octobre 2026), passerelles réseaux sociaux (D4), sortie rapide (D8). Ne pas les réintroduire.
+- **Décisions actées** : D2 Bootstrap seul · D4 inscription simplifiée · D4-bis passerelles réseaux sociaux réintégrées (publication au nom de l'organisation) · D5 palette bleu `#0433C3` / rouge `#E30E0E` · D6 Montserrat + Arial · D7 cPanel mutualisé · D8 sortie rapide retirée, newsletter dans le pied de page.
+- **Modules retirés** : gestion de stock (octobre 2026), sortie rapide (D8). Ne pas les réintroduire. Les passerelles réseaux sociaux sont **réintégrées** (D4-bis).
 
 ## 6. Définition de « terminé »
 

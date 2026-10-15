@@ -129,7 +129,7 @@ Chaque écran suit le gabarit §4 de [UI_UX_DESIGN_SYSTEM.md](UI_UX_DESIGN_SYSTE
 
 **Assistant LLM** (`assistant.php`) — Base de connaissances (modale), prompt système, garde-fous et escalade vers un humain, conversations signalées, statistiques.
 
-*Passerelles réseaux sociaux (`passerelles.php`) : module abandonné par la décision D4 — ne pas implémenter ; seul le partage par lien est conservé.*
+**Passerelles réseaux** (`passerelles.php`, réintégré par D4-bis) — Cartes des réseaux (Facebook, TikTok, Roméo, GanXo, Telegram, Tinder) avec état et bouton connecter / déconnecter le compte **de l'organisation** · **File de publication** (contenu : BD SSR, message clé ou message personnalisé ≤ 500 car. ; réseaux connectés ; date et heure) avec statuts planifié / publié / annulé, marquer publié, retirer · **Modèles de messages clés** (prévention, dépistage, SOS…) · **Salons de discussion entre pairs** (activés, modérés, anonymat, nombre maximal de membres). Réseaux sans API : publication manuelle assistée (texte et visuel prêts à copier).
 
 ### D4. Système
 **Hors connexion & synchro** (`synchronisation.php`) — KPI : appareils suivis, éléments en attente, conflits, sans synchro > 24 h. Appareils & pairs, résolution des conflits (valeur serveur / appareil), journal, paramètres, cache local.
@@ -188,5 +188,4 @@ KPI : templates, templates système, envois (30 j), échecs (30 j).
 | Module | Décision | Remplacement |
 |---|---|---|
 | Gestion de stock (admin, KPI, espace pair) | Octobre 2026 | — (IND-09 devient le taux d'ouverture de la newsletter) |
-| Passerelles réseaux sociaux | D4 | Boutons de partage par lien |
 | Sortie rapide | D8 | Newsletter dans le pied de page ; discrétion par le mode discret |

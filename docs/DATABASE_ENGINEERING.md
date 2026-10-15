@@ -21,10 +21,11 @@ Les collections JSON du prototype (`prototype_social/data/*.json`) donnent les c
 | Dossiers (pair·es) | `cases`, `case_forms` (fiches VBG/VDH), `case_followups`, `validation_rules` |
 | Pilotage | `indicators`, `indicator_values`, `generated_reports` |
 | Modération | `moderation_reports` |
+| Passerelles (D4-bis) | `social_channels`, `gateway_templates`, `outbound_posts`, `outbound_deliveries`, `peer_rooms` |
 | Communication | `email_templates`, `mail_logs`, `newsletter_subscribers`, `newsletter_campaigns`, `newsletter_campaign_recipients`, `newsletter_clicks`, `notifications` |
 | Plateforme | `settings`, `app_versions`, `backups`, `audit_logs`, `sync_devices`, `sync_outbox_receipts`, `sync_conflicts`, `jobs`, `failed_jobs`, `cache`, `cache_locks` |
 
-Supprimées du modèle : `stock`, `stock_movements` (module retiré) ; `social_channels`, `outbound_posts`, `outbound_deliveries` (D4).
+Supprimées du modèle : `stock`, `stock_movements` (module retiré). Rétablies par D4-bis : `social_channels`, `outbound_posts`, `outbound_deliveries`, `gateway_templates`.
 
 ## 2. ERD (extrait principal)
 
@@ -122,6 +123,13 @@ campaign_id FK · subscriber_id FK · sent_at · opened_at null · bounced bool 
 ### `newsletter_clicks`
 recipient_id FK · url varchar(2048) · url_hash char(64) · clicked_at. Unique (recipient_id, url_hash) pour les clics uniques.
 
+### `social_channels`, `gateway_templates`, `outbound_posts`, `outbound_deliveries` (D4-bis)
+- `social_channels` : network enum('Facebook','TikTok','Roméo','GanXo','Telegram','Tinder') unique · is_connected bool · account_handle varchar(60) · access_token text **chiffré** · token_expires_at · connected_at · connected_by FK users.
+- `gateway_templates` : title varchar(80) · body varchar(500) · is_active bool.
+- `outbound_posts` : kind enum('bd','template','custom') · reference varchar(120) · message varchar(500) · media_path null · scheduled_at · status enum('planifie','publie','annule','echec') · created_by FK.
+- `outbound_deliveries` : outbound_post_id FK · social_channel_id FK · status enum('en_attente','publie','echec','manuel') · external_id varchar null · error varchar null · attempts tinyint · published_at. Unique (outbound_post_id, social_channel_id).
+Aucune donnée de membre n'est stockée ni envoyée par ces tables.
+
 ### `backups`
 name varchar(40) unique · kind enum('manuel','auto','avant_restauration') · size_bytes bigint · tables json (nom, lignes) · storage_path · created_by FK · restored_at null.
 
@@ -137,8 +145,9 @@ user_id FK null · action varchar(80) · subject_type, subject_id · detail text
 5. Alertes : `directory_contacts`, `alerts`, `alert_notifications`, `alert_escalations`.
 6. Dossiers : `validation_rules`, `cases`, `case_forms`, `case_followups`.
 7. Pilotage et modération : `indicators`, `indicator_values`, `generated_reports`, `moderation_reports`.
-8. Communication : `email_templates`, `mail_logs`, `newsletter_subscribers`, `newsletter_campaigns`, `newsletter_campaign_recipients`, `newsletter_clicks`, `notifications`.
-9. Plateforme : `settings`, `app_versions`, `backups`, `audit_logs`, `sync_devices`, `sync_outbox_receipts`, `sync_conflicts`, `jobs`, `failed_jobs`, `cache`.
+8. Passerelles : `social_channels`, `gateway_templates`, `outbound_posts`, `outbound_deliveries`, `peer_rooms`.
+9. Communication : `email_templates`, `mail_logs`, `newsletter_subscribers`, `newsletter_campaigns`, `newsletter_campaign_recipients`, `newsletter_clicks`, `notifications`.
+10. Plateforme : `settings`, `app_versions`, `backups`, `audit_logs`, `sync_devices`, `sync_outbox_receipts`, `sync_conflicts`, `jobs`, `failed_jobs`, `cache`.
 
 Chaque migration : `down()` fonctionnelle, clés étrangères nommées, `->constrained()->cascadeOnDelete()` seulement pour les tables de liaison ; `restrictOnDelete()` pour les dossiers et alertes (on ne supprime pas l'historique par cascade).
 
@@ -164,4 +173,4 @@ La rotation d'`APP_KEY` exige une ré-encryption planifiée (`key:rotate` + comm
 
 ## 7. Migration depuis le prototype JSON
 
-Commande `php artisan xomiton:import-prototype <dossier data/>` : lit chaque collection, mappe les champs (ex. `alertes.created` timestamp → `alerts.created_at`, `cases.ts` ignoré, `users.hash` → `password`), crée les zones/communes manquantes, journalise les rejets. Les collections `stock*` et `gateways*` sont ignorées.
+Commande `php artisan xomiton:import-prototype <dossier data/>` : lit chaque collection, mappe les champs (ex. `alertes.created` timestamp → `alerts.created_at`, `cases.ts` ignoré, `users.hash` → `password`), crée les zones/communes manquantes, journalise les rejets. La collection `stock*` est ignorée ; `gateways` → `social_channels`, `gateway_templates` → `gateway_templates`, `gateway_posts` → `outbound_posts` + `outbound_deliveries`.

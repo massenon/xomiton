@@ -100,6 +100,7 @@ Objectif : collecte de cas, signalements et SOS **sans réseau**, puis envoi fia
 | `alerts:escalate` | 1 min | Escalade des SOS sans accusé (RG-05) |
 | `notifications:retry` | 1 min | Rejoue les envois SOS échoués |
 | `newsletter:process` | 1 min | Envoie les campagnes programmées par lots de 200 |
+| `gateways:publish` | 1 min | Publie la file des passerelles (D4-bis) par réseau, rejoue les échecs, marque « manuel » les réseaux sans API |
 | `heartbeat:ping` | 1 min | Signal de vie vers la supervision externe |
 | `backups:run` | quotidien 02:00 | `mysqldump` + fichiers vers stockage externe chiffré |
 | `logs:purge` | quotidien | Journaux de plus de 90 jours |
@@ -143,4 +144,5 @@ Riverpod pour l'état (un provider par écran, voir le panneau du simulateur), g
 | ADR-11 | Pilotes (file, cache, session, diffusion) par configuration : passage à Redis + workers + Reverb sans changer le code applicatif |
 | ADR-12 | OTP par e-mail plutôt que SMS (coût, couverture) |
 | ADR-13 | Templates e-mails stockés en base, éditables par l'administration, slug stable référencé par le code |
+| ADR-15 | Passerelles réseaux sociaux (D4-bis) : un connecteur par réseau derrière une interface `SocialPublisher` (Facebook Graph API, Telegram Bot API ; publication manuelle assistée sinon), jetons chiffrés, comptes de l'organisation uniquement |
 | ADR-14 | Newsletter interne (pas de service tiers), envoi par lots via cron, suivi signé HMAC |
