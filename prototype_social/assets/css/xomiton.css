@@ -161,3 +161,16 @@ main:focus { outline: none; }
 .xm-dt-bar .form-select { min-width: 4.5rem; }
 .xm-dt-pager .page-link { min-width: 2rem; text-align: center; }
 @media print { .xm-dt-bar { display: none !important; } .xm-admin tr[hidden] { display: table-row !important; } }
+
+/* ---------- Sondages (fil d'actualité) ---------- */
+.xm-poll { background: var(--bs-body-bg); }
+.xm-poll-opt { cursor: pointer; min-height: 44px; transition: border-color .15s; }
+.xm-poll-opt:hover, .xm-poll-opt:focus-within { border-color: var(--bs-primary) !important; }
+li.xm-poll-opt { cursor: default; }
+.xm-poll-bar { position: absolute; inset: 0 auto 0 0; background: rgba(4, 51, 195, .10); border-radius: inherit; transition: width .5s ease; }
+.xm-poll-opt.is-lead .xm-poll-bar { background: rgba(4, 51, 195, .20); }
+.xm-poll-opt.is-lead { font-weight: 600; }
+[data-bs-theme=dark] .xm-poll-bar { background: rgba(124, 151, 255, .18); }
+[data-bs-theme=dark] .xm-poll-opt.is-lead .xm-poll-bar { background: rgba(124, 151, 255, .30); }
+.xm-poll-option-row .btn { min-width: 44px; }
+@media (prefers-reduced-motion: reduce) { .xm-poll-bar { transition: none; } }

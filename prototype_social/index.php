@@ -7,7 +7,7 @@ $nav = 'fil';
 $posts = store_all('posts');
 usort($posts, fn($a, $b) => $b['ts'] <=> $a['ts']);
 $posts = array_filter($posts, fn($p) => ($p['visibility'] ?? 'public') !== 'me' || (int)$p['user'] === (int)x_user()['id']);
-$tags = ['' => 'Tout', 'Témoignage' => 'Témoignages', 'Question' => 'Questions', 'Ressource' => 'Ressources', 'Événement' => 'Événements'];
+$tags = ['' => 'Tout', 'Témoignage' => 'Témoignages', 'Question' => 'Questions', 'Ressource' => 'Ressources', 'Événement' => 'Événements', 'Sondage' => 'Sondages'];
 $f = $_GET['tag'] ?? '';
 if ($f) $posts = array_filter($posts, fn($p) => ($p['tag'] ?? '') === $f);
 [$posts, $moreBtn] = x_paginate(array_values($posts), 6);
@@ -49,6 +49,7 @@ $events = array_slice(store_all('events'), 0, 3);
 						<ul class="nav nav-pills nav-stack small fw-normal">
 							<li class="nav-item"><a class="nav-link bg-light py-1 px-2 mb-0" href="#" data-bs-toggle="modal" data-bs-target="#modalCreateFeed"><i class="bi bi-image-fill text-success pe-2"></i>Photo</a></li>
 							<li class="nav-item"><a class="nav-link bg-light py-1 px-2 mb-0" href="#" data-bs-toggle="modal" data-bs-target="#modalCreateEvents"><i class="bi bi-calendar2-event-fill text-danger pe-2"></i>Événement</a></li>
+							<li class="nav-item"><a class="nav-link bg-light py-1 px-2 mb-0" href="#" data-bs-toggle="modal" data-bs-target="#modalCreatePoll"><i class="bi bi-bar-chart-fill text-info pe-2"></i>Sondage</a></li>
 							<li class="nav-item"><a class="nav-link bg-light py-1 px-2 mb-0" href="violences.php"><i class="bi bi-shield-exclamation text-warning pe-2"></i>Violences</a></li>
 							<li class="nav-item"><a class="nav-link bg-light py-1 px-2 mb-0" href="signalement.php"><i class="bi bi-megaphone-fill text-primary pe-2"></i>Signaler</a></li>
 						</ul>
