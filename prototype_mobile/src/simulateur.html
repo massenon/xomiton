@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulateur mobile Xomiton</title>
+<meta name="description" content="Simulateur mobile Xomiton (compte membre et pair éducateur·rice) : 30 écrans interactifs dans un châssis iPhone 14 ou Pixel 8, avec la transposition Flutter de chaque écran.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0433C3">
+<link rel="icon" type="image/svg+xml" href="{{IMG:icone-appli-bleu.svg}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap">
+<style>
+/* =====================================================================
+   Jetons : copie du design system Xomiton (design-system/tokens/tokens.css)
+   ===================================================================== */
+:root {
+  --xm-blue-50:#EBEFFA; --xm-blue-100:#D7DEF5; --xm-blue-200:#AFBEEC; --xm-blue-500:#0433C3; --xm-blue-600:#032BA6; --xm-blue-700:#032488; --xm-blue-800:#021C6B; --xm-blue-900:#02134A;
+  --xm-red-50:#FDECEC; --xm-red-500:#E30E0E; --xm-red-600:#C10C0C; --xm-red-700:#9F0A0A;
+  --xm-neutral-0:#FFFFFF; --xm-neutral-25:#FBF7FA; --xm-neutral-100:#F3EDF4; --xm-neutral-200:#E4DCE6; --xm-neutral-400:#8E88A0; --xm-neutral-600:#5B5670; --xm-neutral-900:#1B1630;
+  --xm-green-700:#0B7A4B; --xm-amber-500:#F0A800; --xm-sky-700:#1864AB; --xm-violet-700:#6F2C91; --xm-rose-600:#C2255C;
+  --xm-font-heading:"Montserrat","Segoe UI",Arial,sans-serif;
+  --xm-font-body:Arial,"Liberation Sans",Helvetica,sans-serif;
+  --xm-radius-md:8px; --xm-radius-lg:16px; --xm-radius-pill:999px;
+  --xm-ease-out:cubic-bezier(.2,.8,.2,1);
+  --xm-target-min:44px;
+
+  /* Page du simulateur (hors appareil) */
+  --pg-bg: var(--xm-neutral-100);
+  --pg-surface: var(--xm-neutral-0);
+  --pg-border: var(--xm-neutral-200);
+  --pg-text: var(--xm-neutral-900);
+  --pg-muted: var(--xm-neutral-600);
+  --pg-accent: var(--xm-blue-500);
+  --pg-accent-subtle: var(--xm-blue-50);
+  --pg-code-bg: var(--xm-blue-900);
+  --pg-code-text: #DCE3FA;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-page-theme="light"]) {
+    --pg-bg:#0B0D1A; --pg-surface:#151829; --pg-border:#2A2E48; --pg-text:#EDEAF7; --pg-muted:#A9A5C0; --pg-accent:#7C97FF; --pg-accent-subtle:#1B2347; --pg-code-bg:#070917;
+    color-scheme: dark;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--pg-bg); color: var(--pg-text); font: 15px/1.5 var(--xm-font-body); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { font-family: var(--xm-font-heading); line-height: 1.2; margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--pg-accent); outline-offset: 2px; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 8px; top: -60px; z-index: 50; background: var(--pg-accent); color: #fff; padding: 10px 14px; border-radius: 8px; }
+.skip:focus { top: 8px; }
+
+/* ---------- Mise en page générale ---------- */
+.sim { display: grid; grid-template-columns: 272px minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); height: 100vh; }
+.topbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: var(--pg-surface); border-bottom: 1px solid var(--pg-border); flex-wrap: wrap; }
+.topbar .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; min-width: 0; }
+.topbar .brand img { height: 28px; width: auto; }
+.topbar h1 { font-size: 16px; font-weight: 700; }
+.topbar .sub { color: var(--pg-muted); font-size: 13px; }
+.seg { display: inline-flex; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-pill); padding: 3px; background: var(--pg-bg); }
+.seg button { border: 0; background: transparent; padding: 6px 12px; border-radius: var(--xm-radius-pill); font-size: 13px; font-weight: 700; color: var(--pg-muted); min-height: 32px; }
+.seg button[aria-pressed="true"] { background: var(--pg-surface); color: var(--pg-accent); box-shadow: 0 1px 3px rgb(27 22 48 / .14); }
+.btn-ghost { border: 1px solid var(--pg-border); background: var(--pg-surface); border-radius: var(--xm-radius-pill); padding: 6px 14px; font-size: 13px; font-weight: 700; min-height: 34px; }
+
+/* Rail gauche : index des écrans */
+.rail { overflow-y: auto; background: var(--pg-surface); border-right: 1px solid var(--pg-border); padding: 12px 10px 24px; }
+.rail-search { width: 100%; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); padding: 8px 10px; background: var(--pg-bg); margin-bottom: 8px; min-height: 38px; }
+.rail-group { margin-top: 14px; }
+.rail-group h2 { font-size: 13px; font-weight: 700; padding: 0 8px 4px; display: flex; justify-content: space-between; align-items: baseline; }
+.rail-group h2 code { font: 12px/1 var(--xm-font-body); color: var(--pg-muted); }
+.rail a { display: grid; grid-template-columns: 26px 1fr; gap: 6px; align-items: baseline; padding: 7px 8px; border-radius: var(--xm-radius-md); color: var(--pg-text); text-decoration: none; font-size: 14px; }
+.rail a .n { color: var(--pg-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.rail a .r { grid-column: 2; color: var(--pg-muted); font-size: 12px; }
+.rail a:hover { background: var(--pg-bg); }
+.rail a[aria-current="page"] { background: var(--pg-accent-subtle); color: var(--pg-accent); font-weight: 700; }
+.rail a[aria-current="page"] .n, .rail a[aria-current="page"] .r { color: var(--pg-accent); }
+
+/* Scène centrale */
+.stage { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 16px; min-height: 0; }
+.stage-caption { margin-top: 10px; font-size: 13px; color: var(--pg-muted); text-align: center; }
+.stage-caption b { color: var(--pg-text); }
+.device-wrap { transform-origin: top center; }
+
+/* ---------- Châssis ---------- */
+.device { --w: 390px; --h: 844px; --bezel: 12px; --r: 55px; --sr: 44px; --safe-top: 47px; --safe-bottom: 34px; position: relative; width: calc(var(--w) + var(--bezel) * 2); height: calc(var(--h) + var(--bezel) * 2); padding: var(--bezel); border-radius: var(--r); background: #1d1b26; box-shadow: 0 0 0 2px #4a4757 inset, 0 30px 60px rgb(27 22 48 / .28), 0 8px 18px rgb(27 22 48 / .18); }
+.device::before, .device::after { content: ""; position: absolute; background: #2b2836; border-radius: 3px; }
+.device::before { left: -3px; top: 160px; width: 3px; height: 64px; box-shadow: 0 84px 0 #2b2836; }
+.device::after { right: -3px; top: 220px; width: 3px; height: 96px; }
+.device[data-model="pixel8"] { --w: 412px; --h: 880px; --bezel: 10px; --r: 44px; --sr: 34px; --safe-top: 32px; --safe-bottom: 24px; background: #23262b; box-shadow: 0 0 0 2px #50545b inset, 0 30px 60px rgb(27 22 48 / .28), 0 8px 18px rgb(27 22 48 / .18); }
+.device[data-model="pixel8"]::before { left: auto; right: -3px; top: 150px; height: 48px; box-shadow: 0 70px 0 0 #2b2836, 0 90px 0 0 #2b2836; }
+.device[data-model="pixel8"]::after { display: none; }
+.screen { --app-bg: var(--xm-neutral-25); --app-text: var(--xm-neutral-900); position: relative; width: var(--w); height: var(--h); border-radius: var(--sr); overflow: hidden; background: var(--app-bg); isolation: isolate; }
+.notch { position: absolute; z-index: 30; left: 50%; top: 0; transform: translateX(-50%); width: 162px; height: 33px; background: #000; border-radius: 0 0 20px 20px; }
+.notch::after { content: ""; position: absolute; right: 30px; top: 11px; width: 10px; height: 10px; border-radius: 50%; background: #16151d; box-shadow: inset 0 0 0 2px #24222e; }
+.device[data-model="pixel8"] .notch { width: 14px; height: 14px; top: 10px; border-radius: 50%; }
+.device[data-model="pixel8"] .notch::after { display: none; }
+.statusbar { position: absolute; z-index: 25; left: 0; right: 0; top: 0; height: var(--safe-top); display: flex; align-items: center; justify-content: space-between; padding: 0 30px 0 34px; font: 600 15px/1 -apple-system, "SF Pro Text", var(--xm-font-body); color: var(--sb-color, var(--app-text)); pointer-events: none; }
+.statusbar .icons { display: flex; gap: 6px; align-items: center; }
+.statusbar svg { width: 17px; height: 12px; fill: currentColor; }
+.device[data-model="pixel8"] .statusbar { padding: 0 18px; font: 500 14px/1 Roboto, var(--xm-font-body); }
+.homebar { position: absolute; z-index: 25; left: 50%; bottom: 8px; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: var(--app-text); opacity: .85; pointer-events: none; }
+.device[data-model="pixel8"] .homebar { width: 108px; height: 4px; bottom: 7px; }
+
+/* ---------- Application (dans l'appareil) ---------- */
+.app {
+  --app-bg: var(--xm-neutral-25); --app-surface: var(--xm-neutral-0); --app-muted-surface: var(--xm-neutral-100); --app-border: var(--xm-neutral-200);
+  --app-text: var(--xm-neutral-900); --app-muted: var(--xm-neutral-600); --app-primary: var(--xm-blue-500); --app-primary-hover: var(--xm-blue-600); --app-on-primary: #fff;
+  --app-primary-subtle: var(--xm-blue-50); --app-primary-subtle-text: var(--xm-blue-800); --app-danger: var(--xm-red-500); --app-danger-subtle: var(--xm-red-50);
+  --app-success: var(--xm-green-700); --app-warning: var(--xm-amber-500); --app-info: var(--xm-sky-700); --app-violet: var(--xm-violet-700);
+  position: absolute; inset: 0; background: var(--app-bg); color: var(--app-text); font: 16px/1.5 var(--xm-font-body); display: flex; flex-direction: column;
+}
+.app[data-theme="dark"] {
+  --app-bg: #0E1020; --app-surface: #171A2E; --app-muted-surface: #1F2340; --app-border: #2A2E48; --app-text: #EDEAF7; --app-muted: #A9A5C0;
+  --app-primary: #7C97FF; --app-primary-hover: #9DB1FF; --app-on-primary: #0E1020; --app-primary-subtle: #1B2347; --app-primary-subtle-text: #9DB1FF;
+  --app-danger: #FF6B6B; --app-danger-subtle: #3A1519; --app-success: #4DD39D; --app-warning: #FFC94D; --app-info: #7AB2FF; --app-violet: #C79BE6;
+}
+.screen:has(.app[data-theme="dark"]) { --app-bg: #0E1020; --app-text: #EDEAF7; }
+.view { flex: 1; overflow-y: auto; overflow-x: hidden; padding: calc(var(--safe-top) + 4px) 16px calc(var(--safe-bottom) + 20px); scrollbar-width: none; overscroll-behavior: contain; }
+.view::-webkit-scrollbar { display: none; }
+.view.stack, .view.stack-lg { grid-auto-rows: max-content; align-content: start; } /* les cartes overflow:hidden ne doivent pas être compressées */
+.app.has-tabs .view { padding-bottom: calc(var(--safe-bottom) + 86px); }
+.app.has-appbar .view { padding-top: calc(var(--safe-top) + 60px); }
+.appbar { position: absolute; z-index: 20; left: 0; right: 0; top: 0; padding: var(--safe-top) 8px 0; height: calc(var(--safe-top) + 56px); display: flex; align-items: center; gap: 4px; background: color-mix(in srgb, var(--app-bg) 88%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--app-border); }
+.appbar h2 { font-size: 18px; font-weight: 700; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.icon-btn { width: 44px; height: 44px; border: 0; background: transparent; border-radius: 50%; display: inline-grid; place-items: center; color: var(--app-text); position: relative; flex-shrink: 0; }
+.icon-btn:hover { background: var(--app-muted-surface); }
+.icon-btn .dot { position: absolute; top: 9px; right: 10px; width: 9px; height: 9px; border-radius: 50%; background: var(--app-danger); border: 2px solid var(--app-bg); }
+.ico { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.ico.sm { width: 18px; height: 18px; }
+.ico.lg { width: 28px; height: 28px; }
+
+/* Barre d'onglets : 5 entrées, SOS au centre (MASTER §6) */
+.tabbar { position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; padding: 6px 6px calc(var(--safe-bottom) + 2px); display: grid; grid-template-columns: repeat(5, 1fr); align-items: end; background: color-mix(in srgb, var(--app-surface) 94%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--app-border); }
+.tabbar button { border: 0; background: transparent; display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--app-muted); padding: 6px 0; min-height: 48px; }
+.tabbar button[aria-current="page"] { color: var(--app-primary); font-weight: 700; }
+.tabbar .sos-tab { transform: translateY(-14px); }
+.tabbar .sos-tab span.b { width: 60px; height: 60px; border-radius: 50%; background: var(--app-danger); color: #fff; display: grid; place-items: center; font: 800 16px var(--xm-font-heading); box-shadow: 0 6px 16px rgb(227 14 14 / .35); border: 4px solid var(--app-surface); }
+.tabbar .sos-tab { color: var(--app-danger); font-weight: 700; }
+
+/* Composants de l'application */
+.h-display { font: 800 28px/1.15 var(--xm-font-heading); letter-spacing: -.01em; }
+.h1 { font: 800 24px/1.2 var(--xm-font-heading); }
+.h2 { font: 700 19px/1.25 var(--xm-font-heading); }
+.h3 { font: 700 16px/1.3 var(--xm-font-heading); }
+.muted { color: var(--app-muted); }
+.small { font-size: 14px; }
+.xs { font-size: 13px; }
+.stack { display: grid; gap: 12px; }
+.stack-lg { display: grid; gap: 20px; }
+.row { display: flex; align-items: center; gap: 10px; }
+.between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+.card { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--xm-radius-lg); padding: 16px; }
+.card.flat { border: 0; background: var(--app-muted-surface); }
+.card.tight { padding: 12px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: var(--xm-radius-md); border: 1px solid transparent; font: 700 15px var(--xm-font-body); text-decoration: none; transition: background-color .12s; }
+.btn-primary { background: var(--app-primary); color: var(--app-on-primary); }
+.btn-primary:hover { background: var(--app-primary-hover); }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+.btn-soft { background: var(--app-primary-subtle); color: var(--app-primary-subtle-text); }
+.btn-outline { background: transparent; border-color: var(--app-border); color: var(--app-text); }
+.btn-danger { background: var(--app-danger); color: #fff; }
+.btn-link { background: none; border: 0; color: var(--app-primary); font-weight: 700; padding: 0; min-height: 44px; }
+.btn-block { width: 100%; }
+.btn-sm { min-height: 38px; padding: 0 14px; font-size: 14px; }
+.field { display: grid; gap: 6px; }
+.field label, .label { font-size: 14px; font-weight: 700; }
+.input { width: 100%; min-height: 48px; border: 1px solid var(--app-border); border-radius: var(--xm-radius-md); background: var(--app-surface); padding: 10px 14px; color: var(--app-text); }
+textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
+.input:focus { outline: 3px solid color-mix(in srgb, var(--app-primary) 35%, transparent); border-color: var(--app-primary); }
+.input[aria-invalid="true"] { border-color: var(--app-danger); }
+.err { color: var(--app-danger); font-size: 13px; display: flex; gap: 6px; align-items: flex-start; }
+.hint { color: var(--app-muted); font-size: 13px; }
+.pw { position: relative; }
+.pw .input { padding-right: 52px; }
+.pw .icon-btn { position: absolute; right: 2px; top: 2px; }
+.check { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; font-size: 14px; }
+.check input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--app-primary); }
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--app-border); min-height: 56px; }
+.switch:last-child { border-bottom: 0; }
+.switch input { appearance: none; width: 46px; height: 28px; border-radius: 14px; background: var(--app-border); position: relative; flex-shrink: 0; transition: background-color .2s; cursor: pointer; }
+.switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / .25); transition: transform .2s var(--xm-ease-out); }
+.switch input:checked { background: var(--app-primary); }
+.switch input:checked::after { transform: translateX(18px); }
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips.wrap { flex-wrap: wrap; overflow: visible; }
+.chip { border: 1px solid var(--app-border); background: var(--app-surface); border-radius: var(--xm-radius-pill); padding: 0 14px; min-height: 36px; font-size: 14px; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.chip[aria-pressed="true"] { background: var(--app-primary); border-color: var(--app-primary); color: var(--app-on-primary); font-weight: 700; }
+.badge { display: inline-flex; align-items: center; gap: 4px; border-radius: var(--xm-radius-pill); padding: 2px 10px; font-size: 12px; font-weight: 700; background: var(--app-primary-subtle); color: var(--app-primary-subtle-text); }
+.badge.ok { background: color-mix(in srgb, var(--app-success) 14%, transparent); color: var(--app-success); }
+.badge.warn { background: color-mix(in srgb, var(--app-warning) 22%, transparent); color: color-mix(in srgb, var(--app-warning) 45%, var(--app-text)); }
+.badge.danger { background: var(--app-danger-subtle); color: var(--app-danger); }
+.badge.violet { background: color-mix(in srgb, var(--app-violet) 14%, transparent); color: var(--app-violet); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 700 15px var(--xm-font-heading); color: #fff; flex-shrink: 0; }
+.avatar.lg { width: 84px; height: 84px; font-size: 28px; border: 4px solid var(--app-surface); }
+.list { display: grid; }
+.list > * { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--app-border); min-height: 56px; text-align: left; background: none; border-left: 0; border-right: 0; border-top: 0; width: 100%; color: inherit; text-decoration: none; }
+.list > *:last-child { border-bottom: 0; }
+.list .grow { flex: 1; min-width: 0; }
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.alert { border-radius: var(--xm-radius-md); padding: 12px 14px; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; background: var(--app-primary-subtle); color: var(--app-primary-subtle-text); }
+.alert.ok { background: color-mix(in srgb, var(--app-success) 12%, transparent); color: var(--app-success); }
+.alert.danger { background: var(--app-danger-subtle); color: var(--app-danger); }
+.progress { height: 8px; border-radius: 4px; background: var(--app-muted-surface); overflow: hidden; }
+.progress > i { display: block; height: 100%; background: var(--app-primary); border-radius: inherit; transition: width .3s var(--xm-ease-out); }
+.tile { display: grid; gap: 8px; align-content: start; padding: 14px; border-radius: var(--xm-radius-lg); background: var(--app-surface); border: 1px solid var(--app-border); text-align: left; min-height: 96px; color: inherit; }
+.tile .ico { color: var(--app-primary); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.thumb { border-radius: var(--xm-radius-md); background: var(--app-muted-surface) center/cover no-repeat; }
+.toast { position: absolute; z-index: 40; left: 16px; right: 16px; bottom: calc(var(--safe-bottom) + 92px); background: var(--xm-neutral-900); color: #fff; border-radius: var(--xm-radius-md); padding: 12px 14px; font-size: 14px; display: flex; gap: 10px; align-items: center; box-shadow: 0 10px 30px rgb(0 0 0 / .25); animation: toast-in .25s var(--xm-ease-out); }
+.app[data-theme="dark"] .toast { background: #EDEAF7; color: #0E1020; }
+@keyframes toast-in { from { transform: translateY(12px); opacity: 0; } }
+.stepper { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 6px; }
+.stepper i { height: 5px; border-radius: 3px; background: var(--app-border); }
+.stepper i.on { background: var(--app-primary); }
+
+/* Splash / carrousel d'authentification */
+.splash { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--app-bg); }
+.slides { position: relative; flex: 1; overflow: hidden; touch-action: pan-y; }
+.slides-track { display: flex; height: 100%; transition: transform .45s var(--xm-ease-out); }
+.slide { flex: 0 0 100%; display: flex; flex-direction: column; height: 100%; }
+.slide-art { position: relative; flex: 0 0 58%; overflow: hidden; }
+.slide-art .texture { position: absolute; inset: -30px; background: center/cover no-repeat; filter: blur(16px) saturate(1.15); transform: scale(1.1); }
+.slide-art .veil { position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--app-bg) 25%, transparent) 0%, transparent 35%, transparent 62%, var(--app-bg) 100%); }
+.slide-art img { position: absolute; left: 50%; top: calc(var(--safe-top) + 46%); transform: translate(-50%, -50%); width: 92%; max-height: 74%; object-fit: contain; border-radius: 22px; box-shadow: 0 18px 40px rgb(27 22 48 / .18); }
+.slide-copy { padding: 8px 28px 0; }
+.slide-copy p { color: var(--app-muted); margin: 10px 0 0; font-size: 16px; }
+.splash-logo { position: absolute; z-index: 3; top: calc(var(--safe-top) + 8px); left: 24px; height: 26px; }
+.splash-skip { position: absolute; z-index: 3; top: calc(var(--safe-top) + 2px); right: 12px; }
+.splash-foot { padding: 12px 24px calc(var(--safe-bottom) + 18px); display: grid; gap: 16px; }
+.dots { display: flex; gap: 8px; justify-content: center; }
+.dots button { width: 24px; height: 24px; border: 0; padding: 0; background: transparent; display: grid; place-items: center; }
+.dots button i { width: 8px; height: 8px; border-radius: 4px; background: var(--app-border); transition: width .25s var(--xm-ease-out), background-color .25s; }
+.dots button[aria-current="true"] i { width: 24px; background: var(--app-primary); }
+
+/* OTP */
+.otp { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.otp input { width: 100%; height: 56px; text-align: center; font: 700 22px var(--xm-font-heading); border: 1px solid var(--app-border); border-radius: var(--xm-radius-md); background: var(--app-surface); color: var(--app-text); }
+.otp input:focus { outline: 3px solid color-mix(in srgb, var(--app-primary) 35%, transparent); border-color: var(--app-primary); }
+
+/* Jauge de mot de passe */
+.meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.meter i { height: 6px; border-radius: 3px; background: var(--app-border); transition: background-color .2s; }
+.rules { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; font-size: 13px; }
+.rules li { display: flex; gap: 6px; align-items: center; color: var(--app-muted); }
+.rules li.ok { color: var(--app-success); }
+
+/* SOS */
+.sos-wrap { display: grid; justify-items: center; gap: 18px; text-align: center; padding-top: 10px; }
+.sos-big { position: relative; width: 184px; height: 184px; border-radius: 50%; border: 0; background: var(--app-danger); color: #fff; font: 800 34px var(--xm-font-heading); box-shadow: 0 16px 36px rgb(227 14 14 / .35); touch-action: none; user-select: none; -webkit-user-select: none; }
+.sos-big svg.ring { position: absolute; inset: -12px; width: calc(100% + 24px); height: calc(100% + 24px); transform: rotate(-90deg); }
+.sos-big svg.ring circle { fill: none; stroke: var(--app-danger); stroke-width: 6; stroke-dasharray: 650; stroke-dashoffset: 650; }
+.sos-big.holding svg.ring circle { transition: stroke-dashoffset 2s linear; stroke-dashoffset: 0; }
+.count { font: 800 72px/1 var(--xm-font-heading); color: var(--app-danger); font-variant-numeric: tabular-nums; }
+
+/* Fil */
+.post { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--xm-radius-lg); overflow: hidden; }
+.post-head { display: flex; gap: 10px; align-items: center; padding: 14px 14px 8px; }
+.post-body { padding: 0 14px 10px; font-size: 15px; }
+.post-img { aspect-ratio: 16 / 9; background: center/cover no-repeat var(--app-muted-surface); }
+.post-actions { display: flex; border-top: 1px solid var(--app-border); }
+.post-actions button { flex: 1; border: 0; background: none; min-height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--app-muted); font-size: 14px; }
+.post-actions button[aria-pressed="true"] { color: var(--app-danger); font-weight: 700; }
+.post-actions button[aria-pressed="true"] .ico { fill: currentColor; }
+.poll { border: 1px solid var(--app-border); border-radius: var(--xm-radius-md); padding: 12px; margin: 0 14px 12px; display: grid; gap: 8px; }
+.poll-opt { position: relative; overflow: hidden; border: 1px solid var(--app-border); border-radius: var(--xm-radius-md); min-height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: var(--app-surface); text-align: left; width: 100%; font-size: 14px; color: var(--app-text); }
+.poll-opt .bar { position: absolute; inset: 0 auto 0 0; background: color-mix(in srgb, var(--app-primary) 14%, transparent); transition: width .5s var(--xm-ease-out); }
+.poll-opt > span { position: relative; }
+.poll-opt .pct { margin-left: auto; font-weight: 700; }
+.poll-opt.mine { border-color: var(--app-primary); }
+.composer { display: flex; gap: 10px; align-items: center; }
+.composer .fake { flex: 1; min-height: 44px; border-radius: var(--xm-radius-pill); background: var(--app-muted-surface); border: 0; text-align: left; padding: 0 16px; color: var(--app-muted); }
+
+/* Messagerie */
+.bubbles { display: grid; gap: 8px; }
+.bubble { max-width: 80%; padding: 10px 14px; border-radius: 18px; font-size: 15px; line-height: 1.4; }
+.bubble.in { background: var(--app-surface); border: 1px solid var(--app-border); border-bottom-left-radius: 6px; justify-self: start; }
+.bubble.out { background: var(--app-primary); color: var(--app-on-primary); border-bottom-right-radius: 6px; justify-self: end; }
+.bubble .t { display: block; font-size: 11px; opacity: .7; margin-top: 4px; }
+.chatbar { position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; padding: 8px 10px calc(var(--safe-bottom) + 6px); display: flex; gap: 8px; background: var(--app-surface); border-top: 1px solid var(--app-border); }
+.chatbar .input { border-radius: var(--xm-radius-pill); }
+.typing { display: inline-flex; gap: 4px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--app-muted); animation: blink 1.2s infinite; }
+.typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 50% { opacity: .25; } }
+
+/* Profil */
+.cover { height: 120px; margin: calc(-1 * (var(--safe-top) + 4px)) -16px 0; background: center/cover no-repeat; position: relative; }
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(0 0 0 / .25), transparent 50%); }
+
+/* ---------- Panneau droit : transposition Flutter ---------- */
+.panel { overflow-y: auto; background: var(--pg-surface); border-left: 1px solid var(--pg-border); padding: 18px 18px 28px; }
+.panel h2 { font-size: 18px; font-weight: 800; }
+.panel .route { display: inline-block; margin-top: 6px; font: 13px/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; background: var(--pg-accent-subtle); color: var(--pg-accent); padding: 3px 8px; border-radius: 6px; }
+.panel section { margin-top: 18px; }
+.panel h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.panel dl { display: grid; grid-template-columns: 92px 1fr; gap: 4px 10px; margin: 0; font-size: 14px; }
+.panel dt { color: var(--pg-muted); }
+.panel dd { margin: 0; font: 13px/1.45 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; word-break: break-word; }
+.panel pre { margin: 0; background: var(--pg-code-bg); color: var(--pg-code-text); border-radius: 10px; padding: 12px 14px; font: 12.5px/1.55 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; overflow-x: auto; white-space: pre; }
+.panel ul.api { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font: 13px/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+.panel ul.api li { display: flex; gap: 8px; align-items: baseline; }
+.panel .verb { font-weight: 700; min-width: 52px; }
+.verb.GET { color: #0B7A4B; } .verb.POST { color: var(--pg-accent); } .verb.PATCH, .verb.PUT { color: #B84B00; } .verb.DELETE { color: #C10C0C; }
+@media (prefers-color-scheme: dark) { :root:not([data-page-theme="light"]) .verb.GET { color: #4DD39D; } :root:not([data-page-theme="light"]) .verb.PATCH { color: #FF9A5C; } :root:not([data-page-theme="light"]) .verb.DELETE { color: #FF8787; } }
+.panel .ds { display: flex; flex-wrap: wrap; gap: 6px; }
+.panel .ds span { border: 1px solid var(--pg-border); border-radius: var(--xm-radius-pill); padding: 2px 10px; font-size: 13px; }
+.panel .warn { border-left: 4px solid #F0A800; background: color-mix(in srgb, #F0A800 12%, var(--pg-surface)); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 14px; }
+.panel .state { font-size: 13px; color: var(--pg-muted); }
+.panel .state code { color: var(--pg-text); }
+
+/* ---------- Réactif ---------- */
+@media (max-width: 1280px) {
+  .sim { grid-template-columns: 240px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; height: auto; min-height: 100vh; }
+  .rail { max-height: calc(100vh - 60px); position: sticky; top: 0; }
+  .stage { min-height: calc(100vh - 60px); }
+  .panel { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--pg-border); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 24px; }
+  .panel > header { grid-column: 1 / -1; }
+}
+@media (max-width: 820px) {
+  .sim { grid-template-columns: 1fr; }
+  .rail { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--pg-border); }
+  .rail-groups { display: none; }
+  .rail-select { display: block !important; }
+  .topbar { padding: 10px 16px; }
+  .topbar .sub { display: none; }
+  .stage { padding: 12px 0; min-height: 0; }
+}
+.rail-select { display: none; width: 100%; min-height: 44px; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); background: var(--pg-bg); padding: 0 10px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#appareil">Aller au simulateur</a>
+<div class="sim">
+  <header class="topbar">
+    <div class="brand">
+      <img src="{{IMG:logo-couleur.svg}}" alt="Xomiton" width="110" height="28">
+      <div><h1>Simulateur mobile</h1><div class="sub">Compte membre et pair éducateur·rice · 30 écrans · transposition Flutter</div></div>
+    </div>
+    <div class="seg" role="group" aria-label="Appareil">
+      <button type="button" data-model="iphone14" aria-pressed="true">iPhone 14</button>
+      <button type="button" data-model="pixel8" aria-pressed="false">Pixel 8</button>
+    </div>
+    <div class="seg" role="group" aria-label="Type de compte">
+      <button type="button" data-role="membre" aria-pressed="true">Membre</button>
+      <button type="button" data-role="pair" aria-pressed="false">Pair éducateur·rice</button>
+    </div>
+    <div class="seg" role="group" aria-label="Thème de l’application">
+      <button type="button" data-apptheme="light" aria-pressed="true">Clair</button>
+      <button type="button" data-apptheme="dark" aria-pressed="false">Sombre</button>
+    </div>
+    <button type="button" class="btn-ghost" id="reset" title="Efface l’état (onboarding vu, session, publications) et revient au splash">Réinitialiser</button>
+  </header>
+
+  <nav class="rail" aria-label="Index des écrans">
+    <label class="vh" for="railSearch">Filtrer les écrans</label>
+    <input class="rail-search" id="railSearch" type="search" placeholder="Filtrer les 30 écrans…" autocomplete="off">
+    <label class="vh" for="railSelect">Aller à l’écran</label>
+    <select class="rail-select" id="railSelect"></select>
+    <div class="rail-groups" id="railGroups"></div>
+  </nav>
+
+  <main class="stage" id="appareil" tabindex="-1" aria-label="Appareil simulé">
+    <div class="device-wrap" id="deviceWrap">
+      <div class="device" id="device" data-model="iphone14">
+        <div class="screen" id="screen">
+          <div class="notch" aria-hidden="true"></div>
+          <div class="statusbar" aria-hidden="true"><span id="clock">9:41</span><span class="icons">
+            <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg viewBox="0 0 16 12"><path d="M8 2.6c2.3 0 4.4.9 6 2.4l1.2-1.3A10.4 10.4 0 0 0 8 .8 10.4 10.4 0 0 0 .8 3.7L2 5c1.6-1.5 3.7-2.4 6-2.4Zm0 3.6c1.3 0 2.5.5 3.4 1.3l1.2-1.3A6.7 6.7 0 0 0 8 4.4c-1.8 0-3.4.7-4.6 1.8l1.2 1.3c.9-.8 2.1-1.3 3.4-1.3Zm0 3.6c.5 0 .9.2 1.2.5L8 11.6l-1.2-1.3c.3-.3.7-.5 1.2-.5Z"/></svg>
+            <svg viewBox="0 0 26 12" style="width:26px"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+          </span></div>
+          <div class="app" id="app" data-theme="light"></div>
+          <div class="homebar" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+    <p class="stage-caption" id="caption"></p>
+  </main>
+
+  <aside class="panel" id="panel" aria-label="Transposition Flutter de l’écran affiché" aria-live="polite"></aside>
+</div>
+
+<script>
+(function () {
+'use strict';
+/* =====================================================================
+   Ressources embarquées
+   ===================================================================== */
+const IMG = {
+  hero04: '{{IMG:hero-04.jpg}}', hero08: '{{IMG:hero-08.jpg}}', hero09: '{{IMG:hero-09.jpg}}', hero10: '{{IMG:hero-10.jpg}}', signin: '{{IMG:sign-in.jpg}}',
+  logo: '{{IMG:logo-couleur.svg}}', logoWhite: '{{IMG:logo-mono-blanc.svg}}', rosace: '{{IMG:symbole-rosace-couleur.svg}}', icon: '{{IMG:icone-appli-bleu.svg}}'
+};
+const P = {
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/>',
+  feed: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+  chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12Z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  back: '<path d="m15 18-6-6 6-6"/>', chevR: '<path d="m9 18 6-6-6-6"/>',
+  bell: '<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8Z"/>',
+  share: '<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
+  image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  chart: '<path d="M3 3v18h18"/><path d="M8 17v-7M13 17V6M18 17v-4"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>', x: '<path d="M18 6 6 18M6 6l12 12"/>', check: '<path d="M20 6 9 17l-5-5"/>',
+  lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+  eyeOff: '<path d="M9.9 4.2A10 10 0 0 1 12 4c6.5 0 10 8 10 8a17 17 0 0 1-2.2 3.2M6.6 6.6A17 17 0 0 0 2 12s3.5 8 10 8a10 10 0 0 0 5.4-1.6"/><path d="M2 2l20 20M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>',
+  phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2Z"/>',
+  pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14Z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+  users: '<circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/>',
+  sliders: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/>',
+  send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+  mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/>',
+  bot: '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13v1M15 13v1M9 17h6"/>',
+  flag: '<path d="M4 22V4M4 4h13l-2 4 2 4H4"/>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
+  wifiOff: '<path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 4.2-2.7M10.7 5.1A15 15 0 0 1 22 8.8M5 12.9a10 10 0 0 1 5.2-2.8M19 12.9a10 10 0 0 0-2-1.5M12 20h.01"/>',
+  sos: '<circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19.1 4.9a10 10 0 0 1 0 14.2M4.9 19.1a10 10 0 0 1 0-14.2"/>',
+  more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+  edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  alert: '<path d="m10.3 3.9-8.2 14a2 2 0 0 0 1.7 3h16.4a2 2 0 0 0 1.7-3l-8.2-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+  folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>'
+};
+const logo = () => S.theme === 'dark' ? IMG.logoWhite : IMG.logo;
+const ic = (n, cls) => `<svg class="ico${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true">${P[n] || ''}</svg>`;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const COLORS = ['#0433C3', '#6F2C91', '#C2255C', '#B84B00', '#0B7A4B', '#1864AB'];
+const av = (name, cls) => { const i = (name || '?').split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase(); const c = COLORS[[...name].reduce((a, ch) => a + ch.charCodeAt(0), 0) % COLORS.length]; return `<span class="avatar${cls ? ' ' + cls : ''}" style="background:${c}" aria-hidden="true">${esc(i)}</span>`; };
+
+/* =====================================================================
+   État (équivalent des providers Riverpod)
+   ===================================================================== */
+const KEY = 'xm-sim-v1';
+const DEFAULT = () => ({
+  seen: false, auth: false, role: 'membre', theme: 'light', model: 'iphone14',
+  user: { name: 'Awa Sossou', pseudo: 'awa_s', email: 'awa@exemple.bj', pronouns: 'elle', zone: 'Littoral', city: 'Cotonou', completion: 40 },
+  otp: { purpose: 'login', email: 'awa@exemple.bj' },
+  signup: { step: 1, pseudo: '', email: '', password: '', pronouns: '', zone: '', type: 'membre', trusted: '', discreet: false, cgu: false, privacy: false, sensitive: false, news: false },
+  feedFilter: 'Tout', liked: {}, votes: {},
+  posts: [
+    { id: 1, author: 'Chantal Hounkpatin', role: 'Pair éducatrice', ago: '2 h', tag: 'Événement', text: 'Rappel : l’atelier « Dire non sans culpabiliser » a lieu samedi à 15 h, en ligne et à Porto-Novo. Venez avec une amie !', img: 'hero10', likes: 48, comments: 7 },
+    { id: 2, author: 'Membre anonyme', role: 'Pseudonyme', ago: '5 h', tag: 'Sondage', text: 'On prépare la causerie de novembre : aidez-nous à choisir le thème.', likes: 21, comments: 4,
+      poll: { q: 'Quel thème pour la prochaine causerie ?', multi: false, ends: 'Se termine dans 6 j', opts: [['Santé sexuelle et reproductive', 1], ['Droits et recours juridiques', 3], ['Bien-être et santé mentale', 4], ['Sécurité numérique', 1]] } },
+    { id: 3, author: 'Estelle Dossou', role: 'Membre', ago: '1 j', tag: 'Témoignage', text: 'Il y a un an je n’osais parler à personne. Ici j’ai trouvé des sœurs, une juriste qui m’a écoutée et le courage de dire stop. Merci à toutes. 💜', likes: 132, comments: 26 },
+    { id: 4, author: 'Équipe Xomiton', role: 'Ressource', ago: '2 j', tag: 'Ressource', text: 'Nouvelle fiche : connaître ses droits face aux violences basées sur le genre au Bénin. Lecture : 6 min.', img: 'hero04', likes: 64, comments: 3 }
+  ],
+  comments: { 3: [['Flora Kpadonou', 'Tellement fière de toi ✨'], ['Nadège Agbo', 'Merci de partager, ça donne de la force.']] },
+  convos: [
+    { id: 1, name: 'Chantal (pair éducatrice)', last: 'Tu veux qu’on en parle samedi ?', ago: '10:42', unread: 2, msgs: [['in', 'Coucou Awa, comment tu vas aujourd’hui ?', '10:31'], ['out', 'Mieux, merci. J’ai lu la fiche sur les recours.', '10:38'], ['in', 'Tu veux qu’on en parle samedi ?', '10:42']] },
+    { id: 2, name: 'Groupe Cotonou', last: 'Nadège : rendez-vous à 15 h', ago: 'Hier', unread: 0, msgs: [['in', 'Rendez-vous à 15 h devant le centre.', 'Hier']] },
+    { id: 3, name: 'Juriste – Me Adjovi', last: 'Votre dossier est bien reçu.', ago: 'Lun.', unread: 0, msgs: [['in', 'Bonjour, votre dossier est bien reçu. Je vous recontacte sous 48 h.', 'Lun.']] }
+  ],
+  convo: 1, groups: { 1: true }, rsvp: {}, reports: [{ code: 'XM-4K7P-21', type: 'Violence psychologique', status: 'En cours de traitement', date: '02/10' }],
+  report: { step: 1, type: '', text: '', zone: 'Littoral', city: 'Cotonou', contact: 'anonyme', channel: 'WhatsApp' },
+  sos: { share: true }, settings: { notif: true, mask: true, discreet: false, pin: false, sounds: true, lang: 'Français' },
+  newsletter: { on: true, interests: ['Événements', 'Ressources'], freq: 'Mensuelle' },
+  assistant: [['in', 'Bonjour, je suis l’assistant Xomiton. Je peux t’orienter vers une ressource, un contact ou une démarche. Que cherches-tu ?']]
+});
+let S;
+try { S = Object.assign(DEFAULT(), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = DEFAULT(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* stockage indisponible (file://, navigation privée) */ } };
+let stack = [];
+
+/* =====================================================================
+   Écrans : rendu + transposition Flutter
+   ===================================================================== */
+const MODULES = [
+  ['auth', 'Authentification'], ['home', 'Accueil'], ['sos', 'SOS & signalement'], ['feed', 'Fil d’actualités'], ['community', 'Communauté'], ['profile', 'Profil']
+];
+const DS = (...a) => a;
+const SCREENS = [];
+const def = o => SCREENS.push(o);
+const appbar = (title, actions = '') => `<div class="appbar"><button class="icon-btn" data-back aria-label="Retour">${ic('back')}</button><h2>${esc(title)}</h2>${actions}</div>`;
+const strength = pw => {
+  const r = [pw.length >= 10, /[A-Z]/.test(pw) && /[a-z]/.test(pw), /\d/.test(pw), /[^A-Za-z0-9]/.test(pw)];
+  const score = pw ? r.filter(Boolean).length : 0;
+  return { r, score, label: ['Trop court', 'Faible', 'Moyen', 'Fort', 'Excellent'][score], color: ['var(--app-border)', 'var(--app-danger)', 'var(--app-warning)', 'var(--app-info)', 'var(--app-success)'][score] };
+};
+const meter = pw => { const s = strength(pw); return `<div class="meter" aria-hidden="true">${[1, 2, 3, 4].map(i => `<i style="background:${i <= s.score ? s.color : ''}"></i>`).join('')}</div>
+  <div class="row between xs"><span class="muted">Solidité du mot de passe</span><b style="color:${s.score ? s.color : 'var(--app-muted)'}" aria-live="polite">${s.label}</b></div>
+  <ul class="rules">${[['10 caractères minimum', s.r[0]], ['Majuscule et minuscule', s.r[1]], ['Un chiffre', s.r[2]], ['Un symbole (!, ?, #…)', s.r[3]]].map(x => `<li class="${x[1] ? 'ok' : ''}">${ic(x[1] ? 'check' : 'info', 'sm')}${x[0]}</li>`).join('')}</ul>`; };
+const pwField = (id, label, val, auto) => `<div class="field"><label for="${id}">${label}</label><div class="pw"><input class="input" id="${id}" type="password" value="${esc(val)}" autocomplete="${auto}" required><button type="button" class="icon-btn" data-toggle-pw="${id}" aria-label="Afficher le mot de passe">${ic('eye')}</button></div></div>`;
+
+/* ---------- auth ---------- */
+const SLIDES = [
+  ['hero04', 'Un espace safe, rien que pour nous', 'Rejoins une communauté bienveillante de filles et de femmes LBTQ+ au Bénin, sous ton vrai nom ou sous pseudonyme.'],
+  ['hero08', 'Du soutien quand tu en as besoin', 'Pair·es éducateur·rices, juristes et psychologues t’écoutent en toute confidentialité.'],
+  ['signin', 'Apprendre à ton rythme', 'Fiches, bandes dessinées et ateliers pour connaître tes droits et prendre soin de toi.'],
+  ['hero09', 'Ta sécurité passe d’abord', 'Un bouton SOS toujours à portée, le signalement anonyme et un mode discret.']
+];
+let slide = 0;
+def({ id: 'splash', module: 'auth', title: 'Splash et carrousel', route: '/splash', page: 'SplashCarouselPage', provider: 'onboardingProvider (seen: bool)', chrome: 'bare',
+  source: 'web/connexion.html — carrousel d’authentification, porté en plein écran mobile',
+  tree: `SplashCarouselPage
+└─ Scaffold
+   └─ Stack
+      ├─ PageView.builder (4 diapositives)
+      │  └─ _Slide
+      │     ├─ ImageFiltered(blur 16) ← texture
+      │     ├─ DecoratedBox(gradient)  ← voile
+      │     ├─ Image.asset (visuel net)
+      │     └─ Text titre / Text corps
+      ├─ XmLogo + TextButton « Passer »
+      └─ _Footer
+         ├─ SmoothPageIndicator
+         └─ FilledButton « Suivant » / « Commencer »`,
+  api: [], ds: DS('XmLogo', 'FilledButton.primary', 'PageIndicator', 'Montserrat 800'),
+  warn: 'onboardingProvider persiste « seen » (SharedPreferences) : au lancement suivant, go_router redirige /splash → /login. Le carrousel ne défile jamais tout seul (respect de reduceMotion et de la lecture).',
+  render: () => `<div class="splash">
+    <img class="splash-logo" src="${logo()}" alt="Xomiton" width="100" height="26">
+    <button class="btn-link splash-skip" data-action="skip" style="padding:0 12px">Passer</button>
+    <div class="slides" id="slides" aria-roledescription="carrousel" aria-label="Présentation de Xomiton">
+      <div class="slides-track" id="track" style="transform:translateX(-${slide * 100}%)">
+        ${SLIDES.map((s, i) => `<section class="slide" aria-roledescription="diapositive" aria-label="${i + 1} sur ${SLIDES.length}" ${i === slide ? '' : 'aria-hidden="true"'}>
+          <div class="slide-art"><div class="texture" style="background-image:url(${IMG[s[0]]})"></div><div class="veil"></div><img src="${IMG[s[0]]}" alt="" loading="${i ? 'lazy' : 'eager'}"></div>
+          <div class="slide-copy"><h2 class="h-display">${s[1]}</h2><p>${s[2]}</p></div></section>`).join('')}
+      </div>
+    </div>
+    <div class="splash-foot">
+      <div class="dots" role="group" aria-label="Choisir une diapositive">${SLIDES.map((s, i) => `<button data-slide="${i}" aria-label="Diapositive ${i + 1}" aria-current="${i === slide}"><i></i></button>`).join('')}</div>
+      <button class="btn btn-primary btn-block" data-action="next">${slide === SLIDES.length - 1 ? 'Commencer' : 'Suivant'}</button>
+      <button class="btn btn-outline btn-block" data-action="have-account">J’ai déjà un compte</button>
+    </div></div>`,
+  mount: root => {
+    const finish = to => { S.seen = true; save(); go(to); };
+    const set = i => { slide = Math.max(0, Math.min(SLIDES.length - 1, i)); render(); };
+    root.querySelector('[data-action=next]').onclick = () => slide < SLIDES.length - 1 ? set(slide + 1) : finish('signup');
+    root.querySelector('[data-action=skip]').onclick = () => finish('login');
+    root.querySelector('[data-action=have-account]').onclick = () => finish('login');
+    root.querySelectorAll('[data-slide]').forEach(b => b.onclick = () => set(+b.dataset.slide));
+    const el = root.querySelector('#slides'); let x0 = null;
+    el.addEventListener('pointerdown', e => { x0 = e.clientX; });
+    el.addEventListener('pointerup', e => { if (x0 === null) return; const d = e.clientX - x0; x0 = null; if (Math.abs(d) > 40) set(slide + (d < 0 ? 1 : -1)); });
+    el.addEventListener('keydown', e => { if (e.key === 'ArrowRight') set(slide + 1); if (e.key === 'ArrowLeft') set(slide - 1); });
+    el.tabIndex = 0;
+  } });
+
+let loginErr = '';
+def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'LoginPage', provider: 'authControllerProvider (AsyncNotifier<Session?>)', chrome: 'bare',
+  tree: `LoginPage
+└─ Scaffold
+   └─ SafeArea › SingleChildScrollView
+      └─ Form (GlobalKey<FormState>)
+         ├─ XmLogo
+         ├─ Text.headlineMedium « Bon retour »
+         ├─ XmTextField(e-mail ou pseudo, autofillHints: username)
+         ├─ XmPasswordField(autofillHints: password)
+         ├─ TextButton « Mot de passe oublié ? »
+         ├─ FilledButton « Recevoir mon code »
+         └─ OutlinedButton « Créer un compte »`,
+  api: [['POST', '/api/v1/auth/login', '{login, password} → 202 {otp_sent: true}'], ['POST', '/api/v1/auth/otp/send', '{purpose: login}']],
+  ds: DS('XmTextField', 'XmPasswordField', 'FilledButton.primary', 'ErrorSummary'),
+  warn: 'Message d’erreur indifférencié (« Identifiants incorrects ») : ne jamais révéler si un compte existe. Collage autorisé, aucun CAPTCHA à image (WCAG 2.2, 3.3.8).',
+  render: () => `<div class="view stack-lg" style="padding-top:calc(var(--safe-top) + 28px)">
+    <img src="${logo()}" alt="Xomiton" width="120" height="31">
+    <div><h1 class="h1">Bon retour</h1><p class="muted" style="margin:6px 0 0">Connecte-toi pour retrouver ta communauté. Un code de vérification te sera envoyé par e-mail.</p></div>
+    ${loginErr ? `<div class="alert danger" role="alert" tabindex="-1" id="loginErr">${ic('alert', 'sm')}<span>${esc(loginErr)}</span></div>` : ''}
+    <form class="stack" id="loginForm" novalidate>
+      <div class="field"><label for="lg">E-mail ou pseudonyme</label><input class="input" id="lg" autocomplete="username" value="${esc(S.user.email)}" required></div>
+      ${pwField('lp', 'Mot de passe', '', 'current-password')}
+      <div style="text-align:right;margin-top:-4px"><button type="button" class="btn-link small" data-go="forgot">Mot de passe oublié ?</button></div>
+      <button class="btn btn-primary btn-block">Recevoir mon code</button>
+    </form>
+    <div class="row" style="gap:12px"><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"><span class="xs muted">Pas encore de compte ?</span><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"></div>
+    <button class="btn btn-outline btn-block" data-go="signup">Créer un compte</button>
+    <p class="xs muted" style="text-align:center;margin:0">${ic('lock', 'sm')} Aucune donnée n’est visible depuis l’écran de verrouillage.</p>
+  </div>`,
+  mount: root => {
+    const f = root.querySelector('#loginForm'); const e = root.querySelector('#loginErr'); if (e) e.focus();
+    f.onsubmit = ev => { ev.preventDefault(); const l = f.lg.value.trim(), p = f.lp.value;
+      if (!l || p.length < 6) { loginErr = !l ? 'Indique ton e-mail ou ton pseudonyme.' : 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.'; return render(); }
+      loginErr = ''; S.otp = { purpose: 'login', email: l.includes('@') ? l : S.user.email }; save(); go('otp'); };
+  } });
+
+def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/signup?step=1..4', page: 'SignupPage', provider: 'signupFormProvider (Notifier<SignupDraft>)', chrome: 'bare',
+  tree: `SignupPage
+└─ Scaffold
+   ├─ AppBar(leading: BackButton, title: « Étape n sur 4 »)
+   ├─ XmStepper(4)
+   └─ PageView (physics: Never)
+      ├─ _AccountStep   pseudo · e-mail · mot de passe + XmPasswordStrength
+      ├─ _ProfileStep   pronoms · département · type (membre / pair) — facultatif
+      ├─ _SafetyStep    contact de confiance · mode discret — facultatif
+      └─ _ConsentStep   CGU · confidentialité · données sensibles · newsletter`,
+  api: [['GET', '/api/v1/zones', 'départements et communes'], ['POST', '/api/v1/auth/register', '{pseudo, email, password, profile?, consents[]} → 201'], ['POST', '/api/v1/auth/otp/send', '{purpose: signup}']],
+  ds: DS('XmStepper', 'XmPasswordStrength', 'XmCheckbox', 'XmChoiceChip', 'FilledButton.primary'),
+  warn: 'Seule la phase 1 est obligatoire (DECISIONS D4 : inscription simplifiée). Consentements RGPD en cases distinctes, jamais pré-cochées ; « données sensibles » (orientation, identité de genre) reste facultatif et séparé.',
+  render: () => { const d = S.signup, st = d.step; const titles = ['Ton compte', 'Ton profil', 'Ta sécurité', 'Tes consentements'];
+    const body = [
+      () => `<div class="field"><label for="sp">Pseudonyme</label><input class="input" id="sp" value="${esc(d.pseudo)}" autocomplete="nickname" required><span class="hint">Visible par la communauté. Ton vrai nom n’est jamais demandé.</span></div>
+        <div class="field"><label for="se">E-mail</label><input class="input" id="se" type="email" value="${esc(d.email)}" autocomplete="email" required></div>
+        ${pwField('sw', 'Mot de passe', d.password, 'new-password')}<div class="stack" style="gap:8px" id="meter">${meter(d.password)}</div>`,
+      () => `<p class="small muted" style="margin:0">Facultatif : tu peux compléter plus tard, depuis ton profil.</p>
+        <div class="field"><span class="label">Pronoms</span><div class="chips wrap">${['elle', 'iel', 'il', 'Je préfère ne pas dire'].map(p => `<button type="button" class="chip" data-pick="pronouns" aria-pressed="${d.pronouns === p}">${p}</button>`).join('')}</div></div>
+        <div class="field"><label for="sz">Département</label><select class="input" id="sz"><option value="">—</option>${['Alibori', 'Atacora', 'Atlantique', 'Borgou', 'Collines', 'Couffo', 'Donga', 'Littoral', 'Mono', 'Ouémé', 'Plateau', 'Zou'].map(z => `<option ${d.zone === z ? 'selected' : ''}>${z}</option>`).join('')}</select></div>
+        <div class="field"><span class="label">Je m’inscris comme</span><div class="chips wrap">${[['membre', 'Membre'], ['pair', 'Pair éducateur·rice']].map(p => `<button type="button" class="chip" data-pick="type" data-val="${p[0]}" aria-pressed="${d.type === p[0]}">${p[1]}</button>`).join('')}</div><span class="hint">Les comptes pair éducateur·rice sont validés par l’équipe.</span></div>`,
+      () => `<p class="small muted" style="margin:0">Facultatif, mais utile en cas d’alerte SOS.</p>
+        <div class="field"><label for="st">Contact de confiance (téléphone)</label><input class="input" id="st" inputmode="tel" value="${esc(d.trusted)}" placeholder="+229 01 97 00 00 00" autocomplete="tel"><span class="hint">Prévenu·e uniquement si tu déclenches un SOS.</span></div>
+        <label class="switch"><span><b>Mode discret</b><br><span class="xs muted">Icône et nom neutres, notifications sans contenu.</span></span><input type="checkbox" id="sd" ${d.discreet ? 'checked' : ''}></label>`,
+      () => `<label class="check"><input type="checkbox" id="c1" ${d.cgu ? 'checked' : ''}><span>J’accepte les <u>conditions d’utilisation</u> et la <u>charte de la communauté</u>. <b>(obligatoire)</b></span></label>
+        <label class="check"><input type="checkbox" id="c2" ${d.privacy ? 'checked' : ''}><span>J’ai lu la <u>politique de confidentialité</u> : mes données sont hébergées de façon sécurisée et je peux les supprimer à tout moment. <b>(obligatoire)</b></span></label>
+        <label class="check"><input type="checkbox" id="c3" ${d.sensitive ? 'checked' : ''}><span>J’autorise l’enregistrement de mes données sensibles (orientation, identité de genre) pour personnaliser l’accompagnement. <span class="muted">(facultatif)</span></span></label>
+        <label class="check"><input type="checkbox" id="c4" ${d.news ? 'checked' : ''}><span>Je souhaite recevoir la newsletter Xomiton. <span class="muted">(facultatif, désinscription en un clic)</span></span></label>
+        <div id="consentErr"></div>`
+    ][st - 1]();
+    return `<div class="appbar"><button class="icon-btn" data-action="prev" aria-label="Retour">${ic('back')}</button><h2>Étape ${st} sur 4</h2>${st === 2 || st === 3 ? '<button class="btn-link small" data-action="skipstep" style="padding:0 12px">Passer</button>' : ''}</div>
+    <div class="view stack-lg"><div class="stepper" style="--n:4">${[1, 2, 3, 4].map(i => `<i class="${i <= st ? 'on' : ''}"></i>`).join('')}</div>
+      <h1 class="h1">${titles[st - 1]}</h1><form class="stack" id="sf" novalidate>${body}<div id="sfErr"></div>
+      <button class="btn btn-primary btn-block">${st === 4 ? 'Créer mon compte' : 'Continuer'}</button></form>
+      ${st === 1 ? '<button class="btn btn-link" data-go="login">J’ai déjà un compte</button>' : ''}</div>`; },
+  mount: root => { const d = S.signup, f = root.querySelector('#sf');
+    root.querySelector('[data-action=prev]').onclick = () => { if (d.step > 1) { d.step--; save(); render(); } else back(); };
+    const skip = root.querySelector('[data-action=skipstep]'); if (skip) skip.onclick = () => { d.step++; save(); render(); };
+    const pw = root.querySelector('#sw'); if (pw) pw.oninput = () => { d.password = pw.value; root.querySelector('#meter').innerHTML = meter(pw.value); };
+    root.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => { d[b.dataset.pick] = b.dataset.val || b.textContent; save(); render(); });
+    f.onsubmit = ev => { ev.preventDefault(); const err = m => { root.querySelector('#sfErr').innerHTML = `<div class="alert danger" role="alert">${ic('alert', 'sm')}<span>${m}</span></div>`; };
+      if (d.step === 1) { d.pseudo = f.sp.value.trim(); d.email = f.se.value.trim();
+        if (d.pseudo.length < 3) return err('Choisis un pseudonyme d’au moins 3 caractères.');
+        if (!/^\S+@\S+\.\S+$/.test(d.email)) return err('Indique une adresse e-mail valide, par exemple nom@exemple.bj.');
+        if (strength(d.password).score < 3) return err('Ton mot de passe doit être au moins « Fort » : 10 caractères, majuscule, minuscule et chiffre.'); }
+      if (d.step === 2) d.zone = f.sz.value;
+      if (d.step === 3) { d.trusted = f.st.value.trim(); d.discreet = f.sd.checked; }
+      if (d.step === 4) { d.cgu = f.c1.checked; d.privacy = f.c2.checked; d.sensitive = f.c3.checked; d.news = f.c4.checked;
+        if (!d.cgu || !d.privacy) { save(); return err('Pour créer ton compte, accepte les conditions d’utilisation et la politique de confidentialité.'); }
+        S.user = Object.assign(S.user, { pseudo: d.pseudo, email: d.email, name: d.pseudo, zone: d.zone || S.user.zone }); S.role = d.type; S.newsletter.on = d.news;
+        S.otp = { purpose: 'signup', email: d.email }; d.step = 1; save(); syncTop(); return go('otp'); }
+      d.step++; save(); render(); };
+  } });
+
+let otpTimer = null, otpLeft = 30, otpErr = '';
+def({ id: 'otp', module: 'auth', title: 'Code par e-mail (OTP)', route: '/otp?purpose=login|signup|reset', page: 'OtpPage', provider: 'otpControllerProvider.family(OtpPurpose)', chrome: 'bare',
+  tree: `OtpPage(purpose)
+└─ Scaffold
+   ├─ AppBar(BackButton)
+   └─ Column
+      ├─ Icon(mail) + Text « Vérifie tes e-mails »
+      ├─ XmOtpField(length: 6,
+      │    autofillHints: oneTimeCode,
+      │    collage du code complet)
+      ├─ Text erreur (Semantics liveRegion)
+      ├─ TextButton « Renvoyer » (compte à rebours 30 s)
+      └─ FilledButton « Valider »`,
+  api: [['POST', '/api/v1/auth/otp/verify', '{purpose, email, code} → {token} | {reset_token}'], ['POST', '/api/v1/auth/otp/send', '{purpose, email} (limité : 5 / heure)']],
+  ds: DS('XmOtpField', 'FilledButton.primary', 'Countdown'),
+  warn: 'OTP par e-mail, pas par SMS : couverture universelle, coût nul, aucune dépendance opérateur. Un seul écran pour connexion, inscription et réinitialisation via le paramètre purpose. Code valable 10 min, 5 essais.',
+  render: () => { const o = S.otp; const lbl = { login: 'pour te connecter', signup: 'pour activer ton compte', reset: 'pour choisir un nouveau mot de passe' }[o.purpose];
+    return `${appbar('Vérification')}<div class="view stack-lg">
+      <div class="stack" style="justify-items:start"><span class="avatar" style="background:var(--app-primary-subtle);color:var(--app-primary);width:56px;height:56px">${ic('mail', 'lg')}</span>
+      <h1 class="h1">Vérifie tes e-mails</h1><p class="muted" style="margin:0">Nous avons envoyé un code à 6 chiffres à <b style="color:var(--app-text)">${esc(o.email)}</b> ${lbl}.</p></div>
+      <form class="stack" id="of" novalidate><fieldset style="border:0;padding:0;margin:0"><legend class="label" style="margin-bottom:8px">Code de vérification</legend>
+      <div class="otp">${[0, 1, 2, 3, 4, 5].map(i => `<input inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="${i ? 'off' : 'one-time-code'}" aria-label="Chiffre ${i + 1}">`).join('')}</div></fieldset>
+      ${otpErr ? `<div class="err" role="alert">${ic('alert', 'sm')}${esc(otpErr)}</div>` : ''}
+      <div class="hint">Démo : saisis n’importe quel code à 6 chiffres (000000 est refusé).</div>
+      <button class="btn btn-primary btn-block">Valider</button></form>
+      <button class="btn btn-link" id="resend" ${otpLeft > 0 ? 'disabled' : ''}>${otpLeft > 0 ? `Renvoyer le code dans ${otpLeft} s` : 'Renvoyer le code'}</button></div>`; },
+  mount: root => { const ins = [...root.querySelectorAll('.otp input')], f = root.querySelector('#of');
+    ins[0].focus();
+    ins.forEach((inp, i) => {
+      inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g, '').slice(-1); if (inp.value && ins[i + 1]) ins[i + 1].focus(); });
+      inp.addEventListener('keydown', e => { if (e.key === 'Backspace' && !inp.value && ins[i - 1]) ins[i - 1].focus(); });
+      inp.addEventListener('paste', e => { const t = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6); if (t.length) { e.preventDefault(); t.split('').forEach((c, j) => { if (ins[j]) ins[j].value = c; }); (ins[t.length] || ins[5]).focus(); } });
+    });
+    clearInterval(otpTimer); otpTimer = setInterval(() => { otpLeft = Math.max(0, otpLeft - 1); const b = root.querySelector('#resend'); if (!b) return clearInterval(otpTimer); b.disabled = otpLeft > 0; b.textContent = otpLeft > 0 ? `Renvoyer le code dans ${otpLeft} s` : 'Renvoyer le code'; if (!otpLeft) clearInterval(otpTimer); }, 1000);
+    root.querySelector('#resend').onclick = () => { otpLeft = 30; otpErr = ''; toast('Nouveau code envoyé. Il annule le précédent.'); render(); };
+    f.onsubmit = e => { e.preventDefault(); const code = ins.map(x => x.value).join('');
+      if (code.length < 6) { otpErr = 'Saisis les 6 chiffres du code.'; return render(); }
+      if (code === '000000') { otpErr = 'Ce code est incorrect ou a expiré. Vérifie le dernier e-mail reçu ou demande un nouveau code.'; return render(); }
+      otpErr = ''; otpLeft = 30; clearInterval(otpTimer);
+      if (S.otp.purpose === 'reset') return go('reset');
+      S.auth = true; save(); stack = []; go('dashboard', { replace: true });
+      toast(S.otp.purpose === 'signup' ? 'Bienvenue sur Xomiton, ton compte est actif.' : 'Connexion réussie.'); };
+  } });
+
+let forgotSent = false;
+def({ id: 'forgot', module: 'auth', title: 'Mot de passe oublié', route: '/forgot', page: 'ForgotPasswordPage', provider: 'passwordResetProvider', chrome: 'bare',
+  tree: `ForgotPasswordPage
+└─ Scaffold
+   ├─ AppBar(BackButton)
+   └─ Form
+      ├─ Text « Mot de passe oublié ? »
+      ├─ XmTextField(e-mail, autofillHints: email)
+      └─ FilledButton « Recevoir un code »`,
+  api: [['POST', '/api/v1/auth/password/forgot', '{email} → 202 (toujours)']],
+  ds: DS('XmTextField', 'FilledButton.primary', 'XmAlert.info'),
+  warn: 'Réponse volontairement indifférenciée : même message et même délai que le compte existe ou non (pas d’énumération de comptes).',
+  render: () => `${appbar('Mot de passe oublié')}<div class="view stack-lg">
+    <div><h1 class="h1">Mot de passe oublié ?</h1><p class="muted" style="margin:6px 0 0">Indique ton e-mail : si un compte y est associé, tu recevras un code pour choisir un nouveau mot de passe.</p></div>
+    <form class="stack" id="ff" novalidate><div class="field"><label for="fe">E-mail</label><input class="input" id="fe" type="email" autocomplete="email" value="${esc(S.user.email)}" required></div>
+    <div id="fErr"></div><button class="btn btn-primary btn-block">Recevoir un code</button></form>
+    <button class="btn btn-link" data-go="login">Retour à la connexion</button></div>`,
+  mount: root => { const f = root.querySelector('#ff');
+    f.onsubmit = e => { e.preventDefault(); const v = f.fe.value.trim();
+      if (!/^\S+@\S+\.\S+$/.test(v)) { root.querySelector('#fErr').innerHTML = `<div class="err" role="alert">${ic('alert', 'sm')}Indique une adresse e-mail valide.</div>`; return; }
+      S.otp = { purpose: 'reset', email: v }; save(); toast('Si un compte existe, un code vient d’être envoyé.'); go('otp'); };
+  } });
+
+def({ id: 'reset', module: 'auth', title: 'Nouveau mot de passe', route: '/reset', page: 'ResetPasswordPage', provider: 'passwordResetProvider', chrome: 'bare',
+  tree: `ResetPasswordPage(resetToken)
+└─ Scaffold
+   ├─ AppBar(BackButton)
+   └─ Form
+      ├─ XmPasswordField(nouveau, autofillHints: newPassword)
+      ├─ XmPasswordStrength
+      ├─ XmPasswordField(confirmation)
+      └─ FilledButton « Enregistrer »`,
+  api: [['POST', '/api/v1/auth/password/reset', '{reset_token, password, password_confirmation}']],
+  ds: DS('XmPasswordField', 'XmPasswordStrength', 'FilledButton.primary'),
+  warn: 'Après réinitialisation : révoquer toutes les sessions et jetons Sanctum actifs, puis envoyer l’e-mail « Mot de passe modifié » (template système).',
+  render: () => `${appbar('Nouveau mot de passe')}<div class="view stack-lg">
+    <h1 class="h1">Choisis un nouveau mot de passe</h1>
+    <form class="stack" id="rf" novalidate>${pwField('r1', 'Nouveau mot de passe', '', 'new-password')}<div class="stack" style="gap:8px" id="rmeter">${meter('')}</div>
+    ${pwField('r2', 'Confirme le mot de passe', '', 'new-password')}<div id="rErr"></div><button class="btn btn-primary btn-block">Enregistrer</button></form></div>`,
+  mount: root => { const f = root.querySelector('#rf'); f.r1.oninput = () => { root.querySelector('#rmeter').innerHTML = meter(f.r1.value); };
+    f.onsubmit = e => { e.preventDefault(); const er = m => root.querySelector('#rErr').innerHTML = `<div class="err" role="alert">${ic('alert', 'sm')}${m}</div>`;
+      if (strength(f.r1.value).score < 3) return er('Le mot de passe doit être au moins « Fort ».');
+      if (f.r1.value !== f.r2.value) return er('Les deux mots de passe ne correspondent pas.');
+      stack = []; go('login', { replace: true }); toast('Mot de passe modifié. Connecte-toi avec le nouveau.'); };
+  } });
+
+/* ---------- home ---------- */
+const THEMES = [
+  ['vbg', 'Violences basées sur le genre', 'Reconnaître les violences et savoir où trouver de l’aide.', 'hero04', 6],
+  ['droits', 'Tes droits au Bénin', 'Code des personnes, plaintes, recours : l’essentiel expliqué simplement.', 'hero10', 8],
+  ['sante', 'Santé sexuelle et reproductive', 'Prévention, dépistage et adresses de soins bienveillants.', 'hero09', 5],
+  ['bienetre', 'Bien-être et santé mentale', 'Gérer le stress, s’affirmer, trouver du soutien.', 'hero08', 7],
+  ['numerique', 'Sécurité numérique', 'Protéger ses comptes, ses conversations et sa vie privée.', 'signin', 4]
+];
+def({ id: 'dashboard', module: 'home', title: 'Tableau de bord', route: '/dashboard', page: 'DashboardPage', provider: 'dashboardProvider (FutureProvider) + roleProvider', chrome: 'tabs', tab: 'dashboard',
+  tree: `DashboardPage
+└─ Scaffold(bottomNavigationBar: XmTabBar)
+   └─ CustomScrollView
+      ├─ SliverAppBar(salutation, cloche)
+      ├─ _QuickActions (Grid 2×2)
+      ├─ if pair → _PairTasks (KPI, alertes routées)
+      ├─ _ProfileProgress (profil progressif)
+      ├─ _ThemesCarousel (ListView horizontal)
+      └─ _NextEvent`,
+  api: [['GET', '/api/v1/dashboard', 'role-aware : tuiles, compteurs, prochains événements'], ['GET', '/api/v1/notifications/unread-count', 'polling 30 s']],
+  ds: DS('XmTabBar', 'XmTile', 'XmCard', 'XmProgress', 'Badge'),
+  warn: 'La tuile SOS reste visible quelle que soit la longueur de la page (barre d’onglets) ; le pair éducateur·rice voit en plus ses tâches et les alertes qui lui sont routées.',
+  render: () => { const pair = S.role === 'pair', first = S.user.name.split(' ')[0];
+    return `<div class="view stack-lg">
+      <div class="row between"><div><div class="xs muted">${pair ? 'Espace pair éducateur·rice' : 'Bonjour'}</div><h1 class="h1">${pair ? 'Bonjour ' : ''}${esc(first)}</h1></div>
+        <button class="icon-btn" data-go="notifications" aria-label="Notifications, 3 non lues">${ic('bell')}<span class="dot"></span></button></div>
+      <div class="grid2">
+        <button class="tile" data-go="sighub">${ic('flag')}<b>Signaler</b><span class="xs muted">Anonymement si tu veux</span></button>
+        <button class="tile" data-go="urgences">${ic('phone')}<b>Urgences</b><span class="xs muted">Écoute 24/7</span></button>
+        <button class="tile" data-go="assistant">${ic('bot')}<b>Assistant</b><span class="xs muted">Trouver de l’aide</span></button>
+        <button class="tile" data-go="thematiques">${ic('book')}<b>Apprendre</b><span class="xs muted">${THEMES.length} thématiques</span></button>
+      </div>
+      ${pair ? `<div class="card stack"><div class="row between"><h2 class="h3">Mes tâches</h2><span class="badge violet">Pair</span></div>
+        <div class="grid2" style="gap:8px"><div class="card flat tight"><div class="xs muted">Dossiers ce mois</div><div class="h1">12</div></div><div class="card flat tight"><div class="xs muted">Alertes routées</div><div class="h1" style="color:var(--app-danger)">2</div></div></div>
+        <div class="list small"><button data-go="sighub">${ic('bell', 'sm')}<span class="grow">2 alertes nouvelles à prendre en charge</span>${ic('chevR', 'sm')}</button><button data-go="evenements">${ic('calendar', 'sm')}<span class="grow">Préparer la causerie de samedi</span>${ic('chevR', 'sm')}</button></div></div>` : ''}
+      <div class="card stack" style="gap:10px"><div class="row between"><b>Ton profil est complété à ${S.user.completion} %</b><button class="btn-link small" data-go="completer">Compléter</button></div><div class="progress"><i style="width:${S.user.completion}%"></i></div><span class="xs muted">Facultatif : chaque information est expliquée.</span></div>
+      <div class="stack"><div class="row between"><h2 class="h2">À la une</h2><button class="btn-link small" data-go="thematiques">Tout voir</button></div>
+        <div class="chips" style="gap:12px">${THEMES.map(t => `<button class="card tight" data-go="thematique" data-param="${t[0]}" style="width:200px;flex-shrink:0;text-align:left;padding:0;overflow:hidden;color:inherit"><div class="thumb" style="height:96px;border-radius:0;background-image:url(${IMG[t[3]]})"></div><div style="padding:10px 12px"><b class="small" style="display:block;white-space:normal">${t[1]}</b><span class="xs muted">${t[4]} min de lecture</span></div></button>`).join('')}</div></div>
+      <div class="card row" style="align-items:flex-start"><span class="avatar" style="background:var(--app-primary-subtle);color:var(--app-primary)">${ic('calendar', 'sm')}</span><div class="grow"><b>Atelier « Dire non sans culpabiliser »</b><div class="xs muted">Samedi 15 h · Porto-Novo et en ligne</div></div><button class="btn btn-soft btn-sm" data-go="evenements">Voir</button></div>
+    </div>`; } });
+
+def({ id: 'thematiques', module: 'home', title: 'Thématiques', route: '/thematiques', alias: ['thematiqes'], page: 'ThemesPage', provider: 'themesProvider (FutureProvider, cache hors ligne)', chrome: 'tabs', tab: 'dashboard',
+  tree: `ThemesPage
+└─ Scaffold
+   ├─ AppBar(title, SearchAction)
+   ├─ XmFilterChips(catégories)
+   └─ ListView.separated
+      └─ XmThemeCard(image, titre, durée, badge « hors ligne »)`,
+  api: [['GET', '/api/v1/thematiques', '?categorie= · ETag + cache Hive']],
+  ds: DS('XmThemeCard', 'XmFilterChips', 'SearchAnchor'),
+  warn: 'Lien profond #/thematiqes (orthographe du cahier des charges) accepté comme alias de #/thematiques.',
+  render: () => `${appbar('Thématiques', `<button class="icon-btn" data-go="ressources" aria-label="Rechercher">${ic('search')}</button>`)}<div class="view stack">
+    <div class="chips">${['Toutes', 'Violences', 'Droits', 'Santé', 'Bien-être', 'Numérique'].map((c, i) => `<button class="chip" aria-pressed="${!i}">${c}</button>`).join('')}</div>
+    ${THEMES.map(t => `<button class="card tight row" data-go="thematique" data-param="${t[0]}" style="text-align:left;color:inherit;align-items:stretch"><div class="thumb" style="width:92px;min-height:80px;background-image:url(${IMG[t[3]]})"></div><div class="grow stack" style="gap:4px"><b>${t[1]}</b><span class="xs muted">${t[2]}</span><span class="xs muted">${ic('clock', 'sm')} ${t[4]} min · disponible hors ligne</span></div></button>`).join('')}</div>`,
+  mount: root => root.querySelectorAll('.chip').forEach(c => c.onclick = () => { root.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === c)); }) });
+
+def({ id: 'thematique', module: 'home', title: 'Fiche thématique', route: '/thematiques/:slug', page: 'ThemeDetailPage', provider: 'themeProvider.family(slug)', chrome: 'stack',
+  tree: `ThemeDetailPage(slug)
+└─ Scaffold
+   └─ CustomScrollView
+      ├─ SliverAppBar.large(image, titre)
+      ├─ _Meta (durée, mise à jour)
+      ├─ XmAccordion (sections)
+      ├─ _KeyContacts (annuaire)
+      └─ FilledButton « J’ai besoin d’aide »`,
+  api: [['GET', '/api/v1/thematiques/{slug}', 'contenu + contacts liés']],
+  ds: DS('XmAccordion', 'XmContactCard', 'FilledButton.primary'),
+  warn: 'Contenus sensibles : avertissement de contenu en tête de fiche, lecture possible hors ligne, aucune image explicite.',
+  render: p => { const t = THEMES.find(x => x[0] === p) || THEMES[0];
+    return `${appbar(t[1])}<div class="view stack-lg"><div class="thumb" style="height:170px;background-image:url(${IMG[t[3]]})"></div>
+      <div><span class="badge">${ic('clock', 'sm')} ${t[4]} min</span><h1 class="h1" style="margin-top:10px">${t[1]}</h1><p class="muted" style="margin:6px 0 0">${t[2]}</p></div>
+      <div class="alert">${ic('info', 'sm')}<span>Cette fiche aborde des sujets difficiles. Tu peux faire une pause à tout moment.</span></div>
+      <div class="stack">${['Comprendre', 'Reconnaître les signes', 'Que faire ?', 'Où trouver de l’aide'].map((s, i) => `<details class="card tight" ${i ? '' : 'open'}><summary class="h3" style="cursor:pointer;min-height:32px;display:flex;align-items:center">${s}</summary><p class="small muted" style="margin:8px 0 0">Contenu de démonstration : explications courtes, exemples concrets et liens vers les ressources de la plateforme.</p></details>`).join('')}</div>
+      <button class="btn btn-primary btn-block" data-go="sighub">J’ai besoin d’aide</button></div>`; } });
+
+def({ id: 'ressources', module: 'home', title: 'Ressources', route: '/ressources?q=', page: 'ResourcesPage', provider: 'resourcesSearchProvider (debounce 300 ms)', chrome: 'stack',
+  tree: `ResourcesPage
+└─ Scaffold
+   ├─ AppBar(SearchBar)
+   ├─ XmFilterChips(type : fiche, BD, vidéo, loi)
+   └─ ListView
+      └─ XmResourceTile(icône, titre, type, poids)`,
+  api: [['GET', '/api/v1/ressources', '?q=&type=&page='], ['GET', '/api/v1/ressources/{id}/download', 'URL signée, mise en cache']],
+  ds: DS('SearchBar', 'XmFilterChips', 'XmResourceTile', 'EmptyState'),
+  warn: 'Afficher le poids des fichiers et proposer le téléchargement pour lecture hors ligne (réseau mobile limité).',
+  render: () => `${appbar('Ressources')}<div class="view stack"><div class="field"><label class="vh" for="rq">Rechercher</label><input class="input" id="rq" type="search" placeholder="Rechercher une fiche, une loi, une BD…"></div>
+    <div class="chips">${['Tout', 'Fiches', 'BD', 'Vidéos', 'Lois'].map((c, i) => `<button class="chip" aria-pressed="${!i}">${c}</button>`).join('')}</div>
+    <div class="list" id="rl">${[['Connaître ses droits face aux VBG', 'Fiche · 420 Ko'], ['Code des personnes et de la famille', 'Loi · 1,2 Mo'], ['Do Glegbe : les règles de la communauté', 'Fiche · 180 Ko'], ['BD « Le courage de Mawa »', 'BD · 3,4 Mo'], ['Se protéger en ligne', 'Vidéo · 6 min']].map(r => `<button data-t="${esc(r[0].toLowerCase())}">${ic(r[1].startsWith('BD') ? 'image' : r[1].startsWith('Vid') ? 'chart' : 'book')}<span class="grow"><b class="small">${r[0]}</b><br><span class="xs muted">${r[1]}</span></span>${ic('chevR', 'sm')}</button>`).join('')}</div>
+    <p class="small muted" id="rEmpty" hidden>Aucune ressource ne correspond. Essaie un autre mot, ou demande à l’assistant.</p></div>`,
+  mount: root => { const q = root.querySelector('#rq'); q.oninput = () => { const v = q.value.toLowerCase().trim(); let n = 0; root.querySelectorAll('#rl > button').forEach(b => { const ok = !v || b.dataset.t.includes(v); b.hidden = !ok; if (ok) n++; }); root.querySelector('#rEmpty').hidden = n > 0; };
+    root.querySelectorAll('#rl > button').forEach(b => b.onclick = () => toast('Ressource téléchargée pour la lecture hors ligne.')); } });
+
+def({ id: 'notifications', module: 'home', title: 'Notifications', route: '/notifications', page: 'NotificationsPage', provider: 'notificationsProvider (StreamProvider, polling)', chrome: 'stack',
+  tree: `NotificationsPage
+└─ Scaffold
+   ├─ AppBar(action « Tout marquer comme lu »)
+   ├─ SegmentedButton(Non lues · Toutes)
+   └─ ListView
+      └─ Dismissible › XmNotificationTile`,
+  api: [['GET', '/api/v1/notifications', '?filter=unread'], ['POST', '/api/v1/notifications/read-all', '']],
+  ds: DS('SegmentedButton', 'XmNotificationTile', 'Badge'),
+  warn: 'Mode discret : sur l’écran verrouillé, le texte devient « Nouveau message » (aucun détail sensible dans la charge utile FCM).',
+  render: () => `${appbar('Notifications', '<button class="btn-link small" id="readAll" style="padding:0 12px">Tout lire</button>')}<div class="view stack">
+    <div class="list">${[['heart', 'Estelle a aimé ta publication', '5 min', 1], ['chat', 'Chantal t’a envoyé un message', '1 h', 1], ['calendar', 'Rappel : atelier samedi à 15 h', '3 h', 1], ['check', 'Ton signalement XM-4K7P-21 a été pris en charge', '1 j', 0], ['users', 'Groupe Cotonou : 3 nouvelles publications', '2 j', 0]].map(n => `<div class="${n[3] ? 'unread' : ''}"><span class="avatar" style="background:var(--app-primary-subtle);color:var(--app-primary)">${ic(n[0], 'sm')}</span><span class="grow small">${n[3] ? '<b>' : ''}${n[1]}${n[3] ? '</b>' : ''}<br><span class="xs muted">il y a ${n[2]}</span></span>${n[3] ? '<span class="badge danger" aria-label="non lue">•</span>' : ''}</div>`).join('')}</div></div>`,
+  mount: root => { root.querySelector('#readAll').onclick = () => { root.querySelectorAll('.badge.danger').forEach(b => b.remove()); root.querySelectorAll('.unread b').forEach(b => b.outerHTML = b.innerHTML); toast('Toutes les notifications sont lues.'); }; } });
+
+/* ---------- sos ---------- */
+def({ id: 'sighub', module: 'sos', title: 'Signaler et suivre', route: '/sighub', page: 'ReportHubPage', provider: 'myReportsProvider', chrome: 'tabs', tab: 'dashboard',
+  tree: `ReportHubPage
+└─ Scaffold
+   ├─ AppBar
+   ├─ XmActionCard(SOS)            → /sos
+   ├─ XmActionCard(Signaler)       → /signalement
+   ├─ XmActionCard(Exprimer un besoin)
+   ├─ _TrackForm (code de suivi)
+   └─ _MyReports (ListView)`,
+  api: [['GET', '/api/v1/signalements/mine', ''], ['GET', '/api/v1/signalements/{code}', 'suivi sans compte (code)']],
+  ds: DS('XmActionCard', 'XmStatusBadge', 'XmTextField'),
+  warn: 'Écran sobre (signaler-et-sos.md) : aucune illustration, rouge réservé à la seule carte SOS.',
+  render: () => `<div class="view stack-lg"><div><h1 class="h1">Signaler et suivre</h1><p class="muted" style="margin:6px 0 0">Tu choisis ce que tu partages. Tu peux rester anonyme.</p></div>
+    <button class="card row" data-go="sos" style="text-align:left;color:inherit;border-color:var(--app-danger)"><span class="avatar" style="background:var(--app-danger)">${ic('sos', 'sm')}</span><span class="grow"><b style="color:var(--app-danger)">SOS — je suis en danger</b><br><span class="xs muted">Alerte immédiate avec ta position</span></span>${ic('chevR')}</button>
+    <button class="card row" data-go="signalement" style="text-align:left;color:inherit"><span class="avatar" style="background:var(--app-primary)">${ic('flag', 'sm')}</span><span class="grow"><b>Faire un signalement</b><br><span class="xs muted">Violence vécue ou observée, 4 étapes</span></span>${ic('chevR')}</button>
+    <button class="card row" data-go="assistant" style="text-align:left;color:inherit"><span class="avatar" style="background:var(--app-violet)">${ic('chat', 'sm')}</span><span class="grow"><b>Exprimer un besoin</b><br><span class="xs muted">Juridique, psychologique, médical</span></span>${ic('chevR')}</button>
+    <form class="card stack" id="track"><label class="label" for="tc">Suivre un signalement</label><div class="row"><input class="input" id="tc" placeholder="XM-XXXX-00" autocapitalize="characters"><button class="btn btn-soft">Suivre</button></div></form>
+    <div class="stack"><h2 class="h2">Mes signalements</h2><div class="list">${S.reports.map(r => `<div><span class="grow"><b class="small">${esc(r.type)}</b><br><span class="xs muted">${esc(r.code)} · ${esc(r.date)}</span></span><span class="badge ${r.status.startsWith('Reçu') ? '' : 'warn'}">${esc(r.status)}</span></div>`).join('')}</div></div></div>`,
+  mount: root => { root.querySelector('#track').onsubmit = e => { e.preventDefault(); const c = root.querySelector('#tc').value.trim().toUpperCase(); const r = S.reports.find(x => x.code === c); toast(r ? `${r.code} : ${r.status}.` : 'Aucun signalement avec ce code. Vérifie les caractères.'); }; } });
+
+let sosPhase = 'idle', sosHold = null, sosTick = null, sosLeft = 5;
+def({ id: 'sos', module: 'sos', title: 'SOS', route: '/sos', page: 'SosPage', provider: 'sosControllerProvider (Notifier<SosState>)', chrome: 'stack',
+  tree: `SosPage
+└─ Scaffold
+   ├─ AppBar(BackButton)
+   └─ Center › Column
+      ├─ Text « Maintiens 2 secondes »
+      ├─ XmSosButton(size: 184,
+      │    onLongPress 2 s → anneau,
+      │    Semantics(onTap double appui))
+      ├─ SwitchListTile « Partager ma position »
+      └─ (compte à rebours 5 s) OutlinedButton « Annuler »`,
+  api: [['POST', '/api/v1/sos', '{lat, lng, accuracy, share_location} → envoi dans la requête (Http::pool, 3 s)'], ['POST', '/api/v1/sos/{id}/cancel', 'pendant le compte à rebours']],
+  ds: DS('XmSosButton', 'SwitchListTile', 'OutlinedButton 52 px'),
+  warn: 'Hors ligne : l’alerte part dès le retour du réseau + appel direct aux numéros d’urgence en cache. Alternatives au maintien : double appui puis confirmation, ou Espace maintenu au clavier. HapticFeedback.heavyImpact au déclenchement.',
+  render: () => `${appbar('SOS')}<div class="view"><div class="sos-wrap">
+    ${sosPhase === 'count' ? `<p class="h2" style="margin:20px 0 0">Envoi de ton alerte dans</p><div class="count" aria-live="assertive">${sosLeft}</div><p class="muted" style="margin:0">Tu peux encore annuler.</p><button class="btn btn-outline btn-block" id="sosCancel" style="min-height:52px;font-size:17px">Annuler l’alerte</button>`
+    : `<p class="h2" style="margin:12px 0 0">Maintiens le bouton 2 secondes pour envoyer ton alerte</p><p class="small muted" style="margin:0">Tes contacts de confiance et le point focal de ta zone seront prévenus.</p>
+    <button class="sos-big" id="sosBtn" aria-describedby="sosHelp">SOS<svg class="ring" viewBox="0 0 208 208" aria-hidden="true"><circle cx="104" cy="104" r="100"/></svg></button>
+    <p class="xs muted" id="sosHelp" style="margin:0">Au clavier : maintiens la touche Espace. Lecteur d’écran : double appui puis confirme.</p>
+    <label class="switch card" style="width:100%;padding:12px 16px;border-bottom:1px solid var(--app-border)"><span style="text-align:left"><b>Partager ma position</b><br><span class="xs muted">Seulement avec les personnes alertées.</span></span><input type="checkbox" id="sosShare" ${S.sos.share ? 'checked' : ''}></label>
+    <button class="btn btn-link" data-go="urgences">${ic('phone', 'sm')} Appeler un numéro d’urgence</button>`}</div></div>`,
+  mount: root => { const b = root.querySelector('#sosBtn');
+    const startCount = () => { sosPhase = 'count'; sosLeft = 5; if (navigator.vibrate) navigator.vibrate(80); render();
+      sosTick = setInterval(() => { sosLeft--; if (sosLeft <= 0) { clearInterval(sosTick); sosPhase = 'idle'; go('sos-envoye', { replace: true }); } else { const c = document.querySelector('.count'); if (c) c.textContent = sosLeft; } }, 1000); };
+    const c = root.querySelector('#sosCancel'); if (c) { c.focus(); c.onclick = () => { clearInterval(sosTick); sosPhase = 'idle'; render(); toast('Alerte annulée. Personne n’a été prévenu.'); }; }
+    if (!b) return;
+    const share = root.querySelector('#sosShare'); share.onchange = () => { S.sos.share = share.checked; save(); };
+    const down = e => { if (e.type === 'keydown' && e.key !== ' ' && e.key !== 'Enter') return; if (e.repeat) return; e.preventDefault(); b.classList.add('holding'); sosHold = setTimeout(() => { b.classList.remove('holding'); startCount(); }, 2000); };
+    const up = () => { clearTimeout(sosHold); b.classList.remove('holding'); };
+    b.addEventListener('pointerdown', down); b.addEventListener('pointerup', up); b.addEventListener('pointerleave', up); b.addEventListener('keydown', down); b.addEventListener('keyup', up);
+    b.addEventListener('dblclick', () => { if (confirm('Envoyer une alerte SOS maintenant ?')) startCount(); });
+  } });
+
+def({ id: 'sos-envoye', module: 'sos', title: 'Alerte envoyée', route: '/sos/sent', page: 'SosSentPage', provider: 'sosControllerProvider', chrome: 'stack',
+  tree: `SosSentPage
+└─ Scaffold
+   └─ Column
+      ├─ Semantics(liveRegion) « Ton alerte est partie »
+      ├─ _NotifiedList (contacts prévenus)
+      ├─ FilledButton « Appeler Chantal »  (tel:)
+      └─ OutlinedButton « Je suis en sécurité »`,
+  api: [['GET', '/api/v1/sos/{id}', 'accusés de réception (polling 10 s)'], ['POST', '/api/v1/sos/{id}/safe', 'clôture + message aux contacts']],
+  ds: DS('XmAlert.success', 'XmContactTile', 'FilledButton.primary'),
+  warn: 'Escalade côté serveur : sans accusé de réception sous 5 min, le cron relance le point focal national (DECISIONS D7).',
+  render: () => `${appbar('Alerte envoyée')}<div class="view stack-lg"><div class="alert ok" role="status" aria-live="assertive" style="font-size:16px">${ic('check')}<span><b>Ton alerte est partie.</b><br>${S.sos.share ? 'Ta position a été partagée.' : 'Ta position n’a pas été partagée.'}</span></div>
+    <div class="card stack"><h2 class="h3">Personnes prévenues</h2><div class="list">${[['Chantal Hounkpatin', 'Pair éducatrice · a vu l’alerte', 1], ['Point focal Littoral', 'Envoyé · en attente', 0], ['Contact de confiance', 'SMS envoyé', 0]].map(p => `<div>${av(p[0])}<span class="grow small"><b>${p[0]}</b><br><span class="xs muted">${p[1]}</span></span>${p[2] ? '<span class="badge ok">Vu</span>' : ''}</div>`).join('')}</div></div>
+    <a class="btn btn-primary btn-block" href="tel:+22901000000">${ic('phone', 'sm')} Appeler Chantal</a>
+    <button class="btn btn-outline btn-block" id="safe">Je suis en sécurité</button></div>`,
+  mount: root => { root.querySelector('#safe').onclick = () => { stack = []; go('dashboard', { replace: true }); toast('Merci. Tes contacts savent que tu es en sécurité.'); }; } });
+
+const VIOL = ['Violence physique', 'Violence psychologique', 'Violence sexuelle', 'Violence économique', 'Harcèlement en ligne', 'Discrimination'];
+def({ id: 'signalement', module: 'sos', title: 'Signalement (4 étapes)', route: '/signalement?step=1..4', page: 'ReportFormPage', provider: 'reportDraftProvider (persisté localement)', chrome: 'stack',
+  tree: `ReportFormPage
+└─ Scaffold
+   ├─ AppBar(« Étape n sur 4 »)
+   ├─ XmStepper
+   └─ _Step
+      1 XmChoiceList(type de violence)
+      2 XmTextArea(récit, min 20 car.)
+      3 ZoneSelect + CommuneSelect (cascade)
+      4 SegmentedButton(anonyme | contactable)
+   → _Summary → _TrackingCode (copier)`,
+  api: [['POST', '/api/v1/signalements', '{type, description, zone, commune, contact?, anonymous}'], ['—', 'file hors ligne', 'Hive → synchronisation au retour du réseau']],
+  ds: DS('XmStepper', 'XmChoiceList', 'XmTextArea', 'SegmentedButton', 'FilledButton.primary'),
+  warn: 'Brouillon sauvegardé à chaque étape (Hive chiffré) : « Tu peux t’arrêter et reprendre plus tard ». Le bouton « Envoyer » est bleu, jamais rouge.',
+  render: () => { const r = S.report, st = r.step;
+    const steps = [
+      () => `<h1 class="h1">Que s’est-il passé ?</h1><div class="stack" style="gap:8px">${VIOL.map(v => `<button type="button" class="card tight row" data-type="${v}" aria-pressed="${r.type === v}" style="text-align:left;color:inherit;${r.type === v ? 'border-color:var(--app-primary);background:var(--app-primary-subtle)' : ''}"><span class="grow">${v}</span>${r.type === v ? ic('check') : ''}</button>`).join('')}</div>`,
+      () => `<h1 class="h1">Raconte, avec tes mots</h1><div class="field"><label for="rt">Description</label><textarea class="input" id="rt" rows="6" placeholder="Ce qui s’est passé, quand, et si tu es toujours en danger.">${esc(r.text)}</textarea><span class="hint" id="rtc">${r.text.length} caractères (20 minimum)</span></div>`,
+      () => `<h1 class="h1">Où ?</h1><div class="field"><label for="rz">Département</label><select class="input" id="rz">${['Littoral', 'Atlantique', 'Ouémé', 'Borgou', 'Zou'].map(z => `<option ${r.zone === z ? 'selected' : ''}>${z}</option>`).join('')}</select></div><div class="field"><label for="rc">Commune</label><input class="input" id="rc" value="${esc(r.city)}"></div>`,
+      () => `<h1 class="h1">Veux-tu être recontacté·e ?</h1><div class="chips wrap">${[['anonyme', 'Rester anonyme'], ['contactable', 'Être recontacté·e']].map(c => `<button type="button" class="chip" data-contact="${c[0]}" aria-pressed="${r.contact === c[0]}">${c[1]}</button>`).join('')}</div>
+        ${r.contact === 'contactable' ? `<div class="field"><label for="rch">Canal préféré</label><select class="input" id="rch">${['WhatsApp', 'SMS', 'Appel', 'E-mail'].map(c => `<option ${r.channel === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>` : '<div class="alert">' + ic('shield', 'sm') + '<span>Aucune donnée d’identité n’est enregistrée. Garde ton code de suivi pour connaître la suite.</span></div>'}
+        <div class="card flat stack small" style="gap:4px"><b>Récapitulatif</b><span>${esc(r.type || '—')}</span><span class="muted">${esc(r.text.slice(0, 90))}${r.text.length > 90 ? '…' : ''}</span><span class="muted">${esc(r.city)}, ${esc(r.zone)}</span></div>`
+    ];
+    return `${appbar('Étape ' + st + ' sur 4')}<div class="view stack-lg"><div class="stepper" style="--n:4">${[1, 2, 3, 4].map(i => `<i class="${i <= st ? 'on' : ''}"></i>`).join('')}</div>
+      <form class="stack-lg" id="rf2" novalidate>${steps[st - 1]()}<div id="rErr2"></div><div class="row"><button type="button" class="btn btn-outline" id="rPrev" ${st === 1 ? 'hidden' : ''}>Retour</button><button class="btn btn-primary" style="flex:1">${st === 4 ? 'Envoyer mon signalement' : 'Continuer'}</button></div></form>
+      <p class="xs muted" style="text-align:center;margin:0">${ic('lock', 'sm')} Brouillon enregistré sur ton téléphone. Tu peux reprendre plus tard.</p></div>`; },
+  mount: root => { const r = S.report, f = root.querySelector('#rf2'), er = m => root.querySelector('#rErr2').innerHTML = `<div class="err" role="alert">${ic('alert', 'sm')}${m}</div>`;
+    root.querySelectorAll('[data-type]').forEach(b => b.onclick = () => { r.type = b.dataset.type; save(); render(); });
+    root.querySelectorAll('[data-contact]').forEach(b => b.onclick = () => { r.contact = b.dataset.contact; save(); render(); });
+    const t = root.querySelector('#rt'); if (t) t.oninput = () => { r.text = t.value; save(); root.querySelector('#rtc').textContent = t.value.length + ' caractères (20 minimum)'; };
+    root.querySelector('#rPrev').onclick = () => { r.step--; save(); render(); };
+    f.onsubmit = e => { e.preventDefault();
+      if (r.step === 1 && !r.type) return er('Choisis le type de situation.');
+      if (r.step === 2 && r.text.trim().length < 20) return er('Décris la situation en 20 caractères au moins.');
+      if (r.step === 3) { r.zone = f.rz.value; r.city = f.rc.value.trim() || r.city; }
+      if (r.step === 4) { if (f.rch) r.channel = f.rch.value;
+        const code = 'XM-' + Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + String(Math.floor(Math.random() * 90 + 10));
+        S.reports.unshift({ code, type: r.type, status: 'Reçu', date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) });
+        S.report = DEFAULT().report; save(); return showCode(code); }
+      r.step++; save(); render(); };
+    function showCode(code) { root.querySelector('.view').innerHTML = `<div class="alert ok" role="status">${ic('check')}<span><b>Ton signalement est envoyé.</b><br>Une personne formée le lira sous 24 h.</span></div>
+      <div class="card stack" style="justify-items:center;text-align:center"><span class="small muted">Ton code de suivi</span><div class="h-display" style="letter-spacing:.06em">${code}</div><button class="btn btn-soft btn-sm" id="cp">${ic('copy', 'sm')} Copier le code</button></div>
+      <button class="btn btn-primary btn-block" data-go="sighub">Suivre mes signalements</button>`;
+      root.querySelector('#cp').onclick = () => { try { navigator.clipboard.writeText(code); } catch (e) { /* presse-papiers indisponible */ } toast('Code copié.'); }; }
+  } });
+
+def({ id: 'urgences', module: 'sos', title: 'Contacts d’urgence', route: '/urgences', page: 'EmergencyContactsPage', provider: 'emergencyContactsProvider (cache hors ligne)', chrome: 'stack',
+  tree: `EmergencyContactsPage
+└─ Scaffold
+   ├─ AppBar
+   ├─ XmAlert(hors ligne → numéros en cache)
+   └─ ListView
+      └─ XmContactTile(rôle, zone, disponibilité,
+           IconButton tel: / WhatsApp)`,
+  api: [['GET', '/api/v1/urgences', '?zone= · mis en cache au premier lancement']],
+  ds: DS('XmContactTile', 'IconButton.tonal', 'XmAlert.info'),
+  warn: 'Disponible sans connexion et sans compte : la liste est embarquée et rafraîchie à chaque synchronisation.',
+  render: () => `${appbar('Contacts d’urgence')}<div class="view stack"><div class="alert">${ic('wifiOff', 'sm')}<span>Disponibles même hors connexion. Appels gratuits ou à tarif réduit selon l’opérateur.</span></div>
+    <div class="list">${[['Ligne d’écoute Xomiton', 'Écoute · 24/7', '+229 01 97 38 88 47'], ['Police secours', 'Urgence', '117'], ['SAMU', 'Urgence médicale', '112'], ['Me Adjovi', 'Juriste · Littoral · 9h-17h', '+229 01 96 00 00 00'], ['Dr Zinsou', 'Psychologue · Ouémé', '+229 01 95 00 00 00'], ['Chantal Hounkpatin', 'Pair éducatrice · Cotonou', '+229 01 94 00 00 00']].map(c => `<div>${av(c[0])}<span class="grow small"><b>${c[0]}</b><br><span class="xs muted">${c[1]}</span></span><a class="icon-btn" href="tel:${c[2].replace(/\s/g, '')}" aria-label="Appeler ${c[0]}" style="background:var(--app-primary-subtle);color:var(--app-primary)">${ic('phone', 'sm')}</a></div>`).join('')}</div></div>` });
+
+/* ---------- fil d'actualités ---------- */
+const postCard = p => { const liked = !!S.liked[p.id]; const pv = S.votes[p.id];
+  let poll = '';
+  if (p.poll) { const total = p.poll.opts.reduce((a, o, i) => a + o[1] + (pv && pv.includes(i) ? 1 : 0), 0);
+    poll = `<div class="poll" data-poll="${p.id}"><b class="small">${ic('chart', 'sm')} ${esc(p.poll.q)}</b><span class="xs muted">${p.poll.multi ? 'Plusieurs réponses' : 'Une seule réponse'} · ${p.poll.ends}</span>
+      ${p.poll.opts.map((o, i) => { const c = o[1] + (pv && pv.includes(i) ? 1 : 0), pct = total ? Math.round(c * 100 / total) : 0;
+        return pv ? `<div class="poll-opt ${pv.includes(i) ? 'mine' : ''}"><i class="bar" style="width:${pct}%"></i><span>${esc(o[0])}${pv.includes(i) ? ' ' + ic('check', 'sm') : ''}</span><span class="pct">${pct} %</span></div>`
+          : `<button class="poll-opt" data-vote="${i}"><span>${esc(o[0])}</span></button>`; }).join('')}
+      <span class="xs muted">${total} vote${total > 1 ? 's' : ''}${pv ? ' · <button class="btn-link xs" data-unvote style="min-height:0">Retirer mon vote</button>' : ''}</span></div>`; }
+  return `<article class="post" data-post="${p.id}"><div class="post-head">${av(p.author)}<div class="grow"><b class="small">${esc(p.author)}</b><div class="xs muted">${esc(p.role)} · ${esc(p.ago)}</div></div><span class="badge ${p.tag === 'Sondage' ? 'violet' : ''}">${esc(p.tag)}</span></div>
+    <div class="post-body">${esc(p.text)}</div>${p.img ? `<div class="post-img" style="background-image:url(${IMG[p.img] || p.img})" role="img" aria-label="Illustration de la publication"></div>` : ''}${poll}
+    <div class="post-actions"><button data-like="${p.id}" aria-pressed="${liked}">${ic('heart', 'sm')} ${p.likes + (liked ? 1 : 0)}</button><button data-go="post" data-param="${p.id}">${ic('chat', 'sm')} ${p.comments + (S.comments[p.id] ? S.comments[p.id].length - (p.id === 3 ? 2 : 0) : 0)}</button><button data-share>${ic('share', 'sm')} Partager</button></div></article>`; };
+const bindPosts = root => {
+  root.querySelectorAll('[data-like]').forEach(b => b.onclick = () => { const id = b.dataset.like; S.liked[id] = !S.liked[id]; save(); render(); });
+  root.querySelectorAll('[data-vote]').forEach(b => b.onclick = () => { const id = b.closest('[data-poll]').dataset.poll; S.votes[id] = [+b.dataset.vote]; save(); render(); toast('Merci, ton vote est enregistré.'); });
+  root.querySelectorAll('[data-unvote]').forEach(b => b.onclick = () => { delete S.votes[b.closest('[data-poll]').dataset.poll]; save(); render(); });
+  root.querySelectorAll('[data-share]').forEach(b => b.onclick = () => toast('Lien copié. Partage-le sur WhatsApp, Telegram ou Facebook.'));
+};
+def({ id: 'fil', module: 'feed', title: 'Fil d’actualités', route: '/fil', page: 'FeedPage', provider: 'feedProvider (AsyncNotifier, pagination curseur)', chrome: 'tabs', tab: 'fil',
+  tree: `FeedPage
+└─ Scaffold(bottomNavigationBar: XmTabBar)
+   └─ RefreshIndicator › CustomScrollView
+      ├─ SliverAppBar(titre, recherche)
+      ├─ _Composer → /postpublication
+      │  └─ Wrap[Photo · Événement · Sondage]
+      ├─ XmFilterChips(Tout, Témoignages…)
+      └─ SliverList
+         └─ XmPostCard(… XmPollCard si poll)`,
+  api: [['GET', '/api/v1/feed', '?tag=&cursor= (20 par page)'], ['POST', '/api/v1/posts/{id}/like', 'optimiste'], ['POST', '/api/v1/posts/{id}/poll/vote', '{choices[]}']],
+  ds: DS('XmPostCard', 'XmPollCard', 'XmFilterChips', 'ChoiceChip'),
+  warn: 'Mises à jour optimistes (j’aime, vote) avec annulation si l’API échoue ; votes confidentiels : seuls les totaux sont renvoyés.',
+  render: () => { const posts = S.posts.filter(p => S.feedFilter === 'Tout' || p.tag === S.feedFilter);
+    return `<div class="view stack"><div class="row between"><h1 class="h1">Fil</h1><button class="icon-btn" data-go="notifications" aria-label="Notifications">${ic('bell')}<span class="dot"></span></button></div>
+      <div class="card stack" style="gap:12px"><div class="composer">${av(S.user.name)}<button class="fake" data-go="postpublication">Partage tes pensées, ${esc(S.user.name.split(' ')[0])}…</button></div>
+        <div class="chips"><button class="chip" data-go="postpublication">${ic('image', 'sm')} Photo</button><button class="chip" data-go="evenements">${ic('calendar', 'sm')} Événement</button><button class="chip" data-go="sondage">${ic('chart', 'sm')} Sondage</button><button class="chip" data-go="signalement">${ic('flag', 'sm')} Signaler</button></div></div>
+      <div class="chips" role="group" aria-label="Filtrer le fil">${['Tout', 'Témoignage', 'Sondage', 'Événement', 'Ressource'].map(t => `<button class="chip" data-filter="${t}" aria-pressed="${S.feedFilter === t}">${t === 'Tout' ? t : t + 's'}</button>`).join('')}</div>
+      ${posts.map(postCard).join('') || '<div class="card" style="text-align:center"><b>Rien ici pour l’instant</b><p class="small muted">Sois la première personne à publier dans cette catégorie.</p><button class="btn btn-soft btn-sm" data-go="postpublication">Publier</button></div>'}</div>`; },
+  mount: root => { bindPosts(root); root.querySelectorAll('[data-filter]').forEach(b => b.onclick = () => { S.feedFilter = b.dataset.filter; save(); render(); }); } });
+
+def({ id: 'post', module: 'feed', title: 'Publication et commentaires', route: '/fil/:id', page: 'PostDetailPage', provider: 'postProvider.family(id) + commentsProvider.family(id)', chrome: 'stack',
+  tree: `PostDetailPage(id)
+└─ Scaffold
+   ├─ AppBar(menu : signaler, masquer)
+   ├─ ListView
+   │  ├─ XmPostCard
+   │  └─ XmCommentTile × n
+   └─ _CommentComposer (bottom, viewInsets)`,
+  api: [['GET', '/api/v1/posts/{id}', ''], ['GET', '/api/v1/posts/{id}/comments', '?cursor='], ['POST', '/api/v1/posts/{id}/comments', '{body} → modération automatique']],
+  ds: DS('XmPostCard', 'XmCommentTile', 'XmComposer'),
+  warn: 'Filtre de mots (bad_words) côté serveur avant publication ; un commentaire bloqué renvoie un message neutre, sans exposer la liste.',
+  render: p => { const post = S.posts.find(x => String(x.id) === String(p)) || S.posts[0]; const cs = S.comments[post.id] || [];
+    return `${appbar('Publication', `<button class="icon-btn" aria-label="Plus d’options" id="more">${ic('more')}</button>`)}<div class="view stack" style="padding-bottom:calc(var(--safe-bottom) + 80px)">${postCard(post)}
+      <h2 class="h3">Commentaires</h2><div class="stack" style="gap:10px">${cs.map(c => `<div class="row" style="align-items:flex-start">${av(c[0])}<div class="card tight grow" style="border-radius:4px 16px 16px 16px"><b class="small">${esc(c[0])}</b><div class="small">${esc(c[1])}</div></div></div>`).join('') || '<p class="small muted">Aucun commentaire. Écris le premier, avec bienveillance.</p>'}</div></div>
+      <form class="chatbar" id="cf"><label class="vh" for="ci">Ton commentaire</label><input class="input" id="ci" placeholder="Un commentaire bienveillant…" autocomplete="off"><button class="icon-btn" style="background:var(--app-primary);color:var(--app-on-primary)" aria-label="Publier le commentaire">${ic('send', 'sm')}</button></form>`; },
+  mount: (root, p) => { bindPosts(root); const id = (S.posts.find(x => String(x.id) === String(p)) || S.posts[0]).id;
+    root.querySelector('#more').onclick = () => toast('Options : signaler, masquer, enregistrer.');
+    root.querySelector('#cf').onsubmit = e => { e.preventDefault(); const v = root.querySelector('#ci').value.trim(); if (!v) return; (S.comments[id] = S.comments[id] || []).push([S.user.name, v]); save(); render(); toast('Commentaire publié.'); }; } });
+
+let draftImg = '';
+def({ id: 'postpublication', module: 'feed', title: 'Créer une publication', route: '/postpublication', page: 'PostComposerPage', provider: 'postComposerProvider (Notifier<PostDraft>)', chrome: 'stack',
+  tree: `PostComposerPage
+└─ Scaffold
+   ├─ AppBar(action « Publier »)
+   └─ ListView
+      ├─ XmTextArea(autofocus, 3000 car.)
+      ├─ XmChoiceChips(type)
+      ├─ _ImagePicker (image_picker + compression 1600 px)
+      ├─ DropdownMenu(visibilité)
+      ├─ SwitchListTile(pseudonyme)
+      └─ XmAlert(« Besoin d’aide ? → Signaler / SOS »)`,
+  api: [['POST', '/api/v1/posts', 'multipart {text, tag, visibility, anonymous, photo?}']],
+  ds: DS('XmTextArea', 'ChoiceChip', 'ImagePicker', 'SwitchListTile', 'XmAlert.warning'),
+  warn: 'Compression et suppression des métadonnées EXIF (position GPS) avant envoi de la photo.',
+  render: () => `${appbar('Nouvelle publication', '<button class="btn btn-primary btn-sm" form="pf" style="margin-right:8px">Publier</button>')}<div class="view"><form class="stack-lg" id="pf" novalidate>
+    <div class="row" style="align-items:flex-start">${av(S.user.name)}<div class="grow"><label class="vh" for="pt">Ta publication</label><textarea class="input" id="pt" rows="5" maxlength="3000" placeholder="Partage une pensée, une question, un témoignage…" style="border:0;padding:6px 0;background:transparent;font-size:17px"></textarea></div></div>
+    <div class="field"><span class="label">Type</span><div class="chips wrap" id="ptag">${['Témoignage', 'Question', 'Ressource', 'Événement'].map((t, i) => `<button type="button" class="chip" aria-pressed="${!i}">${t}</button>`).join('')}</div></div>
+    <div class="field"><span class="label">Photo (facultatif)</span><div class="row" id="pimg">${['hero04', 'hero08', 'hero10'].map(k => `<button type="button" class="thumb" data-img="${k}" aria-pressed="${draftImg === k}" aria-label="Choisir cette image" style="width:84px;height:64px;border:3px solid ${draftImg === k ? 'var(--app-primary)' : 'transparent'};background-image:url(${IMG[k]})"></button>`).join('')}<button type="button" class="thumb" style="width:64px;height:64px;display:grid;place-items:center;border:1px dashed var(--app-border)" aria-label="Galerie">${ic('image')}</button></div></div>
+    <div class="field"><label for="pv">Visibilité</label><select class="input" id="pv"><option>Communauté</option><option>Abonné·es</option><option>Moi seulement</option></select></div>
+    <label class="switch"><span><b>Publier sous pseudonyme</b><br><span class="xs muted">Ton nom n’apparaît pas.</span></span><input type="checkbox" id="pa"></label>
+    <div class="alert">${ic('info', 'sm')}<span>Besoin d’aide ? Utilise plutôt le <button type="button" class="btn-link small" data-go="signalement" style="min-height:0">signalement anonyme</button> ou le SOS.</span></div><div id="pErr"></div></form></div>`,
+  mount: root => { const f = root.querySelector('#pf'); setTimeout(() => f.pt.focus(), 50);
+    root.querySelectorAll('#ptag .chip').forEach(c => c.onclick = () => root.querySelectorAll('#ptag .chip').forEach(x => x.setAttribute('aria-pressed', x === c)));
+    root.querySelectorAll('[data-img]').forEach(b => b.onclick = () => { draftImg = draftImg === b.dataset.img ? '' : b.dataset.img; root.querySelectorAll('[data-img]').forEach(x => { x.setAttribute('aria-pressed', x.dataset.img === draftImg); x.style.borderColor = x.dataset.img === draftImg ? 'var(--app-primary)' : 'transparent'; }); });
+    f.onsubmit = e => { e.preventDefault(); const t = f.pt.value.trim(); if (t.length < 2) { root.querySelector('#pErr').innerHTML = `<div class="err" role="alert">${ic('alert', 'sm')}Écris quelques mots avant de publier.</div>`; return; }
+      const tag = root.querySelector('#ptag [aria-pressed=true]').textContent, anon = f.pa.checked;
+      S.posts.unshift({ id: Date.now(), author: anon ? 'Membre anonyme' : S.user.name, role: anon ? 'Pseudonyme' : (S.role === 'pair' ? 'Pair éducateur·rice' : 'Membre'), ago: 'à l’instant', tag, text: t, img: draftImg, likes: 0, comments: 0 });
+      draftImg = ''; S.feedFilter = 'Tout'; save(); go('fil', { replace: true }); toast('Ta publication est en ligne.'); };
+  } });
+
+def({ id: 'sondage', module: 'feed', title: 'Créer un sondage', route: '/postpublication/sondage', page: 'PollComposerPage', provider: 'pollComposerProvider', chrome: 'stack',
+  tree: `PollComposerPage
+└─ Scaffold
+   ├─ AppBar(action « Publier »)
+   └─ Form › ListView
+      ├─ XmTextField(question, 5–200 car.)
+      ├─ ReorderableListView(réponses 2–6)
+      │  └─ XmTextField + IconButton(retirer)
+      ├─ TextButton « Ajouter une réponse »
+      ├─ XmTextArea(texte) + _ImagePicker
+      ├─ DropdownMenu(durée)
+      └─ SwitchListTile × 2 (choix multiple, résultats avant vote)`,
+  api: [['POST', '/api/v1/posts', '{kind: poll, question, options[], multiple, duration_days, text?, photo?}']],
+  ds: DS('XmTextField', 'ReorderableListView', 'SwitchListTile', 'XmPollCard (aperçu)'),
+  warn: 'Même règles que le web (post-create.php) : 2 à 6 réponses distinctes, durée 1 j à 30 j ou sans fin, votes confidentiels.',
+  render: () => `${appbar('Nouveau sondage', '<button class="btn btn-primary btn-sm" form="qf" style="margin-right:8px">Publier</button>')}<div class="view"><form class="stack-lg" id="qf" novalidate>
+    <div class="field"><label for="qq">Question</label><input class="input" id="qq" maxlength="200" placeholder="Ex. : quel thème pour le prochain atelier ?"></div>
+    <fieldset class="field" style="border:0;padding:0;margin:0"><legend class="label" style="margin-bottom:6px">Réponses (2 à 6)</legend><div class="stack" style="gap:8px" id="qo">${[1, 2].map(i => `<div class="row"><input class="input" placeholder="Réponse ${i}" aria-label="Réponse ${i}"><button type="button" class="icon-btn" data-rm aria-label="Retirer">${ic('x', 'sm')}</button></div>`).join('')}</div>
+    <button type="button" class="btn btn-soft btn-sm" id="qadd" style="justify-self:start">${ic('plus', 'sm')} Ajouter une réponse</button></fieldset>
+    <div class="field"><label for="qt">Texte d’accompagnement (facultatif)</label><textarea class="input" id="qt" rows="3"></textarea></div>
+    <div class="field"><label for="qd">Durée</label><select class="input" id="qd"><option>1 jour</option><option>3 jours</option><option selected>1 semaine</option><option>2 semaines</option><option>Sans date de fin</option></select></div>
+    <div><label class="switch"><span><b>Plusieurs réponses</b></span><input type="checkbox" id="qm"></label><label class="switch"><span><b>Résultats visibles avant le vote</b></span><input type="checkbox" id="qr"></label></div>
+    <div id="qErr"></div><p class="xs muted" style="margin:0">${ic('lock', 'sm')} Les votes sont confidentiels : seuls les totaux sont affichés.</p></form></div>`,
+  mount: root => { const box = root.querySelector('#qo'), f = root.querySelector('#qf');
+    const sync = () => { const rows = box.children; [...rows].forEach((r, i) => { r.querySelector('input').placeholder = 'Réponse ' + (i + 1); r.querySelector('[data-rm]').disabled = rows.length <= 2; }); root.querySelector('#qadd').disabled = rows.length >= 6; };
+    root.querySelector('#qadd').onclick = () => { const r = box.lastElementChild.cloneNode(true); r.querySelector('input').value = ''; box.appendChild(r); sync(); r.querySelector('input').focus(); };
+    box.onclick = e => { const b = e.target.closest('[data-rm]'); if (b && box.children.length > 2) { b.parentElement.remove(); sync(); } };
+    sync();
+    f.onsubmit = e => { e.preventDefault(); const q = f.qq.value.trim(), opts = [...box.querySelectorAll('input')].map(i => i.value.trim()).filter(Boolean);
+      const er = m => root.querySelector('#qErr').innerHTML = `<div class="err" role="alert">${ic('alert', 'sm')}${m}</div>`;
+      if (q.length < 5) return er('Écris une question d’au moins 5 caractères.');
+      if (opts.length < 2) return er('Propose au moins 2 réponses.');
+      if (new Set(opts.map(o => o.toLowerCase())).size !== opts.length) return er('Deux réponses sont identiques.');
+      S.posts.unshift({ id: Date.now(), author: S.user.name, role: S.role === 'pair' ? 'Pair éducateur·rice' : 'Membre', ago: 'à l’instant', tag: 'Sondage', text: f.qt.value.trim(), likes: 0, comments: 0,
+        poll: { q, multi: f.qm.checked, ends: f.qd.value === 'Sans date de fin' ? 'Sans date de fin' : 'Se termine dans ' + f.qd.value, opts: opts.map(o => [o, 0]) } });
+      S.feedFilter = 'Tout'; save(); go('fil', { replace: true }); toast('Ton sondage est en ligne.'); };
+  } });
+
+/* ---------- community ---------- */
+def({ id: 'message', module: 'community', title: 'Messages', route: '/message', page: 'ConversationsPage', provider: 'conversationsProvider (polling 30 s)', chrome: 'tabs', tab: 'message',
+  tree: `ConversationsPage
+└─ Scaffold(bottomNavigationBar: XmTabBar)
+   ├─ AppBar(« Messages », nouvelle conversation)
+   ├─ SearchBar
+   └─ ListView
+      └─ XmConversationTile(avatar, aperçu, heure, badge non lus)`,
+  api: [['GET', '/api/v1/conversations', 'aperçu masqué si mode discret']],
+  ds: DS('XmConversationTile', 'SearchBar', 'Badge'),
+  warn: 'Pas de WebSocket en hébergement mutualisé (D7) : polling 30 s sur la liste, 4 s dans une conversation ouverte.',
+  render: () => `<div class="view stack"><div class="row between"><h1 class="h1">Messages</h1><button class="icon-btn" aria-label="Nouvelle conversation" id="newc">${ic('edit')}</button></div>
+    <label class="vh" for="mq">Rechercher</label><input class="input" id="mq" type="search" placeholder="Rechercher une conversation">
+    <div class="list">${S.convos.map(c => `<button data-convo="${c.id}" data-t="${esc(c.name.toLowerCase())}">${av(c.name)}<span class="grow"><span class="row between"><b class="small ellipsis">${esc(c.name)}</b><span class="xs muted">${c.ago}</span></span><span class="row between"><span class="xs muted ellipsis">${S.settings.mask ? 'Nouveau message' : esc(c.last)}</span>${c.unread ? `<span class="badge danger" aria-label="${c.unread} non lus">${c.unread}</span>` : ''}</span></span></button>`).join('')}</div>
+    ${S.settings.mask ? '<p class="xs muted" style="margin:0">' + ic('eyeOff', 'sm') + ' Aperçus masqués (Paramètres › Sécurité).</p>' : ''}</div>`,
+  mount: root => { root.querySelectorAll('[data-convo]').forEach(b => b.onclick = () => { S.convo = +b.dataset.convo; const c = S.convos.find(x => x.id === S.convo); c.unread = 0; save(); go('chat'); });
+    root.querySelector('#mq').oninput = e => { const v = e.target.value.toLowerCase(); root.querySelectorAll('[data-convo]').forEach(b => b.hidden = v && !b.dataset.t.includes(v)); };
+    root.querySelector('#newc').onclick = () => toast('Choisis une personne dans l’annuaire ou tes abonnements.'); } });
+
+def({ id: 'chat', module: 'community', title: 'Conversation', route: '/message/:id', page: 'ChatPage', provider: 'messagesProvider.family(id) (polling 4 s)', chrome: 'stack',
+  tree: `ChatPage(id)
+└─ Scaffold
+   ├─ AppBar(avatar, nom, menu : bloquer, signaler)
+   ├─ ListView.builder(reverse: true)
+   │  └─ XmBubble(in | out, heure, statut)
+   └─ _ChatComposer (TextField + IconButton.filled)`,
+  api: [['GET', '/api/v1/conversations/{id}/messages', '?after={lastId}'], ['POST', '/api/v1/conversations/{id}/messages', '{body}'], ['POST', '/api/v1/conversations/{id}/block', '']],
+  ds: DS('XmBubble', 'XmComposer', 'PopupMenuButton'),
+  warn: 'Messages en file locale si hors ligne (horloge grisée), envoyés à la synchronisation. Bloquer et signaler accessibles en deux gestes.',
+  render: () => { const c = S.convos.find(x => x.id === S.convo) || S.convos[0];
+    return `${appbar(c.name, `<button class="icon-btn" aria-label="Options" id="copt">${ic('more')}</button>`)}<div class="view" style="padding-bottom:calc(var(--safe-bottom) + 80px)"><div class="bubbles" id="bb">${c.msgs.map(m => `<div class="bubble ${m[0]}">${esc(m[1])}<span class="t">${m[2]}</span></div>`).join('')}</div></div>
+      <form class="chatbar" id="chf"><label class="vh" for="chi">Ton message</label><input class="input" id="chi" placeholder="Écris un message…" autocomplete="off"><button class="icon-btn" style="background:var(--app-primary);color:var(--app-on-primary)" aria-label="Envoyer">${ic('send', 'sm')}</button></form>`; },
+  mount: root => { const c = S.convos.find(x => x.id === S.convo) || S.convos[0], v = root.querySelector('.view'); v.scrollTop = v.scrollHeight;
+    root.querySelector('#copt').onclick = () => toast('Options : bloquer, signaler, masquer la conversation.');
+    root.querySelector('#chf').onsubmit = e => { e.preventDefault(); const i = root.querySelector('#chi'), t = i.value.trim(); if (!t) return;
+      const now = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); c.msgs.push(['out', t, now]); c.last = t; c.ago = now; save(); render();
+      const bb = document.querySelector('#bb'); if (!bb) return; const ty = document.createElement('div'); ty.className = 'bubble in'; ty.innerHTML = '<span class="typing" aria-label="En train d’écrire"><i></i><i></i><i></i></span>'; bb.appendChild(ty); document.querySelector('.view').scrollTop = 1e6;
+      setTimeout(() => { c.msgs.push(['in', 'Merci pour ton message 💜 Je te réponds au plus vite.', now]); save(); if (current().id === 'chat') render(); }, 1400); }; } });
+
+def({ id: 'groupes', module: 'community', title: 'Groupes', route: '/groupes', page: 'GroupsPage', provider: 'groupsProvider + membershipProvider', chrome: 'stack',
+  tree: `GroupsPage
+└─ Scaffold
+   ├─ AppBar
+   ├─ SegmentedButton(Mes groupes · Découvrir)
+   └─ ListView
+      └─ XmGroupCard(cover, membres, FilledButton.tonal « Rejoindre »)`,
+  api: [['GET', '/api/v1/groups', '?scope=mine|discover'], ['POST', '/api/v1/groups/{id}/join', 'privé → demande validée par l’animateur·rice']],
+  ds: DS('XmGroupCard', 'SegmentedButton', 'FilledButton.tonal'),
+  warn: 'Groupes privés : nom et membres invisibles aux non-membres ; la demande d’adhésion passe par un·e pair éducateur·rice.',
+  render: () => `${appbar('Groupes')}<div class="view stack">${[[1, 'Groupe Cotonou', '128 membres · Public', 'hero04'], [2, 'Cercle bien-être', '56 membres · Privé', 'hero08'], [3, 'Juristes & droits', '41 membres · Public', 'hero10'], [4, 'Pairs éducateur·rices', '23 membres · Privé', 'hero09']].map(g => `<div class="card tight row" style="align-items:center"><div class="thumb" style="width:64px;height:64px;background-image:url(${IMG[g[3]]})"></div><div class="grow"><b class="small">${g[1]}</b><div class="xs muted">${g[2]}</div></div><button class="btn btn-sm ${S.groups[g[0]] ? 'btn-outline' : 'btn-soft'}" data-join="${g[0]}" aria-pressed="${!!S.groups[g[0]]}">${S.groups[g[0]] ? 'Membre' : 'Rejoindre'}</button></div>`).join('')}</div>`,
+  mount: root => root.querySelectorAll('[data-join]').forEach(b => b.onclick = () => { const id = b.dataset.join; S.groups[id] = !S.groups[id]; save(); render(); toast(S.groups[id] ? 'Tu as rejoint le groupe.' : 'Tu as quitté le groupe.'); }) });
+
+def({ id: 'evenements', module: 'community', title: 'Événements', route: '/evenements', page: 'EventsPage', provider: 'eventsProvider + rsvpProvider', chrome: 'stack',
+  tree: `EventsPage
+└─ Scaffold
+   ├─ AppBar
+   └─ ListView
+      └─ XmEventCard(date, lieu, places, FilledButton « Je participe »)
+         → add_2_calendar (rappel)`,
+  api: [['GET', '/api/v1/events', '?from=today'], ['POST', '/api/v1/events/{id}/rsvp', '{going: bool}']],
+  ds: DS('XmEventCard', 'FilledButton', 'DateBadge'),
+  warn: 'Lieux sensibles : l’adresse exacte n’est envoyée qu’aux participant·es confirmé·es.',
+  render: () => `${appbar('Événements')}<div class="view stack">${[[1, '17', 'oct.', 'Atelier « Dire non sans culpabiliser »', 'Porto-Novo + en ligne · 15 h'], [2, '24', 'oct.', 'Séance de self-défense', 'Cotonou · 10 h'], [3, '29', 'oct.', 'Webinaire : connaître ses droits', 'En ligne · 18 h']].map(ev => `<div class="card row" style="align-items:flex-start"><div style="text-align:center;min-width:52px;border-radius:12px;background:var(--app-primary-subtle);color:var(--app-primary-subtle-text);padding:6px 0"><div class="h2">${ev[1]}</div><div class="xs">${ev[2]}</div></div><div class="grow stack" style="gap:6px"><b class="small">${ev[3]}</b><span class="xs muted">${ic('pin', 'sm')} ${ev[4]}</span><button class="btn btn-sm ${S.rsvp[ev[0]] ? 'btn-outline' : 'btn-primary'}" data-rsvp="${ev[0]}" style="justify-self:start" aria-pressed="${!!S.rsvp[ev[0]]}">${S.rsvp[ev[0]] ? ic('check', 'sm') + ' Je participe' : 'Je participe'}</button></div></div>`).join('')}</div>`,
+  mount: root => root.querySelectorAll('[data-rsvp]').forEach(b => b.onclick = () => { const id = b.dataset.rsvp; S.rsvp[id] = !S.rsvp[id]; save(); render(); toast(S.rsvp[id] ? 'Inscription confirmée. Un rappel t’est envoyé la veille.' : 'Participation annulée.'); }) });
+
+const BOT = {
+  'Parler à une juriste': 'Me Adjovi (juriste, Littoral) peut te rappeler sous 48 h. Tu veux que je transmette ta demande, anonymement si tu préfères ?',
+  'Je me sens mal': 'Merci de me le dire. Tu n’es pas seule. Tu peux appeler la ligne d’écoute 24/7 ou écrire à Chantal, pair éducatrice. Si tu es en danger, utilise le SOS.',
+  'Mes droits au travail': 'La fiche « Tes droits au Bénin » explique les recours en cas de discrimination au travail. Je te l’ouvre ?'
+};
+def({ id: 'assistant', module: 'community', title: 'Assistant', route: '/assistant', page: 'AssistantPage', provider: 'assistantProvider (StreamNotifier)', chrome: 'stack',
+  tree: `AssistantPage
+└─ Scaffold
+   ├─ AppBar(« Assistant », info)
+   ├─ ListView(XmBubble)
+   ├─ Wrap(ActionChip × suggestions)
+   └─ _ChatComposer`,
+  api: [['POST', '/api/v1/assistant/messages', '{message, context} → réponse + liens (base de connaissances)']],
+  ds: DS('XmBubble', 'ActionChip', 'XmComposer', 'XmAlert.info'),
+  warn: 'Mots de crise détectés (« danger », « suicide »…) : la réponse affiche d’abord le SOS et la ligne d’écoute, jamais une simple réponse générée.',
+  render: () => `${appbar('Assistant')}<div class="view stack" style="padding-bottom:calc(var(--safe-bottom) + 80px)"><div class="alert">${ic('info', 'sm')}<span>L’assistant oriente vers des ressources et des personnes. Il ne remplace pas un·e professionnel·le.</span></div>
+    <div class="bubbles" id="ab">${S.assistant.map(m => `<div class="bubble ${m[0]}">${esc(m[1])}</div>`).join('')}</div>
+    <div class="chips wrap">${Object.keys(BOT).map(k => `<button class="chip" data-ask="${esc(k)}">${k}</button>`).join('')}</div></div>
+    <form class="chatbar" id="af"><label class="vh" for="ai">Ta question</label><input class="input" id="ai" placeholder="Pose ta question…" autocomplete="off"><button class="icon-btn" style="background:var(--app-primary);color:var(--app-on-primary)" aria-label="Envoyer">${ic('send', 'sm')}</button></form>`,
+  mount: root => { const v = root.querySelector('.view'); v.scrollTop = 1e6;
+    const ask = q => { S.assistant.push(['out', q]); const crisis = /danger|suicide|mourir|frapp|tuer/i.test(q);
+      S.assistant.push(['in', BOT[q] || (crisis ? 'Si tu es en danger maintenant, utilise le bouton SOS ou appelle le 117. La ligne d’écoute Xomiton répond 24/7 au +229 01 97 38 88 47.' : 'Je cherche… Voici ce que je te propose : la fiche « Violences basées sur le genre » et la ligne d’écoute 24/7. Tu veux que je t’oriente vers une personne ?')]); save(); render(); };
+    root.querySelectorAll('[data-ask]').forEach(b => b.onclick = () => ask(b.dataset.ask));
+    root.querySelector('#af').onsubmit = e => { e.preventDefault(); const t = root.querySelector('#ai').value.trim(); if (t) ask(t); }; } });
+
+/* ---------- profile ---------- */
+def({ id: 'profil', module: 'profile', title: 'Mon profil', route: '/profil', page: 'ProfilePage', provider: 'meProvider + myPostsProvider', chrome: 'tabs', tab: 'profil',
+  tree: `ProfilePage
+└─ Scaffold(bottomNavigationBar: XmTabBar)
+   └─ NestedScrollView
+      ├─ _Cover + XmAvatar(84) + badge rôle
+      ├─ _Stats (publications · abonné·es · abonnements)
+      ├─ XmProgress(profil progressif) → /profil/completer
+      └─ TabBar(Publications · À propos)`,
+  api: [['GET', '/api/v1/me', ''], ['GET', '/api/v1/users/{id}/posts', '?cursor=']],
+  ds: DS('XmAvatar', 'XmStat', 'TabBar', 'XmProgress', 'Badge'),
+  warn: 'Pseudonyme affiché par défaut ; le nom réel n’est jamais public. Le badge « Pair éducateur·rice » n’apparaît qu’après validation par l’équipe.',
+  render: () => { const pair = S.role === 'pair', mine = S.posts.filter(p => p.author === S.user.name);
+    return `<div class="view stack"><div class="cover" style="background-image:url(${IMG.hero09})"><button class="icon-btn" data-go="parametres" aria-label="Paramètres" style="position:absolute;z-index:2;right:8px;top:calc(var(--safe-top) + 4px);color:#fff">${ic('sliders')}</button></div>
+      <div class="stack" style="justify-items:center;text-align:center;margin-top:-46px;gap:6px">${av(S.user.name, 'lg')}<h1 class="h2">${esc(S.user.name)}</h1><div class="small muted">@${esc(S.user.pseudo)} · ${esc(S.user.pronouns)} · ${esc(S.user.zone)}</div><span class="badge ${pair ? 'violet' : ''}">${pair ? 'Pair éducateur·rice' : 'Membre'}</span></div>
+      <div class="grid2" style="grid-template-columns:repeat(3,1fr);text-align:center">${[[mine.length + 24, 'Publications'], [182, 'Abonné·es'], [96, 'Abonnements']].map(s => `<div class="card tight"><div class="h2">${s[0]}</div><div class="xs muted">${s[1]}</div></div>`).join('')}</div>
+      <button class="card stack" data-go="completer" style="text-align:left;color:inherit;gap:8px"><span class="row between"><b class="small">Profil complété à ${S.user.completion} %</b>${ic('chevR', 'sm')}</span><span class="progress"><i style="width:${S.user.completion}%"></i></span></button>
+      <div class="list">${[['edit', 'Compléter mon profil', 'completer'], ['users', 'Mes groupes', 'groupes'], ['calendar', 'Mes événements', 'evenements'], ['mail', 'Newsletter', 'newsletter'], ['shield', 'Sécurité et confidentialité', 'securite'], ['sliders', 'Paramètres', 'parametres']].map(l => `<button data-go="${l[2]}">${ic(l[0])}<span class="grow">${l[1]}</span>${ic('chevR', 'sm')}</button>`).join('')}</div></div>`; } });
+
+def({ id: 'completer', module: 'profile', title: 'Profil progressif', route: '/profil/completer', page: 'ProfileCompletionPage', provider: 'profileCompletionProvider', chrome: 'stack',
+  tree: `ProfileCompletionPage
+└─ Scaffold
+   ├─ AppBar(« Compléter mon profil »)
+   ├─ XmProgress
+   └─ ListView
+      └─ XmExplainedField × n
+         (champ + « Pourquoi on demande ça ? »)`,
+  api: [['PATCH', '/api/v1/me/profile', '{pronouns?, zone?, city?, age_range?, gender_identity?, orientation?}']],
+  ds: DS('XmExplainedField', 'XmChoiceChip', 'XmProgress'),
+  warn: 'Chaque champ est facultatif et expliqué (DS authentification.md : profil progressif) ; les données sensibles exigent le consentement dédié.',
+  render: () => `${appbar('Compléter mon profil')}<div class="view stack-lg"><div class="stack" style="gap:8px"><b>${S.user.completion} % complété</b><div class="progress"><i style="width:${S.user.completion}%"></i></div><span class="small muted">Tout est facultatif. Complète à ton rythme.</span></div>
+    ${[['Pronoms', 'Pour que la communauté s’adresse à toi comme tu le souhaites.', ['elle', 'iel', 'il']], ['Tranche d’âge', 'Pour te proposer des ressources adaptées. Jamais affichée.', ['15-17', '18-24', '25-34', '35 +']], ['Ce qui t’intéresse', 'Pour personnaliser ton fil et la newsletter.', ['Santé', 'Droits', 'Bien-être', 'Événements']]].map((g, gi) => `<div class="card stack" style="gap:8px"><b>${g[0]}</b><details><summary class="xs" style="color:var(--app-primary);cursor:pointer;min-height:28px">Pourquoi on demande ça ?</summary><p class="xs muted" style="margin:4px 0 0">${g[1]}</p></details><div class="chips wrap">${g[2].map(o => `<button type="button" class="chip" data-g="${gi}" aria-pressed="false">${o}</button>`).join('')}</div></div>`).join('')}
+    <button class="btn btn-primary btn-block" id="cpSave">Enregistrer</button></div>`,
+  mount: root => { root.querySelectorAll('[data-g]').forEach(c => c.onclick = () => { const g = c.dataset.g; root.querySelectorAll(`[data-g="${g}"]`).forEach(x => { if (g !== '2') x.setAttribute('aria-pressed', x === c); }); if (g === '2') c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true'); });
+    root.querySelector('#cpSave').onclick = () => { const n = new Set([...root.querySelectorAll('[aria-pressed=true]')].map(x => x.dataset.g)).size; S.user.completion = Math.min(100, 40 + n * 20); save(); back(); toast('Profil mis à jour.'); }; } });
+
+def({ id: 'parametres', module: 'profile', title: 'Paramètres', route: '/parametres', page: 'SettingsPage', provider: 'settingsProvider (persisté) + themeModeProvider', chrome: 'stack',
+  tree: `SettingsPage
+└─ Scaffold
+   └─ ListView
+      ├─ _Section « Apparence » SegmentedButton(clair · sombre · système)
+      ├─ _Section « Notifications » SwitchListTile × 2
+      ├─ ListTile « Langue »
+      ├─ ListTile → /securite, → /newsletter
+      └─ ListTile « Se déconnecter » (confirmation)`,
+  api: [['PATCH', '/api/v1/me/settings', '{theme, notifications, sounds, locale}'], ['POST', '/api/v1/auth/logout', 'révoque le jeton Sanctum']],
+  ds: DS('SegmentedButton', 'SwitchListTile', 'ListTile', 'AlertDialog'),
+  warn: 'Le thème s’applique immédiatement (ThemeMode) et vérifie les contrastes sombres (#7C97FF, #FF6B6B) prévus par la charte.',
+  render: () => `${appbar('Paramètres')}<div class="view stack-lg">
+    <div class="card stack" style="gap:10px"><b>Apparence</b><div class="chips wrap">${[['light', 'Clair'], ['dark', 'Sombre']].map(t => `<button class="chip" data-theme-set="${t[0]}" aria-pressed="${S.theme === t[0]}">${ic(t[0] === 'dark' ? 'moon' : 'globe', 'sm')} ${t[1]}</button>`).join('')}</div></div>
+    <div class="card" style="padding-top:4px;padding-bottom:4px"><label class="switch"><span><b>Notifications</b><br><span class="xs muted">Messages, réponses, événements</span></span><input type="checkbox" data-set="notif" ${S.settings.notif ? 'checked' : ''}></label><label class="switch"><span><b>Sons</b><br><span class="xs muted">Alertes SOS uniquement si coupé</span></span><input type="checkbox" data-set="sounds" ${S.settings.sounds ? 'checked' : ''}></label></div>
+    <div class="card" style="padding-top:0;padding-bottom:0"><div class="list"><button id="lang">${ic('globe')}<span class="grow">Langue</span><span class="small muted">${S.settings.lang}</span>${ic('chevR', 'sm')}</button><button data-go="securite">${ic('shield')}<span class="grow">Sécurité et confidentialité</span>${ic('chevR', 'sm')}</button><button data-go="newsletter">${ic('mail')}<span class="grow">Newsletter</span>${ic('chevR', 'sm')}</button></div></div>
+    <button class="btn btn-outline btn-block" id="logout" style="color:var(--app-danger)">${ic('logout', 'sm')} Se déconnecter</button><p class="xs muted" style="text-align:center;margin:0">Xomiton 1.5.0 · données hébergées au Bénin</p></div>`,
+  mount: root => { root.querySelectorAll('[data-theme-set]').forEach(b => b.onclick = () => setTheme(b.dataset.themeSet));
+    root.querySelectorAll('[data-set]').forEach(i => i.onchange = () => { S.settings[i.dataset.set] = i.checked; save(); });
+    root.querySelector('#lang').onclick = () => { const L = ['Français', 'Fon', 'Yoruba', 'English']; S.settings.lang = L[(L.indexOf(S.settings.lang) + 1) % L.length]; save(); render(); };
+    root.querySelector('#logout').onclick = () => { if (!confirm('Se déconnecter de Xomiton sur cet appareil ?')) return; S.auth = false; save(); stack = []; go('login', { replace: true }); toast('Tu es déconnecté·e.'); }; } });
+
+def({ id: 'securite', module: 'profile', title: 'Sécurité et confidentialité', route: '/securite', page: 'SecurityPage', provider: 'securitySettingsProvider', chrome: 'stack',
+  tree: `SecurityPage
+└─ Scaffold
+   └─ ListView
+      ├─ SwitchListTile « Mode discret » (icône + nom neutres)
+      ├─ SwitchListTile « Masquer les aperçus »
+      ├─ SwitchListTile « Verrouillage par code » → XmPinSheet
+      ├─ ListTile « Appareils connectés »
+      └─ ListTile « Télécharger / supprimer mes données » (RGPD)`,
+  api: [['PATCH', '/api/v1/me/security', '{discreet, mask_previews, pin_enabled}'], ['GET', '/api/v1/me/sessions', ''], ['POST', '/api/v1/me/export', 'export RGPD (e-mail)'], ['DELETE', '/api/v1/me', 'suppression du compte (délai 30 j)']],
+  ds: DS('SwitchListTile', 'XmPinSheet', 'ListTile', 'AlertDialog'),
+  warn: 'Le mode discret change l’icône (flutter_dynamic_icon / activity-alias Android) et le nom en « Notes ». La sortie rapide a été retirée du projet (décision D8).',
+  render: () => `${appbar('Sécurité')}<div class="view stack-lg"><div class="card" style="padding-top:4px;padding-bottom:4px">
+    ${[['discreet', 'Mode discret', 'Icône et nom neutres sur l’écran d’accueil.'], ['mask', 'Masquer les aperçus', 'Notifications et messages sans contenu.'], ['pin', 'Verrouiller avec un code', 'Code à 4 chiffres à l’ouverture.']].map(s => `<label class="switch"><span><b>${s[1]}</b><br><span class="xs muted">${s[2]}</span></span><input type="checkbox" data-sec="${s[0]}" ${S.settings[s[0]] ? 'checked' : ''}></label>`).join('')}</div>
+    <div class="card" style="padding-top:0;padding-bottom:0"><div class="list"><button id="dev">${ic('phone')}<span class="grow">Appareils connectés</span><span class="small muted">2</span>${ic('chevR', 'sm')}</button><button id="exp">${ic('folder')}<span class="grow">Télécharger mes données</span>${ic('chevR', 'sm')}</button><button id="del" style="color:var(--app-danger)">${ic('x')}<span class="grow">Supprimer mon compte</span>${ic('chevR', 'sm')}</button></div></div></div>`,
+  mount: root => { root.querySelectorAll('[data-sec]').forEach(i => i.onchange = () => { S.settings[i.dataset.sec] = i.checked; save(); toast(i.checked ? 'Activé.' : 'Désactivé.'); });
+    root.querySelector('#dev').onclick = () => toast('iPhone de Awa (cet appareil) · Chrome sur Windows.');
+    root.querySelector('#exp').onclick = () => toast('Ton export sera envoyé par e-mail sous 24 h.');
+    root.querySelector('#del').onclick = () => { if (confirm('Supprimer ton compte ? Tu as 30 jours pour changer d’avis.')) toast('Demande enregistrée. Un e-mail de confirmation t’a été envoyé.'); }; } });
+
+def({ id: 'newsletter', module: 'profile', title: 'Newsletter', route: '/newsletter', page: 'NewsletterPrefsPage', provider: 'newsletterPrefsProvider', chrome: 'stack',
+  tree: `NewsletterPrefsPage
+└─ Scaffold
+   └─ ListView
+      ├─ SwitchListTile « Recevoir la newsletter »
+      ├─ Wrap(FilterChip × centres d’intérêt)
+      ├─ SegmentedButton(fréquence)
+      └─ Text RGPD (désinscription en un clic)`,
+  api: [['GET', '/api/v1/me/newsletter', ''], ['PATCH', '/api/v1/me/newsletter', '{subscribed, interests[], frequency} → segments admin']],
+  ds: DS('SwitchListTile', 'FilterChip', 'SegmentedButton'),
+  warn: 'Les centres d’intérêt alimentent la segmentation du module Newsletter de l’administration ; une inscription depuis l’app vaut consentement explicite (horodaté).',
+  render: () => { const n = S.newsletter;
+    return `${appbar('Newsletter')}<div class="view stack-lg"><div class="card" style="padding-top:4px;padding-bottom:4px"><label class="switch"><span><b>Recevoir la newsletter</b><br><span class="xs muted">Actualités, ressources et événements, une à deux fois par mois.</span></span><input type="checkbox" id="non" ${n.on ? 'checked' : ''}></label></div>
+      <fieldset class="card stack" style="gap:10px;margin:0" ${n.on ? '' : 'disabled'}><legend class="vh">Préférences</legend><b>Ce qui t’intéresse</b><div class="chips wrap">${['Santé', 'Droits', 'Bien-être', 'Événements', 'Ressources', 'Sécurité numérique'].map(i => `<button type="button" class="chip" data-int="${i}" aria-pressed="${n.interests.includes(i)}">${i}</button>`).join('')}</div>
+      <b>Fréquence</b><div class="chips wrap">${['Mensuelle', 'Bimensuelle'].map(f => `<button type="button" class="chip" data-freq="${f}" aria-pressed="${n.freq === f}">${f}</button>`).join('')}</div></fieldset>
+      <p class="xs muted" style="margin:0">${ic('lock', 'sm')} Chaque e-mail contient un lien de désinscription. Tes préférences ne sont jamais partagées.</p></div>`; },
+  mount: root => { const n = S.newsletter;
+    root.querySelector('#non').onchange = e => { n.on = e.target.checked; save(); render(); toast(n.on ? 'Inscription confirmée.' : 'Tu es désinscrit·e de la newsletter.'); };
+    root.querySelectorAll('[data-int]').forEach(b => b.onclick = () => { const i = b.dataset.int; n.interests = n.interests.includes(i) ? n.interests.filter(x => x !== i) : [...n.interests, i]; save(); render(); });
+    root.querySelectorAll('[data-freq]').forEach(b => b.onclick = () => { n.freq = b.dataset.freq; save(); render(); }); } });
+
+/* =====================================================================
+   Navigation (équivalent go_router)
+   ===================================================================== */
+const app = document.getElementById('app');
+const byId = id => SCREENS.find(s => s.id === id || (s.alias || []).includes(id));
+let cur = { id: 'splash', param: '' };
+const current = () => byId(cur.id);
+function parseHash() { const h = decodeURIComponent(location.hash.replace(/^#\/?/, '')); const [id, param] = h.split('/'); return { id: id || '', param: param || '' }; }
+function go(id, o = {}) {
+  const s = byId(id); if (!s) return;
+  if (!o.replace && !o.fromHash && cur.id && cur.id !== s.id) stack.push(cur);
+  cur = { id: s.id, param: o.param || '' };
+  if (s.module !== 'auth' && !S.auth) { S.auth = true; S.seen = true; save(); } // saut direct depuis l'index : session de démo
+  const hash = '#/' + (o.fromHash && o.rawId ? o.rawId : s.id) + (cur.param ? '/' + cur.param : '');
+  if (location.hash !== hash) history.replaceState(null, '', hash);
+  render(true);
+}
+function back() { const p = stack.pop(); if (p) { cur = p; history.replaceState(null, '', '#/' + p.id + (p.param ? '/' + p.param : '')); render(true); } else go(S.auth ? 'dashboard' : 'login', { replace: true }); }
+let toastT = null;
+function toast(msg) { const old = app.querySelector('.toast'); if (old) old.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.innerHTML = ic('check', 'sm') + '<span>' + esc(msg) + '</span>'; app.appendChild(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 3200); }
+function setTheme(t) { S.theme = t; save(); syncTop(); render(); }
+
+const TABS = [['dashboard', 'home', 'Accueil'], ['fil', 'feed', 'Fil'], ['sos', 'sos', 'SOS'], ['message', 'chat', 'Messages'], ['profil', 'user', 'Profil']];
+function render(scrollTop) {
+  const s = current(); if (!s) return;
+  const prevScroll = app.querySelector('.view') ? app.querySelector('.view').scrollTop : 0;
+  app.dataset.theme = S.theme;
+  app.className = 'app' + (s.chrome === 'tabs' ? ' has-tabs' : '') + (s.chrome === 'stack' || ['otp', 'forgot', 'reset', 'signup'].includes(s.id) ? ' has-appbar' : '');
+  let html = s.render(cur.param);
+  if (s.chrome === 'tabs') html += `<nav class="tabbar" aria-label="Navigation principale">${TABS.map(t => `<button data-go="${t[0]}" class="${t[0] === 'sos' ? 'sos-tab' : ''}" ${s.tab === t[0] ? 'aria-current="page"' : ''}>${t[0] === 'sos' ? '<span class="b">SOS</span>' : ic(t[1])}<span>${t[0] === 'sos' ? 'Alerte' : t[2]}</span></button>`).join('')}</nav>`;
+  app.innerHTML = html;
+  app.querySelectorAll('[data-back]').forEach(b => b.onclick = back);
+  app.querySelectorAll('[data-go]').forEach(b => { if (!b.onclick) b.onclick = e => { e.preventDefault(); go(b.dataset.go, { param: b.dataset.param || '' }); }; });
+  app.querySelectorAll('[data-toggle-pw]').forEach(b => b.onclick = () => { const i = app.querySelector('#' + b.dataset.togglePw); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.innerHTML = ic(show ? 'eyeOff' : 'eye'); b.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe'); });
+  if (s.mount) s.mount(app, cur.param);
+  const v = app.querySelector('.view'); if (v && !scrollTop && !['chat', 'assistant'].includes(s.id)) v.scrollTop = prevScroll;
+  document.getElementById('screen').style.setProperty('--sb-color', s.id === 'profil' ? '#fff' : '');
+  updatePanel(s); updateRail(s);
+}
+
+/* =====================================================================
+   Rail, panneau, barre supérieure
+   ===================================================================== */
+const railGroups = document.getElementById('railGroups'), railSelect = document.getElementById('railSelect');
+railGroups.innerHTML = MODULES.map(m => `<div class="rail-group" data-mod="${m[0]}"><h2>${m[1]} <code>${m[0]}</code></h2>${SCREENS.filter(s => s.module === m[0]).map(s => { const n = SCREENS.indexOf(s) + 1; return `<a href="#/${s.id}" data-id="${s.id}" data-t="${(s.title + ' ' + s.route + ' ' + s.page).toLowerCase()}"><span class="n">${String(n).padStart(2, '0')}</span><span>${s.title}</span><span class="r">#/${s.id}</span></a>`; }).join('')}</div>`).join('');
+railSelect.innerHTML = MODULES.map(m => `<optgroup label="${m[1]}">${SCREENS.filter(s => s.module === m[0]).map(s => `<option value="${s.id}">${String(SCREENS.indexOf(s) + 1).padStart(2, '0')} · ${s.title}</option>`).join('')}</optgroup>`).join('');
+railSelect.onchange = () => { stack = []; go(railSelect.value, { replace: true }); };
+railGroups.addEventListener('click', e => { const a = e.target.closest('a[data-id]'); if (!a) return; e.preventDefault(); stack = []; go(a.dataset.id, { replace: true }); });
+document.getElementById('railSearch').oninput = e => { const v = e.target.value.toLowerCase().trim(); railGroups.querySelectorAll('a').forEach(a => a.hidden = v && !a.dataset.t.includes(v)); railGroups.querySelectorAll('.rail-group').forEach(g => g.hidden = ![...g.querySelectorAll('a')].some(a => !a.hidden)); };
+function updateRail(s) { railGroups.querySelectorAll('a').forEach(a => a.dataset.id === s.id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')); railSelect.value = s.id; const a = railGroups.querySelector('[aria-current]'); if (a) a.scrollIntoView({ block: 'nearest' }); }
+function updatePanel(s) {
+  const n = SCREENS.indexOf(s) + 1, mod = MODULES.find(m => m[0] === s.module);
+  document.getElementById('panel').innerHTML = `<header><div class="state">Écran ${String(n).padStart(2, '0')} sur ${SCREENS.length} · module <code>${s.module}</code> (${mod[1]})</div><h2 style="margin-top:4px">${esc(s.title)}</h2><span class="route">${esc(s.route)}</span></header>
+    <section><h3>Flutter</h3><dl><dt>Route</dt><dd>GoRoute('${esc(s.route.split('?')[0])}')</dd><dt>Page</dt><dd>${esc(s.page)}</dd><dt>Provider</dt><dd>${esc(s.provider)}</dd><dt>Dossier</dt><dd>lib/features/${s.module}/presentation/</dd>${s.source ? `<dt>Source</dt><dd>${esc(s.source)}</dd>` : ''}</dl></section>
+    <section><h3>Arbre de widgets</h3><pre>${esc(s.tree)}</pre></section>
+    <section><h3>Appels API</h3>${s.api.length ? `<ul class="api">${s.api.map(a => `<li><span class="verb ${a[0]}">${a[0]}</span><span>${esc(a[1])}${a[2] ? `<br><span style="color:var(--pg-muted)">${esc(a[2])}</span>` : ''}</span></li>`).join('')}</ul>` : '<p class="state">Aucun appel réseau : écran local.</p>'}</section>
+    <section><h3>Composants du design system</h3><div class="ds">${s.ds.map(d => `<span>${esc(d)}</span>`).join('')}</div></section>
+    <section><h3>Point de vigilance</h3><p class="warn">${esc(s.warn)}</p></section>
+    <section><h3>État simulé</h3><p class="state">onboardingProvider.seen = <code>${S.seen}</code> · session = <code>${S.auth}</code> · rôle = <code>${S.role}</code> · thème = <code>${S.theme}</code>${s.id === 'otp' ? ` · purpose = <code>${S.otp.purpose}</code>` : ''}<br>Lien profond : <code>index.html#/${s.id}</code></p></section>`;
+}
+function syncTop() {
+  document.querySelectorAll('[data-model]').forEach(b => b.setAttribute('aria-pressed', b.dataset.model === S.model));
+  document.querySelectorAll('[data-role]').forEach(b => b.setAttribute('aria-pressed', b.dataset.role === S.role));
+  document.querySelectorAll('[data-apptheme]').forEach(b => b.setAttribute('aria-pressed', b.dataset.apptheme === S.theme));
+  document.getElementById('device').dataset.model = S.model;
+  document.getElementById('caption').innerHTML = S.model === 'pixel8' ? '<b>Pixel 8</b> · 412 × 880 · Android 15 · Arial → Roboto' : '<b>iPhone 14</b> · 390 × 844 · iOS 18 · zones sûres 47 / 34';
+  fit();
+}
+document.querySelectorAll('.topbar [data-model]').forEach(b => b.onclick = () => { S.model = b.dataset.model; save(); syncTop(); render(); });
+document.querySelectorAll('.topbar [data-role]').forEach(b => b.onclick = () => { S.role = b.dataset.role; save(); syncTop(); render(); });
+document.querySelectorAll('.topbar [data-apptheme]').forEach(b => b.onclick = () => setTheme(b.dataset.apptheme));
+document.getElementById('reset').onclick = () => { try { localStorage.removeItem(KEY); } catch (e) { /* indisponible */ } S = DEFAULT(); stack = []; slide = 0; syncTop(); go('splash', { replace: true }); };
+
+/* Mise à l'échelle de l'appareil dans la scène */
+function fit() {
+  const wrap = document.getElementById('deviceWrap'), dev = document.getElementById('device'), stage = document.querySelector('.stage');
+  wrap.style.transform = 'none'; wrap.style.height = ''; wrap.style.width = '';
+  const w = dev.offsetWidth, h = dev.offsetHeight, small = window.innerWidth <= 820;
+  const availH = small ? Infinity : stage.clientHeight - 60, availW = stage.clientWidth - 24;
+  const k = Math.min(1, availW / w, availH / h);
+  wrap.style.transform = `scale(${k})`; wrap.style.width = w + 'px'; wrap.style.height = (h * k) + 'px';
+}
+window.addEventListener('resize', fit);
+const tick = () => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); };
+tick(); setInterval(tick, 15000);
+
+window.addEventListener('hashchange', () => { const h = parseHash(); if (h.id && byId(h.id) && (byId(h.id).id !== cur.id || h.param !== cur.param)) { stack = []; go(h.id, { param: h.param, fromHash: true, rawId: h.id }); } });
+syncTop();
+const h0 = parseHash();
+if (h0.id && byId(h0.id)) go(h0.id, { param: h0.param, fromHash: true, rawId: h0.id });
+else go(S.auth ? 'dashboard' : (S.seen ? 'login' : 'splash'), { replace: true }); // redirection go_router selon onboardingProvider
+})();
+</script>
+</body>
+</html>
