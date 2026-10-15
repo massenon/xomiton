@@ -45,7 +45,7 @@ $counts = ['posts' => count(store_all('posts')), 'cases' => count(store_all('cas
 
 						<div class="d-flex flex-column gap-1">
 							<div class="xm-nav-section pt-0">Réseau social</div>
-							<?php $L('index.php', 'bi-house-heart', 'Fil d’actualité', 'fil');
+							<?php $L('fil.php', 'bi-house-heart', 'Fil d’actualité', 'fil');
 							$L('my-profile.php', 'bi-person-circle', 'Mon profil', 'profil');
 							$L('messaging.php', 'bi-chat-dots', 'Messages (Messenger)', 'chat');
 							$L('groups.php', 'bi-people', 'Groupes', 'groupes');

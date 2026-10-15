@@ -3,7 +3,7 @@ require __DIR__ . '/inc/bootstrap.php';
 $pageTitle = 'Connexion';
 $error = '';
 $next = $_GET['next'] ?? $_POST['next'] ?? '';
-if (x_user() && $_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . (x_is_admin() ? 'admin/index.php' : 'index.php')); exit; }
+if (x_user() && $_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . (x_is_admin() ? 'admin/index.php' : 'fil.php')); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrf_ok()) { $error = 'Session expirée, veuillez réessayer.'; }
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($found['hash']);
             $_SESSION['user'] = $found;
             x_log('Connexion', 'Succès');
-            $dest = (x_is_admin() && !$next) ? 'admin/index.php' : ($next && !preg_match('#^(https?:)?//#', $next) ? $next : 'index.php');
+            $dest = (x_is_admin() && !$next) ? 'admin/index.php' : ($next && !preg_match('#^(https?:)?//#', $next) ? $next : 'fil.php');
             header('Location: ' . $dest); exit;
         }
     }
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			</div>
 			<div class="col-lg-6 d-flex align-items-center">
 				<div class="w-100 p-4 p-md-5 mx-auto" style="max-width:520px">
-					<a href="landing.php" class="d-lg-none d-inline-block mb-4"><img src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton" height="38"></a>
+					<a href="index.php" class="d-lg-none d-inline-block mb-4"><img src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton" height="38"></a>
 					<h1 class="h2 fw-bold">Bon retour 👋</h1>
 					<p class="text-secondary">Connectez-vous pour accéder à votre espace.</p>
 

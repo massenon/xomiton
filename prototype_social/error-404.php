@@ -11,7 +11,7 @@ $u = x_user();
 				<h1 class="h2 mt-2">Oups, cette page est introuvable</h1>
 				<p class="text-secondary lead">La page que vous cherchez a peut-être été déplacée ou n’existe plus. Vous n’avez rien fait de mal : retrouvons ensemble le bon chemin.</p>
 				<div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
-					<a class="btn btn-primary" href="<?= $u ? 'index.php' : 'landing.php' ?>"><i class="bi bi-house-heart me-1"></i><?= $u ? 'Mon espace' : 'Retour à l’accueil' ?></a>
+					<a class="btn btn-primary" href="<?= $u ? 'fil.php' : 'index.php' ?>"><i class="bi bi-house-heart me-1"></i><?= $u ? 'Mon espace' : 'Retour à l’accueil' ?></a>
 					<a class="btn btn-primary-soft" href="help.php"><i class="bi bi-life-preserver me-1"></i>Centre d’aide</a>
 					<a class="btn btn-danger-soft" href="urgences.php"><i class="bi bi-telephone me-1"></i>Contacts d’urgence</a>
 				</div>

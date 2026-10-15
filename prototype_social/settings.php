@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		x_log('Compte', 'Suppression du compte');
 		session_destroy();
 		session_start();
-		x_redirect('landing.php', 'success', 'Votre compte a été supprimé. Vos données seront effacées sous 30 jours.');
+		x_redirect('index.php', 'success', 'Votre compte a été supprimé. Vos données seront effacées sous 30 jours.');
 	}
 }
 

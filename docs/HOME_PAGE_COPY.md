@@ -5,7 +5,7 @@ description: Textes de référence de la page d'accueil de Xomiton, section par 
 
 # Page d'accueil — textes
 
-Source : `prototype_social/landing.php`. Les textes ci-dessous sont **à conserver** (ordre et sens) ; les corrections proposées sont marquées ✎ et visent l'harmonisation de l'écriture inclusive ([VOICE_AND_TONE.md](VOICE_AND_TONE.md)).
+Source : `prototype_social/index.php`. Les textes ci-dessous sont **à conserver** (ordre et sens) ; les corrections proposées sont marquées ✎ et visent l'harmonisation de l'écriture inclusive ([VOICE_AND_TONE.md](VOICE_AND_TONE.md)).
 
 ## Méta
 - **Title** : « Xomiton – Espace safe d'apprentissage et d'appui pour les filles et femmes LBTQ+ au Bénin » (≤ 60 car. visibles : « Xomiton – Espace safe LBTQ+ au Bénin »).

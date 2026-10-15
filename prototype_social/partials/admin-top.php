@@ -70,8 +70,8 @@ $menu = [
 		<?php endforeach; ?>
 	<?php endforeach; ?>
 	<div class="group">Raccourcis</div>
-	<a class="item" href="<?= BASE ?>index.php"><i class="bi bi-box-arrow-up-right"></i><span>Voir le site membre</span></a>
-	<a class="item" href="<?= BASE ?>landing.php" target="_blank"><i class="bi bi-globe2"></i><span>Page d’accueil publique</span></a>
+	<a class="item" href="<?= BASE ?>fil.php"><i class="bi bi-box-arrow-up-right"></i><span>Voir le site membre</span></a>
+	<a class="item" href="<?= BASE ?>index.php" target="_blank"><i class="bi bi-globe2"></i><span>Page d’accueil publique</span></a>
 	<a class="item" href="<?= BASE ?>logout.php"><i class="bi bi-power"></i><span>Se déconnecter</span></a>
 </aside>
 

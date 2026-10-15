@@ -32,7 +32,7 @@ if ($a === 'click') {
     header('Location: ' . $u, true, 302); exit;
 }
 if ($a === 'subscribe' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $back = preg_replace('/[^a-z0-9_.-]/i', '', $_POST['back'] ?? 'landing.php') ?: 'landing.php';
+    $back = preg_replace('/[^a-z0-9_.-]/i', '', $_POST['back'] ?? 'index.php') ?: 'index.php';
     if (!csrf_ok()) $r = [false, 'Session expirée, veuillez réessayer.'];
     elseif (($_POST['website'] ?? '') !== '') $r = [true, 'Merci !']; // pot de miel anti-robots
     elseif (empty($_POST['consent'])) $r = [false, 'Cochez la case de consentement pour vous inscrire.'];
@@ -65,7 +65,7 @@ x_pub_open('Newsletter', ['desc' => 'Gérez votre inscription à la newsletter X
 		<i class="bi bi-envelope-check text-success display-5 mb-2" aria-hidden="true"></i>
 		<h1 class="h3">Inscription confirmée</h1>
 		<p class="text-secondary">Merci ! Vous recevrez désormais la newsletter Xomiton à l’adresse <strong><?= e($s['email']) ?></strong>.</p>
-		<a class="btn btn-primary" href="landing.php">Retour à l’accueil</a>
+		<a class="btn btn-primary" href="index.php">Retour à l’accueil</a>
 	<?php elseif ($state === 'ask'): ?>
 		<i class="bi bi-envelope-dash text-primary display-5 mb-2" aria-hidden="true"></i>
 		<h1 class="h3">Se désinscrire de la newsletter</h1>
@@ -80,12 +80,12 @@ x_pub_open('Newsletter', ['desc' => 'Gérez votre inscription à la newsletter X
 		<i class="bi bi-check2-circle text-success display-5 mb-2" aria-hidden="true"></i>
 		<h1 class="h3">Vous êtes désinscrit·e</h1>
 		<p class="text-secondary">L’adresse <strong><?= e($s['email']) ?></strong> ne recevra plus la newsletter. Vous pouvez vous réinscrire à tout moment depuis le bas de chaque page.</p>
-		<a class="btn btn-primary-soft" href="landing.php#newsletter">Me réinscrire</a>
+		<a class="btn btn-primary-soft" href="index.php#newsletter">Me réinscrire</a>
 	<?php else: ?>
 		<i class="bi bi-link-45deg text-warning display-5 mb-2" aria-hidden="true"></i>
 		<h1 class="h3">Lien invalide ou expiré</h1>
 		<p class="text-secondary">Ce lien ne correspond à aucune inscription. Vous pouvez vous inscrire à nouveau depuis le bas de la page d’accueil.</p>
-		<a class="btn btn-primary" href="landing.php#newsletter">Retour à l’accueil</a>
+		<a class="btn btn-primary" href="index.php#newsletter">Retour à l’accueil</a>
 	<?php endif; ?>
 	</div>
 </div></div></div></section>

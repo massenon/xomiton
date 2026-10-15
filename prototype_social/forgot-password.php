@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok()) {
 	<div class="container">
 		<div class="row justify-content-center align-items-center vh-100 py-5">
 			<div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 text-center">
-				<a href="landing.php"><img src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton" height="40" class="mb-4"></a>
+				<a href="index.php"><img src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton" height="40" class="mb-4"></a>
 				<div class="card card-body text-center p-4 p-sm-5">
 					<h1 class="h3 fw-bold">Mot de passe oublié ?</h1>
 					<?php if ($sent): ?>

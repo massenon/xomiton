@@ -13,7 +13,7 @@ function pc_upload_photo() {
     move_uploaded_file($_FILES['photo']['tmp_name'], $dir . '/' . $fn);
     return 'uploads/' . $fn;
 }
-function pc_back($type, $msg) { $_SESSION['flash'] = ['type' => $type, 'msg' => $msg]; header('Location: index.php'); exit; }
+function pc_back($type, $msg) { $_SESSION['flash'] = ['type' => $type, 'msg' => $msg]; header('Location: fil.php'); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok()) {
     $anon = !empty($_POST['anonymous']);
@@ -43,5 +43,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok()) {
         pc_back('success', 'Votre publication est en ligne.');
     }
 }
-header('Location: index.php');
+header('Location: fil.php');
 exit;

@@ -18,7 +18,7 @@ Tous les gabarits reprennent exactement ceux de `prototype_social/` ([FINAL_DESI
   bouton SOS flottant (si connecté·e)
 </body>
 ```
-Réf. : `landing.php`, `partials/public-header.php`, `partials/public-footer.php`.
+Réf. : `index.php`, `partials/public-header.php`, `partials/public-footer.php`.
 
 ## 2. Gabarit membre — `layouts/member` (Vue, coquille Blade)
 ```

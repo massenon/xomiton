@@ -5,7 +5,7 @@ description: Ordre exact des sections de chaque page Xomiton (accueil, fil, thé
 
 # Ordre des sections
 
-## 1. Accueil public (`landing.php`)
+## 1. Accueil public (`index.php`)
 | # | Section | Ancre | Titre |
 |---|---|---|---|
 | 1 | Hero | — | « Xomiton : Votre Espace safe d'apprentissage et d'appui holistique » |
@@ -20,7 +20,7 @@ description: Ordre exact des sections de chaque page Xomiton (accueil, fil, thé
 | 10 | CTA final | — | « Prête à nous rejoindre ? » |
 | 11 | Pied de page | `#newsletter` | Marque + SOS · Plateforme · Aide & protection · **Newsletter** |
 
-## 2. Fil membre (`index.php`)
+## 2. Fil membre (`fil.php`)
 Titre masqué « Mon fil d'actualité » → messages flash → accès rapides (SOS, Signaler, Assistant, Urgences) → **Créer une publication** (Photo, Événement, Sondage, Violences, Signaler) → À la une (thématiques) → filtres → publications → « Charger plus ». Colonne droite : Qui suivre → Événements → En cas d'urgence.
 
 ## 3. Thématique (fiche)

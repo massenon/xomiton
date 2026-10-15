@@ -13,7 +13,7 @@ Conventions : **Réf.** = fichier de référence dans `prototype_social/` (web) 
 
 | Écran | Route | Réf. | Contenu |
 |---|---|---|---|
-| Accueil | `/` | `landing.php` | Voir [HOME_PAGE_COPY.md](HOME_PAGE_COPY.md) et [FRONT_END_SECTION_ORDER_INSTRUCTION.md](FRONT_END_SECTION_ORDER_INSTRUCTION.md) |
+| Accueil | `/` | `index.php` | Voir [HOME_PAGE_COPY.md](HOME_PAGE_COPY.md) et [FRONT_END_SECTION_ORDER_INSTRUCTION.md](FRONT_END_SECTION_ORDER_INSTRUCTION.md) |
 | Thématiques | `/thematiques`, `/thematiques/{slug}` | `thematiques.php`, `thematique.php` | Liste filtrable par catégorie ; fiche avec sections en accordéon, contacts liés, « J'ai besoin d'aide » |
 | Ressources | `/ressources`, `/ressources/{slug}` | `ressources.php`, `ressource.php` | Recherche, filtres (type, catégorie), « Charger plus », téléchargement |
 | Comprendre les violences | `/violences` | `violences.php` | Catégories de violences, signes, que faire |
@@ -35,7 +35,7 @@ Pied de page public : marque + bouton SOS · Plateforme · Aide & protection · 
 
 Gabarit 3 colonnes : `sidenav` (col-lg-3) · contenu (col-md-8 col-lg-6) · colonne droite (col-lg-3).
 
-### B1. Fil d'actualités — `/fil` (Réf. `index.php`)
+### B1. Fil d’actualités — `/fil` (Réf. `fil.php`)
 1. Accès rapides (4 cartes) : SOS (bordure rouge), Signaler, Assistant, Urgences.
 2. **Créer une publication** (`card card-body`) : avatar + champ « Partagez vos pensées, {prénom}… » ouvrant la modale ; pastilles `nav nav-pills nav-stack small fw-normal` : **Photo · Événement · Sondage · Violences · Signaler**.
 3. À la une : carrousel horizontal de thématiques.

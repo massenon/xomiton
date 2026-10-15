@@ -11,7 +11,7 @@
 			<div class="col-6 col-lg-2">
 				<h6 class="text-white">Plateforme</h6>
 				<ul class="list-unstyled small mb-0 xm-flinks">
-					<li><a href="<?= BASE ?>landing.php#valeurs">À propos de Xomiton</a></li>
+					<li><a href="<?= BASE ?>index.php#valeurs">À propos de Xomiton</a></li>
 					<li><a href="<?= BASE ?>help.php">Support</a></li>
 					<li><a href="<?= BASE ?>do-glegbe.php">Do Glegbe</a></li>
 					<li><a href="<?= BASE ?>ressources.php">Ressources</a></li>

@@ -39,7 +39,7 @@ function require_admin() {
     require_login();
     if (!x_is_admin()) {
         $_SESSION['flash'] = ['type' => 'danger', 'msg' => 'Accès réservé à l’administration.'];
-        header('Location: ' . BASE . 'index.php');
+        header('Location: ' . BASE . 'fil.php');
         exit;
     }
 }
