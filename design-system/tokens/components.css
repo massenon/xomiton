@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* Statut « assigné » (violet : accent catégoriel, jamais seul) */
-.xm-status--violet { background-color: var(--xm-accent-violet); color: var(--xm-bg); }
+.xm-badge-violet { background-color: var(--xm-accent-violet); color: var(--xm-bg); } /* ex-.xm-status--violet : « status- » déclenche le point d’état du thème Social */
 
 /* Stepper (inscription en étapes, sauvegarde à chaque étape) */
 .xm-stepper__item { display: flex; align-items: center; gap: var(--xm-space-2); color: var(--xm-text-muted); font-weight: 600; }

@@ -3,10 +3,6 @@
  * et états absents du thème Social. Jetons --xm-* uniquement, aucun hexadécimal.
  */
 
-/* Badge violet (<x-badge color="violet">, statut « assigné ») : même rendu que .xm-status--violet du design system, sous un nom
-   qui ne contient pas « status- » : le thème Social ajoute un point d'état absolu à [class*=status-] (style.css), ce qui déforme le badge. */
-.xm-badge-violet { background-color: var(--xm-accent-violet); color: var(--xm-bg); }
-
 /* Badges pleins success / info (<x-badge>) : texte sur fond coloré lisible dans les deux thèmes (comme .text-bg-success de social-xomiton.css ;
    Bootstrap met du blanc sur le vert et le bleu clairs du thème sombre). */
 .badge.bg-success, .badge.bg-info { color: var(--xm-bg); }

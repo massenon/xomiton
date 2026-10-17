@@ -11,8 +11,8 @@
                alert (nouveau | en_cours | traite), priority (critique | haute | normale), alert_type (denonciation | besoin | sos)
     Slot : libellé (ignoré quand scope + status sont fournis).
     Note : « neutral » remplace le bg-secondary gris du prototype, car secondary est le rouge de marque dans Xomiton (DECISIONS D5).
-    Note : la classe violette s'appelle xm-badge-violet (et non xm-status--violet du design system) : le thème Social applique un point
-    d'état absolu à tout élément dont une classe contient « status- » ([class*=status-]:before), ce qui déformait le badge.
+    Note : la classe violette s'appelle xm-badge-violet (renommée dans design-system/tokens/components.css) : le thème Social applique un
+    point d'état absolu à tout élément dont une classe contient « status- » ([class*=status-]:before), ce qui déformait l'ancien xm-status--violet.
 --}}
 @props(['color' => 'primary', 'soft' => false, 'icon' => null, 'pill' => false, 'scope' => null, 'status' => null])
 @php
