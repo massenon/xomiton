@@ -51,6 +51,9 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
         'cases:anonymize' => '0 3 * * *',
         'sessions:purge' => '0 3 * * *',
         'sync:prune' => '0 3 * * *',
+        'reports:purge' => '30 3 * * *',
+        'cache:purge-expired' => '30 3 * * *',
+        'indicators:snapshot' => '0 4 1 * *',
     ];
 
     expect(array_keys($events))->toEqualCanonicalizing(array_keys($expected));

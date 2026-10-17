@@ -47,8 +47,13 @@ Le planificateur est déclaré dans `routes/console.php` (`php artisan schedule:
 | `cases:anonymize [--dry-run]` | quotidien 03:00 | Dossiers clos ou archivés depuis plus de 5 ans : notes, récits, auteur·e, lieu, note de services, signataire du consentement et commentaires de suivi remplacés par `[anonymisé]`, `anonymized_at` posé ; colonnes statistiques conservées |
 | `sessions:purge` | quotidien 03:00 | Supprime les sessions en base dont `last_activity` dépasse la durée de session + 1 jour |
 | `sync:prune` | quotidien 03:00 | Supprime les `sync_outbox_receipts` de plus de 90 jours et révoque (`is_revoked`) les appareils sans contact depuis plus de 180 jours |
+| `reports:purge` | quotidien 03:30 | Fichiers de `generated_reports` au-delà d'`expires_at` supprimés du disque `xomiton.reports.disk` ; la ligne est marquée (fichier et taille effacés) si le journal d'audit la référence, supprimée sinon |
+| `cache:purge-expired` | quotidien 03:30 | Pilote `file` seulement : supprime par lots les fichiers de `storage/framework/cache/data` dont l'horodatage d'expiration en tête est passé (le pilote ne purge jamais seul une entrée jamais relue) ; sans effet pour les autres pilotes |
+| `indicators:snapshot [--month=AAAA-MM]` | mensuel, le 1er à 04:00 | Calcule les indicateurs intégrés actifs du mois précédent (`App\Application\Steering\IndicatorCalculator`, une méthode par `calc_key`) au niveau national et par département actif, puis les enregistre dans `indicator_values` (idempotent, valeurs manuelles conservées) ; IND-04 (`pct_72h`) est signalé non calculable |
 
-Prévues par les phases suivantes (lignes commentées dans `routes/console.php`, à activer avec la commande) : `alerts:escalate`, `notifications:retry`, `newsletter:process`, `gateways:publish` (chaque minute) ; `indicators:snapshot`, `reports:run-schedules` (quotidien) ; `backups:run` (02:00).
+Prévues par les phases suivantes (lignes commentées dans `routes/console.php`, à activer avec la commande) : `alerts:escalate`, `notifications:retry`, `newsletter:process`, `gateways:publish` (chaque minute) ; `reports:run-schedules` (quotidien) ; `backups:run` (02:00).
+
+Hors planificateur, à lancer à la main lors d'une rotation d'`APP_KEY` (P1-15, runbook) : `php artisan xomiton:reencrypt [--from=<ancienne clé>] [--chunk=500] [--dry-run] [--force]` rechiffre toutes les colonnes de `config('xomiton.encrypted_columns')` avec la clé courante à partir de l'ancienne (`--from`, sinon la première d'`APP_PREVIOUS_KEYS`), exige une sauvegarde terminée de moins de 24 h dans `backups` (sauf `--force`), s'arrête proprement après 50 s et reprend à l'appel suivant (les valeurs déjà rechiffrées sont ignorées) ; journal + entrée d'audit `platform.reencrypt`.
 
 ## Commandes utiles
 

@@ -378,6 +378,16 @@ class User extends Authenticatable
         return $this->hasOne(DirectoryContact::class);
     }
 
+    /**
+     * Plages de garde (admin de garde, point focal remplaçant) de ce compte (P1-17 `on_call_shifts`).
+     *
+     * @return HasMany<OnCallShift, $this>
+     */
+    public function onCallShifts(): HasMany
+    {
+        return $this->hasMany(OnCallShift::class);
+    }
+
     // -- Dossiers (lot 7) ---------------------------------------------------------------------
 
     /**

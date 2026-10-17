@@ -16,6 +16,8 @@ use InvalidArgumentException;
 /**
  * Conflit de synchronisation (DATABASE_DICTIONARY.md §10 `sync_conflicts`) : même champ modifié côté serveur et côté
  * appareil ; l'administration conserve la version serveur, la version appareil ou une fusion saisie à la main.
+ * Les trois valeurs (`server_value`, `device_value`, `resolved_value`) sont chiffrées : elles peuvent contenir un
+ * extrait de récit ou de notes (config/xomiton.php `encrypted_columns`).
  */
 class SyncConflict extends Model
 {
@@ -55,7 +57,12 @@ class SyncConflict extends Model
     {
         return [
             'subject_id' => 'integer',
+            // Les valeurs en conflit peuvent reproduire un récit ou des notes de dossier : chiffrées (P1-15).
+            'server_value' => 'encrypted',
+            'device_value' => 'encrypted',
             'status' => ConflictStatus::class,
+            'resolution' => 'string',
+            'resolved_value' => 'encrypted',
             'resolved_at' => 'datetime',
         ];
     }

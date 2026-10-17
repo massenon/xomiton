@@ -50,6 +50,31 @@ foreach ($daily as $command => $description) {
 }
 
 /*
+ * Quotidien à 03:30 : purges de fichiers (P1-16), après les purges de données.
+ */
+$dailyFiles = [
+    'reports:purge' => 'Supprime les fichiers de generated_reports au-delà d’expires_at (ligne marquée si le journal la référence, supprimée sinon)',
+    'cache:purge-expired' => 'Supprime les fichiers expirés du cache file (storage/framework/cache/data) ; sans effet pour les autres pilotes',
+];
+
+foreach ($dailyFiles as $command => $description) {
+    Schedule::command($command)
+        ->dailyAt('03:30')
+        ->timezone($timezone)
+        ->withoutOverlapping(180)
+        ->description($description);
+}
+
+/*
+ * Mensuel, le 1er à 04:00 : instantanés du mois écoulé des indicateurs intégrés (indicator_values, P1-16).
+ */
+Schedule::command('indicators:snapshot')
+    ->monthlyOn(1, '04:00')
+    ->timezone($timezone)
+    ->withoutOverlapping(180)
+    ->description('Calcule les indicateurs intégrés du mois précédent (national et par département) dans indicator_values');
+
+/*
  * Signal de vie vers la supervision externe (D7, NFR-03) : enregistré en dernier pour être émis après les
  * autres tâches de la minute. Quand `alerts:escalate` et `notifications:retry` (P5-07) seront livrées, le
  * conditionner à leur succès (P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte).
@@ -72,8 +97,6 @@ Schedule::command('heartbeat:ping')
  *   Schedule::command('newsletter:process')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
  * P14-04 — passerelles réseaux sociaux (D4-bis) :
  *   Schedule::command('gateways:publish')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
- * P10-xx — instantanés mensuels des indicateurs (indicator_values) :
- *   Schedule::command('indicators:snapshot')->dailyAt('01:00')->timezone($timezone)->withoutOverlapping(180);
  * P10-07 — rapports planifiés échus (report_schedules) :
  *   Schedule::command('reports:run-schedules')->dailyAt('04:00')->timezone($timezone)->withoutOverlapping(180);
  * P13-03 — sauvegardes (mysqldump + fichiers vers stockage externe chiffré) :

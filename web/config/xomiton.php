@@ -190,6 +190,31 @@ return [
     ],
 
     /*
+     * Langues (NFR-11, Q40, P3-05). `locales` ne liste que les locales dont lang/<locale> et l'ARB Flutter sont
+     * complets : seules celles-là sont proposées par le sélecteur et acceptées par PATCH me/settings {locale}.
+     * `locales_planned` : annoncées « bientôt » dans l'interface (lang/<locale>/README.md décrit la procédure).
+     */
+    'locales' => ['fr'],
+    'locales_planned' => ['en', 'fon', 'yo'],
+    'default_locale' => 'fr',
+
+    // Locales intl (ICU) par langue, dans l'ordre de préférence : la première disponible sur le serveur est retenue
+    // (App\Support\Locales::intlTag()). fr-BJ avec repli fr-FR (Q36) ; fon et yo retombent sur le français du Bénin.
+    'intl_locales' => [
+        'fr' => ['fr-BJ', 'fr-FR'],
+        'en' => ['en-GB', 'en'],
+        'fon' => ['fon-BJ', 'fr-BJ', 'fr-FR'],
+        'yo' => ['yo-BJ', 'yo-NG', 'fr-BJ'],
+    ],
+
+    // Export des messages pour vue-i18n (JSON à plat « fichier.cle.souscle », placeholders {nom}) et Flutter
+    // (ARB, placeholders ICU) : php artisan lang:export [--locale=fr] [--check].
+    'lang_export' => [
+        'json_dir' => resource_path('js/lang'),
+        'arb_dir' => base_path('../mobile/lib/l10n'),
+    ],
+
+    /*
      * Assistant (P3-09 App\Application\Shared\KnowledgeBaseAnswerer, P8-11) : garde-fous de crise évalués avant toute
      * recherche (mots entiers, accents et casse ignorés), numéros d'urgence, seuil d'appariement de la base.
      */

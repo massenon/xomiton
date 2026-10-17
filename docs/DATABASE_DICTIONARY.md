@@ -310,7 +310,10 @@ Migration Laravel (`uuid`, `type`, `notifiable`, `data json`, `read_at`). Colonn
 `id` · `device_id FK cascade` · `idempotency_key char(36)` · `kind string(20)` (`case`, `followup`, `alert`, `sos`, `message`) · `subject_type string(80) null` · `subject_id unsignedBigInteger null` · `result string(10)` (`created`, `duplicate`, `conflict`, `rejected`) · `payload_hash char(64)` · `created_at`. Unique `(device_id, idempotency_key)`.
 
 ### `sync_conflicts`
-`id` · `device_id FK null` · `subject_type string(80)` · `subject_id unsignedBigInteger` · `field string(40)` · `server_value text null` · `device_value text null` · `status string(12) default a_resoudre` (`ConflictStatus` : `a_resoudre`, `resolu`) · `resolution string(10) null` (`serveur`, `appareil`, `fusion`) · `resolved_value text null` · `resolved_by FK users null` · `resolved_at timestamp null`. Index `(status, created_at)`.
+`id` · `device_id FK null` · `subject_type string(80)` · `subject_id unsignedBigInteger` · `field string(40)` · `server_value text null [chiffré]` · `device_value text null [chiffré]` · `status string(12) default a_resoudre` (`ConflictStatus` : `a_resoudre`, `resolu`) · `resolution string(10) null` (`serveur`, `appareil`, `fusion`) · `resolved_value text null [chiffré]` (les valeurs peuvent reproduire des notes de dossier) · `resolved_by FK users null` · `resolved_at timestamp null`. Index `(status, created_at)`.
+
+### `on_call_shifts` (planning de garde, P1-17)
+`id` · `user_id FK users cascade` · `starts_at timestamp` · `ends_at timestamp` · `kind string(20) default admin` (`admin` : admin de garde ; `focal` : remplaçant·e du point focal) · `zone_id FK zones null nullOnDelete` (null = national) · `notes string(200) null`. Index `(starts_at, ends_at)`. Lu par `App\Application\Alerts\OnCallRoster` (repli : admins et superadmins actifs ayant `alerts.take`).
 
 ### `sync_cursors` (côté serveur, par appareil et par collection)
 `id` · `device_id FK cascade` · `collection string(40)` · `cursor unsignedBigInteger default 0` · `pulled_at timestamp null`. Unique `(device_id, collection)`.
@@ -335,5 +338,8 @@ Identique à `DATABASE_ENGINEERING.md` §4, avec les tables ajoutées :
 8. Passerelles : `social_channels`, `gateway_templates`, `outbound_posts`, `outbound_deliveries`, `peer_rooms`.
 9. Communication : `email_templates`, `mail_logs`, `mail_outbox`, `newsletter_tags`, `newsletter_interests`, `newsletter_subscribers`, `newsletter_subscriber_tags`, `newsletter_subscriber_interests`, `newsletter_campaigns`, `newsletter_campaign_recipients`, `newsletter_clicks`, `notifications`, `push_subscriptions`.
 10. Plateforme : `settings`, `app_versions`, `maintenance_windows`, `backups`, `audit_logs`, `sync_outbox_receipts`, `sync_conflicts`, `sync_cursors` (`jobs`, `failed_jobs`, `cache` : migrations Laravel existantes).
+11. Compléments (lot 12) : `on_call_shifts`.
+
+La liste des colonnes chiffrées est tenue dans `config/xomiton.php` → `encrypted_columns` (vérifiée par test contre les casts des modèles) et sert à `xomiton:reencrypt` (rotation d'`APP_KEY`).
 
 Nommage des fichiers : `2026_10_18_<lot sur 2 chiffres>0<ordre>_create_<table>_table.php` pour garantir l'ordre. Implémentation : les lots 4 et 5 ci-dessus sont découpés en « 04 réseau social » et « 05 communauté (événements, forums, conversations) », d'où les préfixes réels `06` alertes, `07` dossiers, `08` pilotage et modération, `09` passerelles, `10` communication, `11` plateforme. La migration `users` reste celle de Laravel (`0001_01_01_000000`) complétée par `2026_10_18_020000_add_foreign_keys_to_users_table.php` (zones et communes sont créées après `users`).
