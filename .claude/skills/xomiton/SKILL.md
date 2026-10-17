@@ -5,14 +5,16 @@ description: Point d'entrée des instructions du projet Xomiton (plateforme sûr
 
 # Xomiton — quel document lire
 
-1. Toujours : `docs/MASTER_PROMPT.md`, puis `docs/FINAL_DESIGN_DIRECTION.md` pour tout écran web.
-2. Selon la tâche :
+1. Toujours : `docs/MASTER_PROMPT.md`, puis `docs/IMPLEMENTATION_PLAN.md` (quoi faire, dans quel ordre, statut de chaque tâche), puis `docs/FINAL_DESIGN_DIRECTION.md` pour tout écran web.
+2. Le code vit dans `web/` (Laravel 12 ; voir `web/README.md`) et, pour le mobile, dans `mobile/` (Flutter). Les prototypes `prototype_social/` et `prototype_mobile/` sont la référence visuelle, pas le code à modifier.
+3. Selon la tâche :
 
 | Tâche | Documents |
 |---|---|
+| Savoir quoi faire ensuite, mettre à jour l'avancement | `docs/IMPLEMENTATION_PLAN.md` (§3 tâches, §8 suivi) |
 | Nouvelle fonctionnalité, périmètre, règle métier | `docs/BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md`, `docs/MODULE_SPECIFICATIONS.md`, `docs/ROLE_ET_PERMISSIONS.md` |
 | Route, service, job, API, synchronisation | `docs/SOFTWARE_ARCHITECTURE.md`, `docs/DEVELOPMENT_STANDARDS.md` |
-| Migration, modèle, requête, import | `docs/DATABASE_ENGINEERING.md` |
+| Migration, modèle, requête, import | `docs/DATABASE_ENGINEERING.md`, `docs/DATABASE_DICTIONARY.md` (colonnes, enums, écarts prototype) |
 | Écran, composant, CRUD, DataTable, KPI | `docs/UI_UX_DESIGN_SYSTEM.md` (§4), `docs/UX_GUIDELINES.md`, `docs/FRONT_END_*.md` |
 | Connexion, inscription, OTP | `docs/LOGIN_INSCRPTION_MULTISTEP_USER_INSTRUCTION.md` |
 | Notifications, e-mails, toasts | `docs/NOTIFICATIONS_INSTRUCTION.md` |

@@ -41,8 +41,8 @@
     }
     $graph = [
         ['@type' => 'Organization', '@id' => $root.'#org', 'name' => $site, 'url' => $root, 'logo' => $root.'assets/images/xomiton/brand/icone-appli-bleu.svg'],
-        ['@type' => 'WebSite', '@id' => $root.'#site', 'url' => $root, 'name' => $site, 'inLanguage' => 'fr', 'publisher' => ['@id' => $root.'#org']],
-        ['@type' => $type === 'article' ? 'Article' : 'WebPage', '@id' => $canonical.'#page', 'url' => $canonical, 'name' => $fullTitle, 'description' => $desc, 'inLanguage' => 'fr', 'isPartOf' => ['@id' => $root.'#site'], 'primaryImageOfPage' => $img] + ($modified ? ['dateModified' => $modified] : []),
+        ['@type' => 'WebSite', '@id' => $root.'#site', 'url' => $root, 'name' => $site, 'inLanguage' => 'fr-BJ', 'publisher' => ['@id' => $root.'#org']],
+        ['@type' => $type === 'article' ? 'Article' : 'WebPage', '@id' => $canonical.'#page', 'url' => $canonical, 'name' => $fullTitle, 'description' => $desc, 'inLanguage' => 'fr-BJ', 'isPartOf' => ['@id' => $root.'#site'], 'primaryImageOfPage' => $img] + ($modified ? ['dateModified' => $modified] : []),
         ['@type' => 'BreadcrumbList', 'itemListElement' => $list],
     ];
     foreach ($schema as $extra) {

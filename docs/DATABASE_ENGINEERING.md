@@ -7,7 +7,7 @@ description: Ingénierie de la base de données Xomiton — modèle de données 
 
 SGBD : **MySQL 8** (ou MariaDB 10.6), `utf8mb4_unicode_ci`, moteur InnoDB, clés primaires `BIGINT UNSIGNED` auto-incrémentées, horodatages `created_at` / `updated_at`, suppression logique (`deleted_at`) pour les contenus et les comptes.
 
-Les collections JSON du prototype (`prototype_social/data/*.json`) donnent les champs de départ ; ce document fixe le schéma cible.
+Les collections JSON du prototype (`prototype_social/data/*.json`) donnent les champs de départ ; ce document fixe le schéma cible. Le détail colonne par colonne de **toutes** les tables (y compris celles seulement nommées ici) et la résolution des écarts avec le prototype sont dans [DATABASE_DICTIONARY.md](DATABASE_DICTIONARY.md).
 
 ## 1. Domaines et tables
 

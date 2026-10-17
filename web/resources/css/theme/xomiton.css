@@ -6,17 +6,17 @@
 .xm-sos-fab:hover { background:#c10c0c; color:#fff; }
 .xm-sos-fab .pulse { width:10px; height:10px; border-radius:50%; background:#fff; animation:xmpulse 1.4s infinite; }
 @keyframes xmpulse { 0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)} 100%{box-shadow:0 0 0 12px rgba(255,255,255,0)} }
-.xm-offline-bar { display:none; position:sticky; top:0; z-index:1100; background:#F0A800; color:#1B1630; text-align:center; padding:.4rem 1rem; font-size:.85rem; font-weight:600; }
+.xm-offline-bar { display:none; position:sticky; top:0; z-index:1100; background:var(--xm-amber-500); color:var(--xm-neutral-900); text-align:center; padding:.4rem 1rem; font-size:.85rem; font-weight:600; }
 body.xm-is-offline .xm-offline-bar { display:block; }
 .xm-sync-badge { display:inline-flex; align-items:center; gap:.35rem; font-size:.75rem; }
 .xm-hero-bg { background:linear-gradient(135deg, #0433C3 0%, #6F2C91 60%, #C2255C 100%); color:#fff; }
-.xm-rainbow-line { height:5px; background:linear-gradient(90deg,#E30E0E,#F0A800,#0B7A4B,#0433C3,#6F2C91); border:0; opacity:1; }
+.xm-rainbow-line { height:5px; background:linear-gradient(90deg,var(--xm-red-500),var(--xm-amber-500),var(--xm-green-700),var(--xm-blue-500),var(--xm-violet-700)); border:0; opacity:1; }
 .xm-card-hover { transition:transform .2s, box-shadow .2s; } .xm-card-hover:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(4,51,195,.12); }
 .xm-img-cover { width:100%; height:100%; object-fit:cover; }
 .xm-ratio-16x9 { aspect-ratio:16/9; overflow:hidden; } .xm-ratio-4x3 { aspect-ratio:4/3; overflow:hidden; } .xm-ratio-1x1 { aspect-ratio:1/1; overflow:hidden; } .xm-ratio-3x2 { aspect-ratio:3/2; overflow:hidden; }
 .xm-chip { display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .65rem; border-radius:999px; font-size:.75rem; font-weight:600; background:rgba(4,51,195,.1); color:var(--xm-blue); }
 .xm-stat { border-left:4px solid var(--xm-blue); }
-.xm-stat.danger { border-color:var(--xm-red); } .xm-stat.success { border-color:#0B7A4B; } .xm-stat.warning { border-color:#F0A800; } .xm-stat.violet { border-color:var(--xm-violet); }
+.xm-stat.danger { border-color:var(--xm-red); } .xm-stat.success { border-color:var(--xm-green-700); } .xm-stat.warning { border-color:var(--xm-amber-500); } .xm-stat.violet { border-color:var(--xm-violet); }
 .xm-assistant-msg { max-width:85%; }
 .xm-typing span { display:inline-block; width:6px; height:6px; margin:0 1px; border-radius:50%; background:#8E88A0; animation:xmtyping 1s infinite; } .xm-typing span:nth-child(2){animation-delay:.15s} .xm-typing span:nth-child(3){animation-delay:.3s}
 @keyframes xmtyping { 0%,80%,100%{transform:scale(.6);opacity:.5} 40%{transform:scale(1);opacity:1} }
@@ -104,9 +104,8 @@ body:not(.xm-admin) > footer .container { max-width: var(--xm-container-max); }
 .vstack > .card, .vstack > article { align-self: stretch; }
 /* Accessibilité (WCAG 2.2 AA) */
 .xm-skip-link { position: absolute; left: .75rem; top: -4rem; z-index: 2000; background: var(--xm-blue); color: #fff; padding: .6rem 1rem; border-radius: .5rem; font-weight: 700; text-decoration: none; transition: top .15s; }
-.xm-skip-link:focus { top: .75rem; color: #fff; outline: 3px solid #F0A800; outline-offset: 2px; }
+.xm-skip-link:focus { top: .75rem; color: var(--xm-neutral-0); outline: 3px solid var(--xm-focus-ring); outline-offset: 2px; }
 main:focus { outline: none; }
-:where(a, button, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid #F0A800; outline-offset: 2px; }
 .btn-sm, .nav-link, .page-link { min-height: 24px; }
 @media (prefers-reduced-motion: reduce) { .xm-card-hover, .xm-card-hover:hover { transition: none; transform: none; } html { scroll-behavior: auto !important; } }
 /* Couvertures de marque */
@@ -146,7 +145,7 @@ main:focus { outline: none; }
 .xm-hero-bg :is(h1, h2, h3, .h1, .h2, .h3) { color: #fff; }
 .xm-hero-bg .xm-hero-sub { color: rgba(255,255,255,.92); }
 .xm-hero-page { position: relative; overflow: hidden; }
-.xm-hero-page::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: linear-gradient(90deg,#E30E0E,#F0A800,#0B7A4B,#0433C3,#6F2C91); }
+.xm-hero-page::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: linear-gradient(90deg,var(--xm-red-500),var(--xm-amber-500),var(--xm-green-700),var(--xm-blue-500),var(--xm-violet-700)); }
 
 /* ---------- Administration : recherche globale, notifications, tableaux paginés ---------- */
 .xm-gsearch { width: min(300px, 22vw); }

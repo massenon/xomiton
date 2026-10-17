@@ -16,11 +16,13 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 |---|---|---|
 | Cadre | [MASTER_PROMPT.md](MASTER_PROMPT.md) | Rôle, méthode, qualité, contraintes globales, définition de « terminé » |
 | Cadre | [FINAL_DESIGN_DIRECTION.md](FINAL_DESIGN_DIRECTION.md) | Ce qui doit rester identique au prototype |
+| Cadre | [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | **Plan d'implémentation** : phases P0 à P17, tâches, dépendances, décisions techniques, suivi d'avancement |
 | Produit | [BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md](BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md) | BRS, PRD, SRS, FRS, NFRS, règles métier |
 | Produit | [MODULE_SPECIFICATIONS.md](MODULE_SPECIFICATIONS.md) | Chaque module, écran par écran, onglet par onglet |
 | Produit | [ROLE_ET_PERMISSIONS.md](ROLE_ET_PERMISSIONS.md) | Rôles, matrice des permissions (§3), règles d'accès |
 | Technique | [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) | Clean Architecture, Laravel, Livewire, Vue, Flutter, API, moteur de synchronisation |
 | Technique | [DATABASE_ENGINEERING.md](DATABASE_ENGINEERING.md) | Modèle de données, ERD, dictionnaire, migrations, contraintes |
+| Technique | [DATABASE_DICTIONARY.md](DATABASE_DICTIONARY.md) | Dictionnaire complet colonne par colonne, enums PHP, résolution des écarts avec le prototype, lots de migrations |
 | Technique | [DEVELOPMENT_STANDARDS.md](DEVELOPMENT_STANDARDS.md) | Conventions Laravel, Livewire, Vue, JS, validation, sécurité, tests |
 | Technique | [NOTIFICATIONS_INSTRUCTION.md](NOTIFICATIONS_INSTRUCTION.md) | Canaux, événements, toasts SweetAlert2, e-mails, push |
 | Technique | [LOGIN_INSCRPTION_MULTISTEP_USER_INSTRUCTION.md](LOGIN_INSCRPTION_MULTISTEP_USER_INSTRUCTION.md) | Connexion, inscription en 4 phases, OTP e-mail, mot de passe oublié |
