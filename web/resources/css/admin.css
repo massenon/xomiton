@@ -1,0 +1,19 @@
+/*
+ * Compléments de l'administration (Livewire) : éditeur riche, listes déroulantes,
+ * sélecteur de dates et toasts. Les couleurs sont ramenées aux jetons --xm-*.
+ */
+@import 'quill/dist/quill.snow.css';
+@import 'choices.js/public/assets/styles/choices.min.css';
+@import 'flatpickr/dist/flatpickr.min.css';
+
+.swal2-popup { font-family: var(--xm-font-body); border-radius: 16px; }
+.swal2-title { font-family: var(--xm-font-heading); }
+.swal2-styled.swal2-confirm { background-color: var(--xm-primary) !important; }
+.swal2-styled.swal2-deny, .swal2-styled.swal2-confirm.xm-danger { background-color: var(--xm-danger) !important; }
+.swal2-icon.swal2-success { color: var(--xm-success); border-color: var(--xm-success); }
+.swal2-icon.swal2-error { color: var(--xm-danger); border-color: var(--xm-danger); }
+.swal2-timer-progress-bar { background: var(--xm-primary); }
+
+.ql-toolbar.ql-snow, .ql-container.ql-snow { border-color: var(--xm-border); }
+.ql-toolbar.ql-snow { border-radius: 8px 8px 0 0; }
+.ql-container.ql-snow { border-radius: 0 0 8px 8px; min-height: 240px; font-family: var(--xm-font-body); }

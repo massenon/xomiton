@@ -53,6 +53,7 @@
   --xm-text: var(--xm-neutral-900);
   --xm-text-muted: var(--xm-neutral-600);
   --xm-focus-ring: var(--xm-blue-500);
+  --xm-footer-bg: #0A1450;              /* pied de page public (repris du prototype) */
 
   /* Triplets RVB : requis par Bootstrap (text-bg-*, ombres, focus) qui compose rgba(var(--bs-*-rgb), .x) */
   --xm-primary-rgb: 4, 51, 195;

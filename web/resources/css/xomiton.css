@@ -1,0 +1,13 @@
+/*
+ * Feuille de style commune aux trois espaces (public, membre/pair, administration).
+ * Ordre imposé par le design system (UI_UX_DESIGN_SYSTEM.md §1) :
+ * style.css (thème Social, jamais modifié) → tokens → social-xomiton → components → xomiton.
+ */
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import './theme/style.css';
+@import './theme/fonts.css';
+@import './theme/tokens.css';
+@import './theme/social-xomiton.css';
+@import './theme/components.css';
+@import './theme/xomiton.css';
+@import './app/layouts.css';

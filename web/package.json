@@ -1,0 +1,45 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "e2e": "playwright test"
+    },
+    "dependencies": {
+        "@alpinejs/focus": "^3.14.9",
+        "@inertiajs/vue3": "^2.0.0",
+        "alpinejs": "^3.14.9",
+        "axios": "^1.11.0",
+        "bootstrap": "^5.3.3",
+        "bootstrap-icons": "^1.11.3",
+        "chart.js": "^4.4.7",
+        "choices.js": "^11.0.2",
+        "flatpickr": "^4.6.13",
+        "idb": "^8.0.0",
+        "pinia": "^2.3.0",
+        "quill": "^2.0.3",
+        "sweetalert2": "^11.14.5",
+        "vue": "^3.5.13",
+        "vue-i18n": "^10.0.5"
+    },
+    "devDependencies": {
+        "@axe-core/playwright": "^4.10.1",
+        "@playwright/test": "^1.49.1",
+        "@testing-library/vue": "^8.1.0",
+        "@types/alpinejs": "^3.13.11",
+        "@vitejs/plugin-vue": "^6.0.0",
+        "@vue/test-utils": "^2.4.6",
+        "concurrently": "^9.0.1",
+        "jsdom": "^26.0.0",
+        "laravel-vite-plugin": "^2.0.0",
+        "typescript": "^5.7.2",
+        "vite": "^7.0.7",
+        "vitest": "^3.2.0",
+        "vue-tsc": "^3.0.0"
+    }
+}

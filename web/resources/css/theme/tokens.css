@@ -1,0 +1,160 @@
+/* ==========================================================================
+   Xomiton — design tokens (source unique, v1.0.0, 2026-10-08)
+   Couches : primitive -> semantic -> component. Les composants n'utilisent
+   QUE les variables sémantiques/composant (--xm-*), jamais un hexadécimal.
+   Jumeau JSON : design-tokens.json (réutilisé par Flutter).
+   ========================================================================== */
+
+:root {
+  /* ---------- 1. PRIMITIVES ---------- */
+  --xm-blue-50:#EBEFFA; --xm-blue-100:#D7DEF5; --xm-blue-200:#AFBEEC; --xm-blue-300:#8299E1; --xm-blue-400:#4366D2;
+  --xm-blue-500:#0433C3; --xm-blue-600:#032BA6; --xm-blue-700:#032488; --xm-blue-800:#021C6B; --xm-blue-900:#02134A;
+  --xm-blue-dark-accent:#7C97FF; --xm-blue-dark-accent-hover:#9DB1FF;
+
+  --xm-red-50:#FDECEC; --xm-red-100:#FBD8D8; --xm-red-200:#F6B2B2; --xm-red-300:#F18686; --xm-red-400:#EA4A4A;
+  --xm-red-500:#E30E0E; --xm-red-600:#C10C0C; --xm-red-700:#9F0A0A; --xm-red-800:#7D0808; --xm-red-900:#560505;
+  --xm-red-dark-accent:#FF6B6B; --xm-red-dark-accent-hover:#FF8787;
+
+  --xm-neutral-0:#FFFFFF; --xm-neutral-25:#FBF7FA; --xm-neutral-100:#F3EDF4; --xm-neutral-200:#E4DCE6;
+  --xm-neutral-400:#8E88A0; --xm-neutral-600:#5B5670; --xm-neutral-900:#1B1630;
+  --xm-neutral-d-0:#0E1020; --xm-neutral-d-100:#171A2E; --xm-neutral-d-200:#2A2E48; --xm-neutral-d-600:#A9A5C0; --xm-neutral-d-900:#EDEAF7;
+
+  --xm-violet-700:#6F2C91; --xm-rose-600:#C2255C; --xm-orange-700:#B84B00;
+  --xm-green-700:#0B7A4B;  --xm-amber-500:#F0A800; --xm-sky-700:#1864AB;
+
+  /* ---------- 2. SEMANTIC (thème clair) ---------- */
+  --xm-primary: var(--xm-blue-500);
+  --xm-primary-hover: var(--xm-blue-600);
+  --xm-primary-active: var(--xm-blue-700);
+  --xm-primary-subtle: var(--xm-blue-50);
+  --xm-primary-subtle-text: var(--xm-blue-800);
+  --xm-on-primary: var(--xm-neutral-0);
+
+  --xm-secondary: var(--xm-red-500);
+  --xm-secondary-hover: var(--xm-red-600);
+  --xm-secondary-active: var(--xm-red-700);
+  --xm-secondary-subtle: var(--xm-red-50);
+  --xm-secondary-subtle-text: var(--xm-red-700);
+  --xm-on-secondary: var(--xm-neutral-0);
+
+  --xm-danger: var(--xm-red-500);          /* rouge = attention : SOS, signalement, critique, suppression */
+  --xm-success: var(--xm-green-700);
+  --xm-warning: var(--xm-amber-500);
+  --xm-on-warning: var(--xm-neutral-900);
+  --xm-info: var(--xm-sky-700);
+  --xm-accent-violet: var(--xm-violet-700);
+  --xm-accent-rose: var(--xm-rose-600);
+  --xm-accent-orange: var(--xm-orange-700);
+
+  --xm-bg: var(--xm-neutral-25);
+  --xm-surface: var(--xm-neutral-0);
+  --xm-surface-muted: var(--xm-neutral-100);
+  --xm-border: var(--xm-neutral-200);
+  --xm-text: var(--xm-neutral-900);
+  --xm-text-muted: var(--xm-neutral-600);
+  --xm-focus-ring: var(--xm-blue-500);
+  --xm-footer-bg: #0A1450;              /* pied de page public (repris du prototype) */
+
+  /* Triplets RVB : requis par Bootstrap (text-bg-*, ombres, focus) qui compose rgba(var(--bs-*-rgb), .x) */
+  --xm-primary-rgb: 4, 51, 195;
+  --xm-secondary-rgb: 227, 14, 14;
+  --xm-success-rgb: 11, 122, 75;
+  --xm-info-rgb: 24, 100, 171;
+  --xm-warning-rgb: 240, 168, 0;
+
+  /* ---------- Typographie ---------- */
+  --xm-font-heading: "Montserrat", "Segoe UI", Arial, sans-serif;   /* titres : Montserrat */
+  --xm-font-subtitle: Arial, "Liberation Sans", Helvetica, sans-serif; /* sous-titres : Arial */
+  --xm-font-body: Arial, "Liberation Sans", Helvetica, sans-serif;     /* texte courant : Arial (hypothèse, voir DECISIONS) */
+
+  --xm-fs-display: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+  --xm-fs-h1: clamp(2rem, 1.5rem + 2.2vw, 2.75rem);
+  --xm-fs-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.125rem);
+  --xm-fs-h3: clamp(1.375rem, 1.2rem + 0.8vw, 1.625rem);
+  --xm-fs-h4: 1.25rem;
+  --xm-fs-h5: 1.125rem;
+  --xm-fs-lead: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+  --xm-fs-body: 1rem;
+  --xm-fs-small: 0.875rem;
+  --xm-fs-caption: 0.8125rem;
+  --xm-lh-heading: 1.2;
+  --xm-lh-body: 1.6;
+  --xm-measure: 68ch;
+
+  /* ---------- Espacement, formes, mouvement ---------- */
+  --xm-space-1:4px; --xm-space-2:8px; --xm-space-3:12px; --xm-space-4:16px; --xm-space-5:24px;
+  --xm-space-6:32px; --xm-space-7:48px; --xm-space-8:64px; --xm-space-9:96px;
+  --xm-radius-sm:6px; --xm-radius-md:8px; --xm-radius-lg:16px; --xm-radius-pill:999px;
+  --xm-shadow-sm: 0 1px 2px rgb(27 22 48 / .08), 0 1px 3px rgb(27 22 48 / .06);
+  --xm-shadow-lg: 0 12px 32px rgb(27 22 48 / .16);
+  --xm-dur-fast:120ms; --xm-dur-base:200ms; --xm-dur-slow:300ms;
+  --xm-ease-out: cubic-bezier(.2,.8,.2,1);
+  --xm-target-min: 44px;
+
+  /* ---------- 3. COMPOSANTS ---------- */
+  --xm-button-radius: var(--xm-radius-md);
+  --xm-button-min-h: var(--xm-target-min);
+  --xm-button-px: var(--xm-space-5);
+  --xm-card-radius: var(--xm-radius-lg);
+  --xm-card-padding: var(--xm-space-5);
+  --xm-field-radius: var(--xm-radius-md);
+  --xm-focus-width: 3px;
+  --xm-focus-offset: 2px;
+  --xm-sos-size: 64px;
+
+  /* ---------- Data visualisation (charte ch. 13) : catégorielle, séquentielle, divergente ---------- */
+  --xm-chart-1:#0433C3; --xm-chart-2:#6F2C91; --xm-chart-3:#C2255C; --xm-chart-4:#B84B00; --xm-chart-5:#0B7A4B; --xm-chart-6:#8E88A0;
+  --xm-chart-seq-1:#EBEFFA; --xm-chart-seq-2:#AFBEEC; --xm-chart-seq-3:#4366D2; --xm-chart-seq-4:#032BA6; --xm-chart-seq-5:#02134A;
+  --xm-chart-div-1:#02134A; --xm-chart-div-2:#4366D2; --xm-chart-div-mid:#F3EDF4; --xm-chart-div-4:#E58A8A; --xm-chart-div-5:#9F0A0A;
+  --xm-chart-masked: repeating-linear-gradient(45deg,#F6F2F7 0 2px,#E4DCE6 2px 4px);
+
+  color-scheme: light;
+}
+
+/* ---------- Thème sombre : sombre explicite OU préférence système si non forcé en clair ---------- */
+:root[data-bs-theme="dark"],
+:root[data-theme="dark"] {
+  --xm-primary: var(--xm-blue-dark-accent);
+  --xm-primary-hover: var(--xm-blue-dark-accent-hover);
+  --xm-primary-active: var(--xm-blue-300);
+  --xm-primary-subtle: #1B2347;
+  --xm-primary-subtle-text: var(--xm-blue-dark-accent-hover);
+  --xm-on-primary: var(--xm-neutral-d-0);
+
+  --xm-secondary: var(--xm-red-dark-accent);
+  --xm-secondary-hover: var(--xm-red-dark-accent-hover);
+  --xm-secondary-active: var(--xm-red-300);
+  --xm-secondary-subtle: #3A1519;
+  --xm-secondary-subtle-text: var(--xm-red-dark-accent-hover);
+  --xm-on-secondary: var(--xm-neutral-d-0);
+
+  --xm-danger: var(--xm-red-dark-accent);
+  --xm-success: #4DD39D; --xm-warning: #FFC94D; --xm-on-warning: var(--xm-neutral-d-0); --xm-info: #7AB2FF;
+  --xm-accent-violet: #C79BE6; --xm-accent-rose: #FF8FB1; --xm-accent-orange: #FF9A5C;
+
+  --xm-bg: var(--xm-neutral-d-0);
+  --xm-surface: var(--xm-neutral-d-100);
+  --xm-surface-muted: #1F2340;
+  --xm-border: var(--xm-neutral-d-200);
+  --xm-text: var(--xm-neutral-d-900);
+  --xm-text-muted: var(--xm-neutral-d-600);
+  --xm-focus-ring: var(--xm-blue-dark-accent);
+  --xm-primary-rgb: 124, 151, 255;
+  --xm-secondary-rgb: 255, 107, 107;
+  --xm-success-rgb: 77, 211, 157;
+  --xm-info-rgb: 122, 178, 255;
+  --xm-warning-rgb: 255, 201, 77;
+  --xm-shadow-sm: 0 1px 2px rgb(0 0 0 / .4);
+  --xm-shadow-lg: 0 12px 32px rgb(0 0 0 / .5);
+  --xm-chart-1:#7C97FF; --xm-chart-2:#C79BE6; --xm-chart-3:#FF8FB1; --xm-chart-4:#FF9A5C; --xm-chart-5:#4DD39D; --xm-chart-6:#A9A5C0;
+  --xm-chart-seq-1:#1B2347; --xm-chart-seq-2:#2F4396; --xm-chart-seq-3:#5B79E0; --xm-chart-seq-4:#9DB1FF; --xm-chart-seq-5:#D7DEFF;
+  --xm-chart-div-1:#D7DEFF; --xm-chart-div-2:#7C97FF; --xm-chart-div-mid:#2A2E48; --xm-chart-div-4:#FF8787; --xm-chart-div-5:#FF4D4D;
+  --xm-chart-masked: repeating-linear-gradient(45deg,#171A2E 0 2px,#2A2E48 2px 4px);
+  color-scheme: dark;
+}
+
+/* ---------- Mouvement réduit ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root { --xm-dur-fast:0.01ms; --xm-dur-base:0.01ms; --xm-dur-slow:0.01ms; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

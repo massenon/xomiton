@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Couche de surcharge « Social → Xomiton » (v1.0.0)
+   Se charge APRÈS assets/css/style.css (Bootstrap 5.3.3 compilé + thème Social) et tokens.css.
+   Pourquoi une couche et pas un rebuild Sass : le thème Social n'est livré qu'en CSS compilé
+   (aucune source .scss) et .btn-primary & co. y ont leurs couleurs en dur. Cette couche réécrit
+   les variables --bs-* et les composants concernés ; style.css n'est jamais modifié.
+   Règle : aucun hexadécimal ici, uniquement var(--xm-*).
+   ========================================================================== */
+
+:root,
+[data-bs-theme="light"],
+[data-bs-theme="dark"] {
+  --bs-primary: var(--xm-primary);
+  --bs-secondary: var(--xm-secondary);
+  --bs-success: var(--xm-success);
+  --bs-info: var(--xm-info);
+  --bs-warning: var(--xm-warning);
+  --bs-danger: var(--xm-danger);
+  --bs-primary-rgb: var(--xm-primary-rgb);
+  --bs-secondary-rgb: var(--xm-secondary-rgb);
+  --bs-danger-rgb: var(--xm-secondary-rgb);
+  --bs-success-rgb: var(--xm-success-rgb);
+  --bs-info-rgb: var(--xm-info-rgb);
+  --bs-warning-rgb: var(--xm-warning-rgb);
+  --bs-body-font-family: var(--xm-font-body);
+  --bs-body-font-size: var(--xm-fs-body);
+  --bs-body-line-height: var(--xm-lh-body);
+  --bs-body-color: var(--xm-text);
+  --bs-body-bg: var(--xm-bg);
+  --bs-secondary-color: var(--xm-text-muted);   /* .text-body-secondary = gris neutre, PAS le rouge de marque */
+  --bs-tertiary-bg: var(--xm-surface-muted);
+  --bs-border-color: var(--xm-border);
+  --bs-link-color: var(--xm-primary);
+  --bs-link-hover-color: var(--xm-primary-hover);
+  --bs-border-radius: var(--xm-radius-md);
+  --bs-border-radius-lg: var(--xm-radius-lg);
+  --bs-focus-ring-color: color-mix(in srgb, var(--xm-focus-ring) 35%, transparent);
+}
+
+/* ---------- Typographie ---------- */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-1, .display-2, .display-3, .display-4, .navbar-brand, .btn {
+  font-family: var(--xm-font-heading);
+  line-height: var(--xm-lh-heading);
+}
+h1, .h1 { font-size: var(--xm-fs-h1); font-weight: 800; }
+h2, .h2 { font-size: var(--xm-fs-h2); font-weight: 700; }
+h3, .h3 { font-size: var(--xm-fs-h3); font-weight: 700; }
+h4, .h4 { font-size: var(--xm-fs-h4); font-weight: 600; }
+h5, .h5 { font-size: var(--xm-fs-h5); font-weight: 600; }
+.display-3, .display-4 { font-size: var(--xm-fs-display); font-weight: 800; letter-spacing: -0.01em; }
+.lead, .xm-subtitle { font-family: var(--xm-font-subtitle); font-size: var(--xm-fs-lead); font-weight: 400; line-height: 1.5; }
+.xm-prose { max-width: var(--xm-measure); }
+
+/* ---------- Boutons (réécrits : couleurs en dur dans style.css) ---------- */
+.btn { min-height: var(--xm-button-min-h); border-radius: var(--xm-button-radius); font-weight: 700; padding-inline: var(--xm-button-px); transition: background-color var(--xm-dur-base) var(--xm-ease-out), border-color var(--xm-dur-base) var(--xm-ease-out), color var(--xm-dur-base) var(--xm-ease-out); }
+.btn-sm { min-height: 36px; padding-inline: var(--xm-space-4); }
+.btn-lg { min-height: 52px; }
+
+.btn-primary {
+  --bs-btn-color: var(--xm-on-primary); --bs-btn-bg: var(--xm-primary); --bs-btn-border-color: var(--xm-primary);
+  --bs-btn-hover-color: var(--xm-on-primary); --bs-btn-hover-bg: var(--xm-primary-hover); --bs-btn-hover-border-color: var(--xm-primary-hover);
+  --bs-btn-active-color: var(--xm-on-primary); --bs-btn-active-bg: var(--xm-primary-active); --bs-btn-active-border-color: var(--xm-primary-active);
+  --bs-btn-disabled-color: var(--xm-on-primary); --bs-btn-disabled-bg: var(--xm-primary); --bs-btn-disabled-border-color: var(--xm-primary);
+}
+.btn-secondary, .btn-danger {
+  --bs-btn-color: var(--xm-on-secondary); --bs-btn-bg: var(--xm-secondary); --bs-btn-border-color: var(--xm-secondary);
+  --bs-btn-hover-color: var(--xm-on-secondary); --bs-btn-hover-bg: var(--xm-secondary-hover); --bs-btn-hover-border-color: var(--xm-secondary-hover);
+  --bs-btn-active-color: var(--xm-on-secondary); --bs-btn-active-bg: var(--xm-secondary-active); --bs-btn-active-border-color: var(--xm-secondary-active);
+  --bs-btn-disabled-color: var(--xm-on-secondary); --bs-btn-disabled-bg: var(--xm-secondary); --bs-btn-disabled-border-color: var(--xm-secondary);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--xm-primary); --bs-btn-border-color: var(--xm-primary);
+  --bs-btn-hover-color: var(--xm-on-primary); --bs-btn-hover-bg: var(--xm-primary); --bs-btn-hover-border-color: var(--xm-primary);
+  --bs-btn-active-color: var(--xm-on-primary); --bs-btn-active-bg: var(--xm-primary-active); --bs-btn-active-border-color: var(--xm-primary-active);
+  --bs-btn-disabled-color: var(--xm-primary); --bs-btn-disabled-border-color: var(--xm-primary);
+}
+.btn-outline-secondary, .btn-outline-danger {
+  --bs-btn-color: var(--xm-secondary); --bs-btn-border-color: var(--xm-secondary);
+  --bs-btn-hover-color: var(--xm-on-secondary); --bs-btn-hover-bg: var(--xm-secondary); --bs-btn-hover-border-color: var(--xm-secondary);
+  --bs-btn-active-color: var(--xm-on-secondary); --bs-btn-active-bg: var(--xm-secondary-active); --bs-btn-active-border-color: var(--xm-secondary-active);
+  --bs-btn-disabled-color: var(--xm-secondary); --bs-btn-disabled-border-color: var(--xm-secondary);
+}
+.btn-light { --bs-btn-bg: var(--xm-surface); --bs-btn-border-color: var(--xm-border); --bs-btn-color: var(--xm-text); --bs-btn-hover-bg: var(--xm-surface-muted); --bs-btn-hover-border-color: var(--xm-border); --bs-btn-hover-color: var(--xm-text); }
+
+/* ---------- Utilitaires de couleur ---------- */
+.text-primary { color: var(--xm-primary) !important; }
+.text-secondary, .text-danger { color: var(--xm-secondary) !important; }
+.bg-primary { background-color: var(--xm-primary) !important; color: var(--xm-on-primary); }
+.bg-secondary, .bg-danger { background-color: var(--xm-secondary) !important; color: var(--xm-on-secondary); }
+.bg-primary-subtle { background-color: var(--xm-primary-subtle) !important; color: var(--xm-primary-subtle-text); }
+.bg-danger-subtle, .bg-secondary-subtle { background-color: var(--xm-secondary-subtle) !important; color: var(--xm-secondary-subtle-text); }
+.bg-light { background-color: var(--xm-surface-muted) !important; }
+.border-primary { border-color: var(--xm-primary) !important; }
+.border-secondary, .border-danger { border-color: var(--xm-secondary) !important; }
+.bg-warning { color: var(--xm-on-warning); }
+.link-primary { color: var(--xm-primary) !important; }
+
+/* ---------- Surfaces ---------- */
+.card { --bs-card-bg: var(--xm-surface); --bs-card-border-color: var(--xm-border); --bs-card-border-radius: var(--xm-card-radius); --bs-card-spacer-x: var(--xm-card-padding); --bs-card-spacer-y: var(--xm-card-padding); }
+.xm-card { background: var(--xm-surface); border: 1px solid var(--xm-border); border-radius: var(--xm-card-radius); padding: var(--xm-card-padding); box-shadow: var(--xm-shadow-sm); }
+.xm-card--interactive { transition: transform var(--xm-dur-base) var(--xm-ease-out), box-shadow var(--xm-dur-base) var(--xm-ease-out); }
+.xm-card--interactive:hover { transform: translateY(-2px); box-shadow: var(--xm-shadow-lg); }
+
+/* ---------- Formulaires ---------- */
+.form-control, .form-select { min-height: var(--xm-target-min); border-radius: var(--xm-field-radius); border-color: var(--xm-border); background-color: var(--xm-surface); color: var(--xm-text); }
+.form-control:focus, .form-select:focus { border-color: var(--xm-focus-ring); box-shadow: 0 0 0 var(--xm-focus-width) color-mix(in srgb, var(--xm-focus-ring) 35%, transparent); }
+.form-check-input { width: 1.25rem; height: 1.25rem; }
+.form-check-input:checked { background-color: var(--xm-primary); border-color: var(--xm-primary); }
+.form-label { font-weight: 700; }
+.form-text, .xm-hint { color: var(--xm-text-muted); font-size: var(--xm-fs-small); }
+.is-invalid, .form-control.is-invalid { border-color: var(--xm-danger); }
+.invalid-feedback { color: var(--xm-danger); font-size: var(--xm-fs-small); font-weight: 700; }
+
+/* ---------- Focus visible (WCAG 2.2 : 2.4.7, 2.4.11) ---------- */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--xm-focus-width) solid var(--xm-focus-ring);
+  outline-offset: var(--xm-focus-offset);
+  box-shadow: none;
+}
+html { scroll-padding-top: 96px; }          /* le header sticky ne masque jamais l'élément focalisé */
+.xm-skip-link { position: absolute; left: var(--xm-space-4); top: -100px; z-index: 2000; background: var(--xm-surface); color: var(--xm-text); padding: var(--xm-space-3) var(--xm-space-4); border-radius: var(--xm-radius-md); border: 2px solid var(--xm-focus-ring); }
+.xm-skip-link:focus { top: var(--xm-space-3); }
+
+/* ---------- Navigation, badges, alertes ---------- */
+.navbar .nav-link { font-weight: 600; min-height: var(--xm-target-min); display: flex; align-items: center; }
+.navbar .nav-link.active, .navbar .nav-link:hover { color: var(--xm-primary); }
+.nav-pills { --bs-nav-pills-link-active-bg: var(--xm-primary); --bs-nav-pills-link-active-color: var(--xm-on-primary); }
+.badge.bg-primary { background-color: var(--xm-primary) !important; }
+.text-bg-primary { color: var(--xm-on-primary) !important; background-color: var(--xm-primary) !important; }
+.text-bg-secondary, .text-bg-danger { color: var(--xm-on-secondary) !important; background-color: var(--xm-secondary) !important; }
+.text-bg-success { color: var(--xm-bg) !important; background-color: var(--xm-success) !important; }
+.text-bg-info { color: var(--xm-bg) !important; background-color: var(--xm-info) !important; }
+.text-bg-warning { color: var(--xm-on-warning) !important; background-color: var(--xm-warning) !important; }
+.alert-danger { --bs-alert-bg: var(--xm-secondary-subtle); --bs-alert-color: var(--xm-secondary-subtle-text); --bs-alert-border-color: var(--xm-secondary); }
+.alert-info { --bs-alert-bg: var(--xm-primary-subtle); --bs-alert-color: var(--xm-primary-subtle-text); --bs-alert-border-color: var(--xm-primary); }
+
+/* ---------- Urgence & statuts : couleur + icône + texte (jamais la couleur seule) ---------- */
+.xm-urgency { display: inline-flex; align-items: center; gap: var(--xm-space-2); padding: 2px var(--xm-space-3); border-radius: var(--xm-radius-pill); font-size: var(--xm-fs-small); font-weight: 700; border: 1px solid currentColor; background: var(--xm-surface); }
+.xm-urgency--low { color: var(--xm-info); }
+.xm-urgency--medium { color: var(--xm-on-warning); background: var(--xm-warning); border-color: var(--xm-warning); }
+.xm-urgency--high { color: var(--xm-accent-orange); }
+.xm-urgency--critical { color: var(--xm-on-secondary); background: var(--xm-danger); border-color: var(--xm-danger); }
+
+/* ---------- SOS ---------- */
+.xm-sos { width: var(--xm-sos-size); height: var(--xm-sos-size); border-radius: 50%; border: 0; background: var(--xm-secondary); color: var(--xm-on-secondary); font-family: var(--xm-font-heading); font-weight: 800; letter-spacing: .02em; box-shadow: var(--xm-shadow-lg); position: relative; }
+.xm-sos:hover { background: var(--xm-secondary-hover); }
+.xm-sos::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--xm-secondary); opacity: 0; }
+.xm-sos[data-holding="true"]::after { opacity: 1; animation: xm-sos-hold 2s linear forwards; }
+@keyframes xm-sos-hold { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ---------- Hero fluide (corrige height: 936px fixe de la vitrine) ---------- */
+.xm-hero { min-height: clamp(520px, 78vh, 780px); background-color: var(--xm-bg); background-size: cover; background-position: center; display: flex; align-items: center; }
+.xm-hero__panel { background: color-mix(in srgb, var(--xm-neutral-d-0) 72%, transparent); color: #fff; border-radius: var(--xm-radius-lg); padding: var(--xm-space-6); backdrop-filter: blur(6px); }
+.xm-hero__panel .btn-primary { --bs-btn-bg: var(--xm-blue-300); --bs-btn-border-color: var(--xm-blue-300); --bs-btn-color: var(--xm-neutral-900); --bs-btn-hover-bg: var(--xm-blue-200); --bs-btn-hover-border-color: var(--xm-blue-200); --bs-btn-hover-color: var(--xm-neutral-900); }
+
+/* ---------- Mode sombre : ajustements propres à Social ---------- */
+[data-bs-theme="dark"] .card, [data-bs-theme="dark"] .xm-card { background: var(--xm-surface); }
+[data-bs-theme="dark"] .btn-light { --bs-btn-bg: var(--xm-surface-muted); --bs-btn-color: var(--xm-text); }
+[data-bs-theme="dark"] .navbar { background-color: var(--xm-surface); }

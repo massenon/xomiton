@@ -1,0 +1,10 @@
+/*
+ * Styles de gabarit portés depuis les <style> en ligne des partials du prototype
+ * (public-footer.php). Jetons uniquement.
+ */
+.xm-pub-footer { background: var(--xm-footer-bg); padding-bottom: 4.5rem !important; }
+.xm-flinks li { margin-bottom: .35rem; }
+.xm-flinks a { color: rgba(255, 255, 255, .75); text-decoration: none; }
+.xm-flinks a:hover, .xm-flinks a:focus-visible { color: var(--xm-neutral-0); text-decoration: underline; }
+.xm-nl-form .form-control { min-height: 44px; }
+.xm-nl-form .form-check-input { border-color: rgba(255, 255, 255, .6); }
