@@ -54,6 +54,14 @@
   --xm-text-muted: var(--xm-neutral-600);
   --xm-focus-ring: var(--xm-blue-500);
   --xm-footer-bg: #0A1450;              /* pied de page public (repris du prototype) */
+  --xm-warning-text: #8A6100;            /* texte des badges « soft » warning (fond ambre translucide, contraste AA) */
+  --xm-badge-primary-text-dark: #8FA6FF; /* texte des badges « soft » primaires en thème sombre */
+  --xm-badge-danger-text-dark: #FF8A8A;  /* texte des badges « soft » danger en thème sombre */
+  --xm-admin-sidebar-text: #C9C6DC;      /* texte de la barre latérale d'administration (fond --xm-neutral-d-0) */
+  --xm-comic-caption-bg: #FFF3C4;        /* légende des cases de bande dessinée (jaune pâle) */
+  /* Do Glegbe (hygiène menstruelle) : sous-marque rouge brique / rose pâle, hors palette principale */
+  --xm-dg-red: #B3261E; --xm-dg-red-hover: #8E1D17; --xm-dg-blush: #FDF2F8; --xm-dg-border: #F7E3EB;
+  --xm-dg-bg-dark: #1C1520; --xm-dg-surface-dark: #261C2C; --xm-dg-border-dark: #3A2C42; --xm-dg-text-dark: #F1E9F5; --xm-dg-heading-dark: #F6EEF9;
 
   /* Triplets RVB : requis par Bootstrap (text-bg-*, ombres, focus) qui compose rgba(var(--bs-*-rgb), .x) */
   --xm-primary-rgb: 4, 51, 195;

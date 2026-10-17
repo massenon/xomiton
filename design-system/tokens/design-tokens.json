@@ -1,9 +1,9 @@
 {
   "$schema": "https://xomiton.org/design-tokens.schema.json",
   "name": "Xomiton Design Tokens",
-  "version": "1.0.0",
-  "updated": "2026-10-08",
-  "notes": "Trois couches : primitive -> semantic -> component. Aucun composant ne référence une valeur primitive directement. Valeurs de contraste calculées (WCAG 2.x), voir charte-graphique/CHARTE_GRAPHIQUE.md §4.",
+  "version": "1.1.0",
+  "updated": "2026-10-17",
+  "notes": "Trois couches : primitive -> semantic -> component. Aucun composant ne référence une valeur primitive directement. Valeurs de contraste calculées (WCAG 2.x), voir charte-graphique/CHARTE_GRAPHIQUE.md §4. v1.1.0 : jetons ajoutés pour le pied de page public, la barre latérale d'administration, les badges « soft », la légende des BD et la sous-marque Do Glegbe (valeurs reprises du prototype, cf. tokens.css).",
   "primitive": {
     "color": {
       "blue": {
@@ -149,7 +149,15 @@
       "color.border": "{primitive.color.neutral.200}",
       "color.text": "{primitive.color.neutral.900}",
       "color.text-muted": "{primitive.color.neutral.600}",
-      "color.focus-ring": "{primitive.color.blue.500}"
+      "color.focus-ring": "{primitive.color.blue.500}",
+      "color.footer-bg": "#0A1450",
+      "color.warning-text": "#8A6100",
+      "color.admin-sidebar-text": "#C9C6DC",
+      "color.comic-caption-bg": "#FFF3C4",
+      "color.dg-red": "#B3261E",
+      "color.dg-red-hover": "#8E1D17",
+      "color.dg-blush": "#FDF2F8",
+      "color.dg-border": "#F7E3EB"
     },
     "dark": {
       "color.primary": "{primitive.color.blue.dark-accent}",
@@ -178,7 +186,14 @@
       "color.border": "{primitive.color.neutral.d-200}",
       "color.text": "{primitive.color.neutral.d-900}",
       "color.text-muted": "{primitive.color.neutral.d-600}",
-      "color.focus-ring": "{primitive.color.blue.dark-accent}"
+      "color.focus-ring": "{primitive.color.blue.dark-accent}",
+      "color.badge-primary-text": "#8FA6FF",
+      "color.badge-danger-text": "#FF8A8A",
+      "color.dg-bg": "#1C1520",
+      "color.dg-surface": "#261C2C",
+      "color.dg-border": "#3A2C42",
+      "color.dg-text": "#F1E9F5",
+      "color.dg-heading": "#F6EEF9"
     },
     "typography": {
       "font.heading": "{primitive.font.family.montserrat}",
