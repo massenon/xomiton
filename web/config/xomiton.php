@@ -148,17 +148,38 @@ return [
     'reports' => [
         'chunk_rows' => 500,
         'max_rows' => 20000,
+        // Disque Laravel des fichiers de generated_reports (hors racine web) ; purgés par reports:purge après expires_at.
+        'disk' => env('XOMITON_REPORTS_DISK', 'local'),
     ],
 
     /*
-     * Téléversements (MASTER_PROMPT.md §4 Sécurité).
+     * Téléversements (P3-04, MASTER_PROMPT.md §4 Sécurité, DEVELOPMENT_STANDARDS.md §7) : App\Application\Shared\MediaUploader.
+     * Le type réel est lu dans le contenu (finfo), jamais dans l'extension ; les images sont ré-encodées par GD
+     * (métadonnées EXIF / ICC supprimées) ; tout fichier va sur le disque privé (storage/app/private) sauf demande
+     * explicite du disque public, réservé aux visuels non sensibles (avatars, couvertures, illustrations).
      */
     'uploads' => [
-        'image_mimes' => ['image/jpeg', 'image/png', 'image/webp'],
-        'image_max_kb' => 5120,
-        'document_mimes' => ['application/pdf'],
-        'document_max_kb' => 20480,
+        // Collections : types MIME réels acceptés et poids maximal (Ko).
+        'collections' => [
+            'images' => ['mimes' => ['image/jpeg', 'image/png', 'image/webp'], 'max_kb' => 5120],
+            'documents' => ['mimes' => ['application/pdf'], 'max_kb' => 20480],
+            'audio' => ['mimes' => ['audio/mpeg', 'audio/mp4', 'audio/x-m4a', 'audio/ogg'], 'max_kb' => 20480],
+            'video' => ['mimes' => ['video/mp4', 'video/webm'], 'max_kb' => 51200],
+        ],
+        'private_disk' => 'local',
+        'public_disk' => 'public',
+        // Disques qu'un lien signé (route media.signed) peut servir.
+        'signed_disks' => ['local'],
+        'signed_url_minutes' => 10,
+        // Images : ré-encodage GD (orientation EXIF appliquée, métadonnées retirées, côté long ≤ 2048 px),
+        // WebP + repli JPEG/PNG, variantes thumb / medium (côté long en px). Garde mémoire : surface maximale décodée.
         'reencode_images' => true,
+        'image_max_dimension' => 2048,
+        'image_max_pixels' => 25_000_000,
+        'image_webp' => true,
+        'image_keep_fallback' => true,
+        'image_quality' => 82,
+        'image_variants' => ['thumb' => 320, 'medium' => 1024],
     ],
 
     /*
@@ -169,10 +190,51 @@ return [
     ],
 
     /*
-     * Assistant (garde-fous de crise : escalade vers un humain, numéros d'urgence).
+     * Assistant (P3-09 App\Application\Shared\KnowledgeBaseAnswerer, P8-11) : garde-fous de crise évalués avant toute
+     * recherche (mots entiers, accents et casse ignorés), numéros d'urgence, seuil d'appariement de la base.
      */
     'assistant' => [
         'provider' => env('ASSISTANT_PROVIDER'),
-        'crisis_keywords' => ['suicide', 'me tuer', 'en danger', 'il va me tuer', 'frappée', 'violée'],
+        'crisis_keywords' => [
+            // Idées suicidaires, détresse vitale
+            'suicide', 'suicider', 'me suicider', 'me tuer', 'se tuer', 'en finir', 'mourir', 'envie de mourir', 'me faire du mal',
+            // Danger immédiat, menaces
+            'en danger', 'danger immédiat', 'il va me tuer', 'elle va me tuer', 'menace de mort', 'menacé de mort', 'menacée de mort', 'au secours',
+            // Violences physiques et sexuelles en cours
+            'viol', 'violé', 'violée', 'violer', 'frappe', 'frappé', 'frappée', 'frapper', 'me bat', 'battue', 'étranglé', 'étranglée',
+            // Privation de liberté
+            'enfermé', 'enfermée', 'séquestré', 'séquestrée',
+        ],
+        // Numéros affichés dans la réponse de crise ; surchargés par le paramètre `emergency_numbers` (settings) s'il existe.
+        // Valeurs du prototype (urgences.php) : à vérifier avec l'association avant la mise en production.
+        'emergency_numbers' => [
+            ['label' => 'Police secours', 'number' => '117'],
+            ['label' => 'Pompiers / secours', 'number' => '118'],
+            ['label' => 'Ligne d’écoute Xomiton', 'number' => '+229 01 97 38 88 47'],
+        ],
+        // Score minimal (0 à 1) pour qu'une entrée de la base réponde ; en dessous, repli avec suggestions.
+        'match_threshold' => 0.5,
+        'suggestions_count' => 3,
+    ],
+
+    /*
+     * Colonnes chiffrées (cast Eloquent `encrypted`, DATABASE_DICTIONARY.md « [chiffré] ») : liste exhaustive
+     * table => colonnes, parcourue par `xomiton:reencrypt` lors d'une rotation d'APP_KEY (P1-15, D7).
+     * Cas particulier : `settings.value` n'est chiffrée que pour les clés de type `secret` (App\Models\Setting),
+     * sous la forme d'une chaîne JSON contenant la charge chiffrée. Un test compare cette liste aux casts
+     * des modèles : toute colonne chiffrée ajoutée doit être déclarée ici.
+     */
+    'encrypted_columns' => [
+        'profiles' => ['gender_identity', 'orientation', 'trusted_contact_phone'],
+        'alerts' => ['description', 'lat', 'lng', 'contact'],
+        'alert_notes' => ['body'],
+        'cases' => ['notes'],
+        'case_forms' => ['facts_author', 'facts_description', 'services_note', 'consent_signatory'],
+        'case_followups' => ['comment'],
+        'messages' => ['body'],
+        'assistant_messages' => ['body'],
+        'social_channels' => ['access_token', 'refresh_token'],
+        'settings' => ['value'],
+        'sync_conflicts' => ['server_value', 'device_value', 'resolved_value'],
     ],
 ];
