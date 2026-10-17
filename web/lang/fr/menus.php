@@ -105,4 +105,58 @@ return [
         'footer' => 'Xomiton – Administration · version :version · :date',
         'breadcrumb_root' => 'Administration',
     ],
+
+    // --- Compléments P3-05 ---------------------------------------------------------------------------------------
+
+    // Barre d'onglets de l'application mobile (MICROCOPY.md §1 « Mobile »).
+    'mobile' => [
+        'home' => 'Accueil',
+        'feed' => 'Fil',
+        'alert' => 'Alerte',
+        'messages' => 'Messages',
+        'profile' => 'Profil',
+    ],
+
+    // Sections et entrées du sidenav membre absentes ci-dessus (prototype partials/sidenav.php).
+    'member_sections' => [
+        'social' => 'Réseau social',
+        'learn' => 'Apprendre',
+        'help' => 'Aide & protection',
+        'peer' => 'Pair animateur·rice',
+        'account' => 'Compte',
+    ],
+    'member_more' => [
+        'feed_full' => 'Fil d’actualité',
+        'messages_full' => 'Messages (Messenger)',
+        'who_to_follow_full' => 'Qui suivre et invitations',
+        'do_glegbe' => 'Do Glegbe (règles)',
+        'violences_short' => 'Violences',
+        'sos_full' => 'SOS – alerte GPS',
+        'collecte' => 'Collecte de données',
+        'saved_posts' => 'Publications enregistrées',
+        'medias' => 'Médiathèque',
+        'about' => 'À propos',
+        'privacy_terms' => 'Confidentialité & conditions',
+        'copyright' => '© :year Xomiton',
+        'stats_posts' => 'Publications',
+        'stats_followers' => 'Abonné·es',
+        'stats_following' => 'Abonnements',
+        'offline_banner' => 'Tu es hors connexion. Tes saisies sont conservées et partiront automatiquement au retour du réseau.',
+        'theme_toggle' => 'Changer de thème',
+        'language' => 'Langue',
+    ],
+
+    // Libellés accessibles de la navigation.
+    'a11y' => [
+        'main_nav' => 'Navigation principale',
+        'public_nav' => 'Navigation du site',
+        'member_nav' => 'Navigation de mon espace',
+        'admin_nav' => 'Navigation de l’administration',
+        'footer_nav' => 'Liens du pied de page',
+        'open_menu' => 'Ouvrir le menu',
+        'close_menu' => 'Fermer le menu',
+        'current_page' => 'page actuelle',
+        'collapse_sidebar' => 'Replier le menu',
+        'expand_sidebar' => 'Déplier le menu',
+    ],
 ];

@@ -142,7 +142,7 @@ return [
             'normale' => ['label' => 'Normale', 'color' => 'neutral', 'icon' => 'dash-circle'],
         ],
         'alert_type' => [
-            'denonciation' => ['label' => 'Dénonciation', 'color' => 'primary', 'soft' => true, 'icon' => 'megaphone'],
+            'denonciation' => ['label' => 'Signalement', 'color' => 'primary', 'soft' => true, 'icon' => 'megaphone'],
             'besoin' => ['label' => 'Besoin', 'color' => 'info', 'soft' => true, 'icon' => 'life-preserver'],
             'sos' => ['label' => 'SOS', 'color' => 'danger', 'icon' => 'geo-alt-fill'],
         ],

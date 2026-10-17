@@ -8,8 +8,9 @@ declare(strict_types=1);
  */
 return [
 
+    // Q29 : la valeur stockée reste `denonciation`, le libellé affiché est « Signalement ».
     'alert_type' => [
-        'denonciation' => 'Dénonciation',
+        'denonciation' => 'Signalement',
         'besoin' => 'Besoin',
         'sos' => 'SOS',
     ],

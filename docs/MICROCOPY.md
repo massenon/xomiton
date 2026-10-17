@@ -7,6 +7,8 @@ description: Microcopie de référence de Xomiton — libellés de menus, bouton
 
 Règle d'or : **le bouton dit ce qui va se passer, le toast confirme avec le même verbe.**
 
+Le registre (tu / vous) de chaque libellé suit la page qui l'affiche : règle par page dans [VOICE_AND_TONE.md](VOICE_AND_TONE.md) §3. Les libellés ci-dessous sont implémentés dans `web/lang/fr/` : `menus.php` (§1), `buttons.php` et `common.php` (§2), `validation.php` et `auth.php` (§4), `microcopy.php` (§5 et §6, états et confirmations de l'espace connecté), `admin.php` (états, modales et toasts de l'administration), `alerts.php` (§7), `errors.php` (pages d'erreur), `notifications.php`, `feed.php`, `community.php`, `profile.php`, `newsletter.php`, `dates.php`. À l'écran, les alertes de type « dénonciation » s'appellent toujours **signalement** (Q29).
+
 ## 1. Menus
 | Zone | Libellés |
 |---|---|
@@ -51,7 +53,8 @@ Règle d'or : **le bouton dit ce qui va se passer, le toast confirme avec le mê
 | Slug pris | « Le slug « … » est déjà utilisé par « … ». » |
 | Segment vide | « Aucun·e abonné·e actif·ve ne correspond à ce segment : élargissez les critères. » |
 | Consentement | « Cochez la case de consentement pour vous inscrire. » |
-| Session expirée | « Session expirée, veuillez réessayer. » |
+| Session expirée (formulaire public, vous) | « Votre session a expiré, veuillez réessayer. » — `errors.419.public` |
+| Session expirée (espace connecté et tunnel d'accès, tu) | « Ta session a expiré. Reconnecte-toi puis réessaie : rien n'a été envoyé. » — `errors.419.member` (deux clés, jamais une troisième ; `VOICE_AND_TONE.md` §3, Q36) |
 | Réseau | « Tu es hors connexion. Ton message partira dès que le réseau revient. » |
 
 ## 5. États vides
