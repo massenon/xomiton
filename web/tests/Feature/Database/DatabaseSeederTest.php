@@ -36,7 +36,7 @@ it('alimente tous les référentiels des lots dans l’ordre et reste idempotent
         ->and(ValidationRule::count())->toBe(12)
         ->and(Indicator::count())->toBe(16)
         ->and(SocialChannel::count())->toBe(6)
-        ->and(EmailTemplate::count())->toBe(8)
+        ->and(EmailTemplate::count())->toBe(9)
         ->and(NewsletterTag::count())->toBe(5)
         ->and(NewsletterInterest::count())->toBe(6)
         ->and(Setting::count())->toBeGreaterThan(0)

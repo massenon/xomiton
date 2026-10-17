@@ -474,6 +474,12 @@ class User extends Authenticatable
         return $this->status === UserStatus::Suspended;
     }
 
+    /** Q12 c : e-mail confirmé par le code OTP d'inscription (vérification différée, non bloquante). */
+    public function hasVerifiedEmail(): bool
+    {
+        return $this->email_verified_at !== null;
+    }
+
     // -- Anonymisation (DATABASE_ENGINEERING.md §6 : compte supprimé, logique 30 j puis anonymisation) ----
 
     /** Pseudo d'un compte anonymisé : `membre-supprimé-<id>`. */

@@ -29,7 +29,7 @@
     </div>
     @vite('resources/js/admin.js')
     @livewireScripts
-    <script>
+    <script nonce="{{ Illuminate\Support\Facades\Vite::cspNonce() }}">
         document.getElementById('xmSidebarToggle')?.addEventListener('click', (e) => {
             const open = document.getElementById('xmSidebar').classList.toggle('open');
             e.currentTarget.setAttribute('aria-expanded', open ? 'true' : 'false');

@@ -15,6 +15,14 @@
     <div class="xm-offline-bar" id="xmOfflineBar" role="status"><i class="bi bi-wifi-off me-1" aria-hidden="true"></i> {{ __('menus.offline_banner') }}</div>
     @include('partials.public-header', ['pubNav' => $pubNav])
     <main id="contenu" tabindex="-1">
+        @auth
+            @if (! auth()->user()->hasVerifiedEmail())
+                {{-- Q12 c : rappel tant que l'e-mail n'est pas confirmé, avec « Renvoyer le code ». --}}
+                <div class="container pt-3">
+                    @include('auth.partials.verify-banner', ['user' => auth()->user()])
+                </div>
+            @endif
+        @endauth
         {{ $slot }}
     </main>
     @include('partials.public-footer')

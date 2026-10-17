@@ -3,19 +3,23 @@
 declare(strict_types=1);
 
 /*
- * Les 8 modèles d'e-mails du prototype (prototype_social/data/email_templates.json), dans l'ordre du fichier.
+ * Les 8 modèles d'e-mails du prototype (prototype_social/data/email_templates.json), dans l'ordre du fichier, plus le
+ * template système `mot-de-passe-modifie` (P1-09, P2-05). Le template de réinitialisation applique Q8 c) : code OTP
+ * `reset` et lien magique dans le même e-mail, sans durée fixe « 60 minutes » (elle suit `xomiton.otp.ttl_minutes`).
  * `category` est le libellé du prototype (converti par TemplateCategory::fromPrototype) ; `system` = template
- * système au slug immuable (RG-10). Les variables {{...}} sont détectées par EmailTemplate::extractVariables().
+ * système au slug immuable (RG-10). Q36 : les e-mails adressés aux membres (compte, OTP, bienvenue, validation,
+ * rappel) tutoient ; `alerte-routee` (intervenant·es) et `newsletter-confirmation` (public) vouvoient. Les variables {{...}} sont détectées par EmailTemplate::extractVariables().
  */
 return [
     [
+        // Q8 c) : un seul e-mail portant le code OTP `reset` et un lien magique signé, valables le temps du code (P2-05).
         'name' => 'Réinitialisation du mot de passe',
         'slug' => 'reinitialisation-mot-de-passe',
         'category' => 'Authentification',
         'system' => true,
-        'subject' => '{{site_name}} : choisissez un nouveau mot de passe',
-        'preheader' => 'Ce lien est valable 60 minutes.',
-        'body' => '<h2>Bonjour {{user_first_name}},</h2><p>Vous avez demandé à réinitialiser votre mot de passe {{site_name}}. Cliquez sur le lien ci-dessous pour en choisir un nouveau :</p><p><a href="{{reset_link}}" rel="noopener noreferrer" target="_blank"><strong>Choisir un nouveau mot de passe</strong></a></p><p>Ce lien est valable 60 minutes. Si vous n’êtes pas à l’origine de cette demande, ignorez ce message : votre mot de passe reste inchangé.</p>',
+        'subject' => '{{site_name}} : ton code pour choisir un nouveau mot de passe',
+        'preheader' => 'Code {{otp_code}}, valable {{otp_expiry}}.',
+        'body' => '<h2>Bonjour {{user_first_name}},</h2><p>Tu as demandé à réinitialiser ton mot de passe {{site_name}}. Voici ton code :</p><h1>{{otp_code}}</h1><p>Tu peux aussi cliquer sur ce lien, qui vaut le code :</p><p><a href="{{reset_link}}" rel="noopener noreferrer" target="_blank"><strong>Choisir un nouveau mot de passe</strong></a></p><p>Code et lien sont valables {{otp_expiry}}. Si tu n’es pas à l’origine de cette demande, ignore ce message : ton mot de passe reste inchangé.</p>',
         'active' => true,
     ],
     [
@@ -23,9 +27,9 @@ return [
         'slug' => 'activation-compte',
         'category' => 'Authentification',
         'system' => true,
-        'subject' => 'Activez votre compte {{site_name}}',
+        'subject' => 'Active ton compte {{site_name}}',
         'preheader' => 'Une dernière étape avant de rejoindre la communauté.',
-        'body' => '<h2>Bienvenue {{user_first_name}} 💜</h2><p>Merci de rejoindre {{site_name}}. Pour activer votre compte, confirmez votre adresse e-mail :</p><p><a href="{{activation_link}}" rel="noopener noreferrer" target="_blank"><strong>Activer mon compte</strong></a></p><p>Votre pseudonyme : <strong>{{user_pseudo}}</strong>. Vous pourrez compléter votre profil plus tard, à votre rythme.</p>',
+        'body' => '<h2>Bienvenue {{user_first_name}} 💜</h2><p>Merci de rejoindre {{site_name}}. Pour activer ton compte, confirme ton adresse e-mail :</p><p><a href="{{activation_link}}" rel="noopener noreferrer" target="_blank"><strong>Activer mon compte</strong></a></p><p>Ton pseudonyme : <strong>{{user_pseudo}}</strong>. Tu pourras compléter ton profil plus tard, à ton rythme.</p>',
         'active' => true,
     ],
     [
@@ -33,9 +37,9 @@ return [
         'slug' => 'code-verification',
         'category' => 'Authentification',
         'system' => true,
-        'subject' => 'Votre code {{site_name}} : {{otp_code}}',
+        'subject' => 'Ton code {{site_name}} : {{otp_code}}',
         'preheader' => 'Code valable {{otp_expiry}}.',
-        'body' => '<p>Bonjour {{user_first_name}},</p><p>Voici votre code de vérification :</p><h1>{{otp_code}}</h1><p>Il est valable {{otp_expiry}}. Ne le communiquez à personne, même à une personne qui dit faire partie de l’équipe {{site_name}}.</p>',
+        'body' => '<p>Bonjour {{user_first_name}},</p><p>Voici ton code de vérification :</p><h1>{{otp_code}}</h1><p>Il est valable {{otp_expiry}}. Ne le communique à personne, même à une personne qui dit faire partie de l’équipe {{site_name}}.</p>',
         'active' => true,
     ],
     [
@@ -43,9 +47,9 @@ return [
         'slug' => 'bienvenue',
         'category' => 'Communauté',
         'system' => false,
-        'subject' => 'Bienvenue dans votre espace safe, {{user_first_name}}',
-        'preheader' => 'Vos premiers pas sur Xomiton.',
-        'body' => '<h2>Bienvenue {{user_first_name}} !</h2><p>Votre compte est actif. Voici trois idées pour commencer :</p><ul><li>Explorez les thématiques et les ressources.</li><li>Présentez-vous dans le fil, sous pseudonyme si vous le souhaitez.</li><li>Enregistrez les contacts d’urgence de votre zone.</li></ul><p><a href="{{login_link}}" rel="noopener noreferrer" target="_blank">Me connecter</a></p>',
+        'subject' => 'Bienvenue dans ton espace safe, {{user_first_name}}',
+        'preheader' => 'Tes premiers pas sur Xomiton.',
+        'body' => '<h2>Bienvenue {{user_first_name}} !</h2><p>Ton compte est actif. Voici trois idées pour commencer :</p><ul><li>Explore les thématiques et les ressources.</li><li>Présente-toi dans le fil, sous pseudonyme si tu le souhaites.</li><li>Enregistre les contacts d’urgence de ta zone.</li></ul><p><a href="{{login_link}}" rel="noopener noreferrer" target="_blank">Me connecter</a></p>',
         'active' => true,
     ],
     [
@@ -53,9 +57,9 @@ return [
         'slug' => 'compte-valide',
         'category' => 'Communauté',
         'system' => false,
-        'subject' => 'Votre compte {{site_name}} est validé',
-        'preheader' => 'Vous pouvez vous connecter.',
-        'body' => '<p>Bonjour {{user_first_name}},</p><p>Bonne nouvelle : l’équipe {{site_name}} a validé votre inscription. Vous pouvez désormais vous connecter.</p><p><a href="{{login_link}}" rel="noopener noreferrer" target="_blank"><strong>Me connecter</strong></a></p>',
+        'subject' => 'Ton compte {{site_name}} est validé',
+        'preheader' => 'L’espace pair t’est ouvert.',
+        'body' => '<p>Bonjour {{user_first_name}},</p><p>Bonne nouvelle : l’équipe {{site_name}} a validé ton inscription. L’espace pair et la collecte te sont désormais ouverts.</p><p><a href="{{login_link}}" rel="noopener noreferrer" target="_blank"><strong>Me connecter</strong></a></p>',
         'active' => true,
     ],
     [
@@ -75,7 +79,7 @@ return [
         'system' => false,
         'subject' => 'Rappel : {{event_title}}',
         'preheader' => '{{event_date}}',
-        'body' => '<p>Bonjour {{user_first_name}},</p><p>Petit rappel : <strong>{{event_title}}</strong> a lieu {{event_date}}. Venez avec une amie !</p>',
+        'body' => '<p>Bonjour {{user_first_name}},</p><p>Petit rappel : <strong>{{event_title}}</strong> a lieu {{event_date}}. Viens avec une amie !</p>',
         'active' => true,
     ],
     [
@@ -86,6 +90,17 @@ return [
         'subject' => 'Confirmez votre inscription à la newsletter {{site_name}}',
         'preheader' => 'Un clic pour confirmer.',
         'body' => '<p>Bonjour,</p><p>Merci de votre intérêt pour la newsletter {{site_name}}. Confirmez votre inscription :</p><p><a href="{{activation_link}}" rel="noopener noreferrer" target="_blank"><strong>Confirmer mon inscription</strong></a></p><p>Vous pourrez vous désinscrire à tout moment : <a href="{{unsubscribe_link}}" rel="noopener noreferrer" target="_blank">se désinscrire</a>.</p>',
+        'active' => true,
+    ],
+    [
+        // Template système ajouté par P1-09 / P2-05 : confirmation après réinitialisation ou changement du mot de passe.
+        'name' => 'Mot de passe modifié',
+        'slug' => 'mot-de-passe-modifie',
+        'category' => 'Authentification',
+        'system' => true,
+        'subject' => '{{site_name}} : ton mot de passe a été modifié',
+        'preheader' => 'Si ce n’est pas toi, écris-nous tout de suite.',
+        'body' => '<p>Bonjour {{user_first_name}},</p><p>Le mot de passe de ton compte {{site_name}} vient d’être modifié. Par sécurité, toutes tes sessions ont été fermées : reconnecte-toi avec ton nouveau mot de passe.</p><p><a href="{{login_link}}" rel="noopener noreferrer" target="_blank"><strong>Me connecter</strong></a></p><p>Si tu n’es pas à l’origine de ce changement, écris-nous sans attendre à <a href="mailto:{{support_email}}">{{support_email}}</a>.</p>',
         'active' => true,
     ],
 ];

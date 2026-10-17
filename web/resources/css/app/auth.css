@@ -1,0 +1,36 @@
+/*
+ * Écrans d'authentification (lot ecrans-web, P4-09 ; design-system/xomiton/pages/authentification.md, Q20 a) :
+ * gabarit 5/12 · 7/12, formulaire centré 440 px, jauge de mot de passe, cases du code OTP, bandeau de vérification.
+ * Jetons --xm-* uniquement (pas d'hexadécimal).
+ */
+
+/* ---------- Gabarit ---------- */
+.xm-auth .xm-auth-side__content { max-width: 480px; }
+.xm-auth .xm-auth-form { max-width: 440px; }
+.xm-auth .xm-lock-notice { display: flex; align-items: flex-start; gap: var(--xm-space-1, .25rem); line-height: 1.4; }
+.xm-auth .xm-stepper__item span:last-child { font-size: var(--xm-fs-small, .875rem); }
+@media (max-width: 575.98px) {
+  .xm-auth .xm-stepper { gap: var(--xm-space-2, .5rem) 1rem; }
+}
+
+/* ---------- Jauge de solidité (4 segments + texte, couleur jamais seule) ---------- */
+.xm-pw-meter__segments { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--xm-space-1, .25rem); }
+.xm-pw-meter__segment { height: 6px; border-radius: 999px; background: var(--xm-border, var(--bs-border-color)); transition: background-color .2s; }
+.xm-pw-meter__segment.is-on.is-danger { background: var(--xm-danger, var(--bs-danger)); }
+.xm-pw-meter__segment.is-on.is-warning { background: var(--xm-warning, var(--bs-warning)); }
+.xm-pw-meter__segment.is-on.is-success { background: var(--xm-success, var(--bs-success)); }
+.xm-pw-meter__label { color: var(--xm-text-muted, var(--bs-secondary-color)); min-height: 1.25em; }
+.xm-pw-meter[data-level="too_short"] .xm-pw-meter__label,
+.xm-pw-meter[data-level="weak"] .xm-pw-meter__label { color: var(--xm-danger, var(--bs-danger)); }
+.xm-pw-meter[data-level="medium"] .xm-pw-meter__label { color: var(--xm-warning-text, var(--bs-warning-text-emphasis)); }
+.xm-pw-meter[data-level="strong"] .xm-pw-meter__label,
+.xm-pw-meter[data-level="excellent"] .xm-pw-meter__label { color: var(--xm-success, var(--bs-success)); }
+.xm-pw-meter__rules li { color: var(--xm-text-muted, var(--bs-secondary-color)); }
+.xm-pw-meter__rules li.is-ok { color: var(--xm-success, var(--bs-success)); }
+
+/* ---------- Code OTP : 6 cases ---------- */
+.xm-otp__digit { flex: 1 1 0; min-width: 0; max-width: 64px; padding-left: .25rem; padding-right: .25rem; font-weight: 700; font-size: 1.5rem; letter-spacing: 0; }
+.xm-otp__digit:focus { position: relative; z-index: 1; }
+
+/* ---------- Bandeau « Confirme ton e-mail » ---------- */
+.xm-verify-banner .btn { min-height: 36px; }

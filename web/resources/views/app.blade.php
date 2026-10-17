@@ -3,7 +3,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     @include('partials.head', ['seo' => ['index' => false]])
-    @routes
+    @routes(null, Illuminate\Support\Facades\Vite::cspNonce())
     @vite('resources/js/app.ts')
     @inertiaHead
 </head>

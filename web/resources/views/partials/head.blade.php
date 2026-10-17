@@ -23,5 +23,5 @@
 <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
 <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
 {{-- Thème appliqué avant le premier rendu pour éviter le clignotement (prototype partials/head-css.php). --}}
-<script>(function(){try{var t=localStorage.getItem('theme')||'light';if(t==='auto'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-bs-theme',t)}catch(e){}})();</script>
+<script nonce="{{ Illuminate\Support\Facades\Vite::cspNonce() }}">(function(){try{var t=localStorage.getItem('theme')||'light';if(t==='auto'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-bs-theme',t)}catch(e){}})();</script>
 @vite($css ?? ['resources/css/xomiton.css'])

@@ -50,7 +50,7 @@ it('crée un template, détecte ses variables et refuse un slug en double', func
     expect(fn () => EmailTemplate::factory()->create(['slug' => 'code-verification']))->toThrow(QueryException::class);
 });
 
-it('seed les 8 templates du prototype sans doublon et sans écraser les textes édités', function (): void {
+it('seed les 8 templates du prototype et mot-de-passe-modifie sans doublon et sans écraser les textes édités', function (): void {
     $this->seed(EmailTemplatesSeeder::class);
 
     EmailTemplate::query()->whereSlug('bienvenue')->firstOrFail()->update(['subject' => 'Sujet modifié', 'is_active' => false]);
@@ -60,8 +60,8 @@ it('seed les 8 templates du prototype sans doublon et sans écraser les textes �
     $otp = EmailTemplate::query()->whereSlug('code-verification')->firstOrFail();
     $welcome = EmailTemplate::query()->whereSlug('bienvenue')->firstOrFail();
 
-    expect(EmailTemplate::query()->count())->toBe(8)
-        ->and(EmailTemplate::query()->system()->count())->toBe(5)
+    expect(EmailTemplate::query()->count())->toBe(9)
+        ->and(EmailTemplate::query()->system()->count())->toBe(6)
         ->and($otp->category)->toBe(TemplateCategory::Authentication)
         ->and($otp->variables)->toBe(['site_name', 'otp_code', 'otp_expiry', 'user_first_name'])
         ->and($welcome->subject)->toBe('Sujet modifié')

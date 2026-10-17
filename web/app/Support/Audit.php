@@ -20,6 +20,9 @@ final class Audit
 {
     public const MASK = '[masqué]';
 
+    /** Taille maximale de `detail` (colonne TEXT MySQL, en octets). */
+    public const DETAIL_MAX_BYTES = 65535;
+
     /**
      * Clés dont la valeur n'est jamais écrite en clair dans le journal (comparaison insensible à la casse,
      * sur la clé entière ou un de ses segments : `current_password`, `otp_code`, `smtp_password`…).
@@ -117,7 +120,8 @@ final class Audit
             $text,
         );
 
-        return Str::limit($masked ?? $text, 65535, '');
+        // `audit_logs.detail` est un TEXT MySQL : la limite est en octets, pas en caractères (accents, « » …).
+        return mb_strcut($masked ?? $text, 0, self::DETAIL_MAX_BYTES);
     }
 
     private static function currentUser(): ?User
@@ -141,7 +145,7 @@ final class Audit
     private static function actorLabel(?User $actor, ?Request $request): string
     {
         if ($actor !== null) {
-            return (string) ($actor->email ?? $actor->pseudo ?? $actor->getKey());
+            return Str::limit((string) ($actor->email ?? $actor->pseudo ?? $actor->getKey()), 190, '');
         }
 
         return $request === null ? AuditLog::ACTOR_SYSTEM : AuditLog::ACTOR_ANONYMOUS;

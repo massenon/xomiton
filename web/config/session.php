@@ -171,7 +171,8 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    // Xomiton (P2-08) : cookie Secure imposé en production, désactivable seulement par SESSION_SECURE_COOKIE=false.
+    'secure' => (bool) env('SESSION_SECURE_COOKIE', env('APP_ENV') === 'production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -201,6 +202,7 @@ return [
     |
     */
 
+    // Xomiton (P2-08) : « lax » par défaut, le site ne dépend d'aucune requête intersite.
     'same_site' => env('SESSION_SAME_SITE', 'lax'),
 
     /*

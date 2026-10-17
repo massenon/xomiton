@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\RegistrationConsentsController;
+use App\Http\Controllers\Auth\RegistrationProfileController;
+use App\Http\Controllers\Auth\RegistrationSecurityController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\PlaceholderController;
 use Illuminate\Support\Facades\Route;
@@ -43,15 +52,35 @@ Route::post('/newsletter', PlaceholderController::class)->name('newsletter.subsc
 $placeholder('/signaler', 'signaler', 'Signaler', 'signalement.php', 'plain');
 $placeholder('/sos', 'sos', 'SOS', 'sos.php', 'plain');
 
-// --- Authentification (P2, P4-09) ------------------------------------------
-Route::middleware('guest')->group(function () use ($placeholder): void {
-    $placeholder('/connexion', 'connexion', 'Connexion', 'sign-in.php', 'auth');
-    $placeholder('/inscription', 'inscription', 'Créer un compte', 'sign-up.php', 'auth');
-    $placeholder('/mot-de-passe-oublie', 'mot-de-passe-oublie', 'Mot de passe oublié', 'forgot-password.php', 'auth');
-    $placeholder('/code-de-verification', 'otp', 'Code de vérification', 'sign-in.php', 'auth');
+// --- Authentification (P2-02 à P2-05, P4-09 — lot ecrans-web) ----------------------
+// Limiteurs nommés de AppServiceProvider : 'login' (identifiant + IP), 'otp' (adresse e-mail).
+Route::middleware('guest')->group(function (): void {
+    Route::get('/connexion', [LoginController::class, 'create'])->name('connexion');
+    Route::post('/connexion', [LoginController::class, 'store'])->middleware('throttle:login')->name('connexion.store');
+    Route::get('/inscription', [RegisterController::class, 'create'])->name('inscription');
+    Route::post('/inscription', [RegisterController::class, 'store'])->middleware('throttle:login')->name('inscription.store');
+    Route::get('/mot-de-passe-oublie', [ForgotPasswordController::class, 'create'])->name('mot-de-passe-oublie');
+    Route::post('/mot-de-passe-oublie', [ForgotPasswordController::class, 'store'])->middleware('throttle:otp')->name('mot-de-passe-oublie.store');
+    Route::get('/nouveau-mot-de-passe', [ResetPasswordController::class, 'create'])->name('reinitialisation');
+    Route::post('/nouveau-mot-de-passe', [ResetPasswordController::class, 'store'])->middleware('throttle:login')->name('reinitialisation.store');
 });
-Route::post('/deconnexion', PlaceholderController::class)->middleware('auth')->name('deconnexion')
-    ->defaults('title', 'Déconnexion')->defaults('prototype', 'logout.php');
+// Code de vérification : usage login (connexion en attente), signup (connecté·e, e-mail non confirmé) ou reset.
+// OtpService borne déjà à 5 essais par code et 5 codes par heure et par adresse ; le limiteur 20/min par IP (ou par
+// compte) n'est qu'une défense en profondeur, assez large pour un réseau partagé (le limiteur 'login', 5/min, l'était trop).
+Route::get('/code-de-verification', [OtpController::class, 'show'])->name('otp');
+Route::post('/code-de-verification', [OtpController::class, 'verify'])->middleware('throttle:20,1')->name('otp.verify');
+Route::post('/code-de-verification/renvoyer', [OtpController::class, 'resend'])->middleware('throttle:otp')->name('otp.resend');
+// Phases 2 à 4 de l'inscription (facultatives, « Passer ») : le compte existe déjà, la session est ouverte (Q12 c).
+Route::middleware('auth')->prefix('inscription')->as('inscription.')->group(function (): void {
+    Route::get('/profil', [RegistrationProfileController::class, 'show'])->name('profil');
+    Route::post('/profil', [RegistrationProfileController::class, 'store'])->name('profil.store');
+    Route::get('/securite', [RegistrationSecurityController::class, 'show'])->name('securite');
+    Route::post('/securite', [RegistrationSecurityController::class, 'store'])->name('securite.store');
+    Route::get('/consentements', [RegistrationConsentsController::class, 'show'])->name('consentements');
+    Route::post('/consentements', [RegistrationConsentsController::class, 'store'])->name('consentements.store');
+    Route::post('/{etape}/passer', [RegisterController::class, 'skip'])->whereIn('etape', ['profile', 'security', 'consents'])->name('passer');
+});
+Route::post('/deconnexion', LogoutController::class)->middleware('auth')->name('deconnexion');
 
 // --- Espace membre et pair éducateur·rice : Vue + Inertia (P6 à P9) ---------
 Route::middleware('auth')->group(function () use ($placeholder): void {
