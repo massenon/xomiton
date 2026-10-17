@@ -1,0 +1,71 @@
+/*
+ * Compléments des composants x-* : styles que le prototype portait en ligne ou scopés à .xm-admin,
+ * et états absents du thème Social. Jetons --xm-* uniquement, aucun hexadécimal.
+ */
+
+/* Badge violet (<x-badge color="violet">, statut « assigné ») : même rendu que .xm-status--violet du design system, sous un nom
+   qui ne contient pas « status- » : le thème Social ajoute un point d'état absolu à [class*=status-] (style.css), ce qui déforme le badge. */
+.xm-badge-violet { background-color: var(--xm-accent-violet); color: var(--xm-bg); }
+
+/* Badges pleins success / info (<x-badge>) : texte sur fond coloré lisible dans les deux thèmes (comme .text-bg-success de social-xomiton.css ;
+   Bootstrap met du blanc sur le vert et le bleu clairs du thème sombre). */
+.badge.bg-success, .badge.bg-info { color: var(--xm-bg); }
+
+/* KPI (<x-stat>) : valeur Montserrat 800 partout, pas seulement dans .xm-admin (COMPOSANTS §KPI ; theme/xomiton.css met 700). */
+.kpi-value, .xm-admin .kpi-value { font-family: var(--xm-font-heading); font-size: 1.75rem; font-weight: 800; line-height: 1.1; }
+
+/* Bouton icône (<x-button variant="icon">) : carré de 44 px (36 px en .btn-sm), libellé en aria-label + title. */
+.xm-btn-icon { width: var(--xm-button-min-h); padding-inline: 0; display: inline-flex; align-items: center; justify-content: center; }
+.xm-btn-icon.btn-sm { width: 36px; }
+
+/* Avatar à initiales dans le gabarit Social (.avatar > .avatar-img.xm-avatar). */
+.avatar .xm-avatar { width: 100%; height: 100%; font-size: 1rem; }
+.avatar-xs .xm-avatar { font-size: .75rem; }
+.avatar-sm .xm-avatar { font-size: .875rem; }
+.avatar-lg .xm-avatar { font-size: 1.375rem; }
+.avatar-xl .xm-avatar, .avatar-xxl .xm-avatar { font-size: 1.75rem; }
+.avatar-xxxl .xm-avatar { font-size: 2.75rem; }
+
+/* Carte : le survol −3 px du prototype est réservé aux cartes cliquables et désactivé en mouvement réduit. */
+.xm-card--interactive, .card.xm-card-hover { cursor: pointer; }
+
+/* Chronologie (<x-timeline>) : point de 12 px du prototype (admin/suivi.php, style en ligne). */
+.xm-timeline__dot { width: 12px; height: 12px; left: -1.15rem; top: .35rem; }
+.xm-timeline__dot--neutral { background: var(--xm-text-muted); }
+
+/* SOS (<x-sos-button>) : position fixe en bas à droite, panneau de confirmation au-dessus du bouton. */
+.xm-sos { cursor: pointer; touch-action: none; -webkit-user-select: none; user-select: none; display: inline-flex; align-items: center; justify-content: center; font-size: var(--xm-fs-body); }
+.xm-sos:focus-visible { outline: var(--xm-focus-width) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
+.xm-sos-wrap--fixed { position: fixed; right: var(--xm-space-4); bottom: var(--xm-space-4); z-index: 1040; }
+.xm-sos-panel { position: absolute; right: 0; bottom: calc(100% + var(--xm-space-3)); width: min(300px, calc(100vw - 32px)); text-align: start; z-index: 1; }
+.xm-sos-wrap:not(.xm-sos-wrap--fixed) .xm-sos-panel { right: auto; left: 0; }
+.xm-sos-count { font-family: var(--xm-font-heading); line-height: 1; }
+@media (prefers-reduced-motion: reduce) { .xm-sos[data-holding="true"]::after { animation: none; opacity: 1; clip-path: none; } }
+
+/* Squelettes (<x-skeleton>) : placeholders Bootstrap, coins arrondis, image 16/9 sans hauteur minimale. */
+.xm-skeleton .placeholder { border-radius: var(--xm-radius-sm); }
+.xm-skeleton .placeholder.xm-ratio-16x9 { min-height: 0; }
+.xm-skeleton__icon { width: 2.5rem; height: 2.5rem; }
+
+/* Tableau (<x-datatable>) : en-tête de tri, cartes empilées sous 768 px (UI_UX_DESIGN_SYSTEM §4.2, FRONT_END_RESPONSIVE « Tableaux : cartes empilées »). */
+.xm-sort { white-space: nowrap; }
+.xm-sort .bi { font-size: .85em; }
+@media (max-width: 767.98px) {
+  .xm-table--stack thead { display: block; position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .xm-table--stack, .xm-table--stack tbody, .xm-table--stack tr { display: block; width: 100%; }
+  .xm-table--stack tr { border: 1px solid var(--xm-border); border-radius: var(--xm-radius-lg); background: var(--xm-surface); margin: var(--xm-space-3); padding: var(--xm-space-2) var(--xm-space-4); box-shadow: var(--xm-shadow-sm); }
+  .xm-table--stack tr:hover { --bs-table-accent-bg: transparent; }
+  .xm-table--stack td { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--xm-space-3); border: 0; padding: var(--xm-space-2) 0; text-align: end; box-shadow: none; }
+  .xm-table--stack td[data-label]::before { content: attr(data-label); flex: 0 0 40%; font-weight: 700; color: var(--xm-text-muted); text-align: start; }
+  .xm-table--stack td.xm-table__empty { display: block; text-align: center; }
+  .xm-table--stack td.xm-table__actions { justify-content: flex-end; padding-top: var(--xm-space-3); border-top: 1px solid var(--xm-border); }
+}
+
+/* Modale de suppression : bouton rouge inactif tant que le mot de confirmation n'est pas saisi. */
+.xm-modal--delete .btn-danger:disabled { cursor: not-allowed; }
+
+/* État vide : icône atténuée, phrase en couleur de texte. */
+.xm-empty .bi { color: var(--xm-text-muted); }
+
+/* Panneau de notifications : largeur du prototype, liste défilante (theme/xomiton.css) ; curseur sur les onglets. */
+.xm-bell [data-xm-bell-tab] { cursor: pointer; }

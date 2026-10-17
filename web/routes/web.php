@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\PlaceholderController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +77,9 @@ Route::middleware('auth')->group(function () use ($placeholder): void {
     $placeholder('/espace-pair', 'espace-pair', 'Espace pair', 'espace-pair.php');
     $placeholder('/collecte', 'collecte', 'Collecte de données', 'collecte.php');
 });
+
+// --- Catalogue vivant du design system (P0-10) : local et recette seulement, 404 ailleurs ----
+Route::get('/design-system', DesignSystemController::class)->name('design-system');
 
 // --- Redirections des anciennes adresses du prototype ------------------------
 Route::permanentRedirect('/index.php', '/');

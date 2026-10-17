@@ -1,10 +1,19 @@
-{{-- Déclenchement : $dispatch('toast', { type: 'success', message: '…' }). Jamais l'unique porteur d'une information. --}}
-<div x-data="{ items: [], push(d) { const t = { id: Date.now() + Math.random(), ...d }; this.items.push(t); setTimeout(() => this.drop(t.id), 6000); }, drop(id) { this.items = this.items.filter(i => i.id !== id); } }"
-     x-on:toast.window="push($event.detail)" class="position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index:1090;width:min(420px,100vw)">
-    <template x-for="t in items" x-bind:key="t.id">
-        <div class="alert d-flex align-items-start gap-2 shadow" x-bind:class="'alert-' + (t.type || 'info')" x-bind:role="t.type === 'danger' ? 'alert' : 'status'" x-bind:aria-live="t.type === 'danger' ? 'assertive' : 'polite'">
-            <span class="flex-grow-1" x-text="t.message"></span>
-            <button type="button" class="btn-close" @click="drop(t.id)" aria-label="{{ __('Fermer') }}"></button>
+{{--
+    Conteneur des toasts publics (prototype assets/js/xomiton.js XM.toast : .toast-container.position-fixed.top-0.end-0.p-3 ;
+    Bootstrap Toast .toast.align-items-center.text-bg-{type}.border-0, 4,5 s, fermable). Léger : aucune information ne doit exister uniquement dans un toast.
+    Déclenchement : window.XM.toast(message, type) ou $dispatch('toast', { type, message }) (resources/js/public/xomiton-ui.js).
+    Chaque toast : role="status" + aria-live="polite" (succès, info) ou role="alert" + aria-live="assertive" (danger).
+    Props : message + type (primary | success | danger | warning | info | secondary) → toast affiché au chargement (flash de session : :message="session('toast')").
+    L'administration utilise SweetAlert2 (UI_UX_DESIGN_SYSTEM §4.6) ; ce composant sert aux pages publiques.
+--}}
+@props(['message' => null, 'type' => 'primary'])
+<div {{ $attributes->class('toast-container position-fixed top-0 end-0 p-3') }} id="xmToastWrap" data-xm-close-label="{{ __('common.close') }}">
+    @if ($message)
+        <div class="toast align-items-center text-bg-{{ $type }} border-0" role="{{ $type === 'danger' ? 'alert' : 'status' }}" aria-live="{{ $type === 'danger' ? 'assertive' : 'polite' }}" aria-atomic="true" data-xm-toast-autoshow>
+            <div class="d-flex">
+                <div class="toast-body">{{ $message }}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="{{ __('common.close') }}"></button>
+            </div>
         </div>
-    </template>
+    @endif
 </div>

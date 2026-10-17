@@ -1,30 +1,60 @@
-{{-- Monté en permanence, ouvert par Alpine : $dispatch('open-modal', 'id'). Jamais derrière un @if.
-     Nécessite le plugin Alpine Focus (x-trap) : fourni avec Livewire 3. --}}
-@props(['id', 'title', 'type' => 'confirm', 'confirmWord' => null, 'dirtyGuard' => false])
-<div x-data="{ open: false, dirty: false, word: '', opener: null,
-               close() { if (this.dirty && ! window.confirm(@js(__('Abandonner les modifications ?')))) return; this.open = false; this.dirty = false; this.$nextTick(() => this.opener && this.opener.focus()); } }"
-     x-on:open-modal.window="if ($event.detail === '{{ $id }}') { open = true; opener = document.activeElement }"
-     x-on:keydown.escape.window="if (open) close()"
-     x-effect="document.body.classList.toggle('overflow-hidden', open)"
-     @if ($dirtyGuard) x-on:input="dirty = true" @endif
-     x-cloak>
-    <div x-show="open" class="position-fixed top-0 start-0 w-100 h-100" style="background:rgb(14 16 32 / .6);z-index:1050" @click="close()" aria-hidden="true"></div>
-    <div x-show="open" x-trap.noscroll="open" id="{{ $id }}" role="{{ $type === 'delete' ? 'alertdialog' : 'dialog' }}" aria-modal="true" aria-labelledby="{{ $id }}-title"
-         class="position-fixed top-50 start-50 translate-middle xm-card xm-modal p-0" style="z-index:1055;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px)">
-        <div class="d-flex align-items-center justify-content-between p-4 border-bottom">
-            <h2 id="{{ $id }}-title" class="h5 mb-0">{{ $title }}</h2>
-            <button type="button" class="btn-close" @click="close()" aria-label="{{ __('Fermer') }}"></button>
-        </div>
-        <div class="p-4 overflow-auto">
-            {{ $slot }}
-            @if ($type === 'delete' && $confirmWord)
-                <label class="form-label mt-3" for="{{ $id }}-word">{{ __('Saisis « :w » pour confirmer', ['w' => $confirmWord]) }}</label>
-                <input id="{{ $id }}-word" class="form-control" x-model="word" autocomplete="off">
+{{--
+    Modale Bootstrap (prototype partials/modals.php, admin/emails.php #mDelete) : montée en permanence (jamais derrière un @if),
+    ouverte par data-bs-toggle="modal" data-bs-target="#id" ou bootstrap.Modal. Focus piégé, Échap et aria-modal gérés par Bootstrap ;
+    retour du focus au déclencheur, mot de confirmation et garde « formulaire modifié » par resources/js/public/xomiton-ui.js.
+    Props :
+      id, title   : obligatoires (aria-labelledby = {id}Title)
+      type        : confirm | form | delete | fullscreen
+                    delete → en-tête rouge avec icône, bouton « Supprimer définitivement » (btn-danger), mot de confirmation facultatif
+                    fullscreen → modal-fullscreen-sm-down (plein écran sur mobile)
+      size        : sm | md | lg | xl (lg : CRUD ; xl : éditeurs riches, + modal-fullscreen-lg-down)
+      scrollable  : corps défilant et pied fixe (défaut true) ; centered : modal-dialog-centered (défaut true)
+      form        : URL d'envoi → le contenu est un <form method="post"> avec @csrf ; method : POST | PUT | PATCH | DELETE
+      action      : libellé du bouton principal à droite (btn-primary ; btn-danger pour delete ; submit si form)
+      confirmWord : (delete) mot à saisir pour activer le bouton principal
+      dirtyGuard  : confirmation avant fermeture si un champ a été modifié (+ backdrop statique)
+      static      : data-bs-backdrop="static"
+    Slots : défaut (corps), footer (boutons supplémentaires ; « Annuler » reste à gauche, l'action principale à droite).
+--}}
+@props(['id', 'title', 'type' => 'confirm', 'size' => 'md', 'scrollable' => true, 'centered' => true, 'form' => null, 'method' => 'POST', 'action' => null, 'confirmWord' => null, 'dirtyGuard' => false, 'static' => false])
+@php
+    $isDelete = $type === 'delete';
+    $method = strtoupper($method);
+    $spoof = ! in_array($method, ['GET', 'POST'], true);
+    $contentTag = $form ? 'form' : 'div';
+    $actionLabel = $action ?? ($isDelete && ! isset($footer) ? __('components.modal.delete_action') : null);
+    $contentAttrs = $form ? ' method="'.($method === 'GET' ? 'get' : 'post').'" action="'.e($form).'"' : '';
+@endphp
+<div {{ $attributes->class(['modal fade', 'xm-modal--delete' => $isDelete]) }} id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Title" aria-hidden="true"
+     @if ($static || $dirtyGuard) data-bs-backdrop="static" @endif
+     @if ($dirtyGuard) data-xm-dirty-guard="{{ __('components.modal.dirty_guard') }}" @endif
+     @if ($confirmWord) data-xm-confirm-word="{{ $confirmWord }}" @endif>
+    <div @class(['modal-dialog', 'modal-dialog-centered' => $centered, 'modal-dialog-scrollable' => $scrollable, 'modal-sm' => $size === 'sm', 'modal-lg' => $size === 'lg', 'modal-xl modal-fullscreen-lg-down' => $size === 'xl', 'modal-fullscreen-sm-down' => $type === 'fullscreen'])>
+        <{{ $contentTag }} class="modal-content"{!! $contentAttrs !!}>
+            @if ($form && $method !== 'GET')
+                @csrf
+                @if ($spoof) @method($method) @endif
             @endif
-        </div>
-        <div class="d-flex justify-content-between gap-2 p-4 border-top">
-            <button type="button" class="btn btn-light" @click="close()">{{ __('Annuler') }}</button>
-            <span @if ($type === 'delete' && $confirmWord) x-bind:class="word !== @js($confirmWord) && 'pe-none opacity-50'" x-bind:aria-disabled="word !== @js($confirmWord)" @endif>{{ $footer ?? '' }}</span>
-        </div>
+            <div @class(['modal-header', 'border-0' => $isDelete])>
+                <h5 @class(['modal-title', 'text-danger' => $isDelete]) id="{{ $id }}Title">@if ($isDelete)<i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>@endif{{ $title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('common.close') }}"></button>
+            </div>
+            <div @class(['modal-body', 'pt-0' => $isDelete])>
+                {{ $slot }}
+                @if ($isDelete && $confirmWord)
+                    <div class="alert alert-danger small mt-3 mb-0">
+                        <label class="form-label mb-1" for="{{ $id }}Word">{{ __('components.modal.confirm_word_label') }} <code>{{ $confirmWord }}</code></label>
+                        <input class="form-control form-control-sm font-monospace" id="{{ $id }}Word" name="confirm_word" autocomplete="off" required data-xm-confirm-input>
+                    </div>
+                @endif
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
+                @isset($footer){{ $footer }}@endisset
+                @if ($actionLabel)
+                    <button type="{{ $form ? 'submit' : 'button' }}" class="btn {{ $isDelete ? 'btn-danger' : 'btn-primary' }}" data-xm-modal-action{!! $confirmWord ? ' disabled' : '' !!}>@if ($isDelete)<i class="bi bi-trash me-1" aria-hidden="true"></i>@endif{{ $actionLabel }}</button>
+                @endif
+            </div>
+        </{{ $contentTag }}>
     </div>
 </div>
