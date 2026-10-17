@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ContentStatus;
+use App\Support\MediaUrl;
 use Database\Factories\ThematiqueFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +22,9 @@ class Thematique extends Model
 {
     /** @use HasFactory<ThematiqueFactory> */
     use HasFactory, SoftDeletes;
+
+    /** Couverture affichée quand `cover_path` et `image_path` sont vides ou pointent sur un fichier absent. */
+    public const DEFAULT_COVER = 'assets/images/xomiton/covers/og-default.jpg';
 
     /** @var list<string> */
     protected $fillable = [
@@ -121,5 +126,29 @@ class Thematique extends Model
         return $this->status === ContentStatus::Published
             && $this->published_at !== null
             && $this->published_at->lessThanOrEqualTo(now());
+    }
+
+    /**
+     * URL de la couverture : `cover_path` si le fichier existe, sinon l'illustration, sinon l'image par défaut.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function coverUrl(): Attribute
+    {
+        return Attribute::get(function (): string {
+            $fallback = MediaUrl::exists($this->image_path) ? (string) $this->image_path : self::DEFAULT_COVER;
+
+            return MediaUrl::resolve($this->cover_path, $fallback);
+        });
+    }
+
+    /**
+     * URL de l'illustration de la fiche, avec repli sur l'image par défaut.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::get(fn (): string => MediaUrl::resolve($this->image_path, self::DEFAULT_COVER));
     }
 }

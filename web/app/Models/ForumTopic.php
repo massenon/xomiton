@@ -79,7 +79,7 @@ class ForumTopic extends Model
      */
     public function replies(): HasMany
     {
-        return $this->hasMany(ForumReply::class, 'topic_id')->orderBy('created_at');
+        return $this->hasMany(ForumReply::class, 'topic_id')->orderBy('created_at')->orderBy('id');
     }
 
     /**
@@ -106,7 +106,8 @@ class ForumTopic extends Model
     public function scopeByActivity(Builder $query): void
     {
         $query->orderByDesc('is_pinned')
-            ->orderByRaw('COALESCE(last_reply_at, created_at) DESC');
+            ->orderByRaw('COALESCE(last_reply_at, created_at) DESC')
+            ->orderByDesc('id');
     }
 
     /**

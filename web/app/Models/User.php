@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\UserStatus;
+use App\Support\MediaUrl;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,7 +26,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
 
     /**
-     * Image affichée quand le profil n'a pas d'avatar téléversé.
+     * Image affichée quand le profil n'a pas d'avatar téléversé (fichier de public/).
      */
     public const DEFAULT_AVATAR = 'assets/images/xomiton/avatar1.png';
 
@@ -80,6 +81,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // -- Identité (lot 2) ---------------------------------------------------------------------
 
     /**
      * @return HasOne<Profile, $this>
@@ -153,6 +156,270 @@ class User extends Authenticatable
             ->withPivot(['reason', 'created_at']);
     }
 
+    // -- Contenus (lot 3) ---------------------------------------------------------------------
+
+    /**
+     * Fiches thématiques rédigées par ce compte (`thematiques.created_by`).
+     *
+     * @return HasMany<Thematique, $this>
+     */
+    public function thematiques(): HasMany
+    {
+        return $this->hasMany(Thematique::class, 'created_by');
+    }
+
+    /**
+     * @return HasMany<AssistantConversation, $this>
+     */
+    public function assistantConversations(): HasMany
+    {
+        return $this->hasMany(AssistantConversation::class);
+    }
+
+    // -- Réseau social (lot 4) ----------------------------------------------------------------
+
+    /**
+     * @return HasMany<Post, $this>
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
+     * @return HasMany<Comment, $this>
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Publications aimées (`post_likes`).
+     *
+     * @return BelongsToMany<Post, $this>
+     */
+    public function likedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'post_likes')->withPivot('created_at');
+    }
+
+    /**
+     * Publications enregistrées (`post_saves`).
+     *
+     * @return BelongsToMany<Post, $this>
+     */
+    public function savedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'post_saves')->withPivot('created_at');
+    }
+
+    /**
+     * Comptes suivis par ce compte (`follows.follower_id` = moi).
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'follows', 'follower_id', 'followed_id')->withPivot('created_at');
+    }
+
+    /**
+     * Abonné·es de ce compte (`follows.followed_id` = moi).
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'follows', 'followed_id', 'follower_id')->withPivot('created_at');
+    }
+
+    /**
+     * @return HasMany<Invitation, $this>
+     */
+    public function invitationsSent(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'from_user_id');
+    }
+
+    /**
+     * @return HasMany<Invitation, $this>
+     */
+    public function invitationsReceived(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'to_user_id');
+    }
+
+    /**
+     * @return HasMany<GroupMember, $this>
+     */
+    public function groupMemberships(): HasMany
+    {
+        return $this->hasMany(GroupMember::class);
+    }
+
+    /**
+     * Groupes rejoints, quel que soit le statut d'adhésion (`group_members`).
+     *
+     * @return BelongsToMany<Group, $this>
+     */
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'group_members')
+            ->withPivot(['role', 'status', 'joined_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Pages suivies (`page_followers`).
+     *
+     * @return BelongsToMany<Page, $this>
+     */
+    public function followedPages(): BelongsToMany
+    {
+        return $this->belongsToMany(Page::class, 'page_followers')->withPivot('created_at');
+    }
+
+    /**
+     * Albums de la médiathèque du profil.
+     *
+     * @return HasMany<Album, $this>
+     */
+    public function albums(): HasMany
+    {
+        return $this->hasMany(Album::class);
+    }
+
+    // -- Communauté (lot 5) -------------------------------------------------------------------
+
+    /**
+     * Événements organisés par ce compte (`events.organizer_id`).
+     *
+     * @return HasMany<Event, $this>
+     */
+    public function organizedEvents(): HasMany
+    {
+        return $this->hasMany(Event::class, 'organizer_id');
+    }
+
+    /**
+     * @return HasMany<EventRsvp, $this>
+     */
+    public function eventRsvps(): HasMany
+    {
+        return $this->hasMany(EventRsvp::class);
+    }
+
+    /**
+     * @return HasMany<ForumTopic, $this>
+     */
+    public function forumTopics(): HasMany
+    {
+        return $this->hasMany(ForumTopic::class);
+    }
+
+    /**
+     * Conversations auxquelles ce compte participe (`conversation_participants`), y compris celles quittées.
+     *
+     * @return BelongsToMany<Conversation, $this>
+     */
+    public function conversations(): BelongsToMany
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants')
+            ->withPivot(['role', 'last_read_message_id', 'muted_until', 'left_at'])
+            ->withTimestamps();
+    }
+
+    /**
+     * @return HasMany<Message, $this>
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    // -- Alertes et annuaire (lot 6) ----------------------------------------------------------
+
+    /**
+     * Alertes émises par ce compte (`alerts.user_id`, null si anonyme).
+     *
+     * @return HasMany<Alert, $this>
+     */
+    public function alerts(): HasMany
+    {
+        return $this->hasMany(Alert::class);
+    }
+
+    /**
+     * Alertes prises en charge par ce compte (`alerts.acknowledged_by`).
+     *
+     * @return HasMany<Alert, $this>
+     */
+    public function acknowledgedAlerts(): HasMany
+    {
+        return $this->hasMany(Alert::class, 'acknowledged_by');
+    }
+
+    /**
+     * @return HasMany<SyncDevice, $this>
+     */
+    public function syncDevices(): HasMany
+    {
+        return $this->hasMany(SyncDevice::class);
+    }
+
+    /**
+     * Fiche d'annuaire liée à ce compte (alertes « routées vers moi »).
+     *
+     * @return HasOne<DirectoryContact, $this>
+     */
+    public function directoryContact(): HasOne
+    {
+        return $this->hasOne(DirectoryContact::class);
+    }
+
+    // -- Dossiers (lot 7) ---------------------------------------------------------------------
+
+    /**
+     * Dossiers collectés par ce compte pair (`cases.collected_by`).
+     *
+     * @return HasMany<CaseRecord, $this>
+     */
+    public function collectedCases(): HasMany
+    {
+        return $this->hasMany(CaseRecord::class, 'collected_by');
+    }
+
+    // -- Communication et plateforme (lots 10 et 11) ------------------------------------------
+
+    /**
+     * @return HasMany<AuditLog, $this>
+     */
+    public function auditLogs(): HasMany
+    {
+        return $this->hasMany(AuditLog::class);
+    }
+
+    /**
+     * @return HasMany<PushSubscription, $this>
+     */
+    public function pushSubscriptions(): HasMany
+    {
+        return $this->hasMany(PushSubscription::class);
+    }
+
+    /**
+     * Abonnement à la lettre d'information rattaché à ce compte.
+     *
+     * @return HasOne<NewsletterSubscriber, $this>
+     */
+    public function newsletterSubscriber(): HasOne
+    {
+        return $this->hasOne(NewsletterSubscriber::class);
+    }
+
+    // -- Scopes et état -----------------------------------------------------------------------
+
     /**
      * @param  Builder<User>  $query
      */
@@ -198,24 +465,13 @@ class User extends Authenticatable
     }
 
     /**
-     * URL de l'avatar : fichier du profil (disque public) ou image par défaut.
+     * URL de l'avatar : fichier du profil (disque public ou image de démonstration de public/),
+     * ou image par défaut si le fichier manque — jamais de 404.
      *
      * @return Attribute<string, never>
      */
     protected function avatarUrl(): Attribute
     {
-        return Attribute::get(function (): string {
-            $path = $this->profile?->avatar_path;
-
-            if ($path === null || $path === '') {
-                return asset(self::DEFAULT_AVATAR);
-            }
-
-            if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
-                return $path;
-            }
-
-            return asset('storage/'.ltrim($path, '/'));
-        });
+        return Attribute::get(fn (): string => MediaUrl::resolve($this->profile?->avatar_path, self::DEFAULT_AVATAR));
     }
 }

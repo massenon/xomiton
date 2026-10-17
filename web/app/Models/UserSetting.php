@@ -29,11 +29,16 @@ class UserSetting extends Model
     public const THEMES = ['light', 'dark', 'auto'];
 
     /**
-     * Fréquences du résumé d'activité par e-mail.
-     *
-     * @var list<string>
+     * Fréquences du résumé d'activité par e-mail (dictionnaire : `notification_digest`, pas d'enum dédié).
      */
-    public const DIGESTS = ['never', 'daily', 'weekly'];
+    public const DIGEST_NEVER = 'never';
+
+    public const DIGEST_DAILY = 'daily';
+
+    public const DIGEST_WEEKLY = 'weekly';
+
+    /** @var list<string> */
+    public const DIGESTS = [self::DIGEST_NEVER, self::DIGEST_DAILY, self::DIGEST_WEEKLY];
 
     /**
      * @var list<string>
@@ -100,7 +105,7 @@ class UserSetting extends Model
 
     public function wantsDigest(): bool
     {
-        return $this->notification_digest !== 'never';
+        return $this->notification_digest !== self::DIGEST_NEVER;
     }
 
     /**

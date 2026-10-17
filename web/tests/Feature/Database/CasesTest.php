@@ -11,6 +11,7 @@ use App\Models\CaseRecord;
 use App\Models\ValidationRule;
 use Database\Seeders\ValidationRulesSeeder;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -95,6 +96,9 @@ it('empêche la suppression d’une pair·e ou d’un département qui a des dos
 });
 
 it('crée une fiche de référence FR-YYYY-0001 chiffrée et rattachée à son dossier', function (): void {
+    // Heure figée : le compteur annuel et l'année attendue ne doivent pas diverger autour du 1er janvier.
+    Carbon::setTestNow(Carbon::create(2026, 10, 17, 10));
+
     $form = CaseForm::factory()->shareable()->create(['facts_description' => 'Description des faits.']);
     $year = now()->format('Y');
 
@@ -105,8 +109,8 @@ it('crée une fiche de référence FR-YYYY-0001 chiffrée et rattachée à son d
         ->and($form->case)->toBeInstanceOf(CaseRecord::class)
         ->and($form->case->forms()->count())->toBe(1)
         ->and(count($form->requestedServices()))->toBe(2)
-        ->and(CaseForm::SERVICE_KEYS)->toContain('dignite')
-        ->and(array_keys($form->services))->toBe(CaseForm::SERVICE_KEYS)
+        ->and(CaseForm::SERVICES)->toContain('dignite')
+        ->and(array_keys($form->services))->toBe(CaseForm::SERVICES)
         ->and(CaseForm::query()->shareable()->count())->toBe(1);
 
     expect(fn () => CaseForm::factory()->create(['reference' => $form->reference]))->toThrow(QueryException::class);
@@ -127,4 +131,31 @@ it('crée une étape de suivi chiffrée et repère les étapes en retard', funct
         ->and(FollowupOutcome::fromPrototype('En attente'))->toBe(FollowupOutcome::Planned);
 
     expect(fn () => $case->delete())->toThrow(QueryException::class);
+});
+
+it('expose le scope des règles désactivables, complément du verrou « required »', function (): void {
+    $this->seed(ValidationRulesSeeder::class);
+
+    expect(ValidationRule::query()->unlockable()->count())->toBe(11)
+        ->and(ValidationRule::query()->unlockable()->withKey(ValidationRule::KEY_REQUIRED)->exists())->toBeFalse()
+        ->and(ValidationRule::query()->locked()->count() + ValidationRule::query()->unlockable()->count())->toBe(ValidationRule::query()->count());
+});
+
+it('normalise les services d’une fiche sur les huit clés du dictionnaire, chacune traduite', function (): void {
+    $normalized = CaseForm::normalizeServices(['dignite' => '1', 'psy' => true, 'inconnu' => true, 'ecoute' => '0']);
+
+    expect(CaseForm::SERVICES)->toBe(['ecoute', 'medical', 'psy', 'juridique', 'hebergement', 'dignite', 'securite', 'autre'])
+        ->and(array_keys($normalized))->toBe(CaseForm::SERVICES)
+        ->and(array_keys(array_filter($normalized)))->toBe(['psy', 'dignite'])
+        ->and(CaseForm::serviceLabel('dignite'))->toBe('Kit de dignité / matériel')
+        ->and(array_keys(CaseForm::serviceLabels()))->toBe(CaseForm::SERVICES);
+
+    foreach (CaseForm::serviceLabels() as $key => $label) {
+        expect($label)->not->toBe('enums/cases.services.'.$key, "Libellé manquant pour le service {$key}");
+    }
+
+    $form = CaseForm::factory()->make(['services' => $normalized]);
+
+    expect($form->requestedServices())->toBe(['psy', 'dignite'])
+        ->and($form->requestedServiceLabels())->toBe(['Soutien psychologique', 'Kit de dignité / matériel']);
 });

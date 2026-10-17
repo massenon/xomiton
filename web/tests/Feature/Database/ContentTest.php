@@ -17,6 +17,7 @@ use App\Models\Law;
 use App\Models\Resource;
 use App\Models\Thematique;
 use App\Models\User;
+use App\Support\MediaUrl;
 use Database\Seeders\ContentSeeder;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -245,5 +246,39 @@ describe('seeders', function (): void {
 
         expect(Thematique::count())->toBe(29)
             ->and($vbg->fresh()->trashed())->toBeFalse();
+    });
+});
+
+describe('images', function (): void {
+    it('sert pour chaque thématique seedée une couverture et une illustration qui existent dans public/', function (): void {
+        $this->seed(ContentSeeder::class);
+
+        $covers = Thematique::query()->orderBy('id')->get(['id', 'slug', 'image_path', 'cover_path']);
+
+        expect($covers)->toHaveCount(29)
+            ->and(is_file(public_path(Thematique::DEFAULT_COVER)))->toBeTrue();
+
+        foreach ($covers as $thematique) {
+            expect(is_file(public_path((string) $thematique->cover_path)))->toBeTrue("Couverture absente : {$thematique->cover_path}")
+                ->and(is_file(public_path((string) $thematique->image_path)))->toBeTrue("Illustration absente : {$thematique->image_path}")
+                ->and($thematique->cover_url)->toEndWith($thematique->cover_path)
+                ->and($thematique->image_url)->toEndWith($thematique->image_path);
+        }
+    });
+
+    it('retombe sur l’illustration puis sur l’image par défaut quand une couverture manque', function (): void {
+        $thematique = Thematique::factory()->create(['cover_path' => 'assets/images/xomiton/covers/th-999.jpg']);
+
+        expect(MediaUrl::exists($thematique->cover_path))->toBeFalse()
+            ->and($thematique->cover_url)->toEndWith($thematique->image_path);
+
+        $thematique->update(['image_path' => 'assets/images/xomiton/hero-99.jpg']);
+
+        expect($thematique->fresh()->cover_url)->toEndWith(Thematique::DEFAULT_COVER)
+            ->and($thematique->fresh()->image_url)->toEndWith(Thematique::DEFAULT_COVER);
+
+        $thematique->update(['cover_path' => 'https://cdn.example.org/cover.jpg']);
+
+        expect($thematique->fresh()->cover_url)->toBe('https://cdn.example.org/cover.jpg');
     });
 });

@@ -66,6 +66,16 @@ class ValidationRule extends Model
         $query->where('is_locked', true);
     }
 
+    /**
+     * Règles que l'administration peut désactiver (tout sauf `required`).
+     *
+     * @param  Builder<ValidationRule>  $query
+     */
+    public function scopeUnlockable(Builder $query): void
+    {
+        $query->where('is_locked', false);
+    }
+
     /** @param  Builder<ValidationRule>  $query */
     public function scopeOrdered(Builder $query): void
     {

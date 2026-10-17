@@ -35,7 +35,8 @@ class ThematiqueFactory extends Factory
                 ['title' => 'Que faire ?', 'body' => fake('fr_FR')->paragraph()],
             ],
             'content_warning' => null,
-            'image_path' => sprintf('assets/images/xomiton/hero-%02d.jpg', fake()->numberBetween(1, 16)),
+            // Visuels présents dans public/assets/images/xomiton (ceux du prototype repris par ContentSeeder).
+            'image_path' => 'assets/images/xomiton/'.fake()->randomElement(['hero-03.jpg', 'hero-04.jpg', 'hero-05.jpg', 'hero-07.jpg', 'hero-09.jpg', 'hero-10.jpg', 'hero-12.jpg', 'hero-13.jpg']),
             'cover_path' => null,
             'reading_minutes' => fake()->numberBetween(3, 8),
             'related_contact_roles' => [DirectoryRole::PointFocal->value],

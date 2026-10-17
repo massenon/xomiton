@@ -80,7 +80,7 @@ class MaintenanceWindow extends Model
      */
     public function scopeUpcoming(Builder $query, ?Carbon $at = null): void
     {
-        $query->active()->where('starts_at', '>', $at ?? now())->orderBy('starts_at');
+        $query->active()->where('starts_at', '>', $at ?? now())->orderBy('starts_at')->orderBy('id');
     }
 
     /**

@@ -19,6 +19,7 @@ use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 /*
  * Lot 2 « identity » : une création par factory et une assertion métier par table
@@ -53,7 +54,23 @@ describe('users', function (): void {
     it('supprime logiquement et fournit un avatar par défaut', function (): void {
         $user = User::factory()->create();
 
-        expect($user->avatar_url)->toEndWith('assets/images/xomiton/avatar1.png');
+        expect($user->avatar_url)->toEndWith('assets/images/xomiton/avatar1.png')
+            ->and(is_file(public_path(User::DEFAULT_AVATAR)))->toBeTrue();
+
+        // Fichier absent du disque public ou de public/ : repli sur l'avatar par défaut, jamais de 404.
+        Storage::fake('public');
+        $profile = Profile::factory()->for($user)->create(['avatar_path' => 'avatars/inexistant.png']);
+
+        expect($user->fresh()->avatar_url)->toEndWith(User::DEFAULT_AVATAR);
+
+        Storage::disk('public')->put('avatars/perso.png', 'png');
+        $profile->update(['avatar_path' => 'avatars/perso.png']);
+
+        expect($user->fresh()->avatar_url)->toEndWith('/storage/avatars/perso.png');
+
+        $profile->update(['avatar_path' => 'assets/images/xomiton/avatar2.png']);
+
+        expect($user->fresh()->avatar_url)->toEndWith('assets/images/xomiton/avatar2.png');
 
         $user->delete();
 
@@ -113,7 +130,8 @@ describe('user_settings', function (): void {
         expect($settings->notification_prefs)->toBeArray()
             ->and($settings->wants('communaute', 'email'))->toBeFalse()
             ->and($settings->wants('sos', 'push'))->toBeTrue()
-            ->and($settings->notification_digest)->toBe('never')
+            ->and(UserSetting::DIGESTS)->toBe(['never', 'daily', 'weekly'])
+            ->and($settings->notification_digest)->toBe(UserSetting::DIGEST_NEVER)
             ->and($settings->wantsDigest())->toBeFalse()
             ->and($settings->sos_share_gps)->toBeTrue()
             ->and($settings->toArray())->not->toHaveKey('pin_hash');
@@ -188,6 +206,8 @@ describe('user_blocks', function (): void {
 
 describe('seeders', function (): void {
     it('crée les rôles, les permissions module.action et les comptes de démonstration', function (): void {
+        Storage::fake('public');
+
         $this->seed(RolesAndPermissionsSeeder::class);
         $this->seed(RolesAndPermissionsSeeder::class);
         $this->seed(DemoAccountsSeeder::class);
@@ -207,6 +227,83 @@ describe('seeders', function (): void {
             ->and($peer->profile->member_type)->toBe(MemberType::Peer)
             ->and($member->pseudo)->toBe('awa_s')
             ->and($member->settings)->not->toBeNull()
+            ->and($member->settings->notification_digest)->toBe(UserSetting::DIGEST_WEEKLY)
+            ->and($member->settings->sos_share_gps)->toBeTrue()
+            ->and($member->profile->visibility)->toBe(ProfileVisibility::Community)
+            ->and($member->profile->searchable)->toBeTrue()
+            ->and(Storage::disk('public')->exists('avatars/avatar3.png'))->toBeTrue()
+            ->and($member->avatar_url)->toEndWith('/storage/avatars/avatar3.png')
             ->and(Hash::check('Membre123!', $member->password))->toBeTrue();
+    });
+});
+
+describe('relations inverses', function (): void {
+    it('expose depuis User les relations vers chaque lot, vides pour un compte neuf', function (): void {
+        $user = User::factory()->create();
+
+        $hasMany = [
+            'consents', 'blocks', 'thematiques', 'assistantConversations', 'posts', 'comments', 'invitationsSent',
+            'invitationsReceived', 'groupMemberships', 'albums', 'organizedEvents', 'eventRsvps', 'forumTopics',
+            'messages', 'alerts', 'acknowledgedAlerts', 'syncDevices', 'collectedCases', 'auditLogs', 'pushSubscriptions',
+        ];
+        $belongsToMany = ['blockedUsers', 'blockedByUsers', 'likedPosts', 'savedPosts', 'following', 'followers', 'groups', 'followedPages', 'conversations'];
+        $hasOne = ['profile', 'settings', 'directoryContact', 'newsletterSubscriber'];
+
+        foreach ($hasMany as $relation) {
+            expect($user->{$relation}())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasMany::class, $relation)
+                ->and($user->{$relation}()->count())->toBe(0, $relation);
+        }
+
+        foreach ($belongsToMany as $relation) {
+            expect($user->{$relation}())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\BelongsToMany::class, $relation)
+                ->and($user->{$relation}()->count())->toBe(0, $relation);
+        }
+
+        foreach ($hasOne as $relation) {
+            expect($user->{$relation}())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class, $relation)
+                ->and($user->{$relation})->toBeNull($relation);
+        }
+    });
+
+    it('retrouve les enregistrements liés par les bonnes clés étrangères', function (): void {
+        $user = User::factory()->create();
+        $other = User::factory()->create();
+
+        $post = App\Models\Post::factory()->for($user)->create();
+        App\Models\PostLike::factory()->create(['post_id' => $post->id, 'user_id' => $other->id]);
+        App\Models\PostSave::factory()->create(['post_id' => $post->id, 'user_id' => $other->id]);
+        App\Models\Follow::factory()->create(['follower_id' => $other->id, 'followed_id' => $user->id]);
+        App\Models\Invitation::factory()->create(['from_user_id' => $user->id, 'to_user_id' => $other->id]);
+        App\Models\GroupMember::factory()->create(['user_id' => $user->id]);
+        App\Models\PageFollower::factory()->create(['user_id' => $user->id]);
+        App\Models\Event::factory()->create(['organizer_id' => $user->id]);
+        App\Models\ConversationParticipant::factory()->create(['user_id' => $user->id]);
+        App\Models\Alert::factory()->create(['user_id' => $user->id, 'is_anonymous' => false]);
+        App\Models\Alert::factory()->create(['acknowledged_by' => $user->id]);
+        App\Models\CaseRecord::factory()->create(['collected_by' => $user->id]);
+        App\Models\DirectoryContact::factory()->create(['user_id' => $user->id]);
+        App\Models\NewsletterSubscriber::factory()->create(['user_id' => $user->id]);
+        App\Models\Thematique::factory()->create(['created_by' => $user->id]);
+        App\Models\Album::factory()->for($user)->create();
+
+        expect($user->posts()->count())->toBe(1)
+            ->and($other->likedPosts()->count())->toBe(1)
+            ->and($other->savedPosts()->count())->toBe(1)
+            ->and($user->followers()->count())->toBe(1)
+            ->and($other->following()->first()->is($user))->toBeTrue()
+            ->and($user->invitationsSent()->count())->toBe(1)
+            ->and($other->invitationsReceived()->count())->toBe(1)
+            ->and($user->groups()->count())->toBe(1)
+            ->and($user->groupMemberships()->count())->toBe(1)
+            ->and($user->followedPages()->count())->toBe(1)
+            ->and($user->organizedEvents()->count())->toBe(1)
+            ->and($user->conversations()->count())->toBe(1)
+            ->and($user->alerts()->count())->toBe(1)
+            ->and($user->acknowledgedAlerts()->count())->toBe(1)
+            ->and($user->collectedCases()->count())->toBe(1)
+            ->and($user->directoryContact)->not->toBeNull()
+            ->and($user->newsletterSubscriber)->not->toBeNull()
+            ->and($user->thematiques()->count())->toBe(1)
+            ->and($user->albums()->count())->toBe(1);
     });
 });

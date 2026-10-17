@@ -24,8 +24,13 @@ class CaseForm extends Model
 
     public const REFERENCE_DIGITS = 4;
 
-    /** @var list<string> clés attendues dans `services` (DATABASE_DICTIONARY.md §6 ; `dignite` = kit de dignité, admin/fiches.php) */
-    public const SERVICE_KEYS = ['ecoute', 'medical', 'psy', 'juridique', 'hebergement', 'dignite', 'securite', 'autre'];
+    /**
+     * Clés admises dans `services` (DATABASE_DICTIONARY.md §6 ; `dignite` = kit de dignité, admin/fiches.php).
+     * Libellés dans lang/fr/enums/cases.php (clé `services`).
+     *
+     * @var list<string>
+     */
+    public const SERVICES = ['ecoute', 'medical', 'psy', 'juridique', 'hebergement', 'dignite', 'securite', 'autre'];
 
     /** @var list<string> */
     protected $fillable = [
@@ -122,6 +127,49 @@ class CaseForm extends Model
     public function requestedServices(): array
     {
         return array_values(array_keys(array_filter($this->services ?? [])));
+    }
+
+    /**
+     * Libellés des services demandés, dans l'ordre du catalogue.
+     *
+     * @return list<string>
+     */
+    public function requestedServiceLabels(): array
+    {
+        return array_map(static fn (string $key): string => self::serviceLabel($key), $this->requestedServices());
+    }
+
+    public static function serviceLabel(string $key): string
+    {
+        return (string) __('enums/cases.services.'.$key);
+    }
+
+    /**
+     * Libellés de tous les services, indexés par clé (formulaire de fiche, exports).
+     *
+     * @return array<string, string>
+     */
+    public static function serviceLabels(): array
+    {
+        return array_combine(self::SERVICES, array_map([self::class, 'serviceLabel'], self::SERVICES));
+    }
+
+    /**
+     * Ramène un tableau de services à la forme canonique `{clé: bool}` sur les huit clés du catalogue :
+     * les clés inconnues sont ignorées, les clés absentes valent faux.
+     *
+     * @param  array<array-key, mixed>  $services
+     * @return array<string, bool>
+     */
+    public static function normalizeServices(array $services): array
+    {
+        $normalized = [];
+
+        foreach (self::SERVICES as $key) {
+            $normalized[$key] = filter_var($services[$key] ?? false, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return $normalized;
     }
 
     /**

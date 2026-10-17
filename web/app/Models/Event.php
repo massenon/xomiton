@@ -137,7 +137,7 @@ class Event extends Model
         $query->where(function (Builder $q): void {
             $q->where('starts_at', '>=', now())
                 ->orWhere('ends_at', '>=', now());
-        })->orderBy('starts_at');
+        })->orderBy('starts_at')->orderBy('id');
     }
 
     /**

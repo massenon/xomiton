@@ -175,7 +175,7 @@ Migrations Laravel / Sanctum publiées, inchangées (sessions en base, D7).
 `forum_replies` [soft delete] : `id` · `topic_id FK cascade` · `user_id FK null nullOnDelete` · `body text` · `is_anonymous boolean` · `status` (`PostStatus`).
 
 ### `albums`, `album_media`
-`albums` [soft delete] : `id` · `ulid unique` · `user_id FK cascade` · `kind string(10) default custom` (`profile`, `cover`, `custom`) · `title string(120)` · `description string(255) null` · `visibility string(10) default community` (`PostVisibility`) · `media_count unsignedInteger default 0` · `cover_media_id unsignedBigInteger null`.
+`albums` [soft delete] : `id` · `ulid unique` · `user_id FK cascade` · `kind string(10) default custom` (`profile`, `cover`, `custom`) · `title string(120)` · `description string(255) null` · `visibility string(10) default community` (`ProfileVisibility` : `public`, `community`, `followers`, `private` — l'enum `PostVisibility` initialement citée ne connaît pas la valeur par défaut `community` ; un album suit la logique de visibilité du profil dont il dépend) · `media_count unsignedInteger default 0` · `cover_media_id unsignedBigInteger null` (pas de FK : référence circulaire vers `album_media`, cohérence applicative).
 `album_media` : `id` · `album_id FK cascade` · `path string(255)` · `kind string(10) default image` (`image`, `video`) · `alt string(255) null` · `width`, `height unsignedSmallInteger null` · `size unsignedInteger null` · `position unsignedTinyInteger default 0`.
 
 ### `conversations`, `conversation_participants`, `messages`

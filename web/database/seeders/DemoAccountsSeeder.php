@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\MemberType;
+use App\Enums\ProfileVisibility;
 use App\Enums\UserStatus;
 use App\Models\Profile;
 use App\Models\User;
@@ -12,6 +13,7 @@ use App\Models\UserSetting;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -115,6 +117,8 @@ class DemoAccountsSeeder extends Seeder
             ],
         );
 
+        $this->ensureDemoAvatar($account['avatar']);
+
         Profile::updateOrCreate(
             ['user_id' => $user->id],
             [
@@ -124,6 +128,10 @@ class DemoAccountsSeeder extends Seeder
                 'completion' => 80,
                 'pronouns' => 'elle',
                 'age_range' => '25-34',
+                // Réglages du prototype (settings.php) : profil visible de la communauté, zone affichée, trouvable.
+                'visibility' => ProfileVisibility::Community,
+                'show_zone' => true,
+                'searchable' => true,
             ],
         );
 
@@ -133,11 +141,32 @@ class DemoAccountsSeeder extends Seeder
                 'theme' => 'auto',
                 'language' => 'fr',
                 'notification_prefs' => UserSetting::defaultNotificationPrefs(),
+                'notification_digest' => UserSetting::DIGEST_WEEKLY,
+                'sos_share_gps' => true,
             ],
         );
 
         if (Role::where('name', $account['role'])->where('guard_name', RolesAndPermissionsSeeder::GUARD)->exists()) {
             $user->syncRoles([$account['role']]);
+        }
+    }
+
+    /**
+     * Copie l'avatar de démonstration (public/assets/images/xomiton) sur le disque public, comme le fera
+     * l'import du prototype (dictionnaire : `storage/app/public/avatars`), pour que `avatar_url` serve un fichier.
+     */
+    private function ensureDemoAvatar(string $path): void
+    {
+        $disk = Storage::disk('public');
+
+        if ($disk->exists($path)) {
+            return;
+        }
+
+        $source = public_path('assets/images/xomiton/'.basename($path));
+
+        if (is_file($source)) {
+            $disk->put($path, (string) file_get_contents($source));
         }
     }
 

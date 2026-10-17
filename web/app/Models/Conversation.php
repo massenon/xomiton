@@ -119,7 +119,7 @@ class Conversation extends Model
     {
         $query->whereHas('participants', function (Builder $q) use ($user): void {
             $q->where('user_id', $user->id)->whereNull('left_at');
-        })->orderByDesc('last_message_at');
+        })->orderByDesc('last_message_at')->orderByDesc('id');
     }
 
     /**

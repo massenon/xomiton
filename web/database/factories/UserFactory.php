@@ -30,7 +30,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'pseudo' => Str::lower(fake()->unique()->userName()).fake()->numberBetween(1, 99),
+            // userName() est déjà unique et en minuscules ; un suffixe aléatoire pouvait recréer un pseudo existant.
+            'pseudo' => Str::limit(fake()->unique()->userName(), 40, ''),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => '+229 01 '.fake()->numerify('## ## ## ##'),

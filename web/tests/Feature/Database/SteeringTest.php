@@ -72,6 +72,34 @@ describe('indicators', function (): void {
             ->and(IndicatorFrequency::fromPrototype('Annuelle')->label())->toBe('Annuelle')
             ->and(Indicator::query()->ordered()->pluck('code')->first())->toBe('IND-01');
     });
+
+    it('reprend pour chaque indicateur la fréquence, la cible et le sens de prototype_social/data/indicateurs.json', function (): void {
+        $json = base_path('../prototype_social/data/indicateurs.json');
+
+        if (! is_file($json)) {
+            $this->markTestSkipped('Prototype absent : indicateurs.json introuvable.');
+        }
+
+        $this->seed(IndicatorsSeeder::class);
+
+        /** @var list<array{code: string, freq: string, target: int|float, unit: string, calc: string, better: string}> $expected */
+        $expected = json_decode((string) file_get_contents($json), true, 512, JSON_THROW_ON_ERROR);
+
+        expect($expected)->toHaveCount(16)
+            ->and(array_column(IndicatorFrequency::cases(), 'value'))->toBe(['hebdomadaire', 'mensuelle', 'trimestrielle', 'semestrielle', 'annuelle'])
+            ->and(array_column(ReportKind::cases(), 'value'))->toContain('semestriel')
+            ->and(ReportSchedule::FREQUENCIES)->toBe(['mensuel', 'trimestriel', 'semestriel', 'annuel']);
+
+        foreach ($expected as $row) {
+            $indicator = Indicator::query()->whereCode($row['code'])->firstOrFail();
+
+            expect($indicator->frequency)->toBe(IndicatorFrequency::fromPrototype($row['freq']), $row['code'])
+                ->and((float) $indicator->target)->toBe((float) $row['target'], $row['code'])
+                ->and($indicator->unit)->toBe($row['unit'], $row['code'])
+                ->and($indicator->calc_key)->toBe($row['calc'], $row['code'])
+                ->and($indicator->better)->toBe($row['better'], $row['code']);
+        }
+    });
 });
 
 describe('indicator_values', function (): void {

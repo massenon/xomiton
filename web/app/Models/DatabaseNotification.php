@@ -70,7 +70,7 @@ class DatabaseNotification extends BaseDatabaseNotification
      */
     public function scopeLatestFirst(Builder $query): void
     {
-        $query->orderByDesc('created_at');
+        $query->orderByDesc('created_at')->orderByDesc('id');
     }
 
     public function isSensitive(): bool

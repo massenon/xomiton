@@ -20,10 +20,8 @@ class CaseFormFactory extends Factory
     public function definition(): array
     {
         $fr = fake('fr_FR');
-        $services = array_fill_keys(CaseForm::SERVICE_KEYS, false);
-        foreach ($fr->randomElements(CaseForm::SERVICE_KEYS, 2) as $key) {
-            $services[$key] = true;
-        }
+        // Deux services demandés parmi le catalogue, sous la forme canonique {clé: bool} (CaseForm::SERVICES).
+        $services = CaseForm::normalizeServices(array_fill_keys($fr->randomElements(CaseForm::SERVICES, 2), true));
 
         return [
             'case_id' => CaseRecord::factory(),
