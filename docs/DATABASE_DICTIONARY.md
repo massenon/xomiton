@@ -52,7 +52,7 @@ Identifiants publics (ADR-27) : les contenus exposés par URL portent une colonn
 Seed : 12 départements (Alibori, Atacora, Atlantique, Borgou, Collines, Couffo, Donga, Littoral, Mono, Ouémé, Plateau, Zou).
 
 ### `communes`
-`id` · `zone_id FK zones restrict` · `name string(80)` · `slug string(80)` · `position unsignedTinyInteger` · `is_active boolean default true`. Unique `(zone_id, slug)`. Seed : les 31 communes du prototype (`x_zones()`), extensible aux 77 communes du Bénin.
+`id` · `zone_id FK zones restrict` · `name string(80)` · `slug string(80)` · `position unsignedTinyInteger` · `is_active boolean default true`. Unique `(zone_id, slug)`. Seed : les 29 communes du prototype (`x_zones()`), extensible aux 77 communes du Bénin (à compléter avec le client).
 
 ### `violence_types`
 `id` · `slug string(40) unique` (`physique`, `psychologique`, `sexuelle`, `economique`, `numerique`) · `label string(80)` · `icon string(40)` · `description string(255)` · `position unsignedTinyInteger` · `is_active boolean`.
@@ -61,7 +61,9 @@ Seed : 12 départements (Alibori, Atacora, Atlantique, Borgou, Collines, Couffo,
 `id` · `slug string(40) unique` · `label string(80)` · `position` · `is_active`. Seed : 7 populations du prototype.
 
 ### `needs`
-`id` · `slug string(40) unique` (`soutien_psychologique`, `soutien_juridique`, `soutien_medical`, `hebergement`, `accompagnement`, `securite`, `autre`) · `label string(80)` · `routed_role string(40) null` (rôle d'annuaire ciblé : `Psychologue`, `Juriste`, `Gynécologue` ; null = point focal) · `position` · `is_active`.
+`id` · `slug string(40) unique` (`soutien_psychologique`, `soutien_juridique`, `soutien_medical`, `hebergement`, `accompagnement`, `securite`, `autre`) · `label string(80)` · `routed_role string(40) null` (valeur de `DirectoryRole` ciblée : `psychologue`, `juriste`, `gynecologue` ; null = point focal) · `position` · `is_active`.
+
+Convention des enums : les valeurs stockées sont des **slugs ASCII en snake_case** (`point_focal`, `temoignage`, `planifie`, `authentification`, `facebook`…), jamais les libellés accentués ; les libellés viennent de `lang/fr/enums/<domaine>.php`. `DirectoryRole::tryFromLabel()` convertit les libellés du prototype à l'import.
 
 ### `categories`
 `id` · `kind string(20)` (`thematique`, `resource`, `faq`, `event`) · `slug string(60)` · `label string(80)` · `icon string(40) null` · `color string(20) null` (clé de variante Bootstrap : `danger`, `primary`…) · `position` · `is_active`. Unique `(kind, slug)`. Seed : les 6 catégories de thématiques (`vbg`, `regles`, `mental`, `droits`, `esc`, `corps`).
@@ -247,7 +249,7 @@ Migrations Laravel / Sanctum publiées, inchangées (sessions en base, D7).
 `id` · `kind string(10)` (`OutboundKind` : `bd`, `template`, `custom`) · `reference string(120) null` (clé de BD ou id de modèle) · `message string(500)` · `media_path string(255) null` · `scheduled_at timestamp` · `status string(10) default planifie` (`OutboundStatus` : `planifie`, `publie`, `annule`, `echec`) · `published_at timestamp null` · `created_by FK users null`. Index `(status, scheduled_at)`.
 
 ### `outbound_deliveries`
-`id` · `outbound_post_id FK cascade` · `social_channel_id FK cascade` · `status string(10) default en_attente` (`DeliveryStatusGateway` : `en_attente`, `publie`, `echec`, `manuel`) · `external_id string(120) null` · `external_url string(500) null` · `error string(255) null` · `attempts unsignedTinyInteger default 0` · `published_at timestamp null` · `marked_by FK users null` (publication manuelle assistée). Unique `(outbound_post_id, social_channel_id)`.
+`id` · `outbound_post_id FK cascade` · `social_channel_id FK cascade` · `status string(10) default en_attente` (`GatewayDeliveryStatus` : `en_attente`, `publie`, `echec`, `manuel`) · `external_id string(120) null` · `external_url string(500) null` · `error string(255) null` · `attempts unsignedTinyInteger default 0` · `published_at timestamp null` · `marked_by FK users null` (publication manuelle assistée). Unique `(outbound_post_id, social_channel_id)`.
 
 ### `peer_rooms`
 `id` · `name string(120)` · `slug unique` · `description string(255) null` · `is_active boolean default true` · `is_moderated boolean default true` · `allow_anonymous boolean default true` · `max_members unsignedSmallInteger default 50` · `conversation_id FK null` (salon = conversation de groupe) · `created_by FK users null`.
@@ -317,7 +319,7 @@ Migration Laravel (`uuid`, `type`, `notifiable`, `data json`, `read_at`). Colonn
 
 `UserStatus`, `MemberType`, `ProfileVisibility`, `AgeRange`, `Sex`, `DirectoryRole`, `OtpPurpose`, `ConsentKind`, `ContentStatus`, `ResourceKind`, `CccKind`, `BadWordSeverity`, `PostTag`, `PostVisibility`, `PostStatus`, `InvitationStatus`, `GroupPrivacy`, `GroupRole`, `MembershipStatus`, `RsvpStatus`, `ConversationKind`, `AlertType`, `AlertStatus`, `AlertPriority`, `AlertSource`, `NotificationChannel`, `DeliveryStatus`, `CaseKind`, `CaseStatus`, `FollowupOutcome`, `IndicatorFrequency`, `ReportKind`, `ReportFormat`, `JobStatus`, `ModerationKind`, `ModerationStatus`, `SocialNetwork`, `OutboundKind`, `OutboundStatus`, `GatewayDeliveryStatus`, `TemplateCategory`, `MailTransport`, `SubscriberStatus`, `SubscriberSource`, `CampaignStatus`, `BackupKind`, `ConflictStatus`.
 
-Chaque enum : `string` backed, méthodes `label(): string` (texte depuis `lang/fr/enums.php`) et `badge(): string` (variante Bootstrap : `success`, `warning`, `danger`, `secondary`, `info`, `primary`).
+Chaque enum : `string` backed, méthodes `label(): string` (texte depuis `lang/fr/enums/<domaine>.php` : `reference`, `identity`, `content`, `feed`, `community`, `alerts`, `cases`, `steering`, `gateways`, `communication`, `platform`) et `badge(): string` (variante Bootstrap : `success`, `warning`, `danger`, `secondary`, `info`, `primary`, `violet`). Le modèle de la table `cases` s'appelle `CaseRecord` (`case` est un mot réservé de PHP).
 
 ## 12. Ordre des migrations (lots)
 
@@ -334,4 +336,4 @@ Identique à `DATABASE_ENGINEERING.md` §4, avec les tables ajoutées :
 9. Communication : `email_templates`, `mail_logs`, `mail_outbox`, `newsletter_tags`, `newsletter_interests`, `newsletter_subscribers`, `newsletter_subscriber_tags`, `newsletter_subscriber_interests`, `newsletter_campaigns`, `newsletter_campaign_recipients`, `newsletter_clicks`, `notifications`, `push_subscriptions`.
 10. Plateforme : `settings`, `app_versions`, `maintenance_windows`, `backups`, `audit_logs`, `sync_outbox_receipts`, `sync_conflicts`, `sync_cursors` (`jobs`, `failed_jobs`, `cache` : migrations Laravel existantes).
 
-Nommage des fichiers : `2026_10_18_0<lot>0<ordre>_create_<table>_table.php` pour garantir l'ordre.
+Nommage des fichiers : `2026_10_18_<lot sur 2 chiffres>0<ordre>_create_<table>_table.php` pour garantir l'ordre. Implémentation : les lots 4 et 5 ci-dessus sont découpés en « 04 réseau social » et « 05 communauté (événements, forums, conversations) », d'où les préfixes réels `06` alertes, `07` dossiers, `08` pilotage et modération, `09` passerelles, `10` communication, `11` plateforme. La migration `users` reste celle de Laravel (`0001_01_01_000000`) complétée par `2026_10_18_020000_add_foreign_keys_to_users_table.php` (zones et communes sont créées après `users`).

@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Models\Poll;
+use App\Models\PollOption;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<PollOption>
+ */
+class PollOptionFactory extends Factory
+{
+    /**
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'poll_id' => Poll::factory(),
+            'label' => fake()->unique()->sentence(3),
+            'position' => fake()->numberBetween(1, Poll::MAX_OPTIONS),
+            'votes_count' => 0,
+        ];
+    }
+}
