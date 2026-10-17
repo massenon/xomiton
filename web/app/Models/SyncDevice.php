@@ -134,6 +134,24 @@ class SyncDevice extends Model
     }
 
     /**
+     * Appareils sans aucun contact depuis plus de `$days` jours (jamais vus : depuis leur enregistrement) :
+     * révoqués par `sync:prune`. Distinct de `stale()`, qui signale un simple retard de synchronisation.
+     *
+     * @param  Builder<SyncDevice>  $query
+     */
+    public function scopeInactiveForDays(Builder $query, int $days): void
+    {
+        $cutoff = now()->subDays($days);
+
+        $query->where(function (Builder $q) use ($cutoff): void {
+            $q->where('last_seen_at', '<', $cutoff)
+                ->orWhere(function (Builder $never) use ($cutoff): void {
+                    $never->whereNull('last_seen_at')->where('created_at', '<', $cutoff);
+                });
+        });
+    }
+
+    /**
      * @param  Builder<SyncDevice>  $query
      */
     public function scopeWhereDeviceUuid(Builder $query, string $uuid): void

@@ -464,6 +464,48 @@ class User extends Authenticatable
         return $this->status === UserStatus::Suspended;
     }
 
+    // -- Anonymisation (DATABASE_ENGINEERING.md §6 : compte supprimé, logique 30 j puis anonymisation) ----
+
+    /** Pseudo d'un compte anonymisé : `membre-supprimé-<id>`. */
+    public const ANONYMIZED_PSEUDO_PREFIX = 'membre-supprimé-';
+
+    /** Domaine réservé (RFC 2606) de l'e-mail d'un compte anonymisé : `supprime-<id>@anonyme.invalid`. */
+    public const ANONYMIZED_EMAIL_DOMAIN = 'anonyme.invalid';
+
+    public static function anonymizedPseudo(int $id): string
+    {
+        return self::ANONYMIZED_PSEUDO_PREFIX.$id;
+    }
+
+    public static function anonymizedEmail(int $id): string
+    {
+        return 'supprime-'.$id.'@'.self::ANONYMIZED_EMAIL_DOMAIN;
+    }
+
+    /**
+     * L'e-mail d'anonymisation sert de marqueur : `accounts:anonymize` ne repasse jamais sur un compte.
+     */
+    public function isAnonymized(): bool
+    {
+        return str_ends_with(mb_strtolower((string) $this->email), '@'.self::ANONYMIZED_EMAIL_DOMAIN);
+    }
+
+    /**
+     * @param  Builder<User>  $query
+     */
+    public function scopeAnonymized(Builder $query): void
+    {
+        $query->where('email', 'like', '%@'.self::ANONYMIZED_EMAIL_DOMAIN);
+    }
+
+    /**
+     * @param  Builder<User>  $query
+     */
+    public function scopeNotAnonymized(Builder $query): void
+    {
+        $query->where('email', 'not like', '%@'.self::ANONYMIZED_EMAIL_DOMAIN);
+    }
+
     /**
      * URL de l'avatar : fichier du profil (disque public ou image de démonstration de public/),
      * ou image par défaut si le fichier manque — jamais de 404.

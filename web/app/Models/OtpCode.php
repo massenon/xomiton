@@ -90,6 +90,21 @@ class OtpCode extends Model
         $query->where('expires_at', '<', now()->subDay());
     }
 
+    /**
+     * Codes à purger par `otp:purge` : expirés ou consommés depuis plus de `$hours` heures
+     * (`xomiton.retention.otp_hours` par défaut). Un code encore valide n'est jamais retenu.
+     *
+     * @param  Builder<OtpCode>  $query
+     */
+    public function scopePurgeable(Builder $query, ?int $hours = null): void
+    {
+        $cutoff = now()->subHours($hours ?? (int) config('xomiton.retention.otp_hours', 24));
+
+        $query->where(function (Builder $q) use ($cutoff): void {
+            $q->where('expires_at', '<', $cutoff)->orWhere('consumed_at', '<', $cutoff);
+        });
+    }
+
     public function isExpired(): bool
     {
         return $this->expires_at->isPast();

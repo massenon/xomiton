@@ -179,6 +179,22 @@ class CaseRecord extends Model
         $query->whereBetween('occurred_on', [$from, $to]);
     }
 
+    /**
+     * Dossiers à anonymiser par `cases:anonymize` : clos ou archivés, pas encore anonymisés, dont le dernier
+     * événement de cycle de vie (archivage, sinon clôture) remonte à plus de `$years` ans
+     * (`xomiton.retention.sensitive_years_after_case` par défaut ; DATABASE_ENGINEERING.md §6).
+     *
+     * @param  Builder<CaseRecord>  $query
+     */
+    public function scopeDueForAnonymization(Builder $query, ?int $years = null): void
+    {
+        $cutoff = now()->subYears($years ?? (int) config('xomiton.retention.sensitive_years_after_case', 5));
+
+        $query->whereNull('anonymized_at')
+            ->whereIn('status', [CaseStatus::Closed->value, CaseStatus::Archived->value])
+            ->whereRaw('COALESCE(archived_at, closed_at) < ?', [$cutoff->format('Y-m-d H:i:s')]);
+    }
+
     public function isActive(): bool
     {
         return $this->status->isActive();

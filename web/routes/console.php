@@ -2,9 +2,80 @@
 
 declare(strict_types=1);
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+/*
+ * Planificateur (SOFTWARE_ARCHITECTURE.md §6, D7 : cPanel mutualisé, une seule ligne cron
+ * « * * * * * php artisan schedule:run », aucun processus permanent). Contraintes :
+ * - jamais runInBackground() (pas de processus détaché en mutualisé) ni onOneServer() (un seul serveur) ;
+ * - withoutOverlapping() partout : un cron qui déborde sur la minute suivante ne doit pas se doubler ;
+ * - toutes les heures sont exprimées dans config('app.timezone').
+ *
+ * `php artisan queue:work --stop-when-empty --max-time=50` est la seconde ligne cron (P17-03), pas une
+ * entrée du planificateur. Les commandes elles-mêmes sont dans app/Console/Commands ; leur logique dans
+ * app/Application/Retention et app/Application/Maintenance.
+ */
+
+$timezone = (string) config('app.timezone', 'UTC');
+
+/*
+ * Chaque minute.
+ */
+Schedule::command('mail:flush-outbox')
+    ->everyMinute()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Envoie les e-mails en attente dans mail_outbox (50 au plus) dès qu’un SMTP est disponible');
+
+/*
+ * Quotidien à 03:00 : purges et anonymisations (DATABASE_ENGINEERING.md §6), dans l'ordre des dépendances
+ * (les comptes anonymisés libèrent leurs sessions et jetons avant la purge des sessions).
+ */
+$daily = [
+    'otp:purge' => 'Supprime les codes OTP expirés ou consommés depuis plus de 24 h',
+    'mail:purge-logs' => 'Supprime les journaux d’envoi (mail_logs) de plus de 180 jours',
+    'audit:purge' => 'Supprime le journal d’audit au-delà de la rétention configurée (90 jours par défaut)',
+    'accounts:anonymize' => 'Anonymise les comptes supprimés depuis plus de 30 jours',
+    'cases:anonymize' => 'Anonymise les dossiers clos ou archivés depuis plus de 5 ans',
+    'sessions:purge' => 'Supprime les sessions en base inactives (durée de session + 1 jour)',
+    'sync:prune' => 'Supprime les reçus de synchronisation de plus de 90 jours et révoque les appareils inactifs depuis 180 jours',
+];
+
+foreach ($daily as $command => $description) {
+    Schedule::command($command)
+        ->dailyAt('03:00')
+        ->timezone($timezone)
+        ->withoutOverlapping(180)
+        ->description($description);
+}
+
+/*
+ * Signal de vie vers la supervision externe (D7, NFR-03) : enregistré en dernier pour être émis après les
+ * autres tâches de la minute. Quand `alerts:escalate` et `notifications:retry` (P5-07) seront livrées, le
+ * conditionner à leur succès (P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte).
+ */
+Schedule::command('heartbeat:ping')
+    ->everyMinute()
+    ->timezone($timezone)
+    ->withoutOverlapping(5)
+    ->description('Signal de vie vers l’URL de supervision (HEARTBEAT_URL)');
+
+/*
+ * Entrées livrées par les phases suivantes : à décommenter avec la commande correspondante. Une commande
+ * planifiée mais absente fait échouer `schedule:run`, et le planificateur ne peut pas interroger Artisan
+ * pendant son propre chargement — d'où ces lignes en commentaire plutôt qu'une condition.
+ *
+ * P5-07  — alertes SOS :
+ *   Schedule::command('alerts:escalate')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
+ *   Schedule::command('notifications:retry')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
+ * P14-03 — newsletter (lots de 200) :
+ *   Schedule::command('newsletter:process')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
+ * P14-04 — passerelles réseaux sociaux (D4-bis) :
+ *   Schedule::command('gateways:publish')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
+ * P10-xx — instantanés mensuels des indicateurs (indicator_values) :
+ *   Schedule::command('indicators:snapshot')->dailyAt('01:00')->timezone($timezone)->withoutOverlapping(180);
+ * P10-07 — rapports planifiés échus (report_schedules) :
+ *   Schedule::command('reports:run-schedules')->dailyAt('04:00')->timezone($timezone)->withoutOverlapping(180);
+ * P13-03 — sauvegardes (mysqldump + fichiers vers stockage externe chiffré) :
+ *   Schedule::command('backups:run')->dailyAt('02:00')->timezone($timezone)->withoutOverlapping(180);
+ */

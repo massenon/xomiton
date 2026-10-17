@@ -123,6 +123,16 @@ class SyncOutboxReceipt extends Model
     }
 
     /**
+     * Reçus plus anciens que `$days` jours : la fenêtre de rejeu est passée, `sync:prune` les supprime.
+     *
+     * @param  Builder<SyncOutboxReceipt>  $query
+     */
+    public function scopeOlderThan(Builder $query, int $days): void
+    {
+        $query->where('created_at', '<', now()->subDays($days));
+    }
+
+    /**
      * Reçu déjà émis pour cette clé d'idempotence sur cet appareil (rejeu), s'il existe.
      */
     public static function findForReplay(int $deviceId, string $idempotencyKey): ?self

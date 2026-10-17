@@ -32,6 +32,24 @@ Tâches planifiées (cron chaque minute en production, D7) :
 * * * * * php artisan queue:work --stop-when-empty --max-time=50
 ```
 
+## Tâches planifiées
+
+Le planificateur est déclaré dans `routes/console.php` (`php artisan schedule:list` pour le vérifier). Toutes les tâches sont idempotentes, protégées par `withoutOverlapping()`, exprimées dans `config('app.timezone')`, sans `runInBackground()` (cPanel mutualisé, D7). Les règles sont dans `app/Application/Retention` et `app/Application/Maintenance` ; les commandes dans `app/Console/Commands`. Chaque commande peut aussi être lancée à la main.
+
+| Commande | Fréquence | Rôle |
+|---|---|---|
+| `mail:flush-outbox [--limit=50]` | chaque minute | Envoie les e-mails de `mail_outbox` avec le mailer par défaut si `MAIL_MAILER` n'est ni `log` ni `array` (sinon ne fait rien et le dit) ; 50 au plus par exécution, `attempts` et `last_error` tenus, trace dans `mail_logs` |
+| `heartbeat:ping` | chaque minute | GET sur `HEARTBEAT_URL` (délai 5 s) pour la supervision externe ; silencieux si l'URL n'est pas définie |
+| `otp:purge` | quotidien 03:00 | Supprime les codes OTP expirés ou consommés depuis plus de 24 h (`xomiton.retention.otp_hours`) |
+| `mail:purge-logs` | quotidien 03:00 | Supprime les `mail_logs` de plus de 180 jours |
+| `audit:purge [--days=N]` | quotidien 03:00 | Supprime les `audit_logs` au-delà de la rétention : option `--days`, sinon paramètre `audit_log_days` de l'administration, sinon `xomiton.retention.audit_log_days` (90 j) ; bornes 7–3650 |
+| `accounts:anonymize [--dry-run]` | quotidien 03:00 | Comptes supprimés logiquement depuis plus de 30 j : pseudo `membre-supprimé-<id>`, e-mail `supprime-<id>@anonyme.invalid`, nom, téléphone, profil, avatar, réglages, jetons, sessions et abonnements push effacés ; publications et commentaires conservés sous le pseudo anonymisé ; une seule fois par compte |
+| `cases:anonymize [--dry-run]` | quotidien 03:00 | Dossiers clos ou archivés depuis plus de 5 ans : notes, récits, auteur·e, lieu, note de services, signataire du consentement et commentaires de suivi remplacés par `[anonymisé]`, `anonymized_at` posé ; colonnes statistiques conservées |
+| `sessions:purge` | quotidien 03:00 | Supprime les sessions en base dont `last_activity` dépasse la durée de session + 1 jour |
+| `sync:prune` | quotidien 03:00 | Supprime les `sync_outbox_receipts` de plus de 90 jours et révoque (`is_revoked`) les appareils sans contact depuis plus de 180 jours |
+
+Prévues par les phases suivantes (lignes commentées dans `routes/console.php`, à activer avec la commande) : `alerts:escalate`, `notifications:retry`, `newsletter:process`, `gateways:publish` (chaque minute) ; `indicators:snapshot`, `reports:run-schedules` (quotidien) ; `backups:run` (02:00).
+
 ## Commandes utiles
 
 | Commande | Rôle |

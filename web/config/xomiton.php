@@ -41,6 +41,21 @@ return [
         'otp_per_hour' => 5,
         'report_per_hour_per_ip' => 10,
         'newsletter_seconds_between' => 20,
+        // Suivi anonyme d'un signalement (GET signalements/{code}), réponse neutre au-delà (P2-08).
+        'tracking_per_hour_per_ip' => 20,
+        // API /api/v1 : par utilisateur·rice authentifié·e, sinon par IP.
+        'api_per_minute' => 60,
+    ],
+
+    /*
+     * En-têtes de sécurité HTTP (P2-08, P2-13, DEVELOPMENT_STANDARDS.md §7).
+     */
+    'security' => [
+        // HSTS en production sur requête sécurisée : un an, sous-domaines compris.
+        'hsts_max_age' => 31536000,
+        // Alpine (public.js et Livewire) évalue ses expressions avec new Function : 'unsafe-eval' consigné (P2-13).
+        // Passer à false le jour où le build CSP d'Alpine (@alpinejs/csp) est adopté.
+        'csp_unsafe_eval' => true,
     ],
 
     /*
@@ -117,6 +132,12 @@ return [
     'retention' => [
         'audit_log_days' => (int) env('XOMITON_AUDIT_RETENTION_DAYS', 90),
         'mail_log_days' => 180,
+        // Accusés de réception de la synchronisation (sync_outbox_receipts) : fenêtre de rejeu dépassée.
+        'sync_receipt_days' => 90,
+        // Appareil de synchronisation sans contact au-delà : révoqué par sync:prune (jamais supprimé).
+        'device_inactive_days' => 180,
+        // Marge ajoutée à la durée de session (session.lifetime) avant purge des sessions en base.
+        'session_grace_days' => 1,
         'otp_hours' => 24,
         'sensitive_years_after_case' => 5,
     ],
