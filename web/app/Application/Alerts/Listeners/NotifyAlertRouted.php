@@ -35,13 +35,16 @@ final class NotifyAlertRouted
             return;
         }
 
-        Audit::log('alerts.created', $alert, sprintf(
-            'type=%s ; priorite=%s ; routage=%s ; contact=%s',
+        $detail = sprintf(
+            'type=%s ; priorite=%s ; routage=%s ; fiche=%s',
             $event->type,
             $event->priority,
             $event->routingFallback ?? '-',
             $event->routedToContactId ?? '-',
-        ), null);
+        );
+
+        // Alerte anonyme (RG-01, RG-02, P5-02) : ni compte, ni IP, ni user-agent dans le journal.
+        $alert->is_anonymous ? Audit::logWithoutRequest('alerts.created', $alert, $detail) : Audit::log('alerts.created', $alert, $detail, $alert->user);
 
         $recipients = $this->recipients($alert);
 

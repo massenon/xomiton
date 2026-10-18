@@ -7,7 +7,7 @@ use App\Models\User;
 it('affiche la page d’accueil avec le gabarit public', function (): void {
     $this->get('/')
         ->assertOk()
-        ->assertSee('<title>Accueil – Xomiton</title>', false)
+        ->assertSee('<title>'.e(__('seo.pages.home.title')).'</title>', false)
         ->assertSee('class="xm-skip-link"', false)
         ->assertSee('id="pubHeader"', false)
         ->assertSee('<main id="contenu" tabindex="-1">', false)

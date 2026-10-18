@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /*
  * Libellés des enums du domaine « alertes » (lot 6) : app/Enums/AlertType, AlertStatus, AlertPriority,
- * AlertSource, NotificationChannel, DeliveryStatus.
+ * AlertSource, NotificationChannel, DeliveryStatus, RoutingFallback, ContactChannel ; motifs d'alert_escalations.
  */
 return [
 
@@ -41,6 +41,29 @@ return [
         'sms' => 'SMS',
         'mail' => 'E-mail',
         'database' => 'Cloche de l’administration',
+    ],
+
+    // RG-04 : niveau de routage retenu (`alerts.routing_fallback`), `manual` = choisi par une personne.
+    'routing_fallback' => [
+        'role_zone' => 'Rôle demandé dans le département',
+        'focal_zone' => 'Point focal du département',
+        'focal_national' => 'Point focal national',
+        'first_active' => 'Premier contact actif (repli)',
+        'manual' => 'Attribution manuelle',
+    ],
+
+    'contact_channel' => [
+        'sms' => 'SMS',
+        'whatsapp' => 'WhatsApp',
+        'call' => 'Appel',
+        'email' => 'E-mail',
+    ],
+
+    // Motifs d'`alert_escalations.reason` (RG-05, Q27) : libellés symboliques, le délai réel est un réglage.
+    'escalation_reason' => [
+        'no_ack_5min' => 'Sans accusé après 5 min',
+        'no_ack_48h' => 'Sans accusé après 48 h',
+        'manual' => 'Réattribution manuelle',
     ],
 
     'delivery_status' => [

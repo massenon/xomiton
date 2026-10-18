@@ -98,6 +98,15 @@ final class OnCallRoster
     }
 
     /**
+     * Remplaçant·e de garde seulement (plage `focal` en cours), sans repli sur l'annuaire : le routage RG-04
+     * (RouteAlert) applique lui-même son repli par identifiant croissant (parité `route_alert()`).
+     */
+    public function focalOnDuty(?Zone $zone, ?CarbonInterface $at = null): ?DirectoryContact
+    {
+        return $this->focalFromShift($zone, $at ?? now());
+    }
+
+    /**
      * Fiche d'annuaire active liée au compte d'une plage `focal` en cours (nationale si `$zone` est nul).
      */
     private function focalFromShift(?Zone $zone, CarbonInterface $at): ?DirectoryContact

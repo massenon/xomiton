@@ -59,6 +59,25 @@ final class Audit
     }
 
     /**
+     * Entrée sans compte, sans IP ni user-agent (P5-02 : actions anonymes — alerte anonyme, accusé par lien signé,
+     * annulation d'un SOS anonyme — et tâches planifiées, avec l'acteur « système »). Ne lit jamais la requête courante,
+     * ce qui protège l'anonymat même quand une requête (ou la requête factice de la console) est liée.
+     */
+    public static function logWithoutRequest(string $action, ?Model $subject = null, ?string $detail = null, string $actor = AuditLog::ACTOR_ANONYMOUS): AuditLog
+    {
+        return AuditLog::query()->create([
+            'user_id' => null,
+            'actor' => Str::limit($actor, 190, ''),
+            'action' => Str::limit($action, 80, ''),
+            'subject_type' => $subject?->getMorphClass(),
+            'subject_id' => $subject?->getKey(),
+            'detail' => $detail === null ? null : self::redactString($detail),
+            'ip' => null,
+            'user_agent' => null,
+        ]);
+    }
+
+    /**
      * Variante pratique : le détail est un tableau (changements, contexte) sérialisé après masquage.
      *
      * @param  array<string, mixed>  $context

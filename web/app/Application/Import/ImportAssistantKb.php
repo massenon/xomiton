@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Application\Import;
 
 use App\Models\AssistantKb;
+use App\Support\FrenchTypography;
 
 /**
  * assistant_kb.json → assistant_kb (q → question, a → answer, keywords « a, b » → json, active → is_active).
- * Déjà semée par ContentSeeder : réalignée par question, le compteur de consultations est conservé.
+ * Déjà semée par ContentSeeder : retrouvée par question (toutes graphies, FrenchTypography), seuls les mots-clés et
+ * l'activation sont réalignés ; question et réponse d'une entrée existante restent celles du seeder ou de l'administration
+ * (réponses au tu, P4-01 / Q56 ; le JSON du prototype vouvoie) et le compteur de consultations est conservé.
  */
 final class ImportAssistantKb extends AbstractImporter
 {
@@ -32,10 +35,10 @@ final class ImportAssistantKb extends AbstractImporter
             is_array($keywords) ? $keywords : [],
         ))));
 
-        $entry = AssistantKb::query()->updateOrCreate(
-            ['question' => $question],
-            ['answer' => $answer, 'keywords' => $keywords, 'is_active' => (bool) ($row['active'] ?? true)],
-        );
+        $entry = AssistantKb::query()->whereIn('question', FrenchTypography::variants($question))->first()
+            ?? new AssistantKb(['question' => $question, 'answer' => $answer]);
+
+        $entry->fill(['keywords' => $keywords, 'is_active' => (bool) ($row['active'] ?? true)])->save();
 
         $this->track($entry);
     }

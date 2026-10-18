@@ -61,6 +61,7 @@ return [
             'contact' => 'Comment te recontacter ? (téléphone ou e-mail)',
             'contact_placeholder' => '+229 01 … ou nom@exemple.bj',
             'contact_invalid' => 'Numéro de téléphone ou e-mail invalide.',
+            'preferred_channel' => 'Canal préféré',
             'position' => 'Joindre ma position',
             'position_help' => 'Facultatif : aide à te localiser pour l’intervention.',
             'position_locating' => 'Localisation en cours…',
@@ -110,6 +111,13 @@ return [
             'en_cours' => 'En cours de traitement.',
             'traite' => 'Traité. Si tu as besoin d’autre chose, tu peux faire un nouveau signalement.',
             'clos' => 'Clos.',
+        ],
+        // Canal préféré de recontact (ContactChannel ; libellés courts du formulaire).
+        'channels' => [
+            'sms' => 'SMS',
+            'whatsapp' => 'WhatsApp',
+            'call' => 'Appel',
+            'email' => 'E-mail',
         ],
         'from_post' => 'Tu signales une publication. Décris ce qui pose problème ; l’équipe de modération la relira.',
     ],
@@ -165,7 +173,16 @@ return [
         'text' => 'En confirmant, vous indiquez prendre cette alerte en charge : l’escalade vers le point focal national s’arrête.',
         'done' => 'Réception confirmée. Merci : appelez la personne dès que possible.',
         'already' => 'Cette alerte a déjà été prise en charge le :date.',
+        'mine' => 'Vous avez accusé réception de cette alerte le :date.',
+        'reveal' => 'Afficher à nouveau les coordonnées',
+        'received_on' => 'Reçue le :date',
+        'priority' => 'Priorité : :priority',
         'invalid' => 'Ce lien n’est plus valide. Connectez-vous à l’administration pour retrouver l’alerte.',
+        'confirm' => 'Confirmer la prise en charge',
+        'closed' => 'Cette alerte est close : aucune action n’est attendue.',
+        'contact_title' => 'Joindre la personne',
+        'preferred_channel' => 'Canal préféré : :channel',
+        'no_contact' => 'Aucun moyen de contact n’a été laissé. Retrouvez l’alerte dans votre espace ou auprès de l’équipe Xomiton.',
     ],
 
     // Page /urgences (prototype urgences.php) : tu, comme tout le parcours de crise.
@@ -218,6 +235,19 @@ return [
         'message' => 'Ton message',
         'message_help' => ':max caractères maximum. Dis simplement de quoi tu as besoin.',
         'sent' => 'Demande envoyée. :name te recontactera.',
+        'default_message' => 'Je souhaite être rappelé·e.',
+        'contact_unavailable' => 'Cette personne n’est plus disponible dans l’annuaire.',
+        'idempotency_conflict' => 'Cette clé Idempotency-Key a déjà servi pour une alerte d’un autre type. Utiliser une nouvelle clé pour un nouvel envoi.',
+    ],
+
+    // Refus métier des cas d'usage (App\Domain\Alerts\Exceptions, P5-02) : code stable côté API, texte ici.
+    'errors' => [
+        'invalid_transition' => 'Passage de « :from » à « :to » impossible.',
+        'alert_closed' => 'Cette alerte est close : aucune action n’est plus possible.',
+        'cancel_window_expired' => 'L’alerte est partie depuis plus de :seconds secondes : elle ne peut plus être annulée. Tu peux indiquer que tu es en sécurité.',
+        'not_sos' => 'Cette action ne concerne que les alertes SOS.',
+        'contact_unavailable' => 'Cette personne n’est plus disponible dans l’annuaire.',
+        'idempotency_conflict' => 'Cette clé Idempotency-Key a déjà servi pour une alerte d’un autre type. Utiliser une nouvelle clé pour un nouvel envoi.',
     ],
 
     // Signalement d'un contenu de la communauté à la modération (prototype messaging.php, render.php).

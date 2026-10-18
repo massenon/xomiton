@@ -32,7 +32,9 @@
     $robots = $shouldIndex ? 'index, follow, max-image-preview:large' : 'noindex, nofollow';
 
     $crumbs = [[__('seo.home'), $root]];
-    foreach ($breadcrumb ?: [[$pageTitle, $canonical]] as $crumb) {
+    // Sur la racine (accueil), le fil d'Ariane n'a qu'un élément « Accueil » (P4-01).
+    $isRoot = rtrim($canonical, '/') === rtrim($root, '/');
+    foreach ($breadcrumb ?: ($isRoot ? [] : [[$pageTitle, $canonical]]) as $crumb) {
         $crumbs[] = $crumb;
     }
     $list = [];
@@ -40,8 +42,10 @@
         $list[] = ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $crumb[0], 'item' => $crumb[1]];
     }
     $graph = [
-        ['@type' => 'Organization', '@id' => $root.'#org', 'name' => $site, 'url' => $root, 'logo' => $root.'assets/images/xomiton/brand/icone-appli-bleu.svg'],
-        ['@type' => 'WebSite', '@id' => $root.'#site', 'url' => $root, 'name' => $site, 'inLanguage' => 'fr-BJ', 'publisher' => ['@id' => $root.'#org']],
+        ['@type' => 'Organization', '@id' => $root.'#org', 'name' => $site, 'url' => $root, 'logo' => $root.'assets/images/xomiton/brand/icone-appli-bleu.svg', 'description' => __('seo.organization_description')],
+        ['@type' => 'WebSite', '@id' => $root.'#site', 'url' => $root, 'name' => $site, 'inLanguage' => 'fr-BJ', 'publisher' => ['@id' => $root.'#org'],
+            // Recherche interne (SEO_CONTENT_GUIDE_INSTRUCTION.md : WebSite + SearchAction ; prototype title-meta.php).
+            'potentialAction' => ['@type' => 'SearchAction', 'target' => route('ressources.index').'?q={search_term_string}', 'query-input' => 'required name=search_term_string']],
         ['@type' => $type === 'article' ? 'Article' : 'WebPage', '@id' => $canonical.'#page', 'url' => $canonical, 'name' => $fullTitle, 'description' => $desc, 'inLanguage' => 'fr-BJ', 'isPartOf' => ['@id' => $root.'#site'], 'primaryImageOfPage' => $img] + ($modified ? ['dateModified' => $modified] : []),
         ['@type' => 'BreadcrumbList', 'itemListElement' => $list],
     ];
@@ -49,7 +53,8 @@
         $graph[] = $extra;
     }
     // Construit dans le bloc PHP : « @context » serait sinon pris pour une directive Blade.
-    $jsonLd = json_encode(['@context' => 'https://schema.org', '@graph' => $graph], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    // JSON_HEX_TAG : un contenu éditorial (FAQ, titre) contenant « </script> » ne peut pas refermer la balise.
+    $jsonLd = json_encode(['@context' => 'https://schema.org', '@graph' => $graph], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
 @endphp
 <title>{{ $fullTitle }}</title>
 <meta name="description" content="{{ $desc }}">

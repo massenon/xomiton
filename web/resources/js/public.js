@@ -6,6 +6,7 @@ import Alpine from 'alpinejs';
 import focus from '@alpinejs/focus';
 import './public/xomiton-ui.js';
 import './public/auth.js';
+import './public/assistant.js';
 import './shared/theme.js';
 
 Alpine.plugin(focus);

@@ -4,6 +4,28 @@ declare(strict_types=1);
 
 // Textes des composants Blade x-* (MICROCOPY.md, COMPOSANTS.md). Les libellés transverses (Annuler, Fermer, Envoi…) sont dans common.php.
 return [
+    // Assistant public (<x-assistant-offcanvas>, P4-01) : bouton flottant + offcanvas, réponses de KnowledgeBaseAnswerer.
+    // Registre tu sur toutes les pages hôtes (accueil, /ressources…) : dialogue d'accompagnement distinct du corps de page,
+    // dont les réponses serveur (lang/fr/assistant.php, assistant_kb) tutoient aussi (Q56, plan §7).
+    'assistant' => [
+        'open' => 'Ouvrir l’assistant',
+        'title' => 'Assistant Xomiton',
+        'subtitle' => 'VBG, santé sexuelle et droits ·',
+        'online' => 'en ligne',
+        'welcome' => 'Bonjour, je suis l’assistant Xomiton. Pose-moi tes questions sur les violences, le consentement, la santé sexuelle et tes droits : je réponds sans jugement, en toute confidentialité.',
+        'chips' => ['Comment porter plainte ?', 'Contraception d’urgence', 'Que faire après une agression ?'],
+        'input_label' => 'Ton message',
+        'placeholder' => 'Pose ta question…',
+        'danger' => 'En danger immédiat ?',
+        'sos' => 'Envoyer un SOS',
+        // :number : premier numéro de settings.emergency_numbers (sinon config), comme la réponse de crise.
+        'offline' => 'Tu es hors connexion : l’assistant a besoin du réseau. En danger ? Appelle le :number ou ouvre les contacts d’urgence.',
+        'offline_no_number' => 'Tu es hors connexion : l’assistant a besoin du réseau. En danger ? Ouvre les contacts d’urgence.',
+        'offline_link' => 'Contacts d’urgence',
+        'error' => 'Je n’ai pas pu répondre. Réessaie dans quelques instants ; en cas de danger, utilise le bouton SOS.',
+        'rate_limited' => 'Trop de questions d’un coup. Réessaie dans :seconds secondes.',
+    ],
+
     'avatar' => [
         'alt' => 'Avatar de :name',
     ],

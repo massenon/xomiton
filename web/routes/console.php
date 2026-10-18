@@ -39,6 +39,7 @@ $daily = [
     'cases:anonymize' => 'Anonymise les dossiers clos ou archivés depuis plus de 5 ans',
     'sessions:purge' => 'Supprime les sessions en base inactives (durée de session + 1 jour)',
     'sync:prune' => 'Supprime les reçus de synchronisation de plus de 90 jours et révoque les appareils inactifs depuis 180 jours',
+    'idempotency:purge' => 'Supprime les réponses idempotentes de l’API dont la fenêtre de rejeu est passée (P5-09, ADR-32)',
 ];
 
 foreach ($daily as $command => $description) {
@@ -75,9 +76,19 @@ Schedule::command('indicators:snapshot')
     ->description('Calcule les indicateurs intégrés du mois précédent (national et par département) dans indicator_values');
 
 /*
+ * Escalade RG-05 / Q27 (P5-07) : SOS sans accusé à 5 min ± 1 vers le point focal national, rappel puis escalade des
+ * signalements et besoins (24 h / 48 h). Avant heartbeat:ping ; pose le marqueur `alerts:escalate:last_success_at`.
+ */
+Schedule::command('alerts:escalate')
+    ->everyMinute()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Escalade les SOS sans accusé (5 min) au point focal national, rappelle puis escalade les signalements et besoins sans accusé (24 h / 48 h)');
+
+/*
  * Signal de vie vers la supervision externe (D7, NFR-03) : enregistré en dernier pour être émis après les
- * autres tâches de la minute. Quand `alerts:escalate` et `notifications:retry` (P5-07) seront livrées, le
- * conditionner à leur succès (P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte).
+ * autres tâches de la minute. À conditionner au succès d'`alerts:escalate` (marqueur `alerts:escalate:last_success_at`,
+ * livré) et de `notifications:retry` (P5-03) — P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte.
  */
 Schedule::command('heartbeat:ping')
     ->everyMinute()
@@ -90,8 +101,7 @@ Schedule::command('heartbeat:ping')
  * planifiée mais absente fait échouer `schedule:run`, et le planificateur ne peut pas interroger Artisan
  * pendant son propre chargement — d'où ces lignes en commentaire plutôt qu'une condition.
  *
- * P5-07  — alertes SOS :
- *   Schedule::command('alerts:escalate')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
+ * P5-03  — rejeu des notifications SOS échouées (avant heartbeat:ping, comme alerts:escalate) :
  *   Schedule::command('notifications:retry')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
  * P14-03 — newsletter (lots de 200) :
  *   Schedule::command('newsletter:process')->everyMinute()->timezone($timezone)->withoutOverlapping(10);

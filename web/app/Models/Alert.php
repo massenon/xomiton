@@ -4,11 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domain\Alerts\EscalationPolicy;
+use App\Domain\Alerts\TrackingCode;
+use App\Domain\Alerts\ValueObjects\EscalationDelays;
 use App\Enums\AlertPriority;
 use App\Enums\AlertSource;
 use App\Enums\AlertStatus;
 use App\Enums\AlertType;
+use App\Enums\ContactChannel;
+use App\Enums\RoutingFallback;
 use App\Models\Concerns\HasUlid;
+use App\Support\EscalationPolicyFactory;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
+use Closure;
 use Database\Factories\AlertFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,19 +36,24 @@ class Alert extends Model
 
     /**
      * Niveaux de repli du routage RG-04 (`routing_fallback`).
+     *
+     * @deprecated utiliser App\Enums\RoutingFallback (valeurs identiques).
      */
     public const ROUTING_ROLE_ZONE = 'role_zone';
 
+    /** @deprecated utiliser RoutingFallback::FocalZone. */
     public const ROUTING_FOCAL_ZONE = 'focal_zone';
 
+    /** @deprecated utiliser RoutingFallback::FocalNational. */
     public const ROUTING_FOCAL_NATIONAL = 'focal_national';
 
+    /** @deprecated utiliser RoutingFallback::FirstActive. */
     public const ROUTING_FIRST_ACTIVE = 'first_active';
 
     /**
-     * Alphabet du code de suivi : sans 0/O, 1/I pour une lecture et une dictée sans ambiguïté.
+     * Alphabet du code de suivi : sans 0/O, 1/I pour une lecture et une dictée sans ambiguïté (domaine : TrackingCode).
      */
-    public const TRACKING_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    public const TRACKING_ALPHABET = TrackingCode::ALPHABET;
 
     /**
      * @var list<string>
@@ -51,6 +65,7 @@ class Alert extends Model
         'is_anonymous',
         'pseudo',
         'category',
+        'occurred_on',
         'description',
         'needs',
         'zone_id',
@@ -59,13 +74,16 @@ class Alert extends Model
         'lng',
         'location_accuracy',
         'contact',
+        'preferred_channel',
         'status',
         'priority',
         'routed_to',
         'routing_fallback',
         'acknowledged_at',
         'acknowledged_by',
+        'acknowledged_by_contact_id',
         'escalated_at',
+        'reminded_at',
         'closed_at',
         'cancelled_at',
         'safe_at',
@@ -95,16 +113,20 @@ class Alert extends Model
         return [
             'type' => AlertType::class,
             'is_anonymous' => 'boolean',
+            'occurred_on' => 'date',
             'description' => 'encrypted',
             'needs' => 'array',
             'lat' => 'encrypted',
             'lng' => 'encrypted',
             'location_accuracy' => 'integer',
             'contact' => 'encrypted',
+            'preferred_channel' => ContactChannel::class,
             'status' => AlertStatus::class,
             'priority' => AlertPriority::class,
+            'routing_fallback' => RoutingFallback::class,
             'acknowledged_at' => 'datetime',
             'escalated_at' => 'datetime',
+            'reminded_at' => 'datetime',
             'closed_at' => 'datetime',
             'cancelled_at' => 'datetime',
             'safe_at' => 'datetime',
@@ -123,18 +145,14 @@ class Alert extends Model
     }
 
     /**
-     * Code de suivi unique, de la longueur configurée (`xomiton.alerts.tracking_code_length`).
+     * Code de suivi unique (TrackingCode::random), de la longueur configurée (`xomiton.alerts.tracking_code_length`).
      */
     public static function generateTrackingCode(): string
     {
-        $length = (int) config('xomiton.alerts.tracking_code_length', 10);
-        $max = strlen(self::TRACKING_ALPHABET) - 1;
+        $length = (int) config('xomiton.alerts.tracking_code_length', TrackingCode::LENGTH);
 
         do {
-            $code = '';
-            for ($i = 0; $i < $length; $i++) {
-                $code .= self::TRACKING_ALPHABET[random_int(0, $max)];
-            }
+            $code = TrackingCode::random($length);
         } while (static::query()->where('tracking_code', $code)->exists());
 
         return $code;
@@ -183,6 +201,21 @@ class Alert extends Model
     }
 
     /**
+     * Fiche d'annuaire qui a accusé réception par lien signé (Q50).
+     *
+     * @return BelongsTo<DirectoryContact, $this>
+     */
+    public function acknowledgedByContact(): BelongsTo
+    {
+        return $this->belongsTo(DirectoryContact::class, 'acknowledged_by_contact_id');
+    }
+
+    public function wasAcknowledgedBy(DirectoryContact $contact): bool
+    {
+        return $this->isAcknowledged() && (int) $this->acknowledged_by_contact_id === (int) $contact->getKey();
+    }
+
+    /**
      * @return BelongsTo<SyncDevice, $this>
      */
     public function device(): BelongsTo
@@ -220,6 +253,16 @@ class Alert extends Model
     public function statusChanges(): HasMany
     {
         return $this->hasMany(AlertStatusChange::class);
+    }
+
+    /**
+     * Preuves jointes (disque privé, lien signé).
+     *
+     * @return HasMany<AlertAttachment, $this>
+     */
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(AlertAttachment::class);
     }
 
     /**
@@ -267,17 +310,87 @@ class Alert extends Model
     }
 
     /**
-     * SOS à escalader (RG-05) : sans accusé depuis plus de `xomiton.alerts.escalation_minutes`, pas encore escaladés.
+     * Statut final (`traite`, `clos`).
      *
      * @param  Builder<Alert>  $query
      */
-    public function scopeAwaitingEscalation(Builder $query): void
+    public function scopeTerminal(Builder $query): void
     {
-        $query->sos()
-            ->open()
-            ->unacknowledged()
+        $query->whereNotIn('status', AlertStatus::openStatuses());
+    }
+
+    /**
+     * @param  Builder<Alert>  $query
+     */
+    public function scopeNotTerminal(Builder $query): void
+    {
+        $query->whereIn('status', AlertStatus::openStatuses());
+    }
+
+    /**
+     * Alertes encore suivies par RG-05 : ouvertes, sans accusé, non annulées, la personne n'a pas indiqué être en sécurité.
+     *
+     * @param  Builder<Alert>  $query
+     */
+    public function scopeAwaitingFollowUp(Builder $query): void
+    {
+        $query->notTerminal()->unacknowledged()->whereNull('safe_at');
+    }
+
+    /**
+     * Alertes à escalader (RG-05, Q27) : délai d'escalade de leur type échu (config `xomiton.alerts.escalation`,
+     * SOS 5 min, signalement et besoin 48 h par défaut), sans accusé, pas encore escaladées, et pas plus vieilles que
+     * ce délai + `xomiton.alerts.escalation_grace_minutes` (une alerte historique importée n'est jamais escaladée).
+     *
+     * @param  Builder<Alert>  $query
+     */
+    public function scopeAwaitingEscalation(Builder $query, ?CarbonInterface $at = null, ?EscalationPolicy $policy = null): void
+    {
+        $query->awaitingFollowUp()
             ->whereNull('escalated_at')
-            ->where('created_at', '<=', now()->subMinutes((int) config('xomiton.alerts.escalation_minutes', 5)));
+            ->where(fn (Builder $types) => self::whereDue($types, $at, $policy, static fn (EscalationDelays $d): ?int => $d->escalateAfterMinutes));
+    }
+
+    /**
+     * Alertes à rappeler au contact routé (Q27 : signalement et besoin à 24 h par défaut) : délai de rappel échu, ni
+     * rappelées ni escaladées, sans accusé, et dans la même borne d'âge que l'escalade.
+     *
+     * @param  Builder<Alert>  $query
+     */
+    public function scopeAwaitingReminder(Builder $query, ?CarbonInterface $at = null, ?EscalationPolicy $policy = null): void
+    {
+        $query->awaitingFollowUp()
+            ->whereNull('escalated_at')
+            ->whereNull('reminded_at')
+            ->where(fn (Builder $types) => self::whereDue($types, $at, $policy, static fn (EscalationDelays $d): ?int => $d->remindAfterMinutes));
+    }
+
+    /**
+     * Par type : délai échu (`created_at <= at - délai`) et alerte encore suivie (`created_at >= at - (délai
+     * d'escalade, sinon de rappel) - marge`). Sans délai configuré pour un type : aucune alerte de ce type.
+     *
+     * @param  Builder<Alert>  $types
+     * @param  Closure(EscalationDelays): ?int  $delay
+     */
+    private static function whereDue(Builder $types, ?CarbonInterface $at, ?EscalationPolicy $policy, Closure $delay): void
+    {
+        $at = CarbonImmutable::instance($at ?? now());
+        $policy ??= EscalationPolicyFactory::fromConfig();
+        $grace = max(0, (int) config('xomiton.alerts.escalation_grace_minutes', 1440));
+
+        $types->whereRaw('1 = 0');
+
+        foreach ($policy->types() as $type) {
+            $delays = $policy->delaysFor($type);
+            $minutes = $delay($delays);
+            $horizon = $delays->escalateAfterMinutes ?? $delays->remindAfterMinutes;
+
+            if ($minutes !== null && $horizon !== null) {
+                $types->orWhere(fn (Builder $q) => $q->where('type', $type)
+                    ->where('created_at', '<=', $at->subMinutes($minutes))
+                    ->where('created_at', '>=', $at->subMinutes($horizon + $grace)));
+            }
+        }
     }
 
     /**
@@ -295,7 +408,9 @@ class Alert extends Model
      */
     public function scopeWhereTrackingCode(Builder $query, string $code): void
     {
-        $query->where('tracking_code', strtoupper(trim($code)));
+        $normalized = TrackingCode::normalize($code);
+
+        $normalized === null ? $query->whereRaw('1 = 0') : $query->where('tracking_code', $normalized);
     }
 
     /**
@@ -324,6 +439,12 @@ class Alert extends Model
     public function isOpen(): bool
     {
         return $this->status->isOpen();
+    }
+
+    /** Statut final (`traite`, `clos`) : plus aucune relance RG-05. */
+    public function isTerminal(): bool
+    {
+        return $this->status->isTerminal();
     }
 
     public function isAcknowledged(): bool
@@ -380,6 +501,25 @@ class Alert extends Model
         }
 
         return $this->user?->pseudo ?? (string) __('alerts.anonymous');
+    }
+
+    /** Code de suivi affiché (« SIG-A7K2M9P4QX »). */
+    public function displayCode(): string
+    {
+        return TrackingCode::display((string) $this->tracking_code);
+    }
+
+    /** Fin du repli « fausse alerte » d'un SOS (création + `xomiton.alerts.cancel_window_seconds`, Q39). */
+    public function cancelWindowEndsAt(): CarbonImmutable
+    {
+        $createdAt = CarbonImmutable::instance($this->created_at ?? now());
+
+        return $createdAt->addSeconds((int) config('xomiton.alerts.cancel_window_seconds', 60));
+    }
+
+    public function canBeCancelledAt(CarbonInterface $now): bool
+    {
+        return $this->isSos() && ! $this->isCancelled() && $now->lessThanOrEqualTo($this->cancelWindowEndsAt());
     }
 
     /**

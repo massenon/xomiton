@@ -12,8 +12,12 @@ return [
     'crisis' => [
         'intro' => 'Je te crois, et tu n’es pas seule. Si tu es en danger maintenant, mets-toi à l’abri si tu le peux et appelle tout de suite :',
         'number' => '• :label : :number',
-        'sos' => 'Bouton SOS : ton alerte part avec ta position vers les personnes de confiance de l’annuaire. :url',
-        'report' => 'Tu peux aussi signaler ce qui se passe, de façon anonyme si tu le souhaites. :url',
+        // Sans URL : l'offcanvas public affiche les boutons ; l'échange enregistré d'un·e membre ajoute l'adresse en fin de ligne.
+        'sos' => 'Bouton SOS : ton alerte part avec ta position vers les personnes de confiance de l’annuaire.',
+        'report' => 'Tu peux aussi signaler ce qui se passe, de façon anonyme si tu le souhaites.',
+        // Échange non enregistré (visiteur·se) : personne ne peut recontacter, renvoi vers « Exprimer un besoin » (/signaler).
+        'need' => 'Pour qu’une personne formée te réponde, exprime un besoin depuis la page Signaler : elle le lira sous 24 h.',
+        // Échange enregistré (membre, P8-11) : la conversation est marquée pour relecture humaine.
         'human' => 'Une personne formée peut te répondre : demande à parler à un humain et une pair éducatrice, une psychologue ou une juriste te recontacte.',
         'flag_reason' => 'Mots de crise détectés : :keyword',
     ],
@@ -37,5 +41,8 @@ return [
         'report' => 'Signaler',
         'emergency' => 'Contacts d’urgence',
         'human' => 'Parler à un humain',
+        // Lien `tel:` de la réponse de crise et du texte hors connexion (numéros de settings.emergency_numbers).
+        'call' => 'Appeler le :number (:label)',
+        'need' => 'Exprimer un besoin',
     ],
 ];

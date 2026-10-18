@@ -8,11 +8,14 @@ use App\Enums\AlertPriority;
 use App\Enums\AlertSource;
 use App\Enums\AlertStatus;
 use App\Enums\AlertType;
+use App\Enums\ContactChannel;
+use App\Enums\RoutingFallback;
 use App\Models\Alert;
 use App\Models\DirectoryContact;
 use App\Models\SyncDevice;
 use App\Models\User;
 use App\Models\Zone;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -132,7 +135,7 @@ class AlertFactory extends Factory
         ]);
     }
 
-    public function routedTo(?DirectoryContact $contact = null, string $fallback = Alert::ROUTING_ROLE_ZONE): static
+    public function routedTo(?DirectoryContact $contact = null, RoutingFallback|string $fallback = RoutingFallback::RoleZone): static
     {
         return $this->state(fn (array $attributes): array => [
             'routed_to' => $contact?->id ?? DirectoryContact::factory(),
@@ -192,6 +195,61 @@ class AlertFactory extends Factory
             'source' => AlertSource::SyncOffline,
             'idempotency_key' => (string) Str::uuid(),
             'device_id' => $device?->id ?? SyncDevice::factory(),
+        ]);
+    }
+
+    /**
+     * Date des faits déclarée (P5-04).
+     */
+    public function withOccurredOn(?CarbonInterface $date = null): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'occurred_on' => ($date ?? now()->subDays(3))->toDateString(),
+        ]);
+    }
+
+    public function preferredChannel(ContactChannel $channel = ContactChannel::Call): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'preferred_channel' => $channel,
+        ]);
+    }
+
+    /**
+     * Rappel RG-05 déjà envoyé au contact routé (Q27).
+     */
+    public function reminded(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'reminded_at' => now(),
+        ]);
+    }
+
+    /**
+     * SOS dont la personne a indiqué « Je suis en sécurité » (statut traité).
+     */
+    public function safe(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'safe_at' => now(),
+            'status' => AlertStatus::Handled,
+        ]);
+    }
+
+    public function withTrackingCode(string $code): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'tracking_code' => $code,
+        ]);
+    }
+
+    /**
+     * Clé d'idempotence ADR-32 (rejeu web ou mobile).
+     */
+    public function withIdempotencyKey(?string $key = null): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'idempotency_key' => $key ?? (string) Str::uuid(),
         ]);
     }
 

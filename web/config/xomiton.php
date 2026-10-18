@@ -20,6 +20,41 @@ return [
         'max_retry_attempts' => (int) env('XOMITON_SOS_MAX_RETRIES', 10),
         // Longueur du code de suivi anonyme (alerts.tracking_code).
         'tracking_code_length' => 10,
+        // RG-05 et Q27 (P5-07) : délais par type depuis la création, en minutes ; null = pas de rappel / pas
+        // d'escalade. SOS : escalade au point focal national à 5 min ; signalement et besoin : rappel au contact
+        // routé à 24 h, escalade à 48 h (décision par défaut, IMPLEMENTATION_PLAN §7). Lus par App\Support\EscalationPolicyFactory,
+        // surchargeables par le réglage `alerts.escalation.<type>.<clé>` (P13-04).
+        'escalation' => [
+            'sos' => [
+                'remind_after_minutes' => null,
+                'escalate_after_minutes' => (int) env('XOMITON_ESCALATION_MINUTES', 5),
+            ],
+            'denonciation' => [
+                'remind_after_minutes' => (int) env('XOMITON_REPORT_REMIND_MINUTES', 1440),
+                'escalate_after_minutes' => (int) env('XOMITON_REPORT_ESCALATE_MINUTES', 2880),
+            ],
+            'besoin' => [
+                'remind_after_minutes' => (int) env('XOMITON_REPORT_REMIND_MINUTES', 1440),
+                'escalate_after_minutes' => (int) env('XOMITON_REPORT_ESCALATE_MINUTES', 2880),
+            ],
+        ],
+        // Alertes examinées au plus par exécution d'alerts:escalate (D7 : 30 s par requête / tâche).
+        'escalation_batch' => 200,
+        // Marge au-delà du délai d'escalade : une alerte plus ancienne n'est plus rappelée ni escaladée (alertes
+        // historiques importées, cron arrêté longtemps), en minutes.
+        'escalation_grace_minutes' => (int) env('XOMITON_ESCALATION_GRACE_MINUTES', 1440),
+        // Repentir après l'envoi d'un SOS (P5-02, Q39), en secondes.
+        'cancel_window_seconds' => 60,
+        // Validité du lien signé d'accusé de réception envoyé à un contact d'annuaire sans compte (heures).
+        'acknowledge_link_hours' => 48,
+        // Suivi par code : une alerte close depuis plus de N jours répond « code inconnu ».
+        'tracking_visible_days' => 90,
+        'description_min' => 20,
+        'description_max' => 4000,
+        'sos_message_max' => 1000,
+        'callback_message_max' => 1000,
+        'note_max' => 1000,
+        'attachments_max' => 5,
     ],
 
     /*
@@ -43,8 +78,30 @@ return [
         'newsletter_seconds_between' => 20,
         // Suivi anonyme d'un signalement (GET signalements/{code}), réponse neutre au-delà (P2-08).
         'tracking_per_hour_per_ip' => 20,
+        // Page d'accusé de réception par lien signé (P5-02) : par IP + alerte + fiche, limiteur distinct de `tracking`.
+        'acknowledge_per_hour_per_link' => 60,
         // API /api/v1 : par utilisateur·rice authentifié·e, sinon par IP.
         'api_per_minute' => 60,
+        // Assistant public de l'accueil (POST assistant/question, P4-01) : par IP, en plus de api_per_minute.
+        'assistant_per_minute' => 20,
+        // SOS (ARCH §4 : « sans limite bloquante, journalisé ») : limiteur `sos`, jamais de 429 ; au-delà de ce nombre
+        // d'envois par minute et par IP, chaque envoi est journalisé et l'administration prévenue (P2-08, P5-09).
+        'sos_log_per_minute_per_ip' => 5,
+    ],
+
+    /*
+     * Idempotence de l'API (P5-09, ADR-32) : middleware `idempotent`, table `idempotency_keys`, purge `idempotency:purge`.
+     */
+    'idempotency' => [
+        // Durée pendant laquelle une réponse est rejouée à l'identique ; au-delà, la déduplication métier
+        // (alerts.idempotency_key, client_uuid) prend le relais.
+        'ttl_hours' => (int) env('XOMITON_IDEMPOTENCY_TTL_HOURS', 48),
+        // Attente maximale d'une requête concurrente portant la même clé avant 429 idempotency_in_progress (202 processing
+        // sur POST sos) ; sondages à partir de poll_milliseconds, doublés jusqu'à 500 ms (worker PHP-FPM mutualisé).
+        'wait_seconds' => 2,
+        'poll_milliseconds' => 100,
+        // Réservation non complétée depuis ce délai (processus interrompu) : reprise par le rejeu suivant.
+        'lock_seconds' => 60,
     ],
 
     /*
@@ -330,5 +387,6 @@ return [
         'social_channels' => ['access_token', 'refresh_token'],
         'settings' => ['value'],
         'sync_conflicts' => ['server_value', 'device_value', 'resolved_value'],
+        'idempotency_keys' => ['response_headers', 'response_body'],
     ],
 ];

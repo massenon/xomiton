@@ -24,7 +24,10 @@ use InvalidArgumentException;
  *
  * 1. crise : si la question contient un mot-clé de `xomiton.assistant.crisis_keywords` (mot entier, accents et casse
  *    ignorés) → réponse de crise (lang/fr/assistant.php) avec numéros d'urgence (`settings.emergency_numbers` sinon config),
- *    SOS, signalement et proposition d'escalade vers un humain ; `kind = crisis`, `emergency = true` ;
+ *    SOS et signalement ; `kind = crisis`, `emergency = true`. Sans enregistrement (visiteur·se, offcanvas public), rien
+ *    ne permet de rappeler la personne : pas de promesse de recontact ni d'URL dans le texte (l'appelant affiche les liens,
+ *    AssistantAnswerResource), renvoi vers « Exprimer un besoin » de /signaler (lu sous 24 h, VOICE_AND_TONE §3 règle 6).
+ *    Échange enregistré (membre) : URL dans le texte et escalade vers un humain, la conversation étant marquée pour relecture ;
  * 2. base : chaque entrée active reçoit un score dans [0, 1] = max(score mots-clés, similarité de question) ; la meilleure
  *    répond si elle atteint `match_threshold`, et son `hits_count` est incrémenté ;
  * 3. repli bienveillant avec les 3 questions les plus proches (ou les plus consultées si rien n'approche).
@@ -63,10 +66,11 @@ final class KnowledgeBaseAnswerer
 
         $crisisKeyword = self::detectCrisis($question);
         $ranked = $this->rank($question);
+        $persisted = $persist && $user !== null;
 
         if ($crisisKeyword !== null) {
             $answer = new Answer(
-                text: $this->crisisText(),
+                text: $this->crisisText($persisted),
                 kind: Answer::KIND_CRISIS,
                 suggestions: $this->suggestions($ranked, null),
                 emergency: true,
@@ -92,7 +96,7 @@ final class KnowledgeBaseAnswerer
             );
         }
 
-        if ($persist && $user !== null) {
+        if ($persisted) {
             $conversation = $this->persist($user, $conversation, $question, $answer, $crisisKeyword);
 
             return $answer->withConversationId((int) $conversation->getKey());
@@ -218,19 +222,25 @@ final class KnowledgeBaseAnswerer
             ->all();
     }
 
-    private function crisisText(): string
+    /**
+     * @param  bool  $persisted  échange enregistré (membre) : URL dans le texte et escalade humaine ; sinon ni l'un ni l'autre
+     */
+    private function crisisText(bool $persisted): string
     {
         $lines = [(string) __('assistant.crisis.intro')];
 
-        foreach ($this->emergencyNumbers() as $entry) {
+        foreach (self::emergencyNumbers() as $entry) {
             $lines[] = (string) __('assistant.crisis.number', ['label' => $entry['label'], 'number' => $entry['number']]);
         }
 
+        $sos = (string) __('assistant.crisis.sos');
+        $report = (string) __('assistant.crisis.report');
+
         $lines[] = '';
-        $lines[] = (string) __('assistant.crisis.sos', ['url' => self::url('sos', '/sos')]);
-        $lines[] = (string) __('assistant.crisis.report', ['url' => self::url('signaler', '/signaler')]);
+        $lines[] = $persisted ? $sos.' '.self::url('sos', '/sos') : $sos;
+        $lines[] = $persisted ? $report.' '.self::url('signaler', '/signaler') : $report;
         $lines[] = '';
-        $lines[] = (string) __('assistant.crisis.human');
+        $lines[] = (string) __($persisted ? 'assistant.crisis.human' : 'assistant.crisis.need');
 
         return implode("\n", $lines);
     }
@@ -257,11 +267,12 @@ final class KnowledgeBaseAnswerer
     }
 
     /**
-     * Numéros d'urgence : paramètre `emergency_numbers` (settings) s'il est renseigné et bien formé, sinon config.
+     * Numéros d'urgence : paramètre `emergency_numbers` (settings) s'il est renseigné et bien formé, sinon config
+     * (réponse de crise, liens `tel:` de l'API, texte hors connexion de l'offcanvas).
      *
      * @return list<array{label: string, number: string}>
      */
-    public function emergencyNumbers(): array
+    public static function emergencyNumbers(): array
     {
         $fromSettings = self::wellFormedNumbers(Settings::array('emergency_numbers', []));
 
@@ -376,6 +387,12 @@ final class KnowledgeBaseAnswerer
         }
 
         return $numbers;
+    }
+
+    /** Cible d'un lien `tel:` : chiffres et « + » seulement (« +229 01 97 38 88 47 » → « +2290197388847 »). */
+    public static function telHref(string $number): string
+    {
+        return 'tel:'.preg_replace('/[^+0-9]/', '', $number);
     }
 
     private static function url(string $routeName, string $fallbackPath): string

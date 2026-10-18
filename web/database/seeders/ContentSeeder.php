@@ -15,6 +15,7 @@ use App\Models\CccTool;
 use App\Models\Faq;
 use App\Models\Law;
 use App\Models\Thematique;
+use App\Support\FrenchTypography;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -232,17 +233,19 @@ class ContentSeeder extends Seeder
         }
 
         foreach ($data['rows'] as $index => [$question, $answer, $published]) {
-            Faq::query()->updateOrCreate(
-                ['question' => $question],
-                [
-                    'category_id' => $categories[$data['category_by_index'][$index] ?? 'compte']->getKey(),
-                    'answer' => $answer,
-                    'position' => $index + 1,
-                    'is_published' => $published,
-                    // La page d'accueil du prototype reprend les huit premières questions (index.php : array_slice(x_faq(), 0, 8)).
-                    'show_on_home' => $index < 8,
-                ],
-            );
+            // Une base semée avant l'harmonisation typographique (P4-01) porte l'ancienne graphie (apostrophe droite,
+            // espace ordinaire) : la ligne est retrouvée et renommée au lieu d'être dupliquée.
+            $faq = Faq::query()->whereIn('question', FrenchTypography::variants($question))->first() ?? new Faq;
+
+            $faq->fill([
+                'question' => $question,
+                'category_id' => $categories[$data['category_by_index'][$index] ?? 'compte']->getKey(),
+                'answer' => $answer,
+                'position' => $index + 1,
+                'is_published' => $published,
+                // Accueil : 5–6 questions (Q16, P4-01) ; le prototype en affichait huit (index.php : array_slice(x_faq(), 0, 8)).
+                'show_on_home' => $index < 6,
+            ])->save();
         }
     }
 
@@ -296,10 +299,10 @@ class ContentSeeder extends Seeder
     private function seedAssistantKb(): void
     {
         foreach ($this->data('assistant_kb') as [$question, $answer, $keywords, $active]) {
-            AssistantKb::query()->updateOrCreate(
-                ['question' => $question],
-                ['answer' => $answer, 'keywords' => $keywords, 'is_active' => $active],
-            );
+            // Ancienne graphie (espace ordinaire avant « ? », apostrophe droite) retrouvée et renommée, jamais dupliquée.
+            $entry = AssistantKb::query()->whereIn('question', FrenchTypography::variants($question))->first() ?? new AssistantKb;
+
+            $entry->fill(['question' => $question, 'answer' => $answer, 'keywords' => $keywords, 'is_active' => $active])->save();
         }
     }
 

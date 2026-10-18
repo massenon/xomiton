@@ -8,6 +8,7 @@ use App\Application\Alerts\Listeners\NotifyAlertRouted;
 use App\Application\Alerts\Listeners\NotifySosTriggered;
 use App\Application\Moderation\Listeners\NotifyModerators;
 use App\Application\Newsletter\Listeners\LogCampaignSent;
+use App\Application\Shared\SosBurstWatch;
 use App\Application\Sync\Listeners\NotifyAdminsOfSyncConflict;
 use App\Domain\Alerts\Events\AlertCreated;
 use App\Domain\Alerts\Events\SosTriggered;
@@ -32,8 +33,10 @@ use App\Notifications\Channels\TemplateMailChannel;
 use App\Notifications\Channels\WebPushChannel;
 use App\Notifications\Channels\XomitonDatabaseChannel;
 use App\Observers\ReferentialObserver;
+use App\Support\KeyedHash;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -67,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Modèles de référentiels (P3-06) dont toute écriture invalide le cache App\Application\Shared\Referentials.
      *
-     * @var list<class-string<\Illuminate\Database\Eloquent\Model>>
+     * @var list<class-string<Model>>
      */
     public const REFERENTIAL_MODELS = [Zone::class, Commune::class, ViolenceType::class, Need::class, Population::class, Category::class];
 
@@ -172,6 +175,17 @@ class AppServiceProvider extends ServiceProvider
             ->by('tracking|'.$request->ip())
             ->response($tooMany));
 
+        // Accusé de réception par lien signé (P5-02) : par IP, alerte et fiche (empreinte), plafond propre, pour qu'un
+        // CGNAT mobile ou une rafale de suivis par code depuis la même IP ne cache jamais au contact le téléphone de la
+        // personne en SOS. La signature HMAC rend la force brute vaine ; le plafond borne seulement les rejeux.
+        RateLimiter::for('acknowledge', static fn (Request $request): Limit => Limit::perHour(self::limit('acknowledge_per_hour_per_link'))
+            ->by('acknowledge|'.KeyedHash::make(implode('|', [
+                (string) $request->ip(),
+                (string) ($request->route('alert') instanceof Model ? $request->route('alert')->getRouteKey() : $request->route('alert')),
+                (string) $request->query('contact'),
+            ])))
+            ->response($tooMany));
+
         // Newsletter : une inscription par fenêtre glissante, par session ; un client qui ne renvoie pas le cookie de session
         // (script, curl) est compté par IP, sinon chaque requête ouvrirait une session neuve et contournerait la limite.
         RateLimiter::for('newsletter', static fn (Request $request): Limit => Limit::perSecond(1, self::limit('newsletter_seconds_between'))
@@ -182,6 +196,21 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('api', static fn (Request $request): Limit => Limit::perMinute(self::limit('api_per_minute'))
             ->by('api|'.($request->user('sanctum')?->getAuthIdentifier() ?? $request->ip()))
             ->response($tooMany));
+
+        // Assistant public de l'accueil (P4-01) : par IP, qu'on soit connecté·e ou non (aucune réponse n'est enregistrée).
+        RateLimiter::for('assistant', static fn (Request $request): Limit => Limit::perMinute(self::limit('assistant_per_minute'))
+            ->by('assistant|'.$request->ip())
+            ->response($tooMany));
+
+        // SOS (ARCH §4, P2-08, P5-09) : jamais de 429. Au-delà de 5 envois par minute et par IP, journal + cloche admin
+        // (App\Application\Shared\SosBurstWatch : abus ou personne qui insiste, l'équipe regarde, la plateforme ne refuse
+        // pas), IP en empreinte HMAC seulement (ADR-33). Route SOS : ->withoutMiddleware('throttle:api')
+        // ->middleware('idempotent:required,nonblocking,limit=sos') : hors limiteur global, rejeux non comptés.
+        RateLimiter::for('sos', static function (Request $request): Limit {
+            app(SosBurstWatch::class)->record($request);
+
+            return Limit::none();
+        });
     }
 
     /**

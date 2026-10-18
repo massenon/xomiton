@@ -62,7 +62,7 @@ it('ne répond pas depuis une entrée désactivée', function (): void {
     expect($answer->kind)->toBe(Answer::KIND_FALLBACK)->and($answer->matchedKbId)->toBeNull();
 });
 
-it('fait passer les garde-fous de crise avant la base : numéros d’urgence, SOS, signalement, escalade humaine', function (): void {
+it('fait passer les garde-fous de crise avant la base : numéros d’urgence, SOS, signalement, besoin', function (): void {
     $agression = kbEntry('Que faire après une agression');
 
     $answer = $this->answerer->answer('Mon mari me frappe et dit qu’il va me tuer, que faire ?');
@@ -74,9 +74,11 @@ it('fait passer les garde-fous de crise avant la base : numéros d’urgence, SO
         ->and($answer->text)->toContain('Police secours : 117')
         ->toContain('Pompiers / secours : 118')
         ->toContain('Ligne d’écoute Xomiton : +229 01 97 38 88 47')
-        ->toContain(url('/sos'))
-        ->toContain(url('/signaler'))
-        ->toContain('Une personne formée peut te répondre')
+        // Sans enregistrement, personne ne peut rappeler : renvoi vers « Exprimer un besoin », ni promesse ni URL.
+        ->toContain(__('assistant.crisis.need'))
+        ->not->toContain('recontacte')
+        ->not->toContain(url('/sos'))
+        ->not->toContain(url('/signaler'))
         ->and($answer->suggestions)->toHaveCount(3);
 
     // Le mot-clé « viol » d'une entrée de la base ne l'emporte pas sur la réponse de crise, et rien n'est compté.
@@ -115,10 +117,10 @@ it('replie avec bienveillance et trois questions proches quand rien ne correspon
         ->and($answer->emergency)->toBeFalse()
         ->and($answer->matchedKbId)->toBeNull()
         ->and($answer->suggestions)->toHaveCount(3)
-        ->and($answer->suggestions[0])->toBe('Comment porter plainte ?')
+        ->and($answer->suggestions[0])->toBe("Comment porter plainte\u{00A0}?")
         ->and($answer->suggestions[1])->toBe('Dépistage VIH / IST')
         ->and($answer->text)->toContain('Je n’ai pas trouvé de réponse précise')
-        ->toContain('• Comment porter plainte ?')
+        ->toContain("• Comment porter plainte\u{00A0}?")
         ->toContain('utilise le bouton SOS')
         ->and(AssistantKb::query()->sum('hits_count'))->toBe(14);
 
@@ -182,7 +184,12 @@ it('enregistre l’échange chiffré d’un·e membre sur demande et poursuit la
         ->and(AssistantConversation::query()->count())->toBe(1)
         ->and($conversation->refresh()->is_flagged)->toBeTrue()
         ->and($conversation->flag_reason)->toBe('Mots de crise détectés : frappe')
-        ->and($conversation->escalated_at)->toBeNull();
+        ->and($conversation->escalated_at)->toBeNull()
+        // Échange enregistré et marqué pour relecture : adresses dans le texte et escalade vers un humain.
+        ->and($second->text)->toContain(url('/sos'))
+        ->toContain(url('/signaler'))
+        ->toContain(__('assistant.crisis.human'))
+        ->not->toContain(__('assistant.crisis.need'));
 });
 
 it('refuse d’écrire dans la conversation d’une autre personne', function (): void {

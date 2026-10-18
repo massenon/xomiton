@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Exceptions\ApiExceptionRenderer;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureNotInMaintenance;
+use App\Http\Middleware\HandleIdempotencyKey;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Application;
@@ -47,14 +48,21 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Q12 c : l'alias `verified` remplace celui de Laravel (lien signé) par la vérification OTP différée
         // (403 « Confirme ton e-mail » tant que users.email_verified_at est nul).
-        $middleware->alias(['verified' => EnsureEmailIsVerified::class]);
+        // Lot api-fondation (P5-09, ADR-32) : `idempotent` (en-tête facultatif) ou `idempotent:required` sur les POST
+        // rejouables par la boîte d'envoi (signalements, sos, sync/push), options `nonblocking` (sos) et `limit=<limiteur>` ;
+        // réponses mémorisées dans idempotency_keys.
+        // Un seul appel à alias() : chaque appel remplace la liste des alias personnalisés.
+        $middleware->alias([
+            'verified' => EnsureEmailIsVerified::class,
+            'idempotent' => HandleIdempotencyKey::class,
+        ]);
 
         $middleware->redirectGuestsTo(fn () => route('connexion'));
         $middleware->redirectUsersTo(fn () => route('fil'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // Lot api-auth (P2-06, P2-12) : /api/v1 répond toujours en JSON { message, code, errors } (401, 403, 404, 405, 429,
-        // exceptions métier App\Domain\Auth) ; le 422 de validation garde la forme Laravel { message, errors }.
+        // Lots api-auth (P2-06, P2-12) et api-fondation (P5-09) : /api/v1 répond toujours en JSON { message, code, errors? }
+        // (401, 403, 404, 405, 409, 419, 422 validation_failed, 429, 500 hors débogage, exceptions métier DomainException).
         $exceptions->shouldRenderJsonWhen(fn (Request $request, Throwable $e): bool => ApiExceptionRenderer::wants($request));
         $exceptions->render(fn (Throwable $e, Request $request) => ApiExceptionRenderer::render($e, $request));
     })->create();

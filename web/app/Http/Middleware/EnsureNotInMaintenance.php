@@ -27,6 +27,8 @@ final class EnsureNotInMaintenance
     /** Noms de routes (motifs `Request::routeIs`) toujours servis pendant la maintenance. */
     public const ALLOWED_ROUTES = [
         'sos', 'sos.*', 'signaler', 'signaler.*', 'urgences', 'urgences.*', 'newsletter.*',
+        // Accusé de réception d'une alerte par lien signé (P5-02) : l'escalade RG-05 ne s'arrête pas en maintenance.
+        'alertes.accuser', 'alertes.accuser.*',
         // Connexion et code de vérification : nécessaires à l'administration ; les autres rôles sont refusés par AuthenticateUser.
         'connexion', 'connexion.*', 'otp', 'otp.*', 'deconnexion',
         'api.health', 'api.auth.login', 'api.auth.otp.*', 'api.auth.logout',
@@ -34,7 +36,7 @@ final class EnsureNotInMaintenance
 
     /** Chemins (motifs `Request::is`) toujours servis, pour les routes sans nom ou ajoutées plus tard. */
     public const ALLOWED_PATHS = [
-        'up', 'sos', 'sos/*', 'signaler', 'signaler/*', 'urgences', 'urgences/*', 'newsletter', 'newsletter/*',
+        'up', 'sos', 'sos/*', 'signaler', 'signaler/*', 'urgences', 'urgences/*', 'newsletter', 'newsletter/*', 'alertes/*/accuser',
         'connexion', 'code-de-verification', 'code-de-verification/*', 'deconnexion',
         'api/v1/health', 'api/v1/signalements', 'api/v1/signalements/*', 'api/v1/sos', 'api/v1/sos/*',
         'api/v1/urgences', 'api/v1/urgences/*', 'api/v1/newsletter', 'api/v1/newsletter/*',

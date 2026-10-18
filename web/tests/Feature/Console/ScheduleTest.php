@@ -43,6 +43,7 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
 
     $expected = [
         'mail:flush-outbox' => '* * * * *',
+        'alerts:escalate' => '* * * * *',
         'heartbeat:ping' => '* * * * *',
         'otp:purge' => '0 3 * * *',
         'mail:purge-logs' => '0 3 * * *',
@@ -51,6 +52,7 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
         'cases:anonymize' => '0 3 * * *',
         'sessions:purge' => '0 3 * * *',
         'sync:prune' => '0 3 * * *',
+        'idempotency:purge' => '0 3 * * *',
         'reports:purge' => '30 3 * * *',
         'cache:purge-expired' => '30 3 * * *',
         'indicators:snapshot' => '0 4 1 * *',
@@ -77,6 +79,13 @@ it('protège chaque tâche contre le chevauchement, sans arrière-plan, dans le 
 
     // Le signal de vie est émis en dernier dans la minute.
     expect(array_key_last($events))->toBe('heartbeat:ping');
+});
+
+it('planifie alerts:escalate chaque minute, avant le signal de vie (P5-07)', function (): void {
+    $order = array_keys(scheduledEvents());
+
+    expect($order)->toContain('alerts:escalate')
+        ->and(array_search('alerts:escalate', $order, true))->toBeLessThan(array_search('heartbeat:ping', $order, true));
 });
 
 it('rend chaque commande planifiée exécutable', function (): void {

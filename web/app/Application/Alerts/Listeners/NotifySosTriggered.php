@@ -31,12 +31,15 @@ final class NotifySosTriggered
             return;
         }
 
-        Audit::log('alerts.sos_triggered', $alert, sprintf(
+        $detail = sprintf(
             'zone=%s ; position=%s ; anonyme=%s',
             $event->zoneId ?? '-',
             $event->hasLocation ? 'oui' : 'non',
             $event->isAnonymous() ? 'oui' : 'non',
-        ), null);
+        );
+
+        // SOS anonyme (P5-02) : ni compte, ni IP, ni user-agent dans le journal.
+        $event->isAnonymous() ? Audit::logWithoutRequest('alerts.sos_triggered', $alert, $detail) : Audit::log('alerts.sos_triggered', $alert, $detail, $alert->user);
 
         $notification = new SosTriggeredNotification(
             alertId: (int) $alert->getKey(),

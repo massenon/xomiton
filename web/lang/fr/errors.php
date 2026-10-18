@@ -73,7 +73,7 @@ return [
         'contacts' => 'Contacts d’urgence',
     ],
 
-    // Réponses JSON de l'API /api/v1 ({message, errors} ; P5-09). Sans registre : lues par Vue et Flutter.
+    // Réponses JSON de l'API /api/v1 ({message, code, errors} ; P5-09). Sans registre : lues par Vue et Flutter.
     'api' => [
         'unauthenticated' => 'Connexion requise.',
         'forbidden' => 'Action non autorisée.',
@@ -83,6 +83,18 @@ return [
         'throttled' => 'Trop de requêtes. Nouvelle tentative possible dans :seconds secondes.',
         'server' => 'Erreur interne. Réessayer plus tard.',
         'maintenance' => 'Plateforme en maintenance. Réessayer dans quelques minutes.',
+        'bad_request' => 'Requête mal formée.',
+        'gone' => 'Cette ressource n’est plus disponible.',
+        'payload_too_large' => 'Contenu trop volumineux.',
+        'unsupported_media_type' => 'Format de contenu non pris en charge.',
+        'http' => 'La requête n’a pas pu aboutir.',
+        // Middleware `idempotent` (ADR-32, docs/API.md §1.3).
+        'idempotency' => [
+            'idempotency_key_required' => 'L’en-tête Idempotency-Key est obligatoire pour cet envoi.',
+            'idempotency_key_invalid' => 'L’en-tête Idempotency-Key doit être un UUID.',
+            'idempotency_key_reused' => 'Cette clé Idempotency-Key a déjà servi pour un autre contenu. Utiliser une nouvelle clé pour un nouvel envoi.',
+            'idempotency_in_progress' => 'L’envoi d’origine est encore en cours de traitement. Nouvelle tentative possible dans :seconds secondes.',
+        ],
     ],
 
 ];

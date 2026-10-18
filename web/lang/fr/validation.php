@@ -180,6 +180,7 @@ return [
     'phone_bj' => 'Saisis un numéro béninois valide, par exemple +229 01 97 38 88 47.',
     'commune_in_zone' => 'Cette commune n’appartient pas au département choisi.',
     'date_not_future' => 'Le champ :attribute ne peut pas être dans le futur.',
+    'phone_or_email' => 'Saisis un numéro béninois (+229 01 97 38 88 47) ou une adresse e-mail valide.',
     'case_code' => 'Le code doit respecter le format VBG-0000 ou VDH-0000.',
 
     /*
@@ -212,6 +213,7 @@ return [
         'password_confirmation' => 'confirmation du mot de passe',
         'current_password' => 'mot de passe actuel',
         'code' => 'code de vérification',
+        'question' => 'question',
         'phone' => 'téléphone',
         'trusted_contact_phone' => 'téléphone du contact de confiance',
         'trusted_contact_name' => 'nom du contact de confiance',
@@ -235,6 +237,25 @@ return [
         'image' => 'image',
         'remember' => 'rester connecté·e',
         'device_name' => 'nom de l’appareil',
+        // Alertes (P5-02).
+        'type' => 'type',
+        'category' => 'type de violence',
+        'occurred_on' => 'date des faits',
+        'needs' => 'besoins',
+        'need' => 'besoin',
+        'contact' => 'moyen de contact',
+        'contactable' => 'recontact',
+        'preferred_channel' => 'canal préféré',
+        'anonymous' => 'anonymat',
+        'lat' => 'position',
+        'lng' => 'position',
+        'accuracy' => 'précision',
+        'attachments' => 'preuves',
+        'attachment' => 'preuve',
+        'share_location' => 'partage de la position',
+        'idempotency_key' => 'clé d’envoi',
+        'contact_id' => 'contact de l’annuaire',
+        'status' => 'statut',
     ],
 
 ];

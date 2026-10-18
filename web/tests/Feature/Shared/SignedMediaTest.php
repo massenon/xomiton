@@ -69,7 +69,9 @@ it('sert un fichier privé par un lien signé valide, puis refuse une signature 
         ->assertHeader('Cache-Control', 'max-age=0, no-store, private');
 
     // Signature altérée.
-    $this->get(preg_replace('/signature=([0-9a-f])/', 'signature='.'f', $url) ?? '')->assertForbidden();
+    // Premier caractère toujours changé (« f » si ce n'en était pas un, « 0 » sinon), sans quoi le test échoue une fois sur 16.
+    $tampered = preg_replace_callback('/signature=([0-9a-f])/', fn (array $m): string => 'signature='.($m[1] === 'f' ? '0' : 'f'), $url);
+    $this->get($tampered ?? '')->assertForbidden();
 
     // Chemin modifié avec la même signature.
     $this->get(str_replace($this->media->path, 'documents/autre.pdf', $url))->assertForbidden();

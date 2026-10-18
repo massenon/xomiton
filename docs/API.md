@@ -1,6 +1,6 @@
 ---
 name: xomiton-api
-description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lot « api-auth » (P2-06, P2-12) : authentification, mon compte, mes appareils. À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
+description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lots « api-auth » (P2-06, P2-12 : authentification, mon compte, mes appareils) et « api-fondation » (P5-09 : enveloppe, format d'erreur, idempotence, groupes de routes). À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
 ---
 
 # API `/api/v1`
@@ -14,13 +14,24 @@ Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_I
 | Base | `https://<domaine>/api/v1` — préfixe posé dans `bootstrap/app.php`, routes dans `routes/api.php` |
 | Format | JSON uniquement (`Accept: application/json` recommandé ; toute requête `api/*` reçoit du JSON même sans cet en-tête) |
 | Authentification | **Sanctum** : en-tête `Authorization: Bearer <token>` (Flutter) ou cookie de session (Vue, même domaine : mode SPA `statefulApi()` d'ADR-31, en-tête `X-XSRF-TOKEN` requis, 419 → `GET /sanctum/csrf-cookie` puis rejeu) |
-| Succès | `{ "data": …, "meta"?: … }` — jamais de modèle Eloquent brut (Resources `App\Http\Resources\*`) |
-| Erreur | `{ "message": "…", "code": "…", "errors"?: { champ: [messages] }, "retry_after"?: secondes }` ; le 422 de validation garde la forme Laravel `{ message, errors }` |
-| Textes | français, tutoiement sur le tunnel d'authentification (Q36), tous dans `lang/fr/auth.php` et `lang/fr/validation.php` |
-| Codes HTTP | 200, 201, 202 (traitement accepté : code envoyé), 401, 403, 404, 405, 422, 429, 503 |
-| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` (`config/xomiton.php` → `rate_limits`). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
+| Succès | `{ "data": …, "meta"?: …, "links"?: … }` (§1.1) — jamais de modèle Eloquent brut (Resources `App\Http\Resources\*`) |
+| Erreur | `{ "message": "…", "code": "…", "errors"?: { champ: [messages] }, "retry_after"?: secondes }` pour **tous** les statuts (§1.2) ; le 422 de validation garde `{ message, errors }` de Laravel et y ajoute `code: validation_failed` |
+| Textes | français ; tutoiement sur le tunnel d'authentification (Q36) ; dans `lang/fr/auth.php` (`auth.api.*`), `lang/fr/errors.php` (`errors.api.*`, sans registre ; `errors.419.public` au vous, `errors.419.member` au tu), `lang/fr/validation.php` et `lang/fr.json` (résumé « (et :count autres erreurs) » du 422) ; export client `resources/js/lang/fr.json` par `php artisan lang:export` |
+| Codes HTTP | 200, 201 (`Location` si connue), 202 (traitement accepté : code envoyé), 204, 400, 401, 403, 404, 405, 409, 410, 413, 415, 419, 422, 429, 500, 503 |
+| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` ; `throttle:report` 10/h par IP (signalement) ; `throttle:tracking` 20/h par IP (suivi par code) ; `throttle:assistant` 20/min par IP (`assistant/question`, §5 ; un compte connecté reste compté par IP) ; `throttle:sos` **jamais bloquant** : au-delà de 5 SOS par minute et par IP, journal + cloche admin `SosBurstDetected` (comptes `alerts.manage`, une par adresse et par quart d'heure), IP en empreinte HMAC seulement (`config/xomiton.php` → `rate_limits`, `sos_log_per_minute_per_ip`). Sur une route `idempotent`, le limiteur nommé passe par l'option `limit=<nom>` : un rejeu ne consomme pas le quota (§1.3). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
+| Groupes | `routes/api.php` en deux groupes (ADR-31, §1.4) : public anonyme (limiteurs nommés) et `auth:sanctum` |
+| Idempotence | en-tête `Idempotency-Key` (UUID) sur `POST signalements`, `POST sos`, `POST sync/push` (§1.3, ADR-32) |
 
-### Codes d'erreur stables (`code`)
+### 1.1 Enveloppe `{ data, meta, links }`
+
+`App\Http\Controllers\Api\V1\ApiController` (P5-09) : `respond(resource|tableau, statut, meta, links)`, `created(…, location)` (201 + `Location`), `accepted()` (202), `noContent()` (204), `paginated(paginator, Resource::class)`. `meta` et `links` sont omis quand ils sont vides. Comme `JsonResource::toResponse()`, `respond()` fusionne `with()` et `additional()` de la Resource (`meta` / `links` passés à `respond()` prioritaires, autres clés au premier niveau). Les liens de `paginated()` gardent les filtres de la requête (`withQueryString()`).
+
+| Pagination | `meta` | `links` |
+|---|---|---|
+| par page (listes d'administration) | `current_page`, `last_page`, `per_page`, `total` | `first`, `last`, `prev`, `next` |
+| par curseur (fil, messages : P6-01) | `per_page`, `next_cursor`, `prev_cursor` | `prev`, `next` |
+
+### 1.2 Codes d'erreur stables (`code`)
 
 | `code` | HTTP | Quand | Message (`lang/fr/auth.php`) |
 |---|---|---|---|
@@ -35,13 +46,49 @@ Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_I
 | `otp_invalid` | 422 | code faux, expiré, épuisé (5 essais), adresse inconnue, preuve de réinitialisation invalide (`errors.code` ou `errors.reset_token`) | `auth.otp.invalid` |
 | `otp_too_soon` | 429 | renvoi demandé avant 30 s (`retry_after`) | `auth.otp.too_soon` |
 | `otp_rate_limited` | 429 | plus de 5 codes par heure pour cette adresse et cet usage (`retry_after`) | `auth.otp.rate_limited` |
-| `too_many_requests` | 429 | limiteur nommé (`retry_after`) | `auth.throttle` |
+| `too_many_requests` | 429 | limiteur nommé (`retry_after`) ; `abort(429)` (`retry_after` = `Retry-After`, sinon 60) | `auth.throttle` · `errors.api.throttled` |
 | `not_found` | 404 | route ou ressource inconnue | `auth.api.not_found` |
-| `method_not_allowed` | 405 | mauvaise méthode | `auth.api.method_not_allowed` |
+| `method_not_allowed` | 405 | mauvaise méthode (route existante ou `abort(405)`) | `auth.api.method_not_allowed` |
+| `validation_failed` | 422 | Form Request ou `validate()` refusé (`errors` par champ, `message` = premier message + « (et :count autres erreurs) ») | `lang/fr/validation.php`, `lang/fr.json` |
+| `conflict` | 409 | conflit générique (`abort(409)`, conflit de champ de `sync/push`, P9-06) | `errors.api.conflict` |
+| `session_expired` | 419 | jeton XSRF absent ou périmé (Vue en mode SPA, assistant de l'accueil) → `GET /sanctum/csrf-cookie` puis rejeu | `errors.419.public.text` (groupe public, vous) · `errors.419.member.text` (route `auth:sanctum`, tu) |
+| `bad_request` · `gone` · `payload_too_large` · `unsupported_media_type` | 400 · 410 · 413 · 415 | requête mal formée, ressource retirée, corps trop gros, format refusé | `errors.api.*` |
+| `http_error` | autre 4xx | statut HTTP sans code dédié | `errors.api.http` |
+| `server_error` | 500 | erreur interne, **sans détail** hors débogage (l'exception est journalisée) | `errors.api.server` |
+| `maintenance` | 503 | maintenance applicative (RG-14) ou `artisan down` (`retry_after` si connu) | `errors.api.maintenance` |
+| `idempotency_key_required` | 422 | `Idempotency-Key` absent sur une route qui l'exige (`errors.idempotency_key`) | `errors.api.idempotency.*` |
+| `idempotency_key_invalid` | 422 | `Idempotency-Key` qui n'est pas un UUID (`errors.idempotency_key`) | `errors.api.idempotency.*` |
+| `idempotency_key_reused` | 422 | même clé, même route, même acteur, **corps différent** (`errors.idempotency_key` ; erreur du client, jamais un rejeu ; jamais 409, réservé au conflit de `sync/push` : ADR-32) | `errors.api.idempotency.*` |
+| `idempotency_in_progress` | 429 | même clé encore en cours de traitement après 2 s d'attente (`retry_after`) : rejouable ; jamais sur `POST sos` (202 `processing`, §1.3) | `errors.api.idempotency.*` |
 
-Rendu par `App\Exceptions\ApiExceptionRenderer` (enregistré dans `bootstrap/app.php` → `withExceptions`). Les exceptions métier `App\Domain\Auth\Exceptions\*` portent elles-mêmes leur statut (`status()`) et leur message (`userMessage()`).
+Rendu par `App\Exceptions\ApiExceptionRenderer` (enregistré dans `bootstrap/app.php` → `withExceptions`) pour toute requête `api/*` ou attendant du JSON ; le message brut d'une exception HTTP n'est jamais renvoyé (il peut être en anglais). Les exceptions métier héritent de `App\Domain\Shared\Exceptions\DomainException` (homonyme de la classe SPL `\DomainException` : toujours l'importer par `use` ; `errorCode()`, `status()` 422 par défaut, `userMessage()` depuis `lang/fr`, `errors()`, `extra()`, `headers()`) ; celles du tunnel d'authentification (`App\Domain\Auth\Exceptions\*`) gardent leur rendu propre (`status()`, `userMessage()`).
 
-### Objet `user` (`App\Http\Resources\UserResource`)
+### 1.3 Idempotence (`Idempotency-Key`, ADR-32)
+
+Middleware `idempotent` (`App\Http\Middleware\HandleIdempotencyKey`) : `idempotent` = en-tête facultatif, `idempotent:required` = obligatoire (`POST signalements`, `POST sos`, `POST sync/push`) ; options `nonblocking` (`POST sos`) et `limit=<limiteur>` (ex. `idempotent:required,limit=report` : le limiteur nommé ne s'applique qu'aux requêtes neuves ; un `throttle:<nom>` écrit à côté serait trié par Laravel **avant** `idempotent` et compterait les rejeux). Les clients (boîte d'envoi web `outbox.js`, Flutter) envoient l'UUID de l'entrée de boîte d'envoi et **le réutilisent à chaque rejeu, avec un corps identique** (aucun champ variable : ni compteur d'essais, ni `sent_at`).
+
+| Cas | Réponse |
+|---|---|
+| Première requête | traitée normalement ; si 2xx, statut, corps, `Content-Type`, `Content-Language` et `Location` sont mémorisés |
+| Même clé + même route (méthode + chemin) + même acteur (compte sur une route `auth:sanctum` ; sur une route publique, jamais le compte : jeton Bearer, sinon `guest`) + même corps | **réponse d'origine rejouée à l'identique** (même statut 200/201, même `tracking_code`), en-tête `Idempotent-Replayed: true`, action non réexécutée |
+| Même clé, corps différent | 422 `idempotency_key_reused` (brouillon IETF *Idempotency-Key* ; jamais 409) |
+| Même clé, requête d'origine encore en cours | attente jusqu'à `wait_seconds` (2 s, sondages de 100 ms doublés jusqu'à 500 ms) puis rejeu ; au-delà 429 `idempotency_in_progress` + `Retry-After` ; en mode `nonblocking` (`POST sos`, P2-08 : jamais de 429) 202 `{ "data": { "status": "processing", "retry_after": 1 } }` + `Retry-After` : la boîte d'envoi **garde l'entrée** et rejoue après le délai pour obtenir la réponse d'origine |
+| Requête d'origine en échec (4xx, 5xx) | rien n'est mémorisé : la clé est libérée, le client corrige et renvoie avec la même clé |
+| Sans en-tête | comportement normal (ou 422 `idempotency_key_required` en mode `required`) |
+| GET, HEAD, OPTIONS | ignorés |
+
+Empreinte du corps : HMAC-SHA256 (clé d'application) des champs triés par clé (fichiers : nom, taille, SHA-256 ; fichier refusé par PHP, ex. `UPLOAD_ERR_INI_SIZE` : nom et code d'erreur, puis 422 de validation). Stockage : table `idempotency_keys` (`DATABASE_DICTIONARY.md` §10) sans acteur ni chemin concret (portée HMAC, gabarit de route seulement : RG-01 / RG-02), en-têtes et corps **chiffrés**, jamais le cache fichier ; TTL `xomiton.idempotency.ttl_hours` (48 h, `XOMITON_IDEMPOTENCY_TTL_HOURS`), purge quotidienne `idempotency:purge` (03:00). Au-delà du TTL, la déduplication métier (`alerts.idempotency_key` unique, `client_uuid`) garantit encore l'absence de doublon.
+
+### 1.4 Groupes de routes (ADR-31)
+
+| Groupe | Middleware | Familles |
+|---|---|---|
+| 1. public, anonyme | `throttle:api` + un limiteur nommé sur chaque écriture | `health`, `zones`, `violence-types`, `needs`, `auth/*` (sauf `logout`), `assistant/question` (`throttle:assistant`, P4-01) ; à venir : `thematiques`, `ressources`, `urgences`, `signalements` (`idempotent:required,limit=report`), `signalements/{code}` (`throttle:tracking`), `sos` (`idempotent:required,nonblocking,limit=sos` sans `throttle:api`) |
+| 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) | `auth/logout`, `me/*` ; à venir : `feed/`, `conversations/`, `pair/`, `sync/`, `notifications/` |
+
+Un test (`tests/Feature/Api/ApiFoundationTest.php`) refuse toute route publique hors des familles d'ADR-31 et toute écriture publique sans limiteur nommé (`throttle:<nom>` ou `idempotent:…,limit=<nom>`).
+
+### 1.5 Objet `user` (`App\Http\Resources\UserResource`)
 
 Vue « moi » (réponses d'inscription, de connexion, `GET me`) :
 
@@ -236,6 +283,26 @@ Champs facultatifs ; seuls les champs présents sont modifiés (`App\Application
 ### `GET health`
 
 **200** `{ "data": { "status": "ok", "version": "1.0" } }` — sans authentification.
+
+### `POST assistant/question` — assistant public (P4-01, Q41 a, Q55)
+
+Offcanvas de l'accueil (`<x-assistant-offcanvas>`, `resources/js/public/assistant.js`) ; même contrat pour Vue et Flutter, P8-11 l'étendra (membre, historique). Groupe public, `throttle:api` + `throttle:assistant` (20/min **par IP**, `rate_limits.assistant_per_minute`). `App\Application\Shared\KnowledgeBaseAnswerer` : garde-fous de crise d'abord, puis base `assistant_kb`, sinon repli. **Aucun échange enregistré**, même connecté·e ; seul `hits_count` de l'entrée appariée augmente.
+
+Corps : `{ "question": "Comment porter plainte ?" }` — chaîne de 2 à 500 caractères (`AssistantQuestionRequest`).
+
+**200** `{ "data": { "text", "kind", "emergency", "suggestions", "links" } }` (`AssistantAnswerResource`) :
+
+| Champ | Contenu |
+|---|---|
+| `text` | réponse prête à afficher, retours à la ligne `\n` (bulle `white-space: pre-line`, jamais du HTML) ; registre tu (Q56) |
+| `kind` | `kb` (entrée de la base) · `crisis` (mot-clé de `xomiton.assistant.crisis_keywords`) · `fallback` (rien d'assez proche) |
+| `emergency` | `true` seulement pour `crisis` |
+| `suggestions` | jusqu'à 3 questions de la base (proches, sinon les plus consultées) ; l'offcanvas ne les affiche que pour `fallback` |
+| `links` | `[]` sauf `crisis` : `[{ label, url, variant }]` dans cet ordre — SOS (`danger`), un `tel:` par numéro de `settings.emergency_numbers` (sinon config), « Exprimer un besoin » (`/signaler?tab=besoin`), signalement (`/signaler`), contacts d'urgence (`/urgences`), tous `primary-soft` |
+
+Réponse de crise publique : numéros en clair, SOS et signalement **sans URL dans le texte** (ce sont les `links`), renvoi vers « Exprimer un besoin » (lu sous 24 h) et **aucune promesse de rappel** : rien n'est enregistré, personne ne peut recontacter (`VOICE_AND_TONE.md` §3 règle 6). Pas de `matched_kb_id` ni de `conversation_id`.
+
+Erreurs : **422** `validation_failed` (`errors.question`) ; **429** `too_many_requests` (`Retry-After`, `retry_after`, message `auth.throttle`) ; **419** `session_expired` sur le chemin stateful seulement (Referer ou Origin d'un domaine `SANCTUM_STATEFUL_DOMAINS`, cookie de session) sans `X-XSRF-TOKEN` valide → `GET /sanctum/csrf-cookie` puis un seul rejeu ; un client Bearer ou sans cookie n'est pas concerné. Hors réseau, l'offcanvas n'appelle pas l'API : texte `components.assistant.offline` (premier numéro d'urgence) avec un lien `tel:` et `/urgences`. Tests : `tests/Feature/Api/AssistantQuestionTest.php`.
 
 ## 6. Parcours Flutter de référence
 

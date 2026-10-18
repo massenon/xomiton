@@ -1,6 +1,24 @@
 {
     "@@locale": "fr",
     "@@x-source": "web/lang/fr — généré par « php artisan lang:export », ne pas modifier à la main",
+    "and_count_more_error": "(et {count} autre erreur)",
+    "@and_count_more_error": {
+        "description": "(and :count more error)",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "and_count_more_errors": "(et {count} autres erreurs)",
+    "@and_count_more_errors": {
+        "description": "(and :count more errors)",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
     "Anonyme": "Anonyme",
     "@Anonyme": {
         "description": "Anonyme"
@@ -8,6 +26,10 @@
     "Membre_anonyme": "Membre anonyme",
     "@Membre_anonyme": {
         "description": "Membre anonyme"
+    },
+    "The_given_data_was_invalid": "Les données envoyées sont invalides.",
+    "@The_given_data_was_invalid": {
+        "description": "The given data was invalid."
     },
     "admin_alerts_anonymous": "Anonyme",
     "@admin_alerts_anonymous": {
@@ -2576,6 +2598,18 @@
             }
         }
     },
+    "alerts_acknowledge_closed": "Cette alerte est close : aucune action n’est attendue.",
+    "@alerts_acknowledge_closed": {
+        "description": "alerts.acknowledge.closed"
+    },
+    "alerts_acknowledge_confirm": "Confirmer la prise en charge",
+    "@alerts_acknowledge_confirm": {
+        "description": "alerts.acknowledge.confirm"
+    },
+    "alerts_acknowledge_contact_title": "Joindre la personne",
+    "@alerts_acknowledge_contact_title": {
+        "description": "alerts.acknowledge.contact_title"
+    },
     "alerts_acknowledge_done": "Réception confirmée. Merci : appelez la personne dès que possible.",
     "@alerts_acknowledge_done": {
         "description": "alerts.acknowledge.done"
@@ -2583,6 +2617,50 @@
     "alerts_acknowledge_invalid": "Ce lien n’est plus valide. Connectez-vous à l’administration pour retrouver l’alerte.",
     "@alerts_acknowledge_invalid": {
         "description": "alerts.acknowledge.invalid"
+    },
+    "alerts_acknowledge_mine": "Vous avez accusé réception de cette alerte le {date}.",
+    "@alerts_acknowledge_mine": {
+        "description": "alerts.acknowledge.mine",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_acknowledge_no_contact": "Aucun moyen de contact n’a été laissé. Retrouvez l’alerte dans votre espace ou auprès de l’équipe Xomiton.",
+    "@alerts_acknowledge_no_contact": {
+        "description": "alerts.acknowledge.no_contact"
+    },
+    "alerts_acknowledge_preferred_channel": "Canal préféré : {channel}",
+    "@alerts_acknowledge_preferred_channel": {
+        "description": "alerts.acknowledge.preferred_channel",
+        "placeholders": {
+            "channel": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_acknowledge_priority": "Priorité : {priority}",
+    "@alerts_acknowledge_priority": {
+        "description": "alerts.acknowledge.priority",
+        "placeholders": {
+            "priority": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_acknowledge_received_on": "Reçue le {date}",
+    "@alerts_acknowledge_received_on": {
+        "description": "alerts.acknowledge.received_on",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_acknowledge_reveal": "Afficher à nouveau les coordonnées",
+    "@alerts_acknowledge_reveal": {
+        "description": "alerts.acknowledge.reveal"
     },
     "alerts_acknowledge_text": "En confirmant, vous indiquez prendre cette alerte en charge : l’escalade vers le point focal national s’arrête.",
     "@alerts_acknowledge_text": {
@@ -2612,6 +2690,18 @@
     "alerts_callback_contact_help": "Téléphone ou e-mail. Obligatoire pour être rappelé·e.",
     "@alerts_callback_contact_help": {
         "description": "alerts.callback.contact_help"
+    },
+    "alerts_callback_contact_unavailable": "Cette personne n’est plus disponible dans l’annuaire.",
+    "@alerts_callback_contact_unavailable": {
+        "description": "alerts.callback.contact_unavailable"
+    },
+    "alerts_callback_default_message": "Je souhaite être rappelé·e.",
+    "@alerts_callback_default_message": {
+        "description": "alerts.callback.default_message"
+    },
+    "alerts_callback_idempotency_conflict": "Cette clé Idempotency-Key a déjà servi pour une alerte d’un autre type. Utiliser une nouvelle clé pour un nouvel envoi.",
+    "@alerts_callback_idempotency_conflict": {
+        "description": "alerts.callback.idempotency_conflict"
     },
     "alerts_callback_intro": "{name} te rappellera au numéro ou à l’adresse que tu indiques.",
     "@alerts_callback_intro": {
@@ -2777,6 +2867,43 @@
     "@alerts_emergency_title": {
         "description": "alerts.emergency.title"
     },
+    "alerts_errors_alert_closed": "Cette alerte est close : aucune action n’est plus possible.",
+    "@alerts_errors_alert_closed": {
+        "description": "alerts.errors.alert_closed"
+    },
+    "alerts_errors_cancel_window_expired": "L’alerte est partie depuis plus de {seconds} secondes : elle ne peut plus être annulée. Tu peux indiquer que tu es en sécurité.",
+    "@alerts_errors_cancel_window_expired": {
+        "description": "alerts.errors.cancel_window_expired",
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_errors_contact_unavailable": "Cette personne n’est plus disponible dans l’annuaire.",
+    "@alerts_errors_contact_unavailable": {
+        "description": "alerts.errors.contact_unavailable"
+    },
+    "alerts_errors_idempotency_conflict": "Cette clé Idempotency-Key a déjà servi pour une alerte d’un autre type. Utiliser une nouvelle clé pour un nouvel envoi.",
+    "@alerts_errors_idempotency_conflict": {
+        "description": "alerts.errors.idempotency_conflict"
+    },
+    "alerts_errors_invalid_transition": "Passage de « {from} » à « {to} » impossible.",
+    "@alerts_errors_invalid_transition": {
+        "description": "alerts.errors.invalid_transition",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_errors_not_sos": "Cette action ne concerne que les alertes SOS.",
+    "@alerts_errors_not_sos": {
+        "description": "alerts.errors.not_sos"
+    },
     "alerts_moderation_danger_hint": "En danger ? Utilise le signalement anonyme ou le SOS.",
     "@alerts_moderation_danger_hint": {
         "description": "alerts.moderation.danger_hint"
@@ -2832,6 +2959,22 @@
     "alerts_report_badge": "Sans compte · sans trace",
     "@alerts_report_badge": {
         "description": "alerts.report.badge"
+    },
+    "alerts_report_channels_call": "Appel",
+    "@alerts_report_channels_call": {
+        "description": "alerts.report.channels.call"
+    },
+    "alerts_report_channels_email": "E-mail",
+    "@alerts_report_channels_email": {
+        "description": "alerts.report.channels.email"
+    },
+    "alerts_report_channels_sms": "SMS",
+    "@alerts_report_channels_sms": {
+        "description": "alerts.report.channels.sms"
+    },
+    "alerts_report_channels_whatsapp": "WhatsApp",
+    "@alerts_report_channels_whatsapp": {
+        "description": "alerts.report.channels.whatsapp"
     },
     "alerts_report_done_duplicate": "Ce signalement avait déjà été reçu : aucun doublon n’a été créé.",
     "@alerts_report_done_duplicate": {
@@ -3023,6 +3166,10 @@
     "alerts_report_fields_position_unavailable": "Position indisponible (accès refusé ou non pris en charge). Tu peux envoyer sans.",
     "@alerts_report_fields_position_unavailable": {
         "description": "alerts.report.fields.position_unavailable"
+    },
+    "alerts_report_fields_preferred_channel": "Canal préféré",
+    "@alerts_report_fields_preferred_channel": {
+        "description": "alerts.report.fields.preferred_channel"
     },
     "alerts_report_fields_related_post": "Signalement de la publication n° {id}",
     "@alerts_report_fields_related_post": {
@@ -3411,6 +3558,10 @@
     "@assistant_crisis_intro": {
         "description": "assistant.crisis.intro"
     },
+    "assistant_crisis_need": "Pour qu’une personne formée te réponde, exprime un besoin depuis la page Signaler : elle le lira sous 24 h.",
+    "@assistant_crisis_need": {
+        "description": "assistant.crisis.need"
+    },
     "assistant_crisis_number": "• {label} : {number}",
     "@assistant_crisis_number": {
         "description": "assistant.crisis.number",
@@ -3423,23 +3574,13 @@
             }
         }
     },
-    "assistant_crisis_report": "Tu peux aussi signaler ce qui se passe, de façon anonyme si tu le souhaites. {url}",
+    "assistant_crisis_report": "Tu peux aussi signaler ce qui se passe, de façon anonyme si tu le souhaites.",
     "@assistant_crisis_report": {
-        "description": "assistant.crisis.report",
-        "placeholders": {
-            "url": {
-                "type": "String"
-            }
-        }
+        "description": "assistant.crisis.report"
     },
-    "assistant_crisis_sos": "Bouton SOS : ton alerte part avec ta position vers les personnes de confiance de l’annuaire. {url}",
+    "assistant_crisis_sos": "Bouton SOS : ton alerte part avec ta position vers les personnes de confiance de l’annuaire.",
     "@assistant_crisis_sos": {
-        "description": "assistant.crisis.sos",
-        "placeholders": {
-            "url": {
-                "type": "String"
-            }
-        }
+        "description": "assistant.crisis.sos"
     },
     "assistant_fallback_disclaimer": "Je donne des informations générales et je ne remplace pas une professionnelle de santé, de droit ou d’écoute. En cas de danger, utilise le bouton SOS.",
     "@assistant_fallback_disclaimer": {
@@ -3478,6 +3619,18 @@
     "@assistant_kinds_kb": {
         "description": "assistant.kinds.kb"
     },
+    "assistant_links_call": "Appeler le {number} ({label})",
+    "@assistant_links_call": {
+        "description": "assistant.links.call",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            },
+            "number": {
+                "type": "String"
+            }
+        }
+    },
     "assistant_links_emergency": "Contacts d’urgence",
     "@assistant_links_emergency": {
         "description": "assistant.links.emergency"
@@ -3485,6 +3638,10 @@
     "assistant_links_human": "Parler à un humain",
     "@assistant_links_human": {
         "description": "assistant.links.human"
+    },
+    "assistant_links_need": "Exprimer un besoin",
+    "@assistant_links_need": {
+        "description": "assistant.links.need"
     },
     "assistant_links_report": "Signaler",
     "@assistant_links_report": {
@@ -6505,6 +6662,84 @@
     "@community_pages_verified": {
         "description": "community.pages.verified"
     },
+    "components_assistant_chips_0": "Comment porter plainte ?",
+    "@components_assistant_chips_0": {
+        "description": "components.assistant.chips.0"
+    },
+    "components_assistant_chips_1": "Contraception d’urgence",
+    "@components_assistant_chips_1": {
+        "description": "components.assistant.chips.1"
+    },
+    "components_assistant_chips_2": "Que faire après une agression ?",
+    "@components_assistant_chips_2": {
+        "description": "components.assistant.chips.2"
+    },
+    "components_assistant_danger": "En danger immédiat ?",
+    "@components_assistant_danger": {
+        "description": "components.assistant.danger"
+    },
+    "components_assistant_error": "Je n’ai pas pu répondre. Réessaie dans quelques instants ; en cas de danger, utilise le bouton SOS.",
+    "@components_assistant_error": {
+        "description": "components.assistant.error"
+    },
+    "components_assistant_input_label": "Ton message",
+    "@components_assistant_input_label": {
+        "description": "components.assistant.input_label"
+    },
+    "components_assistant_offline": "Tu es hors connexion : l’assistant a besoin du réseau. En danger ? Appelle le {number} ou ouvre les contacts d’urgence.",
+    "@components_assistant_offline": {
+        "description": "components.assistant.offline",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "components_assistant_offline_link": "Contacts d’urgence",
+    "@components_assistant_offline_link": {
+        "description": "components.assistant.offline_link"
+    },
+    "components_assistant_offline_no_number": "Tu es hors connexion : l’assistant a besoin du réseau. En danger ? Ouvre les contacts d’urgence.",
+    "@components_assistant_offline_no_number": {
+        "description": "components.assistant.offline_no_number"
+    },
+    "components_assistant_online": "en ligne",
+    "@components_assistant_online": {
+        "description": "components.assistant.online"
+    },
+    "components_assistant_open": "Ouvrir l’assistant",
+    "@components_assistant_open": {
+        "description": "components.assistant.open"
+    },
+    "components_assistant_placeholder": "Pose ta question…",
+    "@components_assistant_placeholder": {
+        "description": "components.assistant.placeholder"
+    },
+    "components_assistant_rate_limited": "Trop de questions d’un coup. Réessaie dans {seconds} secondes.",
+    "@components_assistant_rate_limited": {
+        "description": "components.assistant.rate_limited",
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "components_assistant_sos": "Envoyer un SOS",
+    "@components_assistant_sos": {
+        "description": "components.assistant.sos"
+    },
+    "components_assistant_subtitle": "VBG, santé sexuelle et droits ·",
+    "@components_assistant_subtitle": {
+        "description": "components.assistant.subtitle"
+    },
+    "components_assistant_title": "Assistant Xomiton",
+    "@components_assistant_title": {
+        "description": "components.assistant.title"
+    },
+    "components_assistant_welcome": "Bonjour, je suis l’assistant Xomiton. Pose-moi tes questions sur les violences, le consentement, la santé sexuelle et tes droits : je réponds sans jugement, en toute confidentialité.",
+    "@components_assistant_welcome": {
+        "description": "components.assistant.welcome"
+    },
     "components_avatar_alt": "Avatar de {name}",
     "@components_avatar_alt": {
         "description": "components.avatar.alt",
@@ -7709,6 +7944,22 @@
     "@enums_alerts_alert_type_sos": {
         "description": "enums/alerts.alert_type.sos"
     },
+    "enums_alerts_contact_channel_call": "Appel",
+    "@enums_alerts_contact_channel_call": {
+        "description": "enums/alerts.contact_channel.call"
+    },
+    "enums_alerts_contact_channel_email": "E-mail",
+    "@enums_alerts_contact_channel_email": {
+        "description": "enums/alerts.contact_channel.email"
+    },
+    "enums_alerts_contact_channel_sms": "SMS",
+    "@enums_alerts_contact_channel_sms": {
+        "description": "enums/alerts.contact_channel.sms"
+    },
+    "enums_alerts_contact_channel_whatsapp": "WhatsApp",
+    "@enums_alerts_contact_channel_whatsapp": {
+        "description": "enums/alerts.contact_channel.whatsapp"
+    },
     "enums_alerts_delivery_status_failed": "Échec",
     "@enums_alerts_delivery_status_failed": {
         "description": "enums/alerts.delivery_status.failed"
@@ -7720,6 +7971,18 @@
     "enums_alerts_delivery_status_sent": "Envoyée",
     "@enums_alerts_delivery_status_sent": {
         "description": "enums/alerts.delivery_status.sent"
+    },
+    "enums_alerts_escalation_reason_manual": "Réattribution manuelle",
+    "@enums_alerts_escalation_reason_manual": {
+        "description": "enums/alerts.escalation_reason.manual"
+    },
+    "enums_alerts_escalation_reason_no_ack_48h": "Sans accusé après 48 h",
+    "@enums_alerts_escalation_reason_no_ack_48h": {
+        "description": "enums/alerts.escalation_reason.no_ack_48h"
+    },
+    "enums_alerts_escalation_reason_no_ack_5min": "Sans accusé après 5 min",
+    "@enums_alerts_escalation_reason_no_ack_5min": {
+        "description": "enums/alerts.escalation_reason.no_ack_5min"
     },
     "enums_alerts_notification_channel_database": "Cloche de l’administration",
     "@enums_alerts_notification_channel_database": {
@@ -7736,6 +7999,26 @@
     "enums_alerts_notification_channel_sms": "SMS",
     "@enums_alerts_notification_channel_sms": {
         "description": "enums/alerts.notification_channel.sms"
+    },
+    "enums_alerts_routing_fallback_first_active": "Premier contact actif (repli)",
+    "@enums_alerts_routing_fallback_first_active": {
+        "description": "enums/alerts.routing_fallback.first_active"
+    },
+    "enums_alerts_routing_fallback_focal_national": "Point focal national",
+    "@enums_alerts_routing_fallback_focal_national": {
+        "description": "enums/alerts.routing_fallback.focal_national"
+    },
+    "enums_alerts_routing_fallback_focal_zone": "Point focal du département",
+    "@enums_alerts_routing_fallback_focal_zone": {
+        "description": "enums/alerts.routing_fallback.focal_zone"
+    },
+    "enums_alerts_routing_fallback_manual": "Attribution manuelle",
+    "@enums_alerts_routing_fallback_manual": {
+        "description": "enums/alerts.routing_fallback.manual"
+    },
+    "enums_alerts_routing_fallback_role_zone": "Rôle demandé dans le département",
+    "@enums_alerts_routing_fallback_role_zone": {
+        "description": "enums/alerts.routing_fallback.role_zone"
     },
     "enums_cases_case_kind_VBG": "Violence basée sur le genre",
     "@enums_cases_case_kind_VBG": {
@@ -8518,6 +8801,10 @@
     "@errors_503_title": {
         "description": "errors.503.title"
     },
+    "errors_api_bad_request": "Requête mal formée.",
+    "@errors_api_bad_request": {
+        "description": "errors.api.bad_request"
+    },
     "errors_api_conflict": "Conflit : une version plus récente existe déjà.",
     "@errors_api_conflict": {
         "description": "errors.api.conflict"
@@ -8526,6 +8813,35 @@
     "@errors_api_forbidden": {
         "description": "errors.api.forbidden"
     },
+    "errors_api_gone": "Cette ressource n’est plus disponible.",
+    "@errors_api_gone": {
+        "description": "errors.api.gone"
+    },
+    "errors_api_http": "La requête n’a pas pu aboutir.",
+    "@errors_api_http": {
+        "description": "errors.api.http"
+    },
+    "errors_api_idempotency_idempotency_in_progress": "L’envoi d’origine est encore en cours de traitement. Nouvelle tentative possible dans {seconds} secondes.",
+    "@errors_api_idempotency_idempotency_in_progress": {
+        "description": "errors.api.idempotency.idempotency_in_progress",
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "errors_api_idempotency_idempotency_key_invalid": "L’en-tête Idempotency-Key doit être un UUID.",
+    "@errors_api_idempotency_idempotency_key_invalid": {
+        "description": "errors.api.idempotency.idempotency_key_invalid"
+    },
+    "errors_api_idempotency_idempotency_key_required": "L’en-tête Idempotency-Key est obligatoire pour cet envoi.",
+    "@errors_api_idempotency_idempotency_key_required": {
+        "description": "errors.api.idempotency.idempotency_key_required"
+    },
+    "errors_api_idempotency_idempotency_key_reused": "Cette clé Idempotency-Key a déjà servi pour un autre contenu. Utiliser une nouvelle clé pour un nouvel envoi.",
+    "@errors_api_idempotency_idempotency_key_reused": {
+        "description": "errors.api.idempotency.idempotency_key_reused"
+    },
     "errors_api_maintenance": "Plateforme en maintenance. Réessayer dans quelques minutes.",
     "@errors_api_maintenance": {
         "description": "errors.api.maintenance"
@@ -8533,6 +8849,10 @@
     "errors_api_not_found": "Ressource introuvable.",
     "@errors_api_not_found": {
         "description": "errors.api.not_found"
+    },
+    "errors_api_payload_too_large": "Contenu trop volumineux.",
+    "@errors_api_payload_too_large": {
+        "description": "errors.api.payload_too_large"
     },
     "errors_api_server": "Erreur interne. Réessayer plus tard.",
     "@errors_api_server": {
@@ -8550,6 +8870,10 @@
     "errors_api_unauthenticated": "Connexion requise.",
     "@errors_api_unauthenticated": {
         "description": "errors.api.unauthenticated"
+    },
+    "errors_api_unsupported_media_type": "Format de contenu non pris en charge.",
+    "@errors_api_unsupported_media_type": {
+        "description": "errors.api.unsupported_media_type"
     },
     "errors_api_validation": "Les données envoyées sont invalides.",
     "@errors_api_validation": {
@@ -12388,6 +12712,26 @@
     "@notifications_reaction_title": {
         "description": "notifications.reaction.title"
     },
+    "notifications_sos_burst_body": "{count} SOS en une minute depuis une même adresse (empreinte {fingerprint}). Aucun envoi n’a été bloqué : vérifiez les alertes récentes.",
+    "@notifications_sos_burst_body": {
+        "description": "notifications.sos_burst.body",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "fingerprint": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_sos_burst_discreet": "SOS répétés à vérifier",
+    "@notifications_sos_burst_discreet": {
+        "description": "notifications.sos_burst.discreet"
+    },
+    "notifications_sos_burst_title": "SOS répétés depuis une même adresse",
+    "@notifications_sos_burst_title": {
+        "description": "notifications.sos_burst.title"
+    },
     "notifications_sos_cancelled_body": "L’alerte {code} a été annulée par la personne qui l’avait envoyée. Aucune action n’est attendue.",
     "@notifications_sos_cancelled_body": {
         "description": "notifications.sos_cancelled.body",
@@ -12609,6 +12953,451 @@
                 "type": "String"
             }
         }
+    },
+    "pages_accueil_alerte_kicker": "Alerte & signalement",
+    "@pages_accueil_alerte_kicker": {
+        "description": "pages/accueil.alerte.kicker"
+    },
+    "pages_accueil_alerte_mock_position": "Position : Cotonou, Littoral",
+    "@pages_accueil_alerte_mock_position": {
+        "description": "pages/accueil.alerte.mock_position"
+    },
+    "pages_accueil_alerte_mock_routing": "Envoi vers : point focal · psychologue · juriste",
+    "@pages_accueil_alerte_mock_routing": {
+        "description": "pages/accueil.alerte.mock_routing"
+    },
+    "pages_accueil_alerte_mock_sos": "SOS",
+    "@pages_accueil_alerte_mock_sos": {
+        "description": "pages/accueil.alerte.mock_sos"
+    },
+    "pages_accueil_alerte_mock_title": "Alerte SOS",
+    "@pages_accueil_alerte_mock_title": {
+        "description": "pages/accueil.alerte.mock_title"
+    },
+    "pages_accueil_alerte_proof_anonymous": "Signalement 100 % anonyme possible",
+    "@pages_accueil_alerte_proof_anonymous": {
+        "description": "pages/accueil.alerte.proof_anonymous"
+    },
+    "pages_accueil_alerte_proof_location": "Localisation partagée uniquement avec votre accord",
+    "@pages_accueil_alerte_proof_location": {
+        "description": "pages/accueil.alerte.proof_location"
+    },
+    "pages_accueil_alerte_text": "Signalement, expression d’un besoin ou SOS avec votre position GPS : votre message est routé automatiquement vers les bonnes personnes de l’annuaire (point focal, juriste, psychologue…).",
+    "@pages_accueil_alerte_text": {
+        "description": "pages/accueil.alerte.text"
+    },
+    "pages_accueil_alerte_title_1": "En danger ? Besoin d’aide ?",
+    "@pages_accueil_alerte_title_1": {
+        "description": "pages/accueil.alerte.title_1"
+    },
+    "pages_accueil_alerte_title_2": "Alertez en quelques secondes.",
+    "@pages_accueil_alerte_title_2": {
+        "description": "pages/accueil.alerte.title_2"
+    },
+    "pages_accueil_cta_free": "Gratuit",
+    "@pages_accueil_cta_free": {
+        "description": "pages/accueil.cta.free"
+    },
+    "pages_accueil_cta_secure": "100 % sécurisé",
+    "@pages_accueil_cta_secure": {
+        "description": "pages/accueil.cta.secure"
+    },
+    "pages_accueil_cta_text": "Créez votre compte Xomiton et accédez instantanément à un réseau d’entraide et d’information conçu pour vous.",
+    "@pages_accueil_cta_text": {
+        "description": "pages/accueil.cta.text"
+    },
+    "pages_accueil_cta_text_member": "Retrouvez votre fil, vos groupes, vos messages et vos ressources.",
+    "@pages_accueil_cta_text_member": {
+        "description": "pages/accueil.cta.text_member"
+    },
+    "pages_accueil_cta_title": "Prête à nous rejoindre ?",
+    "@pages_accueil_cta_title": {
+        "description": "pages/accueil.cta.title"
+    },
+    "pages_accueil_cta_title_member": "Votre espace vous attend",
+    "@pages_accueil_cta_title_member": {
+        "description": "pages/accueil.cta.title_member"
+    },
+    "pages_accueil_do_glegbe_badge": "Droit fondamental",
+    "@pages_accueil_do_glegbe_badge": {
+        "description": "pages/accueil.do_glegbe.badge"
+    },
+    "pages_accueil_do_glegbe_benefits_0_icon": "shield-plus",
+    "@pages_accueil_do_glegbe_benefits_0_icon": {
+        "description": "pages/accueil.do_glegbe.benefits.0.icon"
+    },
+    "pages_accueil_do_glegbe_benefits_0_text": "Prévenir les infections",
+    "@pages_accueil_do_glegbe_benefits_0_text": {
+        "description": "pages/accueil.do_glegbe.benefits.0.text"
+    },
+    "pages_accueil_do_glegbe_benefits_1_icon": "people",
+    "@pages_accueil_do_glegbe_benefits_1_icon": {
+        "description": "pages/accueil.do_glegbe.benefits.1.icon"
+    },
+    "pages_accueil_do_glegbe_benefits_1_text": "Assurer la participation sociale",
+    "@pages_accueil_do_glegbe_benefits_1_text": {
+        "description": "pages/accueil.do_glegbe.benefits.1.text"
+    },
+    "pages_accueil_do_glegbe_benefits_2_icon": "emoji-smile",
+    "@pages_accueil_do_glegbe_benefits_2_icon": {
+        "description": "pages/accueil.do_glegbe.benefits.2.icon"
+    },
+    "pages_accueil_do_glegbe_benefits_2_text": "Renforcer la confiance en soi",
+    "@pages_accueil_do_glegbe_benefits_2_text": {
+        "description": "pages/accueil.do_glegbe.benefits.2.text"
+    },
+    "pages_accueil_do_glegbe_benefits_3_icon": "chat-heart",
+    "@pages_accueil_do_glegbe_benefits_3_icon": {
+        "description": "pages/accueil.do_glegbe.benefits.3.icon"
+    },
+    "pages_accueil_do_glegbe_benefits_3_text": "Lutter contre la stigmatisation",
+    "@pages_accueil_do_glegbe_benefits_3_text": {
+        "description": "pages/accueil.do_glegbe.benefits.3.text"
+    },
+    "pages_accueil_do_glegbe_cta_rules": "Fiches sur les règles",
+    "@pages_accueil_do_glegbe_cta_rules": {
+        "description": "pages/accueil.do_glegbe.cta_rules"
+    },
+    "pages_accueil_do_glegbe_eyebrow": "Do Glegbe · La gestion de l’hygiène menstruelle",
+    "@pages_accueil_do_glegbe_eyebrow": {
+        "description": "pages/accueil.do_glegbe.eyebrow"
+    },
+    "pages_accueil_do_glegbe_logo_alt": "Logo Do Glegbe : goutte de sang avec symbole de genre et lune",
+    "@pages_accueil_do_glegbe_logo_alt": {
+        "description": "pages/accueil.do_glegbe.logo_alt"
+    },
+    "pages_accueil_do_glegbe_logo_title": "Do Glegbe – Gestion de l’hygiène menstruelle",
+    "@pages_accueil_do_glegbe_logo_title": {
+        "description": "pages/accueil.do_glegbe.logo_title"
+    },
+    "pages_accueil_do_glegbe_text": "Une bonne gestion de l’hygiène menstruelle est un droit humain fondamental, indispensable à la santé, au bien-être et à l’égalité des genres. Elle permet de :",
+    "@pages_accueil_do_glegbe_text": {
+        "description": "pages/accueil.do_glegbe.text"
+    },
+    "pages_accueil_do_glegbe_title": "Avoir ses règles est un simple fait biologique qui constitue trop souvent un obstacle à la santé, à la dignité et au respect des droits des filles et des femmes…",
+    "@pages_accueil_do_glegbe_title": {
+        "description": "pages/accueil.do_glegbe.title"
+    },
+    "pages_accueil_experts_arg_1_cta": "Exprimer un besoin",
+    "@pages_accueil_experts_arg_1_cta": {
+        "description": "pages/accueil.experts.arg_1_cta"
+    },
+    "pages_accueil_experts_arg_1_text": "Assistant en ligne 24 h/24, réponse humaine sous 24 h quand vous exprimez un besoin.",
+    "@pages_accueil_experts_arg_1_text": {
+        "description": "pages/accueil.experts.arg_1_text"
+    },
+    "pages_accueil_experts_arg_1_title": "Besoin de parler à quelqu’un ?",
+    "@pages_accueil_experts_arg_1_title": {
+        "description": "pages/accueil.experts.arg_1_title"
+    },
+    "pages_accueil_experts_arg_2_text": "C’est anonyme et entièrement gratuit. Si vous avez besoin de parler à quelqu’un, nous sommes là pour vous écouter et vous aider à vous sentir mieux.",
+    "@pages_accueil_experts_arg_2_text": {
+        "description": "pages/accueil.experts.arg_2_text"
+    },
+    "pages_accueil_experts_arg_2_title": "Conseils personnalisés",
+    "@pages_accueil_experts_arg_2_title": {
+        "description": "pages/accueil.experts.arg_2_title"
+    },
+    "pages_accueil_experts_mock_alt": "Aperçu animé de l’assistant Xomiton : question, réponse, mise en relation avec un·e conseiller·ère",
+    "@pages_accueil_experts_mock_alt": {
+        "description": "pages/accueil.experts.mock_alt"
+    },
+    "pages_accueil_experts_text": "Nous disposons d’expert·es juridiques, psychologiques et gynécologiques, avec des approches thérapeutiques adaptées à vos besoins.",
+    "@pages_accueil_experts_text": {
+        "description": "pages/accueil.experts.text"
+    },
+    "pages_accueil_experts_title_1": "Nos expert·es sont",
+    "@pages_accueil_experts_title_1": {
+        "description": "pages/accueil.experts.title_1"
+    },
+    "pages_accueil_experts_title_2": "prêt·es à vous aider",
+    "@pages_accueil_experts_title_2": {
+        "description": "pages/accueil.experts.title_2"
+    },
+    "pages_accueil_faq_eyebrow": "Questions fréquentes",
+    "@pages_accueil_faq_eyebrow": {
+        "description": "pages/accueil.faq.eyebrow"
+    },
+    "pages_accueil_faq_title": "Vous vous demandez…",
+    "@pages_accueil_faq_title": {
+        "description": "pages/accueil.faq.title"
+    },
+    "pages_accueil_hero_cta_primary": "Rejoignez-nous",
+    "@pages_accueil_hero_cta_primary": {
+        "description": "pages/accueil.hero.cta_primary"
+    },
+    "pages_accueil_hero_kicker": "Espace sûr · confidentiel · bienveillant",
+    "@pages_accueil_hero_kicker": {
+        "description": "pages/accueil.hero.kicker"
+    },
+    "pages_accueil_hero_lead": "Filles et femmes LBTQ+ ? Rejoignez notre communauté bienveillante et accédez à des ressources, trouvez du soutien et faites entendre votre voix en toute sécurité.",
+    "@pages_accueil_hero_lead": {
+        "description": "pages/accueil.hero.lead"
+    },
+    "pages_accueil_hero_photo_1_alt": "Deux femmes qui se soutiennent",
+    "@pages_accueil_hero_photo_1_alt": {
+        "description": "pages/accueil.hero.photo_1_alt"
+    },
+    "pages_accueil_hero_photo_2_alt": "Communauté Xomiton",
+    "@pages_accueil_hero_photo_2_alt": {
+        "description": "pages/accueil.hero.photo_2_alt"
+    },
+    "pages_accueil_hero_proof_human": "Lu sous 24 h par une personne formée",
+    "@pages_accueil_hero_proof_human": {
+        "description": "pages/accueil.hero.proof_human"
+    },
+    "pages_accueil_hero_proof_report": "Votre signalement a été reçu",
+    "@pages_accueil_hero_proof_report": {
+        "description": "pages/accueil.hero.proof_report"
+    },
+    "pages_accueil_hero_quote": "« Enfin un espace où je me sens en sécurité et comprise. »",
+    "@pages_accueil_hero_quote": {
+        "description": "pages/accueil.hero.quote"
+    },
+    "pages_accueil_hero_title": "Xomiton : votre espace safe d’apprentissage et d’appui holistique",
+    "@pages_accueil_hero_title": {
+        "description": "pages/accueil.hero.title"
+    },
+    "pages_accueil_questions_report_img_alt": "Signaler un abus",
+    "@pages_accueil_questions_report_img_alt": {
+        "description": "pages/accueil.questions.report_img_alt"
+    },
+    "pages_accueil_questions_report_text": "Tu as vécu ou été témoin de violences ou de discrimination ? Signale-nous ton cas pour que nous puissions t’assister et t’accompagner.",
+    "@pages_accueil_questions_report_text": {
+        "description": "pages/accueil.questions.report_text"
+    },
+    "pages_accueil_questions_report_title": "Je veux témoigner ou signaler un abus",
+    "@pages_accueil_questions_report_title": {
+        "description": "pages/accueil.questions.report_title"
+    },
+    "pages_accueil_questions_services_0_cta": "Exprimer un besoin",
+    "@pages_accueil_questions_services_0_cta": {
+        "description": "pages/accueil.questions.services.0.cta"
+    },
+    "pages_accueil_questions_services_0_icon": "03.svg",
+    "@pages_accueil_questions_services_0_icon": {
+        "description": "pages/accueil.questions.services.0.icon"
+    },
+    "pages_accueil_questions_services_0_text": "Pose tes questions à l’assistant, en ligne 24 h/24 ; pour une réponse humaine sous 24 h, exprime un besoin : un conseil, une orientation ou simplement une oreille attentive. Ton bien-être est notre priorité.",
+    "@pages_accueil_questions_services_0_text": {
+        "description": "pages/accueil.questions.services.0.text"
+    },
+    "pages_accueil_questions_services_0_title": "Chat d’écoute et d’assistance",
+    "@pages_accueil_questions_services_0_title": {
+        "description": "pages/accueil.questions.services.0.title"
+    },
+    "pages_accueil_questions_services_1_icon": "09.svg",
+    "@pages_accueil_questions_services_1_icon": {
+        "description": "pages/accueil.questions.services.1.icon"
+    },
+    "pages_accueil_questions_services_1_text": "Reste informé·e des dernières nouvelles, des campagnes de sensibilisation, des ateliers et des événements organisés par et pour la communauté.",
+    "@pages_accueil_questions_services_1_text": {
+        "description": "pages/accueil.questions.services.1.text"
+    },
+    "pages_accueil_questions_services_1_title": "Actualités et événements",
+    "@pages_accueil_questions_services_1_title": {
+        "description": "pages/accueil.questions.services.1.title"
+    },
+    "pages_accueil_questions_services_2_icon": "06.svg",
+    "@pages_accueil_questions_services_2_icon": {
+        "description": "pages/accueil.questions.services.2.icon"
+    },
+    "pages_accueil_questions_services_2_text": "Trouve rapidement des réponses aux questions fréquentes sur tes droits, les démarches à suivre et les ressources disponibles sur Xomiton.",
+    "@pages_accueil_questions_services_2_text": {
+        "description": "pages/accueil.questions.services.2.text"
+    },
+    "pages_accueil_questions_services_2_title": "Forums de discussion et groupes de soutien",
+    "@pages_accueil_questions_services_2_title": {
+        "description": "pages/accueil.questions.services.2.title"
+    },
+    "pages_accueil_questions_text": "Tu as une question sur l’orientation sexuelle et l’identité de genre, les VBG, la SSR ou les droits humains en général ? Tu es lesbienne, bi, trans, queer, intersexe ou en questionnement ?",
+    "@pages_accueil_questions_text": {
+        "description": "pages/accueil.questions.text"
+    },
+    "pages_accueil_questions_title": "Je me pose des questions",
+    "@pages_accueil_questions_title": {
+        "description": "pages/accueil.questions.title"
+    },
+    "pages_accueil_reseau_eyebrow": "Rejoignez-nous maintenant",
+    "@pages_accueil_reseau_eyebrow": {
+        "description": "pages/accueil.reseau.eyebrow"
+    },
+    "pages_accueil_reseau_features_0_icon": "newspaper",
+    "@pages_accueil_reseau_features_0_icon": {
+        "description": "pages/accueil.reseau.features.0.icon"
+    },
+    "pages_accueil_reseau_features_0_text": "Publiez, commentez, partagez sondages, témoignages et ressources.",
+    "@pages_accueil_reseau_features_0_text": {
+        "description": "pages/accueil.reseau.features.0.text"
+    },
+    "pages_accueil_reseau_features_0_title": "Fil d’actualité",
+    "@pages_accueil_reseau_features_0_title": {
+        "description": "pages/accueil.reseau.features.0.title"
+    },
+    "pages_accueil_reseau_features_1_icon": "chat-dots",
+    "@pages_accueil_reseau_features_1_icon": {
+        "description": "pages/accueil.reseau.features.1.icon"
+    },
+    "pages_accueil_reseau_features_1_text": "Messages privés et conversations de groupe en temps réel.",
+    "@pages_accueil_reseau_features_1_text": {
+        "description": "pages/accueil.reseau.features.1.text"
+    },
+    "pages_accueil_reseau_features_1_title": "Chat Messenger",
+    "@pages_accueil_reseau_features_1_title": {
+        "description": "pages/accueil.reseau.features.1.title"
+    },
+    "pages_accueil_reseau_features_2_icon": "people",
+    "@pages_accueil_reseau_features_2_icon": {
+        "description": "pages/accueil.reseau.features.2.icon"
+    },
+    "pages_accueil_reseau_features_2_text": "Cercles thématiques, pages d’organisations partenaires.",
+    "@pages_accueil_reseau_features_2_text": {
+        "description": "pages/accueil.reseau.features.2.text"
+    },
+    "pages_accueil_reseau_features_2_title": "Groupes & pages",
+    "@pages_accueil_reseau_features_2_title": {
+        "description": "pages/accueil.reseau.features.2.title"
+    },
+    "pages_accueil_reseau_features_3_icon": "calendar-event",
+    "@pages_accueil_reseau_features_3_icon": {
+        "description": "pages/accueil.reseau.features.3.icon"
+    },
+    "pages_accueil_reseau_features_3_text": "Ateliers, webinaires, dépistages, self-défense.",
+    "@pages_accueil_reseau_features_3_text": {
+        "description": "pages/accueil.reseau.features.3.text"
+    },
+    "pages_accueil_reseau_features_3_title": "Événements",
+    "@pages_accueil_reseau_features_3_title": {
+        "description": "pages/accueil.reseau.features.3.title"
+    },
+    "pages_accueil_reseau_features_4_icon": "chat-square-text",
+    "@pages_accueil_reseau_features_4_icon": {
+        "description": "pages/accueil.reseau.features.4.icon"
+    },
+    "pages_accueil_reseau_features_4_text": "Parler librement, droits, santé, sororité.",
+    "@pages_accueil_reseau_features_4_text": {
+        "description": "pages/accueil.reseau.features.4.text"
+    },
+    "pages_accueil_reseau_features_4_title": "Forums",
+    "@pages_accueil_reseau_features_4_title": {
+        "description": "pages/accueil.reseau.features.4.title"
+    },
+    "pages_accueil_reseau_features_5_icon": "person-plus",
+    "@pages_accueil_reseau_features_5_icon": {
+        "description": "pages/accueil.reseau.features.5.icon"
+    },
+    "pages_accueil_reseau_features_5_text": "Suggestions bienveillantes et invitations.",
+    "@pages_accueil_reseau_features_5_text": {
+        "description": "pages/accueil.reseau.features.5.text"
+    },
+    "pages_accueil_reseau_features_5_title": "Qui suivre",
+    "@pages_accueil_reseau_features_5_title": {
+        "description": "pages/accueil.reseau.features.5.title"
+    },
+    "pages_accueil_reseau_mock_b_alt": "Aperçu animé : fil d’actualité, fiche thématique et parcours",
+    "@pages_accueil_reseau_mock_b_alt": {
+        "description": "pages/accueil.reseau.mock_b_alt"
+    },
+    "pages_accueil_reseau_mock_c_alt": "Aperçu animé : discussion dans le cercle sororité",
+    "@pages_accueil_reseau_mock_c_alt": {
+        "description": "pages/accueil.reseau.mock_c_alt"
+    },
+    "pages_accueil_reseau_text": "Partagez vos expériences, participez à des discussions enrichissantes, et contribuez à faire de Xomiton un espace d’accompagnement puissant. Chaque voix compte pour bâtir un avenir plus juste et inclusif.",
+    "@pages_accueil_reseau_text": {
+        "description": "pages/accueil.reseau.text"
+    },
+    "pages_accueil_reseau_title": "Échangez, partagez, grandissez ensemble",
+    "@pages_accueil_reseau_title": {
+        "description": "pages/accueil.reseau.title"
+    },
+    "pages_accueil_ressources_cover_alt": "Couverture de la fiche : {title}",
+    "@pages_accueil_ressources_cover_alt": {
+        "description": "pages/accueil.ressources.cover_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_accueil_ressources_default_category": "Thème",
+    "@pages_accueil_ressources_default_category": {
+        "description": "pages/accueil.ressources.default_category"
+    },
+    "pages_accueil_ressources_empty": "Les fiches thématiques arrivent bientôt.",
+    "@pages_accueil_ressources_empty": {
+        "description": "pages/accueil.ressources.empty"
+    },
+    "pages_accueil_ressources_eyebrow": "Ressources & thématiques",
+    "@pages_accueil_ressources_eyebrow": {
+        "description": "pages/accueil.ressources.eyebrow"
+    },
+    "pages_accueil_ressources_text": "Fiches claires et fiables sur les violences, la santé, le droit, la sexualité et l’autonomie, rédigées pour vous.",
+    "@pages_accueil_ressources_text": {
+        "description": "pages/accueil.ressources.text"
+    },
+    "pages_accueil_ressources_title": "Apprendre pour mieux se protéger et décider",
+    "@pages_accueil_ressources_title": {
+        "description": "pages/accueil.ressources.title"
+    },
+    "pages_accueil_valeurs_intro_1": "Un espace d’échange, de soutien et d’actions pour votre bien-être.",
+    "@pages_accueil_valeurs_intro_1": {
+        "description": "pages/accueil.valeurs.intro_1"
+    },
+    "pages_accueil_valeurs_intro_2": "Nous répondons à toutes vos questions, gratuitement et en toute confidentialité.",
+    "@pages_accueil_valeurs_intro_2": {
+        "description": "pages/accueil.valeurs.intro_2"
+    },
+    "pages_accueil_valeurs_items_0_alt": "Icône de ressources",
+    "@pages_accueil_valeurs_items_0_alt": {
+        "description": "pages/accueil.valeurs.items.0.alt"
+    },
+    "pages_accueil_valeurs_items_0_icon": "02.svg",
+    "@pages_accueil_valeurs_items_0_icon": {
+        "description": "pages/accueil.valeurs.items.0.icon"
+    },
+    "pages_accueil_valeurs_items_0_text": "Explorez nos fiches d’informations complètes sur les droits humains, la lutte contre les VBG, la santé sexuelle et reproductive et bien d’autres sujets essentiels.",
+    "@pages_accueil_valeurs_items_0_text": {
+        "description": "pages/accueil.valeurs.items.0.text"
+    },
+    "pages_accueil_valeurs_items_0_title": "Thématiques & ressources",
+    "@pages_accueil_valeurs_items_0_title": {
+        "description": "pages/accueil.valeurs.items.0.title"
+    },
+    "pages_accueil_valeurs_items_1_alt": "Icône de communauté",
+    "@pages_accueil_valeurs_items_1_alt": {
+        "description": "pages/accueil.valeurs.items.1.alt"
+    },
+    "pages_accueil_valeurs_items_1_icon": "07.svg",
+    "@pages_accueil_valeurs_items_1_icon": {
+        "description": "pages/accueil.valeurs.items.1.icon"
+    },
+    "pages_accueil_valeurs_items_1_text": "Connectez-vous avec d’autres membres, partagez vos expériences et bâtissez des liens solides au sein de nos groupes de discussion thématiques et sécurisés.",
+    "@pages_accueil_valeurs_items_1_text": {
+        "description": "pages/accueil.valeurs.items.1.text"
+    },
+    "pages_accueil_valeurs_items_1_title": "Réseau et communautés",
+    "@pages_accueil_valeurs_items_1_title": {
+        "description": "pages/accueil.valeurs.items.1.title"
+    },
+    "pages_accueil_valeurs_items_2_alt": "Icône de sécurité",
+    "@pages_accueil_valeurs_items_2_alt": {
+        "description": "pages/accueil.valeurs.items.2.alt"
+    },
+    "pages_accueil_valeurs_items_2_icon": "01.svg",
+    "@pages_accueil_valeurs_items_2_icon": {
+        "description": "pages/accueil.valeurs.items.2.icon"
+    },
+    "pages_accueil_valeurs_items_2_text": "Vos échanges sont protégés. Signalez les abus en toute confiance, votre anonymat est garanti et nos conseiller·ères sont disponibles pour vous écouter et vous assister.",
+    "@pages_accueil_valeurs_items_2_text": {
+        "description": "pages/accueil.valeurs.items.2.text"
+    },
+    "pages_accueil_valeurs_items_2_title": "Confidentialité et sécurité",
+    "@pages_accueil_valeurs_items_2_title": {
+        "description": "pages/accueil.valeurs.items.2.title"
+    },
+    "pages_accueil_valeurs_title": "Un soutien à portée de main",
+    "@pages_accueil_valeurs_title": {
+        "description": "pages/accueil.valeurs.title"
     },
     "profile_about_bio": "Présentation",
     "@profile_about_bio": {
@@ -14024,9 +14813,29 @@
             }
         }
     },
+    "validation_attributes_accuracy": "précision",
+    "@validation_attributes_accuracy": {
+        "description": "validation.attributes.accuracy"
+    },
+    "validation_attributes_anonymous": "anonymat",
+    "@validation_attributes_anonymous": {
+        "description": "validation.attributes.anonymous"
+    },
+    "validation_attributes_attachment": "preuve",
+    "@validation_attributes_attachment": {
+        "description": "validation.attributes.attachment"
+    },
+    "validation_attributes_attachments": "preuves",
+    "@validation_attributes_attachments": {
+        "description": "validation.attributes.attachments"
+    },
     "validation_attributes_body": "contenu",
     "@validation_attributes_body": {
         "description": "validation.attributes.body"
+    },
+    "validation_attributes_category": "type de violence",
+    "@validation_attributes_category": {
+        "description": "validation.attributes.category"
     },
     "validation_attributes_cgu": "conditions d’utilisation",
     "@validation_attributes_cgu": {
@@ -14039,6 +14848,18 @@
     "validation_attributes_commune_id": "commune",
     "@validation_attributes_commune_id": {
         "description": "validation.attributes.commune_id"
+    },
+    "validation_attributes_contact": "moyen de contact",
+    "@validation_attributes_contact": {
+        "description": "validation.attributes.contact"
+    },
+    "validation_attributes_contact_id": "contact de l’annuaire",
+    "@validation_attributes_contact_id": {
+        "description": "validation.attributes.contact_id"
+    },
+    "validation_attributes_contactable": "recontact",
+    "@validation_attributes_contactable": {
+        "description": "validation.attributes.contactable"
     },
     "validation_attributes_current_password": "mot de passe actuel",
     "@validation_attributes_current_password": {
@@ -14064,6 +14885,10 @@
     "@validation_attributes_file": {
         "description": "validation.attributes.file"
     },
+    "validation_attributes_idempotency_key": "clé d’envoi",
+    "@validation_attributes_idempotency_key": {
+        "description": "validation.attributes.idempotency_key"
+    },
     "validation_attributes_identifier": "identifiant",
     "@validation_attributes_identifier": {
         "description": "validation.attributes.identifier"
@@ -14071,6 +14896,14 @@
     "validation_attributes_image": "image",
     "@validation_attributes_image": {
         "description": "validation.attributes.image"
+    },
+    "validation_attributes_lat": "position",
+    "@validation_attributes_lat": {
+        "description": "validation.attributes.lat"
+    },
+    "validation_attributes_lng": "position",
+    "@validation_attributes_lng": {
+        "description": "validation.attributes.lng"
     },
     "validation_attributes_login": "identifiant",
     "@validation_attributes_login": {
@@ -14088,9 +14921,21 @@
     "@validation_attributes_name": {
         "description": "validation.attributes.name"
     },
+    "validation_attributes_need": "besoin",
+    "@validation_attributes_need": {
+        "description": "validation.attributes.need"
+    },
+    "validation_attributes_needs": "besoins",
+    "@validation_attributes_needs": {
+        "description": "validation.attributes.needs"
+    },
     "validation_attributes_newsletter": "newsletter",
     "@validation_attributes_newsletter": {
         "description": "validation.attributes.newsletter"
+    },
+    "validation_attributes_occurred_on": "date des faits",
+    "@validation_attributes_occurred_on": {
+        "description": "validation.attributes.occurred_on"
     },
     "validation_attributes_password": "mot de passe",
     "@validation_attributes_password": {
@@ -14104,6 +14949,10 @@
     "@validation_attributes_phone": {
         "description": "validation.attributes.phone"
     },
+    "validation_attributes_preferred_channel": "canal préféré",
+    "@validation_attributes_preferred_channel": {
+        "description": "validation.attributes.preferred_channel"
+    },
     "validation_attributes_privacy": "politique de confidentialité",
     "@validation_attributes_privacy": {
         "description": "validation.attributes.privacy"
@@ -14116,6 +14965,10 @@
     "@validation_attributes_pseudo": {
         "description": "validation.attributes.pseudo"
     },
+    "validation_attributes_question": "question",
+    "@validation_attributes_question": {
+        "description": "validation.attributes.question"
+    },
     "validation_attributes_remember": "rester connecté·e",
     "@validation_attributes_remember": {
         "description": "validation.attributes.remember"
@@ -14124,9 +14977,17 @@
     "@validation_attributes_sensitive_data": {
         "description": "validation.attributes.sensitive_data"
     },
+    "validation_attributes_share_location": "partage de la position",
+    "@validation_attributes_share_location": {
+        "description": "validation.attributes.share_location"
+    },
     "validation_attributes_slug": "slug",
     "@validation_attributes_slug": {
         "description": "validation.attributes.slug"
+    },
+    "validation_attributes_status": "statut",
+    "@validation_attributes_status": {
+        "description": "validation.attributes.status"
     },
     "validation_attributes_subject": "sujet",
     "@validation_attributes_subject": {
@@ -14143,6 +15004,10 @@
     "validation_attributes_trusted_contact_phone": "téléphone du contact de confiance",
     "@validation_attributes_trusted_contact_phone": {
         "description": "validation.attributes.trusted_contact_phone"
+    },
+    "validation_attributes_type": "type",
+    "@validation_attributes_type": {
+        "description": "validation.attributes.type"
     },
     "validation_attributes_zone_id": "département",
     "@validation_attributes_zone_id": {
@@ -15140,6 +16005,10 @@
     "validation_phone_bj": "Saisis un numéro béninois valide, par exemple +229 01 97 38 88 47.",
     "@validation_phone_bj": {
         "description": "validation.phone_bj"
+    },
+    "validation_phone_or_email": "Saisis un numéro béninois (+229 01 97 38 88 47) ou une adresse e-mail valide.",
+    "@validation_phone_or_email": {
+        "description": "validation.phone_or_email"
     },
     "validation_present": "Le champ {attribute} doit être présent.",
     "@validation_present": {

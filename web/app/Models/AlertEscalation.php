@@ -23,6 +23,9 @@ class AlertEscalation extends Model
 
     public const REASON_NO_ACK = 'no_ack_5min';
 
+    /** Signalement ou besoin sans accusé après le délai d'escalade de son type (Q27, 48 h par défaut). */
+    public const REASON_NO_ACK_REPORT = 'no_ack_48h';
+
     public const REASON_MANUAL = 'manual';
 
     /**
@@ -74,7 +77,7 @@ class AlertEscalation extends Model
      */
     public function scopeAutomatic(Builder $query): void
     {
-        $query->where('reason', self::REASON_NO_ACK);
+        $query->whereIn('reason', [self::REASON_NO_ACK, self::REASON_NO_ACK_REPORT]);
     }
 
     /**
@@ -87,6 +90,6 @@ class AlertEscalation extends Model
 
     public function isAutomatic(): bool
     {
-        return $this->reason === self::REASON_NO_ACK;
+        return in_array($this->reason, [self::REASON_NO_ACK, self::REASON_NO_ACK_REPORT], true);
     }
 }

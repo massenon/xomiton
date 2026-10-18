@@ -11,7 +11,9 @@ use App\Http\Controllers\Auth\RegistrationConsentsController;
 use App\Http\Controllers\Auth\RegistrationProfileController;
 use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Web\AlertAcknowledgementController;
 use App\Http\Controllers\Web\DesignSystemController;
+use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\PlaceholderController;
 use App\Http\Controllers\Web\RobotsController;
 use App\Http\Controllers\Web\SignedMediaController;
@@ -38,7 +40,7 @@ $placeholder = static function (string $uri, string $name, string $title, string
 };
 
 // --- Site public (P4) -------------------------------------------------------
-$placeholder('/', 'home', 'Accueil', 'index.php');
+Route::get('/', HomeController::class)->name('home'); // P4-01
 $placeholder('/thematiques', 'thematiques.index', 'Thématiques', 'thematiques.php');
 $placeholder('/thematiques/{slug}', 'thematiques.show', 'Thématique', 'thematique.php');
 $placeholder('/ressources', 'ressources.index', 'Ressources', 'ressources.php');
@@ -59,6 +61,13 @@ Route::post('/newsletter', PlaceholderController::class)->name('newsletter.subsc
 // --- Alertes, SOS, signalement (P5) ----------------------------------------
 $placeholder('/signaler', 'signaler', 'Signaler', 'signalement.php', 'plain');
 $placeholder('/sos', 'sos', 'SOS', 'sos.php', 'plain');
+// Accusé de réception par lien signé (P5-02) : contact d'annuaire sans compte ; GET sans effet, POST + CSRF.
+// Signature vérifiée par AcknowledgeAlertRequest (403 en français), limiteur dédié `acknowledge` (60/h par IP + alerte
+// + fiche, jamais partagé avec le suivi par code : CGNAT mobile), servi en maintenance.
+Route::middleware('throttle:acknowledge')->group(function (): void {
+    Route::get('/alertes/{alert:ulid}/accuser', [AlertAcknowledgementController::class, 'show'])->name('alertes.accuser');
+    Route::post('/alertes/{alert:ulid}/accuser', [AlertAcknowledgementController::class, 'store'])->name('alertes.accuser.store');
+});
 
 // --- Authentification (P2-02 à P2-05, P4-09 — lot ecrans-web) ----------------------
 // Limiteurs nommés de AppServiceProvider : 'login' (identifiant + IP), 'otp' (adresse e-mail).

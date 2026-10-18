@@ -186,6 +186,13 @@ return [
         'discreet' => 'Signalement à modérer',
     ],
 
+    // Limiteur `sos` en mode observateur (P2-08, App\Application\Shared\SosBurstWatch) : aucun SOS n'est bloqué.
+    'sos_burst' => [
+        'title' => 'SOS répétés depuis une même adresse',
+        'body' => ':count SOS en une minute depuis une même adresse (empreinte :fingerprint). Aucun envoi n’a été bloqué : vérifiez les alertes récentes.',
+        'discreet' => 'SOS répétés à vérifier',
+    ],
+
     'sync_conflict' => [
         'title' => 'Conflit de synchronisation',
         'body' => ':subject · champ « :field » : deux versions à arbitrer.',

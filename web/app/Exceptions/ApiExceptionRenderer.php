@@ -14,9 +14,12 @@ use App\Domain\Auth\Exceptions\OtpInvalid;
 use App\Domain\Auth\Exceptions\OtpRateLimited;
 use App\Domain\Auth\Exceptions\OtpTooSoon;
 use App\Domain\Auth\Exceptions\RegistrationsClosed;
+use App\Domain\Shared\Exceptions\DomainException;
+use App\Support\RouteAudience;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,11 +31,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 /**
- * Réponses d'erreur JSON de /api/v1 (SOFTWARE_ARCHITECTURE.md §4) : `{ message, code, errors?, retry_after? }`
- * avec les codes HTTP standard (401, 403, 404, 405, 422, 429, 503). Les exceptions métier du tunnel
- * d'authentification (App\Domain\Auth\Exceptions) portent leur propre statut et un `code` stable lu par Flutter :
- * `invalid_credentials`, `account_suspended`, `maintenance`, `email_unverified`, `otp_invalid`, `otp_too_soon`,
- * `otp_rate_limited`, `registrations_closed`, `consent_required`. Les textes viennent de lang/fr (tutoiement, Q36).
+ * Réponses d'erreur JSON de /api/v1 (SOFTWARE_ARCHITECTURE.md §4, P5-09) : `{ message, code, errors?, retry_after? }`
+ * pour tous les statuts (400, 401, 403, 404, 405, 409, 410, 413, 415, 419, 422, 429, 500, 503). Les exceptions métier
+ * (App\Domain\Shared\Exceptions\DomainException) portent leur statut, leur `code` stable et leurs `errors` ; celles du
+ * tunnel d'authentification (App\Domain\Auth\Exceptions) aussi : `invalid_credentials`, `account_suspended`, `maintenance`,
+ * `email_unverified`, `otp_invalid`, `otp_too_soon`, `otp_rate_limited`, `registrations_closed`, `consent_required`.
+ * Le 422 de validation garde `{ message, errors }` de Laravel et y ajoute `code: validation_failed`. Hors débogage, toute
+ * autre exception répond 500 `server_error` sans détail. Textes : lang/fr (auth.api tutoie, errors.api sans registre).
  */
 final class ApiExceptionRenderer
 {
@@ -54,15 +59,76 @@ final class ApiExceptionRenderer
         }
 
         return match (true) {
+            $e instanceof HttpResponseException => null,
+            $e instanceof DomainException => self::domain($e),
             $e instanceof AuthException => self::auth($e, $request),
             $e instanceof AuthenticationException => self::error(__('auth.api.unauthenticated'), 401, 'unauthenticated'),
             $e instanceof AuthorizationException, $e instanceof AccessDeniedHttpException => self::error(__('auth.api.forbidden'), 403, 'forbidden'),
             $e instanceof ModelNotFoundException, $e instanceof NotFoundHttpException => self::error(__('auth.api.not_found'), 404, 'not_found'),
             $e instanceof MethodNotAllowedHttpException => self::error(__('auth.api.method_not_allowed'), 405, 'method_not_allowed', headers: $e->getHeaders()),
             $e instanceof ThrottleRequestsException => self::throttled($e),
-            $e instanceof ValidationException => null,
-            default => null,
+            $e instanceof ValidationException => self::validation($e),
+            $e instanceof HttpExceptionInterface => self::http($e, $request),
+            default => config('app.debug') ? null : self::error((string) __('errors.api.server'), 500, 'server_error'),
         };
+    }
+
+    /**
+     * Exception métier : statut, message, code, erreurs par champ et en-têtes portés par l'exception.
+     */
+    public static function domain(DomainException $e): JsonResponse
+    {
+        return self::error($e->userMessage(), $e->status(), $e->errorCode(), $e->errors(), $e->extra(), $e->headers());
+    }
+
+    /**
+     * 422 : forme Laravel `{ message, errors }` conservée (premier message + « (et :count autres erreurs) », clés de
+     * ValidationException::summarize() traduites dans lang/fr.json), `code` ajouté. Une exception portant
+     * déjà sa réponse (ValidationException::withMessages()->response) est laissée à Laravel.
+     */
+    private static function validation(ValidationException $e): ?JsonResponse
+    {
+        if ($e->response !== null) {
+            return null;
+        }
+
+        return self::error($e->getMessage(), $e->status, 'validation_failed', $e->errors());
+    }
+
+    /**
+     * Autres exceptions HTTP (abort(), 419 CSRF, 413 corps trop gros, 503 artisan down…) : message et code par statut,
+     * en-têtes conservés (Retry-After). Le message brut de l'exception n'est jamais renvoyé (il peut être en anglais).
+     */
+    private static function http(HttpExceptionInterface $e, Request $request): JsonResponse
+    {
+        $status = $e->getStatusCode();
+        $headers = $e->getHeaders();
+
+        if ($status === 429) {
+            $retryAfter = max(1, (int) ($headers['Retry-After'] ?? 60));
+
+            return self::error((string) __('errors.api.throttled', ['seconds' => $retryAfter]), 429, 'too_many_requests', [], ['retry_after' => $retryAfter], $headers);
+        }
+
+        [$key, $code] = match ($status) {
+            400 => ['errors.api.bad_request', 'bad_request'],
+            401 => ['auth.api.unauthenticated', 'unauthenticated'],
+            403 => ['auth.api.forbidden', 'forbidden'],
+            404 => ['auth.api.not_found', 'not_found'],
+            405 => ['auth.api.method_not_allowed', 'method_not_allowed'],
+            409 => ['errors.api.conflict', 'conflict'],
+            410 => ['errors.api.gone', 'gone'],
+            413 => ['errors.api.payload_too_large', 'payload_too_large'],
+            415 => ['errors.api.unsupported_media_type', 'unsupported_media_type'],
+            // Deux clés seulement (VOICE_AND_TONE.md §3 règle 2) : groupe public (assistant de l'accueil, sans compte) au
+            // vous, espace connecté (Vue en mode SPA, routes auth:sanctum) au tu.
+            419 => [RouteAudience::requiresAuthentication($request) ? 'errors.419.member.text' : 'errors.419.public.text', 'session_expired'],
+            422 => ['errors.api.validation', 'validation_failed'],
+            503 => ['errors.api.maintenance', 'maintenance'],
+            default => $status >= 500 ? ['errors.api.server', 'server_error'] : ['errors.api.http', 'http_error'],
+        };
+
+        return self::error((string) __($key), $status, $code, headers: $headers);
     }
 
     /**

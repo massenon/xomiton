@@ -228,7 +228,7 @@ describe('seeders', function (): void {
             ->and($vbg->content_warning)->not->toBeNull()
             ->and(Law::count())->toBe(7)
             ->and(Faq::count())->toBe(10)
-            ->and(Faq::onHome()->count())->toBe(8)
+            ->and(Faq::onHome()->count())->toBe(6)
             ->and(Category::ofKind(Category::KIND_FAQ)->count())->toBe(4)
             ->and(Category::ofKind(Category::KIND_FAQ)->where('slug', 'signal')->value('label'))->toBe('Signalement & urgences')
             ->and(CccTool::count())->toBe(14)
