@@ -14,3 +14,5 @@
 @import './app/components.css';
 @import './app/auth.css';
 @import './app/pages/accueil.css';
+@import './app/pages/thematiques.css';
+@import './app/pages/alertes-dispatch.css';

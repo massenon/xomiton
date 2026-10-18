@@ -81,8 +81,8 @@ it('répond 404 hors production et quand seo.allow_indexing est à faux', functi
 it('ne liste aucun écran provisoire (PlaceholderController, noindex)', function (): void {
     Thematique::factory()->create(['slug' => 'droits-des-femmes-benin']);
 
-    // Seul l'accueil est livré (P4-01, HomeController) : les autres pages sont encore provisoires.
-    expect(sitemapLocs(sitemapXml()))->toBe([canonical('/')]);
+    // Livrés : accueil (P4-01) et thématiques (P4-02) ; les autres pages sont encore provisoires.
+    expect(sitemapLocs(sitemapXml()))->toBe([canonical('/'), canonical('/thematiques'), canonical('/thematiques/droits-des-femmes-benin')]);
 });
 
 it('répond un XML valide contenant l’accueil et les pages publiques statiques livrées', function (): void {

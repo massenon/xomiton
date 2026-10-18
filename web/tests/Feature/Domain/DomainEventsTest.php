@@ -8,7 +8,10 @@ use App\Domain\Alerts\Events\SosTriggered;
 use App\Domain\Moderation\Events\ContentReported;
 use App\Domain\Newsletter\Events\CampaignSent;
 use App\Domain\Sync\Events\SyncConflictDetected;
+use App\Enums\DeliveryStatus;
+use App\Enums\NotificationChannel;
 use App\Models\Alert;
+use App\Models\AlertNotification;
 use App\Models\AuditLog;
 use App\Models\DirectoryContact;
 use App\Models\ModerationReport;
@@ -22,7 +25,6 @@ use App\Notifications\SosTriggered as SosTriggeredNotification;
 use App\Notifications\SyncConflict as SyncConflictNotification;
 use App\Providers\AppServiceProvider;
 use Database\Seeders\RolesAndPermissionsSeeder;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Notification;
 
 /*
@@ -87,7 +89,11 @@ it('SosTriggered → cloche des admins de garde, SMS du contact de confiance, ja
         && $n->zoneLabel === 'Littoral'
         && $n->place !== null);
     Notification::assertNotSentTo($member, SosTriggeredNotification::class);
-    Notification::assertSentOnDemand(SosTriggeredNotification::class, fn (SosTriggeredNotification $n, array $channels, AnonymousNotifiable $notifiable): bool => $notifiable->routes['sms'] === '+229 01 97 38 88 47' && $channels === ['sms']);
+    // P5-03 : le SMS du contact de confiance part par le DeliveryRunner (SmsSender), consigné sans le numéro (ADR-33).
+    $trusted = AlertNotification::query()->where('alert_id', $alert->id)->where('recipient', 'trusted:'.$member->id)->first();
+    expect($trusted?->channel)->toBe(NotificationChannel::Sms)
+        ->and($trusted?->status)->toBe(DeliveryStatus::Sent)
+        ->and(AlertNotification::query()->where('recipient', 'like', '%97 38%')->exists())->toBeFalse();
     expect(AuditLog::query()->ofAction('alerts.sos_triggered')->forSubject($alert)->value('detail'))->toContain('anonyme=non');
 });
 

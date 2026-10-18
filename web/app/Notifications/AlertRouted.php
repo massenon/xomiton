@@ -22,6 +22,8 @@ final class AlertRouted extends XomitonNotification
         public readonly string $zoneLabel,
         public readonly DateTimeInterface|string $receivedAt,
         public readonly ?string $url = null,
+        // Rappel à 24 h sans accusé (Q27, P5-03) : titre « Rappel : … », contexte e-mail `alerte_rappel`.
+        public readonly bool $reminder = false,
     ) {}
 
     public function category(): string
@@ -41,7 +43,7 @@ final class AlertRouted extends XomitonNotification
 
     protected function mailContext(): ?string
     {
-        return 'alerte_routee';
+        return $this->reminder ? 'alerte_rappel' : 'alerte_routee';
     }
 
     /**
@@ -61,7 +63,7 @@ final class AlertRouted extends XomitonNotification
     protected function content(object $notifiable): array
     {
         return [
-            'title' => (string) __('notifications.alert_routed.title'),
+            'title' => (string) __($this->reminder ? 'notifications.alert_routed.reminder_title' : 'notifications.alert_routed.title'),
             'body' => (string) __('notifications.alert_routed.body', [
                 'type' => $this->typeLabel,
                 'zone' => $this->zoneLabel,

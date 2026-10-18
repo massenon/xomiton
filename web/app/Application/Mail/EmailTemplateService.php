@@ -96,6 +96,42 @@ final class EmailTemplateService
      */
     public static function send(string $slug, string $to, array $vars = [], ?string $context = null): MailLog
     {
+        $prepared = self::prepare($slug, $to, $vars, $context);
+
+        if ($prepared instanceof MailLog) {
+            return $prepared;
+        }
+
+        return self::deliver(trim($to), $prepared, self::redactedSubject($prepared->subjectLine, $vars), $context);
+    }
+
+    /**
+     * Dépôt différé (P5-03, D7) : mêmes contrôles et même rendu que send(), mais l'e-mail est déposé directement dans
+     * la boîte d'envoi, sans aucune connexion SMTP (le SMTP n'est pas HTTP et bloquerait une requête SOS ou de
+     * signalement) ; `mail:flush-outbox` l'expédie dans la minute. Journal `transport = outbox`.
+     *
+     * @param  array<string, scalar|\Stringable|null>  $vars
+     */
+    public static function enqueue(string $slug, string $to, array $vars = [], ?string $context = null): MailLog
+    {
+        $prepared = self::prepare($slug, $to, $vars, $context);
+
+        if ($prepared instanceof MailLog) {
+            return $prepared;
+        }
+
+        self::deposit(trim($to), $prepared, null);
+
+        return self::log(trim($to), self::redactedSubject($prepared->subjectLine, $vars), $slug, $context, MailTransport::Outbox, true, null);
+    }
+
+    /**
+     * Contrôle l'adresse et rend le template ; renvoie la ligne de journal d'échec quand rien ne peut partir.
+     *
+     * @param  array<string, scalar|\Stringable|null>  $vars
+     */
+    private static function prepare(string $slug, string $to, array $vars, ?string $context): TemplateMail|MailLog
+    {
         $to = trim($to);
 
         if (filter_var($to, FILTER_VALIDATE_EMAIL) === false) {
@@ -114,7 +150,7 @@ final class EmailTemplateService
             Log::warning('Template e-mail : variables non fournies.', ['slug' => $slug, 'variables' => $rendered['unknown_vars']]);
         }
 
-        $mailable = new TemplateMail(
+        return new TemplateMail(
             subjectLine: $rendered['subject'],
             htmlBody: $rendered['html'],
             textBody: $rendered['text'],
@@ -123,8 +159,6 @@ final class EmailTemplateService
             replyToAddress: SmtpSettings::replyTo(),
             templateSlug: $slug,
         );
-
-        return self::deliver($to, $mailable, self::redactedSubject($rendered['subject'], $vars), $context);
     }
 
     /**

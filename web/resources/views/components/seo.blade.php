@@ -46,7 +46,9 @@
         ['@type' => 'WebSite', '@id' => $root.'#site', 'url' => $root, 'name' => $site, 'inLanguage' => 'fr-BJ', 'publisher' => ['@id' => $root.'#org'],
             // Recherche interne (SEO_CONTENT_GUIDE_INSTRUCTION.md : WebSite + SearchAction ; prototype title-meta.php).
             'potentialAction' => ['@type' => 'SearchAction', 'target' => route('ressources.index').'?q={search_term_string}', 'query-input' => 'required name=search_term_string']],
-        ['@type' => $type === 'article' ? 'Article' : 'WebPage', '@id' => $canonical.'#page', 'url' => $canonical, 'name' => $fullTitle, 'description' => $desc, 'inLanguage' => 'fr-BJ', 'isPartOf' => ['@id' => $root.'#site'], 'primaryImageOfPage' => $img] + ($modified ? ['dateModified' => $modified] : []),
+        // Toujours WebPage (prototype title-meta.php) : une page éditoriale ajoute son propre Article par `schema`
+        // (mainEntityOfPage → #page, App\Application\Seo\StructuredData) ; `type` ne règle que og:type (P4-02).
+        ['@type' => 'WebPage', '@id' => $canonical.'#page', 'url' => $canonical, 'name' => $fullTitle, 'description' => $desc, 'inLanguage' => 'fr-BJ', 'isPartOf' => ['@id' => $root.'#site'], 'primaryImageOfPage' => $img] + ($modified ? ['dateModified' => $modified] : []),
         ['@type' => 'BreadcrumbList', 'itemListElement' => $list],
     ];
     foreach ($schema as $extra) {

@@ -46,6 +46,8 @@ return [
         'title' => 'Nouvelle alerte à prendre en charge',
         'body' => ':type · :zone · reçue à :time. Ouvrez l’alerte pour accuser réception.',
         'discreet' => 'Nouvelle alerte',
+        // Rappel à 24 h sans accusé (Q27, P5-03).
+        'reminder_title' => 'Rappel : alerte à prendre en charge',
     ],
 
     'sos_triggered' => [
@@ -56,9 +58,13 @@ return [
         'discreet' => 'Alerte urgente',
         'sms' => 'Xomiton – Alerte SOS :code près de :place. Accusez réception : :url',
         'sms_no_position' => 'Xomiton – Alerte SOS :code, zone :zone. Accusez réception : :url',
+        // Fiche d'annuaire prévenue en copie, sans accusé possible (AcknowledgeLink::matches faux : focal de zone distinct
+        // du contact routé, focal national de repli) : ni « Accusez réception » ni lien, l'équipe coordonne (Q57).
+        'sms_copy' => 'Xomiton – Alerte SOS :code (:where). L’équipe Xomiton coordonne la réponse : restez joignable, elle peut vous solliciter.',
         // Contact de confiance (personne sans compte) : vous, sans lien d'administration, consigne d'appel.
-        'sms_trusted' => 'Xomiton – SOS de :pseudo (:where). Vous êtes son contact de confiance : appelez-la tout de suite. Réf. :code',
-        'sms_trusted_unnamed' => 'Xomiton – SOS (:where) d’une personne qui vous a choisi·e comme contact de confiance. Appelez-la tout de suite. Réf. :code',
+        // Textes SMS : lettres de l'alphabet GSM-7 (pas de « ê » ni de point médian), typographie ramenée par SmsText.
+        'sms_trusted' => 'Xomiton – SOS de :pseudo (:where), qui compte sur vous comme contact de confiance : appelez-la tout de suite. Réf. :code',
+        'sms_trusted_unnamed' => 'Xomiton – SOS (:where) d’une personne qui compte sur vous comme contact de confiance. Appelez-la tout de suite. Réf. :code',
         'where_unknown' => 'position indisponible',
     ],
 
@@ -73,11 +79,20 @@ return [
         'title' => 'Fausse alerte',
         'body' => 'L’alerte :code a été annulée par la personne qui l’avait envoyée. Aucune action n’est attendue.',
         'discreet' => 'Alerte annulée',
+        'sms' => 'Xomiton – Fausse alerte : l’alerte :code a été annulée par la personne. Aucune action attendue.',
     ],
 
     'sos_safe' => [
         'title' => 'Personne en sécurité',
         'body' => 'La personne à l’origine de l’alerte :code indique être en sécurité.',
+        'discreet' => 'Mise à jour d’alerte',
+        'sms' => 'Xomiton – La personne à l’origine de l’alerte :code se dit en sécurité.',
+    ],
+
+    // Retour à l'auteur·e d'un SOS quand une personne prévenue accuse réception (P5-03) : tu.
+    'sos_acknowledged' => [
+        'title' => 'Ton alerte a été reçue',
+        'body' => ':name a bien reçu ton alerte et va t’appeler.',
         'discreet' => 'Mise à jour d’alerte',
     ],
 

@@ -14,10 +14,13 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\AlertAcknowledgementController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\PlaceholderController;
 use App\Http\Controllers\Web\RobotsController;
 use App\Http\Controllers\Web\SignedMediaController;
 use App\Http\Controllers\Web\SitemapController;
+use App\Http\Controllers\Web\ThematiquesIndexController;
+use App\Http\Controllers\Web\ThematiquesShowController;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -41,8 +44,9 @@ $placeholder = static function (string $uri, string $name, string $title, string
 
 // --- Site public (P4) -------------------------------------------------------
 Route::get('/', HomeController::class)->name('home'); // P4-01
-$placeholder('/thematiques', 'thematiques.index', 'Thématiques', 'thematiques.php');
-$placeholder('/thematiques/{slug}', 'thematiques.show', 'Thématique', 'thematique.php');
+// P4-02 : publiques et indexables (Q19 a) ; fiche résolue par ShowThematique (publiées seulement), pas de liaison implicite.
+Route::get('/thematiques', ThematiquesIndexController::class)->name('thematiques.index');
+Route::get('/thematiques/{slug}', ThematiquesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('thematiques.show');
 $placeholder('/ressources', 'ressources.index', 'Ressources', 'ressources.php');
 $placeholder('/ressources/{slug}', 'ressources.show', 'Ressource', 'ressource.php');
 $placeholder('/violences', 'violences', 'Comprendre les violences', 'violences.php');
@@ -139,6 +143,9 @@ Route::permanentRedirect('/sign-up.php', '/inscription');
 Route::permanentRedirect('/signalement.php', '/signaler');
 Route::permanentRedirect('/sos.php', '/sos');
 Route::permanentRedirect('/urgences.php', '/urgences');
+Route::permanentRedirect('/thematiques.php', '/thematiques');
+// Le prototype adressait les fiches par id ; la couverture semée le garde (covers/th-<id>.jpg, ContentSeeder) : P4-02.
+Route::get('/thematique.php', LegacyThematiqueRedirectController::class)->name('legacy.thematique');
 
 // --- Référencement (P4-11) : robots.txt et sitemap.xml natifs, sans fichier statique ----
 // Sans session ni cookies : une visite de robot n'ouvre pas de session et la réponse `Cache-Control: public` ne porte

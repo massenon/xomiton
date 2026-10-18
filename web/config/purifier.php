@@ -35,6 +35,15 @@ return [
         'test' => [
             'Attr.EnableID' => 'true',
         ],
+        // HTML éditorial (thématiques, ressources : App\Casts\PurifiedHtml) — ni style ni script, classe `lead` seule.
+        'content' => [
+            'HTML.Doctype' => 'HTML 4.01 Transitional',
+            'HTML.Allowed' => 'p[class],br,strong,b,em,i,u,s,sub,sup,small,blockquote,ul,ol,li,h2,h3,h4,a[href|title]',
+            'Attr.AllowedClasses' => 'lead',
+            'URI.AllowedSchemes' => ['http' => true, 'https' => true, 'mailto' => true, 'tel' => true],
+            'AutoFormat.AutoParagraph' => false,
+            'AutoFormat.RemoveEmpty' => true,
+        ],
         'youtube' => [
             'HTML.SafeIframe' => 'true',
             'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',

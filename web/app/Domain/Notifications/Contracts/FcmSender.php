@@ -18,6 +18,8 @@ use App\Models\PushSubscription;
  * `PushMessage::title()` / `body()` en notification et `PushMessage::data()` (`type`, `id`, `url`, `category`) en
  * données, sur le canal Android « SOS et alertes » pour les catégories `sos` / `alertes` (P15-08), et renvoie
  * `DeliveryResult::gone()` quand FCM signale un jeton invalide (UNREGISTERED) pour que le canal supprime l'abonnement.
+ * Un pilote HTTP implémente PoolablePushSender (envoi borné par DeliveryRunner, P5-03) ou applique lui-même
+ * `xomiton.alerts.provider_timeout_seconds` à sa requête : un `send()` bloquant n'est pas interrompu (D13).
  */
 interface FcmSender
 {

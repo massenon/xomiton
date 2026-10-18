@@ -64,7 +64,7 @@ abstract class PushChannel
 
         if ($result->gone) {
             Log::info(sprintf('[%s] Abonnement push disparu : suppression.', $this->kind()), ['subscription' => $subscription->endpoint_hash, 'error' => $result->error]);
-            $subscription->delete();
+            $subscription->recordDelivery($result);
 
             return $result;
         }
@@ -79,7 +79,7 @@ abstract class PushChannel
             return $result;
         }
 
-        $subscription->touchLastUsed();
+        $subscription->recordDelivery($result);
 
         return $result;
     }

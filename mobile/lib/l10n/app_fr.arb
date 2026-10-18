@@ -2956,6 +2956,84 @@
     "@alerts_moderation_title": {
         "description": "alerts.moderation.title"
     },
+    "alerts_notified_badge_seen": "Vu",
+    "@alerts_notified_badge_seen": {
+        "description": "alerts.notified.badge_seen"
+    },
+    "alerts_notified_badge_sms": "SMS",
+    "@alerts_notified_badge_sms": {
+        "description": "alerts.notified.badge_sms"
+    },
+    "alerts_notified_call_primary": "Appeler {name}",
+    "@alerts_notified_call_primary": {
+        "description": "alerts.notified.call_primary",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_notified_kind_team": "Équipe Xomiton",
+    "@alerts_notified_kind_team": {
+        "description": "alerts.notified.kind.team"
+    },
+    "alerts_notified_kind_team_role": "Admin de garde",
+    "@alerts_notified_kind_team_role": {
+        "description": "alerts.notified.kind.team_role"
+    },
+    "alerts_notified_kind_trusted": "Contact de confiance",
+    "@alerts_notified_kind_trusted": {
+        "description": "alerts.notified.kind.trusted"
+    },
+    "alerts_notified_no_phone": "Aucun numéro à afficher : en danger, appelle le 117.",
+    "@alerts_notified_no_phone": {
+        "description": "alerts.notified.no_phone"
+    },
+    "alerts_notified_offline": "Hors ligne : la liste se mettra à jour au retour du réseau.",
+    "@alerts_notified_offline": {
+        "description": "alerts.notified.offline"
+    },
+    "alerts_notified_role_zone": "{role} · {zone}",
+    "@alerts_notified_role_zone": {
+        "description": "alerts.notified.role_zone",
+        "placeholders": {
+            "role": {
+                "type": "String"
+            },
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_notified_state_pending": "Envoi en cours",
+    "@alerts_notified_state_pending": {
+        "description": "alerts.notified.state.pending"
+    },
+    "alerts_notified_state_seen": "A vu ton alerte",
+    "@alerts_notified_state_seen": {
+        "description": "alerts.notified.state.seen"
+    },
+    "alerts_notified_state_sent": "Prévenu·e · en attente",
+    "@alerts_notified_state_sent": {
+        "description": "alerts.notified.state.sent"
+    },
+    "alerts_notified_state_sms_sent": "SMS envoyé",
+    "@alerts_notified_state_sms_sent": {
+        "description": "alerts.notified.state.sms_sent"
+    },
+    "alerts_notified_title": "Personnes prévenues",
+    "@alerts_notified_title": {
+        "description": "alerts.notified.title"
+    },
+    "alerts_notified_updated": "Mis à jour à {time}",
+    "@alerts_notified_updated": {
+        "description": "alerts.notified.updated",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "alerts_report_badge": "Sans compte · sans trace",
     "@alerts_report_badge": {
         "description": "alerts.report.badge"
@@ -7972,6 +8050,10 @@
     "@enums_alerts_delivery_status_sent": {
         "description": "enums/alerts.delivery_status.sent"
     },
+    "enums_alerts_delivery_status_skipped": "Abandonnée",
+    "@enums_alerts_delivery_status_skipped": {
+        "description": "enums/alerts.delivery_status.skipped"
+    },
     "enums_alerts_escalation_reason_manual": "Réattribution manuelle",
     "@enums_alerts_escalation_reason_manual": {
         "description": "enums/alerts.escalation_reason.manual"
@@ -7999,6 +8081,78 @@
     "enums_alerts_notification_channel_sms": "SMS",
     "@enums_alerts_notification_channel_sms": {
         "description": "enums/alerts.notification_channel.sms"
+    },
+    "enums_alerts_notification_purpose_alert_escalated": "Escalade (signalement sans réponse)",
+    "@enums_alerts_notification_purpose_alert_escalated": {
+        "description": "enums/alerts.notification_purpose.alert_escalated"
+    },
+    "enums_alerts_notification_purpose_alert_reminder": "Rappel",
+    "@enums_alerts_notification_purpose_alert_reminder": {
+        "description": "enums/alerts.notification_purpose.alert_reminder"
+    },
+    "enums_alerts_notification_purpose_alert_routed": "Alerte routée",
+    "@enums_alerts_notification_purpose_alert_routed": {
+        "description": "enums/alerts.notification_purpose.alert_routed"
+    },
+    "enums_alerts_notification_purpose_alert_status_changed": "Changement de statut",
+    "@enums_alerts_notification_purpose_alert_status_changed": {
+        "description": "enums/alerts.notification_purpose.alert_status_changed"
+    },
+    "enums_alerts_notification_purpose_sos_acknowledged": "Accusé transmis à la personne",
+    "@enums_alerts_notification_purpose_sos_acknowledged": {
+        "description": "enums/alerts.notification_purpose.sos_acknowledged"
+    },
+    "enums_alerts_notification_purpose_sos_cancelled": "Fausse alerte",
+    "@enums_alerts_notification_purpose_sos_cancelled": {
+        "description": "enums/alerts.notification_purpose.sos_cancelled"
+    },
+    "enums_alerts_notification_purpose_sos_safe": "Personne en sécurité",
+    "@enums_alerts_notification_purpose_sos_safe": {
+        "description": "enums/alerts.notification_purpose.sos_safe"
+    },
+    "enums_alerts_notification_purpose_sos_triggered": "SOS déclenché",
+    "@enums_alerts_notification_purpose_sos_triggered": {
+        "description": "enums/alerts.notification_purpose.sos_triggered"
+    },
+    "enums_alerts_notification_purpose_sos_unacknowledged": "Escalade (SOS sans réponse)",
+    "@enums_alerts_notification_purpose_sos_unacknowledged": {
+        "description": "enums/alerts.notification_purpose.sos_unacknowledged"
+    },
+    "enums_alerts_notified_state_pending": "En attente",
+    "@enums_alerts_notified_state_pending": {
+        "description": "enums/alerts.notified_state.pending"
+    },
+    "enums_alerts_notified_state_seen": "Vu",
+    "@enums_alerts_notified_state_seen": {
+        "description": "enums/alerts.notified_state.seen"
+    },
+    "enums_alerts_notified_state_sent": "Envoyé",
+    "@enums_alerts_notified_state_sent": {
+        "description": "enums/alerts.notified_state.sent"
+    },
+    "enums_alerts_notified_state_sms_sent": "SMS envoyé",
+    "@enums_alerts_notified_state_sms_sent": {
+        "description": "enums/alerts.notified_state.sms_sent"
+    },
+    "enums_alerts_recipient_kind_author": "Auteur·e",
+    "@enums_alerts_recipient_kind_author": {
+        "description": "enums/alerts.recipient_kind.author"
+    },
+    "enums_alerts_recipient_kind_contact": "Annuaire",
+    "@enums_alerts_recipient_kind_contact": {
+        "description": "enums/alerts.recipient_kind.contact"
+    },
+    "enums_alerts_recipient_kind_focal": "Point focal",
+    "@enums_alerts_recipient_kind_focal": {
+        "description": "enums/alerts.recipient_kind.focal"
+    },
+    "enums_alerts_recipient_kind_team": "Équipe",
+    "@enums_alerts_recipient_kind_team": {
+        "description": "enums/alerts.recipient_kind.team"
+    },
+    "enums_alerts_recipient_kind_trusted": "Contact de confiance",
+    "@enums_alerts_recipient_kind_trusted": {
+        "description": "enums/alerts.recipient_kind.trusted"
     },
     "enums_alerts_routing_fallback_first_active": "Premier contact actif (repli)",
     "@enums_alerts_routing_fallback_first_active": {
@@ -12027,6 +12181,10 @@
     "@notifications_alert_routed_discreet": {
         "description": "notifications.alert_routed.discreet"
     },
+    "notifications_alert_routed_reminder_title": "Rappel : alerte à prendre en charge",
+    "@notifications_alert_routed_reminder_title": {
+        "description": "notifications.alert_routed.reminder_title"
+    },
     "notifications_alert_routed_title": "Nouvelle alerte à prendre en charge",
     "@notifications_alert_routed_title": {
         "description": "notifications.alert_routed.title"
@@ -12712,6 +12870,23 @@
     "@notifications_reaction_title": {
         "description": "notifications.reaction.title"
     },
+    "notifications_sos_acknowledged_body": "{name} a bien reçu ton alerte et va t’appeler.",
+    "@notifications_sos_acknowledged_body": {
+        "description": "notifications.sos_acknowledged.body",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_sos_acknowledged_discreet": "Mise à jour d’alerte",
+    "@notifications_sos_acknowledged_discreet": {
+        "description": "notifications.sos_acknowledged.discreet"
+    },
+    "notifications_sos_acknowledged_title": "Ton alerte a été reçue",
+    "@notifications_sos_acknowledged_title": {
+        "description": "notifications.sos_acknowledged.title"
+    },
     "notifications_sos_burst_body": "{count} SOS en une minute depuis une même adresse (empreinte {fingerprint}). Aucun envoi n’a été bloqué : vérifiez les alertes récentes.",
     "@notifications_sos_burst_body": {
         "description": "notifications.sos_burst.body",
@@ -12745,6 +12920,15 @@
     "@notifications_sos_cancelled_discreet": {
         "description": "notifications.sos_cancelled.discreet"
     },
+    "notifications_sos_cancelled_sms": "Xomiton – Fausse alerte : l’alerte {code} a été annulée par la personne. Aucune action attendue.",
+    "@notifications_sos_cancelled_sms": {
+        "description": "notifications.sos_cancelled.sms",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
     "notifications_sos_cancelled_title": "Fausse alerte",
     "@notifications_sos_cancelled_title": {
         "description": "notifications.sos_cancelled.title"
@@ -12761,6 +12945,15 @@
     "notifications_sos_safe_discreet": "Mise à jour d’alerte",
     "@notifications_sos_safe_discreet": {
         "description": "notifications.sos_safe.discreet"
+    },
+    "notifications_sos_safe_sms": "Xomiton – La personne à l’origine de l’alerte {code} indique être en sécurité.",
+    "@notifications_sos_safe_sms": {
+        "description": "notifications.sos_safe.sms",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
     },
     "notifications_sos_safe_title": "Personne en sécurité",
     "@notifications_sos_safe_title": {
@@ -13398,6 +13591,180 @@
     "pages_accueil_valeurs_title": "Un soutien à portée de main",
     "@pages_accueil_valeurs_title": {
         "description": "pages/accueil.valeurs.title"
+    },
+    "pages_thematiques_aside_label": "Aide et fiches liées",
+    "@pages_thematiques_aside_label": {
+        "description": "pages/thematiques.aside_label"
+    },
+    "pages_thematiques_call": "Appeler",
+    "@pages_thematiques_call": {
+        "description": "pages/thematiques.call"
+    },
+    "pages_thematiques_contacts_label": "Contacts de l’annuaire",
+    "@pages_thematiques_contacts_label": {
+        "description": "pages/thematiques.contacts_label"
+    },
+    "pages_thematiques_count": "{count, plural, =0{Aucune fiche pour l’instant.} =1{{count} fiche pédagogique pour comprendre, se protéger et agir.} other{{count} fiches pédagogiques pour comprendre, se protéger et agir.}}",
+    "@pages_thematiques_count": {
+        "description": "pages/thematiques.count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_thematiques_cover_alt": "Couverture de la fiche : {title}",
+    "@pages_thematiques_cover_alt": {
+        "description": "pages/thematiques.cover_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_thematiques_empty_none": "Les fiches arrivent bientôt.",
+    "@pages_thematiques_empty_none": {
+        "description": "pages/thematiques.empty_none"
+    },
+    "pages_thematiques_empty_text": "Essayez un autre mot ou retirez le filtre de catégorie.",
+    "@pages_thematiques_empty_text": {
+        "description": "pages/thematiques.empty_text"
+    },
+    "pages_thematiques_empty_title": "Aucune thématique ne correspond à votre recherche.",
+    "@pages_thematiques_empty_title": {
+        "description": "pages/thematiques.empty_title"
+    },
+    "pages_thematiques_end_of_list": "{count, plural, =1{Vous avez tout vu : {count} élément affiché.} other{Vous avez tout vu : {count} éléments affichés.}}",
+    "@pages_thematiques_end_of_list": {
+        "description": "pages/thematiques.end_of_list",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_thematiques_faq_title": "Questions fréquentes",
+    "@pages_thematiques_faq_title": {
+        "description": "pages/thematiques.faq_title"
+    },
+    "pages_thematiques_filter_all": "Toutes ({count})",
+    "@pages_thematiques_filter_all": {
+        "description": "pages/thematiques.filter_all",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_thematiques_filters_label": "Filtrer par catégorie",
+    "@pages_thematiques_filters_label": {
+        "description": "pages/thematiques.filters_label"
+    },
+    "pages_thematiques_help_title": "Besoin d’aide ?",
+    "@pages_thematiques_help_title": {
+        "description": "pages/thematiques.help_title"
+    },
+    "pages_thematiques_kicker": "Fiche pédagogique Xomiton",
+    "@pages_thematiques_kicker": {
+        "description": "pages/thematiques.kicker"
+    },
+    "pages_thematiques_legal_notice": "Ces informations sont éducatives et ne remplacent pas un conseil juridique personnalisé. Consultez un·e juriste de l’annuaire pour votre situation.",
+    "@pages_thematiques_legal_notice": {
+        "description": "pages/thematiques.legal_notice"
+    },
+    "pages_thematiques_link_assistant": "Assistant Xomiton",
+    "@pages_thematiques_link_assistant": {
+        "description": "pages/thematiques.link_assistant"
+    },
+    "pages_thematiques_link_directory": "Annuaire : points focaux, juristes, psychologues",
+    "@pages_thematiques_link_directory": {
+        "description": "pages/thematiques.link_directory"
+    },
+    "pages_thematiques_link_emergency": "Contacts d’urgence",
+    "@pages_thematiques_link_emergency": {
+        "description": "pages/thematiques.link_emergency"
+    },
+    "pages_thematiques_link_sos": "Alerte SOS avec localisation",
+    "@pages_thematiques_link_sos": {
+        "description": "pages/thematiques.link_sos"
+    },
+    "pages_thematiques_list_title": "Liste des fiches",
+    "@pages_thematiques_list_title": {
+        "description": "pages/thematiques.list_title"
+    },
+    "pages_thematiques_meta_description_filler": "Fiche Xomiton pour les filles et femmes LBTQ+ au Bénin.",
+    "@pages_thematiques_meta_description_filler": {
+        "description": "pages/thematiques.meta_description_filler"
+    },
+    "pages_thematiques_minutes": "{count, plural, =1{{count} min} other{{count} min}}",
+    "@pages_thematiques_minutes": {
+        "description": "pages/thematiques.minutes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_thematiques_og_alt_index": "Fiches thématiques Xomiton",
+    "@pages_thematiques_og_alt_index": {
+        "description": "pages/thematiques.og_alt_index"
+    },
+    "pages_thematiques_reading_minutes": "{count, plural, =1{{count} min de lecture} other{{count} min de lecture}}",
+    "@pages_thematiques_reading_minutes": {
+        "description": "pages/thematiques.reading_minutes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_thematiques_related_title": "Thématiques liées",
+    "@pages_thematiques_related_title": {
+        "description": "pages/thematiques.related_title"
+    },
+    "pages_thematiques_resource_title": "Ressource principale",
+    "@pages_thematiques_resource_title": {
+        "description": "pages/thematiques.resource_title"
+    },
+    "pages_thematiques_search_label": "Rechercher une thématique",
+    "@pages_thematiques_search_label": {
+        "description": "pages/thematiques.search_label"
+    },
+    "pages_thematiques_search_placeholder": "Rechercher une thématique…",
+    "@pages_thematiques_search_placeholder": {
+        "description": "pages/thematiques.search_placeholder"
+    },
+    "pages_thematiques_shown_capped": "Affichage limité à {shown} fiches sur {total}. Affinez la recherche ou choisissez une catégorie pour voir les autres.",
+    "@pages_thematiques_shown_capped": {
+        "description": "pages/thematiques.shown_capped",
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_thematiques_shown_of": "{shown} sur {total}",
+    "@pages_thematiques_shown_of": {
+        "description": "pages/thematiques.shown_of",
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_thematiques_title": "Thématiques",
+    "@pages_thematiques_title": {
+        "description": "pages/thematiques.title"
+    },
+    "pages_thematiques_warning_sos_link": "Alerte SOS",
+    "@pages_thematiques_warning_sos_link": {
+        "description": "pages/thematiques.warning_sos_link"
     },
     "profile_about_bio": "Présentation",
     "@profile_about_bio": {

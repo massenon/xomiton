@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\PurifiedHtml;
+use App\Casts\PurifiedSections;
 use App\Enums\ContentStatus;
 use App\Support\MediaUrl;
 use Database\Factories\ThematiqueFactory;
@@ -16,7 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Fiche thématique publique identifiée par son slug (DATABASE_DICTIONARY.md §3 `thematiques`).
+ * Fiche thématique publique identifiée par son slug (DATABASE_DICTIONARY.md §3 `thematiques`). `body` et `sections[].body`
+ * sont du HTML nettoyé à l'écriture (profil purifier `content`, DEVELOPMENT_STANDARDS §7) : les vues l'affichent tel quel.
  */
 class Thematique extends Model
 {
@@ -52,7 +55,8 @@ class Thematique extends Model
     protected function casts(): array
     {
         return [
-            'sections' => 'array',
+            'body' => PurifiedHtml::class,
+            'sections' => PurifiedSections::class,
             'related_contact_roles' => 'array',
             'related_ids' => 'array',
             'reading_minutes' => 'integer',
@@ -119,6 +123,12 @@ class Thematique extends Model
         $ids = array_values(array_filter(array_map('intval', $this->related_ids ?? [])));
 
         return static::query()->whereIn('id', $ids);
+    }
+
+    /** Le corps s'ouvre sur son propre chapeau (`<p class="lead">`) : la fiche n'affiche alors pas le résumé en chapeau. */
+    public function bodyOpensWithLead(): bool
+    {
+        return preg_match('/^\s*<p\s+class="(?:[^"]*\s)?lead(?:\s[^"]*)?"/i', (string) $this->body) === 1;
     }
 
     public function isPublished(): bool

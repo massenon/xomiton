@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\V1\Alerts\EmergencyContactController;
+use App\Http\Controllers\Api\V1\Alerts\ReportController;
+use App\Http\Controllers\Api\V1\Alerts\SosController;
 use App\Http\Controllers\Api\V1\AssistantQuestionController;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
@@ -22,7 +25,7 @@ use Illuminate\Support\Facades\Route;
  *   2. authentifié : auth:sanctum (jeton Bearer de Flutter ou cookie de session de Vue en mode SPA).
  * Les POST rejouables par la boîte d'envoi portent `idempotent:required` (ADR-32 : même clé → même réponse), leur limiteur
  * nommé passant par `limit=<nom>` (jamais `throttle:<nom>` à côté : Laravel le trierait avant et un rejeu consommerait le quota).
- * Familles à venir : P5-06 signalements / sos / urgences (groupe 1), P6 me/*, P7 feed, P8 communauté, P9 pair et sync (groupe 2).
+ * Familles à venir : P6 me/*, P7 feed, P8 communauté, P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06).
  */
 
 // === 1. Groupe public, anonyme ===================================================================================
@@ -54,13 +57,33 @@ Route::group([], function (): void {
     // --- Assistant public de l'accueil (P4-01, Q41 a) : KnowledgeBaseAnswerer, sans stockage ; 20/min par IP ---------------
     Route::post('assistant/question', AssistantQuestionController::class)->middleware('throttle:assistant')->name('api.assistant.question');
 
-    // --- Parcours de crise (P5-06, à venir) : limiteurs prêts dans AppServiceProvider -----------------------------------
-    //   POST signalements           ->middleware('idempotent:required,limit=report')            10/h par IP, rejeux non comptés
-    //   GET  signalements/{code}    ->middleware('throttle:tracking')                          20/h par IP, réponse neutre
-    //   POST sos                    ->withoutMiddleware('throttle:api')->middleware('idempotent:required,nonblocking,limit=sos')
-    //                               (jamais de 429 : 202 processing si l'envoi d'origine est en cours ; au-delà de 5/min
-    //                               par IP, journal + cloche admin, rejeux non comptés)
-    //   GET  urgences, zones…       lecture publique (cache.headers comme les référentiels)
+    // --- Parcours de crise (P5-06, docs/API.md §6) : anonymes, liste blanche de maintenance (RG-01) ----------------------
+    // signalements : 10/h par IP, rejeux non comptés ; suivi par code 20/h par IP, réponse neutre (`mine` est dans le
+    // groupe 2, d'où l'exclusion ci-dessous). sos : jamais de 429 (202 processing si l'envoi d'origine est en cours ; au-delà
+    // de 5/min par IP, journal + cloche admin), lecture et actions au compte propriétaire ou au jeton X-Sos-Token (Q52 b).
+    Route::prefix('signalements')->as('api.signalements.')->group(function (): void {
+        Route::post('/', [ReportController::class, 'store'])->middleware('idempotent:required,limit=report')->name('store');
+        Route::get('{code}', [ReportController::class, 'show'])->where('code', '(?!mine$)[^/]{1,40}')
+            ->middleware('throttle:tracking')->name('show');
+    });
+
+    Route::prefix('sos')->as('api.sos.')->group(function (): void {
+        Route::post('/', [SosController::class, 'store'])
+            ->withoutMiddleware('throttle:api')->middleware('idempotent:required,nonblocking,limit=sos')->name('store');
+        // Suivi, repentir et « Je suis en sécurité » hors limiteur global `api` (quota par IP partagé derrière un CGNAT) :
+        // limiteurs propres par IP + alerte seulement.
+        Route::get('{alert:ulid}', [SosController::class, 'show'])
+            ->withoutMiddleware('throttle:api')->middleware('throttle:sos_status')->name('show');
+        Route::post('{alert:ulid}/cancel', [SosController::class, 'cancel'])
+            ->withoutMiddleware('throttle:api')->middleware('throttle:sos_owner')->name('cancel');
+        Route::post('{alert:ulid}/safe', [SosController::class, 'safe'])
+            ->withoutMiddleware('throttle:api')->middleware('throttle:sos_owner')->name('safe');
+    });
+
+    // urgences : même source que /urgences (ListEmergencyContacts), cache HTTP comme les référentiels.
+    Route::get('urgences', EmergencyContactController::class)
+        ->middleware('cache.headers:public;max_age='.(int) config('xomiton.referentials.http_max_age', 3600).';etag')
+        ->name('api.urgences.index');
 });
 
 // === 2. Groupe authentifié (auth:sanctum) =========================================================================
@@ -68,6 +91,9 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::prefix('auth')->as('api.auth.')->group(function (): void {
         Route::post('logout', LogoutController::class)->name('logout');
     });
+
+    // --- Mes signalements (P5-06) : alertes non anonymes du compte, pagination par page --------------------------------
+    Route::get('signalements/mine', [ReportController::class, 'mine'])->name('api.signalements.mine');
 
     // --- Mon compte --------------------------------------------------------------------------------------------------
     Route::prefix('me')->as('api.me.')->group(function (): void {

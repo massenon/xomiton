@@ -509,6 +509,17 @@ class Alert extends Model
         return TrackingCode::display((string) $this->tracking_code);
     }
 
+    /** Libellé du lieu transmis aux personnes prévenues (commune, sinon département) ; jamais la position (P5-03). */
+    public function placeLabel(): ?string
+    {
+        return $this->commune?->name ?? $this->zone?->name;
+    }
+
+    public function zoneLabel(): ?string
+    {
+        return $this->zone?->name;
+    }
+
     /** Fin du repli « fausse alerte » d'un SOS (création + `xomiton.alerts.cancel_window_seconds`, Q39). */
     public function cancelWindowEndsAt(): CarbonImmutable
     {

@@ -37,4 +37,8 @@ export default defineConfig({
             ignored: ['**/storage/framework/views/**'],
         },
     },
+    // Vitest : seulement nos tests (les specs embarquées dans vendor/ et node_modules/ ne sont pas les nôtres).
+    test: {
+        include: ['resources/js/**/*.{test,spec}.{js,ts}'],
+    },
 });

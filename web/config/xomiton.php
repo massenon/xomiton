@@ -45,8 +45,24 @@ return [
         'escalation_grace_minutes' => (int) env('XOMITON_ESCALATION_GRACE_MINUTES', 1440),
         // Repentir après l'envoi d'un SOS (P5-02, Q39), en secondes.
         'cancel_window_seconds' => 60,
+        // Rythme de sondage de GET sos/{id} conseillé aux clients tant que le SOS est ouvert (P5-06, secondes).
+        'sos_poll_seconds' => 10,
         // Validité du lien signé d'accusé de réception envoyé à un contact d'annuaire sans compte (heures).
         'acknowledge_link_hours' => 48,
+        // P5-03 (D7) : budget mural global des remises externes (push, SMS) d'une requête, en secondes ; le délai par
+        // fournisseur reste provider_timeout_seconds. Le cron notifications:retry dispose de retry_budget_seconds.
+        'dispatch_budget_seconds' => (float) env('XOMITON_DISPATCH_BUDGET', 8),
+        'retry_budget_seconds' => 50,
+        // Délai avant la n-ième reprise d'une notification échouée (minutes) ; le dernier se répète jusqu'au plafond.
+        'retry_backoff_minutes' => [1, 1, 2, 5, 10],
+        // Lignes examinées au plus par exécution de notifications:retry.
+        'retry_batch_size' => 100,
+        // Au rejeu : SMS de repli au compte dont tous les push d'un SOS ont échoué au moins autant de fois.
+        'sms_fallback_after_push_failures' => 2,
+        // Au plus N admins de garde reçoivent un SMS de repli par SOS (coût) ; les autres gardent cloche et push.
+        'sos_admin_sms_max' => 2,
+        // Durée du sondage de GET sos/{id} (sos_poll_seconds ci-dessus) après la création, en minutes (P5-03).
+        'sos_poll_minutes' => 30,
         // Suivi par code : une alerte close depuis plus de N jours répond « code inconnu ».
         'tracking_visible_days' => 90,
         'description_min' => 20,
@@ -80,6 +96,10 @@ return [
         'tracking_per_hour_per_ip' => 20,
         // Page d'accusé de réception par lien signé (P5-02) : par IP + alerte + fiche, limiteur distinct de `tracking`.
         'acknowledge_per_hour_per_link' => 60,
+        // Annulation et « Je suis en sécurité » d'un SOS (POST sos/{id}/cancel|safe, P5-06) : par IP + alerte.
+        'sos_owner_per_minute' => 10,
+        // Sondage de l'état d'un SOS (GET sos/{id}, toutes les 10 s, P5-06) : par IP + alerte, hors limiteur `api`.
+        'sos_status_per_minute' => 30,
         // API /api/v1 : par utilisateur·rice authentifié·e, sinon par IP.
         'api_per_minute' => 60,
         // Assistant public de l'accueil (POST assistant/question, P4-01) : par IP, en plus de api_per_minute.
@@ -227,7 +247,12 @@ return [
         'provider' => env('SMS_PROVIDER', 'log'),
         'api_key' => env('SMS_API_KEY'),
         'sender' => env('SMS_SENDER', 'Xomiton'),
-        'max_length' => 160,
+        // P5-03 (D6, Q50) : bornes en segments, pas en caractères (App\Domain\Notifications\SmsText : texte ramené à
+        // GSM-7, 160 caractères pour un segment, 153 par segment au-delà ; 70 / 67 si un caractère reste en UCS-2).
+        'max_segments' => 1,
+        // Un SMS qui se termine par un lien (lien signé d'accusé d'un contact sans compte) n'est jamais tronqué dans le
+        // lien ; il peut alors compter jusqu'à ce nombre de segments (306 caractères GSM-7).
+        'max_segments_with_link' => 2,
     ],
 
     /*
@@ -306,6 +331,20 @@ return [
         'allow_indexing' => (bool) env('SEO_ALLOW_INDEXING', true),
         // Durée de vie du cache du sitemap (secondes).
         'sitemap_cache_seconds' => 3600,
+    ],
+
+    /*
+     * Pages publiques de contenu (P4-02 thématiques ; repris par P4-03 ressources) : pas du « Charger plus »
+     * (prototype x_paginate($list, 6)), fiches liées, contacts d'annuaire publics par fiche (Q19), bornes de la FAQ
+     * d'une fiche (FRONT_END_SEO_PERFECT_AUDIT.md : 3 à 5 questions, sinon ni section ni FAQPage).
+     */
+    'content' => [
+        'thematiques_per_load' => 6,
+        'max_per_load' => 300,
+        'related_count' => 3,
+        'contacts_max' => 4,
+        'faq_min' => 3,
+        'faq_max' => 5,
     ],
 
     /*

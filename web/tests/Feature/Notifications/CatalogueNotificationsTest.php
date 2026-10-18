@@ -100,7 +100,7 @@ it('formule le SOS selon la position, le pseudo et le SMS de secours', function 
         ->and((new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral', 'Awa_S'))->toArray($user)['body'])->toStartWith('Awa_S a besoin d’aide')
         ->and((new SosTriggered(1, 'CODE', null, 'Littoral'))->toArray($user)['body'])->toContain('position indisponible, zone : Littoral')
         ->and((new SosTriggered(1, 'CODE', null, 'Littoral'))->toSms($user))->toContain('zone Littoral')
-        ->and((new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral'))->toSms($user))->toStartWith('Xomiton – Alerte SOS CODE près de Cotonou')
+        ->and((new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral'))->toSms($user))->toStartWith('Xomiton - Alerte SOS CODE près de Cotonou')
         ->and(mb_strlen((string) (new SosUnacknowledged(1, 'CODE', 5))->toSms($user)))->toBeLessThanOrEqual(160)
         ->and((new SosUnacknowledged(1, 'CODE', 5, 'Zou'))->toMail($user)->variables)->toMatchArray(['alert_reference' => 'CODE', 'alert_zone' => 'Zou']);
 });

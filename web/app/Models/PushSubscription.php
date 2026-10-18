@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domain\Notifications\DeliveryResult;
 use Database\Factories\PushSubscriptionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -120,6 +121,23 @@ class PushSubscription extends Model
     public function touchLastUsed(): void
     {
         $this->forceFill(['last_used_at' => now()])->save();
+    }
+
+    /**
+     * Applique le résultat d'une remise (P5-03) : abonnement disparu (404 / 410, jeton FCM désinscrit) → supprimé ;
+     * succès → `last_used_at`. Une seule règle pour les canaux push de la Phase 3 et le DeliveryRunner des alertes.
+     */
+    public function recordDelivery(DeliveryResult $result): void
+    {
+        if ($result->gone) {
+            $this->delete();
+
+            return;
+        }
+
+        if ($result->ok) {
+            $this->touchLastUsed();
+        }
     }
 
     public static function hashEndpoint(string $endpoint): string

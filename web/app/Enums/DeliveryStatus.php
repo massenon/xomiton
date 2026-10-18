@@ -6,13 +6,15 @@ namespace App\Enums;
 
 /**
  * État d'envoi d'une notification d'alerte (DATABASE_DICTIONARY.md §5 `alert_notifications.status`).
- * Distinct de `GatewayDeliveryStatus` (passerelles réseaux sociaux, lot 8).
+ * `skipped` (P5-03) : abandonnée sans envoi (abonnement disparu, numéro absent, alerte prise en charge ou annulée,
+ * plafond de rejeux atteint) ; jamais rejouée. Distinct de `GatewayDeliveryStatus` (passerelles réseaux sociaux, lot 8).
  */
 enum DeliveryStatus: string
 {
     case Pending = 'pending';
     case Sent = 'sent';
     case Failed = 'failed';
+    case Skipped = 'skipped';
 
     public function label(): string
     {
@@ -25,11 +27,12 @@ enum DeliveryStatus: string
             self::Pending => 'warning',
             self::Sent => 'success',
             self::Failed => 'danger',
+            self::Skipped => 'neutral',
         };
     }
 
     public function isFinal(): bool
     {
-        return $this === self::Sent;
+        return $this === self::Sent || $this === self::Skipped;
     }
 }

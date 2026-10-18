@@ -5,8 +5,10 @@ import './shared/bootstrap.js';
 import Alpine from 'alpinejs';
 import focus from '@alpinejs/focus';
 import './public/xomiton-ui.js';
+import './public/load-more.js';
 import './public/auth.js';
 import './public/assistant.js';
+import './public/alertes-dispatch.js';
 import './shared/theme.js';
 
 Alpine.plugin(focus);

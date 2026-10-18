@@ -1,6 +1,6 @@
 ---
 name: xomiton-api
-description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lots « api-auth » (P2-06, P2-12 : authentification, mon compte, mes appareils) et « api-fondation » (P5-09 : enveloppe, format d'erreur, idempotence, groupes de routes). À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
+description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lots « api-auth » (P2-06, P2-12 : authentification, mon compte, mes appareils) et « api-fondation » (P5-09 : enveloppe, format d'erreur, idempotence, groupes de routes), « api-alertes » (P5-06 : signalements, SOS, urgences). À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
 ---
 
 # API `/api/v1`
@@ -18,7 +18,7 @@ Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_I
 | Erreur | `{ "message": "…", "code": "…", "errors"?: { champ: [messages] }, "retry_after"?: secondes }` pour **tous** les statuts (§1.2) ; le 422 de validation garde `{ message, errors }` de Laravel et y ajoute `code: validation_failed` |
 | Textes | français ; tutoiement sur le tunnel d'authentification (Q36) ; dans `lang/fr/auth.php` (`auth.api.*`), `lang/fr/errors.php` (`errors.api.*`, sans registre ; `errors.419.public` au vous, `errors.419.member` au tu), `lang/fr/validation.php` et `lang/fr.json` (résumé « (et :count autres erreurs) » du 422) ; export client `resources/js/lang/fr.json` par `php artisan lang:export` |
 | Codes HTTP | 200, 201 (`Location` si connue), 202 (traitement accepté : code envoyé), 204, 400, 401, 403, 404, 405, 409, 410, 413, 415, 419, 422, 429, 500, 503 |
-| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` ; `throttle:report` 10/h par IP (signalement) ; `throttle:tracking` 20/h par IP (suivi par code) ; `throttle:assistant` 20/min par IP (`assistant/question`, §5 ; un compte connecté reste compté par IP) ; `throttle:sos` **jamais bloquant** : au-delà de 5 SOS par minute et par IP, journal + cloche admin `SosBurstDetected` (comptes `alerts.manage`, une par adresse et par quart d'heure), IP en empreinte HMAC seulement (`config/xomiton.php` → `rate_limits`, `sos_log_per_minute_per_ip`). Sur une route `idempotent`, le limiteur nommé passe par l'option `limit=<nom>` : un rejeu ne consomme pas le quota (§1.3). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
+| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` ; `throttle:report` 10/h par IP (signalement) ; `throttle:tracking` 20/h par IP (suivi par code) ; `throttle:sos_owner` 10/min par IP et par alerte (`sos/{id}/cancel` · `safe`, §6.6) ; `throttle:assistant` 20/min par IP (`assistant/question`, §5 ; un compte connecté reste compté par IP) ; `throttle:sos` **jamais bloquant** : au-delà de 5 SOS par minute et par IP, journal + cloche admin `SosBurstDetected` (comptes `alerts.manage`, une par adresse et par quart d'heure), IP en empreinte HMAC seulement (`config/xomiton.php` → `rate_limits`, `sos_log_per_minute_per_ip`). Sur une route `idempotent`, le limiteur nommé passe par l'option `limit=<nom>` : un rejeu ne consomme pas le quota (§1.3). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
 | Groupes | `routes/api.php` en deux groupes (ADR-31, §1.4) : public anonyme (limiteurs nommés) et `auth:sanctum` |
 | Idempotence | en-tête `Idempotency-Key` (UUID) sur `POST signalements`, `POST sos`, `POST sync/push` (§1.3, ADR-32) |
 
@@ -83,8 +83,8 @@ Empreinte du corps : HMAC-SHA256 (clé d'application) des champs triés par cl�
 
 | Groupe | Middleware | Familles |
 |---|---|---|
-| 1. public, anonyme | `throttle:api` + un limiteur nommé sur chaque écriture | `health`, `zones`, `violence-types`, `needs`, `auth/*` (sauf `logout`), `assistant/question` (`throttle:assistant`, P4-01) ; à venir : `thematiques`, `ressources`, `urgences`, `signalements` (`idempotent:required,limit=report`), `signalements/{code}` (`throttle:tracking`), `sos` (`idempotent:required,nonblocking,limit=sos` sans `throttle:api`) |
-| 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) | `auth/logout`, `me/*` ; à venir : `feed/`, `conversations/`, `pair/`, `sync/`, `notifications/` |
+| 1. public, anonyme | `throttle:api` + un limiteur nommé sur chaque écriture | `health`, `zones`, `violence-types`, `needs`, `auth/*` (sauf `logout`), `assistant/question` (`throttle:assistant`, P4-01), `urgences`, `signalements` (`idempotent:required,limit=report`), `signalements/{code}` (`throttle:tracking`), `sos` (`idempotent:required,nonblocking,limit=sos` sans `throttle:api`), `sos/{id}`, `sos/{id}/cancel` · `safe` (`throttle:sos_owner`) — P5-06, §6 ; à venir : `thematiques`, `ressources` |
+| 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) | `auth/logout`, `me/*`, `signalements/mine` (P5-06) ; à venir : `feed/`, `conversations/`, `pair/`, `sync/`, `notifications/` |
 
 Un test (`tests/Feature/Api/ApiFoundationTest.php`) refuse toute route publique hors des familles d'ADR-31 et toute écriture publique sans limiteur nommé (`throttle:<nom>` ou `idempotent:…,limit=<nom>`).
 
@@ -304,7 +304,64 @@ Réponse de crise publique : numéros en clair, SOS et signalement **sans URL da
 
 Erreurs : **422** `validation_failed` (`errors.question`) ; **429** `too_many_requests` (`Retry-After`, `retry_after`, message `auth.throttle`) ; **419** `session_expired` sur le chemin stateful seulement (Referer ou Origin d'un domaine `SANCTUM_STATEFUL_DOMAINS`, cookie de session) sans `X-XSRF-TOKEN` valide → `GET /sanctum/csrf-cookie` puis un seul rejeu ; un client Bearer ou sans cookie n'est pas concerné. Hors réseau, l'offcanvas n'appelle pas l'API : texte `components.assistant.offline` (premier numéro d'urgence) avec un lien `tel:` et `/urgences`. Tests : `tests/Feature/Api/AssistantQuestionTest.php`.
 
-## 6. Parcours Flutter de référence
+## 6. Alertes : signalements, SOS, urgences (P5-06)
+
+Groupe public (ADR-31), liste blanche de maintenance (RG-01, P2-11). Contrôleurs `App\Http\Controllers\Api\V1\Alerts\*`, cas d'usage `App\Application\Alerts\*` (P5-02), Form Requests `App\Http\Requests\Alerts\*` **partagées avec les pages `/signaler` et `/sos`** (P5-04, P5-05 ; Q11 a : même charge utile web et mobile). Réponses propres à la personne en `Cache-Control: no-store, private`. `source` de l'alerte : `web` si `Referer` / `Origin` est un domaine `SANCTUM_STATEFUL_DOMAINS` (boîte d'envoi `outbox.js` des pages Blade : chemin stateful, donc `X-XSRF-TOKEN` exigé, 419 → `GET /sanctum/csrf-cookie` puis un rejeu avec la même clé), `app` sinon (Flutter) ; `sync-offline` reste réservé à `sync/push` (P9-06).
+
+### 6.1 `POST signalements` — signalement ou besoin, anonyme par défaut
+
+`idempotent:required,limit=report` : en-tête `Idempotency-Key` (UUID) obligatoire, 10 envois **neufs** par heure et par IP (`rate_limits.report_per_hour_per_ip`), un rejeu n'est jamais compté (§1.3). JSON, ou `multipart/form-data` avec des preuves. Connecté·e (Bearer ou cookie), `anonymous: false` rattache l'alerte au compte (« Mes signalements ») ; sinon `user_id` reste vide (RG-01 / RG-02).
+
+| Champ | Règle (`StoreReportRequest`) |
+|---|---|
+| `type` | `report` (signalement) · `need` (besoin) — Q29 ; le SOS a sa route |
+| `category` | slug de `GET violence-types` actif, **obligatoire** pour `report` |
+| `description` | 20 à 4000 caractères (`xomiton.alerts.description_min` / `_max`) |
+| `occurred_on` | date facultative, jamais future |
+| `needs[]` | slugs de `GET needs` actifs, distincts, 10 au plus ; **obligatoires** pour `need` (FR-ALT-02) |
+| `zone_id` · `commune_id` | département actif obligatoire ; commune facultative, du même département |
+| `lat` · `lng` · `accuracy` | position facultative (les deux ou aucune), précision en mètres |
+| `anonymous` · `contactable` | booléens, `true` / `false` par défaut |
+| `contact` · `preferred_channel` | exigés seulement si `contactable` : téléphone béninois ou e-mail ; `sms` · `whatsapp` · `call` · `email` |
+| `attachments[]` | 5 fichiers au plus (image, PDF, audio ; `MediaUploader`, disque privé, métadonnées retirées) ; supprimés si l'envoi échoue ou s'il s'agit d'un rejeu (`SubmitReport`) |
+
+**201** `{ "data": { "id", "tracking_code", "tracking_code_display", "type", "status", "status_label", "status_text", "priority", "created_at", "acknowledged", "acknowledged_at", "cancelled", "safe", "can_cancel_until", "routed", "history" } }` (`AlertResource`) + `Location: /api/v1/signalements/{tracking_code}`. `routed` : `{ role }`, plus `name`, `phone`, `whatsapp` si la fiche est publique ; jamais le récit, le contact, la position ni la clé. Rejeu de la même clé avec le même corps : **même 201**, même `tracking_code`, `Idempotent-Replayed: true`.
+
+Erreurs : **422** `validation_failed`, `idempotency_key_required`, `idempotency_key_invalid`, `idempotency_key_reused` (même clé, corps différent) ; **409** `idempotency_key_reused` (clé déjà prise par une alerte d'un autre type, P5-02) ; **429** `too_many_requests` (`Retry-After`).
+
+### 6.2 `GET signalements/mine` — `auth:sanctum`
+
+Alertes **non anonymes** du compte (signalements, besoins et SOS), la plus récente d'abord (`ListAlertsOfUser`) ; un signalement anonyme ne se retrouve que par son code. Filtres : `type` (`report` · `need` · `sos`), `per_page` (1 à 50, 20 par défaut), `page`. **200** pagination par page (§1.1) : `data[]` (`AlertResource`, `history[]` = changements de statut `{ status, at }` du plus ancien au plus récent), `meta { current_page, last_page, per_page, total }`, `links { first, last, prev, next }` (filtres conservés). **401** `unauthenticated`.
+
+### 6.3 `GET signalements/{code}` — suivi sans compte
+
+`throttle:tracking` (20/h par IP). Saisie tolérante (`SIG-` facultatif, minuscules, espaces et tirets ignorés). **200** `{ "data": { "tracking_code_display", "type", "status", "status_label", "status_text", "received_at", "updated_at", "acknowledged", "routed_role", "history": [{ "status", "status_label", "at" }] } }` (`AlertTrackingResource` : rôle du contact seulement, jamais son nom). **404** `not_found` **neutre**, même message pour un code mal formé, inconnu, annulé ou clos depuis plus de 90 jours (`alerts.report.tracking.not_found`). **429** `too_many_requests`.
+
+### 6.4 `POST sos` — jamais de 429
+
+`withoutMiddleware('throttle:api')` + `idempotent:required,nonblocking,limit=sos` : aucun refus de débit (au-delà de 5/min par IP, journal + cloche admin) ; même clé pendant que l'envoi d'origine est en cours → **202** `{ "data": { "status": "processing", "retry_after": 1 } }`, la boîte d'envoi rejoue (§1.3). Corps facultatif (`StoreSosRequest`) : `message` (≤ 1000), `phone` (béninois), `share_location`, `lat` · `lng` · `accuracy` (ignorés si `share_location = false`), `zone_id` · `commune_id` (repli manuel), `needs[]`. Créé par `TriggerSos` : critique, besoin `securite`, routage RG-04, notifications dans la requête (P5-03).
+
+**201** état du SOS (`SosStatusResource`) : champs d'`AlertResource` (§6.1) + `sos_token` (SOS **anonyme** seulement, rendu aussi aux rejeux : à garder sur l'appareil, en-tête `X-Sos-Token` des appels suivants, Q52 b) + `notified[]` + `primary_contact` + `meta.poll_interval_seconds` ; `Location: /api/v1/sos/{id}`. Erreurs : **422** `validation_failed`, `idempotency_key_*`.
+
+### 6.5 `GET sos/{id}` — statut et personnes prévenues
+
+Hors limiteur global `api` (un CGNAT ne bloque jamais le sondage) : `throttle:sos_status` (30/min par IP et par alerte, `rate_limits.sos_status_per_minute`). Réservé au compte propriétaire (Bearer ou cookie) ou au porteur de `X-Sos-Token` (`ShowSosRequest`, `ActsAsSosOwner`) : **403** `forbidden` sinon (l'ULID seul ne suffit pas ; un SOS identifié n'accepte pas le jeton seul, le jeton d'un SOS ne vaut pas pour un autre) ; **404** `not_found` pour un identifiant inconnu ou une alerte qui n'est pas un SOS. **200** même charge que la création, sans `sos_token`. Sonder toutes les `meta.poll_interval_seconds` (10 s, `xomiton.alerts.sos_poll_seconds`) tant que la valeur n'est pas `null` (SOS annulé, en sécurité, traité, clos, ou envoyé depuis plus de `sos_poll_minutes`, 30 min).
+
+`notified[]` (`App\Application\Alerts\Dispatch\NotifiedPeople`, lot P5-03, lignes `alert_notifications` du déclenchement et de l'escalade) : `{ key, kind, label, role, state, state_label, phone, seen_at, updated_at }` — `key` : empreinte opaque et stable d'un sondage à l'autre (jamais `user:<id>` ni `contact:<id>`) ; `kind` `focal` · `contact` · `team` · `trusted` ; `state` `seen` (a vu l'alerte) · `sms_sent` · `sent` · `pending` ; `phone` seulement pour une fiche publique ou le contact de confiance de la personne ; contact routé en tête. `primary_contact` : première personne dont le numéro peut être montré (bouton d'appel), `null` → appeler le 117.
+
+### 6.6 `POST sos/{id}/cancel` · `POST sos/{id}/safe`
+
+Même règle d'accès que §6.5 ; hors limiteur global `api`, `throttle:sos_owner` seulement (10/min par IP et par alerte, `rate_limits.sos_owner_per_minute`). Réponse **200** = état du SOS (§6.5). `cancel` : repentir pendant 60 s après l'envoi (`CancelSos`, Q39) → `cancelled: true`, `status: clos`, prévient les personnes alertées ; au-delà **422** `cancel_window_expired` ; déjà annulé : idempotent. `safe` : « Je suis en sécurité » (`MarkSafe`) → `safe: true`, `status: traite` (jamais `clos`) ; SOS annulé **422** `alert_closed` ; idempotent. Autre alerte qu'un SOS : **422** `not_sos`.
+
+### 6.7 `GET urgences?zone=` — contacts d'urgence
+
+Lecture publique en cache HTTP comme les référentiels (`Cache-Control: public, max-age=3600`, `ETag`, `If-None-Match` → **304**). **Même source que la page `/urgences`** (`App\Application\Alerts\Queries\ListEmergencyContacts`, P4-06 doit la réutiliser). **200** `{ "data": { "services": [{ "label", "number", "tel" }], "contacts": [{ "id", "name", "role", "role_label", "org", "phone", "whatsapp", "availability", "zone", "commune", "national" }] }, "meta": { "zone": { id, name } | null, "count", "truncated" } }`. `zone` facultatif (identifiant d'un département actif ; **422** sinon) : fiches du département puis fiches nationales (sans département ou point focal national) ; sans zone, toutes les fiches d'urgence (100 au plus, `meta.truncated: true` au-delà). **Fiches d'urgence** (Q19 : l'annuaire complet reste membre) : actives, `is_public` **et** rôle `point_focal` · `juriste` · `psychologue` ou point focal national ; jamais pair·e animateur·rice, responsable de réseau, personnel identifié, etc. Jamais l'e-mail, les notes ni le compte lié d'une fiche. Cache serveur versionné (comme les référentiels), invalidé par toute écriture sur l'annuaire (`DirectoryContactObserver`).
+
+Écart consigné (P5-06) : ni `emergency_services` ni `directory_contacts.is_emergency` (annoncés par P1-05) n'existent ; `services` vient du paramètre `emergency_numbers` (sinon `xomiton.assistant.emergency_numbers`, même source que l'assistant §5) et `contacts` des fiches d'urgence ci-dessus (filtre par rôle en attendant `is_emergency`, suivi en P4-06 et Q59).
+
+Tests : `tests/Feature/Api/Alerts/ReportApiTest.php`, `SosApiTest.php`, `EmergencyApiTest.php`.
+
+## 7. Parcours Flutter de référence
 
 ```
 register ──201 token──► (accès limité) ──otp/verify signup──► email_verified
@@ -315,6 +372,6 @@ password/forgot ──202──► otp/verify reset ──reset_token──► p
 
 Journal d'audit (`audit_logs`) : `auth.registered`, `auth.authenticated`, `auth.token_issued`, `auth.otp_verified`, `auth.email_verified`, `auth.password_reset_requested`, `auth.password_reset`, `auth.logout`, `auth.session_revoked`, `auth.failed`, `auth.refused_suspended`, `auth.refused_maintenance`. Aucune valeur sensible (mot de passe, code, jeton) n'y est écrite.
 
-## 7. Familles à venir
+## 8. Familles à venir
 
-`me/security`, `me/newsletter`, `me/push-subscriptions`, `me/export`, `DELETE me` (P6), `feed/`, `posts/` (P7), `conversations/`, `groups/`, `events/`, `forums/` (P8), `thematiques/`, `ressources/`, `urgences/` (P4-P5), `signalements/`, `sos/` (P5), `pair/`, `sync/` (P9), `notifications/` (P3-P6). Chaque famille complète ce document à sa livraison.
+`me/security`, `me/newsletter`, `me/push-subscriptions`, `me/export`, `DELETE me` (P6), `feed/`, `posts/` (P7), `conversations/`, `groups/`, `events/`, `forums/` (P8), `thematiques/`, `ressources/` (P4), `pair/`, `sync/` (P9), `notifications/` (P3-P6). `signalements/`, `sos/`, `urgences/` : livrés (§6). Chaque famille complète ce document à sa livraison.

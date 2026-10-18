@@ -22,6 +22,9 @@ final class SosTriggered extends XomitonNotification
         public readonly ?string $zoneLabel,
         public readonly ?string $pseudo = null,
         public readonly ?string $url = null,
+        // Faux pour une fiche sans compte qui ne peut pas accuser réception (prévenue en copie, P5-03 / Q57) : SMS
+        // `sms_copy`, sans « Accusez réception » ni lien.
+        public readonly bool $acknowledgeable = true,
     ) {}
 
     public function category(): string
@@ -84,6 +87,13 @@ final class SosTriggered extends XomitonNotification
                 'pseudo' => (string) $this->pseudo,
                 'where' => $this->place ?? $this->zoneLabel ?? __('notifications.sos_triggered.where_unknown'),
                 'code' => $this->code,
+            ]);
+        }
+
+        if (! $this->acknowledgeable) {
+            return (string) __('notifications.sos_triggered.sms_copy', [
+                'code' => $this->code,
+                'where' => $this->place ?? $this->zoneLabel ?? __('notifications.sos_triggered.where_unknown'),
             ]);
         }
 

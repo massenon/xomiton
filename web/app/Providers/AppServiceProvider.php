@@ -4,13 +4,27 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Application\Alerts\Listeners\MarkAlertNotificationsSeen;
+use App\Application\Alerts\Listeners\NotifyAlertEscalated;
+use App\Application\Alerts\Listeners\NotifyAlertReassigned;
+use App\Application\Alerts\Listeners\NotifyAlertReminder;
 use App\Application\Alerts\Listeners\NotifyAlertRouted;
+use App\Application\Alerts\Listeners\NotifyAuthorOfStatusChange;
+use App\Application\Alerts\Listeners\NotifySosCancelled;
+use App\Application\Alerts\Listeners\NotifySosSafe;
 use App\Application\Alerts\Listeners\NotifySosTriggered;
 use App\Application\Moderation\Listeners\NotifyModerators;
 use App\Application\Newsletter\Listeners\LogCampaignSent;
 use App\Application\Shared\SosBurstWatch;
 use App\Application\Sync\Listeners\NotifyAdminsOfSyncConflict;
+use App\Domain\Alerts\Events\AlertAcknowledged;
 use App\Domain\Alerts\Events\AlertCreated;
+use App\Domain\Alerts\Events\AlertEscalated;
+use App\Domain\Alerts\Events\AlertReassigned;
+use App\Domain\Alerts\Events\AlertReminderDue;
+use App\Domain\Alerts\Events\AlertStatusChanged;
+use App\Domain\Alerts\Events\SosCancelled;
+use App\Domain\Alerts\Events\SosMarkedSafe;
 use App\Domain\Alerts\Events\SosTriggered;
 use App\Domain\Moderation\Events\ContentReported;
 use App\Domain\Newsletter\Events\CampaignSent;
@@ -22,6 +36,7 @@ use App\Infrastructure\Notifications\NotificationDrivers;
 use App\Models\AuditLog;
 use App\Models\Category;
 use App\Models\Commune;
+use App\Models\DirectoryContact;
 use App\Models\Need;
 use App\Models\Population;
 use App\Models\User;
@@ -32,6 +47,7 @@ use App\Notifications\Channels\SmsChannel;
 use App\Notifications\Channels\TemplateMailChannel;
 use App\Notifications\Channels\WebPushChannel;
 use App\Notifications\Channels\XomitonDatabaseChannel;
+use App\Observers\DirectoryContactObserver;
 use App\Observers\ReferentialObserver;
 use App\Support\KeyedHash;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -62,6 +78,14 @@ class AppServiceProvider extends ServiceProvider
     public const DOMAIN_LISTENERS = [
         AlertCreated::class => [NotifyAlertRouted::class],
         SosTriggered::class => [NotifySosTriggered::class],
+        // Lot alertes-dispatch (P5-03) : envoi dans la requête ou au cron, consigné dans alert_notifications.
+        AlertReassigned::class => [NotifyAlertReassigned::class],
+        AlertReminderDue::class => [NotifyAlertReminder::class],
+        AlertEscalated::class => [NotifyAlertEscalated::class],
+        SosCancelled::class => [NotifySosCancelled::class],
+        SosMarkedSafe::class => [NotifySosSafe::class],
+        AlertAcknowledged::class => [MarkAlertNotificationsSeen::class],
+        AlertStatusChanged::class => [NotifyAuthorOfStatusChange::class],
         ContentReported::class => [NotifyModerators::class],
         SyncConflictDetected::class => [NotifyAdminsOfSyncConflict::class],
         CampaignSent::class => [LogCampaignSent::class],
@@ -134,6 +158,9 @@ class AppServiceProvider extends ServiceProvider
         foreach (self::REFERENTIAL_MODELS as $model) {
             $model::observe(ReferentialObserver::class);
         }
+
+        // Contacts d'urgence en cache (P5-06 `GET urgences`, ListEmergencyContacts) : toute écriture sur l'annuaire l'invalide.
+        DirectoryContact::observe(DirectoryContactObserver::class);
     }
 
     /**
@@ -183,6 +210,25 @@ class AppServiceProvider extends ServiceProvider
                 (string) $request->ip(),
                 (string) ($request->route('alert') instanceof Model ? $request->route('alert')->getRouteKey() : $request->route('alert')),
                 (string) $request->query('contact'),
+            ])))
+            ->response($tooMany));
+
+        // Repentir et « Je suis en sécurité » d'un SOS (P5-06 `POST sos/{id}/cancel|safe`) : par IP et alerte (empreinte),
+        // plafond propre pour qu'une rafale de suivis depuis la même IP (CGNAT) ne bloque jamais la personne ; le jeton
+        // X-Sos-Token rend la force brute vaine, le plafond borne seulement les rejeux.
+        RateLimiter::for('sos_owner', static fn (Request $request): Limit => Limit::perMinute(self::limit('sos_owner_per_minute'))
+            ->by('sos_owner|'.KeyedHash::make(implode('|', [
+                (string) $request->ip(),
+                (string) ($request->route('alert') instanceof Model ? $request->route('alert')->getRouteKey() : $request->route('alert')),
+            ])))
+            ->response($tooMany));
+
+        // Sondage de l'état d'un SOS (P5-06 `GET sos/{id}`, toutes les 10 s) : hors limiteur global `api` (un CGNAT ne doit
+        // jamais cacher l'état à la personne), plafond propre et large par IP et alerte (empreinte) contre les rejeux.
+        RateLimiter::for('sos_status', static fn (Request $request): Limit => Limit::perMinute(self::limit('sos_status_per_minute'))
+            ->by('sos_status|'.KeyedHash::make(implode('|', [
+                (string) $request->ip(),
+                (string) ($request->route('alert') instanceof Model ? $request->route('alert')->getRouteKey() : $request->route('alert')),
             ])))
             ->response($tooMany));
 

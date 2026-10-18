@@ -269,4 +269,41 @@ return [
         'danger_hint' => 'En danger ? Utilise le signalement anonyme ou le SOS.',
     ],
 
+    // Bloc « Personnes prévenues » de la page /sos (P5-03, composant x-alerts.notified ; maquette mobile) : tu.
+    'notified' => [
+        'title' => 'Personnes prévenues',
+        'state' => [
+            'seen' => 'A vu ton alerte',
+            'sms_sent' => 'SMS envoyé',
+            'sent' => 'Prévenu·e · en attente',
+            'pending' => 'Envoi en cours',
+        ],
+        'badge_seen' => 'Vu',
+        'badge_sms' => 'SMS',
+        'kind' => [
+            'trusted' => 'Contact de confiance',
+            'team' => 'Équipe Xomiton',
+            'team_role' => 'Admin de garde',
+        ],
+        'role_zone' => ':role · :zone',
+        'offline' => 'Hors ligne : la liste se mettra à jour au retour du réseau.',
+        'updated' => 'Mis à jour à :time',
+        'call_primary' => 'Appeler :name',
+        'no_phone' => 'Aucun numéro à afficher : en danger, appelle le 117.',
+    ],
+
+    // Raisons d'abandon ou d'échec d'une notification d'alerte (`alert_notifications.last_error`, codes de
+    // AlertNotification, P5-03), affichées en administration (P10) et par notifications:retry --dry-run.
+    'delivery_reason' => [
+        'gone' => 'Abonnement supprimé',
+        'no_phone' => 'Aucun numéro',
+        'no_address' => 'Aucune adresse',
+        'unavailable' => 'Destinataire indisponible',
+        'handled' => 'Alerte prise en charge',
+        'cancelled' => 'Alerte annulée',
+        'exhausted' => 'Plafond de rejeux atteint',
+        'no_response' => 'Aucune réponse du fournisseur',
+        'mail_not_sent' => 'E-mail non envoyé',
+    ],
+
 ];

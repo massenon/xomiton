@@ -6,6 +6,7 @@ namespace App\Notifications;
 
 use App\Application\Shared\NotificationPreferences;
 use App\Domain\Notifications\PushMessage;
+use App\Domain\Notifications\SmsText;
 use App\Models\DatabaseNotification;
 use App\Models\PushSubscription;
 use App\Models\User;
@@ -261,7 +262,12 @@ abstract class XomitonNotification extends Notification
         );
     }
 
-    /** Texte du SMS de secours (canal `sms`), borné à la longueur configurée. */
+    /**
+     * Texte du SMS de secours (canal `sms`), borné en segments (D6 : plafond de coût) : typographie ramenée à GSM-7
+     * (SmsText::normalize, 160 caractères par segment au lieu de 70 en UCS-2), `xomiton.sms.max_segments` segment(s).
+     * Un lien final n'est jamais tronqué (il serait inutilisable, P5-03 / Q50 : lien signé d'accusé) : le message est
+     * raccourci avant lui et un SMS concaténé est admis jusqu'à `xomiton.sms.max_segments_with_link` segments.
+     */
     public function toSms(object $notifiable): ?string
     {
         $text = $this->smsText($notifiable);
@@ -270,7 +276,20 @@ abstract class XomitonNotification extends Notification
             return null;
         }
 
-        return Str::limit(trim($text), max(20, (int) config('xomiton.sms.max_length', 160)), '…');
+        $text = SmsText::normalize(trim($text));
+        $segments = max(1, (int) config('xomiton.sms.max_segments', 1));
+        $max = SmsText::capacity($text, $segments);
+
+        if (SmsText::length($text) <= $max || preg_match('~\s(https?://\S+)$~u', $text, $match) !== 1) {
+            return SmsText::limit($text, $max);
+        }
+
+        $url = $match[1];
+        $limit = SmsText::capacity($text, max($segments, (int) config('xomiton.sms.max_segments_with_link', 2)));
+        $head = trim(mb_substr($text, 0, mb_strlen($text) - mb_strlen($url)));
+        $room = $limit - SmsText::length($url) - 1;
+
+        return trim(($room >= 20 ? SmsText::limit($head, $room) : '').' '.$url);
     }
 
     /** La personne masque le contenu sensible et cette notification l'est : texte neutre partout. */

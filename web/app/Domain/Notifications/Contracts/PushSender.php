@@ -17,6 +17,8 @@ use App\Models\PushSubscription;
  * `Minishlink\WebPush\Subscription` depuis `endpoint`, `public_key` (p256dh) et `auth_token`, puis renvoie
  * `DeliveryResult::gone()` sur un 404 / 410 pour que le canal supprime l'abonnement (`notifications:retry`).
  * La charge utile (`PushMessage::toJson()`) ne contient jamais de donnée sensible (NOTIFICATIONS §4.1).
+ * Un pilote HTTP implémente PoolablePushSender (envoi borné par DeliveryRunner, P5-03) ou applique lui-même
+ * `xomiton.alerts.provider_timeout_seconds` à sa requête : un `send()` bloquant n'est pas interrompu (D13).
  */
 interface PushSender
 {

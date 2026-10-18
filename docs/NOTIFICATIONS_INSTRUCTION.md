@@ -24,7 +24,7 @@ description: Système de notifications de Xomiton — canaux (cloche en applicat
 | Mot de passe oublié | Personne (si le compte existe) | e-mail | `reinitialisation-mot-de-passe` |
 | Compte pair validé | Pair | e-mail, cloche | `compte-valide` |
 | Alerte routée | Contact de l'annuaire ciblé, admin de garde | e-mail, push, cloche | `alerte-routee` |
-| **SOS déclenché** | Contacts de confiance, point focal de zone, admin de garde | push + SMS de secours **dans la requête**, cloche | `alerte-routee` |
+| **SOS déclenché** | Contacts de confiance, point focal de zone, admin de garde | push + SMS de secours **dans la requête**, cloche | — (aucun e-mail SOS dans la requête ; `alerte-routee` à l'escalade, P5-03 D14) |
 | SOS non accusé (5 min) | Point focal national | push, SMS, e-mail | `alerte-routee` |
 | Nouveau message | Participant·es | push (aperçu masqué si mode discret), cloche | — |
 | Réaction ou commentaire | Auteur·e | cloche (regroupée) | — |
@@ -50,7 +50,7 @@ Panneau à onglets **Non lus · Lues · Toutes les notifications**, « Tout marq
 4. **Son** : uniquement SOS et cas critiques pour les destinataires concernés ; alternative visuelle et vibration.
 5. **Accessibilité** : `aria-live="polite"` (succès, info), `assertive` (erreurs, SOS) ; toasts ≥ 4,5 s, fermables, jamais seule source d'une information.
 6. **Langue** : textes dans `lang/`, verbe d'action identique au bouton (« Publier » → « Publié »).
-7. **Journalisation** : chaque e-mail est consigné (`mail_logs`) ; chaque échec SOS est rejoué par cron chaque minute.
+7. **Journalisation** : chaque e-mail est consigné (`mail_logs`) ; chaque remise d'alerte est consignée (`alert_notifications`) et chaque échec rejoué par `notifications:retry` chaque minute, jusqu'à la prise en charge, l'annulation ou la clôture de l'alerte (P5-03, D8).
 
 ## 5. Toasts SweetAlert2 (administration)
 ```js

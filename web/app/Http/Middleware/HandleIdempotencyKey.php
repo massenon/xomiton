@@ -46,8 +46,14 @@ final class HandleIdempotencyKey
     /** Option de route : `limit=<limiteur nommé>` (AppServiceProvider::registerRateLimiters). */
     public const LIMIT_PREFIX = 'limit=';
 
-    /** En-têtes de la réponse d'origine restitués au rejeu (les en-têtes de sécurité sont reposés par SecurityHeaders). */
-    private const STORED_HEADERS = ['Content-Type', 'Content-Language', 'Location'];
+    /**
+     * En-têtes de la réponse d'origine restitués au rejeu (les en-têtes de sécurité sont reposés par SecurityHeaders) ;
+     * `Cache-Control` garde le `no-store, private` d'une réponse propre à la personne (code de suivi, `sos_token`).
+     */
+    private const STORED_HEADERS = ['Content-Type', 'Content-Language', 'Location', 'Cache-Control'];
+
+    /** Cache-Control d'un rejeu dont la réponse d'origine n'en portait pas (enregistrements antérieurs) : jamais en cache. */
+    private const REPLAY_CACHE_CONTROL = 'no-store, private';
 
     public function __construct(
         private readonly IdempotencyStore $store,
@@ -234,6 +240,7 @@ final class HandleIdempotencyKey
     private function replay(IdempotencyKey $record): Response
     {
         return response((string) $record->response_body, (int) $record->status_code, ($record->response_headers ?? []) + [
+            'Cache-Control' => self::REPLAY_CACHE_CONTROL,
             self::REPLAYED_HEADER => 'true',
         ]);
     }

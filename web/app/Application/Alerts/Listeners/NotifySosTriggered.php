@@ -4,28 +4,33 @@ declare(strict_types=1);
 
 namespace App\Application\Alerts\Listeners;
 
-use App\Application\Alerts\OnCallRoster;
+use App\Application\Alerts\Dispatch\AlertDispatcher;
+use App\Application\Alerts\Dispatch\DispatchContext;
+use App\Application\Alerts\Dispatch\Recipients\SosRecipients;
+use App\Application\Alerts\Listeners\Concerns\DispatchesAlertNotifications;
 use App\Domain\Alerts\Events\SosTriggered;
-use App\Models\Alert;
-use App\Models\User;
-use App\Notifications\SosTriggered as SosTriggeredNotification;
+use App\Enums\NotificationPurpose;
+use App\Models\AuditLog;
 use App\Support\Audit;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Notification;
 
 /**
- * SosTriggered → notification SosTriggered (NOTIFICATIONS §2 : contact de confiance par SMS, point focal de zone, admin de
- * garde, contact routé ; une seule notification par personne, jamais la personne en danger elle-même) et journal
- * `alerts.sos_triggered` (P3-08). Tout part dans la requête, sans file (D7) ; la position n'est jamais transmise, seul
- * le libellé du lieu (commune ou département) l'est. Enregistré par AppServiceProvider::DOMAIN_LISTENERS.
+ * SosTriggered → journal `alerts.sos_triggered` (P3-08) puis notifications dans la requête (P5-03, D7) : contact de
+ * confiance par SMS, contact routé, point focal de zone, admin de garde ; cloche, push et SMS de secours, consignés
+ * dans `alert_notifications` (AlertDispatcher). Jamais la personne en danger elle-même ; la position n'est jamais
+ * transmise, seul le libellé du lieu l'est. Enregistré par AppServiceProvider::DOMAIN_LISTENERS.
  */
 final class NotifySosTriggered
 {
-    public function __construct(private readonly OnCallRoster $roster) {}
+    use DispatchesAlertNotifications;
+
+    public function __construct(
+        private readonly AlertDispatcher $dispatcher,
+        private readonly SosRecipients $recipients,
+    ) {}
 
     public function handle(SosTriggered $event): void
     {
-        $alert = Alert::query()->with(['zone', 'commune', 'user.profile', 'routedContact.user'])->find($event->alertId);
+        $alert = $this->loadAlert($event->alertId);
 
         if ($alert === null) {
             return;
@@ -38,47 +43,19 @@ final class NotifySosTriggered
             $event->isAnonymous() ? 'oui' : 'non',
         );
 
-        // SOS anonyme (P5-02) : ni compte, ni IP, ni user-agent dans le journal.
-        $event->isAnonymous() ? Audit::logWithoutRequest('alerts.sos_triggered', $alert, $detail) : Audit::log('alerts.sos_triggered', $alert, $detail, $alert->user);
+        // Jamais d'IP ni de user-agent pour un SOS, même envoyé depuis un compte (la position d'une personne en danger ne se
+        // déduit pas du journal) ; le compte est désigné par son numéro, sans adresse e-mail (SOS anonyme : ni l'un ni
+        // l'autre, P5-02).
+        Audit::logWithoutRequest('alerts.sos_triggered', $alert, $detail, $event->isAnonymous() || $alert->user_id === null
+            ? AuditLog::ACTOR_ANONYMOUS
+            : 'compte#'.$alert->user_id);
 
-        $notification = new SosTriggeredNotification(
-            alertId: (int) $alert->getKey(),
-            code: (string) ($alert->tracking_code ?? $alert->ulid),
-            place: $event->hasLocation ? ($alert->commune?->name ?? $alert->zone?->name) : null,
-            zoneLabel: $alert->zone?->name,
-            pseudo: $alert->is_anonymous ? null : $alert->authorLabel(),
-        );
-
-        $recipients = $this->recipients($alert, $event);
-
-        if ($recipients->isNotEmpty()) {
-            Notification::send($recipients, $notification);
-        }
-
-        $trustedPhone = $alert->user?->profile?->trusted_contact_phone;
-
-        if (is_string($trustedPhone) && trim($trustedPhone) !== '') {
-            Notification::route('sms', trim($trustedPhone))->notify($notification);
-        }
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    private function recipients(Alert $alert, SosTriggered $event): Collection
-    {
-        $recipients = new Collection;
-
-        foreach ([$alert->routedContact?->user, $alert->zone !== null ? $this->roster->zoneFocal($alert->zone)?->user : null] as $user) {
-            if ($user instanceof User && $user->isActive()) {
-                $recipients->push($user);
-            }
-        }
-
-        return $recipients
-            ->merge($this->roster->adminsOnCall())
-            ->reject(fn (User $user): bool => $event->userId !== null && (int) $user->getKey() === $event->userId)
-            ->unique(fn (User $user): int => (int) $user->getKey())
-            ->values();
+        $this->guarded($alert, fn () => $this->dispatcher->dispatch(
+            $alert,
+            NotificationPurpose::SosTriggered,
+            $this->recipients->for($alert),
+            DispatchContext::request(),
+            ['has_location' => $event->hasLocation],
+        ));
     }
 }

@@ -3,42 +3,38 @@
 declare(strict_types=1);
 
 use App\Domain\Alerts\Events\SosTriggered;
+use App\Domain\Notifications\Contracts\SmsSender;
+use App\Enums\DeliveryStatus;
 use App\Models\Alert;
+use App\Models\AlertNotification;
 use App\Models\User;
 use App\Models\Zone;
 use App\Notifications\SosTriggered as SosTriggeredNotification;
 use Database\Seeders\RolesAndPermissionsSeeder;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Notification;
+use Tests\Support\Notifications\FakeSmsSender;
 
 /*
- * SMS du contact de confiance (NOTIFICATIONS §2, P5-03) : personne sans compte jointe par Notification::route('sms'),
+ * SMS du contact de confiance (NOTIFICATIONS §2, P5-03) : personne sans compte jointe par le SmsSender (destinataire à la demande),
  * texte dédié (qui demande de l'aide, consigne d'appel), jamais le lien d'administration ni l'accusé de réception.
  */
 
 beforeEach(function (): void {
     $this->seed(RolesAndPermissionsSeeder::class);
     Notification::fake();
+    $this->sms = new FakeSmsSender;
+    $this->app->instance(SmsSender::class, $this->sms);
 });
 
 /**
- * SMS reçu par le contact de confiance pour l'alerte, ou null s'il n'est pas parti.
+ * SMS reçu par le contact de confiance pour l'alerte, ou null s'il n'est pas parti. Depuis P5-03, le SMS part par le
+ * DeliveryRunner (SmsSender du conteneur), consigné dans alert_notifications sous la référence `trusted:<id>`.
  */
 function trustedContactSms(Alert $alert): ?string
 {
-    $text = null;
+    expect(AlertNotification::query()->forAlert($alert)->where('recipient', 'trusted:'.$alert->user_id)->value('status'))->toBe(DeliveryStatus::Sent);
 
-    Notification::assertSentOnDemand(SosTriggeredNotification::class, function (SosTriggeredNotification $n, array $channels, AnonymousNotifiable $notifiable) use ($alert, &$text): bool {
-        if ($n->alertId !== $alert->id || $channels !== ['sms'] || $notifiable->routes['sms'] !== '+229 01 97 38 88 47') {
-            return false;
-        }
-
-        $text = $n->toSms($notifiable);
-
-        return true;
-    });
-
-    return $text;
+    return collect(test()->sms->calls)->firstWhere('to', '+229 01 97 38 88 47')['text'] ?? null;
 }
 
 it('envoie au contact de confiance un SMS dédié : qui demande de l’aide, consigne d’appel, sans lien admin', function (): void {
@@ -50,7 +46,7 @@ it('envoie au contact de confiance un SMS dédié : qui demande de l’aide, con
 
     $sms = (string) trustedContactSms($alert);
 
-    expect($sms)->toStartWith('Xomiton – SOS de Awa_S')
+    expect($sms)->toStartWith('Xomiton - SOS de Awa_S')
         ->toContain('contact de confiance', 'appelez-la', (string) ($alert->tracking_code ?? $alert->ulid))
         ->not->toContain('/admin', 'http', 'Accusez réception')
         ->and(mb_strlen($sms))->toBeLessThanOrEqual(160);

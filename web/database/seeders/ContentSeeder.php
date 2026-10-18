@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Application\Seo\MetaText;
 use App\Enums\BadWordSeverity;
 use App\Enums\CccKind;
 use App\Enums\ContentStatus;
@@ -83,13 +84,14 @@ class ContentSeeder extends Seeder
         $created = [];
 
         foreach ($data['rows'] as $index => [$protoId, $cat, $title, $summary]) {
+            $body = $this->thematiqueBody($content, $protoId, $cat, $title, $summary);
             $thematique = Thematique::query()->withTrashed()->updateOrCreate(
                 ['slug' => Str::slug($title)],
                 [
                     'category_id' => $categories[$cat]->getKey(),
                     'title' => $title,
                     'summary' => $summary,
-                    'body' => $this->thematiqueBody($content, $protoId, $cat, $title, $summary),
+                    'body' => $body,
                     'sections' => $this->thematiqueSections($content, $protoId, $cat),
                     'content_warning' => $cat === 'vbg' ? self::CONTENT_WARNING : null,
                     'image_path' => self::IMAGE_BASE.$data['images'][$index % count($data['images'])],
@@ -98,8 +100,9 @@ class ContentSeeder extends Seeder
                     'related_contact_roles' => array_map(static fn (DirectoryRole $role): string => $role->value, self::CONTACT_ROLES[$cat]),
                     'status' => ContentStatus::Published,
                     'published_at' => $publishedAt,
-                    'meta_title' => Str::limit($title, 67, '…'),
-                    'meta_description' => Str::limit($summary, 157, '…'),
+                    // Bornes SEO (P4-02) : titre ≤ 50 + « – Xomiton », description 140–160, même règle que le repli de la page.
+                    'meta_title' => MetaText::title($title),
+                    'meta_description' => MetaText::description($summary, $body, (string) __('pages/thematiques.meta_description_filler')),
                 ],
             );
 
@@ -135,19 +138,20 @@ class ContentSeeder extends Seeder
     }
 
     /**
-     * Corps HTML : introduction spécifique (ou résumé) puis les paragraphes de la catégorie,
-     * précédés du paragraphe « À propos du thème » comme dans x_thematique_content().
+     * Corps HTML : paragraphes de la catégorie précédés du paragraphe « À propos du thème », comme dans
+     * x_thematique_content(). Seule une introduction spécifique ouvre le corps en `<p class="lead">` : elle remplace
+     * alors le résumé en chapeau de la fiche (un seul chapeau, comme le prototype) ; sinon la vue montre le résumé.
      *
      * @param  array<string, mixed>  $content
      */
     private function thematiqueBody(array $content, int $protoId, string $cat, string $title, string $summary): string
     {
-        $intro = $content['specific'][$protoId] ?? $summary;
+        $intro = $content['specific'][$protoId] ?? null;
         $about = 'À propos du thème « '.rtrim($title, ' ?').' » : '.rtrim($summary, '.')
             .". Cette fiche vous en donne les repères essentiels, de manière simple, en privilégiant votre sécurité et votre droit à l'information.";
         $paragraphs = array_slice([$about, ...$content['categories'][$cat]['paragraphs']], 0, 5);
 
-        return '<p class="lead">'.e($intro).'</p>'
+        return ($intro === null ? '' : '<p class="lead">'.e($intro).'</p>')
             .implode('', array_map(static fn (string $p): string => '<p>'.e($p).'</p>', $paragraphs));
     }
 

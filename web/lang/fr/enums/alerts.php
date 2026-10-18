@@ -70,6 +70,35 @@ return [
         'pending' => 'En attente',
         'sent' => 'Envoyée',
         'failed' => 'Échec',
+        'skipped' => 'Abandonnée',
+    ],
+
+    // P5-03 : objet d'une ligne `alert_notifications.purpose` (administration « Personnes prévenues »).
+    'notification_purpose' => [
+        'sos_triggered' => 'SOS déclenché',
+        'alert_routed' => 'Alerte routée',
+        'alert_reminder' => 'Rappel',
+        'alert_escalated' => 'Escalade (signalement sans réponse)',
+        'sos_unacknowledged' => 'Escalade (SOS sans réponse)',
+        'sos_cancelled' => 'Fausse alerte',
+        'sos_safe' => 'Personne en sécurité',
+        'sos_acknowledged' => 'Accusé transmis à la personne',
+        'alert_status_changed' => 'Changement de statut',
+    ],
+
+    'notified_state' => [
+        'seen' => 'Vu',
+        'sms_sent' => 'SMS envoyé',
+        'sent' => 'Envoyé',
+        'pending' => 'En attente',
+    ],
+
+    'recipient_kind' => [
+        'trusted' => 'Contact de confiance',
+        'focal' => 'Point focal',
+        'team' => 'Équipe',
+        'contact' => 'Annuaire',
+        'author' => 'Auteur·e',
     ],
 
 ];

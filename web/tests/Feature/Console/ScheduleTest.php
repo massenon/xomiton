@@ -44,6 +44,7 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
     $expected = [
         'mail:flush-outbox' => '* * * * *',
         'alerts:escalate' => '* * * * *',
+        'notifications:retry' => '* * * * *',
         'heartbeat:ping' => '* * * * *',
         'otp:purge' => '0 3 * * *',
         'mail:purge-logs' => '0 3 * * *',
@@ -94,4 +95,12 @@ it('rend chaque commande planifiée exécutable', function (): void {
     foreach (array_keys(scheduledEvents()) as $command) {
         expect($commands)->toContain($command);
     }
+});
+
+it('planifie notifications:retry chaque minute, après alerts:escalate et avant le signal de vie (P5-03)', function (): void {
+    $order = array_keys(scheduledEvents());
+
+    expect($order)->toContain('notifications:retry')
+        ->and(array_search('notifications:retry', $order, true))->toBeGreaterThan(array_search('alerts:escalate', $order, true))
+        ->and(array_search('notifications:retry', $order, true))->toBeLessThan(array_search('heartbeat:ping', $order, true));
 });

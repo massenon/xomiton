@@ -86,9 +86,20 @@ Schedule::command('alerts:escalate')
     ->description('Escalade les SOS sans accusé (5 min) au point focal national, rappelle puis escalade les signalements et besoins sans accusé (24 h / 48 h)');
 
 /*
+ * Rejeu des notifications d'alerte (P5-03, D7) : push, SMS et e-mails en attente ou échoués, SOS d'abord, SMS de repli,
+ * abonnements push disparus supprimés. Après alerts:escalate (dont il rejoue les envois) et avant heartbeat:ping ;
+ * pose le marqueur `notifications:retry:last_success_at`.
+ */
+Schedule::command('notifications:retry')
+    ->everyMinute()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Rejoue les notifications d’alerte en attente ou échouées (push, SMS, e-mail) et supprime les abonnements push disparus');
+
+/*
  * Signal de vie vers la supervision externe (D7, NFR-03) : enregistré en dernier pour être émis après les
  * autres tâches de la minute. À conditionner au succès d'`alerts:escalate` (marqueur `alerts:escalate:last_success_at`,
- * livré) et de `notifications:retry` (P5-03) — P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte.
+ * livré) et de `notifications:retry` (marqueur `notifications:retry:last_success_at`, livré) — P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte.
  */
 Schedule::command('heartbeat:ping')
     ->everyMinute()
@@ -101,8 +112,6 @@ Schedule::command('heartbeat:ping')
  * planifiée mais absente fait échouer `schedule:run`, et le planificateur ne peut pas interroger Artisan
  * pendant son propre chargement — d'où ces lignes en commentaire plutôt qu'une condition.
  *
- * P5-03  — rejeu des notifications SOS échouées (avant heartbeat:ping, comme alerts:escalate) :
- *   Schedule::command('notifications:retry')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
  * P14-03 — newsletter (lots de 200) :
  *   Schedule::command('newsletter:process')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
  * P14-04 — passerelles réseaux sociaux (D4-bis) :

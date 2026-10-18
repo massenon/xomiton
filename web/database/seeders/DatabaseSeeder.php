@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         ReferenceDataSeeder::class,
         RolesAndPermissionsSeeder::class,
         ContentSeeder::class,
+        ThematiqueFaqSeeder::class,
         ForumsSeeder::class,
         ValidationRulesSeeder::class,
         IndicatorsSeeder::class,
