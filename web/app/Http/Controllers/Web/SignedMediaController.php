@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * MediaUploader::signedUrl() (P3-04). Signature absente, altérée ou expirée → 403 ; disque hors liste, chemin suspect
  * ou fichier absent → 404. Réponse non mise en cache, jamais indexée, type MIME verrouillé (`nosniff`).
  *
- * Route à déclarer (routes/web.php) :
+ * Route déclarée dans routes/web.php :
  *   Route::get('/media/{disk}/{path}', SignedMediaController::class)->where('path', '.*')->name('media.signed');
  */
 final class SignedMediaController extends Controller

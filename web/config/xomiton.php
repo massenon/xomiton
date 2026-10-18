@@ -243,7 +243,7 @@ return [
     /*
      * Référencement (P4-11) : SEO_ALLOW_INDEXING=false interdit toute exploration dans robots.txt (recette publique,
      * mise en ligne progressive) ; surchargeable par le paramètre `seo.allow_indexing` (settings). Hors production
-     * et recette, robots.txt interdit toujours tout.
+     * (local, testing, recette comprise), robots.txt interdit toujours tout et sitemap.xml répond 404.
      */
     'seo' => [
         'allow_indexing' => (bool) env('SEO_ALLOW_INDEXING', true),

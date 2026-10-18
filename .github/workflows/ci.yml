@@ -43,6 +43,19 @@ jobs:
       - name: Analyse statique (Larastan niveau 6)
         run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
 
+      # Les tests de pages et PerformanceHeadTest lisent public/build/manifest.json (gitignoré) : CSS critique,
+      # préchargement de police, @vite. Le contrôle des budgets reste dans le job front.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Compiler les paquets Vite (manifest pour Pest)
+        run: |
+          npm ci
+          npm run build:nocheck
+
       - name: Tests (Pest)
         run: vendor/bin/pest --ci
         env:

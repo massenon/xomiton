@@ -3701,14 +3701,22 @@
     "@auth_otp_screen_back_to_login": {
         "description": "auth.otp_screen.back_to_login"
     },
-    "auth_otp_screen_code_label": "Code à 6 chiffres",
+    "auth_otp_screen_code_label": "Code à {length} chiffres",
     "@auth_otp_screen_code_label": {
-        "description": "auth.otp_screen.code_label"
+        "description": "auth.otp_screen.code_label",
+        "placeholders": {
+            "length": {
+                "type": "String"
+            }
+        }
     },
-    "auth_otp_screen_digit": "Chiffre {n} sur 6",
+    "auth_otp_screen_digit": "Chiffre {n} sur {length}",
     "@auth_otp_screen_digit": {
         "description": "auth.otp_screen.digit",
         "placeholders": {
+            "length": {
+                "type": "String"
+            },
             "n": {
                 "type": "String"
             }
@@ -3718,11 +3726,14 @@
     "@auth_otp_screen_heading": {
         "description": "auth.otp_screen.heading"
     },
-    "auth_otp_screen_intro": "Un code à 6 chiffres vient d’être envoyé à {email}. Il est valable {minutes} minutes.",
+    "auth_otp_screen_intro": "Un code à {length} chiffres vient d’être envoyé à {email}. Il est valable {minutes} minutes.",
     "@auth_otp_screen_intro": {
         "description": "auth.otp_screen.intro",
         "placeholders": {
             "email": {
+                "type": "String"
+            },
+            "length": {
                 "type": "String"
             },
             "minutes": {
@@ -4189,11 +4200,11 @@
     "@auth_reset_requested": {
         "description": "auth.reset_requested"
     },
-    "auth_side_text": "Filles et femmes LBTQ+ : retrouvez votre communauté bienveillante, des ressources fiables et un soutien confidentiel.",
+    "auth_side_text": "Filles et femmes LBTQ+ : retrouve ta communauté bienveillante, des ressources fiables et un soutien confidentiel.",
     "@auth_side_text": {
         "description": "auth.side_text"
     },
-    "auth_side_title": "Votre espace safe d’apprentissage et d’appui holistique.",
+    "auth_side_title": "Ton espace safe d’apprentissage et d’appui holistique.",
     "@auth_side_title": {
         "description": "auth.side_title"
     },
@@ -5147,14 +5158,6 @@
     "common_logo_alt": "Xomiton, logo",
     "@common_logo_alt": {
         "description": "common.logo_alt"
-    },
-    "common_logo_alt_dark": "Xomiton, logo (mode sombre)",
-    "@common_logo_alt_dark": {
-        "description": "common.logo_alt_dark"
-    },
-    "common_logo_alt_light": "Xomiton, logo (mode clair)",
-    "@common_logo_alt_light": {
-        "description": "common.logo_alt_light"
     },
     "common_maps": "Maps",
     "@common_maps": {
@@ -6613,6 +6616,10 @@
     "components_img_missing_alt": "<x-img> exige un attribut alt (utiliser alt=\"\" pour une image décorative).",
     "@components_img_missing_alt": {
         "description": "components.img.missing_alt"
+    },
+    "components_img_missing_src": "<x-img> exige une source : src, ou media (image téléversée sur le disque public).",
+    "@components_img_missing_src": {
+        "description": "components.img.missing_src"
     },
     "components_logo_alt": "Xomiton",
     "@components_logo_alt": {
@@ -10186,6 +10193,22 @@
     "@menus_member_more_who_to_follow_full": {
         "description": "menus.member_more.who_to_follow_full"
     },
+    "menus_member_roles_admin": "Administrateur·rice",
+    "@menus_member_roles_admin": {
+        "description": "menus.member_roles.admin"
+    },
+    "menus_member_roles_membre": "Membre",
+    "@menus_member_roles_membre": {
+        "description": "menus.member_roles.membre"
+    },
+    "menus_member_roles_pair": "Pair éducateur·rice",
+    "@menus_member_roles_pair": {
+        "description": "menus.member_roles.pair"
+    },
+    "menus_member_roles_superadmin": "Super-administrateur·rice",
+    "@menus_member_roles_superadmin": {
+        "description": "menus.member_roles.superadmin"
+    },
     "menus_member_sections_account": "Compte",
     "@menus_member_sections_account": {
         "description": "menus.member_sections.account"
@@ -11704,6 +11727,50 @@
     "@notifications_alert_status_changed_title": {
         "description": "notifications.alert_status_changed.title"
     },
+    "notifications_categories_alertes": "Alertes routées",
+    "@notifications_categories_alertes": {
+        "description": "notifications.categories.alertes"
+    },
+    "notifications_categories_communaute": "Communauté",
+    "@notifications_categories_communaute": {
+        "description": "notifications.categories.communaute"
+    },
+    "notifications_categories_evenements": "Événements",
+    "@notifications_categories_evenements": {
+        "description": "notifications.categories.evenements"
+    },
+    "notifications_categories_messages": "Messages",
+    "@notifications_categories_messages": {
+        "description": "notifications.categories.messages"
+    },
+    "notifications_categories_moderation": "Modération",
+    "@notifications_categories_moderation": {
+        "description": "notifications.categories.moderation"
+    },
+    "notifications_categories_securite": "Sécurité du compte",
+    "@notifications_categories_securite": {
+        "description": "notifications.categories.securite"
+    },
+    "notifications_categories_sos": "SOS",
+    "@notifications_categories_sos": {
+        "description": "notifications.categories.sos"
+    },
+    "notifications_categories_systeme": "Système",
+    "@notifications_categories_systeme": {
+        "description": "notifications.categories.systeme"
+    },
+    "notifications_channels_email": "E-mail",
+    "@notifications_channels_email": {
+        "description": "notifications.channels.email"
+    },
+    "notifications_channels_in_app": "Cloche dans l’application",
+    "@notifications_channels_in_app": {
+        "description": "notifications.channels.in_app"
+    },
+    "notifications_channels_push": "Push (navigateur et mobile)",
+    "@notifications_channels_push": {
+        "description": "notifications.channels.push"
+    },
     "notifications_content_moderated_body": "Ta publication du {date} a été masquée par la modération : {reason}. Tu peux contacter l’équipe.",
     "@notifications_content_moderated_body": {
         "description": "notifications.content_moderated.body",
@@ -11723,6 +11790,26 @@
     "notifications_content_moderated_title": "Contenu masqué",
     "@notifications_content_moderated_title": {
         "description": "notifications.content_moderated.title"
+    },
+    "notifications_content_reported_body": "{kind} à modérer · motif : {reason}.",
+    "@notifications_content_reported_body": {
+        "description": "notifications.content_reported.body",
+        "placeholders": {
+            "kind": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_content_reported_discreet": "Signalement à modérer",
+    "@notifications_content_reported_discreet": {
+        "description": "notifications.content_reported.discreet"
+    },
+    "notifications_content_reported_title": "Contenu signalé",
+    "@notifications_content_reported_title": {
+        "description": "notifications.content_reported.title"
     },
     "notifications_digest_body": "{posts} nouvelles publications, {messages} messages non lus, {events} événements à venir.",
     "@notifications_digest_body": {
@@ -11764,6 +11851,24 @@
         "description": "notifications.event_created.body",
         "placeholders": {
             "date": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_event_created_body_group": "{title} ({group}), le {date} à {time}.",
+    "@notifications_event_created_body_group": {
+        "description": "notifications.event_created.body_group",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "group": {
                 "type": "String"
             },
             "time": {
@@ -12381,9 +12486,40 @@
             }
         }
     },
+    "notifications_sos_triggered_sms_trusted": "Xomiton – SOS de {pseudo} ({where}). Vous êtes son contact de confiance : appelez-la tout de suite. Réf. {code}",
+    "@notifications_sos_triggered_sms_trusted": {
+        "description": "notifications.sos_triggered.sms_trusted",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            },
+            "pseudo": {
+                "type": "String"
+            },
+            "where": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_sos_triggered_sms_trusted_unnamed": "Xomiton – SOS ({where}) d’une personne qui vous a choisi·e comme contact de confiance. Appelez-la tout de suite. Réf. {code}",
+    "@notifications_sos_triggered_sms_trusted_unnamed": {
+        "description": "notifications.sos_triggered.sms_trusted_unnamed",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            },
+            "where": {
+                "type": "String"
+            }
+        }
+    },
     "notifications_sos_triggered_title": "Alerte SOS",
     "@notifications_sos_triggered_title": {
         "description": "notifications.sos_triggered.title"
+    },
+    "notifications_sos_triggered_where_unknown": "position indisponible",
+    "@notifications_sos_triggered_where_unknown": {
+        "description": "notifications.sos_triggered.where_unknown"
     },
     "notifications_sos_unacknowledged_body": "Aucun accusé de réception pour l’alerte {code}. Prenez le relais.",
     "@notifications_sos_unacknowledged_body": {
@@ -12421,6 +12557,26 @@
                 "type": "String"
             }
         }
+    },
+    "notifications_sync_conflict_body": "{subject} · champ « {field} » : deux versions à arbitrer.",
+    "@notifications_sync_conflict_body": {
+        "description": "notifications.sync_conflict.body",
+        "placeholders": {
+            "field": {
+                "type": "String"
+            },
+            "subject": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_sync_conflict_discreet": "Conflit de synchronisation",
+    "@notifications_sync_conflict_discreet": {
+        "description": "notifications.sync_conflict.discreet"
+    },
+    "notifications_sync_conflict_title": "Conflit de synchronisation",
+    "@notifications_sync_conflict_title": {
+        "description": "notifications.sync_conflict.title"
     },
     "notifications_system_maintenance": "Maintenance prévue le {date} de {from} à {to}. Tes brouillons restent sur ton appareil.",
     "@notifications_system_maintenance": {

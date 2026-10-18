@@ -24,9 +24,15 @@ it('autorise l’index en production avec les exclusions et le sitemap', functio
 
     expect($content)
         ->toStartWith("User-agent: *\n")
-        ->toContain('Disallow: /admin', 'Disallow: /api', 'Disallow: /storage', 'Disallow: /newsletter/confirmer', 'Disallow: /newsletter/desinscription', 'Disallow: /otp', 'Disallow: /recherche')
+        ->toContain('Disallow: /admin', 'Disallow: /api', 'Disallow: /storage', 'Disallow: /newsletter/confirmer', 'Disallow: /newsletter/desinscription', 'Disallow: /otp', 'Disallow: /code-de-verification', 'Disallow: /recherche')
         ->toContain('Sitemap: '.rtrim((string) config('app.url'), '/').'/sitemap.xml')
         ->not->toContain("Disallow: /\n");
+});
+
+it('interdit toute exploration en recette', function (): void {
+    $this->app->detectEnvironment(static fn (): string => 'staging');
+
+    expect((string) $this->get('/robots.txt')->assertOk()->getContent())->toBe("User-agent: *\nDisallow: /\n");
 });
 
 it('interdit tout en production si le paramètre seo.allow_indexing est à faux', function (): void {

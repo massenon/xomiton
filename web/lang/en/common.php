@@ -19,8 +19,6 @@ return [
     'see_details' => 'See details',
     'load_more' => 'Load more',
     'optional' => '(optional)',
-    'logo_alt_light' => 'Xomiton, logo (light mode)',
-    'logo_alt_dark' => 'Xomiton, logo (dark mode)',
     'logo_alt' => 'Xomiton, logo',
     'coming_soon_title' => 'Screen under construction',
     'coming_soon_text' => 'This prototype screen is being ported. It will reproduce the page :page as is.',

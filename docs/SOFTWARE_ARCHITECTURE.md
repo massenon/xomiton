@@ -147,3 +147,4 @@ Riverpod pour l'état (un provider par écran, voir le panneau du simulateur), g
 | ADR-13 | Templates e-mails stockés en base, éditables par l'administration, slug stable référencé par le code |
 | ADR-15 | Passerelles réseaux sociaux (D4-bis) : un connecteur par réseau derrière une interface `SocialPublisher` (Facebook Graph API, Telegram Bot API ; Roméo, GanXo et Tinder sans API : publication manuelle assistée), jetons chiffrés, comptes de l'organisation uniquement |
 | ADR-14 | Newsletter interne (pas de service tiers), envoi par lots via cron, suivi signé HMAC |
+| ADR-34 | Sitemap natif (`SitemapBuilder`), pas de `spatie/laravel-sitemap` : pas de crawler sur cPanel (D7), contenu indexable connu ; détail dans `IMPLEMENTATION_PLAN.md` §1 |

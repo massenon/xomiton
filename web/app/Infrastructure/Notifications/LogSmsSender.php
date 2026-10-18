@@ -9,18 +9,24 @@ use App\Domain\Notifications\DeliveryResult;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Pilote SMS par défaut (SMS_PROVIDER=log, Q7) : consigne le message dans le journal au lieu de l'envoyer.
- * Le numéro est masqué (quatre derniers chiffres) : le journal est lisible par l'équipe technique.
+ * Pilote SMS par défaut (SMS_PROVIDER=log, Q7) : consigne la remise dans le journal au lieu de l'envoyer.
+ * Le journal est lisible par l'équipe technique : numéro masqué (quatre derniers chiffres), longueur seulement, jamais
+ * le texte (code SOS, commune). En production, ce pilote ne remet rien : la remise est un échec (avertissement) pour
+ * que les replis et le rejeu (P5) se déclenchent au lieu d'un SMS de SOS réputé envoyé.
  */
 final class LogSmsSender implements SmsSender
 {
     public function send(string $to, string $text): DeliveryResult
     {
-        Log::info('[sms:log] SMS consigné (aucun envoi).', [
-            'to' => self::maskNumber($to),
-            'length' => mb_strlen($text),
-            'text' => $text,
-        ]);
+        $context = ['to' => self::maskNumber($to), 'length' => mb_strlen($text)];
+
+        if (app()->isProduction()) {
+            Log::warning('[sms:log] Pilote log en production : SMS non envoyé.', $context);
+
+            return DeliveryResult::failed('sms: log driver, not delivered');
+        }
+
+        Log::info('[sms:log] SMS consigné (aucun envoi).', $context);
 
         return DeliveryResult::sent();
     }

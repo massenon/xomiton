@@ -56,6 +56,10 @@ return [
         'discreet' => 'Alerte urgente',
         'sms' => 'Xomiton – Alerte SOS :code près de :place. Accusez réception : :url',
         'sms_no_position' => 'Xomiton – Alerte SOS :code, zone :zone. Accusez réception : :url',
+        // Contact de confiance (personne sans compte) : vous, sans lien d'administration, consigne d'appel.
+        'sms_trusted' => 'Xomiton – SOS de :pseudo (:where). Vous êtes son contact de confiance : appelez-la tout de suite. Réf. :code',
+        'sms_trusted_unnamed' => 'Xomiton – SOS (:where) d’une personne qui vous a choisi·e comme contact de confiance. Appelez-la tout de suite. Réf. :code',
+        'where_unknown' => 'position indisponible',
     ],
 
     'sos_unacknowledged' => [
@@ -178,13 +182,13 @@ return [
     // Cloche de l'administration (P3-02 ContentReported, SyncConflict) : vous.
     'content_reported' => [
         'title' => 'Contenu signalé',
-        'body' => ':kind à modérer · motif : :reason.',
+        'body' => ':kind à modérer · motif : :reason.',
         'discreet' => 'Signalement à modérer',
     ],
 
     'sync_conflict' => [
         'title' => 'Conflit de synchronisation',
-        'body' => ':subject · champ « :field » : deux versions à arbitrer.',
+        'body' => ':subject · champ « :field » : deux versions à arbitrer.',
         'discreet' => 'Conflit de synchronisation',
     ],
 

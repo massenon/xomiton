@@ -50,14 +50,8 @@ it('ne sert pas un fichier privé en direct : hors racine web, et la route /stor
         ->and($response->getContent())->not->toContain('%PDF');
 });
 
-it('signedUrl refuse tant que la route media.signed n’est pas déclarée, et pour un disque hors liste', function (): void {
+it('signedUrl refuse un disque hors liste', function (): void {
     expect(fn () => $this->uploader->signedUrl('public', $this->media->path))->toThrow(InvalidArgumentException::class);
-
-    if (Route::has(MediaUploader::ROUTE_SIGNED)) {
-        $this->markTestSkipped('La route media.signed est déclarée dans routes/web.php : ce garde-fou n’a plus lieu d’être.');
-    }
-
-    expect(fn () => $this->uploader->signedUrl('local', $this->media->path))->toThrow(LogicException::class, 'media.signed');
 });
 
 it('sert un fichier privé par un lien signé valide, puis refuse une signature altérée ou expirée (403)', function (): void {

@@ -249,8 +249,8 @@ it('rend une image accessible et refuse le rendu sans alt', function (): void {
 it('construit <picture> WebP → repli + srcset depuis un média téléversé, sans AVIF fictif', function (): void {
     Storage::fake('public');
     $root = Storage::disk('public')->url('');
-    $variant = fn (string $name, int $w, int $h): \App\Application\Shared\StoredMedia => new \App\Application\Shared\StoredMedia('public', "covers/01-$name.webp", 'image/webp', 1000, $w, $h, 'c.jpg', "covers/01-$name.jpg");
-    $media = new \App\Application\Shared\StoredMedia('public', 'covers/01.webp', 'image/webp', 9000, 2048, 1365, 'c.jpg', 'covers/01.jpg', [
+    $variant = fn (string $name, int $w, int $h): App\Application\Shared\StoredMedia => new App\Application\Shared\StoredMedia('public', "covers/01-$name.webp", 'image/webp', 1000, $w, $h, 'c.jpg', "covers/01-$name.jpg");
+    $media = new App\Application\Shared\StoredMedia('public', 'covers/01.webp', 'image/webp', 9000, 2048, 1365, 'c.jpg', 'covers/01.jpg', [
         'thumb' => $variant('thumb', 320, 213), 'medium' => $variant('medium', 1024, 683), 'large' => $variant('large', 1600, 1067),
     ]);
 
@@ -266,7 +266,7 @@ it('construit <picture> WebP → repli + srcset depuis un média téléversé, s
         ->assertDontSee('covers/01.webp 2048w', false);
 
     // Forme tableau (colonne JSON) et sizes personnalisé ; une image déjà petite n'a ni variante ni srcset.
-    $small = new \App\Application\Shared\StoredMedia('public', 'avatars/02.webp', 'image/webp', 500, 300, 300, 'a.png', 'avatars/02.png');
+    $small = new App\Application\Shared\StoredMedia('public', 'avatars/02.webp', 'image/webp', 500, 300, 300, 'a.png', 'avatars/02.png');
     render('<x-img :media="$media" alt="Avatar" sizes="300px" />', ['media' => $small->toArray()])
         ->assertSee('<source type="image/webp" srcset="'.$root.'avatars/02.webp 300w" sizes="300px">', false)
         ->assertSee('src="'.$root.'avatars/02.png"', false)
@@ -277,7 +277,7 @@ it('construit <picture> WebP → repli + srcset depuis un média téléversé, s
         ->assertSeeInOrder(['type="image/avif"', 'type="image/webp"', 'src="/h.jpg"'], false);
 
     // Un média privé n'a pas d'URL publique : rendu refusé.
-    $private = new \App\Application\Shared\StoredMedia('local', 'images/x.webp', 'image/webp', 10, 100, 100, 'x.jpg');
+    $private = new App\Application\Shared\StoredMedia('local', 'images/x.webp', 'image/webp', 10, 100, 100, 'x.jpg');
     expect(fn () => render('<x-img :media="$media" alt="Privé" />', ['media' => $private]))->toThrow(ViewException::class, 'public disk');
 });
 
@@ -295,6 +295,9 @@ it('rend le logo depuis le dossier de marque', function (): void {
         ->assertSee('assets/images/xomiton/brand/icone-appli-bleu.svg', false)->assertSee('width="48" height="48"', false)->assertSee('alt="'.__('components.logo.alt').'"', false);
     render('<x-logo variant="icone-blanc" :width="32" :link="false" />')->assertSee('icone-appli-blanc.svg', false)->assertSee('width="32" height="32"', false);
     render('<x-logo variant="blanc" :link="false" />')->assertSee('logo-mono-blanc.svg', false);
+
+    // Variante inconnue : refus explicite plutôt qu'une image cassée.
+    expect(fn () => render('<x-logo variant="rouge" />'))->toThrow(ViewException::class, 'unknown variant');
 
     // Variante adaptative (en-têtes) : couleur en clair, sombre en sombre, classes sur les <img>, cible et classes du lien.
     render('<x-logo class="navbar-brand" :href="route(\'urgences\')" :adaptive="true" :width="140" img-class="navbar-brand-item" />')

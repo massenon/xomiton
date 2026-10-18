@@ -33,3 +33,26 @@ it('inline aussi le CSS critique sur le gabarit sobre, mais pas sur le gabarit d
 it('tient le budget du CSS critique : moins de 14 Ko non compressés', function (): void {
     expect(strlen(Vite::content('resources/css/critical.css')))->toBeLessThan(14 * 1024);
 });
+
+it('omet préchargement et CSS critique sans faire échouer la page quand Vite ne fournit rien', function (): void {
+    $this->withoutVite();
+
+    expect((string) $this->get('/')->assertOk()->getContent())
+        ->not->toContain('<style nonce="')
+        ->not->toContain('rel="preload" as="font"');
+});
+
+it('omet préchargement et CSS critique en vite dev (serveur Vite lancé)', function (): void {
+    $hot = tempnam(sys_get_temp_dir(), 'vite-hot');
+    file_put_contents($hot, 'http://localhost:5173');
+    Vite::useHotFile($hot);
+
+    try {
+        expect((string) $this->get('/')->assertOk()->getContent())
+            ->toContain('http://localhost:5173/@vite/client')
+            ->not->toContain('<style nonce="')
+            ->not->toContain('rel="preload" as="font"');
+    } finally {
+        @unlink($hot);
+    }
+});

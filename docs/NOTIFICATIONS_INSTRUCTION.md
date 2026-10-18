@@ -30,6 +30,12 @@ description: Système de notifications de Xomiton — canaux (cloche en applicat
 | Réaction ou commentaire | Auteur·e | cloche (regroupée) | — |
 | Rappel d'événement (veille) | Participant·es | push, e-mail | `rappel-evenement` |
 | Sondage terminé | Auteur·e | cloche | — |
+| Invitation reçue (groupe, événement) | Personne invitée | cloche (préférence « Communauté ») | — |
+| Invitation acceptée | Personne qui a invité | cloche (préférence « Communauté ») | — |
+| Réponse dans un sujet de forum suivi | Auteur·e et abonné·es du sujet | cloche (préférence « Communauté ») | — |
+| Demande d'adhésion à un groupe | Modération du groupe | cloche (préférence « Communauté ») | — |
+| Adhésion à un groupe acceptée | Demandeur·se | cloche (préférence « Communauté ») | — |
+| Événement créé dans un de mes groupes | Membres du groupe | cloche (préférence « Communauté ») | — |
 | Inscription newsletter | Abonné·e | e-mail (double opt-in) | `newsletter-confirmation` |
 | Contenu signalé | Modération | cloche admin | — |
 | Conflit de synchronisation | Admin | cloche admin | — |

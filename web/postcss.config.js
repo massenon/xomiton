@@ -17,8 +17,8 @@ const production = process.env.NODE_ENV === 'production' && process.env.XM_PURGE
 const safelist = {
     standard: [
         'html', 'body', 'light-mode-item', 'dark-mode-item', 'no-print',
-        // Préfixes et familles de classes jamais purgés.
-        /^xm-/, /^bi-/, /^wire:/, /^x-/, /^livewire-/, /^data-bs-/,
+        // Préfixes et familles de classes jamais purgés (`bs-` : posées par Popper / Bootstrap JS, ex. `bs-tooltip-auto`).
+        /^xm-/, /^bi-/, /^bs-/, /^wire:/, /^x-/, /^livewire-/, /^data-bs-/,
         // États et composants pilotés par le JS de Bootstrap, Alpine ou Livewire.
         /^(show|showing|hide|hiding|fade|collapse|collapsing|active|disabled|invalid|valid|is-invalid|is-valid|was-validated|visually-hidden|visually-hidden-focusable|modal|modal-backdrop|modal-open|offcanvas|offcanvas-backdrop|tooltip|popover|toast|dropdown|dropdown-menu|carousel|placeholder|placeholder-glow|placeholder-wave|table|form-)/,
         // Utilitaires Bootstrap composés dans le PHP et le JS (ex. `text-bg-${type}`, `bg-${status}`, `col-md-${n}`).

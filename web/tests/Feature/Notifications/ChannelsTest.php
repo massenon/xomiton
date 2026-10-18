@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Log;
  */
 function fakePushSender(DeliveryResult $result): object
 {
-    return new class($result) implements PushSender, FcmSender
+    return new class($result) implements FcmSender, PushSender
     {
         /** @var list<array{0: int, 1: PushMessage}> */
         public array $sent = [];
@@ -75,15 +75,39 @@ it('consigne la charge push et le SMS dans le journal avec les pilotes log, sans
     Log::shouldHaveReceived('info')->withArgs(fn (string $message, array $context): bool => str_starts_with($message, '[webpush:log]')
         && $context['subscription'] === $subscription->endpoint_hash
         && ! str_contains(json_encode($context), $subscription->endpoint)
-        && $context['payload']['data']['type'] === 'invitation')->once();
+        && $context['type'] === 'invitation'
+        && ! array_key_exists('payload', $context)
+        && ! str_contains((string) json_encode($context, JSON_UNESCAPED_UNICODE), 'Mariam'))->once();
 
+    // Ni le texte du SMS (code SOS, commune) ni le numéro en clair : longueur et numéro masqué seulement.
     Log::shouldHaveReceived('info')->withArgs(fn (string $message, array $context): bool => str_starts_with($message, '[sms:log]')
         && $context['to'] === LogSmsSender::maskNumber('+229 01 97 38 88 47')
         && ! str_contains($context['to'], '229019738')
-        && str_contains($context['text'], 'CODE'))->once();
+        && $context['length'] > 0
+        && ! array_key_exists('text', $context)
+        && ! str_contains((string) json_encode($context, JSON_UNESCAPED_UNICODE), 'CODE')
+        && ! str_contains((string) json_encode($context, JSON_UNESCAPED_UNICODE), 'Cotonou'))->once();
 
     expect($subscription->fresh()->last_used_at)->not->toBeNull()
         ->and(LogSmsSender::maskNumber('+229 01 97 38 88 47'))->toBe('*********8847');
+});
+
+it('fait échouer les pilotes log en production, avec un avertissement et sans contenu journalisé', function (): void {
+    $this->app->detectEnvironment(static fn (): string => 'production');
+    Log::spy();
+    $subscription = PushSubscription::factory()->for(User::factory()->withProfile())->create();
+    $message = new PushMessage('Nouveau message', 'Aperçu privé', '/messages/1', ['type' => 'new_message', 'id' => 1, 'url' => '/messages/1', 'category' => 'messages']);
+
+    $sms = (new LogSmsSender)->send('+229 01 97 38 88 47', 'SOS CODE Cotonou');
+    $push = (new LogPushSender)->send($subscription, $message);
+    $fcm = (new LogFcmSender)->send($subscription, $message);
+
+    expect($sms->ok)->toBeFalse()->and($sms->gone)->toBeFalse()
+        ->and($push->ok)->toBeFalse()->and($fcm->ok)->toBeFalse();
+
+    Log::shouldHaveReceived('warning')->withArgs(fn (string $log, array $context): bool => ! str_contains((string) json_encode($context, JSON_UNESCAPED_UNICODE), 'CODE')
+        && ! str_contains((string) json_encode($context, JSON_UNESCAPED_UNICODE), 'Aperçu privé'))->times(3);
+    Log::shouldNotHaveReceived('info');
 });
 
 it('remet le push à chaque abonnement Web Push et FCM de la personne par le pilote du canal', function (): void {

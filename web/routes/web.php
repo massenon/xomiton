@@ -13,8 +13,15 @@ use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Http\Controllers\Web\RobotsController;
 use App\Http\Controllers\Web\SignedMediaController;
+use App\Http\Controllers\Web\SitemapController;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 /*
  * Routes web : pages publiques (Blade) et espace membre / pair (Vue + Inertia, D9).
@@ -125,5 +132,10 @@ Route::permanentRedirect('/sos.php', '/sos');
 Route::permanentRedirect('/urgences.php', '/urgences');
 
 // --- Référencement (P4-11) : robots.txt et sitemap.xml natifs, sans fichier statique ----
-Route::get('/robots.txt', App\Http\Controllers\Web\RobotsController::class)->name('robots');
-Route::get('/sitemap.xml', App\Http\Controllers\Web\SitemapController::class)->name('sitemap');
+// Sans session ni cookies : une visite de robot n'ouvre pas de session et la réponse `Cache-Control: public` ne porte
+// aucun Set-Cookie qu'un cache partagé pourrait conserver.
+Route::withoutMiddleware([EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, ShareErrorsFromSession::class, ValidateCsrfToken::class])
+    ->group(function (): void {
+        Route::get('/robots.txt', RobotsController::class)->name('robots');
+        Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+    });

@@ -57,3 +57,5 @@ Rendu serveur des pages publiques (Blade), HTML sémantique, liens explorables (
 
 ## 10. Contrôle
 Lighthouse CI (mobile) sur l'accueil, une thématique, les ressources et le signalement à chaque demande de fusion ; échec si un budget est dépassé.
+
+Au build : `npm run build` = `vite build && node scripts/check-budgets.mjs` ; tailles gzip lues dans `public/build/manifest.json` (entrée + imports statiques) ; strict (échec) : `public.js` < 60 Ko, `critical.css` < 50 Ko ; indicatif (avertissement) : `xomiton.css` < 120 Ko, `app.ts` < 150 Ko ; `npm run build:nocheck` construit sans contrôle.

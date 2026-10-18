@@ -191,6 +191,24 @@ Tous les champs sont facultatifs ; un champ absent **ou `null`** est laissé tel
 
 **200** `{ "data": <user> }` (avec `profile.completion` recalculé) ; 422 par champ ; 401.
 
+### `PATCH me/settings` — réglages et préférences de notification (P3-02)
+
+Champs facultatifs ; seuls les champs présents sont modifiés (`App\Application\Auth\UpdateUserSettings`, journal `me.settings_updated` avec la liste des champs, jamais leurs valeurs).
+
+| Champ | Règles |
+|---|---|
+| `theme` | `light` \| `dark` \| `auto` |
+| `language` | locale active (`config('xomiton.locales')`, aujourd'hui `fr`) |
+| `notification_prefs` | objet `{catégorie: {in_app?, email?, push?}}` ; catégories : `securite`, `sos`, `alertes`, `messages`, `communaute`, `evenements`, `moderation`, `systeme` ; catégorie ou canal inconnu → 422 ; fusion avec l'existant |
+| `notification_digest` | `never` \| `daily` \| `weekly` — enregistré, **sans effet** tant que la commande `notifications:digest` (P3-07) n'est pas livrée |
+| `mask_sensitive_notifications` | bool — texte neutre pour toute notification sensible (`isSensitive()`) |
+| `sos_share_gps` | bool |
+| `neutral_tab_title` | bool |
+
+`securite` et `sos` sont **verrouillées** (`locked` dans `config/xomiton.php`) : une valeur `false` envoyée est ignorée et la réponse les renvoie à `true` (`App\Application\Shared\NotificationPreferences`).
+
+**200** `{ "data": <user> }` (avec `settings` à jour) ; 422 par champ ; 401.
+
 ### `GET me/sessions` — « Appareils connectés »
 
 **200** `{ "data": [ { "id": "token-12", "kind": "token", "name": "Pixel 7", "ip": null, "current": true, "last_active_at": "…", "created_at": "…" }, { "id": "web-3f9…", "kind": "web", "name": "Mozilla/5.0 …", "ip": "41.79.1.1", "current": false, "last_active_at": "…", "created_at": null } ], "meta": { "total": 2 } }`
@@ -201,13 +219,25 @@ Tous les champs sont facultatifs ; un champ absent **ou `null`** est laissé tel
 
 `id` = `token-<n>` ou `web-<empreinte>` tel que listé. Révoque uniquement un appareil de la personne connectée (révoquer le jeton courant équivaut à `auth/logout`). **200** `{ "data": { "revoked": true, "id": "…" } }` ; 404 `not_found` (inconnu ou d'un autre compte) ; 401. Journal `auth.session_revoked`.
 
-## 4. Divers
+## 4. Référentiels publics (P3-06) — sans authentification
+
+`GET zones`, `GET violence-types`, `GET needs` : lecture depuis le cache serveur 24 h (`App\Application\Shared\Referentials`, invalidé à toute écriture d'un référentiel par `App\Observers\ReferentialObserver`). Réponses `Cache-Control: public, max-age=3600` (`xomiton.referentials.http_max_age`) et `ETag` dérivé du contenu ; `If-None-Match` identique → **304** sans corps. Seules les entrées actives sortent, triées par `position`.
+
+| Route | `data[]` |
+|---|---|
+| `GET zones` | `{ id, name, slug, position, communes: [{ id, name, slug, position }] }` (départements et communes actives) |
+| `GET violence-types` | `{ id, slug, label, icon, description, position }` |
+| `GET needs` | `{ id, slug, label, routed_role, position }` (`routed_role` : rôle d'annuaire qui reçoit l'alerte, ou `null`) |
+
+**200** `{ "data": [ … ], "meta": { "count": n } }`.
+
+## 5. Divers
 
 ### `GET health`
 
 **200** `{ "data": { "status": "ok", "version": "1.0" } }` — sans authentification.
 
-## 5. Parcours Flutter de référence
+## 6. Parcours Flutter de référence
 
 ```
 register ──201 token──► (accès limité) ──otp/verify signup──► email_verified
@@ -218,6 +248,6 @@ password/forgot ──202──► otp/verify reset ──reset_token──► p
 
 Journal d'audit (`audit_logs`) : `auth.registered`, `auth.authenticated`, `auth.token_issued`, `auth.otp_verified`, `auth.email_verified`, `auth.password_reset_requested`, `auth.password_reset`, `auth.logout`, `auth.session_revoked`, `auth.failed`, `auth.refused_suspended`, `auth.refused_maintenance`. Aucune valeur sensible (mot de passe, code, jeton) n'y est écrite.
 
-## 6. Familles à venir
+## 7. Familles à venir
 
-`me/settings`, `me/security`, `me/newsletter`, `me/push-subscriptions`, `me/export`, `DELETE me` (P6), `feed/`, `posts/` (P7), `conversations/`, `groups/`, `events/`, `forums/` (P8), `thematiques/`, `ressources/`, `urgences/`, `zones/` (P4-P5), `signalements/`, `sos/` (P5), `pair/`, `sync/` (P9), `notifications/` (P3-P6). Chaque famille complète ce document à sa livraison.
+`me/security`, `me/newsletter`, `me/push-subscriptions`, `me/export`, `DELETE me` (P6), `feed/`, `posts/` (P7), `conversations/`, `groups/`, `events/`, `forums/` (P8), `thematiques/`, `ressources/`, `urgences/` (P4-P5), `signalements/`, `sos/` (P5), `pair/`, `sync/` (P9), `notifications/` (P3-P6). Chaque famille complète ce document à sa livraison.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Seo;
 
+use App\Http\Controllers\Web\PlaceholderController;
 use App\Models\Resource;
 use App\Models\Thematique;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,11 +16,15 @@ use Illuminate\Support\Facades\Route;
  * Plan du site natif (P4-11, SEO_CONTENT_GUIDE_INSTRUCTION.md §1) : seules les pages indexées y figurent, avec leur
  * `lastmod`. Décision : pas de spatie/laravel-sitemap — son crawler n'a pas sa place sur un hébergement mutualisé
  * (D7) et le contenu indexable est connu (routes publiques + contenus publiés en base). Le XML est mis en cache 1 h
- * (`xomiton.seo.sitemap_cache_seconds`, cache=file) ; `flush()` l'invalide après une publication.
+ * (`xomiton.seo.sitemap_cache_seconds`, cache=file) ; `flush()` l'invalide, à appeler par la publication admin (P11).
  *
  * Jamais listés : l'administration, l'API, l'espace membre (routes `auth`, ADR-30), l'OTP, les pages de newsletter,
- * les résultats de recherche. Une route statique n'est retenue que si elle existe, est publique (aucun middleware
- * `auth`) et hors des préfixes interdits ; `/evenements` n'apparaîtra donc qu'une fois sa liste publique livrée (Q35).
+ * les résultats de recherche, les écrans provisoires (PlaceholderController, servis en noindex). Une route n'est retenue
+ * que si elle existe, est publique (aucun middleware `auth`), n'est plus provisoire et hors des préfixes interdits :
+ * chaque page apparaît quand sa phase la livre ; `/evenements` une fois sa liste publique livrée (Q35).
+ *
+ * Les `<loc>` partent de `config('app.url')`, jamais de l'hôte de la requête : le XML mis en cache sous une clé globale
+ * ne peut pas être empoisonné par un en-tête Host (cohérent avec l'annonce Sitemap de robots.txt).
  */
 final class SitemapBuilder
 {
@@ -68,26 +73,26 @@ final class SitemapBuilder
 
         foreach (self::STATIC_ROUTES as $name) {
             if ($this->isPublicRoute($name)) {
-                $urls[] = ['loc' => route($name), 'lastmod' => null];
+                $urls[] = ['loc' => self::absolute($name), 'lastmod' => null];
             }
         }
 
         if ($this->isPublicRoute('thematiques.show')) {
             foreach (self::published(Thematique::query()) as $row) {
-                $urls[] = ['loc' => route('thematiques.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
+                $urls[] = ['loc' => self::absolute('thematiques.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
             }
         }
 
         if ($this->isPublicRoute('ressources.show')) {
             foreach (self::published(Resource::query()->whereNot('kind', 'article')) as $row) {
-                $urls[] = ['loc' => route('ressources.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
+                $urls[] = ['loc' => self::absolute('ressources.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
             }
         }
 
         // Les actualités sont des ressources `kind = article` (DATABASE_DICTIONARY.md `resources`, Q1).
         if ($this->isPublicRoute('actualites.show')) {
             foreach (self::published(Resource::query()->news()) as $row) {
-                $urls[] = ['loc' => route('actualites.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
+                $urls[] = ['loc' => self::absolute('actualites.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
             }
         }
 
@@ -103,6 +108,14 @@ final class SitemapBuilder
     }
 
     /**
+     * URL absolue sur la racine canonique (`app.url`), indépendante de l'hôte et du schéma de la requête.
+     */
+    private static function absolute(string $name, ?string $slug = null): string
+    {
+        return rtrim((string) config('app.url'), '/').route($name, $slug === null ? [] : [$slug], false);
+    }
+
+    /**
      * @template TModel of \Illuminate\Database\Eloquent\Model
      *
      * @param  Builder<TModel>  $query
@@ -114,7 +127,8 @@ final class SitemapBuilder
     }
 
     /**
-     * La route nommée existe, est publique (aucun middleware `auth`, `auth:*`, `verified`, `can:*`) et n'est pas exclue.
+     * La route nommée existe, est publique (aucun middleware `auth`, `auth:*`, `verified`, `can:*`), n'est plus servie
+     * par PlaceholderController (écran provisoire en noindex) et n'est pas exclue.
      */
     private function isPublicRoute(string $name): bool
     {
@@ -128,13 +142,17 @@ final class SitemapBuilder
             return false;
         }
 
+        if ($route->getControllerClass() === PlaceholderController::class) {
+            return false;
+        }
+
         foreach ($route->gatherMiddleware() as $middleware) {
             if (preg_match('/^(auth|verified|can)(:|$)/', $middleware) === 1) {
                 return false;
             }
         }
 
-        return self::isAllowed(url($route->uri()));
+        return self::isAllowed('/'.ltrim($route->uri(), '/'));
     }
 
     /**

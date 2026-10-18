@@ -17,6 +17,10 @@
 @php
     $aliases = ['blanc' => 'mono-blanc', 'icone' => 'icone-bleu'];
     $variant = $aliases[$variant] ?? $variant;
+    $known = ['couleur', 'sombre', 'mono-encre', 'mono-bleu', 'mono-blanc', 'vertical-couleur', 'vertical-sombre', 'icone-bleu', 'icone-blanc', 'icone-sombre'];
+    if (! $adaptive && ! in_array($variant, $known, true)) {
+        throw new \InvalidArgumentException(sprintf('<x-logo> unknown variant [%s].', $variant));
+    }
     $family = match (true) {
         str_starts_with($variant, 'vertical') => 'vertical',
         str_starts_with($variant, 'icone') => 'icone',

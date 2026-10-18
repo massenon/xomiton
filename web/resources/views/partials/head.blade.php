@@ -33,9 +33,15 @@
     fonts.css) ; les titres en 700 / 800 utilisent le fichier latin, préchargé ici. Les sous-ensembles latin étendu et
     vietnamien restent chargés à la demande par unicode-range.
 --}}
-<link rel="preload" as="font" type="font/woff2" crossorigin href="{{ Illuminate\Support\Facades\Vite::asset('resources/fonts/montserrat/Montserrat-latin-normal.woff2') }}">
-@if ($critical)
+{{-- Sans manifest (build absent) ou serveur Vite lancé, préchargement et CSS critique sont omis : @vite garde la main. --}}
+@php($hot = Illuminate\Support\Facades\Vite::isRunningHot())
+@php($fontUrl = $hot ? '' : rescue(fn () => Illuminate\Support\Facades\Vite::asset('resources/fonts/montserrat/Montserrat-latin-normal.woff2'), '', false))
+@php($criticalCss = $critical && ! $hot ? rescue(fn () => Illuminate\Support\Facades\Vite::content('resources/css/critical.css'), '', false) : '')
+@if ($fontUrl !== '')
+<link rel="preload" as="font" type="font/woff2" crossorigin href="{{ $fontUrl }}">
+@endif
+@if ($criticalCss !== '')
     {{-- CSS critique en ligne (au-dessus de la ligne de flottaison), avant le CSS principal qui garde le dernier mot. --}}
-    <style nonce="{{ Illuminate\Support\Facades\Vite::cspNonce() }}">{!! Illuminate\Support\Facades\Vite::content('resources/css/critical.css') !!}</style>
+    <style nonce="{{ Illuminate\Support\Facades\Vite::cspNonce() }}">{!! $criticalCss !!}</style>
 @endif
 @vite($css ?? ['resources/css/xomiton.css'])
