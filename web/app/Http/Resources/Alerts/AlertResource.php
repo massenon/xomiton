@@ -13,7 +13,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * Alerte vue par la personne qui l'a envoyée (réponse 201 de création, `GET sos/{id}` ; P5-06 l'étend avec
  * `notified`). Jamais la position, le contact, le récit ni la clé d'idempotence : la personne les connaît et l'API
- * ne les redonne pas (P5-02 §4.9). `type` en valeurs API (Q29 : report | need | sos).
+ * ne les redonne pas (P5-02 §4.9) ; un SOS dit seulement si une position est jointe (`located`, P5-05 : « Envoyée sans
+ * position GPS » après le bouton flottant ou un rechargement). `type` en valeurs API (Q29 : report | need | sos).
  *
  * @property Alert $resource
  */
@@ -53,6 +54,8 @@ final class AlertResource extends JsonResource
             'acknowledged_at' => $alert->acknowledged_at?->toIso8601String(),
             'cancelled' => $alert->isCancelled(),
             'safe' => $alert->isSafe(),
+            // Valeur brute (chiffrée) : savoir qu'une position existe sans la déchiffrer.
+            'located' => $this->when($alert->isSos(), static fn (): bool => $alert->getRawOriginal('lat') !== null && $alert->getRawOriginal('lng') !== null),
             'can_cancel_until' => $alert->isSos() && ! $alert->isCancelled() ? $alert->cancelWindowEndsAt()->toIso8601String() : null,
             'routed' => $alert->routedContact === null ? null : new RoutedContactResource($alert->routedContact),
             'sos_token' => $this->when($this->sosToken !== null, $this->sosToken),

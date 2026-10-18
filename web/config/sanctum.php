@@ -20,12 +20,13 @@ return [
     |
     */
 
-    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
-        '%s%s',
+    // L'hôte d'APP_URL reste stateful même quand SANCTUM_STATEFUL_DOMAINS est renseigné (cPanel : variable recopiée de
+    // .env.example) : les pages Blade du site envoient SOS et signalements par l'API avec la session (ADR-26) ; sans
+    // lui, le SOS du bouton flottant (P5-08) partirait sans lien avec le compte.
+    'stateful' => array_values(array_unique(array_filter(array_map('trim', explode(',', env(
+        'SANCTUM_STATEFUL_DOMAINS',
         'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
-        Sanctum::currentApplicationUrlWithPort(),
-        // Sanctum::currentRequestHost(),
-    ))),
+    ).Sanctum::currentApplicationUrlWithPort()))))),
 
     /*
     |--------------------------------------------------------------------------

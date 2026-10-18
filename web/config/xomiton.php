@@ -20,6 +20,8 @@ return [
         'max_retry_attempts' => (int) env('XOMITON_SOS_MAX_RETRIES', 10),
         // Longueur du code de suivi anonyme (alerts.tracking_code).
         'tracking_code_length' => 10,
+        // P5-04 : durée de vie du brouillon local de /signaler (IndexedDB, sans contact, position ni preuves), en jours.
+        'draft_days' => 7,
         // RG-05 et Q27 (P5-07) : délais par type depuis la création, en minutes ; null = pas de rappel / pas
         // d'escalade. SOS : escalade au point focal national à 5 min ; signalement et besoin : rappel au contact
         // routé à 24 h, escalade à 48 h (décision par défaut, IMPLEMENTATION_PLAN §7). Lus par App\Support\EscalationPolicyFactory,
@@ -63,6 +65,12 @@ return [
         'sos_admin_sms_max' => 2,
         // Durée du sondage de GET sos/{id} (sos_poll_seconds ci-dessus) après la création, en minutes (P5-03).
         'sos_poll_minutes' => 30,
+        // Bouton SOS (P5-05, P5-08, FR-ALT-03, Q39) : maintien (ms), décompte annulable (s), attente de la position sur
+        // /sos (s) puis envoi automatique du repli département / commune sans GPS (s ; délai total à trancher, Q61).
+        'sos_hold_ms' => 2000,
+        'sos_countdown_seconds' => 5,
+        'sos_locate_seconds' => 12,
+        'sos_manual_seconds' => 15,
         // Suivi par code : une alerte close depuis plus de N jours répond « code inconnu ».
         'tracking_visible_days' => 90,
         'description_min' => 20,
@@ -104,6 +112,8 @@ return [
         'api_per_minute' => 60,
         // Assistant public de l'accueil (POST assistant/question, P4-01) : par IP, en plus de api_per_minute.
         'assistant_per_minute' => 20,
+        // Téléchargement et lecture d'une ressource (P4-03, limiteur `resource_download`) : par IP, adresse et ressource.
+        'resource_download_per_minute' => 60,
         // SOS (ARCH §4 : « sans limite bloquante, journalisé ») : limiteur `sos`, jamais de 429 ; au-delà de ce nombre
         // d'envois par minute et par IP, chaque envoi est journalisé et l'administration prévenue (P2-08, P5-09).
         'sos_log_per_minute_per_ip' => 5,
@@ -340,11 +350,26 @@ return [
      */
     'content' => [
         'thematiques_per_load' => 6,
+        // P4-03 : même pas que les thématiques (grille 2 / 3 colonnes sans rangée orpheline) ; « Fiches à télécharger ».
+        'ressources_per_load' => 6,
+        'ressources_files_count' => 6,
         'max_per_load' => 300,
         'related_count' => 3,
         'contacts_max' => 4,
         'faq_min' => 3,
         'faq_max' => 5,
+        // P4-03 : catégories dont les ressources portent la mention « informations éducatives, pas un conseil juridique ».
+        'legal_notice_categories' => ['droits'],
+    ],
+
+    /*
+     * Bibliothèque hors connexion des ressources (P4-03, ADR-26) : interrupteur « Hors ligne » par ressource, marquage
+     * local par appareil (localStorage + événement `xm:offline-resources`) et badge « Disponible hors connexion » des
+     * ressources marquées par l'équipe. La mise en cache effective revient au service worker (P5-10) : désactivée par
+     * défaut, aucune promesse hors connexion n'est affichée tant que P5-10 ne passe pas XOMITON_OFFLINE_LIBRARY à true.
+     */
+    'offline' => [
+        'library_enabled' => (bool) env('XOMITON_OFFLINE_LIBRARY', false),
     ],
 
     /*

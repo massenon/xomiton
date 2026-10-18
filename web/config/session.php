@@ -49,7 +49,8 @@ return [
     |
     */
 
-    'encrypt' => env('SESSION_ENCRYPT', false),
+    // Lot signaler (P5-04) : contenu chiffré par défaut (récit et contact flashés après une erreur de validation).
+    'encrypt' => env('SESSION_ENCRYPT', true),
 
     /*
     |--------------------------------------------------------------------------

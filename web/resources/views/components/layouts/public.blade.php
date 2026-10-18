@@ -27,7 +27,8 @@
     </main>
     @include('partials.public-footer')
     @auth
-        <a class="xm-sos-fab no-print" href="{{ route('sos') }}" title="{{ __('common.sos_title') }}"><span class="pulse" aria-hidden="true"></span> {{ __('common.sos') }}</a>
+        {{-- P5-08 : bouton SOS flottant (maintien 2 s + décompte 5 s, z-index 1060 au-dessus des modales et des toasts). --}}
+        <x-sos-fab />
     @endauth
     @vite('resources/js/public.js')
     {{ $scripts ?? '' }}

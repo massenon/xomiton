@@ -4,22 +4,31 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\PurifiedHtml;
 use App\Enums\ContentStatus;
 use App\Enums\ResourceKind;
+use App\Support\LikePattern;
+use App\Support\MediaUrl;
 use Database\Factories\ResourceFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Ressource documentaire ou actualité (DATABASE_DICTIONARY.md §3 `resources`).
+ * Ressource documentaire ou actualité (DATABASE_DICTIONARY.md §3 `resources`). Le fichier téléchargeable (`file_path`)
+ * vit sur le disque privé et n'est servi que par lien signé (`ressources.download` → `media.signed`, P4-03) ;
+ * l'illustration (`image_path`) vit dans `public/assets` ou sur le disque public, jamais sur le disque privé.
  */
 class Resource extends Model
 {
     /** @use HasFactory<ResourceFactory> */
     use HasFactory, SoftDeletes;
+
+    /** Couverture par défaut (ni illustration ni thématique liée). */
+    public const DEFAULT_COVER = 'assets/images/xomiton/covers/og-default.jpg';
 
     /** @var list<string> */
     protected $fillable = [
@@ -51,6 +60,8 @@ class Resource extends Model
         return [
             'kind' => ResourceKind::class,
             'status' => ContentStatus::class,
+            // HTML éditorial nettoyé à l'écriture (ADR-24, même profil que les thématiques) : la fiche l'affiche avec {!! !!}.
+            'body' => PurifiedHtml::class,
             'file_size' => 'integer',
             'duration_minutes' => 'integer',
             'downloads_count' => 'integer',
@@ -111,6 +122,80 @@ class Resource extends Model
     public function scopeOfflineAvailable(Builder $query): void
     {
         $query->where('is_offline_available', true);
+    }
+
+    /**
+     * Catalogue public `/ressources` (P4-03) : ressources publiées hors actualités (`article` vit sur `/actualites`, Q1).
+     *
+     * @param  Builder<\App\Models\Resource>  $query
+     */
+    public function scopeCatalog(Builder $query): void
+    {
+        $query->published()->whereNot('kind', ResourceKind::Article);
+    }
+
+    /**
+     * Recherche « contient » sur le titre et le résumé, jokers LIKE de la saisie neutralisés (LikePattern).
+     *
+     * @param  Builder<\App\Models\Resource>  $query
+     */
+    public function scopeSearch(Builder $query, string $term): void
+    {
+        $pattern = LikePattern::contains($term);
+
+        $query->where(static fn (Builder $where) => $where
+            ->whereRaw(LikePattern::clause('title'), [$pattern])
+            ->orWhereRaw(LikePattern::clause('summary'), [$pattern]));
+    }
+
+    /** Fichier à télécharger : type porté par un fichier (vidéo, audio, PDF) et fichier renseigné. */
+    public function isDownloadable(): bool
+    {
+        return $this->kind->hasFile() && (string) $this->file_path !== '';
+    }
+
+    /**
+     * Ressource qui renvoie vers un site externe (aucun fichier à télécharger) par une adresse web absolue `http(s)` :
+     * `javascript:`, `data:` ou une adresse sans hôte ne sont jamais rendus en lien (l'échappement Blade ne les arrête
+     * pas). L'admin (P12-03) et l'API (P6-08) valideront en plus `url:https` à l'écriture.
+     */
+    public function isExternal(): bool
+    {
+        return ! $this->isDownloadable() && self::isWebUrl($this->external_url);
+    }
+
+    private static function isWebUrl(mixed $url): bool
+    {
+        if (! is_string($url) || $url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
+            return false;
+        }
+
+        $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+
+        return in_array($scheme, ['http', 'https'], true) && (string) parse_url($url, PHP_URL_HOST) !== '';
+    }
+
+    /** Vidéo ou audio lisible dans la page (fichier hébergé). */
+    public function isPlayable(): bool
+    {
+        return in_array($this->kind, [ResourceKind::Video, ResourceKind::Audio], true) && $this->isDownloadable();
+    }
+
+    /**
+     * Couverture : illustration propre si le fichier existe, sinon couverture de la thématique liée, sinon l'image par
+     * défaut. La thématique n'est lue que si l'illustration manque (listes : la charger avec `with('thematique')`).
+     *
+     * @return Attribute<string, never>
+     */
+    protected function coverUrl(): Attribute
+    {
+        return Attribute::get(function (): string {
+            if (MediaUrl::exists($this->image_path)) {
+                return MediaUrl::resolve($this->image_path, self::DEFAULT_COVER);
+            }
+
+            return $this->thematique_id !== null && $this->thematique !== null ? $this->thematique->cover_url : asset(self::DEFAULT_COVER);
+        });
     }
 
     public function isPublished(): bool

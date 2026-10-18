@@ -98,3 +98,18 @@ Conséquences :
 - Les composants Vue `Xm*` reproduisent **exactement le HTML** des composants Blade `x-*` et du prototype `prototype_social/` (thème Social, classes `xm-*`) : un seul design.
 - Les pages publiques ne chargent jamais Vue (SEO et poids) ; l'administration reste en Livewire (modales CRUD, DataTables, SweetAlert2).
 - L'équipe maintient deux technologies côté interface (Vue et Livewire) : conventions dans `docs/DEVELOPMENT_STANDARDS.md`.
+
+## Q21 — Bouton SOS : interaction du design system, au-dessus des modales (18 octobre 2026)
+Décision d'équipe (plan `docs/IMPLEMENTATION_PLAN.md` §7, Q21 b), appliquée par P5-05 et P5-08 ; écart volontaire au prototype `prototype_social/sos.php`.
+- **Interaction** : maintien 2 s (anneau de progression) → décompte 5 s annulable (« Annuler » 52 px, haut contraste) → envoi ; alternatives : double appui, Entrée ou activation par lecteur d'écran, puis confirmation ; Espace maintenue 2 s. Le prototype envoyait au clic simple après 3 s.
+- **Tailles** : 64 px (bouton flottant, `x-sos-button`), 96 px sur la page `/sos` (prototype : 280 px).
+- **Après l'envoi** : « Ton alerte est partie » (`aria-live="assertive"`), personnes prévenues, appel du contact principal, « Je suis en sécurité », repentir 60 s (absents du prototype). Case « Partager ma position » cochée par défaut, dernier choix mémorisé ; repli département / commune sans GPS, envoi automatique au bout de 15 s.
+- **Superposition** : bouton flottant `.xm-sos-fab` à **z-index 1060**, au-dessus des modales (1055) conformément à D8 ; toasts (1090) en haut à droite, jamais sur le bouton. Le prototype et l'ancien composant étaient à 1040 (corrigé dans `web/` et `design-system/blade/`). Ouvrir le panneau SOS ferme une modale ouverte (pièges de focus concurrents).
+- **Espaces connectés** : le bouton flottant envoie directement (sans GPS : la géolocalisation n'est accordée qu'à `/sos` et `/signaler`, département du profil joint), puis ouvre le suivi `/sos?alerte=`.
+
+## Q11 — Signalement : six étapes du design system, écarts au prototype (18 octobre 2026)
+Décision d'équipe (plan `docs/IMPLEMENTATION_PLAN.md` §7, Q11 a et Q18 a), appliquée par P5-04 ; écart volontaire au prototype `prototype_social/signalement.php`.
+- **Parcours** : six étapes « Étape n sur 6 » (type · faits · besoins et lieu · preuves · contact · vérification, `xomiton/pages/signaler-et-sos.md`) au lieu du formulaire unique à onglets Dénonciation / Besoins du prototype ; même charge utile web et mobile. Sans JavaScript, les six étapes s'affichent à la suite et partent en un seul envoi.
+- **« Une question par écran sur mobile »** (`signaler-et-sos.md`) : appliquée étape par étape, pas champ par champ. Les étapes 1 (signalement ou besoin, type de violence), 3 (besoins, département, commune, position) et 5 (anonymat, recontact, moyen et canal) regroupent des questions dont l'une dépend de l'autre ; les découper porterait le parcours à une douzaine d'écrans, loin des 4 étapes de FR-ALT-01. Chaque étape tient sur un écran mobile, avec « Retour » et un seul bouton primaire.
+- **Gabarit** : sobre 640 px pour tout le monde (Q18 a), sans le visuel `hero-10` ni la colonne `col-lg-8` / `col-lg-9` du prototype.
+- **Badge** : « Sans compte · anonyme » au lieu de « Sans compte · sans trace » : un brouillon local (sans contact, position ni preuves, `xomiton.alerts.draft_days` jours) reste sur l'appareil jusqu'à l'envoi ; « Retour » à la première étape ou « Effacer le brouillon » le supprime, comme l'annonce l'encadré d'anonymat. Côté serveur : aucune IP ni user agent pour une session d'invité·e, contenu des sessions chiffré.

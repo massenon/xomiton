@@ -43,7 +43,7 @@ return [
         ],
         'signaler' => [
             'title' => 'Signaler une violence, sans compte et anonymement – Xomiton',
-            'description' => 'Signalez une violence ou exprimez un besoin d’aide, sans compte ni adresse IP enregistrée. Une personne formée lit votre message sous 24 h et l’oriente.',
+            'description' => 'Signale une violence ou exprime un besoin d’aide, sans compte ni adresse IP enregistrée. Une personne formée lira ton message sous 24 h et t’orientera.',
         ],
         'sos' => [
             'title' => 'SOS : envoyer une alerte avec sa position GPS – Xomiton',

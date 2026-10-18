@@ -140,4 +140,16 @@ describe('xmNotified', () => {
     expect(c.primary().key).toBe('trusted:3');
     expect(c.telHref('+229 01 97 38 88 47')).toBe('+2290197388847');
   });
+
+  it('rappelle onUpdate avec chaque réponse (page /sos : statut, contact principal), même si l’hôte échoue', async () => {
+    const data = { notified: [person('contact:4', 'seen')], status: 'acknowledged', primary_contact: null };
+    globalThis.fetch = vi.fn(async () => reply(200, { data }));
+    const onUpdate = vi.fn(() => { throw new Error('hôte'); });
+    const c = make({ onUpdate });
+    await c.tick();
+    expect(onUpdate).toHaveBeenCalledWith(data);
+    expect(c.people[0].state).toBe('seen');
+    expect(c.stopped).toBe(false);
+    c.stop();
+  });
 });

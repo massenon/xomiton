@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Seo\SitemapBuilder;
 use App\Enums\ContentStatus;
+use App\Http\Controllers\Web\PlaceholderController;
 use App\Models\Resource;
 use App\Models\Thematique;
 use App\Support\Settings;
@@ -81,8 +82,18 @@ it('répond 404 hors production et quand seo.allow_indexing est à faux', functi
 it('ne liste aucun écran provisoire (PlaceholderController, noindex)', function (): void {
     Thematique::factory()->create(['slug' => 'droits-des-femmes-benin']);
 
-    // Livrés : accueil (P4-01) et thématiques (P4-02) ; les autres pages sont encore provisoires.
-    expect(sitemapLocs(sitemapXml()))->toBe([canonical('/'), canonical('/thematiques'), canonical('/thematiques/droits-des-femmes-benin')]);
+    // Livrés : accueil (P4-01), thématiques (P4-02), SOS (P5-05) ; les pages encore servies par PlaceholderController
+    // (noindex) n'y figurent jamais. Liste non figée : chaque lot qui livre une page l'y fait entrer.
+    $locs = sitemapLocs(sitemapXml());
+    expect($locs)->toContain(canonical('/'), canonical('/thematiques'), canonical('/thematiques/droits-des-femmes-benin'), canonical('/sos'));
+
+    foreach (SitemapBuilder::STATIC_ROUTES as $name) {
+        $route = Route::getRoutes()->getByName($name);
+
+        if ($route !== null && $route->getControllerClass() === PlaceholderController::class) {
+            expect($locs)->not->toContain(route($name));
+        }
+    }
 });
 
 it('répond un XML valide contenant l’accueil et les pages publiques statiques livrées', function (): void {

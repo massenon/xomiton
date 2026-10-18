@@ -2,10 +2,8 @@
 :root { --xm-blue:var(--xm-blue-500); --xm-blue-dark:var(--xm-blue-700); --xm-red:var(--xm-red-500); --xm-violet:var(--xm-violet-700); --xm-rose:var(--xm-rose-600); }
 
 /* ---------- Généralités ---------- */
-.xm-sos-fab { position:fixed; right:18px; bottom:18px; z-index:1040; display:flex; align-items:center; gap:.5rem; padding:.7rem 1.1rem; border-radius:999px; background:var(--xm-red); color:var(--xm-neutral-0); font-weight:700; box-shadow:0 8px 24px rgba(227,14,14,.45); text-decoration:none; }
-.xm-sos-fab:hover { background:var(--xm-red-600); color:var(--xm-neutral-0); }
-.xm-sos-fab .pulse { width:10px; height:10px; border-radius:50%; background:var(--xm-neutral-0); animation:xmpulse 1.4s infinite; }
-@keyframes xmpulse { 0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)} 100%{box-shadow:0 0 0 12px rgba(255,255,255,0)} }
+/* Bouton SOS flottant (P5-08) : conteneur fixe de <x-sos-button> (64 px, design system, Q21 b), au-dessus des modales (D8). */
+.xm-sos-fab { position:fixed; right:max(18px, env(safe-area-inset-right)); bottom:max(18px, env(safe-area-inset-bottom)); z-index:1060; }
 .xm-offline-bar { display:none; position:sticky; top:0; z-index:1100; background:var(--xm-amber-500); color:var(--xm-neutral-900); text-align:center; padding:.4rem 1rem; font-size:.85rem; font-weight:600; }
 body.xm-is-offline .xm-offline-bar { display:block; }
 .xm-sync-badge { display:inline-flex; align-items:center; gap:.35rem; font-size:.75rem; }

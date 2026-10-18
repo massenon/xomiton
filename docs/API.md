@@ -341,7 +341,7 @@ Alertes **non anonymes** du compte (signalements, besoins et SOS), la plus réce
 
 `withoutMiddleware('throttle:api')` + `idempotent:required,nonblocking,limit=sos` : aucun refus de débit (au-delà de 5/min par IP, journal + cloche admin) ; même clé pendant que l'envoi d'origine est en cours → **202** `{ "data": { "status": "processing", "retry_after": 1 } }`, la boîte d'envoi rejoue (§1.3). Corps facultatif (`StoreSosRequest`) : `message` (≤ 1000), `phone` (béninois), `share_location`, `lat` · `lng` · `accuracy` (ignorés si `share_location = false`), `zone_id` · `commune_id` (repli manuel), `needs[]`. Créé par `TriggerSos` : critique, besoin `securite`, routage RG-04, notifications dans la requête (P5-03).
 
-**201** état du SOS (`SosStatusResource`) : champs d'`AlertResource` (§6.1) + `sos_token` (SOS **anonyme** seulement, rendu aussi aux rejeux : à garder sur l'appareil, en-tête `X-Sos-Token` des appels suivants, Q52 b) + `notified[]` + `primary_contact` + `meta.poll_interval_seconds` ; `Location: /api/v1/sos/{id}`. Erreurs : **422** `validation_failed`, `idempotency_key_*`.
+**201** état du SOS (`SosStatusResource`) : champs d'`AlertResource` (§6.1) + `located` (booléen : position jointe ou non, jamais la position) + `sos_token` (SOS **anonyme** seulement, rendu aussi aux rejeux : à garder sur l'appareil, en-tête `X-Sos-Token` des appels suivants, Q52 b) + `notified[]` + `primary_contact` + `meta.poll_interval_seconds` ; `Location: /api/v1/sos/{id}`. Erreurs : **422** `validation_failed`, `idempotency_key_*`.
 
 ### 6.5 `GET sos/{id}` — statut et personnes prévenues
 

@@ -21,6 +21,8 @@ final class RobotsController extends Controller
         '/admin',
         '/api',
         '/storage',
+        // Fichiers privés servis par lien signé (P3-04, P4-03) : jamais explorés ; barre finale, `/medias` reste à part.
+        '/media/',
         '/newsletter/confirmer',
         '/newsletter/desinscription',
         '/otp',

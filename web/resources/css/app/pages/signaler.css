@@ -1,0 +1,75 @@
+/*
+ * Signaler, confirmation et suivi par code (P5-04, design-system/xomiton/pages/signaler-et-sos.md) : le plus sobre du
+ * produit — une colonne (gabarit plain 640 px), aucun décor ni mouvement, consigne ≥ 18 px, cibles ≥ 44 px.
+ * Jetons --xm-* et classes du thème Social seulement.
+ */
+.xm-report__lead {
+  font-size: max(1.125rem, var(--xm-fs-lead, 1.125rem));
+  line-height: var(--xm-lh-body);
+}
+
+.xm-report__choice {
+  border: 1px solid var(--xm-border);
+  border-radius: var(--xm-radius-md);
+  padding: var(--xm-space-3) var(--xm-space-3) var(--xm-space-3) calc(var(--xm-space-3) + 1.75em);
+  margin-bottom: var(--xm-space-2);
+}
+
+.xm-report__choice:has(.form-check-input:checked) {
+  border-color: var(--xm-primary);
+  background: var(--xm-primary-subtle);
+}
+
+.xm-report .btn,
+.xm-report-sent .btn,
+.xm-report .form-check {
+  min-height: var(--xm-target-min, 44px);
+}
+
+.xm-report .btn,
+.xm-report-sent .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xm-report__step h2:focus {
+  outline: none;
+}
+
+.xm-report__step h2:focus-visible {
+  outline: var(--xm-focus-width) solid var(--xm-focus-ring);
+  outline-offset: var(--xm-focus-offset);
+}
+
+/* Petit écran : seule l'étape courante garde son libellé visible (les autres restent lues par les lecteurs d'écran). */
+@media (max-width: 575.98px) {
+  .xm-report .xm-stepper {
+    gap: var(--xm-space-2) !important;
+  }
+
+  .xm-report .xm-stepper__item:not(.is-current) > span:last-child {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+}
+
+.xm-report-sent__icon {
+  width: 4rem;
+  height: 4rem;
+  font-size: 2rem;
+}
+
+.xm-tracking-code {
+  font-family: var(--xm-font-heading);
+  font-size: clamp(1.5rem, 6vw, 2.25rem);
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}

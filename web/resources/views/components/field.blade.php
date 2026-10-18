@@ -32,6 +32,8 @@
     $error ??= isset($errors) ? $errors->first($name) : null;
     $describedBy = trim(($hint ? $id.'-hint ' : '').($error ? $id.'-error' : ''));
     $val = old($name, $value);
+    // Booléen normalisé par une Form Request (prepareForValidation) puis flashé : comparé comme '1' / '0'.
+    $val = is_bool($val) ? ($val ? '1' : '0') : $val;
     $isGroup = in_array($type, ['radio-group', 'checkbox-group'], true);
     $common = array_filter([
         'id' => $id, 'name' => $name, 'aria-describedby' => $describedBy ?: null, 'aria-invalid' => $error ? 'true' : null,
@@ -46,7 +48,7 @@
             <label class="form-check-label" for="{{ $id }}">{{ $label }}{!! $optionalMark !!}</label>
         </div>
     @elseif ($isGroup)
-        <fieldset @if ($describedBy) aria-describedby="{{ $describedBy }}" @endif @if ($error) aria-invalid="true" @endif>
+        <fieldset id="{{ $id }}" tabindex="-1" @if ($describedBy) aria-describedby="{{ $describedBy }}" @endif @if ($error) aria-invalid="true" @endif>
             <legend class="form-label fs-6">{{ $label }}{!! $optionalMark !!}</legend>
             @foreach ($options as $k => $l)
                 @php($checked = $type === 'checkbox-group' ? in_array((string) $k, array_map('strval', (array) $val), true) : (string) $val === (string) $k)

@@ -2,6 +2,7 @@
 // Chargé par les paquets public (Alpine démarré après cet import) et administration (Alpine fourni par Livewire).
 // Aucun état n'est stocké hors de la page : le marquage « lu » et le tri réels viennent du serveur (Livewire, API).
 import { Tab, Toast } from '../shared/bootstrap.js';
+import './sos-button.js';
 
 const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
 window.XM = window.XM || {};
@@ -127,84 +128,4 @@ ready(() => {
   });
 });
 
-/* ---------- SOS (<x-sos-button>) : composant Alpine xmSos ---------- */
-// Maintien 2 s (pointeur ou touche Espace) → compte à rebours 5 s annulable → envoi (évènement `action`).
-// Entrée ouvre d'abord une confirmation. Vibration courte au départ du compte à rebours et à l'envoi. Message en aria-live="assertive".
-document.addEventListener('alpine:init', () => {
-  window.Alpine.data('xmSos', (opts = {}) => ({
-    holding: false,
-    confirming: false,
-    counting: false,
-    done: false,
-    left: 0,
-    message: '',
-    _hold: null,
-    _tick: null,
-    _keyHeld: false,
-    holdMs: opts.hold ?? 2000,
-    seconds: opts.countdown ?? 5,
-    action: opts.action ?? null,
-    texts: Object.assign({ sent: 'Ton alerte est partie.', countdown: 'Envoi de ton alerte dans :s… Tu peux encore annuler.', cancelled: 'Alerte annulée.' }, opts.texts || {}),
-    start() {
-      if (this.counting || this.confirming || this.done) return;
-      this.holding = true;
-      clearTimeout(this._hold);
-      this._hold = setTimeout(() => { this.holding = false; this._keyHeld = false; this.begin(); }, this.holdMs);
-    },
-    startKey() {
-      if (this._keyHeld) return; // la touche maintenue répète keydown
-      this._keyHeld = true;
-      this.start();
-    },
-    cancelHold() {
-      clearTimeout(this._hold);
-      this.holding = false;
-      this._keyHeld = false;
-    },
-    ask() {
-      if (this.counting || this.done) return;
-      this.cancelHold();
-      this.confirming = true;
-    },
-    begin() {
-      this.confirming = false;
-      this.done = false;
-      this.counting = true;
-      this.left = this.seconds;
-      this.message = this.countdownText();
-      if (navigator.vibrate) navigator.vibrate(80);
-      clearInterval(this._tick);
-      this._tick = setInterval(() => {
-        this.left -= 1;
-        if (this.left <= 0) this.send();
-        else this.message = this.countdownText();
-      }, 1000);
-    },
-    countdownText() { return this.texts.countdown.replace(':s', String(this.left)); },
-    abort() {
-      clearInterval(this._tick);
-      this.cancelHold();
-      this.counting = false;
-      this.confirming = false;
-      this.message = this.texts.cancelled;
-      this.focusButton();
-    },
-    send() {
-      clearInterval(this._tick);
-      this.counting = false;
-      this.done = true;
-      this.message = this.texts.sent;
-      if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
-      if (this.action) this.$dispatch(this.action); // l'envoi réel est fait par Livewire / l'API (dans la requête, D7)
-    },
-    reset() {
-      this.done = false;
-      this.message = '';
-      this.focusButton();
-    },
-    focusButton() {
-      this.$nextTick(() => { const b = this.$root.querySelector('.xm-sos'); if (b) b.focus(); });
-    },
-    destroy() { clearTimeout(this._hold); clearInterval(this._tick); },
-  }));
-});
+/* ---------- SOS (<x-sos-button>) : composant Alpine xmSos, module ./sos-button.js (P5-05, P5-08) ---------- */

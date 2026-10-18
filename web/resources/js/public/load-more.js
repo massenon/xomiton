@@ -28,7 +28,8 @@ export const applyNextPage = (doc, html, href) => {
   }
 
   doc.defaultView?.history.replaceState(null, '', href.split('#')[0]);
-  const focusable = items.children[before]?.querySelector('a, button');
+  // Premier lien ou bouton atteignable au clavier (une couverture décorative en tabindex=-1 / aria-hidden est sautée : P4-03).
+  const focusable = items.children[before]?.querySelector('a:not([tabindex="-1"]):not([aria-hidden="true"]), button:not([tabindex="-1"])');
   focusable?.focus({ preventScroll: true });
   return true;
 };

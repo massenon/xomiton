@@ -75,6 +75,8 @@ final class StoreReportRequest extends FormRequest
     {
         return [
             'needs.required_if' => (string) __('alerts.report.fields.needs_error'),
+            'category.required_if' => (string) __('alerts.report.fields.category_error'),
+            'occurred_on.before_or_equal' => (string) __('alerts.report.fields.date_future'),
             'description.min' => (string) __('alerts.report.fields.description_min', ['min' => (int) config('xomiton.alerts.description_min', 20)]),
         ];
     }

@@ -34,6 +34,16 @@ describe('load-more', () => {
     expect(document.activeElement.getAttribute('href')).toBe('/thematiques/c');
   });
 
+  it('saute la couverture décorative (tabindex=-1, aria-hidden) et focalise le titre de la première carte ajoutée (P4-03)', () => {
+    const cards = (slugs) => `<section id="liste"><ul data-xm-items>${slugs.map((s) => `<li><a href="/ressources/${s}" tabindex="-1" aria-hidden="true">img</a><h3><a href="/ressources/${s}">${s}</a></h3></li>`).join('')}</ul></section><p data-xm-more>Fin</p>`;
+    document.body.innerHTML = cards(['a']);
+
+    expect(applyNextPage(document, cards(['a', 'b']), 'http://localhost/ressources?n=12#liste')).toBe(true);
+
+    expect(document.activeElement.textContent).toBe('b');
+    expect(document.activeElement.hasAttribute('tabindex')).toBe(false);
+  });
+
   it('signale une réponse sans liste pour laisser la navigation classique', () => {
     expect(applyNextPage(document, '<p>Erreur</p>', '/x')).toBe(false);
     expect(document.querySelectorAll('[data-xm-items] li')).toHaveLength(2);

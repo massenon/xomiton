@@ -91,14 +91,16 @@ return [
 
     'sos' => [
         'label' => 'SOS',
-        'help' => 'Maintiens le bouton 2 secondes, ou appuie sur Entrée puis confirme. Tu pourras annuler pendant 5 secondes.',
-        'confirm_title' => 'Envoyer une alerte SOS ?',
-        'confirm_text' => 'Ta position et ton message seront envoyés à la personne de l’annuaire la plus proche.',
+        'help' => 'Maintiens le bouton 2 secondes. Sinon, appuie deux fois ou sur Entrée, puis confirme. Tu pourras annuler pendant 5 secondes.',
+        'confirm_title' => 'Envoyer une alerte SOS ?',
+        // Générique : jamais de promesse de position ni de message (l'hôte passe le texte exact : prop confirm, confirmBind).
+        'confirm_text' => 'Ton alerte partira vers la personne de l’annuaire la plus proche.',
         'countdown_title' => 'Envoi de ton alerte…',
         'countdown' => 'Envoi de ton alerte dans :s… Tu peux encore annuler.',
         'cancel' => 'Annuler l’alerte',
         'cancelled' => 'Alerte annulée.',
         'send' => 'Envoyer',
+        'sending' => 'Envoi de ton alerte…',
         'sent' => 'Ton alerte est partie.',
         'sent_text' => 'Reste si possible dans un lieu public ou éclairé. La personne contactée va te rappeler.',
         'safe' => 'Je suis en sécurité',

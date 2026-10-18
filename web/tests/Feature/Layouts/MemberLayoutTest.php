@@ -22,7 +22,7 @@ it('sert /fil dans le gabarit membre avec en-tête, sidenav, SOS flottant et dé
         ->assertSee('id="memberSidenav"', false)
         ->assertSee('<main id="contenu" tabindex="-1"', false)
         ->assertSee('Awa_S')
-        ->assertSee('class="xm-sos-fab', false)
+        ->assertSee('xm-sos-fab', false)
         ->assertSee('<form method="post" action="'.route('deconnexion').'"', false)
         ->assertSee('name="robots" content="noindex', false)
         ->assertDontSee('id="pubHeader"', false)

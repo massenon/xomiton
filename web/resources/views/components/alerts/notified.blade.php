@@ -7,10 +7,12 @@
     « :name a bien reçu ton alerte » pour les lecteurs d'écran ; bouton d'appel seulement si le numéro peut être montré.
     Props : people (NotifiedPerson[] ou tableaux de NotifiedPersonResource), endpoint (null = liste statique),
             poll (secondes, défaut xomiton.alerts.sos_poll_seconds), pollUntil (ISO 8601), title,
-            token (SOS sans compte : jeton `sos_token` de la création, envoyé en X-Sos-Token par le sondage, jamais stocké).
+            token (SOS sans compte : jeton `sos_token` de la création, envoyé en X-Sos-Token par le sondage, jamais stocké),
+            bind (expression JavaScript évaluée dans la portée Alpine parente, fusionnée aux options : page /sos de P5-05,
+            qui monte ce bloc après la réponse de l'API et lui passe personnes, sondage et jeton depuis sa fermeture).
     Heure « Mis à jour à » : gabarit tiré de LocaleFormatter::time() (« 9 h 05 »), appliqué par le navigateur.
 --}}
-@props(['people' => [], 'endpoint' => null, 'poll' => null, 'pollUntil' => null, 'title' => null, 'token' => null])
+@props(['people' => [], 'endpoint' => null, 'poll' => null, 'pollUntil' => null, 'title' => null, 'token' => null, 'bind' => null])
 @php
     $people = collect($people)->map(static fn ($person) => $person instanceof \App\Application\Alerts\Dispatch\NotifiedPerson
         ? \App\Http\Resources\Alerts\NotifiedPersonResource::make($person)->resolve()
@@ -35,7 +37,7 @@
     ];
     $call = __('buttons.help.call');
 @endphp
-<section {{ $attributes->class(['card', 'xm-notified']) }} x-data="xmNotified(@js($config))" aria-labelledby="xmNotifiedTitle">
+<section {{ $attributes->class(['card', 'xm-notified']) }} x-data="xmNotified({!! $bind ? 'Object.assign('.\Illuminate\Support\Js::from($config)->toHtml().', '.$bind.')' : \Illuminate\Support\Js::from($config)->toHtml() !!})" aria-labelledby="xmNotifiedTitle">
     <div class="card-body">
         <h2 id="xmNotifiedTitle" class="h5 mb-3">{{ $title ?? __('alerts.notified.title') }}</h2>
 

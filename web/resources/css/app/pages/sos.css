@@ -1,0 +1,8 @@
+/*
+ * Page /sos (P5-05 ; design-system/xomiton/pages/signaler-et-sos.md) : gabarit sobre, aucun mouvement hors anneau de
+ * maintien du bouton, rouge réservé au bouton et au décompte. Jetons et classes du thème seulement.
+ */
+.xm-sos-options { max-width: 520px; }
+.xm-sos-options summary { cursor: pointer; min-height: var(--xm-target-min); display: flex; align-items: center; }
+.xm-sos-page .btn-lg { min-height: 52px; }
+.xm-sos-done-icon { width: 64px; height: 64px; }

@@ -2738,6 +2738,42 @@
     "@alerts_callback_title": {
         "description": "alerts.callback.title"
     },
+    "alerts_delivery_reason_cancelled": "Alerte annulée",
+    "@alerts_delivery_reason_cancelled": {
+        "description": "alerts.delivery_reason.cancelled"
+    },
+    "alerts_delivery_reason_exhausted": "Plafond de rejeux atteint",
+    "@alerts_delivery_reason_exhausted": {
+        "description": "alerts.delivery_reason.exhausted"
+    },
+    "alerts_delivery_reason_gone": "Abonnement supprimé",
+    "@alerts_delivery_reason_gone": {
+        "description": "alerts.delivery_reason.gone"
+    },
+    "alerts_delivery_reason_handled": "Alerte prise en charge",
+    "@alerts_delivery_reason_handled": {
+        "description": "alerts.delivery_reason.handled"
+    },
+    "alerts_delivery_reason_mail_not_sent": "E-mail non envoyé",
+    "@alerts_delivery_reason_mail_not_sent": {
+        "description": "alerts.delivery_reason.mail_not_sent"
+    },
+    "alerts_delivery_reason_no_address": "Aucune adresse",
+    "@alerts_delivery_reason_no_address": {
+        "description": "alerts.delivery_reason.no_address"
+    },
+    "alerts_delivery_reason_no_phone": "Aucun numéro",
+    "@alerts_delivery_reason_no_phone": {
+        "description": "alerts.delivery_reason.no_phone"
+    },
+    "alerts_delivery_reason_no_response": "Aucune réponse du fournisseur",
+    "@alerts_delivery_reason_no_response": {
+        "description": "alerts.delivery_reason.no_response"
+    },
+    "alerts_delivery_reason_unavailable": "Destinataire indisponible",
+    "@alerts_delivery_reason_unavailable": {
+        "description": "alerts.delivery_reason.unavailable"
+    },
     "alerts_emergency_availability": "Disponibilité : {hours}",
     "@alerts_emergency_availability": {
         "description": "alerts.emergency.availability",
@@ -3034,9 +3070,18 @@
             }
         }
     },
-    "alerts_report_badge": "Sans compte · sans trace",
+    "alerts_report_badge": "Sans compte · anonyme",
     "@alerts_report_badge": {
         "description": "alerts.report.badge"
+    },
+    "alerts_report_changed_after_send": "Une première version de ce signalement a déjà été reçue (code {code}), sans tes dernières modifications. Relis tes réponses puis envoie à nouveau : la version corrigée partira comme un nouveau signalement.",
+    "@alerts_report_changed_after_send": {
+        "description": "alerts.report.changed_after_send",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
     },
     "alerts_report_channels_call": "Appel",
     "@alerts_report_channels_call": {
@@ -3054,9 +3099,33 @@
     "@alerts_report_channels_whatsapp": {
         "description": "alerts.report.channels.whatsapp"
     },
+    "alerts_report_client_errors": "Vérifie cette étape avant de continuer.",
+    "@alerts_report_client_errors": {
+        "description": "alerts.report.client_errors"
+    },
+    "alerts_report_done_copied": "Code copié.",
+    "@alerts_report_done_copied": {
+        "description": "alerts.report.done.copied"
+    },
+    "alerts_report_done_copy": "Copier le code",
+    "@alerts_report_done_copy": {
+        "description": "alerts.report.done.copy"
+    },
+    "alerts_report_done_copy_failed": "Copie impossible : sélectionne le code et copie-le à la main.",
+    "@alerts_report_done_copy_failed": {
+        "description": "alerts.report.done.copy_failed"
+    },
     "alerts_report_done_duplicate": "Ce signalement avait déjà été reçu : aucun doublon n’a été créé.",
     "@alerts_report_done_duplicate": {
         "description": "alerts.report.done.duplicate"
+    },
+    "alerts_report_done_need_title": "Ta demande d’aide est envoyée",
+    "@alerts_report_done_need_title": {
+        "description": "alerts.report.done.need_title"
+    },
+    "alerts_report_done_once": "Ce code ne sera plus affiché : copie-le, imprime-le ou note-le dans un endroit sûr.",
+    "@alerts_report_done_once": {
+        "description": "alerts.report.done.once"
     },
     "alerts_report_done_pending": "Le réseau n’a pas répondu : ton signalement est conservé sur cet appareil et sera renvoyé automatiquement.",
     "@alerts_report_done_pending": {
@@ -3110,6 +3179,30 @@
     "@alerts_report_done_tracking_help": {
         "description": "alerts.report.done.tracking_help"
     },
+    "alerts_report_draft_clear": "Effacer le brouillon",
+    "@alerts_report_draft_clear": {
+        "description": "alerts.report.draft.clear"
+    },
+    "alerts_report_draft_cleared": "Brouillon effacé.",
+    "@alerts_report_draft_cleared": {
+        "description": "alerts.report.draft.cleared"
+    },
+    "alerts_report_draft_found": "Un brouillon de signalement est enregistré sur cet appareil.",
+    "@alerts_report_draft_found": {
+        "description": "alerts.report.draft.found"
+    },
+    "alerts_report_draft_restored": "Brouillon repris. Vérifie chaque étape avant d’envoyer.",
+    "@alerts_report_draft_restored": {
+        "description": "alerts.report.draft.restored"
+    },
+    "alerts_report_draft_resume": "Reprendre mon brouillon",
+    "@alerts_report_draft_resume": {
+        "description": "alerts.report.draft.resume"
+    },
+    "alerts_report_draft_saved": "Tu peux t’arrêter et reprendre plus tard : tes réponses sont gardées sur cet appareil.",
+    "@alerts_report_draft_saved": {
+        "description": "alerts.report.draft.saved"
+    },
     "alerts_report_fields_anonymous": "Rester anonyme",
     "@alerts_report_fields_anonymous": {
         "description": "alerts.report.fields.anonymous"
@@ -3122,6 +3215,14 @@
     "@alerts_report_fields_category": {
         "description": "alerts.report.fields.category"
     },
+    "alerts_report_fields_category_error": "Choisis le type de violence.",
+    "@alerts_report_fields_category_error": {
+        "description": "alerts.report.fields.category_error"
+    },
+    "alerts_report_fields_category_hint": "Obligatoire pour signaler une violence, facultatif pour un besoin.",
+    "@alerts_report_fields_category_hint": {
+        "description": "alerts.report.fields.category_hint"
+    },
     "alerts_report_fields_category_placeholder": "Choisir…",
     "@alerts_report_fields_category_placeholder": {
         "description": "alerts.report.fields.category_placeholder"
@@ -3130,21 +3231,49 @@
     "@alerts_report_fields_commune": {
         "description": "alerts.report.fields.commune"
     },
+    "alerts_report_fields_commune_placeholder": "Choisir une commune…",
+    "@alerts_report_fields_commune_placeholder": {
+        "description": "alerts.report.fields.commune_placeholder"
+    },
     "alerts_report_fields_contact": "Comment te recontacter ? (téléphone ou e-mail)",
     "@alerts_report_fields_contact": {
         "description": "alerts.report.fields.contact"
+    },
+    "alerts_report_fields_contact_hint": "Utilisé seulement pour te recontacter, jamais affiché ailleurs.",
+    "@alerts_report_fields_contact_hint": {
+        "description": "alerts.report.fields.contact_hint"
     },
     "alerts_report_fields_contact_invalid": "Numéro de téléphone ou e-mail invalide.",
     "@alerts_report_fields_contact_invalid": {
         "description": "alerts.report.fields.contact_invalid"
     },
+    "alerts_report_fields_contact_only_if": "À remplir seulement si tu acceptes d’être recontacté·e.",
+    "@alerts_report_fields_contact_only_if": {
+        "description": "alerts.report.fields.contact_only_if"
+    },
     "alerts_report_fields_contact_placeholder": "+229 01 … ou nom@exemple.bj",
     "@alerts_report_fields_contact_placeholder": {
         "description": "alerts.report.fields.contact_placeholder"
     },
+    "alerts_report_fields_contactable": "Veux-tu être recontacté·e ?",
+    "@alerts_report_fields_contactable": {
+        "description": "alerts.report.fields.contactable"
+    },
+    "alerts_report_fields_contactable_no": "Non, je reste anonyme : personne ne me recontacte",
+    "@alerts_report_fields_contactable_no": {
+        "description": "alerts.report.fields.contactable_no"
+    },
+    "alerts_report_fields_contactable_yes": "Oui, une personne de l’annuaire peut me recontacter",
+    "@alerts_report_fields_contactable_yes": {
+        "description": "alerts.report.fields.contactable_yes"
+    },
     "alerts_report_fields_date": "Date des faits",
     "@alerts_report_fields_date": {
         "description": "alerts.report.fields.date"
+    },
+    "alerts_report_fields_date_future": "La date des faits ne peut pas être dans le futur.",
+    "@alerts_report_fields_date_future": {
+        "description": "alerts.report.fields.date_future"
     },
     "alerts_report_fields_date_help": "Approximative si tu ne sais plus. Jamais dans le futur.",
     "@alerts_report_fields_date_help": {
@@ -3198,6 +3327,70 @@
             }
         }
     },
+    "alerts_report_fields_evidence_hint": "Image, PDF ou audio : {count} fichiers au plus (image {image} Mo, PDF {pdf} Mo, audio {audio} Mo).",
+    "@alerts_report_fields_evidence_hint": {
+        "description": "alerts.report.fields.evidence_hint",
+        "placeholders": {
+            "audio": {
+                "type": "String"
+            },
+            "count": {
+                "type": "String"
+            },
+            "image": {
+                "type": "String"
+            },
+            "pdf": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_fields_evidence_reselect": "Par sécurité, les fichiers choisis ne sont pas gardés après une erreur : ajoute-les à nouveau.",
+    "@alerts_report_fields_evidence_reselect": {
+        "description": "alerts.report.fields.evidence_reselect"
+    },
+    "alerts_report_fields_evidence_too_large": "« {name} » dépasse {max} Mo.",
+    "@alerts_report_fields_evidence_too_large": {
+        "description": "alerts.report.fields.evidence_too_large",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_fields_evidence_too_many": "Tu peux joindre {max} fichiers au plus.",
+    "@alerts_report_fields_evidence_too_many": {
+        "description": "alerts.report.fields.evidence_too_many",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_fields_evidence_type": "« {name} » n’est ni une image, ni un PDF, ni un fichier audio.",
+    "@alerts_report_fields_evidence_type": {
+        "description": "alerts.report.fields.evidence_type",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_fields_evidence_warning": "Les métadonnées (lieu, date, appareil) sont supprimées de la copie envoyée. Garde l’original en lieu sûr si tu veux t’en servir plus tard, par exemple pour une plainte.",
+    "@alerts_report_fields_evidence_warning": {
+        "description": "alerts.report.fields.evidence_warning"
+    },
+    "alerts_report_fields_link_account": "Ne pas lier ce signalement à mon compte",
+    "@alerts_report_fields_link_account": {
+        "description": "alerts.report.fields.link_account"
+    },
+    "alerts_report_fields_link_account_help": "Coché, ton signalement reste anonyme et n’apparaît pas dans « Mes signalements ».",
+    "@alerts_report_fields_link_account_help": {
+        "description": "alerts.report.fields.link_account_help"
+    },
     "alerts_report_fields_needs": "Besoins spécifiques",
     "@alerts_report_fields_needs": {
         "description": "alerts.report.fields.needs"
@@ -3205,6 +3398,10 @@
     "alerts_report_fields_needs_error": "Choisis au moins un besoin.",
     "@alerts_report_fields_needs_error": {
         "description": "alerts.report.fields.needs_error"
+    },
+    "alerts_report_fields_needs_hint": "Obligatoire si tu exprimes un besoin. Coche tout ce qui t’aiderait.",
+    "@alerts_report_fields_needs_hint": {
+        "description": "alerts.report.fields.needs_hint"
     },
     "alerts_report_fields_needs_optional": "(facultatif)",
     "@alerts_report_fields_needs_optional": {
@@ -3241,6 +3438,10 @@
     "@alerts_report_fields_position_locating": {
         "description": "alerts.report.fields.position_locating"
     },
+    "alerts_report_fields_position_remove": "Retirer ma position",
+    "@alerts_report_fields_position_remove": {
+        "description": "alerts.report.fields.position_remove"
+    },
     "alerts_report_fields_position_unavailable": "Position indisponible (accès refusé ou non pris en charge). Tu peux envoyer sans.",
     "@alerts_report_fields_position_unavailable": {
         "description": "alerts.report.fields.position_unavailable"
@@ -3262,6 +3463,10 @@
     "@alerts_report_fields_zone": {
         "description": "alerts.report.fields.zone"
     },
+    "alerts_report_fields_zone_placeholder": "Choisir un département…",
+    "@alerts_report_fields_zone_placeholder": {
+        "description": "alerts.report.fields.zone_placeholder"
+    },
     "alerts_report_from_post": "Tu signales une publication. Décris ce qui pose problème ; l’équipe de modération la relira.",
     "@alerts_report_from_post": {
         "description": "alerts.report.from_post"
@@ -3278,9 +3483,47 @@
     "@alerts_report_intro": {
         "description": "alerts.report.intro"
     },
+    "alerts_report_nojs": "Réponds aux {total} étapes ci-dessous, puis envoie ton signalement.",
+    "@alerts_report_nojs": {
+        "description": "alerts.report.nojs",
+        "placeholders": {
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_offline": "Tu es hors ligne. Tes réponses restent sur cet appareil : tu pourras envoyer ton signalement dès que le réseau revient.",
+    "@alerts_report_offline": {
+        "description": "alerts.report.offline"
+    },
     "alerts_report_online_hint": "Hors connexion, ton message est mis en attente puis envoyé automatiquement.",
     "@alerts_report_online_hint": {
         "description": "alerts.report.online_hint"
+    },
+    "alerts_report_privacy_items_device": "Rien ne part avant la dernière étape. D’ici là, un brouillon sans ton contact, ta position ni tes preuves reste sur cet appareil {days} jours au plus ; « Retour » à la première étape ou « Effacer le brouillon » le supprime.",
+    "@alerts_report_privacy_items_device": {
+        "description": "alerts.report.privacy.items.device",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_privacy_items_identity": "Aucun nom, aucun compte et aucune adresse IP ne sont demandés ni enregistrés.",
+    "@alerts_report_privacy_items_identity": {
+        "description": "alerts.report.privacy.items.identity"
+    },
+    "alerts_report_privacy_items_readers": "Ton récit est chiffré. Seules la personne de l’annuaire qui le reçoit (point focal, juriste, psychologue…) et l’équipe Xomiton peuvent le lire.",
+    "@alerts_report_privacy_items_readers": {
+        "description": "alerts.report.privacy.items.readers"
+    },
+    "alerts_report_privacy_title": "Ton anonymat",
+    "@alerts_report_privacy_title": {
+        "description": "alerts.report.privacy.title"
+    },
+    "alerts_report_question": "Que veux-tu faire ?",
+    "@alerts_report_question": {
+        "description": "alerts.report.question"
     },
     "alerts_report_reassurance": "Tu peux rester anonyme. Rien n’est envoyé avant la dernière étape.",
     "@alerts_report_reassurance": {
@@ -3299,6 +3542,40 @@
     "@alerts_report_review_anonymous_yes": {
         "description": "alerts.report.review.anonymous_yes"
     },
+    "alerts_report_review_channel": "Canal : {channel}",
+    "@alerts_report_review_channel": {
+        "description": "alerts.report.review.channel",
+        "placeholders": {
+            "channel": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_review_edit_step": "Modifier l’étape « {step} »",
+    "@alerts_report_review_edit_step": {
+        "description": "alerts.report.review.edit_step",
+        "placeholders": {
+            "step": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_review_empty": "Non renseigné",
+    "@alerts_report_review_empty": {
+        "description": "alerts.report.review.empty"
+    },
+    "alerts_report_review_no_files": "Aucune preuve jointe",
+    "@alerts_report_review_no_files": {
+        "description": "alerts.report.review.no_files"
+    },
+    "alerts_report_review_nojs": "Relis tes réponses ci-dessus avant d’envoyer.",
+    "@alerts_report_review_nojs": {
+        "description": "alerts.report.review.nojs"
+    },
+    "alerts_report_review_place": "Lieu",
+    "@alerts_report_review_place": {
+        "description": "alerts.report.review.place"
+    },
     "alerts_report_review_position_no": "Sans position",
     "@alerts_report_review_position_no": {
         "description": "alerts.report.review.position_no"
@@ -3314,6 +3591,10 @@
     "alerts_report_review_title": "Vérifie avant d’envoyer",
     "@alerts_report_review_title": {
         "description": "alerts.report.review.title"
+    },
+    "alerts_report_sos_hint": "En danger immédiat ?",
+    "@alerts_report_sos_hint": {
+        "description": "alerts.report.sos_hint"
     },
     "alerts_report_status_text_clos": "Clos.",
     "@alerts_report_status_text_clos": {
@@ -3399,9 +3680,21 @@
     "@alerts_report_tracking_handled_by": {
         "description": "alerts.report.tracking.handled_by"
     },
+    "alerts_report_tracking_history": "Étapes du suivi",
+    "@alerts_report_tracking_history": {
+        "description": "alerts.report.tracking.history"
+    },
     "alerts_report_tracking_intro": "Saisis ton code de suivi pour connaître l’avancement. Aucune autre information n’est demandée.",
     "@alerts_report_tracking_intro": {
         "description": "alerts.report.tracking.intro"
+    },
+    "alerts_report_tracking_invalid": "Ce code n’a pas le bon format. Il ressemble à SIG-A7K2M9P4QX.",
+    "@alerts_report_tracking_invalid": {
+        "description": "alerts.report.tracking.invalid"
+    },
+    "alerts_report_tracking_no_code": "Pas de code ? Il est remis à la fin d’un signalement.",
+    "@alerts_report_tracking_no_code": {
+        "description": "alerts.report.tracking.no_code"
     },
     "alerts_report_tracking_not_found": "Aucun signalement ne correspond à ce code, ou il a été clos depuis plus de {days} jours.",
     "@alerts_report_tracking_not_found": {
@@ -3417,6 +3710,19 @@
         "description": "alerts.report.tracking.received_on",
         "placeholders": {
             "date": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_report_tracking_required": "Saisis ton code de suivi.",
+    "@alerts_report_tracking_required": {
+        "description": "alerts.report.tracking.required"
+    },
+    "alerts_report_tracking_result_title": "Signalement {code}",
+    "@alerts_report_tracking_result_title": {
+        "description": "alerts.report.tracking.result_title",
+        "placeholders": {
+            "code": {
                 "type": "String"
             }
         }
@@ -3447,23 +3753,27 @@
             }
         }
     },
-    "alerts_sos_button": "SOS",
-    "@alerts_sos_button": {
-        "description": "alerts.sos.button"
+    "alerts_sos_all_contacts": "Tous les contacts d’urgence",
+    "@alerts_sos_all_contacts": {
+        "description": "alerts.sos.all_contacts"
+    },
+    "alerts_sos_alternatives": "Sans maintenir : appuie deux fois sur le bouton ou place-toi dessus et appuie sur Entrée, puis confirme.",
+    "@alerts_sos_alternatives": {
+        "description": "alerts.sos.alternatives"
     },
     "alerts_sos_button_help": "Maintiens le bouton 2 secondes pour envoyer ton alerte.",
     "@alerts_sos_button_help": {
         "description": "alerts.sos.button_help"
     },
-    "alerts_sos_consent": "Consentement : j’accepte de partager ma position GPS et mon message avec les personnes ciblées de l’annuaire, uniquement pour recevoir de l’aide. Mes données ne sont pas utilisées à d’autres fins.",
-    "@alerts_sos_consent": {
-        "description": "alerts.sos.consent"
+    "alerts_sos_confirm_shared": "Ton alerte partira vers la personne de l’annuaire la plus proche, avec ta position si ton téléphone la trouve.",
+    "@alerts_sos_confirm_shared": {
+        "description": "alerts.sos.confirm_shared"
     },
-    "alerts_sos_consent_required": "Coche le consentement pour partager ta position, ou appelle le 117.",
-    "@alerts_sos_consent_required": {
-        "description": "alerts.sos.consent_required"
+    "alerts_sos_confirm_unshared": "Ton alerte partira sans ta position, vers la personne de l’annuaire la plus proche.",
+    "@alerts_sos_confirm_unshared": {
+        "description": "alerts.sos.confirm_unshared"
     },
-    "alerts_sos_countdown_hint": "Après l’appui, tu as {seconds} secondes pour annuler en cas d’erreur.",
+    "alerts_sos_countdown_hint": "Tu as ensuite {seconds} secondes pour annuler en cas d’erreur.",
     "@alerts_sos_countdown_hint": {
         "description": "alerts.sos.countdown_hint",
         "placeholders": {
@@ -3472,7 +3782,11 @@
             }
         }
     },
-    "alerts_sos_done_accuracy": "Précision : ± {meters} m",
+    "alerts_sos_details": "Ajouter un numéro ou un message",
+    "@alerts_sos_details": {
+        "description": "alerts.sos.details"
+    },
+    "alerts_sos_done_accuracy": "Précision : ± {meters} m",
     "@alerts_sos_done_accuracy": {
         "description": "alerts.sos.done.accuracy",
         "placeholders": {
@@ -3490,27 +3804,61 @@
             }
         }
     },
+    "alerts_sos_done_action_failed": "Ta demande n’a pas abouti. Vérifie ta connexion et réessaie.",
+    "@alerts_sos_done_action_failed": {
+        "description": "alerts.sos.done.action_failed"
+    },
+    "alerts_sos_done_call_number": "Appeler le {number}",
+    "@alerts_sos_done_call_number": {
+        "description": "alerts.sos.done.call_number",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_sos_done_cancel": "Annuler l’alerte",
+    "@alerts_sos_done_cancel": {
+        "description": "alerts.sos.done.cancel"
+    },
+    "alerts_sos_done_emergency": "Contacts d’urgence",
+    "@alerts_sos_done_emergency": {
+        "description": "alerts.sos.done.emergency"
+    },
     "alerts_sos_done_maps": "Voir sur Google Maps",
     "@alerts_sos_done_maps": {
         "description": "alerts.sos.done.maps"
     },
-    "alerts_sos_done_position": "Ta position",
-    "@alerts_sos_done_position": {
-        "description": "alerts.sos.done.position"
+    "alerts_sos_done_new": "Nouvelle alerte",
+    "@alerts_sos_done_new": {
+        "description": "alerts.sos.done.new"
     },
-    "alerts_sos_done_queued": "Pas de réseau : l’alerte partira automatiquement dès que la connexion reviendra. Appelle le 117 si possible.",
-    "@alerts_sos_done_queued": {
-        "description": "alerts.sos.done.queued"
+    "alerts_sos_done_position_joined": "Position jointe.",
+    "@alerts_sos_done_position_joined": {
+        "description": "alerts.sos.done.position_joined"
     },
-    "alerts_sos_done_queued_title": "Alerte enregistrée hors connexion",
-    "@alerts_sos_done_queued_title": {
-        "description": "alerts.sos.done.queued_title"
+    "alerts_sos_done_position_no": "Envoyée sans position GPS.",
+    "@alerts_sos_done_position_no": {
+        "description": "alerts.sos.done.position_no"
+    },
+    "alerts_sos_done_position_yes": "Position jointe (± {meters} m).",
+    "@alerts_sos_done_position_yes": {
+        "description": "alerts.sos.done.position_yes",
+        "placeholders": {
+            "meters": {
+                "type": "String"
+            }
+        }
     },
     "alerts_sos_done_received": "Alerte reçue par l’équipe Xomiton.",
     "@alerts_sos_done_received": {
         "description": "alerts.sos.done.received"
     },
-    "alerts_sos_done_routed": "Alerte envoyée à {name}, {role}",
+    "alerts_sos_done_report": "Compléter par un signalement",
+    "@alerts_sos_done_report": {
+        "description": "alerts.sos.done.report"
+    },
+    "alerts_sos_done_routed": "Transmise à {name}, {role}.",
     "@alerts_sos_done_routed": {
         "description": "alerts.sos.done.routed",
         "placeholders": {
@@ -3521,6 +3869,10 @@
                 "type": "String"
             }
         }
+    },
+    "alerts_sos_done_safe": "Je suis en sécurité",
+    "@alerts_sos_done_safe": {
+        "description": "alerts.sos.done.safe"
     },
     "alerts_sos_done_safe_confirmed": "Merci. Les personnes prévenues savent que tu es en sécurité.",
     "@alerts_sos_done_safe_confirmed": {
@@ -3534,19 +3886,28 @@
     "@alerts_sos_done_steps_2": {
         "description": "alerts.sos.done.steps.2"
     },
-    "alerts_sos_done_steps_3": "En danger de mort, appelle aussi le 117.",
+    "alerts_sos_done_steps_3": "En danger de mort, appelle aussi le {number}.",
     "@alerts_sos_done_steps_3": {
-        "description": "alerts.sos.done.steps.3"
+        "description": "alerts.sos.done.steps.3",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
     },
     "alerts_sos_done_steps_4": "Ne supprime rien : messages, photos et traces peuvent servir de preuves.",
     "@alerts_sos_done_steps_4": {
         "description": "alerts.sos.done.steps.4"
     },
-    "alerts_sos_done_title": "Alerte envoyée",
+    "alerts_sos_done_text": "Reste si possible dans un lieu public ou éclairé. La personne contactée va te rappeler.",
+    "@alerts_sos_done_text": {
+        "description": "alerts.sos.done.text"
+    },
+    "alerts_sos_done_title": "Ton alerte est partie",
     "@alerts_sos_done_title": {
         "description": "alerts.sos.done.title"
     },
-    "alerts_sos_done_undo": "Fausse alerte ? Tu peux encore annuler pendant {seconds} s.",
+    "alerts_sos_done_undo": "Fausse alerte ? Tu peux encore annuler pendant {seconds} s.",
     "@alerts_sos_done_undo": {
         "description": "alerts.sos.done.undo",
         "placeholders": {
@@ -3555,23 +3916,85 @@
             }
         }
     },
-    "alerts_sos_done_undone": "Alerte annulée. Les personnes prévenues savent qu’il s’agissait d’une fausse alerte.",
+    "alerts_sos_done_undone": "Les personnes prévenues savent qu’il s’agissait d’une fausse alerte.",
     "@alerts_sos_done_undone": {
         "description": "alerts.sos.done.undone"
+    },
+    "alerts_sos_done_undone_title": "Alerte annulée",
+    "@alerts_sos_done_undone_title": {
+        "description": "alerts.sos.done.undone_title"
     },
     "alerts_sos_done_while_waiting": "En attendant l’aide",
     "@alerts_sos_done_while_waiting": {
         "description": "alerts.sos.done.while_waiting"
     },
-    "alerts_sos_doubt": "En cas de doute, appelle le 117",
+    "alerts_sos_doubt": "En cas de doute, appelle le {number}",
     "@alerts_sos_doubt": {
-        "description": "alerts.sos.doubt"
+        "description": "alerts.sos.doubt",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
     },
-    "alerts_sos_fab_title": "Envoyer une alerte SOS avec ma position",
+    "alerts_sos_fab_call": "Appeler le {number}",
+    "@alerts_sos_fab_call": {
+        "description": "alerts.sos.fab.call",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_sos_fab_confirm": "Ton alerte partira sans ta position GPS, vers la personne de l’annuaire la plus proche.",
+    "@alerts_sos_fab_confirm": {
+        "description": "alerts.sos.fab.confirm"
+    },
+    "alerts_sos_fab_detached": "Elle n’est pas reliée à ton compte : tes contacts de confiance ne sont pas prévenus et le suivi ne peut pas s’ouvrir. N’envoie pas de nouvelle alerte ; en danger, appelle un numéro d’urgence.",
+    "@alerts_sos_fab_detached": {
+        "description": "alerts.sos.fab.detached"
+    },
+    "alerts_sos_fab_failed": "Appelle un numéro d’urgence ou ouvre la page SOS.",
+    "@alerts_sos_fab_failed": {
+        "description": "alerts.sos.fab.failed"
+    },
+    "alerts_sos_fab_failed_title": "Ton alerte n’est pas partie",
+    "@alerts_sos_fab_failed_title": {
+        "description": "alerts.sos.fab.failed_title"
+    },
+    "alerts_sos_fab_offline": "Ton alerte partira dès que le réseau revient. Garde cette page ouverte.",
+    "@alerts_sos_fab_offline": {
+        "description": "alerts.sos.fab.offline"
+    },
+    "alerts_sos_fab_offline_title": "Tu es hors ligne",
+    "@alerts_sos_fab_offline_title": {
+        "description": "alerts.sos.fab.offline_title"
+    },
+    "alerts_sos_fab_open_page": "Ouvrir la page SOS",
+    "@alerts_sos_fab_open_page": {
+        "description": "alerts.sos.fab.open_page"
+    },
+    "alerts_sos_fab_sent_text": "Ouverture du suivi de ton alerte…",
+    "@alerts_sos_fab_sent_text": {
+        "description": "alerts.sos.fab.sent_text"
+    },
+    "alerts_sos_fab_title": "Envoyer une alerte SOS",
     "@alerts_sos_fab_title": {
         "description": "alerts.sos.fab_title"
     },
-    "alerts_sos_intro": "Une alerte avec ta position est envoyée à la personne de l’annuaire la plus proche (point focal, juriste, psychologue…).",
+    "alerts_sos_failed_retry": "Réessayer",
+    "@alerts_sos_failed_retry": {
+        "description": "alerts.sos.failed.retry"
+    },
+    "alerts_sos_failed_text": "Appelle directement un numéro d’urgence, ou réessaie.",
+    "@alerts_sos_failed_text": {
+        "description": "alerts.sos.failed.text"
+    },
+    "alerts_sos_failed_title": "Ton alerte n’est pas partie",
+    "@alerts_sos_failed_title": {
+        "description": "alerts.sos.failed.title"
+    },
+    "alerts_sos_intro": "Ton alerte part vers la personne de l’annuaire la plus proche (point focal, juriste, psychologue…) et, si tu as un compte, vers tes contacts de confiance.",
     "@alerts_sos_intro": {
         "description": "alerts.sos.intro"
     },
@@ -3579,15 +4002,44 @@
     "@alerts_sos_locating": {
         "description": "alerts.sos.locating"
     },
+    "alerts_sos_locating_help": "Si ta position n’arrive pas, tu pourras indiquer ta zone.",
+    "@alerts_sos_locating_help": {
+        "description": "alerts.sos.locating_help"
+    },
+    "alerts_sos_manual_auto": "Sans choix de ta part, ton alerte part dans {s} s.",
+    "@alerts_sos_manual_auto": {
+        "description": "alerts.sos.manual.auto",
+        "placeholders": {
+            "s": {
+                "type": "String"
+            }
+        }
+    },
+    "alerts_sos_manual_choose": "Choisir…",
+    "@alerts_sos_manual_choose": {
+        "description": "alerts.sos.manual.choose"
+    },
+    "alerts_sos_manual_commune": "Commune",
+    "@alerts_sos_manual_commune": {
+        "description": "alerts.sos.manual.commune"
+    },
+    "alerts_sos_manual_send": "Envoyer maintenant",
+    "@alerts_sos_manual_send": {
+        "description": "alerts.sos.manual.send"
+    },
     "alerts_sos_manual_text": "Indique ta zone pour que l’alerte soit routée vers la bonne personne.",
     "@alerts_sos_manual_text": {
         "description": "alerts.sos.manual.text"
     },
-    "alerts_sos_manual_title": "Position GPS indisponible.",
+    "alerts_sos_manual_title": "Position GPS indisponible",
     "@alerts_sos_manual_title": {
         "description": "alerts.sos.manual.title"
     },
-    "alerts_sos_message": "Message (facultatif)",
+    "alerts_sos_manual_zone": "Département",
+    "@alerts_sos_manual_zone": {
+        "description": "alerts.sos.manual.zone"
+    },
+    "alerts_sos_message": "Message",
     "@alerts_sos_message": {
         "description": "alerts.sos.message"
     },
@@ -3595,21 +4047,53 @@
     "@alerts_sos_message_placeholder": {
         "description": "alerts.sos.message_placeholder"
     },
-    "alerts_sos_phone": "Téléphone (facultatif)",
+    "alerts_sos_noscript": "Le bouton SOS a besoin de JavaScript. En danger, appelle directement un numéro d’urgence.",
+    "@alerts_sos_noscript": {
+        "description": "alerts.sos.noscript"
+    },
+    "alerts_sos_phone": "Téléphone pour te rappeler",
     "@alerts_sos_phone": {
         "description": "alerts.sos.phone"
     },
-    "alerts_sos_phone_help": "Pour te rappeler.",
-    "@alerts_sos_phone_help": {
-        "description": "alerts.sos.phone_help"
+    "alerts_sos_phone_placeholder": "+229 01 …",
+    "@alerts_sos_phone_placeholder": {
+        "description": "alerts.sos.phone_placeholder"
     },
-    "alerts_sos_press": "Appuyer pour alerter",
-    "@alerts_sos_press": {
-        "description": "alerts.sos.press"
+    "alerts_sos_queued_keep_open": "Garde cette page ouverte : l’envoi reprend tout seul. En attendant, appelle directement :",
+    "@alerts_sos_queued_keep_open": {
+        "description": "alerts.sos.queued.keep_open"
     },
-    "alerts_sos_sending": "Envoi de l’alerte…",
+    "alerts_sos_queued_text": "Tu es hors ligne. Ton alerte partira dès que le réseau revient.",
+    "@alerts_sos_queued_text": {
+        "description": "alerts.sos.queued.text"
+    },
+    "alerts_sos_queued_title": "Tu es hors ligne",
+    "@alerts_sos_queued_title": {
+        "description": "alerts.sos.queued.title"
+    },
+    "alerts_sos_send_without_position": "Envoyer sans position",
+    "@alerts_sos_send_without_position": {
+        "description": "alerts.sos.send_without_position"
+    },
+    "alerts_sos_sending": "Envoi de ton alerte…",
     "@alerts_sos_sending": {
         "description": "alerts.sos.sending"
+    },
+    "alerts_sos_share": "Partager ma position",
+    "@alerts_sos_share": {
+        "description": "alerts.sos.share"
+    },
+    "alerts_sos_share_help": "Ta position aide la personne la plus proche à te trouver. Elle n’est transmise qu’aux personnes prévenues, uniquement pour t’aider.",
+    "@alerts_sos_share_help": {
+        "description": "alerts.sos.share_help"
+    },
+    "alerts_sos_share_remembered_account": "Ton choix sera gardé dans ton compte à l’envoi.",
+    "@alerts_sos_share_remembered_account": {
+        "description": "alerts.sos.share_remembered_account"
+    },
+    "alerts_sos_share_remembered_device": "Ton choix reste sur cet appareil.",
+    "@alerts_sos_share_remembered_device": {
+        "description": "alerts.sos.share_remembered_device"
     },
     "alerts_sos_title": "SOS – Alerte d’urgence",
     "@alerts_sos_title": {
@@ -6966,11 +7450,11 @@
     "@components_sos_cancelled": {
         "description": "components.sos.cancelled"
     },
-    "components_sos_confirm_text": "Ta position et ton message seront envoyés à la personne de l’annuaire la plus proche.",
+    "components_sos_confirm_text": "Ton alerte partira vers la personne de l’annuaire la plus proche.",
     "@components_sos_confirm_text": {
         "description": "components.sos.confirm_text"
     },
-    "components_sos_confirm_title": "Envoyer une alerte SOS ?",
+    "components_sos_confirm_title": "Envoyer une alerte SOS ?",
     "@components_sos_confirm_title": {
         "description": "components.sos.confirm_title"
     },
@@ -6987,7 +7471,7 @@
     "@components_sos_countdown_title": {
         "description": "components.sos.countdown_title"
     },
-    "components_sos_help": "Maintiens le bouton 2 secondes, ou appuie sur Entrée puis confirme. Tu pourras annuler pendant 5 secondes.",
+    "components_sos_help": "Maintiens le bouton 2 secondes. Sinon, appuie deux fois ou sur Entrée, puis confirme. Tu pourras annuler pendant 5 secondes.",
     "@components_sos_help": {
         "description": "components.sos.help"
     },
@@ -7002,6 +7486,10 @@
     "components_sos_send": "Envoyer",
     "@components_sos_send": {
         "description": "components.sos.send"
+    },
+    "components_sos_sending": "Envoi de ton alerte…",
+    "@components_sos_sending": {
+        "description": "components.sos.sending"
     },
     "components_sos_sent": "Ton alerte est partie.",
     "@components_sos_sent": {
@@ -12946,7 +13434,7 @@
     "@notifications_sos_safe_discreet": {
         "description": "notifications.sos_safe.discreet"
     },
-    "notifications_sos_safe_sms": "Xomiton – La personne à l’origine de l’alerte {code} indique être en sécurité.",
+    "notifications_sos_safe_sms": "Xomiton – La personne à l’origine de l’alerte {code} se dit en sécurité.",
     "@notifications_sos_safe_sms": {
         "description": "notifications.sos_safe.sms",
         "placeholders": {
@@ -13008,6 +13496,18 @@
             }
         }
     },
+    "notifications_sos_triggered_sms_copy": "Xomiton – Alerte SOS {code} ({where}). L’équipe Xomiton coordonne la réponse : restez joignable, elle peut vous solliciter.",
+    "@notifications_sos_triggered_sms_copy": {
+        "description": "notifications.sos_triggered.sms_copy",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            },
+            "where": {
+                "type": "String"
+            }
+        }
+    },
     "notifications_sos_triggered_sms_no_position": "Xomiton – Alerte SOS {code}, zone {zone}. Accusez réception : {url}",
     "@notifications_sos_triggered_sms_no_position": {
         "description": "notifications.sos_triggered.sms_no_position",
@@ -13023,7 +13523,7 @@
             }
         }
     },
-    "notifications_sos_triggered_sms_trusted": "Xomiton – SOS de {pseudo} ({where}). Vous êtes son contact de confiance : appelez-la tout de suite. Réf. {code}",
+    "notifications_sos_triggered_sms_trusted": "Xomiton – SOS de {pseudo} ({where}), qui compte sur vous comme contact de confiance : appelez-la tout de suite. Réf. {code}",
     "@notifications_sos_triggered_sms_trusted": {
         "description": "notifications.sos_triggered.sms_trusted",
         "placeholders": {
@@ -13038,7 +13538,7 @@
             }
         }
     },
-    "notifications_sos_triggered_sms_trusted_unnamed": "Xomiton – SOS ({where}) d’une personne qui vous a choisi·e comme contact de confiance. Appelez-la tout de suite. Réf. {code}",
+    "notifications_sos_triggered_sms_trusted_unnamed": "Xomiton – SOS ({where}) d’une personne qui compte sur vous comme contact de confiance. Appelez-la tout de suite. Réf. {code}",
     "@notifications_sos_triggered_sms_trusted_unnamed": {
         "description": "notifications.sos_triggered.sms_trusted_unnamed",
         "placeholders": {
@@ -13591,6 +14091,360 @@
     "pages_accueil_valeurs_title": "Un soutien à portée de main",
     "@pages_accueil_valeurs_title": {
         "description": "pages/accueil.valeurs.title"
+    },
+    "pages_ressources_aside_label": "Compléments et aide",
+    "@pages_ressources_aside_label": {
+        "description": "pages/ressources.aside_label"
+    },
+    "pages_ressources_assistant_need": "Exprimer un besoin",
+    "@pages_ressources_assistant_need": {
+        "description": "pages/ressources.assistant_need"
+    },
+    "pages_ressources_assistant_text": "L’assistant répond en ligne 24 h/24, sans compte, sur les violences, la santé sexuelle ou vos droits. Pour une réponse humaine sous 24 h, exprimez un besoin.",
+    "@pages_ressources_assistant_text": {
+        "description": "pages/ressources.assistant_text"
+    },
+    "pages_ressources_assistant_title": "Une question ? L’assistant Xomiton vous répond",
+    "@pages_ressources_assistant_title": {
+        "description": "pages/ressources.assistant_title"
+    },
+    "pages_ressources_category_short_vbg": "VBG",
+    "@pages_ressources_category_short_vbg": {
+        "description": "pages/ressources.category_short.vbg"
+    },
+    "pages_ressources_cover_alt": "Couverture de la ressource : {title}",
+    "@pages_ressources_cover_alt": {
+        "description": "pages/ressources.cover_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_download_cta": "Télécharger ({kind}, {size})",
+    "@pages_ressources_download_cta": {
+        "description": "pages/ressources.download_cta",
+        "placeholders": {
+            "kind": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_download_cta_no_size": "Télécharger ({kind})",
+    "@pages_ressources_download_cta_no_size": {
+        "description": "pages/ressources.download_cta_no_size",
+        "placeholders": {
+            "kind": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_download_hint": "« {title} » ({kind}, {size})",
+    "@pages_ressources_download_hint": {
+        "description": "pages/ressources.download_hint",
+        "placeholders": {
+            "kind": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_downloads": "{count, plural, =0{Aucun téléchargement} =1{{count} téléchargement} other{{count} téléchargements}}",
+    "@pages_ressources_downloads": {
+        "description": "pages/ressources.downloads",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_ressources_empty_none": "Les ressources arrivent bientôt.",
+    "@pages_ressources_empty_none": {
+        "description": "pages/ressources.empty_none"
+    },
+    "pages_ressources_empty_text": "Essayez un autre mot, un autre type ou retirez le filtre de catégorie.",
+    "@pages_ressources_empty_text": {
+        "description": "pages/ressources.empty_text"
+    },
+    "pages_ressources_empty_title": "Aucune ressource ne correspond à votre recherche.",
+    "@pages_ressources_empty_title": {
+        "description": "pages/ressources.empty_title"
+    },
+    "pages_ressources_end_of_list": "{count, plural, =1{Vous avez tout vu : {count} élément affiché.} other{Vous avez tout vu : {count} éléments affichés.}}",
+    "@pages_ressources_end_of_list": {
+        "description": "pages/ressources.end_of_list",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_ressources_faq_title": "Questions fréquentes : {category}",
+    "@pages_ressources_faq_title": {
+        "description": "pages/ressources.faq_title",
+        "placeholders": {
+            "category": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_file_meta": "{kind} · {size} · {category}",
+    "@pages_ressources_file_meta": {
+        "description": "pages/ressources.file_meta",
+        "placeholders": {
+            "category": {
+                "type": "String"
+            },
+            "kind": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_file_meta_no_category": "{kind} · {size}",
+    "@pages_ressources_file_meta_no_category": {
+        "description": "pages/ressources.file_meta_no_category",
+        "placeholders": {
+            "kind": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_files_title": "Fiches à télécharger",
+    "@pages_ressources_files_title": {
+        "description": "pages/ressources.files_title"
+    },
+    "pages_ressources_filter_all": "Tout",
+    "@pages_ressources_filter_all": {
+        "description": "pages/ressources.filter_all"
+    },
+    "pages_ressources_filters_label": "Filtrer par catégorie",
+    "@pages_ressources_filters_label": {
+        "description": "pages/ressources.filters_label"
+    },
+    "pages_ressources_help_title": "Besoin d’aide ?",
+    "@pages_ressources_help_title": {
+        "description": "pages/ressources.help_title"
+    },
+    "pages_ressources_intro": "Articles, fiches pratiques et outils à lire, à enregistrer et à partager.",
+    "@pages_ressources_intro": {
+        "description": "pages/ressources.intro"
+    },
+    "pages_ressources_legal_notice": "Ces informations sont éducatives et ne remplacent pas un conseil juridique personnalisé. Consultez un·e juriste de l’annuaire pour votre situation.",
+    "@pages_ressources_legal_notice": {
+        "description": "pages/ressources.legal_notice"
+    },
+    "pages_ressources_link_emergency": "Contacts d’urgence",
+    "@pages_ressources_link_emergency": {
+        "description": "pages/ressources.link_emergency"
+    },
+    "pages_ressources_link_report": "Signaler une violence",
+    "@pages_ressources_link_report": {
+        "description": "pages/ressources.link_report"
+    },
+    "pages_ressources_link_sos": "Alerte SOS avec localisation",
+    "@pages_ressources_link_sos": {
+        "description": "pages/ressources.link_sos"
+    },
+    "pages_ressources_media_title": "Lire la ressource",
+    "@pages_ressources_media_title": {
+        "description": "pages/ressources.media_title"
+    },
+    "pages_ressources_media_unsupported": "Votre navigateur ne peut pas lire ce fichier. Téléchargez-le pour l’ouvrir.",
+    "@pages_ressources_media_unsupported": {
+        "description": "pages/ressources.media_unsupported"
+    },
+    "pages_ressources_meta_description_filler": "Ressource Xomiton pour les filles et femmes LBTQ+ au Bénin.",
+    "@pages_ressources_meta_description_filler": {
+        "description": "pages/ressources.meta_description_filler"
+    },
+    "pages_ressources_minutes": "{count, plural, =1{{count} min} other{{count} min}}",
+    "@pages_ressources_minutes": {
+        "description": "pages/ressources.minutes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_ressources_offline_count": "{count, plural, =0{Aucune ressource hors connexion} =1{{count} disponible hors connexion} other{{count} disponibles hors connexion}}",
+    "@pages_ressources_offline_count": {
+        "description": "pages/ressources.offline_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_ressources_offline_filter_label": "Afficher seulement les ressources enregistrées",
+    "@pages_ressources_offline_filter_label": {
+        "description": "pages/ressources.offline_filter_label"
+    },
+    "pages_ressources_offline_list_title": "Ressources enregistrées pour le hors connexion",
+    "@pages_ressources_offline_list_title": {
+        "description": "pages/ressources.offline_list_title"
+    },
+    "pages_ressources_offline_only_empty": "Aucune ressource n’est enregistrée pour le hors connexion sur cet appareil.",
+    "@pages_ressources_offline_only_empty": {
+        "description": "pages/ressources.offline_only_empty"
+    },
+    "pages_ressources_offline_remove": "Retirer",
+    "@pages_ressources_offline_remove": {
+        "description": "pages/ressources.offline_remove"
+    },
+    "pages_ressources_offline_remove_hint": " « {title} » du hors connexion",
+    "@pages_ressources_offline_remove_hint": {
+        "description": "pages/ressources.offline_remove_hint",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_offline_switch": "Hors ligne",
+    "@pages_ressources_offline_switch": {
+        "description": "pages/ressources.offline_switch"
+    },
+    "pages_ressources_offline_switch_hint": ": rendre « {title} » disponible hors connexion",
+    "@pages_ressources_offline_switch_hint": {
+        "description": "pages/ressources.offline_switch_hint",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_offline_text": "Activez l’interrupteur pour garder cette ressource sur cet appareil.",
+    "@pages_ressources_offline_text": {
+        "description": "pages/ressources.offline_text"
+    },
+    "pages_ressources_offline_title": "Lecture hors connexion",
+    "@pages_ressources_offline_title": {
+        "description": "pages/ressources.offline_title"
+    },
+    "pages_ressources_og_alt_index": "Ressources Xomiton : fiches, guides, vidéos et documents",
+    "@pages_ressources_og_alt_index": {
+        "description": "pages/ressources.og_alt_index"
+    },
+    "pages_ressources_open_external": "Ouvrir le lien",
+    "@pages_ressources_open_external": {
+        "description": "pages/ressources.open_external"
+    },
+    "pages_ressources_published_on": "Publié le {date}",
+    "@pages_ressources_published_on": {
+        "description": "pages/ressources.published_on",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_reading_minutes": "{count, plural, =1{{count} min de lecture} other{{count} min de lecture}}",
+    "@pages_ressources_reading_minutes": {
+        "description": "pages/ressources.reading_minutes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_ressources_related_title": "Ressources de la même catégorie",
+    "@pages_ressources_related_title": {
+        "description": "pages/ressources.related_title"
+    },
+    "pages_ressources_reset_filters": "Réinitialiser les filtres",
+    "@pages_ressources_reset_filters": {
+        "description": "pages/ressources.reset_filters"
+    },
+    "pages_ressources_results": "{count, plural, =0{Aucune ressource} =1{{count} ressource} other{{count} ressources}}",
+    "@pages_ressources_results": {
+        "description": "pages/ressources.results",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_ressources_results_query": "{count, plural, =0{Aucune ressource pour « {query} »} =1{{count} ressource pour « {query} »} other{{count} ressources pour « {query} »}}",
+    "@pages_ressources_results_query": {
+        "description": "pages/ressources.results_query",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "query": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_search_label": "Rechercher une ressource",
+    "@pages_ressources_search_label": {
+        "description": "pages/ressources.search_label"
+    },
+    "pages_ressources_search_placeholder": "Rechercher une ressource…",
+    "@pages_ressources_search_placeholder": {
+        "description": "pages/ressources.search_placeholder"
+    },
+    "pages_ressources_shown_capped": "Affichage limité à {shown} ressources sur {total}. Affinez la recherche ou choisissez un type ou une catégorie pour voir les autres.",
+    "@pages_ressources_shown_capped": {
+        "description": "pages/ressources.shown_capped",
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_shown_of": "{shown} sur {total}",
+    "@pages_ressources_shown_of": {
+        "description": "pages/ressources.shown_of",
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_ressources_signup_text": "Créez un compte pour retrouver la communauté, vos groupes et les nouveautés.",
+    "@pages_ressources_signup_text": {
+        "description": "pages/ressources.signup_text"
+    },
+    "pages_ressources_thematique_title": "Thématique liée",
+    "@pages_ressources_thematique_title": {
+        "description": "pages/ressources.thematique_title"
+    },
+    "pages_ressources_title": "Ressources",
+    "@pages_ressources_title": {
+        "description": "pages/ressources.title"
+    },
+    "pages_ressources_transcript_title": "Transcription",
+    "@pages_ressources_transcript_title": {
+        "description": "pages/ressources.transcript_title"
+    },
+    "pages_ressources_type_all": "Tous les types",
+    "@pages_ressources_type_all": {
+        "description": "pages/ressources.type_all"
+    },
+    "pages_ressources_type_label": "Type de ressource",
+    "@pages_ressources_type_label": {
+        "description": "pages/ressources.type_label"
     },
     "pages_thematiques_aside_label": "Aide et fiches liées",
     "@pages_thematiques_aside_label": {
@@ -14893,7 +15747,7 @@
     "@seo_pages_ressources_title": {
         "description": "seo.pages.ressources.title"
     },
-    "seo_pages_signaler_description": "Signalez une violence ou exprimez un besoin d’aide, sans compte ni adresse IP enregistrée. Une personne formée lit votre message sous 24 h et l’oriente.",
+    "seo_pages_signaler_description": "Signale une violence ou exprime un besoin d’aide, sans compte ni adresse IP enregistrée. Une personne formée lira ton message sous 24 h et t’orientera.",
     "@seo_pages_signaler_description": {
         "description": "seo.pages.signaler.description"
     },

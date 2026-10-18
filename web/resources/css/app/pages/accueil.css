@@ -145,11 +145,11 @@
 /* ---------- FAQ (scopée : l'accordéon des autres pages garde le style du thème) ---------- */
 #lpFaq .accordion-button:not(.collapsed) { color: var(--xm-primary); background: var(--xm-primary-subtle); }
 
-/* ---------- Assistant : bouton flottant (sous le SOS, z-index 1040) et offcanvas ---------- */
+/* ---------- Assistant : bouton flottant (au-dessus du SOS de 64 px, z-index 1040 sous lui) et offcanvas ---------- */
 .xm-chat-fab {
   position: fixed;
   right: 18px;
-  bottom: 78px;
+  bottom: calc(var(--xm-sos-size) + 30px);
   z-index: 1040;
   display: inline-flex;
   align-items: center;

@@ -12,13 +12,21 @@ use App\Http\Controllers\Auth\RegistrationProfileController;
 use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\AlertAcknowledgementController;
+use App\Http\Controllers\Web\Alerts\ReportPageController;
+use App\Http\Controllers\Web\Alerts\ReportTrackingController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Http\Controllers\Web\RessourceDownloadController;
+use App\Http\Controllers\Web\RessourcesIndexController;
+use App\Http\Controllers\Web\RessourcesShowController;
+use App\Http\Controllers\Web\RessourceStreamController;
 use App\Http\Controllers\Web\RobotsController;
 use App\Http\Controllers\Web\SignedMediaController;
 use App\Http\Controllers\Web\SitemapController;
+use App\Http\Controllers\Web\SosPageController;
 use App\Http\Controllers\Web\ThematiquesIndexController;
 use App\Http\Controllers\Web\ThematiquesShowController;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -47,8 +55,15 @@ Route::get('/', HomeController::class)->name('home'); // P4-01
 // P4-02 : publiques et indexables (Q19 a) ; fiche résolue par ShowThematique (publiées seulement), pas de liaison implicite.
 Route::get('/thematiques', ThematiquesIndexController::class)->name('thematiques.index');
 Route::get('/thematiques/{slug}', ThematiquesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('thematiques.show');
-$placeholder('/ressources', 'ressources.index', 'Ressources', 'ressources.php');
-$placeholder('/ressources/{slug}', 'ressources.show', 'Ressource', 'ressource.php');
+// P4-03 : publiques et indexables (Q19 a) ; fiche résolue par ShowResource (publiées seulement, `article` → /actualites).
+// Téléchargement : compte puis 302 vers un lien signé `media.signed` ; lecture vidéo / audio : fichier servi avec `Range`
+// (206), sans redirection. Adresses stables pour le cache hors connexion (P5-10) ; limiteur nommé `resource_download`.
+Route::get('/ressources', RessourcesIndexController::class)->name('ressources.index');
+Route::get('/ressources/{slug}', RessourcesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('ressources.show');
+Route::get('/ressources/{slug}/telecharger', RessourceDownloadController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->middleware('throttle:resource_download')->name('ressources.download');
+Route::get('/ressources/{slug}/lire', RessourceStreamController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->middleware('throttle:resource_download')->name('ressources.stream');
 $placeholder('/violences', 'violences', 'Comprendre les violences', 'violences.php');
 $placeholder('/lois', 'lois', 'Lois et codes du Bénin', 'lois-benin.php');
 $placeholder('/do-glegbe', 'do-glegbe', 'Do Glegbe', 'do-glegbe.php');
@@ -63,8 +78,16 @@ Route::post('/newsletter', PlaceholderController::class)->name('newsletter.subsc
     ->defaults('title', 'Newsletter')->defaults('prototype', 'newsletter.php');
 
 // --- Alertes, SOS, signalement (P5) ----------------------------------------
-$placeholder('/signaler', 'signaler', 'Signaler', 'signalement.php', 'plain');
-$placeholder('/sos', 'sos', 'SOS', 'sos.php', 'plain');
+// Signalement (P5-04, Q11 a, Q18 a) : POST classique + @csrf (sans JavaScript), même charge utile et même cas d'usage que
+// POST /api/v1/signalements ; 10/h par IP (`report`). Suivi par code en POST (code hors URL), 20/h par IP (`tracking`).
+// Noms en `signaler.*` : servis pendant la maintenance (EnsureNotInMaintenance, RG-01).
+Route::get('/signaler', [ReportPageController::class, 'create'])->name('signaler');
+Route::post('/signaler', [ReportPageController::class, 'store'])->middleware('throttle:report')->name('signaler.store');
+Route::get('/signaler/confirmation', [ReportPageController::class, 'confirmation'])->name('signaler.confirmation');
+Route::get('/suivi', [ReportTrackingController::class, 'show'])->name('signaler.suivi');
+Route::post('/suivi', [ReportTrackingController::class, 'lookup'])->middleware('throttle:tracking')->name('signaler.suivi.show');
+// P5-05 : page sobre (tu), envoi par l'API (Idempotency-Key) ; `?alerte={ulid}` : SOS du compte connecté (bouton flottant P5-08).
+Route::get('/sos', SosPageController::class)->name('sos');
 // Accusé de réception par lien signé (P5-02) : contact d'annuaire sans compte ; GET sans effet, POST + CSRF.
 // Signature vérifiée par AcknowledgeAlertRequest (403 en français), limiteur dédié `acknowledge` (60/h par IP + alerte
 // + fiche, jamais partagé avec le suivi par code : CGNAT mobile), servi en maintenance.
@@ -146,6 +169,9 @@ Route::permanentRedirect('/urgences.php', '/urgences');
 Route::permanentRedirect('/thematiques.php', '/thematiques');
 // Le prototype adressait les fiches par id ; la couverture semée le garde (covers/th-<id>.jpg, ContentSeeder) : P4-02.
 Route::get('/thematique.php', LegacyThematiqueRedirectController::class)->name('legacy.thematique');
+// P4-03 : ressources.php garde ?q= et ?cat= ; ressource.php?id= redirigeait vers thematique.php?id= (même résolution).
+Route::get('/ressources.php', [LegacyRessourceRedirectController::class, 'index'])->name('legacy.ressources');
+Route::get('/ressource.php', [LegacyRessourceRedirectController::class, 'show'])->name('legacy.ressource');
 
 // --- Référencement (P4-11) : robots.txt et sitemap.xml natifs, sans fichier statique ----
 // Sans session ni cookies : une visite de robot n'ouvre pas de session et la réponse `Cache-Control: public` ne porte

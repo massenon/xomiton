@@ -15,4 +15,7 @@
 @import './app/auth.css';
 @import './app/pages/accueil.css';
 @import './app/pages/thematiques.css';
+@import './app/pages/ressources.css';
 @import './app/pages/alertes-dispatch.css';
+@import './app/pages/sos.css';
+@import './app/pages/signaler.css';

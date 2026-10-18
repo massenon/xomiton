@@ -33,6 +33,7 @@ use App\Domain\Notifications\Contracts\PushSender;
 use App\Domain\Notifications\Contracts\SmsSender;
 use App\Domain\Sync\Events\SyncConflictDetected;
 use App\Infrastructure\Notifications\NotificationDrivers;
+use App\Infrastructure\Session\GuestPrivateDatabaseSessionHandler;
 use App\Models\AuditLog;
 use App\Models\Category;
 use App\Models\Commune;
@@ -61,6 +62,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -116,6 +118,21 @@ class AppServiceProvider extends ServiceProvider
         $this->registerNotificationChannels();
         $this->registerDomainEvents();
         $this->registerReferentialObservers();
+        $this->registerSessionDriver();
+    }
+
+    /**
+     * Lot signaler (P5-04, RG-01, ADR-33) : le pilote `database` n'écrit ni IP ni user agent pour une session d'invité·e
+     * (GuestPrivateDatabaseSessionHandler) ; une session connectée les garde pour les appareils connectés.
+     */
+    private function registerSessionDriver(): void
+    {
+        Session::extend('database', static fn (Application $app): GuestPrivateDatabaseSessionHandler => new GuestPrivateDatabaseSessionHandler(
+            $app->make('db')->connection(config('session.connection')),
+            (string) config('session.table', 'sessions'),
+            (int) config('session.lifetime', 120),
+            $app,
+        ));
     }
 
     /**
@@ -192,14 +209,14 @@ class AppServiceProvider extends ServiceProvider
                 throw new ThrottleRequestsException(__('auth.otp.rate_limited', ['minutes' => $minutes]), null, $headers);
             }));
 
-        // Signalement anonyme : par IP.
+        // Signalement anonyme : par IP, en empreinte HMAC dans le cache (ADR-33 : le md5 du limiteur se renverse).
         RateLimiter::for('report', static fn (Request $request): Limit => Limit::perHour(self::limit('report_per_hour_per_ip'))
-            ->by('report|'.$request->ip())
+            ->by('report|'.KeyedHash::make((string) $request->ip()))
             ->response($tooMany));
 
-        // Suivi anonyme d'un signalement : par IP, la réponse « code inconnu ou expiré » reste neutre.
+        // Suivi anonyme d'un signalement : par IP (empreinte), la réponse « code inconnu ou expiré » reste neutre.
         RateLimiter::for('tracking', static fn (Request $request): Limit => Limit::perHour(self::limit('tracking_per_hour_per_ip'))
-            ->by('tracking|'.$request->ip())
+            ->by('tracking|'.KeyedHash::make((string) $request->ip()))
             ->response($tooMany));
 
         // Accusé de réception par lien signé (P5-02) : par IP, alerte et fiche (empreinte), plafond propre, pour qu'un
@@ -246,6 +263,17 @@ class AppServiceProvider extends ServiceProvider
         // Assistant public de l'accueil (P4-01) : par IP, qu'on soit connecté·e ou non (aucune réponse n'est enregistrée).
         RateLimiter::for('assistant', static fn (Request $request): Limit => Limit::perMinute(self::limit('assistant_per_minute'))
             ->by('assistant|'.$request->ip())
+            ->response($tooMany));
+
+        // Téléchargement et lecture d'une ressource (P4-03, /ressources/{slug}/telecharger|lire) : par IP, adresse et ressource
+        // (empreinte HMAC, ADR-33), contre le gonflement de `downloads_count` ; par ressource pour qu'un CGNAT mobile et le
+        // précache du service worker (P5-10 : une requête par ressource marquée) n'épuisent pas un quota commun.
+        RateLimiter::for('resource_download', static fn (Request $request): Limit => Limit::perMinute(self::limit('resource_download_per_minute'))
+            ->by('resource_download|'.KeyedHash::make(implode('|', [
+                (string) $request->ip(),
+                (string) $request->route()?->getName(),
+                (string) $request->route('slug'),
+            ])))
             ->response($tooMany));
 
         // SOS (ARCH §4, P2-08, P5-09) : jamais de 429. Au-delà de 5 envois par minute et par IP, journal + cloche admin

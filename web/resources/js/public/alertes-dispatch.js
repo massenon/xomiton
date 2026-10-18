@@ -5,6 +5,7 @@
 // 5xx consécutifs ou `pollUntil` dépassé. Hors ligne (navigateur hors ligne ou réseau en échec) : liste figée, message,
 // sondage maintenu avec recul, reprise immédiate à l'événement `online`. SOS sans compte : jeton `token` envoyé en
 // `X-Sos-Token` (ShowSosRequest, Q52 b), gardé en mémoire seulement (jamais d'état Alpine ni de stockage local).
+// `onUpdate(data)` (facultatif) : rappelé avec chaque réponse de sondage (page /sos : statut et contact principal).
 // Aucun texte ici : tout vient de Blade (lang/fr, LocaleFormatter) par `opts.texts`.
 
 export const MIN_POLL = 10;
@@ -148,6 +149,10 @@ export function xmNotified(opts = {}) {
       this.people = people;
       this.offline = false;
       this.updatedAt = new Date();
+      // Hôte (page /sos, P5-05) : statut, contact principal, annulation et sécurité suivent le même sondage.
+      if (typeof opts.onUpdate === 'function') {
+        try { opts.onUpdate(data); } catch (e) { /* le sondage continue */ }
+      }
       if (isFinal(data)) this.stop();
     },
 

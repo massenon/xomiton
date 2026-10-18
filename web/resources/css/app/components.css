@@ -29,10 +29,18 @@
 .xm-timeline__dot { width: 12px; height: 12px; left: -1.15rem; top: .35rem; }
 .xm-timeline__dot--neutral { background: var(--xm-text-muted); }
 
-/* SOS (<x-sos-button>) : position fixe en bas à droite, panneau de confirmation au-dessus du bouton. */
+/* SOS (<x-sos-button>) : position fixe en bas à droite, panneau de confirmation au-dessus du bouton. Superposition
+   (D8, FRONT_END_LAYOUT §7, Q21 b) : 1060, au-dessus des modales (1055) et de leur fond (1050) ; les toasts (1090) restent
+   en haut à droite et ne le recouvrent jamais. Encoches et barre gestuelle : marges de sécurité (safe-area). */
 .xm-sos { cursor: pointer; touch-action: none; -webkit-user-select: none; user-select: none; display: inline-flex; align-items: center; justify-content: center; font-size: var(--xm-fs-body); }
+a.xm-sos { text-decoration: none; } /* lien de repli sans JavaScript du bouton flottant (x-sos-fab) */
 .xm-sos:focus-visible { outline: var(--xm-focus-width) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
-.xm-sos-wrap--fixed { position: fixed; right: var(--xm-space-4); bottom: var(--xm-space-4); z-index: 1040; }
+.xm-sos--lg { --xm-sos-size: 96px; font-size: 1.75rem; }
+.xm-sos-wrap--fixed { position: fixed; right: max(var(--xm-space-4), env(safe-area-inset-right)); bottom: max(var(--xm-space-4), env(safe-area-inset-bottom)); z-index: 1060; }
+.xm-sos-wrap--inline { display: block; }
+.xm-sos-panel--inline { position: static; width: 100%; margin-top: var(--xm-space-4); text-align: center; }
+.xm-sos-panel--inline .xm-sos-count { font-size: clamp(4rem, 3rem + 6vw, 6rem); }
+.xm-sos-panel .btn-lg { min-height: 52px; }
 .xm-sos-panel { position: absolute; right: 0; bottom: calc(100% + var(--xm-space-3)); width: min(300px, calc(100vw - 32px)); text-align: start; z-index: 1; }
 .xm-sos-wrap:not(.xm-sos-wrap--fixed) .xm-sos-panel { right: auto; left: 0; }
 .xm-sos-count { font-family: var(--xm-font-heading); line-height: 1; }

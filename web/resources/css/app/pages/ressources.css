@@ -1,0 +1,24 @@
+/*
+ * Ressources `/ressources` et `/ressources/{slug}` (P4-03) : style en ligne du prototype sorti dans la feuille
+ * (thematique.php l.102, vignette 88 px), puces de catégorie portées à 14 px (`.xm-chip` du prototype : 12 px, texte
+ * < 14 px interdit, MASTER.md) avec un anneau de focus, interrupteur « Hors ligne » et ses 44 px, contour du
+ * bouton-bascule enfoncé ; cibles tactiles de 44 px au pointeur tactile pour les btn-sm gardés par fidélité. Jetons uniquement.
+ */
+.xm-res-filters .xm-chip { font-size: var(--xm-fs-small); min-height: 2rem; }
+.xm-res-filters .xm-chip:focus-visible { outline: var(--xm-focus-width) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
+
+.xm-offline-switch { display: inline-flex; align-items: center; gap: var(--xm-space-2); min-height: var(--xm-button-min-h, 44px); }
+.xm-offline-switch .form-check-label { padding-block: var(--xm-space-2); cursor: pointer; }
+
+/* Bouton-bascule « enregistrées seulement » : état enfoncé visible autrement que par la couleur du texte (contour). */
+.xm-res-offline-toggle { border: 1px solid transparent; }
+.xm-res-offline-toggle[aria-pressed="true"] { border-color: var(--xm-success); }
+
+.xm-res-thumb { width: 88px; }
+
+@media (pointer: coarse) {
+  .xm-res-filters .xm-chip,
+  .xm-res-help .btn,
+  .xm-res-offline-toggle,
+  .xm-res-offline-remove { min-height: var(--xm-button-min-h, 44px); display: inline-flex; align-items: center; }
+}

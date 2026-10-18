@@ -52,6 +52,8 @@ class DatabaseSeeder extends Seeder
 
         if (app()->environment(self::DEMO_ENVIRONMENTS)) {
             $this->call(DemoAccountsSeeder::class);
+            // P4-03 : ressources de démonstration (le prototype n'en a pas ; l'admin Contenu arrive en P12-03).
+            $this->call(DemoResourcesSeeder::class);
         }
     }
 }

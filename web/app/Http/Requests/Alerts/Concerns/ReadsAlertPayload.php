@@ -30,10 +30,14 @@ trait ReadsAlertPayload
         }
 
         foreach ($booleans as $field) {
-            if ($this->has($field)) {
+            // Valeur vide ou nulle (`anonymous: null`, `anonymous=`) : la valeur par défaut, jamais `false` (RG-01 / RG-02 :
+            // un signalement n'est lié au compte que sur un refus explicite de l'anonymat).
+            if ($this->filled($field)) {
                 $merge[$field] = $this->boolean($field);
             } elseif (array_key_exists($field, $defaults)) {
                 $merge[$field] = $defaults[$field];
+            } elseif ($this->has($field)) {
+                $merge[$field] = false;
             }
         }
 
