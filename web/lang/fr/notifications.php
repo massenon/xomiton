@@ -113,9 +113,9 @@ return [
     'reaction' => [
         'title' => 'Réactions à ta publication',
         'liked_one' => ':name a aimé ta publication.',
-        'liked_many' => ':name et :count autres ont aimé ta publication.',
+        'liked_many' => '{1} :name et :count autre personne ont aimé ta publication.|[2,*] :name et :count autres ont aimé ta publication.',
         'commented_one' => ':name a commenté ta publication.',
-        'commented_many' => ':name et :count autres ont commenté ta publication.',
+        'commented_many' => '{1} :name et :count autre personne ont commenté ta publication.|[2,*] :name et :count autres ont commenté ta publication.',
         'replied' => ':name a répondu à ton commentaire.',
         'discreet' => 'Nouvelle activité',
     ],
@@ -136,7 +136,7 @@ return [
 
     'poll_closed' => [
         'title' => 'Sondage terminé',
-        'body' => '« :question » : :votes votes. Découvre les résultats.',
+        'body' => '{0} « :question » : aucun·e participant·e. Découvre les résultats.|{1} « :question » : :count participant·e. Découvre les résultats.|[2,*] « :question » : :count participant·es. Découvre les résultats.',
         'discreet' => 'Sondage terminé',
     ],
 

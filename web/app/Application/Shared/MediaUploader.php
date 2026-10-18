@@ -6,6 +6,8 @@ namespace App\Application\Shared;
 
 use App\Application\Shared\Exceptions\MediaRejected;
 use App\Http\Controllers\Web\SignedMediaController;
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use GdImage;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
@@ -155,10 +157,12 @@ final class MediaUploader
 
     /**
      * Lien temporaire signé vers un fichier privé, servi par SignedMediaController (route `media.signed`).
+     * `$expires` : durée en minutes à partir de maintenant, ou instant d'expiration déjà calculé (stableExpiry(), ou
+     * valeur que l'appelant renvoie aussi au client : une seule horloge pour le lien et son `expires_at`).
      *
      * @throws LogicException si la route n'est pas encore déclarée dans routes/web.php
      */
-    public function signedUrl(string $disk, string $path, int $minutes = 10): string
+    public function signedUrl(string $disk, string $path, int|DateTimeInterface $expires = 10): string
     {
         if (! in_array($disk, self::signedDisks(), true)) {
             throw new InvalidArgumentException(sprintf('Disk [%s] cannot be served through signed URLs (xomiton.uploads.signed_disks).', $disk));
@@ -173,10 +177,24 @@ final class MediaUploader
             ));
         }
 
-        return URL::temporarySignedRoute(self::ROUTE_SIGNED, now()->addMinutes(max(1, $minutes)), [
+        return URL::temporarySignedRoute(self::ROUTE_SIGNED, $expires instanceof DateTimeInterface ? $expires : now()->addMinutes(max(1, $expires)), [
             'disk' => $disk,
             'path' => ltrim(str_replace('\\', '/', $path), '/'),
         ]);
+    }
+
+    /**
+     * Expiration alignée sur une fenêtre fixe : début de la **prochaine** fenêtre de `$windowMinutes` (quart d'heure par
+     * défaut) plus `$minutes`. Toutes les lectures d'une même fenêtre reçoivent le même lien signé, donc le même corps
+     * et le même ETag (304 possible sur une liste qui contient des médias privés) ; le lien reste valable au moins
+     * `$minutes` après la lecture (au plus `$minutes + $windowMinutes`).
+     */
+    public static function stableExpiry(int $minutes, int $windowMinutes = 15): CarbonImmutable
+    {
+        $window = max(1, $windowMinutes) * 60;
+        $next = (intdiv(now()->getTimestamp(), $window) + 1) * $window;
+
+        return CarbonImmutable::createFromTimestamp($next + max(1, $minutes) * 60, (string) config('app.timezone', 'UTC'));
     }
 
     /** @return list<string> */

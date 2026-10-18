@@ -18,6 +18,8 @@ return [
             // Parcours de crise et pages publiques atteintes depuis l'espace connecté.
             'home', 'sos', 'signaler', 'signaler.suivi', 'urgences', 'thematiques.*', 'ressources.index', 'ressources.show',
             'violences', 'lois', 'do-glegbe', 'aide.index', 'aide.show', 'actualites.*', 'confidentialite', 'connexion',
+            // Bandeau « Confirme ton e-mail » du gabarit membre Vue (P6-03).
+            'otp', 'otp.resend',
         ],
     ],
 

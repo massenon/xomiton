@@ -7,7 +7,8 @@ namespace App\Notifications;
 use App\Models\DatabaseNotification;
 
 /**
- * « Sondage terminé » (NOTIFICATIONS §2) : auteur·e du sondage ; cloche seulement.
+ * « Sondage terminé » (NOTIFICATIONS §2) : auteur·e du sondage ; cloche seulement. `voters` : participant·es distinct·es
+ * (`polls.voters_count`), jamais le nombre de réponses cochées (gonflé en choix multiple).
  */
 final class PollEnded extends XomitonNotification
 {
@@ -15,7 +16,7 @@ final class PollEnded extends XomitonNotification
         public readonly int $pollId,
         public readonly int $postId,
         public readonly string $question,
-        public readonly int $votes,
+        public readonly int $voters,
         public readonly ?string $url = null,
     ) {}
 
@@ -41,7 +42,7 @@ final class PollEnded extends XomitonNotification
     {
         return [
             'title' => (string) __('notifications.poll_closed.title'),
-            'body' => (string) __('notifications.poll_closed.body', ['question' => $this->question, 'votes' => $this->votes]),
+            'body' => trans_choice('notifications.poll_closed.body', $this->voters, ['question' => $this->question]),
             'url' => $this->url ?? self::urlTo('fil.show', ['post' => $this->postId], '/fil/'.$this->postId),
             'icon' => 'bar-chart-fill',
         ];
@@ -60,7 +61,7 @@ final class PollEnded extends XomitonNotification
      */
     protected function extra(object $notifiable): array
     {
-        return ['poll_id' => $this->pollId, 'post_id' => $this->postId, 'votes' => $this->votes];
+        return ['poll_id' => $this->pollId, 'post_id' => $this->postId, 'voters' => $this->voters];
     }
 
     protected function subjectId(): int

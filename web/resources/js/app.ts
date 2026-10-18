@@ -5,8 +5,11 @@
 // Au démarrage : stores hydratés depuis les props partagées (HandleInertiaRequests), catalogue de la locale chargé avant
 // le montage (le squelette x-skeleton de app.blade.php reste affiché jusque-là), titre d'onglet neutre si demandé,
 // toast flashé affiché une seule fois (app/flash.ts, jamais au retour dans l'historique) et statut gardé à l'écran
-// (XmFlashStatus), `window.XM.toast` et l'évènement `toast` (contrat de xomiton-ui.js) relayés vers useToast(),
-// réseau suivi pour le bandeau hors connexion, boîte d'envoi et brouillons configurés pour le compte de la page.
+// (XmFlashStatus, sous l'en-tête du gabarit), `window.XM.toast` et l'évènement `toast` (contrat de xomiton-ui.js)
+// relayés vers useToast(), réseau suivi pour le bandeau hors connexion, boîte d'envoi et brouillons configurés pour le
+// compte de la page, `window.XM.outbox` (contrat de shared/outbox-boot.js : remise d'un SOS hors ligne par sos.js)
+// adossé au store `outbox`. Gabarit membre persistant (layouts/MemberLayout.vue, P6-03) par défaut pour chaque page.
+// Ces deux câblages sont dans app/shellBoot.ts (testés en Vitest).
 import './shared/bootstrap.js';
 import './shared/theme.js';
 import { createApp, h, Fragment, type DefineComponent } from 'vue';
@@ -16,6 +19,7 @@ import { i18n, loadLocale, t } from './app/i18n';
 import { route } from './app/routes';
 import { useToast } from './app/useToast';
 import { createFlashPresenter } from './app/flash';
+import { bindOutbox, withDefaultLayout } from './app/shellBoot';
 import type { SharedProps } from './app/types';
 import { useSessionStore } from './stores/session';
 import { useNotificationsStore } from './stores/notifications';
@@ -24,13 +28,13 @@ import { useDraftsStore } from './stores/drafts';
 import { useUiStore } from './stores/ui';
 import XmToast from './components/XmToast.vue';
 import XmOfflineBar from './components/XmOfflineBar.vue';
-import XmFlashStatus from './components/XmFlashStatus.vue';
+import MemberLayout from './layouts/MemberLayout.vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Xomiton';
 const pinia = createPinia();
 setActivePinia(pinia);
 
-const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue');
+const pages = import.meta.glob<{ default: DefineComponent }>('./Pages/**/*.vue');
 
 /** Textes neutres des avis de la boîte d'envoi : mêmes clés que partials/offline.blade.php (lang/fr/offline.php). */
 const OUTBOX_TEXTS = ['queued', 'report_sent_title', 'report_sent', 'report_keep', 'report_failed_title', 'report_failed', 'report_resume',
@@ -51,10 +55,11 @@ const showFlash = createFlashPresenter((message, type) => useToast().show(messag
 
 createInertiaApp({
     title: (title) => useSessionStore().documentTitle(title, appName),
-    resolve: (name) => {
-        const page = pages[`./Pages/${name}.vue`];
-        if (!page) throw new Error(`Page Inertia introuvable : ${name}`);
-        return page();
+    resolve: async (name) => {
+        const loader = pages[`./Pages/${name}.vue`];
+        if (!loader) throw new Error(`Page Inertia introuvable : ${name}`);
+        // Gabarit membre par défaut ; `layout: null` (defineOptions) le retire, un autre gabarit le remplace.
+        return withDefaultLayout((await loader()).default, MemberLayout);
     },
     async setup({ el, App, props, plugin }) {
         const initial = props.initialPage as unknown as { props: SharedProps };
@@ -86,9 +91,11 @@ createInertiaApp({
         const drafts = useDraftsStore();
         drafts.configure(session.outboxAccount, session.ttlDays);
         drafts.purge().catch(() => undefined);
-        useOutboxStore().start({ account: session.outboxAccount, ttlDays: session.ttlDays, texts: outboxTexts() }).catch(() => undefined);
+        const outbox = useOutboxStore();
+        outbox.start({ account: session.outboxAccount, ttlDays: session.ttlDays, texts: outboxTexts() }).catch(() => undefined);
+        bindOutbox(window, outbox);
 
-        createApp({ render: () => h(Fragment, [h(XmOfflineBar), h(XmFlashStatus), h(App, props), h(XmToast)]) })
+        createApp({ render: () => h(Fragment, [h(XmOfflineBar), h(App, props), h(XmToast)]) })
             .use(plugin)
             .use(pinia)
             .use(i18n)

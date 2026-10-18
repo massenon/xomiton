@@ -13,6 +13,7 @@
 @import './app/layouts.css';
 @import './app/components.css';
 @import './app/auth.css';
+@import './app/member.css';
 @import './app/pages/accueil.css';
 @import './app/pages/thematiques.css';
 @import './app/pages/ressources.css';

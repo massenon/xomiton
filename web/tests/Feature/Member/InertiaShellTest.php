@@ -15,7 +15,7 @@ use Inertia\Testing\AssertableInertia as Assert;
  * Coquille Inertia de l'espace membre (P6-02, ADR-30) : réponse Inertia (première visite HTML et visite X-Inertia JSON),
  * props partagées (auth.user réduit, can, counters, flash, lang, ui), titre d'onglet neutre (<title inertia>), noindex,
  * no-store et historique chiffré, Ziggy limité au groupe « member », squelette avant hydratation, pas de SSR, 409 de
- * version, déconnexion qui efface l'historique ; routes membres encore Blade (/fil) sous le même middleware.
+ * version, déconnexion qui efface l'historique ; /fil en Inertia sous le même middleware (gabarit membre Vue, P6-03).
  * Page de démonstration : /design-system/vue (local et recette).
  */
 
@@ -163,14 +163,14 @@ it('ne garde aucune page membre en cache et chiffre l’historique Inertia', fun
     expect($json->headers->get('Cache-Control'))->toContain('no-store');
 });
 
-it('garde /fil en Blade sous le middleware membre : noindex, no-store, sans page Inertia', function (): void {
+it('sert /fil en Inertia sous le middleware membre (critère reporté à P6-03) : noindex, no-store', function (): void {
     $response = $this->actingAs($this->member)->get('/fil')
         ->assertOk()
         ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
-        ->assertDontSee('<div id="app" data-page="', false);
+        ->assertSee('<div id="app" data-page="', false)
+        ->assertInertia(fn (Assert $page) => $page->component('Member/Placeholder'));
 
-    expect($response->headers->get('Cache-Control'))->toContain('no-store')
-        ->and($response->headers->has('X-Inertia'))->toBeFalse();
+    expect($response->headers->get('Cache-Control'))->toContain('no-store');
 });
 
 it('déconnexion depuis Inertia : 409 vers l’accueil, historique effacé à la visite Inertia suivante', function (): void {

@@ -48,6 +48,7 @@ class Post extends Model
         'status',
         'hidden_reason',
         'published_at',
+        'edited_at',
     ];
 
     /**
@@ -74,6 +75,7 @@ class Post extends Model
             'comments_count' => 'integer',
             'reports_count' => 'integer',
             'published_at' => 'datetime',
+            'edited_at' => 'datetime',
         ];
     }
 
@@ -134,6 +136,16 @@ class Post extends Model
     }
 
     /**
+     * Masquages par des membres (« Masquer » : retirée de leur fil seulement, P7-02).
+     *
+     * @return HasMany<PostHide, $this>
+     */
+    public function hides(): HasMany
+    {
+        return $this->hasMany(PostHide::class);
+    }
+
+    /**
      * @return HasMany<Comment, $this>
      */
     public function comments(): HasMany
@@ -182,7 +194,9 @@ class Post extends Model
 
             $q->orWhere('user_id', $viewer->id)
                 ->orWhere(function (Builder $r) use ($viewer): void {
+                    // Anonyme + abonné·es : traitée comme « moi » (Q72) ; sinon, la voir révélerait qui l'a écrite.
                     $r->where('visibility', PostVisibility::Followers)
+                        ->where('is_anonymous', false)
                         ->whereIn('user_id', Follow::query()->select('followed_id')->where('follower_id', $viewer->id));
                 });
         });

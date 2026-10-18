@@ -4,7 +4,8 @@
 // est un dropdown Bootstrap ; le filtre des onglets est tenu par Vue. Émet `read` (id) au clic d'une notification non
 // lue et `read-all` ; la mise à jour réelle (store `notifications`, polling `bell_poll_seconds`) est branchée par
 // l'en-tête membre (P6-03). items : [{ id, icon, color, text, time, href, read }] ; unread (défaut : calculé) ; href /
-// hrefLabel (pied) ; id ; variant : member (nav-link icon-md) | admin (btn-light btn-sm).
+// hrefLabel (pied) ; id ; variant : member (nav-link icon-md) | admin (btn-light btn-sm) ; label : nom accessible du
+// bouton (défaut « Notifications » ; l'en-tête membre y met le compteur, qu'un aria-label fixe masquerait).
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -25,7 +26,8 @@ const props = withDefaults(defineProps<{
     hrefLabel?: string | null;
     id?: string;
     variant?: 'member' | 'admin';
-}>(), { items: () => [], unread: null, href: null, hrefLabel: null, id: 'xmNotif', variant: 'member' });
+    label?: string | null;
+}>(), { items: () => [], unread: null, href: null, hrefLabel: null, id: 'xmNotif', variant: 'member', label: null });
 
 const emit = defineEmits<{ read: [id: string]; 'read-all': [] }>();
 
@@ -45,7 +47,7 @@ function open(n: BellItem) {
 
 <template>
     <div :id="id" class="dropdown xm-bell">
-        <button :class="variant === 'member' ? 'nav-link bg-light icon-md btn btn-light p-0 position-relative' : 'btn btn-light btn-sm position-relative'" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" :aria-label="t('components.bell.label')" :title="t('components.bell.label')">
+        <button :class="variant === 'member' ? 'nav-link bg-light icon-md btn btn-light p-0 position-relative' : 'btn btn-light btn-sm position-relative'" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" :aria-label="label ?? t('components.bell.label')" :title="t('components.bell.label')">
             <i class="bi bi-bell" aria-hidden="true"></i>
             <span :class="['position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger', { 'd-none': !count }]">{{ count }}<span class="visually-hidden"> {{ t('components.bell.unread', count) }}</span></span>
         </button>

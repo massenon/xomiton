@@ -9307,6 +9307,42 @@
     "@enums_feed_post_visibility_public": {
         "description": "enums/feed.post_visibility.public"
     },
+    "enums_feed_report_reason_autre": "Autre",
+    "@enums_feed_report_reason_autre": {
+        "description": "enums/feed.report_reason.autre"
+    },
+    "enums_feed_report_reason_desinformation": "Désinformation santé",
+    "@enums_feed_report_reason_desinformation": {
+        "description": "enums/feed.report_reason.desinformation"
+    },
+    "enums_feed_report_reason_discrimination": "Contenu discriminatoire (homophobie, transphobie)",
+    "@enums_feed_report_reason_discrimination": {
+        "description": "enums/feed.report_reason.discrimination"
+    },
+    "enums_feed_report_reason_donnees_personnelles": "Partage d’informations privées",
+    "@enums_feed_report_reason_donnees_personnelles": {
+        "description": "enums/feed.report_reason.donnees_personnelles"
+    },
+    "enums_feed_report_reason_filtre_automatique": "Mots surveillés (filtre automatique)",
+    "@enums_feed_report_reason_filtre_automatique": {
+        "description": "enums/feed.report_reason.filtre_automatique"
+    },
+    "enums_feed_report_reason_harcelement": "Harcèlement ou insultes",
+    "@enums_feed_report_reason_harcelement": {
+        "description": "enums/feed.report_reason.harcelement"
+    },
+    "enums_feed_report_reason_menaces": "Menaces ou chantage",
+    "@enums_feed_report_reason_menaces": {
+        "description": "enums/feed.report_reason.menaces"
+    },
+    "enums_feed_report_reason_spam": "Spam",
+    "@enums_feed_report_reason_spam": {
+        "description": "enums/feed.report_reason.spam"
+    },
+    "enums_feed_report_reason_usurpation": "Usurpation d’identité",
+    "@enums_feed_report_reason_usurpation": {
+        "description": "enums/feed.report_reason.usurpation"
+    },
     "enums_gateways_gateway_delivery_status_echec": "Échec",
     "@enums_gateways_gateway_delivery_status_echec": {
         "description": "enums/gateways.gateway_delivery_status.echec"
@@ -9880,6 +9916,114 @@
             }
         }
     },
+    "feed_api_anonymous_followers": "Une publication anonyme ne peut pas être réservée à tes abonné·es : choisis « Public » ou « Moi uniquement ».",
+    "@feed_api_anonymous_followers": {
+        "description": "feed.api.anonymous_followers"
+    },
+    "feed_api_attributes_body": "message",
+    "@feed_api_attributes_body": {
+        "description": "feed.api.attributes.body"
+    },
+    "feed_api_attributes_choice": "réponse",
+    "@feed_api_attributes_choice": {
+        "description": "feed.api.attributes.choice"
+    },
+    "feed_api_attributes_choices": "réponses",
+    "@feed_api_attributes_choices": {
+        "description": "feed.api.attributes.choices"
+    },
+    "feed_api_attributes_details": "précisions",
+    "@feed_api_attributes_details": {
+        "description": "feed.api.attributes.details"
+    },
+    "feed_api_attributes_image": "photo",
+    "@feed_api_attributes_image": {
+        "description": "feed.api.attributes.image"
+    },
+    "feed_api_attributes_image_alt": "description de la photo",
+    "@feed_api_attributes_image_alt": {
+        "description": "feed.api.attributes.image_alt"
+    },
+    "feed_api_attributes_is_anonymous": "pseudonyme",
+    "@feed_api_attributes_is_anonymous": {
+        "description": "feed.api.attributes.is_anonymous"
+    },
+    "feed_api_attributes_kind": "type de contenu",
+    "@feed_api_attributes_kind": {
+        "description": "feed.api.attributes.kind"
+    },
+    "feed_api_attributes_parent_id": "commentaire",
+    "@feed_api_attributes_parent_id": {
+        "description": "feed.api.attributes.parent_id"
+    },
+    "feed_api_attributes_per_page": "nombre par page",
+    "@feed_api_attributes_per_page": {
+        "description": "feed.api.attributes.per_page"
+    },
+    "feed_api_attributes_poll": "sondage",
+    "@feed_api_attributes_poll": {
+        "description": "feed.api.attributes.poll"
+    },
+    "feed_api_attributes_poll_duration_days": "durée",
+    "@feed_api_attributes_poll_duration_days": {
+        "description": "feed.api.attributes.poll_duration_days"
+    },
+    "feed_api_attributes_poll_multiple": "plusieurs réponses",
+    "@feed_api_attributes_poll_multiple": {
+        "description": "feed.api.attributes.poll_multiple"
+    },
+    "feed_api_attributes_poll_option": "réponse",
+    "@feed_api_attributes_poll_option": {
+        "description": "feed.api.attributes.poll_option"
+    },
+    "feed_api_attributes_poll_options": "réponses",
+    "@feed_api_attributes_poll_options": {
+        "description": "feed.api.attributes.poll_options"
+    },
+    "feed_api_attributes_poll_question": "question",
+    "@feed_api_attributes_poll_question": {
+        "description": "feed.api.attributes.poll_question"
+    },
+    "feed_api_attributes_poll_results_before_vote": "résultats avant le vote",
+    "@feed_api_attributes_poll_results_before_vote": {
+        "description": "feed.api.attributes.poll_results_before_vote"
+    },
+    "feed_api_attributes_reason": "motif",
+    "@feed_api_attributes_reason": {
+        "description": "feed.api.attributes.reason"
+    },
+    "feed_api_attributes_tag": "type de publication",
+    "@feed_api_attributes_tag": {
+        "description": "feed.api.attributes.tag"
+    },
+    "feed_api_attributes_visibility": "visibilité",
+    "@feed_api_attributes_visibility": {
+        "description": "feed.api.attributes.visibility"
+    },
+    "feed_api_choice_unknown": "Cette réponse ne fait pas partie du sondage.",
+    "@feed_api_choice_unknown": {
+        "description": "feed.api.choice_unknown"
+    },
+    "feed_api_content_blocked": "Ce texte contient des mots non autorisés par la charte. Reformule-le, puis réessaie.",
+    "@feed_api_content_blocked": {
+        "description": "feed.api.content_blocked"
+    },
+    "feed_api_parent_invalid": "Ce commentaire ne fait pas partie de cette publication.",
+    "@feed_api_parent_invalid": {
+        "description": "feed.api.parent_invalid"
+    },
+    "feed_api_single_choice": "Ce sondage n’accepte qu’une seule réponse.",
+    "@feed_api_single_choice": {
+        "description": "feed.api.single_choice"
+    },
+    "feed_api_tag_change_poll": "Le type d’un sondage ne peut pas être modifié.",
+    "@feed_api_tag_change_poll": {
+        "description": "feed.api.tag_change_poll"
+    },
+    "feed_api_tag_poll": "Un sondage se publie avec sa question et ses réponses (type « sondage »).",
+    "@feed_api_tag_poll": {
+        "description": "feed.api.tag_poll"
+    },
     "feed_comments_anonymous": "Membre anonyme",
     "@feed_comments_anonymous": {
         "description": "feed.comments.anonymous"
@@ -10149,6 +10293,28 @@
     "feed_filters_temoignage": "Témoignages",
     "@feed_filters_temoignage": {
         "description": "feed.filters.temoignage"
+    },
+    "feed_moderation_auto_details": "Termes surveillés : {terms}",
+    "@feed_moderation_auto_details": {
+        "description": "feed.moderation.auto_details",
+        "placeholders": {
+            "terms": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_moderation_auto_hidden_reason": "Masqué automatiquement après {count} signalements (RG-16), en attente de relecture.",
+    "@feed_moderation_auto_hidden_reason": {
+        "description": "feed.moderation.auto_hidden_reason",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_moderation_auto_reporter": "Filtre automatique",
+    "@feed_moderation_auto_reporter": {
+        "description": "feed.moderation.auto_reporter"
     },
     "feed_page_title": "Mon fil",
     "@feed_page_title": {
@@ -11075,9 +11241,17 @@
     "@menus_a11y_main_nav": {
         "description": "menus.a11y.main_nav"
     },
+    "menus_a11y_member_aside": "Informations complémentaires",
+    "@menus_a11y_member_aside": {
+        "description": "menus.a11y.member_aside"
+    },
     "menus_a11y_member_nav": "Navigation de mon espace",
     "@menus_a11y_member_nav": {
         "description": "menus.a11y.member_nav"
+    },
+    "menus_a11y_member_sidenav": "Menu de mon espace",
+    "@menus_a11y_member_sidenav": {
+        "description": "menus.a11y.member_sidenav"
     },
     "menus_a11y_open_menu": "Ouvrir le menu",
     "@menus_a11y_open_menu": {
@@ -11407,6 +11581,24 @@
     "@menus_member_more_about": {
         "description": "menus.member_more.about"
     },
+    "menus_member_more_bell_announce": "{count, plural, =0{Aucune notification non lue} =1{{count} notification non lue} other{{count} notifications non lues}}",
+    "@menus_member_more_bell_announce": {
+        "description": "menus.member_more.bell_announce",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "menus_member_more_bell_label": "{count, plural, =0{Notifications} =1{Notifications, {count} non lue} other{Notifications, {count} non lues}}",
+    "@menus_member_more_bell_label": {
+        "description": "menus.member_more.bell_label",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "menus_member_more_collecte": "Collecte de données",
     "@menus_member_more_collecte": {
         "description": "menus.member_more.collecte"
@@ -11420,6 +11612,10 @@
             }
         }
     },
+    "menus_member_more_country": "Bénin",
+    "@menus_member_more_country": {
+        "description": "menus.member_more.country"
+    },
     "menus_member_more_do_glegbe": "Do Glegbe (règles)",
     "@menus_member_more_do_glegbe": {
         "description": "menus.member_more.do_glegbe"
@@ -11427,6 +11623,19 @@
     "menus_member_more_feed_full": "Fil d’actualité",
     "@menus_member_more_feed_full": {
         "description": "menus.member_more.feed_full"
+    },
+    "menus_member_more_invite": "Envoyer une invitation",
+    "@menus_member_more_invite": {
+        "description": "menus.member_more.invite"
+    },
+    "menus_member_more_invite_named": "Envoyer une invitation : {pseudo}",
+    "@menus_member_more_invite_named": {
+        "description": "menus.member_more.invite_named",
+        "placeholders": {
+            "pseudo": {
+                "type": "String"
+            }
+        }
     },
     "menus_member_more_language": "Langue",
     "@menus_member_more_language": {
@@ -11440,6 +11649,15 @@
     "@menus_member_more_messages_full": {
         "description": "menus.member_more.messages_full"
     },
+    "menus_member_more_messages_label": "{count, plural, =0{Messages} =1{Messages, {count} conversation non lue} other{Messages, {count} conversations non lues}}",
+    "@menus_member_more_messages_label": {
+        "description": "menus.member_more.messages_label",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "menus_member_more_offline_banner": "Tu es hors connexion. Tes saisies sont conservées et partiront automatiquement au retour du réseau.",
     "@menus_member_more_offline_banner": {
         "description": "menus.member_more.offline_banner"
@@ -11451,6 +11669,10 @@
     "menus_member_more_saved_posts": "Publications enregistrées",
     "@menus_member_more_saved_posts": {
         "description": "menus.member_more.saved_posts"
+    },
+    "menus_member_more_see_all": "Tout voir",
+    "@menus_member_more_see_all": {
+        "description": "menus.member_more.see_all"
     },
     "menus_member_more_sos_full": "SOS – alerte GPS",
     "@menus_member_more_sos_full": {
@@ -11479,6 +11701,94 @@
     "menus_member_more_who_to_follow_full": "Qui suivre et invitations",
     "@menus_member_more_who_to_follow_full": {
         "description": "menus.member_more.who_to_follow_full"
+    },
+    "menus_member_more_who_to_follow_title": "Qui suivre",
+    "@menus_member_more_who_to_follow_title": {
+        "description": "menus.member_more.who_to_follow_title"
+    },
+    "menus_member_pages_assistant": "Assistant",
+    "@menus_member_pages_assistant": {
+        "description": "menus.member_pages.assistant"
+    },
+    "menus_member_pages_ccc": "Outils CCC",
+    "@menus_member_pages_ccc": {
+        "description": "menus.member_pages.ccc"
+    },
+    "menus_member_pages_collecte": "Collecte de données",
+    "@menus_member_pages_collecte": {
+        "description": "menus.member_pages.collecte"
+    },
+    "menus_member_pages_directory": "Annuaire",
+    "@menus_member_pages_directory": {
+        "description": "menus.member_pages.directory"
+    },
+    "menus_member_pages_event": "Événement",
+    "@menus_member_pages_event": {
+        "description": "menus.member_pages.event"
+    },
+    "menus_member_pages_events": "Événements",
+    "@menus_member_pages_events": {
+        "description": "menus.member_pages.events"
+    },
+    "menus_member_pages_feed": "Fil d’actualité",
+    "@menus_member_pages_feed": {
+        "description": "menus.member_pages.feed"
+    },
+    "menus_member_pages_forums": "Forums",
+    "@menus_member_pages_forums": {
+        "description": "menus.member_pages.forums"
+    },
+    "menus_member_pages_group": "Groupe",
+    "@menus_member_pages_group": {
+        "description": "menus.member_pages.group"
+    },
+    "menus_member_pages_groups": "Groupes",
+    "@menus_member_pages_groups": {
+        "description": "menus.member_pages.groups"
+    },
+    "menus_member_pages_medias": "Médiathèque",
+    "@menus_member_pages_medias": {
+        "description": "menus.member_pages.medias"
+    },
+    "menus_member_pages_messages": "Messages",
+    "@menus_member_pages_messages": {
+        "description": "menus.member_pages.messages"
+    },
+    "menus_member_pages_notifications": "Notifications",
+    "@menus_member_pages_notifications": {
+        "description": "menus.member_pages.notifications"
+    },
+    "menus_member_pages_page_create": "Créer une page",
+    "@menus_member_pages_page_create": {
+        "description": "menus.member_pages.page_create"
+    },
+    "menus_member_pages_pages": "Pages",
+    "@menus_member_pages_pages": {
+        "description": "menus.member_pages.pages"
+    },
+    "menus_member_pages_peer_space": "Espace pair",
+    "@menus_member_pages_peer_space": {
+        "description": "menus.member_pages.peer_space"
+    },
+    "menus_member_pages_post": "Publication",
+    "@menus_member_pages_post": {
+        "description": "menus.member_pages.post"
+    },
+    "menus_member_pages_profile": "Mon profil",
+    "@menus_member_pages_profile": {
+        "description": "menus.member_pages.profile"
+    },
+    "menus_member_pages_settings": "Paramètres",
+    "@menus_member_pages_settings": {
+        "description": "menus.member_pages.settings"
+    },
+    "menus_member_pages_topic": "Sujet",
+    "@menus_member_pages_topic": {
+        "description": "menus.member_pages.topic"
+    },
+    "menus_member_pages_who_to_follow": "Qui suivre",
+    "@menus_member_pages_who_to_follow": {
+        "description": "menus.member_pages.who_to_follow"
     },
     "menus_member_roles_admin": "Administrateur·rice",
     "@menus_member_roles_admin": {
@@ -12119,6 +12429,26 @@
     "microcopy_success_theme_applied": "Thème appliqué.",
     "@microcopy_success_theme_applied": {
         "description": "microcopy.success.theme_applied"
+    },
+    "mobile_api_attributes_categorie": "catégorie",
+    "@mobile_api_attributes_categorie": {
+        "description": "mobile.api.attributes.categorie"
+    },
+    "mobile_api_attributes_page": "page",
+    "@mobile_api_attributes_page": {
+        "description": "mobile.api.attributes.page"
+    },
+    "mobile_api_attributes_per_page": "nombre d’éléments par page",
+    "@mobile_api_attributes_per_page": {
+        "description": "mobile.api.attributes.per_page"
+    },
+    "mobile_api_attributes_q": "recherche",
+    "@mobile_api_attributes_q": {
+        "description": "mobile.api.attributes.q"
+    },
+    "mobile_api_attributes_type": "type de ressource",
+    "@mobile_api_attributes_type": {
+        "description": "mobile.api.attributes.type"
     },
     "newsletter_admin_campaigns_batch_info": "Envoi par lots de {batch} e-mails par minute (tâche cron). Chaque e-mail contient automatiquement un lien de désinscription unique et l’en-tête List-Unsubscribe.",
     "@newsletter_admin_campaigns_batch_info": {
@@ -13631,14 +13961,14 @@
     "@notifications_password_reset_title": {
         "description": "notifications.password_reset.title"
     },
-    "notifications_poll_closed_body": "« {question} » : {votes} votes. Découvre les résultats.",
+    "notifications_poll_closed_body": "{count, plural, =0{« {question} » : aucun·e participant·e. Découvre les résultats.} =1{« {question} » : {count} participant·e. Découvre les résultats.} other{« {question} » : {count} participant·es. Découvre les résultats.}}",
     "@notifications_poll_closed_body": {
         "description": "notifications.poll_closed.body",
         "placeholders": {
-            "question": {
-                "type": "String"
+            "count": {
+                "type": "int"
             },
-            "votes": {
+            "question": {
                 "type": "String"
             }
         }
@@ -13727,12 +14057,12 @@
     "@notifications_preferences_title": {
         "description": "notifications.preferences.title"
     },
-    "notifications_reaction_commented_many": "{name} et {count} autres ont commenté ta publication.",
+    "notifications_reaction_commented_many": "{count, plural, =1{{name} et {count} autre personne ont commenté ta publication.} other{{name} et {count} autres ont commenté ta publication.}}",
     "@notifications_reaction_commented_many": {
         "description": "notifications.reaction.commented_many",
         "placeholders": {
             "count": {
-                "type": "String"
+                "type": "int"
             },
             "name": {
                 "type": "String"
@@ -13752,12 +14082,12 @@
     "@notifications_reaction_discreet": {
         "description": "notifications.reaction.discreet"
     },
-    "notifications_reaction_liked_many": "{name} et {count} autres ont aimé ta publication.",
+    "notifications_reaction_liked_many": "{count, plural, =1{{name} et {count} autre personne ont aimé ta publication.} other{{name} et {count} autres ont aimé ta publication.}}",
     "@notifications_reaction_liked_many": {
         "description": "notifications.reaction.liked_many",
         "placeholders": {
             "count": {
-                "type": "String"
+                "type": "int"
             },
             "name": {
                 "type": "String"
@@ -15567,6 +15897,42 @@
     "pages_lois_urgent": "Contacts d’urgence",
     "@pages_lois_urgent": {
         "description": "pages/lois.urgent"
+    },
+    "pages_partage_description": "Une publication de la communauté Xomiton vous a été partagée. Connectez-vous pour la lire.",
+    "@pages_partage_description": {
+        "description": "pages/partage.description"
+    },
+    "pages_partage_help": "Besoin d’aide tout de suite ?",
+    "@pages_partage_help": {
+        "description": "pages/partage.help"
+    },
+    "pages_partage_help_report": "Signaler une violence",
+    "@pages_partage_help_report": {
+        "description": "pages/partage.help_report"
+    },
+    "pages_partage_help_urgences": "Contacts d’urgence",
+    "@pages_partage_help_urgences": {
+        "description": "pages/partage.help_urgences"
+    },
+    "pages_partage_lead": "Cette publication est réservée à la communauté Xomiton. Connectez-vous ou créez un compte pour la lire.",
+    "@pages_partage_lead": {
+        "description": "pages/partage.lead"
+    },
+    "pages_partage_login": "Se connecter",
+    "@pages_partage_login": {
+        "description": "pages/partage.login"
+    },
+    "pages_partage_privacy": "Pour protéger les personnes qui s’expriment, rien n’est affiché ici : ni le texte, ni le nom, ni la photo.",
+    "@pages_partage_privacy": {
+        "description": "pages/partage.privacy"
+    },
+    "pages_partage_register": "Créer un compte",
+    "@pages_partage_register": {
+        "description": "pages/partage.register"
+    },
+    "pages_partage_title": "Publication partagée depuis Xomiton",
+    "@pages_partage_title": {
+        "description": "pages/partage.title"
     },
     "pages_ressources_aside_label": "Compléments et aide",
     "@pages_ressources_aside_label": {

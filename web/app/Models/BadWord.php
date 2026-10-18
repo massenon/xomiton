@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domain\Feed\ContentFilter;
 use App\Enums\BadWordSeverity;
 use Database\Factories\BadWordFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
@@ -18,6 +20,9 @@ class BadWord extends Model
 {
     /** @use HasFactory<BadWordFactory> */
     use HasFactory;
+
+    /** Liste des termes actifs mise en cache par App\Application\Feed\BadWordFilter, oubliée à chaque écriture. */
+    public const CACHE_KEY = 'feed:bad_words';
 
     /** @var list<string> */
     protected $fillable = [
@@ -33,6 +38,14 @@ class BadWord extends Model
             'severity' => BadWordSeverity::class,
             'is_active' => 'boolean',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        $forget = static fn (): bool => Cache::forget(self::CACHE_KEY);
+
+        static::saved($forget);
+        static::deleted($forget);
     }
 
     /** @param  Builder<BadWord>  $query */
@@ -59,13 +72,7 @@ class BadWord extends Model
      */
     public function appearsIn(string $text): bool
     {
-        $needle = preg_quote(Str::lower(Str::ascii(trim($this->word))), '/');
-
-        if ($needle === '') {
-            return false;
-        }
-
-        return preg_match('/(?<![\p{L}\p{N}])'.$needle.'(?![\p{L}\p{N}])/u', Str::lower(Str::ascii($text))) === 1;
+        return ContentFilter::contains($text, (string) $this->word);
     }
 
     /**

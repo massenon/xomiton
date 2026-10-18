@@ -23,18 +23,19 @@ use App\Http\Controllers\Web\Alerts\ReportTrackingController;
 use App\Http\Controllers\Web\ConfidentialiteController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\DoGlegbeController;
+use App\Http\Controllers\Web\Feed\SharedPostController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LegacyAideRedirectController;
 use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
+use App\Http\Controllers\Web\Member\PlaceholderPageController;
 use App\Http\Controllers\Web\Newsletter\LegacyNewsletterRedirectController;
 use App\Http\Controllers\Web\Newsletter\NewsletterConfirmationController;
 use App\Http\Controllers\Web\Newsletter\NewsletterController;
 use App\Http\Controllers\Web\Newsletter\NewsletterTrackingController;
 use App\Http\Controllers\Web\Newsletter\NewsletterUnsubscribeController;
-use App\Http\Controllers\Web\PlaceholderController;
 use App\Http\Controllers\Web\RessourceDownloadController;
 use App\Http\Controllers\Web\RessourcesIndexController;
 use App\Http\Controllers\Web\RessourcesShowController;
@@ -53,6 +54,7 @@ use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -60,15 +62,17 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 /*
  * Routes web : pages publiques (Blade) et espace membre / pair (Vue + Inertia, D9).
  * Noms « module.action », chemins en français (MODULE_SPECIFICATIONS.md §A à §C).
- * Les routes encore servies par PlaceholderController sont remplacées phase par phase (docs/IMPLEMENTATION_PLAN.md).
+ * Les écrans membres provisoires ($memberPlaceholder) sont remplacés phase par phase (docs/IMPLEMENTATION_PLAN.md).
  */
 
-$placeholder = static function (string $uri, string $name, string $title, string $prototype, string $layout = 'public'): void {
-    Route::get($uri, PlaceholderController::class)
+// P6-03 : écran provisoire d'une route membre = page Inertia `Member/Placeholder` dans le gabarit membre Vue ; titre
+// = clé de lang/fr/menus.php (member_pages.*), traduite à la requête par Member\PlaceholderPageController.
+$memberPlaceholder = static function (string $uri, string $name, string $title, string $prototype, bool $aside = false): RoutingRoute {
+    return Route::get($uri, PlaceholderPageController::class)
         ->name($name)
-        ->defaults('title', $title)
+        ->defaults('title', 'menus.member_pages.'.$title)
         ->defaults('prototype', $prototype)
-        ->defaults('layout', $layout);
+        ->defaults('aside', $aside);
 };
 
 // --- Site public (P4) -------------------------------------------------------
@@ -180,33 +184,39 @@ Route::post('/deconnexion', LogoutController::class)->middleware('auth')->name('
 Route::get('/mes-donnees/export/{token}', PersonalDataExportController::class)
     ->middleware(['auth'])->where('token', '[a-z0-9]{40}')->name('mes-donnees.export');
 
+// P7-02, Q31 b : lien de partage d'une publication = page d'atterrissage publique **neutre** (titre générique, invitation
+// à se connecter, aucun contenu, noindex) ; aucune lecture en base, même réponse que la publication existe ou non.
+// Connecté·e : redirection vers le détail /fil/{ulid} (qui applique la visibilité).
+Route::get('/p/{ulid}', SharedPostController::class)->where('ulid', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('p.show');
+
 // --- Espace membre et pair éducateur·rice : Vue + Inertia (P6 à P9) ---------
-// HandleInertiaRequests (P6-02) : props partagées et X-Robots-Tag noindex. Les routes encore servies par PlaceholderController
-// restent en Blade (gabarit membre avec SOS flottant) jusqu'au gabarit Vue (P6-03) : un lien Vue vers elles est un <a> simple.
-Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use ($placeholder): void {
+// HandleInertiaRequests (P6-02) : props partagées et X-Robots-Tag noindex. Toutes les pages sont Inertia, dans le gabarit
+// membre Vue (P6-03, resources/js/layouts/MemberLayout.vue) : les écrans pas encore livrés sont `Member/Placeholder`
+// ($memberPlaceholder) ; le gabarit les relie par <Link> (Inertia), les pages publiques Blade par un <a> simple.
+Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use ($memberPlaceholder): void {
     // P6-04 : catalogue des composants Xm* (local et recette, 404 ailleurs), page de démonstration de la coquille Inertia.
     Route::get('/design-system/vue', DesignSystemVueController::class)->name('design-system.vue');
-    $placeholder('/fil', 'fil', 'Fil d’actualité', 'fil.php');
-    $placeholder('/fil/{post}', 'fil.show', 'Publication', 'post-details.php');
-    $placeholder('/messages', 'messages', 'Messages', 'messaging.php');
-    $placeholder('/groupes', 'groupes.index', 'Groupes', 'groups.php');
-    $placeholder('/groupes/{group}', 'groupes.show', 'Groupe', 'group-details.php');
-    $placeholder('/pages', 'pages.index', 'Pages', 'pages.php');
-    $placeholder('/pages/creer', 'pages.create', 'Créer une page', 'create-page.php');
-    $placeholder('/evenements', 'evenements.index', 'Événements', 'events.php');
-    $placeholder('/evenements/{event}', 'evenements.show', 'Événement', 'event-details.php');
-    $placeholder('/forums', 'forums.index', 'Forums', 'forums.php');
-    $placeholder('/forums/{topic}', 'forums.show', 'Sujet', 'forum-topic.php');
-    $placeholder('/qui-suivre', 'qui-suivre', 'Qui suivre', 'who-to-follow.php');
-    $placeholder('/profil', 'profil', 'Mon profil', 'my-profile.php');
-    $placeholder('/parametres', 'parametres', 'Paramètres', 'settings.php');
-    $placeholder('/notifications', 'notifications', 'Notifications', 'notifications.php');
-    $placeholder('/assistant', 'assistant', 'Assistant', 'assistant.php');
-    $placeholder('/annuaire', 'annuaire', 'Annuaire', 'annuaire.php');
-    $placeholder('/medias', 'medias', 'Médiathèque', 'albums.php');
-    $placeholder('/ccc', 'ccc', 'Outils CCC', 'ccc.php');
-    $placeholder('/espace-pair', 'espace-pair', 'Espace pair', 'espace-pair.php');
-    $placeholder('/collecte', 'collecte', 'Collecte de données', 'collecte.php');
+    $memberPlaceholder('/fil', 'fil', 'feed', 'fil.php', aside: true);
+    $memberPlaceholder('/fil/{post}', 'fil.show', 'post', 'post-details.php');
+    $memberPlaceholder('/messages', 'messages', 'messages', 'messaging.php');
+    $memberPlaceholder('/groupes', 'groupes.index', 'groups', 'groups.php');
+    $memberPlaceholder('/groupes/{group}', 'groupes.show', 'group', 'group-details.php');
+    $memberPlaceholder('/pages', 'pages.index', 'pages', 'pages.php');
+    $memberPlaceholder('/pages/creer', 'pages.create', 'page_create', 'create-page.php');
+    $memberPlaceholder('/evenements', 'evenements.index', 'events', 'events.php');
+    $memberPlaceholder('/evenements/{event}', 'evenements.show', 'event', 'event-details.php');
+    $memberPlaceholder('/forums', 'forums.index', 'forums', 'forums.php');
+    $memberPlaceholder('/forums/{topic}', 'forums.show', 'topic', 'forum-topic.php');
+    $memberPlaceholder('/qui-suivre', 'qui-suivre', 'who_to_follow', 'who-to-follow.php');
+    $memberPlaceholder('/profil', 'profil', 'profile', 'my-profile.php');
+    $memberPlaceholder('/parametres', 'parametres', 'settings', 'settings.php');
+    $memberPlaceholder('/notifications', 'notifications', 'notifications', 'notifications.php');
+    $memberPlaceholder('/assistant', 'assistant', 'assistant', 'assistant.php');
+    $memberPlaceholder('/annuaire', 'annuaire', 'directory', 'annuaire.php');
+    $memberPlaceholder('/medias', 'medias', 'medias', 'albums.php');
+    $memberPlaceholder('/ccc', 'ccc', 'ccc', 'ccc.php');
+    $memberPlaceholder('/espace-pair', 'espace-pair', 'peer_space', 'espace-pair.php')->middleware('can:peer_space.access');
+    $memberPlaceholder('/collecte', 'collecte', 'collecte', 'collecte.php')->middleware('can:peer_space.access');
 });
 
 // --- Catalogue vivant du design system (P0-10) : local et recette seulement, 404 ailleurs ----

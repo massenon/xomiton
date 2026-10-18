@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Application\Member;
 
 use App\Application\Notifications\NotificationInbox;
+use App\Application\Shared\KnowledgeBaseAnswerer;
 use App\Enums\UserStatus;
 use App\Models\ConversationParticipant;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * État de la coquille de l'espace membre et pair (P6-02, D9) : ce que chaque page Inertia reçoit en props partagées
@@ -37,6 +39,9 @@ final class MemberShell
         'sync.view_own',
         'admin.access',
     ];
+
+    /** Préfixe du cache de la carte profil (par compte et département). */
+    private const PROFILE_CARD_CACHE = 'member-shell:card:';
 
     /**
      * @return array<string, mixed>
@@ -102,6 +107,61 @@ final class MemberShell
     public function neutralTitle(?User $user): bool
     {
         return (bool) ($user?->settings?->neutral_tab_title ?? false);
+    }
+
+    /**
+     * Données du gabarit membre Vue (P6-03, props partagées `shell`) : carte profil du sidenav (département, compteurs
+     * réels), bouton SOS flottant (équivalent de x-sos-fab : endpoint, département et commune du profil, jamais de
+     * position ; premier numéro d'urgence pour l'appel hors ligne, Settings en cache), lien d'administration si
+     * `admin.access`. Département et compteurs : cache court par compte (`xomiton.feed.shell_stats_cache_seconds`, D7 :
+     * réponses légères) au lieu d'une lecture de la zone et de trois COUNT à chaque visite.
+     *
+     * @return array{zone: ?string, stats: array{posts: int, followers: int, following: int}, sos: array{endpoint: string, zone_id: ?int, commune_id: ?int, number: ?string}, admin_url: ?string}
+     */
+    public function layout(User $user): array
+    {
+        $number = KnowledgeBaseAnswerer::emergencyNumbers()[0]['number'] ?? null;
+        $card = $this->profileCard($user);
+
+        return [
+            'zone' => $card['zone'],
+            'stats' => $card['stats'],
+            'sos' => [
+                'endpoint' => route('api.sos.store', [], false),
+                'zone_id' => $user->zone_id === null ? null : (int) $user->zone_id,
+                'commune_id' => $user->commune_id === null ? null : (int) $user->commune_id,
+                'number' => is_string($number) && $number !== '' ? $number : null,
+            ],
+            'admin_url' => $user->can('admin.access') ? route('admin.dashboard', [], false) : null,
+        ];
+    }
+
+    /**
+     * Carte profil du sidenav : département du profil et compteurs (publications visibles seulement : ni masquées par la
+     * modération ni supprimées).
+     *
+     * @return array{zone: ?string, stats: array{posts: int, followers: int, following: int}}
+     */
+    private function profileCard(User $user): array
+    {
+        $read = static function () use ($user): array {
+            $user->loadMissing('zone');
+
+            return [
+                'zone' => $user->zone?->name,
+                'stats' => [
+                    'posts' => $user->posts()->published()->count(),
+                    'followers' => $user->followers()->count(),
+                    'following' => $user->following()->count(),
+                ],
+            ];
+        };
+
+        $seconds = (int) config('xomiton.feed.shell_stats_cache_seconds', 60);
+
+        return $seconds > 0
+            ? Cache::remember(self::PROFILE_CARD_CACHE.$user->getKey().':'.($user->zone_id ?? 0), $seconds, $read)
+            : $read();
     }
 
     private function unreadConversations(User $user): int

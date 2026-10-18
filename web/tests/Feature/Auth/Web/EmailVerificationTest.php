@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use Inertia\Testing\AssertableInertia;
 
 /*
  * Intégration phase 2 (Q12 c) : vérification d'e-mail différée et non bloquante — middleware `verified`
@@ -53,16 +54,18 @@ it('expose la même règle par la Gate verified et User::hasVerifiedEmail()', fu
 });
 
 it('affiche le bandeau de rappel avec « Renvoyer le code » sur le fil tant que l’e-mail n’est pas confirmé', function (): void {
+    // Fil en Vue (P6-03) : XmVerifyBanner suit auth.user.email_verified ; « Renvoyer le code » poste en natif vers
+    // otp.resend avec le jeton CSRF des props partagées (rendu vérifié par Vitest, memberShell.test.ts).
     $this->actingAs($this->unverified)->get(route('fil'))
         ->assertOk()
-        ->assertSee(__('auth.verify_banner.title'))
-        ->assertSee(__('auth.verify_banner.resend'))
-        ->assertSee(route('otp.resend'), false)
-        ->assertSee(route('otp', ['purpose' => 'signup']), false);
+        ->assertSee('"otp.resend":{"uri":"code-de-verification\\/renvoyer"', false)
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->where('auth.user.email_verified', false)
+            ->where('shell.csrf_token', fn (string $token): bool => $token !== ''));
 
     $this->actingAs($this->verified)->get(route('fil'))
         ->assertOk()
-        ->assertDontSee(__('auth.verify_banner.title'));
+        ->assertInertia(fn (AssertableInertia $page) => $page->where('auth.user.email_verified', true));
 });
 
 it('ne montre rien à un·e visiteur·se et laisse les pages publiques accessibles', function (): void {

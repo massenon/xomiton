@@ -7,6 +7,7 @@ namespace App\Application\Content;
 use App\Application\Shared\MediaUploader;
 use App\Models\Resource;
 use App\Support\CountableVisit;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,6 +37,14 @@ final class ResourceDownload
         return $resource !== null && $resource->isDownloadable() ? $resource : null;
     }
 
+    /** Même règle par identifiant (API mobile, `GET /api/v1/ressources/{id}/download`, P6-08), poids compris. */
+    public function findById(int $id): ?Resource
+    {
+        $resource = Resource::query()->catalog()->whereKey($id)->first(['id', 'slug', 'kind', 'file_path', 'file_size']);
+
+        return $resource !== null && $resource->isDownloadable() ? $resource : null;
+    }
+
     public function record(Resource $resource, Request $request): void
     {
         if (CountableVisit::counts($request) && CountableVisit::isFirstRange($request)) {
@@ -43,14 +52,19 @@ final class ResourceDownload
         }
     }
 
-    /** Lien signé temporaire vers le fichier du disque privé. */
-    public function signedUrl(Resource $resource): string
+    /**
+     * Lien signé temporaire vers le fichier du disque privé ; `$expires` (expires()) quand l'appelant renvoie aussi
+     * l'échéance au client : même instant que la signature.
+     */
+    public function signedUrl(Resource $resource, ?CarbonInterface $expires = null): string
     {
-        return $this->uploader->signedUrl(
-            MediaUploader::privateDisk(),
-            (string) $resource->file_path,
-            max(1, (int) config('xomiton.uploads.signed_url_minutes', 10)),
-        );
+        return $this->uploader->signedUrl(MediaUploader::privateDisk(), (string) $resource->file_path, $expires ?? $this->expires());
+    }
+
+    /** Échéance d'un lien délivré maintenant (`xomiton.uploads.signed_url_minutes`). */
+    public function expires(): CarbonInterface
+    {
+        return now()->addMinutes(max(1, (int) config('xomiton.uploads.signed_url_minutes', 10)));
     }
 
     /**

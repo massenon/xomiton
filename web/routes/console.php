@@ -98,6 +98,16 @@ Schedule::command('notifications:retry')
     ->description('Rejoue les notifications d’alerte en attente ou échouées (push, SMS, e-mail) et supprime les abonnements push disparus');
 
 /*
+ * Sondages du fil (P7-07) : clôture des sondages échus et cloche « Sondage terminé » à leur auteur·rice. Le vote est
+ * refusé dès l'échéance même avant ce passage (Poll::isOpen) : cinq minutes suffisent pour la notification.
+ */
+Schedule::command('polls:close')
+    ->everyFiveMinutes()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Clôt les sondages arrivés à échéance et envoie « Sondage terminé » à leur auteur·rice');
+
+/*
  * Signal de vie vers la supervision externe (D7, NFR-03) : enregistré en dernier pour être émis après les
  * autres tâches de la minute. À conditionner au succès d'`alerts:escalate` (marqueur `alerts:escalate:last_success_at`,
  * livré) et de `notifications:retry` (marqueur `notifications:retry:last_success_at`, livré) — P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte.

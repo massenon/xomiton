@@ -1001,7 +1001,7 @@ def({ id: 'fil', module: 'feed', title: 'Fil d’actualités', route: '/fil', pa
       ├─ XmFilterChips(Tout, Témoignages…)
       └─ SliverList
          └─ XmPostCard(… XmPollCard si poll)`,
-  api: [['GET', '/api/v1/feed', '?tag=&cursor= (20 par page)'], ['POST', '/api/v1/posts/{id}/like', 'optimiste'], ['POST', '/api/v1/posts/{id}/poll/vote', '{choices[]}']],
+  api: [['GET', '/api/v1/feed', '?tag=&cursor= (20 par page)'], ['POST', '/api/v1/posts/{ulid}/like', 'optimiste, idempotent'], ['DELETE', '/api/v1/posts/{ulid}/like', 'retrait du j’aime'], ['POST', '/api/v1/posts/{ulid}/poll/vote', '{choices[]} (remplace le vote)'], ['DELETE', '/api/v1/posts/{ulid}/poll/vote', 'retrait du vote']],
   ds: DS('XmPostCard', 'XmPollCard', 'XmFilterChips', 'ChoiceChip'),
   warn: 'Mises à jour optimistes (j’aime, vote) avec annulation si l’API échoue ; votes confidentiels : seuls les totaux sont renvoyés.',
   render: () => { const posts = S.posts.filter(p => S.feedFilter === 'Tout' || p.tag === S.feedFilter);

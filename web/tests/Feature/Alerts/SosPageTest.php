@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use Inertia\Testing\AssertableInertia;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Tests\Support\AlertFixtures;
 
@@ -140,14 +141,17 @@ it('pose le bouton SOS flottant sur les gabarits connectés, jamais pour un visi
     $this->get('/')->assertDontSee('xm-sos-fab', false);
     $this->get('/connexion')->assertDontSee('xm-sos-fab', false);
 
-    foreach (['/', '/fil'] as $uri) {
-        $this->actingAs($member)->get($uri)->assertOk()
-            ->assertSee('x-data="xmSosFab(', false)
-            ->assertSee('x-on:sos-fab-send="onSend($event.detail)" data-outbox="sos"', false)
-            ->assertSee('class="xm-sos-wrap no-print xm-sos-wrap--fixed xm-sos-fab"', false)
-            ->assertSee('class="xm-sos" id="xmSosFab"', false)
-            ->assertSee('sos?alerte=__ID__', false);
-    }
+    $this->actingAs($member)->get('/')->assertOk()
+        ->assertSee('x-data="xmSosFab(', false)
+        ->assertSee('x-on:sos-fab-send="onSend($event.detail)" data-outbox="sos"', false)
+        ->assertSee('class="xm-sos-wrap no-print xm-sos-wrap--fixed xm-sos-fab"', false)
+        ->assertSee('class="xm-sos" id="xmSosFab"', false)
+        ->assertSee('sos?alerte=__ID__', false);
+
+    // Espace membre Vue (P6-03) : XmSosFab, configuré par les props partagées `shell.sos` ; lien /sos avant le montage.
+    $this->actingAs($member)->get('/fil')->assertOk()
+        ->assertSee('data-xm-sos-fallback', false)
+        ->assertInertia(fn (AssertableInertia $page) => $page->where('shell.sos.endpoint', route('api.sos.store', [], false)));
 
     $this->actingAs($member)->get('/sos')->assertDontSee('xmSosFab', false);
 });
@@ -239,7 +243,7 @@ it('dit d’après l’API si une position est jointe, sans jamais la redonner',
 it('confirme ce que l’envoi transmet vraiment : sans position pour le bouton flottant, selon la case sur /sos', function (): void {
     $member = AlertFixtures::member();
 
-    $fab = $this->actingAs($member)->get('/fil')->assertOk();
+    $fab = $this->actingAs($member)->get('/')->assertOk();
     expect(preg_match('/x-data="xmSos\(JSON\.parse\(\'(.*?)\'\)\)"/s', $fab->getContent(), $m))->toBe(1);
     $button = json_decode(json_decode('"'.$m[1].'"'), true, 512, JSON_THROW_ON_ERROR);
     expect($button['texts']['confirmText'])->toBe(__('alerts.sos.fab.confirm'))
@@ -260,7 +264,7 @@ it('ouvre le panneau du bouton sans focus automatique (Espace maintenue n’acti
 });
 
 it('garde un lien vers /sos à la place du bouton flottant sans JavaScript', function (): void {
-    $this->actingAs(AlertFixtures::member())->get('/fil')->assertOk()
+    $this->actingAs(AlertFixtures::member())->get('/')->assertOk()
         ->assertSee('<div class="xm-sos-wrap xm-sos-wrap--fixed xm-sos-fab" x-init="$el.remove()">', false)
         ->assertSee('<a class="xm-sos" href="'.route('sos').'" aria-label="'.e(__('alerts.sos.fab_title')).'">', false)
         ->assertSee('x-cloak="x-cloak"', false);

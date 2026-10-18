@@ -228,6 +228,48 @@ return [
         'text_required' => 'Écris un message avant de publier.',
     ],
 
+    // API du fil (P7-02, docs/API.md §8) : erreurs métier et noms de champs des Form Requests App\Http\Requests\Api\Feed.
+    'api' => [
+        'content_blocked' => 'Ce texte contient des mots non autorisés par la charte. Reformule-le, puis réessaie.',
+        'tag_poll' => 'Un sondage se publie avec sa question et ses réponses (type « sondage »).',
+        'tag_change_poll' => 'Le type d’un sondage ne peut pas être modifié.',
+        'anonymous_followers' => 'Une publication anonyme ne peut pas être réservée à tes abonné·es : choisis « Public » ou « Moi uniquement ».',
+        'single_choice' => 'Ce sondage n’accepte qu’une seule réponse.',
+        'choice_unknown' => 'Cette réponse ne fait pas partie du sondage.',
+        'parent_invalid' => 'Ce commentaire ne fait pas partie de cette publication.',
+        // Clés sans point (export Vue / ARB à plat) : App\Http\Requests\Api\Feed\Concerns\FeedRequest::attributes()
+        // les rattache aux champs (`poll.options.*` → poll_option…).
+        'attributes' => [
+            'kind' => 'type de contenu',
+            'body' => 'message',
+            'tag' => 'type de publication',
+            'visibility' => 'visibilité',
+            'is_anonymous' => 'pseudonyme',
+            'image' => 'photo',
+            'image_alt' => 'description de la photo',
+            'poll' => 'sondage',
+            'poll_question' => 'question',
+            'poll_options' => 'réponses',
+            'poll_option' => 'réponse',
+            'poll_multiple' => 'plusieurs réponses',
+            'poll_results_before_vote' => 'résultats avant le vote',
+            'poll_duration_days' => 'durée',
+            'choices' => 'réponses',
+            'choice' => 'réponse',
+            'reason' => 'motif',
+            'details' => 'précisions',
+            'parent_id' => 'commentaire',
+            'per_page' => 'nombre par page',
+        ],
+    ],
+
+    // Textes lus par l'équipe de modération (registre neutre) : motif de masquage et signalement automatique.
+    'moderation' => [
+        'auto_hidden_reason' => 'Masqué automatiquement après :count signalements (RG-16), en attente de relecture.',
+        'auto_reporter' => 'Filtre automatique',
+        'auto_details' => 'Termes surveillés : :terms',
+    ],
+
     'sidebar' => [
         'who_to_follow' => 'Qui suivre',
         'see_all' => 'Tout voir',

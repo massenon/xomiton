@@ -13,6 +13,16 @@ use App\Http\Controllers\Api\V1\Auth\OtpSendController;
 use App\Http\Controllers\Api\V1\Auth\OtpVerifyController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\V1\Content\ResourceController;
+use App\Http\Controllers\Api\V1\Content\ThematiqueController;
+use App\Http\Controllers\Api\V1\DashboardController;
+use App\Http\Controllers\Api\V1\Feed\CommentController;
+use App\Http\Controllers\Api\V1\Feed\ContentReportController;
+use App\Http\Controllers\Api\V1\Feed\FeedController;
+use App\Http\Controllers\Api\V1\Feed\PollVoteController;
+use App\Http\Controllers\Api\V1\Feed\PostController;
+use App\Http\Controllers\Api\V1\Feed\PostReactionController;
+use App\Http\Controllers\Api\V1\Feed\UserPostController;
 use App\Http\Controllers\Api\V1\Me\AccountController;
 use App\Http\Controllers\Api\V1\Me\DeviceController;
 use App\Http\Controllers\Api\V1\Me\ExportController;
@@ -33,8 +43,9 @@ use Illuminate\Support\Facades\Route;
  *   2. authentifié : auth:sanctum (jeton Bearer de Flutter ou cookie de session de Vue en mode SPA).
  * Les POST rejouables par la boîte d'envoi portent `idempotent:required` (ADR-32 : même clé → même réponse), leur limiteur
  * nommé passant par `limit=<nom>` (jamais `throttle:<nom>` à côté : Laravel le trierait avant et un rejeu consommerait le quota).
- * Familles à venir : P7 feed, P8 communauté, P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
- * me/* et notifications/* livrés (P6-06, P6-07, P6-09).
+ * Familles à venir : P8 communauté, P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
+ * me/* et notifications/* livrés (P6-06, P6-07, P6-09), feed/, posts/*, comments/* livrés (P7-02), dashboard,
+ * thematiques, ressources, users/{id}/posts livrés (P6-08).
  */
 
 // === 1. Groupe public, anonyme ===================================================================================
@@ -94,6 +105,18 @@ Route::group([], function (): void {
     Route::get('urgences', EmergencyContactController::class)
         ->middleware('cache.headers:public;max_age='.(int) config('xomiton.referentials.http_max_age', 3600).';etag')
         ->name('api.urgences.index');
+
+    // --- Contenus publics pour l'application mobile (P6-08, docs/API.md §11) : mêmes requêtes que /thematiques et
+    // /ressources (P4-02, P4-03) ; `conditional` (ETag, 304, Cache-Control: private, no-cache : une fiche programmée
+    // apparaît à son heure) ; lien de téléchargement signé en no-store, limiteur `resource_download` ----------------
+    Route::middleware('conditional')->group(function (): void {
+        Route::get('thematiques', [ThematiqueController::class, 'index'])->name('api.thematiques.index');
+        Route::get('thematiques/{slug}', [ThematiqueController::class, 'show'])
+            ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('api.thematiques.show');
+        Route::get('ressources', [ResourceController::class, 'index'])->name('api.ressources.index');
+        Route::get('ressources/{resource}/download', [ResourceController::class, 'download'])->whereNumber('resource')
+            ->middleware('throttle:resource_download')->name('api.ressources.download');
+    });
 });
 
 // === 2. Groupe authentifié (auth:sanctum) =========================================================================
@@ -105,6 +128,10 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
 
     // --- Mes signalements (P5-06) : alertes non anonymes du compte, pagination par page --------------------------------
     Route::get('signalements/mine', [ReportController::class, 'mine'])->name('api.signalements.mine');
+
+    // --- Tableau de bord mobile et publications d'un profil (P6-08, docs/API.md §11) --------------------------------
+    Route::get('dashboard', DashboardController::class)->name('api.dashboard');
+    Route::get('users/{user}/posts', UserPostController::class)->whereNumber('user')->name('api.users.posts');
 
     // --- Mon compte (P2-06, P6-06, P6-09) : profil, réglages, sécurité, newsletter, export RGPD, suppression, appareils
     // connectés, appareils de l'application (sync_devices) et abonnements push -----------------------------------------
@@ -128,6 +155,36 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::get('push-subscriptions', [PushSubscriptionController::class, 'index'])->name('push_subscriptions.index');
         Route::post('push-subscriptions', [PushSubscriptionController::class, 'store'])->name('push_subscriptions.store');
         Route::delete('push-subscriptions', [PushSubscriptionController::class, 'destroy'])->name('push_subscriptions.destroy');
+    });
+
+    // --- Fil et sondages (P7-02, docs/API.md §8) : publications par ULID (ADR-27), publication invisible → 404 ; publier,
+    // modifier et commenter exigent un e-mail confirmé (`verified`, Q12 c) et passent par `feed_write` (10/min), signaler par
+    // `content_report` (20/h) ; réactions et votes idempotents ------------------------------------------------------
+    Route::get('feed', [FeedController::class, 'index'])->name('api.feed.index');
+    Route::get('feed/saved', [FeedController::class, 'saved'])->name('api.feed.saved');
+
+    Route::prefix('posts')->as('api.posts.')->group(function (): void {
+        Route::post('/', [PostController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('store');
+        Route::get('{post:ulid}', [PostController::class, 'show'])->name('show');
+        Route::patch('{post:ulid}', [PostController::class, 'update'])->middleware(['verified', 'throttle:feed_write'])->name('update');
+        Route::delete('{post:ulid}', [PostController::class, 'destroy'])->name('destroy');
+        Route::post('{post:ulid}/like', [PostReactionController::class, 'like'])->name('like');
+        Route::delete('{post:ulid}/like', [PostReactionController::class, 'unlike'])->name('unlike');
+        Route::post('{post:ulid}/save', [PostReactionController::class, 'save'])->name('save');
+        Route::delete('{post:ulid}/save', [PostReactionController::class, 'unsave'])->name('unsave');
+        Route::post('{post:ulid}/hide', [PostReactionController::class, 'hide'])->name('hide');
+        Route::delete('{post:ulid}/hide', [PostReactionController::class, 'unhide'])->name('unhide');
+        Route::post('{post:ulid}/report', [ContentReportController::class, 'post'])->middleware('throttle:content_report')->name('report');
+        Route::get('{post:ulid}/comments', [CommentController::class, 'index'])->name('comments.index');
+        Route::post('{post:ulid}/comments', [CommentController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('comments.store');
+        Route::post('{post:ulid}/poll/vote', [PollVoteController::class, 'store'])->name('poll.vote');
+        Route::delete('{post:ulid}/poll/vote', [PollVoteController::class, 'destroy'])->name('poll.unvote');
+    });
+
+    Route::prefix('comments')->as('api.comments.')->group(function (): void {
+        Route::delete('{comment}', [CommentController::class, 'destroy'])->whereNumber('comment')->name('destroy');
+        Route::post('{comment}/report', [ContentReportController::class, 'comment'])->whereNumber('comment')
+            ->middleware('throttle:content_report')->name('report');
     });
 
     // --- Cloche (P6-07) : liste paginée, compteurs par filtre (polling 30 s, ETag), lecture, suppression -------------

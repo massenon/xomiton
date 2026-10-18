@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Catalogue des composants Vue Xm* (P6-04) servi par Inertia à /design-system/vue (local et recette) : page de
 // démonstration de la coquille (P6-02), à comparer au catalogue Blade /design-system. Textes : lang/fr/design_system.php
-// (`design_system.vue.*`). Le gabarit membre (en-tête, sidenav) arrive avec P6-03.
+// (`design_system.vue.*`). Pleine largeur, hors du gabarit membre (P6-03 : `layout: null`, son propre <main>).
 import { ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
@@ -27,6 +27,8 @@ import XmStatus from '@/components/XmStatus.vue';
 import XmStepper from '@/components/XmStepper.vue';
 import XmTabs from '@/components/XmTabs.vue';
 import XmUrgency from '@/components/XmUrgency.vue';
+
+defineOptions({ layout: null });
 
 const { t } = useI18n();
 const toast = useToast();

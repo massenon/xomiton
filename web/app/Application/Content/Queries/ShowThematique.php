@@ -26,7 +26,8 @@ use Illuminate\Support\Collection;
  *     vers un `?cat=` qui répondrait 404 ;
  *   - contacts : rôles `related_contact_roles` de la fiche, contacts **actifs et publics seulement** (Q19), dans l'ordre
  *     des rôles puis point focal national d'abord ; ni notes ni e-mail ne sortent ;
- *   - fiches liées : `related_ids` dans l'ordre, complétées par la même catégorie puis les autres (prototype l.11-15) ;
+ *   - fiches liées : `related_ids` dans l'ordre, complétées par la même catégorie puis les autres (prototype l.11-15),
+ *     colonnes d'une carte (résumé compris) et catégorie chargée seulement si elle est un filtre de la liste ;
  *   - ressource principale : décision par défaut (plan §7) — la ressource publiée la plus récente rattachée à la fiche,
  *     hors actualités (`kind = article`, Q1), faute de colonne dédiée ;
  *   - FAQ : décision par défaut (plan §7) — questions publiées de la catégorie de la fiche, 3 à 5, sinon aucune.
@@ -36,7 +37,10 @@ final class ShowThematique
     public function __construct(private readonly Referentials $referentials) {}
 
     /** @var list<string> */
-    private const RELATED_COLUMNS = ['id', 'category_id', 'slug', 'title', 'reading_minutes', 'cover_path', 'image_path', 'published_at'];
+    private const RELATED_COLUMNS = ['id', 'category_id', 'slug', 'title', 'summary', 'reading_minutes', 'cover_path', 'image_path', 'published_at'];
+
+    /** Catégorie des fiches liées (carte de l'API mobile, ThematiqueCardResource), comme ListThematiques. */
+    private const RELATED_CATEGORY = 'category:id,slug,label,icon,color';
 
     /** @throws ModelNotFoundException<Thematique> */
     public function __invoke(string $slug): ThematiqueSheet
@@ -56,10 +60,14 @@ final class ShowThematique
     private function listedCategory(Thematique $thematique): ?Category
     {
         $category = $thematique->category;
-        $listed = $category !== null && collect($this->referentials->categories(Category::KIND_THEMATIQUE))
-            ->contains('id', (int) $category->getKey());
 
-        return $listed ? $category : null;
+        return $category !== null && in_array((int) $category->getKey(), $this->listedCategoryIds(), true) ? $category : null;
+    }
+
+    /** @return list<int> catégories actives de type `thematique` (filtres de la liste publique) */
+    private function listedCategoryIds(): array
+    {
+        return array_map(static fn (array $category): int => (int) $category['id'], $this->referentials->categories(Category::KIND_THEMATIQUE));
     }
 
     /** @return Collection<int, DirectoryContact> */
@@ -100,7 +108,7 @@ final class ShowThematique
             static fn (int $id): bool => $id > 0 && $id !== (int) $thematique->getKey(),
         )));
 
-        $related = $ids === [] ? collect() : Thematique::query()->published()->whereIn('id', $ids)->get(self::RELATED_COLUMNS)
+        $related = $ids === [] ? collect() : Thematique::query()->published()->whereIn('id', $ids)->with(self::RELATED_CATEGORY)->get(self::RELATED_COLUMNS)
             ->sortBy(static fn (Thematique $item): int|false => array_search((int) $item->getKey(), $ids, true))
             ->values();
         $related = $related->take($wanted);
@@ -118,10 +126,18 @@ final class ShowThematique
                 ->orderByDesc('published_at')
                 ->orderBy('id')
                 ->limit($missing)
+                ->with(self::RELATED_CATEGORY)
                 ->get(self::RELATED_COLUMNS));
         }
 
-        return $related->values();
+        $listed = $this->listedCategoryIds();
+
+        // Catégorie inactive ou d'un autre type : retirée, jamais un slug qui répondrait 404 à `?categorie=`.
+        return $related->values()->each(static function (Thematique $item) use ($listed): void {
+            if ($item->category_id === null || ! in_array((int) $item->category_id, $listed, true)) {
+                $item->setRelation('category', null);
+            }
+        });
     }
 
     private function primaryResource(Thematique $thematique): ?Resource
@@ -131,7 +147,8 @@ final class ShowThematique
             ->whereNot('kind', ResourceKind::Article)
             ->orderByDesc('published_at')
             ->orderByDesc('id')
-            ->first(['id', 'thematique_id', 'slug', 'title', 'kind', 'summary', 'file_size', 'duration_minutes', 'is_offline_available', 'published_at']);
+            // file_path, external_url, image_path : carte de l'API mobile (P6-08 : téléchargeable, lien externe, couverture).
+            ->first(['id', 'thematique_id', 'slug', 'title', 'kind', 'summary', 'file_path', 'file_size', 'external_url', 'image_path', 'duration_minutes', 'is_offline_available', 'published_at']);
     }
 
     /** @return Collection<int, Faq> */

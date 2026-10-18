@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Content\Queries;
 
 use App\Application\Content\Results\ResourceListing;
+use App\Application\Content\Results\ResourcePage;
 use App\Application\Shared\Referentials;
 use App\Enums\ResourceKind;
 use App\Models\Category;
@@ -23,6 +24,8 @@ use Illuminate\Support\Collection;
  * (Referentials, invalidé par ReferentialObserver) et regroupées par slug (un même slug dans les deux types = une puce) ;
  * une puce sans ressource publiée est masquée. Les compteurs viennent d'une requête groupée non cachée, comme P4-02 :
  * une ressource programmée apparaît à son heure sans événement de modèle à intercepter.
+ *
+ * @phpstan-import-type ChipRow from ResourceListing
  */
 final class ListResources
 {
@@ -34,32 +37,16 @@ final class ListResources
     /** null : catégorie inconnue ou inactive (404). */
     public function __invoke(?string $categorySlug, ?ResourceKind $kind, string $search, int $limit): ?ResourceListing
     {
-        /** @var array<int|string, int> $counts */
-        $counts = Resource::query()->catalog()
-            ->selectRaw('category_id, count(*) as aggregate')
-            ->groupBy('category_id')
-            ->pluck('aggregate', 'category_id')
-            ->map(static fn (mixed $count): int => (int) $count)
-            ->all();
+        $context = $this->context($categorySlug);
 
-        $chips = $this->chips($counts);
-        $category = null;
-
-        if ($categorySlug !== null) {
-            $category = collect($chips)->firstWhere('slug', $categorySlug);
-
-            if ($category === null) {
-                return null;
-            }
+        if ($context === null) {
+            return null;
         }
 
-        $visible = array_values(array_filter($chips, static fn (array $chip): bool => $chip['count'] > 0));
+        [$counts, $chips, $category] = $context;
+        $visible = self::visible($chips);
         $totalAll = array_sum($counts);
-        $query = Resource::query()->catalog()
-            ->with(['category:id,kind,slug,label,icon,color', 'thematique:id,slug,cover_path,image_path'])
-            ->when($category !== null, static fn (Builder $query) => $query->whereIn('category_id', $category['ids'] ?? []))
-            ->when($kind !== null, static fn (Builder $query) => $query->where('kind', $kind))
-            ->when($search !== '', static fn (Builder $query) => $query->search($search));
+        $query = $this->filtered($category, $kind, $search);
 
         $total = match (true) {
             $search !== '' || $kind !== null => (clone $query)->count(),
@@ -88,6 +75,84 @@ final class ListResources
             $hasFilters ? new Collection : self::withListedCategory($this->files(), $listedIds),
             $category === null ? new Collection : $this->faqs($category['ids']),
         );
+    }
+
+    /**
+     * Page du catalogue pour l'API mobile (P6-08, `GET /api/v1/ressources?page=`) : mêmes filtres, même ordre et même
+     * règle de catégorie affichée que la liste publique, paginée par page. null : catégorie inconnue ou inactive (404).
+     */
+    public function page(?string $categorySlug, ?ResourceKind $kind, string $search, int $perPage, int $page = 1): ?ResourcePage
+    {
+        $context = $this->context($categorySlug);
+
+        if ($context === null) {
+            return null;
+        }
+
+        [, $chips, $category] = $context;
+        $paginator = $this->filtered($category, $kind, $search)
+            ->orderByDesc('published_at')
+            ->orderBy('id')
+            ->paginate(max(1, $perPage), self::CARD_COLUMNS, 'page', max(1, $page));
+
+        self::withListedCategory(new Collection($paginator->items()), array_merge([], ...array_column($chips, 'ids')));
+
+        return new ResourcePage(self::visible($chips), $category, $kind, $search, $paginator);
+    }
+
+    /**
+     * Compteurs par catégorie (requête groupée non cachée), puces et catégorie filtrée ; null si le slug est inconnu.
+     *
+     * @return array{0: array<int|string, int>, 1: list<ChipRow>, 2: ChipRow|null}|null
+     */
+    private function context(?string $categorySlug): ?array
+    {
+        /** @var array<int|string, int> $counts */
+        $counts = Resource::query()->catalog()
+            ->selectRaw('category_id, count(*) as aggregate')
+            ->groupBy('category_id')
+            ->pluck('aggregate', 'category_id')
+            ->map(static fn (mixed $count): int => (int) $count)
+            ->all();
+
+        $chips = $this->chips($counts);
+        $category = null;
+
+        if ($categorySlug !== null) {
+            $category = collect($chips)->firstWhere('slug', $categorySlug);
+
+            if ($category === null) {
+                return null;
+            }
+        }
+
+        return [$counts, $chips, $category];
+    }
+
+    /**
+     * Puces affichées : celles qui comptent au moins une ressource publiée.
+     *
+     * @param  list<ChipRow>  $chips
+     * @return list<ChipRow>
+     */
+    private static function visible(array $chips): array
+    {
+        return array_values(array_filter($chips, static fn (array $chip): bool => $chip['count'] > 0));
+    }
+
+    /**
+     * Ressources du catalogue filtrées (catégorie, type, recherche), catégorie et thématique chargées, sans ordre.
+     *
+     * @param  ChipRow|null  $category
+     * @return Builder<\App\Models\Resource>
+     */
+    private function filtered(?array $category, ?ResourceKind $kind, string $search): Builder
+    {
+        return Resource::query()->catalog()
+            ->with(['category:id,kind,slug,label,icon,color', 'thematique:id,slug,cover_path,image_path'])
+            ->when($category !== null, static fn (Builder $query) => $query->whereIn('category_id', $category['ids'] ?? []))
+            ->when($kind !== null, static fn (Builder $query) => $query->where('kind', $kind))
+            ->when($search !== '', static fn (Builder $query) => $query->search($search));
     }
 
     /**

@@ -1,0 +1,16 @@
+/*
+ * Gabarit membre Vue (P6-03, resources/js/layouts/MemberLayout.vue) : en-tête #memberHeader et sidenav #memberSidenav
+ * portés de prototype partials/header.php et sidenav.php sans changer leur rendu à la souris. Sur écran tactile, cibles
+ * d'au moins 44 px (ACCESSIBILITE.md, critère 2.5.8 : 44 px dans Xomiton) : boutons ronds de l'en-tête, liens des menus
+ * déroulants et du sidenav.
+ */
+#memberHeader .navbar-nav .dropdown-toggle { background: none; border: 0; }
+
+@media (pointer: coarse) {
+  #memberHeader .icon-md,
+  #memberHeader .navbar-toggler { width: var(--xm-target-min, 44px); height: var(--xm-target-min, 44px); }
+  #memberHeader .navbar-nav .nav-link,
+  #memberHeader .dropdown-item,
+  #memberSidenav .xm-side-link { min-height: var(--xm-target-min, 44px); display: flex; align-items: center; }
+  #memberSidenav .offcanvas-header .btn-close { min-width: var(--xm-target-min, 44px); min-height: var(--xm-target-min, 44px); }
+}

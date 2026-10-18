@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  *  - auth.user : compte réduit (MemberShell::user), null sans session ;
  *  - can : permissions lues par l'interface (MemberShell::ABILITIES), la décision reste aux policies ;
  *  - counters : notifications et conversations non lues (en-tête, P6-03) ;
+ *  - shell : gabarit membre Vue (P6-03, MemberShell::layout) — département et compteurs du sidenav, bouton SOS flottant
+ *    (endpoint, zone et commune du profil, premier numéro d'urgence), lien d'administration, jeton CSRF ;
  *  - flash : toast / statut flashés en session (`toast`, `toast_type`, `status`, `status_type`) : `{id, message, type}`,
  *    type ramené à un ToastType (TOAST_TYPES, sinon primary), id propre à la réponse (app/flash.ts : jamais réaffiché
  *    au retour dans l'historique) ; le statut reste aussi à l'écran (XmFlashStatus) ;
@@ -77,6 +79,12 @@ class HandleInertiaRequests extends Middleware
             ],
             'can' => fn (): array => $this->shell->abilities($user),
             'counters' => fn (): ?array => $user !== null ? $this->shell->counters($user) : null,
+            // P6-03 : gabarit membre Vue (MemberLayout) ; jeton CSRF pour les rares formulaires natifs vers une page Blade
+            // (« Renvoyer le code » du bandeau de vérification), comme la balise meta csrf-token d'une page Blade.
+            'shell' => fn (): ?array => $user !== null ? [
+                ...$this->shell->layout($user),
+                'csrf_token' => $request->hasSession() ? $request->session()->token() : null,
+            ] : null,
             'flash' => fn (): array => [
                 'toast' => $this->flashed($request, 'toast', 'toast_type'),
                 'status' => $this->flashed($request, 'status', 'status_type'),

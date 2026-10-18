@@ -125,13 +125,20 @@ return [
         'sos_log_per_minute_per_ip' => 5,
         // Actions sensibles de mon compte (DELETE me, POST me/export, P6-06 : limiteur `account_sensitive`) : par compte.
         'account_sensitive_per_hour' => 5,
+        // Fil (P7-02) : publications et commentaires par compte et par minute (limiteur `feed_write`), signalements de
+        // contenu par compte et par heure (limiteur `content_report`).
+        'feed_write_per_minute' => 10,
+        'content_report_per_hour' => 20,
     ],
 
     /*
      * API /api/v1 (P6-01, docs/API.md §1.1) : taille de page maximale demandable par `?per_page=`.
+     * P6-08 (tableau de bord mobile, `GET dashboard`) : fiches « À la une » et alertes routées listées pour un pair.
      */
     'api' => [
         'max_per_page' => 50,
+        'dashboard_featured' => 5,
+        'dashboard_routed_alerts' => 5,
     ],
 
     /*
@@ -187,10 +194,22 @@ return [
         'poll_option_max_length' => 80,
         'poll_durations_days' => [1, 3, 7, 14, 30, null],
         'image_max_kb' => 5120,
-        // Contenus signalés masqués en attendant la modération (RG-16, proposée).
+        // Contenus signalés masqués en attendant la modération (RG-16, proposée) : nombre de signalements en attente de
+        // personnes distinctes ; 0 désactive. Surcharge par l'administration : Settings `moderation_auto_hide_reports`.
         'auto_hide_after_reports' => (int) env('XOMITON_AUTO_HIDE_REPORTS', 3),
+        // API du fil (P7-02) : taille de page par défaut (curseur), durée des liens signés des images (disque privé),
+        // cache de la liste des mots filtrés (oubliée à chaque écriture de bad_words).
+        'per_page' => 20,
+        'comments_per_page' => 20,
+        'media_url_minutes' => 60,
+        // Fenêtre d'alignement des liens signés des médias (MediaUploader::stableExpiry) : même lien, même ETag, 304.
+        'media_url_window_minutes' => 15,
+        'bad_words_cache_seconds' => 600,
         'messages_poll_seconds' => 4,
         'bell_poll_seconds' => 30,
+        // Gabarit membre Vue (P6-03, MemberShell::layout) : département et compteurs de la carte profil gardés en cache
+        // (secondes, par compte) plutôt que recomptés à chaque visite Inertia ; 0 désactive.
+        'shell_stats_cache_seconds' => 60,
         'duty_alerts_poll_seconds' => 10,
     ],
 
@@ -458,8 +477,9 @@ return [
         'json_dir' => resource_path('js/lang'),
         'arb_dir' => base_path('../mobile/lib/l10n'),
         // Catalogue Vue (P6-05) : textes jamais affichés par l'espace Vue (administration Livewire, pages publiques et SEO
-        // Blade, maintenance, e-mails) retirés de resources/js/lang/<locale>.json ; l'ARB mobile reste complet.
-        'vue_exclude' => ['admin', 'newsletter.admin', 'newsletter.campaign_defaults', 'notifications.admin', 'pages/', 'seo', 'maintenance', 'mail'],
+        // Blade, maintenance, e-mails ; erreurs et noms de champs de l'API du fil, rendus par le serveur, P7-02) retirés de
+        // resources/js/lang/<locale>.json ; l'ARB mobile reste complet.
+        'vue_exclude' => ['admin', 'newsletter.admin', 'newsletter.campaign_defaults', 'notifications.admin', 'pages/', 'seo', 'maintenance', 'mail', 'feed.api', 'feed.moderation', 'mobile.api'],
     ],
 
     /*

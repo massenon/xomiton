@@ -129,7 +129,7 @@ Migrations Laravel / Sanctum publiées, inchangées (sessions en base, D7).
 ## 4. Réseau social
 
 ### `posts` [soft delete]
-`id` · `ulid char(26) unique` · `user_id FK null nullOnDelete` · `group_id FK null nullOnDelete` · `page_id FK null nullOnDelete` · `is_anonymous boolean default false` · `body text` (≤ 3000) · `tag string(20)` (`PostTag` : `temoignage`, `question`, `ressource`, `evenement`, `violences`, `sondage`) · `visibility string(10) default public` (`PostVisibility` : `public`, `followers`, `me`) · `likes_count unsignedInteger default 0` · `comments_count unsignedInteger default 0` · `reports_count unsignedSmallInteger default 0` · `status string(10) default publie` (`PostStatus` : `publie`, `masque`, `supprime`) · `hidden_reason string(200) null` · `published_at timestamp`. Index `(status, created_at)`, `(user_id, status)`, `(tag, status)`.
+`id` · `ulid char(26) unique` · `user_id FK null nullOnDelete` · `group_id FK null nullOnDelete` · `page_id FK null nullOnDelete` · `is_anonymous boolean default false` · `body text` (≤ 3000) · `tag string(20)` (`PostTag` : `temoignage`, `question`, `ressource`, `evenement`, `violences`, `sondage`) · `visibility string(10) default public` (`PostVisibility` : `public`, `followers`, `me`) · `likes_count unsignedInteger default 0` · `comments_count unsignedInteger default 0` · `reports_count unsignedSmallInteger default 0` · `status string(10) default publie` (`PostStatus` : `publie`, `masque`, `supprime`) · `hidden_reason string(200) null` · `published_at timestamp` · `edited_at timestamp null` (posé par la seule modification de l'auteur·rice : mention « modifiée », P7-02). Index `(status, created_at)`, `(user_id, status)`, `(tag, status)`.
 
 ### `post_media`
 `id` · `post_id FK cascade` · `kind string(10)` (`image`, `video`, `audio`) · `path string(255)` · `alt string(255) null` · `width`, `height unsignedSmallInteger null` · `size unsignedInteger null` · `position unsignedTinyInteger default 0`.
@@ -139,6 +139,9 @@ Migrations Laravel / Sanctum publiées, inchangées (sessions en base, D7).
 
 ### `post_saves` [sans updated_at]
 `id` · `post_id FK cascade` · `user_id FK cascade` · `created_at`. Unique `(post_id, user_id)`. (« Enregistrer » du menu de publication.)
+
+### `post_hides` [sans updated_at ; P7-02]
+`id` · `post_id FK cascade` · `user_id FK cascade` · `created_at`. Unique `(post_id, user_id)`, index `(user_id, post_id)`. (« Masquer » du menu de publication : retirée du seul fil de la personne, FR-SOC-03, prototype `inc/render.php` l.47 ; « Annuler » supprime la ligne. Sans effet sur la modération.)
 
 ### `comments` [soft delete]
 `id` · `post_id FK cascade` · `user_id FK null nullOnDelete` · `parent_id FK comments null cascade` · `body text` (≤ 1000) · `is_anonymous boolean default false` · `likes_count unsignedInteger default 0` · `status string(10) default publie` (`PostStatus`). Index `(post_id, created_at)`.

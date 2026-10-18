@@ -31,11 +31,21 @@ export interface FlashMessage {
 
 export type ToastType = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
 
+/** Gabarit membre Vue (P6-03, MemberShell::layout + jeton CSRF) : null sans session. */
+export interface SharedShell {
+    zone: string | null;
+    stats: { posts: number; followers: number; following: number };
+    sos: { endpoint: string; zone_id: number | null; commune_id: number | null; number: string | null };
+    admin_url: string | null;
+    csrf_token: string | null;
+}
+
 export interface SharedProps {
     [key: string]: unknown;
     auth: { user: SharedUser | null };
     can: Record<string, boolean>;
     counters: { notifications: number; messages: number } | null;
+    shell?: SharedShell | null;
     flash: { toast: FlashMessage | null; status: FlashMessage | null };
     lang: { locale: string; fallback: string };
     ui: {

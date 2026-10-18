@@ -98,7 +98,8 @@ export function mountOutboxNotices(texts = {}, opts = {}) {
   const ac = new AbortController();
   const on = { signal: ac.signal };
   win.__xmOutboxNotices = () => { ac.abort(); delete win.__xmOutboxNotices; };
-  const sosOnScreen = () => Boolean(doc.querySelector('[x-data^="xmSosPage"], [x-data^="xmSosFab"]'));
+  // Bouton flottant Blade (Alpine) ou Vue (XmSosFab, P6-03 : data-xm-sos-fab) : il annonce lui-même l'envoi.
+  const sosOnScreen = () => Boolean(doc.querySelector('[x-data^="xmSosPage"], [x-data^="xmSosFab"], [data-xm-sos-fab]'));
   if (doc.getElementById('contenu') || doc.querySelector('main') || doc.body) container(doc);
 
   win.addEventListener('xm:outbox:queued', (event) => {

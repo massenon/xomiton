@@ -274,14 +274,15 @@ class AppServiceProvider extends ServiceProvider
             ->by('assistant|'.$request->ip())
             ->response($tooMany));
 
-        // Téléchargement et lecture d'une ressource (P4-03, /ressources/{slug}/telecharger|lire) : par IP, adresse et ressource
-        // (empreinte HMAC, ADR-33), contre le gonflement de `downloads_count` ; par ressource pour qu'un CGNAT mobile et le
-        // précache du service worker (P5-10 : une requête par ressource marquée) n'épuisent pas un quota commun.
+        // Téléchargement et lecture d'une ressource (P4-03, /ressources/{slug}/telecharger|lire ; P6-08, API
+        // ressources/{resource}/download) : par IP, adresse et ressource (empreinte HMAC, ADR-33), contre le gonflement de
+        // `downloads_count` ; par ressource pour qu'un CGNAT mobile et le précache du service worker (P5-10 : une requête
+        // par ressource marquée) n'épuisent pas un quota commun.
         RateLimiter::for('resource_download', static fn (Request $request): Limit => Limit::perMinute(self::limit('resource_download_per_minute'))
             ->by('resource_download|'.KeyedHash::make(implode('|', [
                 (string) $request->ip(),
                 (string) $request->route()?->getName(),
-                (string) $request->route('slug'),
+                (string) ($request->route('slug') ?? $request->route('resource')),
             ])))
             ->response($tooMany));
 
@@ -289,6 +290,15 @@ class AppServiceProvider extends ServiceProvider
         // **et par route** (des mots de passe erronés sur DELETE me ne bloquent jamais l'export RGPD).
         RateLimiter::for('account_sensitive', static fn (Request $request): Limit => Limit::perHour(self::limit('account_sensitive_per_hour'))
             ->by('account_sensitive|'.($request->route()?->getName() ?? $request->path()).'|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+
+        // Fil (P7-02) : publications et commentaires (`feed_write`) par compte et par minute, signalements de contenu
+        // (`content_report`) par compte et par heure ; routes du groupe auth:sanctum, donc toujours un compte.
+        RateLimiter::for('feed_write', static fn (Request $request): Limit => Limit::perMinute(self::limit('feed_write_per_minute'))
+            ->by('feed_write|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+        RateLimiter::for('content_report', static fn (Request $request): Limit => Limit::perHour(self::limit('content_report_per_hour'))
+            ->by('content_report|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
 
         // Vote « Cet article vous a-t-il aidé·e ? » (P4-05, POST /aide/{slug}/avis) : par session (un CGNAT mobile partage

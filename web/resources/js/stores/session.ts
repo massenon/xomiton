@@ -2,12 +2,14 @@
 // chaque visite (app.ts : router.on('navigate')). La décision d'accès reste côté serveur (policies) : `can()` ne sert
 // qu'à afficher ou masquer un menu, un bouton.
 import { defineStore } from 'pinia';
-import type { SharedProps, SharedUser } from '@/app/types';
+import type { SharedProps, SharedShell, SharedUser } from '@/app/types';
 
 export const useSessionStore = defineStore('session', {
     state: () => ({
         user: null as SharedUser | null,
         abilities: {} as Record<string, boolean>,
+        /** Gabarit membre (P6-03) : carte profil, SOS flottant, lien d'administration. */
+        shell: null as SharedShell | null,
         neutralTitle: false,
         neutralLabel: '',
         bellPollSeconds: 30,
@@ -24,6 +26,7 @@ export const useSessionStore = defineStore('session', {
     actions: {
         hydrate(props: Partial<SharedProps>) {
             if (props.auth) this.user = props.auth.user ?? null;
+            if (props.shell !== undefined) this.shell = props.shell ?? null;
             if (props.can) this.abilities = { ...props.can };
             if (props.lang?.locale) this.locale = props.lang.locale;
             if (props.ui) {

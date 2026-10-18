@@ -26,6 +26,8 @@
     @vite('resources/js/app.ts')
 </head>
 <body class="xm-member">
-    <div id="app" data-page="{{ json_encode($page) }}"><div class="container py-4" data-xm-shell-skeleton><x-skeleton type="lines" :lines="6" /></div></div>
+    {{-- P6-03 : avant le montage de Vue (ou si app.ts ne se charge pas), lien vers /sos à la place du bouton flottant
+         XmSosFab (RG-01 : le SOS reste atteignable) ; Vue remplace tout le contenu de #app au montage. --}}
+    <div id="app" data-page="{{ json_encode($page) }}"><div class="container py-4" data-xm-shell-skeleton><x-skeleton type="lines" :lines="6" /></div><div class="xm-sos-wrap xm-sos-wrap--fixed xm-sos-fab no-print" data-xm-sos-fallback><a class="xm-sos" href="{{ route('sos') }}" aria-label="{{ __('alerts.sos.fab_title') }}">{{ __('components.sos.label') }}</a></div></div>
 </body>
 </html>

@@ -9,7 +9,8 @@ use InvalidArgumentException;
 
 /**
  * « Réaction ou commentaire » (NOTIFICATIONS §2, §4.2) : auteur·e de la publication ; cloche seulement, regroupée
- * (« Estelle et 4 autres ont aimé… »). `kind` : like, comment ou reply ; `othersCount` : nombre d'autres personnes.
+ * (« Estelle et 4 autres ont aimé… »). `kind` : like, comment ou reply ; `othersCount` : nombre d'autres personnes
+ * distinctes ; `since` : début du regroupement (App\Application\Feed\ReactionNotifier recompte à partir de là).
  */
 final class ReactionGrouped extends XomitonNotification
 {
@@ -28,6 +29,7 @@ final class ReactionGrouped extends XomitonNotification
         public readonly string $actorName,
         public readonly int $othersCount = 0,
         public readonly ?string $url = null,
+        public readonly ?string $since = null,
     ) {
         if (! in_array($kind, self::KINDS, true)) {
             throw new InvalidArgumentException(sprintf('Unknown reaction kind [%s].', $kind));
@@ -58,8 +60,8 @@ final class ReactionGrouped extends XomitonNotification
         $many = $this->othersCount > 0;
 
         $body = match ($this->kind) {
-            self::KIND_LIKE => __($many ? 'notifications.reaction.liked_many' : 'notifications.reaction.liked_one', $replace),
-            self::KIND_COMMENT => __($many ? 'notifications.reaction.commented_many' : 'notifications.reaction.commented_one', $replace),
+            self::KIND_LIKE => $many ? trans_choice('notifications.reaction.liked_many', $this->othersCount, $replace) : __('notifications.reaction.liked_one', $replace),
+            self::KIND_COMMENT => $many ? trans_choice('notifications.reaction.commented_many', $this->othersCount, $replace) : __('notifications.reaction.commented_one', $replace),
             default => __('notifications.reaction.replied', $replace),
         };
 
@@ -84,7 +86,7 @@ final class ReactionGrouped extends XomitonNotification
      */
     protected function extra(object $notifiable): array
     {
-        return ['post_id' => $this->postId, 'kind' => $this->kind, 'count' => $this->othersCount + 1];
+        return ['post_id' => $this->postId, 'kind' => $this->kind, 'count' => $this->othersCount + 1, 'since' => $this->since];
     }
 
     protected function subjectId(): int

@@ -1,6 +1,6 @@
 ---
 name: xomiton-api
-description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lots « api-auth » (P2-06, P2-12 : authentification, mon compte, mes appareils) et « api-fondation » (P5-09 : enveloppe, format d'erreur, idempotence, groupes de routes), « api-alertes » (P5-06 : signalements, SOS, urgences), « api-me » (P6-01, P6-06, P6-07, P6-09 : lectures conditionnelles, Sanctum SPA, mon compte, cloche, appareils et abonnements push). À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
+description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lots « api-auth » (P2-06, P2-12 : authentification, mon compte, mes appareils) et « api-fondation » (P5-09 : enveloppe, format d'erreur, idempotence, groupes de routes), « api-alertes » (P5-06 : signalements, SOS, urgences), « api-me » (P6-01, P6-06, P6-07, P6-09 : lectures conditionnelles, Sanctum SPA, mon compte, cloche, appareils et abonnements push), « fil-domaine-api » (P7-01, P7-02, P7-07 : fil, publications, sondages, commentaires, signalement de contenu, partage par lien), « api-mobile-lecture » (P6-08 : tableau de bord mobile, thématiques, ressources et téléchargement signé, publications d'un profil). À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
 ---
 
 # API `/api/v1`
@@ -18,7 +18,7 @@ Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_I
 | Erreur | `{ "message": "…", "code": "…", "errors"?: { champ: [messages] }, "retry_after"?: secondes }` pour **tous** les statuts (§1.2) ; le 422 de validation garde `{ message, errors }` de Laravel et y ajoute `code: validation_failed` |
 | Textes | français ; tutoiement sur le tunnel d'authentification (Q36) ; dans `lang/fr/auth.php` (`auth.api.*`), `lang/fr/errors.php` (`errors.api.*`, sans registre ; `errors.419.public` au vous, `errors.419.member` au tu), `lang/fr/validation.php` et `lang/fr.json` (résumé « (et :count autres erreurs) » du 422) ; export client `resources/js/lang/fr.json` par `php artisan lang:export` |
 | Codes HTTP | 200, 201 (`Location` si connue), 202 (traitement accepté : code envoyé), 204, 400, 401, 403, 404, 405, 409, 410, 413, 415, 419, 422, 429, 500, 503 |
-| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` ; `throttle:report` 10/h par IP (signalement) ; `throttle:tracking` 20/h par IP (suivi par code) ; `throttle:sos_owner` 10/min par IP et par alerte (`sos/{id}/cancel` · `safe`, §6.6) ; `throttle:assistant` 20/min par IP (`assistant/question`, §5 ; un compte connecté reste compté par IP) ; `throttle:account_sensitive` 5/h par compte (`DELETE me`, `POST me/export`, §3) ; `throttle:sos` **jamais bloquant** : au-delà de 5 SOS par minute et par IP, journal + cloche admin `SosBurstDetected` (comptes `alerts.manage`, une par adresse et par quart d'heure), IP en empreinte HMAC seulement (`config/xomiton.php` → `rate_limits`, `sos_log_per_minute_per_ip`). Sur une route `idempotent`, le limiteur nommé passe par l'option `limit=<nom>` : un rejeu ne consomme pas le quota (§1.3). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
+| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` ; `throttle:report` 10/h par IP (signalement) ; `throttle:tracking` 20/h par IP (suivi par code) ; `throttle:sos_owner` 10/min par IP et par alerte (`sos/{id}/cancel` · `safe`, §6.6) ; `throttle:assistant` 20/min par IP (`assistant/question`, §5 ; un compte connecté reste compté par IP) ; `throttle:account_sensitive` 5/h par compte (`DELETE me`, `POST me/export`, §3) ; `throttle:feed_write` 10/min par compte (`POST posts`, `PATCH posts/{ulid}`, `POST posts/{ulid}/comments`, §8) ; `throttle:content_report` 20/h par compte (signalement de contenu, §8) ; `throttle:resource_download` 60/min par IP, route et ressource (`ressources/{id}/download`, §11, comme `/ressources/{slug}/telecharger`) ; `throttle:sos` **jamais bloquant** : au-delà de 5 SOS par minute et par IP, journal + cloche admin `SosBurstDetected` (comptes `alerts.manage`, une par adresse et par quart d'heure), IP en empreinte HMAC seulement (`config/xomiton.php` → `rate_limits`, `sos_log_per_minute_per_ip`). Sur une route `idempotent`, le limiteur nommé passe par l'option `limit=<nom>` : un rejeu ne consomme pas le quota (§1.3). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
 | Groupes | `routes/api.php` en deux groupes (ADR-31, §1.4) : public anonyme (limiteurs nommés) et `auth:sanctum` |
 | Idempotence | en-tête `Idempotency-Key` (UUID) sur `POST signalements`, `POST sos`, `POST sync/push` (§1.3, ADR-32) |
 | Lectures conditionnelles | `ETag` + `If-None-Match` → **304** sur toute lecture 200 du groupe `auth:sanctum` (§1.6, P6-01) |
@@ -67,6 +67,8 @@ Taille de page : `?per_page=` borné à `xomiton.api.max_per_page` (50) par `Api
 | `device_revoked` | 403 | `POST me/devices` sur un appareil révoqué : l'application génère un nouvel UUID (§3, P6-09) | `account.devices.revoked` |
 | `device_taken` | 422 | `POST me/devices` avec l'UUID d'un appareil d'un autre compte (`errors.device_uuid`) | `account.devices.taken` |
 | `newsletter_bounced` · `newsletter_email_missing` · `newsletter_not_subscribed` | 422 | `PATCH me/newsletter` : adresse en rebond, compte sans e-mail, centres d'intérêt sans abonnement (§3, P6-06) | `account.newsletter.*` |
+| `content_blocked` | 422 | texte refusé par le filtre de mots (`bad_words` « bloquer », §8.3) : `errors.<champ>`, message neutre sans le terme | `feed.api.content_blocked` |
+| `poll_closed` | 422 | vote ou retrait sur un sondage terminé (§8.2) | `feed.poll.already_closed` |
 
 Rendu par `App\Exceptions\ApiExceptionRenderer` (enregistré dans `bootstrap/app.php` → `withExceptions`) pour toute requête `api/*` ou attendant du JSON ; le message brut d'une exception HTTP n'est jamais renvoyé (il peut être en anglais). Les exceptions métier héritent de `App\Domain\Shared\Exceptions\DomainException` (homonyme de la classe SPL `\DomainException` : toujours l'importer par `use` ; `errorCode()`, `status()` 422 par défaut, `userMessage()` depuis `lang/fr`, `errors()`, `extra()`, `headers()`) ; celles du tunnel d'authentification (`App\Domain\Auth\Exceptions\*`) gardent leur rendu propre (`status()`, `userMessage()`).
 
@@ -90,8 +92,8 @@ Empreinte du corps : HMAC-SHA256 (clé d'application) des champs triés par cl�
 
 | Groupe | Middleware | Familles |
 |---|---|---|
-| 1. public, anonyme | `throttle:api` + un limiteur nommé sur chaque écriture | `health`, `zones`, `violence-types`, `needs`, `auth/*` (sauf `logout`), `assistant/question` (`throttle:assistant`, P4-01), `urgences`, `signalements` (`idempotent:required,limit=report`), `signalements/{code}` (`throttle:tracking`), `sos` (`idempotent:required,nonblocking,limit=sos` sans `throttle:api`), `sos/{id}`, `sos/{id}/cancel` · `safe` (`throttle:sos_owner`) — P5-06, §6 ; à venir : `thematiques`, `ressources` |
-| 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) + `conditional` (§1.6) | `auth/logout`, `me/*` (§3), `notifications/*` (§7), `signalements/mine` (P5-06) ; à venir : `feed/`, `conversations/`, `pair/`, `sync/` |
+| 1. public, anonyme | `throttle:api` + un limiteur nommé sur chaque écriture | `health`, `zones`, `violence-types`, `needs`, `auth/*` (sauf `logout`), `assistant/question` (`throttle:assistant`, P4-01), `urgences`, `signalements` (`idempotent:required,limit=report`), `signalements/{code}` (`throttle:tracking`), `sos` (`idempotent:required,nonblocking,limit=sos` sans `throttle:api`), `sos/{id}`, `sos/{id}/cancel` · `safe` (`throttle:sos_owner`) — P5-06, §6 ; `thematiques`, `thematiques/{slug}`, `ressources`, `ressources/{id}/download` (`conditional` ; téléchargement `throttle:resource_download`) — P6-08, §11 |
+| 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) + `conditional` (§1.6) | `auth/logout`, `me/*` (§3), `notifications/*` (§7), `signalements/mine` (P5-06), `feed/`, `posts/*`, `comments/*` (§8, P7-02), `dashboard`, `users/{id}/posts` (§11, P6-08) ; à venir : `conversations/`, `pair/`, `sync/` |
 
 Un test (`tests/Feature/Api/ApiFoundationTest.php`) refuse toute route publique hors des familles d'ADR-31 et toute écriture publique sans limiteur nommé (`throttle:<nom>` ou `idempotent:…,limit=<nom>`).
 
@@ -131,7 +133,7 @@ Vue « autre compte » (futures routes `users/{id}`) : seuls `id`, `pseudo`, `av
 
 ### 1.6 Lectures conditionnelles et Sanctum SPA (P6-01)
 
-Middleware `conditional` (`App\Http\Middleware\HandleConditionalGet`), posé sur tout le groupe `auth:sanctum` : sur un `GET` / `HEAD` **200** au corps connu, `ETag` fort = empreinte xxh128 du corps (sauf ETag déjà posé), `Cache-Control: private, no-cache` (le client garde la réponse et la revalide ; aucun cache partagé), `Vary: Authorization, Cookie` ; `If-None-Match` identique → **304** sans corps — comparaison au suffixe `-gzip` / `-br` d'Apache `mod_deflate` (cPanel) et au `W/` près. Ignorés : écritures, erreurs, fichiers et flux, réponses `no-store` (suivi de signalement, `signalements/mine`, SOS, et les lectures sensibles `me`, `me/profile`, `me/security` : jamais gardées, même par le client d'un appareil partagé). Usage : Flutter (cache Hive) et la cloche Vue (polling 30 s de `notifications/unread-count`) renvoient le dernier `ETag` reçu. Les référentiels publics gardent leur cache public (`cache.headers:public;max_age=3600;etag`, §4).
+Middleware `conditional` (`App\Http\Middleware\HandleConditionalGet`), posé sur tout le groupe `auth:sanctum` : sur un `GET` / `HEAD` **200** au corps connu, `ETag` fort = empreinte xxh128 du corps (sauf ETag déjà posé), `Cache-Control: private, no-cache` (le client garde la réponse et la revalide ; aucun cache partagé), `Vary: Authorization, Cookie` ; `If-None-Match` identique → **304** sans corps — comparaison au suffixe `-gzip` / `-br` d'Apache `mod_deflate` (cPanel) et au `W/` près. Ignorés : écritures, erreurs, fichiers et flux, réponses `no-store` (suivi de signalement, `signalements/mine`, SOS, et les lectures sensibles `me`, `me/profile`, `me/security` : jamais gardées, même par le client d'un appareil partagé). Usage : Flutter (cache Hive) et la cloche Vue (polling 30 s de `notifications/unread-count`) renvoient le dernier `ETag` reçu. Les référentiels publics gardent leur cache public (`cache.headers:public;max_age=3600;etag`, §4) ; les contenus publics de l'application mobile (`thematiques`, `ressources`, §11) portent aussi `conditional` (revalidation à chaque lecture : une fiche programmée apparaît à son heure), sauf le lien de téléchargement signé (`no-store`).
 
 Sanctum SPA (ADR-31, `statefulApi()` dans `bootstrap/app.php`) : une requête dont le `Referer` / `Origin` appartient à `SANCTUM_STATEFUL_DOMAINS` est authentifiée par le cookie de session, **sans jeton** ; toute écriture exige alors `X-XSRF-TOKEN` (cookie `XSRF-TOKEN`), sinon **419** `session_expired` (`errors.419.member.text`, au tu) → `GET /sanctum/csrf-cookie` puis un rejeu. Vérifié par `tests/Feature/Api/ApiConditionalAndSpaTest.php`.
 
@@ -324,7 +326,7 @@ Pas de fréquence : le schéma n'en a pas (prototype « mensuelle · bimensuelle
 
 ### `POST me/export` — export RGPD (P6-06)
 
-**202** `{ "data": { "status": "preparing", "link_valid_hours": 48, "message": "Ton export est en préparation. Tu recevras un e-mail avec le lien de téléchargement (valable 48 h)." } }`. Construit en file (`BuildPersonalDataExport`, `QUEUE_CONNECTION=database`, une tâche à la fois par compte) : fichier JSON **chiffré** (`Crypt::encryptString`, `.json.enc`) sur le disque privé (`storage/app/private/exports/personal/<compte>/`, un seul par compte), déchiffré en mémoire au téléchargement ; e-mail `export-donnees` avec un **lien signé** `GET /mes-donnees/export/{jeton}` (route **web**, `auth`, signature vérifiée par le contrôleur : il faut être connecté·e au même compte ; autre compte → 404, lien altéré ou expiré → 403 page « Lien expiré » avec « Redemander un export »), valable `xomiton.accounts.export_link_hours` (48 h), fichier effacé ensuite par `accounts:purge-exports` (03:30). Contenu (`format_version: 2`, `App\Application\Account\PersonalDataExport`) : compte, profil (données sensibles déchiffrées : droit d'accès ; chemins de l'avatar et de la couverture), réglages, consentements, publications (et médias), commentaires (ULID du post), j'aime, enregistrements, votes, comptes et pages suivis, groupes, événements, invitations, conversations et messages **écrits par la personne**, sujets et réponses de forum, conversations avec l'assistant, albums, blocages, avertissements, signalements de modération déposés, alertes rattachées au compte (lieu, contact, besoins, pièces jointes), appareils, abonnements push (libellés), newsletter ; jamais mot de passe, jetons, endpoints, fichiers eux-mêmes, messages d'autrui, identité de qui signale ou avertit, notes internes (Q70). `throttle:account_sensitive` ; 401. Journal `account.export_requested`, `account.export_ready`, `account.export_downloaded`.
+**202** `{ "data": { "status": "preparing", "link_valid_hours": 48, "message": "Ton export est en préparation. Tu recevras un e-mail avec le lien de téléchargement (valable 48 h)." } }`. Construit en file (`BuildPersonalDataExport`, `QUEUE_CONNECTION=database`, une tâche à la fois par compte) : fichier JSON **chiffré** (`Crypt::encryptString`, `.json.enc`) sur le disque privé (`storage/app/private/exports/personal/<compte>/`, un seul par compte), déchiffré en mémoire au téléchargement ; e-mail `export-donnees` avec un **lien signé** `GET /mes-donnees/export/{jeton}` (route **web**, `auth`, signature vérifiée par le contrôleur : il faut être connecté·e au même compte ; autre compte → 404, lien altéré ou expiré → 403 page « Lien expiré » avec « Redemander un export »), valable `xomiton.accounts.export_link_hours` (48 h), fichier effacé ensuite par `accounts:purge-exports` (03:30). Contenu (`format_version: 2`, `App\Application\Account\PersonalDataExport`) : compte, profil (données sensibles déchiffrées : droit d'accès ; chemins de l'avatar et de la couverture), réglages, consentements, publications (et médias), commentaires (ULID du post), j'aime, enregistrements, publications masquées de son fil (`hides`), votes, comptes et pages suivis, groupes, événements, invitations, conversations et messages **écrits par la personne**, sujets et réponses de forum, conversations avec l'assistant, albums, blocages, avertissements, signalements de modération déposés, alertes rattachées au compte (lieu, contact, besoins, pièces jointes), appareils, abonnements push (libellés), newsletter ; jamais mot de passe, jetons, endpoints, fichiers eux-mêmes, messages d'autrui, identité de qui signale ou avertit, notes internes (Q70). `throttle:account_sensitive` ; 401. Journal `account.export_requested`, `account.export_ready`, `account.export_downloaded`.
 
 ### `DELETE me` — suppression du compte (P6-06)
 
@@ -463,7 +465,96 @@ Notifications en base de la personne connectée (`App\Application\Notifications\
 
 Objet : `{ id, type, category, title, body, url, icon, sensitive, read, read_at, created_at, data }` — `type` = nom court de la classe (`invitation_received`, même valeur que `data.type` de la charge push), `data` = compléments d'ouverture profonde (identifiants, jamais de donnée sensible). Une notification sensible est **neutralisée à la lecture** (`notifications.discreet.*`, « Nouvelle notification ») tant que `mask_sensitive_notifications` est actif, même reçue avant l'activation du masquage. Catégories : `securite`, `sos`, `alertes`, `messages`, `communaute`, `evenements`, `moderation`, `systeme`. 401 sans session ni jeton.
 
-## 8. Parcours Flutter de référence
+## 8. Fil et sondages `feed/`, `posts/*`, `comments/*` — `auth:sanctum` (P7-02)
+
+Lot « fil-domaine-api » (P7-01, P7-02, P7-07). Domaine `App\Domain\Feed` (`PostAudience`, `ContentFilter`, `PollBallot`), `App\Domain\Moderation\AutoHideRule` (RG-16) ; cas d'usage `App\Application\Feed\*` et `App\Application\Moderation\ReportContent` ; lectures `App\Application\Feed\Queries\FeedQuery`. Publications adressées par **ULID** (ADR-27), commentaires par identifiant numérique. Une publication que la personne ne peut pas voir (visibilité, masquée, supprimée, groupe privé, blocage dans un sens ou dans l'autre) est **introuvable (404)**, jamais « interdite » ; le 403 est réservé à une action refusée sur une publication visible (modifier celle d'une autre personne, signaler la sienne) et à `email_unverified`.
+
+### 8.1 Visibilité (P7-01)
+
+| `visibility` | Qui la voit |
+|---|---|
+| `public` (« Communauté ») | tout compte du réseau (`social.access`) |
+| `followers` | les abonné·es de l'auteur·rice (`follows`) |
+| `me` | l'auteur·rice seulement |
+
+L'auteur·rice voit toujours sa publication (même masquée par la modération : `moderated: true`) ; `posts.moderate` voit tout. Le fil exclut en plus : les publications masquées par la personne (`post_hides`), celles des groupes (P8), celles des comptes bloqués (`user_blocks`, deux sens), les publications non publiées. **Contenu anonyme** (publication ou commentaire, Q72) : seul le blocage posé par l'auteur·rice compte, jamais celui posé par la personne qui lit (bloquer ne doit pas révéler qui a écrit) ; anonyme + `followers` refusé (422 `visibility` au POST et au PATCH ; une ligne ancienne est traitée comme `me`). `feed/saved` applique la même règle de groupe que le détail (groupe public actif, ou dont on est propriétaire ou membre active).
+
+### 8.2 Routes
+
+| Route | Réponse |
+|---|---|
+| `GET feed?tag=&cursor=&per_page=` | **200** liste par curseur (§1.1, 20 par page), plus récentes d'abord ; `meta.tag` ; 422 étiquette inconnue |
+| `GET feed/saved?cursor=` | **200** publications enregistrées encore visibles (P7-06) |
+| `POST posts` | **201** + `Location` ; `verified`, `throttle:feed_write` (10/min par compte) ; corps ci-dessous ; 403 `forbidden` sans `posts.create` (sondage : `polls.create`), 403 `email_unverified`, 422 `validation_failed` ou `content_blocked` |
+| `GET posts/{ulid}` | **200** publication ; 404 |
+| `PATCH posts/{ulid}` `{body?, tag?, visibility?}` | **200** ; auteur·rice seulement (403), `verified`, `throttle:feed_write` ; étiquette jamais vers ou depuis `sondage` (422) ; anonyme jamais vers `followers` (422) |
+| `DELETE posts/{ulid}` | **204** ; auteur·rice ou `posts.moderate` (journal `post.deleted_by_moderation`) ; statut `supprime` + suppression logique |
+| `POST · DELETE posts/{ulid}/like` | **200** `{ liked, likes_count, changed }` — idempotent (`changed: false` sur un rejeu) ; cloche regroupée de l'auteur·rice (`ReactionGrouped`) |
+| `POST · DELETE posts/{ulid}/save` | **200** `{ saved, changed }` |
+| `POST · DELETE posts/{ulid}/hide` | **200** `{ hidden, changed }` — « Masquer » : retirée du seul fil de la personne ; `DELETE` = « Annuler » |
+| `POST posts/{ulid}/report` `{reason, details?}` | **201** `{ reported: true, reason }` ; **200** si la personne l'avait déjà signalée (rien n'est compté deux fois) ; `throttle:content_report` (20/h par compte) ; 403 sur son propre contenu ; 422 motif inconnu |
+| `GET posts/{ulid}/comments?cursor=&per_page=` | **200** commentaires publiés du plus ancien au plus récent, réponses comprises (`parent_id`), `meta.comments_count` |
+| `POST posts/{ulid}/comments` `{body, parent_id?, is_anonymous?}` | **201** + `meta.comments_count` ; `verified`, `throttle:feed_write` ; 2 à 1000 car. ; `parent_id` = commentaire publié de la **même** publication (422 sinon) ; filtre de mots |
+| `DELETE comments/{id}` | **204** ; auteur·rice ou `posts.moderate` ; 404 si invisible |
+| `POST comments/{id}/report` `{reason, details?}` | comme `posts/{ulid}/report` |
+| `POST posts/{ulid}/poll/vote` `{choices: [option_id…]}` | **200** sondage (§8.4) ; le vote **remplace** le précédent, les mêmes choix ne changent rien (idempotent) ; 422 `validation_failed` (aucun choix, réponse étrangère, deux réponses en choix unique), 422 `poll_closed`, 404 sans sondage |
+| `DELETE posts/{ulid}/poll/vote` | **200** sondage ; sans effet si la personne n'avait pas voté ; 422 `poll_closed` |
+
+Motifs `reason` (`App\Enums\ContentReportReason`, libellé gardé dans `moderation_reports.reason`) : `harcelement`, `discrimination`, `menaces`, `donnees_personnelles`, `desinformation`, `usurpation`, `spam`, `autre`.
+
+### 8.3 `POST posts` — publication ou sondage (JSON ou multipart)
+
+```json
+{ "kind": "post", "body": "Merci à toutes…", "tag": "temoignage", "visibility": "public", "is_anonymous": false,
+  "image": <fichier>, "image_alt": "Atelier en plein air" }
+{ "kind": "poll", "body": "Aidez-nous à choisir.", "visibility": "followers",
+  "poll": { "question": "Quel thème pour la causerie ?", "options": ["Santé", "Droits", "Bien-être"],
+            "multiple": false, "results_before_vote": false, "duration_days": 7 } }
+```
+
+| Champ | Règle |
+|---|---|
+| `kind` | `post` (défaut) ou `poll` |
+| `body` | ≤ 3000 car. ; obligatoire pour `post` sauf image seule ; facultatif pour `poll` |
+| `tag` | `PostTag` sauf `sondage` (défaut `temoignage`) ; `sondage` imposé pour `poll` |
+| `visibility` | `public` (défaut), `followers`, `me` |
+| `image` | collection `images` de MediaUploader (JPEG, PNG, WebP, 5 Mo) : type réel lu dans le contenu, ré-encodage GD (**EXIF retiré**), WebP + variantes, **disque privé**, servie en lien signé `media.signed` (`xomiton.feed.media_url_minutes`, 60 min au moins), expiration alignée sur une fenêtre de 15 min (`media_url_window_minutes`) : même lien, même ETag, 304 dans la fenêtre |
+| `poll.question` | 5 à 200 car. |
+| `poll.options` | 2 à 6 réponses ≤ 80 car., distinctes (casse et accents ignorés) ; réponses vides retirées (comme le prototype) |
+| `poll.duration_days` | 1, 3, 7, 14, 30 ; 0 ou absent = sans fin |
+
+**Filtre de mots** (`bad_words`, FR-SOC-06) sur le corps, le texte alternatif, la question et chaque réponse, avant tout téléversement : terme « bloquer » → 422 `content_blocked` (`errors.<champ>`, message neutre, jamais le terme) ; terme « signaler » → publication en ligne **et** signalement automatique (`reporter_user_id` nul, motif « Mots surveillés (filtre automatique) », termes dans `details` lu par la seule modération), sans incrémenter `reports_count`.
+
+### 8.4 Objets
+
+Publication (`App\Http\Resources\Feed\PostResource`) :
+
+```json
+{ "id": "01JC…", "author": { "id": 12, "pseudo": "Awa_S", "avatar_url": "…", "role": "membre", "anonymous": false },
+  "is_mine": false, "is_anonymous": false, "body": "…", "tag": "temoignage", "tag_label": "Témoignage",
+  "visibility": "public", "visibility_label": "Public", "moderated": false, "likes_count": 3, "comments_count": 1,
+  "liked": true, "saved": false, "media": [{ "kind": "image", "url": "…signature=…", "alt": null, "width": 1600, "height": 1200 }],
+  "poll": null, "url": "https://…/fil/01JC…", "share_url": "https://…/p/01JC…", "published_at": "…", "edited": false,
+  "can": { "update": false, "delete": false, "report": true, "comment": true } }
+```
+
+Publication anonyme (RG-02) : `author` = `{ "id": null, "pseudo": "Membre anonyme", "avatar_url": "…/personnage-1.png", "role": null, "anonymous": true }`, **même pour l'auteur·rice** (`is_mine` suffit). Le statut, le motif de masquage et `reports_count` ne sortent jamais.
+
+Sondage (`PollResource`, RG-09) : `question`, `multiple`, `results_before_vote`, `ends_at`, `closed`, `closed_at`, `voters_count` (toujours), `votes_count`, `results_visible`, `has_voted`, `my_choices` (**les seuls choix de la personne qui lit**), `can_vote`, `options[] { id, label, position, votes_count, percentage, leading }`. Les résultats (`votes_count`, `percentage`, `leading`) valent `null` tant que la personne n'a pas voté, sauf sondage terminé ou `results_before_vote`. **Aucun vote individuel n'est jamais exposé** ; `PollVoted` ne porte que des identifiants et n'est jamais journalisé.
+
+Commentaire (`CommentResource`) : `{ id, parent_id, body, author, is_mine, is_anonymous, created_at, can: { delete, report } }` ; `parent_id` nul dans la liste si le parent est supprimé ou masqué (la réponse remonte au premier niveau). `edited` (publication) : vrai seulement après un `PATCH` qui change le texte, l'étiquette ou la visibilité (`posts.edited_at`), jamais après une réaction.
+
+### 8.5 Signalement et RG-16
+
+`ReportContent` (FR-SOC-06) : un signalement par personne et par contenu (`moderation_reports`, extrait figé ≤ 250 car.), `posts.reports_count` + 1, événement `ContentReported` → cloche des comptes `moderation.manage` (`NotifyModerators`). **RG-16** (`AutoHideRule`) : au seuil de signalements **en attente** de personnes distinctes, le contenu passe `masque` (`hidden_reason` lisible par l'équipe), journal `moderation.auto_hidden` (acteur « système ») ; un commentaire masqué recalcule `comments_count`. Seuil : `config('xomiton.feed.auto_hide_after_reports')` (3, `XOMITON_AUTO_HIDE_REPORTS`), surcharge `Settings` `moderation_auto_hide_reports`, **0 désactive**. Après un rejet par la modération, il faut de nouveaux signalements. La réponse ne dit jamais si le contenu a été masqué.
+
+### 8.6 Partage par lien (Q31 b) et clôture des sondages (P7-07)
+
+`share_url` = `/p/{ulid}` (route web `p.show`) : page publique **neutre** (titre « Publication partagée depuis Xomiton », invitation à se connecter, aucun contenu ni pseudonyme, `noindex`, `no-store`), **sans lecture en base** : même réponse que la publication existe ou non. Connecté·e : redirection vers `/fil/{ulid}` ; « Se connecter » y ramène par `?next=`.
+
+`polls:close` (toutes les 5 min, `routes/console.php`) : `closed_at` = `ends_at` pour chaque sondage échu (une seule fois), cloche « Sondage terminé » (`PollEnded`) à l'auteur·rice active d'une publication encore publiée. Le vote est refusé dès l'échéance, même avant le passage de la tâche.
+
+## 9. Parcours Flutter de référence
 
 ```
 register ──201 token──► (accès limité) ──otp/verify signup──► email_verified
@@ -476,6 +567,46 @@ password/forgot ──202──► otp/verify reset ──reset_token──► p
 
 Journal d'audit (`audit_logs`) : `auth.registered`, `auth.authenticated`, `auth.token_issued`, `auth.otp_verified`, `auth.email_verified`, `auth.password_reset_requested`, `auth.password_reset`, `auth.logout`, `auth.session_revoked`, `auth.failed`, `auth.refused_suspended`, `auth.refused_maintenance` ; mon compte (P6) : `me.settings_updated`, `me.security_updated`, `account.deletion_requested`, `account.export_requested`, `account.export_ready`, `account.export_downloaded`, `device.registered`, `device.revoked`, `push.subscribed`, `push.unsubscribed`, `newsletter.subscribed_from_account`. Aucune valeur sensible (mot de passe, code, jeton) n'y est écrite.
 
-## 9. Familles à venir
+## 10. Familles à venir
 
-`feed/`, `posts/` (P7), `conversations/`, `groups/`, `events/`, `forums/` (P8), `dashboard`, `thematiques/`, `ressources/`, `users/{id}/posts` (P6-08), `pair/`, `sync/` (P9). `signalements/`, `sos/`, `urgences/` : livrés (§6) ; `me/*` (§3) et `notifications/*` (§7) : livrés (P6-06, P6-07, P6-09). Chaque famille complète ce document à sa livraison.
+`conversations/`, `groups/`, `events/`, `forums/` (P8), `pair/`, `sync/` (P9). `signalements/`, `sos/`, `urgences/` : livrés (§6) ; `me/*` (§3) et `notifications/*` (§7) : livrés (P6-06, P6-07, P6-09) ; `feed/`, `posts/*`, `comments/*` (§8) : livrés (P7-02) ; `dashboard`, `thematiques/`, `ressources/`, `users/{id}/posts` (§11) : livrés (P6-08). Chaque famille complète ce document à sa livraison.
+
+## 11. Lecture mobile : tableau de bord, thématiques, ressources, publications d'un profil (P6-08)
+
+Lot « api-mobile-lecture » : routes de lecture attendues par l'application Flutter (`simulateur.html` : `dashboard` l.756, `thematiques` l.785, `thematique` l.802, `ressources` l.819, `profil` l.1202). Aucune donnée nouvelle : mêmes requêtes que le site (`App\Application\Content\Queries\ListThematiques`, `ShowThematique`, `ListResources::page()`, `ResourceDownload`, P4-02 / P4-03), la cloche (P6-07), les alertes (P5) et le fil (`FeedQuery`, P7-02). Toutes les lectures 200 portent un `ETag` (`conditional`, §1.6) : `If-None-Match` → **304** ; aucun texte d'interface (les libellés sont au client, catalogue ARB).
+
+| Route | Groupe | Réponse |
+|---|---|---|
+| `GET dashboard` | `auth:sanctum` | **200** tableau de bord selon le rôle (ci-dessous) ; avec la section `peer` : `Cache-Control: no-store` (résumés d'alertes d'autres personnes, jamais gardés par l'appareil), sans ETag ; 401 |
+| `GET thematiques?categorie=&q=` | public | **200** fiches publiées (cartes), plus récentes d'abord, jusqu'à `xomiton.content.max_per_load` (300) ; `meta` : `total`, `total_all`, `has_more`, `categorie`, `q`, `categories` (puces `{slug, label, icon, color, count}`) ; 404 `categorie` inconnue ou inactive ; 422 format invalide |
+| `GET thematiques/{slug}` | public | **200** fiche complète ; 404 inconnue, brouillon, programmée, supprimée |
+| `GET ressources?q=&type=&categorie=&page=&per_page=` | public | **200** catalogue de `/ressources` paginé par page (§1.1), 20 par page, même ordre ; `meta` + `categorie`, `type`, `q`, `categories` ; 422 `type` inconnu ou `article` (actualités, Q1) ; 404 `categorie` inconnue |
+| `GET ressources/{id}/download` | public, `throttle:resource_download` | **200** `{ id, url, expires_at, kind, file_size, file_size_label, filename }` : lien signé périssable (`xomiton.uploads.signed_url_minutes`, 10 min) vers le disque privé, `expires_at` = échéance de la signature, `Cache-Control: no-store` (jamais d'ETag : la signature expire) ; téléchargement compté (`downloads_count`, mêmes règles que le site : ni `HEAD`, ni robot, ni préchargement), **à chaque délivrance du lien** (le redemander pour une reprise ou après expiration compte de nouveau, Q73) ; 404 ressource sans fichier (lien, fiche), non publiée, actualité ou inconnue |
+| `GET users/{id}/posts?cursor=&per_page=&tag=` | `auth:sanctum` | **200** publications du profil au format du fil (§8.4), pagination par curseur (§1.1), `meta.user_id` ; 404 profil inconnu ou invisible ; 403 sans `social.access` |
+
+**Tableau de bord** (`App\Application\Member\MemberDashboard`, `DashboardResource`) :
+
+```json
+{ "data": {
+  "user": { "id": 12, "pseudo": "Awa_S", "avatar_url": "…", "role": "pair", "pending_validation": false, "email_verified": true },
+  "tiles": [ { "key": "report", "route": "/sighub", "count": null }, { "key": "emergency", "route": "/urgences", "count": null },
+             { "key": "assistant", "route": "/assistant", "count": null }, { "key": "learn", "route": "/thematiques", "count": 5 } ],
+  "counters": { "notifications": 3, "messages": 1 },
+  "profile": { "completion": 43, "complete": false },
+  "featured": { "total": 5, "items": [ { "id": 4, "slug": "…", "title": "…", "summary": "…", "cover_url": "…", "reading_minutes": 6, "category": { "slug": "vbg", "label": "…", "icon": "…", "color": "…" }, "published_at": "…", "url": "https://…/thematiques/…" } ] },
+  "next_event": { "id": "01J…", "title": "…", "starts_at": "…", "ends_at": "…", "is_online": true },
+  "peer": { "kpi": { "collected": 12, "this_month": 3, "in_progress": 4, "closed": 8 },
+            "routed_alerts": { "open": 2, "new": 1, "items": [ { "id": "01J…", "type": "need", "type_label": "…", "status": "nouveau", "status_label": "…", "priority": "haute", "priority_label": "…", "place": "Cotonou", "acknowledged": false, "created_at": "…" } ] },
+            "tasks": [ { "key": "alerts_to_take", "count": 1 }, { "key": "cases_to_contact", "count": 2 } ] }
+} }
+```
+
+- `tiles` : identiques pour tous les rôles (la tuile SOS est la barre d'onglets) ; `learn.count` = fiches publiées. `counters` = compteurs de l'en-tête de l'espace membre (`MemberShell::counters` : notifications non lues de la cloche, conversations ayant un message non lu — 0 tant que la messagerie P8-01 n'écrit rien) ; le polling reste `notifications/unread-count` (§7).
+- `featured` : `xomiton.api.dashboard_featured` (5) fiches les plus récentes ; `category` à null si la catégorie n'est pas un filtre de la liste. `next_event` : premier événement publié à venir sans groupe ou d'un groupe public actif (`UpcomingEvents`), **jamais le lieu** ; null s'il n'y en a pas (les événements eux-mêmes viendront de `events/`, P8-04).
+- `peer` : null hors `peer_space.access` **et** pour un compte en attente de validation (RG-03) ; `routed_alerts` vide sans `alerts.view_routed`. KPI du prototype `espace-pair.php` (collectés, ce mois-ci par date de saisie, en cours = ouverts + en cours, clos) sur **ses** dossiers (`cases.collected_by`), archivés exclus — jamais ceux des autres. Alertes : celles routées vers ses fiches d'annuaire (`directory_contacts.user_id`), encore ouvertes, `new` = sans accusé de réception, `xomiton.api.dashboard_routed_alerts` (5) plus récentes ; jamais le récit, le contact, la position ni l'autrice ou l'auteur (`RoutedAlertResource`) : le détail et la prise en charge passent par l'espace pair (P9-03). `tasks` : seulement les compteurs non nuls.
+
+**Fiche thématique** (`ThematiqueResource`) : `id, slug, title, summary, cover_url, reading_minutes, category, content_warning` (avertissement de contenu saisi par l'équipe, null sinon), `body` et `sections[{title, body}]` (HTML nettoyé à l'écriture, profil purifier `content`), `contacts[]` (annuaire **actif et public** des rôles liés, Q19 : `id, name, role, role_label, org, phone, whatsapp, zone, availability, is_national_focal` ; jamais e-mail, notes ni compte lié), `related[]` (cartes complètes : résumé, catégorie si elle est un filtre de la liste), `primary_resource` (carte de ressource ou null), `faqs[{id, question, answer}]` (3 à 5 ou aucune), `published_at, updated_at, url`. Consultation comptée comme sur le site (`views_count`, ni robot ni préchargement) au premier chargement seulement : une revalidation (`If-None-Match`) n'est pas une lecture.
+
+**Carte de ressource** (`ResourceCardResource`) : `id, slug, title, kind, kind_label, summary, category, cover_url, file_size` (octets, null sans fichier), `file_size_label` (« 1,2 Mo », LocaleFormatter), `duration_minutes, is_offline_available, downloadable, playable, external_url` (adresse `http(s)` seulement), `published_at, url` (fiche publique), `download_url` (cette API, jamais un lien signé gardé en cache) ; ni `file_path` ni compteurs.
+
+**Publications d'un profil** (`App\Application\Feed\Queries\UserPostsQuery`) : profil visible selon `App\Domain\Account\ProfileAudience` — soi-même toujours ; `public` et `community` pour tout compte ; `followers` pour ses abonné·es ; `private` pour personne d'autre ; compte suspendu, anonymisé ou supprimé, blocage dans un sens ou dans l'autre → **404** (on ne révèle pas qu'un compte existe). Publications : celles que la personne verrait dans son fil (visibilité, hors groupes, hors masquées par elle), plus récentes d'abord ; **jamais une publication anonyme**, même pour son autrice ou son auteur (RG-02 : elle n'est rattachée à aucun profil).

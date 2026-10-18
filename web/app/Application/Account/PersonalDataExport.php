@@ -24,6 +24,7 @@ use App\Models\ModerationReport;
 use App\Models\PageFollower;
 use App\Models\PollVote;
 use App\Models\Post;
+use App\Models\PostHide;
 use App\Models\PostLike;
 use App\Models\PostMedia;
 use App\Models\PostSave;
@@ -45,7 +46,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * activité ») : ce que la plateforme garde **sur la personne et qu'elle a fourni ou fait**, données sensibles comprises
  * (identité de genre, orientation, contact de confiance, récits et positions des alertes, messages, déchiffrés : c'est
  * son droit d'accès). Une section par famille : compte, profil (chemins de l'avatar et de la couverture), réglages,
- * consentements, publications (et leurs médias), commentaires, mentions « j'aime », enregistrements, votes, abonnements
+ * consentements, publications (et leurs médias), commentaires, mentions « j'aime », enregistrements, publications
+ * masquées de son fil (`hides`), votes, abonnements
  * (comptes et pages suivis), groupes, participations aux événements, invitations, conversations et messages
  * **qu'elle a écrits**, sujets et réponses de forum, conversations avec l'assistant, albums et médias, blocages,
  * avertissements reçus, signalements de modération déposés, alertes rattachées au compte (lieu, contact, besoins,
@@ -107,6 +109,10 @@ final class PersonalDataExport
             'saves' => self::rows(PostSave::query()->with(['post' => self::trashed()])->where('user_id', $id), static fn (PostSave $save): array => [
                 'post_id' => $save->post?->ulid,
                 'created_at' => self::date($save->created_at),
+            ]),
+            'hides' => self::rows(PostHide::query()->with(['post' => self::trashed()])->where('user_id', $id), static fn (PostHide $hide): array => [
+                'post_id' => $hide->post?->ulid,
+                'created_at' => self::date($hide->created_at),
             ]),
             'poll_votes' => self::rows(PollVote::query()->with(['option', 'poll.post' => self::trashed()])->where('user_id', $id), static fn (PollVote $vote): array => [
                 'post_id' => $vote->poll?->post?->ulid,

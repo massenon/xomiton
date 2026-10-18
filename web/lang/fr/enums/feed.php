@@ -29,6 +29,19 @@ return [
         'supprime' => 'Supprimé',
     ],
 
+    // App\Enums\ContentReportReason (P7-02) : motifs d'un signalement de contenu, gardés tels quels en base (reason).
+    'report_reason' => [
+        'harcelement' => 'Harcèlement ou insultes',
+        'discrimination' => 'Contenu discriminatoire (homophobie, transphobie)',
+        'menaces' => 'Menaces ou chantage',
+        'donnees_personnelles' => 'Partage d’informations privées',
+        'desinformation' => 'Désinformation santé',
+        'usurpation' => 'Usurpation d’identité',
+        'spam' => 'Spam',
+        'autre' => 'Autre',
+        'filtre_automatique' => 'Mots surveillés (filtre automatique)',
+    ],
+
     'invitation_status' => [
         'en_attente' => 'En attente',
         'acceptee' => 'Acceptée',
