@@ -8,6 +8,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     @include('partials.head', ['seo' => $seo, 'critical' => true])
+    @include('partials.offline', ['sw' => true])
     {{ $head ?? '' }}
 </head>
 <body @class([$bodyClass => $bodyClass !== ''])>

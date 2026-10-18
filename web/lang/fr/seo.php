@@ -37,6 +37,14 @@ return [
             'title' => 'Do Glegbe : règles, hygiène menstruelle et santé – Xomiton',
             'description' => 'Comprendre ses règles, gérer son hygiène menstruelle et savoir quand consulter : Do Glegbe donne des réponses simples et fiables aux filles et femmes du Bénin.',
         ],
+        'violences' => [
+            'title' => 'Comprendre les violences : formes, signes et cycle – Xomiton',
+            'description' => 'Violences physiques, psychologiques, sexuelles, économiques ou en ligne : repérer les signes, comprendre le cycle et faire le point en toute confidentialité.',
+        ],
+        'lois' => [
+            'title' => 'Lois et codes du Bénin : connaître vos droits – Xomiton',
+            'description' => 'Loi sur les violences faites aux femmes, Code pénal, Code de la famille, santé, VIH : résumés clairs et version simple pour connaître et défendre vos droits.',
+        ],
         'aide' => [
             'title' => 'Centre d’aide : questions fréquentes et contacts – Xomiton',
             'description' => 'Réponses aux questions fréquentes sur l’inscription, l’anonymat, le signalement, le SOS et vos données. Une équipe formée vous répond sous 24 h.',
@@ -49,9 +57,13 @@ return [
             'title' => 'SOS : envoyer une alerte avec sa position GPS – Xomiton',
             'description' => 'En danger ? Envoyez une alerte SOS avec votre position à la personne de l’annuaire la plus proche : point focal, juriste ou psychologue. Même hors connexion.',
         ],
+        // Aucun numéro en dur (P4-06, Q62) : `:number` = premier numéro administré (`emergency_numbers`) ; variantes
+        // `*_plain` quand aucun numéro n'est renseigné.
         'urgences' => [
-            'title' => 'Contacts d’urgence au Bénin : 117, écoute, juriste – Xomiton',
-            'description' => 'Numéros d’urgence (117, 118), ligne d’écoute, psychologues et juristes joignables, lieux d’accueil et plan de sécurité à imprimer : agir vite, en sécurité.',
+            'title' => 'Contacts d’urgence au Bénin : :number, écoute, juriste – Xomiton',
+            'title_plain' => 'Contacts d’urgence au Bénin : écoute, juriste – Xomiton',
+            'description' => 'Numéro d’urgence :number, ligne d’écoute, psychologues et juristes joignables, lieux d’accueil et plan de sécurité à imprimer : agir vite, en sécurité.',
+            'description_plain' => 'Numéros d’urgence, ligne d’écoute, psychologues et juristes joignables, lieux d’accueil et plan de sécurité à imprimer : agir vite, en sécurité.',
         ],
         'connexion' => [
             'title' => 'Se connecter : retrouver mon fil, mes messages – Xomiton',
@@ -63,7 +75,7 @@ return [
         ],
         'actualites' => [
             'title' => 'Actualités de la communauté et des partenaires – Xomiton',
-            'description' => 'Événements, ateliers, campagnes et nouvelles des organisations partenaires de Xomiton au Bénin. Suivez la vie de la communauté et participez près de chez vous.',
+            'description' => 'Articles et nouvelles de l’équipe Xomiton au Bénin : droits, santé, sécurité et vie de la communauté, expliqués simplement pour agir en confiance.',
         ],
         'confidentialite' => [
             'title' => 'Confidentialité, charte et conditions d’usage – Xomiton',

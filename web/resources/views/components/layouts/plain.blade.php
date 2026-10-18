@@ -7,6 +7,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     @include('partials.head', ['seo' => $seo, 'critical' => true])
+    @include('partials.offline', ['sw' => true])
     {{ $head ?? '' }}
 </head>
 <body @class(['xm-plain', $bodyClass => $bodyClass !== ''])>
@@ -17,7 +18,8 @@
             <div class="container" style="max-width:640px">
                 <x-logo class="navbar-brand" :href="route('home')" :adaptive="true" :width="140" img-class="navbar-brand-item" />
                 <div class="d-flex gap-2 align-items-center">
-                    <a class="btn btn-sm btn-danger-soft fw-bold" href="{{ route('urgences') }}"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i>{{ __('menus.member.emergency') }}</a>
+                    {{-- Sur /urgences : lien vers la page courante, neutre (rouge réservé au SOS, Q62) et aria-current. --}}
+                    <a @class(['btn btn-sm fw-bold', 'btn-secondary-soft' => request()->routeIs('urgences'), 'btn-danger-soft' => ! request()->routeIs('urgences')]) href="{{ route('urgences') }}" @if (request()->routeIs('urgences')) aria-current="page" @endif><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i>{{ __('menus.member.emergency') }}</a>
                     @auth
                         <a class="btn btn-sm btn-primary" href="{{ route('fil') }}">{{ __('menus.public.my_space') }}</a>
                     @else

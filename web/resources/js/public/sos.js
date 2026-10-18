@@ -3,7 +3,7 @@
 // essai : jamais de doublon), GET / cancel / safe avec le jeton X-Sos-Token d'un SOS sans compte (Q52 b), gardé dans une
 // variable de fermeture (jamais d'état Alpine ni de stockage local). Sanctum SPA : X-XSRF-TOKEN repris du cookie, un
 // passage par /sanctum/csrf-cookie sur 419. Réponses : 201 / 200 rejeu → envoyé ; 202 → nouvel essai après Retry-After ;
-// 422 → un seul nouvel envoi sans les champs refusés (RG-01 : un SOS part toujours) sous une nouvelle clé ; réseau
+// 422 → un seul nouvel envoi sans les champs refusés (RG-01 : un SOS part toujours) sous une clé dérivée ; réseau
 // coupé ou 5xx → « hors ligne », nouvel essai au retour du réseau puis avec recul (5 s → 60 s) tant que la page reste
 // ouverte, et remise à la boîte d'envoi commune si elle existe (`window.XM.outbox`, P5-10) + évènement `xm:outbox`.
 // Suivi : `x-alerts.notified` rappelle `onUpdate` à chaque sondage (statut, contact principal, annulation, sécurité).
@@ -11,6 +11,8 @@
 // attente », jamais une 2e alerte) ; SOS non rattaché au compte (réponse avec `sos_token`) : pas de navigation vers le
 // suivi, qui ne le montrerait pas. Chargé à la demande par public.js (`[x-data^="xmSosPage"]`, `[x-data^="xmSosFab"]`).
 // Aucun texte ici : tout vient de Blade (lang/fr) par `opts.texts`.
+
+import { derivedKey, strip } from '../shared/sos-retry.js';
 
 export const MIN_RETRY = 5;
 export const MAX_RETRY = 60;
@@ -59,17 +61,8 @@ export function buildPayload({ share = null, position = null, zoneId = null, com
   return payload;
 }
 
-/** Retire les champs refusés par la validation (422) ; une position refusée part entière. */
-export function strip(payload, fields = []) {
-  const lean = { ...payload };
-  fields.forEach((field) => {
-    const name = String(field).split('.')[0];
-    delete lean[name];
-    if (['lat', 'lng', 'accuracy'].includes(name)) { delete lean.lat; delete lean.lng; delete lean.accuracy; }
-    if (name === 'zone_id') delete lean.commune_id;
-  });
-  return lean;
-}
+// 422 : champs retirés et clé dérivée de l'ancienne, comme la boîte d'envoi (shared/sos-retry.js) : jamais deux SOS.
+export { strip };
 
 /** Position du navigateur, ou null (refus, absence, délai dépassé) : jamais d'exception. */
 export function locate(geo = typeof navigator === 'undefined' ? null : navigator.geolocation, timeoutMs = 12000) {
@@ -176,8 +169,9 @@ export function createSosClient(opts = {}) {
         if (r.state === 'invalid') {
           if (stripped) return { state: 'failed', status: 422 };
           stripped = true;
-          // Clé refusée (déjà prise ou absente) : nouvelle clé ; champs refusés retirés, la clé change aussi (corps différent).
-          current = { payload: strip(current.payload, r.fields), key: uuid() };
+          // Champs refusés retirés : le corps change, donc la clé aussi, dérivée de l'ancienne comme dans la boîte d'envoi
+          // (shared/sos-retry.js) : si elle renvoie aussi cette alerte, le serveur rejoue la même réponse, sans 2e SOS.
+          current = { payload: strip(current.payload, r.fields), key: derivedKey(current.key) };
           continue;
         }
         if (r.state === 'failed') return r;

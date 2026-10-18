@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\ReferentialController;
+use App\Http\Middleware\BindOutboxAccount;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,14 +63,15 @@ Route::group([], function (): void {
     // groupe 2, d'où l'exclusion ci-dessous). sos : jamais de 429 (202 processing si l'envoi d'origine est en cours ; au-delà
     // de 5/min par IP, journal + cloche admin), lecture et actions au compte propriétaire ou au jeton X-Sos-Token (Q52 b).
     Route::prefix('signalements')->as('api.signalements.')->group(function (): void {
-        Route::post('/', [ReportController::class, 'store'])->middleware('idempotent:required,limit=report')->name('store');
+        // BindOutboxAccount (P5-10) : rejeu de la boîte d'envoi annonçant un autre compte que la session → sans compte.
+        Route::post('/', [ReportController::class, 'store'])->middleware(['idempotent:required,limit=report', BindOutboxAccount::class])->name('store');
         Route::get('{code}', [ReportController::class, 'show'])->where('code', '(?!mine$)[^/]{1,40}')
             ->middleware('throttle:tracking')->name('show');
     });
 
     Route::prefix('sos')->as('api.sos.')->group(function (): void {
         Route::post('/', [SosController::class, 'store'])
-            ->withoutMiddleware('throttle:api')->middleware('idempotent:required,nonblocking,limit=sos')->name('store');
+            ->withoutMiddleware('throttle:api')->middleware(['idempotent:required,nonblocking,limit=sos', BindOutboxAccount::class])->name('store');
         // Suivi, repentir et « Je suis en sécurité » hors limiteur global `api` (quota par IP partagé derrière un CGNAT) :
         // limiteurs propres par IP + alerte seulement.
         Route::get('{alert:ulid}', [SosController::class, 'show'])

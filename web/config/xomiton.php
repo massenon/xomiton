@@ -353,6 +353,9 @@ return [
         // P4-03 : même pas que les thématiques (grille 2 / 3 colonnes sans rangée orpheline) ; « Fiches à télécharger ».
         'ressources_per_load' => 6,
         'ressources_files_count' => 6,
+        // P4-10 : pas du « Charger plus » de /actualites (prototype blog.php) ; « À lire aussi » de la fiche (ShowNews).
+        'actualites_per_load' => 6,
+        'news_related_count' => 4,
         'max_per_load' => 300,
         'related_count' => 3,
         'contacts_max' => 4,
@@ -360,16 +363,39 @@ return [
         'faq_max' => 5,
         // P4-03 : catégories dont les ressources portent la mention « informations éducatives, pas un conseil juridique ».
         'legal_notice_categories' => ['droits'],
+        // P4-04 : fiches de /do-glegbe = thématiques publiées de cette catégorie (slug), les plus récentes d'abord.
+        'do_glegbe_category' => 'regles',
+        'do_glegbe_sheets' => 4,
     ],
 
     /*
      * Bibliothèque hors connexion des ressources (P4-03, ADR-26) : interrupteur « Hors ligne » par ressource, marquage
      * local par appareil (localStorage + événement `xm:offline-resources`) et badge « Disponible hors connexion » des
-     * ressources marquées par l'équipe. La mise en cache effective revient au service worker (P5-10) : désactivée par
-     * défaut, aucune promesse hors connexion n'est affichée tant que P5-10 ne passe pas XOMITON_OFFLINE_LIBRARY à true.
+     * ressources marquées par l'équipe. La mise en cache effective revient au service worker (P5-10, livré) : activée par
+     * défaut ; XOMITON_OFFLINE_LIBRARY=false retire interrupteurs et badges (aucune promesse hors connexion). Sans service
+     * worker dans le navigateur, l'interrupteur n'est pas affiché (ressources.js, `supported`).
      */
     'offline' => [
-        'library_enabled' => (bool) env('XOMITON_OFFLINE_LIBRARY', false),
+        // P5-10 livré : le service worker met en cache les ressources enregistrées et marquées (désactivable).
+        'library_enabled' => (bool) env('XOMITON_OFFLINE_LIBRARY', true),
+        /*
+         * Service worker (P5-10, ADR-26) servi par GET /sw.js (ServiceWorkerScript) : script construit par Vite
+         * (vite-plugin-pwa, injectManifest) ; `version` est injectée dans le script avec la révision que la tâche
+         * « Mise à jour du cache hors connexion » (P13-02) incrémente (ServiceWorkerScript::bump()) : un changement
+         * fait installer la nouvelle version et recharger les pages gardées. `pages` : préchargées à l'installation
+         * (sans cookie) et gardées à chaque consultation ; `fallback` : page servie sans réseau quand la page demandée
+         * n'est pas en cache ; `timeout_ms` : délai réseau au-delà duquel une copie en cache est servie.
+         */
+        'service_worker' => [
+            'script' => env('XOMITON_SW_SCRIPT', 'build/sw.js'),
+            'version' => env('XOMITON_SW_VERSION', '1'),
+            'pages' => ['/urgences', '/sos', '/signaler', '/annuaire', '/ressources'],
+            'fallback' => '/urgences',
+            'timeout_ms' => 6000,
+            // Liste des ressources marquées injectée dans /sw.js, gardée en cache applicatif (secondes ; clé liée à la
+            // révision : la tâche P13-02 la relit) : /sw.js est revalidé à chaque navigation.
+            'marked_cache_seconds' => 300,
+        ],
     ],
 
     /*

@@ -5,7 +5,8 @@
 // ({ action: init | add | remove, slug, item: { url, file, title, savedAt }, items, marked }) pour mettre en cache `url`
 // (page) et `file` (source du lecteur ou téléchargement stable). Aucun texte en dur : tout vient des options (lang/fr
 // via le contrôleur). Le titre est gardé avec l'adresse : la liste hors réseau n'a pas d'autre source, et le slug de
-// l'adresse en dit déjà autant.
+// l'adresse en dit déjà autant. `supported` : le navigateur a un service worker ; sinon (navigateur ancien, certaines
+// navigations privées) l'interrupteur et le filtre sont masqués : aucune promesse de lecture hors ligne non tenue.
 
 const hasOwn = (object, key) =>
     Object.prototype.hasOwnProperty.call(object, key);
@@ -48,10 +49,14 @@ export function xmOfflineLibrary(opts = {}) {
         ...(opts.countLabels || {}),
     };
     const marked = cleanMarked(opts.marked);
+    const supported =
+        opts.supported ??
+        (typeof navigator !== "undefined" && "serviceWorker" in navigator);
 
     return {
         items: {},
         only: false,
+        supported,
 
         init() {
             this.items = read(key);

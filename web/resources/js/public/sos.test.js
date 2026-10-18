@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 // Envoi d'un SOS (P5-05 / P5-08) : client de l'API, page xmSosPage et bouton flottant xmSosFab, sans Alpine ni réseau.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { derivedKey } from '../shared/sos-retry.js';
 import {
   SHARE_KEY, buildPayload, createSosClient, locate, readCookie, readShare, retryDelay, strip, telHref, uuid, writeShare, xmSosFab, xmSosPage,
 } from './sos.js';
@@ -121,14 +122,14 @@ describe('createSosClient', () => {
     expect(fetch.mock.calls.map((c) => c[1].headers['Idempotency-Key'])).toEqual(['k', 'k']);
   });
 
-  it('422 : un seul nouvel envoi sans les champs refusés, sous une nouvelle clé (un SOS part toujours)', async () => {
+  it('422 : un seul nouvel envoi sans les champs refusés, sous la clé dérivée que prend aussi la boîte d’envoi', async () => {
     const fetch = vi.fn()
       .mockResolvedValueOnce(reply(422, { code: 'validation_failed', errors: { phone: ['Numéro invalide.'] } }))
       .mockResolvedValueOnce(created());
     const r = await createSosClient({ fetch }).send({ share_location: false, phone: 'abc' }, 'k');
     expect(r.state).toBe('sent');
     expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({ share_location: false });
-    expect(fetch.mock.calls[1][1].headers['Idempotency-Key']).not.toBe('k');
+    expect(fetch.mock.calls[1][1].headers['Idempotency-Key']).toBe(derivedKey('k'));
 
     const always = vi.fn().mockResolvedValue(reply(422, { errors: { message: ['x'] } }));
     expect((await createSosClient({ fetch: always }).send({ message: 'x' }, 'k')).state).toBe('failed');

@@ -27,7 +27,7 @@
                         {{-- Prototype l.43 : badge compteur, devenu bouton-bascule « ressources enregistrées seulement » (plan §7). --}}
                         {{-- Nom accessible stable (action) suivi du compteur visible (Label in Name) ; état par aria-pressed. --}}
                         <button type="button" class="btn btn-sm bg-success bg-opacity-10 text-success align-self-start xm-res-offline-toggle" aria-controls="liste" aria-pressed="false"
-                                x-on:click="only = ! only" x-bind:aria-pressed="only ? 'true' : 'false'">
+                                x-show="supported" x-on:click="only = ! only" x-bind:aria-pressed="only ? 'true' : 'false'">
                             <i class="bi bi-cloud-check me-1" aria-hidden="true"></i><span class="visually-hidden">{{ __('pages/ressources.offline_filter_label') }}&#160;: </span><span x-text="countLabel()">{{ trans_choice('pages/ressources.offline_count', 0) }}</span>
                         </button>
                     @endif

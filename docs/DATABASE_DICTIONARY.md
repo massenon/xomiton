@@ -108,7 +108,7 @@ Migrations Laravel / Sanctum publiées, inchangées (sessions en base, D7).
 `id` · `category_id FK null` · `question string(255)` · `answer text` · `position unsignedSmallInteger` · `is_published boolean default true` · `show_on_home boolean default false`. Seed : `faqs.json`.
 
 ### `laws`
-`id` · `slug string(80) unique` · `title string(200)` · `subtitle string(200) null` · `summary text` · `category string(80)` · `official_url string(500) null` · `position` · `is_published boolean`. Seed : `x_lois()`.
+`id` · `slug string(80) unique` · `title string(200)` · `subtitle string(200) null` · `summary text` · `simple_summary text null` (version « Lire en version simple » de `/lois`, repli sur `summary` ; tableau `$simple` de `lois-benin.php`, P4-04) · `category string(80)` · `official_url string(500) null` (lien affiché seulement en http(s)) · `position` · `is_published boolean`. Seed : `x_lois()` + versions simples du prototype.
 
 ### `ccc_tools`
 `id` · `kind string(20)` (`CccKind` : `manuel`, `boite_images`, `bd`, `loi`) · `key string(40) unique` (`m1`, `bd1`…) · `title string(200)` · `description text null` · `image_path string(255) null` · `pages json null` (planches : `[{image, caption, alt}]`) · `chapters json null` (manuel : `[titre]`) · `duration_minutes unsignedSmallInteger null` · `position` · `is_published boolean default true`. Seed : `x_ccc_manuel()`, `x_ccc_boites()`, `x_ccc_bd()`.

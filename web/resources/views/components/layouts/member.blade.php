@@ -10,6 +10,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     @include('partials.head', ['seo' => ['index' => false] + $seo])
+    @include('partials.offline')
     {{ $head ?? '' }}
 </head>
 <body @class(['xm-member', $bodyClass => $bodyClass !== ''])>

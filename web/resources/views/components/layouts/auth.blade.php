@@ -12,6 +12,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     @include('partials.head', ['seo' => $seo + ['index' => false]])
+    @include('partials.offline')
     {{ $head ?? '' }}
 </head>
 <body class="xm-auth">

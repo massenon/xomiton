@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Texte de loi présenté sur la page « Lois » (DATABASE_DICTIONARY.md §3 `laws`).
+ * Texte de loi présenté sur la page « Lois » (DATABASE_DICTIONARY.md §3 `laws`) ; `simple_summary` : version simple
+ * facultative (P4-04, interrupteur « Lire en version simple », repli sur `summary`).
  */
 class Law extends Model
 {
@@ -23,6 +24,7 @@ class Law extends Model
         'title',
         'subtitle',
         'summary',
+        'simple_summary',
         'category',
         'official_url',
         'position',

@@ -7,6 +7,7 @@ use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureNotInMaintenance;
 use App\Http\Middleware\HandleIdempotencyKey;
 use App\Http\Middleware\SecurityHeaders;
+use App\Http\Middleware\TagGuestResponse;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -41,6 +42,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // Lot pairs-maintenance (P2-11, RG-14) : mode maintenance applicatif après session et authentification
         // (web et API), liste blanche SOS / signalement / urgences / connexion, admin et superadmin exemptés.
         $middleware->web(append: [EnsureNotInMaintenance::class]);
+        // Lot service-worker (P5-10, ADR-26) : `X-Xm-Audience: guest` sur les pages rendues sans compte ni message flash,
+        // les seules que le service worker garde à la consultation.
+        $middleware->web(append: [TagGuestResponse::class]);
         $middleware->api(append: [EnsureNotInMaintenance::class]);
         // Évalué avant `auth` / `auth:sanctum` : un client dont la session ou le jeton est encore valable reçoit 503
         // (et non 401, que Flutter prendrait pour une déconnexion) ; après StartSession pour pouvoir fermer la session.

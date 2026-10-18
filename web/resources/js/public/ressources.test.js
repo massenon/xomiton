@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 // Bibliothèque hors connexion des ressources (P4-03) : lecture du stockage, ajout / retrait avec événement et toast,
 // liste « enregistrées seulement » (stockage local et ressources marquées par l'équipe, cartes chargées ou non),
-// stockage indisponible, libellés du compteur.
+// stockage indisponible, libellés du compteur, interrupteur masqué sans service worker dans le navigateur.
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { xmOfflineLibrary } from "./ressources.js";
 
@@ -256,5 +256,14 @@ describe("xmOfflineLibrary", () => {
 
         library.toggle("b", input(true, { offlineUrl: "/ressources/b" }));
         expect(library.countLabel()).toBe("2 disponibles hors connexion");
+    });
+
+    it("ne promet la lecture hors ligne qu’avec un service worker dans le navigateur", () => {
+        const had = "serviceWorker" in window.navigator;
+        expect(make().supported).toBe(had);
+        expect(xmOfflineLibrary({ supported: false }).supported).toBe(false);
+        Object.defineProperty(window.navigator, "serviceWorker", { value: {}, configurable: true });
+        expect(xmOfflineLibrary({}).supported).toBe(true);
+        if (!had) delete window.navigator.serviceWorker;
     });
 });

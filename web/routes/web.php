@@ -11,24 +11,32 @@ use App\Http\Controllers\Auth\RegistrationConsentsController;
 use App\Http\Controllers\Auth\RegistrationProfileController;
 use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Web\ActualitesIndexController;
+use App\Http\Controllers\Web\ActualitesShowController;
 use App\Http\Controllers\Web\AlertAcknowledgementController;
 use App\Http\Controllers\Web\Alerts\ReportPageController;
 use App\Http\Controllers\Web\Alerts\ReportTrackingController;
 use App\Http\Controllers\Web\DesignSystemController;
+use App\Http\Controllers\Web\DoGlegbeController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
+use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\PlaceholderController;
 use App\Http\Controllers\Web\RessourceDownloadController;
 use App\Http\Controllers\Web\RessourcesIndexController;
 use App\Http\Controllers\Web\RessourcesShowController;
 use App\Http\Controllers\Web\RessourceStreamController;
 use App\Http\Controllers\Web\RobotsController;
+use App\Http\Controllers\Web\ServiceWorkerController;
 use App\Http\Controllers\Web\SignedMediaController;
 use App\Http\Controllers\Web\SitemapController;
 use App\Http\Controllers\Web\SosPageController;
 use App\Http\Controllers\Web\ThematiquesIndexController;
 use App\Http\Controllers\Web\ThematiquesShowController;
+use App\Http\Controllers\Web\UrgencesController;
+use App\Http\Controllers\Web\ViolencesController;
+use App\Http\Middleware\EnsureNotInMaintenance;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -64,14 +72,19 @@ Route::get('/ressources/{slug}/telecharger', RessourceDownloadController::class)
     ->middleware('throttle:resource_download')->name('ressources.download');
 Route::get('/ressources/{slug}/lire', RessourceStreamController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->middleware('throttle:resource_download')->name('ressources.stream');
-$placeholder('/violences', 'violences', 'Comprendre les violences', 'violences.php');
-$placeholder('/lois', 'lois', 'Lois et codes du Bénin', 'lois-benin.php');
-$placeholder('/do-glegbe', 'do-glegbe', 'Do Glegbe', 'do-glegbe.php');
+// P4-04 : publiques et indexables (Q19 a), vous ; auto-évaluation (/violences), recherche et version simple (/lois), quiz
+// (/do-glegbe) entièrement dans le navigateur, sans requête réseau.
+Route::get('/violences', ViolencesController::class)->name('violences');
+Route::get('/lois', LoisController::class)->name('lois');
+Route::get('/do-glegbe', DoGlegbeController::class)->name('do-glegbe');
 $placeholder('/aide', 'aide.index', 'Centre d’aide', 'help.php');
 $placeholder('/aide/{slug}', 'aide.show', 'Aide', 'help-details.php');
-$placeholder('/actualites', 'actualites.index', 'Actualités', 'blog.php');
-$placeholder('/actualites/{slug}', 'actualites.show', 'Actualité', 'blog-details.php');
-$placeholder('/urgences', 'urgences', 'Contacts d’urgence', 'urgences.php', 'plain');
+// P4-10 : actualités = ressources `article` publiées (Q1 a) ; une ressource d'un autre type → 301 /ressources/{slug}.
+Route::get('/actualites', ActualitesIndexController::class)->name('actualites.index');
+Route::get('/actualites/{slug}', ActualitesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('actualites.show');
+// P4-06 : gabarit sobre, tu (Q47) ; même source que GET /api/v1/urgences (ListEmergencyContacts) ; nom `urgences`
+// servi pendant la maintenance (EnsureNotInMaintenance, RG-01).
+Route::get('/urgences', UrgencesController::class)->name('urgences');
 $placeholder('/confidentialite', 'confidentialite', 'Confidentialité et conditions', 'privacy-and-terms.php');
 $placeholder('/newsletter', 'newsletter.show', 'Newsletter', 'newsletter.php');
 Route::post('/newsletter', PlaceholderController::class)->name('newsletter.subscribe')
@@ -166,7 +179,14 @@ Route::permanentRedirect('/sign-up.php', '/inscription');
 Route::permanentRedirect('/signalement.php', '/signaler');
 Route::permanentRedirect('/sos.php', '/sos');
 Route::permanentRedirect('/urgences.php', '/urgences');
+// P4-10 : blog.php filtrait par libellé (?cat=) et blog-details.php adressait des articles fictifs par id : liste.
+Route::permanentRedirect('/blog.php', '/actualites');
+Route::permanentRedirect('/blog-details.php', '/actualites');
 Route::permanentRedirect('/thematiques.php', '/thematiques');
+// P4-04 : pages Apprendre.
+Route::permanentRedirect('/violences.php', '/violences');
+Route::permanentRedirect('/lois-benin.php', '/lois');
+Route::permanentRedirect('/do-glegbe.php', '/do-glegbe');
 // Le prototype adressait les fiches par id ; la couverture semée le garde (covers/th-<id>.jpg, ContentSeeder) : P4-02.
 Route::get('/thematique.php', LegacyThematiqueRedirectController::class)->name('legacy.thematique');
 // P4-03 : ressources.php garde ?q= et ?cat= ; ressource.php?id= redirigeait vers thematique.php?id= (même résolution).
@@ -181,3 +201,7 @@ Route::withoutMiddleware([EncryptCookies::class, AddQueuedCookiesToResponse::cla
         Route::get('/robots.txt', RobotsController::class)->name('robots');
         Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
     });
+
+// --- Service worker (P5-10, ADR-26) : à la racine pour la portée « / », sans session ni cookie, servi en maintenance ----
+Route::withoutMiddleware([EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, ShareErrorsFromSession::class, ValidateCsrfToken::class, EnsureNotInMaintenance::class])
+    ->get('/sw.js', ServiceWorkerController::class)->name('service-worker');

@@ -13647,6 +13647,78 @@
             }
         }
     },
+    "offline_outbox_close": "Fermer",
+    "@offline_outbox_close": {
+        "description": "offline.outbox.close"
+    },
+    "offline_outbox_copied": "Code copié.",
+    "@offline_outbox_copied": {
+        "description": "offline.outbox.copied"
+    },
+    "offline_outbox_copy": "Copier le code",
+    "@offline_outbox_copy": {
+        "description": "offline.outbox.copy"
+    },
+    "offline_outbox_print": "Imprimer",
+    "@offline_outbox_print": {
+        "description": "offline.outbox.print"
+    },
+    "offline_outbox_queued": "Envoi enregistré sur cet appareil : il partira automatiquement au retour du réseau.",
+    "@offline_outbox_queued": {
+        "description": "offline.outbox.queued"
+    },
+    "offline_outbox_report_failed": "Le serveur a refusé le signalement enregistré hors connexion. Les réponses restent sur la page du formulaire.",
+    "@offline_outbox_report_failed": {
+        "description": "offline.outbox.report_failed"
+    },
+    "offline_outbox_report_failed_title": "Signalement non envoyé",
+    "@offline_outbox_report_failed_title": {
+        "description": "offline.outbox.report_failed_title"
+    },
+    "offline_outbox_report_keep": "À conserver : ce code ne sera plus affiché.",
+    "@offline_outbox_report_keep": {
+        "description": "offline.outbox.report_keep"
+    },
+    "offline_outbox_report_resume": "Reprendre le signalement",
+    "@offline_outbox_report_resume": {
+        "description": "offline.outbox.report_resume"
+    },
+    "offline_outbox_report_sent": "Le signalement enregistré hors connexion est bien parti. Code de suivi :",
+    "@offline_outbox_report_sent": {
+        "description": "offline.outbox.report_sent"
+    },
+    "offline_outbox_report_sent_title": "Signalement envoyé",
+    "@offline_outbox_report_sent_title": {
+        "description": "offline.outbox.report_sent_title"
+    },
+    "offline_outbox_sos_contacts": "Contacts d’urgence",
+    "@offline_outbox_sos_contacts": {
+        "description": "offline.outbox.sos_contacts"
+    },
+    "offline_outbox_sos_failed": "L’alerte enregistrée hors connexion n’a pas pu partir. En danger, appeler directement un numéro d’urgence.",
+    "@offline_outbox_sos_failed": {
+        "description": "offline.outbox.sos_failed"
+    },
+    "offline_outbox_sos_failed_title": "Alerte SOS non envoyée",
+    "@offline_outbox_sos_failed_title": {
+        "description": "offline.outbox.sos_failed_title"
+    },
+    "offline_outbox_sos_sent": "Alerte SOS envoyée.",
+    "@offline_outbox_sos_sent": {
+        "description": "offline.outbox.sos_sent"
+    },
+    "offline_sw_numbers": "Numéros d’urgence",
+    "@offline_sw_numbers": {
+        "description": "offline.sw.numbers"
+    },
+    "offline_sw_text": "Cette page n’est pas encore enregistrée sur cet appareil. En danger, appeler directement un numéro d’urgence.",
+    "@offline_sw_text": {
+        "description": "offline.sw.text"
+    },
+    "offline_sw_title": "Hors connexion",
+    "@offline_sw_title": {
+        "description": "offline.sw.title"
+    },
     "pages_accueil_alerte_kicker": "Alerte & signalement",
     "@pages_accueil_alerte_kicker": {
         "description": "pages/accueil.alerte.kicker"
@@ -14091,6 +14163,597 @@
     "pages_accueil_valeurs_title": "Un soutien à portée de main",
     "@pages_accueil_valeurs_title": {
         "description": "pages/accueil.valeurs.title"
+    },
+    "pages_actualites_aside_label": "Compléments",
+    "@pages_actualites_aside_label": {
+        "description": "pages/actualites.aside_label"
+    },
+    "pages_actualites_author_team": "Équipe Xomiton",
+    "@pages_actualites_author_team": {
+        "description": "pages/actualites.author_team"
+    },
+    "pages_actualites_back": "Toutes les actualités",
+    "@pages_actualites_back": {
+        "description": "pages/actualites.back"
+    },
+    "pages_actualites_cover_alt": "Couverture de l’article : {title}",
+    "@pages_actualites_cover_alt": {
+        "description": "pages/actualites.cover_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_actualites_disclaimer": "Ce contenu informe mais ne remplace pas l’avis d’un·e professionnel·le. En cas de danger, utilisez le {sos} ou les {urgences}.",
+    "@pages_actualites_disclaimer": {
+        "description": "pages/actualites.disclaimer",
+        "placeholders": {
+            "sos": {
+                "type": "String"
+            },
+            "urgences": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_actualites_disclaimer_sos": "SOS",
+    "@pages_actualites_disclaimer_sos": {
+        "description": "pages/actualites.disclaimer_sos"
+    },
+    "pages_actualites_disclaimer_urgences": "contacts d’urgence",
+    "@pages_actualites_disclaimer_urgences": {
+        "description": "pages/actualites.disclaimer_urgences"
+    },
+    "pages_actualites_empty_category": "Aucun article dans cette catégorie.",
+    "@pages_actualites_empty_category": {
+        "description": "pages/actualites.empty_category"
+    },
+    "pages_actualites_empty_none": "Aucune actualité publiée pour le moment.",
+    "@pages_actualites_empty_none": {
+        "description": "pages/actualites.empty_none"
+    },
+    "pages_actualites_end_of_list": "{count, plural, =1{Vous avez vu la seule actualité.} other{Vous avez vu les {count} actualités.}}",
+    "@pages_actualites_end_of_list": {
+        "description": "pages/actualites.end_of_list",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_actualites_events_empty": "Aucun événement à venir pour le moment.",
+    "@pages_actualites_events_empty": {
+        "description": "pages/actualites.events_empty"
+    },
+    "pages_actualites_events_online": "En ligne",
+    "@pages_actualites_events_online": {
+        "description": "pages/actualites.events_online"
+    },
+    "pages_actualites_events_title": "Prochains événements",
+    "@pages_actualites_events_title": {
+        "description": "pages/actualites.events_title"
+    },
+    "pages_actualites_filter_all": "Tout",
+    "@pages_actualites_filter_all": {
+        "description": "pages/actualites.filter_all"
+    },
+    "pages_actualites_filters_label": "Filtrer par catégorie",
+    "@pages_actualites_filters_label": {
+        "description": "pages/actualites.filters_label"
+    },
+    "pages_actualites_intro": "Articles, guides et nouvelles de la communauté Xomiton.",
+    "@pages_actualites_intro": {
+        "description": "pages/actualites.intro"
+    },
+    "pages_actualites_list_title": "Liste des actualités",
+    "@pages_actualites_list_title": {
+        "description": "pages/actualites.list_title"
+    },
+    "pages_actualites_meta_description_filler": "Actualité Xomiton pour les filles et femmes LBTQ+ au Bénin.",
+    "@pages_actualites_meta_description_filler": {
+        "description": "pages/actualites.meta_description_filler"
+    },
+    "pages_actualites_minutes": "{count, plural, =1{{count} min} other{{count} min}}",
+    "@pages_actualites_minutes": {
+        "description": "pages/actualites.minutes",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_actualites_og_alt_index": "Actualités Xomiton : articles, guides et nouvelles de la communauté",
+    "@pages_actualites_og_alt_index": {
+        "description": "pages/actualites.og_alt_index"
+    },
+    "pages_actualites_others_title": "À lire aussi",
+    "@pages_actualites_others_title": {
+        "description": "pages/actualites.others_title"
+    },
+    "pages_actualites_published_on": "Publié le {date}",
+    "@pages_actualites_published_on": {
+        "description": "pages/actualites.published_on",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_actualites_question_alt": "Illustration : un personnage souriant du centre d’aide Xomiton",
+    "@pages_actualites_question_alt": {
+        "description": "pages/actualites.question_alt"
+    },
+    "pages_actualites_question_cta": "Centre d’aide",
+    "@pages_actualites_question_cta": {
+        "description": "pages/actualites.question_cta"
+    },
+    "pages_actualites_question_text": "Consultez le centre d’aide ou discutez avec l’assistant.",
+    "@pages_actualites_question_text": {
+        "description": "pages/actualites.question_text"
+    },
+    "pages_actualites_question_title": "Une question ?",
+    "@pages_actualites_question_title": {
+        "description": "pages/actualites.question_title"
+    },
+    "pages_actualites_reading_time": "{count, plural, =1{{count} min de lecture} other{{count} min de lecture}}",
+    "@pages_actualites_reading_time": {
+        "description": "pages/actualites.reading_time",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_actualites_share": "Partager",
+    "@pages_actualites_share": {
+        "description": "pages/actualites.share"
+    },
+    "pages_actualites_share_copied": "Lien copié.",
+    "@pages_actualites_share_copied": {
+        "description": "pages/actualites.share_copied"
+    },
+    "pages_actualites_share_failed": "Copie impossible. Copiez l’adresse de la page.",
+    "@pages_actualites_share_failed": {
+        "description": "pages/actualites.share_failed"
+    },
+    "pages_actualites_show_all": "Voir toutes les actualités",
+    "@pages_actualites_show_all": {
+        "description": "pages/actualites.show_all"
+    },
+    "pages_actualites_shown_capped": "{shown} actualités affichées sur {total}. Filtrez par catégorie pour affiner.",
+    "@pages_actualites_shown_capped": {
+        "description": "pages/actualites.shown_capped",
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_actualites_shown_of": "{shown} sur {total}",
+    "@pages_actualites_shown_of": {
+        "description": "pages/actualites.shown_of",
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_actualites_title": "Actualités",
+    "@pages_actualites_title": {
+        "description": "pages/actualites.title"
+    },
+    "pages_do_glegbe_engage_help": "Besoin d’aide ?",
+    "@pages_do_glegbe_engage_help": {
+        "description": "pages/do_glegbe.engage.help"
+    },
+    "pages_do_glegbe_engage_question": "Poser une question",
+    "@pages_do_glegbe_engage_question": {
+        "description": "pages/do_glegbe.engage.question"
+    },
+    "pages_do_glegbe_engage_quote": "Ensemble, créons un monde où les menstruations ne sont plus un obstacle, mais une partie naturelle et saine de la vie.",
+    "@pages_do_glegbe_engage_quote": {
+        "description": "pages/do_glegbe.engage.quote"
+    },
+    "pages_do_glegbe_engage_text": "La santé menstruelle est l’affaire de tout le monde. Explorez nos ressources, participez à nos événements et rejoignez la conversation.",
+    "@pages_do_glegbe_engage_text": {
+        "description": "pages/do_glegbe.engage.text"
+    },
+    "pages_do_glegbe_engage_thematiques": "Explorer les thématiques liées",
+    "@pages_do_glegbe_engage_thematiques": {
+        "description": "pages/do_glegbe.engage.thematiques"
+    },
+    "pages_do_glegbe_engage_title": "Engagez-vous avec nous",
+    "@pages_do_glegbe_engage_title": {
+        "description": "pages/do_glegbe.engage.title"
+    },
+    "pages_do_glegbe_headline": "Do Glegbe – Gestion de l’hygiène menstruelle",
+    "@pages_do_glegbe_headline": {
+        "description": "pages/do_glegbe.headline"
+    },
+    "pages_do_glegbe_hero_badge": "Gestion de l’hygiène menstruelle",
+    "@pages_do_glegbe_hero_badge": {
+        "description": "pages/do_glegbe.hero.badge"
+    },
+    "pages_do_glegbe_hero_lead": "Votre guide complet pour une gestion saine et digne de l’hygiène menstruelle.",
+    "@pages_do_glegbe_hero_lead": {
+        "description": "pages/do_glegbe.hero.lead"
+    },
+    "pages_do_glegbe_hero_logo_alt": "Logo Do Glegbe : goutte de sang avec symbole de genre et lune",
+    "@pages_do_glegbe_hero_logo_alt": {
+        "description": "pages/do_glegbe.hero.logo_alt"
+    },
+    "pages_do_glegbe_hero_logo_title": "Do Glegbe",
+    "@pages_do_glegbe_hero_logo_title": {
+        "description": "pages/do_glegbe.hero.logo_title"
+    },
+    "pages_do_glegbe_hero_sheets": "Explorer les fiches",
+    "@pages_do_glegbe_hero_sheets": {
+        "description": "pages/do_glegbe.hero.sheets"
+    },
+    "pages_do_glegbe_hero_workshops": "Voir les ateliers",
+    "@pages_do_glegbe_hero_workshops": {
+        "description": "pages/do_glegbe.hero.workshops"
+    },
+    "pages_do_glegbe_mission_eyebrow": "Notre mission",
+    "@pages_do_glegbe_mission_eyebrow": {
+        "description": "pages/do_glegbe.mission.eyebrow"
+    },
+    "pages_do_glegbe_mission_lead": "Avoir ses règles est un simple fait biologique qui constitue trop souvent un obstacle à la santé, à la dignité et au respect des droits des filles et des femmes…",
+    "@pages_do_glegbe_mission_lead": {
+        "description": "pages/do_glegbe.mission.lead"
+    },
+    "pages_do_glegbe_mission_text": "« Do Glegbe » est une initiative dédiée à l’autonomisation des personnes menstruées. Notre mission est de briser les tabous et de fournir les informations, les compétences, les ressources, le soutien social et le matériel nécessaires pour gérer sa santé menstruelle en toute confiance et dignité.",
+    "@pages_do_glegbe_mission_text": {
+        "description": "pages/do_glegbe.mission.text"
+    },
+    "pages_do_glegbe_mission_title": "Qu’est-ce que « Do Glegbe » ?",
+    "@pages_do_glegbe_mission_title": {
+        "description": "pages/do_glegbe.mission.title"
+    },
+    "pages_do_glegbe_quiz_correct": "Bonne réponse.",
+    "@pages_do_glegbe_quiz_correct": {
+        "description": "pages/do_glegbe.quiz.correct"
+    },
+    "pages_do_glegbe_quiz_eyebrow": "Quiz",
+    "@pages_do_glegbe_quiz_eyebrow": {
+        "description": "pages/do_glegbe.quiz.eyebrow"
+    },
+    "pages_do_glegbe_quiz_false": "Faux",
+    "@pages_do_glegbe_quiz_false": {
+        "description": "pages/do_glegbe.quiz.false"
+    },
+    "pages_do_glegbe_quiz_intro": "{count} affirmations sur les règles. Vos réponses restent sur cet écran : rien n’est enregistré.",
+    "@pages_do_glegbe_quiz_intro": {
+        "description": "pages/do_glegbe.quiz.intro",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_do_glegbe_quiz_items_0_explanation": "Faux. Les règles sont un phénomène biologique naturel : elles ne salissent pas, ne rendent personne impur·e et n’empêchent ni d’aller à l’école, ni de cuisiner, ni de voir ses proches.",
+    "@pages_do_glegbe_quiz_items_0_explanation": {
+        "description": "pages/do_glegbe.quiz.items.0.explanation"
+    },
+    "pages_do_glegbe_quiz_items_0_statement": "Les règles sont une impureté.",
+    "@pages_do_glegbe_quiz_items_0_statement": {
+        "description": "pages/do_glegbe.quiz.items.0.statement"
+    },
+    "pages_do_glegbe_quiz_items_1_explanation": "Vrai. Une toilette quotidienne à l’eau propre, avec un savon doux pour l’extérieur, est recommandée. Évitez les douches vaginales (lavage à l’intérieur du vagin), qui déséquilibrent la flore.",
+    "@pages_do_glegbe_quiz_items_1_explanation": {
+        "description": "pages/do_glegbe.quiz.items.1.explanation"
+    },
+    "pages_do_glegbe_quiz_items_1_statement": "On peut se laver normalement pendant ses règles.",
+    "@pages_do_glegbe_quiz_items_1_statement": {
+        "description": "pages/do_glegbe.quiz.items.1.statement"
+    },
+    "pages_do_glegbe_quiz_items_2_explanation": "Faux. Changez de serviette toutes les 4 à 6 heures environ, et de tampon au plus tard au bout de 8 heures, même si le flux est faible : cela prévient les infections et le syndrome du choc toxique.",
+    "@pages_do_glegbe_quiz_items_2_explanation": {
+        "description": "pages/do_glegbe.quiz.items.2.explanation"
+    },
+    "pages_do_glegbe_quiz_items_2_statement": "Une serviette ou un tampon peut se garder toute la journée.",
+    "@pages_do_glegbe_quiz_items_2_statement": {
+        "description": "pages/do_glegbe.quiz.items.2.statement"
+    },
+    "pages_do_glegbe_quiz_items_3_explanation": "Faux. Une douleur qui vous empêche de vivre normalement n’est pas une fatalité. Parlez-en à un·e professionnel·le de santé : elle peut être soulagée et révèle parfois une maladie comme l’endométriose.",
+    "@pages_do_glegbe_quiz_items_3_explanation": {
+        "description": "pages/do_glegbe.quiz.items.3.explanation"
+    },
+    "pages_do_glegbe_quiz_items_3_statement": "Des règles si douloureuses qu’elles empêchent d’aller en cours ou au travail, c’est normal : il faut les supporter.",
+    "@pages_do_glegbe_quiz_items_3_statement": {
+        "description": "pages/do_glegbe.quiz.items.3.statement"
+    },
+    "pages_do_glegbe_quiz_items_4_explanation": "Vrai. Lavées à l’eau propre et au savon, rincées puis séchées au soleil, elles sont sûres et économiques ; la coupe se stérilise à l’eau bouillante entre deux cycles.",
+    "@pages_do_glegbe_quiz_items_4_explanation": {
+        "description": "pages/do_glegbe.quiz.items.4.explanation"
+    },
+    "pages_do_glegbe_quiz_items_4_statement": "Les protections réutilisables (coupe menstruelle, serviettes lavables) sont sûres si elles sont bien entretenues.",
+    "@pages_do_glegbe_quiz_items_4_statement": {
+        "description": "pages/do_glegbe.quiz.items.4.statement"
+    },
+    "pages_do_glegbe_quiz_restart": "Recommencer le quiz",
+    "@pages_do_glegbe_quiz_restart": {
+        "description": "pages/do_glegbe.quiz.restart"
+    },
+    "pages_do_glegbe_quiz_score": "Votre score : {score} sur {total}.",
+    "@pages_do_glegbe_quiz_score": {
+        "description": "pages/do_glegbe.quiz.score",
+        "placeholders": {
+            "score": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_do_glegbe_quiz_show_answer": "Voir la réponse",
+    "@pages_do_glegbe_quiz_show_answer": {
+        "description": "pages/do_glegbe.quiz.show_answer"
+    },
+    "pages_do_glegbe_quiz_statement_label": "Affirmation {number} sur {total}",
+    "@pages_do_glegbe_quiz_statement_label": {
+        "description": "pages/do_glegbe.quiz.statement_label",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_do_glegbe_quiz_title": "Vrai ou faux ? Testez vos connaissances",
+    "@pages_do_glegbe_quiz_title": {
+        "description": "pages/do_glegbe.quiz.title"
+    },
+    "pages_do_glegbe_quiz_true": "Vrai",
+    "@pages_do_glegbe_quiz_true": {
+        "description": "pages/do_glegbe.quiz.true"
+    },
+    "pages_do_glegbe_quiz_wrong": "Pas tout à fait.",
+    "@pages_do_glegbe_quiz_wrong": {
+        "description": "pages/do_glegbe.quiz.wrong"
+    },
+    "pages_do_glegbe_schema_description": "Une bonne gestion de l’hygiène menstruelle est un droit humain fondamental, indispensable à la santé, au bien-être et à l’égalité des genres.",
+    "@pages_do_glegbe_schema_description": {
+        "description": "pages/do_glegbe.schema_description"
+    },
+    "pages_do_glegbe_schema_section": "Hygiène menstruelle",
+    "@pages_do_glegbe_schema_section": {
+        "description": "pages/do_glegbe.schema_section"
+    },
+    "pages_do_glegbe_services_eyebrow": "Nos services et ressources",
+    "@pages_do_glegbe_services_eyebrow": {
+        "description": "pages/do_glegbe.services.eyebrow"
+    },
+    "pages_do_glegbe_services_items_groups_cta": "Rejoindre un groupe",
+    "@pages_do_glegbe_services_items_groups_cta": {
+        "description": "pages/do_glegbe.services.items.groups.cta"
+    },
+    "pages_do_glegbe_services_items_groups_text": "Des groupes de discussion sécurisés pour partager ses expériences, poser des questions sans jugement et briser le sentiment d’isolement.",
+    "@pages_do_glegbe_services_items_groups_text": {
+        "description": "pages/do_glegbe.services.items.groups.text"
+    },
+    "pages_do_glegbe_services_items_groups_title": "Soutien social",
+    "@pages_do_glegbe_services_items_groups_title": {
+        "description": "pages/do_glegbe.services.items.groups.title"
+    },
+    "pages_do_glegbe_services_items_sheets_cta": "Lire les fiches",
+    "@pages_do_glegbe_services_items_sheets_cta": {
+        "description": "pages/do_glegbe.services.items.sheets.cta"
+    },
+    "pages_do_glegbe_services_items_sheets_text": "Des articles et guides sur le cycle menstruel, les différents types de protections (serviettes, tampons, coupes, culottes menstruelles) et la gestion de la douleur.",
+    "@pages_do_glegbe_services_items_sheets_text": {
+        "description": "pages/do_glegbe.services.items.sheets.text"
+    },
+    "pages_do_glegbe_services_items_sheets_title": "Informations fiables",
+    "@pages_do_glegbe_services_items_sheets_title": {
+        "description": "pages/do_glegbe.services.items.sheets.title"
+    },
+    "pages_do_glegbe_services_items_workshops_cta": "Voir les ateliers",
+    "@pages_do_glegbe_services_items_workshops_cta": {
+        "description": "pages/do_glegbe.services.items.workshops.cta"
+    },
+    "pages_do_glegbe_services_items_workshops_text": "Des ateliers (en ligne et en présentiel) pour apprendre à utiliser et entretenir les protections réutilisables, et pour mieux comprendre son corps.",
+    "@pages_do_glegbe_services_items_workshops_text": {
+        "description": "pages/do_glegbe.services.items.workshops.text"
+    },
+    "pages_do_glegbe_services_items_workshops_title": "Compétences pratiques",
+    "@pages_do_glegbe_services_items_workshops_title": {
+        "description": "pages/do_glegbe.services.items.workshops.title"
+    },
+    "pages_do_glegbe_services_members_only": "réservé aux membres",
+    "@pages_do_glegbe_services_members_only": {
+        "description": "pages/do_glegbe.services.members_only"
+    },
+    "pages_do_glegbe_services_title": "À travers Do Glegbe, Xomiton s’engage à vous fournir",
+    "@pages_do_glegbe_services_title": {
+        "description": "pages/do_glegbe.services.title"
+    },
+    "pages_do_glegbe_sheets_all": "Toutes les fiches sur les règles",
+    "@pages_do_glegbe_sheets_all": {
+        "description": "pages/do_glegbe.sheets.all"
+    },
+    "pages_do_glegbe_sheets_intro": "Des réponses simples et vérifiées, à lire à votre rythme.",
+    "@pages_do_glegbe_sheets_intro": {
+        "description": "pages/do_glegbe.sheets.intro"
+    },
+    "pages_do_glegbe_sheets_title": "Fiches sur les règles",
+    "@pages_do_glegbe_sheets_title": {
+        "description": "pages/do_glegbe.sheets.title"
+    },
+    "pages_do_glegbe_title": "Do Glegbe",
+    "@pages_do_glegbe_title": {
+        "description": "pages/do_glegbe.title"
+    },
+    "pages_do_glegbe_why_benefits_0_icon": "shield-plus",
+    "@pages_do_glegbe_why_benefits_0_icon": {
+        "description": "pages/do_glegbe.why.benefits.0.icon"
+    },
+    "pages_do_glegbe_why_benefits_0_text": "Utiliser des protections propres et les changer régulièrement est crucial pour éviter les infections de l’appareil reproducteur.",
+    "@pages_do_glegbe_why_benefits_0_text": {
+        "description": "pages/do_glegbe.why.benefits.0.text"
+    },
+    "pages_do_glegbe_why_benefits_0_title": "Prévenir les infections",
+    "@pages_do_glegbe_why_benefits_0_title": {
+        "description": "pages/do_glegbe.why.benefits.0.title"
+    },
+    "pages_do_glegbe_why_benefits_1_icon": "people",
+    "@pages_do_glegbe_why_benefits_1_icon": {
+        "description": "pages/do_glegbe.why.benefits.1.icon"
+    },
+    "pages_do_glegbe_why_benefits_1_text": "Avoir accès à des protections et à des installations sanitaires adéquates permet de poursuivre ses études, son travail et ses activités sociales sans interruption.",
+    "@pages_do_glegbe_why_benefits_1_text": {
+        "description": "pages/do_glegbe.why.benefits.1.text"
+    },
+    "pages_do_glegbe_why_benefits_1_title": "Assurer la participation sociale",
+    "@pages_do_glegbe_why_benefits_1_title": {
+        "description": "pages/do_glegbe.why.benefits.1.title"
+    },
+    "pages_do_glegbe_why_benefits_2_icon": "emoji-smile",
+    "@pages_do_glegbe_why_benefits_2_icon": {
+        "description": "pages/do_glegbe.why.benefits.2.icon"
+    },
+    "pages_do_glegbe_why_benefits_2_text": "Comprendre son corps et savoir gérer ses menstruations contribue à une meilleure estime de soi et à un plus grand bien-être psychologique.",
+    "@pages_do_glegbe_why_benefits_2_text": {
+        "description": "pages/do_glegbe.why.benefits.2.text"
+    },
+    "pages_do_glegbe_why_benefits_2_title": "Renforcer la confiance en soi",
+    "@pages_do_glegbe_why_benefits_2_title": {
+        "description": "pages/do_glegbe.why.benefits.2.title"
+    },
+    "pages_do_glegbe_why_benefits_3_icon": "chat-heart",
+    "@pages_do_glegbe_why_benefits_3_icon": {
+        "description": "pages/do_glegbe.why.benefits.3.icon"
+    },
+    "pages_do_glegbe_why_benefits_3_text": "Parler ouvertement des menstruations aide à déconstruire les mythes et les tabous qui entraînent discrimination et exclusion.",
+    "@pages_do_glegbe_why_benefits_3_text": {
+        "description": "pages/do_glegbe.why.benefits.3.text"
+    },
+    "pages_do_glegbe_why_benefits_3_title": "Lutter contre la stigmatisation",
+    "@pages_do_glegbe_why_benefits_3_title": {
+        "description": "pages/do_glegbe.why.benefits.3.title"
+    },
+    "pages_do_glegbe_why_eyebrow": "Un droit humain fondamental",
+    "@pages_do_glegbe_why_eyebrow": {
+        "description": "pages/do_glegbe.why.eyebrow"
+    },
+    "pages_do_glegbe_why_intro": "Une bonne gestion de l’hygiène menstruelle est indispensable à la santé, au bien-être et à l’égalité des genres. Elle permet de :",
+    "@pages_do_glegbe_why_intro": {
+        "description": "pages/do_glegbe.why.intro"
+    },
+    "pages_do_glegbe_why_title": "Pourquoi la gestion de l’hygiène menstruelle est-elle essentielle ?",
+    "@pages_do_glegbe_why_title": {
+        "description": "pages/do_glegbe.why.title"
+    },
+    "pages_lois_category_all": "Toutes les catégories",
+    "@pages_lois_category_all": {
+        "description": "pages/lois.category_all"
+    },
+    "pages_lois_category_label": "Catégorie",
+    "@pages_lois_category_label": {
+        "description": "pages/lois.category_label"
+    },
+    "pages_lois_clear": "Effacer la recherche",
+    "@pages_lois_clear": {
+        "description": "pages/lois.clear"
+    },
+    "pages_lois_count_many": "{count} textes affichés.",
+    "@pages_lois_count_many": {
+        "description": "pages/lois.count_many",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_lois_count_none": "Aucun texte affiché.",
+    "@pages_lois_count_none": {
+        "description": "pages/lois.count_none"
+    },
+    "pages_lois_count_one": "1 texte affiché.",
+    "@pages_lois_count_one": {
+        "description": "pages/lois.count_one"
+    },
+    "pages_lois_disclaimer": "Résumé indicatif sans valeur juridique. Pour votre situation, consultez un·e juriste.",
+    "@pages_lois_disclaimer": {
+        "description": "pages/lois.disclaimer"
+    },
+    "pages_lois_empty": "Aucun texte ne correspond à votre recherche.",
+    "@pages_lois_empty": {
+        "description": "pages/lois.empty"
+    },
+    "pages_lois_intro": "Connaître vos droits pour les faire respecter.",
+    "@pages_lois_intro": {
+        "description": "pages/lois.intro"
+    },
+    "pages_lois_jurist": "Parler à un·e juriste",
+    "@pages_lois_jurist": {
+        "description": "pages/lois.jurist"
+    },
+    "pages_lois_legal_label": "Résumé",
+    "@pages_lois_legal_label": {
+        "description": "pages/lois.legal_label"
+    },
+    "pages_lois_list_title": "Textes de loi",
+    "@pages_lois_list_title": {
+        "description": "pages/lois.list_title"
+    },
+    "pages_lois_none": "Aucun texte de loi publié pour le moment.",
+    "@pages_lois_none": {
+        "description": "pages/lois.none"
+    },
+    "pages_lois_official": "Lire le texte officiel",
+    "@pages_lois_official": {
+        "description": "pages/lois.official"
+    },
+    "pages_lois_official_hint": "site externe",
+    "@pages_lois_official_hint": {
+        "description": "pages/lois.official_hint"
+    },
+    "pages_lois_og_alt": "Lois et codes du Bénin : résumés des textes qui protègent vos droits",
+    "@pages_lois_og_alt": {
+        "description": "pages/lois.og_alt"
+    },
+    "pages_lois_search_label": "Rechercher un texte",
+    "@pages_lois_search_label": {
+        "description": "pages/lois.search_label"
+    },
+    "pages_lois_search_placeholder": "Rechercher (viol, harcèlement, VIH…)",
+    "@pages_lois_search_placeholder": {
+        "description": "pages/lois.search_placeholder"
+    },
+    "pages_lois_simple_hint": "Préférence gardée sur cet appareil.",
+    "@pages_lois_simple_hint": {
+        "description": "pages/lois.simple_hint"
+    },
+    "pages_lois_simple_label": "Version simple",
+    "@pages_lois_simple_label": {
+        "description": "pages/lois.simple_label"
+    },
+    "pages_lois_simple_switch": "Lire en version simple",
+    "@pages_lois_simple_switch": {
+        "description": "pages/lois.simple_switch"
+    },
+    "pages_lois_title": "Lois et codes du Bénin",
+    "@pages_lois_title": {
+        "description": "pages/lois.title"
+    },
+    "pages_lois_tools_label": "Rechercher et filtrer les textes",
+    "@pages_lois_tools_label": {
+        "description": "pages/lois.tools_label"
+    },
+    "pages_lois_urgent": "Contacts d’urgence",
+    "@pages_lois_urgent": {
+        "description": "pages/lois.urgent"
     },
     "pages_ressources_aside_label": "Compléments et aide",
     "@pages_ressources_aside_label": {
@@ -14619,6 +15282,706 @@
     "pages_thematiques_warning_sos_link": "Alerte SOS",
     "@pages_thematiques_warning_sos_link": {
         "description": "pages/thematiques.warning_sos_link"
+    },
+    "pages_urgences_actions_assistant": "Assistant",
+    "@pages_urgences_actions_assistant": {
+        "description": "pages/urgences.actions.assistant"
+    },
+    "pages_urgences_actions_label": "Autres façons d’agir",
+    "@pages_urgences_actions_label": {
+        "description": "pages/urgences.actions.label"
+    },
+    "pages_urgences_actions_report": "Signaler",
+    "@pages_urgences_actions_report": {
+        "description": "pages/urgences.actions.report"
+    },
+    "pages_urgences_actions_sign_in": "Se connecter",
+    "@pages_urgences_actions_sign_in": {
+        "description": "pages/urgences.actions.sign_in"
+    },
+    "pages_urgences_banner_sos": "SOS",
+    "@pages_urgences_banner_sos": {
+        "description": "pages/urgences.banner.sos"
+    },
+    "pages_urgences_banner_sos_hint": "envoyer une alerte",
+    "@pages_urgences_banner_sos_hint": {
+        "description": "pages/urgences.banner.sos_hint"
+    },
+    "pages_urgences_banner_text": "Appelle le {number} ou envoie une alerte SOS avec ta position.",
+    "@pages_urgences_banner_text": {
+        "description": "pages/urgences.banner.text",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_urgences_banner_text_no_number": "Envoie une alerte SOS avec ta position.",
+    "@pages_urgences_banner_text_no_number": {
+        "description": "pages/urgences.banner.text_no_number"
+    },
+    "pages_urgences_banner_title": "En danger immédiat ?",
+    "@pages_urgences_banner_title": {
+        "description": "pages/urgences.banner.title"
+    },
+    "pages_urgences_contacts_call": "Appeler",
+    "@pages_urgences_contacts_call": {
+        "description": "pages/urgences.contacts.call"
+    },
+    "pages_urgences_contacts_directory_all": "Tout l’annuaire",
+    "@pages_urgences_contacts_directory_all": {
+        "description": "pages/urgences.contacts.directory_all"
+    },
+    "pages_urgences_contacts_empty": "Aucun contact disponible pour le moment. Appelle un des numéros d’urgence ci-dessus.",
+    "@pages_urgences_contacts_empty": {
+        "description": "pages/urgences.contacts.empty"
+    },
+    "pages_urgences_contacts_intro": "Des personnes de l’annuaire Xomiton, à joindre directement.",
+    "@pages_urgences_contacts_intro": {
+        "description": "pages/urgences.contacts.intro"
+    },
+    "pages_urgences_contacts_national": "National",
+    "@pages_urgences_contacts_national": {
+        "description": "pages/urgences.contacts.national"
+    },
+    "pages_urgences_contacts_title": "Points focaux, psychologues et juristes",
+    "@pages_urgences_contacts_title": {
+        "description": "pages/urgences.contacts.title"
+    },
+    "pages_urgences_contacts_truncated": "D’autres contacts existent : choisis ton département pour voir les plus proches.",
+    "@pages_urgences_contacts_truncated": {
+        "description": "pages/urgences.contacts.truncated"
+    },
+    "pages_urgences_contacts_whatsapp": "WhatsApp",
+    "@pages_urgences_contacts_whatsapp": {
+        "description": "pages/urgences.contacts.whatsapp"
+    },
+    "pages_urgences_contacts_zone_all": "Tous les départements",
+    "@pages_urgences_contacts_zone_all": {
+        "description": "pages/urgences.contacts.zone_all"
+    },
+    "pages_urgences_contacts_zone_current": "Contacts du département {zone} d’abord, puis contacts nationaux.",
+    "@pages_urgences_contacts_zone_current": {
+        "description": "pages/urgences.contacts.zone_current",
+        "placeholders": {
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_urgences_contacts_zone_label": "Ton département",
+    "@pages_urgences_contacts_zone_label": {
+        "description": "pages/urgences.contacts.zone_label"
+    },
+    "pages_urgences_contacts_zone_submit": "Afficher",
+    "@pages_urgences_contacts_zone_submit": {
+        "description": "pages/urgences.contacts.zone_submit"
+    },
+    "pages_urgences_intro": "Appelle directement depuis ton téléphone. Appels gratuits ou à tarif réduit selon l’opérateur.",
+    "@pages_urgences_intro": {
+        "description": "pages/urgences.intro"
+    },
+    "pages_urgences_places_examples": "exemples",
+    "@pages_urgences_places_examples": {
+        "description": "pages/urgences.places.examples"
+    },
+    "pages_urgences_places_intro": "Lieux d’accueil, de soins et de dépôt de plainte.",
+    "@pages_urgences_places_intro": {
+        "description": "pages/urgences.places.intro"
+    },
+    "pages_urgences_places_items_0_name": "Office central de protection des mineurs (OCPM)",
+    "@pages_urgences_places_items_0_name": {
+        "description": "pages/urgences.places.items.0.name"
+    },
+    "pages_urgences_places_items_0_text": "Pour les victimes de moins de 18 ans.",
+    "@pages_urgences_places_items_0_text": {
+        "description": "pages/urgences.places.items.0.text"
+    },
+    "pages_urgences_places_items_0_where": "Cotonou",
+    "@pages_urgences_places_items_0_where": {
+        "description": "pages/urgences.places.items.0.where"
+    },
+    "pages_urgences_places_items_1_name": "Centre de promotion sociale (CPS)",
+    "@pages_urgences_places_items_1_name": {
+        "description": "pages/urgences.places.items.1.name"
+    },
+    "pages_urgences_places_items_1_text": "Accueil, écoute, orientation et hébergement temporaire.",
+    "@pages_urgences_places_items_1_text": {
+        "description": "pages/urgences.places.items.1.text"
+    },
+    "pages_urgences_places_items_1_where": "Dans chaque commune",
+    "@pages_urgences_places_items_1_where": {
+        "description": "pages/urgences.places.items.1.where"
+    },
+    "pages_urgences_places_items_2_name": "Brigade de protection de la famille",
+    "@pages_urgences_places_items_2_name": {
+        "description": "pages/urgences.places.items.2.name"
+    },
+    "pages_urgences_places_items_2_text": "Dépôt de plainte pour violences domestiques.",
+    "@pages_urgences_places_items_2_text": {
+        "description": "pages/urgences.places.items.2.text"
+    },
+    "pages_urgences_places_items_2_where": "Cotonou et chefs-lieux",
+    "@pages_urgences_places_items_2_where": {
+        "description": "pages/urgences.places.items.2.where"
+    },
+    "pages_urgences_places_items_3_name": "Centre de santé partenaire",
+    "@pages_urgences_places_items_3_name": {
+        "description": "pages/urgences.places.items.3.name"
+    },
+    "pages_urgences_places_items_3_text": "Soins, certificat médical, PEP, contraception d’urgence.",
+    "@pages_urgences_places_items_3_text": {
+        "description": "pages/urgences.places.items.3.text"
+    },
+    "pages_urgences_places_items_3_where": "Selon ta zone",
+    "@pages_urgences_places_items_3_where": {
+        "description": "pages/urgences.places.items.3.where"
+    },
+    "pages_urgences_places_title": "Où aller ?",
+    "@pages_urgences_places_title": {
+        "description": "pages/urgences.places.title"
+    },
+    "pages_urgences_plan_intro": "Coche ce qui est déjà prêt.",
+    "@pages_urgences_plan_intro": {
+        "description": "pages/urgences.plan.intro"
+    },
+    "pages_urgences_plan_items_0": "J’ai repéré un lieu sûr où aller (amie, famille, association).",
+    "@pages_urgences_plan_items_0": {
+        "description": "pages/urgences.plan.items.0"
+    },
+    "pages_urgences_plan_items_1": "J’ai mémorisé 2 numéros d’urgence importants.",
+    "@pages_urgences_plan_items_1": {
+        "description": "pages/urgences.plan.items.1"
+    },
+    "pages_urgences_plan_items_2": "Mes documents (pièce d’identité, acte de naissance, carnet de santé) sont dans un endroit accessible ou en copie chez une personne de confiance.",
+    "@pages_urgences_plan_items_2": {
+        "description": "pages/urgences.plan.items.2"
+    },
+    "pages_urgences_plan_items_3": "J’ai de l’argent (même un peu) et de quoi me déplacer.",
+    "@pages_urgences_plan_items_3": {
+        "description": "pages/urgences.plan.items.3"
+    },
+    "pages_urgences_plan_items_4": "J’ai prévenu une personne de confiance de ma situation.",
+    "@pages_urgences_plan_items_4": {
+        "description": "pages/urgences.plan.items.4"
+    },
+    "pages_urgences_plan_items_5": "Je sais comment partir rapidement (sortie, transport).",
+    "@pages_urgences_plan_items_5": {
+        "description": "pages/urgences.plan.items.5"
+    },
+    "pages_urgences_plan_items_6": "J’ai convenu d’un mot-code avec une personne de confiance pour demander de l’aide.",
+    "@pages_urgences_plan_items_6": {
+        "description": "pages/urgences.plan.items.6"
+    },
+    "pages_urgences_plan_items_7": "Je sauvegarde mes preuves (captures, certificats) en lieu sûr.",
+    "@pages_urgences_plan_items_7": {
+        "description": "pages/urgences.plan.items.7"
+    },
+    "pages_urgences_plan_local_only": "Cette liste reste sur ton appareil (aucune donnée envoyée). Imprime-la ou garde-la en lieu sûr.",
+    "@pages_urgences_plan_local_only": {
+        "description": "pages/urgences.plan.local_only"
+    },
+    "pages_urgences_plan_print": "Imprimer",
+    "@pages_urgences_plan_print": {
+        "description": "pages/urgences.plan.print"
+    },
+    "pages_urgences_plan_progress": "{done}/{total}",
+    "@pages_urgences_plan_progress": {
+        "description": "pages/urgences.plan.progress",
+        "placeholders": {
+            "done": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_urgences_plan_progress_live": "Étapes prêtes : {done} sur {total}.",
+    "@pages_urgences_plan_progress_live": {
+        "description": "pages/urgences.plan.progress_live",
+        "placeholders": {
+            "done": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_urgences_plan_reset": "Réinitialiser",
+    "@pages_urgences_plan_reset": {
+        "description": "pages/urgences.plan.reset"
+    },
+    "pages_urgences_plan_reset_done": "Ton plan de sécurité est réinitialisé.",
+    "@pages_urgences_plan_reset_done": {
+        "description": "pages/urgences.plan.reset_done"
+    },
+    "pages_urgences_plan_shared_device": "Sur un téléphone partagé, réinitialise la liste après usage.",
+    "@pages_urgences_plan_shared_device": {
+        "description": "pages/urgences.plan.shared_device"
+    },
+    "pages_urgences_plan_title": "Mon plan de sécurité",
+    "@pages_urgences_plan_title": {
+        "description": "pages/urgences.plan.title"
+    },
+    "pages_urgences_services_empty": "Aucun numéro n’est encore renseigné. En danger, envoie une alerte SOS.",
+    "@pages_urgences_services_empty": {
+        "description": "pages/urgences.services.empty"
+    },
+    "pages_urgences_services_title": "Numéros d’urgence",
+    "@pages_urgences_services_title": {
+        "description": "pages/urgences.services.title"
+    },
+    "pages_urgences_title": "Contacts d’urgence",
+    "@pages_urgences_title": {
+        "description": "pages/urgences.title"
+    },
+    "pages_violences_check_actions_label": "Trouver de l’aide",
+    "@pages_violences_check_actions_label": {
+        "description": "pages/violences.check.actions_label"
+    },
+    "pages_violences_check_assistant": "Assistant",
+    "@pages_violences_check_assistant": {
+        "description": "pages/violences.check.assistant"
+    },
+    "pages_violences_check_directory": "Annuaire",
+    "@pages_violences_check_directory": {
+        "description": "pages/violences.check.directory"
+    },
+    "pages_violences_check_emergency_contacts": "Contacts d’urgence",
+    "@pages_violences_check_emergency_contacts": {
+        "description": "pages/violences.check.emergency_contacts"
+    },
+    "pages_violences_check_incomplete": "Répondez aux {count} questions pour voir votre résultat.",
+    "@pages_violences_check_incomplete": {
+        "description": "pages/violences.check.incomplete",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_check_intro": "{count} questions pour faire le point. Vos réponses restent sur cet écran : rien n’est enregistré ni transmis. Ce n’est pas un diagnostic.",
+    "@pages_violences_check_intro": {
+        "description": "pages/violences.check.intro",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_check_no": "Non",
+    "@pages_violences_check_no": {
+        "description": "pages/violences.check.no"
+    },
+    "pages_violences_check_no_js": "Le résultat s’affiche quand JavaScript est activé. Vos réponses ne quittent jamais cet écran.",
+    "@pages_violences_check_no_js": {
+        "description": "pages/violences.check.no_js"
+    },
+    "pages_violences_check_note": "Ce résultat est indicatif et ne remplace pas l’avis d’un·e professionnel·le. Il n’a pas été enregistré.",
+    "@pages_violences_check_note": {
+        "description": "pages/violences.check.note"
+    },
+    "pages_violences_check_private": "Rien n’est envoyé",
+    "@pages_violences_check_private": {
+        "description": "pages/violences.check.private"
+    },
+    "pages_violences_check_question_label": "Question {number} sur {total}",
+    "@pages_violences_check_question_label": {
+        "description": "pages/violences.check.question_label",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_check_questions_0": "Avez-vous peur de la réaction d’une personne de votre entourage ?",
+    "@pages_violences_check_questions_0": {
+        "description": "pages/violences.check.questions.0"
+    },
+    "pages_violences_check_questions_1": "Quelqu’un contrôle-t-il votre téléphone, vos messages ou vos sorties ?",
+    "@pages_violences_check_questions_1": {
+        "description": "pages/violences.check.questions.1"
+    },
+    "pages_violences_check_questions_2": "Quelqu’un menace-t-il de révéler votre orientation ou votre identité ?",
+    "@pages_violences_check_questions_2": {
+        "description": "pages/violences.check.questions.2"
+    },
+    "pages_violences_check_questions_3": "Quelqu’un vous humilie-t-il, vous insulte-t-il ou vous rabaisse-t-il régulièrement ?",
+    "@pages_violences_check_questions_3": {
+        "description": "pages/violences.check.questions.3"
+    },
+    "pages_violences_check_questions_4": "Quelqu’un vous a-t-il imposé un acte sexuel ou un contact non voulu ?",
+    "@pages_violences_check_questions_4": {
+        "description": "pages/violences.check.questions.4"
+    },
+    "pages_violences_check_questions_5": "Vous prive-t-on d’argent, de documents ou de logement ?",
+    "@pages_violences_check_questions_5": {
+        "description": "pages/violences.check.questions.5"
+    },
+    "pages_violences_check_questions_6": "Avez-vous déjà subi des coups, des bousculades ou un enfermement ?",
+    "@pages_violences_check_questions_6": {
+        "description": "pages/violences.check.questions.6"
+    },
+    "pages_violences_check_questions_7": "Vous sentez-vous coupable ou responsable de ce qui vous arrive, alors que vous n’avez rien demandé ?",
+    "@pages_violences_check_questions_7": {
+        "description": "pages/violences.check.questions.7"
+    },
+    "pages_violences_check_reset": "Recommencer",
+    "@pages_violences_check_reset": {
+        "description": "pages/violences.check.reset"
+    },
+    "pages_violences_check_reset_done": "Réponses effacées.",
+    "@pages_violences_check_reset_done": {
+        "description": "pages/violences.check.reset_done"
+    },
+    "pages_violences_check_results_high_text": "Vos réponses évoquent une situation qui peut vous mettre en danger. Vous avez le droit d’être protégé·e : contactez une personne formée et, en cas de danger immédiat, utilisez le bouton SOS.",
+    "@pages_violences_check_results_high_text": {
+        "description": "pages/violences.check.results.high.text"
+    },
+    "pages_violences_check_results_high_title": "Plusieurs signes préoccupants",
+    "@pages_violences_check_results_high_title": {
+        "description": "pages/violences.check.results.high.title"
+    },
+    "pages_violences_check_results_low_text": "Rien ne laisse penser à une situation préoccupante, mais si un doute persiste, parlez-en à une personne de confiance ou à l’assistant.",
+    "@pages_violences_check_results_low_text": {
+        "description": "pages/violences.check.results.low.text"
+    },
+    "pages_violences_check_results_low_title": "Peu d’indices de violence",
+    "@pages_violences_check_results_low_title": {
+        "description": "pages/violences.check.results.low.title"
+    },
+    "pages_violences_check_results_medium_text": "Certaines situations décrites peuvent être des formes de violence. Vous pouvez en parler à une personne paire ou faire un signalement anonyme.",
+    "@pages_violences_check_results_medium_text": {
+        "description": "pages/violences.check.results.medium.text"
+    },
+    "pages_violences_check_results_medium_title": "Quelques signes méritent votre attention",
+    "@pages_violences_check_results_medium_title": {
+        "description": "pages/violences.check.results.medium.title"
+    },
+    "pages_violences_check_submit": "Voir mon résultat",
+    "@pages_violences_check_submit": {
+        "description": "pages/violences.check.submit"
+    },
+    "pages_violences_check_title": "Auto-évaluation confidentielle",
+    "@pages_violences_check_title": {
+        "description": "pages/violences.check.title"
+    },
+    "pages_violences_check_yes": "Oui",
+    "@pages_violences_check_yes": {
+        "description": "pages/violences.check.yes"
+    },
+    "pages_violences_cycle_intro": "Un schéma qui se répète et s’accélère souvent avec le temps. Le reconnaître aide à en sortir.",
+    "@pages_violences_cycle_intro": {
+        "description": "pages/violences.cycle.intro"
+    },
+    "pages_violences_cycle_loop": "… puis retour à la tension : le cycle recommence.",
+    "@pages_violences_cycle_loop": {
+        "description": "pages/violences.cycle.loop"
+    },
+    "pages_violences_cycle_step_label": "Étape {number}",
+    "@pages_violences_cycle_step_label": {
+        "description": "pages/violences.cycle.step_label",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_cycle_steps_0_icon": "cloud-lightning",
+    "@pages_violences_cycle_steps_0_icon": {
+        "description": "pages/violences.cycle.steps.0.icon"
+    },
+    "pages_violences_cycle_steps_0_text": "L’atmosphère devient pesante, on « marche sur des œufs ».",
+    "@pages_violences_cycle_steps_0_text": {
+        "description": "pages/violences.cycle.steps.0.text"
+    },
+    "pages_violences_cycle_steps_0_title": "Tension",
+    "@pages_violences_cycle_steps_0_title": {
+        "description": "pages/violences.cycle.steps.0.title"
+    },
+    "pages_violences_cycle_steps_0_tone": "warning",
+    "@pages_violences_cycle_steps_0_tone": {
+        "description": "pages/violences.cycle.steps.0.tone"
+    },
+    "pages_violences_cycle_steps_1_icon": "exclamation-triangle-fill",
+    "@pages_violences_cycle_steps_1_icon": {
+        "description": "pages/violences.cycle.steps.1.icon"
+    },
+    "pages_violences_cycle_steps_1_text": "Explosion : violence verbale, physique, sexuelle ou numérique.",
+    "@pages_violences_cycle_steps_1_text": {
+        "description": "pages/violences.cycle.steps.1.text"
+    },
+    "pages_violences_cycle_steps_1_title": "Agression",
+    "@pages_violences_cycle_steps_1_title": {
+        "description": "pages/violences.cycle.steps.1.title"
+    },
+    "pages_violences_cycle_steps_1_tone": "danger",
+    "@pages_violences_cycle_steps_1_tone": {
+        "description": "pages/violences.cycle.steps.1.tone"
+    },
+    "pages_violences_cycle_steps_2_icon": "chat-left-dots",
+    "@pages_violences_cycle_steps_2_icon": {
+        "description": "pages/violences.cycle.steps.2.icon"
+    },
+    "pages_violences_cycle_steps_2_text": "« C’est ta faute », excuses, minimisation, culpabilisation.",
+    "@pages_violences_cycle_steps_2_text": {
+        "description": "pages/violences.cycle.steps.2.text"
+    },
+    "pages_violences_cycle_steps_2_title": "Justification",
+    "@pages_violences_cycle_steps_2_title": {
+        "description": "pages/violences.cycle.steps.2.title"
+    },
+    "pages_violences_cycle_steps_2_tone": "info",
+    "@pages_violences_cycle_steps_2_tone": {
+        "description": "pages/violences.cycle.steps.2.tone"
+    },
+    "pages_violences_cycle_steps_3_icon": "heart-half",
+    "@pages_violences_cycle_steps_3_icon": {
+        "description": "pages/violences.cycle.steps.3.icon"
+    },
+    "pages_violences_cycle_steps_3_text": "Promesses, cadeaux, calme… jusqu’à la prochaine tension.",
+    "@pages_violences_cycle_steps_3_text": {
+        "description": "pages/violences.cycle.steps.3.text"
+    },
+    "pages_violences_cycle_steps_3_title": "Lune de miel",
+    "@pages_violences_cycle_steps_3_title": {
+        "description": "pages/violences.cycle.steps.3.title"
+    },
+    "pages_violences_cycle_steps_3_tone": "primary",
+    "@pages_violences_cycle_steps_3_tone": {
+        "description": "pages/violences.cycle.steps.3.tone"
+    },
+    "pages_violences_cycle_title": "Le cycle de la violence",
+    "@pages_violences_cycle_title": {
+        "description": "pages/violences.cycle.title"
+    },
+    "pages_violences_do_contact_guest": "Joindre une personne formée parmi les {link} ou faire un {report}.",
+    "@pages_violences_do_contact_guest": {
+        "description": "pages/violences.do.contact_guest",
+        "placeholders": {
+            "link": {
+                "type": "String"
+            },
+            "report": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_do_contact_member": "Contacter une personne de l’{link} ou faire un {report}.",
+    "@pages_violences_do_contact_member": {
+        "description": "pages/violences.do.contact_member",
+        "placeholders": {
+            "link": {
+                "type": "String"
+            },
+            "report": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_do_directory": "annuaire",
+    "@pages_violences_do_directory": {
+        "description": "pages/violences.do.directory"
+    },
+    "pages_violences_do_emergency_contacts": "contacts d’urgence",
+    "@pages_violences_do_emergency_contacts": {
+        "description": "pages/violences.do.emergency_contacts"
+    },
+    "pages_violences_do_items_0": "Vous mettre en sécurité et prévenir une personne de confiance.",
+    "@pages_violences_do_items_0": {
+        "description": "pages/violences.do.items.0"
+    },
+    "pages_violences_do_items_1": "Garder des preuves : captures d’écran, certificats médicaux, dates.",
+    "@pages_violences_do_items_1": {
+        "description": "pages/violences.do.items.1"
+    },
+    "pages_violences_do_items_2": "Consulter un centre de santé (soins, contraception d’urgence, traitement préventif du VIH sous 72 h).",
+    "@pages_violences_do_items_2": {
+        "description": "pages/violences.do.items.2"
+    },
+    "pages_violences_do_plan": "Préparer un {link}.",
+    "@pages_violences_do_plan": {
+        "description": "pages/violences.do.plan",
+        "placeholders": {
+            "link": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_do_plan_link": "plan de sécurité",
+    "@pages_violences_do_plan_link": {
+        "description": "pages/violences.do.plan_link"
+    },
+    "pages_violences_do_report": "signalement anonyme",
+    "@pages_violences_do_report": {
+        "description": "pages/violences.do.report"
+    },
+    "pages_violences_do_title": "Que faire ?",
+    "@pages_violences_do_title": {
+        "description": "pages/violences.do.title"
+    },
+    "pages_violences_dont_items_0": "Vous blâmer : la responsabilité est toujours celle de l’auteur·e.",
+    "@pages_violences_dont_items_0": {
+        "description": "pages/violences.dont.items.0"
+    },
+    "pages_violences_dont_items_1": "Payer un chantage ou négocier seul·e avec la personne violente.",
+    "@pages_violences_dont_items_1": {
+        "description": "pages/violences.dont.items.1"
+    },
+    "pages_violences_dont_items_2": "Supprimer les preuves ou les messages.",
+    "@pages_violences_dont_items_2": {
+        "description": "pages/violences.dont.items.2"
+    },
+    "pages_violences_dont_items_3": "Confronter l’auteur·e sans être en sécurité.",
+    "@pages_violences_dont_items_3": {
+        "description": "pages/violences.dont.items.3"
+    },
+    "pages_violences_dont_items_4": "Garder le silence en pensant que « ça passera ».",
+    "@pages_violences_dont_items_4": {
+        "description": "pages/violences.dont.items.4"
+    },
+    "pages_violences_dont_title": "Que ne pas faire ?",
+    "@pages_violences_dont_title": {
+        "description": "pages/violences.dont.title"
+    },
+    "pages_violences_forms_signs_economique_0": "Privation d’argent ou de documents",
+    "@pages_violences_forms_signs_economique_0": {
+        "description": "pages/violences.forms.signs.economique.0"
+    },
+    "pages_violences_forms_signs_economique_1": "Interdiction de travailler ou d’étudier",
+    "@pages_violences_forms_signs_economique_1": {
+        "description": "pages/violences.forms.signs.economique.1"
+    },
+    "pages_violences_forms_signs_economique_2": "Expulsion du domicile",
+    "@pages_violences_forms_signs_economique_2": {
+        "description": "pages/violences.forms.signs.economique.2"
+    },
+    "pages_violences_forms_signs_numerique_0": "Diffusion de photos sans accord",
+    "@pages_violences_forms_signs_numerique_0": {
+        "description": "pages/violences.forms.signs.numerique.0"
+    },
+    "pages_violences_forms_signs_numerique_1": "Harcèlement sur les réseaux",
+    "@pages_violences_forms_signs_numerique_1": {
+        "description": "pages/violences.forms.signs.numerique.1"
+    },
+    "pages_violences_forms_signs_numerique_2": "Surveillance du téléphone, doxxing",
+    "@pages_violences_forms_signs_numerique_2": {
+        "description": "pages/violences.forms.signs.numerique.2"
+    },
+    "pages_violences_forms_signs_physique_0": "Blessures inexpliquées ou cachées",
+    "@pages_violences_forms_signs_physique_0": {
+        "description": "pages/violences.forms.signs.physique.0"
+    },
+    "pages_violences_forms_signs_physique_1": "Peur de rentrer chez soi",
+    "@pages_violences_forms_signs_physique_1": {
+        "description": "pages/violences.forms.signs.physique.1"
+    },
+    "pages_violences_forms_signs_physique_2": "Isolement physique, séquestration",
+    "@pages_violences_forms_signs_physique_2": {
+        "description": "pages/violences.forms.signs.physique.2"
+    },
+    "pages_violences_forms_signs_psychologique_0": "Insultes, humiliations, dévalorisation constante",
+    "@pages_violences_forms_signs_psychologique_0": {
+        "description": "pages/violences.forms.signs.psychologique.0"
+    },
+    "pages_violences_forms_signs_psychologique_1": "Menaces de révéler l’orientation (outing)",
+    "@pages_violences_forms_signs_psychologique_1": {
+        "description": "pages/violences.forms.signs.psychologique.1"
+    },
+    "pages_violences_forms_signs_psychologique_2": "Contrôle des fréquentations",
+    "@pages_violences_forms_signs_psychologique_2": {
+        "description": "pages/violences.forms.signs.psychologique.2"
+    },
+    "pages_violences_forms_signs_sexuelle_0": "Rapports imposés ou « correctifs »",
+    "@pages_violences_forms_signs_sexuelle_0": {
+        "description": "pages/violences.forms.signs.sexuelle.0"
+    },
+    "pages_violences_forms_signs_sexuelle_1": "Attouchements non consentis",
+    "@pages_violences_forms_signs_sexuelle_1": {
+        "description": "pages/violences.forms.signs.sexuelle.1"
+    },
+    "pages_violences_forms_signs_sexuelle_2": "Chantage sexuel en échange d’un service",
+    "@pages_violences_forms_signs_sexuelle_2": {
+        "description": "pages/violences.forms.signs.sexuelle.2"
+    },
+    "pages_violences_forms_signs_title": "Signes à repérer",
+    "@pages_violences_forms_signs_title": {
+        "description": "pages/violences.forms.signs_title"
+    },
+    "pages_violences_forms_title": "{count, plural, =1{La forme de violence} other{Les {count} formes de violences}}",
+    "@pages_violences_forms_title": {
+        "description": "pages/violences.forms.title",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_violences_hero_actions_label": "Agir maintenant",
+    "@pages_violences_hero_actions_label": {
+        "description": "pages/violences.hero.actions_label"
+    },
+    "pages_violences_hero_assistant": "Parler à l’assistant",
+    "@pages_violences_hero_assistant": {
+        "description": "pages/violences.hero.assistant"
+    },
+    "pages_violences_hero_badge": "Comprendre pour agir",
+    "@pages_violences_hero_badge": {
+        "description": "pages/violences.hero.badge"
+    },
+    "pages_violences_hero_report": "Signaler",
+    "@pages_violences_hero_report": {
+        "description": "pages/violences.hero.report"
+    },
+    "pages_violences_hero_sos": "SOS",
+    "@pages_violences_hero_sos": {
+        "description": "pages/violences.hero.sos"
+    },
+    "pages_violences_hero_sos_hint": "envoyer une alerte avec votre position",
+    "@pages_violences_hero_sos_hint": {
+        "description": "pages/violences.hero.sos_hint"
+    },
+    "pages_violences_hero_text": "Une violence basée sur le genre (VBG) vise une personne en raison de son genre, de son orientation ou de son identité. Vous n’êtes pas seul·e, et ce n’est jamais votre faute.",
+    "@pages_violences_hero_text": {
+        "description": "pages/violences.hero.text"
+    },
+    "pages_violences_law_cta": "Lire les lois et codes du Bénin",
+    "@pages_violences_law_cta": {
+        "description": "pages/violences.law.cta"
+    },
+    "pages_violences_law_law_name": "loi n° 2011-26 du 9 janvier 2012",
+    "@pages_violences_law_law_name": {
+        "description": "pages/violences.law.law_name"
+    },
+    "pages_violences_law_text": "Au Bénin, la {law} réprime les violences faites aux femmes : harcèlement sexuel, violences conjugales, viol, mariage forcé. Le Code pénal prévoit des circonstances aggravantes, et la Constitution garantit l’égalité devant la loi.",
+    "@pages_violences_law_text": {
+        "description": "pages/violences.law.text",
+        "placeholders": {
+            "law": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_law_title": "Que dit la loi ?",
+    "@pages_violences_law_title": {
+        "description": "pages/violences.law.title"
+    },
+    "pages_violences_og_alt": "Comprendre les violences basées sur le genre : formes, signes, cycle et auto-évaluation confidentielle",
+    "@pages_violences_og_alt": {
+        "description": "pages/violences.og_alt"
+    },
+    "pages_violences_schema_section": "Violences basées sur le genre",
+    "@pages_violences_schema_section": {
+        "description": "pages/violences.schema_section"
+    },
+    "pages_violences_title": "Comprendre les violences",
+    "@pages_violences_title": {
+        "description": "pages/violences.title"
     },
     "profile_about_bio": "Présentation",
     "@profile_about_bio": {
@@ -15667,7 +17030,7 @@
     "@seo_organization_description": {
         "description": "seo.organization_description"
     },
-    "seo_pages_actualites_description": "Événements, ateliers, campagnes et nouvelles des organisations partenaires de Xomiton au Bénin. Suivez la vie de la communauté et participez près de chez vous.",
+    "seo_pages_actualites_description": "Articles et nouvelles de l’équipe Xomiton au Bénin : droits, santé, sécurité et vie de la communauté, expliqués simplement pour agir en confiance.",
     "@seo_pages_actualites_description": {
         "description": "seo.pages.actualites.description"
     },
@@ -15731,6 +17094,14 @@
     "@seo_pages_inscription_title": {
         "description": "seo.pages.inscription.title"
     },
+    "seo_pages_lois_description": "Loi sur les violences faites aux femmes, Code pénal, Code de la famille, santé, VIH : résumés clairs et version simple pour connaître et défendre vos droits.",
+    "@seo_pages_lois_description": {
+        "description": "seo.pages.lois.description"
+    },
+    "seo_pages_lois_title": "Lois et codes du Bénin : connaître vos droits – Xomiton",
+    "@seo_pages_lois_title": {
+        "description": "seo.pages.lois.title"
+    },
     "seo_pages_newsletter_description": "Recevez une à deux fois par mois les actualités, ressources et événements de la communauté Xomiton. Inscription confirmée par e-mail, désinscription en un clic.",
     "@seo_pages_newsletter_description": {
         "description": "seo.pages.newsletter.description"
@@ -15771,13 +17142,39 @@
     "@seo_pages_thematiques_title": {
         "description": "seo.pages.thematiques.title"
     },
-    "seo_pages_urgences_description": "Numéros d’urgence (117, 118), ligne d’écoute, psychologues et juristes joignables, lieux d’accueil et plan de sécurité à imprimer : agir vite, en sécurité.",
+    "seo_pages_urgences_description": "Numéro d’urgence {number}, ligne d’écoute, psychologues et juristes joignables, lieux d’accueil et plan de sécurité à imprimer : agir vite, en sécurité.",
     "@seo_pages_urgences_description": {
-        "description": "seo.pages.urgences.description"
+        "description": "seo.pages.urgences.description",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
     },
-    "seo_pages_urgences_title": "Contacts d’urgence au Bénin : 117, écoute, juriste – Xomiton",
+    "seo_pages_urgences_description_plain": "Numéros d’urgence, ligne d’écoute, psychologues et juristes joignables, lieux d’accueil et plan de sécurité à imprimer : agir vite, en sécurité.",
+    "@seo_pages_urgences_description_plain": {
+        "description": "seo.pages.urgences.description_plain"
+    },
+    "seo_pages_urgences_title": "Contacts d’urgence au Bénin : {number}, écoute, juriste – Xomiton",
     "@seo_pages_urgences_title": {
-        "description": "seo.pages.urgences.title"
+        "description": "seo.pages.urgences.title",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "seo_pages_urgences_title_plain": "Contacts d’urgence au Bénin : écoute, juriste – Xomiton",
+    "@seo_pages_urgences_title_plain": {
+        "description": "seo.pages.urgences.title_plain"
+    },
+    "seo_pages_violences_description": "Violences physiques, psychologiques, sexuelles, économiques ou en ligne : repérer les signes, comprendre le cycle et faire le point en toute confidentialité.",
+    "@seo_pages_violences_description": {
+        "description": "seo.pages.violences.description"
+    },
+    "seo_pages_violences_title": "Comprendre les violences : formes, signes et cycle – Xomiton",
+    "@seo_pages_violences_title": {
+        "description": "seo.pages.violences.title"
     },
     "seo_search_action": "Rechercher une ressource",
     "@seo_search_action": {

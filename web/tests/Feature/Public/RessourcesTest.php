@@ -468,11 +468,11 @@ describe('hors connexion', function (): void {
             ->and(resHtml('/ressources/'.$marked->slug))->not->toContain('Disponible hors connexion')->not->toContain('id="hors-ligne"');
     });
 
-    it('désactive la bibliothèque hors connexion par défaut tant que le service worker (P5-10) n’est pas livré', function (): void {
+    it('active la bibliothèque hors connexion par défaut depuis la livraison du service worker (P5-10)', function (): void {
         $config = require base_path('config/xomiton.php');
 
-        expect($config['offline']['library_enabled'])->toBeFalse()
-            ->and(file_get_contents(base_path('.env.example')))->toContain("XOMITON_OFFLINE_LIBRARY=false\n");
+        expect($config['offline']['library_enabled'])->toBeTrue()
+            ->and(file_get_contents(base_path('.env.example')))->toContain("XOMITON_OFFLINE_LIBRARY=true\n");
     });
 
     it('affiche « Disponible hors connexion » sans interrupteur pour une ressource marquée par l’équipe', function (): void {

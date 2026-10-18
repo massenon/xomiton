@@ -215,10 +215,19 @@ class ContentSeeder extends Seeder
 
     private function seedLaws(): void
     {
-        foreach ($this->data('laws') as $index => [$slug, $title, $subtitle, $summary, $category]) {
+        // P4-04 : forme typographique (apostrophe courbe, espace insécable) et version simple du prototype.
+        foreach ($this->data('laws') as $index => [$slug, $title, $subtitle, $summary, $category, $simple]) {
             Law::query()->updateOrCreate(
                 ['slug' => $slug],
-                ['title' => $title, 'subtitle' => $subtitle, 'summary' => $summary, 'category' => $category, 'position' => $index + 1, 'is_published' => true],
+                [
+                    'title' => FrenchTypography::apply($title),
+                    'subtitle' => FrenchTypography::apply($subtitle),
+                    'summary' => FrenchTypography::apply($summary),
+                    'simple_summary' => FrenchTypography::apply($simple),
+                    'category' => $category,
+                    'position' => $index + 1,
+                    'is_published' => true,
+                ],
             );
         }
     }

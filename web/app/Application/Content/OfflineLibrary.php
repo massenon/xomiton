@@ -14,8 +14,9 @@ use App\Models\Resource;
  * et `data-offline-file` (fichier : `/lire` pour un média, `/telecharger` sinon) des interrupteurs, liste `marked` des
  * options, événement `window` `xm:offline-resources` ({action, slug, item, items, marked}), clé localStorage
  * `xm_offline_res_v1` (objets indexés par slug), en-tête `Purpose: prefetch` sur ses requêtes de mise en cache (non
- * comptées, CountableVisit). Désactivée par défaut (`xomiton.offline.library_enabled`) : sans P5-10, ni interrupteur ni
- * badge, aucune promesse de lecture sans réseau.
+ * comptées, CountableVisit). Activée par défaut depuis P5-10 (`xomiton.offline.library_enabled`, XOMITON_OFFLINE_LIBRARY) ;
+ * désactivée : ni interrupteur ni badge, aucune promesse de lecture sans réseau. Sans service worker dans le navigateur,
+ * le composant masque l'interrupteur (`supported`).
  */
 final class OfflineLibrary
 {
@@ -28,7 +29,7 @@ final class OfflineLibrary
 
     public static function enabled(): bool
     {
-        return (bool) config('xomiton.offline.library_enabled', false);
+        return (bool) config('xomiton.offline.library_enabled', true);
     }
 
     /** Fichier à mettre en cache : la source du lecteur pour un média, le téléchargement stable sinon, ou rien. */

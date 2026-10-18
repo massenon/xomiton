@@ -54,6 +54,8 @@ class DatabaseSeeder extends Seeder
             $this->call(DemoAccountsSeeder::class);
             // P4-03 : ressources de démonstration (le prototype n'en a pas ; l'admin Contenu arrive en P12-03).
             $this->call(DemoResourcesSeeder::class);
+            // P4-10 : actualités de démonstration (ressources `article`, Q1 a ; prototype x_blog_articles()).
+            $this->call(DemoNewsSeeder::class);
         }
     }
 }

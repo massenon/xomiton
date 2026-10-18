@@ -25,3 +25,5 @@ Thumbs.db
 /database/*.sqlite
 /database/*.sqlite-journal
 /storage/debugbar
+/test-results
+/playwright-report

@@ -7,10 +7,14 @@ import focus from '@alpinejs/focus';
 import './public/xomiton-ui.js';
 import './public/load-more.js';
 import './public/ressources.js';
+import './public/share.js';
 import './public/auth.js';
 import './public/assistant.js';
 import './public/alertes-dispatch.js';
 import './shared/theme.js';
+// Hors connexion (P5-10, ADR-26) : amorce de la boîte d'envoi (outbox.js chargé à la demande) et service worker.
+import './shared/outbox-boot.js';
+import './shared/sw-register.js';
 
 Alpine.plugin(focus);
 window.Alpine = Alpine;
@@ -24,6 +28,10 @@ window.Alpine = Alpine;
 const lazyModules = [
   ['[x-data^="xmReport"]', () => import('./public/signaler.js')],
   ['[x-data^="xmSosPage"], [x-data^="xmSosFab"]', () => import('./public/sos.js')],
+  // P4-04 : auto-évaluation /violences, recherche et version simple /lois, quiz /do-glegbe (sans réseau ni envoi).
+  ['[x-data^="xmSelfCheck"]', () => import('./public/violences.js')],
+  ['[x-data^="xmLaws"]', () => import('./public/lois.js')],
+  ['[x-data^="xmQuiz"]', () => import('./public/do-glegbe.js')],
 ].filter(([selector]) => document.querySelector(selector));
 
 if (lazyModules.length > 0) {
