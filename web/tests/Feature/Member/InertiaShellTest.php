@@ -168,7 +168,7 @@ it('sert /fil en Inertia sous le middleware membre (critère reporté à P6-03) 
         ->assertOk()
         ->assertHeader('X-Robots-Tag', 'noindex, nofollow')
         ->assertSee('<div id="app" data-page="', false)
-        ->assertInertia(fn (Assert $page) => $page->component('Member/Placeholder'));
+        ->assertInertia(fn (Assert $page) => $page->component('Feed/Index')); // écran du fil (lot fil-ecrans, P7-03)
 
     expect($response->headers->get('Cache-Control'))->toContain('no-store');
 });

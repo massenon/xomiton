@@ -26,7 +26,7 @@ trait FeedRequest
             'poll.options' => 'poll_options', 'poll.options.*' => 'poll_option', 'poll.multiple' => 'poll_multiple',
             'poll.results_before_vote' => 'poll_results_before_vote', 'poll.duration_days' => 'poll_duration_days',
             'choices' => 'choices', 'choices.*' => 'choice', 'reason' => 'reason', 'details' => 'details',
-            'parent_id' => 'parent_id', 'per_page' => 'per_page',
+            'parent_id' => 'parent_id', 'per_page' => 'per_page', 'group' => 'group',
         ];
 
         return array_map(static fn (string $key): string => (string) __('feed.api.attributes.'.$key), $fields);

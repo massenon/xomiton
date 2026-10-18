@@ -11,7 +11,8 @@ use Illuminate\Http\UploadedFile;
 /**
  * Publication à créer (POST /api/v1/posts, P7-02), validée par App\Http\Requests\Api\Feed\StorePostRequest :
  * texte (≤ 3000), étiquette, visibilité, pseudonyme, image facultative (MediaUploader, collection `images`) et, pour
- * un sondage, son PollDraft (l'étiquette est alors `sondage`).
+ * un sondage, son PollDraft (l'étiquette est alors `sondage`) ; `groupId` : publication dans un groupe (P8-02 : le
+ * groupe est l'audience, visibilité `public`).
  */
 final readonly class PostDraft
 {
@@ -23,5 +24,6 @@ final readonly class PostDraft
         public ?UploadedFile $image = null,
         public ?string $imageAlt = null,
         public ?PollDraft $poll = null,
+        public ?int $groupId = null,
     ) {}
 }

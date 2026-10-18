@@ -39,8 +39,20 @@ class PageFactory extends Factory
             'owner_id' => User::factory(),
             'followers_count' => 0,
             'is_verified' => false,
+            // Approuvée par défaut (pages d'organisations partenaires) ; `pending()` : en attente de la modération (P8-03).
+            'is_approved' => true,
+            'approved_at' => now(),
+            'is_featured' => false,
             'is_active' => true,
         ];
+    }
+
+    public function pending(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_approved' => false,
+            'approved_at' => null,
+        ]);
     }
 
     public function verified(): static

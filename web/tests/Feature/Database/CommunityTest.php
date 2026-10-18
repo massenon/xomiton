@@ -184,14 +184,14 @@ describe('conversations', function (): void {
             ->and(Conversation::query()->groups()->count())->toBe(1);
     });
 
-    it('dénormalise le dernier message en clair, tronqué à 120 caractères', function (): void {
-        $conversation = Conversation::factory()->create();
+    it('dénormalise la date du dernier message sans recopier son corps chiffré en clair (ADR-33, P8-01)', function (): void {
+        $conversation = Conversation::factory()->create(['last_message_preview' => 'ancien aperçu']);
         $message = Message::factory()->in($conversation)->create(['body' => str_repeat('a', 200)]);
 
         $conversation->touchLastMessage($message);
 
         expect($conversation->last_message_at)->not->toBeNull()
-            ->and($conversation->last_message_preview)->toHaveLength(120);
+            ->and($conversation->last_message_preview)->toBeNull();
     });
 });
 

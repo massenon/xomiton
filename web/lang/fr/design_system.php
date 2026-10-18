@@ -83,7 +83,7 @@ return [
             'step_2' => 'Contact',
             'step_3' => 'Confirmation',
             'faq_q' => 'Mes messages sont-ils privés ?',
-            'faq_a' => 'Oui : seules les personnes de la conversation les lisent.',
+            'faq_a' => 'Ils sont chiffrés sur nos serveurs. L’équipe n’y accède qu’en cas de signalement.',
             'crumb_home' => 'Accueil',
             'crumb_current' => 'Design system Vue',
             'member' => 'Awa Dossou',

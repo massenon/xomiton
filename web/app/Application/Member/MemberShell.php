@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Member;
 
+use App\Application\Messaging\ConversationDirectory;
 use App\Application\Notifications\NotificationInbox;
 use App\Application\Shared\KnowledgeBaseAnswerer;
 use App\Enums\UserStatus;
-use App\Models\ConversationParticipant;
-use App\Models\Message;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -20,7 +18,10 @@ use Illuminate\Support\Facades\Cache;
  */
 final class MemberShell
 {
-    public function __construct(private readonly NotificationInbox $inbox) {}
+    public function __construct(
+        private readonly NotificationInbox $inbox,
+        private readonly ConversationDirectory $conversations,
+    ) {}
 
     /**
      * Permissions lues par l'interface Vue (menus, boutons) : la décision reste aux policies côté serveur.
@@ -164,24 +165,9 @@ final class MemberShell
             : $read();
     }
 
+    /** Même requête que la liste des conversations (comptes bloqués, entrée dans un groupe) : badge et liste concordent. */
     private function unreadConversations(User $user): int
     {
-        $participants = (new ConversationParticipant)->getTable();
-        $messages = (new Message)->getTable();
-
-        return Message::query()
-            ->join("$participants as cp", 'cp.conversation_id', '=', "$messages.conversation_id")
-            ->where('cp.user_id', $user->getKey())
-            ->whereNull('cp.left_at')
-            ->where(function (Builder $q): void {
-                $q->whereNull('cp.muted_until')->orWhere('cp.muted_until', '<', now());
-            })
-            ->whereRaw("$messages.id > COALESCE(cp.last_read_message_id, 0)")
-            ->where(function (Builder $q) use ($messages, $user): void {
-                $q->whereNull("$messages.user_id")->orWhere("$messages.user_id", '!=', $user->getKey());
-            })
-            ->whereNull("$messages.deleted_for_everyone_at")
-            ->distinct()
-            ->count("$messages.conversation_id");
+        return $this->conversations->unreadConversationsCount($user);
     }
 }

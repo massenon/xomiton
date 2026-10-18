@@ -10,6 +10,7 @@
     $offlineTexts = (array) trans('offline.outbox') + [
         'report_url' => route('signaler', absolute: false),
         'urgences_url' => route('urgences', absolute: false),
+        'feed_url' => route('fil', absolute: false),
     ];
 @endphp
 <meta name="xm-offline" content="{{ ($sw ?? false) ? route('service-worker', absolute: false) : '' }}" data-account="{{ \App\Application\Offline\OutboxAccount::fingerprint(auth()->user()) }}" data-ttl-days="{{ (int) config('xomiton.alerts.draft_days', 7) }}" data-texts="{{ json_encode($offlineTexts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) }}">

@@ -34,10 +34,8 @@ it('sert /fil en Inertia dans le gabarit membre Vue, colonnes du fil et props du
         ->assertDontSee('id="memberHeader"', false)
         ->assertDontSee('x-data="xmSosFab(', false)
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Member/Placeholder')
+            ->component('Feed/Index') // écran réel du fil depuis le lot fil-ecrans (P7-03, tests/Feature/Member/FeedPagesTest.php)
             ->where('title', 'Fil d’actualité')
-            ->where('prototype', 'fil.php')
-            ->where('aside', true)
             ->where('auth.user.pseudo', 'Awa_S')
             ->where('shell.stats', ['posts' => 0, 'followers' => 0, 'following' => 0])
             ->where('shell.sos.endpoint', '/api/v1/sos')
@@ -58,10 +56,8 @@ it('sert chaque écran membre provisoire en Inertia, titre de la route même ave
             ->where('prototype', $prototype)
             ->where('aside', false));
 })->with([
-    ['/fil/12', 'Publication', 'post-details.php'],
-    ['/messages', 'Messages', 'messaging.php'],
-    ['/groupes/3', 'Groupe', 'group-details.php'],
-    ['/pages/creer', 'Créer une page', 'create-page.php'],
+    // /messages : écran réel depuis le lot messagerie (P8-01, tests/Feature/Member/MessagesPageTest.php).
+    // /groupes, /pages : écrans réels depuis le lot groupes-pages (P8-02, P8-03, tests/Feature/Member/CommunityPagesTest.php).
     ['/evenements', 'Événements', 'events.php'],
     ['/forums/7', 'Sujet', 'forum-topic.php'],
     ['/qui-suivre', 'Qui suivre', 'who-to-follow.php'],

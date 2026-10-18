@@ -13,6 +13,11 @@ use App\Http\Controllers\Api\V1\Auth\OtpSendController;
 use App\Http\Controllers\Api\V1\Auth\OtpVerifyController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\V1\Community\GroupController;
+use App\Http\Controllers\Api\V1\Community\GroupDiscussionController;
+use App\Http\Controllers\Api\V1\Community\GroupMembershipController;
+use App\Http\Controllers\Api\V1\Community\GroupPostController;
+use App\Http\Controllers\Api\V1\Community\PageController;
 use App\Http\Controllers\Api\V1\Content\ResourceController;
 use App\Http\Controllers\Api\V1\Content\ThematiqueController;
 use App\Http\Controllers\Api\V1\DashboardController;
@@ -30,6 +35,10 @@ use App\Http\Controllers\Api\V1\Me\NewsletterController as MeNewsletterControlle
 use App\Http\Controllers\Api\V1\Me\PushSubscriptionController;
 use App\Http\Controllers\Api\V1\Me\SecurityController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\Messaging\ConversationActionController;
+use App\Http\Controllers\Api\V1\Messaging\ConversationController;
+use App\Http\Controllers\Api\V1\Messaging\ConversationParticipantController;
+use App\Http\Controllers\Api\V1\Messaging\MessageController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\ReferentialController;
 use App\Http\Middleware\BindOutboxAccount;
@@ -43,7 +52,7 @@ use Illuminate\Support\Facades\Route;
  *   2. authentifié : auth:sanctum (jeton Bearer de Flutter ou cookie de session de Vue en mode SPA).
  * Les POST rejouables par la boîte d'envoi portent `idempotent:required` (ADR-32 : même clé → même réponse), leur limiteur
  * nommé passant par `limit=<nom>` (jamais `throttle:<nom>` à côté : Laravel le trierait avant et un rejeu consommerait le quota).
- * Familles à venir : P8 communauté, P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
+ * Familles à venir : P8 communauté (conversations/ livrées, P8-01 ; groups/, pages/ livrés, P8-02, P8-03), P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
  * me/* et notifications/* livrés (P6-06, P6-07, P6-09), feed/, posts/*, comments/* livrés (P7-02), dashboard,
  * thematiques, ressources, users/{id}/posts livrés (P6-08).
  */
@@ -164,7 +173,9 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
     Route::get('feed/saved', [FeedController::class, 'saved'])->name('api.feed.saved');
 
     Route::prefix('posts')->as('api.posts.')->group(function (): void {
-        Route::post('/', [PostController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('store');
+        // P7-04 (lot fil-ecrans) : publication mise en file hors connexion (store outbox) → Idempotency-Key facultative,
+        // limiteur `feed_write` par `limit=` (un rejeu ne consomme pas le quota, ADR-32).
+        Route::post('/', [PostController::class, 'store'])->middleware(['verified', 'idempotent:optional,limit=feed_write'])->name('store');
         Route::get('{post:ulid}', [PostController::class, 'show'])->name('show');
         Route::patch('{post:ulid}', [PostController::class, 'update'])->middleware(['verified', 'throttle:feed_write'])->name('update');
         Route::delete('{post:ulid}', [PostController::class, 'destroy'])->name('destroy');
@@ -194,5 +205,57 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::post('read-all', [NotificationController::class, 'readAll'])->name('read_all');
         Route::post('{notification}/read', [NotificationController::class, 'read'])->whereUuid('notification')->name('read');
         Route::delete('{notification}', [NotificationController::class, 'destroy'])->whereUuid('notification')->name('destroy');
+    });
+
+    // --- Messagerie (P8-01, docs/API.md §12) : conversations privées et de groupe, messages par curseur ou `after`
+    // (sondage court, D7), envoi idempotent par `client_uuid` (boîte d'envoi, ADR-32), lecture, sourdine, départ,
+    // blocage, signalement. Écrire et gérer un groupe exigent un e-mail confirmé (`verified`) et passent par
+    // `messages_write` (30/min) ; l'envoi, rejoué par la boîte d'envoi, le prend par `limit=` (ADR-32). Bloquer et
+    // signaler (gestes de sécurité, comme sur le fil) : sans `verified`, sous `throttle:api` / `content_report`.
+    Route::prefix('conversations')->as('api.conversations.')->group(function (): void {
+        Route::get('/', [ConversationController::class, 'index'])->name('index');
+        Route::post('/', [ConversationController::class, 'store'])->middleware(['verified', 'throttle:messages_write'])->name('store');
+        Route::get('recipients', [ConversationController::class, 'recipients'])->name('recipients');
+        Route::get('{conversation:ulid}', [ConversationController::class, 'show'])->name('show');
+        Route::patch('{conversation:ulid}', [ConversationController::class, 'update'])->middleware(['verified', 'throttle:messages_write'])->name('update');
+        Route::get('{conversation:ulid}/messages', [MessageController::class, 'index'])->name('messages.index');
+        Route::post('{conversation:ulid}/messages', [MessageController::class, 'store'])->middleware(['verified', 'idempotent:optional,limit=messages_write'])->name('messages.store');
+        Route::delete('{conversation:ulid}/messages/{message}', [MessageController::class, 'destroy'])->whereNumber('message')->middleware('throttle:messages_write')->name('messages.destroy');
+        Route::post('{conversation:ulid}/read', [ConversationActionController::class, 'read'])->name('read');
+        Route::post('{conversation:ulid}/mute', [ConversationActionController::class, 'mute'])->middleware('throttle:messages_write')->name('mute');
+        Route::delete('{conversation:ulid}/mute', [ConversationActionController::class, 'unmute'])->middleware('throttle:messages_write')->name('unmute');
+        Route::post('{conversation:ulid}/leave', [ConversationActionController::class, 'leave'])->name('leave');
+        Route::post('{conversation:ulid}/block', [ConversationActionController::class, 'block'])->name('block');
+        Route::delete('{conversation:ulid}/block', [ConversationActionController::class, 'unblock'])->name('unblock');
+        Route::post('{conversation:ulid}/report', [ConversationActionController::class, 'report'])->middleware('throttle:content_report')->name('report');
+        Route::post('{conversation:ulid}/participants', [ConversationParticipantController::class, 'store'])->middleware(['verified', 'throttle:messages_write'])->name('participants.store');
+        Route::delete('{conversation:ulid}/participants/{user}', [ConversationParticipantController::class, 'destroy'])->whereNumber('user')->middleware(['verified', 'throttle:messages_write'])->name('participants.destroy');
+    });
+
+    // --- Groupes (P8-02, docs/API.md §13) : par ULID (ADR-27) ; groupe privé : fiche réduite pour une non-membre,
+    // publications et membres en 404 (FR-SOC-05). Créer exige un e-mail confirmé (`verified`) ; créer, rejoindre,
+    // quitter et décider d'une demande passent par `community_write` (20/min). Publier : `POST posts` avec `group`.
+    Route::prefix('groups')->as('api.groups.')->group(function (): void {
+        Route::get('/', [GroupController::class, 'index'])->name('index');
+        Route::post('/', [GroupController::class, 'store'])->middleware(['verified', 'throttle:community_write'])->name('store');
+        Route::get('{group:ulid}', [GroupController::class, 'show'])->name('show');
+        Route::post('{group:ulid}/join', [GroupMembershipController::class, 'join'])->middleware('throttle:community_write')->name('join');
+        Route::post('{group:ulid}/leave', [GroupMembershipController::class, 'leave'])->middleware('throttle:community_write')->name('leave');
+        Route::get('{group:ulid}/members', [GroupMembershipController::class, 'index'])->name('members.index');
+        Route::post('{group:ulid}/members/{user}/accept', [GroupMembershipController::class, 'accept'])->whereNumber('user')->middleware('throttle:community_write')->name('members.accept');
+        Route::patch('{group:ulid}/members/{user}', [GroupMembershipController::class, 'update'])->whereNumber('user')->middleware('throttle:community_write')->name('members.update');
+        Route::delete('{group:ulid}/members/{user}', [GroupMembershipController::class, 'destroy'])->whereNumber('user')->middleware('throttle:community_write')->name('members.destroy');
+        Route::get('{group:ulid}/posts', [GroupPostController::class, 'index'])->name('posts.index');
+        Route::post('{group:ulid}/conversation', [GroupDiscussionController::class, 'store'])->middleware('throttle:messages_write')->name('conversation');
+    });
+
+    // --- Pages d'organisations (P8-03, docs/API.md §14) : visibles des autres membres une fois approuvées (P12-05) ;
+    // une page en attente n'est servie qu'à sa propriétaire et à la modération (404 sinon).
+    Route::prefix('pages')->as('api.pages.')->group(function (): void {
+        Route::get('/', [PageController::class, 'index'])->name('index');
+        Route::post('/', [PageController::class, 'store'])->middleware(['verified', 'throttle:community_write'])->name('store');
+        Route::get('{page:ulid}', [PageController::class, 'show'])->name('show');
+        Route::post('{page:ulid}/follow', [PageController::class, 'follow'])->middleware('throttle:community_write')->name('follow');
+        Route::delete('{page:ulid}/follow', [PageController::class, 'unfollow'])->middleware('throttle:community_write')->name('unfollow');
     });
 });

@@ -175,15 +175,23 @@ describe('ConversationPolicy et MessagePolicy', function (): void {
         RoleUsers::assertAbility($this->users, 'view', $message, ['superadmin']);
         RoleUsers::assertAbility($this->users, 'delete', $message, ['superadmin']);
 
+        // Conversation privée : aucune gestion, même pour la personne qui l'a ouverte (revue P8-01) — elle ne supprime
+        // jamais le message de l'autre ; dans un groupe, la créatrice (ou une admin) gère et supprime.
         expect($others[1]->can('view', $conversation))->toBeTrue()
             ->and($others[1]->can('sendMessage', $conversation))->toBeFalse() // sans rôle : pas de social.access
             ->and($others[1]->can('manage', $conversation))->toBeFalse()
-            ->and($others[0]->can('manage', $conversation))->toBeTrue()
+            ->and($others[0]->can('manage', $conversation))->toBeFalse()
             ->and($others[1]->can('view', $message))->toBeTrue()
             ->and($others[1]->can('delete', $message))->toBeTrue()
-            ->and($others[0]->can('delete', $message))->toBeTrue()
+            ->and($others[0]->can('delete', $message))->toBeFalse()
             ->and($others[1]->can('report', $message))->toBeFalse()
             ->and($others[0]->can('report', $message))->toBeTrue();
+
+        $group = Conversation::factory()->group()->withParticipants($others->all())->create(['created_by' => $others[0]->id]);
+        $inGroup = Message::factory()->in($group, $others[1])->create();
+        expect($others[0]->can('manage', $group))->toBeTrue()
+            ->and($others[0]->can('delete', $inGroup))->toBeTrue()
+            ->and($others[1]->can('manage', $group))->toBeFalse();
     });
 
     it('ferme la conversation à qui l’a quittée et ouvre l’écriture aux participant·es du réseau', function (): void {

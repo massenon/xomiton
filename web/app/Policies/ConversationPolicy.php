@@ -9,8 +9,10 @@ use App\Models\ConversationParticipant;
 use App\Models\User;
 
 /**
- * Messagerie : seul·e un·e participant·e encore présent·e lit et écrit ; la gestion (ajouter, retirer, renommer)
- * revient au créateur ou aux participant·es de rôle admin. Aucune permission d'administration n'ouvre une conversation privée.
+ * Messagerie : seul·e un·e participant·e encore présent·e lit et écrit ; la gestion (ajouter, retirer, renommer,
+ * supprimer le message d'autrui) n'existe que dans un **groupe** et revient à son créateur ou à ses admins. Une
+ * conversation privée n'a pas de gestionnaire : la personne qui l'a ouverte n'a aucun droit sur les messages de l'autre.
+ * Aucune permission d'administration n'ouvre une conversation privée.
  */
 final class ConversationPolicy
 {
@@ -41,6 +43,10 @@ final class ConversationPolicy
 
     public function manage(User $user, Conversation $conversation): bool
     {
+        if (! $conversation->isGroup()) {
+            return false;
+        }
+
         if ($conversation->created_by !== null && (int) $conversation->created_by === (int) $user->getKey()) {
             return $this->view($user, $conversation);
         }

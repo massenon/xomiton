@@ -102,8 +102,16 @@ final class PostPolicy
         return $this->view($user, $post);
     }
 
+    /**
+     * Publication d'un groupe : seules ses membres commentent (P8-02, group-details.php : « Rejoins le groupe pour
+     * publier et commenter »).
+     */
     public function comment(User $user, Post $post): bool
     {
+        if ($post->group_id !== null && ($post->group === null || ! $user->can('post', $post->group))) {
+            return false;
+        }
+
         return $user->can('comments.create') && $this->view($user, $post) && $post->status->isPublished();
     }
 

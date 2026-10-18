@@ -300,6 +300,14 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('content_report', static fn (Request $request): Limit => Limit::perHour(self::limit('content_report_per_hour'))
             ->by('content_report|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
+        // Messagerie (P8-01) : créations de conversation, envois et ajouts de participant·es, par compte et par minute.
+        RateLimiter::for('messages_write', static fn (Request $request): Limit => Limit::perMinute(self::limit('messages_write_per_minute'))
+            ->by('messages_write|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+        // Groupes et pages (P8-02, P8-03) : créer, rejoindre, quitter, décider d'une demande, suivre, par compte et par minute.
+        RateLimiter::for('community_write', static fn (Request $request): Limit => Limit::perMinute(self::limit('community_write_per_minute'))
+            ->by('community_write|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
 
         // Vote « Cet article vous a-t-il aidé·e ? » (P4-05, POST /aide/{slug}/avis) : par session (un CGNAT mobile partage
         // une IP entre de nombreuses personnes, P12-03 ne doit pas perdre leurs voix), par IP pour un client sans cookie ;

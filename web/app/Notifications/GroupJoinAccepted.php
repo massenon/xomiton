@@ -8,6 +8,7 @@ use App\Models\DatabaseNotification;
 
 /**
  * « Adhésion acceptée » (P3-02) : personne admise dans le groupe ; cloche et push, préférence « Communauté ».
+ * Sensible (P8-02, RG-02, Q75) : en mode discret, « Groupe rejoint » sans le nom du groupe sur l'écran verrouillé.
  */
 final class GroupJoinAccepted extends XomitonNotification
 {
@@ -24,7 +25,7 @@ final class GroupJoinAccepted extends XomitonNotification
 
     public function isSensitive(): bool
     {
-        return false;
+        return true;
     }
 
     /**

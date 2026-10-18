@@ -9,6 +9,7 @@ use App\Domain\Feed\Exceptions\ContentBlocked;
 use App\Enums\PostStatus;
 use App\Enums\PostTag;
 use App\Enums\PostVisibility;
+use App\Models\Group;
 use App\Models\Post;
 use App\Models\User;
 use App\Support\Audit;
@@ -68,6 +69,12 @@ final class ManagePost
         DB::transaction(static function () use ($post): void {
             $post->forceFill(['status' => PostStatus::Deleted])->save();
             $post->delete();
+
+            // Publication de groupe (P8-02) : `groups.posts_count` compte les publications **non supprimées** (une
+            // publication masquée par la modération y reste, le masquage étant réversible), jamais sous zéro.
+            if ($post->group_id !== null) {
+                Group::query()->whereKey($post->group_id)->where('posts_count', '>=', 1)->toBase()->decrement('posts_count');
+            }
         });
 
         if ($post->user_id !== $actor->getKey()) {

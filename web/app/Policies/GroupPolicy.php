@@ -14,6 +14,10 @@ use App\Models\User;
 /**
  * Groupes du réseau social : `social.access` lit les groupes publics et rejoint ; un groupe privé n'est visible
  * que de ses membres actifs ; propriétaire et administrateur·rices du groupe gèrent ; `moderation.manage` modère tout.
+ * P8-02 : `discover` (fiche réduite d'un groupe actif — nom, zone, confidentialité, nombre de membres — pour demander
+ * à rejoindre un groupe privé dont on a le lien ; ni description, ni publications, ni membres : `view`), `discuss`
+ * (discussion du groupe, membres actives), `changeRole` (propriétaire ou admin du groupe) ; quitter : toute membre
+ * active, propriétaire comprise (la dernière admin est retenue par App\Domain\Community\GroupMembershipRules).
  */
 final class GroupPolicy
 {
@@ -37,6 +41,11 @@ final class GroupPolicy
         }
 
         return $this->isOwner($user, $group) || $this->membership($user, $group)?->isActive() === true;
+    }
+
+    public function discover(User $user, Group $group): bool
+    {
+        return $user->can('moderation.manage') || ($user->can('social.access') && $group->is_active);
     }
 
     public function create(User $user): bool
@@ -67,7 +76,13 @@ final class GroupPolicy
 
     public function leave(User $user, Group $group): bool
     {
-        return ! $this->isOwner($user, $group) && $this->membership($user, $group)?->isActive() === true;
+        return $this->membership($user, $group)?->isActive() === true;
+    }
+
+    /** « Discussion du groupe » (conversation rattachée, P8-01) : membres actives d'un groupe actif. */
+    public function discuss(User $user, Group $group): bool
+    {
+        return $group->is_active && $user->can('social.access') && $this->membership($user, $group)?->isActive() === true;
     }
 
     public function post(User $user, Group $group): bool
@@ -81,6 +96,12 @@ final class GroupPolicy
     public function moderate(User $user, Group $group): bool
     {
         return $user->can('moderation.manage') || $this->isOwner($user, $group) || $this->hasRole($user, $group);
+    }
+
+    /** Changer le rôle d'une membre : propriétaire, admin du groupe ou modération globale. */
+    public function changeRole(User $user, Group $group): bool
+    {
+        return $user->can('moderation.manage') || $this->isOwner($user, $group) || $this->hasRole($user, $group, admin: true);
     }
 
     private function isOwner(User $user, Group $group): bool

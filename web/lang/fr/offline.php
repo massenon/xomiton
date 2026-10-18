@@ -29,6 +29,11 @@ return [
         'sos_failed_title' => 'Alerte SOS non envoyée',
         'sos_failed' => 'L’alerte enregistrée hors connexion n’a pas pu partir. En danger, appeler directement un numéro d’urgence.',
         'sos_contacts' => 'Contacts d’urgence',
+        // Publication du fil mise en file hors connexion (P7-04, type `post`), hors de la page /fil qui l'annonce elle-même.
+        'post_sent' => 'Publication enregistrée hors connexion : elle est en ligne.',
+        'post_failed_title' => 'Publication non envoyée',
+        'post_failed' => 'Le serveur a refusé la publication enregistrée hors connexion. Son contenu reste sur cet appareil, prêt à être corrigé.',
+        'post_resume' => 'Reprendre la publication',
         'copy' => 'Copier le code',
         'copied' => 'Code copié.',
         'print' => 'Imprimer',

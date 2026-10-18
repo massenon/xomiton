@@ -1,0 +1,35 @@
+/*
+ * Messagerie `/messages` (P8-01 ; prototype messaging.php l.14-22) : styles en ligne du prototype sortis dans la feuille
+ * (carte pleine hauteur, liste et fil défilants, bulles arrondies avec coin « queue », bascule liste / fil sous 768 px),
+ * plus l'état « en attente d'envoi » (horloge grisée, contour pointillé) et « non envoyé ». Jetons uniquement, aucune
+ * opacité sur du texte (contraste du thème gardé sur fond primaire).
+ */
+.xm-chat { height: calc(100vh - 170px); min-height: 540px; }
+.xm-chat-list .xm-conv { cursor: pointer; border: 0; text-align: start; min-height: var(--xm-target-min); }
+.xm-chat-list .xm-conv.active { background: rgba(var(--xm-primary-rgb), .1); }
+.xm-chat-list .xm-conv:focus-visible { outline: 2px solid var(--xm-focus-ring); outline-offset: -2px; }
+.xm-chat-msgs { overflow-y: auto; overscroll-behavior: contain; }
+.xm-chat-msgs:focus-visible { outline: 2px solid var(--xm-focus-ring); outline-offset: -2px; }
+.xm-bubble { max-width: 78%; border-radius: 1rem; padding: .5rem .85rem; overflow-wrap: anywhere; }
+.xm-bubble.them { background: var(--bs-tertiary-bg); border-bottom-left-radius: .25rem; }
+.xm-bubble.me { background: var(--xm-primary); color: var(--xm-on-primary); border-bottom-right-radius: .25rem; }
+.xm-bubble small { font-size: var(--xm-fs-caption); }
+.xm-bubble .xm-bubble-action { font-size: var(--xm-fs-caption); }
+.xm-bubble .xm-bubble-text { white-space: pre-wrap; }
+/* En attente : contour pointillé plutôt qu'une opacité (texte gardé au contraste du thème, ≥ 4,5:1). */
+.xm-bubble.is-pending { outline: 1px dashed currentColor; outline-offset: -4px; }
+.xm-bubble.is-failed { background: var(--xm-secondary-subtle); color: var(--xm-secondary-subtle-text); }
+.xm-bubble .xm-bubble-clock { opacity: .6; }
+.xm-bubble img.xm-bubble-image { max-width: 100%; max-height: 260px; border-radius: .75rem; }
+.xm-bubble.me a { color: inherit; }
+.xm-chat-day { font-size: var(--xm-fs-caption); }
+.xm-chat-compose .form-control { min-height: var(--xm-target-min); }
+.xm-chat-compose .btn { min-width: var(--xm-target-min); min-height: var(--xm-target-min); }
+.xm-chat-preview { display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.xm-chat-group-avatar { width: 40px; height: 40px; }
+
+@media (max-width: 767.98px) {
+  .xm-chat { height: calc(100vh - 130px); }
+  .xm-chat.show-pane .xm-chat-list { display: none !important; }
+  .xm-chat:not(.show-pane) .xm-chat-pane { display: none !important; }
+}

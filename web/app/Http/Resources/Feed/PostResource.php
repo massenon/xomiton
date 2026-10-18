@@ -16,10 +16,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Publication du fil telle qu'elle sort de l'API (P7-02, docs/API.md §8) : identifiant public ULID (ADR-27), auteur·rice
- * (AuthorPayload, RG-02), corps, étiquette, visibilité, compteurs, état propre à la personne qui lit (`liked`, `saved`,
- * `is_mine`), médias (lien signé pour le disque privé), sondage (PollResource), liens de détail et de partage neutre
- * (`/p/{ulid}`, Q31 b), permissions utiles à l'interface (`can`). Le statut et le motif de masquage ne sont jamais
- * renvoyés ; l'auteur·rice d'une publication masquée voit seulement `moderated: true`.
+ * (AuthorPayload, RG-02), corps, étiquette (libellé et couleur du prototype, PostTag::badge()), visibilité, compteurs,
+ * état propre à la personne qui lit (`liked`, `saved`, `is_mine`), médias (lien signé pour le disque privé), sondage
+ * (PollResource), liens de détail et de partage neutre (`/p/{ulid}`, Q31 b), permissions utiles à l'interface (`can`).
+ * Le statut et le motif de masquage ne sont jamais renvoyés ; l'auteur·rice d'une publication masquée voit seulement
+ * `moderated: true`.
  *
  * @mixin Post
  */
@@ -45,6 +46,7 @@ final class PostResource extends JsonResource
             'body' => $post->body,
             'tag' => $post->tag->value,
             'tag_label' => $post->tag->label(),
+            'tag_color' => $post->tag->badge(),
             'visibility' => $post->visibility->value,
             'visibility_label' => $post->visibility->label(),
             'moderated' => $isMine && $post->status === PostStatus::Hidden,

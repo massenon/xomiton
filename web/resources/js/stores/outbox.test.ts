@@ -73,4 +73,34 @@ describe('store outbox', () => {
         expect(typeof core.getOutbox).toBe('function');
         expect(core.PENDING_KEY).toBe('xm.outbox.pending');
     });
+
+    it('entries() filtre par type et écarte les envois d’un autre compte ; remove() retire l’entrée et rend le reste', async () => {
+        const m = fakeModules();
+        const list = [
+            { id: 'a', type: 'message', account: 'acct' },
+            { id: 'b', type: 'message', account: 'autre' },
+            { id: 'c', type: 'signalement', account: 'acct' },
+            { id: 'd', type: 'message' }, // sans compte (page sans session) : gardée, comme heldFor de shared/outbox.js
+        ];
+        const box = Object.assign(m.box, { list: vi.fn(async () => list), remove: vi.fn(async () => undefined), count: vi.fn(async () => 2) });
+        m.core.getOutbox.mockReturnValue(box);
+        const store = useOutboxStore();
+        await store.start({ account: 'acct', importer: m.importer, storage: memoryStorage(), target: new EventTarget() as Window });
+
+        expect((await store.entries('message')).map((e) => e.id)).toEqual(['a', 'd']);
+        expect((await store.entries()).map((e) => e.id)).toEqual(['a', 'c', 'd']);
+        await expect(store.remove('a')).resolves.toBe(2);
+        expect(box.remove).toHaveBeenCalledWith('a');
+        expect(store.pending).toBe(2);
+    });
+
+    it('entries() sans compte connu (page sans session) : aucun tri par compte', async () => {
+        const m = fakeModules();
+        const box = Object.assign(m.box, { list: vi.fn(async () => [{ id: 'a', type: 'message', account: 'x' }, { id: 'b', type: 'message' }]) });
+        m.core.getOutbox.mockReturnValue(box);
+        const store = useOutboxStore();
+        await store.start({ account: null, importer: m.importer, storage: memoryStorage(), target: new EventTarget() as Window });
+
+        expect((await store.entries('message')).map((e) => e.id)).toEqual(['a', 'b']);
+    });
 });

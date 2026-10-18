@@ -22,7 +22,10 @@ class Conversation extends Model
     /** @use HasFactory<ConversationFactory> */
     use HasFactory, HasUlid;
 
-    /** Longueur de `last_message_preview` (aperçu en clair, tronqué). */
+    /**
+     * Longueur de la colonne `last_message_preview`. ADR-33 : elle n'est plus écrite (aucune copie en clair du corps
+     * chiffré) ; l'aperçu de la liste est calculé à la lecture (App\Application\Messaging\ConversationDirectory).
+     */
     public const PREVIEW_MAX_LENGTH = 120;
 
     /**
@@ -123,13 +126,14 @@ class Conversation extends Model
     }
 
     /**
-     * Met à jour la dénormalisation du dernier message (appelé par l'action d'envoi).
+     * Met à jour la dernière activité (appelé par l'envoi, P8-01). L'aperçu en clair est vidé, jamais recopié du corps
+     * chiffré (ADR-33).
      */
     public function touchLastMessage(Message $message): void
     {
         $this->forceFill([
             'last_message_at' => $message->created_at,
-            'last_message_preview' => mb_substr((string) $message->body, 0, self::PREVIEW_MAX_LENGTH),
+            'last_message_preview' => null,
         ])->save();
     }
 

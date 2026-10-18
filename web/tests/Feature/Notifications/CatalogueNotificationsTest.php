@@ -47,8 +47,8 @@ function catalogue(): array
         'InvitationReceived' => [new InvitationReceived(1, 'Mariam A.'), 'communaute', false, 'Nouvelle invitation'],
         'InvitationAccepted' => [new InvitationAccepted(1, 2, 'Mariam A.'), 'communaute', false, 'Invitation acceptée'],
         'ForumReplyPosted' => [new ForumReplyPosted(1, 2, 'Nadia', 'Dire non'), 'communaute', false, 'Nouvelle réponse'],
-        'GroupJoinRequested' => [new GroupJoinRequested(1, 2, 'Nadia', 'Cercle Cotonou'), 'communaute', false, 'Demande d’adhésion'],
-        'GroupJoinAccepted' => [new GroupJoinAccepted(1, 'Cercle Cotonou'), 'communaute', false, 'Bienvenue dans le groupe'],
+        'GroupJoinRequested' => [new GroupJoinRequested(1, 2, 'Nadia', 'Cercle Cotonou'), 'communaute', true, 'Demande d’adhésion'],
+        'GroupJoinAccepted' => [new GroupJoinAccepted(1, 'Cercle Cotonou'), 'communaute', true, 'Bienvenue dans le groupe'],
         'EventCreatedInMyGroup' => [new EventCreatedInMyGroup(6, 'Atelier', '18 octobre', '15 h', 'Cercle Cotonou'), 'communaute', false, 'Nouvel événement'],
     ];
 }

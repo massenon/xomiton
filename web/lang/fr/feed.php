@@ -30,6 +30,15 @@ return [
         'poll' => 'Sondage',
         'violences' => 'Violences',
         'report' => 'Signaler',
+        'label' => 'Créer une publication',
+        'event_unavailable' => 'La création d’événements arrive bientôt.',
+    ],
+
+    // P7-03 (lot fil-ecrans) : liste du fil, chargement à la demande, filtres.
+    'list' => [
+        'title' => 'Publications',
+        'filters_label' => 'Filtrer le fil par type',
+        'loaded' => '{1} :count publication de plus.|[2,*] :count publications de plus.',
     ],
 
     'featured' => [
@@ -76,6 +85,7 @@ return [
         'saved_title' => 'Publications enregistrées',
         'saved_intro' => 'Les publications que tu as mises de côté. Elles ne sont visibles que par toi.',
         'moderated' => 'Publication masquée en attente de relecture par la modération.',
+        'back' => 'Retour au fil',
     ],
 
     'create' => [
@@ -99,10 +109,17 @@ return [
         'help_notice' => 'Besoin d’aide ? Utilise plutôt le signalement anonyme ou SOS.',
         'help_report' => 'le signalement anonyme',
         'help_sos' => 'SOS',
+        'help_links' => 'Besoin d’aide ? Utilise plutôt :report ou :sos.',
         'submit' => 'Publier',
         'draft_saved' => 'Brouillon enregistré sur cet appareil.',
         'draft_restored' => 'Brouillon restauré. Tu peux le modifier avant de publier.',
         'bad_words' => 'Ton message contient des mots non autorisés par la charte. Reformule, puis publie.',
+        'image_alt' => 'Description de la photo',
+        'image_alt_help' => 'Décris l’image en quelques mots pour les personnes qui ne la voient pas.',
+        'photo_remove' => 'Retirer la photo',
+        'photo_type' => 'Format non pris en charge. Choisis une image JPG, PNG ou WebP.',
+        'anonymous_followers' => 'Une publication anonyme ne peut pas être réservée à tes abonné·es : elle sera visible par la communauté ou par toi seulement.',
+        'errors_title' => 'Ta publication n’est pas encore partie :',
     ],
 
     'photo_modal' => [
@@ -174,6 +191,8 @@ return [
         'vote_removed' => 'Ton vote est retiré.',
         'already_closed' => 'Ce sondage est terminé : les votes sont clos.',
         'results_title' => 'Résultats',
+        'question_count_sr' => ':count caractères sur :max',
+        'vote_failed' => 'Ton vote n’a pas été enregistré. Réessaie dans un instant.',
     ],
 
     'comments' => [
@@ -193,6 +212,33 @@ return [
         'report' => 'Signaler ce commentaire',
         'delete' => 'Supprimer ce commentaire',
         'anonymous' => 'Membre anonyme',
+        'load_next' => 'Voir la suite des commentaires',
+        'field_label' => 'Ton commentaire',
+        'too_short' => 'Écris au moins 2 caractères.',
+    ],
+
+    // P7-05 (lot fil-ecrans) : signalement d'un contenu à la modération (POST posts/{ulid}/report, RG-16).
+    'report' => [
+        'title' => 'Signaler cette publication',
+        'comment_title' => 'Signaler ce commentaire',
+        'intro' => 'Dis-nous ce qui ne va pas. Ton signalement reste confidentiel : la personne concernée n’est pas prévenue.',
+        'reason' => 'Motif',
+        'details' => 'Précisions',
+        'details_placeholder' => 'Ce qui te gêne, en quelques mots.',
+        'submit' => 'Envoyer le signalement',
+        'reason_required' => 'Choisis un motif.',
+        'danger' => 'Tu es en danger ou victime de violences ?',
+        'danger_link' => 'Fais un signalement anonyme',
+        'already' => 'Tu as déjà signalé ce contenu. Merci.',
+    ],
+
+    // P7-04 (lot fil-ecrans) : publication mise en file hors connexion (store outbox), envoyée au retour du réseau ; son
+    // brouillon reste jusqu'à l'envoi confirmé (refusée : modale rouverte avec contenu et erreurs).
+    'offline' => [
+        'queued' => 'Pas de réseau : ta publication partira dès que la connexion revient.',
+        'sent' => 'Ta publication mise en attente est en ligne.',
+        'failed' => 'Ta publication mise en attente n’a pas pu partir. Vérifie son contenu, puis publie-la à nouveau.',
+        'pending' => 'Cette publication attend le retour du réseau. Si tu la modifies, la nouvelle version partira à sa place.',
     ],
 
     'share' => [
@@ -219,6 +265,7 @@ return [
         'reported' => 'Signalement transmis à la modération. Merci.',
         'liked' => 'J’aime ajouté.',
         'image_too_large' => 'Image trop lourde (:max Mo maximum).',
+        'unhidden' => 'Publication de retour dans ton fil.',
     ],
 
     'errors' => [
@@ -234,6 +281,7 @@ return [
         'tag_poll' => 'Un sondage se publie avec sa question et ses réponses (type « sondage »).',
         'tag_change_poll' => 'Le type d’un sondage ne peut pas être modifié.',
         'anonymous_followers' => 'Une publication anonyme ne peut pas être réservée à tes abonné·es : choisis « Public » ou « Moi uniquement ».',
+        'group_visibility' => 'Une publication de groupe est visible par les membres du groupe : sa visibilité ne change pas.',
         'single_choice' => 'Ce sondage n’accepte qu’une seule réponse.',
         'choice_unknown' => 'Cette réponse ne fait pas partie du sondage.',
         'parent_invalid' => 'Ce commentaire ne fait pas partie de cette publication.',
@@ -260,6 +308,7 @@ return [
             'details' => 'précisions',
             'parent_id' => 'commentaire',
             'per_page' => 'nombre par page',
+            'group' => 'groupe',
         ],
     ],
 
@@ -278,6 +327,7 @@ return [
         'role_member' => 'Membre',
         'role_peer' => 'Pair animateur·rice',
         'role_team' => 'Équipe Xomiton',
+        'event_online' => 'En ligne',
     ],
 
 ];

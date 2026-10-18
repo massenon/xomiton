@@ -10,6 +10,7 @@ use App\Application\Shared\MediaUploader;
 use App\Application\Shared\StoredMedia;
 use App\Domain\Feed\Exceptions\ContentBlocked;
 use App\Enums\PostStatus;
+use App\Models\Group;
 use App\Models\Poll;
 use App\Models\PollOption;
 use App\Models\Post;
@@ -22,7 +23,8 @@ use Throwable;
  * Publier dans le fil (P7-02, FR-SOC-01, FR-SOC-02 ; prototype post-create.php) : filtre de mots sur chaque texte
  * (bloquant → 422 avant tout téléversement), image ré-encodée par MediaUploader (EXIF retiré, disque privé, collection
  * `images`), publication + média + sondage et ses réponses dans une transaction (le fichier est effacé si elle échoue),
- * puis signalement automatique si un terme « à surveiller » a été trouvé (la publication reste en ligne).
+ * puis signalement automatique si un terme « à surveiller » a été trouvé (la publication reste en ligne). Publication
+ * de groupe (P8-02, `group_id`) : `groups.posts_count` incrémenté dans la même transaction.
  */
 final class PublishPost
 {
@@ -72,6 +74,7 @@ final class PublishPost
     {
         $post = Post::query()->create([
             'user_id' => $author->getKey(),
+            'group_id' => $draft->groupId,
             'is_anonymous' => $draft->anonymous,
             'body' => trim((string) $draft->body),
             'tag' => $draft->tag,
@@ -79,6 +82,10 @@ final class PublishPost
             'status' => PostStatus::Published,
             'published_at' => now(),
         ]);
+
+        if ($draft->groupId !== null) {
+            Group::query()->whereKey($draft->groupId)->toBase()->increment('posts_count');
+        }
 
         if ($stored !== null) {
             PostMedia::query()->create([

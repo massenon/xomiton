@@ -24,6 +24,9 @@ class Group extends Model
     /** @use HasFactory<GroupFactory> */
     use HasFactory, HasUlid, SoftDeletes;
 
+    /** Couverture par défaut (prototype x_group_cover : `covers/gr-default.jpg`). */
+    public const DEFAULT_COVER = 'assets/images/xomiton/covers/gr-default.jpg';
+
     /**
      * @var list<string>
      */

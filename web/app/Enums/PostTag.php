@@ -22,15 +22,18 @@ enum PostTag: string
         return (string) __('enums/feed.post_tag.'.$this->value);
     }
 
+    /**
+     * Couleur de l'étiquette : celle du prototype (inc/render.php x_render_post, `$tagCls`), seule source des écrans
+     * Vue (PostResource `tag_color`, <XmBadge soft>) comme des vues Blade.
+     */
     public function badge(): string
     {
         return match ($this) {
-            self::Testimony => 'primary',
-            self::Question => 'info',
-            self::Resource => 'success',
-            self::Event => 'violet',
+            self::Testimony => 'success',
+            self::Question => 'warning',
+            self::Resource => 'info',
+            self::Event, self::Poll => 'primary',
             self::Violence => 'danger',
-            self::Poll => 'warning',
         };
     }
 

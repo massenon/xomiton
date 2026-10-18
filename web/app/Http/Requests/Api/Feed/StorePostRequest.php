@@ -9,6 +9,7 @@ use App\Application\Feed\Data\PostDraft;
 use App\Enums\PostTag;
 use App\Enums\PostVisibility;
 use App\Http\Requests\Api\Feed\Concerns\FeedRequest;
+use App\Models\Group;
 use App\Models\Poll;
 use App\Models\Post;
 use App\Rules\UploadAllowed;
@@ -27,6 +28,8 @@ use Illuminate\Validation\Validator;
  *    ignorés, réponses vides retirées comme le prototype), ≤ 80 car., durée 1, 3, 7, 14, 30 jours ou 0 / null (sans fin).
  * `posts.create` (403 sinon), `polls.create` pour un sondage ; e-mail confirmé (middleware `verified`, Q12 c).
  * Anonyme : visibilité `public` ou `me` seulement (422 sur `followers`, Q72).
+ * Groupe (P8-02) : `group` = ULID d'un groupe où la personne peut publier (membre active ou propriétaire, sinon 422
+ * `group` : on ne dit pas si le groupe existe), visibilité `public` seulement (le groupe est l'audience).
  */
 final class StorePostRequest extends FormRequest
 {
@@ -35,6 +38,8 @@ final class StorePostRequest extends FormRequest
     public const KIND_POST = 'post';
 
     public const KIND_POLL = 'poll';
+
+    private ?Group $resolvedGroup = null;
 
     public function authorize(): bool
     {
@@ -66,6 +71,7 @@ final class StorePostRequest extends FormRequest
 
         return [
             'kind' => ['sometimes', 'string', Rule::in([self::KIND_POST, self::KIND_POLL])],
+            'group' => ['sometimes', 'nullable', 'string', 'size:26'],
             'body' => [$poll ? 'nullable' : 'required_without:image', 'nullable', 'string', 'max:'.(int) config('xomiton.feed.post_max_length', Post::BODY_MAX_LENGTH)],
             'tag' => ['sometimes', 'nullable', 'string', Rule::enum(PostTag::class)],
             'visibility' => ['sometimes', 'string', Rule::enum(PostVisibility::class)],
@@ -106,6 +112,16 @@ final class StorePostRequest extends FormRequest
     public function after(): array
     {
         return [function (Validator $validator): void {
+            if (is_string($this->input('group')) && $this->input('group') !== '') {
+                $group = $this->group();
+
+                if ($group === null || ! $this->viewer()->can('post', $group)) {
+                    $validator->errors()->add('group', (string) __('community.groups.errors.not_member'));
+                } elseif ($this->has('visibility') && $this->input('visibility') !== PostVisibility::Public->value) {
+                    $validator->errors()->add('visibility', (string) __('feed.api.group_visibility'));
+                }
+            }
+
             if (! $this->isPoll() && $this->input('tag') === PostTag::Poll->value) {
                 $validator->errors()->add('tag', (string) __('feed.api.tag_poll'));
             }
@@ -125,6 +141,20 @@ final class StorePostRequest extends FormRequest
                 }
             }
         }];
+    }
+
+    /**
+     * Groupe actif désigné par `group` (ULID), sinon null.
+     */
+    public function group(): ?Group
+    {
+        $ulid = $this->input('group');
+
+        if (! is_string($ulid) || $ulid === '') {
+            return null;
+        }
+
+        return $this->resolvedGroup ??= Group::query()->active()->whereUlid($ulid)->first();
     }
 
     public function isPoll(): bool
@@ -152,6 +182,7 @@ final class StorePostRequest extends FormRequest
 
         $tag = $this->validated('tag');
         $image = $this->file('image');
+        $group = $this->group();
         $body = $this->validated('body');
 
         return new PostDraft(
@@ -162,6 +193,7 @@ final class StorePostRequest extends FormRequest
             image: $image instanceof UploadedFile ? $image : null,
             imageAlt: is_string($this->validated('image_alt')) ? $this->validated('image_alt') : null,
             poll: $poll,
+            groupId: $group !== null ? (int) $group->getKey() : null,
         );
     }
 }

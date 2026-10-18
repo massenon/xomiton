@@ -6,7 +6,11 @@
 //    affiché une seule fois, boutons « Copier » et « Imprimer », comme la page de confirmation de P5-04) et brouillon
 //    /signaler effacé ; refusé : avis avec un lien vers le formulaire (le brouillon reste) ;
 //  - SOS envoyé au rejeu : toast, sauf sur la page /sos ou avec le bouton flottant ouvert, qui l'annoncent eux-mêmes ;
-//    refusé : avis d'alerte avec le lien vers les contacts d'urgence.
+//    refusé : avis d'alerte avec le lien vers les contacts d'urgence ;
+//  - publication du fil (type `post`, P7-04) : son brouillon Vue (stores/drafts.ts, lié à l'entrée par `outbox`) est
+//    effacé à l'envoi, ou garde le refus (`failure` : statut et erreurs) pour que la modale rouverte montre contenu et
+//    erreurs ; envoyée : toast ; refusée : avis avec un lien vers le fil ; rien sur /fil ([data-xm-feed-page]), qui
+//    l'annonce et rouvre la modale lui-même.
 import { openDB } from 'idb';
 
 // Brouillon de resources/js/public/signaler.js (DRAFT_DB, DRAFT_STORE, DRAFT_KEY) : même base, même version.
@@ -14,12 +18,38 @@ const DRAFT_DB = 'xomiton-drafts';
 const DRAFT_STORE = 'drafts';
 const DRAFT_KEY = 'signaler';
 
-export function clearReportDraft(open = () => openDB(DRAFT_DB, 1, {
+const openDrafts = () => openDB(DRAFT_DB, 1, {
   upgrade(db) {
     if (!db.objectStoreNames.contains(DRAFT_STORE)) db.createObjectStore(DRAFT_STORE);
   },
-})) {
+});
+
+export function clearReportDraft(open = openDrafts) {
   return open().then((db) => db.delete(DRAFT_STORE, DRAFT_KEY)).catch(() => undefined);
+}
+
+/**
+ * Brouillon Vue d'une publication mise en file (clés `vue:<compte>:<nom>`, { value, savedAt }, `value.outbox` = id de
+ * l'entrée) : effacé quand elle est envoyée, marqué `failure` quand elle est refusée (contenu gardé).
+ *
+ * @param {string} id
+ * @param {{ status: number, errors?: Record<string, unknown> } | null} [failure]
+ * @param {() => Promise<import('idb').IDBPDatabase>} [open]
+ */
+export function settlePostDraft(id, failure = null, open = openDrafts) {
+  return open().then(async (db) => {
+    const tx = db.transaction(DRAFT_STORE, 'readwrite');
+    let cursor = await tx.store.openCursor();
+    while (cursor) {
+      const record = cursor.value;
+      if (typeof cursor.key === 'string' && cursor.key.startsWith('vue:') && record && record.value && record.value.outbox === id) {
+        if (failure) await cursor.update({ ...record, value: { ...record.value, failure } });
+        else await cursor.delete();
+      }
+      cursor = await cursor.continue();
+    }
+    await tx.done;
+  }).catch(() => undefined);
 }
 
 const el = (doc, tag, className, text) => {
@@ -94,12 +124,15 @@ export function mountOutboxNotices(texts = {}, opts = {}) {
   const win = opts.window || window;
   const doc = opts.document || document;
   const clearDraft = opts.clearDraft || clearReportDraft;
+  const settleDraft = opts.settlePostDraft || settlePostDraft;
   if (win.__xmOutboxNotices) return win.__xmOutboxNotices;
   const ac = new AbortController();
   const on = { signal: ac.signal };
   win.__xmOutboxNotices = () => { ac.abort(); delete win.__xmOutboxNotices; };
   // Bouton flottant Blade (Alpine) ou Vue (XmSosFab, P6-03 : data-xm-sos-fab) : il annonce lui-même l'envoi.
   const sosOnScreen = () => Boolean(doc.querySelector('[x-data^="xmSosPage"], [x-data^="xmSosFab"], [data-xm-sos-fab]'));
+  // Page /fil (Pages/Feed/Index.vue) : elle annonce elle-même une publication envoyée ou refusée.
+  const feedOnScreen = () => Boolean(doc.querySelector('[data-xm-feed-page]'));
   if (doc.getElementById('contenu') || doc.querySelector('main') || doc.body) container(doc);
 
   win.addEventListener('xm:outbox:queued', (event) => {
@@ -115,6 +148,9 @@ export function mountOutboxNotices(texts = {}, opts = {}) {
         clearDraft();
       } else if (result.type === 'sos' && !sosOnScreen()) {
         toast(win, texts.sos_sent, 'success');
+      } else if (result.type === 'post') {
+        settleDraft(result.id);
+        if (!feedOnScreen()) toast(win, texts.post_sent, 'success');
       }
     });
     failed.forEach((result) => {
@@ -122,6 +158,9 @@ export function mountOutboxNotices(texts = {}, opts = {}) {
         renderNotice(doc, texts, { type: 'warning', title: texts.report_failed_title, lines: [texts.report_failed], link: { href: texts.report_url, label: texts.report_resume } });
       } else if (result.type === 'sos') {
         renderNotice(doc, texts, { type: 'danger', title: texts.sos_failed_title, lines: [texts.sos_failed], link: { href: texts.urgences_url, label: texts.sos_contacts } });
+      } else if (result.type === 'post') {
+        settleDraft(result.id, { status: result.status, ...(result.errors ? { errors: result.errors } : {}) });
+        if (!feedOnScreen()) renderNotice(doc, texts, { type: 'warning', title: texts.post_failed_title, lines: [texts.post_failed], link: { href: texts.feed_url, label: texts.post_resume } });
       }
     });
   }, on);

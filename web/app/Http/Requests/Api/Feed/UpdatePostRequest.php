@@ -67,6 +67,11 @@ final class UpdatePostRequest extends FormRequest
                 $validator->errors()->add('visibility', (string) __('feed.api.anonymous_followers'));
             }
 
+            // Publication de groupe (P8-02) : le groupe est l'audience, la visibilité reste `public`.
+            if ($post->group_id !== null && $this->has('visibility') && $this->input('visibility') !== PostVisibility::Public->value) {
+                $validator->errors()->add('visibility', (string) __('feed.api.group_visibility'));
+            }
+
             if (! is_string($tag)) {
                 return;
             }

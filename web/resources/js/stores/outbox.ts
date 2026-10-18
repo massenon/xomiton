@@ -102,10 +102,30 @@ export const useOutboxStore = defineStore('outbox', () => {
         return pending.value;
     }
 
+    /**
+     * Entrées en attente (P8-01 : messages affichés « en attente d'envoi » après un rechargement), filtrées par type et,
+     * quand la page a un compte, sans celles d'un **autre** compte (appareil partagé) — même règle que `heldFor` de
+     * shared/outbox.js : une entrée sans compte (page sans session) reste visible.
+     */
+    async function entries(type?: string): Promise<Array<Record<string, unknown>>> {
+        const { box } = await load();
+        const all = (await box.list()) as Array<Record<string, unknown>>;
+        const account = options?.account ?? null;
+        const mine = (entry: Record<string, unknown>) => account === null || typeof entry.account !== 'string' || entry.account === '' || entry.account === account;
+        return all.filter((entry) => (!type || entry.type === type) && mine(entry));
+    }
+
+    /** Retire une entrée (message abandonné par la personne) ; rend le nombre restant. */
+    async function remove(id: string) {
+        const { box } = await load();
+        await box.remove(id);
+        return refresh();
+    }
+
     function stop() {
         listening?.abort();
         listening = null;
     }
 
-    return { pending, lastFlush, ready, start, add, flush, refresh, stop };
+    return { pending, lastFlush, ready, start, add, flush, refresh, entries, remove, stop };
 });

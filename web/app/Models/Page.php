@@ -15,7 +15,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Page d'organisation (DATABASE_DICTIONARY.md §4 `pages`).
+ * Page d'organisation (DATABASE_DICTIONARY.md §4 `pages`). Visible des autres membres seulement une fois **approuvée**
+ * par la modération (`is_approved`, P8-03, P12-05) et active ; sa propriétaire la voit toujours (« En attente »).
+ * `is_verified` (badge « Page vérifiée ») et `is_featured` (« En avant », P12-05) sont distincts de l'approbation.
  */
 class Page extends Model
 {
@@ -37,8 +39,15 @@ class Page extends Model
         'owner_id',
         'followers_count',
         'is_verified',
+        'is_approved',
+        'approved_at',
+        'approved_by',
+        'is_featured',
         'is_active',
     ];
+
+    /** Image par défaut d'une page sans couverture (prototype : visuels hero-*). */
+    public const DEFAULT_COVER = 'assets/images/xomiton/hero-09.jpg';
 
     /**
      * @return array<string, string>
@@ -48,6 +57,9 @@ class Page extends Model
         return [
             'followers_count' => 'integer',
             'is_verified' => 'boolean',
+            'is_approved' => 'boolean',
+            'approved_at' => 'datetime',
+            'is_featured' => 'boolean',
             'is_active' => 'boolean',
         ];
     }
@@ -98,6 +110,39 @@ class Page extends Model
     public function scopeVerified(Builder $query): void
     {
         $query->where('is_verified', true);
+    }
+
+    /**
+     * Approuvée par la modération (P12-05) : condition pour être vue des autres membres.
+     *
+     * @param  Builder<Page>  $query
+     */
+    public function scopeApproved(Builder $query): void
+    {
+        $query->where('is_approved', true);
+    }
+
+    /**
+     * Pages lisibles par un·e membre : approuvées et actives, ou les siennes (même en attente ou désactivées).
+     *
+     * @param  Builder<Page>  $query
+     */
+    public function scopeVisibleTo(Builder $query, User $viewer): void
+    {
+        $query->where(static function (Builder $q) use ($viewer): void {
+            $q->where(static fn (Builder $r) => $r->where('is_approved', true)->where('is_active', true))
+                ->orWhere('owner_id', $viewer->getKey());
+        });
+    }
+
+    public function isPubliclyVisible(): bool
+    {
+        return $this->is_approved && $this->is_active && ! $this->trashed();
+    }
+
+    public function isOwnedBy(User $user): bool
+    {
+        return $this->owner_id !== null && (int) $this->owner_id === (int) $user->getKey();
     }
 
     /**

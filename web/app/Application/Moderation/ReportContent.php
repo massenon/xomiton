@@ -14,6 +14,7 @@ use App\Enums\ModerationStatus;
 use App\Enums\PostStatus;
 use App\Models\AuditLog;
 use App\Models\Comment;
+use App\Models\Message;
 use App\Models\ModerationReport;
 use App\Models\Post;
 use App\Models\User;
@@ -33,7 +34,9 @@ use Throwable;
  *  - `posts.reports_count` compte les signalements des membres (jamais ceux du filtre automatique) ;
  *  - RG-16 (AutoHideRule) : au seuil de signalements **en attente** de personnes distinctes, le contenu est masqué
  *    (`status = masque`, motif lisible par l'équipe), journalisé `moderation.auto_hidden` par le système ;
- *  - l'extrait (255 car.) est figé pour rester lisible si le contenu est supprimé ; il ne sort jamais dans une notification.
+ *  - l'extrait (255 car.) est figé pour rester lisible si le contenu est supprimé ; il ne sort jamais dans une notification ;
+ *  - message privé ou personne (P8-01, `confidential()`) : même dédoublonnage, même événement, **sans extrait** (corps
+ *    chiffré au repos, `excerpt` en clair, ADR-33) ni compteur ni masquage automatique.
  */
 final class ReportContent
 {
@@ -59,10 +62,35 @@ final class ReportContent
 
     public function byMember(User $reporter, Post|Comment $subject, ContentReportReason $reason, ?string $details = null): ReportOutcome
     {
+        return $this->once($reporter, $subject, $reason, $details, function () use ($subject): bool {
+            if ($subject instanceof Post) {
+                $this->counters->increment($subject, 'reports_count');
+            }
+
+            return $this->applyAutoHide($subject);
+        });
+    }
+
+    /**
+     * Signalement d'un message privé (ou de l'autre personne d'une conversation sans message reçu) : sans extrait, sans
+     * compteur ni masquage automatique (RG-16 vise le fil).
+     */
+    public function confidential(User $reporter, Message|User $subject, ContentReportReason $reason, ?string $details = null): ReportOutcome
+    {
+        return $this->once($reporter, $subject, $reason, $details, null);
+    }
+
+    /**
+     * Un signalement par personne et par sujet : contrôle et insertion sous verrou de la ligne du sujet (deux envois
+     * simultanés, même personne, ou deux personnes au seuil RG-16, passent l'un après l'autre) ; `$after` (dans la
+     * transaction, signalement créé seulement) rend vrai si le contenu a été masqué.
+     *
+     * @param  (callable(): bool)|null  $after
+     */
+    private function once(User $reporter, Post|Comment|Message|User $subject, ContentReportReason $reason, ?string $details, ?callable $after): ReportOutcome
+    {
         /** @var array{0: ModerationReport, 1: bool, 2: bool} $result */
-        $result = DB::transaction(function () use ($reporter, $subject, $reason, $details): array {
-            // Verrou sur la ligne du sujet : deux envois simultanés (même personne, ou deux personnes au seuil RG-16)
-            // passent l'un après l'autre, sans doublon ni seuil franchi sans masquage.
+        $result = DB::transaction(function () use ($reporter, $subject, $reason, $details, $after): array {
             $subject->newQuery()->whereKey($subject->getKey())->lockForUpdate()->value($subject->getKeyName());
 
             $existing = ModerationReport::query()->forSubject($subject)->where('reporter_user_id', $reporter->getKey())->first();
@@ -77,11 +105,7 @@ final class ReportContent
                 'details' => $details === null || trim($details) === '' ? null : Str::limit(trim($details), 500, ''),
             ]);
 
-            if ($subject instanceof Post) {
-                $this->counters->increment($subject, 'reports_count');
-            }
-
-            return [$report, true, $this->applyAutoHide($subject)];
+            return [$report, true, $after === null ? false : $after()];
         });
 
         [$report, $created, $hidden] = $result;
@@ -114,16 +138,21 @@ final class ReportContent
     /**
      * @param  array<string, mixed>  $attributes
      */
-    private function createReport(Post|Comment $subject, array $attributes): ModerationReport
+    private function createReport(Post|Comment|Message|User $subject, array $attributes): ModerationReport
     {
-        $kind = $subject instanceof Post ? ModerationKind::Post : ModerationKind::Comment;
+        $kind = match (true) {
+            $subject instanceof Post => ModerationKind::Post,
+            $subject instanceof Comment => ModerationKind::Comment,
+            $subject instanceof Message => ModerationKind::Message,
+            default => ModerationKind::User,
+        };
 
         return ModerationReport::query()->create($attributes + [
             'kind' => $kind,
             'subject_type' => $subject->getMorphClass(),
             'subject_id' => $subject->getKey(),
-            'excerpt' => self::excerpt($subject),
-            'reported_user_id' => $subject->user_id,
+            'excerpt' => $subject instanceof Post || $subject instanceof Comment ? self::excerpt($subject) : null,
+            'reported_user_id' => $subject instanceof User ? $subject->getKey() : $subject->user_id,
             'status' => ModerationStatus::Pending,
         ]);
     }

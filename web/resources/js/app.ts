@@ -38,12 +38,14 @@ const pages = import.meta.glob<{ default: DefineComponent }>('./Pages/**/*.vue')
 
 /** Textes neutres des avis de la boîte d'envoi : mêmes clés que partials/offline.blade.php (lang/fr/offline.php). */
 const OUTBOX_TEXTS = ['queued', 'report_sent_title', 'report_sent', 'report_keep', 'report_failed_title', 'report_failed', 'report_resume',
-    'sos_sent', 'sos_failed_title', 'sos_failed', 'sos_contacts', 'copy', 'copied', 'print', 'close'];
+    'sos_sent', 'sos_failed_title', 'sos_failed', 'sos_contacts', 'post_sent', 'post_failed_title', 'post_failed', 'post_resume',
+    'copy', 'copied', 'print', 'close'];
 
 const outboxTexts = (): Record<string, string> => ({
     ...Object.fromEntries(OUTBOX_TEXTS.map((key) => [key, t(`offline.outbox.${key}`)])),
     report_url: route('signaler', undefined, '/signaler'),
     urgences_url: route('urgences', undefined, '/urgences'),
+    feed_url: route('fil', undefined, '/fil'),
 });
 
 const hydrate = (props: Partial<SharedProps>) => {

@@ -30,6 +30,10 @@ use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
+use App\Http\Controllers\Web\Member\FeedPageController;
+use App\Http\Controllers\Web\Member\GroupsPageController;
+use App\Http\Controllers\Web\Member\MessagesPageController;
+use App\Http\Controllers\Web\Member\PagesPageController;
 use App\Http\Controllers\Web\Member\PlaceholderPageController;
 use App\Http\Controllers\Web\Newsletter\LegacyNewsletterRedirectController;
 use App\Http\Controllers\Web\Newsletter\NewsletterConfirmationController;
@@ -196,13 +200,19 @@ Route::get('/p/{ulid}', SharedPostController::class)->where('ulid', '[0-9A-HJKMN
 Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use ($memberPlaceholder): void {
     // P6-04 : catalogue des composants Xm* (local et recette, 404 ailleurs), page de démonstration de la coquille Inertia.
     Route::get('/design-system/vue', DesignSystemVueController::class)->name('design-system.vue');
-    $memberPlaceholder('/fil', 'fil', 'feed', 'fil.php', aside: true);
-    $memberPlaceholder('/fil/{post}', 'fil.show', 'post', 'post-details.php');
-    $memberPlaceholder('/messages', 'messages', 'messages', 'messaging.php');
-    $memberPlaceholder('/groupes', 'groupes.index', 'groups', 'groups.php');
-    $memberPlaceholder('/groupes/{group}', 'groupes.show', 'group', 'group-details.php');
-    $memberPlaceholder('/pages', 'pages.index', 'pages', 'pages.php');
-    $memberPlaceholder('/pages/creer', 'pages.create', 'page_create', 'create-page.php');
+    // P7-03 à P7-06 (lot fil-ecrans) : fil, publications enregistrées, détail par ULID (ADR-27 ; invisible → 404).
+    Route::get('/fil', [FeedPageController::class, 'index'])->name('fil');
+    Route::get('/fil/enregistres', [FeedPageController::class, 'saved'])->name('fil.saved');
+    Route::get('/fil/{post:ulid}', [FeedPageController::class, 'show'])->where('post', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('fil.show');
+    // P8-01 : messagerie (liste + conversation, sondage court, boîte d'envoi hors connexion).
+    Route::get('/messages', MessagesPageController::class)->name('messages');
+    // P8-02, P8-03 (lot groupes-pages) : groupes et pages d'organisations par ULID (ADR-27 ; invisible → 404, groupe privé
+    // d'une non-membre → fiche réduite, page non approuvée → 404 sauf propriétaire et modération).
+    Route::get('/groupes', [GroupsPageController::class, 'index'])->name('groupes.index');
+    Route::get('/groupes/{group:ulid}', [GroupsPageController::class, 'show'])->where('group', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('groupes.show');
+    Route::get('/pages', [PagesPageController::class, 'index'])->name('pages.index');
+    Route::get('/pages/creer', [PagesPageController::class, 'create'])->name('pages.create');
+    Route::get('/pages/{page:ulid}', [PagesPageController::class, 'show'])->where('page', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('pages.show');
     $memberPlaceholder('/evenements', 'evenements.index', 'events', 'events.php');
     $memberPlaceholder('/evenements/{event}', 'evenements.show', 'event', 'event-details.php');
     $memberPlaceholder('/forums', 'forums.index', 'forums', 'forums.php');

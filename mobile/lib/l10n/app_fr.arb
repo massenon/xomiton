@@ -6188,6 +6188,50 @@
     "@common_zone": {
         "description": "common.zone"
     },
+    "community_api_attributes_category": "catégorie",
+    "@community_api_attributes_category": {
+        "description": "community.api.attributes.category"
+    },
+    "community_api_attributes_description": "description",
+    "@community_api_attributes_description": {
+        "description": "community.api.attributes.description"
+    },
+    "community_api_attributes_name": "nom",
+    "@community_api_attributes_name": {
+        "description": "community.api.attributes.name"
+    },
+    "community_api_attributes_per_page": "nombre par page",
+    "@community_api_attributes_per_page": {
+        "description": "community.api.attributes.per_page"
+    },
+    "community_api_attributes_privacy": "confidentialité",
+    "@community_api_attributes_privacy": {
+        "description": "community.api.attributes.privacy"
+    },
+    "community_api_attributes_q": "recherche",
+    "@community_api_attributes_q": {
+        "description": "community.api.attributes.q"
+    },
+    "community_api_attributes_role": "rôle",
+    "@community_api_attributes_role": {
+        "description": "community.api.attributes.role"
+    },
+    "community_api_attributes_status": "statut",
+    "@community_api_attributes_status": {
+        "description": "community.api.attributes.status"
+    },
+    "community_api_attributes_tab": "onglet",
+    "@community_api_attributes_tab": {
+        "description": "community.api.attributes.tab"
+    },
+    "community_api_attributes_website": "site web",
+    "@community_api_attributes_website": {
+        "description": "community.api.attributes.website"
+    },
+    "community_api_attributes_zone_id": "zone",
+    "@community_api_attributes_zone_id": {
+        "description": "community.api.attributes.zone_id"
+    },
     "community_events_all": "Tous",
     "@community_events_all": {
         "description": "community.events.all"
@@ -6721,6 +6765,75 @@
             }
         }
     },
+    "community_groups_actions_accept": "Accepter",
+    "@community_groups_actions_accept": {
+        "description": "community.groups.actions.accept"
+    },
+    "community_groups_actions_cancel_request": "Annuler ma demande",
+    "@community_groups_actions_cancel_request": {
+        "description": "community.groups.actions.cancel_request"
+    },
+    "community_groups_actions_decline": "Refuser",
+    "@community_groups_actions_decline": {
+        "description": "community.groups.actions.decline"
+    },
+    "community_groups_actions_join": "Rejoindre",
+    "@community_groups_actions_join": {
+        "description": "community.groups.actions.join"
+    },
+    "community_groups_actions_join_group": "Rejoindre le groupe",
+    "@community_groups_actions_join_group": {
+        "description": "community.groups.actions.join_group"
+    },
+    "community_groups_actions_leave": "Quitter le groupe",
+    "@community_groups_actions_leave": {
+        "description": "community.groups.actions.leave"
+    },
+    "community_groups_actions_make_admin": "Nommer admin",
+    "@community_groups_actions_make_admin": {
+        "description": "community.groups.actions.make_admin"
+    },
+    "community_groups_actions_make_member": "Repasser membre",
+    "@community_groups_actions_make_member": {
+        "description": "community.groups.actions.make_member"
+    },
+    "community_groups_actions_make_moderator": "Nommer modérateur·rice",
+    "@community_groups_actions_make_moderator": {
+        "description": "community.groups.actions.make_moderator"
+    },
+    "community_groups_actions_member": "Membre",
+    "@community_groups_actions_member": {
+        "description": "community.groups.actions.member"
+    },
+    "community_groups_actions_member_actions": "Actions pour {name}",
+    "@community_groups_actions_member_actions": {
+        "description": "community.groups.actions.member_actions",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_groups_actions_member_leave": "Membre – Quitter",
+    "@community_groups_actions_member_leave": {
+        "description": "community.groups.actions.member_leave"
+    },
+    "community_groups_actions_remove": "Retirer du groupe",
+    "@community_groups_actions_remove": {
+        "description": "community.groups.actions.remove"
+    },
+    "community_groups_actions_request": "Demander à rejoindre",
+    "@community_groups_actions_request": {
+        "description": "community.groups.actions.request"
+    },
+    "community_groups_actions_requested": "Demande envoyée",
+    "@community_groups_actions_requested": {
+        "description": "community.groups.actions.requested"
+    },
+    "community_groups_actions_see": "Voir",
+    "@community_groups_actions_see": {
+        "description": "community.groups.actions.see"
+    },
     "community_groups_cover_alt": "Couverture du groupe : {name}",
     "@community_groups_cover_alt": {
         "description": "community.groups.cover_alt",
@@ -6759,7 +6872,7 @@
     "@community_groups_create_privacy": {
         "description": "community.groups.create.privacy"
     },
-    "community_groups_create_privacy_private_help": "Invisible pour les non-membres ; les demandes sont validées par l’équipe du groupe.",
+    "community_groups_create_privacy_private_help": "Absent de « Découvrir » : on le rejoint par son lien, sur demande validée par l’équipe du groupe. Publications et membres réservés aux membres.",
     "@community_groups_create_privacy_private_help": {
         "description": "community.groups.create.privacy_private_help"
     },
@@ -6795,6 +6908,10 @@
     "@community_groups_detail_all_groups": {
         "description": "community.groups.detail.all_groups"
     },
+    "community_groups_detail_aside": "Autour du groupe",
+    "@community_groups_detail_aside": {
+        "description": "community.groups.detail.aside"
+    },
     "community_groups_detail_charter": "Ce groupe est régi par la charte Xomiton : respect, confidentialité, aucune photo ni information sur une personne sans son accord. Tout contenu discriminatoire sera modéré.",
     "@community_groups_detail_charter": {
         "description": "community.groups.detail.charter"
@@ -6816,13 +6933,50 @@
     "@community_groups_detail_events": {
         "description": "community.groups.detail.events"
     },
+    "community_groups_detail_hidden_members": "{count, plural, =1{Et {count} autre membre au profil privé.} other{Et {count} autres membres aux profils privés.}}",
+    "@community_groups_detail_hidden_members": {
+        "description": "community.groups.detail.hidden_members",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "community_groups_detail_join_to_post": "Rejoins le groupe pour publier et commenter.",
     "@community_groups_detail_join_to_post": {
         "description": "community.groups.detail.join_to_post"
     },
+    "community_groups_detail_kind_private": "Groupe privé",
+    "@community_groups_detail_kind_private": {
+        "description": "community.groups.detail.kind_private"
+    },
+    "community_groups_detail_kind_public": "Groupe public",
+    "@community_groups_detail_kind_public": {
+        "description": "community.groups.detail.kind_public"
+    },
+    "community_groups_detail_leave_body": "Tu ne verras plus le contenu réservé aux membres. Tu pourras le rejoindre à nouveau.",
+    "@community_groups_detail_leave_body": {
+        "description": "community.groups.detail.leave_body"
+    },
+    "community_groups_detail_leave_private_body": "Ce groupe est privé : pour revenir, il faudra une nouvelle demande validée par son équipe.",
+    "@community_groups_detail_leave_private_body": {
+        "description": "community.groups.detail.leave_private_body"
+    },
+    "community_groups_detail_leave_title": "Quitter le groupe ?",
+    "@community_groups_detail_leave_title": {
+        "description": "community.groups.detail.leave_title"
+    },
     "community_groups_detail_members": "Membres",
     "@community_groups_detail_members": {
         "description": "community.groups.detail.members"
+    },
+    "community_groups_detail_members_empty": "Aucun membre à afficher.",
+    "@community_groups_detail_members_empty": {
+        "description": "community.groups.detail.members_empty"
+    },
+    "community_groups_detail_owner": "Propriétaire",
+    "@community_groups_detail_owner": {
+        "description": "community.groups.detail.owner"
     },
     "community_groups_detail_pending": "Ta demande est envoyée. L’équipe du groupe te répondra bientôt.",
     "@community_groups_detail_pending": {
@@ -6832,9 +6986,51 @@
     "@community_groups_detail_posts": {
         "description": "community.groups.detail.posts"
     },
+    "community_groups_detail_posts_empty": "Aucune publication dans ce groupe pour l’instant.",
+    "@community_groups_detail_posts_empty": {
+        "description": "community.groups.detail.posts_empty"
+    },
     "community_groups_detail_private_hidden": "Ce groupe est privé. Son contenu est réservé à ses membres.",
     "@community_groups_detail_private_hidden": {
         "description": "community.groups.detail.private_hidden"
+    },
+    "community_groups_detail_remove_body": "Cette personne ne verra plus le contenu réservé aux membres.",
+    "@community_groups_detail_remove_body": {
+        "description": "community.groups.detail.remove_body"
+    },
+    "community_groups_detail_remove_title": "Retirer {name} du groupe ?",
+    "@community_groups_detail_remove_title": {
+        "description": "community.groups.detail.remove_title",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_groups_detail_requests": "Demandes en attente",
+    "@community_groups_detail_requests": {
+        "description": "community.groups.detail.requests"
+    },
+    "community_groups_detail_requests_empty": "Aucune demande en attente.",
+    "@community_groups_detail_requests_empty": {
+        "description": "community.groups.detail.requests_empty"
+    },
+    "community_groups_detail_role_change": "Changer le rôle de {name}",
+    "@community_groups_detail_role_change": {
+        "description": "community.groups.detail.role_change",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_groups_detail_see_all": "Tout voir",
+    "@community_groups_detail_see_all": {
+        "description": "community.groups.detail.see_all"
+    },
+    "community_groups_detail_visibility_members": "Membres du groupe",
+    "@community_groups_detail_visibility_members": {
+        "description": "community.groups.detail.visibility_members"
     },
     "community_groups_detail_write": "Écrire dans le groupe…",
     "@community_groups_detail_write": {
@@ -6856,6 +7052,10 @@
     "@community_groups_errors_not_found": {
         "description": "community.groups.errors.not_found"
     },
+    "community_groups_errors_not_manageable": "Tu ne peux pas faire cela pour cette personne.",
+    "@community_groups_errors_not_manageable": {
+        "description": "community.groups.errors.not_manageable"
+    },
     "community_groups_errors_not_member": "Tu dois être membre du groupe pour faire cela.",
     "@community_groups_errors_not_member": {
         "description": "community.groups.errors.not_member"
@@ -6863,6 +7063,15 @@
     "community_groups_intro": "Des cercles d’entraide pour échanger en toute sécurité.",
     "@community_groups_intro": {
         "description": "community.groups.intro"
+    },
+    "community_groups_loaded": "{count, plural, =1{{count} groupe de plus.} other{{count} groupes de plus.}}",
+    "@community_groups_loaded": {
+        "description": "community.groups.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "community_groups_members": "{count, plural, =0{Aucun membre} =1{{count} membre} other{{count} membres}}",
     "@community_groups_members": {
@@ -6913,6 +7122,10 @@
     "@community_groups_toasts_request_accepted": {
         "description": "community.groups.toasts.request_accepted"
     },
+    "community_groups_toasts_request_cancelled": "Demande annulée.",
+    "@community_groups_toasts_request_cancelled": {
+        "description": "community.groups.toasts.request_cancelled"
+    },
     "community_groups_toasts_request_declined": "Demande refusée.",
     "@community_groups_toasts_request_declined": {
         "description": "community.groups.toasts.request_declined"
@@ -6920,6 +7133,10 @@
     "community_groups_toasts_requested": "Demande envoyée.",
     "@community_groups_toasts_requested": {
         "description": "community.groups.toasts.requested"
+    },
+    "community_groups_toasts_role_changed": "Rôle modifié.",
+    "@community_groups_toasts_role_changed": {
+        "description": "community.groups.toasts.role_changed"
     },
     "community_groups_toasts_updated": "Groupe modifié.",
     "@community_groups_toasts_updated": {
@@ -6995,6 +7212,14 @@
     "@community_messages_actions_delete": {
         "description": "community.messages.actions.delete"
     },
+    "community_messages_actions_delete_message": "Supprimer pour tout le monde",
+    "@community_messages_actions_delete_message": {
+        "description": "community.messages.actions.delete_message"
+    },
+    "community_messages_actions_hide": "Masquer la conversation",
+    "@community_messages_actions_hide": {
+        "description": "community.messages.actions.hide"
+    },
     "community_messages_actions_info": "Informations",
     "@community_messages_actions_info": {
         "description": "community.messages.actions.info"
@@ -7006,6 +7231,18 @@
     "community_messages_actions_mute": "Mettre en sourdine",
     "@community_messages_actions_mute": {
         "description": "community.messages.actions.mute"
+    },
+    "community_messages_actions_mute_1w": "Sourdine 1 semaine",
+    "@community_messages_actions_mute_1w": {
+        "description": "community.messages.actions.mute_1w"
+    },
+    "community_messages_actions_mute_8h": "Sourdine 8 h",
+    "@community_messages_actions_mute_8h": {
+        "description": "community.messages.actions.mute_8h"
+    },
+    "community_messages_actions_mute_always": "Sourdine jusqu’à réactivation",
+    "@community_messages_actions_mute_always": {
+        "description": "community.messages.actions.mute_always"
     },
     "community_messages_actions_report": "Signaler cette conversation",
     "@community_messages_actions_report": {
@@ -7019,9 +7256,126 @@
     "@community_messages_actions_unmute": {
         "description": "community.messages.actions.unmute"
     },
+    "community_messages_admin": "Admin",
+    "@community_messages_admin": {
+        "description": "community.messages.admin"
+    },
+    "community_messages_api_attributes_after": "dernier message reçu",
+    "@community_messages_api_attributes_after": {
+        "description": "community.messages.api.attributes.after"
+    },
+    "community_messages_api_attributes_attachment": "pièce jointe",
+    "@community_messages_api_attributes_attachment": {
+        "description": "community.messages.api.attributes.attachment"
+    },
+    "community_messages_api_attributes_body": "message",
+    "@community_messages_api_attributes_body": {
+        "description": "community.messages.api.attributes.body"
+    },
+    "community_messages_api_attributes_client_uuid": "identifiant d’envoi",
+    "@community_messages_api_attributes_client_uuid": {
+        "description": "community.messages.api.attributes.client_uuid"
+    },
+    "community_messages_api_attributes_details": "précisions",
+    "@community_messages_api_attributes_details": {
+        "description": "community.messages.api.attributes.details"
+    },
+    "community_messages_api_attributes_duration": "durée de la sourdine",
+    "@community_messages_api_attributes_duration": {
+        "description": "community.messages.api.attributes.duration"
+    },
+    "community_messages_api_attributes_filter": "filtre",
+    "@community_messages_api_attributes_filter": {
+        "description": "community.messages.api.attributes.filter"
+    },
+    "community_messages_api_attributes_kind": "type de conversation",
+    "@community_messages_api_attributes_kind": {
+        "description": "community.messages.api.attributes.kind"
+    },
+    "community_messages_api_attributes_message_id": "message",
+    "@community_messages_api_attributes_message_id": {
+        "description": "community.messages.api.attributes.message_id"
+    },
+    "community_messages_api_attributes_per_page": "nombre par page",
+    "@community_messages_api_attributes_per_page": {
+        "description": "community.messages.api.attributes.per_page"
+    },
+    "community_messages_api_attributes_q": "recherche",
+    "@community_messages_api_attributes_q": {
+        "description": "community.messages.api.attributes.q"
+    },
+    "community_messages_api_attributes_reason": "motif",
+    "@community_messages_api_attributes_reason": {
+        "description": "community.messages.api.attributes.reason"
+    },
+    "community_messages_api_attributes_title": "nom de la conversation",
+    "@community_messages_api_attributes_title": {
+        "description": "community.messages.api.attributes.title"
+    },
+    "community_messages_api_attributes_user_id": "personne",
+    "@community_messages_api_attributes_user_id": {
+        "description": "community.messages.api.attributes.user_id"
+    },
+    "community_messages_api_attributes_user_ids": "personnes",
+    "@community_messages_api_attributes_user_ids": {
+        "description": "community.messages.api.attributes.user_ids"
+    },
+    "community_messages_api_client_uuid_conflict": "Cet identifiant d’envoi est déjà utilisé. Recharge la page puis réessaie.",
+    "@community_messages_api_client_uuid_conflict": {
+        "description": "community.messages.api.client_uuid_conflict"
+    },
+    "community_messages_api_conversation_unavailable": "Cette conversation n’est plus disponible.",
+    "@community_messages_api_conversation_unavailable": {
+        "description": "community.messages.api.conversation_unavailable"
+    },
+    "community_messages_api_group_only": "Cette action est réservée aux conversations de groupe.",
+    "@community_messages_api_group_only": {
+        "description": "community.messages.api.group_only"
+    },
+    "community_messages_api_nothing_to_report": "Aucun message d’une autre personne à signaler dans cette conversation.",
+    "@community_messages_api_nothing_to_report": {
+        "description": "community.messages.api.nothing_to_report"
+    },
+    "community_messages_api_participants_max": "Une conversation de groupe compte au plus {max} personnes.",
+    "@community_messages_api_participants_max": {
+        "description": "community.messages.api.participants_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_api_private_only": "Cette action est réservée aux conversations privées.",
+    "@community_messages_api_private_only": {
+        "description": "community.messages.api.private_only"
+    },
+    "community_messages_api_recipient_unavailable": "Cette personne ne peut pas recevoir de message pour le moment.",
+    "@community_messages_api_recipient_unavailable": {
+        "description": "community.messages.api.recipient_unavailable"
+    },
     "community_messages_attach": "Joindre un fichier",
     "@community_messages_attach": {
         "description": "community.messages.attach"
+    },
+    "community_messages_attachment": "Pièce jointe",
+    "@community_messages_attachment": {
+        "description": "community.messages.attachment"
+    },
+    "community_messages_attachment_hint": "Image (JPEG, PNG, WebP) ou PDF",
+    "@community_messages_attachment_hint": {
+        "description": "community.messages.attachment_hint"
+    },
+    "community_messages_attachment_image_alt": "Image envoyée dans la conversation",
+    "@community_messages_attachment_image_alt": {
+        "description": "community.messages.attachment_image_alt"
+    },
+    "community_messages_attachment_open": "Ouvrir la pièce jointe (PDF)",
+    "@community_messages_attachment_open": {
+        "description": "community.messages.attachment_open"
+    },
+    "community_messages_attachment_remove": "Retirer la pièce jointe",
+    "@community_messages_attachment_remove": {
+        "description": "community.messages.attachment_remove"
     },
     "community_messages_avatar_alt": "Avatar de la conversation",
     "@community_messages_avatar_alt": {
@@ -7046,6 +7400,43 @@
     "community_messages_compose_label": "Message",
     "@community_messages_compose_label": {
         "description": "community.messages.compose_label"
+    },
+    "community_messages_confirm_block": "Bloquer {name} ? Cette personne ne pourra plus t’écrire ni voir tes publications.",
+    "@community_messages_confirm_block": {
+        "description": "community.messages.confirm.block",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_confirm_block_title": "Bloquer cette personne",
+    "@community_messages_confirm_block_title": {
+        "description": "community.messages.confirm.block_title"
+    },
+    "community_messages_confirm_delete": "Supprimer ce message pour tout le monde ?",
+    "@community_messages_confirm_delete": {
+        "description": "community.messages.confirm.delete"
+    },
+    "community_messages_confirm_delete_title": "Supprimer le message",
+    "@community_messages_confirm_delete_title": {
+        "description": "community.messages.confirm.delete_title"
+    },
+    "community_messages_confirm_hide": "Masquer cette conversation ? Elle reviendra si tu reçois un nouveau message.",
+    "@community_messages_confirm_hide": {
+        "description": "community.messages.confirm.hide"
+    },
+    "community_messages_confirm_hide_title": "Masquer la conversation",
+    "@community_messages_confirm_hide_title": {
+        "description": "community.messages.confirm.hide_title"
+    },
+    "community_messages_confirm_leave": "Quitter cette conversation ? Tu ne recevras plus ses messages.",
+    "@community_messages_confirm_leave": {
+        "description": "community.messages.confirm.leave"
+    },
+    "community_messages_confirm_leave_title": "Quitter la conversation",
+    "@community_messages_confirm_leave_title": {
+        "description": "community.messages.confirm.leave_title"
     },
     "community_messages_danger_hint": "En danger ? Utilise le signalement anonyme ou le SOS.",
     "@community_messages_danger_hint": {
@@ -7079,6 +7470,10 @@
     "@community_messages_errors_empty": {
         "description": "community.messages.errors.empty"
     },
+    "community_messages_errors_load_failed": "Impossible de charger les messages. Vérifie ta connexion.",
+    "@community_messages_errors_load_failed": {
+        "description": "community.messages.errors.load_failed"
+    },
     "community_messages_errors_not_found": "Cette conversation est introuvable.",
     "@community_messages_errors_not_found": {
         "description": "community.messages.errors.not_found"
@@ -7086,6 +7481,10 @@
     "community_messages_errors_not_participant": "Tu ne fais pas partie de cette conversation.",
     "@community_messages_errors_not_participant": {
         "description": "community.messages.errors.not_participant"
+    },
+    "community_messages_errors_send_failed": "Le message n’est pas parti. Réessaie.",
+    "@community_messages_errors_send_failed": {
+        "description": "community.messages.errors.send_failed"
     },
     "community_messages_errors_too_long": "Message trop long ({max} caractères maximum).",
     "@community_messages_errors_too_long": {
@@ -7100,17 +7499,147 @@
     "@community_messages_failed": {
         "description": "community.messages.failed"
     },
-    "community_messages_intro": "Messages chiffrés sur nos serveurs. Seules les personnes de la conversation peuvent les lire.",
+    "community_messages_filters_all": "Toutes",
+    "@community_messages_filters_all": {
+        "description": "community.messages.filters.all"
+    },
+    "community_messages_filters_label": "Filtrer les conversations",
+    "@community_messages_filters_label": {
+        "description": "community.messages.filters.label"
+    },
+    "community_messages_filters_unread": "Non lues",
+    "@community_messages_filters_unread": {
+        "description": "community.messages.filters.unread"
+    },
+    "community_messages_group_default_title": "Conversation de groupe",
+    "@community_messages_group_default_title": {
+        "description": "community.messages.group_default_title"
+    },
+    "community_messages_incoming": "Nouveau message de {name}",
+    "@community_messages_incoming": {
+        "description": "community.messages.incoming",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_intro": "Messages chiffrés sur nos serveurs. L’équipe n’y accède qu’en cas de signalement.",
     "@community_messages_intro": {
         "description": "community.messages.intro"
+    },
+    "community_messages_load_older": "Afficher les messages plus anciens",
+    "@community_messages_load_older": {
+        "description": "community.messages.load_older"
+    },
+    "community_messages_loading": "Chargement des messages…",
+    "@community_messages_loading": {
+        "description": "community.messages.loading"
+    },
+    "community_messages_menu": "Options de la conversation",
+    "@community_messages_menu": {
+        "description": "community.messages.menu"
+    },
+    "community_messages_muted_label": "En sourdine",
+    "@community_messages_muted_label": {
+        "description": "community.messages.muted_label"
     },
     "community_messages_new": "Nouvelle conversation",
     "@community_messages_new": {
         "description": "community.messages.new"
     },
+    "community_messages_new_dialog_add": "Ajouter {name}",
+    "@community_messages_new_dialog_add": {
+        "description": "community.messages.new_dialog.add",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_new_dialog_create": "Créer la conversation",
+    "@community_messages_new_dialog_create": {
+        "description": "community.messages.new_dialog.create"
+    },
+    "community_messages_new_dialog_group": "Groupe",
+    "@community_messages_new_dialog_group": {
+        "description": "community.messages.new_dialog.group"
+    },
+    "community_messages_new_dialog_group_title": "Nom de la conversation",
+    "@community_messages_new_dialog_group_title": {
+        "description": "community.messages.new_dialog.group_title"
+    },
+    "community_messages_new_dialog_group_title_placeholder": "Ex. : Cercle des sœurs",
+    "@community_messages_new_dialog_group_title_placeholder": {
+        "description": "community.messages.new_dialog.group_title_placeholder"
+    },
+    "community_messages_new_dialog_no_people": "Aucune personne trouvée.",
+    "@community_messages_new_dialog_no_people": {
+        "description": "community.messages.new_dialog.no_people"
+    },
+    "community_messages_new_dialog_private": "Message privé",
+    "@community_messages_new_dialog_private": {
+        "description": "community.messages.new_dialog.private"
+    },
+    "community_messages_new_dialog_remove": "Retirer {name}",
+    "@community_messages_new_dialog_remove": {
+        "description": "community.messages.new_dialog.remove",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_new_dialog_search": "Rechercher une personne",
+    "@community_messages_new_dialog_search": {
+        "description": "community.messages.new_dialog.search"
+    },
+    "community_messages_new_dialog_search_hint": "Tape au moins {min} caractères.",
+    "@community_messages_new_dialog_search_hint": {
+        "description": "community.messages.new_dialog.search_hint",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_new_dialog_search_placeholder": "Début du pseudonyme…",
+    "@community_messages_new_dialog_search_placeholder": {
+        "description": "community.messages.new_dialog.search_placeholder"
+    },
+    "community_messages_new_dialog_selected": "{count, plural, =0{Aucune personne sélectionnée} =1{{count} personne sélectionnée} other{{count} personnes sélectionnées}}",
+    "@community_messages_new_dialog_selected": {
+        "description": "community.messages.new_dialog.selected",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "community_messages_new_dialog_start": "Écrire à {name}",
+    "@community_messages_new_dialog_start": {
+        "description": "community.messages.new_dialog.start",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_new_dialog_suggestions": "Tes connexions",
+    "@community_messages_new_dialog_suggestions": {
+        "description": "community.messages.new_dialog.suggestions"
+    },
+    "community_messages_new_dialog_title": "Nouvelle conversation",
+    "@community_messages_new_dialog_title": {
+        "description": "community.messages.new_dialog.title"
+    },
     "community_messages_new_group": "Nouvelle conversation de groupe",
     "@community_messages_new_group": {
         "description": "community.messages.new_group"
+    },
+    "community_messages_offline_notice": "Tu es hors connexion : tes messages partiront dès le retour du réseau.",
+    "@community_messages_offline_notice": {
+        "description": "community.messages.offline_notice"
     },
     "community_messages_participants": "{count, plural, =1{{count} participant·e} other{{count} participant·es}}",
     "@community_messages_participants": {
@@ -7121,9 +7650,69 @@
             }
         }
     },
+    "community_messages_participants_title": "Participant·es",
+    "@community_messages_participants_title": {
+        "description": "community.messages.participants_title"
+    },
     "community_messages_pending": "En attente d’envoi",
     "@community_messages_pending": {
         "description": "community.messages.pending"
+    },
+    "community_messages_preview_from": "{name} : {text}",
+    "@community_messages_preview_from": {
+        "description": "community.messages.preview_from",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "text": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_preview_hidden": "Aperçu masqué",
+    "@community_messages_preview_hidden": {
+        "description": "community.messages.preview_hidden"
+    },
+    "community_messages_remove_pending": "Retirer ce message",
+    "@community_messages_remove_pending": {
+        "description": "community.messages.remove_pending"
+    },
+    "community_messages_report_anonymous_report": "Signalement anonyme",
+    "@community_messages_report_anonymous_report": {
+        "description": "community.messages.report.anonymous_report"
+    },
+    "community_messages_report_details": "Précisions (facultatif)",
+    "@community_messages_report_details": {
+        "description": "community.messages.report.details"
+    },
+    "community_messages_report_intro": "Ton signalement est transmis à l’équipe de modération, de façon confidentielle.",
+    "@community_messages_report_intro": {
+        "description": "community.messages.report.intro"
+    },
+    "community_messages_report_reason": "Motif",
+    "@community_messages_report_reason": {
+        "description": "community.messages.report.reason"
+    },
+    "community_messages_report_sos": "SOS",
+    "@community_messages_report_sos": {
+        "description": "community.messages.report.sos"
+    },
+    "community_messages_report_submit": "Envoyer le signalement",
+    "@community_messages_report_submit": {
+        "description": "community.messages.report.submit"
+    },
+    "community_messages_report_title": "Signaler cette conversation",
+    "@community_messages_report_title": {
+        "description": "community.messages.report.title"
+    },
+    "community_messages_retry": "Réessayer",
+    "@community_messages_retry": {
+        "description": "community.messages.retry"
+    },
+    "community_messages_retry_unavailable": "Pièce jointe perdue après le rechargement. Retire ce message puis renvoie-le.",
+    "@community_messages_retry_unavailable": {
+        "description": "community.messages.retry_unavailable"
     },
     "community_messages_search": "Rechercher une conversation…",
     "@community_messages_search": {
@@ -7149,6 +7738,10 @@
     "@community_messages_sent": {
         "description": "community.messages.sent"
     },
+    "community_messages_thread_label": "Messages de la conversation",
+    "@community_messages_thread_label": {
+        "description": "community.messages.thread_label"
+    },
     "community_messages_title": "Messages",
     "@community_messages_title": {
         "description": "community.messages.title"
@@ -7169,13 +7762,25 @@
     "@community_messages_toasts_deleted": {
         "description": "community.messages.toasts.deleted"
     },
+    "community_messages_toasts_hidden": "Conversation masquée.",
+    "@community_messages_toasts_hidden": {
+        "description": "community.messages.toasts.hidden"
+    },
     "community_messages_toasts_left": "Tu as quitté la conversation.",
     "@community_messages_toasts_left": {
         "description": "community.messages.toasts.left"
     },
+    "community_messages_toasts_message_deleted": "Message supprimé.",
+    "@community_messages_toasts_message_deleted": {
+        "description": "community.messages.toasts.message_deleted"
+    },
     "community_messages_toasts_muted": "Conversation en sourdine.",
     "@community_messages_toasts_muted": {
         "description": "community.messages.toasts.muted"
+    },
+    "community_messages_toasts_queued": "Message en attente d’envoi.",
+    "@community_messages_toasts_queued": {
+        "description": "community.messages.toasts.queued"
     },
     "community_messages_toasts_reported": "Signalement transmis à la modération. Merci.",
     "@community_messages_toasts_reported": {
@@ -7215,6 +7820,23 @@
             }
         }
     },
+    "community_messages_with_confirm": "Écrire à {name} ? La conversation n’apparaîtra chez cette personne qu’à ton premier message.",
+    "@community_messages_with_confirm": {
+        "description": "community.messages.with_confirm",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_messages_with_confirm_title": "Nouvelle conversation",
+    "@community_messages_with_confirm_title": {
+        "description": "community.messages.with_confirm_title"
+    },
+    "community_messages_with_unavailable": "Cette personne ne peut pas recevoir de message pour le moment.",
+    "@community_messages_with_unavailable": {
+        "description": "community.messages.with_unavailable"
+    },
     "community_messages_yesterday": "Hier",
     "@community_messages_yesterday": {
         "description": "community.messages.yesterday"
@@ -7223,13 +7845,50 @@
     "@community_messages_you": {
         "description": "community.messages.you"
     },
+    "community_pages_actions_create": "Créer une page",
+    "@community_pages_actions_create": {
+        "description": "community.pages.actions.create"
+    },
+    "community_pages_actions_follow": "Suivre la page",
+    "@community_pages_actions_follow": {
+        "description": "community.pages.actions.follow"
+    },
+    "community_pages_actions_following": "Abonné·e",
+    "@community_pages_actions_following": {
+        "description": "community.pages.actions.following"
+    },
+    "community_pages_actions_unfollow": "Ne plus suivre",
+    "@community_pages_actions_unfollow": {
+        "description": "community.pages.actions.unfollow"
+    },
+    "community_pages_actions_website": "Site web",
+    "@community_pages_actions_website": {
+        "description": "community.pages.actions.website"
+    },
     "community_pages_all_categories": "Toutes",
     "@community_pages_all_categories": {
         "description": "community.pages.all_categories"
     },
+    "community_pages_categories_label": "Catégories",
+    "@community_pages_categories_label": {
+        "description": "community.pages.categories_label"
+    },
+    "community_pages_cover_alt": "Couverture de la page : {name}",
+    "@community_pages_cover_alt": {
+        "description": "community.pages.cover_alt",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "community_pages_create_category": "Catégorie",
     "@community_pages_create_category": {
         "description": "community.pages.create.category"
+    },
+    "community_pages_create_category_invalid": "Choisis une catégorie de la liste.",
+    "@community_pages_create_category_invalid": {
+        "description": "community.pages.create.category_invalid"
     },
     "community_pages_create_description": "Description",
     "@community_pages_create_description": {
@@ -7246,6 +7905,15 @@
     "community_pages_create_name": "Nom de la page",
     "@community_pages_create_name": {
         "description": "community.pages.create.name"
+    },
+    "community_pages_create_name_min": "Le nom de la page doit contenir au moins {min} caractères.",
+    "@community_pages_create_name_min": {
+        "description": "community.pages.create.name_min",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
     },
     "community_pages_create_name_placeholder": "Ex. : Clinique amie de Parakou",
     "@community_pages_create_name_placeholder": {
@@ -7267,13 +7935,37 @@
     "@community_pages_create_website": {
         "description": "community.pages.create.website"
     },
+    "community_pages_detail_about": "À propos",
+    "@community_pages_detail_about": {
+        "description": "community.pages.detail.about"
+    },
+    "community_pages_detail_all_pages": "Toutes les pages",
+    "@community_pages_detail_all_pages": {
+        "description": "community.pages.detail.all_pages"
+    },
+    "community_pages_detail_no_description": "Cette organisation n’a pas encore ajouté de présentation.",
+    "@community_pages_detail_no_description": {
+        "description": "community.pages.detail.no_description"
+    },
     "community_pages_empty": "Aucune page trouvée.",
     "@community_pages_empty": {
         "description": "community.pages.empty"
     },
+    "community_pages_empty_following": "Tu ne suis aucune page pour l’instant. Découvre les organisations partenaires.",
+    "@community_pages_empty_following": {
+        "description": "community.pages.empty_following"
+    },
+    "community_pages_empty_mine": "Tu n’as créé aucune page.",
+    "@community_pages_empty_mine": {
+        "description": "community.pages.empty_mine"
+    },
     "community_pages_errors_not_found": "Cette page est introuvable.",
     "@community_pages_errors_not_found": {
         "description": "community.pages.errors.not_found"
+    },
+    "community_pages_featured": "En avant",
+    "@community_pages_featured": {
+        "description": "community.pages.featured"
     },
     "community_pages_followers": "{count, plural, =0{Aucun·e abonné·e} =1{{count} abonné·e} other{{count} abonné·es}}",
     "@community_pages_followers": {
@@ -7288,6 +7980,19 @@
     "@community_pages_intro": {
         "description": "community.pages.intro"
     },
+    "community_pages_loaded": "{count, plural, =1{{count} page de plus.} other{{count} pages de plus.}}",
+    "@community_pages_loaded": {
+        "description": "community.pages.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "community_pages_pending_banner": "Ta page attend la vérification de l’équipe de modération. D’ici là, elle n’est visible que par toi.",
+    "@community_pages_pending_banner": {
+        "description": "community.pages.pending_banner"
+    },
     "community_pages_pending_review": "En attente de vérification par l’équipe de modération.",
     "@community_pages_pending_review": {
         "description": "community.pages.pending_review"
@@ -7295,6 +8000,26 @@
     "community_pages_search": "Rechercher une page…",
     "@community_pages_search": {
         "description": "community.pages.search"
+    },
+    "community_pages_status_approved": "Approuvée",
+    "@community_pages_status_approved": {
+        "description": "community.pages.status.approved"
+    },
+    "community_pages_status_pending": "En attente de vérification",
+    "@community_pages_status_pending": {
+        "description": "community.pages.status.pending"
+    },
+    "community_pages_tabs_all": "Toutes les pages",
+    "@community_pages_tabs_all": {
+        "description": "community.pages.tabs.all"
+    },
+    "community_pages_tabs_following": "Mes abonnements",
+    "@community_pages_tabs_following": {
+        "description": "community.pages.tabs.following"
+    },
+    "community_pages_tabs_mine": "Mes pages",
+    "@community_pages_tabs_mine": {
+        "description": "community.pages.tabs.mine"
     },
     "community_pages_title": "Pages",
     "@community_pages_title": {
@@ -8631,7 +9356,7 @@
     "@design_system_vue_samples_empty_title": {
         "description": "design_system.vue.samples.empty_title"
     },
-    "design_system_vue_samples_faq_a": "Oui : seules les personnes de la conversation les lisent.",
+    "design_system_vue_samples_faq_a": "Ils sont chiffrés sur nos serveurs. L’équipe n’y accède qu’en cas de signalement.",
     "@design_system_vue_samples_faq_a": {
         "description": "design_system.vue.samples.faq_a"
     },
@@ -9936,6 +10661,10 @@
     "@feed_api_attributes_details": {
         "description": "feed.api.attributes.details"
     },
+    "feed_api_attributes_group": "groupe",
+    "@feed_api_attributes_group": {
+        "description": "feed.api.attributes.group"
+    },
     "feed_api_attributes_image": "photo",
     "@feed_api_attributes_image": {
         "description": "feed.api.attributes.image"
@@ -10008,6 +10737,10 @@
     "@feed_api_content_blocked": {
         "description": "feed.api.content_blocked"
     },
+    "feed_api_group_visibility": "Une publication de groupe est visible par les membres du groupe : sa visibilité ne change pas.",
+    "@feed_api_group_visibility": {
+        "description": "feed.api.group_visibility"
+    },
     "feed_api_parent_invalid": "Ce commentaire ne fait pas partie de cette publication.",
     "@feed_api_parent_invalid": {
         "description": "feed.api.parent_invalid"
@@ -10053,9 +10786,17 @@
     "@feed_comments_empty_error": {
         "description": "feed.comments.empty_error"
     },
+    "feed_comments_field_label": "Ton commentaire",
+    "@feed_comments_field_label": {
+        "description": "feed.comments.field_label"
+    },
     "feed_comments_load_more": "Voir les commentaires précédents",
     "@feed_comments_load_more": {
         "description": "feed.comments.load_more"
+    },
+    "feed_comments_load_next": "Voir la suite des commentaires",
+    "@feed_comments_load_next": {
+        "description": "feed.comments.load_next"
     },
     "feed_comments_placeholder": "Ajouter un commentaire bienveillant…",
     "@feed_comments_placeholder": {
@@ -10103,6 +10844,10 @@
     "@feed_comments_title": {
         "description": "feed.comments.title"
     },
+    "feed_comments_too_short": "Écris au moins 2 caractères.",
+    "@feed_comments_too_short": {
+        "description": "feed.comments.too_short"
+    },
     "feed_compose_event": "Événement",
     "@feed_compose_event": {
         "description": "feed.compose.event"
@@ -10110,6 +10855,14 @@
     "feed_compose_event_soon": "Événement (bientôt)",
     "@feed_compose_event_soon": {
         "description": "feed.compose.event_soon"
+    },
+    "feed_compose_event_unavailable": "La création d’événements arrive bientôt.",
+    "@feed_compose_event_unavailable": {
+        "description": "feed.compose.event_unavailable"
+    },
+    "feed_compose_label": "Créer une publication",
+    "@feed_compose_label": {
+        "description": "feed.compose.label"
     },
     "feed_compose_photo": "Photo",
     "@feed_compose_photo": {
@@ -10144,6 +10897,10 @@
     "@feed_create_anonymous": {
         "description": "feed.create.anonymous"
     },
+    "feed_create_anonymous_followers": "Une publication anonyme ne peut pas être réservée à tes abonné·es : elle sera visible par la communauté ou par toi seulement.",
+    "@feed_create_anonymous_followers": {
+        "description": "feed.create.anonymous_followers"
+    },
     "feed_create_anonymous_help": "Ton nom et ton avatar n’apparaissent pas. L’équipe de modération peut toujours intervenir.",
     "@feed_create_anonymous_help": {
         "description": "feed.create.anonymous_help"
@@ -10160,6 +10917,22 @@
     "@feed_create_draft_saved": {
         "description": "feed.create.draft_saved"
     },
+    "feed_create_errors_title": "Ta publication n’est pas encore partie :",
+    "@feed_create_errors_title": {
+        "description": "feed.create.errors_title"
+    },
+    "feed_create_help_links": "Besoin d’aide ? Utilise plutôt {report} ou {sos}.",
+    "@feed_create_help_links": {
+        "description": "feed.create.help_links",
+        "placeholders": {
+            "report": {
+                "type": "String"
+            },
+            "sos": {
+                "type": "String"
+            }
+        }
+    },
     "feed_create_help_notice": "Besoin d’aide ? Utilise plutôt le signalement anonyme ou SOS.",
     "@feed_create_help_notice": {
         "description": "feed.create.help_notice"
@@ -10171,6 +10944,14 @@
     "feed_create_help_sos": "SOS",
     "@feed_create_help_sos": {
         "description": "feed.create.help_sos"
+    },
+    "feed_create_image_alt": "Description de la photo",
+    "@feed_create_image_alt": {
+        "description": "feed.create.image_alt"
+    },
+    "feed_create_image_alt_help": "Décris l’image en quelques mots pour les personnes qui ne la voient pas.",
+    "@feed_create_image_alt_help": {
+        "description": "feed.create.image_alt_help"
     },
     "feed_create_photo": "Photo (facultatif)",
     "@feed_create_photo": {
@@ -10188,6 +10969,14 @@
     "feed_create_photo_preview_alt": "Aperçu de l’image",
     "@feed_create_photo_preview_alt": {
         "description": "feed.create.photo_preview_alt"
+    },
+    "feed_create_photo_remove": "Retirer la photo",
+    "@feed_create_photo_remove": {
+        "description": "feed.create.photo_remove"
+    },
+    "feed_create_photo_type": "Format non pris en charge. Choisis une image JPG, PNG ou WebP.",
+    "@feed_create_photo_type": {
+        "description": "feed.create.photo_type"
     },
     "feed_create_submit": "Publier",
     "@feed_create_submit": {
@@ -10294,6 +11083,23 @@
     "@feed_filters_temoignage": {
         "description": "feed.filters.temoignage"
     },
+    "feed_list_filters_label": "Filtrer le fil par type",
+    "@feed_list_filters_label": {
+        "description": "feed.list.filters_label"
+    },
+    "feed_list_loaded": "{count, plural, =1{{count} publication de plus.} other{{count} publications de plus.}}",
+    "@feed_list_loaded": {
+        "description": "feed.list.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "feed_list_title": "Publications",
+    "@feed_list_title": {
+        "description": "feed.list.title"
+    },
     "feed_moderation_auto_details": "Termes surveillés : {terms}",
     "@feed_moderation_auto_details": {
         "description": "feed.moderation.auto_details",
@@ -10315,6 +11121,22 @@
     "feed_moderation_auto_reporter": "Filtre automatique",
     "@feed_moderation_auto_reporter": {
         "description": "feed.moderation.auto_reporter"
+    },
+    "feed_offline_failed": "Ta publication mise en attente n’a pas pu partir. Vérifie son contenu, puis publie-la à nouveau.",
+    "@feed_offline_failed": {
+        "description": "feed.offline.failed"
+    },
+    "feed_offline_pending": "Cette publication attend le retour du réseau. Si tu la modifies, la nouvelle version partira à sa place.",
+    "@feed_offline_pending": {
+        "description": "feed.offline.pending"
+    },
+    "feed_offline_queued": "Pas de réseau : ta publication partira dès que la connexion revient.",
+    "@feed_offline_queued": {
+        "description": "feed.offline.queued"
+    },
+    "feed_offline_sent": "Ta publication mise en attente est en ligne.",
+    "@feed_offline_sent": {
+        "description": "feed.offline.sent"
     },
     "feed_page_title": "Mon fil",
     "@feed_page_title": {
@@ -10555,6 +11377,18 @@
     "@feed_poll_question": {
         "description": "feed.poll.question"
     },
+    "feed_poll_question_count_sr": "{count} caractères sur {max}",
+    "@feed_poll_question_count_sr": {
+        "description": "feed.poll.question_count_sr",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
     "feed_poll_question_counter": "{count} / {max}",
     "@feed_poll_question_counter": {
         "description": "feed.poll.question_counter",
@@ -10623,6 +11457,10 @@
     "@feed_poll_vote": {
         "description": "feed.poll.vote"
     },
+    "feed_poll_vote_failed": "Ton vote n’a pas été enregistré. Réessaie dans un instant.",
+    "@feed_poll_vote_failed": {
+        "description": "feed.poll.vote_failed"
+    },
     "feed_poll_vote_removed": "Ton vote est retiré.",
     "@feed_poll_vote_removed": {
         "description": "feed.poll.vote_removed"
@@ -10652,6 +11490,10 @@
                 "type": "String"
             }
         }
+    },
+    "feed_post_back": "Retour au fil",
+    "@feed_post_back": {
+        "description": "feed.post.back"
     },
     "feed_post_comments": "{count, plural, =0{Commentaires} =1{{count} commentaire} other{{count} commentaires}}",
     "@feed_post_comments": {
@@ -10812,6 +11654,50 @@
     "@feed_quick_title": {
         "description": "feed.quick.title"
     },
+    "feed_report_already": "Tu as déjà signalé ce contenu. Merci.",
+    "@feed_report_already": {
+        "description": "feed.report.already"
+    },
+    "feed_report_comment_title": "Signaler ce commentaire",
+    "@feed_report_comment_title": {
+        "description": "feed.report.comment_title"
+    },
+    "feed_report_danger": "Tu es en danger ou victime de violences ?",
+    "@feed_report_danger": {
+        "description": "feed.report.danger"
+    },
+    "feed_report_danger_link": "Fais un signalement anonyme",
+    "@feed_report_danger_link": {
+        "description": "feed.report.danger_link"
+    },
+    "feed_report_details": "Précisions",
+    "@feed_report_details": {
+        "description": "feed.report.details"
+    },
+    "feed_report_details_placeholder": "Ce qui te gêne, en quelques mots.",
+    "@feed_report_details_placeholder": {
+        "description": "feed.report.details_placeholder"
+    },
+    "feed_report_intro": "Dis-nous ce qui ne va pas. Ton signalement reste confidentiel : la personne concernée n’est pas prévenue.",
+    "@feed_report_intro": {
+        "description": "feed.report.intro"
+    },
+    "feed_report_reason": "Motif",
+    "@feed_report_reason": {
+        "description": "feed.report.reason"
+    },
+    "feed_report_reason_required": "Choisis un motif.",
+    "@feed_report_reason_required": {
+        "description": "feed.report.reason_required"
+    },
+    "feed_report_submit": "Envoyer le signalement",
+    "@feed_report_submit": {
+        "description": "feed.report.submit"
+    },
+    "feed_report_title": "Signaler cette publication",
+    "@feed_report_title": {
+        "description": "feed.report.title"
+    },
     "feed_share_copied": "Lien copié dans le presse-papiers.",
     "@feed_share_copied": {
         "description": "feed.share.copied"
@@ -10851,6 +11737,10 @@
     "feed_share_whatsapp": "WhatsApp",
     "@feed_share_whatsapp": {
         "description": "feed.share.whatsapp"
+    },
+    "feed_sidebar_event_online": "En ligne",
+    "@feed_sidebar_event_online": {
+        "description": "feed.sidebar.event_online"
     },
     "feed_sidebar_events": "Événements",
     "@feed_sidebar_events": {
@@ -10920,6 +11810,10 @@
     "feed_toasts_saved": "Publication enregistrée.",
     "@feed_toasts_saved": {
         "description": "feed.toasts.saved"
+    },
+    "feed_toasts_unhidden": "Publication de retour dans ton fil.",
+    "@feed_toasts_unhidden": {
+        "description": "feed.toasts.unhidden"
     },
     "feed_toasts_unsaved": "Publication retirée des enregistrés.",
     "@feed_toasts_unsaved": {
@@ -14416,6 +15310,22 @@
     "offline_outbox_copy": "Copier le code",
     "@offline_outbox_copy": {
         "description": "offline.outbox.copy"
+    },
+    "offline_outbox_post_failed": "Le serveur a refusé la publication enregistrée hors connexion. Son contenu reste sur cet appareil, prêt à être corrigé.",
+    "@offline_outbox_post_failed": {
+        "description": "offline.outbox.post_failed"
+    },
+    "offline_outbox_post_failed_title": "Publication non envoyée",
+    "@offline_outbox_post_failed_title": {
+        "description": "offline.outbox.post_failed_title"
+    },
+    "offline_outbox_post_resume": "Reprendre la publication",
+    "@offline_outbox_post_resume": {
+        "description": "offline.outbox.post_resume"
+    },
+    "offline_outbox_post_sent": "Publication enregistrée hors connexion : elle est en ligne.",
+    "@offline_outbox_post_sent": {
+        "description": "offline.outbox.post_sent"
     },
     "offline_outbox_print": "Imprimer",
     "@offline_outbox_print": {

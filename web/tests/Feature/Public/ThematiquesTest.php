@@ -419,7 +419,7 @@ describe('fiche /thematiques/{slug}', function (): void {
             ->toContain('AHOUANSOU Clarisse')
             ->toContain('href="tel:+2290195494979"')
             ->toContain('href="https://wa.me/2290195494979" target="_blank" rel="noopener"')
-            ->toContain($public->zone->name)
+            ->toContain(e($public->zone->name)) // nom de zone Faker possiblement avec apostrophe, échappée dans le HTML
             ->toContain('Juriste')
             ->and($html)
             ->not->toContain('CONTACT Non-public')

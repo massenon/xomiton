@@ -8,8 +8,9 @@ use App\Models\Message;
 use App\Models\User;
 
 /**
- * Messages : lisibles par les participant·es de la conversation ; l'auteur·rice supprime pour tout le monde,
- * la gestion de la conversation (créateur, admin) aussi. Le contenu chiffré n'est jamais ouvert à l'administration.
+ * Messages : lisibles par les participant·es de la conversation ; l'auteur·rice supprime pour tout le monde, la
+ * gestion d'un **groupe** (créateur, admin) aussi — jamais l'autre personne d'une conversation privée. Le contenu
+ * chiffré n'est jamais ouvert à l'administration.
  */
 final class MessagePolicy
 {
@@ -36,7 +37,8 @@ final class MessagePolicy
             return $this->view($user, $message);
         }
 
-        return $message->conversation !== null && $this->conversations->manage($user, $message->conversation);
+        return $message->conversation !== null && $message->conversation->isGroup()
+            && $this->conversations->manage($user, $message->conversation);
     }
 
     public function report(User $user, Message $message): bool

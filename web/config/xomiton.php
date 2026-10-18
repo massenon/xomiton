@@ -129,6 +129,12 @@ return [
         // contenu par compte et par heure (limiteur `content_report`).
         'feed_write_per_minute' => 10,
         'content_report_per_hour' => 20,
+        // Messagerie (P8-01) : créations de conversation, envois, ajouts de participant·es par compte et par minute
+        // (limiteur `messages_write` ; un rejeu de la boîte d'envoi compte, d'où une marge pour vider une file).
+        'messages_write_per_minute' => 30,
+        // Groupes et pages (P8-02, P8-03) : créations, adhésions, départs, décisions sur les demandes, abonnements aux
+        // pages, par compte et par minute (limiteur `community_write`).
+        'community_write_per_minute' => 20,
     ],
 
     /*
@@ -211,6 +217,57 @@ return [
         // (secondes, par compte) plutôt que recomptés à chaque visite Inertia ; 0 désactive.
         'shell_stats_cache_seconds' => 60,
         'duty_alerts_poll_seconds' => 10,
+    ],
+
+    /*
+     * Messagerie (P8-01, docs/API.md §12) : corps chiffré au repos (`encrypted_columns.messages`), aperçu de la liste
+     * calculé à la lecture (ADR-33 : `conversations.last_message_preview` reste nul), sondage court sans WebSocket (D7) :
+     * conversation ouverte `feed.messages_poll_seconds` (4 s, DECISIONS.md), liste `list_poll_seconds`.
+     */
+    'messaging' => [
+        'body_max_length' => 1000,
+        'preview_length' => 80,
+        'per_page' => 30,
+        'conversations_per_page' => 30,
+        'poll_max_messages' => 100,
+        'list_poll_seconds' => 15,
+        // Repli du sondage de la liste après 3 réponses inchangées (`meta.unchanged`, empreinte), retour à 15 s au
+        // premier changement (D7 : réponses légères sur cPanel).
+        'list_poll_idle_seconds' => 30,
+        // Sondage `?after=` sans `since` : suppressions pour tout le monde rapportées sur cette fenêtre (minutes).
+        'deleted_window_minutes' => 15,
+        'group_title_min' => 3,
+        'group_max_participants' => 50,
+        'recipients_limit' => 10,
+        'recipient_search_min' => 2,
+        // « Nouveau message » : une seule notification non lue par conversation ; un message reçu moins de N secondes
+        // après la précédente met à jour son compteur sans nouvel envoi push.
+        'notify_cooldown_seconds' => 60,
+        // Sourdine : durées proposées (minutes ; null = jusqu'à réactivation).
+        'mute_durations' => ['8h' => 480, '1w' => 10080, 'always' => null],
+        'attachment_collections' => ['images', 'documents'],
+        'attachment_url_minutes' => 60,
+    ],
+
+    /*
+     * Groupes et pages (P8-02, P8-03 ; prototype groups.php, pages.php, create-page.php) : bornes des formulaires
+     * (groups.php l.111-116 : nom 3–80, description ≤ 300 ; create-page.php : nom 3–80, description ≤ 400), tailles de
+     * page (prototype : 6 groupes par « Charger plus »), catégories de pages (create-page.php $cats).
+     */
+    'community' => [
+        'group_name_min' => 3,
+        'group_name_max' => 80,
+        'group_description_max' => 300,
+        'groups_per_page' => 6,
+        'members_per_page' => 24,
+        // P8-02 : une demande d'adhésion annulée puis renouvelée ne renotifie l'équipe qu'après ce délai.
+        'join_request_renotify_hours' => 24,
+        'page_name_min' => 3,
+        'page_name_max' => 80,
+        'page_description_max' => 400,
+        'pages_per_page' => 12,
+        'page_categories' => ['Organisation', 'Santé', 'Juridique', 'Réseau', 'Éducation', 'Autonomisation'],
+        'search_max' => 60,
     ],
 
     /*
@@ -479,7 +536,7 @@ return [
         // Catalogue Vue (P6-05) : textes jamais affichés par l'espace Vue (administration Livewire, pages publiques et SEO
         // Blade, maintenance, e-mails ; erreurs et noms de champs de l'API du fil, rendus par le serveur, P7-02) retirés de
         // resources/js/lang/<locale>.json ; l'ARB mobile reste complet.
-        'vue_exclude' => ['admin', 'newsletter.admin', 'newsletter.campaign_defaults', 'notifications.admin', 'pages/', 'seo', 'maintenance', 'mail', 'feed.api', 'feed.moderation', 'mobile.api'],
+        'vue_exclude' => ['admin', 'newsletter.admin', 'newsletter.campaign_defaults', 'notifications.admin', 'pages/', 'seo', 'maintenance', 'mail', 'feed.api', 'feed.moderation', 'mobile.api', 'community.messages.api', 'community.api'],
     ],
 
     /*

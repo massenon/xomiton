@@ -8,6 +8,8 @@ use App\Models\DatabaseNotification;
 
 /**
  * « Demande d'adhésion à un groupe » (P3-02) : administrateur·rices du groupe ; cloche et push, préférence « Communauté ».
+ * Sensible (P8-02, RG-02, Q75) : le nom d'un groupe peut révéler une orientation ou une identité ; en mode discret, cloche
+ * et push n'affichent que « Demande d'adhésion », le nom n'apparaît qu'une fois l'application ouverte.
  */
 final class GroupJoinRequested extends XomitonNotification
 {
@@ -26,7 +28,7 @@ final class GroupJoinRequested extends XomitonNotification
 
     public function isSensitive(): bool
     {
-        return false;
+        return true;
     }
 
     /**
