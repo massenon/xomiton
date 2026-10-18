@@ -104,6 +104,8 @@ describe('PATCH /api/v1/me/settings', function (): void {
         $this->withToken($this->token)->patchJson('/api/v1/me/settings', ['theme' => 'sepia', 'language' => 'en', 'notification_digest' => 'hourly'])
             ->assertUnprocessable()->assertJsonValidationErrors(['theme', 'language', 'notification_digest']);
 
+        $this->withoutToken();
+        app('auth')->forgetGuards();
         $this->patchJson('/api/v1/me/settings', ['theme' => 'dark'])->assertUnauthorized()->assertJsonPath('code', 'unauthenticated');
         expect($this->user->fresh()->settings->theme)->not->toBe('sepia');
     });

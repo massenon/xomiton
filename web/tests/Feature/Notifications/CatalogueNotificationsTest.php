@@ -40,7 +40,7 @@ function catalogue(): array
         'SosUnacknowledged' => [new SosUnacknowledged(1, 'CODE', 5, 'Littoral'), 'sos', true, 'SOS sans réponse depuis 5 min'],
         'NewMessage' => [new NewMessage(1, 2, 'Estelle', 'Coucou', 'Groupe soutien'), 'messages', true, 'Nouveau message'],
         'ReactionGrouped' => [new ReactionGrouped(4, ReactionGrouped::KIND_LIKE, 'Estelle', 4), 'communaute', false, 'Réactions à ta publication'],
-        'EventReminder' => [new EventReminder(6, 'Atelier', '15 h', 'Cotonou', 'demain à 15 h'), 'evenements', false, 'Rappel : Atelier'],
+        'EventReminder' => [new EventReminder(6, 'Atelier', '15 h', 'Cotonou', 'demain à 15 h'), 'evenements', false, 'Rappel : Atelier'],
         'PollEnded' => [new PollEnded(2, 9, 'Quel sujet ?', 12), 'communaute', false, 'Sondage terminé'],
         'ContentReported' => [new ContentReported(8, 'Publication', 'Insultes'), 'moderation', true, 'Contenu signalé'],
         'SyncConflict' => [new SyncConflict(5, 'CaseRecord #12', 'status'), 'systeme', false, 'Conflit de synchronisation'],
@@ -98,7 +98,7 @@ it('formule le SOS selon la position, le pseudo et le SMS de secours', function 
 
     expect((new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral'))->toArray($user)['body'])->toContain('près de Cotonou')
         ->and((new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral', 'Awa_S'))->toArray($user)['body'])->toStartWith('Awa_S a besoin d’aide')
-        ->and((new SosTriggered(1, 'CODE', null, 'Littoral'))->toArray($user)['body'])->toContain('position indisponible, zone : Littoral')
+        ->and((new SosTriggered(1, 'CODE', null, 'Littoral'))->toArray($user)['body'])->toContain('position indisponible, zone : Littoral')
         ->and((new SosTriggered(1, 'CODE', null, 'Littoral'))->toSms($user))->toContain('zone Littoral')
         ->and((new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral'))->toSms($user))->toStartWith('Xomiton – Alerte SOS CODE près de Cotonou')
         ->and(mb_strlen((string) (new SosUnacknowledged(1, 'CODE', 5))->toSms($user)))->toBeLessThanOrEqual(160)

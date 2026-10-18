@@ -32,7 +32,7 @@ it('met les référentiels en cache et ne relit plus la base jusqu’à l’inva
     $this->referentials->zones();
     $this->referentials->violenceTypes();
     $this->referentials->zones();
-    expect(DB::getQueryLog())->toHaveCount(2); // violence_types seul : premier appel
+    expect(DB::getQueryLog())->toHaveCount(1); // violence_types seul : premier appel
     DB::flushQueryLog();
 
     expect($this->referentials->needs())->toHaveCount(7)
@@ -58,11 +58,12 @@ it('invalide le cache à chaque écriture d’un référentiel et ignore les ent
     $zone->update(['is_active' => false]);
     expect(collect($this->referentials->zones())->pluck('slug'))->not->toContain('zone-test');
 
-    Need::query()->where('slug', 'autre')->delete();
+    // Écritures par Eloquent (les mises à jour de masse du constructeur de requêtes ne déclenchent pas l'observer).
+    Need::query()->where('slug', 'autre')->firstOrFail()->delete();
     expect(collect($this->referentials->needs())->pluck('slug'))->not->toContain('autre');
 
     $hash = $this->referentials->hash(Referentials::NEEDS);
-    Need::query()->where('slug', 'securite')->update(['label' => 'Mise en sécurité immédiate']);
+    Need::query()->where('slug', 'securite')->firstOrFail()->update(['label' => 'Mise en sécurité immédiate']);
     expect($this->referentials->hash(Referentials::NEEDS))->not->toBe($hash);
 });
 

@@ -71,7 +71,7 @@ it('ne laisse jamais désactiver la sécurité du compte ni le SOS', function ()
 
     expect((new PeerAccountValidated(1))->via($user))->toBe(['database', 'mail'])
         ->and((new PeerAccountValidated(1))->isMandatory())->toBeTrue()
-        // SOS sans abonnement push : cloche + SMS de secours (téléphone du compte).
+        // SOS sans abonnement push : cloche + SMS de secours (téléphone du compte).
         ->and((new SosTriggered(1, 'ABCDEFGH12', 'Cotonou', 'Littoral'))->via($user))->toBe(['database', 'sms']);
 
     PushSubscription::factory()->for($user)->fcm()->create();
@@ -97,10 +97,11 @@ it('écrit un texte neutre en base pour une notification sensible quand la perso
         ->and($masked->category)->toBe('messages')
         ->and($masked->is_sensitive)->toBeTrue()
         ->and(json_encode($masked->data))->not->toContain('On se voit demain')
-        ->and($plain->data['body'])->toBe('Estelle : On se voit demain ?')
+        ->and($plain->data['body'])->toBe("Estelle\u{00A0}: On se voit demain ?")
         ->and($plain->data['title'])->toBe('Nouveau message');
 
     // Une notification non sensible garde son texte, mode discret ou pas.
+    $this->travel(1)->seconds();
     $discreet->notify(new InvitationReceived(3, 'Mariam A.'));
     expect($discreet->notifications()->first()->data['body'])->toBe('Mariam A. t’a envoyé une invitation.');
 });
@@ -133,7 +134,7 @@ it('envoie l’e-mail par le template du catalogue, jamais par un Mailable Markd
     expect(MailLog::query()->where('template_slug', 'alerte-routee')->value('context'))->toBe('alerte_routee');
 });
 
-it('construit une charge push sans donnée sensible : type, id, url, catégorie et texte neutre si masqué', function (): void {
+it('construit une charge push sans donnée sensible : type, id, url, catégorie et texte neutre si masqué', function (): void {
     $user = memberWithPrefs([], ['mask_sensitive_notifications' => true]);
     $push = (new NewMessage(7, 42, 'Estelle', 'Secret partagé', null))->toPush($user);
 
@@ -146,7 +147,7 @@ it('construit une charge push sans donnée sensible : type, id, url, catégorie 
         ->and($push->toJson())->not->toContain('Secret');
 
     $open = memberWithPrefs();
-    expect((new NewMessage(7, 42, 'Estelle', 'Bonjour', null))->toPush($open)->body)->toBe('Estelle : Bonjour')
+    expect((new NewMessage(7, 42, 'Estelle', 'Bonjour', null))->toPush($open)->body)->toBe("Estelle\u{00A0}: Bonjour")
         ->and((new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral'))->toPush($open)->isUrgent())->toBeTrue();
 });
 

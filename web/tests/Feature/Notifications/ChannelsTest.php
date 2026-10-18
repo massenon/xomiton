@@ -68,7 +68,9 @@ it('consigne la charge push et le SMS dans le journal avec les pilotes log, sans
     $subscription = PushSubscription::factory()->for($user)->create();
 
     $user->notify(new InvitationReceived(1, 'Mariam A.'));
-    $user->notify(new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral'));
+    // SMS de secours seulement sans abonnement push (P5-03) : SOS adressé à un compte sans abonnement.
+    User::factory()->withProfile()->create(['phone' => '+229 01 97 38 88 47'])
+        ->notify(new SosTriggered(1, 'CODE', 'Cotonou', 'Littoral'));
 
     Log::shouldHaveReceived('info')->withArgs(fn (string $message, array $context): bool => str_starts_with($message, '[webpush:log]')
         && $context['subscription'] === $subscription->endpoint_hash
