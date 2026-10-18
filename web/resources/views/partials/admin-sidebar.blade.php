@@ -37,7 +37,7 @@
 @endphp
 <aside class="xm-admin-sidebar" id="xmSidebar" aria-label="{{ __('menus.admin.breadcrumb_root') }}">
     <div class="brand d-flex align-items-center justify-content-between">
-        <a href="{{ route('admin.dashboard') }}"><img src="{{ asset('assets/images/logo-dark.svg') }}" alt="{{ __('common.logo_alt') }}" title="Xomiton" style="height:30px;width:auto" width="108" height="30"></a>
+        <x-logo variant="sombre" :href="route('admin.dashboard')" :width="117" />
         <span class="badge bg-danger">{{ __('menus.admin.badge') }}</span>
     </div>
     @foreach ($menu as $group => $items)

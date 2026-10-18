@@ -372,14 +372,14 @@ class Alert extends Model
     public function authorLabel(): string
     {
         if ($this->is_anonymous) {
-            return (string) __('Anonyme');
+            return (string) __('alerts.anonymous');
         }
 
         if ($this->pseudo !== null && $this->pseudo !== '') {
             return $this->pseudo;
         }
 
-        return $this->user?->pseudo ?? (string) __('Anonyme');
+        return $this->user?->pseudo ?? (string) __('alerts.anonymous');
     }
 
     /**

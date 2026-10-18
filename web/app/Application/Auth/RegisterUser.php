@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Auth;
 
 use App\Application\Auth\Support\RegistrationGate;
-use App\Application\Mail\EmailTemplateService;
 use App\Domain\Auth\ConsentVersion;
 use App\Domain\Auth\Exceptions\ConsentRequired;
 use App\Domain\Auth\Exceptions\OtpException;
@@ -19,6 +18,7 @@ use App\Models\Consent;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\UserSetting;
+use App\Notifications\UserRegistered as UserRegisteredNotification;
 use App\Rules\PhoneBj;
 use App\Support\Audit;
 use Database\Seeders\RolesAndPermissionsSeeder;
@@ -30,7 +30,8 @@ use Spatie\Permission\Models\Role;
 /**
  * Phase 1 de l'inscription (P2-03, Q12 c) : compte créé et actif dès maintenant, e-mail non vérifié (accès limité),
  * rôle `membre`, profil et réglages par défaut, consentements CGU + charte et confidentialité horodatés, code OTP
- * `signup` envoyé aussitôt puis e-mail `bienvenue`. La session est ouverte par le contrôleur appelant.
+ * `signup` envoyé aussitôt puis e-mail `bienvenue` (notification UserRegistered, canal mail par template : un seul
+ * envoi, Q44 a). La session est ouverte par le contrôleur appelant.
  */
 final class RegisterUser
 {
@@ -60,11 +61,7 @@ final class RegisterUser
             Log::warning('Code d’inscription non envoyé : '.$e->getMessage(), ['user_id' => $user->getKey()]);
         }
 
-        EmailTemplateService::send('bienvenue', $user->email, [
-            'user_first_name' => $user->pseudo,
-            'user_pseudo' => $user->pseudo,
-            'user_email' => $user->email,
-        ], 'inscription');
+        $user->notify(new UserRegisteredNotification);
 
         Audit::log('auth.registered', $user, sprintf('pseudo=%s', $user->pseudo), $user);
         UserRegistered::dispatch($user);

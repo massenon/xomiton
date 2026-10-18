@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-4">
-                <img src="{{ asset('assets/images/xomiton/brand/logo-mono-blanc.svg') }}" alt="{{ __('common.logo_alt') }}" title="Xomiton" style="height:40px;width:auto" class="mb-3" width="160" height="40">
+                <x-logo variant="mono-blanc" :width="156" :link="false" class="d-block mb-3" />
                 <p class="small opacity-75 mb-3">{{ __('footer.brand_text') }}</p>
                 <a class="btn btn-sm btn-danger fw-bold" href="{{ route('sos') }}"><i class="bi bi-broadcast me-1" aria-hidden="true"></i>{{ __('footer.sos_gps') }}</a>
             </div>

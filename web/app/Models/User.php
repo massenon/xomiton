@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -416,6 +417,26 @@ class User extends Authenticatable
     public function pushSubscriptions(): HasMany
     {
         return $this->hasMany(PushSubscription::class);
+    }
+
+    /**
+     * Cloche (P3-02) : le modèle Xomiton (`category`, `is_sensitive`, scopes) remplace celui de Laravel.
+     *
+     * @return MorphMany<DatabaseNotification, $this>
+     */
+    public function notifications(): MorphMany
+    {
+        return $this->morphMany(DatabaseNotification::class, 'notifiable')->latest();
+    }
+
+    /**
+     * Numéro du SMS de secours (canal `sms`, SOS uniquement) : le téléphone du compte, jamais exposé par ailleurs (RG-02).
+     */
+    public function routeNotificationForSms(): ?string
+    {
+        $phone = trim((string) $this->phone);
+
+        return $phone !== '' ? $phone : null;
     }
 
     /**

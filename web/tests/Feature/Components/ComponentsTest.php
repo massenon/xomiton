@@ -246,13 +246,62 @@ it('rend une image accessible et refuse le rendu sans alt', function (): void {
     expect(fn () => render('<x-img src="/img.jpg" />'))->toThrow(ViewException::class, 'alt');
 });
 
+it('construit <picture> WebP → repli + srcset depuis un média téléversé, sans AVIF fictif', function (): void {
+    Storage::fake('public');
+    $root = Storage::disk('public')->url('');
+    $variant = fn (string $name, int $w, int $h): \App\Application\Shared\StoredMedia => new \App\Application\Shared\StoredMedia('public', "covers/01-$name.webp", 'image/webp', 1000, $w, $h, 'c.jpg', "covers/01-$name.jpg");
+    $media = new \App\Application\Shared\StoredMedia('public', 'covers/01.webp', 'image/webp', 9000, 2048, 1365, 'c.jpg', 'covers/01.jpg', [
+        'thumb' => $variant('thumb', 320, 213), 'medium' => $variant('medium', 1024, 683), 'large' => $variant('large', 1600, 1067),
+    ]);
+
+    $view = render('<x-img :media="$media" alt="Atelier à Porto-Novo" />', ['media' => $media]);
+
+    $view->assertSee('<picture>', false)
+        ->assertDontSee('image/avif', false)
+        ->assertSee('<source type="image/webp" srcset="'.$root.'covers/01-thumb.webp 320w, '.$root.'covers/01-medium.webp 1024w, '.$root.'covers/01-large.webp 1600w" sizes="(max-width: 1600px) 100vw, 1600px">', false)
+        ->assertSee('src="'.$root.'covers/01-large.jpg"', false)
+        ->assertSee('srcset="'.$root.'covers/01-thumb.jpg 320w, '.$root.'covers/01-medium.jpg 1024w, '.$root.'covers/01-large.jpg 1600w"', false)
+        ->assertSee('width="1600" height="1067"', false)
+        ->assertSee('loading="lazy"', false)
+        ->assertDontSee('covers/01.webp 2048w', false);
+
+    // Forme tableau (colonne JSON) et sizes personnalisé ; une image déjà petite n'a ni variante ni srcset.
+    $small = new \App\Application\Shared\StoredMedia('public', 'avatars/02.webp', 'image/webp', 500, 300, 300, 'a.png', 'avatars/02.png');
+    render('<x-img :media="$media" alt="Avatar" sizes="300px" />', ['media' => $small->toArray()])
+        ->assertSee('<source type="image/webp" srcset="'.$root.'avatars/02.webp 300w" sizes="300px">', false)
+        ->assertSee('src="'.$root.'avatars/02.png"', false)
+        ->assertDontSee('srcset="'.$root.'avatars/02.png', false);
+
+    // Variantes explicites par type MIME : AVIF avant WebP.
+    render('<x-img src="/h.jpg" alt="Hero" :variants="[\'image/webp\' => \'/h.webp 1600w\', \'image/avif\' => \'/h.avif 1600w\']" />')
+        ->assertSeeInOrder(['type="image/avif"', 'type="image/webp"', 'src="/h.jpg"'], false);
+
+    // Un média privé n'a pas d'URL publique : rendu refusé.
+    $private = new \App\Application\Shared\StoredMedia('local', 'images/x.webp', 'image/webp', 10, 100, 100, 'x.jpg');
+    expect(fn () => render('<x-img :media="$media" alt="Privé" />', ['media' => $private]))->toThrow(ViewException::class, 'public disk');
+});
+
 it('rend le logo depuis le dossier de marque', function (): void {
     render('<x-logo variant="couleur" :width="160" />')
         ->assertSee('aria-label="'.__('components.logo.home').'"', false)
         ->assertSee('assets/images/xomiton/brand/logo-couleur.svg', false)
         ->assertSee('width="160" height="41"', false);
 
-    render('<x-logo variant="vertical-couleur" :width="120" :link="false" />')->assertSee('<span', false)->assertDontSee('<a ', false);
+    render('<x-logo variant="vertical-couleur" :width="120" :link="false" />')->assertSee('<span', false)->assertDontSee('<a ', false)
+        ->assertSee('logo-vertical-couleur.svg', false)->assertSee('width="120" height="69"', false);
+
+    // Icône carrée (icone-appli-*.svg), alias « blanc » et « icone », alt « Xomiton » partout.
+    render('<x-logo variant="icone" :width="48" :link="false" />')
+        ->assertSee('assets/images/xomiton/brand/icone-appli-bleu.svg', false)->assertSee('width="48" height="48"', false)->assertSee('alt="'.__('components.logo.alt').'"', false);
+    render('<x-logo variant="icone-blanc" :width="32" :link="false" />')->assertSee('icone-appli-blanc.svg', false)->assertSee('width="32" height="32"', false);
+    render('<x-logo variant="blanc" :link="false" />')->assertSee('logo-mono-blanc.svg', false);
+
+    // Variante adaptative (en-têtes) : couleur en clair, sombre en sombre, classes sur les <img>, cible et classes du lien.
+    render('<x-logo class="navbar-brand" :href="route(\'urgences\')" :adaptive="true" :width="140" img-class="navbar-brand-item" />')
+        ->assertSee('<a href="'.route('urgences').'" class="navbar-brand" aria-label="'.__('components.logo.home').'">', false)
+        ->assertSee('logo-couleur.svg', false)->assertSee('class="light-mode-item navbar-brand-item"', false)
+        ->assertSee('logo-sombre.svg', false)->assertSee('class="dark-mode-item navbar-brand-item"', false)
+        ->assertSee('width="140" height="36"', false);
 });
 
 it('rend les squelettes de lignes et de cartes', function (): void {

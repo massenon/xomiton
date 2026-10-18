@@ -24,6 +24,8 @@ class DatabaseNotification extends BaseDatabaseNotification
 
     public const CATEGORY_SOS = 'sos';
 
+    public const CATEGORY_ALERTS = 'alertes';
+
     public const CATEGORY_COMMUNITY = 'communaute';
 
     public const CATEGORY_MESSAGES = 'messages';
@@ -36,6 +38,18 @@ class DatabaseNotification extends BaseDatabaseNotification
 
     /** @var list<string> */
     public const MANDATORY_CATEGORIES = [self::CATEGORY_SECURITY, self::CATEGORY_SOS];
+
+    /** @var list<string> */
+    public const CATEGORIES = [
+        self::CATEGORY_SECURITY,
+        self::CATEGORY_SOS,
+        self::CATEGORY_ALERTS,
+        self::CATEGORY_MESSAGES,
+        self::CATEGORY_COMMUNITY,
+        self::CATEGORY_EVENTS,
+        self::CATEGORY_MODERATION,
+        self::CATEGORY_SYSTEM,
+    ];
 
     /**
      * @return array<string, string>

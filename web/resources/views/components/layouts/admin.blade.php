@@ -24,7 +24,7 @@
             {{ $slot }}
         </main>
         <footer class="px-4 py-3 small text-secondary border-top no-print">
-            {{ __('menus.admin.footer', ['version' => config('xomiton.version', '1.0'), 'date' => now()->format('d/m/Y H:i')]) }}
+            {{ __('menus.admin.footer', ['version' => config('xomiton.version', '1.0'), 'date' => \App\Support\LocaleFormatter::make()->tableDateTime(now())]) }}
         </footer>
     </div>
     @vite('resources/js/admin.js')

@@ -9,6 +9,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
+                'resources/css/critical.css',
                 'resources/css/xomiton.css',
                 'resources/css/admin.css',
                 'resources/js/public.js',

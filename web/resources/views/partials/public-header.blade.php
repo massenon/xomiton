@@ -12,10 +12,7 @@
 <header class="navbar-light bg-mode sticky-top shadow-sm no-print" id="pubHeader">
     <nav class="navbar navbar-expand-lg" aria-label="{{ __('menus.menu') }}">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <img class="light-mode-item navbar-brand-item" src="{{ asset('assets/images/logo.svg') }}" alt="{{ __('common.logo_alt_light') }}" title="Xomiton" width="144" height="40">
-                <img class="dark-mode-item navbar-brand-item" src="{{ asset('assets/images/logo-dark.svg') }}" alt="{{ __('common.logo_alt_dark') }}" title="Xomiton" width="144" height="40">
-            </a>
+            <x-logo class="navbar-brand" :href="route('home')" :adaptive="true" :width="140" img-class="navbar-brand-item" />
             <button class="navbar-toggler ms-auto icon-md btn btn-light p-0" type="button" data-bs-toggle="collapse" data-bs-target="#pubNavbar" aria-controls="pubNavbar" aria-expanded="false" aria-label="{{ __('menus.menu') }}">
                 <span class="navbar-toggler-animation"><span></span><span></span><span></span></span>
             </button>

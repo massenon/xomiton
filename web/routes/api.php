@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\Auth\OtpVerifyController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\ReferentialController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/health', static fn () => response()->json(['data' => ['status' => 'ok', 'version' => config('xomiton.version', '1.0')]]))
     ->name('api.health');
+
+// --- Référentiels publics (P3-06) : cache serveur 24 h (App\Application\Shared\Referentials), ETag dérivé du contenu,
+// If-None-Match → 304, Cache-Control public 1 h (middleware cache.headers, config xomiton.referentials.http_max_age) ---------
+Route::middleware('cache.headers:public;max_age='.(int) config('xomiton.referentials.http_max_age', 3600).';etag')
+    ->as('api.referentials.')
+    ->group(function (): void {
+        Route::get('zones', [ReferentialController::class, 'zones'])->name('zones');
+        Route::get('violence-types', [ReferentialController::class, 'violenceTypes'])->name('violence_types');
+        Route::get('needs', [ReferentialController::class, 'needs'])->name('needs');
+    });
 
 // --- Authentification (P2-06, P2-12, LOGIN §9) : partagée par Flutter et l'espace Vue ---------------------------------
 Route::prefix('auth')->as('api.auth.')->group(function (): void {
@@ -37,6 +48,7 @@ Route::prefix('auth')->as('api.auth.')->group(function (): void {
 Route::middleware('auth:sanctum')->prefix('me')->as('api.me.')->group(function (): void {
     Route::get('/', [MeController::class, 'show'])->name('show');
     Route::patch('profile', [MeController::class, 'updateProfile'])->name('profile.update');
+    Route::patch('settings', [MeController::class, 'updateSettings'])->name('settings.update');
     Route::get('sessions', [MeController::class, 'sessions'])->name('sessions.index');
     Route::delete('sessions/{id}', [MeController::class, 'destroySession'])->where('id', '[a-z]+-[A-Za-z0-9]+')->name('sessions.destroy');
 });

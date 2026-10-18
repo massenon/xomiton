@@ -88,7 +88,8 @@ it('ré-encode un JPEG : EXIF retiré, orientation appliquée, 2048 px au plus, 
         ->and($media->fallbackPath)->toBe(substr($media->path, 0, -5).'.jpg')
         // 3000 × 2000 tourné de 90° → 2000 × 3000, puis côté long ramené à 2048.
         ->and([$media->width, $media->height])->toBe([1365, 2048])
-        ->and(array_keys($media->variants))->toBe(['thumb', 'medium'])
+        ->and(array_keys($media->variants))->toBe(['thumb', 'medium', 'large'])
+        ->and([$media->variant('large')->width, $media->variant('large')->height])->toBe([1066, 1600])
         ->and([$media->variant('thumb')->width, $media->variant('thumb')->height])->toBe([213, 320])
         ->and([$media->variant('medium')->width, $media->variant('medium')->height])->toBe([683, 1024])
         ->and($media->variant('thumb')->path)->toBe(substr($media->path, 0, -5).'-thumb.webp')
@@ -100,7 +101,8 @@ it('ré-encode un JPEG : EXIF retiré, orientation appliquée, 2048 px au plus, 
         $disk->assertExists($path);
     }
 
-    expect($media->allPaths())->toHaveCount(6);
+    // Principal + 3 variantes, chacun en WebP et en JPEG.
+    expect($media->allPaths())->toHaveCount(8);
 
     // Plus aucune métadonnée dans la sortie, ni dans le WebP ni dans le repli JPEG.
     $webp = (string) $disk->get($media->path);

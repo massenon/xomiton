@@ -4,12 +4,43 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Application\Alerts\Listeners\NotifyAlertRouted;
+use App\Application\Alerts\Listeners\NotifySosTriggered;
+use App\Application\Moderation\Listeners\NotifyModerators;
+use App\Application\Newsletter\Listeners\LogCampaignSent;
+use App\Application\Sync\Listeners\NotifyAdminsOfSyncConflict;
+use App\Domain\Alerts\Events\AlertCreated;
+use App\Domain\Alerts\Events\SosTriggered;
+use App\Domain\Moderation\Events\ContentReported;
+use App\Domain\Newsletter\Events\CampaignSent;
+use App\Domain\Notifications\Contracts\FcmSender;
+use App\Domain\Notifications\Contracts\PushSender;
+use App\Domain\Notifications\Contracts\SmsSender;
+use App\Domain\Sync\Events\SyncConflictDetected;
+use App\Infrastructure\Notifications\NotificationDrivers;
 use App\Models\AuditLog;
+use App\Models\Category;
+use App\Models\Commune;
+use App\Models\Need;
+use App\Models\Population;
 use App\Models\User;
+use App\Models\ViolenceType;
+use App\Models\Zone;
+use App\Notifications\Channels\FcmChannel;
+use App\Notifications\Channels\SmsChannel;
+use App\Notifications\Channels\TemplateMailChannel;
+use App\Notifications\Channels\WebPushChannel;
+use App\Notifications\Channels\XomitonDatabaseChannel;
+use App\Observers\ReferentialObserver;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Channels\DatabaseChannel;
+use Illuminate\Notifications\Channels\MailChannel;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -17,11 +48,35 @@ use Illuminate\Support\Str;
 class AppServiceProvider extends ServiceProvider
 {
     /**
+     * Événements de domaine (P3-08) et leurs écouteurs (notifications de P3-02 et journal d'audit). Les écouteurs vivent
+     * dans app/Application/<Module>/Listeners, hors de app/Listeners : la découverte automatique de Laravel (active pour
+     * App\Listeners\Auth\*) les enregistrerait une seconde fois. PollVoted et PeerValidated n'ont pas d'écouteur ici :
+     * le vote n'est jamais journalisé nominativement (compteurs et PollEnded : P7), et la validation d'un·e pair·e porte
+     * déjà sa notification et son audit dans le cas d'usage.
+     *
+     * @var array<class-string, list<class-string>>
+     */
+    public const DOMAIN_LISTENERS = [
+        AlertCreated::class => [NotifyAlertRouted::class],
+        SosTriggered::class => [NotifySosTriggered::class],
+        ContentReported::class => [NotifyModerators::class],
+        SyncConflictDetected::class => [NotifyAdminsOfSyncConflict::class],
+        CampaignSent::class => [LogCampaignSent::class],
+    ];
+
+    /**
+     * Modèles de référentiels (P3-06) dont toute écriture invalide le cache App\Application\Shared\Referentials.
+     *
+     * @var list<class-string<\Illuminate\Database\Eloquent\Model>>
+     */
+    public const REFERENTIAL_MODELS = [Zone::class, Commune::class, ViolenceType::class, Need::class, Population::class, Category::class];
+
+    /**
      * Register any application services.
      */
     public function register(): void
     {
-        //
+        $this->registerNotificationDrivers();
     }
 
     /**
@@ -31,6 +86,51 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->registerAuthorization();
         $this->registerRateLimiters();
+        $this->registerNotificationChannels();
+        $this->registerDomainEvents();
+        $this->registerReferentialObservers();
+    }
+
+    /**
+     * Lot notifications (P3-02, ADR-25, Q7) : pilotes des canaux externes résolus depuis config/xomiton.php
+     * (`log` tant que les paquets Web Push / FCM et le fournisseur SMS ne sont pas installés).
+     */
+    private function registerNotificationDrivers(): void
+    {
+        $this->app->singleton(PushSender::class, static fn (Application $app): PushSender => NotificationDrivers::webPush($app));
+        $this->app->singleton(FcmSender::class, static fn (Application $app): FcmSender => NotificationDrivers::fcm($app));
+        $this->app->singleton(SmsSender::class, static fn (Application $app): SmsSender => NotificationDrivers::sms($app));
+
+        // Canal `database` : renseigne notifications.category et is_sensitive à l'insertion (DATABASE_DICTIONARY §9).
+        $this->app->bind(DatabaseChannel::class, XomitonDatabaseChannel::class);
+    }
+
+    /**
+     * Canaux Xomiton : `mail` passe par les templates en base quand toMail() renvoie une TemplateMailData (sinon canal
+     * Laravel) ; `webpush`, `fcm` et `sms` sont des canaux nommés, utilisables par `via()`.
+     */
+    private function registerNotificationChannels(): void
+    {
+        Notification::extend('mail', static fn (Application $app): TemplateMailChannel => new TemplateMailChannel($app->make(MailChannel::class)));
+        Notification::extend('webpush', static fn (Application $app): WebPushChannel => $app->make(WebPushChannel::class));
+        Notification::extend('fcm', static fn (Application $app): FcmChannel => $app->make(FcmChannel::class));
+        Notification::extend('sms', static fn (Application $app): SmsChannel => $app->make(SmsChannel::class));
+    }
+
+    private function registerDomainEvents(): void
+    {
+        foreach (self::DOMAIN_LISTENERS as $event => $listeners) {
+            foreach ($listeners as $listener) {
+                Event::listen($event, $listener);
+            }
+        }
+    }
+
+    private function registerReferentialObservers(): void
+    {
+        foreach (self::REFERENTIAL_MODELS as $model) {
+            $model::observe(ReferentialObserver::class);
+        }
     }
 
     /**

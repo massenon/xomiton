@@ -1,0 +1,145 @@
+/*
+ * CSS critique (P4-12, PERFORMANCE.md §3) : inliné dans <head> des gabarits public et sobre avant le CSS principal,
+ * pour afficher sans attendre ce qui est au-dessus de la ligne de flottaison : jetons, reset minimal, lien d'évitement,
+ * bandeau hors connexion, en-tête public (barre, logo, bouton menu, boutons) et bandeau héros.
+ * Règles : copies à l'identique des valeurs de style.css / tokens.css / social-xomiton.css / xomiton.css, jamais plus
+ * spécifiques (le CSS principal, chargé ensuite, doit toujours l'emporter) ; aucun hexadécimal hors des jetons ;
+ * budget < 14 Ko non compressé (contrôlé par scripts/check-budgets.mjs : < 50 Ko gzip).
+ */
+
+/* ---------- Jetons (sous-ensemble de tokens.css) ---------- */
+:root {
+  --xm-blue-500:#0433C3; --xm-blue-600:#032BA6; --xm-blue-700:#032488; --xm-blue-dark-accent:#7C97FF; --xm-blue-dark-accent-hover:#9DB1FF; --xm-blue-300:#8299E1;
+  --xm-red-500:#E30E0E; --xm-red-600:#C10C0C; --xm-red-700:#9F0A0A; --xm-red-dark-accent:#FF6B6B; --xm-red-dark-accent-hover:#FF8787; --xm-red-300:#F18686;
+  --xm-neutral-0:#FFFFFF; --xm-neutral-25:#FBF7FA; --xm-neutral-100:#F3EDF4; --xm-neutral-200:#E4DCE6; --xm-neutral-600:#5B5670; --xm-neutral-900:#1B1630;
+  --xm-neutral-d-0:#0E1020; --xm-neutral-d-100:#171A2E; --xm-neutral-d-200:#2A2E48; --xm-neutral-d-600:#A9A5C0; --xm-neutral-d-900:#EDEAF7;
+  --xm-violet-700:#6F2C91; --xm-rose-600:#C2255C; --xm-green-700:#0B7A4B; --xm-amber-500:#F0A800;
+  --xm-primary: var(--xm-blue-500); --xm-primary-hover: var(--xm-blue-600); --xm-primary-active: var(--xm-blue-700); --xm-on-primary: var(--xm-neutral-0);
+  --xm-secondary: var(--xm-red-500); --xm-secondary-hover: var(--xm-red-600); --xm-secondary-active: var(--xm-red-700); --xm-on-secondary: var(--xm-neutral-0);
+  --xm-danger: var(--xm-red-500);
+  --xm-bg: var(--xm-neutral-25); --xm-surface: var(--xm-neutral-0); --xm-surface-muted: var(--xm-neutral-100); --xm-border: var(--xm-neutral-200);
+  --xm-text: var(--xm-neutral-900); --xm-text-muted: var(--xm-neutral-600); --xm-focus-ring: var(--xm-blue-500);
+  --xm-primary-rgb: 4, 51, 195; --xm-secondary-rgb: 227, 14, 14;
+  --xm-font-heading: "Montserrat", "Segoe UI", Arial, sans-serif; --xm-font-body: Arial, "Liberation Sans", Helvetica, sans-serif;
+  --xm-fs-h1: clamp(2rem, 1.5rem + 2.2vw, 2.75rem); --xm-fs-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.125rem); --xm-fs-body: 1rem;
+  --xm-lh-heading: 1.2; --xm-lh-body: 1.6;
+  --xm-space-4:16px; --xm-space-5:24px; --xm-radius-md:8px; --xm-radius-lg:16px; --xm-target-min: 44px;
+  --xm-button-radius: var(--xm-radius-md); --xm-button-min-h: var(--xm-target-min); --xm-button-px: var(--xm-space-5);
+  --xm-container-max: 1400px;
+  --xm-blue: var(--xm-blue-500); --xm-red: var(--xm-red-500);
+}
+:root[data-bs-theme="dark"] {
+  --xm-primary: var(--xm-blue-dark-accent); --xm-primary-hover: var(--xm-blue-dark-accent-hover); --xm-primary-active: var(--xm-blue-300); --xm-on-primary: var(--xm-neutral-d-0);
+  --xm-secondary: var(--xm-red-dark-accent); --xm-secondary-hover: var(--xm-red-dark-accent-hover); --xm-secondary-active: var(--xm-red-300); --xm-on-secondary: var(--xm-neutral-d-0);
+  --xm-bg: var(--xm-neutral-d-0); --xm-surface: var(--xm-neutral-d-100); --xm-surface-muted: var(--xm-neutral-d-200); --xm-border: var(--xm-neutral-d-200);
+  --xm-text: var(--xm-neutral-d-900); --xm-text-muted: var(--xm-neutral-d-600);
+}
+
+/* ---------- Variables Bootstrap du thème Social puis surcharge Xomiton (style.css :root, social-xomiton.css) ---------- */
+:root {
+  --bs-gray-600: #676a79; --bs-light: #eef0f2; --bs-emphasis-color-rgb: 0, 0, 0; --bs-border-width: 1px;
+  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(83, 88, 93, 0.15); --bs-body-font-weight: 400; --bs-body-text-align: left;
+  --bs-heading-color: inherit;
+}
+[data-bs-theme=dark] { --bs-gray-600: #c5c6cc; --bs-emphasis-color-rgb: 255, 255, 255; --bs-mode: #191a1f; --bs-light: #212529; }
+:root, [data-bs-theme="light"], [data-bs-theme="dark"] {
+  --bs-primary: var(--xm-primary); --bs-secondary: var(--xm-secondary); --bs-danger: var(--xm-danger);
+  --bs-primary-rgb: var(--xm-primary-rgb); --bs-secondary-rgb: var(--xm-secondary-rgb); --bs-danger-rgb: var(--xm-secondary-rgb);
+  --bs-body-font-family: var(--xm-font-body); --bs-body-font-size: var(--xm-fs-body); --bs-body-line-height: var(--xm-lh-body);
+  --bs-body-color: var(--xm-text); --bs-body-bg: var(--xm-bg); --bs-secondary-color: var(--xm-text-muted); --bs-tertiary-bg: var(--xm-surface-muted);
+  --bs-border-color: var(--xm-border); --bs-link-color: var(--xm-primary); --bs-link-hover-color: var(--xm-primary-hover);
+  --bs-border-radius: var(--xm-radius-md); --bs-border-radius-lg: var(--xm-radius-lg);
+}
+
+/* ---------- Reset minimal (style.css) ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); line-height: var(--bs-body-line-height); color: var(--bs-body-color); text-align: var(--bs-body-text-align); background-color: var(--bs-body-bg); -webkit-text-size-adjust: 100%; overflow-x: hidden; position: relative; }
+main { background-color: var(--bs-body-bg); }
+header { position: relative; }
+h1, h2, h3, .h1, .h2, .h3 { margin-top: 0; margin-bottom: 0.5rem; font-family: var(--xm-font-heading); line-height: var(--xm-lh-heading); color: var(--bs-heading-color); }
+h1, .h1 { font-size: var(--xm-fs-h1); font-weight: 800; }
+h2, .h2 { font-size: var(--xm-fs-h2); font-weight: 700; }
+p { margin-top: 0; margin-bottom: 1rem; }
+a { color: var(--bs-link-color); text-decoration: underline; }
+img, svg { vertical-align: middle; }
+img { max-width: 100%; height: auto; }
+ul { padding-left: 2rem; margin-top: 0; margin-bottom: 1rem; }
+button { border-radius: 0; margin: 0; font-family: inherit; font-size: inherit; line-height: inherit; text-transform: none; cursor: pointer; }
+.container { --bs-gutter-x: 1.5rem; width: 100%; padding-right: calc(var(--bs-gutter-x) * 0.5); padding-left: calc(var(--bs-gutter-x) * 0.5); margin-right: auto; margin-left: auto; }
+@media (min-width: 576px) { .container { max-width: 540px; } }
+@media (min-width: 768px) { .container { max-width: 720px; } }
+@media (min-width: 992px) { .container { max-width: 960px; } }
+@media (min-width: 1200px) { .container { max-width: 1140px; } }
+@media (min-width: 1400px) { .container { max-width: 1320px; } }
+body:not(.xm-admin) main > .container, body:not(.xm-admin) header .container { max-width: var(--xm-container-max); }
+
+/* ---------- Accessibilité : lien d'évitement, bandeau hors connexion (xomiton.css) ---------- */
+.xm-skip-link { position: absolute; left: .75rem; top: -4rem; z-index: 2000; background: var(--xm-blue); color: var(--xm-neutral-0); padding: .6rem 1rem; border-radius: .5rem; font-weight: 700; text-decoration: none; transition: top .15s; }
+.xm-skip-link:focus { top: .75rem; color: var(--xm-neutral-0); outline: 3px solid var(--xm-focus-ring); outline-offset: 2px; }
+.xm-offline-bar { display:none; position:sticky; top:0; z-index:1100; background:var(--xm-amber-500); color:var(--xm-neutral-900); text-align:center; padding:.4rem 1rem; font-size:.85rem; font-weight:600; }
+body.xm-is-offline .xm-offline-bar { display:block; }
+
+/* ---------- En-tête public et sobre (style.css navbar, surcharges Social) ---------- */
+.bg-mode { background: #fff; }
+[data-bs-theme=dark] .bg-mode { background: var(--bs-mode); }
+.sticky-top { position: sticky; top: 0; z-index: 1020; }
+.shadow-sm { box-shadow: var(--bs-box-shadow-sm) !important; }
+.navbar { --bs-navbar-padding-x: 0; --bs-navbar-padding-y: 0; --bs-navbar-color: var(--bs-gray-600); --bs-navbar-hover-color: #0433C3; --bs-navbar-active-color: #0433C3; --bs-navbar-brand-padding-y: 10px; --bs-navbar-brand-margin-end: 1rem; --bs-navbar-brand-font-size: 1.25rem; --bs-navbar-brand-color: rgba(var(--bs-emphasis-color-rgb), 1); --bs-navbar-nav-link-padding-x: 1rem; --bs-navbar-toggler-padding-y: 0.25rem; --bs-navbar-toggler-padding-x: 0; --bs-navbar-toggler-font-size: 1.25rem; --bs-navbar-toggler-border-color: rgba(0, 0, 0, 0.1); --bs-navbar-toggler-border-radius: var(--bs-border-radius); position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x); }
+.navbar > .container { display: flex; flex-wrap: inherit; align-items: center; justify-content: space-between; }
+.navbar-brand { padding-top: var(--bs-navbar-brand-padding-y); padding-bottom: var(--bs-navbar-brand-padding-y); margin-right: var(--bs-navbar-brand-margin-end); font-size: var(--bs-navbar-brand-font-size); color: var(--bs-navbar-brand-color); white-space: nowrap; text-decoration: none; font-family: var(--xm-font-heading); }
+.navbar-nav { --bs-nav-link-padding-x: 0; --bs-nav-link-padding-y: 0.25rem; --bs-nav-link-color: var(--bs-navbar-color); --bs-nav-link-hover-color: var(--bs-navbar-hover-color); display: flex; flex-direction: column; padding-left: 0; margin-bottom: 0; list-style: none; }
+.nav-link { display: block; padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x); font-size: var(--bs-nav-link-font-size); font-weight: var(--bs-nav-link-font-weight); color: var(--bs-nav-link-color); background: none; border: 0; text-decoration: none; }
+.navbar-nav .nav-link { font-size: 0.9375rem; font-weight: 600; text-transform: capitalize; line-height: 56px; padding-top: 0; padding-bottom: 0; }
+.navbar-nav .nav-link.active { color: var(--bs-navbar-active-color); }
+.navbar-collapse { flex-basis: 100%; flex-grow: 1; align-items: center; }
+.collapse:not(.show) { display: none; }
+.navbar-toggler { padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x); font-size: var(--bs-navbar-toggler-font-size); line-height: 1; color: var(--bs-navbar-color); background-color: var(--bs-light); border: 0; border-radius: var(--bs-navbar-toggler-border-radius); margin-bottom: 0; }
+.navbar-toggler .navbar-toggler-animation { background-image: none; position: relative; height: 18px; width: 20px; display: inline-block; vertical-align: middle; }
+.navbar-toggler .navbar-toggler-animation span { height: 2px; background: var(--bs-gray-600); display: block; position: absolute; width: 100%; border-radius: 30px; }
+.navbar-toggler .navbar-toggler-animation span:nth-child(1) { top: 10%; }
+.navbar-toggler .navbar-toggler-animation span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.navbar-toggler .navbar-toggler-animation span:nth-child(3) { bottom: 10%; }
+.icon-md { height: 2.5rem; width: 2.5rem; font-size: 0.9em; display: inline-flex; align-items: center; justify-content: center; }
+.dark-mode-item { display: none !important; }
+[data-bs-theme=dark] .dark-mode-item { display: inline-block !important; }
+[data-bs-theme=dark] .light-mode-item { display: none !important; }
+@media (min-width: 992px) {
+  .navbar-expand-lg { flex-wrap: nowrap; justify-content: flex-start; }
+  .navbar-expand-lg .navbar-nav { flex-direction: row; }
+  .navbar-expand-lg .navbar-nav .nav-link { padding-right: var(--bs-navbar-nav-link-padding-x); padding-left: var(--bs-navbar-nav-link-padding-x); }
+  .navbar-expand-lg .navbar-collapse { display: flex !important; flex-basis: auto; }
+  .navbar-expand-lg .navbar-toggler { display: none; }
+}
+.xm-rainbow-line { height:5px; background:linear-gradient(90deg,var(--xm-red-500),var(--xm-amber-500),var(--xm-green-700),var(--xm-blue-500),var(--xm-violet-700)); border:0; opacity:1; }
+
+/* ---------- Boutons de l'en-tête (style.css .btn, social-xomiton.css) ---------- */
+.btn { --bs-btn-padding-x: 1rem; --bs-btn-padding-y: 0.5rem; --bs-btn-font-size: 0.9375rem; --bs-btn-font-weight: 500; --bs-btn-line-height: 1.5; --bs-btn-color: var(--bs-body-color); --bs-btn-bg: transparent; --bs-btn-border-width: 1px; --bs-btn-border-color: transparent; --bs-btn-border-radius: 0.4rem; display: inline-block; padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x); font-size: var(--bs-btn-font-size); font-weight: var(--bs-btn-font-weight); line-height: var(--bs-btn-line-height); color: var(--bs-btn-color); text-align: center; text-decoration: none; vertical-align: middle; cursor: pointer; user-select: none; border: var(--bs-btn-border-width) solid var(--bs-btn-border-color); border-radius: var(--bs-btn-border-radius); background-color: var(--bs-btn-bg); outline: 0; }
+.btn-sm { --bs-btn-padding-y: 0.4rem; --bs-btn-padding-x: 0.8rem; --bs-btn-font-size: 0.8125rem; --bs-btn-border-radius: 0.2rem; }
+.btn { min-height: var(--xm-button-min-h); border-radius: var(--xm-button-radius); font-weight: 700; padding-inline: var(--xm-button-px); font-family: var(--xm-font-heading); line-height: var(--xm-lh-heading); }
+.btn-sm { min-height: 36px; padding-inline: var(--xm-space-4); }
+.btn-primary { --bs-btn-color: var(--xm-on-primary); --bs-btn-bg: var(--xm-primary); --bs-btn-border-color: var(--xm-primary); }
+.btn-outline-primary { --bs-btn-color: var(--xm-primary); --bs-btn-border-color: var(--xm-primary); }
+.btn-danger-soft { color: #d6293e; background-color: rgba(214, 41, 62, 0.1); }
+.btn-danger-soft { color: var(--xm-secondary); background-color: rgba(var(--bs-secondary-rgb), .1); }
+
+/* ---------- Utilitaires présents dans l'en-tête ---------- */
+.d-flex { display: flex !important; }
+.d-none { display: none !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+.align-items-center { align-items: center !important; }
+.gap-2 { gap: 0.5rem !important; }
+.ms-auto { margin-left: auto !important; }
+.mx-auto { margin-right: auto !important; margin-left: auto !important; }
+.me-1 { margin-right: 0.25rem !important; }
+.p-0 { padding: 0 !important; }
+.py-3 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.fw-bold { font-weight: 700 !important; }
+@media (min-width: 576px) { .d-sm-inline-flex { display: inline-flex !important; } }
+@media (min-width: 992px) { .py-lg-0 { padding-top: 0 !important; padding-bottom: 0 !important; } }
+
+/* ---------- Bandeau héros (xomiton.css) ---------- */
+.xm-hero-bg { background:linear-gradient(135deg, var(--xm-blue-500) 0%, var(--xm-violet-700) 60%, var(--xm-rose-600) 100%); color:var(--xm-neutral-0); }
+.xm-hero-bg :is(h1, h2, h3, .h1, .h2, .h3) { color: var(--xm-neutral-0); }
+.xm-hero-bg .xm-hero-sub { color: rgba(255,255,255,.92); }
+.xm-hero-page { position: relative; overflow: hidden; }
+.xm-hero-page::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: linear-gradient(90deg,var(--xm-red-500),var(--xm-amber-500),var(--xm-green-700),var(--xm-blue-500),var(--xm-violet-700)); }

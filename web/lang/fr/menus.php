@@ -146,6 +146,14 @@ return [
         'language' => 'Langue',
     ],
 
+    // Rôle affiché sous le pseudo dans le menu avatar (prototype partials/header.php $uRoleLabel).
+    'member_roles' => [
+        'membre' => 'Membre',
+        'pair' => 'Pair éducateur·rice',
+        'admin' => 'Administrateur·rice',
+        'superadmin' => 'Super-administrateur·rice',
+    ],
+
     // Libellés accessibles de la navigation.
     'a11y' => [
         'main_nav' => 'Navigation principale',

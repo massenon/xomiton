@@ -111,6 +111,7 @@ return [
     'event_created' => [
         'title' => 'Nouvel événement',
         'body' => ':title, le :date à :time.',
+        'body_group' => ':title (:group), le :date à :time.',
         'discreet' => 'Nouvel événement',
     ],
 
@@ -172,6 +173,37 @@ return [
         'title' => 'Nouvelle fiche',
         'body' => '« :title » est disponible dans :theme.',
         'discreet' => 'Nouvelle ressource',
+    ],
+
+    // Cloche de l'administration (P3-02 ContentReported, SyncConflict) : vous.
+    'content_reported' => [
+        'title' => 'Contenu signalé',
+        'body' => ':kind à modérer · motif : :reason.',
+        'discreet' => 'Signalement à modérer',
+    ],
+
+    'sync_conflict' => [
+        'title' => 'Conflit de synchronisation',
+        'body' => ':subject · champ « :field » : deux versions à arbitrer.',
+        'discreet' => 'Conflit de synchronisation',
+    ],
+
+    // Catégories stockées (`notifications.category`, `user_settings.notification_prefs`, config xomiton.notifications.categories)
+    // et canaux de préférence (`in_app`, `email`, `push`) : libellés pour l'API et l'écran Paramètres.
+    'categories' => [
+        'securite' => 'Sécurité du compte',
+        'sos' => 'SOS',
+        'alertes' => 'Alertes routées',
+        'messages' => 'Messages',
+        'communaute' => 'Communauté',
+        'evenements' => 'Événements',
+        'moderation' => 'Modération',
+        'systeme' => 'Système',
+    ],
+    'channels' => [
+        'in_app' => 'Cloche dans l’application',
+        'email' => 'E-mail',
+        'push' => 'Push (navigateur et mobile)',
     ],
 
     'digest' => [

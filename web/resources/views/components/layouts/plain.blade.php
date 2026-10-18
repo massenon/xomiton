@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
-    @include('partials.head', ['seo' => $seo])
+    @include('partials.head', ['seo' => $seo, 'critical' => true])
     {{ $head ?? '' }}
 </head>
 <body @class(['xm-plain', $bodyClass => $bodyClass !== ''])>
@@ -15,10 +15,7 @@
     <header class="navbar-light bg-mode sticky-top shadow-sm no-print">
         <nav class="navbar" aria-label="{{ __('menus.menu') }}">
             <div class="container" style="max-width:640px">
-                <a class="navbar-brand" href="{{ route('home') }}">
-                    <img class="light-mode-item navbar-brand-item" src="{{ asset('assets/images/logo.svg') }}" alt="{{ __('common.logo_alt_light') }}" width="144" height="40">
-                    <img class="dark-mode-item navbar-brand-item" src="{{ asset('assets/images/logo-dark.svg') }}" alt="{{ __('common.logo_alt_dark') }}" width="144" height="40">
-                </a>
+                <x-logo class="navbar-brand" :href="route('home')" :adaptive="true" :width="140" img-class="navbar-brand-item" />
                 <div class="d-flex gap-2 align-items-center">
                     <a class="btn btn-sm btn-danger-soft fw-bold" href="{{ route('urgences') }}"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i>{{ __('menus.member.emergency') }}</a>
                     @auth

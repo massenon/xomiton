@@ -214,7 +214,7 @@ class Post extends Model
     public function authorLabel(): string
     {
         if ($this->is_anonymous || $this->user === null) {
-            return (string) __('Membre anonyme');
+            return (string) __('feed.post.anonymous_author');
         }
 
         return $this->user->pseudo;

@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-lg-7 d-flex align-items-center">
                     <div class="w-100 p-4 p-md-5 mx-auto xm-auth-form" style="max-width:{{ $maxWidth }}px">
-                        <a href="{{ route('home') }}" class="d-lg-none d-inline-block mb-4" aria-label="{{ __('auth.layout.home') }}"><img src="{{ asset('assets/images/logo.svg') }}" alt="Xomiton" height="38" width="137"></a>
+                        <x-logo class="d-lg-none d-inline-block mb-4" :href="route('home')" :width="148" />
                         {{ $slot }}
                         <p class="xm-lock-notice small text-body-secondary mt-4 mb-0"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>{{ __('auth.lock_screen_notice') }}</p>
                     </div>

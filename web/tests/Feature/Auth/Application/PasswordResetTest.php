@@ -11,7 +11,7 @@ use App\Enums\MemberType;
 use App\Enums\OtpPurpose;
 use App\Enums\UserStatus;
 use App\Events\Auth\PasswordResetCompleted;
-use App\Events\Auth\PeerValidated;
+use App\Domain\Auth\Events\PeerValidated;
 use App\Mail\TemplateMail;
 use App\Models\AuditLog;
 use App\Models\MailLog;

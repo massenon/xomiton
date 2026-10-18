@@ -1,7 +1,7 @@
 // Comportements d'interface des composants x-* (prototype assets/js/xomiton.js et xomiton-admin.js, portés sur Bootstrap 5.3 ESM).
 // Chargé par les paquets public (Alpine démarré après cet import) et administration (Alpine fourni par Livewire).
 // Aucun état n'est stocké hors de la page : le marquage « lu » et le tri réels viennent du serveur (Livewire, API).
-import { Tab, Toast } from 'bootstrap';
+import { Tab, Toast } from '../shared/bootstrap.js';
 
 const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
 window.XM = window.XM || {};

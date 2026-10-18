@@ -49,6 +49,7 @@ return [
 
     'img' => [
         'missing_alt' => '<x-img> exige un attribut alt (utiliser alt="" pour une image décorative).',
+        'missing_src' => '<x-img> exige une source : src, ou media (image téléversée sur le disque public).',
     ],
 
     'logo' => [

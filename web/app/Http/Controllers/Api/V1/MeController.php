@@ -6,7 +6,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Application\Auth\CompleteRegistrationProfile;
 use App\Application\Auth\ConnectedDevices;
+use App\Application\Auth\UpdateUserSettings;
 use App\Http\Requests\Api\Auth\UpdateProfileRequest;
+use App\Http\Requests\Api\Auth\UpdateSettingsRequest;
 use App\Http\Resources\SessionResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -15,14 +17,16 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * /api/v1/me : mon compte (UserResource), mon profil (phases 2-3, profil progressif) et mes appareils connectés
- * (App\Application\Auth\ConnectedDevices). Rien ici ne touche un autre compte.
+ * /api/v1/me : mon compte (UserResource), mon profil (phases 2-3, profil progressif), mes réglages (thème, langue,
+ * préférences de notification P3-02) et mes appareils connectés (App\Application\Auth\ConnectedDevices).
+ * Rien ici ne touche un autre compte.
  */
 final class MeController extends ApiController
 {
     public function __construct(
         private readonly CompleteRegistrationProfile $completeProfile,
         private readonly ConnectedDevices $devices,
+        private readonly UpdateUserSettings $updateSettings,
     ) {}
 
     public function show(Request $request): JsonResponse
@@ -39,6 +43,19 @@ final class MeController extends ApiController
         $user = $request->user();
 
         ($this->completeProfile)($user, $request->toProfileData());
+
+        return $this->data($this->userPayload($user->fresh() ?? $user, $request));
+    }
+
+    /**
+     * Réglages et préférences de notification par catégorie (sécurité du compte et SOS restent actifs quoi qu'il arrive).
+     */
+    public function updateSettings(UpdateSettingsRequest $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        ($this->updateSettings)($user, $request->toSettings());
 
         return $this->data($this->userPayload($user->fresh() ?? $user, $request));
     }

@@ -126,7 +126,7 @@ final class UserResource extends JsonResource
         return [
             'theme' => $settings->theme,
             'language' => $settings->language,
-            'notification_prefs' => $settings->notification_prefs ?? UserSetting::defaultNotificationPrefs(),
+            'notification_prefs' => $settings->notificationPrefs(),
             'notification_digest' => $settings->notification_digest,
             'mask_sensitive_notifications' => (bool) $settings->mask_sensitive_notifications,
             'sos_share_gps' => (bool) $settings->sos_share_gps,

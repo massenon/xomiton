@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Application\Shared\Referentials;
 use App\Enums\DirectoryRole;
 use App\Models\Category;
 use App\Models\Commune;
@@ -85,6 +86,9 @@ class ReferenceDataSeeder extends Seeder
         $this->seedPopulations();
         $this->seedNeeds();
         $this->seedThematiqueCategories();
+
+        // DatabaseSeeder coupe les événements de modèle : le cache des référentiels (P3-06) est invalidé explicitement.
+        app(Referentials::class)->invalidate();
     }
 
     private function seedZonesAndCommunes(): void

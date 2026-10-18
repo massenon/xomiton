@@ -1,5 +1,9 @@
-{{-- En-tête HTML commun aux gabarits. Variables : $seo (tableau de props pour <x-seo>), $css (chemins Vite CSS). --}}
+{{--
+    En-tête HTML commun aux gabarits. Variables : $seo (tableau de props pour <x-seo>), $css (chemins Vite CSS),
+    $critical (bool : CSS critique resources/css/critical.css inliné avant le CSS principal, gabarits public et sobre, P4-12).
+--}}
 @php($seo = $seo ?? [])
+@php($critical = $critical ?? false)
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <x-seo
@@ -24,4 +28,14 @@
 <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
 {{-- Thème appliqué avant le premier rendu pour éviter le clignotement (prototype partials/head-css.php). --}}
 <script nonce="{{ Illuminate\Support\Facades\Vite::cspNonce() }}">(function(){try{var t=localStorage.getItem('theme')||'light';if(t==='auto'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-bs-theme',t)}catch(e){}})();</script>
+{{--
+    Polices (PERFORMANCE.md §6) : Montserrat est une police variable (graisses 100–900 dans un seul WOFF2 par sous-ensemble,
+    fonts.css) ; les titres en 700 / 800 utilisent le fichier latin, préchargé ici. Les sous-ensembles latin étendu et
+    vietnamien restent chargés à la demande par unicode-range.
+--}}
+<link rel="preload" as="font" type="font/woff2" crossorigin href="{{ Illuminate\Support\Facades\Vite::asset('resources/fonts/montserrat/Montserrat-latin-normal.woff2') }}">
+@if ($critical)
+    {{-- CSS critique en ligne (au-dessus de la ligne de flottaison), avant le CSS principal qui garde le dernier mot. --}}
+    <style nonce="{{ Illuminate\Support\Facades\Vite::cspNonce() }}">{!! Illuminate\Support\Facades\Vite::content('resources/css/critical.css') !!}</style>
+@endif
 @vite($css ?? ['resources/css/xomiton.css'])

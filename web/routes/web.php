@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Http\Controllers\Web\SignedMediaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -110,6 +111,9 @@ Route::middleware('auth')->group(function () use ($placeholder): void {
 // --- Catalogue vivant du design system (P0-10) : local et recette seulement, 404 ailleurs ----
 Route::get('/design-system', DesignSystemController::class)->name('design-system');
 
+// --- Fichiers privés (P3-04) : lien temporaire signé produit par MediaUploader::signedUrl() ----
+Route::get('/media/{disk}/{path}', SignedMediaController::class)->where('path', '.*')->name('media.signed');
+
 // --- Redirections des anciennes adresses du prototype ------------------------
 Route::permanentRedirect('/index.php', '/');
 Route::permanentRedirect('/landing.php', '/');
@@ -119,3 +123,7 @@ Route::permanentRedirect('/sign-up.php', '/inscription');
 Route::permanentRedirect('/signalement.php', '/signaler');
 Route::permanentRedirect('/sos.php', '/sos');
 Route::permanentRedirect('/urgences.php', '/urgences');
+
+// --- Référencement (P4-11) : robots.txt et sitemap.xml natifs, sans fichier statique ----
+Route::get('/robots.txt', App\Http\Controllers\Web\RobotsController::class)->name('robots');
+Route::get('/sitemap.xml', App\Http\Controllers\Web\SitemapController::class)->name('sitemap');

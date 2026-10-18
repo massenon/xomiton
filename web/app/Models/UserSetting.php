@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Application\Shared\NotificationPreferences;
 use Database\Factories\UserSettingFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,11 +16,12 @@ class UserSetting extends Model
     use HasFactory;
 
     /**
-     * Catégories de notifications que la personne ne peut pas désactiver.
+     * Catégories de notifications que la personne ne peut pas désactiver (miroir de `locked` dans
+     * config/xomiton.php « notifications.categories », vérifié par un test).
      *
      * @var list<string>
      */
-    public const LOCKED_CATEGORIES = ['securite', 'sos'];
+    public const LOCKED_CATEGORIES = DatabaseNotification::MANDATORY_CATEGORIES;
 
     /**
      * Thèmes d'interface admis (dictionnaire : string, pas d'enum).
@@ -78,21 +80,13 @@ class UserSetting extends Model
     }
 
     /**
-     * Préférences par défaut : tout activé dans l'application, e-mail pour les catégories importantes.
+     * Préférences par défaut (config/xomiton.php « notifications.categories », App\Application\Shared\NotificationPreferences).
      *
      * @return array<string, array{in_app: bool, email: bool, push: bool}>
      */
     public static function defaultNotificationPrefs(): array
     {
-        return [
-            'securite' => ['in_app' => true, 'email' => true, 'push' => true],
-            'sos' => ['in_app' => true, 'email' => true, 'push' => true],
-            'communaute' => ['in_app' => true, 'email' => false, 'push' => true],
-            'messages' => ['in_app' => true, 'email' => false, 'push' => true],
-            'evenements' => ['in_app' => true, 'email' => true, 'push' => false],
-            'alertes' => ['in_app' => true, 'email' => true, 'push' => true],
-            'newsletter' => ['in_app' => false, 'email' => true, 'push' => false],
-        ];
+        return NotificationPreferences::defaults();
     }
 
     /**
@@ -109,16 +103,20 @@ class UserSetting extends Model
     }
 
     /**
-     * Indique si un canal est actif pour une catégorie ; sécurité et SOS restent toujours actifs.
+     * Indique si un canal (`in_app`, `email`, `push`) est actif pour une catégorie ; sécurité et SOS restent toujours actifs.
      */
     public function wants(string $category, string $channel): bool
     {
-        if (in_array($category, self::LOCKED_CATEGORIES, true)) {
-            return true;
-        }
+        return NotificationPreferences::allows($this->notification_prefs, $category, $channel);
+    }
 
-        $prefs = $this->notification_prefs ?? self::defaultNotificationPrefs();
-
-        return (bool) ($prefs[$category][$channel] ?? true);
+    /**
+     * Préférences complètes et cohérentes (catégories connues, canaux présents, verrous appliqués).
+     *
+     * @return array<string, array{in_app: bool, email: bool, push: bool}>
+     */
+    public function notificationPrefs(): array
+    {
+        return NotificationPreferences::normalize($this->notification_prefs);
     }
 }

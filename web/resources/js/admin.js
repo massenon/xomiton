@@ -1,5 +1,11 @@
 // Paquet de l'administration (Livewire 3). Alpine est fourni par Livewire : ne pas le réimporter.
-import 'bootstrap';
+// Bootstrap complet : composants partagés avec le public (shared/bootstrap.js) + ceux propres aux écrans Livewire.
+import './shared/bootstrap.js';
+import 'bootstrap/js/src/button.js';
+import 'bootstrap/js/src/carousel.js';
+import 'bootstrap/js/src/popover.js';
+import 'bootstrap/js/src/scrollspy.js';
+import 'bootstrap/js/src/tooltip.js';
 import Swal from 'sweetalert2';
 import Chart from 'chart.js/auto';
 import Quill from 'quill';

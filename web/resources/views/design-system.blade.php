@@ -337,19 +337,22 @@
                     <x-avatar name="Ada Lovelace" />
                     <x-avatar name="Membre anonyme" size="sm" rounded="2" />
                 </div>
-                <span class="xm-ds-state">&lt;x-img&gt; (lazy par défaut, priority pour l'image LCP, alt="" décorative)</span>
+                <span class="xm-ds-state">&lt;x-img&gt; (lazy par défaut, priority pour l'image LCP, alt="" décorative ; prop media → &lt;picture&gt; WebP → repli + srcset, largeur max 1600 px, sans AVIF fictif)</span>
                 <div class="row g-3 mb-4">
                     <div class="col-6 col-md-3"><div class="xm-ratio-4x3 rounded-3"><x-img :src="$hero" alt="Deux femmes discutent sur un banc" class="xm-img-cover" width="400" height="300" /></div><p class="small text-secondary mb-0 mt-1">loading="lazy"</p></div>
                     <div class="col-6 col-md-3"><div class="xm-ratio-4x3 rounded-3"><x-img :src="$hero" alt="Deux femmes discutent sur un banc" class="xm-img-cover" width="400" height="300" :priority="true" /></div><p class="small text-secondary mb-0 mt-1">fetchpriority="high"</p></div>
                     <div class="col-6 col-md-3"><div class="xm-ratio-4x3 rounded-3"><x-img :src="$hero" alt="" class="xm-img-cover" width="400" height="300" /></div><p class="small text-secondary mb-0 mt-1">décorative : alt="" + aria-hidden</p></div>
                     <div class="col-6 col-md-3"><div class="xm-ratio-4x3 rounded-3 d-flex align-items-center justify-content-center border"><code class="small">&lt;x-img&gt; sans alt → exception</code></div><p class="small text-secondary mb-0 mt-1">{{ $states['error'] }} : rendu refusé</p></div>
                 </div>
-                <span class="xm-ds-state">&lt;x-logo&gt;</span>
+                <span class="xm-ds-state">&lt;x-logo&gt; (variantes couleur / sombre / mono-* / vertical-* / icone-* ; adaptive pour les en-têtes ; alt « Xomiton »)</span>
                 <div class="d-flex flex-wrap gap-4 align-items-center">
                     <x-logo variant="couleur" :link="false" />
                     <span class="p-3 rounded-3 xm-ds-dark"><x-logo variant="sombre" :link="false" /></span>
+                    <span class="p-3 rounded-3 xm-ds-dark"><x-logo variant="mono-blanc" :width="120" :link="false" /></span>
                     <x-logo variant="mono-bleu" :width="120" :link="false" />
                     <x-logo variant="vertical-couleur" :width="110" :link="false" />
+                    <x-logo variant="icone-bleu" :width="48" :link="false" />
+                    <span class="p-2 rounded-3 xm-ds-dark"><x-logo variant="icone-blanc" :width="48" :link="false" /></span>
                 </div>
             </section>
 

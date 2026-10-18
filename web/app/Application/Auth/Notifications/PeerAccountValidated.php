@@ -6,51 +6,64 @@ namespace App\Application\Auth\Notifications;
 
 use App\Models\DatabaseNotification;
 use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Route;
+use App\Notifications\XomitonNotification;
 
 /**
- * Cloche « compte pair validé » (NOTIFICATIONS §2) ; l'e-mail `compte-valide` part séparément via EmailTemplateService.
- * Catégorie sécurité du compte : non désactivable.
+ * « Compte pair validé » (NOTIFICATIONS §2) : cloche et e-mail `compte-valide` (canal `mail` par template), portés
+ * par la même notification depuis P3-02. Catégorie sécurité du compte : non désactivable. Aucune donnée sensible.
  */
-class PeerAccountValidated extends Notification
+final class PeerAccountValidated extends XomitonNotification
 {
-    use Queueable;
+    private readonly int $validatedById;
 
-    public function __construct(private readonly User $validatedBy) {}
-
-    /**
-     * @return list<string>
-     */
-    public function via(object $notifiable): array
+    public function __construct(User|int $validatedBy)
     {
-        return ['database'];
+        $this->validatedById = $validatedBy instanceof User ? (int) $validatedBy->getKey() : $validatedBy;
     }
 
-    /** Catégorie de préférences (`user_settings.notification_prefs`) : sécurité du compte, jamais désactivable. */
     public function category(): string
     {
         return DatabaseNotification::CATEGORY_SECURITY;
     }
 
-    /** Aucune donnée sensible : le texte peut s'afficher tel quel sur l'écran de verrouillage (NOTIFICATIONS §4.1). */
     public function isSensitive(): bool
     {
         return false;
     }
 
+    public function mailTemplate(): ?string
+    {
+        return 'compte-valide';
+    }
+
+    protected function mailContext(): ?string
+    {
+        return 'validation_pair';
+    }
+
+    protected function wantsPush(): bool
+    {
+        return false;
+    }
+
     /**
-     * @return array<string, mixed>
+     * @return array{title: string, body: string, url: string, icon: string}
      */
-    public function toDatabase(object $notifiable): array
+    protected function content(object $notifiable): array
     {
         return [
             'title' => (string) __('auth.peer_validated.title'),
             'body' => (string) __('auth.peer_validated.body'),
-            'url' => Route::has('espace-pair') ? route('espace-pair') : url('/espace-pair'),
-            'category' => $this->category(),
-            'validated_by' => $this->validatedBy->getKey(),
+            'url' => self::urlTo('espace-pair', [], '/espace-pair'),
+            'icon' => 'patch-check-fill',
         ];
+    }
+
+    /**
+     * @return array<string, scalar|null>
+     */
+    protected function extra(object $notifiable): array
+    {
+        return ['validated_by' => $this->validatedById];
     }
 }

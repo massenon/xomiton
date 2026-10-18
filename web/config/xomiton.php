@@ -127,6 +127,63 @@ return [
     ],
 
     /*
+     * Notifications (P3-02, NOTIFICATIONS_INSTRUCTION.md, ADR-25) : App\Notifications\XomitonNotification.
+     * `categories` : valeurs par défaut de `user_settings.notification_prefs` par catégorie (`in_app` = cloche,
+     * `email` = template en base, `push` = Web Push et FCM) ; `locked` = catégorie que la personne ne peut pas
+     * désactiver (sécurité du compte et SOS, §4.3). `push.*.driver` : `log` tant que les paquets ne sont pas installés
+     * (`vapid` → minishlink/web-push ; `firebase` → compte de service FIREBASE_CREDENTIALS hors racine web) ; un pilote
+     * inconnu ou non installé retombe sur `log` avec un avertissement (App\Infrastructure\Notifications\NotificationDrivers).
+     */
+    'notifications' => [
+        'categories' => [
+            'securite' => ['in_app' => true, 'email' => true, 'push' => true, 'locked' => true],
+            'sos' => ['in_app' => true, 'email' => true, 'push' => true, 'locked' => true],
+            'alertes' => ['in_app' => true, 'email' => true, 'push' => true, 'locked' => false],
+            'messages' => ['in_app' => true, 'email' => false, 'push' => true, 'locked' => false],
+            'communaute' => ['in_app' => true, 'email' => false, 'push' => true, 'locked' => false],
+            'evenements' => ['in_app' => true, 'email' => true, 'push' => false, 'locked' => false],
+            'moderation' => ['in_app' => true, 'email' => false, 'push' => false, 'locked' => false],
+            'systeme' => ['in_app' => true, 'email' => false, 'push' => false, 'locked' => false],
+        ],
+        'push' => [
+            'webpush' => [
+                'driver' => env('WEBPUSH_DRIVER', 'log'),
+                'vapid' => [
+                    'subject' => env('VAPID_SUBJECT', 'mailto:bonjour@xomiton.org'),
+                    'public_key' => env('VAPID_PUBLIC_KEY'),
+                    'private_key' => env('VAPID_PRIVATE_KEY'),
+                ],
+            ],
+            'fcm' => [
+                'driver' => env('FCM_DRIVER', 'log'),
+                // Chemin absolu du fichier JSON du compte de service Firebase, hors racine web (jamais de clé serveur héritée).
+                'credentials' => env('FIREBASE_CREDENTIALS'),
+            ],
+        ],
+    ],
+
+    /*
+     * SMS de secours (NOTIFICATIONS_INSTRUCTION.md §1 : SOS uniquement, Q7) : App\Domain\Notifications\Contracts\SmsSender.
+     * `provider` : `log` (journal) tant que le fournisseur n'est pas choisi ; un fournisseur inconnu retombe sur `log`.
+     */
+    'sms' => [
+        'provider' => env('SMS_PROVIDER', 'log'),
+        'api_key' => env('SMS_API_KEY'),
+        'sender' => env('SMS_SENDER', 'Xomiton'),
+        'max_length' => 160,
+    ],
+
+    /*
+     * Référentiels en cache (P3-06, PERFORMANCE.md) : App\Application\Shared\Referentials. Durée en secondes ;
+     * l'invalidation passe par une clé de version incrémentée à chaque écriture (observer sur les modèles).
+     */
+    'referentials' => [
+        'ttl_seconds' => 86400,
+        // Cache-Control public (secondes) des réponses GET /api/v1/zones, violence-types, needs.
+        'http_max_age' => 3600,
+    ],
+
+    /*
      * Rétention (DATABASE_ENGINEERING.md §6).
      */
     'retention' => [
@@ -172,14 +229,26 @@ return [
         'signed_disks' => ['local'],
         'signed_url_minutes' => 10,
         // Images : ré-encodage GD (orientation EXIF appliquée, métadonnées retirées, côté long ≤ 2048 px),
-        // WebP + repli JPEG/PNG, variantes thumb / medium (côté long en px). Garde mémoire : surface maximale décodée.
+        // WebP + repli JPEG/PNG, variantes thumb / medium / large (côté long en px ; `large` = largeur maximale affichée par
+        // <x-img>, PERFORMANCE.md §2). Garde mémoire : surface maximale décodée.
         'reencode_images' => true,
         'image_max_dimension' => 2048,
         'image_max_pixels' => 25_000_000,
         'image_webp' => true,
         'image_keep_fallback' => true,
         'image_quality' => 82,
-        'image_variants' => ['thumb' => 320, 'medium' => 1024],
+        'image_variants' => ['thumb' => 320, 'medium' => 1024, 'large' => 1600],
+    ],
+
+    /*
+     * Référencement (P4-11) : SEO_ALLOW_INDEXING=false interdit toute exploration dans robots.txt (recette publique,
+     * mise en ligne progressive) ; surchargeable par le paramètre `seo.allow_indexing` (settings). Hors production
+     * et recette, robots.txt interdit toujours tout.
+     */
+    'seo' => [
+        'allow_indexing' => (bool) env('SEO_ALLOW_INDEXING', true),
+        // Durée de vie du cache du sitemap (secondes).
+        'sitemap_cache_seconds' => 3600,
     ],
 
     /*

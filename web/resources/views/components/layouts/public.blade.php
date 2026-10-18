@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
-    @include('partials.head', ['seo' => $seo])
+    @include('partials.head', ['seo' => $seo, 'critical' => true])
     {{ $head ?? '' }}
 </head>
 <body @class([$bodyClass => $bodyClass !== ''])>
