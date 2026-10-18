@@ -40,14 +40,14 @@ function webLoginOtpCode(string $email, string $code = '246810'): OtpCode
 it('affiche l’écran de connexion fidèle au prototype, dans le gabarit 5/12 · 7/12 (Q20 a), sans comptes de démonstration hors local', function (): void {
     $this->get('/connexion')
         ->assertOk()
-        ->assertSee('<title>Connexion – Xomiton</title>', false)
+        ->assertSee('<title>Se connecter'."\u{00A0}".': retrouver mon fil, mes messages – Xomiton</title>', false)
         ->assertSee('Bon retour')
         ->assertSee('Connecte-toi pour accéder à ton espace.')
         ->assertSee('Ton espace safe d’apprentissage et d’appui holistique.')
         ->assertSee('autocomplete="username"', false)
         ->assertSee('autocomplete="current-password"', false)
         ->assertSee('Rester connecté·e')
-        ->assertSee('Mot de passe oublié ?')
+        ->assertSee('Mot de passe oublié ?')
         ->assertSee('Signaler (sans compte)')
         ->assertSee('Urgences')
         ->assertSee('Aucune donnée n’est visible depuis l’écran de verrouillage.')
@@ -176,7 +176,7 @@ it('signale un compte suspendu et la maintenance seulement après vérification 
         ->assertSessionHasErrors(['identifier' => 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.']);
 
     $this->from('/connexion')->post('/connexion', ['identifier' => 'awa@exemple.bj', 'password' => 'Xomiton2026!'])
-        ->assertSessionHasErrors(['identifier' => 'Ce compte est suspendu. Contacte-nous : contact@xomiton.bj']);
+        ->assertSessionHasErrors(['identifier' => 'Ce compte est suspendu. Contacte-nous : contact@xomiton.bj']);
 
     $this->user->forceFill(['status' => 'actif', 'suspended_at' => null])->save();
     Settings::set('maintenance', true);

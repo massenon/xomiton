@@ -3,12 +3,16 @@
 // minuscule et chiffre pour « Fort », un symbole en plus pour « Excellent ». La jauge est indicative : le bouton
 // d'envoi reste actif, le serveur tranche. Couleur jamais seule : 4 segments + texte + liste des règles cochées.
 //
+// Annonce : seul le texte du niveau est dans une région aria-live ; il n'est réécrit que quand le niveau change, pour
+// que les lecteurs d'écran ne relisent pas « Solidité du mot de passe : Trop court » à chaque frappe (l'annonce
+// couvrirait l'écho de la saisie). Les règles sont liées au champ par aria-describedby (lues au focus).
+//
 // Balisage attendu (texte fourni par Blade via lang/fr/auth.php, jamais codé ici) :
-//   <input id="password" type="password" data-password-meter="#pwMeter">
-//   <div id="pwMeter" class="xm-pw-meter" data-labels='{"too_short":"Trop court",…}' aria-live="polite">
-//     <div class="xm-pw-meter__segments"><span class="xm-pw-meter__segment"></span> ×4</div>
-//     <p class="xm-pw-meter__label" data-password-label></p>
-//     <ul class="xm-pw-meter__rules"><li data-rule="length">…</li><li data-rule="uppercase">…</li> …</ul>
+//   <input id="password" type="password" data-password-meter="#pwMeter" aria-describedby="… pwMeter-rules">
+//   <div id="pwMeter" class="xm-pw-meter" data-level="empty" data-labels='{"too_short":"Trop court",…}'>
+//     <div class="xm-pw-meter__segments" aria-hidden="true"><span class="xm-pw-meter__segment"></span> ×4</div>
+//     <p class="xm-pw-meter__label" aria-live="polite" aria-atomic="true"><span class="visually-hidden">Solidité…</span><span data-password-label></span></p>
+//     <ul id="pwMeter-rules" class="xm-pw-meter__rules"><li data-rule="length">…</li><li data-rule="uppercase">…</li> …</ul>
 //   </div>
 
 export const MIN_LENGTH = 10;
@@ -66,15 +70,20 @@ export function render(meter, password) {
   const labels = readLabels(meter);
   const empty = String(password || '').length === 0;
 
-  meter.dataset.level = level;
+  // Champ vide : niveau « empty », texte neutre (pas de rouge avant la saisie, authentification.md).
+  const shown = empty ? 'empty' : level;
+  const changed = meter._xmShownLevel !== shown;
+  meter._xmShownLevel = shown;
+  meter.dataset.level = shown;
   meter.querySelectorAll('.xm-pw-meter__segment').forEach((seg, index) => {
     const on = !empty && index < segments;
     seg.classList.toggle('is-on', on);
     ['danger', 'warning', 'success'].forEach((t) => seg.classList.toggle(`is-${t}`, on && t === tone));
   });
 
+  // Texte réécrit seulement quand le niveau change : pas de nouvelle annonce aria-live à chaque caractère.
   const label = meter.querySelector('[data-password-label]');
-  if (label) label.textContent = empty ? (labels.empty || '') : (labels[level] || level);
+  if (label && changed) label.textContent = empty ? (labels.empty || '') : (labels[level] || level);
 
   const results = checks(password);
   meter.querySelectorAll('[data-rule]').forEach((item) => {

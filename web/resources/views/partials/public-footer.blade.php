@@ -1,4 +1,4 @@
-{{-- Pied de page public (prototype partials/public-footer.php + inc/x_newsletter.php nl_footer_form). --}}
+{{-- Pied de page public (prototype partials/public-footer.php + inc/x_newsletter.php nl_footer_form → x-newsletter-form, P4-07). --}}
 <footer class="xm-pub-footer text-white pt-5 pb-3 mt-0 no-print">
     <div class="container">
         <div class="row g-4">
@@ -28,23 +28,7 @@
             <div class="col-lg-4" id="newsletter">
                 <h2 class="h6 text-white">{{ __('footer.newsletter') }}</h2>
                 <p class="small opacity-75 mb-2">{{ __('footer.newsletter_text') }}</p>
-                @if (session('newsletter_flash'))
-                    <div class="alert alert-{{ session('newsletter_flash')['ok'] ? 'success' : 'danger' }} py-2 small mb-2" role="status">{{ session('newsletter_flash')['message'] }}</div>
-                @endif
-                <form class="xm-nl-form" method="post" action="{{ route('newsletter.subscribe') }}" novalidate>
-                    @csrf
-                    <input type="hidden" name="back" value="{{ url()->current() }}">
-                    <div class="visually-hidden" aria-hidden="true"><label for="nlWebsite">{{ __('footer.newsletter_honeypot') }}</label><input id="nlWebsite" name="website" tabindex="-1" autocomplete="off"></div>
-                    <label class="visually-hidden" for="nlEmail">{{ __('footer.newsletter_email') }}</label>
-                    <div class="input-group">
-                        <input class="form-control" type="email" id="nlEmail" name="email" placeholder="{{ __('footer.newsletter_email') }}" autocomplete="email" required>
-                        <button class="btn btn-primary" type="submit"><i class="bi bi-send me-1" aria-hidden="true"></i>{{ __('footer.newsletter_subscribe') }}</button>
-                    </div>
-                    <div class="form-check small mt-2">
-                        <input class="form-check-input" type="checkbox" id="nlConsent" name="consent" value="1" required>
-                        <label class="form-check-label opacity-75" for="nlConsent">{!! __('footer.newsletter_consent', ['url' => route('confidentialite').'#confidentialite']) !!}</label>
-                    </div>
-                </form>
+                <x-newsletter-form />
             </div>
         </div>
         <hr class="border-light opacity-25 my-4">

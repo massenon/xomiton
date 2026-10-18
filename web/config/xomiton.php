@@ -100,6 +100,8 @@ return [
         'otp_per_hour' => 5,
         'report_per_hour_per_ip' => 10,
         'newsletter_seconds_between' => 20,
+        // Inscriptions newsletter par IP et par heure (empreinte), toutes sessions confondues (P4-07).
+        'newsletter_per_hour_per_ip' => 10,
         // Suivi anonyme d'un signalement (GET signalements/{code}), réponse neutre au-delà (P2-08).
         'tracking_per_hour_per_ip' => 20,
         // Page d'accusé de réception par lien signé (P5-02) : par IP + alerte + fiche, limiteur distinct de `tracking`.
@@ -114,6 +116,10 @@ return [
         'assistant_per_minute' => 20,
         // Téléchargement et lecture d'une ressource (P4-03, limiteur `resource_download`) : par IP, adresse et ressource.
         'resource_download_per_minute' => 60,
+        // Vote « Cet article vous a-t-il aidé·e ? » du centre d'aide (POST /aide/{slug}/avis, P4-05, limiteur
+        // `faq_feedback`) : par session (par IP sans cookie), plus un plafond large par IP (CGNAT mobile), en empreinte.
+        'faq_feedback_per_hour' => 30,
+        'faq_feedback_per_hour_per_ip' => 600,
         // SOS (ARCH §4 : « sans limite bloquante, journalisé ») : limiteur `sos`, jamais de 429 ; au-delà de ce nombre
         // d'envois par minute et par IP, chaque envoi est journalisé et l'administration prévenue (P2-08, P5-09).
         'sos_log_per_minute_per_ip' => 5,
@@ -192,6 +198,12 @@ return [
         'batch_size' => (int) env('XOMITON_NEWSLETTER_BATCH', 200),
         'confirmation_ttl_hours' => 48,
         'import_max_rows' => 5000,
+        // P4-07 : renvoi de l'e-mail de confirmation à une adresse en attente au plus toutes les N minutes ; durée
+        // plancher de l'inscription publique (anti-énumération : même délai pour une adresse connue ou inconnue).
+        'confirmation_resend_minutes' => 10,
+        'response_floor_ms' => (int) env('XOMITON_NEWSLETTER_FLOOR_MS', 600),
+        // Clé HMAC des liens de suivi (pixel, clic) ; vide = dérivée d'APP_KEY. Rotation : RUNBOOK (P17-05).
+        'signing_key' => env('XOMITON_NEWSLETTER_KEY'),
     ],
 
     /*
@@ -366,6 +378,9 @@ return [
         // P4-04 : fiches de /do-glegbe = thématiques publiées de cette catégorie (slug), les plus récentes d'abord.
         'do_glegbe_category' => 'regles',
         'do_glegbe_sheets' => 4,
+        // P4-08 : « Dernière mise à jour » de /confidentialite (Y-m-d), à changer avec les textes de
+        // lang/fr/pages/confidentialite.php (et la version des consentements, ConsentVersion, si l'engagement change).
+        'legal_updated_at' => '2026-10-18',
     ],
 
     /*

@@ -1,5 +1,5 @@
 {{-- /nouveau-mot-de-passe (P2-05) : par lien signé (champs cachés) ou après le code saisi (session) ; mot de passe + confirmation + jauge. --}}
-<x-layouts.auth :seo="['title' => __('auth.reset.title')]" image="sign-in.jpg" :max-width="440">
+<x-layouts.auth :seo="['title' => __('seo.noindex.reset_password')]" image="sign-in.jpg" :max-width="440">
     <h1 class="h2 fw-bold">{{ __('auth.reset.heading') }}</h1>
     <p class="text-body-secondary">{{ __('auth.reset.intro') }}</p>
 
@@ -12,7 +12,7 @@
             <input type="hidden" name="email" value="{{ $email }}">
             <input type="hidden" name="token" value="{{ $token }}">
         @endif
-        <x-field name="password" type="password" :label="__('auth.reset.password')" :hint="__('auth.register.account.password_hint')" autocomplete="new-password" required autofocus data-password-meter="#pwMeter" />
+        <x-field name="password" type="password" :label="__('auth.reset.password')" :hint="__('auth.register.account.password_hint')" autocomplete="new-password" required autofocus data-password-meter="#pwMeter" aria-describedby="pwMeter-rules" />
         @include('auth.partials.password-meter', ['id' => 'pwMeter'])
         <div class="mt-3">
             <x-field name="password_confirmation" type="password" :label="__('auth.reset.password_confirmation')" autocomplete="new-password" required />

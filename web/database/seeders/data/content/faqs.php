@@ -21,6 +21,11 @@ return [
 
     'category_by_index' => ['compte', 'compte', 'signal', 'signal', 'signal', 'soutien', 'soutien', 'communaute', 'communaute', 'compte'],
 
+    'slug_by_index' => [
+        'qu-est-ce-que-xomiton', 'qui-peut-s-inscrire', 'abus-a-signaler', 'apres-mon-signalement', 'porter-plainte-police',
+        'chat-d-assistance', 'consultations-specialisees', 'participer-evenement-atelier', 'espace-sur-lbtq', 'protection-des-donnees',
+    ],
+
     'rows' => [
         ['Qu’est-ce que Xomiton ?', 'Xomiton est une plateforme numérique sécurisée destinée aux femmes, aux filles et aux communautés LBTQ+ au Bénin : un espace d’apprentissage, de soutien et de communauté bienveillante.', true],
         ['Qui peut s’inscrire sur Xomiton ?', 'Toute personne s’identifiant comme femme, fille ou faisant partie de la communauté LBTQ+. Les allié·es peuvent rejoindre l’espace sous condition de respect de la charte.', true],

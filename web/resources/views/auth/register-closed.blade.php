@@ -1,5 +1,10 @@
-{{-- Inscriptions fermées par l'administration (FR-AUTH-06, Q26) : message configuré (≤ 300 car.), newsletter, connexion. --}}
-<x-layouts.auth :seo="['title' => __('auth.register.title')]" image="hero-12.jpg" :max-width="520">
+{{--
+    Inscriptions fermées par l'administration (FR-AUTH-06, Q26) : message configuré (≤ 300 car.), newsletter, connexion.
+    Formulaire newsletter partagé x-newsletter-form (case de consentement exigée par SubscribeNewsletterRequest, erreurs du
+    sac `newsletter` affichées sur /newsletter#inscription, Q66). Page en noindex avec son propre titre tant que les
+    inscriptions sont fermées : /inscription n'est pas indexée avec la promesse « Crée ton compte ».
+--}}
+<x-layouts.auth :seo="['title' => __('seo.noindex.register_closed')]" image="hero-12.jpg" :max-width="520">
     <x-slot:side>@include('auth.partials.register-side')</x-slot:side>
 
     <div class="text-center py-3" data-xm-registrations-closed>
@@ -15,14 +20,7 @@
         <div class="card-body">
             <h2 class="h5 fw-bold">{{ __('auth.register.closed.newsletter_title') }}</h2>
             <p class="small text-body-secondary">{{ __('auth.register.closed.newsletter_text') }}</p>
-            <form method="post" action="{{ route('newsletter.subscribe') }}" class="d-flex flex-column flex-sm-row gap-2" novalidate>
-                @csrf
-                <div class="flex-grow-1">
-                    <label class="visually-hidden" for="f-newsletter-email">{{ __('auth.register.closed.newsletter_email') }}</label>
-                    <input class="form-control" id="f-newsletter-email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder="{{ __('auth.register.closed.newsletter_email') }}">
-                </div>
-                <x-button type="submit" icon="envelope">{{ __('auth.register.closed.newsletter_submit') }}</x-button>
-            </form>
+            <x-newsletter-form variant="page" />
         </div>
     </div>
 

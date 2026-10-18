@@ -55,6 +55,29 @@ final class RegistrationSteps
         return array_map(static fn (string $step): string => (string) __('auth.register.steps.'.$step), self::STEPS);
     }
 
+    /**
+     * Métadonnées de la phase (lang/fr/seo.php, lot auth-ecrans P4-09) : la phase 1 est la page publique indexée
+     * `/inscription` ; les phases 2 à 4, réservées à la personne connectée, sont en noindex et portent « étape n sur 4 »
+     * dans le titre de l'onglet (WCAG 2.4.2 : un titre par écran).
+     *
+     * @return array{title: string, description?: string, index: bool}
+     */
+    public static function seo(string $step): array
+    {
+        if (! self::isOptional($step)) {
+            return [
+                'title' => (string) __('seo.pages.inscription.title'),
+                'description' => (string) __('seo.pages.inscription.description'),
+                'index' => true,
+            ];
+        }
+
+        return [
+            'title' => (string) __('seo.noindex.register_step', ['current' => self::number($step), 'total' => count(self::STEPS)]),
+            'index' => false,
+        ];
+    }
+
     /** Route de la phase suivante, ou null quand l'inscription est terminée. */
     public static function nextRoute(string $step): ?string
     {

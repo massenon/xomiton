@@ -4217,7 +4217,7 @@
     "@auth_api_attributes_reset_token": {
         "description": "auth.api.attributes.reset_token"
     },
-    "auth_api_email_taken": "Un compte existe déjà avec cette adresse e-mail. Connecte-toi ou utilise « Mot de passe oublié ».",
+    "auth_api_email_taken": "Un compte existe déjà avec cette adresse e-mail. Connecte-toi ou utilise « Mot de passe oublié ».",
     "@auth_api_email_taken": {
         "description": "auth.api.email_taken"
     },
@@ -4265,11 +4265,11 @@
     "@auth_forgot_email": {
         "description": "auth.forgot.email"
     },
-    "auth_forgot_heading": "Mot de passe oublié ?",
+    "auth_forgot_heading": "Mot de passe oublié ?",
     "@auth_forgot_heading": {
         "description": "auth.forgot.heading"
     },
-    "auth_forgot_intro": "Indique ton adresse e-mail : tu recevras un code et un lien pour choisir un nouveau mot de passe.",
+    "auth_forgot_intro": "Indique ton adresse e-mail : tu recevras un code et un lien pour choisir un nouveau mot de passe.",
     "@auth_forgot_intro": {
         "description": "auth.forgot.intro"
     },
@@ -4280,10 +4280,6 @@
     "auth_forgot_submit": "Envoyer le code",
     "@auth_forgot_submit": {
         "description": "auth.forgot.submit"
-    },
-    "auth_forgot_title": "Mot de passe oublié",
-    "@auth_forgot_title": {
-        "description": "auth.forgot.title"
     },
     "auth_layout_home": "Xomiton, accueil",
     "@auth_layout_home": {
@@ -4317,7 +4313,7 @@
     "@auth_login_emergencies": {
         "description": "auth.login.emergencies"
     },
-    "auth_login_forgot": "Mot de passe oublié ?",
+    "auth_login_forgot": "Mot de passe oublié ?",
     "@auth_login_forgot": {
         "description": "auth.login.forgot"
     },
@@ -4337,7 +4333,7 @@
     "@auth_login_intro": {
         "description": "auth.login.intro"
     },
-    "auth_login_no_account": "Pas encore de compte ?",
+    "auth_login_no_account": "Pas encore de compte ?",
     "@auth_login_no_account": {
         "description": "auth.login.no_account"
     },
@@ -4365,11 +4361,7 @@
     "@auth_login_submit": {
         "description": "auth.login.submit"
     },
-    "auth_login_title": "Connexion",
-    "@auth_login_title": {
-        "description": "auth.login.title"
-    },
-    "auth_login_welcome_back": "Content·e de te revoir !",
+    "auth_login_welcome_back": "Content·e de te revoir !",
     "@auth_login_welcome_back": {
         "description": "auth.login.welcome_back"
     },
@@ -4464,7 +4456,7 @@
     "@auth_otp_screen_later": {
         "description": "auth.otp_screen.later"
     },
-    "auth_otp_screen_not_received": "Rien reçu ? Vérifie tes courriers indésirables.",
+    "auth_otp_screen_not_received": "Rien reçu ? Vérifie tes courriers indésirables.",
     "@auth_otp_screen_not_received": {
         "description": "auth.otp_screen.not_received"
     },
@@ -4472,7 +4464,7 @@
     "@auth_otp_screen_nothing_pending": {
         "description": "auth.otp_screen.nothing_pending"
     },
-    "auth_otp_screen_purpose_login": "Nous ne reconnaissons pas cet appareil : confirme que c’est bien toi.",
+    "auth_otp_screen_purpose_login": "Nous ne reconnaissons pas cet appareil : confirme que c’est bien toi.",
     "@auth_otp_screen_purpose_login": {
         "description": "auth.otp_screen.purpose.login"
     },
@@ -4505,17 +4497,17 @@
     "@auth_otp_screen_submit": {
         "description": "auth.otp_screen.submit"
     },
-    "auth_otp_screen_title": "Code de vérification",
-    "@auth_otp_screen_title": {
-        "description": "auth.otp_screen.title"
-    },
-    "auth_otp_screen_verified": "Ton e-mail est confirmé. Merci !",
+    "auth_otp_screen_verified": "Ton e-mail est confirmé. Merci !",
     "@auth_otp_screen_verified": {
         "description": "auth.otp_screen.verified"
     },
     "auth_password": "Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.",
     "@auth_password": {
         "description": "auth.password"
+    },
+    "auth_password_meter_label": "Solidité du mot de passe :",
+    "@auth_password_meter_label": {
+        "description": "auth.password_meter_label"
     },
     "auth_password_rules_digit": "Un chiffre",
     "@auth_password_rules_digit": {
@@ -4529,7 +4521,7 @@
     "@auth_password_rules_lowercase": {
         "description": "auth.password_rules.lowercase"
     },
-    "auth_password_rules_symbol": "Un symbole, pour un mot de passe « Excellent »",
+    "auth_password_rules_symbol": "Un symbole, pour un mot de passe « Excellent »",
     "@auth_password_rules_symbol": {
         "description": "auth.password_rules.symbol"
     },
@@ -4561,7 +4553,7 @@
     "@auth_password_strength_weak": {
         "description": "auth.password_strength.weak"
     },
-    "auth_peer_validated_body": "L’équipe Xomiton a validé ton inscription : l’espace pair et la collecte te sont ouverts.",
+    "auth_peer_validated_body": "L’équipe Xomiton a validé ton inscription : l’espace pair et la collecte te sont ouverts.",
     "@auth_peer_validated_body": {
         "description": "auth.peer_validated.body"
     },
@@ -4593,7 +4585,7 @@
     "@auth_register_account_cgu_terms": {
         "description": "auth.register.account.cgu_terms"
     },
-    "auth_register_account_created": "Ton compte est créé. Bienvenue sur Xomiton !",
+    "auth_register_account_created": "Ton compte est créé. Bienvenue sur Xomiton !",
     "@auth_register_account_created": {
         "description": "auth.register.account.created"
     },
@@ -4605,7 +4597,7 @@
     "@auth_register_account_email_hint": {
         "description": "auth.register.account.email_hint"
     },
-    "auth_register_account_heading": "Qui es-tu ?",
+    "auth_register_account_heading": "Qui es-tu ?",
     "@auth_register_account_heading": {
         "description": "auth.register.account.heading"
     },
@@ -4634,7 +4626,7 @@
     "@auth_register_account_pseudo": {
         "description": "auth.register.account.pseudo"
     },
-    "auth_register_account_pseudo_hint": "C’est ce que les autres verront. 3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
+    "auth_register_account_pseudo_hint": "C’est ce que les autres verront. 3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
     "@auth_register_account_pseudo_hint": {
         "description": "auth.register.account.pseudo_hint"
     },
@@ -4642,19 +4634,11 @@
     "@auth_register_account_submit": {
         "description": "auth.register.account.submit"
     },
-    "auth_register_closed_newsletter_email": "Adresse e-mail",
-    "@auth_register_closed_newsletter_email": {
-        "description": "auth.register.closed.newsletter_email"
-    },
-    "auth_register_closed_newsletter_submit": "M’inscrire à la newsletter",
-    "@auth_register_closed_newsletter_submit": {
-        "description": "auth.register.closed.newsletter_submit"
-    },
-    "auth_register_closed_newsletter_text": "Laisse ton adresse : on t’écrit dès que les inscriptions rouvrent.",
+    "auth_register_closed_newsletter_text": "La newsletter annonce la réouverture des inscriptions, avec les nouvelles ressources et les événements de la communauté.",
     "@auth_register_closed_newsletter_text": {
         "description": "auth.register.closed.newsletter_text"
     },
-    "auth_register_closed_newsletter_title": "Reste informé·e",
+    "auth_register_closed_newsletter_title": "Être prévenu·e de la réouverture",
     "@auth_register_closed_newsletter_title": {
         "description": "auth.register.closed.newsletter_title"
     },
@@ -4667,7 +4651,7 @@
             }
         }
     },
-    "auth_register_closed_sign_in": "J’ai déjà un compte : me connecter",
+    "auth_register_closed_sign_in": "J’ai déjà un compte : me connecter",
     "@auth_register_closed_sign_in": {
         "description": "auth.register.closed.sign_in"
     },
@@ -4695,7 +4679,7 @@
     "@auth_register_consents_sensitive_data": {
         "description": "auth.register.consents.sensitive_data"
     },
-    "auth_register_done": "Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.",
+    "auth_register_done": "Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.",
     "@auth_register_done": {
         "description": "auth.register.done"
     },
@@ -4707,7 +4691,7 @@
     "@auth_register_heading": {
         "description": "auth.register.heading"
     },
-    "auth_register_intro": "Un espace safe, confidentiel et gratuit. Déjà inscrit·e ?",
+    "auth_register_intro": "Un espace safe, confidentiel et gratuit. Déjà inscrit·e ?",
     "@auth_register_intro": {
         "description": "auth.register.intro"
     },
@@ -4739,7 +4723,7 @@
     "@auth_register_profile_member_type": {
         "description": "auth.register.profile.member_type"
     },
-    "auth_register_profile_member_type_hint": "Un compte pair éducateur·rice est validé par l’équipe Xomiton avant l’accès à la collecte ; tu gardes l’accès au reste en attendant.",
+    "auth_register_profile_member_type_hint": "Un compte pair éducateur·rice est validé par l’équipe Xomiton avant l’accès à la collecte ; tu gardes l’accès au reste en attendant.",
     "@auth_register_profile_member_type_hint": {
         "description": "auth.register.profile.member_type_hint"
     },
@@ -4819,7 +4803,7 @@
     "@auth_register_security_trusted_contact_phone_hint": {
         "description": "auth.register.security.trusted_contact_phone_hint"
     },
-    "auth_register_side_points_0": "Pseudonyme : ton identité reste protégée",
+    "auth_register_side_points_0": "Pseudonyme : ton identité reste protégée",
     "@auth_register_side_points_0": {
         "description": "auth.register.side_points.0"
     },
@@ -4855,6 +4839,18 @@
             }
         }
     },
+    "auth_register_step_of_optional": "Étape {current} sur {total}, facultative",
+    "@auth_register_step_of_optional": {
+        "description": "auth.register.step_of_optional",
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
     "auth_register_steps_account": "Compte",
     "@auth_register_steps_account": {
         "description": "auth.register.steps.account"
@@ -4871,10 +4867,6 @@
     "@auth_register_steps_security": {
         "description": "auth.register.steps.security"
     },
-    "auth_register_title": "Créer un compte",
-    "@auth_register_title": {
-        "description": "auth.register.title"
-    },
     "auth_registrations_closed": "Les inscriptions sont momentanément fermées. Reviens bientôt ou inscris-toi à la newsletter.",
     "@auth_registrations_closed": {
         "description": "auth.registrations_closed"
@@ -4883,7 +4875,7 @@
     "@auth_reset_done": {
         "description": "auth.reset.done"
     },
-    "auth_reset_expired": "Ta demande a expiré. Recommence depuis « Mot de passe oublié ».",
+    "auth_reset_expired": "Ta demande a expiré. Recommence depuis « Mot de passe oublié ».",
     "@auth_reset_expired": {
         "description": "auth.reset.expired"
     },
@@ -4891,7 +4883,7 @@
     "@auth_reset_heading": {
         "description": "auth.reset.heading"
     },
-    "auth_reset_intro": "Toutes tes sessions seront fermées : tu te reconnecteras avec ce nouveau mot de passe.",
+    "auth_reset_intro": "Toutes tes sessions seront fermées : tu te reconnecteras avec ce nouveau mot de passe.",
     "@auth_reset_intro": {
         "description": "auth.reset.intro"
     },
@@ -4911,15 +4903,11 @@
     "@auth_reset_submit": {
         "description": "auth.reset.submit"
     },
-    "auth_reset_title": "Nouveau mot de passe",
-    "@auth_reset_title": {
-        "description": "auth.reset.title"
-    },
     "auth_reset_requested": "Si un compte correspond à cette adresse, un code vient d’être envoyé.",
     "@auth_reset_requested": {
         "description": "auth.reset_requested"
     },
-    "auth_side_text": "Filles et femmes LBTQ+ : retrouve ta communauté bienveillante, des ressources fiables et un soutien confidentiel.",
+    "auth_side_text": "Filles et femmes LBTQ+ : retrouve ta communauté bienveillante, des ressources fiables et un soutien confidentiel.",
     "@auth_side_text": {
         "description": "auth.side_text"
     },
@@ -4927,7 +4915,7 @@
     "@auth_side_title": {
         "description": "auth.side_title"
     },
-    "auth_suspended": "Ce compte est suspendu. Contacte-nous : {email}",
+    "auth_suspended": "Ce compte est suspendu. Contacte-nous : {email}",
     "@auth_suspended": {
         "description": "auth.suspended",
         "placeholders": {
@@ -8385,6 +8373,10 @@
     "design_system_sections_navigation": "Navigation : fil d’Ariane, onglets, accordéon, étapes",
     "@design_system_sections_navigation": {
         "description": "design_system.sections.navigation"
+    },
+    "design_system_sections_newsletter": "Newsletter <x-newsletter-form>",
+    "@design_system_sections_newsletter": {
+        "description": "design_system.sections.newsletter"
     },
     "design_system_sections_sos": "Bouton SOS <x-sos-button>",
     "@design_system_sections_sos": {
@@ -12403,6 +12395,23 @@
     "@newsletter_public_back_home": {
         "description": "newsletter.public.back_home"
     },
+    "newsletter_public_confirm_submit": "Confirmer mon inscription",
+    "@newsletter_public_confirm_submit": {
+        "description": "newsletter.public.confirm_submit"
+    },
+    "newsletter_public_confirm_text": "Encore un clic pour recevoir la newsletter Xomiton à l’adresse {email}.",
+    "@newsletter_public_confirm_text": {
+        "description": "newsletter.public.confirm_text",
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
+    "newsletter_public_confirm_title": "Confirmez votre inscription",
+    "@newsletter_public_confirm_title": {
+        "description": "newsletter.public.confirm_title"
+    },
     "newsletter_public_confirmed": "Merci ! Vous recevrez désormais la newsletter Xomiton à l’adresse {email}.",
     "@newsletter_public_confirmed": {
         "description": "newsletter.public.confirmed",
@@ -12420,15 +12429,36 @@
     "@newsletter_public_confirmed_title": {
         "description": "newsletter.public.confirmed_title"
     },
+    "newsletter_public_consent": "J’accepte de recevoir la newsletter Xomiton et j’ai lu la <a href=\"{url}\">politique de confidentialité</a>.",
+    "@newsletter_public_consent": {
+        "description": "newsletter.public.consent",
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
     "newsletter_public_consent_required": "Cochez la case de consentement pour vous inscrire.",
     "@newsletter_public_consent_required": {
         "description": "newsletter.public.consent_required"
+    },
+    "newsletter_public_email_hint": "Vous recevrez un e-mail de confirmation : l’inscription n’est active qu’après votre clic.",
+    "@newsletter_public_email_hint": {
+        "description": "newsletter.public.email_hint"
     },
     "newsletter_public_email_invalid": "Indiquez une adresse e-mail valide, par exemple nom@exemple.bj.",
     "@newsletter_public_email_invalid": {
         "description": "newsletter.public.email_invalid"
     },
-    "newsletter_public_expired_link": "Ce lien de confirmation a expiré ({hours} h). Inscrivez-vous à nouveau pour en recevoir un nouveau.",
+    "newsletter_public_email_label": "Votre adresse e-mail",
+    "@newsletter_public_email_label": {
+        "description": "newsletter.public.email_label"
+    },
+    "newsletter_public_email_placeholder": "nom@exemple.bj",
+    "@newsletter_public_email_placeholder": {
+        "description": "newsletter.public.email_placeholder"
+    },
+    "newsletter_public_expired_link": "Ce lien de confirmation a expiré ({hours} h). Inscrivez-vous à nouveau pour en recevoir un nouveau.",
     "@newsletter_public_expired_link": {
         "description": "newsletter.public.expired_link",
         "placeholders": {
@@ -12436,6 +12466,14 @@
                 "type": "String"
             }
         }
+    },
+    "newsletter_public_expired_title": "Lien de confirmation expiré",
+    "@newsletter_public_expired_title": {
+        "description": "newsletter.public.expired_title"
+    },
+    "newsletter_public_form_title": "Inscription",
+    "@newsletter_public_form_title": {
+        "description": "newsletter.public.form_title"
     },
     "newsletter_public_frequencies_all": "Toutes les campagnes",
     "@newsletter_public_frequencies_all": {
@@ -12453,6 +12491,14 @@
     "@newsletter_public_interests": {
         "description": "newsletter.public.interests"
     },
+    "newsletter_public_interests_invalid": "Choisissez vos centres d’intérêt dans la liste proposée.",
+    "@newsletter_public_interests_invalid": {
+        "description": "newsletter.public.interests_invalid"
+    },
+    "newsletter_public_interests_label": "Ce qui vous intéresse",
+    "@newsletter_public_interests_label": {
+        "description": "newsletter.public.interests_label"
+    },
     "newsletter_public_invalid_link": "Ce lien ne correspond à aucune inscription. Vous pouvez vous inscrire à nouveau depuis le bas de la page d’accueil.",
     "@newsletter_public_invalid_link": {
         "description": "newsletter.public.invalid_link"
@@ -12460,6 +12506,30 @@
     "newsletter_public_invalid_link_title": "Lien invalide ou expiré",
     "@newsletter_public_invalid_link_title": {
         "description": "newsletter.public.invalid_link_title"
+    },
+    "newsletter_public_invalid_tracking_link": "Ce lien n’est pas valide. Copiez-le en entier depuis l’e-mail reçu, ou revenez à la page d’accueil.",
+    "@newsletter_public_invalid_tracking_link": {
+        "description": "newsletter.public.invalid_tracking_link"
+    },
+    "newsletter_public_page_lead": "Une à deux fois par mois, les nouvelles ressources, les événements de la communauté et les rappels utiles, directement dans votre boîte e-mail.",
+    "@newsletter_public_page_lead": {
+        "description": "newsletter.public.page_lead"
+    },
+    "newsletter_public_page_points_frequency": "Une à deux fois par mois, jamais plus.",
+    "@newsletter_public_page_points_frequency": {
+        "description": "newsletter.public.page_points.frequency"
+    },
+    "newsletter_public_page_points_interests": "Vous choisissez vos sujets : santé, droits, bien-être, événements…",
+    "@newsletter_public_page_points_interests": {
+        "description": "newsletter.public.page_points.interests"
+    },
+    "newsletter_public_page_points_privacy": "Votre adresse n’est jamais partagée. Désinscription en un clic depuis chaque e-mail.",
+    "@newsletter_public_page_points_privacy": {
+        "description": "newsletter.public.page_points.privacy"
+    },
+    "newsletter_public_page_title": "La newsletter Xomiton",
+    "@newsletter_public_page_title": {
+        "description": "newsletter.public.page_title"
     },
     "newsletter_public_preferences_saved": "Préférences enregistrées.",
     "@newsletter_public_preferences_saved": {
@@ -12473,6 +12543,14 @@
     "@newsletter_public_resubscribe": {
         "description": "newsletter.public.resubscribe"
     },
+    "newsletter_public_submit": "S’inscrire",
+    "@newsletter_public_submit": {
+        "description": "newsletter.public.submit"
+    },
+    "newsletter_public_subscribe_again": "M’inscrire à nouveau",
+    "@newsletter_public_subscribe_again": {
+        "description": "newsletter.public.subscribe_again"
+    },
     "newsletter_public_subscribed": "Merci ! Un e-mail de confirmation vient de vous être envoyé. Cliquez sur le lien qu’il contient pour activer votre inscription.",
     "@newsletter_public_subscribed": {
         "description": "newsletter.public.subscribed"
@@ -12485,13 +12563,30 @@
     "@newsletter_public_subscribed_title": {
         "description": "newsletter.public.subscribed_title"
     },
+    "newsletter_public_thanks_hint": "Rien reçu d’ici quelques minutes ? Regardez dans vos courriers indésirables. Sans clic de votre part, aucune newsletter ne vous sera envoyée.",
+    "@newsletter_public_thanks_hint": {
+        "description": "newsletter.public.thanks_hint"
+    },
     "newsletter_public_too_fast": "Merci de patienter quelques secondes avant de réessayer.",
     "@newsletter_public_too_fast": {
         "description": "newsletter.public.too_fast"
     },
+    "newsletter_public_too_many": "Trop de demandes d’inscription depuis cette connexion. Réessayez dans {minutes} min.",
+    "@newsletter_public_too_many": {
+        "description": "newsletter.public.too_many",
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
     "newsletter_public_unsubscribe_reason": "Pourquoi partez-vous ? (facultatif)",
     "@newsletter_public_unsubscribe_reason": {
         "description": "newsletter.public.unsubscribe_reason"
+    },
+    "newsletter_public_unsubscribe_reason_none": "—",
+    "@newsletter_public_unsubscribe_reason_none": {
+        "description": "newsletter.public.unsubscribe_reason_none"
     },
     "newsletter_public_unsubscribe_reasons_never_subscribed": "Je ne me suis pas inscrit·e",
     "@newsletter_public_unsubscribe_reasons_never_subscribed": {
@@ -12513,7 +12608,7 @@
     "@newsletter_public_unsubscribe_submit": {
         "description": "newsletter.public.unsubscribe_submit"
     },
-    "newsletter_public_unsubscribe_text": "L’adresse {email} ne recevra plus la newsletter. Vous pouvez vous réinscrire à tout moment depuis le bas de chaque page.",
+    "newsletter_public_unsubscribe_text": "Vous ne recevrez plus la newsletter à l’adresse {email}. Les e-mails liés à votre compte (sécurité, mot de passe) ne sont pas concernés.",
     "@newsletter_public_unsubscribe_text": {
         "description": "newsletter.public.unsubscribe_text",
         "placeholders": {
@@ -12526,7 +12621,7 @@
     "@newsletter_public_unsubscribe_title": {
         "description": "newsletter.public.unsubscribe_title"
     },
-    "newsletter_public_unsubscribed": "Vous ne recevrez plus la newsletter à l’adresse {email}. Les e-mails liés à votre compte (sécurité, mot de passe) ne sont pas concernés.",
+    "newsletter_public_unsubscribed": "L’adresse {email} ne recevra plus la newsletter. Vous pouvez vous réinscrire à tout moment depuis le bas de chaque page.",
     "@newsletter_public_unsubscribed": {
         "description": "newsletter.public.unsubscribed",
         "placeholders": {
@@ -14348,6 +14443,387 @@
     "pages_actualites_title": "Actualités",
     "@pages_actualites_title": {
         "description": "pages/actualites.title"
+    },
+    "pages_aide_categories_title": "Catégories de l’aide",
+    "@pages_aide_categories_title": {
+        "description": "pages/aide.categories_title"
+    },
+    "pages_aide_category_count": "{count, plural, =1{{count} article} other{{count} articles}}",
+    "@pages_aide_category_count": {
+        "description": "pages/aide.category_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_aide_clear_filters": "Effacer les filtres",
+    "@pages_aide_clear_filters": {
+        "description": "pages/aide.clear_filters"
+    },
+    "pages_aide_danger_contacts": "Contacts d’urgence",
+    "@pages_aide_danger_contacts": {
+        "description": "pages/aide.danger_contacts"
+    },
+    "pages_aide_danger_report": "Signaler",
+    "@pages_aide_danger_report": {
+        "description": "pages/aide.danger_report"
+    },
+    "pages_aide_danger_sos": "SOS",
+    "@pages_aide_danger_sos": {
+        "description": "pages/aide.danger_sos"
+    },
+    "pages_aide_danger_text": "Ne cherchez pas dans l’aide : agissez maintenant.",
+    "@pages_aide_danger_text": {
+        "description": "pages/aide.danger_text"
+    },
+    "pages_aide_danger_title": "Vous êtes en danger ?",
+    "@pages_aide_danger_title": {
+        "description": "pages/aide.danger_title"
+    },
+    "pages_aide_empty_contact": "Exprimer un besoin",
+    "@pages_aide_empty_contact": {
+        "description": "pages/aide.empty_contact"
+    },
+    "pages_aide_empty_none": "Les questions fréquentes arrivent bientôt.",
+    "@pages_aide_empty_none": {
+        "description": "pages/aide.empty_none"
+    },
+    "pages_aide_empty_text": "Essayez un autre mot ou contactez l’équipe.",
+    "@pages_aide_empty_text": {
+        "description": "pages/aide.empty_text"
+    },
+    "pages_aide_empty_title": "Aucun résultat pour « {query} ».",
+    "@pages_aide_empty_title": {
+        "description": "pages/aide.empty_title",
+        "placeholders": {
+            "query": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_aide_feedback_failed": "Votre avis n’a pas pu être envoyé. Réessayez dans un instant.",
+    "@pages_aide_feedback_failed": {
+        "description": "pages/aide.feedback.failed"
+    },
+    "pages_aide_feedback_invalid": "Choisissez « Oui » ou « Non ».",
+    "@pages_aide_feedback_invalid": {
+        "description": "pages/aide.feedback.invalid"
+    },
+    "pages_aide_feedback_no": "Non",
+    "@pages_aide_feedback_no": {
+        "description": "pages/aide.feedback.no"
+    },
+    "pages_aide_feedback_question": "Cet article vous a-t-il aidé·e ?",
+    "@pages_aide_feedback_question": {
+        "description": "pages/aide.feedback.question"
+    },
+    "pages_aide_feedback_thanks_no": "Merci, nous allons améliorer cet article.",
+    "@pages_aide_feedback_thanks_no": {
+        "description": "pages/aide.feedback.thanks_no"
+    },
+    "pages_aide_feedback_thanks_yes": "Merci pour votre retour !",
+    "@pages_aide_feedback_thanks_yes": {
+        "description": "pages/aide.feedback.thanks_yes"
+    },
+    "pages_aide_feedback_yes": "Oui",
+    "@pages_aide_feedback_yes": {
+        "description": "pages/aide.feedback.yes"
+    },
+    "pages_aide_hero_title": "Comment pouvons-nous vous aider ?",
+    "@pages_aide_hero_title": {
+        "description": "pages/aide.hero_title"
+    },
+    "pages_aide_know_communaute_0": "Rejoignez des groupes, pages et forums selon vos centres d’intérêt.",
+    "@pages_aide_know_communaute_0": {
+        "description": "pages/aide.know.communaute.0"
+    },
+    "pages_aide_know_communaute_1": "Confirmez votre participation aux événements depuis leur fiche.",
+    "@pages_aide_know_communaute_1": {
+        "description": "pages/aide.know.communaute.1"
+    },
+    "pages_aide_know_communaute_2": "Signalez tout comportement contraire à la charte de bienveillance.",
+    "@pages_aide_know_communaute_2": {
+        "description": "pages/aide.know.communaute.2"
+    },
+    "pages_aide_know_compte_0": "Créez votre compte avec un pseudonyme : aucun nom réel n’est exigé.",
+    "@pages_aide_know_compte_0": {
+        "description": "pages/aide.know.compte.0"
+    },
+    "pages_aide_know_compte_1": "Protégez-le avec un mot de passe fort : {min} caractères au moins, avec des majuscules, des minuscules et des chiffres.",
+    "@pages_aide_know_compte_1": {
+        "description": "pages/aide.know.compte.1",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_aide_know_compte_2": "Vous pouvez à tout moment exporter ou supprimer vos données depuis Paramètres.",
+    "@pages_aide_know_compte_2": {
+        "description": "pages/aide.know.compte.2"
+    },
+    "pages_aide_know_signal_0": "Choisissez le type : signaler une violence, exprimer un besoin ou SOS en cas de danger immédiat.",
+    "@pages_aide_know_signal_0": {
+        "description": "pages/aide.know.signal.0"
+    },
+    "pages_aide_know_signal_1": "Le signalement peut être totalement anonyme ; vous recevez un code de suivi.",
+    "@pages_aide_know_signal_1": {
+        "description": "pages/aide.know.signal.1"
+    },
+    "pages_aide_know_signal_2": "Il est transmis aux personnes de l’annuaire concernées par votre besoin et votre zone.",
+    "@pages_aide_know_signal_2": {
+        "description": "pages/aide.know.signal.2"
+    },
+    "pages_aide_know_signal_3": "Hors connexion, il est conservé sur votre appareil puis envoyé automatiquement.",
+    "@pages_aide_know_signal_3": {
+        "description": "pages/aide.know.signal.3"
+    },
+    "pages_aide_know_soutien_0": "Consultez l’annuaire pour trouver psychologues, juristes et points focaux.",
+    "@pages_aide_know_soutien_0": {
+        "description": "pages/aide.know.soutien.0"
+    },
+    "pages_aide_know_soutien_1": "L’assistant automatique répond 24 h/24 et vous oriente vers le bouton SOS en cas de danger ; pour une réponse humaine sous 24 h, exprimez un besoin depuis la page Signaler.",
+    "@pages_aide_know_soutien_1": {
+        "description": "pages/aide.know.soutien.1"
+    },
+    "pages_aide_know_soutien_2": "Les pair·es éducateur·rices peuvent vous accompagner dans vos démarches.",
+    "@pages_aide_know_soutien_2": {
+        "description": "pages/aide.know.soutien.2"
+    },
+    "pages_aide_know_title": "À savoir",
+    "@pages_aide_know_title": {
+        "description": "pages/aide.know_title"
+    },
+    "pages_aide_list_title": "Questions fréquentes",
+    "@pages_aide_list_title": {
+        "description": "pages/aide.list_title"
+    },
+    "pages_aide_meta_description_filler": "Toutes les réponses du centre d’aide Xomiton, gratuites et confidentielles.",
+    "@pages_aide_meta_description_filler": {
+        "description": "pages/aide.meta_description_filler"
+    },
+    "pages_aide_now_report": "Signalement",
+    "@pages_aide_now_report": {
+        "description": "pages/aide.now_report"
+    },
+    "pages_aide_now_title": "Besoin d’aide maintenant ?",
+    "@pages_aide_now_title": {
+        "description": "pages/aide.now_title"
+    },
+    "pages_aide_og_alt": "Centre d’aide Xomiton : questions fréquentes sur le compte, le signalement, le soutien et la communauté",
+    "@pages_aide_og_alt": {
+        "description": "pages/aide.og_alt"
+    },
+    "pages_aide_read_more": "Lire la suite",
+    "@pages_aide_read_more": {
+        "description": "pages/aide.read_more"
+    },
+    "pages_aide_read_more_context": " : « {question} »",
+    "@pages_aide_read_more_context": {
+        "description": "pages/aide.read_more_context",
+        "placeholders": {
+            "question": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_aide_related_title": "Autres questions",
+    "@pages_aide_related_title": {
+        "description": "pages/aide.related_title"
+    },
+    "pages_aide_results_count": "{count, plural, =0{Aucune question trouvée.} =1{1 question trouvée.} other{{count} questions trouvées.}}",
+    "@pages_aide_results_count": {
+        "description": "pages/aide.results_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_aide_search_label": "Rechercher dans l’aide",
+    "@pages_aide_search_label": {
+        "description": "pages/aide.search_label"
+    },
+    "pages_aide_search_placeholder": "Rechercher : signalement, données, SOS…",
+    "@pages_aide_search_placeholder": {
+        "description": "pages/aide.search_placeholder"
+    },
+    "pages_aide_search_submit": "Chercher",
+    "@pages_aide_search_submit": {
+        "description": "pages/aide.search_submit"
+    },
+    "pages_aide_title": "Centre d’aide",
+    "@pages_aide_title": {
+        "description": "pages/aide.title"
+    },
+    "pages_confidentialite_charte_intro": "Xomiton est un espace sûr. En l’utilisant, je m’engage à :",
+    "@pages_confidentialite_charte_intro": {
+        "description": "pages/confidentialite.charte.intro"
+    },
+    "pages_confidentialite_charte_items_0": "respecter chaque personne, quelle que soit son orientation sexuelle, son identité de genre, son âge, son origine ou sa situation ;",
+    "@pages_confidentialite_charte_items_0": {
+        "description": "pages/confidentialite.charte.items.0"
+    },
+    "pages_confidentialite_charte_items_1": "ne tenir aucun propos homophobe, transphobe, sexiste, violent ou discriminatoire ;",
+    "@pages_confidentialite_charte_items_1": {
+        "description": "pages/confidentialite.charte.items.1"
+    },
+    "pages_confidentialite_charte_items_2": "ne jamais révéler l’identité, l’orientation ou les informations privées d’une autre personne (pas d’« outing ») ;",
+    "@pages_confidentialite_charte_items_2": {
+        "description": "pages/confidentialite.charte.items.2"
+    },
+    "pages_confidentialite_charte_items_3": "écouter sans juger et garder confidentiel ce qui est partagé dans les groupes ;",
+    "@pages_confidentialite_charte_items_3": {
+        "description": "pages/confidentialite.charte.items.3"
+    },
+    "pages_confidentialite_charte_items_4": "ne pas utiliser la plateforme pour du harcèlement, du chantage, de la publicité ou des contenus illégaux.",
+    "@pages_confidentialite_charte_items_4": {
+        "description": "pages/confidentialite.charte.items.4"
+    },
+    "pages_confidentialite_charte_notice": "Tout manquement peut entraîner un avertissement, une suspension ou une exclusion décidés par l’équipe de modération.",
+    "@pages_confidentialite_charte_notice": {
+        "description": "pages/confidentialite.charte.notice"
+    },
+    "pages_confidentialite_conditions_0_0": "Accès.",
+    "@pages_confidentialite_conditions_0_0": {
+        "description": "pages/confidentialite.conditions.0.0"
+    },
+    "pages_confidentialite_conditions_0_1": "Xomiton s’adresse aux filles et femmes, aux personnes LBTQ+ et à leurs allié·es respectueux·ses. Les inscriptions peuvent être ouvertes ou suspendues par l’administration.",
+    "@pages_confidentialite_conditions_0_1": {
+        "description": "pages/confidentialite.conditions.0.1"
+    },
+    "pages_confidentialite_conditions_1_0": "Compte.",
+    "@pages_confidentialite_conditions_1_0": {
+        "description": "pages/confidentialite.conditions.1.0"
+    },
+    "pages_confidentialite_conditions_1_1": "Vous êtes responsable de la confidentialité de votre mot de passe. Utilisez un mot de passe fort.",
+    "@pages_confidentialite_conditions_1_1": {
+        "description": "pages/confidentialite.conditions.1.1"
+    },
+    "pages_confidentialite_conditions_2_0": "Contenus.",
+    "@pages_confidentialite_conditions_2_0": {
+        "description": "pages/confidentialite.conditions.2.0"
+    },
+    "pages_confidentialite_conditions_2_1": "Vous restez propriétaire de ce que vous publiez et nous autorisez à l’afficher dans la plateforme selon vos réglages de visibilité.",
+    "@pages_confidentialite_conditions_2_1": {
+        "description": "pages/confidentialite.conditions.2.1"
+    },
+    "pages_confidentialite_conditions_3_0": "Information, pas avis médical ou juridique.",
+    "@pages_confidentialite_conditions_3_0": {
+        "description": "pages/confidentialite.conditions.3.0"
+    },
+    "pages_confidentialite_conditions_3_1": "Les ressources et l’assistant informent mais ne remplacent pas un·e professionnel·le. En cas de danger, utilisez le bouton SOS ou les contacts d’urgence.",
+    "@pages_confidentialite_conditions_3_1": {
+        "description": "pages/confidentialite.conditions.3.1"
+    },
+    "pages_confidentialite_conditions_4_0": "Disponibilité.",
+    "@pages_confidentialite_conditions_4_0": {
+        "description": "pages/confidentialite.conditions.4.0"
+    },
+    "pages_confidentialite_conditions_4_1": "La plateforme est mise à jour périodiquement ; des interruptions brèves peuvent survenir.",
+    "@pages_confidentialite_conditions_4_1": {
+        "description": "pages/confidentialite.conditions.4.1"
+    },
+    "pages_confidentialite_nav_label": "Sections de la page",
+    "@pages_confidentialite_nav_label": {
+        "description": "pages/confidentialite.nav_label"
+    },
+    "pages_confidentialite_privacy_0_0": "Données collectées",
+    "@pages_confidentialite_privacy_0_0": {
+        "description": "pages/confidentialite.privacy.0.0"
+    },
+    "pages_confidentialite_privacy_0_1": "Pseudonyme, adresse e-mail, zone géographique et, si vous le choisissez, des informations de profil. Aucun nom réel n’est exigé. Pour la sécurité des comptes, l’adresse IP et le navigateur utilisé sont aussi conservés avec vos consentements, les codes de vérification, le journal d’audit et la liste de vos appareils connectés.",
+    "@pages_confidentialite_privacy_0_1": {
+        "description": "pages/confidentialite.privacy.0.1"
+    },
+    "pages_confidentialite_privacy_1_0": "Signaler",
+    "@pages_confidentialite_privacy_1_0": {
+        "description": "pages/confidentialite.privacy.1.0"
+    },
+    "pages_confidentialite_privacy_1_1": "Sans compte, ni identifiant ni adresse IP : seuls le contenu de votre signalement, son code de suivi et, si vous le choisissez, un moyen de vous recontacter sont enregistrés. Connecté·e, vous pouvez rester anonyme ; sinon, le signalement est lié à votre compte et à votre pseudonyme.",
+    "@pages_confidentialite_privacy_1_1": {
+        "description": "pages/confidentialite.privacy.1.1"
+    },
+    "pages_confidentialite_privacy_2_0": "Localisation GPS",
+    "@pages_confidentialite_privacy_2_0": {
+        "description": "pages/confidentialite.privacy.2.0"
+    },
+    "pages_confidentialite_privacy_2_1": "Partagée uniquement quand vous déclenchez un SOS ou l’autorisez explicitement ; jamais en arrière-plan.",
+    "@pages_confidentialite_privacy_2_1": {
+        "description": "pages/confidentialite.privacy.2.1"
+    },
+    "pages_confidentialite_privacy_3_0": "Hors connexion",
+    "@pages_confidentialite_privacy_3_0": {
+        "description": "pages/confidentialite.privacy.3.0"
+    },
+    "pages_confidentialite_privacy_3_1": "Les saisies en attente sont stockées sur votre appareil, puis transmises de façon sécurisée à la synchronisation.",
+    "@pages_confidentialite_privacy_3_1": {
+        "description": "pages/confidentialite.privacy.3.1"
+    },
+    "pages_confidentialite_privacy_4_0": "Vos droits",
+    "@pages_confidentialite_privacy_4_0": {
+        "description": "pages/confidentialite.privacy.4.0"
+    },
+    "pages_confidentialite_privacy_4_1": "Accès, rectification, export et suppression de vos données depuis Paramètres, ou sur demande à l’équipe.",
+    "@pages_confidentialite_privacy_4_1": {
+        "description": "pages/confidentialite.privacy.4.1"
+    },
+    "pages_confidentialite_privacy_5_0": "Partage",
+    "@pages_confidentialite_privacy_5_0": {
+        "description": "pages/confidentialite.privacy.5.0"
+    },
+    "pages_confidentialite_privacy_5_1": "Vos informations ne sont jamais vendues. Elles ne sont transmises qu’aux personnes de l’annuaire que vous ciblez.",
+    "@pages_confidentialite_privacy_5_1": {
+        "description": "pages/confidentialite.privacy.5.1"
+    },
+    "pages_confidentialite_sections_charte": "Charte de bienveillance",
+    "@pages_confidentialite_sections_charte": {
+        "description": "pages/confidentialite.sections.charte"
+    },
+    "pages_confidentialite_sections_conditions": "Conditions d’utilisation",
+    "@pages_confidentialite_sections_conditions": {
+        "description": "pages/confidentialite.sections.conditions"
+    },
+    "pages_confidentialite_sections_confidentialite": "Confidentialité et données",
+    "@pages_confidentialite_sections_confidentialite": {
+        "description": "pages/confidentialite.sections.confidentialite"
+    },
+    "pages_confidentialite_sections_signalement": "Signalement et modération",
+    "@pages_confidentialite_sections_signalement": {
+        "description": "pages/confidentialite.sections.signalement"
+    },
+    "pages_confidentialite_signalement_help": "Centre d’aide",
+    "@pages_confidentialite_signalement_help": {
+        "description": "pages/confidentialite.signalement.help"
+    },
+    "pages_confidentialite_signalement_home": "Retour à l’accueil",
+    "@pages_confidentialite_signalement_home": {
+        "description": "pages/confidentialite.signalement.home"
+    },
+    "pages_confidentialite_signalement_report": "Signaler",
+    "@pages_confidentialite_signalement_report": {
+        "description": "pages/confidentialite.signalement.report"
+    },
+    "pages_confidentialite_signalement_text": "Vous pouvez signaler un contenu ou une personne à tout moment. L’équipe examine chaque signalement dans la confidentialité et peut vous orienter vers un·e professionnel·le de l’annuaire.",
+    "@pages_confidentialite_signalement_text": {
+        "description": "pages/confidentialite.signalement.text"
+    },
+    "pages_confidentialite_title": "Charte, confidentialité et conditions",
+    "@pages_confidentialite_title": {
+        "description": "pages/confidentialite.title"
+    },
+    "pages_confidentialite_updated": "Dernière mise à jour : {date} · version {version}",
+    "@pages_confidentialite_updated": {
+        "description": "pages/confidentialite.updated",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "version": {
+                "type": "String"
+            }
+        }
     },
     "pages_do_glegbe_engage_help": "Besoin d’aide ?",
     "@pages_do_glegbe_engage_help": {
@@ -17006,6 +17482,10 @@
     "@seo_noindex_admin": {
         "description": "seo.noindex.admin"
     },
+    "seo_noindex_forgot_password": "Mot de passe oublié – Xomiton",
+    "@seo_noindex_forgot_password": {
+        "description": "seo.noindex.forgot_password"
+    },
     "seo_noindex_member": "Mon espace – Xomiton",
     "@seo_noindex_member": {
         "description": "seo.noindex.member"
@@ -17017,6 +17497,26 @@
     "seo_noindex_otp": "Code de vérification – Xomiton",
     "@seo_noindex_otp": {
         "description": "seo.noindex.otp"
+    },
+    "seo_noindex_register_closed": "Inscriptions momentanément fermées – Xomiton",
+    "@seo_noindex_register_closed": {
+        "description": "seo.noindex.register_closed"
+    },
+    "seo_noindex_register_step": "Créer mon compte, étape {current} sur {total} – Xomiton",
+    "@seo_noindex_register_step": {
+        "description": "seo.noindex.register_step",
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "seo_noindex_reset_password": "Nouveau mot de passe – Xomiton",
+    "@seo_noindex_reset_password": {
+        "description": "seo.noindex.reset_password"
     },
     "seo_noindex_search": "Résultats de recherche – Xomiton",
     "@seo_noindex_search": {
@@ -17054,7 +17554,7 @@
     "@seo_pages_confidentialite_title": {
         "description": "seo.pages.confidentialite.title"
     },
-    "seo_pages_connexion_description": "Connectez-vous à votre espace Xomiton pour retrouver votre fil, vos messages, vos groupes et vos ressources. Accès sécurisé par e-mail ou pseudonyme et code.",
+    "seo_pages_connexion_description": "Connecte-toi à ton espace Xomiton avec ton e-mail ou ton pseudonyme et ton mot de passe : retrouve ton fil, tes messages, tes groupes et tes ressources.",
     "@seo_pages_connexion_description": {
         "description": "seo.pages.connexion.description"
     },
@@ -17086,7 +17586,7 @@
     "@seo_pages_home_title": {
         "description": "seo.pages.home.title"
     },
-    "seo_pages_inscription_description": "Créez votre compte en une étape avec un pseudonyme : votre vrai nom n’est jamais demandé. Communauté bienveillante, ressources fiables et soutien confidentiel.",
+    "seo_pages_inscription_description": "Crée ton compte en une étape, avec un pseudonyme et un mot de passe : ton vrai nom n’est jamais demandé. Communauté bienveillante et soutien confidentiel.",
     "@seo_pages_inscription_description": {
         "description": "seo.pages.inscription.description"
     },

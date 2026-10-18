@@ -46,6 +46,9 @@ Icône `bi-bell` + badge numérique, panneau *Alertes · Cas · Messages · Syst
 ## `<x-toast>`, `<x-empty-state>`, `<x-skeleton>`, `<x-stepper>`, `<x-timeline>`, `<x-avatar>`, `<x-gallery>`, `<x-comic-viewer>`, `<x-player>`
 Toast : `aria-live="polite"` (succès/info) ou `assertive` (erreur), 6 s, fermable, pas d'information unique. État vide : illustration + une phrase + une action. Squelettes pour listes et cartes (évite le décalage de mise en page). Stepper : étapes numérotées avec étape courante `aria-current="step"`, sauvegarde à chaque étape. Timeline : chronologie d'un cas (note interne/partagée, changements de statut). Visionneuse de BD : planche par planche, swipe, zoom, plein écran, `alt` par planche. Lecteur : Plyr avec sous-titres.
 
+## Newsletter `<x-newsletter-form>`
+Deux variantes (P4-07) : `footer` (pied de page sombre, champ + bouton en ligne, libellé masqué) et `page` (`/newsletter`, `<x-field>` à libellés visibles, centres d'intérêt facultatifs, `<x-error-summary>`). Consentement explicite jamais pré-coché avec lien vers la confidentialité, pot de miel `website` masqué, retour à la page d'origine. Erreurs et saisie affichées par le seul formulaire envoyé ; alerte d'erreur ou « trop rapide » focalisée au chargement. Vous.
+
 ## Images `<x-img>`
 Refuse le rendu sans `alt` ; accepte `title`, `width`, `height` ; `loading="lazy"` sauf image LCP (`fetchpriority="high"`) ; `srcset` AVIF/WebP + repli ; décorative : `alt=""` + `aria-hidden`.
 

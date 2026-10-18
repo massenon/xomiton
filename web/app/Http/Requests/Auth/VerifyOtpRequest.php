@@ -27,7 +27,9 @@ final class VerifyOtpRequest extends FormRequest
             $code = implode('', array_map(static fn (mixed $d): string => is_scalar($d) ? (string) $d : '', $code));
         }
 
-        $this->merge(['code' => is_string($code) ? preg_replace('/\s+/', '', $code) : $code]);
+        // Code collé dans la première case sans JavaScript (« 482 913 », « 482-913 », « 482.913 ») : séparateurs retirés,
+        // comme le fait resources/js/public/auth.js (LOGIN §5, WCAG 3.3.8 : collage autorisé).
+        $this->merge(['code' => is_string($code) ? preg_replace('/[\s\x{00A0}\x{202F}.\-]+/u', '', $code) : $code]);
     }
 
     /**

@@ -1,5 +1,5 @@
-{{-- /connexion (prototype sign-in.php, LOGIN §3, Q13 b, Q36 : tutoiement). --}}
-<x-layouts.auth :seo="['title' => __('auth.login.title')]" image="sign-in.jpg" :max-width="440">
+{{-- /connexion (prototype sign-in.php, LOGIN §3, Q13 b, Q36 : tutoiement). Page publique indexée (seo.pages.connexion) ; pas de rouge hors erreurs (lien Urgences neutre). --}}
+<x-layouts.auth :seo="['title' => __('seo.pages.connexion.title'), 'description' => __('seo.pages.connexion.description'), 'index' => true]" image="sign-in.jpg" :max-width="440">
     <h1 class="h2 fw-bold">{{ __('auth.login.heading') }}</h1>
     <p class="text-body-secondary">{{ __('auth.login.intro') }}</p>
 
@@ -22,7 +22,7 @@
     </form>
 
     <p class="text-center mt-4 mb-2">{{ __('auth.login.no_account') }} <a href="{{ route('inscription') }}" class="fw-bold">{{ __('auth.login.create_account') }}</a></p>
-    <p class="text-center small"><a href="{{ route('signaler') }}"><i class="bi bi-megaphone me-1" aria-hidden="true"></i>{{ __('auth.login.report_without_account') }}</a> · <a href="{{ route('urgences') }}" class="text-danger">{{ __('auth.login.emergencies') }}</a></p>
+    <p class="text-center small"><a href="{{ route('signaler') }}"><i class="bi bi-megaphone me-1" aria-hidden="true"></i>{{ __('auth.login.report_without_account') }}</a> · <a href="{{ route('urgences') }}"><i class="bi bi-telephone me-1" aria-hidden="true"></i>{{ __('auth.login.emergencies') }}</a></p>
 
     @if ($showDemo)
         {{-- Environnement local seulement : comptes de DemoAccountsSeeder (prototype sign-in.php). --}}

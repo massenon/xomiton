@@ -19,6 +19,10 @@ import './shared/sw-register.js';
 Alpine.plugin(focus);
 window.Alpine = Alpine;
 
+// P4-05 : vote « Cet article vous a-t-il aidé·e ? » du centre d'aide, chargé à la demande (sans Alpine) ; en échec de
+// chargement, le formulaire reste un POST classique.
+if (document.querySelector('form[data-xm-faq-feedback]')) import('./public/aide.js').catch(() => {});
+
 // Formulaire /signaler et sa confirmation (P5-04) : module chargé à la demande (budget du paquet public), avant le
 // démarrage d'Alpine qui doit connaître xmReport / xmReportSent. Si le chargement échoue (2G, hors ligne sans précache),
 // Alpine démarre quand même mais ignore ces blocs (x-ignore) : la page reste le formulaire complet sans JavaScript,

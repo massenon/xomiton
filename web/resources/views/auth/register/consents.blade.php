@@ -1,5 +1,5 @@
 {{-- Phase 4 « Consentements » (facultative) : données sensibles, newsletter — cases distinctes, jamais pré-cochées. --}}
-<x-layouts.auth :seo="['title' => __('auth.register.title')]" image="hero-12.jpg" :max-width="520">
+<x-layouts.auth :seo="\App\Http\Controllers\Auth\Support\RegistrationSteps::seo($step)" image="hero-12.jpg" :max-width="520">
     <x-slot:side>@include('auth.partials.register-side')</x-slot:side>
 
     <h1 class="h2 fw-bold">{{ __('auth.register.heading') }}</h1>

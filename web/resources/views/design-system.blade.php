@@ -144,8 +144,8 @@
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <span class="xm-ds-state">{{ $states['error'] }} : résumé + champs</span>
-                        <x-error-summary :messages="['email' => 'Saisis une adresse e-mail valide.', 'password' => 'Le mot de passe doit contenir au moins 8 caractères.']" :autofocus="false" />
-                        <x-field name="email" label="Adresse e-mail" type="email" autocomplete="email" value="aya@exemple" error="Saisis une adresse e-mail valide." />
+                        <x-error-summary :messages="['ds_email' => 'Saisis une adresse e-mail valide.', 'password' => 'Le mot de passe doit contenir au moins 8 caractères.']" :autofocus="false" />
+                        <x-field name="ds_email" label="Adresse e-mail" type="email" autocomplete="email" value="aya@exemple" error="Saisis une adresse e-mail valide." />
                         <x-field name="password" label="Mot de passe" type="password" autocomplete="new-password" hint="8 caractères minimum, le collage est autorisé." error="Le mot de passe doit contenir au moins 8 caractères." />
                         <span class="xm-ds-state">{{ $states['default'] }}, aide, facultatif</span>
                         <x-field name="pseudo" label="Pseudonyme" hint="Visible par la communauté. Évite ton vrai nom si tu préfères rester discrète." autocomplete="nickname" />
@@ -364,6 +364,21 @@
                     <div><span class="xm-ds-state">{{ $states['focus'] }}</span><span class="d-inline-block"><button type="button" class="xm-sos xm-demo-focus" aria-hidden="true" tabindex="-1">SOS</button></span></div>
                     <div><span class="xm-ds-state">{{ $states['active'] }} (maintien)</span><span class="d-inline-block"><button type="button" class="xm-sos" data-holding="true" aria-hidden="true" tabindex="-1">SOS</button></span></div>
                     <p class="small text-secondary mb-0 xm-prose">64 px, rouge, Montserrat 800. Maintien 2 s (anneau de progression) puis compte à rebours 5 s annulable ; au clavier : Espace maintenue, ou Entrée puis confirmation. « Ton alerte est partie. » en aria-live="assertive". Position fixe en bas à droite dans les pages ; ici en ligne.</p>
+                </div>
+            </section>
+
+            {{-- 14. Newsletter (P4-07) : variante page ici ; la variante pied de page est celle du pied de cette page (identifiants uniques). --}}
+            <section class="xm-ds-section mb-5" id="ds-newsletter" aria-labelledby="ds-newsletter-h">
+                <h2 class="h3" id="ds-newsletter-h">{!! $sections['newsletter'] !!}</h2>
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <span class="xm-ds-state">variant="page" (/newsletter : libellés visibles, centres d’intérêt facultatifs, résumé d’erreurs focalisé)</span>
+                        <x-newsletter-form variant="page" :interests="['sante' => 'Santé', 'droits' => 'Droits', 'evenements' => 'Événements']" />
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="xm-ds-state">variant="footer" (défaut)</span>
+                        <p class="small text-secondary xm-prose">Champ et bouton en ligne, consentement jamais pré-coché, pot de miel masqué ; erreurs et refus « trop rapide » dans une alerte focalisée au chargement. Rendue une seule fois par page : voir <a href="#newsletter">le pied de cette page</a>.</p>
+                    </div>
                 </div>
             </section>
         </div>

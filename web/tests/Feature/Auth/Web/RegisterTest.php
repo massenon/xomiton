@@ -42,7 +42,7 @@ function webRegisterPayload(array $overrides = []): array
 it('affiche la phase 1 avec le stepper (étapes 2 à 4 facultatives), la jauge et des cases jamais pré-cochées', function (): void {
     $response = $this->get('/inscription')
         ->assertOk()
-        ->assertSee('<title>Créer un compte – Xomiton</title>', false)
+        ->assertSee('<title>Créer un compte'."\u{00A0}".': rejoindre la communauté – Xomiton</title>', false)
         ->assertSee('Étape 1 sur 4')
         ->assertSee('aria-current="step"', false)
         ->assertSee('Profil (facultative)')
@@ -105,7 +105,7 @@ it('refuse chaque règle : pseudo pris (casse ignorée), e-mail pris, mot de pas
         ->assertRedirect('/inscription')
         ->assertSessionHasErrors(['pseudo', 'email', 'password', 'cgu', 'privacy'])
         ->assertSessionHasErrors(['pseudo' => 'Ce pseudonyme est déjà pris. Choisis-en un autre.'])
-        ->assertSessionHasErrors(['email' => 'Un compte existe déjà avec cette adresse e-mail. Connecte-toi ou utilise « Mot de passe oublié ».']);
+        ->assertSessionHasErrors(['email' => 'Un compte existe déjà avec cette adresse e-mail. Connecte-toi ou utilise « Mot de passe oublié ».']);
 
     foreach (['Court1Ab', 'sansmajuscule2026', 'SANSMINUSCULE2026', 'SansChiffreIci'] as $weak) {
         $this->postJson('/inscription', webRegisterPayload(['pseudo' => 'Nouvelle_'.strlen($weak), 'password' => $weak]))
@@ -129,8 +129,9 @@ it('remplace le formulaire par le message configuré, la newsletter et la connex
         ->assertSee('Fermé pour les fêtes, retour le 3 janvier.')
         ->assertSee('Réouverture prévue le 3 janvier 2027.')
         ->assertSee('action="'.route('newsletter.subscribe').'"', false)
-        ->assertSee('M’inscrire à la newsletter')
-        ->assertSee('J’ai déjà un compte : me connecter')
+        ->assertSee('Être prévenu·e de la réouverture')
+        ->assertSee('name="consent"', false)
+        ->assertSee('J’ai déjà un compte : me connecter')
         ->assertDontSee('name="pseudo"', false);
 
     $this->post('/inscription', webRegisterPayload())
@@ -185,7 +186,7 @@ it('enregistre les phases 2 à 4 d’un·e pair : en attente (RG-03), rôle pair
 
     $this->post('/inscription/consentements', ['sensitive_data' => '1'])
         ->assertRedirect(route('fil'))
-        ->assertSessionHas('toast', 'Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.');
+        ->assertSessionHas('toast', 'Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.');
 
     expect($user->consents()->count())->toBe(4)
         ->and($user->consents()->ofKind(ConsentKind::SensitiveData)->granted()->exists())->toBeTrue()

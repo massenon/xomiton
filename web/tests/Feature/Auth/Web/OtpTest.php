@@ -90,7 +90,7 @@ it('confirme l’e-mail avec le bon code et refuse un code faux, expiré ou épu
     webSignupOtp('awa@exemple.bj');
     $this->actingAs($this->user)->post('/code-de-verification', ['purpose' => 'signup', 'code' => '1 3 5 7 9 0'])
         ->assertRedirect(route('inscription.profil'))
-        ->assertSessionHas('toast', 'Ton e-mail est confirmé. Merci !');
+        ->assertSessionHas('toast', 'Ton e-mail est confirmé. Merci !');
     expect($this->user->fresh()?->email_verified_at)->not->toBeNull();
 
     // Déjà confirmé : l'écran renvoie vers le fil.

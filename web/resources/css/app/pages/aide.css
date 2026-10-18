@@ -1,0 +1,28 @@
+/*
+ * Centre d'aide (P4-05 : /aide, /aide/{slug} ; prototype help.php, help-details.php) et page légale (P4-08 :
+ * /confidentialite ; privacy-and-terms.php). Styles en ligne des prototypes sortis dans la feuille. Jetons --xm-* quand
+ * ils existent ; une seule valeur reprise telle quelle du prototype : la largeur de la recherche du héro (560 px, aucun
+ * jeton de largeur). La sous-navigation collante s'arrête à --xm-space-9 (96 px), la même valeur que
+ * `html { scroll-padding-top: 96px }` (social-xomiton.css) qui décale les ancres sous l'en-tête collant (le prototype :
+ * top 90 px). Cibles tactiles de 44 px pour le vote Oui / Non.
+ */
+
+/* /aide — recherche du héro (prototype : style="max-width:560px"). */
+.xm-help-search { max-width: 560px; }
+
+/* /aide/{slug} — vote « Cet article vous a-t-il aidé·e ? » ; le remerciement (tabindex=-1) reçoit le focus après l'envoi. */
+@media (pointer: coarse) {
+  .xm-help-feedback .btn { min-height: var(--xm-target-min, 44px); display: inline-flex; align-items: center; }
+}
+.xm-help-feedback [data-feedback-done]:focus { outline: none; }
+.xm-help-feedback [data-feedback-done]:focus-visible { outline: 2px solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
+
+/* /aide/{slug} — texte rouge sur fond rouge à 10 % (badge « Signalement », titre « Besoin d'aide maintenant ? ») :
+   --xm-red-600 (≈ 5,3:1) au lieu de text-danger (#E30E0E ≈ 4,1:1, sous l'AA) ; thème sombre : texte des badges doux. */
+.xm-help-attention, .badge.xm-help-attention { color: var(--xm-red-600); }
+[data-bs-theme=dark] .xm-help-attention, [data-bs-theme=dark] .badge.xm-help-attention { color: var(--xm-badge-danger-text-dark); }
+
+/* /confidentialite — sous-navigation collante dès 992 px (en dessous : en tête de page, puis le texte). */
+@media (min-width: 992px) {
+  .xm-legal-nav { position: sticky; top: var(--xm-space-9); }
+}

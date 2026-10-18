@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Seo;
 
+use App\Application\Content\HelpCenter;
 use App\Http\Controllers\Web\PlaceholderController;
 use App\Models\Resource;
 use App\Models\Thematique;
@@ -93,6 +94,13 @@ final class SitemapBuilder
         if ($this->isPublicRoute('actualites.show')) {
             foreach (self::published(Resource::query()->news()) as $row) {
                 $urls[] = ['loc' => self::absolute('actualites.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
+            }
+        }
+
+        // Centre d'aide (P4-05) : questions du périmètre HelpCenter (catégories `faq` actives, publiées).
+        if ($this->isPublicRoute('aide.show')) {
+            foreach (app(HelpCenter::class)->faqs()->get(['id', 'slug', 'updated_at']) as $row) {
+                $urls[] = ['loc' => self::absolute('aide.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
             }
         }
 

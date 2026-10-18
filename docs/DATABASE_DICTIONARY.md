@@ -105,7 +105,10 @@ Migrations Laravel / Sanctum publiées, inchangées (sessions en base, D7).
 `id` · `category_id FK null` · `thematique_id FK null nullOnDelete` · `slug string(120) unique` · `title string(200)` · `kind string(20)` (`ResourceKind` : `fiche`, `guide`, `video`, `audio`, `pdf`, `article`, `lien`) · `summary string(500)` · `body longtext null` · `file_path string(255) null` · `file_size unsignedInteger null` · `external_url string(500) null` · `image_path string(255) null` · `duration_minutes unsignedSmallInteger null` · `status` (`ContentStatus`) · `published_at` · `downloads_count unsignedInteger default 0` · `views_count` · `is_offline_available boolean default false` · `meta_title`, `meta_description` · `created_by FK null`. Index `(status, published_at)`, `(kind)`. Les **actualités** (`/actualites`, Q1 du plan) sont des ressources `kind = article` tant que le client n'a pas tranché.
 
 ### `faqs`
-`id` · `category_id FK null` · `question string(255)` · `answer text` · `position unsignedSmallInteger` · `is_published boolean default true` · `show_on_home boolean default false`. Seed : `faqs.json`.
+`id` · `category_id FK null` · `slug string(80) null unique` (adresse `/aide/{slug}` du centre d'aide, P4-05 : ≤ 5 mots, dérivé de la question par le modèle si vide, puis stable ; le prototype adressait par rang `?id=`) · `question string(255)` · `answer text` · `position unsignedSmallInteger` · `is_published boolean default true` · `show_on_home boolean default false`. Seed : `faqs.json`.
+
+### `faq_feedback`
+`id` · `faq_id FK faqs cascadeOnDelete` · `helpful boolean` · `fingerprint char(64)` (KeyedHash de la question et d'un jeton aléatoire gardé en session, le même connecté·e ou non : ni IP, ni compte, ni identifiant de session ; `RecordFaqFeedback`) · `created_at timestamp null`. Unique `(faq_id, fingerprint)` (une voix par votant·e, un nouveau vote remplace l'ancien), index `(faq_id, helpful)`. Vote « Cet article vous a-t-il aidé·e ? » de `/aide/{slug}` (P4-05, plan §7) ; compteur « utile » de `/admin/contenu` (P12-03). Pas de seed.
 
 ### `laws`
 `id` · `slug string(80) unique` · `title string(200)` · `subtitle string(200) null` · `summary text` · `simple_summary text null` (version « Lire en version simple » de `/lois`, repli sur `summary` ; tableau `$simple` de `lois-benin.php`, P4-04) · `category string(80)` · `official_url string(500) null` (lien affiché seulement en http(s)) · `position` · `is_published boolean`. Seed : `x_lois()` + versions simples du prototype.
@@ -336,7 +339,7 @@ Identique à `DATABASE_ENGINEERING.md` §4, avec les tables ajoutées :
 
 1. Référentiels : `zones`, `communes`, `violence_types`, `populations`, `needs`, `categories`.
 2. Identité : `users` (modifiée : colonnes ajoutées à la migration Laravel), `profiles`, `user_settings`, spatie, `personal_access_tokens`, `otp_codes`, `consents`, `user_blocks`.
-3. Contenus : `thematiques`, `resources`, `faqs`, `laws`, `ccc_tools`, `assistant_kb`, `assistant_conversations`, `assistant_messages`, `bad_words`.
+3. Contenus : `thematiques`, `resources`, `faqs`, `faq_feedback`, `laws`, `ccc_tools`, `assistant_kb`, `assistant_conversations`, `assistant_messages`, `bad_words`.
 4. Réseau social : `groups`, `pages`, `posts`, `post_media`, `post_likes`, `post_saves`, `comments`, `polls`, `poll_options`, `poll_votes`, `follows`, `invitations`, `group_members`, `page_followers`, `albums`, `album_media`, `events`, `event_rsvps`, `forums`, `forum_topics`, `forum_replies`, `conversations`, `conversation_participants`, `messages`.
 5. Alertes : `sync_devices` (avancé ici car référencé par `alerts` et `cases`), `directory_contacts`, `alerts`, `alert_notes`, `alert_notifications`, `alert_escalations`, `alert_status_changes`.
 6. Dossiers : `validation_rules`, `cases`, `case_forms`, `case_followups`.

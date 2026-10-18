@@ -1,5 +1,5 @@
 {{-- /mot-de-passe-oublie (prototype forgot-password.php, Q8 c) : réponse identique quel que soit le compte. --}}
-<x-layouts.auth :seo="['title' => __('auth.forgot.title')]" image="sign-in.jpg" :max-width="440">
+<x-layouts.auth :seo="['title' => __('seo.noindex.forgot_password')]" image="sign-in.jpg" :max-width="440">
     <h1 class="h2 fw-bold">{{ __('auth.forgot.heading') }}</h1>
     <p class="text-body-secondary">{{ __('auth.forgot.intro') }}</p>
 

@@ -3,11 +3,24 @@
     plein écran, ≥ 992 px deux colonnes : illustration 5/12 (logo blanc + promesse) · formulaire 7/12 centré, 440 px
     (prop maxWidth bornée 440–520) ; < 992 px : formulaire seul, logo au-dessus. Pas de SOS flottant, pas de rouge
     hors erreurs. Mention discrète « Aucune donnée n'est visible depuis l'écran de verrouillage » sous le formulaire.
-    Écart consigné : sign-in.php est en 6/6 et 520 px, sign-up.php en 5/7 et 640 px, forgot-password.php en colonne centrée.
-    Props : seo, image (public/assets/images/xomiton/), maxWidth, slot `side` (contenu de l'illustration).
+    Écart consigné (design-system/DECISIONS.md, Q20) : sign-in.php est en 6/6 et 520 px, sign-up.php en 5/7 et 640 px,
+    forgot-password.php en colonne centrée.
+    Props : seo (lang/fr/seo.php ; noindex par défaut, /connexion et /inscription passent index => true), image
+    (public/assets/images/xomiton/), maxWidth, slot `side` (contenu de l'illustration).
 --}}
 @props(['seo' => [], 'image' => 'sign-in.jpg', 'maxWidth' => 440])
-@php($maxWidth = max(440, min(520, (int) $maxWidth)))
+@php
+    $maxWidth = max(440, min(520, (int) $maxWidth));
+    // Écrans haute densité : variante `{nom}-2x.webp` (recadrage portrait de l'original, colonne 5/12 pleine hauteur)
+    // servie par image-set() quand elle existe ; une image de fond n'a pas de srcset. Repli : l'image 1x seule.
+    $sideImage = asset('assets/images/xomiton/'.$image);
+    $sideHiDpi = 'assets/images/xomiton/'.pathinfo($image, PATHINFO_FILENAME).'-2x.webp';
+    $sideStyle = "background-image:url('{$sideImage}')";
+    if (is_file(public_path($sideHiDpi))) {
+        $set = "url('{$sideImage}') 1x, url('".asset($sideHiDpi)."') 2x";
+        $sideStyle .= ";background-image:-webkit-image-set({$set});background-image:image-set({$set})";
+    }
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
@@ -20,7 +33,7 @@
     <main id="contenu" tabindex="-1">
         <div class="container-fluid p-0">
             <div class="row g-0 min-vh-100">
-                <div class="col-lg-5 d-none d-lg-flex xm-auth-side align-items-end p-5" style="background-image:url('{{ asset('assets/images/xomiton/'.$image) }}')">
+                <div class="col-lg-5 d-none d-lg-flex xm-auth-side align-items-end p-5" style="{{ $sideStyle }}">
                     <div class="text-white xm-auth-side__content">
                         <a href="{{ route('home') }}" class="d-inline-block mb-4" aria-label="{{ __('auth.layout.home') }}"><img src="{{ asset('assets/images/xomiton/brand/logo-mono-blanc.svg') }}" alt="Xomiton" height="44" width="171"></a>
                         @isset($side)

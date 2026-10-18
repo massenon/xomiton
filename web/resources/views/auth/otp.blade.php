@@ -2,8 +2,10 @@
     /code-de-verification (LOGIN §5) : écran unique purpose = login | signup | reset. 6 cases numériques
     (inputmode="numeric", autocomplete="one-time-code" sur la première), collage réparti, retour arrière, renvoi après 30 s
     (compte à rebours, resources/js/public/auth.js). Erreur indifférenciée (MICROCOPY §4).
+    Première case : maxlength = 2 × longueur, pour qu'un code collé avec séparateurs (« 482 913 ») passe entier sans
+    JavaScript (VerifyOtpRequest les retire) ; avec JavaScript, auth.js répartit la saisie, un chiffre par case.
 --}}
-<x-layouts.auth :seo="['title' => __('auth.otp_screen.title')]" image="sign-in.jpg" :max-width="440">
+<x-layouts.auth :seo="['title' => __('seo.noindex.otp')]" image="sign-in.jpg" :max-width="440">
     <h1 class="h2 fw-bold">{{ __('auth.otp_screen.heading') }}</h1>
     <p class="text-body-secondary mb-1">{{ __('auth.otp_screen.purpose.'.$purpose->value) }}</p>
     <p class="text-body-secondary">{{ __('auth.otp_screen.intro', ['email' => $maskedEmail, 'minutes' => $ttlMinutes, 'length' => $length]) }}</p>
@@ -21,7 +23,7 @@
             <div class="xm-otp d-flex gap-2">
                 @for ($i = 0; $i < $length; $i++)
                     <input type="text" class="form-control form-control-lg text-center xm-otp__digit {{ $errors->has('code') ? 'is-invalid' : '' }}"
-                           name="code[]" id="{{ $i === 0 ? 'f-code' : 'f-code-'.$i }}" inputmode="numeric" pattern="[0-9]*" maxlength="{{ $i === 0 ? $length : 1 }}"
+                           name="code[]" id="{{ $i === 0 ? 'f-code' : 'f-code-'.$i }}" inputmode="numeric" pattern="[0-9]*" maxlength="{{ $i === 0 ? $length * 2 : 1 }}"
                            autocomplete="{{ $i === 0 ? 'one-time-code' : 'off' }}" aria-label="{{ __('auth.otp_screen.digit', ['n' => $i + 1, 'length' => $length]) }}"
                            @if ($errors->has('code')) aria-invalid="true" aria-describedby="f-code-error" @endif @if ($i === 0) autofocus @endif required>
                 @endfor

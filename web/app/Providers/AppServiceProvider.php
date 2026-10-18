@@ -251,9 +251,18 @@ class AppServiceProvider extends ServiceProvider
 
         // Newsletter : une inscription par fenêtre glissante, par session ; un client qui ne renvoie pas le cookie de session
         // (script, curl) est compté par IP, sinon chaque requête ouvrirait une session neuve et contournerait la limite.
-        RateLimiter::for('newsletter', static fn (Request $request): Limit => Limit::perSecond(1, self::limit('newsletter_seconds_between'))
-            ->by('newsletter|'.self::sessionOrIp($request))
-            ->response($tooMany));
+        // Clé en empreinte HMAC (ADR-33 : aucune IP en clair dans le cache). Consommé après validation par
+        // NewsletterController (App\Support\NamedRateLimit, P4-07) : un formulaire refusé ne brûle pas la tentative.
+        // Second plafond par IP et par heure : un GET suffit à ouvrir une session neuve (nouveau jeton CSRF), et chaque
+        // inscription dépose un e-mail dans la boîte d'envoi partagée avec les OTP et les alertes (quota cPanel).
+        RateLimiter::for('newsletter', static fn (Request $request): array => [
+            Limit::perSecond(1, self::limit('newsletter_seconds_between'))
+                ->by('newsletter|'.KeyedHash::make(self::sessionOrIp($request)))
+                ->response($tooMany),
+            Limit::perHour(self::limit('newsletter_per_hour_per_ip'))
+                ->by('newsletter_ip|'.KeyedHash::make((string) $request->ip()))
+                ->response($tooMany),
+        ]);
 
         // API : par utilisateur·rice authentifié·e (session Sanctum ou jeton), sinon par IP.
         RateLimiter::for('api', static fn (Request $request): Limit => Limit::perMinute(self::limit('api_per_minute'))
@@ -275,6 +284,19 @@ class AppServiceProvider extends ServiceProvider
                 (string) $request->route('slug'),
             ])))
             ->response($tooMany));
+
+        // Vote « Cet article vous a-t-il aidé·e ? » (P4-05, POST /aide/{slug}/avis) : par session (un CGNAT mobile partage
+        // une IP entre de nombreuses personnes, P12-03 ne doit pas perdre leurs voix), par IP pour un client sans cookie ;
+        // second plafond large par IP contre un script qui ouvre une session par requête. Clés en empreinte HMAC (ADR-33).
+        // Une voix par votant·e et par question est déjà garantie par RecordFaqFeedback.
+        RateLimiter::for('faq_feedback', static fn (Request $request): array => [
+            Limit::perHour(self::limit('faq_feedback_per_hour'))
+                ->by('faq_feedback|'.KeyedHash::make(self::sessionOrIp($request)))
+                ->response($tooMany),
+            Limit::perHour(self::limit('faq_feedback_per_hour_per_ip'))
+                ->by('faq_feedback_ip|'.KeyedHash::make((string) $request->ip()))
+                ->response($tooMany),
+        ]);
 
         // SOS (ARCH §4, P2-08, P5-09) : jamais de 429. Au-delà de 5 envois par minute et par IP, journal + cloche admin
         // (App\Application\Shared\SosBurstWatch : abus ou personne qui insiste, l'équipe regarde, la plateforme ne refuse

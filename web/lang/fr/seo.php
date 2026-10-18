@@ -67,11 +67,11 @@ return [
         ],
         'connexion' => [
             'title' => 'Se connecter : retrouver mon fil, mes messages – Xomiton',
-            'description' => 'Connectez-vous à votre espace Xomiton pour retrouver votre fil, vos messages, vos groupes et vos ressources. Accès sécurisé par e-mail ou pseudonyme et code.',
+            'description' => 'Connecte-toi à ton espace Xomiton avec ton e-mail ou ton pseudonyme et ton mot de passe : retrouve ton fil, tes messages, tes groupes et tes ressources.',
         ],
         'inscription' => [
             'title' => 'Créer un compte : rejoindre la communauté – Xomiton',
-            'description' => 'Créez votre compte en une étape avec un pseudonyme : votre vrai nom n’est jamais demandé. Communauté bienveillante, ressources fiables et soutien confidentiel.',
+            'description' => 'Crée ton compte en une étape, avec un pseudonyme et un mot de passe : ton vrai nom n’est jamais demandé. Communauté bienveillante et soutien confidentiel.',
         ],
         'actualites' => [
             'title' => 'Actualités de la communauté et des partenaires – Xomiton',
@@ -94,6 +94,11 @@ return [
     // Pages non indexées (robots noindex, nofollow) : titre seul.
     'noindex' => [
         'otp' => 'Code de vérification – Xomiton',
+        // Lot auth-ecrans (P4-09) : tunnel d'accès hors connexion et inscription (tu, VOICE_AND_TONE §3).
+        'forgot_password' => 'Mot de passe oublié – Xomiton',
+        'reset_password' => 'Nouveau mot de passe – Xomiton',
+        'register_closed' => 'Inscriptions momentanément fermées – Xomiton',
+        'register_step' => 'Créer mon compte, étape :current sur :total – Xomiton',
         'search' => 'Résultats de recherche – Xomiton',
         'thanks' => 'Merci – Xomiton',
         'member' => 'Mon espace – Xomiton',

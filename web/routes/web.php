@@ -13,15 +13,25 @@ use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\ActualitesIndexController;
 use App\Http\Controllers\Web\ActualitesShowController;
+use App\Http\Controllers\Web\AideFeedbackController;
+use App\Http\Controllers\Web\AideIndexController;
+use App\Http\Controllers\Web\AideShowController;
 use App\Http\Controllers\Web\AlertAcknowledgementController;
 use App\Http\Controllers\Web\Alerts\ReportPageController;
 use App\Http\Controllers\Web\Alerts\ReportTrackingController;
+use App\Http\Controllers\Web\ConfidentialiteController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\DoGlegbeController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\LegacyAideRedirectController;
 use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\LoisController;
+use App\Http\Controllers\Web\Newsletter\LegacyNewsletterRedirectController;
+use App\Http\Controllers\Web\Newsletter\NewsletterConfirmationController;
+use App\Http\Controllers\Web\Newsletter\NewsletterController;
+use App\Http\Controllers\Web\Newsletter\NewsletterTrackingController;
+use App\Http\Controllers\Web\Newsletter\NewsletterUnsubscribeController;
 use App\Http\Controllers\Web\PlaceholderController;
 use App\Http\Controllers\Web\RessourceDownloadController;
 use App\Http\Controllers\Web\RessourcesIndexController;
@@ -77,18 +87,42 @@ Route::get('/ressources/{slug}/lire', RessourceStreamController::class)->where('
 Route::get('/violences', ViolencesController::class)->name('violences');
 Route::get('/lois', LoisController::class)->name('lois');
 Route::get('/do-glegbe', DoGlegbeController::class)->name('do-glegbe');
-$placeholder('/aide', 'aide.index', 'Centre d’aide', 'help.php');
-$placeholder('/aide/{slug}', 'aide.show', 'Aide', 'help-details.php');
+// P4-05 : centre d'aide public et indexable (vous) ; questions du périmètre HelpCenter (catégories `faq`), adressées par
+// slug ; vote « Cet article vous a-t-il aidé·e ? » persisté dans `faq_feedback` (POST + @csrf, limiteur `faq_feedback`).
+Route::get('/aide', AideIndexController::class)->name('aide.index');
+Route::get('/aide/{slug}', AideShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('aide.show');
+Route::post('/aide/{slug}/avis', AideFeedbackController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->middleware('throttle:faq_feedback')->name('aide.feedback');
 // P4-10 : actualités = ressources `article` publiées (Q1 a) ; une ressource d'un autre type → 301 /ressources/{slug}.
 Route::get('/actualites', ActualitesIndexController::class)->name('actualites.index');
 Route::get('/actualites/{slug}', ActualitesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('actualites.show');
 // P4-06 : gabarit sobre, tu (Q47) ; même source que GET /api/v1/urgences (ListEmergencyContacts) ; nom `urgences`
 // servi pendant la maintenance (EnsureNotInMaintenance, RG-01).
 Route::get('/urgences', UrgencesController::class)->name('urgences');
-$placeholder('/confidentialite', 'confidentialite', 'Confidentialité et conditions', 'privacy-and-terms.php');
-$placeholder('/newsletter', 'newsletter.show', 'Newsletter', 'newsletter.php');
-Route::post('/newsletter', PlaceholderController::class)->name('newsletter.subscribe')
-    ->defaults('title', 'Newsletter')->defaults('prototype', 'newsletter.php');
+// P4-08 : charte, confidentialité, conditions et signalement sur une page (ancres), publique et indexable (vous).
+Route::get('/confidentialite', ConfidentialiteController::class)->name('confidentialite');
+// P4-07 : newsletter publique (vous). `/newsletter` indexable ; remerciement, confirmation et désinscription en noindex,
+// hors sitemap ; seules les pages à jeton (confirmation, désinscription) sont en plus exclues par robots.txt. Inscription :
+// limiteurs `newsletter` (session 1 / 20 s, IP 10 / h) consommés après validation par le contrôleur (pas de middleware
+// throttle), réponse et durée identiques quelle que soit l'adresse. Noms `newsletter.*`
+// servis pendant la maintenance (EnsureNotInMaintenance, RG-01).
+Route::get('/newsletter', [NewsletterController::class, 'show'])->name('newsletter.show');
+Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.subscribe');
+Route::get('/newsletter/merci', [NewsletterController::class, 'thanks'])->name('newsletter.thanks');
+Route::get('/newsletter/confirmer/{token}', [NewsletterConfirmationController::class, 'show'])->where('token', '[A-Za-z0-9]{1,64}')->name('newsletter.confirm');
+Route::post('/newsletter/confirmer/{token}', [NewsletterConfirmationController::class, 'store'])->where('token', '[A-Za-z0-9]{1,64}')->name('newsletter.confirm.store');
+Route::get('/newsletter/desinscription/{token}', [NewsletterUnsubscribeController::class, 'show'])->where('token', '[A-Za-z0-9]{1,64}')->name('newsletter.unsubscribe');
+// « One-click » RFC 8058 : la messagerie poste sans cookie ni jeton CSRF ; le jeton de l'adresse fait foi.
+Route::post('/newsletter/desinscription/{token}', [NewsletterUnsubscribeController::class, 'store'])->where('token', '[A-Za-z0-9]{1,64}')
+    ->withoutMiddleware(ValidateCsrfToken::class)->name('newsletter.unsubscribe.store');
+// Pixel d'ouverture et clic suivi (liens signés HMAC des campagnes P14-03) : sans session ni cookie.
+Route::withoutMiddleware([EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, ShareErrorsFromSession::class, ValidateCsrfToken::class])
+    ->group(function (): void {
+        Route::get('/newsletter/ouverture/{recipient}/{signature}', [NewsletterTrackingController::class, 'open'])
+            ->where(['recipient' => '[0-9]{1,18}', 'signature' => '[A-Za-z0-9]{1,64}'])->name('newsletter.open');
+        Route::get('/newsletter/clic/{recipient}/{signature}', [NewsletterTrackingController::class, 'click'])
+            ->where(['recipient' => '[0-9]{1,18}', 'signature' => '[A-Za-z0-9]{1,64}'])->name('newsletter.click');
+    });
 
 // --- Alertes, SOS, signalement (P5) ----------------------------------------
 // Signalement (P5-04, Q11 a, Q18 a) : POST classique + @csrf (sans JavaScript), même charge utile et même cas d'usage que
@@ -187,11 +221,18 @@ Route::permanentRedirect('/thematiques.php', '/thematiques');
 Route::permanentRedirect('/violences.php', '/violences');
 Route::permanentRedirect('/lois-benin.php', '/lois');
 Route::permanentRedirect('/do-glegbe.php', '/do-glegbe');
+// P4-05 : help.php garde ?cat= et ?q= ; help-details.php?id= (rang dans x_faq()) → article du slug semé de même rang.
+Route::get('/help.php', [LegacyAideRedirectController::class, 'index'])->name('legacy.help');
+Route::get('/help-details.php', [LegacyAideRedirectController::class, 'show'])->name('legacy.help_details');
+// P4-08 : page légale.
+Route::permanentRedirect('/privacy-and-terms.php', '/confidentialite');
 // Le prototype adressait les fiches par id ; la couverture semée le garde (covers/th-<id>.jpg, ContentSeeder) : P4-02.
 Route::get('/thematique.php', LegacyThematiqueRedirectController::class)->name('legacy.thematique');
 // P4-03 : ressources.php garde ?q= et ?cat= ; ressource.php?id= redirigeait vers thematique.php?id= (même résolution).
 Route::get('/ressources.php', [LegacyRessourceRedirectController::class, 'index'])->name('legacy.ressources');
 Route::get('/ressource.php', [LegacyRessourceRedirectController::class, 'show'])->name('legacy.ressource');
+// P4-07 : newsletter.php?a=confirm|unsub&t= → pages à jeton ; suivi du prototype (autre clé) et le reste → /newsletter.
+Route::get('/newsletter.php', LegacyNewsletterRedirectController::class)->name('legacy.newsletter');
 
 // --- Référencement (P4-11) : robots.txt et sitemap.xml natifs, sans fichier statique ----
 // Sans session ni cookies : une visite de robot n'ouvre pas de session et la réponse `Cache-Control: public` ne porte

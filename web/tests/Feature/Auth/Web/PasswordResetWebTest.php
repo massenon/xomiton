@@ -61,7 +61,7 @@ it('affiche l’écran et répond de la même façon que le compte existe ou non
     $this->get('/mot-de-passe-oublie')
         ->assertOk()
         ->assertSee('<title>Mot de passe oublié – Xomiton</title>', false)
-        ->assertSee('Mot de passe oublié ?')
+        ->assertSee('Mot de passe oublié ?')
         ->assertSee('autocomplete="email"', false)
         ->assertSee('Envoyer le code');
 

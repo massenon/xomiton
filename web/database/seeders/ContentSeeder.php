@@ -250,6 +250,13 @@ class ContentSeeder extends Seeder
             // espace ordinaire) : la ligne est retrouvée et renommée au lieu d'être dupliquée.
             $faq = Faq::query()->whereIn('question', FrenchTypography::variants($question))->first() ?? new Faq;
 
+            // P4-05 : slug écrit à la main posé une seule fois (adresse stable), sinon dérivé de la question ; posé ici car
+            // DatabaseSeeder tourne sans événements de modèle (WithoutModelEvents : le hook `saving` de Faq ne joue pas).
+            if (trim((string) $faq->slug) === '') {
+                $wanted = $data['slug_by_index'][$index] ?? null;
+                $faq->slug = $wanted !== null && ! Faq::query()->where('slug', $wanted)->exists() ? $wanted : Faq::uniqueSlug($question);
+            }
+
             $faq->fill([
                 'question' => $question,
                 'category_id' => $categories[$data['category_by_index'][$index] ?? 'compte']->getKey(),

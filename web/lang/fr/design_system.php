@@ -37,5 +37,6 @@ return [
         'bell' => 'Cloche <x-bell>',
         'media' => 'Avatars, images et logo',
         'sos' => 'Bouton SOS <x-sos-button>',
+        'newsletter' => 'Newsletter <x-newsletter-form>',
     ],
 ];
