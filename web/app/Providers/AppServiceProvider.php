@@ -285,6 +285,12 @@ class AppServiceProvider extends ServiceProvider
             ])))
             ->response($tooMany));
 
+        // Lot api-me (P6-06) : DELETE me (mot de passe vérifié) et POST me/export (un fichier par demande) : par compte
+        // **et par route** (des mots de passe erronés sur DELETE me ne bloquent jamais l'export RGPD).
+        RateLimiter::for('account_sensitive', static fn (Request $request): Limit => Limit::perHour(self::limit('account_sensitive_per_hour'))
+            ->by('account_sensitive|'.($request->route()?->getName() ?? $request->path()).'|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+
         // Vote « Cet article vous a-t-il aidé·e ? » (P4-05, POST /aide/{slug}/avis) : par session (un CGNAT mobile partage
         // une IP entre de nombreuses personnes, P12-03 ne doit pas perdre leurs voix), par IP pour un client sans cookie ;
         // second plafond large par IP contre un script qui ouvre une session par requête. Clés en empreinte HMAC (ADR-33).

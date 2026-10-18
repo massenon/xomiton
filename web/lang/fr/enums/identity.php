@@ -21,6 +21,12 @@ return [
         'ressource' => 'Personne ressource',
     ],
 
+    // App\Enums\AllyStatus (Q10 c, P6-06) : profil progressif, aucun droit associé.
+    'ally_status' => [
+        'allie' => 'Allié·e',
+        'ressource' => 'Personne ressource',
+    ],
+
     'profile_visibility' => [
         'public' => 'Tout le monde',
         'community' => 'Toute la communauté',

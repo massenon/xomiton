@@ -39,6 +39,8 @@ class Profile extends Model
         'visibility',
         'show_zone',
         'searchable',
+        'ally_status',
+        'interests',
     ];
 
     /**
@@ -51,6 +53,7 @@ class Profile extends Model
         'orientation',
         'trusted_contact_phone',
         'trusted_contact_name',
+        'ally_status',
     ];
 
     /**
@@ -65,6 +68,9 @@ class Profile extends Model
             'gender_identity' => 'encrypted',
             'orientation' => 'encrypted',
             'trusted_contact_phone' => 'encrypted',
+            // Q10 c (P6-06) : allié·e / personne ressource, chiffré comme les autres données d'identité.
+            'ally_status' => 'encrypted',
+            'interests' => 'array',
             'completion' => 'integer',
             'discreet_mode' => 'boolean',
             'show_zone' => 'boolean',

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Abonnement push d'un membre (DATABASE_DICTIONARY.md §9 `push_subscriptions`) : Web Push (VAPID,
  * `public_key` + `auth_token`) ou FCM (jeton d'appareil dans `endpoint`). Les secrets ne sont jamais sérialisés.
+ * `token_id` (jeton Sanctum, cascade) et `sync_device_id` (appareil) : révoquer l'un ou l'autre coupe l'abonnement (P6-09).
  */
 class PushSubscription extends Model
 {
@@ -32,6 +33,8 @@ class PushSubscription extends Model
      */
     protected $fillable = [
         'user_id',
+        'token_id',
+        'sync_device_id',
         'kind',
         'endpoint',
         'endpoint_hash',
@@ -57,6 +60,8 @@ class PushSubscription extends Model
     {
         return [
             'last_used_at' => 'datetime',
+            'token_id' => 'integer',
+            'sync_device_id' => 'integer',
         ];
     }
 

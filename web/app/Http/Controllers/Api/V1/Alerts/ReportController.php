@@ -33,8 +33,10 @@ final class ReportController extends ApiController
     {
         $files = array_values(array_filter((array) $request->file('attachments', []), static fn (mixed $file): bool => $file instanceof UploadedFile));
         $source = $this->alertSource($request);
+        // RG-01 : un signalement anonyme ne consulte même pas l'appareil (aucune trace reliant l'envoi au compte).
+        $device = $request->isAnonymous() ? null : $this->alertDevice($request);
 
-        $result = $submit($files, static fn (array $stored) => $request->toData($source, $stored));
+        $result = $submit($files, static fn (array $stored) => $request->toData($source, $stored, $device));
         $alert = $result->alert->loadMissing('routedContact');
 
         return $this->created(AlertResource::make($alert), route('api.signalements.show', ['code' => $alert->tracking_code]))

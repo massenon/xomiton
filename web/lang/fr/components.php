@@ -53,6 +53,15 @@ return [
         'label' => 'Fil d’Ariane',
     ],
 
+    // Graphique Vue <XmChart> (P6-04, COMPOSANTS §x-chart) : tableau de données accessible sous chaque graphique,
+    // effectifs sous le seuil masqués.
+    'chart' => [
+        'table' => 'Données du graphique',
+        'category' => 'Catégorie',
+        'masked' => 'données masquées',
+        'loading' => 'Chargement du graphique…',
+    ],
+
     'datatable' => [
         'empty' => 'Aucun résultat.',
         'sort' => 'Trier par :column',

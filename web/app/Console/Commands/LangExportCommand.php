@@ -16,7 +16,8 @@ use Symfony\Component\Finder\Finder;
  *
  * - `resources/js/lang/<locale>.json` : clés à plat « fichier.cle.souscle » pour vue-i18n (résolveur à plat),
  *   placeholders `:nom` → `{nom}`, pluriels Laravel « {0} a|{1} b|[2,*] c » → « a | b | c », `@` et accolades
- *   littérales échappés ;
+ *   littérales échappés ; sans les préfixes de config('xomiton.lang_export.vue_exclude') (administration Livewire,
+ *   pages publiques Blade, SEO, e-mails : catalogue attendu avant le montage de l'espace Vue, PERFORMANCE.md) ;
  * - `mobile/lib/l10n/app_<locale>.arb` : format ARB de Flutter (gen-l10n), clés « fichier_cle_souscle »,
  *   placeholders ICU `{nom}` déclarés dans les @-métadonnées, pluriels ICU `{count, plural, =0{…} =1{…} other{…}}`.
  *
@@ -54,7 +55,7 @@ final class LangExportCommand extends Command
 
             try {
                 $targets = [
-                    $jsonDir.'/'.$locale.'.json' => $this->toVueJson($messages),
+                    $jsonDir.'/'.$locale.'.json' => $this->toVueJson($this->forVue($messages)),
                     $arbDir.'/app_'.$locale.'.arb' => $this->toArb($locale, $messages),
                 ];
             } catch (RuntimeException $exception) {
@@ -184,6 +185,32 @@ final class LangExportCommand extends Command
     }
 
     // --- vue-i18n ----------------------------------------------------------------------------------------------------
+
+    /**
+     * Messages de l'espace Vue : une clé est retirée si elle vaut un préfixe exclu, ou commence par « préfixe. » (par
+     * « préfixe » seul quand il finit par « / » : « pages/ » retire tous les fichiers de lang/<locale>/pages).
+     *
+     * @param  array<string, string>  $messages
+     * @return array<string, string>
+     */
+    private function forVue(array $messages): array
+    {
+        $excluded = array_values(array_filter((array) config('xomiton.lang_export.vue_exclude', []), fn (mixed $prefix): bool => is_string($prefix) && $prefix !== ''));
+
+        if ($excluded === []) {
+            return $messages;
+        }
+
+        return array_filter($messages, function (string $key) use ($excluded): bool {
+            foreach ($excluded as $prefix) {
+                if ($key === $prefix || str_starts_with($key, str_ends_with($prefix, '/') ? $prefix : $prefix.'.')) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, ARRAY_FILTER_USE_KEY);
+    }
 
     /** @param  array<string, string>  $messages */
     private function toVueJson(array $messages): string

@@ -56,6 +56,7 @@ foreach ($daily as $command => $description) {
 $dailyFiles = [
     'reports:purge' => 'Supprime les fichiers de generated_reports au-delà d’expires_at (ligne marquée si le journal la référence, supprimée sinon)',
     'cache:purge-expired' => 'Supprime les fichiers expirés du cache file (storage/framework/cache/data) ; sans effet pour les autres pilotes',
+    'accounts:purge-exports' => 'Supprime les exports RGPD (me/export) dont le lien de téléchargement a expiré (P6-06)',
 ];
 
 foreach ($dailyFiles as $command => $description) {

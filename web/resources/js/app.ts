@@ -1,27 +1,98 @@
-// Paquet de l'espace membre et pair éducateur·rice : Vue 3 + Inertia.js + Pinia + vue-i18n (D9).
-import 'bootstrap';
-import { createApp, h, type DefineComponent } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { createPinia } from 'pinia';
-import { i18n } from './app/i18n';
+// Paquet de l'espace membre et pair éducateur·rice (D9, ADR-18, ADR-30) : Vue 3 + Inertia 2 (sans SSR) + Pinia + vue-i18n.
+// Budget : app.ts + imports statiques < 150 Ko gzip (scripts/check-budgets.mjs) — chaque page Vue, le catalogue de
+// messages (resources/js/lang/<locale>.json), la boîte d'envoi (shared/outbox.js) et Chart.js sont des import() à la
+// demande. Bootstrap : import sélectif partagé avec public.js (shared/bootstrap.js), jamais le paquet complet.
+// Au démarrage : stores hydratés depuis les props partagées (HandleInertiaRequests), catalogue de la locale chargé avant
+// le montage (le squelette x-skeleton de app.blade.php reste affiché jusque-là), titre d'onglet neutre si demandé,
+// toast flashé affiché une seule fois (app/flash.ts, jamais au retour dans l'historique) et statut gardé à l'écran
+// (XmFlashStatus), `window.XM.toast` et l'évènement `toast` (contrat de xomiton-ui.js) relayés vers useToast(),
+// réseau suivi pour le bandeau hors connexion, boîte d'envoi et brouillons configurés pour le compte de la page.
+import './shared/bootstrap.js';
 import './shared/theme.js';
+import { createApp, h, Fragment, type DefineComponent } from 'vue';
+import { createInertiaApp, router } from '@inertiajs/vue3';
+import { createPinia, setActivePinia } from 'pinia';
+import { i18n, loadLocale, t } from './app/i18n';
+import { route } from './app/routes';
+import { useToast } from './app/useToast';
+import { createFlashPresenter } from './app/flash';
+import type { SharedProps } from './app/types';
+import { useSessionStore } from './stores/session';
+import { useNotificationsStore } from './stores/notifications';
+import { useOutboxStore } from './stores/outbox';
+import { useDraftsStore } from './stores/drafts';
+import { useUiStore } from './stores/ui';
+import XmToast from './components/XmToast.vue';
+import XmOfflineBar from './components/XmOfflineBar.vue';
+import XmFlashStatus from './components/XmFlashStatus.vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Xomiton';
+const pinia = createPinia();
+setActivePinia(pinia);
+
+const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue');
+
+/** Textes neutres des avis de la boîte d'envoi : mêmes clés que partials/offline.blade.php (lang/fr/offline.php). */
+const OUTBOX_TEXTS = ['queued', 'report_sent_title', 'report_sent', 'report_keep', 'report_failed_title', 'report_failed', 'report_resume',
+    'sos_sent', 'sos_failed_title', 'sos_failed', 'sos_contacts', 'copy', 'copied', 'print', 'close'];
+
+const outboxTexts = (): Record<string, string> => ({
+    ...Object.fromEntries(OUTBOX_TEXTS.map((key) => [key, t(`offline.outbox.${key}`)])),
+    report_url: route('signaler', undefined, '/signaler'),
+    urgences_url: route('urgences', undefined, '/urgences'),
+});
+
+const hydrate = (props: Partial<SharedProps>) => {
+    useSessionStore().hydrate(props);
+    useNotificationsStore().hydrate(props);
+};
+
+const showFlash = createFlashPresenter((message, type) => useToast().show(message, type));
 
 createInertiaApp({
-    title: (title) => (title ? `${title} – ${appName}` : appName),
+    title: (title) => useSessionStore().documentTitle(title, appName),
     resolve: (name) => {
-        const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue');
         const page = pages[`./Pages/${name}.vue`];
         if (!page) throw new Error(`Page Inertia introuvable : ${name}`);
         return page();
     },
-    setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+    async setup({ el, App, props, plugin }) {
+        const initial = props.initialPage as unknown as { props: SharedProps };
+        hydrate(initial.props);
+
+        const session = useSessionStore();
+        const ui = useUiStore();
+        const toast = useToast();
+
+        window.XM = window.XM || {};
+        window.XM.toast = (message: string, type = 'primary') => toast.show(message, type as never);
+        window.addEventListener('toast', (event) => {
+            const detail = (event as CustomEvent<{ message?: string; type?: string }>).detail || {};
+            if (detail.message) toast.show(detail.message, (detail.type || 'primary') as never);
+        });
+        window.addEventListener('online', () => ui.setOnline(true));
+        window.addEventListener('offline', () => ui.setOnline(false));
+
+        router.on('navigate', (event) => {
+            hydrate(event.detail.page.props);
+            showFlash(event.detail.page.props as Partial<SharedProps>);
+        });
+        // Rechargements partiels (compteurs de la cloche, P6-03) : pas d'évènement navigate.
+        router.on('success', (event) => hydrate(event.detail.page.props));
+
+        await loadLocale(initial.props.lang?.locale || 'fr', initial.props.lang?.fallback || 'fr');
+        document.documentElement.lang = i18n.global.locale.value;
+
+        const drafts = useDraftsStore();
+        drafts.configure(session.outboxAccount, session.ttlDays);
+        drafts.purge().catch(() => undefined);
+        useOutboxStore().start({ account: session.outboxAccount, ttlDays: session.ttlDays, texts: outboxTexts() }).catch(() => undefined);
+
+        createApp({ render: () => h(Fragment, [h(XmOfflineBar), h(XmFlashStatus), h(App, props), h(XmToast)]) })
             .use(plugin)
-            .use(createPinia())
+            .use(pinia)
             .use(i18n)
             .mount(el);
     },
-    progress: { color: 'var(--xm-primary)' },
+    progress: { color: 'var(--xm-primary)', showSpinner: false },
 });

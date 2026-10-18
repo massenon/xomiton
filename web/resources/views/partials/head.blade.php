@@ -1,11 +1,13 @@
 {{--
-    En-tête HTML commun aux gabarits. Variables : $seo (tableau de props pour <x-seo>), $css (chemins Vite CSS),
+    En-tête HTML commun aux gabarits. Variables : $seo (tableau de props pour <x-seo> ; false : aucune balise de référencement,
+    la racine Inertia app.blade.php écrit elle-même titre et robots), $css (chemins Vite CSS),
     $critical (bool : CSS critique resources/css/critical.css inliné avant le CSS principal, gabarits public et sobre, P4-12).
 --}}
 @php($seo = $seo ?? [])
 @php($critical = $critical ?? false)
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+@if ($seo !== false)
 <x-seo
     :title="$seo['title'] ?? null"
     :description="$seo['description'] ?? null"
@@ -17,6 +19,7 @@
     :schema="$seo['schema'] ?? []"
     :modified="$seo['modified'] ?? null"
 />
+@endif
 <meta name="theme-color" content="#0433C3">
 <meta name="application-name" content="Xomiton">
 <meta name="apple-mobile-web-app-title" content="Xomiton">

@@ -25,6 +25,9 @@ abstract class ApiController extends Controller
     /** Nom de jeton par défaut quand le client n'envoie pas `device_name`. */
     public const DEFAULT_DEVICE_NAME = 'appareil';
 
+    /** Lectures sensibles (genre, orientation, contact de confiance…) : jamais gardées, même par le client (P6-01). */
+    protected const NO_STORE = ['Cache-Control' => 'no-store, private'];
+
     /**
      * @param  array<array-key, mixed>  $data
      * @param  array<string, mixed>  $meta
@@ -138,6 +141,18 @@ abstract class ApiController extends Controller
             'prev' => $paginator->previousPageUrl(),
             'next' => $paginator->nextPageUrl(),
         ]);
+    }
+
+    /**
+     * Taille de page demandée (`?per_page=`), bornée à [1, `xomiton.api.max_per_page`] (P6-01) ; valeur absente ou
+     * invalide → `$default`. Évite qu'un client demande 10 000 lignes d'un coup.
+     */
+    protected function perPage(Request $request, int $default = 20): int
+    {
+        $max = max(1, (int) config('xomiton.api.max_per_page', 50));
+        $value = filter_var($request->query('per_page'), FILTER_VALIDATE_INT);
+
+        return min($max, max(1, $value === false ? $default : (int) $value));
     }
 
     /**

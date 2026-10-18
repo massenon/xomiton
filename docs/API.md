@@ -1,6 +1,6 @@
 ---
 name: xomiton-api
-description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lots « api-auth » (P2-06, P2-12 : authentification, mon compte, mes appareils) et « api-fondation » (P5-09 : enveloppe, format d'erreur, idempotence, groupes de routes), « api-alertes » (P5-06 : signalements, SOS, urgences). À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
+description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventions de réponse et d'erreur, limitation de débit, puis chaque endpoint (méthode, URL, corps, réponses, codes d'erreur). Lots « api-auth » (P2-06, P2-12 : authentification, mon compte, mes appareils) et « api-fondation » (P5-09 : enveloppe, format d'erreur, idempotence, groupes de routes), « api-alertes » (P5-06 : signalements, SOS, urgences), « api-me » (P6-01, P6-06, P6-07, P6-09 : lectures conditionnelles, Sanctum SPA, mon compte, cloche, appareils et abonnements push). À charger avant d'écrire un client Flutter ou Vue, ou d'ajouter une famille de routes.
 ---
 
 # API `/api/v1`
@@ -18,9 +18,11 @@ Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_I
 | Erreur | `{ "message": "…", "code": "…", "errors"?: { champ: [messages] }, "retry_after"?: secondes }` pour **tous** les statuts (§1.2) ; le 422 de validation garde `{ message, errors }` de Laravel et y ajoute `code: validation_failed` |
 | Textes | français ; tutoiement sur le tunnel d'authentification (Q36) ; dans `lang/fr/auth.php` (`auth.api.*`), `lang/fr/errors.php` (`errors.api.*`, sans registre ; `errors.419.public` au vous, `errors.419.member` au tu), `lang/fr/validation.php` et `lang/fr.json` (résumé « (et :count autres erreurs) » du 422) ; export client `resources/js/lang/fr.json` par `php artisan lang:export` |
 | Codes HTTP | 200, 201 (`Location` si connue), 202 (traitement accepté : code envoyé), 204, 400, 401, 403, 404, 405, 409, 410, 413, 415, 419, 422, 429, 500, 503 |
-| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` ; `throttle:report` 10/h par IP (signalement) ; `throttle:tracking` 20/h par IP (suivi par code) ; `throttle:sos_owner` 10/min par IP et par alerte (`sos/{id}/cancel` · `safe`, §6.6) ; `throttle:assistant` 20/min par IP (`assistant/question`, §5 ; un compte connecté reste compté par IP) ; `throttle:sos` **jamais bloquant** : au-delà de 5 SOS par minute et par IP, journal + cloche admin `SosBurstDetected` (comptes `alerts.manage`, une par adresse et par quart d'heure), IP en empreinte HMAC seulement (`config/xomiton.php` → `rate_limits`, `sos_log_per_minute_per_ip`). Sur une route `idempotent`, le limiteur nommé passe par l'option `limit=<nom>` : un rejeu ne consomme pas le quota (§1.3). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
+| Débit | `throttle:api` 60/min par compte ou IP sur tout `/api/v1` ; `throttle:login` 5/min par identifiant + IP sur `register`, `login`, `otp/verify`, `password/reset` ; `throttle:otp` 5/h par adresse sur `otp/send`, `password/forgot` ; `throttle:report` 10/h par IP (signalement) ; `throttle:tracking` 20/h par IP (suivi par code) ; `throttle:sos_owner` 10/min par IP et par alerte (`sos/{id}/cancel` · `safe`, §6.6) ; `throttle:assistant` 20/min par IP (`assistant/question`, §5 ; un compte connecté reste compté par IP) ; `throttle:account_sensitive` 5/h par compte (`DELETE me`, `POST me/export`, §3) ; `throttle:sos` **jamais bloquant** : au-delà de 5 SOS par minute et par IP, journal + cloche admin `SosBurstDetected` (comptes `alerts.manage`, une par adresse et par quart d'heure), IP en empreinte HMAC seulement (`config/xomiton.php` → `rate_limits`, `sos_log_per_minute_per_ip`). Sur une route `idempotent`, le limiteur nommé passe par l'option `limit=<nom>` : un rejeu ne consomme pas le quota (§1.3). Réponse 429 : `code: too_many_requests`, en-têtes `Retry-After`, `X-RateLimit-*` |
 | Groupes | `routes/api.php` en deux groupes (ADR-31, §1.4) : public anonyme (limiteurs nommés) et `auth:sanctum` |
 | Idempotence | en-tête `Idempotency-Key` (UUID) sur `POST signalements`, `POST sos`, `POST sync/push` (§1.3, ADR-32) |
+| Lectures conditionnelles | `ETag` + `If-None-Match` → **304** sur toute lecture 200 du groupe `auth:sanctum` (§1.6, P6-01) |
+| Appareil | en-tête `X-Device-Id: <device_uuid>` (appareil enregistré par `POST me/devices`, §3) sur les requêtes Flutter authentifiées : rattache SOS et signalements non anonymes à `sync_devices` (P6-09) |
 
 ### 1.1 Enveloppe `{ data, meta, links }`
 
@@ -30,6 +32,8 @@ Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_I
 |---|---|---|
 | par page (listes d'administration) | `current_page`, `last_page`, `per_page`, `total` | `first`, `last`, `prev`, `next` |
 | par curseur (fil, messages : P6-01) | `per_page`, `next_cursor`, `prev_cursor` | `prev`, `next` |
+
+Taille de page : `?per_page=` borné à `xomiton.api.max_per_page` (50) par `ApiController::perPage()` (valeur absente ou invalide → défaut de la route, 20) ; une Form Request qui valide `per_page` répond 422 au-delà. Curseur : `?cursor=<meta.next_cursor>` (opaque, à renvoyer tel quel).
 
 ### 1.2 Codes d'erreur stables (`code`)
 
@@ -60,6 +64,9 @@ Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_I
 | `idempotency_key_invalid` | 422 | `Idempotency-Key` qui n'est pas un UUID (`errors.idempotency_key`) | `errors.api.idempotency.*` |
 | `idempotency_key_reused` | 422 | même clé, même route, même acteur, **corps différent** (`errors.idempotency_key` ; erreur du client, jamais un rejeu ; jamais 409, réservé au conflit de `sync/push` : ADR-32) | `errors.api.idempotency.*` |
 | `idempotency_in_progress` | 429 | même clé encore en cours de traitement après 2 s d'attente (`retry_after`) : rejouable ; jamais sur `POST sos` (202 `processing`, §1.3) | `errors.api.idempotency.*` |
+| `device_revoked` | 403 | `POST me/devices` sur un appareil révoqué : l'application génère un nouvel UUID (§3, P6-09) | `account.devices.revoked` |
+| `device_taken` | 422 | `POST me/devices` avec l'UUID d'un appareil d'un autre compte (`errors.device_uuid`) | `account.devices.taken` |
+| `newsletter_bounced` · `newsletter_email_missing` · `newsletter_not_subscribed` | 422 | `PATCH me/newsletter` : adresse en rebond, compte sans e-mail, centres d'intérêt sans abonnement (§3, P6-06) | `account.newsletter.*` |
 
 Rendu par `App\Exceptions\ApiExceptionRenderer` (enregistré dans `bootstrap/app.php` → `withExceptions`) pour toute requête `api/*` ou attendant du JSON ; le message brut d'une exception HTTP n'est jamais renvoyé (il peut être en anglais). Les exceptions métier héritent de `App\Domain\Shared\Exceptions\DomainException` (homonyme de la classe SPL `\DomainException` : toujours l'importer par `use` ; `errorCode()`, `status()` 422 par défaut, `userMessage()` depuis `lang/fr`, `errors()`, `extra()`, `headers()`) ; celles du tunnel d'authentification (`App\Domain\Auth\Exceptions\*`) gardent leur rendu propre (`status()`, `userMessage()`).
 
@@ -84,7 +91,7 @@ Empreinte du corps : HMAC-SHA256 (clé d'application) des champs triés par cl�
 | Groupe | Middleware | Familles |
 |---|---|---|
 | 1. public, anonyme | `throttle:api` + un limiteur nommé sur chaque écriture | `health`, `zones`, `violence-types`, `needs`, `auth/*` (sauf `logout`), `assistant/question` (`throttle:assistant`, P4-01), `urgences`, `signalements` (`idempotent:required,limit=report`), `signalements/{code}` (`throttle:tracking`), `sos` (`idempotent:required,nonblocking,limit=sos` sans `throttle:api`), `sos/{id}`, `sos/{id}/cancel` · `safe` (`throttle:sos_owner`) — P5-06, §6 ; à venir : `thematiques`, `ressources` |
-| 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) | `auth/logout`, `me/*`, `signalements/mine` (P5-06) ; à venir : `feed/`, `conversations/`, `pair/`, `sync/`, `notifications/` |
+| 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) + `conditional` (§1.6) | `auth/logout`, `me/*` (§3), `notifications/*` (§7), `signalements/mine` (P5-06) ; à venir : `feed/`, `conversations/`, `pair/`, `sync/` |
 
 Un test (`tests/Feature/Api/ApiFoundationTest.php`) refuse toute route publique hors des familles d'ADR-31 et toute écriture publique sans limiteur nommé (`throttle:<nom>` ou `idempotent:…,limit=<nom>`).
 
@@ -101,13 +108,15 @@ Vue « moi » (réponses d'inscription, de connexion, `GET me`) :
     "pronouns": "elle", "member_type": "membre", "bio": null, "completion": 30, "visibility": "communaute",
     "zone": {"id": 1, "name": "Littoral"}, "commune": {"id": 3, "name": "Cotonou"},
     "age_range": null, "discreet_mode": false, "show_zone": true, "searchable": true,
-    "trusted_contact_name": null, "trusted_contact_phone": null
+    "trusted_contact_name": null, "trusted_contact_phone": null,
+    "ally_status": null, "interests": ["sante", "droits"]
   },
   "created_at": "2026-10-17T10:00:00+01:00",
   "email": "awa@exemple.bj", "email_verified": false, "email_verified_at": null,
   "permissions": ["comments.create", "posts.create", "social.access", "…"],
   "settings": {"theme": "auto", "language": "fr", "notification_prefs": {…}, "notification_digest": "never",
-               "mask_sensitive_notifications": false, "sos_share_gps": false, "pin_enabled": false, "neutral_tab_title": false},
+               "mask_sensitive_notifications": false, "sos_share_gps": false, "pin_enabled": false, "neutral_tab_title": false,
+               "sounds_enabled": true},
   "last_login_at": null
 }
 ```
@@ -119,6 +128,12 @@ Vue « autre compte » (futures routes `users/{id}`) : seuls `id`, `pseudo`, `av
 | `actif` | accès normal (limité à lecture, SOS, signalement, profil tant que `email_verified` est faux) |
 | `en_attente` | pair éducateur·rice en attente de validation (RG-03) : session ouverte, bandeau « compte en attente », collecte fermée |
 | `suspendu` | connexion refusée (403 `account_suspended`) |
+
+### 1.6 Lectures conditionnelles et Sanctum SPA (P6-01)
+
+Middleware `conditional` (`App\Http\Middleware\HandleConditionalGet`), posé sur tout le groupe `auth:sanctum` : sur un `GET` / `HEAD` **200** au corps connu, `ETag` fort = empreinte xxh128 du corps (sauf ETag déjà posé), `Cache-Control: private, no-cache` (le client garde la réponse et la revalide ; aucun cache partagé), `Vary: Authorization, Cookie` ; `If-None-Match` identique → **304** sans corps — comparaison au suffixe `-gzip` / `-br` d'Apache `mod_deflate` (cPanel) et au `W/` près. Ignorés : écritures, erreurs, fichiers et flux, réponses `no-store` (suivi de signalement, `signalements/mine`, SOS, et les lectures sensibles `me`, `me/profile`, `me/security` : jamais gardées, même par le client d'un appareil partagé). Usage : Flutter (cache Hive) et la cloche Vue (polling 30 s de `notifications/unread-count`) renvoient le dernier `ETag` reçu. Les référentiels publics gardent leur cache public (`cache.headers:public;max_age=3600;etag`, §4).
+
+Sanctum SPA (ADR-31, `statefulApi()` dans `bootstrap/app.php`) : une requête dont le `Referer` / `Origin` appartient à `SANCTUM_STATEFUL_DOMAINS` est authentifiée par le cookie de session, **sans jeton** ; toute écriture exige alors `X-XSRF-TOKEN` (cookie `XSRF-TOKEN`), sinon **419** `session_expired` (`errors.419.member.text`, au tu) → `GET /sanctum/csrf-cookie` puis un rejeu. Vérifié par `tests/Feature/Api/ApiConditionalAndSpaTest.php`.
 
 ## 2. Authentification `auth/*`
 
@@ -212,9 +227,7 @@ Si le compte existe : code OTP `reset` + lien magique signé dans l'e-mail `rein
 
 ### `POST auth/logout` — `auth:sanctum`
 
-Révoque le jeton de la requête (ou ferme la session web d'un client Vue en mode SPA). **200** `{ "data": { "logged_out": true } }` ; 401 sans jeton. Journal `auth.logout` (une seule entrée : événement `Logout` émis par le garde `web` ou par le contrôleur pour un jeton).
-
-> Non couvert ici (P6-09) : la suppression de l'abonnement push de l'appareil à la déconnexion, qui attend `me/push-subscriptions`.
+Révoque le jeton de la requête (ou ferme la session web d'un client Vue en mode SPA). Corps facultatif `{ "push_token"?: "<jeton FCM>", "push_endpoint"?: "<endpoint Web Push>" }` : l'abonnement push de **cet appareil** est supprimé avec la session (P6-09 ; le serveur ne relie pas un jeton Sanctum à un abonnement, le client doit donc l'envoyer). **200** `{ "data": { "logged_out": true } }` ; 401 sans jeton. Journal `auth.logout` (une seule entrée : événement `Logout` émis par le garde `web` ou par le contrôleur pour un jeton).
 
 ## 3. Mon compte `me/*` — `auth:sanctum`
 
@@ -222,9 +235,13 @@ Révoque le jeton de la requête (ou ferme la session web d'un client Vue en mod
 
 **200** `{ "data": <user vue « moi »> }` (voir §1). 401 `unauthenticated`.
 
+### `GET me/profile` (P6-06)
+
+**200** `{ "data": <profile de la vue « moi »> }` (objet `profile` du §1.5, avec `interests` et `ally_status`) ; 401.
+
 ### `PATCH me/profile` — phases 2-3 et profil progressif
 
-Tous les champs sont facultatifs ; un champ absent **ou `null`** est laissé tel quel (le profil progressif ne vide rien par cette route).
+Tous les champs sont facultatifs ; un champ absent **ou `null`** est laissé tel quel (le profil progressif ne vide rien par cette route, sauf `interests: []` et `ally_status: "aucun"`).
 
 | Champ | Règles |
 |---|---|
@@ -235,17 +252,26 @@ Tous les champs sont facultatifs ; un champ absent **ou `null`** est laissé tel
 | `trusted_contact_phone` | numéro béninois (stocké chiffré) |
 | `trusted_contact_name` | ≤ 80 |
 | `discreet_mode` | bool |
+| `age_range` | `10-14` \| `15-17` \| `18-24` \| `25-34` \| `35-49` \| `50+` (`AgeRange`, P6-06) |
+| `interests` | tableau (≤ 20) de slugs **distincts** de `newsletter_interests` (`sante`, `droits`, `bien-etre`, `evenements`, `ressources`, `securite-numerique`) ; `[]` vide la liste (P6-06) |
+| `ally_status` | `allie` \| `ressource` \| `aucun` (efface) — Q10 c : stocké **chiffré** (`profiles.ally_status`), aucun droit associé, jamais montré à un autre compte (P6-06) |
 
 **200** `{ "data": <user> }` (avec `profile.completion` recalculé) ; 422 par champ ; 401.
 
-### `PATCH me/settings` — réglages et préférences de notification (P3-02)
+### `GET me/settings` (P6-06)
+
+**200** `{ "data": <settings de la vue « moi »> }` (§1.5, avec `sounds_enabled`) **+ les noms d'écriture du prototype mobile** `locale` (= `language`), `sounds` (= `sounds_enabled`), `notifications` (vrai si au moins une catégorie désactivable garde le push) ; `theme` est relu tel qu'enregistré (`auto` = `system` du prototype, accepté aussi en écriture) ; la ligne `user_settings` est créée avec les valeurs par défaut si elle manque ; 401.
+
+### `PATCH me/settings` — réglages et préférences de notification (P3-02, P6-06)
 
 Champs facultatifs ; seuls les champs présents sont modifiés (`App\Application\Auth\UpdateUserSettings`, journal `me.settings_updated` avec la liste des champs, jamais leurs valeurs).
 
 | Champ | Règles |
 |---|---|
-| `theme` | `light` \| `dark` \| `auto` |
-| `language` | locale active (`config('xomiton.locales')`, aujourd'hui `fr`) |
+| `theme` | `light` \| `dark` \| `auto` \| `system` (alias du prototype mobile « système », **enregistré et relu `auto`**) |
+| `language` · `locale` | locale active (`config('xomiton.locales')`, aujourd'hui `fr`, Q40) ; `locale` = alias du prototype mobile ; 422 « Cette langue n’est pas encore disponible. » pour `fon`, `yo`, `en` |
+| `sounds` · `sounds_enabled` | bool (P6-06, `user_settings.sounds_enabled`, défaut `true`) : sons de l'application ; le son du SOS reste actif pour qui le reçoit |
+| `notifications` | bool (P6-06, interrupteur global du prototype mobile) : canal `push` de toutes les catégories désactivables ; `notification_prefs` envoyé dans la même requête l'emporte catégorie par catégorie |
 | `notification_prefs` | objet `{catégorie: {in_app?, email?, push?}}` ; catégories : `securite`, `sos`, `alertes`, `messages`, `communaute`, `evenements`, `moderation`, `systeme` ; catégorie ou canal inconnu → 422 ; fusion avec l'existant |
 | `notification_digest` | `never` \| `daily` \| `weekly` — enregistré, **sans effet** tant que la commande `notifications:digest` (P3-07) n'est pas livrée |
 | `mask_sensitive_notifications` | bool — texte neutre pour toute notification sensible (`isSensitive()`) |
@@ -264,7 +290,69 @@ Champs facultatifs ; seuls les champs présents sont modifiés (`App\Application
 
 ### `DELETE me/sessions/{id}`
 
-`id` = `token-<n>` ou `web-<empreinte>` tel que listé. Révoque uniquement un appareil de la personne connectée (révoquer le jeton courant équivaut à `auth/logout`). **200** `{ "data": { "revoked": true, "id": "…" } }` ; 404 `not_found` (inconnu ou d'un autre compte) ; 401. Journal `auth.session_revoked`.
+`id` = `token-<n>` ou `web-<empreinte>` tel que listé. Révoque uniquement un appareil de la personne connectée (révoquer le jeton courant équivaut à `auth/logout`) ; les abonnements push enregistrés avec ce jeton (`push_subscriptions.token_id`) partent avec lui (P6-09). **200** `{ "data": { "revoked": true, "id": "…" } }` ; 404 `not_found` (inconnu ou d'un autre compte) ; 401. Journal `auth.session_revoked`.
+
+### `GET me/security` · `PATCH me/security` (P6-06, Q37)
+
+Noms du prototype mobile (`simulateur.html` l.1260). **200** `{ "data": { "discreet": false, "mask_previews": false, "pin_enabled": false, "neutral_tab_title": false } }`.
+
+| Champ (PATCH, facultatifs) | Colonne |
+|---|---|
+| `discreet` | `profiles.discreet_mode` — **l'activer active aussi `mask_previews` et `neutral_tab_title`**, sauf valeur contraire dans la même requête ; le désactiver ne touche à rien d'autre |
+| `mask_previews` | `user_settings.mask_sensitive_notifications` (texte neutre des notifications sensibles, cloche et push) |
+| `pin_enabled` | `user_settings.pin_enabled` — Q37 b : le code PIN reste sur l'appareil (stockage sécurisé) ; `pin`, `pin_code`, `pin_hash` → 422 (« Ton code PIN reste sur ton appareil : ne l’envoie jamais au serveur. ») ; tout `pin_hash` hérité est effacé |
+| `neutral_tab_title` | `user_settings.neutral_tab_title` |
+
+422 par champ ; 401. Journal `me.security_updated` (liste des champs, jamais les valeurs).
+
+### `GET me/newsletter` · `PATCH me/newsletter` (P6-06)
+
+**200** `{ "data": { "subscribed": true, "status": "actif", "pending_confirmation": false, "interests": ["sante"], "available_interests": [{ "slug": "sante", "label": "Santé" }, …], "confirmed_at": "…" } }` (`status` `null` = jamais abonné·e).
+
+PATCH `{ "subscribed"?: bool, "interests"?: [slugs] }` (`App\Application\Account\MemberNewsletter`) :
+
+| Cas | Effet |
+|---|---|
+| `subscribed: true`, e-mail du compte confirmé (OTP) | abonnement **actif tout de suite**, source `app`, ligne `consents` accordée, `consent_meta` sans IP — y compris pour une adresse désabonnée : c'est la personne elle-même (Q66 ne vise que les tiers) |
+| `subscribed: true`, e-mail non confirmé | double opt-in public (e-mail `newsletter-confirmation`), `pending_confirmation: true` |
+| adresse en rebond | 422 `newsletter_bounced` (jamais réactivée) |
+| compte sans e-mail | 422 `newsletter_email_missing` |
+| `subscribed: false` | désabonnement tracé (UnsubscribeFromNewsletter : `consents` refusé, audit) |
+| `interests` sans abonnement | 422 `newsletter_not_subscribed` (`errors.interests`) |
+
+Pas de fréquence : le schéma n'en a pas (prototype « mensuelle · bimensuelle ») — un champ `frequency` est ignoré.
+
+### `POST me/export` — export RGPD (P6-06)
+
+**202** `{ "data": { "status": "preparing", "link_valid_hours": 48, "message": "Ton export est en préparation. Tu recevras un e-mail avec le lien de téléchargement (valable 48 h)." } }`. Construit en file (`BuildPersonalDataExport`, `QUEUE_CONNECTION=database`, une tâche à la fois par compte) : fichier JSON **chiffré** (`Crypt::encryptString`, `.json.enc`) sur le disque privé (`storage/app/private/exports/personal/<compte>/`, un seul par compte), déchiffré en mémoire au téléchargement ; e-mail `export-donnees` avec un **lien signé** `GET /mes-donnees/export/{jeton}` (route **web**, `auth`, signature vérifiée par le contrôleur : il faut être connecté·e au même compte ; autre compte → 404, lien altéré ou expiré → 403 page « Lien expiré » avec « Redemander un export »), valable `xomiton.accounts.export_link_hours` (48 h), fichier effacé ensuite par `accounts:purge-exports` (03:30). Contenu (`format_version: 2`, `App\Application\Account\PersonalDataExport`) : compte, profil (données sensibles déchiffrées : droit d'accès ; chemins de l'avatar et de la couverture), réglages, consentements, publications (et médias), commentaires (ULID du post), j'aime, enregistrements, votes, comptes et pages suivis, groupes, événements, invitations, conversations et messages **écrits par la personne**, sujets et réponses de forum, conversations avec l'assistant, albums, blocages, avertissements, signalements de modération déposés, alertes rattachées au compte (lieu, contact, besoins, pièces jointes), appareils, abonnements push (libellés), newsletter ; jamais mot de passe, jetons, endpoints, fichiers eux-mêmes, messages d'autrui, identité de qui signale ou avertit, notes internes (Q70). `throttle:account_sensitive` ; 401. Journal `account.export_requested`, `account.export_ready`, `account.export_downloaded`.
+
+### `DELETE me` — suppression du compte (P6-06)
+
+Corps `{ "password": "…" }` (mot de passe actuel, requis : un appareil resté ouvert ne suffit pas). **200** `{ "data": { "deleted": true, "erased_from": "2026-11-17T10:00:00+01:00", "message": "Ton compte est supprimé. Tes données seront effacées sous 30 jours." } }`.
+
+Suppression logique (`users.deleted_at`) puis anonymisation par `accounts:anonymize` après `xomiton.accounts.deletion_grace_days` (30 j) ; **tout accès s'arrête tout de suite** : jetons Sanctum, sessions web, abonnements push et export en attente supprimés, appareils de synchronisation révoqués, newsletter désabonnée (motif « Compte supprimé », consentement retiré ; adresse effacée de la ligne et des consentements à l'anonymisation) ; e-mail `compte-supprime` par la boîte d'envoi (prévient la personne si quelqu'un d'autre a supprimé son compte). 422 `password` ; **403** `forbidden` pour un compte de l'équipe d'administration (`admin.access`, superadmin compris : `UserPolicy::deleteOwnAccount`, son rôle doit d'abord lui être retiré) ; 429 `throttle:account_sensitive` (compteur par compte **et par route** : DELETE me et POST me/export ne se bloquent pas l'un l'autre) ; 401. Journal `account.deletion_requested`. La restauration pendant les 30 jours passe par l'équipe (aucune route libre-service).
+
+### `GET me/devices` · `POST me/devices` · `DELETE me/devices/{device_uuid}` (P6-09)
+
+Appareils de l'application (`sync_devices`, utilisés par `alerts.device_id`, `sync_outbox_receipts`, `sync/pull`). POST `{ "device_uuid": "<UUID généré à l'installation>", "label": "Pixel 7", "platform"?: "Android 14", "app_version"?: "1.5.0" }` :
+
+| Réponse | Quand |
+|---|---|
+| **201** + `Location` | appareil nouveau |
+| **200** | déjà enregistré pour ce compte : libellé, plateforme, version et `last_seen_at` mis à jour (idempotent, à rappeler au lancement) |
+| **403** `device_revoked` | appareil révoqué (par la personne, l'équipe ou `sync:prune`) : jamais réactivé, l'application génère un nouvel UUID |
+| **422** `device_taken` (`errors.device_uuid`) | UUID déjà enregistré par un autre compte (téléphone partagé) : jamais réattribué, l'application génère un nouvel UUID |
+
+`data` : `{ device_uuid, label, platform, app_version, revoked, last_seen_at, last_sync_at, created_at }`. DELETE → **204** (révoqué, jamais supprimé ; idempotent ; ses abonnements push `push_subscriptions.sync_device_id` sont supprimés) ; 404 si l'appareil n'est pas à moi. Ensuite, chaque requête authentifiée de l'application porte `X-Device-Id: <device_uuid>` : un SOS ou un signalement non anonyme reçoit `device_id` (appareil actif du même compte seulement ; un signalement anonyme ne consulte même pas l'appareil, RG-01 ; résolution en lecture seule : `last_seen_at` n'est tenu que par POST me/devices). Journal `device.registered`, `device.revoked` (libellé, jamais l'UUID).
+
+### `GET · POST · DELETE me/push-subscriptions` (P6-09, ADR-25)
+
+| Type | Corps POST |
+|---|---|
+| Web Push (navigateur) | `{ "kind": "webpush", "endpoint": "https://…", "keys": { "p256dh": "…", "auth": "…" }, "device_label"?: "Chrome sur Windows" }` — forme de `PushSubscription.toJSON()` ; `public_key` / `auth_token` à plat acceptés |
+| FCM (Flutter) | `{ "kind": "fcm", "token": "<jeton FCM>", "device_label"?: "Pixel 7" }` (après la 1re connexion et à chaque `onTokenRefresh`, P15-08) |
+
+**201** + `Location` à la création, **200** si l'abonnement existait déjà pour ce compte. Un endpoint est **unique** (`endpoint_hash` SHA-256) : sur un appareil partagé, l'abonnement passe au compte qui vient de s'abonner (l'ancien n'y est plus notifié). `data` : `{ id, kind, fingerprint, device_label, last_used_at, created_at }` — **jamais l'endpoint, le jeton ni les clés** ; `fingerprint` = 12 premiers caractères de l'empreinte. GET : liste + `meta.vapid_public_key` (clé publique VAPID pour `pushManager.subscribe()`, `null` tant que `VAPID_PUBLIC_KEY` n'est pas configurée). DELETE `{ "endpoint" | "token", "kind"? }` → **204** toujours (déconnexion, `onTokenRefresh` : idempotent ; l'abonnement d'un autre compte n'est jamais touché). L'abonnement retient le jeton Sanctum de la requête (`token_id`) et l'appareil `X-Device-Id` (`sync_device_id`) : `DELETE me/sessions/{id}`, toute suppression du jeton ou `DELETE me/devices/{uuid}` le suppriment (un téléphone perdu n'est plus notifié). 422 : `kind` inconnu, endpoint non `https` ou hors des services push connus (`xomiton.notifications.push.webpush.allowed_hosts` : `fcm.googleapis.com`, `updates.push.services.mozilla.com`, `*.notify.windows.com`, `web.push.apple.com` ; SSRF), clés manquantes, jeton manquant. Journaux (`push.subscribed`, `push.unsubscribed`, `Log`) : type et empreinte tronquée seulement, **jamais l'endpoint ni le jeton en clair**. Remise : canaux `webpush` / `fcm` des `Notification` Xomiton (pilote `log` tant que VAPID / FCM ne sont pas configurés, Q7) ; abonnement disparu (404 / 410) supprimé à la remise.
 
 ## 4. Référentiels publics (P3-06) — sans authentification
 
@@ -361,17 +449,33 @@ Lecture publique en cache HTTP comme les référentiels (`Cache-Control: public,
 
 Tests : `tests/Feature/Api/Alerts/ReportApiTest.php`, `SosApiTest.php`, `EmergencyApiTest.php`.
 
-## 7. Parcours Flutter de référence
+## 7. Cloche `notifications/*` — `auth:sanctum` (P6-07)
+
+Notifications en base de la personne connectée (`App\Application\Notifications\NotificationInbox`) ; une notification d'un autre compte est **introuvable (404)**, jamais « interdite ».
+
+| Route | Réponse |
+|---|---|
+| `GET notifications?filter=all\|unread\|read&category=&page=&per_page=` | **200** liste paginée par page (§1.1), plus récentes d'abord ; `meta` + `filter`, `category`, `unread` ; 422 filtre ou catégorie inconnus |
+| `GET notifications/unread-count` | **200** `{ "data": { "all": 12, "unread": 3, "read": 9, "categories": { "messages": { "all": 4, "unread": 1 }, … } } }` — compteurs des onglets **Non lues · Lues · Toutes** et par catégorie ; polling 30 s avec `If-None-Match` → 304 (§1.6) |
+| `POST notifications/{id}/read` | **200** la notification lue (idempotent : `read_at` d'origine conservé) + `meta.unread` ; 404 |
+| `POST notifications/read-all` `{ "category"? }` | **200** `{ "data": { "marked": 2, "unread": 1 } }` |
+| `DELETE notifications/{id}` | **204** ; 404 |
+
+Objet : `{ id, type, category, title, body, url, icon, sensitive, read, read_at, created_at, data }` — `type` = nom court de la classe (`invitation_received`, même valeur que `data.type` de la charge push), `data` = compléments d'ouverture profonde (identifiants, jamais de donnée sensible). Une notification sensible est **neutralisée à la lecture** (`notifications.discreet.*`, « Nouvelle notification ») tant que `mask_sensitive_notifications` est actif, même reçue avant l'activation du masquage. Catégories : `securite`, `sos`, `alertes`, `messages`, `communaute`, `evenements`, `moderation`, `systeme`. 401 sans session ni jeton.
+
+## 8. Parcours Flutter de référence
 
 ```
 register ──201 token──► (accès limité) ──otp/verify signup──► email_verified
 login ──202 otp_sent──► otp/verify login ──200 token + device_token──► me
 login + device_token ──200 token──► me                (appareil reconnu, Q13 b)
+me ──► POST me/devices (X-Device-Id ensuite) ──► POST me/push-subscriptions {kind: fcm, token}   (P6-09)
+auth/logout {push_token} ──► abonnement push de l'appareil supprimé, jeton révoqué
 password/forgot ──202──► otp/verify reset ──reset_token──► password/reset ──200──► login
 ```
 
-Journal d'audit (`audit_logs`) : `auth.registered`, `auth.authenticated`, `auth.token_issued`, `auth.otp_verified`, `auth.email_verified`, `auth.password_reset_requested`, `auth.password_reset`, `auth.logout`, `auth.session_revoked`, `auth.failed`, `auth.refused_suspended`, `auth.refused_maintenance`. Aucune valeur sensible (mot de passe, code, jeton) n'y est écrite.
+Journal d'audit (`audit_logs`) : `auth.registered`, `auth.authenticated`, `auth.token_issued`, `auth.otp_verified`, `auth.email_verified`, `auth.password_reset_requested`, `auth.password_reset`, `auth.logout`, `auth.session_revoked`, `auth.failed`, `auth.refused_suspended`, `auth.refused_maintenance` ; mon compte (P6) : `me.settings_updated`, `me.security_updated`, `account.deletion_requested`, `account.export_requested`, `account.export_ready`, `account.export_downloaded`, `device.registered`, `device.revoked`, `push.subscribed`, `push.unsubscribed`, `newsletter.subscribed_from_account`. Aucune valeur sensible (mot de passe, code, jeton) n'y est écrite.
 
-## 8. Familles à venir
+## 9. Familles à venir
 
-`me/security`, `me/newsletter`, `me/push-subscriptions`, `me/export`, `DELETE me` (P6), `feed/`, `posts/` (P7), `conversations/`, `groups/`, `events/`, `forums/` (P8), `thematiques/`, `ressources/` (P4), `pair/`, `sync/` (P9), `notifications/` (P3-P6). `signalements/`, `sos/`, `urgences/` : livrés (§6). Chaque famille complète ce document à sa livraison.
+`feed/`, `posts/` (P7), `conversations/`, `groups/`, `events/`, `forums/` (P8), `dashboard`, `thematiques/`, `ressources/`, `users/{id}/posts` (P6-08), `pair/`, `sync/` (P9). `signalements/`, `sos/`, `urgences/` : livrés (§6) ; `me/*` (§3) et `notifications/*` (§7) : livrés (P6-06, P6-07, P6-09). Chaque famille complète ce document à sa livraison.

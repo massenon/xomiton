@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Exceptions\ApiExceptionRenderer;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureNotInMaintenance;
+use App\Http\Middleware\HandleConditionalGet;
 use App\Http\Middleware\HandleIdempotencyKey;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\TagGuestResponse;
@@ -59,6 +60,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified' => EnsureEmailIsVerified::class,
             'idempotent' => HandleIdempotencyKey::class,
+            // Lot api-me (P6-01) : ETag + If-None-Match → 304 sur les lectures du groupe auth:sanctum de routes/api.php.
+            'conditional' => HandleConditionalGet::class,
         ]);
 
         $middleware->redirectGuestsTo(fn () => route('connexion'));

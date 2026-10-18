@@ -81,6 +81,12 @@ final class StoreReportRequest extends FormRequest
         ];
     }
 
+    /** Signalement anonyme (défaut, RG-01) : ni compte ni appareil rattachés. */
+    public function isAnonymous(): bool
+    {
+        return $this->boolean('anonymous', true);
+    }
+
     /**
      * Données du cas d'usage CreateReport ; `$attachments` = fichiers déjà passés par MediaUploader (disque privé).
      *
@@ -97,7 +103,7 @@ final class StoreReportRequest extends FormRequest
             idempotencyKey: (string) $this->input('idempotency_key'),
             source: $source,
             userId: $user === null ? null : (int) $user->getKey(),
-            anonymous: $this->boolean('anonymous', true),
+            anonymous: $this->isAnonymous(),
             category: $this->stringOrNull('category'),
             description: (string) $this->input('description'),
             occurredOn: $occurredOn === null ? null : CarbonImmutable::parse($occurredOn)->startOfDay(),

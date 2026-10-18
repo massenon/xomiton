@@ -44,6 +44,8 @@ return [
         'title' => 'Un problème est survenu',
         'generic' => 'Une erreur s’est produite. Réessaie dans quelques instants ; si le problème persiste, contacte l’équipe Xomiton.',
         'network' => 'Tu es hors connexion. Ton message partira dès que le réseau revient.',
+        // Requête non mise en boîte d'envoi (lecture, action immédiate) : aucune promesse d'envoi différé.
+        'unreachable' => 'Connexion impossible pour le moment. Vérifie ton réseau, puis réessaie.',
         'timeout' => 'Le serveur met trop de temps à répondre. Réessaie dans quelques instants.',
         'form' => 'Corrige les champs signalés, puis renvoie le formulaire.',
         'not_found' => 'Cet élément est introuvable. Il a peut-être été supprimé.',

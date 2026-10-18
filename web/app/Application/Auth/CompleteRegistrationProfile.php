@@ -17,7 +17,8 @@ use Spatie\Permission\Models\Role;
 
 /**
  * Phases 2 et 3 de l'inscription, facultatives (« Passer ») : pronoms, département → commune, type de membre,
- * contact de confiance (chiffré), mode discret. Choisir « pair éducateur·rice » place le compte `en_attente`
+ * contact de confiance (chiffré), mode discret ; profil progressif de l'API (P6-06) : tranche d'âge, centres
+ * d'intérêt, statut allié·e / personne ressource (chiffré, Q10 c, aucun droit associé). Choisir « pair éducateur·rice » place le compte `en_attente`
  * et lui donne le rôle `pair` (RG-03) : la session reste ouverte, l'accès à la collecte attend la validation.
  */
 final class CompleteRegistrationProfile
@@ -64,6 +65,22 @@ final class CompleteRegistrationProfile
 
         if ($data->memberType !== null) {
             $profile->member_type = $data->memberType;
+        }
+
+        // Profil progressif (PATCH me/profile, P6-06).
+        if ($data->ageRange !== null) {
+            $profile->age_range = $data->ageRange;
+        }
+
+        if ($data->interests !== null) {
+            $interests = array_values(array_unique($data->interests));
+            $profile->interests = $interests === [] ? null : $interests;
+        }
+
+        if ($data->clearAllyStatus) {
+            $profile->ally_status = null;
+        } elseif ($data->allyStatus !== null) {
+            $profile->ally_status = $data->allyStatus->value;
         }
     }
 

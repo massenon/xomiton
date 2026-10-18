@@ -6,11 +6,15 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-// Service worker (P5-10, ADR-26) : précache de la coquille du paquet public seulement (public.js, ses imports statiques et
-// à la demande, xomiton.css), des polices latines et des logos ; ni l'administration ni l'espace Vue. La liste suit le
-// manifest Vite écrit juste avant (public/build/manifest.json) ; les adresses sont absolues (/build/…) car le script est
-// servi à la racine par GET /sw.js (ServiceWorkerController).
-const SHELL_ENTRIES = ['resources/js/public.js', 'resources/css/xomiton.css'];
+// Service worker (P5-10, ADR-26) : précache de la coquille du paquet public (public.js, ses imports statiques et à la
+// demande, xomiton.css), de la coquille Inertia (app.ts, ses imports statiques et à la demande : pages Vue, catalogue
+// vue-i18n, boîte d'envoi ; P6-05), des polices latines et des logos ; jamais l'administration, Chart.js (graphiques
+// en ligne seulement) ni le catalogue Vue de recette (Pages/DesignSystem). Seul le code est précaché : les réponses
+// Inertia d'une session ne sont jamais gardées (rules.js).
+// La liste suit le manifest Vite écrit juste avant (public/build/manifest.json) ; les adresses sont absolues (/build/…)
+// car le script est servi à la racine par GET /sw.js (ServiceWorkerController).
+const SHELL_ENTRIES = ['resources/js/public.js', 'resources/css/xomiton.css', 'resources/js/app.ts'];
+const SHELL_SKIP = /(?:^|\/)(?:node_modules\/chart\.js|resources\/js\/Pages\/DesignSystem)\//;
 const SHELL_FONTS = /(?:Montserrat-(?:latin|latin-ext)-normal|bootstrap-icons)\.woff2$/;
 const SHELL_STATIC = ['logo-couleur.svg', 'logo-sombre.svg', 'icone-appli-bleu.svg'].map((name) => `assets/images/xomiton/brand/${name}`);
 
@@ -20,7 +24,7 @@ function shellFiles(manifestPath) {
     const seen = new Set();
     const visit = (key) => {
         const chunk = manifest[key];
-        if (!chunk || seen.has(key)) return;
+        if (!chunk || seen.has(key) || SHELL_SKIP.test(key)) return;
         seen.add(key);
         files.add(chunk.file);
         (chunk.css || []).forEach((file) => files.add(file));
@@ -89,6 +93,12 @@ export default defineConfig({
         alias: {
             '@': '/resources/js',
         },
+    },
+    // vue-i18n (P6-05) : API de composition seule (legacy retirée du paquet app.ts), sans outils de développement en production.
+    define: {
+        __VUE_I18N_FULL_INSTALL__: true,
+        __VUE_I18N_LEGACY_API__: false,
+        __INTLIFY_PROD_DEVTOOLS__: false,
     },
     server: {
         watch: {

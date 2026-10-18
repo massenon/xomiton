@@ -81,6 +81,24 @@ it('exporte un JSON à plat pour vue-i18n avec placeholders {nom}, pluriels et �
         ->and(array_keys($json))->toBe(collect(array_keys($json))->sort(SORT_STRING)->values()->all());
 });
 
+it('retire du JSON Vue les préfixes de vue_exclude, jamais de l’ARB', function (): void {
+    config(['xomiton.lang_export.vue_exclude' => ['demo.nested', 'enums/', 'demo.hello']]);
+
+    $this->artisan('lang:export', ['--locale' => 'fr'])->assertSuccessful();
+
+    $json = readJson($this->workDir.'/js/lang/fr.json');
+    $arb = readJson($this->workDir.'/mobile/lib/l10n/app_fr.arb');
+
+    expect($json)->toHaveKey('demo.items')
+        ->toHaveKey('demo.simple')
+        ->toHaveKey('demo.range.50+')
+        ->not->toHaveKey('demo.hello')
+        ->not->toHaveKey('demo.nested.deep.key')
+        ->not->toHaveKey('enums/kind.a')
+        ->and($arb)->toHaveKey('demo_nested_deep_key')
+        ->and($arb)->toHaveKey('enums_kind_a');
+});
+
 it('exporte un ARB Flutter avec clés Dart, placeholders ICU et pluriels ICU', function (): void {
     $this->artisan('lang:export', ['--locale' => 'fr'])->assertSuccessful();
 
@@ -153,7 +171,10 @@ it('exporte le vrai lang/fr sans collision de clé ARB et avec les textes de ré
     expect(count($json))->toBeGreaterThan(1500)
         ->and($json)->toHaveKey('errors.419.member.text')
         ->and($json['alerts.report.done.text'])->toBe('Une personne formée le lira sous 24 h.')
-        ->and($json['admin.datatable.showing'])->toBe('Affichage de {from} à {to} sur {total} entrées')
+        ->and($json)->not->toHaveKey('admin.datatable.showing')
+        ->and(collect(array_keys($json))->filter(fn (string $key): bool => str_starts_with($key, 'pages/') || str_starts_with($key, 'seo.'))->all())->toBe([])
+        ->and($json)->toHaveKey('newsletter.public.subscribed_title')
+        ->and($json)->not->toHaveKey('newsletter.admin.title')
         ->and($json['enums/alerts.alert_type.denonciation'])->toBe('Signalement')
         ->and($arb)->toHaveKey('errors_419_public_text')
         ->and($arb)->toHaveKey('errors_419_member_text')

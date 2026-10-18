@@ -123,6 +123,15 @@ return [
         // SOS (ARCH §4 : « sans limite bloquante, journalisé ») : limiteur `sos`, jamais de 429 ; au-delà de ce nombre
         // d'envois par minute et par IP, chaque envoi est journalisé et l'administration prévenue (P2-08, P5-09).
         'sos_log_per_minute_per_ip' => 5,
+        // Actions sensibles de mon compte (DELETE me, POST me/export, P6-06 : limiteur `account_sensitive`) : par compte.
+        'account_sensitive_per_hour' => 5,
+    ],
+
+    /*
+     * API /api/v1 (P6-01, docs/API.md §1.1) : taille de page maximale demandable par `?per_page=`.
+     */
+    'api' => [
+        'max_per_page' => 50,
     ],
 
     /*
@@ -160,6 +169,8 @@ return [
         'pseudo_max_length' => 40,
         // Effacement différé d'un compte supprimé, avant anonymisation (jours).
         'deletion_grace_days' => 30,
+        // Export RGPD (POST me/export, P6-06) : validité du lien de téléchargement envoyé par e-mail, puis fichier effacé.
+        'export_link_hours' => 48,
         'age_min' => 10,
         'age_max' => 99,
     ],
@@ -247,6 +258,9 @@ return [
         'push' => [
             'webpush' => [
                 'driver' => env('WEBPUSH_DRIVER', 'log'),
+                // P6-09 : hôtes des services push des navigateurs (Chrome / Edge Chromium / Opera, Firefox, Edge hérité,
+                // Safari). Un endpoint d'un autre hôte est refusé (422) : le pilote VAPID ne poste jamais ailleurs (SSRF).
+                'allowed_hosts' => ['fcm.googleapis.com', 'updates.push.services.mozilla.com', '*.notify.windows.com', 'web.push.apple.com'],
                 'vapid' => [
                     'subject' => env('VAPID_SUBJECT', 'mailto:bonjour@xomiton.org'),
                     'public_key' => env('VAPID_PUBLIC_KEY'),
@@ -443,6 +457,9 @@ return [
     'lang_export' => [
         'json_dir' => resource_path('js/lang'),
         'arb_dir' => base_path('../mobile/lib/l10n'),
+        // Catalogue Vue (P6-05) : textes jamais affichés par l'espace Vue (administration Livewire, pages publiques et SEO
+        // Blade, maintenance, e-mails) retirés de resources/js/lang/<locale>.json ; l'ARB mobile reste complet.
+        'vue_exclude' => ['admin', 'newsletter.admin', 'newsletter.campaign_defaults', 'notifications.admin', 'pages/', 'seo', 'maintenance', 'mail'],
     ],
 
     /*
@@ -481,7 +498,7 @@ return [
      * des modèles : toute colonne chiffrée ajoutée doit être déclarée ici.
      */
     'encrypted_columns' => [
-        'profiles' => ['gender_identity', 'orientation', 'trusted_contact_phone'],
+        'profiles' => ['gender_identity', 'orientation', 'trusted_contact_phone', 'ally_status'],
         'alerts' => ['description', 'lat', 'lng', 'contact'],
         'alert_notes' => ['body'],
         'cases' => ['notes'],

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\AllyStatus;
 use App\Enums\UserStatus;
 use App\Models\Profile;
 use App\Models\User;
@@ -108,6 +109,9 @@ final class UserResource extends JsonResource
                 'searchable' => (bool) $profile->searchable,
                 'trusted_contact_name' => $profile->trusted_contact_name,
                 'trusted_contact_phone' => $profile->trusted_contact_phone,
+                // P6-06 : profil progressif (Q10 c), vue « moi » seulement.
+                'ally_status' => AllyStatus::tryFrom((string) $profile->ally_status)?->value,
+                'interests' => array_values(array_filter((array) ($profile->interests ?? []), 'is_string')),
             ];
         }
 
@@ -132,6 +136,7 @@ final class UserResource extends JsonResource
             'sos_share_gps' => (bool) $settings->sos_share_gps,
             'pin_enabled' => (bool) $settings->pin_enabled,
             'neutral_tab_title' => (bool) $settings->neutral_tab_title,
+            'sounds_enabled' => (bool) ($settings->sounds_enabled ?? true),
         ];
     }
 }

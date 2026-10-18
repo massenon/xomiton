@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Retention;
 
+use App\Enums\SubscriberStatus;
+use App\Models\Consent;
+use App\Models\NewsletterSubscriber;
 use App\Models\OtpCode;
 use App\Models\Profile;
 use App\Models\PushSubscription;
@@ -27,8 +30,11 @@ use Illuminate\Support\Str;
  *
  * Effacé : pseudo, nom, e-mail, téléphone, mot de passe, jeton « se souvenir de moi », motif de suspension,
  * profil (identité de genre, orientation, bio, pronoms, site, avatar et couverture avec leurs fichiers,
- * contact de confiance), réglages (réinitialisés), jetons API Sanctum, abonnements push, sessions, codes OTP
- * et jetons de réinitialisation de l'ancienne adresse ; les appareils de synchronisation sont révoqués.
+ * contact de confiance, statut allié·e, centres d'intérêt), réglages (réinitialisés), jetons API Sanctum, abonnements push, sessions, codes OTP
+ * et jetons de réinitialisation de l'ancienne adresse ; les appareils de synchronisation sont révoqués ; abonnement
+ * newsletter (rattaché au compte ou à l'ancienne adresse) anonymisé : adresse, nom, centres d'intérêt et étiquettes
+ * effacés, désabonné, `user_id` détaché (la ligne reste pour les statistiques des campagnes déjà envoyées) ; adresse
+ * effacée des consentements.
  * Conservé : publications, commentaires et autres contenus (affichés sous le pseudo anonymisé), consentements.
  * Chaque anonymisation laisse une entrée `account.anonymize` dans le journal d'audit (acteur « système »).
  */
@@ -83,6 +89,7 @@ final class AnonymizeDeletedAccounts
             $previousEmail = (string) $user->email;
 
             $this->revokeAccess($user, $previousEmail);
+            $this->eraseNewsletter($id, $previousEmail);
             $this->eraseProfile($user);
             $this->resetSettings($user);
 
@@ -127,6 +134,40 @@ final class AnonymizeDeletedAccounts
         }
     }
 
+    /**
+     * Abonnement newsletter du compte ou de son ancienne adresse : plus aucune adresse ni préférence, jamais réactivable.
+     */
+    private function eraseNewsletter(int $id, string $previousEmail): void
+    {
+        $email = mb_strtolower(trim($previousEmail));
+
+        NewsletterSubscriber::query()
+            ->where(static fn (Builder $query) => $query->where('user_id', $id)->when($email !== '', static fn (Builder $q) => $q->orWhere('email', $email)))
+            ->get()
+            ->each(static function (NewsletterSubscriber $subscriber): void {
+                $subscriber->syncTags([]);
+                $subscriber->syncInterests([]);
+                $subscriber->forceFill([
+                    'email' => 'newsletter-'.$subscriber->getKey().'@'.User::ANONYMIZED_EMAIL_DOMAIN,
+                    'name' => null,
+                    'status' => $subscriber->status === SubscriberStatus::Bounced ? SubscriberStatus::Bounced : SubscriberStatus::Unsubscribed,
+                    'unsubscribed_at' => $subscriber->unsubscribed_at ?? now(),
+                    'tags' => null,
+                    'interests' => null,
+                    'consent_meta' => null,
+                    'token' => NewsletterSubscriber::generateToken(),
+                    'user_id' => null,
+                    'last_opened_at' => null,
+                ])->saveQuietly();
+            });
+
+        Consent::query()->where('user_id', $id)->whereNotNull('email')->update(['email' => null]);
+
+        if ($email !== '') {
+            Consent::query()->whereNull('user_id')->where('email', $email)->update(['email' => null]);
+        }
+    }
+
     private function eraseProfile(User $user): void
     {
         $profile = Profile::query()->where('user_id', $user->getKey())->first();
@@ -148,6 +189,8 @@ final class AnonymizeDeletedAccounts
             'cover_path' => null,
             'trusted_contact_phone' => null,
             'trusted_contact_name' => null,
+            'ally_status' => null,
+            'interests' => null,
             'website' => null,
             'visibility' => 'private',
             'show_zone' => false,
@@ -173,6 +216,7 @@ final class AnonymizeDeletedAccounts
             'pin_enabled' => false,
             'pin_hash' => null,
             'neutral_tab_title' => false,
+            'sounds_enabled' => true,
         ])->saveQuietly();
     }
 

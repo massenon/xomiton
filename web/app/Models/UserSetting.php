@@ -30,6 +30,9 @@ class UserSetting extends Model
      */
     public const THEMES = ['light', 'dark', 'auto'];
 
+    /** Alias accepté par l'API (prototype mobile « système », P6-06) et stocké sous `auto`. */
+    public const THEME_SYSTEM_ALIAS = 'system';
+
     /**
      * Fréquences du résumé d'activité par e-mail (dictionnaire : `notification_digest`, pas d'enum dédié).
      */
@@ -56,6 +59,7 @@ class UserSetting extends Model
         'pin_enabled',
         'pin_hash',
         'neutral_tab_title',
+        'sounds_enabled',
     ];
 
     /**
@@ -76,6 +80,7 @@ class UserSetting extends Model
             'sos_share_gps' => 'boolean',
             'pin_enabled' => 'boolean',
             'neutral_tab_title' => 'boolean',
+            'sounds_enabled' => 'boolean',
         ];
     }
 

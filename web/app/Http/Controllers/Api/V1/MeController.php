@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Application\Account\UserSettings;
 use App\Application\Auth\CompleteRegistrationProfile;
 use App\Application\Auth\ConnectedDevices;
 use App\Application\Auth\UpdateUserSettings;
@@ -17,8 +18,10 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * /api/v1/me : mon compte (UserResource), mon profil (phases 2-3, profil progressif), mes réglages (thème, langue,
- * préférences de notification P3-02) et mes appareils connectés (App\Application\Auth\ConnectedDevices).
+ * /api/v1/me : mon compte (UserResource), mon profil (phases 2-3, profil progressif ; lecture P6-06), mes réglages
+ * (thème, langue, sons, préférences de notification P3-02 ; lecture P6-06) et mes appareils connectés
+ * (App\Application\Auth\ConnectedDevices). Sécurité, suppression, appareils de synchronisation, abonnements push,
+ * newsletter et export : contrôleurs App\Http\Controllers\Api\V1\Me\*.
  * Rien ici ne touche un autre compte.
  */
 final class MeController extends ApiController
@@ -34,7 +37,18 @@ final class MeController extends ApiController
         /** @var User $user */
         $user = $request->user();
 
-        return $this->data($this->userPayload($user, $request));
+        return $this->data($this->userPayload($user, $request))->withHeaders(self::NO_STORE);
+    }
+
+    /**
+     * GET me/profile (P6-06) : le profil de la vue « moi » (UserResource), centres d'intérêt et statut allié·e compris.
+     */
+    public function profile(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        return $this->data((array) ($this->userPayload($user, $request)['profile'] ?? []))->withHeaders(self::NO_STORE);
     }
 
     public function updateProfile(UpdateProfileRequest $request): JsonResponse
@@ -45,6 +59,19 @@ final class MeController extends ApiController
         ($this->completeProfile)($user, $request->toProfileData());
 
         return $this->data($this->userPayload($user->fresh() ?? $user, $request));
+    }
+
+    /**
+     * GET me/settings (P6-06) : thème, langue, sons, préférences de notification (vue « moi » de UserResource), plus
+     * les champs d'écriture du prototype mobile `locale`, `sounds`, `notifications` (UserSettings::writeAliases).
+     */
+    public function settings(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $settings = UserSettings::ensure($user);
+
+        return $this->data((array) ($this->userPayload($user, $request)['settings'] ?? []) + UserSettings::writeAliases($settings));
     }
 
     /**

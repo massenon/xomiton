@@ -13,7 +13,14 @@ use App\Http\Controllers\Api\V1\Auth\OtpSendController;
 use App\Http\Controllers\Api\V1\Auth\OtpVerifyController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\V1\Me\AccountController;
+use App\Http\Controllers\Api\V1\Me\DeviceController;
+use App\Http\Controllers\Api\V1\Me\ExportController;
+use App\Http\Controllers\Api\V1\Me\NewsletterController as MeNewsletterController;
+use App\Http\Controllers\Api\V1\Me\PushSubscriptionController;
+use App\Http\Controllers\Api\V1\Me\SecurityController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\ReferentialController;
 use App\Http\Middleware\BindOutboxAccount;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +33,8 @@ use Illuminate\Support\Facades\Route;
  *   2. authentifié : auth:sanctum (jeton Bearer de Flutter ou cookie de session de Vue en mode SPA).
  * Les POST rejouables par la boîte d'envoi portent `idempotent:required` (ADR-32 : même clé → même réponse), leur limiteur
  * nommé passant par `limit=<nom>` (jamais `throttle:<nom>` à côté : Laravel le trierait avant et un rejeu consommerait le quota).
- * Familles à venir : P6 me/*, P7 feed, P8 communauté, P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06).
+ * Familles à venir : P7 feed, P8 communauté, P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
+ * me/* et notifications/* livrés (P6-06, P6-07, P6-09).
  */
 
 // === 1. Groupe public, anonyme ===================================================================================
@@ -89,7 +97,8 @@ Route::group([], function (): void {
 });
 
 // === 2. Groupe authentifié (auth:sanctum) =========================================================================
-Route::middleware('auth:sanctum')->group(function (): void {
+// `conditional` (P6-01) : ETag + If-None-Match → 304 sur toute lecture 200 du groupe (Cache-Control: private, no-cache).
+Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
     Route::prefix('auth')->as('api.auth.')->group(function (): void {
         Route::post('logout', LogoutController::class)->name('logout');
     });
@@ -97,12 +106,36 @@ Route::middleware('auth:sanctum')->group(function (): void {
     // --- Mes signalements (P5-06) : alertes non anonymes du compte, pagination par page --------------------------------
     Route::get('signalements/mine', [ReportController::class, 'mine'])->name('api.signalements.mine');
 
-    // --- Mon compte --------------------------------------------------------------------------------------------------
+    // --- Mon compte (P2-06, P6-06, P6-09) : profil, réglages, sécurité, newsletter, export RGPD, suppression, appareils
+    // connectés, appareils de l'application (sync_devices) et abonnements push -----------------------------------------
     Route::prefix('me')->as('api.me.')->group(function (): void {
         Route::get('/', [MeController::class, 'show'])->name('show');
+        Route::delete('/', [AccountController::class, 'destroy'])->middleware('throttle:account_sensitive')->name('destroy');
+        Route::get('profile', [MeController::class, 'profile'])->name('profile.show');
         Route::patch('profile', [MeController::class, 'updateProfile'])->name('profile.update');
+        Route::get('settings', [MeController::class, 'settings'])->name('settings.show');
         Route::patch('settings', [MeController::class, 'updateSettings'])->name('settings.update');
+        Route::get('security', [SecurityController::class, 'show'])->name('security.show');
+        Route::patch('security', [SecurityController::class, 'update'])->name('security.update');
+        Route::get('newsletter', [MeNewsletterController::class, 'show'])->name('newsletter.show');
+        Route::patch('newsletter', [MeNewsletterController::class, 'update'])->name('newsletter.update');
+        Route::post('export', [ExportController::class, 'store'])->middleware('throttle:account_sensitive')->name('export');
         Route::get('sessions', [MeController::class, 'sessions'])->name('sessions.index');
         Route::delete('sessions/{id}', [MeController::class, 'destroySession'])->where('id', '[a-z]+-[A-Za-z0-9]+')->name('sessions.destroy');
+        Route::get('devices', [DeviceController::class, 'index'])->name('devices.index');
+        Route::post('devices', [DeviceController::class, 'store'])->name('devices.store');
+        Route::delete('devices/{uuid}', [DeviceController::class, 'destroy'])->whereUuid('uuid')->name('devices.destroy');
+        Route::get('push-subscriptions', [PushSubscriptionController::class, 'index'])->name('push_subscriptions.index');
+        Route::post('push-subscriptions', [PushSubscriptionController::class, 'store'])->name('push_subscriptions.store');
+        Route::delete('push-subscriptions', [PushSubscriptionController::class, 'destroy'])->name('push_subscriptions.destroy');
+    });
+
+    // --- Cloche (P6-07) : liste paginée, compteurs par filtre (polling 30 s, ETag), lecture, suppression -------------
+    Route::prefix('notifications')->as('api.notifications.')->group(function (): void {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('unread-count', [NotificationController::class, 'counts'])->name('unread_count');
+        Route::post('read-all', [NotificationController::class, 'readAll'])->name('read_all');
+        Route::post('{notification}/read', [NotificationController::class, 'read'])->whereUuid('notification')->name('read');
+        Route::delete('{notification}', [NotificationController::class, 'destroy'])->whereUuid('notification')->name('destroy');
     });
 });

@@ -11,14 +11,14 @@ use App\Support\Audit;
 
 /**
  * Mise à jour des réglages de la personne connectée (PATCH me/settings, P3-02) : réglages simples (thème, langue,
- * résumé, discrétion, GPS, titre neutre) et préférences de notification par catégorie via NotificationPreferences
+ * résumé, discrétion, GPS, titre neutre, sons — P6-06), interrupteur global du push (`notifications`, P6-06) et préférences de notification par catégorie via NotificationPreferences
  * (sécurité du compte et SOS jamais désactivables). Crée la ligne `user_settings` si elle manque. Journal `me.settings_updated`
  * avec la liste des champs touchés, jamais leurs valeurs.
  */
 final class UpdateUserSettings
 {
     /** @var list<string> */
-    public const SIMPLE_FIELDS = ['theme', 'language', 'notification_digest', 'mask_sensitive_notifications', 'sos_share_gps', 'neutral_tab_title'];
+    public const SIMPLE_FIELDS = ['theme', 'language', 'notification_digest', 'mask_sensitive_notifications', 'sos_share_gps', 'neutral_tab_title', 'sounds_enabled'];
 
     public function __construct(private readonly NotificationPreferences $preferences) {}
 
@@ -50,11 +50,31 @@ final class UpdateUserSettings
         $settings->save();
         $user->setRelation('settings', $settings);
 
+        $prefs = [];
+
+        // Interrupteur global du prototype mobile (P6-06) : push de toutes les catégories désactivables ; le détail
+        // envoyé dans `notification_prefs` l'emporte, sécurité et SOS restent verrouillées par NotificationPreferences.
+        if (array_key_exists('notifications', $data)) {
+            foreach (NotificationPreferences::categories() as $category) {
+                if (! NotificationPreferences::isLocked($category)) {
+                    $prefs[$category] = [NotificationPreferences::CHANNEL_PUSH => (bool) $data['notifications']];
+                }
+            }
+            $touched[] = 'notifications';
+        }
+
         if (isset($data['notification_prefs']) && is_array($data['notification_prefs'])) {
-            /** @var array<string, array<string, mixed>> $prefs */
-            $prefs = $data['notification_prefs'];
-            $this->preferences->set($user, $prefs);
+            /** @var array<string, array<string, mixed>> $detail */
+            $detail = $data['notification_prefs'];
+
+            foreach ($detail as $category => $channels) {
+                $prefs[$category] = array_replace($prefs[$category] ?? [], (array) $channels);
+            }
             $touched[] = 'notification_prefs';
+        }
+
+        if ($prefs !== []) {
+            $this->preferences->set($user, $prefs);
         }
 
         if ($touched !== []) {

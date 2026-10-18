@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 /*
- * Les 8 modèles d'e-mails du prototype (prototype_social/data/email_templates.json), dans l'ordre du fichier, plus le
- * template système `mot-de-passe-modifie` (P1-09, P2-05). Le template de réinitialisation applique Q8 c) : code OTP
+ * Les 8 modèles d'e-mails du prototype (prototype_social/data/email_templates.json), dans l'ordre du fichier, plus les
+ * templates système `mot-de-passe-modifie` (P1-09, P2-05), `compte-supprime` et `export-donnees` (P6-06). Le template de réinitialisation applique Q8 c) : code OTP
  * `reset` et lien magique dans le même e-mail, sans durée fixe « 60 minutes » (elle suit `xomiton.otp.ttl_minutes`).
  * `category` est le libellé du prototype (converti par TemplateCategory::fromPrototype) ; `system` = template
  * système au slug immuable (RG-10). Q36 : les e-mails adressés aux membres (compte, OTP, bienvenue, validation,
@@ -101,6 +101,28 @@ return [
         'subject' => '{{site_name}} : ton mot de passe a été modifié',
         'preheader' => 'Si ce n’est pas toi, écris-nous tout de suite.',
         'body' => '<p>Bonjour {{user_first_name}},</p><p>Le mot de passe de ton compte {{site_name}} vient d’être modifié. Par sécurité, toutes tes sessions ont été fermées : reconnecte-toi avec ton nouveau mot de passe.</p><p><a href="{{login_link}}" rel="noopener noreferrer" target="_blank"><strong>Me connecter</strong></a></p><p>Si tu n’es pas à l’origine de ce changement, écris-nous sans attendre à <a href="mailto:{{support_email}}">{{support_email}}</a>.</p>',
+        'active' => true,
+    ],
+    [
+        // Lot api-me (P6-06) : confirmation de la suppression du compte (DELETE me), effacement différé de {{deletion_days}} jours.
+        'name' => 'Compte supprimé',
+        'slug' => 'compte-supprime',
+        'category' => 'Authentification',
+        'system' => true,
+        'subject' => '{{site_name}} : ton compte est supprimé',
+        'preheader' => 'Tes données seront effacées le {{deletion_date}}.',
+        'body' => '<p>Bonjour {{user_first_name}},</p><p>Ton compte {{site_name}} (<strong>{{user_pseudo}}</strong>) vient d’être supprimé. Tu es déconnecté·e de tous tes appareils et tu ne recevras plus de notifications.</p><p>Tes données personnelles seront effacées le {{deletion_date}} (sous {{deletion_days}} jours). Tes signalements anonymes déjà transmis restent suivis par l’équipe.</p><p>Tu n’es pas à l’origine de cette suppression, ou tu changes d’avis avant cette date ? Écris-nous à <a href="mailto:{{support_email}}">{{support_email}}</a>.</p>',
+        'active' => true,
+    ],
+    [
+        // Lot api-me (P6-06) : lien de téléchargement de l'export RGPD (POST me/export), valable {{export_expiry}}.
+        'name' => 'Export de mes données',
+        'slug' => 'export-donnees',
+        'category' => 'Authentification',
+        'system' => true,
+        'subject' => '{{site_name}} : ton export de données est prêt',
+        'preheader' => 'Lien valable {{export_expiry}}.',
+        'body' => '<p>Bonjour {{user_first_name}},</p><p>Tu as demandé une copie de tes données {{site_name}}. Ton fichier est prêt :</p><p><a href="{{export_link}}" rel="noopener noreferrer" target="_blank"><strong>Télécharger mes données</strong></a></p><p>Ce lien est valable {{export_expiry}} et ne fonctionne que connecté·e à ton compte. Le fichier contient des informations personnelles : garde-le en lieu sûr.</p><p>Si tu n’es pas à l’origine de cette demande, change ton mot de passe et écris-nous à <a href="mailto:{{support_email}}">{{support_email}}</a>.</p>',
         'active' => true,
     ],
 ];

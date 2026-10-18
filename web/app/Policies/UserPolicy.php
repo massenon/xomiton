@@ -80,6 +80,17 @@ final class UserPolicy
         return $user->can('users.manage') && $this->mayActOn($user, $target);
     }
 
+    /**
+     * Suppression de son propre compte (DELETE me, P6-06) : un compte de l'équipe d'administration (`admin.access`) ne
+     * se supprime pas lui-même — son rôle doit d'abord lui être retiré (RG-15 : jamais d'administration sans superadmin,
+     * plages de garde et alertes routées à reprendre). Le superadmin passe aussi par ici (Gate::before s'abstient sur
+     * son propre compte).
+     */
+    public function deleteOwnAccount(User $user, User $target): bool
+    {
+        return $user->is($target) && ! $this->isAdministrator($user);
+    }
+
     public function export(User $user): bool
     {
         return $user->can('users.manage');

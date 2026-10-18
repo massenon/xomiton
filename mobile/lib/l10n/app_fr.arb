@@ -31,6 +31,119 @@
     "@The_given_data_was_invalid": {
         "description": "The given data was invalid."
     },
+    "account_deletion_newsletter_reason": "Compte supprimé",
+    "@account_deletion_newsletter_reason": {
+        "description": "account.deletion.newsletter_reason"
+    },
+    "account_devices_fields_app_version": "Version de l’application",
+    "@account_devices_fields_app_version": {
+        "description": "account.devices.fields.app_version"
+    },
+    "account_devices_fields_device_uuid": "Identifiant de l’appareil",
+    "@account_devices_fields_device_uuid": {
+        "description": "account.devices.fields.device_uuid"
+    },
+    "account_devices_fields_label": "Nom de l’appareil",
+    "@account_devices_fields_label": {
+        "description": "account.devices.fields.label"
+    },
+    "account_devices_fields_platform": "Système",
+    "@account_devices_fields_platform": {
+        "description": "account.devices.fields.platform"
+    },
+    "account_devices_revoked": "Cet appareil a été déconnecté de ton compte. Réinstalle ou réinitialise l’application pour l’enregistrer à nouveau.",
+    "@account_devices_revoked": {
+        "description": "account.devices.revoked"
+    },
+    "account_devices_taken": "Cet identifiant d’appareil est déjà utilisé. Réinitialise l’application pour en générer un nouveau.",
+    "@account_devices_taken": {
+        "description": "account.devices.taken"
+    },
+    "account_export_expiry": "{count, plural, =1{{hours} heure} other{{hours} heures}}",
+    "@account_export_expiry": {
+        "description": "account.export.expiry",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "account_export_link_invalid_action": "Redemander un export",
+    "@account_export_link_invalid_action": {
+        "description": "account.export.link_invalid.action"
+    },
+    "account_export_link_invalid_text": "Ce lien de téléchargement n’est plus valable : il ne dure que {expiry}, ou il a été modifié. Redemande un export depuis tes paramètres, tu recevras un nouveau lien par e-mail.",
+    "@account_export_link_invalid_text": {
+        "description": "account.export.link_invalid.text",
+        "placeholders": {
+            "expiry": {
+                "type": "String"
+            }
+        }
+    },
+    "account_export_link_invalid_title": "Lien expiré",
+    "@account_export_link_invalid_title": {
+        "description": "account.export.link_invalid.title"
+    },
+    "account_newsletter_bounced": "Nos e-mails n’arrivent plus à ton adresse. Vérifie-la ou écris-nous pour réactiver la newsletter.",
+    "@account_newsletter_bounced": {
+        "description": "account.newsletter.bounced"
+    },
+    "account_newsletter_email_missing": "Ajoute une adresse e-mail à ton compte pour recevoir la newsletter.",
+    "@account_newsletter_email_missing": {
+        "description": "account.newsletter.email_missing"
+    },
+    "account_newsletter_not_subscribed": "Abonne-toi d’abord à la newsletter pour choisir tes centres d’intérêt.",
+    "@account_newsletter_not_subscribed": {
+        "description": "account.newsletter.not_subscribed"
+    },
+    "account_newsletter_subscribed": "Recevoir la newsletter",
+    "@account_newsletter_subscribed": {
+        "description": "account.newsletter.subscribed"
+    },
+    "account_notifications_category": "Catégorie",
+    "@account_notifications_category": {
+        "description": "account.notifications.category"
+    },
+    "account_notifications_filter": "Filtre",
+    "@account_notifications_filter": {
+        "description": "account.notifications.filter"
+    },
+    "account_push_endpoint_host": "Cette adresse d’abonnement ne vient pas d’un service de notifications reconnu par ton navigateur.",
+    "@account_push_endpoint_host": {
+        "description": "account.push.endpoint_host"
+    },
+    "account_push_fields_auth": "Clé d’authentification",
+    "@account_push_fields_auth": {
+        "description": "account.push.fields.auth"
+    },
+    "account_push_fields_device_label": "Nom de l’appareil",
+    "@account_push_fields_device_label": {
+        "description": "account.push.fields.device_label"
+    },
+    "account_push_fields_endpoint": "Adresse d’abonnement",
+    "@account_push_fields_endpoint": {
+        "description": "account.push.fields.endpoint"
+    },
+    "account_push_fields_kind": "Type d’abonnement",
+    "@account_push_fields_kind": {
+        "description": "account.push.fields.kind"
+    },
+    "account_push_fields_p256dh": "Clé publique",
+    "@account_push_fields_p256dh": {
+        "description": "account.push.fields.p256dh"
+    },
+    "account_push_fields_token": "Jeton de l’appareil",
+    "@account_push_fields_token": {
+        "description": "account.push.fields.token"
+    },
+    "account_security_pin_never_sent": "Ton code PIN reste sur ton appareil : ne l’envoie jamais au serveur.",
+    "@account_security_pin_never_sent": {
+        "description": "account.security.pin_never_sent"
+    },
     "admin_alerts_anonymous": "Anonyme",
     "@admin_alerts_anonymous": {
         "description": "admin.alerts.anonymous"
@@ -7352,6 +7465,22 @@
     "@components_breadcrumb_label": {
         "description": "components.breadcrumb.label"
     },
+    "components_chart_category": "Catégorie",
+    "@components_chart_category": {
+        "description": "components.chart.category"
+    },
+    "components_chart_loading": "Chargement du graphique…",
+    "@components_chart_loading": {
+        "description": "components.chart.loading"
+    },
+    "components_chart_masked": "données masquées",
+    "@components_chart_masked": {
+        "description": "components.chart.masked"
+    },
+    "components_chart_table": "Données du graphique",
+    "@components_chart_table": {
+        "description": "components.chart.table"
+    },
     "components_datatable_empty": "Aucun résultat.",
     "@components_datatable_empty": {
         "description": "components.datatable.empty"
@@ -8442,6 +8571,198 @@
     "@design_system_toc": {
         "description": "design_system.toc"
     },
+    "design_system_vue_blade_link": "Catalogue Blade",
+    "@design_system_vue_blade_link": {
+        "description": "design_system.vue.blade_link"
+    },
+    "design_system_vue_heading": "Composants Vue Xm*",
+    "@design_system_vue_heading": {
+        "description": "design_system.vue.heading"
+    },
+    "design_system_vue_intro": "Chaque composant Xm* produit le HTML de son équivalent x-* (test de parité commun Pest / Vitest). Comparer avec le catalogue Blade.",
+    "@design_system_vue_intro": {
+        "description": "design_system.vue.intro"
+    },
+    "design_system_vue_samples_alert_text": "Tu peux reprendre ta publication plus tard.",
+    "@design_system_vue_samples_alert_text": {
+        "description": "design_system.vue.samples.alert_text"
+    },
+    "design_system_vue_samples_alert_title": "Brouillon enregistré",
+    "@design_system_vue_samples_alert_title": {
+        "description": "design_system.vue.samples.alert_title"
+    },
+    "design_system_vue_samples_card_badge": "Fiche",
+    "@design_system_vue_samples_card_badge": {
+        "description": "design_system.vue.samples.card_badge"
+    },
+    "design_system_vue_samples_card_meta": "5 min de lecture",
+    "@design_system_vue_samples_card_meta": {
+        "description": "design_system.vue.samples.card_meta"
+    },
+    "design_system_vue_samples_card_text": "Une fiche courte pour en parler sans gêne.",
+    "@design_system_vue_samples_card_text": {
+        "description": "design_system.vue.samples.card_text"
+    },
+    "design_system_vue_samples_card_title": "Comprendre le consentement",
+    "@design_system_vue_samples_card_title": {
+        "description": "design_system.vue.samples.card_title"
+    },
+    "design_system_vue_samples_chart_label": "Publications par semaine",
+    "@design_system_vue_samples_chart_label": {
+        "description": "design_system.vue.samples.chart_label"
+    },
+    "design_system_vue_samples_crumb_current": "Design system Vue",
+    "@design_system_vue_samples_crumb_current": {
+        "description": "design_system.vue.samples.crumb_current"
+    },
+    "design_system_vue_samples_crumb_home": "Accueil",
+    "@design_system_vue_samples_crumb_home": {
+        "description": "design_system.vue.samples.crumb_home"
+    },
+    "design_system_vue_samples_empty_action": "Découvrir les groupes",
+    "@design_system_vue_samples_empty_action": {
+        "description": "design_system.vue.samples.empty_action"
+    },
+    "design_system_vue_samples_empty_text": "Les publications de tes groupes apparaîtront ici.",
+    "@design_system_vue_samples_empty_text": {
+        "description": "design_system.vue.samples.empty_text"
+    },
+    "design_system_vue_samples_empty_title": "Rien pour l’instant",
+    "@design_system_vue_samples_empty_title": {
+        "description": "design_system.vue.samples.empty_title"
+    },
+    "design_system_vue_samples_faq_a": "Oui : seules les personnes de la conversation les lisent.",
+    "@design_system_vue_samples_faq_a": {
+        "description": "design_system.vue.samples.faq_a"
+    },
+    "design_system_vue_samples_faq_q": "Mes messages sont-ils privés ?",
+    "@design_system_vue_samples_faq_q": {
+        "description": "design_system.vue.samples.faq_q"
+    },
+    "design_system_vue_samples_field_error": "Choisis un pseudo d’au moins 3 caractères.",
+    "@design_system_vue_samples_field_error": {
+        "description": "design_system.vue.samples.field_error"
+    },
+    "design_system_vue_samples_field_hint": "Visible par les autres membres.",
+    "@design_system_vue_samples_field_hint": {
+        "description": "design_system.vue.samples.field_hint"
+    },
+    "design_system_vue_samples_field_label": "Pseudo",
+    "@design_system_vue_samples_field_label": {
+        "description": "design_system.vue.samples.field_label"
+    },
+    "design_system_vue_samples_loading": "Envoi en cours",
+    "@design_system_vue_samples_loading": {
+        "description": "design_system.vue.samples.loading"
+    },
+    "design_system_vue_samples_member": "Awa Dossou",
+    "@design_system_vue_samples_member": {
+        "description": "design_system.vue.samples.member"
+    },
+    "design_system_vue_samples_modal_open": "Ouvrir la modale",
+    "@design_system_vue_samples_modal_open": {
+        "description": "design_system.vue.samples.modal_open"
+    },
+    "design_system_vue_samples_modal_text": "Cette action est définitive.",
+    "@design_system_vue_samples_modal_text": {
+        "description": "design_system.vue.samples.modal_text"
+    },
+    "design_system_vue_samples_modal_title": "Supprimer la publication ?",
+    "@design_system_vue_samples_modal_title": {
+        "description": "design_system.vue.samples.modal_title"
+    },
+    "design_system_vue_samples_new": "Nouveau",
+    "@design_system_vue_samples_new": {
+        "description": "design_system.vue.samples.new"
+    },
+    "design_system_vue_samples_notif": "Nouvelle réponse à ta publication",
+    "@design_system_vue_samples_notif": {
+        "description": "design_system.vue.samples.notif"
+    },
+    "design_system_vue_samples_notif_time": "il y a 5 min",
+    "@design_system_vue_samples_notif_time": {
+        "description": "design_system.vue.samples.notif_time"
+    },
+    "design_system_vue_samples_outline": "Contour",
+    "@design_system_vue_samples_outline": {
+        "description": "design_system.vue.samples.outline"
+    },
+    "design_system_vue_samples_primary": "Primaire",
+    "@design_system_vue_samples_primary": {
+        "description": "design_system.vue.samples.primary"
+    },
+    "design_system_vue_samples_report": "Signaler un abus",
+    "@design_system_vue_samples_report": {
+        "description": "design_system.vue.samples.report"
+    },
+    "design_system_vue_samples_settings": "Réglages",
+    "@design_system_vue_samples_settings": {
+        "description": "design_system.vue.samples.settings"
+    },
+    "design_system_vue_samples_soft": "Doux",
+    "@design_system_vue_samples_soft": {
+        "description": "design_system.vue.samples.soft"
+    },
+    "design_system_vue_samples_stat_label": "Publications",
+    "@design_system_vue_samples_stat_label": {
+        "description": "design_system.vue.samples.stat_label"
+    },
+    "design_system_vue_samples_stat_sub": "Ce mois-ci",
+    "@design_system_vue_samples_stat_sub": {
+        "description": "design_system.vue.samples.stat_sub"
+    },
+    "design_system_vue_samples_stat_trend": "+12 %",
+    "@design_system_vue_samples_stat_trend": {
+        "description": "design_system.vue.samples.stat_trend"
+    },
+    "design_system_vue_samples_step_1": "Identité",
+    "@design_system_vue_samples_step_1": {
+        "description": "design_system.vue.samples.step_1"
+    },
+    "design_system_vue_samples_step_2": "Contact",
+    "@design_system_vue_samples_step_2": {
+        "description": "design_system.vue.samples.step_2"
+    },
+    "design_system_vue_samples_step_3": "Confirmation",
+    "@design_system_vue_samples_step_3": {
+        "description": "design_system.vue.samples.step_3"
+    },
+    "design_system_vue_samples_tab_infos": "Informations",
+    "@design_system_vue_samples_tab_infos": {
+        "description": "design_system.vue.samples.tab_infos"
+    },
+    "design_system_vue_samples_tab_infos_text": "Contenu de l’onglet Informations.",
+    "@design_system_vue_samples_tab_infos_text": {
+        "description": "design_system.vue.samples.tab_infos_text"
+    },
+    "design_system_vue_samples_tab_notes": "Notes",
+    "@design_system_vue_samples_tab_notes": {
+        "description": "design_system.vue.samples.tab_notes"
+    },
+    "design_system_vue_samples_tab_notes_text": "Contenu de l’onglet Notes.",
+    "@design_system_vue_samples_tab_notes_text": {
+        "description": "design_system.vue.samples.tab_notes_text"
+    },
+    "design_system_vue_samples_toast": "Ta publication est en ligne.",
+    "@design_system_vue_samples_toast": {
+        "description": "design_system.vue.samples.toast"
+    },
+    "design_system_vue_samples_toast_error": "Envoi impossible. Réessaie dans quelques instants.",
+    "@design_system_vue_samples_toast_error": {
+        "description": "design_system.vue.samples.toast_error"
+    },
+    "design_system_vue_samples_toast_show": "Afficher un toast",
+    "@design_system_vue_samples_toast_show": {
+        "description": "design_system.vue.samples.toast_show"
+    },
+    "design_system_vue_samples_toast_show_error": "Afficher une erreur",
+    "@design_system_vue_samples_toast_show_error": {
+        "description": "design_system.vue.samples.toast_show_error"
+    },
+    "design_system_vue_title": "Design system Vue",
+    "@design_system_vue_title": {
+        "description": "design_system.vue.title"
+    },
     "enums_alerts_alert_priority_critique": "Critique",
     "@enums_alerts_alert_priority_critique": {
         "description": "enums/alerts.alert_priority.critique"
@@ -9053,6 +9374,14 @@
     "enums_gateways_social_network_tinder": "Tinder",
     "@enums_gateways_social_network_tinder": {
         "description": "enums/gateways.social_network.tinder"
+    },
+    "enums_identity_ally_status_allie": "Allié·e",
+    "@enums_identity_ally_status_allie": {
+        "description": "enums/identity.ally_status.allie"
+    },
+    "enums_identity_ally_status_ressource": "Personne ressource",
+    "@enums_identity_ally_status_ressource": {
+        "description": "enums/identity.ally_status.ressource"
     },
     "enums_identity_consent_kind_cgu": "Conditions générales d’utilisation",
     "@enums_identity_consent_kind_cgu": {
@@ -11527,6 +11856,10 @@
     "microcopy_error_title": "Un problème est survenu",
     "@microcopy_error_title": {
         "description": "microcopy.error.title"
+    },
+    "microcopy_error_unreachable": "Connexion impossible pour le moment. Vérifie ton réseau, puis réessaie.",
+    "@microcopy_error_unreachable": {
+        "description": "microcopy.error.unreachable"
     },
     "microcopy_error_upload_too_large": "Fichier trop lourd ({max} Mo maximum).",
     "@microcopy_error_upload_too_large": {
@@ -14443,6 +14776,10 @@
     "pages_actualites_title": "Actualités",
     "@pages_actualites_title": {
         "description": "pages/actualites.title"
+    },
+    "pages_aide_account_text": "Pas encore de compte ? Rejoignez la communauté pour échanger dans les groupes et participer aux événements.",
+    "@pages_aide_account_text": {
+        "description": "pages/aide.account_text"
     },
     "pages_aide_categories_title": "Catégories de l’aide",
     "@pages_aide_categories_title": {

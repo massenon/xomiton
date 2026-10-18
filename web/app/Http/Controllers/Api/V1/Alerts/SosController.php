@@ -32,7 +32,7 @@ final class SosController extends ApiController
 
     public function store(StoreSosRequest $request, TriggerSos $trigger): JsonResponse
     {
-        $result = $trigger($request->toData($this->alertSource($request)));
+        $result = $trigger($request->toData($this->alertSource($request), $this->alertDevice($request)));
         $alert = $this->loaded($result->alert);
 
         return $this->created(new SosStatusResource($alert, NotifiedPeople::for($alert), $result->sosToken), route('api.sos.show', ['alert' => $alert->ulid]))

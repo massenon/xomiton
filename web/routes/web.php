@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegistrationConsentsController;
 use App\Http\Controllers\Auth\RegistrationProfileController;
 use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Web\Account\PersonalDataExportController;
 use App\Http\Controllers\Web\ActualitesIndexController;
 use App\Http\Controllers\Web\ActualitesShowController;
 use App\Http\Controllers\Web\AideFeedbackController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Web\LegacyAideRedirectController;
 use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\LoisController;
+use App\Http\Controllers\Web\Member\DesignSystemVueController;
 use App\Http\Controllers\Web\Newsletter\LegacyNewsletterRedirectController;
 use App\Http\Controllers\Web\Newsletter\NewsletterConfirmationController;
 use App\Http\Controllers\Web\Newsletter\NewsletterController;
@@ -47,6 +49,7 @@ use App\Http\Controllers\Web\ThematiquesShowController;
 use App\Http\Controllers\Web\UrgencesController;
 use App\Http\Controllers\Web\ViolencesController;
 use App\Http\Middleware\EnsureNotInMaintenance;
+use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -172,9 +175,17 @@ Route::middleware('auth')->prefix('inscription')->as('inscription.')->group(func
     Route::post('/{etape}/passer', [RegisterController::class, 'skip'])->whereIn('etape', ['profile', 'security', 'consents'])->name('passer');
 });
 Route::post('/deconnexion', LogoutController::class)->middleware('auth')->name('deconnexion');
+// Lot api-me (P6-06) : export RGPD, lien signé de l'e-mail `export-donnees` ; connexion au même compte exigée.
+// Signature vérifiée par le contrôleur (lien expiré ou altéré : page dédiée « redemande un export »).
+Route::get('/mes-donnees/export/{token}', PersonalDataExportController::class)
+    ->middleware(['auth'])->where('token', '[a-z0-9]{40}')->name('mes-donnees.export');
 
 // --- Espace membre et pair éducateur·rice : Vue + Inertia (P6 à P9) ---------
-Route::middleware('auth')->group(function () use ($placeholder): void {
+// HandleInertiaRequests (P6-02) : props partagées et X-Robots-Tag noindex. Les routes encore servies par PlaceholderController
+// restent en Blade (gabarit membre avec SOS flottant) jusqu'au gabarit Vue (P6-03) : un lien Vue vers elles est un <a> simple.
+Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use ($placeholder): void {
+    // P6-04 : catalogue des composants Xm* (local et recette, 404 ailleurs), page de démonstration de la coquille Inertia.
+    Route::get('/design-system/vue', DesignSystemVueController::class)->name('design-system.vue');
     $placeholder('/fil', 'fil', 'Fil d’actualité', 'fil.php');
     $placeholder('/fil/{post}', 'fil.show', 'Publication', 'post-details.php');
     $placeholder('/messages', 'messages', 'Messages', 'messaging.php');
