@@ -1,4 +1,7 @@
-// Paquet de l'administration (Livewire 3). Alpine est fourni par Livewire : ne pas le réimporter.
+// Paquet de l'administration (Livewire 3, ADR-18, P10-02) : Bootstrap + SweetAlert2 + écouteurs seulement (toasts,
+// confirmations, modales, coquille). Alpine est fourni par Livewire : ne pas le réimporter. Chart.js, Quill, Choices et
+// flatpickr ne sont **jamais** importés ici : chaque écran les charge à la demande (admin/lazy.js, `XM.admin.load()`),
+// contrôle au build par scripts/check-budgets.mjs.
 // Bootstrap complet : composants partagés avec le public (shared/bootstrap.js) + ceux propres aux écrans Livewire.
 import './shared/bootstrap.js';
 import 'bootstrap/js/src/button.js';
@@ -7,31 +10,26 @@ import 'bootstrap/js/src/popover.js';
 import 'bootstrap/js/src/scrollspy.js';
 import 'bootstrap/js/src/tooltip.js';
 import Swal from 'sweetalert2';
-import Chart from 'chart.js/auto';
-import Quill from 'quill';
-import Choices from 'choices.js';
-import flatpickr from 'flatpickr';
-import { French } from 'flatpickr/dist/l10n/fr.js';
 import './shared/theme.js';
 import './public/xomiton-ui.js';
+import { bindToasts, fireToast } from './admin/toasts.js';
+import { bindConfirm, confirmDialog } from './admin/confirm.js';
+import { bindModals } from './admin/modals.js';
+import { bindShell, bindSessionExpiry } from './admin/shell.js';
+import { load, preload, LIBRARIES } from './admin/lazy.js';
 
 window.Swal = Swal;
-window.Chart = Chart;
-window.Quill = Quill;
-window.Choices = Choices;
-flatpickr.localize(French);
-window.flatpickr = flatpickr;
+window.XM = window.XM || {};
+window.XM.admin = { load, preload, libraries: LIBRARIES, toast: fireToast, confirm: confirmDialog };
 
-// Toasts SweetAlert2 : un seul écouteur global (DEVELOPMENT_STANDARDS.md §3, NOTIFICATIONS_INSTRUCTION.md §5).
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 4500,
-    timerProgressBar: true,
-    didOpen: (t) => {
-        t.addEventListener('mouseenter', Swal.stopTimer);
-        t.addEventListener('mouseleave', Swal.resumeTimer);
-    },
+// Avant le démarrage de Livewire (livewire:init, à DOMContentLoaded) : wire:confirm passe par la modale rouge.
+bindConfirm();
+bindModals();
+bindSessionExpiry();
+
+const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
+ready(() => {
+  bindToasts();
+  bindShell();
+  preload();
 });
-window.addEventListener('toast', (e) => Toast.fire({ icon: e.detail.type ?? 'success', title: e.detail.message }));

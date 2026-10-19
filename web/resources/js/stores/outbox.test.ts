@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 // Store outbox (P6-05) : adossé à shared/outbox.js (P5-10), mêmes options que outbox-boot.js (compte de la page,
-// durée de vie), chargé à la demande, avis du code de suivi montés, compteur suivant les évènements de outbox.js.
+// durée de vie), chargé à la demande, avis du code de suivi montés, compteur suivant les évènements de outbox.js ;
+// P9-07 : `queue()` typé (collecte, message, SOS), compteurs par type du compte de la page, SOS envoyé tout de suite.
 import 'fake-indexeddb/auto';
+import { IDBFactory } from 'fake-indexeddb';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { freshPinia } from '@/test/helpers';
 import { useOutboxStore } from './outbox';
@@ -102,5 +104,90 @@ describe('store outbox', () => {
         await store.start({ account: null, importer: m.importer, storage: memoryStorage(), target: new EventTarget() as Window });
 
         expect((await store.entries('message')).map((e) => e.id)).toEqual(['a', 'b']);
+    });
+});
+
+// P9-07 (lot synchro) : le store sur la vraie boîte d'envoi (IndexedDB factice), réseau et fetch injectés.
+describe('store outbox — collecte, messages, SOS (P9-07)', () => {
+    const realModules = async (fetchImpl: (url: string, init: RequestInit) => Promise<unknown>, online: () => boolean, target: EventTarget = new EventTarget()) => {
+        const core = await import('../shared/outbox.js');
+        const notices = { mountOutboxNotices: vi.fn() };
+        const wrapped = {
+            ...core,
+            getOutbox: (opts: Record<string, unknown>) => core.createOutbox({ ...opts, fetch: fetchImpl, online, locks: null, storage: null, autoFlush: true, target } as never),
+        };
+        return async () => [wrapped, notices] as never;
+    };
+    const response = (status: number, data: unknown = {}) => ({ status, ok: status < 300, headers: { get: () => null }, json: async () => ({ data }) });
+
+    beforeEach(() => {
+        (globalThis as { indexedDB: IDBFactory }).indexedDB = new IDBFactory();
+    });
+
+    it('met en file une collecte hors connexion (client_uuid = clé), la compte par type puis l’envoie au retour du réseau', async () => {
+        let online = false;
+        const calls: Array<[string, Record<string, string>, string]> = [];
+        const target = new EventTarget() as Window;
+        const importer = await realModules(async (url, init) => {
+            calls.push([url, init.headers as Record<string, string>, String(init.body)]);
+            return response(201, { id: 12, code: 'VBG-0012' });
+        }, () => online, target);
+        const store = useOutboxStore();
+        await store.start({ account: 'acct', importer, storage: memoryStorage(), target });
+
+        const entry = await store.queue('collecte', { kind: 'VBG', zone_id: 3 }, { idempotencyKey: 'c-1' }) as Record<string, unknown>;
+        await store.queue('message', { body: 'Bonjour' }, { idempotencyKey: 'm-1', url: '/api/v1/conversations/01J/messages' });
+
+        expect(entry).toMatchObject({ type: 'collecte', url: '/api/v1/pair/cases', idempotencyKey: 'c-1' });
+        expect(calls).toHaveLength(0);
+        expect(await store.refresh()).toBe(2);
+        expect(store.byType).toEqual({ collecte: 1, message: 1 });
+
+        online = true;
+        const report = await store.flush(true) as { sent: Array<{ id: string }> };
+        expect(report.sent.map((r) => r.id)).toEqual(['c-1', 'm-1']);
+        expect(calls.map(([url]) => url)).toEqual(['/api/v1/pair/cases', '/api/v1/conversations/01J/messages']);
+        expect(calls[0][1]['Idempotency-Key']).toBe('c-1');
+        expect(JSON.parse(calls[0][2])).toEqual({ kind: 'VBG', zone_id: 3, client_uuid: 'c-1' });
+        expect(JSON.parse(calls[1][2])).toEqual({ body: 'Bonjour', client_uuid: 'm-1' });
+        await vi.waitFor(() => expect(store.pending).toBe(0));
+        await vi.waitFor(() => expect(store.byType).toEqual({}));
+        store.stop();
+    });
+
+    it('envoie un SOS tout de suite quand le réseau est là, sans attendre les autres envois', async () => {
+        const calls: string[] = [];
+        let release: () => void = () => undefined;
+        const held = new Promise<void>((resolve) => { release = resolve; });
+        const importer = await realModules(async (url) => {
+            calls.push(url);
+            if (url === '/api/v1/pair/cases') await held;
+            return response(201, { id: 'x' });
+        }, () => true);
+        const store = useOutboxStore();
+        await store.start({ account: 'acct', importer, storage: memoryStorage(), target: new EventTarget() as Window });
+
+        await store.queue('collecte', { kind: 'VBG' }, { idempotencyKey: 'c' });
+        await vi.waitFor(() => expect(calls).toEqual(['/api/v1/pair/cases']));
+        await store.queue('sos', { message: 'Aide' }, { idempotencyKey: 's' });
+        await vi.waitFor(() => expect(calls).toEqual(['/api/v1/pair/cases', '/api/v1/sos']));
+
+        release();
+        await vi.waitFor(async () => expect(await store.refresh()).toBe(0));
+        expect(calls.filter((url) => url === '/api/v1/sos')).toHaveLength(1);
+        store.stop();
+    });
+
+    it('ne compte pas les envois d’un autre compte (appareil partagé)', async () => {
+        const importer = await realModules(async () => response(201), () => false);
+        const store = useOutboxStore();
+        await store.start({ account: 'acct', importer, storage: memoryStorage(), target: new EventTarget() as Window });
+        await store.add({ type: 'collecte', payload: { kind: 'VBG' }, idempotencyKey: 'mine' });
+        await store.add({ type: 'collecte', payload: { kind: 'VBG' }, idempotencyKey: 'theirs', account: 'autre' });
+
+        await store.refresh();
+        expect(store.pending).toBe(2);
+        expect(store.byType).toEqual({ collecte: 1 });
+        store.stop();
     });
 });

@@ -37,6 +37,9 @@ class SyncOutboxReceipt extends Model
 
     public const RESULT_CREATED = 'created';
 
+    /** Modification d'un enregistrement déjà synchronisé appliquée sans conflit (P9-06, `op: update`). */
+    public const RESULT_UPDATED = 'updated';
+
     public const RESULT_DUPLICATE = 'duplicate';
 
     public const RESULT_CONFLICT = 'conflict';
@@ -44,7 +47,7 @@ class SyncOutboxReceipt extends Model
     public const RESULT_REJECTED = 'rejected';
 
     /** @var list<string> */
-    public const RESULTS = [self::RESULT_CREATED, self::RESULT_DUPLICATE, self::RESULT_CONFLICT, self::RESULT_REJECTED];
+    public const RESULTS = [self::RESULT_CREATED, self::RESULT_UPDATED, self::RESULT_DUPLICATE, self::RESULT_CONFLICT, self::RESULT_REJECTED];
 
     /**
      * @var list<string>

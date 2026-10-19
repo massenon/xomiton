@@ -1,0 +1,112 @@
+/*
+ * Socle de l'administration (P10-01 à P10-03) : barre latérale Q14 (offcanvas < 992 px, repliable en icônes ≥ 992 px),
+ * barre supérieure, rangée de KPI en accordéon < 768 px, filtres, tableaux Livewire (squelettes, cartes < 768 px),
+ * pagination, actions groupées, cloche, toasts et confirmations SweetAlert2, journal d'audit. Jetons --xm-* seulement ;
+ * le thème Social (style.css) n'est jamais modifié : ses règles .offcanvas-lg sont complétées ici.
+ */
+
+/* ---------- Barre latérale (dashboard-admin.md : entrée active fond --xm-primary-subtle, aria-current) ---------- */
+.xm-admin { --xm-sidebar-w: 264px; --xm-sidebar-w-collapsed: 72px; }
+.xm-admin-sidebar { --bs-offcanvas-width: var(--xm-sidebar-w); --bs-offcanvas-zindex: 1045; display: flex; flex-direction: column; }
+.xm-admin-sidebar.offcanvas-lg { background-color: var(--xm-neutral-d-0) !important; color: var(--xm-admin-sidebar-text); }
+.xm-admin-sidebar .brand { min-height: 64px; flex-shrink: 0; }
+.xm-admin-sidebar__nav { flex: 1 1 auto; overflow-y: auto; padding-bottom: var(--xm-space-6); }
+.xm-admin-sidebar .item { display: flex; align-items: center; gap: .7rem; min-height: 40px; padding: .5rem 1.25rem; color: var(--xm-admin-sidebar-text); text-decoration: none; font-size: .88rem; border-left: 3px solid transparent; }
+.xm-admin-sidebar .item:hover { background: rgb(255 255 255 / .05); color: var(--xm-neutral-0); }
+.xm-admin-sidebar .item.active,
+.xm-admin-sidebar .item[aria-current="page"] { background: var(--xm-primary-subtle); color: var(--xm-primary-subtle-text); border-left-color: var(--xm-blue-dark-accent); font-weight: 600; }
+.xm-admin-sidebar .item i { font-size: 1.05rem; width: 1.2rem; text-align: center; flex-shrink: 0; }
+.xm-admin-sidebar .item .badge { margin-left: auto; }
+.xm-admin-sidebar .item:focus-visible,
+.xm-admin-sidebar .btn:focus-visible,
+.xm-admin-sidebar a:focus-visible { outline: 3px solid var(--xm-blue-dark-accent); outline-offset: -3px; box-shadow: none; }
+.xm-admin-sidebar__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.xm-admin-sidebar__icon { display: none; }
+.xm-admin-sidebar__collapse { color: var(--xm-admin-sidebar-text); border: 1px solid rgb(255 255 255 / .16); width: 32px; height: 32px; align-items: center; justify-content: center; padding: 0; }
+.xm-admin-sidebar__collapse:hover { color: var(--xm-neutral-0); background: rgb(255 255 255 / .08); }
+
+@media (max-width: 991.98px) {
+  /* Offcanvas Bootstrap : la transformation et la visibilité viennent de .offcanvas-lg (thème) ; plus de classe .open. */
+  .xm-admin-sidebar.offcanvas-lg { transition: transform .25s ease-in-out, visibility .25s; }
+  .xm-admin-sidebar .item { min-height: 44px; }
+}
+
+@media (min-width: 992px) {
+  .xm-admin-sidebar.offcanvas-lg { position: fixed; inset: 0 auto 0 0; width: var(--xm-sidebar-w); transform: none; visibility: visible; transition: width .2s ease; }
+  .xm-admin-main { transition: margin-left .2s ease; }
+
+  /* Repliée : icônes seules (le libellé reste lu par les lecteurs d'écran ; title au survol). */
+  .xm-sidebar-collapsed .xm-admin { --xm-sidebar-w: var(--xm-sidebar-w-collapsed); }
+  .xm-sidebar-collapsed .xm-admin-sidebar .brand { flex-direction: column; justify-content: center !important; padding: .75rem .5rem; }
+  .xm-sidebar-collapsed .xm-admin-sidebar__logo,
+  .xm-sidebar-collapsed .xm-admin-sidebar__badge { display: none !important; }
+  .xm-sidebar-collapsed .xm-admin-sidebar__icon { display: inline-block; }
+  .xm-sidebar-collapsed .xm-admin-sidebar .group { font-size: 0; height: 1px; margin: .6rem .9rem; padding: 0; background: rgb(255 255 255 / .12); }
+  .xm-sidebar-collapsed .xm-admin-sidebar .item { justify-content: center; padding: .6rem 0; position: relative; }
+  .xm-sidebar-collapsed .xm-admin-sidebar__label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .xm-sidebar-collapsed .xm-admin-sidebar .item .badge { position: absolute; top: .2rem; right: .55rem; font-size: .6rem; padding: .2em .4em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xm-admin-sidebar.offcanvas-lg, .xm-admin-main { transition: none; }
+}
+
+/* ---------- Barre supérieure ---------- */
+.xm-admin-topbar { min-height: 64px; }
+.xm-admin-topbar .min-w-0 { min-width: 0; }
+.xm-admin-topbar__avatar { width: 36px; height: 36px; object-fit: cover; }
+@media (max-width: 575.98px) {
+  .xm-admin-topbar .breadcrumb { display: none; }
+  .xm-admin-content { padding: 1rem var(--xm-space-4) 2.5rem; }
+}
+
+/* Le thème Social donne à tout <section> 1,5 rem (4 rem < 768 px) de marge interne : neutralisée pour les sections
+   qui sont des composants d'écran (rangée de KPI, cartes « liste » marquées xm-admin-card). */
+.xm-admin-content section.xm-kpis,
+.xm-admin-content section.xm-admin-card { padding-top: 0; padding-bottom: 0; }
+
+/* ---------- KPI (x-admin.kpi) : accordéon « Indicateurs clés » < 768 px, premier KPI en résumé ---------- */
+.xm-kpis__toggle { display: flex; align-items: center; gap: var(--xm-space-3); width: 100%; min-height: 48px; padding: var(--xm-space-3) var(--xm-space-4); border: 1px solid var(--xm-border); border-radius: .75rem; background: var(--xm-surface); color: var(--xm-text); text-align: start; box-shadow: var(--xm-shadow-sm); }
+.xm-kpis__toggle-title { font-weight: 700; }
+.xm-kpis__summary { margin-left: auto; font-size: .875rem; color: var(--xm-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.xm-kpis__chevron { transition: transform .2s ease; }
+.xm-kpis__toggle[aria-expanded="true"] .xm-kpis__chevron { transform: rotate(180deg); }
+.xm-kpis__toggle[aria-expanded="true"] { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+@media (max-width: 767.98px) {
+  .xm-kpis__body > .row { margin-top: var(--xm-space-3); }
+}
+.xm-stat--masked .kpi-value { font-size: 1rem; font-weight: 700; color: var(--xm-text-muted); }
+@media (prefers-reduced-motion: reduce) { .xm-kpis__chevron { transition: none; } }
+
+/* ---------- Filtres, tableau, pagination, actions groupées ---------- */
+.xm-filters .form-text { color: var(--xm-text-muted); }
+.xm-admin-table .xm-sort { font-size: inherit; }
+.xm-admin-table .xm-table__empty { padding: 0; }
+.xm-admin-table .xm-table__skeleton .placeholder { min-height: 1rem; border-radius: var(--xm-radius-sm); }
+.xm-pager .pagination .page-link { min-width: 2rem; text-align: center; }
+@media (max-width: 767.98px) {
+  .xm-pager .pagination .page-link { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .xm-pager > nav { width: 100%; }
+  .xm-admin-table .xm-table--stack .xm-table__skeleton td::before { content: none; }
+  /* Cartes : la marge latérale ne s'ajoute pas à width:100 % (pas de débordement à droite). */
+  .xm-admin-table .xm-table--stack tr { width: auto; }
+  .xm-admin-table .xm-table--stack td > .min-w-0 { min-width: 0; text-align: end; }
+}
+.xm-admin-table .min-w-0 { min-width: 0; }
+.xm-bulk-bar { padding: var(--xm-space-2) var(--xm-space-4); background: var(--xm-primary-subtle); color: var(--xm-primary-subtle-text); border-bottom: 1px solid var(--xm-border); }
+
+/* ---------- Cloche (Livewire) : éléments en boutons, même rendu que la liste du prototype ---------- */
+.xm-bell .xm-notif-list .list-group-item { border-left: 0; border-right: 0; }
+.xm-bell [role="tab"] { cursor: pointer; }
+
+/* ---------- SweetAlert2 : toasts et confirmations (modale rouge) ---------- */
+.swal2-container .xm-swal-toast { box-shadow: var(--xm-shadow-sm), 0 8px 24px rgb(27 22 48 / .12); }
+.swal2-popup.xm-swal--danger { border-top: 4px solid var(--xm-danger); }
+.swal2-popup.xm-swal--danger .swal2-icon.swal2-warning { color: var(--xm-danger); border-color: var(--xm-danger); }
+.swal2-popup.xm-swal--danger .swal2-input { font-family: var(--bs-font-monospace); }
+.swal2-popup .swal2-validation-message { color: var(--xm-danger); }
+
+/* ---------- Journal d'audit (P13-05) ---------- */
+.xm-journal__detail { max-width: 36rem; overflow-wrap: anywhere; }
+.xm-journal__code { color: var(--xm-text-muted); font-size: .75rem; overflow-wrap: anywhere; }
+.xm-journal__days { width: 9.5rem; }

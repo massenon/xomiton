@@ -4,13 +4,13 @@
 // essai, X-XSRF-TOKEN repris du cookie et rejeu après 419, recul sur erreur réseau / 5xx / 202, 422 (retirée, ou SOS
 // renvoyé sans les champs refusés sous la clé dérivée que prend aussi sos.js), évènements queued / flushed, drapeau
 // localStorage, déclencheurs, compte de la mise en file (X-Xm-Outbox-Account, signalement d'un compte gardé pour une
-// page du même compte), expiration après `ttlDays`.
+// page du même compte), expiration après `ttlDays` ; P9-07 : collecte et messages (`client_uuid`), SOS immédiat.
 import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   ENDPOINTS, EVENTS, FLUSH_INTERVAL, PENDING_KEY, backoff, classify, compareEntries, createEntry, createOutbox, formBody,
-  readCookie, requestBody, stripFields, uuid, ACCOUNT_HEADER,
+  readCookie, requestBody, stripFields, uuid, ACCOUNT_HEADER, PRIORITIES,
 } from './outbox.js';
 import { derivedKey } from './sos-retry.js';
 
@@ -305,5 +305,80 @@ describe('createOutbox', () => {
     expect(await fallback.purge()).toBe(0);
     clock += 2 * 86_400_000;
     expect(await fallback.purge()).toBe(1);
+  });
+});
+
+// P9-07 (lot synchro) : collecte et messages dans la même boîte d'envoi, SOS jamais en attente si le réseau est là.
+describe('P9-07 : collecte, messages, SOS immédiat', () => {
+  it('normalise une collecte (POST pair/cases) et un message : priorités, client_uuid = clé dans le corps JSON', () => {
+    const collecte = createEntry({ uuid: 'c-1', type: 'collecte', payload: { kind: 'VBG', zone_id: 3 } }, 1);
+    expect(collecte).toMatchObject({ url: ENDPOINTS.collecte, priority: PRIORITIES.collecte, idempotencyKey: 'c-1' });
+    expect(JSON.parse(collecte.body)).toEqual({ kind: 'VBG', zone_id: 3, client_uuid: 'c-1' });
+
+    const message = createEntry({ type: 'message', url: '/api/v1/conversations/01J/messages', body: { body: 'Salut' }, idempotencyKey: 'm-1' }, 1);
+    expect(message).toMatchObject({ url: '/api/v1/conversations/01J/messages', priority: PRIORITIES.message });
+    expect(JSON.parse(message.body)).toEqual({ body: 'Salut', client_uuid: 'm-1' });
+
+    // Clé déjà portée par le corps, corps multipart ou autre type : jamais réécrits.
+    expect(JSON.parse(createEntry({ type: 'message', url: '/x', body: { client_uuid: 'k' }, idempotencyKey: 'k' }).body)).toEqual({ client_uuid: 'k' });
+    expect(createEntry({ type: 'message', url: '/x', body: { form: [['body', 'a']] }, idempotencyKey: 'k' }).body).toEqual({ form: [['body', 'a']] });
+    expect(JSON.parse(createEntry({ uuid: 's', type: 'sos', payload: { a: 1 } }).body)).toEqual({ a: 1 });
+    expect(() => createEntry({ type: 'message', body: {} })).toThrow(TypeError);
+    expect([PRIORITIES.sos, PRIORITIES.signalement, PRIORITIES.collecte, PRIORITIES.message, PRIORITIES.default]).toEqual([0, 10, 20, 30, 50]);
+  });
+
+  it('envoie SOS, signalement, collecte puis message dans un passage', async () => {
+    const urls = [];
+    const fetch = vi.fn(async (url) => { urls.push(url); return json(201, { data: {} }); });
+    const { box } = make({ fetch });
+    await box.add({ type: 'message', url: '/api/v1/conversations/01J/messages', body: { body: 'a' }, idempotencyKey: 'm' });
+    await box.add({ uuid: 'c', type: 'collecte', payload: { kind: 'VDH' } });
+    await box.add({ uuid: 'r', type: 'signalement', payload: { type: 'report' } });
+    await box.add({ uuid: 's', type: 'sos', payload: {} });
+
+    await box.flush();
+    expect(urls).toEqual(['/api/v1/sos', '/api/v1/signalements', '/api/v1/pair/cases', '/api/v1/conversations/01J/messages']);
+  });
+
+  it('n’attend jamais pour un SOS si le réseau est là : envoyé pendant un passage en cours, une seule fois', async () => {
+    let release;
+    const held = new Promise((resolve) => { release = resolve; });
+    const calls = [];
+    const fetch = vi.fn(async (url, init) => {
+      calls.push([url, init.headers['Idempotency-Key']]);
+      if (url === ENDPOINTS.collecte) { await held; return json(201, { data: { id: 7 } }); }
+      return json(201, { data: { id: 'sos' } });
+    });
+    const { box, events } = make({ fetch, autoFlush: true });
+
+    await box.add({ uuid: 'c', type: 'collecte', payload: { kind: 'VBG' } }); // lance un passage, bloqué sur la collecte
+    await vi.waitFor(() => expect(calls).toHaveLength(1));
+    const pass = box.flush();
+
+    await box.add({ uuid: 's', type: 'sos', payload: { message: 'Aide' } });
+    await vi.waitFor(() => expect(calls).toEqual([[ENDPOINTS.collecte, 'c'], [ENDPOINTS.sos, 's']]));
+    await vi.waitFor(async () => expect(await box.get('s')).toBeUndefined());
+    expect(events.some(([name, detail]) => name === 'flushed' && detail.sent.some((r) => r.id === 's'))).toBe(true);
+
+    release();
+    await pass;
+    await box.flush({ force: true });
+    expect(calls.filter(([url]) => url === ENDPOINTS.sos)).toHaveLength(1);
+    expect(await box.count()).toBe(0);
+  });
+
+  it('garde un SOS immédiat sur coupure réseau, avec sa clé, pour le passage suivant', async () => {
+    const responses = [() => { throw new TypeError('Failed to fetch'); }, () => json(201, { data: {} })];
+    const fetch = vi.fn(async () => responses.shift()());
+    const { box } = make({ fetch });
+
+    await box.add({ uuid: 's', type: 'sos', payload: {} });
+    const first = await box.express(await box.get('s'));
+    expect(first.pending).toBe(1);
+    expect((await box.get('s')).attempts).toBe(1);
+
+    const second = await box.flush({ force: true });
+    expect(second.sent.map((r) => r.id)).toEqual(['s']);
+    expect(fetch.mock.calls.map(([, init]) => init.headers['Idempotency-Key'])).toEqual(['s', 's']);
   });
 });

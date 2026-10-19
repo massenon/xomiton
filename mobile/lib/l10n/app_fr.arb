@@ -374,6 +374,10 @@
     "@admin_alerts_title": {
         "description": "admin.alerts.title"
     },
+    "admin_audit_anonymous": "anonyme",
+    "@admin_audit_anonymous": {
+        "description": "admin.audit.anonymous"
+    },
     "admin_audit_columns_action": "Action",
     "@admin_audit_columns_action": {
         "description": "admin.audit.columns.action"
@@ -398,7 +402,184 @@
     "@admin_audit_empty": {
         "description": "admin.audit.empty"
     },
-    "admin_audit_retention": "Entrées conservées {days} jours.",
+    "admin_audit_empty_text": "Les actions de l’équipe et les connexions apparaîtront ici.",
+    "@admin_audit_empty_text": {
+        "description": "admin.audit.empty_text"
+    },
+    "admin_audit_families_account": "Compte",
+    "@admin_audit_families_account": {
+        "description": "admin.audit.families.account"
+    },
+    "admin_audit_families_alerts": "Alerte",
+    "@admin_audit_families_alerts": {
+        "description": "admin.audit.families.alerts"
+    },
+    "admin_audit_families_audit": "Journal",
+    "@admin_audit_families_audit": {
+        "description": "admin.audit.families.audit"
+    },
+    "admin_audit_families_auth": "Connexion",
+    "@admin_audit_families_auth": {
+        "description": "admin.audit.families.auth"
+    },
+    "admin_audit_families_cases": "Dossier",
+    "@admin_audit_families_cases": {
+        "description": "admin.audit.families.cases"
+    },
+    "admin_audit_families_content": "Contenu",
+    "@admin_audit_families_content": {
+        "description": "admin.audit.families.content"
+    },
+    "admin_audit_families_export": "Export",
+    "@admin_audit_families_export": {
+        "description": "admin.audit.families.export"
+    },
+    "admin_audit_families_maintenance": "Maintenance",
+    "@admin_audit_families_maintenance": {
+        "description": "admin.audit.families.maintenance"
+    },
+    "admin_audit_families_moderation": "Modération",
+    "@admin_audit_families_moderation": {
+        "description": "admin.audit.families.moderation"
+    },
+    "admin_audit_families_other": "Autre",
+    "@admin_audit_families_other": {
+        "description": "admin.audit.families.other"
+    },
+    "admin_audit_families_sync": "Synchro",
+    "@admin_audit_families_sync": {
+        "description": "admin.audit.families.sync"
+    },
+    "admin_audit_filters_action": "Action",
+    "@admin_audit_filters_action": {
+        "description": "admin.audit.filters.action"
+    },
+    "admin_audit_filters_all_actions": "Toutes les actions",
+    "@admin_audit_filters_all_actions": {
+        "description": "admin.audit.filters.all_actions"
+    },
+    "admin_audit_filters_from": "Du",
+    "@admin_audit_filters_from": {
+        "description": "admin.audit.filters.from"
+    },
+    "admin_audit_filters_search_help": "La recherche porte sur le compte, le code de l’action et le détail (texte déjà masqué à l’écriture).",
+    "@admin_audit_filters_search_help": {
+        "description": "admin.audit.filters.search_help"
+    },
+    "admin_audit_filters_search_placeholder": "Compte, action ou détail…",
+    "@admin_audit_filters_search_placeholder": {
+        "description": "admin.audit.filters.search_placeholder"
+    },
+    "admin_audit_filters_to": "Au",
+    "@admin_audit_filters_to": {
+        "description": "admin.audit.filters.to"
+    },
+    "admin_audit_intro": "Chaque action sensible laisse une trace : qui, quoi, quand. Les entrées ne se modifient jamais.",
+    "@admin_audit_intro": {
+        "description": "admin.audit.intro"
+    },
+    "admin_audit_kpi_actors": "Comptes distincts",
+    "@admin_audit_kpi_actors": {
+        "description": "admin.audit.kpi.actors"
+    },
+    "admin_audit_kpi_entries": "Entrées",
+    "@admin_audit_kpi_entries": {
+        "description": "admin.audit.kpi.entries"
+    },
+    "admin_audit_kpi_filtered": "Résultats du filtre",
+    "@admin_audit_kpi_filtered": {
+        "description": "admin.audit.kpi.filtered"
+    },
+    "admin_audit_kpi_today": "Aujourd’hui",
+    "@admin_audit_kpi_today": {
+        "description": "admin.audit.kpi.today"
+    },
+    "admin_audit_purge_action": "Purger",
+    "@admin_audit_purge_action": {
+        "description": "admin.audit.purge.action"
+    },
+    "admin_audit_purge_audit_detail": "Purge : {count} entrée(s) de plus de {days} jours",
+    "@admin_audit_purge_audit_detail": {
+        "description": "admin.audit.purge.audit_detail",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_audit_purge_confirm_text": "Les entrées de plus de {days} jours seront supprimées définitivement ({count} entrée(s) concernée(s)). Cette action ne peut pas être annulée.",
+    "@admin_audit_purge_confirm_text": {
+        "description": "admin.audit.purge.confirm_text",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_audit_purge_confirm_title": "Purger définitivement le journal ?",
+    "@admin_audit_purge_confirm_title": {
+        "description": "admin.audit.purge.confirm_title"
+    },
+    "admin_audit_purge_days": "Jours conservés",
+    "@admin_audit_purge_days": {
+        "description": "admin.audit.purge.days"
+    },
+    "admin_audit_purge_days_hint": "Entre {min} et {max} jours.",
+    "@admin_audit_purge_days_hint": {
+        "description": "admin.audit.purge.days_hint",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_audit_purge_days_suffix": "jours",
+    "@admin_audit_purge_days_suffix": {
+        "description": "admin.audit.purge.days_suffix"
+    },
+    "admin_audit_purge_done": "{count, plural, =0{Aucune entrée à purger.} =1{{count} entrée purgée.} other{{count} entrées purgées.}}",
+    "@admin_audit_purge_done": {
+        "description": "admin.audit.purge.done",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_audit_purge_locked": "Super-admin requis",
+    "@admin_audit_purge_locked": {
+        "description": "admin.audit.purge.locked"
+    },
+    "admin_audit_purge_text": "Supprime définitivement les entrées plus anciennes que la durée choisie. Réservé aux super-admins ; la purge elle-même est journalisée.",
+    "@admin_audit_purge_text": {
+        "description": "admin.audit.purge.text"
+    },
+    "admin_audit_purge_title": "Purger le journal",
+    "@admin_audit_purge_title": {
+        "description": "admin.audit.purge.title"
+    },
+    "admin_audit_purge_word": "PURGER",
+    "@admin_audit_purge_word": {
+        "description": "admin.audit.purge.word"
+    },
+    "admin_audit_purge_word_label": "Pour confirmer, saisissez :",
+    "@admin_audit_purge_word_label": {
+        "description": "admin.audit.purge.word_label"
+    },
+    "admin_audit_purge_word_mismatch": "Saisissez PURGER pour confirmer.",
+    "@admin_audit_purge_word_mismatch": {
+        "description": "admin.audit.purge.word_mismatch"
+    },
+    "admin_audit_retention": "Entrées conservées {days} jours, puis purgées automatiquement chaque nuit.",
     "@admin_audit_retention": {
         "description": "admin.audit.retention",
         "placeholders": {
@@ -406,6 +587,14 @@
                 "type": "String"
             }
         }
+    },
+    "admin_audit_system": "système",
+    "@admin_audit_system": {
+        "description": "admin.audit.system"
+    },
+    "admin_audit_table_caption": "Entrées du journal d’audit, les plus récentes d’abord",
+    "@admin_audit_table_caption": {
+        "description": "admin.audit.table_caption"
     },
     "admin_audit_title": "Journal d’audit",
     "@admin_audit_title": {
@@ -483,6 +672,14 @@
     "admin_backups_title": "Sauvegardes",
     "@admin_backups_title": {
         "description": "admin.backups.title"
+    },
+    "admin_bell_marked_all": "Notifications marquées comme lues.",
+    "@admin_bell_marked_all": {
+        "description": "admin.bell.marked_all"
+    },
+    "admin_bell_title": "Notifications de l’administration",
+    "@admin_bell_title": {
+        "description": "admin.bell.title"
     },
     "admin_bulk_action": "Action groupée",
     "@admin_bulk_action": {
@@ -578,6 +775,35 @@
                 "type": "int"
             }
         }
+    },
+    "admin_confirm_cancel": "Annuler",
+    "@admin_confirm_cancel": {
+        "description": "admin.confirm.cancel"
+    },
+    "admin_confirm_confirm": "Confirmer",
+    "@admin_confirm_confirm": {
+        "description": "admin.confirm.confirm"
+    },
+    "admin_confirm_mismatch": "Le texte saisi ne correspond pas.",
+    "@admin_confirm_mismatch": {
+        "description": "admin.confirm.mismatch"
+    },
+    "admin_confirm_prompt": "Pour confirmer, saisissez : {word}",
+    "@admin_confirm_prompt": {
+        "description": "admin.confirm.prompt",
+        "placeholders": {
+            "word": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_confirm_prompt_label": "Texte de confirmation",
+    "@admin_confirm_prompt_label": {
+        "description": "admin.confirm.prompt_label"
+    },
+    "admin_confirm_title": "Confirmer l’action",
+    "@admin_confirm_title": {
+        "description": "admin.confirm.title"
     },
     "admin_dashboard_active_sos_map": "SOS actifs — localisation",
     "@admin_dashboard_active_sos_map": {
@@ -936,6 +1162,10 @@
     "@admin_datatable_showing_one": {
         "description": "admin.datatable.showing_one"
     },
+    "admin_datatable_sort_asc": "tri croissant",
+    "@admin_datatable_sort_asc": {
+        "description": "admin.datatable.sort_asc"
+    },
     "admin_datatable_sort_by": "Trier par {column}",
     "@admin_datatable_sort_by": {
         "description": "admin.datatable.sort_by",
@@ -944,6 +1174,10 @@
                 "type": "String"
             }
         }
+    },
+    "admin_datatable_sort_desc": "tri décroissant",
+    "@admin_datatable_sort_desc": {
+        "description": "admin.datatable.sort_desc"
     },
     "admin_datatable_sorted_asc": "Trié par {column}, croissant",
     "@admin_datatable_sorted_asc": {
@@ -1499,6 +1733,10 @@
     "@admin_filters_reset": {
         "description": "admin.filters.reset"
     },
+    "admin_filters_reset_all": "Réinitialiser les filtres",
+    "@admin_filters_reset_all": {
+        "description": "admin.filters.reset_all"
+    },
     "admin_filters_role": "Rôle",
     "@admin_filters_role": {
         "description": "admin.filters.role"
@@ -1724,6 +1962,18 @@
     "@admin_kpi_subscribers": {
         "description": "admin.kpi.subscribers"
     },
+    "admin_kpi_summary": "{label} : {value}",
+    "@admin_kpi_summary": {
+        "description": "admin.kpi.summary",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            },
+            "value": {
+                "type": "String"
+            }
+        }
+    },
     "admin_kpi_sync_rate": "Taux de synchro",
     "@admin_kpi_sync_rate": {
         "description": "admin.kpi.sync_rate"
@@ -1739,6 +1989,10 @@
     "admin_kpi_title": "Indicateurs clés",
     "@admin_kpi_title": {
         "description": "admin.kpi.title"
+    },
+    "admin_kpi_toggle_help": "Afficher ou masquer les indicateurs clés",
+    "@admin_kpi_toggle_help": {
+        "description": "admin.kpi.toggle_help"
     },
     "admin_kpi_trend_vs_previous": "par rapport à la période précédente",
     "@admin_kpi_trend_vs_previous": {
@@ -1979,6 +2233,36 @@
     "admin_moderation_title": "Modération",
     "@admin_moderation_title": {
         "description": "admin.moderation.title"
+    },
+    "admin_nav_close": "Fermer le menu",
+    "@admin_nav_close": {
+        "description": "admin.nav.close"
+    },
+    "admin_nav_collapse": "Replier le menu",
+    "@admin_nav_collapse": {
+        "description": "admin.nav.collapse"
+    },
+    "admin_nav_counters_alerts_new": "{count, plural, =1{{count} nouvelle alerte} other{{count} nouvelles alertes}}",
+    "@admin_nav_counters_alerts_new": {
+        "description": "admin.nav.counters.alerts_new",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_nav_counters_users_pending": "{count, plural, =1{{count} compte en attente de validation} other{{count} comptes en attente de validation}}",
+    "@admin_nav_counters_users_pending": {
+        "description": "admin.nav.counters.users_pending",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_nav_expand": "Déplier le menu",
+    "@admin_nav_expand": {
+        "description": "admin.nav.expand"
     },
     "admin_page_title": "{page} – Administration",
     "@admin_page_title": {
@@ -2513,6 +2797,10 @@
     "admin_topbar_search_shortcut": "Ctrl K",
     "@admin_topbar_search_shortcut": {
         "description": "admin.topbar.search_shortcut"
+    },
+    "admin_topbar_shortcut_help": "Raccourci clavier : Ctrl K (⌘ K sur Mac) place le curseur dans la recherche globale.",
+    "@admin_topbar_shortcut_help": {
+        "description": "admin.topbar.shortcut_help"
     },
     "admin_users_columns_account": "Compte",
     "@admin_users_columns_account": {
@@ -6033,6 +6321,51 @@
     "buttons_understood": "J’ai compris",
     "@buttons_understood": {
         "description": "buttons.understood"
+    },
+    "cases_errors_client_uuid_conflict": "Cet envoi porte un identifiant déjà utilisé. Recommence la saisie : rien n’a été enregistré.",
+    "@cases_errors_client_uuid_conflict": {
+        "description": "cases.errors.client_uuid_conflict"
+    },
+    "cases_errors_client_uuid_reused": "Cet envoi reprend l’identifiant d’une saisie déjà enregistrée, avec un contenu différent. Recommence la saisie : la première est conservée, celle-ci n’a pas été enregistrée.",
+    "@cases_errors_client_uuid_reused": {
+        "description": "cases.errors.client_uuid_reused"
+    },
+    "cases_errors_invalid_transition": "Passage de « {from} » à « {to} » impossible pour ce dossier.",
+    "@cases_errors_invalid_transition": {
+        "description": "cases.errors.invalid_transition",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "cases_errors_locked": "Ce dossier est archivé ou anonymisé : il ne peut plus être modifié ni recevoir de nouvelle étape de suivi.",
+    "@cases_errors_locked": {
+        "description": "cases.errors.locked"
+    },
+    "cases_warnings_date_old": "La date des faits remonte à plus de {years} ans. Vérifie-la : le dossier est bien enregistré.",
+    "@cases_warnings_date_old": {
+        "description": "cases.warnings.date_old",
+        "placeholders": {
+            "years": {
+                "type": "String"
+            }
+        }
+    },
+    "cases_warnings_duplicate_suspected": "{count, plural, =1{Un dossier que tu peux consulter ressemble beaucoup à celui-ci ({codes}). Vérifie qu’il ne s’agit pas de la même personne.} other{Plusieurs dossiers que tu peux consulter ressemblent beaucoup à celui-ci ({codes}). Vérifie qu’il ne s’agit pas de la même personne.}}",
+    "@cases_warnings_duplicate_suspected": {
+        "description": "cases.warnings.duplicate_suspected",
+        "placeholders": {
+            "codes": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "common_acronym": "LBTQ+",
     "@common_acronym": {
@@ -14418,17 +14751,33 @@
     "@menus_admin_global_search_placeholder": {
         "description": "menus.admin.global_search_placeholder"
     },
-    "menus_admin_groups_data": "Gestion des données",
+    "menus_admin_groups_cases": "Cas & alertes",
+    "@menus_admin_groups_cases": {
+        "description": "menus.admin.groups.cases"
+    },
+    "menus_admin_groups_content": "Contenus",
+    "@menus_admin_groups_content": {
+        "description": "menus.admin.groups.content"
+    },
+    "menus_admin_groups_data": "Données",
     "@menus_admin_groups_data": {
         "description": "menus.admin.groups.data"
     },
-    "menus_admin_groups_platform": "Plateforme",
-    "@menus_admin_groups_platform": {
-        "description": "menus.admin.groups.platform"
+    "menus_admin_groups_directory": "Annuaire",
+    "@menus_admin_groups_directory": {
+        "description": "menus.admin.groups.directory"
+    },
+    "menus_admin_groups_reports": "Rapports",
+    "@menus_admin_groups_reports": {
+        "description": "menus.admin.groups.reports"
     },
     "menus_admin_groups_shortcuts": "Raccourcis",
     "@menus_admin_groups_shortcuts": {
         "description": "menus.admin.groups.shortcuts"
+    },
+    "menus_admin_groups_social": "Réseau social",
+    "@menus_admin_groups_social": {
+        "description": "menus.admin.groups.social"
     },
     "menus_admin_groups_steering": "Pilotage",
     "@menus_admin_groups_steering": {
@@ -14461,6 +14810,10 @@
     "menus_admin_my_profile": "Mon profil",
     "@menus_admin_my_profile": {
         "description": "menus.admin.my_profile"
+    },
+    "menus_admin_nav_title": "Menu de l’administration",
+    "@menus_admin_nav_title": {
+        "description": "menus.admin.nav_title"
     },
     "menus_admin_network": "Réseau social",
     "@menus_admin_network": {
@@ -22601,6 +22954,110 @@
     "@seo_title_suffix": {
         "description": "seo.title_suffix"
     },
+    "sync_cursor_invalid": "Le point de reprise de la synchronisation est illisible. Relance une synchronisation complète.",
+    "@sync_cursor_invalid": {
+        "description": "sync.cursor_invalid"
+    },
+    "sync_device_required": "Enregistre d’abord cet appareil dans l’application pour synchroniser tes données.",
+    "@sync_device_required": {
+        "description": "sync.device.required"
+    },
+    "sync_fields_base": "valeurs d’origine",
+    "@sync_fields_base": {
+        "description": "sync.fields.base"
+    },
+    "sync_fields_body": "message",
+    "@sync_fields_body": {
+        "description": "sync.fields.body"
+    },
+    "sync_fields_changes": "modifications",
+    "@sync_fields_changes": {
+        "description": "sync.fields.changes"
+    },
+    "sync_fields_collection": "collection",
+    "@sync_fields_collection": {
+        "description": "sync.fields.collection"
+    },
+    "sync_fields_collections": "collections",
+    "@sync_fields_collections": {
+        "description": "sync.fields.collections"
+    },
+    "sync_fields_conversation": "conversation",
+    "@sync_fields_conversation": {
+        "description": "sync.fields.conversation"
+    },
+    "sync_fields_items": "éléments",
+    "@sync_fields_items": {
+        "description": "sync.fields.items"
+    },
+    "sync_fields_op": "opération",
+    "@sync_fields_op": {
+        "description": "sync.fields.op"
+    },
+    "sync_fields_payload": "contenu",
+    "@sync_fields_payload": {
+        "description": "sync.fields.payload"
+    },
+    "sync_fields_pending": "envois en attente",
+    "@sync_fields_pending": {
+        "description": "sync.fields.pending"
+    },
+    "sync_fields_since": "point de reprise",
+    "@sync_fields_since": {
+        "description": "sync.fields.since"
+    },
+    "sync_fields_type": "type d’envoi",
+    "@sync_fields_type": {
+        "description": "sync.fields.type"
+    },
+    "sync_fields_uuid": "identifiant de l’envoi",
+    "@sync_fields_uuid": {
+        "description": "sync.fields.uuid"
+    },
+    "sync_items_anonymous": "Un signalement anonyme part par l’envoi anonyme, jamais par la synchronisation de ton compte.",
+    "@sync_items_anonymous": {
+        "description": "sync.items.anonymous"
+    },
+    "sync_items_base_missing": "Indique la valeur que tu avais avant ta modification.",
+    "@sync_items_base_missing": {
+        "description": "sync.items.base_missing"
+    },
+    "sync_items_conflict": "Une modification faite ailleurs croise la tienne. L’équipe va choisir la bonne version.",
+    "@sync_items_conflict": {
+        "description": "sync.items.conflict"
+    },
+    "sync_items_field_locked": "Ce champ ne se modifie pas depuis l’appareil.",
+    "@sync_items_field_locked": {
+        "description": "sync.items.field_locked"
+    },
+    "sync_items_forbidden": "Tu ne peux pas faire cette action.",
+    "@sync_items_forbidden": {
+        "description": "sync.items.forbidden"
+    },
+    "sync_items_maintenance": "Xomiton est en maintenance. Cet envoi reste dans ta boîte d’envoi et repartira à la fin de la maintenance.",
+    "@sync_items_maintenance": {
+        "description": "sync.items.maintenance"
+    },
+    "sync_items_not_found": "Ce contenu n’existe plus ou ne t’est plus accessible.",
+    "@sync_items_not_found": {
+        "description": "sync.items.not_found"
+    },
+    "sync_items_retry": "Cet envoi n’a pas pu être traité. Il repartira au prochain passage.",
+    "@sync_items_retry": {
+        "description": "sync.items.retry"
+    },
+    "sync_items_too_many": "Trop d’envois de ce type en peu de temps. Celui-ci reste dans ta boîte d’envoi et repartira plus tard.",
+    "@sync_items_too_many": {
+        "description": "sync.items.too_many"
+    },
+    "sync_items_unknown_type": "Ce type d’envoi n’existe pas.",
+    "@sync_items_unknown_type": {
+        "description": "sync.items.unknown_type"
+    },
+    "sync_items_uuid_reused": "Cet identifiant d’envoi a déjà servi pour un autre contenu.",
+    "@sync_items_uuid_reused": {
+        "description": "sync.items.uuid_reused"
+    },
     "uploads_collections_audio": "Sons",
     "@uploads_collections_audio": {
         "description": "uploads.collections.audio"
@@ -22781,6 +23238,18 @@
             }
         }
     },
+    "validation_age_range": "Choisis une tranche d’âge comprise entre {min} et {max} ans.",
+    "@validation_age_range": {
+        "description": "validation.age_range",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
     "validation_alpha": "Le champ {attribute} ne peut contenir que des lettres.",
     "@validation_alpha": {
         "description": "validation.alpha",
@@ -22839,6 +23308,10 @@
     "@validation_attributes_accuracy": {
         "description": "validation.attributes.accuracy"
     },
+    "validation_attributes_age_range": "tranche d’âge",
+    "@validation_attributes_age_range": {
+        "description": "validation.attributes.age_range"
+    },
     "validation_attributes_anonymous": "anonymat",
     "@validation_attributes_anonymous": {
         "description": "validation.attributes.anonymous"
@@ -22863,9 +23336,17 @@
     "@validation_attributes_cgu": {
         "description": "validation.attributes.cgu"
     },
+    "validation_attributes_client_uuid": "identifiant d’envoi",
+    "@validation_attributes_client_uuid": {
+        "description": "validation.attributes.client_uuid"
+    },
     "validation_attributes_code": "code de vérification",
     "@validation_attributes_code": {
         "description": "validation.attributes.code"
+    },
+    "validation_attributes_comment": "commentaire",
+    "@validation_attributes_comment": {
+        "description": "validation.attributes.comment"
     },
     "validation_attributes_commune_id": "commune",
     "@validation_attributes_commune_id": {
@@ -22919,6 +23400,10 @@
     "@validation_attributes_image": {
         "description": "validation.attributes.image"
     },
+    "validation_attributes_kind": "type de dossier",
+    "@validation_attributes_kind": {
+        "description": "validation.attributes.kind"
+    },
     "validation_attributes_lat": "position",
     "@validation_attributes_lat": {
         "description": "validation.attributes.lat"
@@ -22955,9 +23440,21 @@
     "@validation_attributes_newsletter": {
         "description": "validation.attributes.newsletter"
     },
+    "validation_attributes_next_on": "prochaine date",
+    "@validation_attributes_next_on": {
+        "description": "validation.attributes.next_on"
+    },
+    "validation_attributes_notes": "notes",
+    "@validation_attributes_notes": {
+        "description": "validation.attributes.notes"
+    },
     "validation_attributes_occurred_on": "date des faits",
     "@validation_attributes_occurred_on": {
         "description": "validation.attributes.occurred_on"
+    },
+    "validation_attributes_outcome": "résultat",
+    "@validation_attributes_outcome": {
+        "description": "validation.attributes.outcome"
     },
     "validation_attributes_password": "mot de passe",
     "@validation_attributes_password": {
@@ -22970,6 +23467,10 @@
     "validation_attributes_phone": "téléphone",
     "@validation_attributes_phone": {
         "description": "validation.attributes.phone"
+    },
+    "validation_attributes_population_id": "population",
+    "@validation_attributes_population_id": {
+        "description": "validation.attributes.population_id"
     },
     "validation_attributes_preferred_channel": "canal préféré",
     "@validation_attributes_preferred_channel": {
@@ -22991,6 +23492,10 @@
     "@validation_attributes_question": {
         "description": "validation.attributes.question"
     },
+    "validation_attributes_referral": "orientation",
+    "@validation_attributes_referral": {
+        "description": "validation.attributes.referral"
+    },
     "validation_attributes_remember": "rester connecté·e",
     "@validation_attributes_remember": {
         "description": "validation.attributes.remember"
@@ -22998,6 +23503,10 @@
     "validation_attributes_sensitive_data": "données sensibles",
     "@validation_attributes_sensitive_data": {
         "description": "validation.attributes.sensitive_data"
+    },
+    "validation_attributes_sex": "sexe",
+    "@validation_attributes_sex": {
+        "description": "validation.attributes.sex"
     },
     "validation_attributes_share_location": "partage de la position",
     "@validation_attributes_share_location": {
@@ -23010,6 +23519,10 @@
     "validation_attributes_status": "statut",
     "@validation_attributes_status": {
         "description": "validation.attributes.status"
+    },
+    "validation_attributes_step": "étape",
+    "@validation_attributes_step": {
+        "description": "validation.attributes.step"
     },
     "validation_attributes_subject": "sujet",
     "@validation_attributes_subject": {
@@ -23030,6 +23543,10 @@
     "validation_attributes_type": "type",
     "@validation_attributes_type": {
         "description": "validation.attributes.type"
+    },
+    "validation_attributes_violence_type_id": "type de violence",
+    "@validation_attributes_violence_type_id": {
+        "description": "validation.attributes.violence_type_id"
     },
     "validation_attributes_zone_id": "département",
     "@validation_attributes_zone_id": {
@@ -23873,6 +24390,18 @@
     "validation_min_digits": "Le champ {attribute} doit contenir au moins {min} chiffres.",
     "@validation_min_digits": {
         "description": "validation.min_digits",
+        "placeholders": {
+            "attribute": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "validation_min_len_20": "Le champ {attribute} doit contenir au moins {min} caractères, ou rester vide.",
+    "@validation_min_len_20": {
+        "description": "validation.min_len_20",
         "placeholders": {
             "attribute": {
                 "type": "String"

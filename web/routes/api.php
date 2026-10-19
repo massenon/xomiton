@@ -54,10 +54,18 @@ use App\Http\Controllers\Api\V1\Messaging\MessageController;
 use App\Http\Controllers\Api\V1\Network\FollowController;
 use App\Http\Controllers\Api\V1\Network\InvitationController;
 use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\Peer\CaseController;
+use App\Http\Controllers\Api\V1\Peer\CaseFollowupController;
+use App\Http\Controllers\Api\V1\Peer\RoutedAlertController;
+use App\Http\Controllers\Api\V1\Peer\ValidationRuleController;
 use App\Http\Controllers\Api\V1\Platform\StatusController;
 use App\Http\Controllers\Api\V1\ReferentialController;
 use App\Http\Controllers\Api\V1\Search\SearchController;
+use App\Http\Controllers\Api\V1\Sync\HeartbeatController;
+use App\Http\Controllers\Api\V1\Sync\SyncController;
 use App\Http\Middleware\BindOutboxAccount;
+use App\Http\Middleware\EnsureAlertRoutedToViewer;
+use App\Http\Middleware\EnsurePeerSpaceAccess;
 use App\Http\Middleware\ForgetSearchTerms;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
@@ -364,6 +372,21 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::delete('{invitation}', [InvitationController::class, 'destroy'])->whereNumber('invitation')->middleware('throttle:community_write')->name('destroy');
     });
 
+    // --- Synchronisation hors connexion (P9-06, lot synchro, docs/API.md §21, ADR-26, ADR-32) : appareils enregistrés
+    // seulement (`X-Device-Id`, sinon 403 `device_required` / `device_revoked`). push : lot de 50 éléments, Idempotency-Key
+    // = uuid du lot (réponse d'origine rejouée ; lot encore en cours : 202 `processing` + Retry-After, jamais 429, P2-08),
+    // éléments dédoublonnés par uuid ; hors `throttle:api` comme POST sos, limiteur `sync_push` par compte après la clé
+    // (un lot fait seulement de SOS n'est jamais limité) et quotas des routes dédiées par élément (PushBatch). push et
+    // heartbeat sont dans la liste blanche de maintenance (EnsureNotInMaintenance, RG-01 ; seuls SOS et signalements y
+    // sont traités hors administration).
+    Route::prefix('sync')->as('api.sync.')->group(function (): void {
+        Route::post('push', [SyncController::class, 'push'])
+            ->withoutMiddleware('throttle:api')->middleware('idempotent:required,nonblocking,limit=sync_push')->name('push');
+        Route::get('pull', [SyncController::class, 'pull'])->name('pull');
+        Route::get('conflicts', [SyncController::class, 'conflicts'])->name('conflicts');
+    });
+    Route::post('heartbeat', HeartbeatController::class)->name('api.heartbeat');
+
     // --- Annuaire membre (P8-12, lot annuaire-membre, docs/API.md §19) : fiches selon la portée du compte (publiques pour
     // un·e membre, réseau compris pour pair·e validé·e, modération, administration), `no-store`. Demande de rappel →
     // RequestCallback (P5-02, sans RG-04) : rejouable (`idempotent:required`), limiteur `directory_callback` (par compte)
@@ -372,6 +395,32 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::get('/', [DirectoryController::class, 'index'])->name('index');
         Route::post('{contact}/callback', [DirectoryController::class, 'callback'])->whereNumber('contact')
             ->middleware('idempotent:required,limit=directory_callback')->name('callback');
+    });
+
+    // --- Espace pair (P9-02, lot dossiers-api-pair, docs/API.md §22) : compte actif `peer_space.access` (RG-03,
+    // EnsurePeerSpaceAccess, sinon 403). Dossiers par code **dans le scope** visibleTo (dossier d'un autre ou code inconnu
+    // → même 404), collecte et suivi idempotents par `client_uuid` et `Idempotency-Key` facultative (ADR-32 : autre
+    // contenu → 422 `idempotency_key_reused`), pas de suppression ; suivi des victimes ; alertes
+    // routées vers mes fiches d'annuaire (accuser, prendre en charge, clore — ni réattribution ni export ; non routée →
+    // 403, même pour l'administration : EnsureAlertRoutedToViewer) ; règles de validation actives (ETag). Réponses
+    // no-store sauf les règles.
+    Route::prefix('pair')->as('api.pair.')->middleware(EnsurePeerSpaceAccess::class)->group(function (): void {
+        Route::get('cases', [CaseController::class, 'index'])->name('cases.index');
+        Route::post('cases', [CaseController::class, 'store'])->middleware('idempotent')->name('cases.store');
+        Route::get('cases/{code}', [CaseController::class, 'show'])->where('code', '[^/]{1,20}')->name('cases.show');
+        Route::patch('cases/{code}', [CaseController::class, 'update'])->where('code', '[^/]{1,20}')->name('cases.update');
+        Route::get('cases/{code}/followups', [CaseFollowupController::class, 'index'])->where('code', '[^/]{1,20}')->name('cases.followups.index');
+        Route::post('cases/{code}/followups', [CaseFollowupController::class, 'store'])->where('code', '[^/]{1,20}')
+            ->middleware('idempotent')->name('cases.followups.store');
+        Route::patch('cases/{code}/followups/{followup}', [CaseFollowupController::class, 'update'])->where('code', '[^/]{1,20}')
+            ->whereNumber('followup')->name('cases.followups.update');
+        Route::get('alerts', [RoutedAlertController::class, 'index'])->name('alerts.index');
+        Route::middleware(EnsureAlertRoutedToViewer::class)->group(function (): void {
+            Route::get('alerts/{alert:ulid}', [RoutedAlertController::class, 'show'])->name('alerts.show');
+            Route::post('alerts/{alert:ulid}/acknowledge', [RoutedAlertController::class, 'acknowledge'])->name('alerts.acknowledge');
+            Route::post('alerts/{alert:ulid}/status', [RoutedAlertController::class, 'status'])->name('alerts.status');
+        });
+        Route::get('validation-rules', ValidationRuleController::class)->name('validation_rules.index');
     });
 });
 

@@ -14,5 +14,7 @@ final readonly class SyncPruneResult
         public int $devicesRevoked,
         public int $receiptDays,
         public int $deviceDays,
+        public int $tombstonesDeleted = 0,
+        public int $tombstoneDays = 90,
     ) {}
 }

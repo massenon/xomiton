@@ -168,7 +168,7 @@ Chaque exigence porte un code, une priorité (**M** obligatoire, **S** souhaité
 | RG-05 | Un SOS non accusé sous 5 minutes est escaladé au point focal national. |
 | RG-06 | Le code dossier suit le format `VBG-0000` / `VDH-0000`, unique et non réutilisable. |
 | RG-07 | Une date de collecte ne peut pas être postérieure à aujourd'hui ; une date de plus de 5 ans déclenche un avertissement. |
-| RG-08 | L'âge saisi est compris entre 10 et 99 ans ; la commune doit appartenir au département choisi. |
+| RG-08 | La tranche d'âge saisie est comprise entre 10-14 et 50+ (bornes `age_min` / `age_max` de la plausibilité, 10 et 99 ans ; jamais un âge exact : Q25 a, `design-system/DECISIONS.md`) ; la commune doit appartenir au département choisi. |
 | RG-09 | Un sondage a 2 à 6 réponses distinctes ; une seule réponse par personne sauf choix multiple ; les votes individuels ne sont jamais exposés. |
 | RG-10 | Un template e-mail **système** ne peut être supprimé qu'en saisissant son slug ; son slug n'est pas modifiable. |
 | RG-11 | Une inscription à la newsletter est confirmée par double opt-in ; chaque e-mail de campagne contient un lien de désinscription unique ; une adresse en rebond n'est plus ciblée. |

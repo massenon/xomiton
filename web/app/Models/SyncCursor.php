@@ -19,8 +19,8 @@ class SyncCursor extends Model
     /** @use HasFactory<SyncCursorFactory> */
     use HasFactory;
 
-    /** @var list<string> collections synchronisées vers l'appareil (SOFTWARE_ARCHITECTURE.md §5) */
-    public const COLLECTIONS = ['cases', 'case_followups', 'alerts', 'directory_contacts', 'zones', 'communes', 'resources', 'messages'];
+    /** @var list<string> collections de `GET sync/pull` (SOFTWARE_ARCHITECTURE.md §5, App\Application\Sync\Pull\PullChanges::COLLECTIONS) */
+    public const COLLECTIONS = ['emergency_contacts', 'directory_contacts', 'thematiques', 'validation_rules', 'cases', 'case_followups', 'alerts'];
 
     /**
      * @var list<string>

@@ -3,7 +3,10 @@
 // partagées ui.outbox.account) et `ttlDays` (xomiton.alerts.draft_days). outbox.js (IndexedDB) et les avis
 // public/outbox-notices.js (code de suivi d'un signalement envoyé au rejeu, affiché une seule fois) sont chargés à la
 // demande : au démarrage si un envoi attend (`xm.outbox.pending`), sinon au premier `add()`. Le compteur `pending`
-// suit les évènements window `xm:outbox:queued` / `xm:outbox:flushed` émis par outbox.js.
+// suit les évènements window `xm:outbox:queued` / `xm:outbox:flushed` émis par outbox.js ; `byType` (P9-07) compte les
+// envois en attente du compte de la page par type (file d'attente visible de la collecte, messages « en attente »).
+// `queue(type, payload)` (P9-07) : signalement, SOS, collecte (`POST /api/v1/pair/cases`, `client_uuid` = clé) ou
+// message (URL de la conversation) ; un SOS part tout de suite si le réseau est là (outbox.js `express`).
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
@@ -29,10 +32,14 @@ export interface FlushDetail {
 
 const PENDING_KEY = 'xm.outbox.pending'; // = PENDING_KEY de shared/outbox.js
 
+/** Types d'envoi de la boîte d'envoi (shared/outbox.js : ENDPOINTS, PRIORITIES). */
+export type OutboxType = 'sos' | 'signalement' | 'collecte' | 'message' | 'post';
+
 const defaultImporter = () => Promise.all([import('../shared/outbox.js'), import('../public/outbox-notices.js')]);
 
 export const useOutboxStore = defineStore('outbox', () => {
     const pending = ref(0);
+    const byType = ref<Record<string, number>>({});
     const lastFlush = ref<FlushDetail | null>(null);
     const ready = ref(false);
     let options: OutboxStartOptions | null = null;
@@ -69,11 +76,13 @@ export const useOutboxStore = defineStore('outbox', () => {
             listening = new AbortController();
             target.addEventListener('xm:outbox:queued', (event) => {
                 pending.value = Number((event as CustomEvent).detail?.pending) || pending.value + 1;
+                recount();
             }, { signal: listening.signal });
             target.addEventListener('xm:outbox:flushed', (event) => {
                 const detail = (event as CustomEvent<FlushDetail>).detail;
                 lastFlush.value = detail ?? null;
                 pending.value = Number(detail?.pending) || 0;
+                recount();
             }, { signal: listening.signal });
         }
         const storage = opts.storage === undefined ? (() => { try { return target?.localStorage ?? null; } catch { return null; } })() : opts.storage;
@@ -91,6 +100,16 @@ export const useOutboxStore = defineStore('outbox', () => {
         return box.add(withAccount);
     }
 
+    /**
+     * Met en file un envoi typé (P9-07) : `signalement`, `sos`, `collecte` (point d'API déduit du type) ou `message`
+     * (`url` de la conversation obligatoire) ; clé neuve sauf `idempotencyKey` donnée (un nouvel essai garde la sienne).
+     */
+    async function queue(type: OutboxType, payload: Record<string, unknown>, options: { idempotencyKey?: string; url?: string } = {}) {
+        const { core } = await load();
+        const idempotencyKey = options.idempotencyKey ?? core.uuid();
+        return add({ type, payload, idempotencyKey, ...(options.url ? { url: options.url } : {}) });
+    }
+
     async function flush(force = false) {
         const { box } = await load();
         return box.flush({ force });
@@ -99,7 +118,20 @@ export const useOutboxStore = defineStore('outbox', () => {
     async function refresh() {
         const { box } = await load();
         pending.value = await box.count();
+        await recount();
         return pending.value;
+    }
+
+    /** Envois en attente du compte de la page, par type (jamais ceux d'un autre compte : appareil partagé). */
+    async function recount() {
+        if (!loading) return byType.value;
+        const all = await entries().catch(() => [] as Array<Record<string, unknown>>);
+        byType.value = all.reduce<Record<string, number>>((acc, entry) => {
+            const type = String(entry.type ?? 'default');
+            acc[type] = (acc[type] ?? 0) + 1;
+            return acc;
+        }, {});
+        return byType.value;
     }
 
     /**
@@ -127,5 +159,5 @@ export const useOutboxStore = defineStore('outbox', () => {
         listening = null;
     }
 
-    return { pending, lastFlush, ready, start, add, flush, refresh, entries, remove, stop };
+    return { pending, byType, lastFlush, ready, start, add, queue, flush, refresh, recount, entries, remove, stop };
 });

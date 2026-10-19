@@ -10,6 +10,8 @@ return [
     'pending' => 'Ton compte est en attente de validation par l’équipe Xomiton.',
     'suspended' => 'Ce compte est suspendu. Contacte-nous : :email',
     'maintenance' => 'La plateforme est en maintenance. Réessaie dans quelques instants.',
+    // Lot admin-socle (Q30, P13-04) : session fermée après la durée d'inactivité (EnforceIdleTimeout).
+    'session_idle' => 'Ta session a été fermée après une période d’inactivité. Reconnecte-toi.',
 
     // Tutoiement sur tout le tunnel d'authentification (Q36), y compris la promesse de l'illustration.
     'side_title' => 'Ton espace safe d’apprentissage et d’appui holistique.',

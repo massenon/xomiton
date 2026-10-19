@@ -14,7 +14,7 @@ class PruneSyncDataCommand extends Command
 
     protected $signature = 'sync:prune';
 
-    protected $description = 'Supprime les reçus de synchronisation de plus de 90 jours et révoque les appareils sans contact depuis plus de 180 jours';
+    protected $description = 'Supprime les reçus et pierres tombales de synchronisation de plus de 90 jours et révoque les appareils sans contact depuis plus de 180 jours';
 
     public function handle(PruneSyncData $rule): int
     {
@@ -30,6 +30,12 @@ class PruneSyncDataCommand extends Command
             '%s (sans contact depuis plus de %d jours).',
             $this->countLabel($result->devicesRevoked, 'appareil révoqué', 'appareils révoqués'),
             $result->deviceDays,
+        ));
+
+        $this->info(sprintf(
+            '%s (plus de %d jours).',
+            $this->countLabel($result->tombstonesDeleted, 'pierre tombale de synchronisation supprimée', 'pierres tombales de synchronisation supprimées'),
+            $result->tombstoneDays,
         ));
 
         return self::SUCCESS;

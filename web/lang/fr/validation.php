@@ -182,6 +182,8 @@ return [
     'date_not_future' => 'Le champ :attribute ne peut pas être dans le futur.',
     'phone_or_email' => 'Saisis un numéro béninois (+229 01 97 38 88 47) ou une adresse e-mail valide.',
     'case_code' => 'Le code doit respecter le format VBG-0000 ou VDH-0000.',
+    'min_len_20' => 'Le champ :attribute doit contenir au moins :min caractères, ou rester vide.',
+    'age_range' => 'Choisis une tranche d’âge comprise entre :min et :max ans.',
 
     /*
      * Messages spécifiques à un champ : 'attribute.rule' => 'message'.
@@ -256,6 +258,19 @@ return [
         'idempotency_key' => 'clé d’envoi',
         'contact_id' => 'contact de l’annuaire',
         'status' => 'statut',
+        // Dossiers et suivi (P9-01, P9-02).
+        'kind' => 'type de dossier',
+        'population_id' => 'population',
+        'sex' => 'sexe',
+        'age_range' => 'tranche d’âge',
+        'violence_type_id' => 'type de violence',
+        'referral' => 'orientation',
+        'notes' => 'notes',
+        'client_uuid' => 'identifiant d’envoi',
+        'step' => 'étape',
+        'outcome' => 'résultat',
+        'next_on' => 'prochaine date',
+        'comment' => 'commentaire',
     ],
 
 ];

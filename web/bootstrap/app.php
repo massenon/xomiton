@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Exceptions\ApiExceptionRenderer;
 use App\Http\Middleware\EnsureEmailIsVerified;
+use App\Http\Middleware\EnforceIdleTimeout;
 use App\Http\Middleware\EnsureNotInMaintenance;
 use App\Http\Middleware\ForgetSearchTerms;
 use App\Http\Middleware\HandleConditionalGet;
@@ -48,6 +49,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // les seules que le service worker garde à la consultation.
         $middleware->web(append: [TagGuestResponse::class]);
         $middleware->api(append: [EnsureNotInMaintenance::class]);
+        // Lot admin-socle (Q30, P13-04) : inactivité de session mesurée sur l'activité réelle — le polling Livewire nu
+        // ne la prolonge plus ; API à session (espace Vue) comprise pour que ses appels comptent comme activité.
+        $middleware->web(append: [EnforceIdleTimeout::class]);
+        $middleware->api(append: [EnforceIdleTimeout::class]);
         // Évalué avant `auth` / `auth:sanctum` : un client dont la session ou le jeton est encore valable reçoit 503
         // (et non 401, que Flutter prendrait pour une déconnexion) ; après StartSession pour pouvoir fermer la session.
         $middleware->prependToPriorityList(AuthenticatesRequests::class, EnsureNotInMaintenance::class);

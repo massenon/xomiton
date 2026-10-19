@@ -91,6 +91,33 @@ if (!bootstrapFile) {
     console.log(`  - Garde Bootstrap : ${bootstrapFile} hors des imports statiques d'app.ts ok`);
 }
 
+// Garde administration (P10-02, ADR-18, PERFORMANCE.md §4) : admin.js n'embarque jamais Chart.js, Quill, Choices ni
+// flatpickr ; chacun doit rester un morceau chargé à la demande (resources/js/admin/lazy.js, `XM.admin.load()`).
+const ADMIN = 'resources/js/admin.js';
+const ADMIN_LAZY = { 'Chart.js': /node_modules\/chart\.js\//, Quill: /node_modules\/quill\//, Choices: /node_modules\/choices\.js\//, flatpickr: /node_modules\/flatpickr\// };
+const staticKeys = (key, seen = new Set()) => {
+    if (!manifest[key] || seen.has(key)) return seen;
+    seen.add(key);
+    for (const imported of manifest[key].imports || []) staticKeys(imported, seen);
+    return seen;
+};
+if (manifest[ADMIN]) {
+    const adminStatic = [...staticKeys(ADMIN)].map((key) => manifest[key].src || key);
+    const adminDynamic = (manifest[ADMIN].dynamicImports || []).map((key) => (manifest[key] && manifest[key].src) || key);
+    for (const [lib, pattern] of Object.entries(ADMIN_LAZY)) {
+        if (adminStatic.some((src) => pattern.test(src))) {
+            console.log(`  - Garde administration : ${lib} importé en dur par admin.js (ÉCHEC : passer par admin/lazy.js)`);
+            failed = true;
+        } else if (!adminDynamic.some((src) => pattern.test(src)) && !Object.values(manifest).some((c) => c.src && pattern.test(c.src) && c.isDynamicEntry)) {
+            console.log(`  - Garde administration : ${lib} absent des morceaux à la demande (AVERTISSEMENT)`);
+        } else {
+            console.log(`  - Garde administration : ${lib} chargé à la demande ok`);
+        }
+    }
+    const adminSize = total([...new Set(filesOf(ADMIN))]);
+    console.log(`  - JS administration (admin.js + imports statiques, indicatif) : ${fmt(adminSize)}`);
+}
+
 const pages = Object.keys(manifest).filter((key) => PAGES.test(key)).sort();
 if (pages.length && manifest[APP]) {
     console.log(`JS initial des pages membre (app.ts + morceau de page + imports statiques, indicatif, ${fmt(PAGE_MAX)}) :`);

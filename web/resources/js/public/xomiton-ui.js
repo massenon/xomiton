@@ -36,9 +36,12 @@ window.XM.toast = (message, type = 'primary') => {
   wrap.appendChild(el);
   return showToast(el);
 };
+// Un seul afficheur par paquet : l'administration (admin/toasts.js) pose window.XM.toastHandler (SweetAlert2, P10-03).
 window.addEventListener('toast', (e) => {
   const d = e.detail || {};
-  if (d.message) window.XM.toast(d.message, d.type || 'primary');
+  if (!d.message) return;
+  if (typeof window.XM.toastHandler === 'function') window.XM.toastHandler(d);
+  else window.XM.toast(d.message, d.type || 'primary');
 });
 ready(() => document.querySelectorAll('[data-xm-toast-autoshow]').forEach(showToast));
 

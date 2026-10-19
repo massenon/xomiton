@@ -77,21 +77,13 @@
         </div>
     </section>
 
-    {{-- Indicateurs --}}
-    <div class="row g-3 mb-4">
-        <div class="col-sm-6 col-xl-3">
-            <x-stat :label="__('maintenance.admin.kpi.state')" :value="$state->label()" :variant="['inactive' => 'success', 'announced' => 'warning', 'ongoing' => 'danger', 'ended' => ''][$state->value]" :icon="$state->icon()" />
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <x-stat :label="__('maintenance.admin.kpi.ends')" :value="$snapshot->active ? ($endsAt ? $format->time($endsAt) : __('maintenance.admin.kpi.unknown')) : '—'" icon="clock-history" :sub="$snapshot->active && $endsAt ? \App\Application\Platform\MaintenancePage::day($endsAt) : null" />
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <x-stat :label="__('maintenance.admin.kpi.next')" :value="$next ? $format->dayMonth($next->starts_at) : __('maintenance.admin.kpi.none')" icon="calendar-event" :sub="$next ? (\App\Application\Platform\MaintenancePage::local($next->starts_at)->isSameDay(\App\Application\Platform\MaintenancePage::local($next->ends_at)) ? __('maintenance.admin.kpi.hours', ['from' => $format->time($next->starts_at), 'to' => $format->time($next->ends_at)]) : \App\Application\Platform\MaintenancePage::range($next->starts_at, $next->ends_at)) : null" />
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <x-stat :label="__('maintenance.admin.schedule.list_title')" :value="$format->number($overview->upcoming->count())" icon="list-check" :sub="trans_choice('maintenance.admin.kpi.announced_count', $overview->upcoming->filter(fn (\App\Models\MaintenanceWindow $w): bool => $w->isAnnounced())->count())" />
-        </div>
-    </div>
+    {{-- Indicateurs (x-admin.kpi, P10-02 : accordéon « Indicateurs clés » < 768 px) --}}
+    <x-admin.kpi id="xmMaintKpis" :items="[
+        ['label' => __('maintenance.admin.kpi.state'), 'value' => $state->label(), 'variant' => ['inactive' => 'success', 'announced' => 'warning', 'ongoing' => 'danger', 'ended' => ''][$state->value], 'icon' => $state->icon()],
+        ['label' => __('maintenance.admin.kpi.ends'), 'value' => $snapshot->active ? ($endsAt ? $format->time($endsAt) : __('maintenance.admin.kpi.unknown')) : '—', 'icon' => 'clock-history', 'sub' => $snapshot->active && $endsAt ? \App\Application\Platform\MaintenancePage::day($endsAt) : null],
+        ['label' => __('maintenance.admin.kpi.next'), 'value' => $next ? $format->dayMonth($next->starts_at) : __('maintenance.admin.kpi.none'), 'icon' => 'calendar-event', 'sub' => $next ? (\App\Application\Platform\MaintenancePage::local($next->starts_at)->isSameDay(\App\Application\Platform\MaintenancePage::local($next->ends_at)) ? __('maintenance.admin.kpi.hours', ['from' => $format->time($next->starts_at), 'to' => $format->time($next->ends_at)]) : \App\Application\Platform\MaintenancePage::range($next->starts_at, $next->ends_at)) : null],
+        ['label' => __('maintenance.admin.schedule.list_title'), 'value' => $format->number($overview->upcoming->count()), 'icon' => 'list-check', 'sub' => trans_choice('maintenance.admin.kpi.announced_count', $overview->upcoming->filter(fn (\App\Models\MaintenanceWindow $w): bool => $w->isAnnounced())->count())],
+    ]" cols="col-sm-6 col-xl-3" />
 
     <div class="row g-4">
         <div class="col-xl-7 d-flex flex-column gap-4">

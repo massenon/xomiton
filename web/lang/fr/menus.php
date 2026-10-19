@@ -58,10 +58,15 @@ return [
 
     'admin' => [
         'badge' => 'Admin',
+        // Q14 a (P10-01) : 8 groupes de dashboard-admin.md + Raccourcis du prototype en pied de barre.
         'groups' => [
             'steering' => 'Pilotage',
-            'data' => 'Gestion des données',
-            'platform' => 'Plateforme',
+            'cases' => 'Cas & alertes',
+            'directory' => 'Annuaire',
+            'content' => 'Contenus',
+            'data' => 'Données',
+            'reports' => 'Rapports',
+            'social' => 'Réseau social',
             'system' => 'Système',
             'shortcuts' => 'Raccourcis',
         ],
@@ -90,6 +95,7 @@ return [
         'emails' => 'Templates e-mails',
         'settings' => 'Paramètres',
         'audit' => 'Journal d’audit',
+        'nav_title' => 'Menu de l’administration',
         'view_member_site' => 'Voir le site membre',
         'public_home' => 'Page d’accueil publique',
         'global_search' => 'Recherche globale',

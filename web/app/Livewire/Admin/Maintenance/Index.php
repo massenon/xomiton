@@ -15,6 +15,7 @@ use App\Application\Platform\ScheduleMaintenance;
 use App\Application\Platform\UpdateMaintenanceMessage;
 use App\Domain\Platform\Exceptions\MaintenanceException;
 use App\Http\Middleware\EnsureNotInMaintenance;
+use App\Livewire\Concerns\InteractsWithUi;
 use App\Models\MaintenanceWindow;
 use App\Models\Setting;
 use App\Models\User;
@@ -40,6 +41,8 @@ use Livewire\Component;
  */
 final class Index extends Component
 {
+    use InteractsWithUi;
+
     /** Durées estimées proposées (minutes) ; `unknown` : aucune heure affichée au public. */
     public const DURATIONS = ['15', '30', '60', '120', '240', 'unknown'];
 
@@ -109,7 +112,7 @@ final class Index extends Component
             return;
         }
 
-        $this->flashAndReload('maintenance.admin.toasts.enabled', 'danger');
+        $this->flashAndReload('maintenance.admin.toasts.enabled', 'warning');
     }
 
     public function disable(DisableMaintenance $disable): void
@@ -350,16 +353,13 @@ final class Index extends Component
         return $user;
     }
 
-    private function toast(string $message, string $type = 'success'): void
-    {
-        $this->dispatch('toast', type: $type, message: $message);
-    }
-
-    /** Activation et désactivation : rechargement complet (bandeau du gabarit, pastille du menu, sessions). */
+    /**
+     * Activation et désactivation : rechargement complet (bandeau du gabarit, pastille du menu, sessions) ; le message
+     * est rejoué en toast SweetAlert2 par le gabarit (InteractsWithUi::flashToast, P10-03).
+     */
     private function flashAndReload(string $key, string $type): void
     {
-        session()->flash('status', (string) __($key));
-        session()->flash('status_type', $type);
+        $this->flashToast((string) __($key), $type);
         $this->redirectRoute('admin.maintenance');
     }
 }

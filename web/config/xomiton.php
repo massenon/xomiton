@@ -161,6 +161,9 @@ return [
         // `directory_callback`, après la vérification de la clé : un rejeu ne compte pas), jamais le quota `report` par
         // IP des signalements anonymes (CGNAT mobile).
         'directory_callback_per_hour' => 10,
+        // Synchronisation (P9-06) : lots `POST sync/push` par compte et par minute (limiteur `sync_push`, rejeux non
+        // comptés) ; un lot qui porte un SOS n'est jamais limité (RG-01).
+        'sync_push_per_minute' => 20,
     ],
 
     /*
@@ -431,6 +434,15 @@ return [
     'sync' => [
         'push_batch_size' => 50,
         'device_stale_hours' => 24,
+        // P9-06 `GET sync/pull` : lignes par collection et par page ; lignes plus récentes que le retard gardées pour le
+        // tirage suivant (transaction validée en retard) ; rétention des pierres tombales (`sync:prune`) : un appareil
+        // silencieux plus longtemps refait un tirage complet.
+        'pull_page_size' => 200,
+        'pull_lag_seconds' => 2,
+        'tombstone_days' => 90,
+        // `POST sync/push` : budget de temps d'un lot (sous les 30 s de D7) ; au-delà, les éléments restants repartent
+        // en 503 `retry_later` sans reçu (PushBatch).
+        'push_time_budget_seconds' => 20,
     ],
 
     /*
@@ -522,6 +534,18 @@ return [
         'max_rows' => 20000,
         // Disque Laravel des fichiers de generated_reports (hors racine web) ; purgés par reports:purge après expires_at.
         'disk' => env('XOMITON_REPORTS_DISK', 'local'),
+    ],
+
+    /*
+     * Exports CSV des écrans d'administration (P10-02, ADR-33, revue admin-socle) : l'action Livewire délivre un lien
+     * signé de courte durée vers App\Http\Controllers\Admin\CsvExportController, qui diffuse le fichier par paquets
+     * (Livewire mettrait toute la réponse en mémoire, puis en base64). Au-delà de `max_rows` lignes, l'export est
+     * refusé : affiner les filtres (30 s / 128 Mo sur cPanel).
+     */
+    'exports' => [
+        'max_rows' => (int) env('XOMITON_EXPORT_MAX_ROWS', 20000),
+        'chunk_rows' => 500,
+        'link_minutes' => 2,
     ],
 
     /*

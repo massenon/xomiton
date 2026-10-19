@@ -57,12 +57,14 @@ class ValidationRulesSeeder extends Seeder
             'invalid' => '2099-01-01',
             'params' => null,
         ],
+        // Q25 a (P9-01) : la collecte saisit une tranche d'âge (x_age_ranges()), jamais un âge exact ; RG-08 reformulée
+        // « tranche comprise entre 10-14 et 50+ », bornes `age_min` / `age_max` de la règle `plausibility`.
         'age_range' => [
-            'label' => 'Âge entre 10 et 99 ans',
-            'description' => 'Valeur plausible pour les populations accompagnées.',
+            'label' => 'Tranche d’âge entre 10-14 et 50+',
+            'description' => 'Tranche d’âge de la liste, comprise entre les bornes age_min / age_max de la plausibilité (10 et 99 ans par défaut).',
             'forms' => ['Collecte de données', 'Fiches VBG/VDH'],
-            'valid' => '24',
-            'invalid' => '150',
+            'valid' => '18-24',
+            'invalid' => '10-14 si age_min vaut 15',
             'params' => null,
         ],
         'min_len_20' => [
@@ -107,10 +109,10 @@ class ValidationRulesSeeder extends Seeder
         ],
         'plausibility' => [
             'label' => 'Règles de plausibilité',
-            'description' => 'Âge entre les bornes, date ni future ni plus ancienne que l’ancienneté maximale (avertissement), coordonnées GPS dans le Bénin.',
+            'description' => 'Bornes age_min / age_max des tranches d’âge (règle age_range), date plus ancienne que l’ancienneté maximale (avertissement), coordonnées GPS dans le Bénin.',
             'forms' => ['Collecte de données', 'Fiches VBG/VDH', 'SOS'],
-            'valid' => 'Âge 24 · 2026-01-15 · lat 6.37, lng 2.39',
-            'invalid' => 'Âge 150 · 2099-01-01 · lat 48.85, lng 2.35',
+            'valid' => 'Tranche 18-24 · 2026-01-15 · lat 6.37, lng 2.39',
+            'invalid' => 'Tranche 10-14 si age_min vaut 15 · 2015-01-01 · lat 48.85, lng 2.35',
             'params' => [
                 'age_min' => 10,
                 'age_max' => 99,

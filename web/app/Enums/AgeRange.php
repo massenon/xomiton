@@ -32,6 +32,20 @@ enum AgeRange: string
         };
     }
 
+    /** Âge le plus bas de la tranche (plausibilité RG-08, Q25 a). */
+    public function lowerBound(): int
+    {
+        return (int) explode('-', rtrim($this->value, '+'))[0];
+    }
+
+    /** Âge le plus haut de la tranche ; null pour la tranche ouverte « 50 ans et plus ». */
+    public function upperBound(): ?int
+    {
+        $parts = explode('-', $this->value);
+
+        return count($parts) === 2 ? (int) $parts[1] : null;
+    }
+
     /** Vrai pour les tranches mineures (signalement à traiter avec une vigilance renforcée). */
     public function isMinor(): bool
     {

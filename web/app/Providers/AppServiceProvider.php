@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Application\Admin\AdminNavigation;
 use App\Application\Alerts\Listeners\MarkAlertNotificationsSeen;
 use App\Application\Alerts\Listeners\NotifyAlertEscalated;
 use App\Application\Alerts\Listeners\NotifyAlertReassigned;
@@ -18,6 +19,7 @@ use App\Application\Moderation\Listeners\NotifyModerators;
 use App\Application\Newsletter\Listeners\LogCampaignSent;
 use App\Application\Shared\SosBurstWatch;
 use App\Application\Sync\Listeners\NotifyAdminsOfSyncConflict;
+use App\Application\Sync\Pull\TombstoneRecorder;
 use App\Domain\Alerts\Events\AlertAcknowledged;
 use App\Domain\Alerts\Events\AlertCreated;
 use App\Domain\Alerts\Events\AlertEscalated;
@@ -122,6 +124,10 @@ class AppServiceProvider extends ServiceProvider
         $this->registerDomainEvents();
         $this->registerReferentialObservers();
         $this->registerSessionDriver();
+        // Lot synchro (P9-06) : pierres tombales de `sync/pull` (suppression définitive, réattribution).
+        TombstoneRecorder::register();
+        // Lot admin-socle (P10-01) : pastilles du menu d'administration oubliées à chaque alerte ou compte modifié.
+        AdminNavigation::watchCounters();
     }
 
     /**
@@ -348,6 +354,15 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('directory_callback', static fn (Request $request): Limit => Limit::perHour(self::limit('directory_callback_per_hour'))
             ->by('directory_callback|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
+        // Synchronisation (P9-06) : lots `sync/push` par compte (`idempotent:required,limit=sync_push` : un rejeu ne compte
+        // pas) ; seul un lot fait uniquement de SOS n'est jamais limité (RG-01, comme POST sos) : un SOS rejoué ne fait pas
+        // passer les autres éléments. Chaque message et signalement d'un lot compte en plus sur `messages_write` / `report`
+        // (App\Http\Requests\Api\Sync\SyncItemLimiter) ; chaque SOS neuf passe par SosBurstWatch.
+        RateLimiter::for('sync_push', static fn (Request $request): Limit => self::onlySos($request)
+            ? Limit::none()
+            : Limit::perMinute(self::limit('sync_push_per_minute'))
+                ->by('sync_push|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+                ->response($tooMany));
         RateLimiter::for('network_preview', static fn (Request $request): Limit => $request->query('invite') === null
             ? Limit::none()
             : Limit::perMinute(self::limit('network_preview_per_minute'))
@@ -376,6 +391,16 @@ class AppServiceProvider extends ServiceProvider
 
             return Limit::none();
         });
+    }
+
+    /**
+     * Lot `sync/push` fait uniquement de SOS (au moins un élément).
+     */
+    private static function onlySos(Request $request): bool
+    {
+        $types = array_column(array_filter((array) $request->input('items', []), 'is_array'), 'type');
+
+        return $types !== [] && array_filter($types, static fn (mixed $type): bool => $type !== 'sos') === [];
     }
 
     /**

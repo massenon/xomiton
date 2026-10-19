@@ -30,6 +30,36 @@ return [
         'duty_help' => 'Actualisation des alertes toutes les :seconds s.',
         'last_refresh' => 'Dernière actualisation : :time',
         'auto_refresh' => 'Actualisation automatique toutes les :seconds s · dernière : :time',
+        'shortcut_help' => 'Raccourci clavier : Ctrl K (⌘ K sur Mac) place le curseur dans la recherche globale.',
+    ],
+
+    // Barre latérale (P10-01, Q14 a) : repliable en icônes ≥ 992 px, offcanvas en dessous.
+    'nav' => [
+        'collapse' => 'Replier le menu',
+        'expand' => 'Déplier le menu',
+        'close' => 'Fermer le menu',
+        'counters' => [
+            'alerts_new' => '{1} :count nouvelle alerte|[2,*] :count nouvelles alertes',
+            'users_pending' => '{1} :count compte en attente de validation|[2,*] :count comptes en attente de validation',
+        ],
+    ],
+
+    // Confirmations (P10-03) : wire:confirm affiché dans une modale SweetAlert2 rouge, focus sur « Annuler ».
+    'confirm' => [
+        'title' => 'Confirmer l’action',
+        'confirm' => 'Confirmer',
+        'cancel' => 'Annuler',
+        'prompt' => 'Pour confirmer, saisissez : :word',
+        'prompt_label' => 'Texte de confirmation',
+        'mismatch' => 'Le texte saisi ne correspond pas.',
+    ],
+
+    // Cloche de l'administration (P10-03) : alertes, inscriptions, modération, conflits ; polling 30 s.
+    'bell' => [
+        'title' => 'Notifications de l’administration',
+        // Nom accessible du bouton (texte masqué mis à jour à chaque polling ; aria-label fixe proscrit).
+        'button' => '{0} Notifications|{1} Notifications, :count non lue|[2,*] Notifications, :count non lues',
+        'marked_all' => 'Notifications marquées comme lues.',
     ],
 
     'kpi' => [
@@ -52,6 +82,8 @@ return [
         'conflicts' => 'Conflits à résoudre',
         'masked' => 'données masquées',
         'masked_help' => 'Les effectifs inférieurs à :min ne sont pas affichés pour protéger les personnes.',
+        'summary' => ':label : :value',
+        'toggle_help' => 'Afficher ou masquer les indicateurs clés',
         'trend_vs_previous' => 'par rapport à la période précédente',
         'see_list' => 'Voir la liste',
     ],
@@ -119,6 +151,8 @@ return [
         'sort_by' => 'Trier par :column',
         'sorted_asc' => 'Trié par :column, croissant',
         'sorted_desc' => 'Trié par :column, décroissant',
+        'sort_asc' => 'tri croissant',
+        'sort_desc' => 'tri décroissant',
         'empty' => 'Aucun résultat.',
         'empty_filtered' => 'Aucun élément ne correspond aux filtres.',
         'empty_create' => 'Aucun élément. Créez le premier avec « :action ».',
@@ -157,6 +191,7 @@ return [
         'search_help' => 'La recherche porte sur les colonnes en clair (code, pseudonyme, commune, catégorie), jamais sur les récits chiffrés.',
         'apply' => 'Filtrer',
         'reset' => 'Réinitialiser',
+        'reset_all' => 'Réinitialiser les filtres',
         'active' => '{1} :count filtre actif|[2,*] :count filtres actifs',
         'all' => 'Tous',
         'all_f' => 'Toutes',
@@ -190,9 +225,9 @@ return [
         'choose' => 'Choisir une action…',
         'apply' => 'Appliquer',
         'clear' => 'Désélectionner',
-        'confirm' => 'Appliquer « :action » à :count éléments ?',
-        'confirm_delete' => 'Supprimer définitivement les :count éléments sélectionnés ?',
-        'applied' => 'Action appliquée à :count éléments.',
+        'confirm' => '{1} Appliquer « :action » à :count élément ?|[2,*] Appliquer « :action » à :count éléments ?',
+        'confirm_delete' => '{1} Supprimer définitivement l’élément sélectionné ?|[2,*] Supprimer définitivement les :count éléments sélectionnés ?',
+        'applied' => '{1} Action appliquée à :count élément.|[2,*] Action appliquée à :count éléments.',
         'none' => 'Sélectionnez au moins un élément.',
         'actions' => [
             'delete' => 'Supprimer',
@@ -272,7 +307,9 @@ return [
         'full_requires' => 'L’export complet exige la permission « export des dossiers » et est consigné au journal.',
         'too_many_rows_pdf' => 'Trop de lignes pour un PDF (:max maximum) : choisissez Excel.',
         'failed' => 'Échec de l’export : :reason',
-        'audit' => 'Export CSV :screen, :count lignes',
+        'audit' => '[0,1] Export CSV :screen, :count ligne|[2,*] Export CSV :screen, :count lignes',
+        'audit_full' => '[0,1] Export CSV complet :screen, :count ligne|[2,*] Export CSV complet :screen, :count lignes',
+        'too_many_rows' => 'Trop de lignes à exporter (:count) : affinez les filtres, :max lignes au plus.',
     ],
 
     'toasts' => [
@@ -559,8 +596,11 @@ return [
         'password_hint' => 'Archive protégée par mot de passe. Conservez-le hors de la plateforme.',
     ],
 
+    // Journal d'audit /admin/journal (P13-05, écran témoin de WithDataTable, P10-02) : lecture, filtres, export, purge.
     'audit' => [
         'title' => 'Journal d’audit',
+        'intro' => 'Chaque action sensible laisse une trace : qui, quoi, quand. Les entrées ne se modifient jamais.',
+        'table_caption' => 'Entrées du journal d’audit, les plus récentes d’abord',
         'columns' => [
             'at' => 'Date',
             'user' => 'Compte',
@@ -568,8 +608,54 @@ return [
             'detail' => 'Détail',
             'ip' => 'Adresse IP',
         ],
+        'kpi' => [
+            'entries' => 'Entrées',
+            'today' => 'Aujourd’hui',
+            'actors' => 'Comptes distincts',
+            'filtered' => 'Résultats du filtre',
+        ],
+        'filters' => [
+            'search_placeholder' => 'Compte, action ou détail…',
+            'search_help' => 'La recherche porte sur le compte, le code de l’action et le détail (texte déjà masqué à l’écriture).',
+            'action' => 'Action',
+            'all_actions' => 'Toutes les actions',
+            'from' => 'Du',
+            'to' => 'Au',
+        ],
+        'families' => [
+            'auth' => 'Connexion',
+            'account' => 'Compte',
+            'alerts' => 'Alerte',
+            'cases' => 'Dossier',
+            'moderation' => 'Modération',
+            'maintenance' => 'Maintenance',
+            'sync' => 'Synchro',
+            'export' => 'Export',
+            'audit' => 'Journal',
+            'content' => 'Contenu',
+            'other' => 'Autre',
+        ],
+        'system' => 'système',
+        'anonymous' => 'anonyme',
         'empty' => 'Aucune entrée pour cette période.',
-        'retention' => 'Entrées conservées :days jours.',
+        'empty_text' => 'Les actions de l’équipe et les connexions apparaîtront ici.',
+        'retention' => 'Entrées conservées :days jours, puis purgées automatiquement chaque nuit.',
+        'purge' => [
+            'title' => 'Purger le journal',
+            'text' => 'Supprime définitivement les entrées plus anciennes que la durée choisie. Réservé aux super-admins ; la purge elle-même est journalisée.',
+            'days' => 'Jours conservés',
+            'days_hint' => 'Entre :min et :max jours.',
+            'days_suffix' => 'jours',
+            'action' => 'Purger',
+            'locked' => 'Super-admin requis',
+            'confirm_title' => 'Purger définitivement le journal ?',
+            'confirm_text' => '{0} Aucune entrée n’a plus de :days jours : rien ne sera supprimé.|{1} Les entrées de plus de :days jours seront supprimées définitivement (:count entrée concernée). Cette action ne peut pas être annulée.|[2,*] Les entrées de plus de :days jours seront supprimées définitivement (:count entrées concernées). Cette action ne peut pas être annulée.',
+            'word' => 'PURGER',
+            'word_label' => 'Pour confirmer, saisissez :',
+            'word_mismatch' => 'Saisissez PURGER pour confirmer.',
+            'done' => '{0} Aucune entrée à purger.|{1} :count entrée purgée.|[2,*] :count entrées purgées.',
+            'audit_detail' => '{0} Purge : aucune entrée de plus de :days jours|{1} Purge : :count entrée de plus de :days jours|[2,*] Purge : :count entrées de plus de :days jours',
+        ],
     ],
 
     'moderation' => [

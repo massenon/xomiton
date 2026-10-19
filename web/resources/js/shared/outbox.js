@@ -1,5 +1,9 @@
-// Boîte d'envoi commune hors connexion (P5-10, ADR-26, ADR-32), sans framework : pages Blade (chargée à la demande par
-// shared/outbox-boot.js) et, plus tard, store Pinia `outbox` (P6-05) et collecte (P9-04, P9-07) : une seule implémentation.
+// Boîte d'envoi commune hors connexion (P5-10, ADR-26, ADR-32, P9-07), sans framework : pages Blade (chargée à la demande
+// par shared/outbox-boot.js), store Pinia `outbox` (P6-05) et collecte (P9-04) : une seule implémentation. Types : `sos`,
+// `signalement`, `collecte` (POST /api/v1/pair/cases), `message` (URL de la conversation), publications (`post`).
+// `collecte` et `message` portent aussi la clé dans le corps (`client_uuid`, dédoublonnage métier au-delà du TTL des
+// clés, ADR-32). SOS : jamais en attente si le réseau est là — envoyé tout de suite à sa mise en file, hors du passage
+// en cours et du verrou entre onglets (le serveur dédoublonne par Idempotency-Key si un autre passage l'envoie aussi).
 // File IndexedDB (`idb`) d'entrées { id, type, url, method, body, headers, priority, createdAt, idempotencyKey,
 // attempts, nextAttemptAt, lastStatus, account } ; `body` : chaîne JSON ou { form: [[nom, valeur | Blob]] } (multipart,
 // preuves). Contenu en clair sur l'appareil (récit, contact, position, preuves) : chaque entrée expire après `ttlDays`
@@ -27,8 +31,10 @@ export const FLUSH_INTERVAL = 5 * 60 * 1000;
 export const PENDING_KEY = 'xm.outbox.pending';
 export const LOCK_NAME = 'xm-outbox';
 export const EVENTS = { queued: 'xm:outbox:queued', flushed: 'xm:outbox:flushed' };
-export const PRIORITIES = { sos: 0, signalement: 10, default: 50 };
-export const ENDPOINTS = { sos: '/api/v1/sos', signalement: '/api/v1/signalements' };
+export const PRIORITIES = { sos: 0, signalement: 10, collecte: 20, message: 30, default: 50 };
+export const ENDPOINTS = { sos: '/api/v1/sos', signalement: '/api/v1/signalements', collecte: '/api/v1/pair/cases' };
+/** Types dont le corps JSON porte aussi la clé en `client_uuid` (StoreCaseRequest, StoreMessageRequest). */
+export const CLIENT_UUID_TYPES = ['collecte', 'message'];
 export const ACCOUNT_HEADER = 'X-Xm-Outbox-Account'; // = App\Application\Offline\OutboxAccount::HEADER
 export const GUEST = 'guest'; // = OutboxAccount::GUEST
 export const TTL_DAYS = 7; // = xomiton.alerts.draft_days (repli quand la page ne le transmet pas)
@@ -92,10 +98,13 @@ export function createEntry(input = {}, now = Date.now()) {
   const type = typeof input.type === 'string' && input.type !== '' ? input.type : 'default';
   const url = input.url || ENDPOINTS[type];
   if (typeof url !== 'string' || url === '') throw new TypeError('outbox: url manquante');
-  let body = input.body;
-  if (body === undefined && input.payload !== undefined) body = JSON.stringify(input.payload);
-  if (body !== undefined && body !== null && typeof body === 'object' && !isFormBody(body)) body = JSON.stringify(body);
   const idempotencyKey = input.idempotencyKey || input.uuid || input.id || uuid();
+  let body = input.body;
+  if (body === undefined && input.payload !== undefined) body = input.payload;
+  if (body !== undefined && body !== null && typeof body === 'object' && !isFormBody(body)) {
+    const withUuid = CLIENT_UUID_TYPES.includes(type) && body.client_uuid === undefined ? { ...body, client_uuid: idempotencyKey } : body;
+    body = JSON.stringify(withUuid);
+  }
   const headers = { Accept: 'application/json', ...(typeof body === 'string' ? { 'Content-Type': 'application/json' } : {}) };
   Object.entries(input.headers || {}).forEach(([name, value]) => {
     // Jamais de jeton stocké : XSRF et Idempotency-Key sont posés à l'envoi.
@@ -188,6 +197,7 @@ export function createOutbox(opts = {}) {
   const ttlMs = (Number(opts.ttlDays) > 0 ? Number(opts.ttlDays) : TTL_DAYS) * DAY_MS;
   let dbPromise = null;
   let flushing = null;
+  const inflight = new Set(); // entrées en cours d'envoi dans cet onglet (passage ou SOS immédiat)
   let timer = null;
   let stopper = null;
 
@@ -241,7 +251,10 @@ export function createOutbox(opts = {}) {
     const pending = await count();
     remember(pending);
     emit(EVENTS.queued, { id: entry.id, type: entry.type, pending });
-    if (opts.autoFlush !== false && online()) flush({ force: true }).catch(() => undefined);
+    if (opts.autoFlush !== false && online()) {
+      if (entry.type === 'sos') express(entry).catch(() => undefined);
+      else flush({ force: true }).catch(() => undefined);
+    }
     return entry;
   }
 
@@ -287,6 +300,41 @@ export function createOutbox(opts = {}) {
     return result;
   }
 
+  /** Suite donnée à un essai : envoyée ou refusée → retirée ; sinon gardée avec recul. Rend vrai si le réseau est coupé. */
+  async function settle(entry, result, report) {
+    if (result.state === 'sent') {
+      await remove(entry.id);
+      report.sent.push(result);
+    } else if (result.state === 'invalid' || result.state === 'failed') {
+      await remove(entry.id);
+      report.failed.push(result);
+    } else {
+      entry.attempts += 1;
+      entry.lastStatus = result.status;
+      entry.nextAttemptAt = now() + (result.retryAfter ? result.retryAfter * 1000 : backoff(entry.attempts, entry.type));
+      if (await get(entry.id)) await put(entry); // jamais recréée si un autre envoi l'a retirée entre-temps
+    }
+    return Boolean(result.network);
+  }
+
+  /** Un essai complet d'une entrée (SOS refusé : renvoyé une fois sans les champs refusés). */
+  async function process(entry, report) {
+    inflight.add(entry.id);
+    try {
+      let result = await attempt(entry);
+      if (result.state === 'invalid' && entry.type === 'sos' && !entry.stripped && typeof entry.body === 'string') {
+        // RG-01 : un SOS part toujours ; le corps change, donc la clé aussi (même clé + autre corps = 422 côté serveur),
+        // dérivée de l'ancienne comme dans public/sos.js : si la page renvoie aussi cette alerte, une seule est créée.
+        Object.assign(entry, { body: stripFields(entry.body, Object.keys(result.errors || {})), idempotencyKey: derivedKey(entry.idempotencyKey), stripped: true });
+        await put(entry);
+        result = await attempt(entry);
+      }
+      return await settle(entry, result, report);
+    } finally {
+      inflight.delete(entry.id);
+    }
+  }
+
   async function run(force) {
     const report = { sent: [], failed: [], pending: 0 };
     await purge();
@@ -298,31 +346,27 @@ export function createOutbox(opts = {}) {
     for (const entry of entries) {
       if (!force && entry.nextAttemptAt > now()) continue;
       if (account && heldFor(entry, account())) continue; // attend une page du même compte
-      let result = await attempt(entry);
-      if (result.state === 'invalid' && entry.type === 'sos' && !entry.stripped && typeof entry.body === 'string') {
-        // RG-01 : un SOS part toujours ; le corps change, donc la clé aussi (même clé + autre corps = 422 côté serveur),
-        // dérivée de l'ancienne comme dans public/sos.js : si la page renvoie aussi cette alerte, une seule est créée.
-        Object.assign(entry, { body: stripFields(entry.body, Object.keys(result.errors || {})), idempotencyKey: derivedKey(entry.idempotencyKey), stripped: true });
-        await put(entry);
-        result = await attempt(entry);
-      }
-      if (result.state === 'sent') {
-        await remove(entry.id);
-        report.sent.push(result);
-      } else if (result.state === 'invalid' || result.state === 'failed') {
-        await remove(entry.id);
-        report.failed.push(result);
-      } else {
-        entry.attempts += 1;
-        entry.lastStatus = result.status;
-        entry.nextAttemptAt = now() + (result.retryAfter ? result.retryAfter * 1000 : backoff(entry.attempts, entry.type));
-        await put(entry);
-        if (result.network) break; // réseau coupé : les suivantes attendront le prochain passage
-      }
+      if (inflight.has(entry.id) || !(await get(entry.id))) continue; // déjà en cours (SOS immédiat) ou déjà envoyée
+      if (await process(entry, report)) break; // réseau coupé : les suivantes attendront le prochain passage
     }
     report.pending = await count();
     remember(report.pending);
     if (entries.length > 0) emit(EVENTS.flushed, report);
+    return report;
+  }
+
+  /**
+   * SOS immédiat (SOFTWARE_ARCHITECTURE §5 : le SOS n'attend jamais si le réseau est là) : envoyé hors du passage en
+   * cours et du verrou entre onglets, sans attendre les autres envois ; résultat annoncé par `flushed` comme un passage.
+   */
+  async function express(entry) {
+    if (inflight.has(entry.id)) return null;
+    const report = { sent: [], failed: [], pending: 0 };
+    await process(entry, report);
+    report.pending = await count();
+    remember(report.pending);
+    emit(EVENTS.flushed, report);
+    schedule().catch(() => undefined);
     return report;
   }
 
@@ -369,7 +413,7 @@ export function createOutbox(opts = {}) {
     if (stopper) stopper();
   }
 
-  return { add, list, count, get, remove, purge, flush, start, stop };
+  return { add, list, count, get, remove, purge, flush, express, start, stop };
 }
 
 let shared = null;

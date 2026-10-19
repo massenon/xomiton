@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\CsvExportController;
 use App\Http\Controllers\Admin\MaintenancePreviewController;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Livewire\Admin\Journal\Index as JournalIndex;
 use App\Livewire\Admin\Maintenance\Index as MaintenanceIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +42,6 @@ $screens = [
     ['/mises-a-jour', 'mises-a-jour', 'Mises à jour & optimisation', 'admin/mises-a-jour.php'],
     ['/emails', 'emails', 'Templates e-mails', 'admin/emails.php'],
     ['/parametres', 'parametres', 'Paramètres', 'admin/parametres.php'],
-    ['/journal', 'journal', 'Journal d’audit', 'admin/journal.php'],
     ['/recherche', 'recherche', 'Recherche globale', 'admin/recherche.php'],
 ];
 
@@ -57,3 +58,11 @@ Route::middleware('can:platform.maintenance')->group(function (): void {
     Route::get('/maintenance', MaintenanceIndex::class)->name('maintenance');
     Route::get('/maintenance/apercu', MaintenancePreviewController::class)->name('maintenance.preview');
 });
+
+// --- Journal d'audit (P13-05, écran témoin de WithDataTable P10-02) : lecture et export `audit_logs.view`, purge
+// `audit_logs.purge` (superadmin) vérifiée par le composant ----------------------------------------------------------
+Route::get('/journal', JournalIndex::class)->middleware('can:audit_logs.view')->name('journal');
+
+// --- Exports CSV des écrans WithDataTable (P10-02, ADR-33) : lien signé et chiffré de courte durée, lié au compte ;
+// l'écran rejoue ses contrôles (policy, `cases.export` pour un export complet), le plafond et la ligne d'audit ----------
+Route::get('/export', CsvExportController::class)->middleware('signed')->name('export');
