@@ -116,7 +116,9 @@ return [
     |
     */
 
-    'inject_assets' => true,
+    // Xomiton : le gabarit d'administration pose lui-même @livewireStyles et @livewireScripts ; aucune injection
+    // automatique (une page publique ou membre ne reçoit jamais le JS ni le CSS de Livewire, CSP et budgets P4-12).
+    'inject_assets' => false,
 
     /*
     |---------------------------------------------------------------------------

@@ -71,9 +71,9 @@ it('fait passer les garde-fous de crise avant la base : numéros d’urgence, SO
         ->and($answer->isCrisis())->toBeTrue()
         ->and($answer->emergency)->toBeTrue()
         ->and($answer->matchedKbId)->toBeNull()
-        ->and($answer->text)->toContain('Police secours : 117')
-        ->toContain('Pompiers / secours : 118')
-        ->toContain('Ligne d’écoute Xomiton : +229 01 97 38 88 47')
+        ->and($answer->text)->toContain("Police secours\u{00A0}: 117")
+        ->toContain("Pompiers / secours\u{00A0}: 118")
+        ->toContain("Ligne d’écoute Xomiton\u{00A0}: +229 01 97 38 88 47")
         // Sans enregistrement, personne ne peut rappeler : renvoi vers « Exprimer un besoin », ni promesse ni URL.
         ->toContain(__('assistant.crisis.need'))
         ->not->toContain('recontacte')
@@ -103,7 +103,7 @@ it('prend les numéros d’urgence dans les paramètres quand ils y sont renseig
     $answer = $this->answerer->answer('je vais me tuer');
 
     // L'entrée sans libellé est ignorée ; les numéros de la config ne s'ajoutent pas à ceux des paramètres.
-    expect($answer->text)->toContain('• Ligne verte : 138')->not->toContain('555')->not->toContain('117');
+    expect($answer->text)->toContain("• Ligne verte\u{00A0}: 138")->not->toContain('555')->not->toContain('117');
 });
 
 it('replie avec bienveillance et trois questions proches quand rien ne correspond', function (): void {
@@ -183,7 +183,7 @@ it('enregistre l’échange chiffré d’un·e membre sur demande et poursuit la
         ->and($conversation->messages()->count())->toBe(4)
         ->and(AssistantConversation::query()->count())->toBe(1)
         ->and($conversation->refresh()->is_flagged)->toBeTrue()
-        ->and($conversation->flag_reason)->toBe('Mots de crise détectés : frappe')
+        ->and($conversation->flag_reason)->toBe("Mots de crise détectés\u{00A0}: frappe")
         ->and($conversation->escalated_at)->toBeNull()
         // Échange enregistré et marqué pour relecture : adresses dans le texte et escalade vers un humain.
         ->and($second->text)->toContain(url('/sos'))

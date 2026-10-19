@@ -9,10 +9,15 @@
 // première colonne après le sidenav (tabindex -1 le temps du focus ; repli : <main>) : clavier et lecteur d'écran ne
 // repassent pas le menu (WCAG 2.4.1) ; jamais au chargement initial, ni au retour arrière, ni après un envoi qui reste
 // sur place. La disposition visuelle ne change pas (la page reste une suite de colonnes de la rangée).
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+// P13-08 : bandeau d'annonce préalable d'une maintenance planifiée (prop partagée `maintenance_notice`, textes neutres
+// composés par le serveur), refermable sans bloquer, fermé pour la session de l'onglet (même clé sessionStorage que les
+// gabarits Blade, shared/dismissible.js).
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { pathOf } from '@/app/memberNav';
+import type { MaintenanceNotice } from '@/app/types';
+import XmAlert from '@/components/XmAlert.vue';
 import XmFlashStatus from '@/components/XmFlashStatus.vue';
 import XmHeader from '@/components/XmHeader.vue';
 import XmSidenav from '@/components/XmSidenav.vue';
@@ -45,6 +50,28 @@ function focusContent({ scroll = false } = {}) {
 
 const skip = () => focusContent({ scroll: true });
 
+const DISMISS_PREFIX = 'xm-dismissed:';
+const readDismissed = (key: string): boolean => {
+    try {
+        return window.sessionStorage.getItem(DISMISS_PREFIX + key) === '1';
+    } catch {
+        return false;
+    }
+};
+const dismissedNotices = ref<string[]>([]);
+const notice = computed(() => {
+    const value = (page.props as { maintenance_notice?: MaintenanceNotice | null }).maintenance_notice ?? null;
+    return value && !dismissedNotices.value.includes(value.key) && !readDismissed(value.key) ? value : null;
+});
+function dismissNotice(key: string) {
+    dismissedNotices.value = [...dismissedNotices.value, key];
+    try {
+        window.sessionStorage.setItem(DISMISS_PREFIX + key, '1');
+    } catch {
+        // Stockage refusé : le bandeau reste fermé pour cette page seulement.
+    }
+}
+
 let visiting = false;
 let lastPath = pathOf(page.url ?? '/');
 const offs: Array<() => void> = [];
@@ -69,6 +96,10 @@ onBeforeUnmount(() => offs.splice(0).forEach((off) => off()));
     <XmFlashStatus />
     <main id="contenu" ref="main" tabindex="-1" class="py-4">
         <div class="container">
+            <XmAlert v-if="notice" :key="notice.key" type="warning" role="status" icon="megaphone" :title="notice.title" dismissible class="mb-4" data-xm-maintenance-notice @dismiss="notice && dismissNotice(notice.key)">
+                <p class="mb-0">{{ notice.text }}</p>
+                <p v-if="notice.message" class="mb-0 mt-1 small">{{ notice.message }}</p>
+            </XmAlert>
             <XmVerifyBanner class="mb-4" />
             <div ref="row" class="row g-4">
                 <XmSidenav />

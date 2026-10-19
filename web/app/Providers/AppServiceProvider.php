@@ -13,6 +13,7 @@ use App\Application\Alerts\Listeners\NotifyAuthorOfStatusChange;
 use App\Application\Alerts\Listeners\NotifySosCancelled;
 use App\Application\Alerts\Listeners\NotifySosSafe;
 use App\Application\Alerts\Listeners\NotifySosTriggered;
+use App\Application\Assistant\AssistantProvider;
 use App\Application\Moderation\Listeners\NotifyModerators;
 use App\Application\Newsletter\Listeners\LogCampaignSent;
 use App\Application\Shared\SosBurstWatch;
@@ -32,6 +33,7 @@ use App\Domain\Notifications\Contracts\FcmSender;
 use App\Domain\Notifications\Contracts\PushSender;
 use App\Domain\Notifications\Contracts\SmsSender;
 use App\Domain\Sync\Events\SyncConflictDetected;
+use App\Infrastructure\Assistant\AssistantProviders;
 use App\Infrastructure\Notifications\NotificationDrivers;
 use App\Infrastructure\Session\GuestPrivateDatabaseSessionHandler;
 use App\Models\AuditLog;
@@ -106,6 +108,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerNotificationDrivers();
+        $this->registerAssistantProvider();
     }
 
     /**
@@ -147,6 +150,14 @@ class AppServiceProvider extends ServiceProvider
 
         // Canal `database` : renseigne notifications.category et is_sensitive à l'insertion (DATABASE_DICTIONARY §9).
         $this->app->bind(DatabaseChannel::class, XomitonDatabaseChannel::class);
+    }
+
+    /**
+     * Lot assistant (P8-11, Q7) : fournisseur de l'assistant membre, `kb` (base de connaissances) par défaut.
+     */
+    private function registerAssistantProvider(): void
+    {
+        $this->app->singleton(AssistantProvider::class, static fn (Application $app): AssistantProvider => AssistantProviders::make($app));
     }
 
     /**
@@ -269,7 +280,8 @@ class AppServiceProvider extends ServiceProvider
             ->by('api|'.($request->user('sanctum')?->getAuthIdentifier() ?? $request->ip()))
             ->response($tooMany));
 
-        // Assistant public de l'accueil (P4-01) : par IP, qu'on soit connecté·e ou non (aucune réponse n'est enregistrée).
+        // Assistant (P4-01 accueil, P8-11 /assistant) : par IP, qu'on soit connecté·e ou non (se connecter ne remet pas le
+        // compteur à zéro).
         RateLimiter::for('assistant', static fn (Request $request): Limit => Limit::perMinute(self::limit('assistant_per_minute'))
             ->by('assistant|'.$request->ip())
             ->response($tooMany));
@@ -324,6 +336,17 @@ class AppServiceProvider extends ServiceProvider
         // par compte et par minute, sans limite pour la page sans `invite`.
         RateLimiter::for('network_invite', static fn (Request $request): Limit => Limit::perDay(self::limit('network_invites_per_day'))
             ->by('network_invite|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+        // Recherche membre (P8-13) : `GET search` et `search/suggestions` par compte et par minute, hors `api` (les
+        // suggestions instantanées de l'en-tête ne doivent pas épuiser le quota de la cloche ou de la messagerie). La clé
+        // ne porte jamais le terme cherché.
+        RateLimiter::for('search', static fn (Request $request): Limit => Limit::perMinute(self::limit('search_per_minute'))
+            ->by('search|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+        // Annuaire membre (P8-12) : demandes de rappel par compte et par heure (`idempotent:required,limit=directory_callback`),
+        // à part du limiteur `report` par IP : les membres derrière un même CGNAT n'épuisent pas le quota des signalements.
+        RateLimiter::for('directory_callback', static fn (Request $request): Limit => Limit::perHour(self::limit('directory_callback_per_hour'))
+            ->by('directory_callback|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
         RateLimiter::for('network_preview', static fn (Request $request): Limit => $request->query('invite') === null
             ? Limit::none()

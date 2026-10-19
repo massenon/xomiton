@@ -6,26 +6,29 @@ namespace App\Application\Platform;
 
 use App\Models\MaintenanceWindow;
 use App\Models\User;
-use App\Support\Audit;
 use App\Support\Settings;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Lève le mode maintenance (RG-14) : baisse la bascule `maintenance`, efface les dates annoncées et clôt les fenêtres
- * `maintenance_windows` en cours (désactivées, jamais supprimées : elles restent dans l'historique).
- * Journalisé dans audit_logs.
+ * `maintenance_windows` en cours (désactivées, jamais supprimées : elles restent dans l'historique). Les fenêtres à
+ * venir restent planifiées (CancelMaintenanceWindow les annule une à une). Journalisé dans audit_logs avec le motif.
+ * `$by` nul : commande de secours `xomiton:maintenance off` (journal « système »).
  */
 final class DisableMaintenance
 {
     /**
      * @return int Nombre de fenêtres en cours clôturées.
      */
-    public function __invoke(User $by): int
+    public function __invoke(?User $by, ?string $reason = null): int
     {
-        return DB::transaction(function () use ($by): int {
-            Settings::set(MaintenanceStatus::SETTING_FLAG, false, (int) $by->getKey());
-            Settings::set(MaintenanceStatus::SETTING_START, null, (int) $by->getKey());
-            Settings::set(MaintenanceStatus::SETTING_END, null, (int) $by->getKey());
+        $reason = EnableMaintenance::clean($reason, EnableMaintenance::REASON_MAX_LENGTH);
+        $byId = $by === null ? null : (int) $by->getKey();
+
+        $closed = DB::transaction(function () use ($by, $byId, $reason): int {
+            Settings::set(MaintenanceStatus::SETTING_FLAG, false, $byId);
+            Settings::set(MaintenanceStatus::SETTING_START, null, $byId);
+            Settings::set(MaintenanceStatus::SETTING_END, null, $byId);
 
             $closed = 0;
 
@@ -34,9 +37,13 @@ final class DisableMaintenance
                 $closed++;
             });
 
-            Audit::logWith('maintenance.disabled', ['closed_windows' => $closed], null, $by);
+            MaintenanceAudit::log('maintenance.disabled', ['reason' => $reason, 'closed_windows' => $closed], null, $by);
 
             return $closed;
         });
+
+        MaintenanceStatus::forget();
+
+        return $closed;
     }
 }

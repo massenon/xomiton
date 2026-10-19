@@ -14,6 +14,8 @@ use Illuminate\Support\Carbon;
 /**
  * Fenêtre de maintenance (DATABASE_DICTIONARY.md §10 `maintenance_windows`) : pendant une fenêtre active et en cours,
  * seule l'administration peut se connecter ; le message est affiché aux autres visiteur·ses.
+ * P13-06 : motif interne (`reason`, jamais public), annonce préalable `announce_hours` heures avant le début (bandeau
+ * P13-08), annulation d'une fenêtre à venir (`cancelled_at`, `is_active` faux : la ligne reste dans l'historique).
  */
 class MaintenanceWindow extends Model
 {
@@ -29,7 +31,10 @@ class MaintenanceWindow extends Model
         'starts_at',
         'ends_at',
         'message',
+        'reason',
+        'announce_hours',
         'is_active',
+        'cancelled_at',
         'created_by',
     ];
 
@@ -42,6 +47,8 @@ class MaintenanceWindow extends Model
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
             'is_active' => 'boolean',
+            'announce_hours' => 'integer',
+            'cancelled_at' => 'datetime',
         ];
     }
 
@@ -84,6 +91,17 @@ class MaintenanceWindow extends Model
     }
 
     /**
+     * Fenêtres actives qui chevauchent l'intervalle [début, fin[ (en cours ou à venir ; les fenêtres closes ou
+     * annulées ne comptent pas).
+     *
+     * @param  Builder<MaintenanceWindow>  $query
+     */
+    public function scopeOverlapping(Builder $query, Carbon $startsAt, Carbon $endsAt): void
+    {
+        $query->active()->where('starts_at', '<', $endsAt)->where('ends_at', '>', $startsAt);
+    }
+
+    /**
      * Y a-t-il une maintenance en cours ?
      */
     public static function isUnderMaintenance(?Carbon $at = null): bool
@@ -101,6 +119,25 @@ class MaintenanceWindow extends Model
     public function isPast(?Carbon $at = null): bool
     {
         return $this->ends_at->lte($at ?? now());
+    }
+
+    /** Début de l'annonce préalable (bandeau P13-08) : `announce_hours` heures avant le début. */
+    public function announcedFrom(): Carbon
+    {
+        return $this->starts_at->copy()->subHours(max(0, (int) $this->announce_hours));
+    }
+
+    /** La fenêtre, à venir, est-elle dans son délai d'annonce ? */
+    public function isAnnounced(?Carbon $at = null): bool
+    {
+        $at ??= now();
+
+        return $this->is_active && $this->starts_at->gt($at) && (int) $this->announce_hours > 0 && $this->announcedFrom()->lte($at);
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->cancelled_at !== null;
     }
 
     public function displayMessage(): string

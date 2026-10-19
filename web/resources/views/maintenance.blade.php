@@ -1,65 +1,136 @@
 {{--
-    Page de maintenance (RG-14, P2-11, Q28) : gabarit plain, une colonne, aucun décor. Rendue avec le statut 503 par
-    App\Http\Middleware\EnsureNotInMaintenance et par resources/views/errors/503.blade.php.
-    Variables : message (texte personnalisable `maint_msg` ou fenêtre), startsAt / endsAt (Carbon|null), disconnected (bool).
-    Les parcours garantis par RG-01 (SOS, signalement, urgences) restent accessibles et sont mis en avant.
+    Page de maintenance (RG-14, P2-11, Q28 ; refonte P13-07) : document autonome, rendu avec le statut 503 par
+    App\Http\Middleware\EnsureNotInMaintenance (MaintenancePage::response), par resources/views/errors/503.blade.php
+    (variante `generic`) et par l'aperçu de l'administration. Aucune dépendance au manifest Vite : CSS en ligne minifié
+    (maintenance/page.css + content.css, < 30 Ko), logo et illustration SVG en ligne, police Montserrat du build si le
+    manifest existe, sinon pile système ; `noindex`. Sans JavaScript : la fin prévue reste écrite en clair. Avec :
+    compte à rebours, barre d'avancement, dépassement de la reprise annoncée (classe .xmm-overdue, phrase remplacée),
+    annonces `aria-live` aux seuils 60 / 30 / 15 / 5 min puis au dépassement et à la réouverture, vérification de la
+    réouverture (GET /api/v1/status toutes les 60 s, décalage aléatoire) puis rechargement ; une nouvelle reprise
+    annoncée recharge la page (heures recomposées par le serveur, fuseau xomiton.display_timezone).
+    Thème : choix enregistré (`localStorage.theme` clair ou sombre, comme partials/head) sinon préférence du système.
+    Variables : MaintenancePage::data().
 --}}
-@php
-    $disconnected = $disconnected ?? false;
-    $fmtDate = static fn (\Illuminate\Support\Carbon $d): string => $d->copy()->locale('fr')->isoFormat('Do MMMM YYYY');
-    $fmtTime = static fn (\Illuminate\Support\Carbon $d): string => $d->format('G').' h'.($d->format('i') !== '00' ? ' '.$d->format('i') : '');
-    $numbers = \App\Support\Settings::array('emergency_numbers', (array) config('xomiton.assistant.emergency_numbers', []));
-@endphp
-<x-layouts.plain :seo="['title' => __('maintenance.page_title'), 'index' => false]" body-class="xm-maintenance">
-    <section class="text-center" data-xm-maintenance>
-        <div class="display-3 text-primary"><i class="bi bi-tools" aria-hidden="true"></i></div>
-        <h1 class="h2 fw-bold mt-3">{{ __('maintenance.title') }}</h1>
-        <p class="lead mb-3">{{ $message }}</p>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{{ $pageTitle }} – {{ __('seo.site_name') }}</title>
+    <meta name="description" content="{{ $metaDescription }}">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0433C3">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/xomiton/brand/icone-appli-bleu.svg') }}">
+    <script nonce="{{ $nonce }}">(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-bs-theme',t)}}catch(e){}})();</script>
+    @if ($fontUrl)
+        <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ $fontUrl }}">
+    @endif
+    <style nonce="{{ $nonce }}">
+@foreach ([800 => ['Montserrat ExtraBold', 'Montserrat-ExtraBold'], 700 => ['Montserrat Bold', 'Montserrat-Bold']] as $weight => $locals)
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:{{ $weight }};font-display:swap;src:local("{{ $locals[0] }}"),local("{{ $locals[1] }}")@if ($fontUrl),url("{{ $fontUrl }}") format("woff2")@endif;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@endforeach
+{!! $css !!}
+    </style>
+</head>
+<body>
+    @if ($preview)
+        <p class="xmm-ribbon" role="note">{{ __('maintenance.admin.preview_ribbon') }}</p>
+    @endif
+    @include('maintenance.content')
+    @if ($statusUrl)
+        <script nonce="{{ $nonce }}">
+            (function () {
+                var root = document.querySelector('[data-xm-maintenance]');
+                if (!root) return;
+                root.classList.add('xmm-js');
+                var attr = function (name) { return root.getAttribute(name) || ''; };
+                var ends = Date.parse(attr('data-ends-at'));
+                var starts = Date.parse(attr('data-starts-at'));
+                var url = attr('data-status-url');
+                var poll = (parseInt(attr('data-poll'), 10) || 60) * 1000;
+                var marks = attr('data-announce').split(',').map(Number).filter(function (n) { return n > 0; });
+                var texts = {};
+                try { texts = JSON.parse(attr('data-texts')) || {}; } catch (e) {}
+                var $ = function (sel) { return root.querySelector(sel); };
+                var out = $('[data-xmm-remaining]');
+                var bar = $('[data-xmm-bar]');
+                var live = $('[data-xmm-announce]');
+                var skew = 0;
+                var mark = null;
+                var overdue = root.classList.contains('xmm-overdue');
+                var reopening = false;
+                var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+                var say = function (text) { if (live && text) { live.textContent = text; } };
+                var setText = function (sel, text) { var el = $(sel); if (el && text) { el.textContent = text; } };
 
-        @if ($disconnected)
-            <x-alert type="info" class="text-start">{{ __('maintenance.disconnected') }}</x-alert>
-        @endif
+                // Seuil déjà franchi au chargement : rien n'est annoncé avant le seuil suivant (la phrase en clair suffit).
+                function markFor(minutes) {
+                    var found = null;
+                    marks.forEach(function (m) { if (minutes <= m && (found === null || m < found)) { found = m; } });
+                    return found;
+                }
 
-        @if ($startsAt)
-            <p class="text-body-secondary mb-1">{{ __('maintenance.since', ['date' => $fmtDate($startsAt), 'time' => $fmtTime($startsAt)]) }}</p>
-        @endif
-        <p class="fw-bold">
-            @if ($endsAt)
-                {{ __('maintenance.until', ['date' => $fmtDate($endsAt), 'time' => $fmtTime($endsAt)]) }}
-            @else
-                {{ __('maintenance.until_unknown') }}
-            @endif
-        </p>
+                function showOverdue() {
+                    if (overdue) return;
+                    overdue = true;
+                    root.classList.add('xmm-overdue');
+                    setText('[data-xmm-ends]', texts.soon);
+                    setText('[data-xmm-until]', texts.overdue);
+                    say(texts.overdue);
+                    check();
+                }
 
-        <a class="btn btn-outline-primary" href="{{ url()->current() }}"><i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>{{ __('maintenance.refresh') }}</a>
-    </section>
+                function tick() {
+                    if (isNaN(ends) || overdue) return;
+                    var now = Date.now() + skew;
+                    var left = Math.max(0, Math.round((ends - now) / 1000));
+                    if (left === 0) { showOverdue(); return; }
+                    var h = Math.floor(left / 3600), m = Math.floor((left % 3600) / 60), s = left % 60;
+                    if (out) out.textContent = (h > 0 ? pad(h) + ':' : '') + pad(m) + ':' + pad(s);
+                    if (bar && !isNaN(starts) && ends > starts) {
+                        var p = Math.min(1, Math.max(0, (now - starts) / (ends - starts)));
+                        bar.style.setProperty('--xmm-p', p.toFixed(3));
+                        bar.setAttribute('aria-valuenow', String(Math.round(p * 100)));
+                    }
+                    var current = markFor(Math.ceil(left / 60));
+                    if (mark === null) { mark = current === null ? Infinity : current; return; }
+                    if (current !== null && current < mark) {
+                        mark = current;
+                        say(String(texts.remaining || '').replace(':minutes', String(current)));
+                    }
+                }
 
-    <section class="card border-danger-subtle mt-4" aria-labelledby="maintenance-help-title">
-        <div class="card-body">
-            <h2 class="h5 fw-bold text-danger" id="maintenance-help-title"><i class="bi bi-heart-pulse-fill me-1" aria-hidden="true"></i>{{ __('maintenance.always_available.title') }}</h2>
-            <p class="mb-3">{{ __('maintenance.always_available.text') }}</p>
-            <div class="d-flex flex-column flex-sm-row gap-2">
-                <a class="btn btn-danger fw-bold flex-fill" href="{{ route('sos') }}"><i class="bi bi-exclamation-octagon-fill me-1" aria-hidden="true"></i>{{ __('maintenance.always_available.sos') }}</a>
-                <a class="btn btn-outline-danger flex-fill" href="{{ route('signaler') }}"><i class="bi bi-flag-fill me-1" aria-hidden="true"></i>{{ __('maintenance.always_available.report') }}</a>
-                <a class="btn btn-outline-secondary flex-fill" href="{{ route('urgences') }}"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i>{{ __('maintenance.always_available.emergency') }}</a>
-            </div>
+                function reopen() {
+                    if (reopening) return;
+                    reopening = true;
+                    root.classList.add('xmm-open');
+                    say(texts.reopened);
+                    setTimeout(function () { window.location.reload(); }, 1500);
+                }
 
-            @if ($numbers !== [])
-                <h3 class="h6 fw-bold mt-4 mb-2">{{ __('maintenance.always_available.numbers_title') }}</h3>
-                <ul class="list-unstyled mb-0">
-                    @foreach ($numbers as $entry)
-                        @if (is_array($entry) && isset($entry['label'], $entry['number']))
-                            <li class="d-flex justify-content-between align-items-center py-2 border-top">
-                                <span>{{ $entry['label'] }}</span>
-                                <a class="fw-bold text-decoration-none" href="tel:{{ preg_replace('/[^+0-9]/', '', (string) $entry['number']) }}">{{ $entry['number'] }}</a>
-                            </li>
-                        @endif
-                    @endforeach
-                </ul>
-            @endif
-        </div>
-    </section>
+                function check() {
+                    if (!window.fetch || reopening) return;
+                    fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store', credentials: 'omit' })
+                        .then(function (r) { return r.ok ? r.json() : null; })
+                        .then(function (body) {
+                            var data = body && body.data;
+                            if (!data || !data.maintenance) return;
+                            if (data.server_time) { var server = Date.parse(data.server_time); if (!isNaN(server)) skew = server - Date.now(); }
+                            if (data.maintenance.active === false) { reopen(); return; }
+                            // Nouvelle reprise annoncée : la page est recomposée par le serveur (heures en clair, fuseau).
+                            var next = Date.parse(data.maintenance.ends_at || '');
+                            if (!isNaN(next) && next !== ends) { reopening = true; window.location.reload(); }
+                        })
+                        .catch(function () {});
+                }
 
-    <p class="text-center small text-body-secondary mt-4 mb-1"><a href="{{ route('connexion') }}">{{ __('maintenance.admin_login') }}</a></p>
-    <p class="text-center small text-body-secondary mb-0"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>{{ __('maintenance.lock_screen_notice') }}</p>
-</x-layouts.plain>
+                tick();
+                setInterval(tick, 1000);
+                setTimeout(function loop() { check(); setTimeout(loop, poll); }, Math.round(poll * (0.5 + Math.random() * 0.5)));
+                document.addEventListener('visibilitychange', function () { if (!document.hidden) check(); });
+            })();
+        </script>
+    @endif
+</body>
+</html>

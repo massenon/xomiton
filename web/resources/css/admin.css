@@ -5,6 +5,7 @@
 @import 'quill/dist/quill.snow.css';
 @import 'choices.js/public/assets/styles/choices.min.css';
 @import 'flatpickr/dist/flatpickr.min.css';
+@import './app/pages/admin-maintenance.css';
 
 .swal2-popup { font-family: var(--xm-font-body); border-radius: 16px; }
 .swal2-title { font-family: var(--xm-font-heading); }

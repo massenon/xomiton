@@ -120,10 +120,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'sync.view_own' => $peerAndAdmin,
             'sync.manage' => $admins,
 
-            // Mises à jour, maintenance, sauvegardes
+            // Mises à jour, maintenance, sauvegardes. `platform.maintenance` (écran /admin/maintenance, P13-06 : admin et
+            // superadmin, les deux rôles qui gardent l'accès pendant la maintenance, RG-14) remplace `maintenance.manage`.
             'updates.view' => $admins,
             'updates.manage' => $superOnly,
-            'maintenance.manage' => $superOnly,
+            'platform.maintenance' => $admins,
             'backups.create' => $admins,
             'backups.download' => $admins,
             'backups.restore' => $superOnly,

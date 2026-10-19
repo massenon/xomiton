@@ -80,6 +80,13 @@ h5, .h5 { font-size: var(--xm-fs-h5); font-weight: 600; }
   --bs-btn-active-color: var(--xm-on-secondary); --bs-btn-active-bg: var(--xm-secondary-active); --bs-btn-active-border-color: var(--xm-secondary-active);
   --bs-btn-disabled-color: var(--xm-secondary); --bs-btn-disabled-border-color: var(--xm-secondary);
 }
+/* Succès : le vert clair du thème (2,45:1 avec le blanc) cède à --xm-success (5,07:1 avec --xm-bg, 9,99:1 en sombre). */
+.btn-success {
+  --bs-btn-color: var(--xm-bg); --bs-btn-bg: var(--xm-success); --bs-btn-border-color: var(--xm-success);
+  --bs-btn-hover-color: var(--xm-bg); --bs-btn-hover-bg: var(--xm-success); --bs-btn-hover-border-color: var(--xm-text);
+  --bs-btn-active-color: var(--xm-bg); --bs-btn-active-bg: var(--xm-success); --bs-btn-active-border-color: var(--xm-text);
+  --bs-btn-disabled-color: var(--xm-bg); --bs-btn-disabled-bg: var(--xm-success); --bs-btn-disabled-border-color: var(--xm-success);
+}
 .btn-light { --bs-btn-bg: var(--xm-surface); --bs-btn-border-color: var(--xm-border); --bs-btn-color: var(--xm-text); --bs-btn-hover-bg: var(--xm-surface-muted); --bs-btn-hover-border-color: var(--xm-border); --bs-btn-hover-color: var(--xm-text); }
 
 /* ---------- Utilitaires de couleur ---------- */
@@ -133,6 +140,9 @@ html { scroll-padding-top: 96px; }          /* le header sticky ne masque jamais
 .text-bg-warning { color: var(--xm-on-warning) !important; background-color: var(--xm-warning) !important; }
 .alert-danger { --bs-alert-bg: var(--xm-secondary-subtle); --bs-alert-color: var(--xm-secondary-subtle-text); --bs-alert-border-color: var(--xm-secondary); }
 .alert-info { --bs-alert-bg: var(--xm-primary-subtle); --bs-alert-color: var(--xm-primary-subtle-text); --bs-alert-border-color: var(--xm-primary); }
+/* Texte ocre du thème (2,97:1 sur son fond jaune pâle) remplacé par --xm-warning-text (5,0:1) ; en sombre, --xm-warning. */
+.alert-warning { --bs-alert-color: var(--xm-warning-text); --bs-alert-link-color: var(--xm-warning-text); }
+[data-bs-theme="dark"] .alert-warning { --bs-alert-color: var(--xm-warning); --bs-alert-link-color: var(--xm-warning); }
 
 /* ---------- Urgence & statuts : couleur + icône + texte (jamais la couleur seule) ---------- */
 .xm-urgency { display: inline-flex; align-items: center; gap: var(--xm-space-2); padding: 2px var(--xm-space-3); border-radius: var(--xm-radius-pill); font-size: var(--xm-fs-small); font-weight: 700; border: 1px solid currentColor; background: var(--xm-surface); }

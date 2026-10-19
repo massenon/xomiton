@@ -1,7 +1,8 @@
 {{--
     Fiches de l'annuaire (prototype urgences.php l.66-90) : ListEmergencyContacts — actives, `is_public`, point focal,
     juriste, psychologue ou point focal national (Q19, Q59), celles du département choisi d'abord ; nom, rôle, commune
-    et département (ou « National »), disponibilité, Appeler (tel:) et WhatsApp ; jamais l'e-mail ni les notes.
+    et département (ou « National »), disponibilité, Appeler (tel:) et WhatsApp (WhatsAppLink : WhatsApp sinon téléphone,
+    indicatif 229) ; couleur de rôle DirectoryRole::memberBadge() (Q62) ; jamais l'e-mail ni les notes.
     Avatar à initiales (aucune photo de fiche). Département : formulaire GET + bouton (pas de soumission au changement,
     WCAG 3.2.2) ; « Tout l'annuaire » pour un·e membre seulement (l'annuaire complet reste membre, Q19).
     Liste en `data-nosnippet` : page indexable, mais noms et numéros des personnes hors des extraits de recherche tant
@@ -42,7 +43,7 @@
         <ul class="row g-3 list-unstyled mb-0" data-nosnippet>
             @foreach ($contacts as $contact)
                 @php
-                    $badge = $contact->role->badge();
+                    $whatsapp = \App\Support\WhatsAppLink::for($contact->whatsapp, $contact->phone);
                     $place = $contact->zone_id === null || $contact->is_national_focal
                         ? __('pages/urgences.contacts.national')
                         : collect([$contact->commune?->name, $contact->zone?->name])->filter()->implode(', ');
@@ -54,7 +55,7 @@
                             <div class="flex-grow-1 xm-urg-shrink">
                                 <h3 class="h6 fw-bold mb-1" id="urg-contact-{{ $contact->getKey() }}">{{ $contact->name }}</h3>
                                 <p class="small text-secondary mb-0">
-                                    <x-badge soft :color="in_array($badge, ['secondary', 'danger'], true) ? 'primary' : $badge">{{ $contact->role->label() }}</x-badge>
+                                    <x-badge soft :color="$contact->role->memberBadge()">{{ $contact->role->label() }}</x-badge>
                                     {{ $place }}
                                 </p>
                                 @if ($contact->org)
@@ -65,13 +66,13 @@
                                 @endif
                             </div>
                         </div>
-                        @if ($contact->phone || $contact->whatsapp)
+                        @if ($contact->phone || $whatsapp)
                             <div class="d-flex gap-2 mt-3 xm-urg-contact-actions">
                                 @if ($contact->phone)
                                     <a class="btn btn-sm btn-success flex-fill" href="{{ \App\Application\Shared\KnowledgeBaseAnswerer::telHref((string) $contact->phone) }}"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i>{{ __('pages/urgences.contacts.call') }}<span class="visually-hidden"> {{ $contact->name }}</span></a>
                                 @endif
-                                @if ($contact->whatsapp)
-                                    <a class="btn btn-sm btn-success-soft flex-fill" href="https://wa.me/{{ preg_replace('/\D/', '', (string) $contact->whatsapp) }}" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i>{{ __('pages/urgences.contacts.whatsapp') }}<span class="visually-hidden"> {{ $contact->name }} {{ __('microcopy.a11y.opens_new_tab') }}</span></a>
+                                @if ($whatsapp)
+                                    <a class="btn btn-sm btn-success-soft flex-fill" href="{{ $whatsapp }}" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i>{{ __('pages/urgences.contacts.whatsapp') }}<span class="visually-hidden"> {{ $contact->name }} {{ __('microcopy.a11y.opens_new_tab') }}</span></a>
                                 @endif
                             </div>
                         @endif

@@ -2,6 +2,7 @@
 // Chargé par les paquets public (Alpine démarré après cet import) et administration (Alpine fourni par Livewire).
 // Aucun état n'est stocké hors de la page : le marquage « lu » et le tri réels viennent du serveur (Livewire, API).
 import { Tab, Toast } from '../shared/bootstrap.js';
+import { bindDismissible } from '../shared/dismissible.js';
 import './sos-button.js';
 
 const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
@@ -40,6 +41,9 @@ window.addEventListener('toast', (e) => {
   if (d.message) window.XM.toast(d.message, d.type || 'primary');
 });
 ready(() => document.querySelectorAll('[data-xm-toast-autoshow]').forEach(showToast));
+
+/* ---------- Bandeaux refermables mémorisés pour la session (annonce de maintenance, P13-08) ---------- */
+ready(() => bindDismissible(document));
 
 /* ---------- Modales (<x-modal>) : retour du focus au déclencheur, mot de confirmation, garde « formulaire modifié » ---------- */
 const syncConfirmWord = (modal) => {

@@ -9,6 +9,8 @@ use Illuminate\Support\Carbon;
 
 /**
  * Photographie du mode maintenance à un instant donné (MaintenanceStatus::snapshot) : ce que la page 503 affiche.
+ * `overdue` : une reprise avait été annoncée et elle est passée alors que la maintenance continue (activation
+ * immédiate : la durée n'est qu'une estimation, Q85) — la page le dit au lieu d'afficher une heure dépassée.
  */
 final readonly class MaintenanceSnapshot
 {
@@ -18,6 +20,7 @@ final readonly class MaintenanceSnapshot
         public string $message,
         public ?Carbon $startsAt,
         public ?Carbon $endsAt,
+        public bool $overdue = false,
     ) {}
 
     /**

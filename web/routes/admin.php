@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\MaintenancePreviewController;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Livewire\Admin\Maintenance\Index as MaintenanceIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,3 +51,9 @@ foreach ($screens as [$uri, $name, $title, $prototype]) {
         ->defaults('prototype', $prototype)
         ->defaults('layout', 'admin');
 }
+
+// --- Mode maintenance (P13-06) : admin et superadmin (`platform.maintenance`), jamais bloqué par la maintenance -------
+Route::middleware('can:platform.maintenance')->group(function (): void {
+    Route::get('/maintenance', MaintenanceIndex::class)->name('maintenance');
+    Route::get('/maintenance/apercu', MaintenancePreviewController::class)->name('maintenance.preview');
+});

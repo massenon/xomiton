@@ -1,0 +1,54 @@
+/*
+ * Écran « Mode maintenance » de l'administration (P13-06) : bandeau d'état coloré selon l'état (inactif · annoncé ·
+ * en cours · terminé), fenêtres planifiées en liste datée, aperçu de la page publique dans un cadre de téléphone,
+ * modale rouge d'activation. Jetons --xm-* uniquement ; mouvement fini (deux pulsations, WCAG 2.2.2) et coupé par
+ * prefers-reduced-motion (tokens.css). Le rouge reste sur le bandeau et l'icône d'état : chiffres en --xm-text.
+ */
+.xm-maint__intro { max-width: 72ch; }
+
+/* Bandeau d'état */
+.xm-maint-state { --xm-maint-accent: var(--xm-success); border: 1px solid var(--xm-border); border-left: 6px solid var(--xm-maint-accent); overflow: hidden; }
+.xm-maint-state--announced { --xm-maint-accent: var(--xm-warning); }
+.xm-maint-state--ongoing { --xm-maint-accent: var(--xm-danger); background: linear-gradient(100deg, var(--xm-secondary-subtle) 0%, var(--xm-surface) 46%); }
+.xm-maint-state--ended { --xm-maint-accent: var(--xm-primary); }
+.xm-maint-state .card-body { display: grid; gap: var(--xm-space-4); align-items: center; padding: var(--xm-space-5); }
+@media (min-width: 992px) {
+  .xm-maint-state .card-body { grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--xm-space-5); }
+}
+.xm-maint-state__side { display: flex; flex-wrap: wrap; align-items: center; gap: var(--xm-space-3) var(--xm-space-4); }
+@media (min-width: 992px) { .xm-maint-state__side { flex-direction: column; align-items: stretch; } }
+.xm-maint-state__icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: var(--xm-radius-lg); background: var(--xm-surface-muted); color: var(--xm-maint-accent); font-size: 1.9rem; }
+.xm-maint-state--ongoing .xm-maint-state__icon { background: var(--xm-danger); color: var(--xm-on-secondary); position: relative; }
+.xm-maint-state--ongoing .xm-maint-state__icon::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 2px solid var(--xm-danger); animation: xm-maint-ping 2.2s var(--xm-ease-out) 2; }
+.xm-maint-state__clock { padding: var(--xm-space-3) var(--xm-space-4); border-radius: var(--xm-radius-lg); background: var(--xm-surface); border: 1px solid var(--xm-border); min-width: 180px; }
+.xm-maint-state__digits { font-family: var(--xm-font-heading); font-weight: 800; font-size: 2rem; line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--xm-text); }
+.xm-maint-state__actions .btn { width: 100%; }
+@keyframes xm-maint-ping { 0% { transform: scale(1); opacity: .7; } 80%, 100% { transform: scale(1.35); opacity: 0; } }
+
+/* Fenêtres planifiées */
+.xm-maint-windows { display: grid; gap: var(--xm-space-3); }
+.xm-maint-window { display: flex; gap: var(--xm-space-4); align-items: flex-start; padding: var(--xm-space-3) var(--xm-space-4); border: 1px solid var(--xm-border); border-radius: var(--xm-radius-lg); background: var(--xm-surface); }
+.xm-maint-window__date { display: grid; place-items: center; flex: none; width: 56px; padding: 6px 0; border-radius: 12px; background: var(--xm-primary-subtle); color: var(--xm-primary-subtle-text); line-height: 1; }
+.xm-maint-window__day { font-family: var(--xm-font-heading); font-weight: 800; font-size: 1.5rem; }
+.xm-maint-window__month { font-size: .875rem; text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+@media (max-width: 575.98px) { .xm-maint-window { flex-wrap: wrap; } }
+
+/* Liste blanche (lecture seule) et garde-fous */
+.xm-maint-allow { display: grid; gap: var(--xm-space-2); }
+.xm-maint-allow li { display: flex; gap: var(--xm-space-2); align-items: flex-start; font-size: .9375rem; }
+.xm-maint-allow li > i { margin-top: 2px; }
+.xm-maint-path { font-size: .875rem; padding: 1px 6px; border-radius: var(--xm-radius-sm); background: var(--xm-surface-muted); color: var(--xm-text-muted); }
+.xm-maint-cli { padding: var(--xm-space-3) var(--xm-space-4); border-radius: var(--xm-radius-md); background: var(--xm-neutral-d-0); color: var(--xm-neutral-d-900); font-size: .875rem; white-space: pre-wrap; }
+
+/* Aperçu de la page publique : cadre de téléphone (360 × 640), même contenu que la page (maintenance/content). */
+.xm-maint-phone { position: relative; width: min(100%, 360px); margin-inline: auto; padding: 12px; border-radius: 40px; background: var(--xm-neutral-d-0); box-shadow: var(--xm-shadow-lg); }
+.xm-maint-phone__notch { position: absolute; z-index: 2; top: 12px; left: 50%; width: 96px; height: 18px; margin-left: -48px; border-radius: 0 0 14px 14px; background: var(--xm-neutral-d-0); }
+.xm-maint-phone__screen { height: 640px; overflow-y: auto; overflow-x: hidden; border-radius: 30px; background: var(--xm-surface); scrollbar-width: thin; }
+.xm-maint-phone__screen .xmm { min-height: 100%; }
+
+/* Modale rouge d'activation */
+.xm-maint-modal .modal-content { border-top: 6px solid var(--xm-danger); }
+.xm-maint-modal .modal-header { background: var(--xm-secondary-subtle); }
+/* Titre rouge foncé sur fond rose : 7,29:1 (le --xm-secondary de .text-danger n'y fait que 4,24:1). */
+.xm-maint-modal .modal-title { color: var(--xm-secondary-subtle-text) !important; font-weight: 800; }
+.xm-maint-modal .modal-body { padding-top: var(--xm-space-4) !important; }

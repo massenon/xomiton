@@ -6,6 +6,9 @@ namespace App\Http\Middleware;
 
 use App\Application\Member\MemberShell;
 use App\Application\Offline\OutboxAccount;
+use App\Application\Platform\MaintenancePage;
+use App\Application\Search\MemberSearch;
+use App\Http\Requests\Search\SearchRequest;
 use App\Models\User;
 use App\Support\Locales;
 use Closure;
@@ -89,6 +92,8 @@ class HandleInertiaRequests extends Middleware
                 'toast' => $this->flashed($request, 'toast', 'toast_type'),
                 'status' => $this->flashed($request, 'status', 'status_type'),
             ],
+            // P13-08 : annonce préalable d'une maintenance planifiée (bandeau refermable du gabarit membre), null sinon.
+            'maintenance_notice' => fn (): ?array => MaintenancePage::notice(),
             'lang' => [
                 'locale' => Locales::current(),
                 'fallback' => Locales::default(),
@@ -104,6 +109,11 @@ class HandleInertiaRequests extends Middleware
                 'sos' => [
                     'hold_ms' => (int) config('xomiton.alerts.sos_hold_ms', 2000),
                     'countdown_seconds' => (int) config('xomiton.alerts.sos_countdown_seconds', 5),
+                ],
+                // P8-13 : bornes du terme du champ de recherche de l'en-tête (suggestions, maxlength), comme l'API.
+                'search' => [
+                    'min_length' => MemberSearch::minLength(),
+                    'max_length' => SearchRequest::maxLength(),
                 ],
             ],
         ];

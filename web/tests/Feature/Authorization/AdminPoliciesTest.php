@@ -128,7 +128,7 @@ describe('SettingPolicy', function (): void {
         RoleUsers::assertAbility($this->users, 'update', $secret, ['superadmin']);
         RoleUsers::assertAbility($this->users, 'updateSmtp', Setting::class, ['superadmin']);
         RoleUsers::assertAbility($this->users, 'testSmtp', Setting::class, ['superadmin']);
-        RoleUsers::assertAbility($this->users, 'toggleMaintenance', Setting::class, ['superadmin']);
+        RoleUsers::assertAbility($this->users, 'toggleMaintenance', Setting::class, ['admin', 'superadmin']);
     });
 });
 

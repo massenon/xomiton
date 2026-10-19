@@ -36,11 +36,18 @@ it('refuse chaque écran d’administration aux rôles sans admin.access', funct
     }
 })->with(['membre', 'pair']);
 
-it('sert chaque écran d’administration aux rôles avec admin.access', function (string $role): void {
-    $this->actingAs(RoleUsers::make($role));
+it('sert chaque écran d’administration aux rôles avec admin.access, sauf ceux d’une permission propre qu’ils n’ont pas', function (string $role): void {
+    $user = RoleUsers::make($role);
+    $this->actingAs($user);
 
     foreach (adminUris() as $uri) {
-        $this->get($uri)->assertOk();
+        // Permission propre à l'écran (ex. `can:platform.maintenance`, P13-06) en plus de `admin.access`.
+        $route = Route::getRoutes()->match(Illuminate\Http\Request::create($uri));
+        $ability = collect($route->gatherMiddleware())
+            ->first(fn (string $m): bool => str_starts_with($m, 'can:') && $m !== 'can:admin.access');
+        $allowed = $ability === null || $user->can(substr((string) $ability, 4));
+
+        $allowed ? $this->get($uri)->assertOk() : $this->get($uri)->assertForbidden();
     }
 })->with(['moderateur', 'admin', 'superadmin']);
 

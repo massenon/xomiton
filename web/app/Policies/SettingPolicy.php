@@ -42,8 +42,9 @@ final class SettingPolicy
         return $user->can('settings.manage');
     }
 
+    /** Mode maintenance (P13-06) : admin et superadmin, les rôles exemptés pendant la maintenance (RG-14). */
     public function toggleMaintenance(User $user): bool
     {
-        return $user->can('maintenance.manage');
+        return $user->can('platform.maintenance');
     }
 }

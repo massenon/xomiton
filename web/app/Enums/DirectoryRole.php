@@ -37,6 +37,18 @@ enum DirectoryRole: string
         };
     }
 
+    /**
+     * Couleur du badge côté membre et public (`/annuaire`, `/urgences`, API `directory` ; Q62) : le rouge reste réservé
+     * à l'urgence et le gris se confond avec le texte secondaire, d'où la couleur primaire pour le point focal et les
+     * rôles `secondary`. `badge()` garde la couleur du prototype pour l'administration.
+     */
+    public function memberBadge(): string
+    {
+        $badge = $this->badge();
+
+        return in_array($badge, ['danger', 'secondary'], true) ? 'primary' : $badge;
+    }
+
     /** Rôles proposés comme cible d'un besoin (les autres relèvent du point focal). */
     public function isRoutable(): bool
     {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\V1\Alerts\EmergencyContactController;
 use App\Http\Controllers\Api\V1\Alerts\ReportController;
 use App\Http\Controllers\Api\V1\Alerts\SosController;
+use App\Http\Controllers\Api\V1\Assistant\AssistantConversationController;
+use App\Http\Controllers\Api\V1\Assistant\AssistantEscalationController;
 use App\Http\Controllers\Api\V1\AssistantQuestionController;
 use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
@@ -21,6 +23,7 @@ use App\Http\Controllers\Api\V1\Community\PageController;
 use App\Http\Controllers\Api\V1\Content\ResourceController;
 use App\Http\Controllers\Api\V1\Content\ThematiqueController;
 use App\Http\Controllers\Api\V1\DashboardController;
+use App\Http\Controllers\Api\V1\Directory\DirectoryController;
 use App\Http\Controllers\Api\V1\Events\EventController;
 use App\Http\Controllers\Api\V1\Feed\CommentController;
 use App\Http\Controllers\Api\V1\Feed\ContentReportController;
@@ -51,9 +54,13 @@ use App\Http\Controllers\Api\V1\Messaging\MessageController;
 use App\Http\Controllers\Api\V1\Network\FollowController;
 use App\Http\Controllers\Api\V1\Network\InvitationController;
 use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\Platform\StatusController;
 use App\Http\Controllers\Api\V1\ReferentialController;
+use App\Http\Controllers\Api\V1\Search\SearchController;
 use App\Http\Middleware\BindOutboxAccount;
+use App\Http\Middleware\ForgetSearchTerms;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 /*
  * API /api/v1 (SOFTWARE_ARCHITECTURE.md §4, docs/API.md) : REST JSON, Sanctum, réponses { data, meta?, links? }
@@ -73,9 +80,16 @@ Route::group([], function (): void {
     Route::get('/health', static fn () => response()->json(['data' => ['status' => 'ok', 'version' => config('xomiton.version', '1.0')]]))
         ->name('api.health');
 
+    // --- État public de la plateforme (P13-08, docs/API.md §5) : page de maintenance et mobile ; liste blanche de
+    // maintenance, cache serveur 15 s (MaintenanceStatus::publicStatus). Sans session même appelé depuis le site (Referer
+    // de même origine) : la réponse `Cache-Control: public` ne porte aucun Set-Cookie qu'un cache partagé garderait.
+    Route::get('/status', StatusController::class)->withoutMiddleware([EnsureFrontendRequestsAreStateful::class])->name('api.status');
+
     // --- Référentiels publics (P3-06) : cache serveur 24 h (App\Application\Shared\Referentials), ETag dérivé du contenu,
-    // If-None-Match → 304, Cache-Control public 1 h (middleware cache.headers, config xomiton.referentials.http_max_age) -----
+    // If-None-Match → 304, Cache-Control public 1 h (middleware cache.headers, config xomiton.referentials.http_max_age) ;
+    // sans session, comme `status` (revue du lot maintenance) : une réponse `public` ne porte jamais de Set-Cookie -----
     Route::middleware('cache.headers:public;max_age='.(int) config('xomiton.referentials.http_max_age', 3600).';etag')
+        ->withoutMiddleware([EnsureFrontendRequestsAreStateful::class])
         ->as('api.referentials.')
         ->group(function (): void {
             Route::get('zones', [ReferentialController::class, 'zones'])->name('zones');
@@ -94,7 +108,8 @@ Route::group([], function (): void {
         Route::post('password/reset', ResetPasswordController::class)->middleware('throttle:login')->name('password.reset');
     });
 
-    // --- Assistant public de l'accueil (P4-01, Q41 a) : KnowledgeBaseAnswerer, sans stockage ; 20/min par IP ---------------
+    // --- Assistant (P4-01, Q41 a ; P8-11) : KnowledgeBaseAnswerer, sans stockage pour un·e visiteur·se ; compte connecté :
+    // fournisseur hors crise et `persist` facultatif (AskAssistant) ; 20/min par IP ---------------------------------------
     Route::post('assistant/question', AssistantQuestionController::class)->middleware('throttle:assistant')->name('api.assistant.question');
 
     // --- Parcours de crise (P5-06, docs/API.md §6) : anonymes, liste blanche de maintenance (RG-01) ----------------------
@@ -121,9 +136,10 @@ Route::group([], function (): void {
             ->withoutMiddleware('throttle:api')->middleware('throttle:sos_owner')->name('safe');
     });
 
-    // urgences : même source que /urgences (ListEmergencyContacts), cache HTTP comme les référentiels.
+    // urgences : même source que /urgences (ListEmergencyContacts), cache HTTP comme les référentiels, sans session.
     Route::get('urgences', EmergencyContactController::class)
         ->middleware('cache.headers:public;max_age='.(int) config('xomiton.referentials.http_max_age', 3600).';etag')
+        ->withoutMiddleware([EnsureFrontendRequestsAreStateful::class])
         ->name('api.urgences.index');
 
     // --- Contenus publics pour l'application mobile (P6-08, docs/API.md §11) : mêmes requêtes que /thematiques et
@@ -148,6 +164,14 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
 
     // --- Mes signalements (P5-06) : alertes non anonymes du compte, pagination par page --------------------------------
     Route::get('signalements/mine', [ReportController::class, 'mine'])->name('api.signalements.mine');
+
+    // --- Assistant membre (P8-11, docs/API.md §5) : « Parler à un humain » = alerte besoin routée (CreateReport, quota
+    // `report` des signalements, rejeu idempotent) ; effacer une conversation enregistrée (404 si elle n'est pas à soi) ---
+    Route::prefix('assistant')->as('api.assistant.')->group(function (): void {
+        Route::post('escalate', AssistantEscalationController::class)->middleware('idempotent:required,limit=report')->name('escalate');
+        Route::delete('conversations/{conversation}', [AssistantConversationController::class, 'destroy'])->whereNumber('conversation')
+            ->name('conversations.destroy');
+    });
 
     // --- Tableau de bord mobile et publications d'un profil (P6-08, docs/API.md §11) --------------------------------
     Route::get('dashboard', DashboardController::class)->name('api.dashboard');
@@ -339,4 +363,27 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::post('{invitation}/refuse', [InvitationController::class, 'refuse'])->whereNumber('invitation')->middleware('throttle:community_write')->name('refuse');
         Route::delete('{invitation}', [InvitationController::class, 'destroy'])->whereNumber('invitation')->middleware('throttle:community_write')->name('destroy');
     });
+
+    // --- Annuaire membre (P8-12, lot annuaire-membre, docs/API.md §19) : fiches selon la portée du compte (publiques pour
+    // un·e membre, réseau compris pour pair·e validé·e, modération, administration), `no-store`. Demande de rappel →
+    // RequestCallback (P5-02, sans RG-04) : rejouable (`idempotent:required`), limiteur `directory_callback` (par compte)
+    // après la clé.
+    Route::prefix('directory')->as('api.directory.')->group(function (): void {
+        Route::get('/', [DirectoryController::class, 'index'])->name('index');
+        Route::post('{contact}/callback', [DirectoryController::class, 'callback'])->whereNumber('contact')
+            ->middleware('idempotent:required,limit=directory_callback')->name('callback');
+    });
 });
+
+// === 3. Recherche membre (P8-13, lot recherche-membre, docs/API.md §20) ==========================================
+// Ressources, thématiques, contacts de l'annuaire (portée du compte) et membres trouvables ; réponses no-store, jamais le
+// terme renvoyé. Hors du groupe 2 pour que ForgetSearchTerms passe **avant** auth:sanctum (le terme ne reste jamais dans
+// la session, même pour une requête refusée) ; hors `throttle:api` : les suggestions instantanées de l'en-tête
+// (anti-rebond) ont leur propre quota `search` par compte et n'épuisent pas celui du reste de l'espace (cloche, messages).
+// `conditional` comme tout le groupe authentifié : sans effet ici (réponses no-store, jamais d'ETag).
+Route::middleware([ForgetSearchTerms::class.':sanctum', 'auth:sanctum', 'conditional', 'throttle:search'])
+    ->withoutMiddleware('throttle:api')
+    ->prefix('search')->as('api.search.')->group(function (): void {
+        Route::get('/', [SearchController::class, 'index'])->name('index');
+        Route::get('suggestions', [SearchController::class, 'suggestions'])->name('suggestions');
+    });

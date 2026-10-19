@@ -1,4 +1,5 @@
-{{-- Barre latérale d'administration (prototype partials/admin-top.php, menu UI_UX_DESIGN_SYSTEM.md §2). Variable : $adminPage. --}}
+{{-- Barre latérale d'administration (prototype partials/admin-top.php, menu UI_UX_DESIGN_SYSTEM.md §2). Variable : $adminPage.
+     Entrée « Mode maintenance » (P13-06) : réservée à `platform.maintenance`, pastille « Actif » pendant la maintenance. --}}
 @php
     $adminPage = $adminPage ?? '';
     $menu = [
@@ -29,6 +30,7 @@
         __('menus.admin.groups.system') => [
             ['synchronisation', 'bi-cloud-arrow-up', __('menus.admin.sync')],
             ['mises-a-jour', 'bi-arrow-repeat', __('menus.admin.updates')],
+            ['maintenance', 'bi-cone-striped', __('menus.admin.maintenance'), null, 'danger', 'platform.maintenance'],
             ['emails', 'bi-envelope-at', __('menus.admin.emails')],
             ['parametres', 'bi-gear', __('menus.admin.settings')],
             ['journal', 'bi-clock-history', __('menus.admin.audit')],
@@ -43,9 +45,11 @@
     @foreach ($menu as $group => $items)
         <div class="group">{{ $group }}</div>
         @foreach ($items as $item)
+            @continue(isset($item[5]) && ! auth()->user()?->can($item[5]))
             <a class="item {{ $adminPage === $item[0] ? 'active' : '' }}" href="{{ route('admin.'.$item[0]) }}" @if ($adminPage === $item[0]) aria-current="page" @endif>
                 <i class="bi {{ $item[1] }}" aria-hidden="true"></i><span>{{ $item[2] }}</span>
-                @if (! empty($item[3]))<span class="badge bg-{{ $item[4] }}">{{ (int) $item[3] }}</span>@endif
+                @if ($item[0] === 'maintenance' && ($maintenanceActive ?? false))<span class="badge bg-danger">{{ __('menus.admin.maintenance_on') }}</span>
+                @elseif (! empty($item[3]))<span class="badge bg-{{ $item[4] }}">{{ (int) $item[3] }}</span>@endif
             </a>
         @endforeach
     @endforeach

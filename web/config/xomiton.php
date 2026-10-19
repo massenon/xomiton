@@ -9,6 +9,13 @@ declare(strict_types=1);
 return [
 
     /*
+     * Fuseau d'affichage des heures publiques (Bénin, UTC+1) : la base et `app.timezone` restent en UTC, les heures
+     * montrées aux personnes (page de maintenance, bandeau d'annonce, écran /admin/maintenance, GET /api/v1/status
+     * `timezone` pour l'écran membre et le mobile) sont converties dans ce fuseau (revue du lot maintenance, Q85).
+     */
+    'display_timezone' => env('XOMITON_DISPLAY_TIMEZONE', 'Africa/Porto-Novo'),
+
+    /*
      * Alertes et SOS (FR-ALT-03 à FR-ALT-05, RG-04, RG-05).
      */
     'alerts' => [
@@ -77,6 +84,8 @@ return [
         'description_max' => 4000,
         'sos_message_max' => 1000,
         'callback_message_max' => 1000,
+        // Moyen de contact d'une demande de rappel (téléphone ou e-mail, RequestCallbackRequest et modale de l'annuaire).
+        'callback_contact_max' => 190,
         'note_max' => 1000,
         'attachments_max' => 5,
     ],
@@ -145,6 +154,13 @@ return [
         // Paramètres (P8-09) : enregistrements de la section « Profil » (PATCH me/identity) par compte et par heure
         // (limiteur `identity_update`).
         'identity_update_per_hour' => 20,
+        // Recherche membre (P8-13) : `GET search` et `search/suggestions` par compte et par minute (limiteur `search`,
+        // hors `api_per_minute` : les suggestions de l'en-tête n'épuisent pas le quota du reste de l'espace).
+        'search_per_minute' => 60,
+        // Annuaire membre (P8-12) : demandes de rappel (POST directory/{id}/callback) par compte et par heure (limiteur
+        // `directory_callback`, après la vérification de la clé : un rejeu ne compte pas), jamais le quota `report` par
+        // IP des signalements anonymes (CGNAT mobile).
+        'directory_callback_per_hour' => 10,
     ],
 
     /*
@@ -282,6 +298,30 @@ return [
         'pages_per_page' => 12,
         'page_categories' => ['Organisation', 'Santé', 'Juridique', 'Réseau', 'Éducation', 'Autonomisation'],
         'search_max' => 60,
+    ],
+
+    /*
+     * Annuaire membre `/annuaire` (P8-12, lot annuaire-membre ; prototype annuaire.php) : fiches par page (« Charger
+     * plus ») et longueur de la recherche (nom, organisation, rôle, commune). Le message de la demande de rappel est
+     * borné par `alerts.callback_message_max`.
+     */
+    'directory' => [
+        'per_page' => 24,
+        'search_max' => 80,
+    ],
+
+    /*
+     * Recherche membre de l'en-tête (P8-13, lot recherche-membre ; page `/recherche`, API `search/`) : longueur du terme
+     * (en deçà de `min_length`, aucune requête ; au-delà de `max_length`, tronqué), résultats par famille dans la vue
+     * d'ensemble et dans les suggestions instantanées, taille de page d'une famille (« Charger plus »). Aucun
+     * historique : le terme n'est ni enregistré, ni journalisé, ni mis en cache.
+     */
+    'search' => [
+        'min_length' => 2,
+        'max_length' => 80,
+        'overview_per_type' => 4,
+        'suggestions_per_type' => 3,
+        'per_page' => 10,
     ],
 
     /*
@@ -625,7 +665,13 @@ return [
      * recherche (mots entiers, accents et casse ignorés), numéros d'urgence, seuil d'appariement de la base.
      */
     'assistant' => [
-        'provider' => env('ASSISTANT_PROVIDER'),
+        // Fournisseur de l'assistant membre (App\Infrastructure\Assistant\AssistantProviders, Q7 non tranchée) : `kb`
+        // (base de connaissances, sans LLM ni clé d'API) seul pilote livré ; vide, `null` ou inconnu → `kb`.
+        'provider' => env('ASSISTANT_PROVIDER', 'kb'),
+        // « Parler à un humain » (P8-11, App\Application\Assistant\EscalateToHuman) : besoin de l'alerte créée (slug de
+        // `needs`, routage RG-04 ; repli `autre` s'il n'existe plus) et longueur maximale du message.
+        'escalation_need' => 'soutien_psychologique',
+        'escalation_message_max' => 1000,
         'crisis_keywords' => [
             // Idées suicidaires, détresse vitale
             'suicide', 'suicider', 'me suicider', 'me tuer', 'se tuer', 'en finir', 'mourir', 'envie de mourir', 'me faire du mal',

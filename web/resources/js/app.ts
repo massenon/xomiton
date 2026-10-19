@@ -10,7 +10,9 @@
 // relayés vers useToast(), réseau suivi pour le bandeau hors connexion, boîte d'envoi et brouillons configurés pour le
 // compte de la page, `window.XM.outbox` (contrat de shared/outbox-boot.js : remise d'un SOS hors ligne par sos.js)
 // adossé au store `outbox`. Gabarit membre persistant (layouts/MemberLayout.vue, P6-03) par défaut pour chaque page.
-// Ces deux câblages sont dans app/shellBoot.ts (testés en Vitest).
+// Ces deux câblages sont dans app/shellBoot.ts (testés en Vitest), comme l'écran plein XmMaintenance (P13-08), chargé à
+// la demande sur un 503 `maintenance` (visite Inertia refusée ou appel d'API) et monté hors de l'application, qui reste
+// en mémoire derrière lui (inerte) : boîte d'envoi et brouillons gardés.
 import './shared/theme.js';
 import { createApp, h, Fragment, type DefineComponent } from 'vue';
 import { createInertiaApp, router } from '@inertiajs/vue3';
@@ -19,7 +21,7 @@ import { i18n, loadLocale, t } from './app/i18n';
 import { route } from './app/routes';
 import { useToast } from './app/useToast';
 import { createFlashPresenter } from './app/flash';
-import { bindOutbox, withDefaultLayout } from './app/shellBoot';
+import { bindMaintenance, bindOutbox, createMaintenanceScreen, withDefaultLayout } from './app/shellBoot';
 import { bootstrapOnDemand } from './app/bootstrapOnDemand';
 import type { SharedProps } from './app/types';
 import { useSessionStore } from './stores/session';
@@ -97,6 +99,17 @@ createInertiaApp({
         const outbox = useOutboxStore();
         outbox.start({ account: session.outboxAccount, ttlDays: session.ttlDays, texts: outboxTexts() }).catch(() => undefined);
         bindOutbox(window, outbox);
+
+        bindMaintenance(window, router, createMaintenanceScreen(
+            () => import('./components/XmMaintenance.vue').then((module) => module.default),
+            (component, payload) => {
+                el.setAttribute('inert', '');
+                el.setAttribute('aria-hidden', 'true');
+                const host = document.createElement('div');
+                document.body.appendChild(host);
+                createApp(component, { payload }).use(pinia).use(i18n).mount(host);
+            },
+        ));
 
         createApp({ render: () => h(Fragment, [h(XmOfflineBar), h(App, props), h(XmToast)]) })
             .use(plugin)

@@ -27,7 +27,8 @@ use InvalidArgumentException;
  *    SOS et signalement ; `kind = crisis`, `emergency = true`. Sans enregistrement (visiteur·se, offcanvas public), rien
  *    ne permet de rappeler la personne : pas de promesse de recontact ni d'URL dans le texte (l'appelant affiche les liens,
  *    AssistantAnswerResource), renvoi vers « Exprimer un besoin » de /signaler (lu sous 24 h, VOICE_AND_TONE §3 règle 6).
- *    Échange enregistré (membre) : URL dans le texte et escalade vers un humain, la conversation étant marquée pour relecture ;
+ *    Compte connecté : escalade vers un humain (« Parler à un humain », P8-11) ; échange enregistré : URL dans le texte et
+ *    conversation marquée pour relecture ;
  * 2. base : chaque entrée active reçoit un score dans [0, 1] = max(score mots-clés, similarité de question) ; la meilleure
  *    répond si elle atteint `match_threshold`, et son `hits_count` est incrémenté ;
  * 3. repli bienveillant avec les 3 questions les plus proches (ou les plus consultées si rien n'approche).
@@ -70,7 +71,9 @@ final class KnowledgeBaseAnswerer
 
         if ($crisisKeyword !== null) {
             $answer = new Answer(
-                text: $this->crisisText($persisted),
+                // « Parler à un humain » existe pour tout compte connecté (page /assistant, Flutter en Bearer) ; les
+                // adresses ne vont dans le texte que pour un échange enregistré, relu plus tard.
+                text: self::crisisText($persisted, $user !== null),
                 kind: Answer::KIND_CRISIS,
                 suggestions: $this->suggestions($ranked, null),
                 emergency: true,
@@ -223,9 +226,14 @@ final class KnowledgeBaseAnswerer
     }
 
     /**
-     * @param  bool  $persisted  échange enregistré (membre) : URL dans le texte et escalade humaine ; sinon ni l'un ni l'autre
+     * Texte de la réponse de crise, aussi servi à la page /assistant (P8-11) qui l'affiche sans appel réseau.
+     *
+     * @param  bool  $withUrls  adresses SOS et signalement dans le texte (échange enregistré, relu plus tard) ; sinon ce
+     *                          sont les boutons de l'appelant (AssistantAnswerResource::crisisLinks)
+     * @param  bool  $withHuman  escalade vers un humain proposée (« Parler à un humain » : compte connecté, P8-11) ;
+     *                           sinon renvoi vers « Exprimer un besoin », sans promesse de rappel
      */
-    private function crisisText(bool $persisted): string
+    public static function crisisText(bool $withUrls, bool $withHuman): string
     {
         $lines = [(string) __('assistant.crisis.intro')];
 
@@ -237,10 +245,10 @@ final class KnowledgeBaseAnswerer
         $report = (string) __('assistant.crisis.report');
 
         $lines[] = '';
-        $lines[] = $persisted ? $sos.' '.self::url('sos', '/sos') : $sos;
-        $lines[] = $persisted ? $report.' '.self::url('signaler', '/signaler') : $report;
+        $lines[] = $withUrls ? $sos.' '.self::url('sos', '/sos') : $sos;
+        $lines[] = $withUrls ? $report.' '.self::url('signaler', '/signaler') : $report;
         $lines[] = '';
-        $lines[] = (string) __($persisted ? 'assistant.crisis.human' : 'assistant.crisis.need');
+        $lines[] = (string) __($withHuman ? 'assistant.crisis.human' : 'assistant.crisis.need');
 
         return implode("\n", $lines);
     }
@@ -281,6 +289,22 @@ final class KnowledgeBaseAnswerer
         }
 
         return self::wellFormedNumbers((array) config('xomiton.assistant.emergency_numbers', []));
+    }
+
+    /**
+     * Enregistre l'échange d'un·e membre produit hors de la base (pilote de fournisseur LLM, P8-11 :
+     * App\Application\Assistant\AssistantProvider) : mêmes tables et même chiffrement que la réponse de la base.
+     */
+    public function record(User $user, ?AssistantConversation $conversation, string $question, Answer $answer): Answer
+    {
+        if ($conversation !== null && $conversation->user_id !== $user->getKey()) {
+            throw new InvalidArgumentException('The conversation does not belong to the given user.');
+        }
+
+        $question = Str::limit(trim($question), self::MAX_QUESTION_LENGTH, '');
+        $conversation = $this->persist($user, $conversation, $question, $answer, null);
+
+        return $answer->withConversationId((int) $conversation->getKey());
     }
 
     /**

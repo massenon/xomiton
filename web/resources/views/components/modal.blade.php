@@ -14,9 +14,10 @@
       confirmWord : (delete) mot à saisir pour activer le bouton principal
       dirtyGuard  : confirmation avant fermeture si un champ a été modifié (+ backdrop statique)
       static      : data-bs-backdrop="static"
+      heading     : niveau du titre (h2 à h6, défaut h5 comme le prototype) ; h2 quand la page a déjà des h3 (axe heading-order)
     Slots : défaut (corps), footer (boutons supplémentaires ; « Annuler » reste à gauche, l'action principale à droite).
 --}}
-@props(['id', 'title', 'type' => 'confirm', 'size' => 'md', 'scrollable' => true, 'centered' => true, 'form' => null, 'method' => 'POST', 'action' => null, 'confirmWord' => null, 'dirtyGuard' => false, 'static' => false])
+@props(['id', 'title', 'type' => 'confirm', 'size' => 'md', 'scrollable' => true, 'centered' => true, 'form' => null, 'method' => 'POST', 'action' => null, 'confirmWord' => null, 'dirtyGuard' => false, 'static' => false, 'heading' => 'h5'])
 @php
     $isDelete = $type === 'delete';
     $method = strtoupper($method);
@@ -24,6 +25,7 @@
     $contentTag = $form ? 'form' : 'div';
     $actionLabel = $action ?? ($isDelete && ! isset($footer) ? __('components.modal.delete_action') : null);
     $contentAttrs = $form ? ' method="'.($method === 'GET' ? 'get' : 'post').'" action="'.e($form).'"' : '';
+    $heading = in_array($heading, ['h2', 'h3', 'h4', 'h5', 'h6'], true) ? $heading : 'h5';
 @endphp
 <div {{ $attributes->class(['modal fade', 'xm-modal--delete' => $isDelete]) }} id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}Title" aria-hidden="true"
      @if ($static || $dirtyGuard) data-bs-backdrop="static" @endif
@@ -36,7 +38,7 @@
                 @if ($spoof) @method($method) @endif
             @endif
             <div @class(['modal-header', 'border-0' => $isDelete])>
-                <h5 @class(['modal-title', 'text-danger' => $isDelete]) id="{{ $id }}Title">@if ($isDelete)<i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>@endif{{ $title }}</h5>
+                <{{ $heading }} @class(['modal-title', 'h5' => $heading !== 'h5', 'text-danger' => $isDelete]) id="{{ $id }}Title">@if ($isDelete)<i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>@endif{{ $title }}</{{ $heading }}>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('common.close') }}"></button>
             </div>
             <div @class(['modal-body', 'pt-0' => $isDelete])>

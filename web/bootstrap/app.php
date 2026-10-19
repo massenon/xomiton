@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Exceptions\ApiExceptionRenderer;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureNotInMaintenance;
+use App\Http\Middleware\ForgetSearchTerms;
 use App\Http\Middleware\HandleConditionalGet;
 use App\Http\Middleware\HandleIdempotencyKey;
 use App\Http\Middleware\SecurityHeaders;
@@ -50,6 +51,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // Évalué avant `auth` / `auth:sanctum` : un client dont la session ou le jeton est encore valable reçoit 503
         // (et non 401, que Flutter prendrait pour une déconnexion) ; après StartSession pour pouvoir fermer la session.
         $middleware->prependToPriorityList(AuthenticatesRequests::class, EnsureNotInMaintenance::class);
+        // Lot recherche-membre (P8-13) : ForgetSearchTerms avant la maintenance, donc avant `auth` (sinon le tri des
+        // priorités le placerait après : `url.intended` d'une visite sans compte, ou `_previous.url` d'un 503 de
+        // maintenance, session régénérée comprise, garderait le terme cherché dans la session).
+        $middleware->prependToPriorityList(EnsureNotInMaintenance::class, ForgetSearchTerms::class);
 
         // Q12 c : l'alias `verified` remplace celui de Laravel (lien signé) par la vérification OTP différée
         // (403 « Confirme ton e-mail » tant que users.email_verified_at est nul).

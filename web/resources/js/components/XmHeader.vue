@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // En-tête de l'espace membre (P6-03) : portage de prototype partials/header.php (et du gabarit Blade provisoire de P3).
-// Logo → /fil ; recherche (GET /ressources?q=) ; menus Fil · Apprendre ▾ · Communauté ▾ · Aide & protection ▾ · Espace
+// Logo → /fil ; recherche (P8-13 : visite Inertia de /recherche?q=, champ vidé ensuite ; suggestions instantanées en
+// combobox ARIA, morceau components/search/HeaderSuggest.vue chargé au premier focus du champ) ; menus Fil · Apprendre ▾ · Communauté ▾ · Aide & protection ▾ · Espace
 // pair (si `peer_space.access`) ; SOS, messages (compteur des conversations non lues), paramètres, cloche <XmBell>
 // branchée sur le store `notifications` (API P6-07 : liste chargée à l'ouverture, compteur relu toutes les
 // `ui.bell_poll_seconds` secondes, au moins 15 (D7), onglet visible et réseau présent ; lecture enregistrée avant d'ouvrir
@@ -21,6 +22,9 @@ import { BELL_MIN_SECONDS, HEADER_MENUS, LINKS, allowed, browser, hrefOf, isActi
 import { useNotificationsStore } from '@/stores/notifications';
 import { useSessionStore } from '@/stores/session';
 import { useUiStore } from '@/stores/ui';
+import { lazyComponent } from '@/feed/lazy';
+import { bindSearchReferrer } from '@/search/referrer';
+import { cleanTerm, holdTerm, MAX_LENGTH, MIN_LENGTH } from '@/search/suggest';
 import XmAvatar from './XmAvatar.vue';
 import XmBell from './XmBell.vue';
 import XmLogo from './XmLogo.vue';
@@ -44,7 +48,41 @@ const active = (item: NavLink) => isActive(item, url.value);
 const tag = (item: NavLink) => (item.inertia ? Link : 'a');
 const menus = HEADER_MENUS;
 const fil = { ...LINKS.fil, label: 'menus.member.feed' };
-const searchAction = route('ressources.index', undefined, '/ressources');
+const searchAction = route('recherche', undefined, '/recherche');
+
+// Recherche (P8-13) : suggestions chargées à la demande (budget de app.ts) ; le champ relaie ses touches au morceau.
+const suggest = lazyComponent(() => import('./search/HeaderSuggest.vue'));
+const HeaderSuggest = suggest.component;
+const suggestRef = ref<{ onKeydown: (event: KeyboardEvent) => void; close: () => void; reopen: () => void } | null>(null);
+const searchTerm = ref('');
+const searchState = ref<{ expanded: boolean; activeId: string | null }>({ expanded: false, activeId: null });
+// Bornes du terme partagées par le serveur (`ui.search` : xomiton.search.min_length / max_length), repli de suggest.ts.
+const searchLimits = computed(() => {
+    const limits = (page.props as { ui?: { search?: { min_length?: number; max_length?: number } } }).ui?.search;
+    return { min: Number(limits?.min_length) || MIN_LENGTH, max: Number(limits?.max_length) || MAX_LENGTH };
+});
+// Motif combobox (APG) : la liste se referme quand le champ perd le focus (les options gardent le focus par
+// `mousedown.prevent`) et revient au retour du focus si le terme est assez long.
+const onSearchFocus = () => { void suggest.load(); suggestRef.value?.reopen(); };
+const onSearchBlur = () => suggestRef.value?.close();
+const onSearchKeydown = (event: KeyboardEvent) => suggestRef.value?.onKeydown(event);
+const onSearchState = (state: { expanded: boolean; activeId: string | null }) => { searchState.value = state; };
+const onSearchChosen = () => { searchTerm.value = ''; };
+// Mode discret (Q84) : le terme ne passe pas par l'adresse (historique du navigateur) ; la page le reçoit en mémoire.
+const discreet = computed(() => user.value?.profile?.discreet_mode === true);
+
+/** Envoi du champ : page /recherche en visite Inertia ; le champ est vidé (le terme ne reste pas affiché ailleurs). */
+function onSearchSubmit() {
+    const q = cleanTerm(searchTerm.value, searchLimits.value.max);
+    suggestRef.value?.close();
+    searchTerm.value = '';
+    if (discreet.value && q !== '') {
+        holdTerm(q);
+        router.get(searchAction);
+        return;
+    }
+    router.get(searchAction, q === '' ? {} : { q });
+}
 const roleLabel = computed(() => {
     const role = user.value?.role ?? 'membre';
     return t(`menus.member_roles.${ROLES.includes(role) ? role : 'membre'}`);
@@ -61,6 +99,7 @@ const bellItems = computed(() => notifications.bellItems.map((item) => ({ ...ite
 function closeMenus() {
     const el = root.value;
     const bootstrap = loadedBootstrap();
+    suggestRef.value?.close();
     if (!el || !bootstrap) return;
     el.querySelectorAll<HTMLElement>('[data-bs-toggle="dropdown"]').forEach((toggle) => bootstrap.Dropdown.getInstance(toggle)?.hide());
     const collapse = el.querySelector<HTMLElement>('#memberNavbar');
@@ -132,6 +171,7 @@ const onReadAll = () => { notifications.markAllRead(api).catch(() => undefined);
 const onLogout = () => { logout(); };
 
 let offStart: (() => void) | null = null;
+let offReferrer: (() => void) | null = null;
 
 onMounted(() => {
     const seconds = Math.max(BELL_MIN_SECONDS, Number(session.bellPollSeconds) || 30);
@@ -139,6 +179,8 @@ onMounted(() => {
     document.addEventListener('visibilitychange', onVisibility);
     bellItem.value?.addEventListener('show.bs.dropdown', onBellOpen);
     offStart = router.on('start', closeMenus);
+    // P8-13 : Referer réduit à l'origine tant que l'adresse est /recherche?q= (search/referrer.ts).
+    offReferrer = bindSearchReferrer(router, searchAction);
 });
 
 onBeforeUnmount(() => {
@@ -146,6 +188,7 @@ onBeforeUnmount(() => {
     document.removeEventListener('visibilitychange', onVisibility);
     bellItem.value?.removeEventListener('show.bs.dropdown', onBellOpen);
     offStart?.();
+    offReferrer?.();
 });
 
 defineExpose({ poll, closeMenus });
@@ -164,10 +207,28 @@ defineExpose({ poll, closeMenus });
                 <div id="memberNavbar" class="collapse navbar-collapse">
                     <div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
                         <div class="nav-item w-100">
-                            <form class="rounded position-relative" :action="searchAction" method="get" role="search">
+                            <form class="rounded position-relative" :action="searchAction" method="get" role="search" @submit.prevent="onSearchSubmit">
                                 <label for="memberSearch" class="visually-hidden">{{ t('menus.member.search') }}</label>
-                                <input id="memberSearch" class="form-control ps-5 bg-light" type="search" name="q" :placeholder="t('menus.member.search_placeholder')">
+                                <input
+                                    id="memberSearch"
+                                    v-model="searchTerm"
+                                    class="form-control ps-5 bg-light"
+                                    type="search"
+                                    name="q"
+                                    :maxlength="searchLimits.max"
+                                    autocomplete="off"
+                                    role="combobox"
+                                    aria-autocomplete="list"
+                                    :aria-expanded="searchState.expanded ? 'true' : 'false'"
+                                    :aria-controls="HeaderSuggest ? 'memberSearchSuggest' : undefined"
+                                    :aria-activedescendant="searchState.activeId ?? undefined"
+                                    :placeholder="t('menus.member.search_placeholder')"
+                                    @focus="onSearchFocus"
+                                    @blur="onSearchBlur"
+                                    @keydown="onSearchKeydown"
+                                >
                                 <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit" :aria-label="t('menus.member.search')"><i class="bi bi-search fs-5" aria-hidden="true"></i></button>
+                                <component :is="HeaderSuggest" v-if="HeaderSuggest" ref="suggestRef" :query="searchTerm" listbox-id="memberSearchSuggest" :search-base="searchAction" :min="searchLimits.min" :max="searchLimits.max" :discreet="discreet" :online="ui.online" @state="onSearchState" @chosen="onSearchChosen" />
                             </form>
                         </div>
                     </div>

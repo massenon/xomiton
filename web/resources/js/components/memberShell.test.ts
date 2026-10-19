@@ -59,7 +59,7 @@ describe('XmHeader', () => {
         const sos = $('[aria-labelledby="menuAide"] a.dropdown-item') as HTMLElement;
         expect([text(sos), sos.getAttribute('href'), sos.className.includes('text-danger')]).toEqual(['SOS (position GPS)', '/sos', true]);
         expect($('#memberNavbar a[href="/espace-pair"]')).toBeNull();
-        expect($('form[role="search"]')?.getAttribute('action')).toBe('/ressources');
+        expect($('form[role="search"]')?.getAttribute('action')).toBe('/recherche');
         expect($('label[for="memberSearch"]')).not.toBeNull();
     });
 

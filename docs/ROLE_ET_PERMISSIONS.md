@@ -75,6 +75,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `gateways.connect`, `gateways.publish` | | | | ✅ | ✅ |
 | `email_templates.manage` | | | | ✅ | ✅ |
 | `email_templates.delete_system` | | | | | ✅ |
+| `platform.maintenance` (écran `/admin/maintenance`, P13-06 ; remplace `maintenance.manage`, Q85) | | | | ✅ | ✅ |
 | `backups.create`, `backups.download` | | | | ✅ | ✅ |
 | `backups.restore`, `backups.delete` | | | | | ✅ |
 | `roles.assign_admin` | | | | | ✅ |
@@ -84,7 +85,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 - Requêtes « pair » toujours portées par un scope : `Case::visibleTo($user)` → `where('collected_by', $user->id)` ; `Alert::routedTo($user)` → contact d'annuaire lié au compte.
 - Les exports (CSV, PDF) appliquent le même scope que l'écran.
 - Les votes de sondage, les adresses IP de consentement et les jetons de newsletter ne sont **jamais** exposés hors de l'administration.
-- La maintenance (RG-14) bloque la connexion de tous les rôles sauf admin et superadmin.
+- La maintenance (RG-14) bloque la connexion de tous les rôles sauf admin et superadmin ; SOS, signalement, urgences et leur API restent servis (RG-01, Q28), ainsi que les référentiels du signalement (zones, types de violence, besoins) et « mot de passe oublié » / réinitialisation (anti-verrouillage : la réinitialisation ne connecte personne). Seuls ces deux rôles détiennent `platform.maintenance` (migration de données depuis `maintenance.manage`, Q85) : personne ne peut activer une maintenance qui l'exclurait (garde-fou anti-verrouillage, P13-06) ; une maintenance déjà active n'est jamais réactivée.
 
 ## 6. Tests obligatoires
 

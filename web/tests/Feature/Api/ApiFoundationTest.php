@@ -176,7 +176,8 @@ it('découpe routes/api.php en un groupe public et un groupe auth:sanctum sans c
 
 it('impose un limiteur nommé à chaque écriture publique, et auth:sanctum à toute famille hors ADR-31', function (): void {
     // `assistant` : assistant public de l'accueil (P4-01, Q41 a), ajouté aux familles publiques d'ADR-31.
-    $publicFamilies = '/^api\.(health|referentials|zones|violence_types|needs|auth|thematiques|ressources|urgences|signalements|sos|assistant)\b/';
+    // `status` : état public de la plateforme (P13-08, page de maintenance et mobile), lecture seule.
+    $publicFamilies = '/^api\.(health|status|referentials|zones|violence_types|needs|auth|thematiques|ressources|urgences|signalements|sos|assistant)\b/';
 
     foreach (apiRoutes() as $route) {
         $name = (string) $route->getName();

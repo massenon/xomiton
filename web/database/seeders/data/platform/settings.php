@@ -70,7 +70,7 @@ return [
     // admin/mises-a-jour.php — maintenance (la fenêtre détaillée vit dans maintenance_windows)
     'maint_start' => [Setting::GROUP_MAINTENANCE, Setting::TYPE_STRING, null, false],
     'maint_end' => [Setting::GROUP_MAINTENANCE, Setting::TYPE_STRING, null, false],
-    'maint_msg' => [Setting::GROUP_MAINTENANCE, Setting::TYPE_STRING, 'Xomiton est en maintenance. Nous revenons très vite.', true],
+    'maint_msg' => [Setting::GROUP_MAINTENANCE, Setting::TYPE_STRING, 'Xomiton est en maintenance. Nous revenons dès que possible.', true],
 
     // admin/mises-a-jour.php — tâches d'optimisation (date et résultat de la dernière exécution par tâche)
     'optim_state' => [Setting::GROUP_OPTIMIZATION, Setting::TYPE_JSON, [], false],

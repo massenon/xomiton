@@ -13,6 +13,7 @@
             <ul class="list-unstyled mb-0 vstack gap-2 xm-th-contacts" aria-label="{{ __('pages/thematiques.contacts_label') }}">
                 @foreach ($contacts as $contact)
                     @php($badge = $contact->role->badge())
+                    @php($whatsapp = \App\Support\WhatsAppLink::for($contact->whatsapp, $contact->phone))
                     <li class="border rounded p-2">
                         <div class="d-flex justify-content-between align-items-start gap-2">
                             <div>
@@ -21,13 +22,13 @@
                             </div>
                             <x-badge soft :color="$badge === 'secondary' ? 'neutral' : $badge">{{ $contact->role->label() }}</x-badge>
                         </div>
-                        @if ($contact->phone || $contact->whatsapp)
+                        @if ($contact->phone || $whatsapp)
                             <div class="d-flex flex-wrap gap-2 mt-2">
                                 @if ($contact->phone)
                                     <a class="btn btn-sm btn-primary-soft" href="tel:{{ preg_replace('/[^\d+]/', '', (string) $contact->phone) }}"><i class="bi bi-telephone me-1" aria-hidden="true"></i>{{ __('pages/thematiques.call') }}<span class="visually-hidden"> {{ $contact->name }}</span></a>
                                 @endif
-                                @if ($contact->whatsapp)
-                                    <a class="btn btn-sm btn-light" href="https://wa.me/{{ preg_replace('/\D/', '', (string) $contact->whatsapp) }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i>{{ __('common.whatsapp') }}<span class="visually-hidden"> {{ $contact->name }} {{ __('microcopy.a11y.opens_new_tab') }}</span></a>
+                                @if ($whatsapp)
+                                    <a class="btn btn-sm btn-light" href="{{ $whatsapp }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1" aria-hidden="true"></i>{{ __('common.whatsapp') }}<span class="visually-hidden"> {{ $contact->name }} {{ __('microcopy.a11y.opens_new_tab') }}</span></a>
                                 @endif
                             </div>
                         @endif

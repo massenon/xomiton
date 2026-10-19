@@ -13,7 +13,8 @@ use Illuminate\Validation\Rule;
 
 /**
  * Modale « Demander à être rappelé·e » de l'annuaire membre (annuaire.php l.122-138, P8-12) : membre connecté·e avec
- * `directory.view`, moyen de contact obligatoire, message ≤ 1000 caractères, pseudo non transmis par défaut.
+ * `directory.view`, moyen de contact obligatoire (≤ `alerts.callback_contact_max`), message ≤ `alerts.callback_message_max`,
+ * pseudo non transmis par défaut.
  */
 final class RequestCallbackRequest extends FormRequest
 {
@@ -35,7 +36,7 @@ final class RequestCallbackRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'contact' => ['required', 'string', 'max:190', new PhoneOrEmail],
+            'contact' => ['required', 'string', 'max:'.(int) config('xomiton.alerts.callback_contact_max', 190), new PhoneOrEmail],
             'preferred_channel' => ['nullable', Rule::enum(ContactChannel::class)],
             'message' => ['nullable', 'string', 'max:'.(int) config('xomiton.alerts.callback_message_max', 1000)],
             'anonymous' => ['boolean'],

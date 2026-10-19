@@ -65,11 +65,10 @@ it('renvoie une page 503 sobre au visiteur·se et garde SOS, signalement, urgenc
         ->assertSee('Nous améliorons la plateforme pour toi.')
         ->assertSee('Nous n’avons pas encore d’heure de reprise à annoncer.')
         ->assertSee('Le SOS, le signalement et les contacts d’urgence restent disponibles')
-        ->assertSee('Aucune donnée n’est visible depuis l’écran de verrouillage.')
-        ->assertSee('href="'.route('sos').'"', false)
-        ->assertSee('href="'.route('signaler').'"', false)
+        ->assertSee('href="'.route('sos', absolute: false).'"', false)
+        ->assertSee('href="'.route('signaler', absolute: false).'"', false)
         ->assertSee('117')
-        ->assertDontSee('Pour protéger ton compte, ta session a été fermée.');
+        ->assertDontSee('Pour protéger votre compte, votre session a été fermée.');
 
     $this->get('/ressources')->assertStatus(503);
     $this->get('/sos')->assertOk();
@@ -146,12 +145,16 @@ it('exempte aussi superadmin et déconnecte proprement un·e membre ou modérate
 
     $this->actingAs($member)->get('/fil')
         ->assertStatus(503)
-        ->assertSee('Pour protéger ton compte, ta session a été fermée.');
+        ->assertSee('Pour protéger votre compte, votre session a été fermée.');
     $this->assertGuest();
 
+    // Action du système (fermeture automatique), pas un geste du membre : ni compte auteur, ni IP, ni navigateur.
     $audit = AuditLog::query()->where('action', 'maintenance.session_closed')->latest('id')->first();
     expect($audit)->not->toBeNull()
-        ->and($audit?->user_id)->toBe($member->id)
+        ->and($audit?->user_id)->toBeNull()
+        ->and($audit?->actor)->toBe(AuditLog::ACTOR_SYSTEM)
+        ->and($audit?->ip)->toBeNull()
+        ->and($audit?->user_agent)->toBeNull()
         ->and($audit?->subject_id)->toBe($member->id);
 
     // admin.access ne suffit pas : RG-14 ne retient que admin et superadmin.
@@ -173,8 +176,9 @@ it('s’active par une fenêtre maintenance_windows en cours et affiche son mess
 
     $response = $this->get('/')->assertStatus(503)
         ->assertSee('Mise à jour de sécurité en cours.')
-        ->assertSee('Maintenance commencée le 2 novembre 2026 à 13 h 30.')
-        ->assertSee('Reprise prévue le 2 novembre 2026 à 16 h 30.');
+        // 13 h 30 et 16 h 30 UTC : heures du Bénin (UTC+1, xomiton.display_timezone).
+        ->assertSee("Maintenance commencée aujourd’hui à 14\u{00A0}h\u{00A0}30.")
+        ->assertSee("Reprise prévue aujourd’hui à 17\u{00A0}h\u{00A0}30.");
 
     expect((int) $response->headers->get('Retry-After'))->toBe(3600);
 
@@ -231,7 +235,37 @@ it('sans reprise annoncée, EnableMaintenance lève seulement la bascule et gard
         ->and(MaintenanceWindow::query()->count())->toBe(0)
         ->and(MaintenanceStatus::active())->toBeTrue();
 
-    $this->get('/')->assertStatus(503)->assertSee('Xomiton est en maintenance. Nous revenons très vite.');
+    $this->get('/')->assertStatus(503)->assertSee('Xomiton est en maintenance. Nous revenons dès que possible.');
+});
+
+it('sert pendant la maintenance les référentiels du formulaire de signalement (RG-01 : category et needs obligatoires)', function (): void {
+    $this->seed(Database\Seeders\ReferenceDataSeeder::class);
+    Settings::set('maintenance', true);
+
+    foreach (['/api/v1/zones', '/api/v1/violence-types', '/api/v1/needs'] as $uri) {
+        $this->getJson($uri)->assertOk()->assertJsonStructure(['data'])->assertHeaderMissing(EnsureNotInMaintenance::HEADER);
+    }
+
+    $this->getJson('/api/v1/me')->assertStatus(503);
+});
+
+it('garde « mot de passe oublié » ouvert pendant la maintenance sans ouvrir de session à un·e membre (anti-verrouillage)', function (): void {
+    $member = maintenanceUser('membre', 'membre@exemple.bj', 'Membre2026!!');
+    Settings::set('maintenance', true);
+
+    $this->get('/mot-de-passe-oublie')->assertOk();
+    $this->get('/nouveau-mot-de-passe')->assertStatus(302);
+    $this->postJson('/api/v1/auth/password/forgot', ['email' => $member->email])->assertSuccessful();
+    $this->assertGuest();
+
+    foreach (['/mot-de-passe-oublie', '/nouveau-mot-de-passe', '/api/v1/auth/password/forgot', '/api/v1/auth/password/reset'] as $uri) {
+        expect(EnsureNotInMaintenance::isAlwaysAllowed(Illuminate\Http\Request::create($uri, 'POST')))->toBeTrue($uri);
+    }
+
+    // La connexion qui suivrait une réinitialisation reste refusée aux rôles non exemptés (AuthenticateUser).
+    $this->from('/connexion')->post('/connexion', ['identifier' => 'membre@exemple.bj', 'password' => 'Membre2026!!'])
+        ->assertSessionHasErrors(['identifier' => 'La plateforme est en maintenance. Réessaie dans quelques instants.']);
+    $this->assertGuest();
 });
 
 it('reconnaît les parcours toujours servis par nom de route ou par chemin', function (): void {
@@ -244,28 +278,37 @@ it('reconnaît les parcours toujours servis par nom de route ou par chemin', fun
     }
 });
 
-it('affiche la page 503 générique hors maintenance (errors/503) sans message personnalisé', function (): void {
+it('affiche la page 503 générique hors maintenance (errors/503) sans promettre que le SOS en ligne fonctionne', function (): void {
     $html = view('errors.503', ['exception' => null])->render();
 
-    expect($html)->toContain('Maintenance en cours')
-        ->toContain('Xomiton revient dans quelques minutes.')
+    expect($html)->toContain('<title>Service momentanément indisponible – Xomiton</title>')
+        ->toContain('Nous faisons le nécessaire pour rétablir le service au plus vite.')
+        ->toContain('Si le SOS en ligne ne répond pas, appelez directement le 117 ou le 118.')
+        ->toContain('href="tel:117"')
+        ->not->toContain('Maintenance en cours')
+        ->not->toContain('Pendant la maintenance')
+        ->not->toContain('restent disponibles pendant la maintenance')
         ->not->toContain('ta session a été fermée');
 });
 
-it('écrit « 1er » pour le premier jour du mois dans les dates de la page', function (): void {
-    $this->travelTo(now()->setDate(2026, 11, 1)->setTime(9, 0));
+it('écrit « 1er » pour le premier jour du mois et « demain » le lendemain dans les dates de la page', function (): void {
+    $this->travelTo(now()->setDate(2026, 10, 30)->setTime(9, 0));
 
     MaintenanceWindow::factory()->create([
         'starts_at' => now()->subHour(),
-        'ends_at' => now()->addHour(),
+        'ends_at' => now()->setDate(2026, 11, 1)->setTime(10, 0),
     ]);
 
     $this->get('/')->assertStatus(503)
-        ->assertSee('Maintenance commencée le 1er novembre 2026 à 8 h.')
-        ->assertSee('Reprise prévue le 1er novembre 2026 à 10 h.');
+        ->assertSee("Maintenance commencée aujourd’hui à 9\u{00A0}h.")
+        ->assertSee("Reprise prévue le dimanche 1er novembre 2026 à 11\u{00A0}h.")
+        ->assertSee('dimanche 1er novembre 2026');
+
+    $this->travelTo(now()->setDate(2026, 10, 31)->setTime(9, 0));
+    $this->get('/')->assertSee("Reprise prévue demain à 11\u{00A0}h.");
 });
 
-it('ignore une reprise déjà passée et borne le message à 255 caractères (EnableMaintenance)', function (): void {
+it('ignore une reprise déjà passée et borne le message à 280 caractères (EnableMaintenance)', function (): void {
     $admin = maintenanceUser('admin', 'admin@exemple.bj', 'Admin2026!!');
     $long = str_repeat('a', 300);
 
@@ -287,5 +330,6 @@ it('sert les parcours garantis sans lire les fenêtres et rend la 503 génériqu
     $this->get('/signaler')->assertOk();
 
     $html = view('errors.503', ['exception' => null])->render();
-    expect($html)->toContain('Xomiton revient dans quelques minutes.');
+    expect($html)->toContain('Service momentanément indisponible')
+        ->toContain('Si le SOS en ligne ne répond pas, appelez directement le 117 ou le 118.');
 });

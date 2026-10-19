@@ -85,6 +85,8 @@ return [
         'gateways' => 'Passerelles réseaux',
         'sync' => 'Hors connexion & synchro',
         'updates' => 'Mises à jour & optimisation',
+        'maintenance' => 'Mode maintenance',
+        'maintenance_on' => 'Actif',
         'emails' => 'Templates e-mails',
         'settings' => 'Paramètres',
         'audit' => 'Journal d’audit',

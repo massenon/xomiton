@@ -304,7 +304,7 @@ Migration Laravel (`uuid`, `type`, `notifiable`, `data json`, `read_at`). Colonn
 `id` · `version string(20) unique` · `kind string(20)` (`correctif`, `fonctionnalite`, `securite`) · `notes text null` · `status string(12)` (`planifiee`, `deployee`, `annulee`) · `scheduled_for timestamp null` · `deployed_at timestamp null` · `created_by FK null`.
 
 ### `maintenance_windows`
-`id` · `starts_at timestamp` · `ends_at timestamp` · `message string(255) null` · `is_active boolean default true` · `created_by FK null`.
+`id` · `starts_at timestamp` · `ends_at timestamp` · `message string(280) null` (message public, P13-06) · `reason string(255) null` (motif interne, jamais public) · `announce_hours unsignedSmallInteger default 0` (annonce préalable, bandeau P13-08) · `is_active boolean default true` · `cancelled_at timestamp null` (fenêtre à venir annulée, jamais supprimée) · `created_by FK null`. Index `(is_active, starts_at)`. Activation immédiate : fenêtre `starts_at = maintenant`, `ends_at` = reprise estimée (la bascule `maintenance` des paramètres tient la plateforme fermée jusqu'à la désactivation) ; fenêtre planifiée : ouverte et close seule (`MaintenanceStatus`).
 
 ### `backups`
 `id` · `name string(40) unique` · `kind string(20)` (`BackupKind` : `manuel`, `auto`, `avant_restauration`) · `size_bytes unsignedBigInteger` · `tables json` (`[{name, rows}]`) · `storage_disk string(20)` · `storage_path string(255)` · `checksum char(64) null` · `status string(10) default done` (`JobStatus`) · `created_by FK null` · `restored_at timestamp null` · `restored_by FK null`.

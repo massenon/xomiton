@@ -30,7 +30,9 @@ use App\Http\Controllers\Web\LegacyAideRedirectController;
 use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\LoisController;
+use App\Http\Controllers\Web\Member\AssistantPageController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
+use App\Http\Controllers\Web\Member\DirectoryPageController;
 use App\Http\Controllers\Web\Member\FeedPageController;
 use App\Http\Controllers\Web\Member\ForumsPageController;
 use App\Http\Controllers\Web\Member\GroupsPageController;
@@ -39,6 +41,7 @@ use App\Http\Controllers\Web\Member\NotificationsPageController;
 use App\Http\Controllers\Web\Member\PagesPageController;
 use App\Http\Controllers\Web\Member\PlaceholderPageController;
 use App\Http\Controllers\Web\Member\ProfilePageController;
+use App\Http\Controllers\Web\Member\SearchPageController;
 use App\Http\Controllers\Web\Member\SettingsPageController;
 use App\Http\Controllers\Web\Member\WhoToFollowPageController;
 use App\Http\Controllers\Web\Newsletter\LegacyNewsletterRedirectController;
@@ -60,6 +63,7 @@ use App\Http\Controllers\Web\ThematiquesShowController;
 use App\Http\Controllers\Web\UrgencesController;
 use App\Http\Controllers\Web\ViolencesController;
 use App\Http\Middleware\EnsureNotInMaintenance;
+use App\Http\Middleware\ForgetSearchTerms;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InertiaForMembers;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -244,13 +248,25 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     // (filtres ?filtre=invitations|evenements|echanges|systeme, état lu en base, API notifications/).
     Route::get('/parametres', SettingsPageController::class)->name('parametres');
     Route::get('/notifications', NotificationsPageController::class)->name('notifications');
-    $memberPlaceholder('/assistant', 'assistant', 'assistant', 'assistant.php');
-    $memberPlaceholder('/annuaire', 'annuaire', 'directory', 'annuaire.php');
+    // P8-11 (lot assistant) : conversation avec la base de connaissances (API assistant/question), garde-fous de crise sans
+    // appel réseau, « Parler à un humain » (API assistant/escalate), historique dans l'onglet seulement.
+    Route::get('/assistant', AssistantPageController::class)->name('assistant');
+    // P8-12 (lot annuaire-membre) : fiches selon la portée du compte (DirectoryReach), filtres ?q=&role=&zone=&commune=,
+    // carte par département, demande de rappel (API directory/{id}/callback). Page d'une session : jamais gardée hors ligne.
+    // Sans `directory.view` : 403, comme l'API.
+    Route::get('/annuaire', DirectoryPageController::class)->middleware('can:directory.view')->name('annuaire');
     $memberPlaceholder('/medias', 'medias', 'medias', 'albums.php');
     $memberPlaceholder('/ccc', 'ccc', 'ccc', 'ccc.php');
     $memberPlaceholder('/espace-pair', 'espace-pair', 'peer_space', 'espace-pair.php')->middleware('can:peer_space.access');
     $memberPlaceholder('/collecte', 'collecte', 'collecte', 'collecte.php')->middleware('can:peer_space.access');
 });
+
+// P8-13 (lot recherche-membre) : recherche de l'en-tête (ressources, thématiques, contacts, membres trouvables ; ?q=&type=),
+// page Inertia du gabarit membre, noindex (Disallow du robots.txt). ForgetSearchTerms **avant** `auth` : le terme ne reste
+// ni dans la session (`_previous.url`, `url.intended`) ni dans aucune table ; mêmes middlewares que le groupe membre,
+// plus le quota `search` de l'API (même compteur par compte : la page lance la même vue d'ensemble ; 429 : errors/429).
+Route::middleware([ForgetSearchTerms::class, 'auth', 'throttle:search', HandleInertiaRequests::class])
+    ->get('/recherche', SearchPageController::class)->name('recherche');
 
 // --- Catalogue vivant du design system (P0-10) : local et recette seulement, 404 ailleurs ----
 Route::get('/design-system', DesignSystemController::class)->name('design-system');

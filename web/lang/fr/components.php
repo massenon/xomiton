@@ -181,4 +181,16 @@ return [
             'sos' => ['label' => 'SOS', 'color' => 'danger', 'icon' => 'geo-alt-fill'],
         ],
     ],
+
+    // Bandeau d'annonce préalable d'une maintenance (P13-08) : gabarits public, membre Vue et administration, texte neutre
+    // (ni tu ni vous : composant partagé, VOICE_AND_TONE.md §3 règle 1), composé par MaintenancePage::notice().
+    'maintenance_notice' => [
+        'title' => 'Maintenance prévue',
+        'text' => 'Une maintenance est prévue :range. La plateforme sera alors indisponible ; le SOS, le signalement et les contacts d’urgence resteront accessibles.',
+        'same_day' => ':day de :from à :to',
+        'span' => 'du :from_day à :from au :to_day à :to',
+        'today' => 'aujourd’hui',
+        'tomorrow' => 'demain',
+        'on_day' => 'le :day',
+    ],
 ];

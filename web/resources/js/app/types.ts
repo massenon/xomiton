@@ -40,6 +40,18 @@ export interface SharedShell {
     csrf_token: string | null;
 }
 
+/** Annonce préalable d'une maintenance planifiée (P13-08, MaintenancePage::notice) : textes neutres déjà composés. */
+export interface MaintenanceNotice {
+    id: number;
+    /** Clé de fermeture (sessionStorage `xm-dismissed:<key>`, commune aux gabarits Blade, shared/dismissible.js). */
+    key: string;
+    title: string;
+    text: string;
+    message: string | null;
+    starts_at: string;
+    ends_at: string;
+}
+
 export interface SharedProps {
     [key: string]: unknown;
     auth: { user: SharedUser | null };
@@ -48,11 +60,13 @@ export interface SharedProps {
     shell?: SharedShell | null;
     flash: { toast: FlashMessage | null; status: FlashMessage | null };
     lang: { locale: string; fallback: string };
+    maintenance_notice?: MaintenanceNotice | null;
     ui: {
         neutral_title: boolean;
         neutral_label: string;
         bell_poll_seconds: number;
         outbox: { account: string; ttl_days: number };
         sos: { hold_ms: number; countdown_seconds: number };
+        search?: { min_length: number; max_length: number };
     };
 }

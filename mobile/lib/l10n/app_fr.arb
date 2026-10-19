@@ -4216,7 +4216,7 @@
     "@alerts_tracking_code": {
         "description": "alerts.tracking_code"
     },
-    "assistant_crisis_flag_reason": "Mots de crise détectés : {keyword}",
+    "assistant_crisis_flag_reason": "Mots de crise détectés : {keyword}",
     "@assistant_crisis_flag_reason": {
         "description": "assistant.crisis.flag_reason",
         "placeholders": {
@@ -4225,19 +4225,19 @@
             }
         }
     },
-    "assistant_crisis_human": "Une personne formée peut te répondre : demande à parler à un humain et une pair éducatrice, une psychologue ou une juriste te recontacte.",
+    "assistant_crisis_human": "Une personne formée peut te répondre : demande à parler à un humain et une pair éducatrice, une psychologue ou une juriste te recontacte.",
     "@assistant_crisis_human": {
         "description": "assistant.crisis.human"
     },
-    "assistant_crisis_intro": "Je te crois, et tu n’es pas seule. Si tu es en danger maintenant, mets-toi à l’abri si tu le peux et appelle tout de suite :",
+    "assistant_crisis_intro": "Je te crois, et tu n’es pas seule. Si tu es en danger maintenant, mets-toi à l’abri si tu le peux et appelle tout de suite :",
     "@assistant_crisis_intro": {
         "description": "assistant.crisis.intro"
     },
-    "assistant_crisis_need": "Pour qu’une personne formée te réponde, exprime un besoin depuis la page Signaler : elle le lira sous 24 h.",
+    "assistant_crisis_need": "Pour qu’une personne formée te réponde, exprime un besoin depuis la page Signaler : elle le lira sous 24 h.",
     "@assistant_crisis_need": {
         "description": "assistant.crisis.need"
     },
-    "assistant_crisis_number": "• {label} : {number}",
+    "assistant_crisis_number": "• {label} : {number}",
     "@assistant_crisis_number": {
         "description": "assistant.crisis.number",
         "placeholders": {
@@ -4253,9 +4253,125 @@
     "@assistant_crisis_report": {
         "description": "assistant.crisis.report"
     },
-    "assistant_crisis_sos": "Bouton SOS : ton alerte part avec ta position vers les personnes de confiance de l’annuaire.",
+    "assistant_crisis_sos": "Bouton SOS : ton alerte part avec ta position vers les personnes de confiance de l’annuaire.",
     "@assistant_crisis_sos": {
         "description": "assistant.crisis.sos"
+    },
+    "assistant_escalation_channel": "Moyen préféré",
+    "@assistant_escalation_channel": {
+        "description": "assistant.escalation.channel"
+    },
+    "assistant_escalation_channel_any": "Peu importe",
+    "@assistant_escalation_channel_any": {
+        "description": "assistant.escalation.channel_any"
+    },
+    "assistant_escalation_contact": "Comment te joindre ?",
+    "@assistant_escalation_contact": {
+        "description": "assistant.escalation.contact"
+    },
+    "assistant_escalation_contact_help": "Téléphone ou e-mail. Obligatoire pour être recontacté·e.",
+    "@assistant_escalation_contact_help": {
+        "description": "assistant.escalation.contact_help"
+    },
+    "assistant_escalation_contact_required": "Indique un téléphone ou un e-mail pour être recontacté·e.",
+    "@assistant_escalation_contact_required": {
+        "description": "assistant.escalation.contact_required"
+    },
+    "assistant_escalation_default_message": "Je souhaite parler à une personne formée (demande envoyée depuis l’assistant).",
+    "@assistant_escalation_default_message": {
+        "description": "assistant.escalation.default_message"
+    },
+    "assistant_escalation_directory": "Choisir une personne dans l’annuaire",
+    "@assistant_escalation_directory": {
+        "description": "assistant.escalation.directory"
+    },
+    "assistant_escalation_errors_title": "Ta demande n’est pas encore partie :",
+    "@assistant_escalation_errors_title": {
+        "description": "assistant.escalation.errors_title"
+    },
+    "assistant_escalation_failed_help": "En danger ? N’attends pas : appelle un numéro d’urgence ou choisis une personne dans l’annuaire.",
+    "@assistant_escalation_failed_help": {
+        "description": "assistant.escalation.failed_help"
+    },
+    "assistant_escalation_flag_reason": "Demande à parler à un humain",
+    "@assistant_escalation_flag_reason": {
+        "description": "assistant.escalation.flag_reason"
+    },
+    "assistant_escalation_intro": "Une personne formée (pair éducatrice, psychologue ou juriste) lira ta demande sous 24 h et te recontactera par le moyen que tu indiques.",
+    "@assistant_escalation_intro": {
+        "description": "assistant.escalation.intro"
+    },
+    "assistant_escalation_message": "Ton message",
+    "@assistant_escalation_message": {
+        "description": "assistant.escalation.message"
+    },
+    "assistant_escalation_message_help": "{max} caractères maximum. Tu peux simplement dire de quoi tu as besoin.",
+    "@assistant_escalation_message_help": {
+        "description": "assistant.escalation.message_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "assistant_escalation_not_shared": "Le contenu de cette conversation n’est pas transmis.",
+    "@assistant_escalation_not_shared": {
+        "description": "assistant.escalation.not_shared"
+    },
+    "assistant_escalation_offline": "Tu es hors connexion : ta demande ne peut pas partir. En danger ? Appelle le {number}.",
+    "@assistant_escalation_offline": {
+        "description": "assistant.escalation.offline",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "assistant_escalation_offline_no_number": "Tu es hors connexion : ta demande ne peut pas partir. En danger ? Ouvre les contacts d’urgence.",
+    "@assistant_escalation_offline_no_number": {
+        "description": "assistant.escalation.offline_no_number"
+    },
+    "assistant_escalation_sent": "Demande envoyée. Une personne formée la lira sous 24 h. Code de suivi : {code}",
+    "@assistant_escalation_sent": {
+        "description": "assistant.escalation.sent",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
+    "assistant_escalation_share_pseudo": "Transmettre mon pseudonyme",
+    "@assistant_escalation_share_pseudo": {
+        "description": "assistant.escalation.share_pseudo"
+    },
+    "assistant_escalation_share_pseudo_help": "Sans cela, ta demande reste anonyme : seul le moyen de contact est transmis.",
+    "@assistant_escalation_share_pseudo_help": {
+        "description": "assistant.escalation.share_pseudo_help"
+    },
+    "assistant_escalation_shared": "Ta conversation enregistrée pourra être relue par l’équipe.",
+    "@assistant_escalation_shared": {
+        "description": "assistant.escalation.shared"
+    },
+    "assistant_escalation_shared_needs_pseudo": "Ta demande anonyme n’est pas reliée à ta conversation enregistrée. Pour que l’équipe puisse la relire avec ta demande, transmets ton pseudonyme.",
+    "@assistant_escalation_shared_needs_pseudo": {
+        "description": "assistant.escalation.shared_needs_pseudo"
+    },
+    "assistant_escalation_submit": "Envoyer ma demande",
+    "@assistant_escalation_submit": {
+        "description": "assistant.escalation.submit"
+    },
+    "assistant_escalation_title": "Parler à un humain",
+    "@assistant_escalation_title": {
+        "description": "assistant.escalation.title"
+    },
+    "assistant_escalation_too_long": "{max} caractères maximum.",
+    "@assistant_escalation_too_long": {
+        "description": "assistant.escalation.too_long",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
     },
     "assistant_fallback_disclaimer": "Je donne des informations générales et je ne remplace pas une professionnelle de santé, de droit ou d’écoute. En cas de danger, utilise le bouton SOS.",
     "@assistant_fallback_disclaimer": {
@@ -4265,7 +4381,7 @@
     "@assistant_fallback_intro": {
         "description": "assistant.fallback.intro"
     },
-    "assistant_fallback_rephrase": "Tu peux aussi reformuler en quelques mots (ex. « comment porter plainte ? », « contraception d’urgence », « chantage à l’outing »).",
+    "assistant_fallback_rephrase": "Tu peux aussi reformuler en quelques mots (ex. « comment porter plainte ? », « contraception d’urgence », « chantage à l’outing »).",
     "@assistant_fallback_rephrase": {
         "description": "assistant.fallback.rephrase"
     },
@@ -4278,7 +4394,7 @@
             }
         }
     },
-    "assistant_fallback_suggestions": "Ces questions sont peut-être proches de la tienne :",
+    "assistant_fallback_suggestions": "Ces questions sont peut-être proches de la tienne :",
     "@assistant_fallback_suggestions": {
         "description": "assistant.fallback.suggestions"
     },
@@ -4325,6 +4441,166 @@
     "assistant_links_sos": "SOS",
     "@assistant_links_sos": {
         "description": "assistant.links.sos"
+    },
+    "assistant_page_bot": "Assistant :",
+    "@assistant_page_bot": {
+        "description": "assistant.page.bot"
+    },
+    "assistant_page_chips_0": "Comment porter plainte ?",
+    "@assistant_page_chips_0": {
+        "description": "assistant.page.chips.0"
+    },
+    "assistant_page_chips_1": "Que faire après une agression ?",
+    "@assistant_page_chips_1": {
+        "description": "assistant.page.chips.1"
+    },
+    "assistant_page_chips_2": "Contraception d’urgence",
+    "@assistant_page_chips_2": {
+        "description": "assistant.page.chips.2"
+    },
+    "assistant_page_chips_3": "Chantage à l’outing, que faire ?",
+    "@assistant_page_chips_3": {
+        "description": "assistant.page.chips.3"
+    },
+    "assistant_page_chips_4": "Dépistage VIH / IST",
+    "@assistant_page_chips_4": {
+        "description": "assistant.page.chips.4"
+    },
+    "assistant_page_chips_5": "Douleurs de règles",
+    "@assistant_page_chips_5": {
+        "description": "assistant.page.chips.5"
+    },
+    "assistant_page_chips_6": "Je me sens angoissée",
+    "@assistant_page_chips_6": {
+        "description": "assistant.page.chips.6"
+    },
+    "assistant_page_chips_7": "C’est quoi le consentement ?",
+    "@assistant_page_chips_7": {
+        "description": "assistant.page.chips.7"
+    },
+    "assistant_page_chips_label": "Questions fréquentes",
+    "@assistant_page_chips_label": {
+        "description": "assistant.page.chips_label"
+    },
+    "assistant_page_clear": "Effacer la conversation",
+    "@assistant_page_clear": {
+        "description": "assistant.page.clear"
+    },
+    "assistant_page_clear_failed": "La conversation enregistrée n’a pas pu être effacée. Réessaie dans un instant.",
+    "@assistant_page_clear_failed": {
+        "description": "assistant.page.clear_failed"
+    },
+    "assistant_page_cleared": "Conversation effacée.",
+    "@assistant_page_cleared": {
+        "description": "assistant.page.cleared"
+    },
+    "assistant_page_conversation": "conversation",
+    "@assistant_page_conversation": {
+        "description": "assistant.page.conversation"
+    },
+    "assistant_page_danger_text": "Si tu es en danger immédiat, n’attends pas : envoie une alerte.",
+    "@assistant_page_danger_text": {
+        "description": "assistant.page.danger_text"
+    },
+    "assistant_page_danger_title": "En danger ?",
+    "@assistant_page_danger_title": {
+        "description": "assistant.page.danger_title"
+    },
+    "assistant_page_directory_cta": "Ouvrir l’annuaire",
+    "@assistant_page_directory_cta": {
+        "description": "assistant.page.directory_cta"
+    },
+    "assistant_page_disclaimer": "Cet assistant donne des informations générales et ne remplace pas un·e professionnel·le de santé, de droit ou de soutien psychologique.",
+    "@assistant_page_disclaimer": {
+        "description": "assistant.page.disclaimer"
+    },
+    "assistant_page_history_discreet": "Mode discret : rien n’est gardé dans ce navigateur, la conversation disparaît quand tu quittes la page.",
+    "@assistant_page_history_discreet": {
+        "description": "assistant.page.history_discreet"
+    },
+    "assistant_page_history_saved": "Conversation enregistrée et chiffrée : tu peux l’effacer à tout moment.",
+    "@assistant_page_history_saved": {
+        "description": "assistant.page.history_saved"
+    },
+    "assistant_page_history_tab": "La conversation est gardée uniquement dans cet onglet.",
+    "@assistant_page_history_tab": {
+        "description": "assistant.page.history_tab"
+    },
+    "assistant_page_human_cta": "Demander à être recontacté·e",
+    "@assistant_page_human_cta": {
+        "description": "assistant.page.human_cta"
+    },
+    "assistant_page_human_text": "Une pair éducatrice, une psychologue ou une juriste peut t’écouter.",
+    "@assistant_page_human_text": {
+        "description": "assistant.page.human_text"
+    },
+    "assistant_page_human_title": "Parler à un humain",
+    "@assistant_page_human_title": {
+        "description": "assistant.page.human_title"
+    },
+    "assistant_page_input_label": "Ton message",
+    "@assistant_page_input_label": {
+        "description": "assistant.page.input_label"
+    },
+    "assistant_page_log_label": "Conversation avec l’assistant",
+    "@assistant_page_log_label": {
+        "description": "assistant.page.log_label"
+    },
+    "assistant_page_me": "Toi :",
+    "@assistant_page_me": {
+        "description": "assistant.page.me"
+    },
+    "assistant_page_offline": "Hors connexion",
+    "@assistant_page_offline": {
+        "description": "assistant.page.offline"
+    },
+    "assistant_page_online": "En ligne",
+    "@assistant_page_online": {
+        "description": "assistant.page.online"
+    },
+    "assistant_page_options": "Options de la conversation",
+    "@assistant_page_options": {
+        "description": "assistant.page.options"
+    },
+    "assistant_page_persist": "Garder cette conversation",
+    "@assistant_page_persist": {
+        "description": "assistant.page.persist"
+    },
+    "assistant_page_persist_help": "Chiffrée sur nos serveurs, effaçable à tout moment. Si tu sembles en danger, elle pourra être relue par l’équipe, sans réponse ici : pour qu’une personne formée te recontacte, utilise « Parler à un humain ». Désactivé par défaut.",
+    "@assistant_page_persist_help": {
+        "description": "assistant.page.persist_help"
+    },
+    "assistant_page_placeholder": "Pose ta question…",
+    "@assistant_page_placeholder": {
+        "description": "assistant.page.placeholder"
+    },
+    "assistant_page_record_failed": "Ce message n’a pas pu être enregistré sur nos serveurs. Les numéros ci-dessus restent valables : appelle si tu es en danger.",
+    "@assistant_page_record_failed": {
+        "description": "assistant.page.record_failed"
+    },
+    "assistant_page_retry": "Réessayer",
+    "@assistant_page_retry": {
+        "description": "assistant.page.retry"
+    },
+    "assistant_page_send": "Envoyer",
+    "@assistant_page_send": {
+        "description": "assistant.page.send"
+    },
+    "assistant_page_subtitle": "Spécialisé VBG, santé sexuelle et droits",
+    "@assistant_page_subtitle": {
+        "description": "assistant.page.subtitle"
+    },
+    "assistant_page_title": "Assistant Xomiton",
+    "@assistant_page_title": {
+        "description": "assistant.page.title"
+    },
+    "assistant_page_typing": "L’assistant écrit…",
+    "@assistant_page_typing": {
+        "description": "assistant.page.typing"
+    },
+    "assistant_page_welcome": "Bonjour, je suis l’assistant Xomiton. Je peux t’informer sur les violences, la santé sexuelle, tes droits et les services disponibles. Je ne remplace pas un·e professionnel·le. En cas de danger, utilise le bouton SOS.",
+    "@assistant_page_welcome": {
+        "description": "assistant.page.welcome"
     },
     "auth_api_attributes_reset_token": "code ou lien de réinitialisation",
     "@auth_api_attributes_reset_token": {
@@ -8974,6 +9250,69 @@
     "@components_logo_home": {
         "description": "components.logo.home"
     },
+    "components_maintenance_notice_on_day": "le {day}",
+    "@components_maintenance_notice_on_day": {
+        "description": "components.maintenance_notice.on_day",
+        "placeholders": {
+            "day": {
+                "type": "String"
+            }
+        }
+    },
+    "components_maintenance_notice_same_day": "{day} de {from} à {to}",
+    "@components_maintenance_notice_same_day": {
+        "description": "components.maintenance_notice.same_day",
+        "placeholders": {
+            "day": {
+                "type": "String"
+            },
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "components_maintenance_notice_span": "du {from_day} à {from} au {to_day} à {to}",
+    "@components_maintenance_notice_span": {
+        "description": "components.maintenance_notice.span",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "from_day": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            },
+            "to_day": {
+                "type": "String"
+            }
+        }
+    },
+    "components_maintenance_notice_text": "Une maintenance est prévue {range}. La plateforme sera alors indisponible ; le SOS, le signalement et les contacts d’urgence resteront accessibles.",
+    "@components_maintenance_notice_text": {
+        "description": "components.maintenance_notice.text",
+        "placeholders": {
+            "range": {
+                "type": "String"
+            }
+        }
+    },
+    "components_maintenance_notice_title": "Maintenance prévue",
+    "@components_maintenance_notice_title": {
+        "description": "components.maintenance_notice.title"
+    },
+    "components_maintenance_notice_today": "aujourd’hui",
+    "@components_maintenance_notice_today": {
+        "description": "components.maintenance_notice.today"
+    },
+    "components_maintenance_notice_tomorrow": "demain",
+    "@components_maintenance_notice_tomorrow": {
+        "description": "components.maintenance_notice.tomorrow"
+    },
     "components_modal_confirm_word_label": "Pour confirmer, saisis le mot suivant :",
     "@components_modal_confirm_word_label": {
         "description": "components.modal.confirm_word_label"
@@ -10193,6 +10532,227 @@
     "design_system_vue_title": "Design system Vue",
     "@design_system_vue_title": {
         "description": "design_system.vue.title"
+    },
+    "directory_callback_anonymous": "Ne pas transmettre mon pseudo",
+    "@directory_callback_anonymous": {
+        "description": "directory.callback.anonymous"
+    },
+    "directory_callback_anonymous_help": "Coché : la personne ne voit que ton numéro ou ton adresse.",
+    "@directory_callback_anonymous_help": {
+        "description": "directory.callback.anonymous_help"
+    },
+    "directory_callback_contact_help": "Téléphone ou e-mail, utilisé uniquement pour ce rappel.",
+    "@directory_callback_contact_help": {
+        "description": "directory.callback.contact_help"
+    },
+    "directory_callback_contact_required": "Indique un numéro ou une adresse pour être rappelé·e.",
+    "@directory_callback_contact_required": {
+        "description": "directory.callback.contact_required"
+    },
+    "directory_callback_errors_title": "Ta demande n’est pas encore partie :",
+    "@directory_callback_errors_title": {
+        "description": "directory.callback.errors_title"
+    },
+    "directory_callback_message_max": "{max} caractères au plus.",
+    "@directory_callback_message_max": {
+        "description": "directory.callback.message_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "directory_callback_message_placeholder": "Que souhaites-tu dire ?",
+    "@directory_callback_message_placeholder": {
+        "description": "directory.callback.message_placeholder"
+    },
+    "directory_callback_offline": "Pas de connexion : ta demande n’est pas partie. Réessaie quand le réseau revient, ou appelle directement.",
+    "@directory_callback_offline": {
+        "description": "directory.callback.offline"
+    },
+    "directory_callback_only_them": "Ta demande est transmise comme un « besoin » à cette personne uniquement.",
+    "@directory_callback_only_them": {
+        "description": "directory.callback.only_them"
+    },
+    "directory_callback_placeholder": "+229 01 …",
+    "@directory_callback_placeholder": {
+        "description": "directory.callback.placeholder"
+    },
+    "directory_callback_submit": "Envoyer la demande",
+    "@directory_callback_submit": {
+        "description": "directory.callback.submit"
+    },
+    "directory_callback_tracking": "Ton code de suivi : {code}",
+    "@directory_callback_tracking": {
+        "description": "directory.callback.tracking",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
+    "directory_callback_who": "Tu seras rappelé·e par {name} ({role}).",
+    "@directory_callback_who": {
+        "description": "directory.callback.who",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "role": {
+                "type": "String"
+            }
+        }
+    },
+    "directory_card_call": "Appeler",
+    "@directory_card_call": {
+        "description": "directory.card.call"
+    },
+    "directory_card_callback": "Demander à être rappelé·e",
+    "@directory_card_callback": {
+        "description": "directory.card.callback"
+    },
+    "directory_card_callback_unavailable": "Pas de demande de rappel pour un contact réservé au réseau.",
+    "@directory_card_callback_unavailable": {
+        "description": "directory.card.callback_unavailable"
+    },
+    "directory_card_email": "E-mail",
+    "@directory_card_email": {
+        "description": "directory.card.email"
+    },
+    "directory_card_national": "National",
+    "@directory_card_national": {
+        "description": "directory.card.national"
+    },
+    "directory_card_reserved": "Réservé au réseau",
+    "@directory_card_reserved": {
+        "description": "directory.card.reserved"
+    },
+    "directory_card_whatsapp": "WhatsApp",
+    "@directory_card_whatsapp": {
+        "description": "directory.card.whatsapp"
+    },
+    "directory_empty": "Aucun contact ne correspond à ces critères.",
+    "@directory_empty": {
+        "description": "directory.empty"
+    },
+    "directory_empty_all": "Voir tout l’annuaire",
+    "@directory_empty_all": {
+        "description": "directory.empty_all"
+    },
+    "directory_filters_all_communes": "Commune",
+    "@directory_filters_all_communes": {
+        "description": "directory.filters.all_communes"
+    },
+    "directory_filters_all_roles": "Rôle",
+    "@directory_filters_all_roles": {
+        "description": "directory.filters.all_roles"
+    },
+    "directory_filters_all_zones": "Département",
+    "@directory_filters_all_zones": {
+        "description": "directory.filters.all_zones"
+    },
+    "directory_filters_commune": "Commune",
+    "@directory_filters_commune": {
+        "description": "directory.filters.commune"
+    },
+    "directory_filters_label": "Filtrer l’annuaire",
+    "@directory_filters_label": {
+        "description": "directory.filters.label"
+    },
+    "directory_filters_reset": "Réinitialiser",
+    "@directory_filters_reset": {
+        "description": "directory.filters.reset"
+    },
+    "directory_filters_results": "{count, plural, =0{Aucun résultat} =1{1 résultat} other{{count} résultats}}",
+    "@directory_filters_results": {
+        "description": "directory.filters.results",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "directory_filters_role": "Rôle",
+    "@directory_filters_role": {
+        "description": "directory.filters.role"
+    },
+    "directory_filters_search": "Nom, organisation, commune…",
+    "@directory_filters_search": {
+        "description": "directory.filters.search"
+    },
+    "directory_filters_search_label": "Recherche",
+    "@directory_filters_search_label": {
+        "description": "directory.filters.search_label"
+    },
+    "directory_filters_submit": "Filtrer",
+    "@directory_filters_submit": {
+        "description": "directory.filters.submit"
+    },
+    "directory_filters_zone": "Département",
+    "@directory_filters_zone": {
+        "description": "directory.filters.zone"
+    },
+    "directory_heading": "Annuaire dynamique",
+    "@directory_heading": {
+        "description": "directory.heading"
+    },
+    "directory_intro": "Points focaux, juristes, psychologues et responsables de réseaux près de chez toi.",
+    "@directory_intro": {
+        "description": "directory.intro"
+    },
+    "directory_loaded": "{count, plural, =0{Aucun contact de plus} =1{1 contact de plus} other{{count} contacts de plus}}",
+    "@directory_loaded": {
+        "description": "directory.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "directory_map_caption": "Bénin · par département",
+    "@directory_map_caption": {
+        "description": "directory.map.caption"
+    },
+    "directory_map_hint": "Choisis un département sur la carte ou dans la liste.",
+    "@directory_map_hint": {
+        "description": "directory.map.hint"
+    },
+    "directory_map_label": "Carte schématique du Bénin",
+    "@directory_map_label": {
+        "description": "directory.map.label"
+    },
+    "directory_map_national": "{count, plural, =1{National : {count} contact} other{National : {count} contacts}}",
+    "@directory_map_national": {
+        "description": "directory.map.national",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "directory_map_pin": "{count, plural, =1{{zone} : {count} contact} other{{zone} : {count} contacts}}",
+    "@directory_map_pin": {
+        "description": "directory.map.pin",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "directory_network_notice": "Tu vois aussi les contacts réservés au réseau. Ne les partage pas en dehors de ton accompagnement.",
+    "@directory_network_notice": {
+        "description": "directory.network_notice"
+    },
+    "directory_title": "Annuaire",
+    "@directory_title": {
+        "description": "directory.title"
+    },
+    "directory_urgences": "Urgences",
+    "@directory_urgences": {
+        "description": "directory.urgences"
     },
     "enums_alerts_alert_priority_critique": "Critique",
     "@enums_alerts_alert_priority_critique": {
@@ -12725,13 +13285,592 @@
     "@mail_footer_unsubscribe": {
         "description": "mail.footer.unsubscribe"
     },
-    "maintenance_admin_login": "Connexion de l’administration",
+    "maintenance_admin_announce_0": "Aucune annonce",
+    "@maintenance_admin_announce_0": {
+        "description": "maintenance.admin.announce.0"
+    },
+    "maintenance_admin_announce_1": "1 heure avant",
+    "@maintenance_admin_announce_1": {
+        "description": "maintenance.admin.announce.1"
+    },
+    "maintenance_admin_announce_168": "7 jours avant",
+    "@maintenance_admin_announce_168": {
+        "description": "maintenance.admin.announce.168"
+    },
+    "maintenance_admin_announce_24": "24 heures avant",
+    "@maintenance_admin_announce_24": {
+        "description": "maintenance.admin.announce.24"
+    },
+    "maintenance_admin_announce_48": "48 heures avant",
+    "@maintenance_admin_announce_48": {
+        "description": "maintenance.admin.announce.48"
+    },
+    "maintenance_admin_announce_6": "6 heures avant",
+    "@maintenance_admin_announce_6": {
+        "description": "maintenance.admin.announce.6"
+    },
+    "maintenance_admin_announce_72": "3 jours avant",
+    "@maintenance_admin_announce_72": {
+        "description": "maintenance.admin.announce.72"
+    },
+    "maintenance_admin_banner_active": "Mode maintenance actif : le public voit la page de maintenance. Le SOS, le signalement et les urgences restent ouverts.",
+    "@maintenance_admin_banner_active": {
+        "description": "maintenance.admin.banner_active"
+    },
+    "maintenance_admin_banner_manage": "Gérer la maintenance",
+    "@maintenance_admin_banner_manage": {
+        "description": "maintenance.admin.banner_manage"
+    },
+    "maintenance_admin_confirm_acknowledge": "Je confirme : seuls les comptes admin et superadmin garderont l’accès.",
+    "@maintenance_admin_confirm_acknowledge": {
+        "description": "maintenance.admin.confirm.acknowledge"
+    },
+    "maintenance_admin_confirm_action": "Activer maintenant",
+    "@maintenance_admin_confirm_action": {
+        "description": "maintenance.admin.confirm.action"
+    },
+    "maintenance_admin_confirm_text": "Le public verra la page de maintenance et les membres connectés seront déconnectés. Les comptes admin et superadmin gardent l’accès.",
+    "@maintenance_admin_confirm_text": {
+        "description": "maintenance.admin.confirm.text"
+    },
+    "maintenance_admin_confirm_title": "Activer le mode maintenance ?",
+    "@maintenance_admin_confirm_title": {
+        "description": "maintenance.admin.confirm.title"
+    },
+    "maintenance_admin_durations_120": "2 heures",
+    "@maintenance_admin_durations_120": {
+        "description": "maintenance.admin.durations.120"
+    },
+    "maintenance_admin_durations_15": "15 minutes",
+    "@maintenance_admin_durations_15": {
+        "description": "maintenance.admin.durations.15"
+    },
+    "maintenance_admin_durations_240": "4 heures",
+    "@maintenance_admin_durations_240": {
+        "description": "maintenance.admin.durations.240"
+    },
+    "maintenance_admin_durations_30": "30 minutes",
+    "@maintenance_admin_durations_30": {
+        "description": "maintenance.admin.durations.30"
+    },
+    "maintenance_admin_durations_60": "1 heure",
+    "@maintenance_admin_durations_60": {
+        "description": "maintenance.admin.durations.60"
+    },
+    "maintenance_admin_durations_unknown": "Inconnue (aucune heure affichée)",
+    "@maintenance_admin_durations_unknown": {
+        "description": "maintenance.admin.durations.unknown"
+    },
+    "maintenance_admin_fields_announce_hint": "Un bandeau prévient visiteurs et membres pendant ce délai avant le début.",
+    "@maintenance_admin_fields_announce_hint": {
+        "description": "maintenance.admin.fields.announce_hint"
+    },
+    "maintenance_admin_fields_announce_hours": "Annonce préalable",
+    "@maintenance_admin_fields_announce_hours": {
+        "description": "maintenance.admin.fields.announce_hours"
+    },
+    "maintenance_admin_fields_cancel_reason": "Motif de l’annulation",
+    "@maintenance_admin_fields_cancel_reason": {
+        "description": "maintenance.admin.fields.cancel_reason"
+    },
+    "maintenance_admin_fields_duration": "Durée estimée",
+    "@maintenance_admin_fields_duration": {
+        "description": "maintenance.admin.fields.duration"
+    },
+    "maintenance_admin_fields_ends_at": "Fin",
+    "@maintenance_admin_fields_ends_at": {
+        "description": "maintenance.admin.fields.ends_at"
+    },
+    "maintenance_admin_fields_message": "Message public",
+    "@maintenance_admin_fields_message": {
+        "description": "maintenance.admin.fields.message"
+    },
+    "maintenance_admin_fields_message_editor": "Texte affiché aux visiteurs",
+    "@maintenance_admin_fields_message_editor": {
+        "description": "maintenance.admin.fields.message_editor"
+    },
+    "maintenance_admin_fields_message_hint": "Texte court affiché sur la page de maintenance (280 caractères au plus).",
+    "@maintenance_admin_fields_message_hint": {
+        "description": "maintenance.admin.fields.message_hint"
+    },
+    "maintenance_admin_fields_reason": "Motif interne",
+    "@maintenance_admin_fields_reason": {
+        "description": "maintenance.admin.fields.reason"
+    },
+    "maintenance_admin_fields_reason_hint": "Visible uniquement dans le journal d’audit. Exemple : migration de la base de données.",
+    "@maintenance_admin_fields_reason_hint": {
+        "description": "maintenance.admin.fields.reason_hint"
+    },
+    "maintenance_admin_fields_starts_at": "Début",
+    "@maintenance_admin_fields_starts_at": {
+        "description": "maintenance.admin.fields.starts_at"
+    },
+    "maintenance_admin_fields_timezone_hint": "Heure de {zone} (UTC{offset}), comme sur la page publique.",
+    "@maintenance_admin_fields_timezone_hint": {
+        "description": "maintenance.admin.fields.timezone_hint",
+        "placeholders": {
+            "offset": {
+                "type": "String"
+            },
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_fields_window_message": "Message public de la fenêtre",
+    "@maintenance_admin_fields_window_message": {
+        "description": "maintenance.admin.fields.window_message"
+    },
+    "maintenance_admin_fields_window_reason": "Motif interne",
+    "@maintenance_admin_fields_window_reason": {
+        "description": "maintenance.admin.fields.window_reason"
+    },
+    "maintenance_admin_headlines_announced": "Maintenance annoncée",
+    "@maintenance_admin_headlines_announced": {
+        "description": "maintenance.admin.headlines.announced"
+    },
+    "maintenance_admin_headlines_ended": "Maintenance terminée",
+    "@maintenance_admin_headlines_ended": {
+        "description": "maintenance.admin.headlines.ended"
+    },
+    "maintenance_admin_headlines_inactive": "La plateforme est ouverte",
+    "@maintenance_admin_headlines_inactive": {
+        "description": "maintenance.admin.headlines.inactive"
+    },
+    "maintenance_admin_headlines_ongoing": "Maintenance en cours",
+    "@maintenance_admin_headlines_ongoing": {
+        "description": "maintenance.admin.headlines.ongoing"
+    },
+    "maintenance_admin_history_actions_disabled": "Maintenance désactivée",
+    "@maintenance_admin_history_actions_disabled": {
+        "description": "maintenance.admin.history.actions.disabled"
+    },
+    "maintenance_admin_history_actions_enabled": "Maintenance activée",
+    "@maintenance_admin_history_actions_enabled": {
+        "description": "maintenance.admin.history.actions.enabled"
+    },
+    "maintenance_admin_history_actions_message_updated": "Message public modifié",
+    "@maintenance_admin_history_actions_message_updated": {
+        "description": "maintenance.admin.history.actions.message_updated"
+    },
+    "maintenance_admin_history_actions_scheduled": "Fenêtre planifiée",
+    "@maintenance_admin_history_actions_scheduled": {
+        "description": "maintenance.admin.history.actions.scheduled"
+    },
+    "maintenance_admin_history_actions_window_cancelled": "Fenêtre annulée",
+    "@maintenance_admin_history_actions_window_cancelled": {
+        "description": "maintenance.admin.history.actions.window_cancelled"
+    },
+    "maintenance_admin_history_empty": "Aucune action de maintenance enregistrée.",
+    "@maintenance_admin_history_empty": {
+        "description": "maintenance.admin.history.empty"
+    },
+    "maintenance_admin_history_no_reason": "Sans motif",
+    "@maintenance_admin_history_no_reason": {
+        "description": "maintenance.admin.history.no_reason"
+    },
+    "maintenance_admin_history_reason": "Motif : {reason}",
+    "@maintenance_admin_history_reason": {
+        "description": "maintenance.admin.history.reason",
+        "placeholders": {
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_history_title": "Historique",
+    "@maintenance_admin_history_title": {
+        "description": "maintenance.admin.history.title"
+    },
+    "maintenance_admin_intro": "Fermez temporairement la plateforme au public pendant une mise à jour importante. L’administration garde l’accès complet ; le SOS, le signalement et les urgences restent toujours ouverts.",
+    "@maintenance_admin_intro": {
+        "description": "maintenance.admin.intro"
+    },
+    "maintenance_admin_kpi_announced_count": "{count, plural, =0{Aucune annoncée en ce moment} =1{Dont 1 annoncée en ce moment} other{Dont {count} annoncées en ce moment}}",
+    "@maintenance_admin_kpi_announced_count": {
+        "description": "maintenance.admin.kpi.announced_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "maintenance_admin_kpi_ended_at": "Terminée le {date}",
+    "@maintenance_admin_kpi_ended_at": {
+        "description": "maintenance.admin.kpi.ended_at",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_kpi_ends": "Fin prévue",
+    "@maintenance_admin_kpi_ends": {
+        "description": "maintenance.admin.kpi.ends"
+    },
+    "maintenance_admin_kpi_ends_on": "Fin prévue : {date}",
+    "@maintenance_admin_kpi_ends_on": {
+        "description": "maintenance.admin.kpi.ends_on",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_kpi_hours": "De {from} à {to}",
+    "@maintenance_admin_kpi_hours": {
+        "description": "maintenance.admin.kpi.hours",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_kpi_next": "Prochaine fenêtre",
+    "@maintenance_admin_kpi_next": {
+        "description": "maintenance.admin.kpi.next"
+    },
+    "maintenance_admin_kpi_none": "Aucune",
+    "@maintenance_admin_kpi_none": {
+        "description": "maintenance.admin.kpi.none"
+    },
+    "maintenance_admin_kpi_remaining": "Temps restant",
+    "@maintenance_admin_kpi_remaining": {
+        "description": "maintenance.admin.kpi.remaining"
+    },
+    "maintenance_admin_kpi_since": "Depuis le {date}",
+    "@maintenance_admin_kpi_since": {
+        "description": "maintenance.admin.kpi.since",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_kpi_starts_in": "Commence le {date}",
+    "@maintenance_admin_kpi_starts_in": {
+        "description": "maintenance.admin.kpi.starts_in",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_kpi_state": "État",
+    "@maintenance_admin_kpi_state": {
+        "description": "maintenance.admin.kpi.state"
+    },
+    "maintenance_admin_kpi_unknown": "Non annoncée",
+    "@maintenance_admin_kpi_unknown": {
+        "description": "maintenance.admin.kpi.unknown"
+    },
+    "maintenance_admin_live_disable": "Désactiver la maintenance",
+    "@maintenance_admin_live_disable": {
+        "description": "maintenance.admin.live.disable"
+    },
+    "maintenance_admin_live_disable_text": "Rouvre la plateforme à tout le monde en un clic. Les fenêtres planifiées à venir sont conservées.",
+    "@maintenance_admin_live_disable_text": {
+        "description": "maintenance.admin.live.disable_text"
+    },
+    "maintenance_admin_live_enable": "Activer la maintenance",
+    "@maintenance_admin_live_enable": {
+        "description": "maintenance.admin.live.enable"
+    },
+    "maintenance_admin_live_estimate_hint": "Fin affichée au public, à titre indicatif : la plateforme ne rouvre qu’à la désactivation.",
+    "@maintenance_admin_live_estimate_hint": {
+        "description": "maintenance.admin.live.estimate_hint"
+    },
+    "maintenance_admin_live_text": "Ferme la plateforme au public tout de suite. Votre session reste ouverte.",
+    "@maintenance_admin_live_text": {
+        "description": "maintenance.admin.live.text"
+    },
+    "maintenance_admin_live_title": "Activation immédiate",
+    "@maintenance_admin_live_title": {
+        "description": "maintenance.admin.live.title"
+    },
+    "maintenance_admin_message_dark": "Sombre",
+    "@maintenance_admin_message_dark": {
+        "description": "maintenance.admin.message.dark"
+    },
+    "maintenance_admin_message_light": "Clair",
+    "@maintenance_admin_message_light": {
+        "description": "maintenance.admin.message.light"
+    },
+    "maintenance_admin_message_preview": "Aperçu en direct",
+    "@maintenance_admin_message_preview": {
+        "description": "maintenance.admin.message.preview"
+    },
+    "maintenance_admin_message_preview_hint": "Rendu de la page publique sur mobile, mis à jour pendant la saisie.",
+    "@maintenance_admin_message_preview_hint": {
+        "description": "maintenance.admin.message.preview_hint"
+    },
+    "maintenance_admin_message_save": "Enregistrer le message",
+    "@maintenance_admin_message_save": {
+        "description": "maintenance.admin.message.save"
+    },
+    "maintenance_admin_message_title": "Message public",
+    "@maintenance_admin_message_title": {
+        "description": "maintenance.admin.message.title"
+    },
+    "maintenance_admin_preview_ribbon": "Aperçu de la page publique : rien n’est publié.",
+    "@maintenance_admin_preview_ribbon": {
+        "description": "maintenance.admin.preview_ribbon"
+    },
+    "maintenance_admin_safeguards_command": "Commande de secours (cPanel, SSH ou cron) :",
+    "@maintenance_admin_safeguards_command": {
+        "description": "maintenance.admin.safeguards.command"
+    },
+    "maintenance_admin_safeguards_login": "La connexion admin et superadmin reste ouverte pendant la maintenance.",
+    "@maintenance_admin_safeguards_login": {
+        "description": "maintenance.admin.safeguards.login"
+    },
+    "maintenance_admin_safeguards_password": "Mot de passe oublié : la réinitialisation reste ouverte, sans rouvrir la plateforme au public.",
+    "@maintenance_admin_safeguards_password": {
+        "description": "maintenance.admin.safeguards.password"
+    },
+    "maintenance_admin_safeguards_session": "Votre session reste ouverte : l’administration n’est jamais bloquée.",
+    "@maintenance_admin_safeguards_session": {
+        "description": "maintenance.admin.safeguards.session"
+    },
+    "maintenance_admin_safeguards_title": "Garde-fous anti-verrouillage",
+    "@maintenance_admin_safeguards_title": {
+        "description": "maintenance.admin.safeguards.title"
+    },
+    "maintenance_admin_schedule_announce_from": "Annonce à partir du {date}",
+    "@maintenance_admin_schedule_announce_from": {
+        "description": "maintenance.admin.schedule.announce_from",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_schedule_announced_badge": "Annoncée",
+    "@maintenance_admin_schedule_announced_badge": {
+        "description": "maintenance.admin.schedule.announced_badge"
+    },
+    "maintenance_admin_schedule_by": "Par {name}",
+    "@maintenance_admin_schedule_by": {
+        "description": "maintenance.admin.schedule.by",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_schedule_cancel": "Annuler la fenêtre",
+    "@maintenance_admin_schedule_cancel": {
+        "description": "maintenance.admin.schedule.cancel"
+    },
+    "maintenance_admin_schedule_cancel_confirm": "Annuler la fenêtre du {date} ? Le bandeau d’annonce disparaît aussitôt.",
+    "@maintenance_admin_schedule_cancel_confirm": {
+        "description": "maintenance.admin.schedule.cancel_confirm",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_schedule_empty": "Aucune fenêtre planifiée. Planifiez la prochaine avec le formulaire.",
+    "@maintenance_admin_schedule_empty": {
+        "description": "maintenance.admin.schedule.empty"
+    },
+    "maintenance_admin_schedule_list_title": "Fenêtres planifiées",
+    "@maintenance_admin_schedule_list_title": {
+        "description": "maintenance.admin.schedule.list_title"
+    },
+    "maintenance_admin_schedule_no_announce": "Sans annonce préalable",
+    "@maintenance_admin_schedule_no_announce": {
+        "description": "maintenance.admin.schedule.no_announce"
+    },
+    "maintenance_admin_schedule_planned_badge": "Planifiée",
+    "@maintenance_admin_schedule_planned_badge": {
+        "description": "maintenance.admin.schedule.planned_badge"
+    },
+    "maintenance_admin_schedule_submit": "Planifier la fenêtre",
+    "@maintenance_admin_schedule_submit": {
+        "description": "maintenance.admin.schedule.submit"
+    },
+    "maintenance_admin_schedule_text": "La fenêtre s’ouvre et se ferme toute seule aux heures choisies. Deux fenêtres ne peuvent pas se chevaucher.",
+    "@maintenance_admin_schedule_text": {
+        "description": "maintenance.admin.schedule.text"
+    },
+    "maintenance_admin_schedule_title": "Planifier une fenêtre",
+    "@maintenance_admin_schedule_title": {
+        "description": "maintenance.admin.schedule.title"
+    },
+    "maintenance_admin_state_text_announced": "Une maintenance est annoncée : un bandeau prévient les visiteurs et les membres.",
+    "@maintenance_admin_state_text_announced": {
+        "description": "maintenance.admin.state_text.announced"
+    },
+    "maintenance_admin_state_text_ended": "La dernière maintenance est terminée. La plateforme est de nouveau ouverte.",
+    "@maintenance_admin_state_text_ended": {
+        "description": "maintenance.admin.state_text.ended"
+    },
+    "maintenance_admin_state_text_inactive": "La plateforme est ouverte à tout le monde.",
+    "@maintenance_admin_state_text_inactive": {
+        "description": "maintenance.admin.state_text.inactive"
+    },
+    "maintenance_admin_state_text_ongoing": "Le public voit la page de maintenance. Seuls les comptes admin et superadmin peuvent se connecter.",
+    "@maintenance_admin_state_text_ongoing": {
+        "description": "maintenance.admin.state_text.ongoing"
+    },
+    "maintenance_admin_states_announced": "Annoncé",
+    "@maintenance_admin_states_announced": {
+        "description": "maintenance.admin.states.announced"
+    },
+    "maintenance_admin_states_ended": "Terminé",
+    "@maintenance_admin_states_ended": {
+        "description": "maintenance.admin.states.ended"
+    },
+    "maintenance_admin_states_inactive": "Inactif",
+    "@maintenance_admin_states_inactive": {
+        "description": "maintenance.admin.states.inactive"
+    },
+    "maintenance_admin_states_ongoing": "En cours",
+    "@maintenance_admin_states_ongoing": {
+        "description": "maintenance.admin.states.ongoing"
+    },
+    "maintenance_admin_title": "Mode maintenance",
+    "@maintenance_admin_title": {
+        "description": "maintenance.admin.title"
+    },
+    "maintenance_admin_toasts_cancelled": "Fenêtre du {date} annulée.",
+    "@maintenance_admin_toasts_cancelled": {
+        "description": "maintenance.admin.toasts.cancelled",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_toasts_disabled": "Mode maintenance désactivé : la plateforme est de nouveau ouverte.",
+    "@maintenance_admin_toasts_disabled": {
+        "description": "maintenance.admin.toasts.disabled"
+    },
+    "maintenance_admin_toasts_enabled": "Mode maintenance activé : seule l’administration garde l’accès.",
+    "@maintenance_admin_toasts_enabled": {
+        "description": "maintenance.admin.toasts.enabled"
+    },
+    "maintenance_admin_toasts_message_saved": "Message public enregistré.",
+    "@maintenance_admin_toasts_message_saved": {
+        "description": "maintenance.admin.toasts.message_saved"
+    },
+    "maintenance_admin_toasts_scheduled": "Fenêtre planifiée du {from} au {to}.",
+    "@maintenance_admin_toasts_scheduled": {
+        "description": "maintenance.admin.toasts.scheduled",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_view_as_visitor": "Voir comme un visiteur",
+    "@maintenance_admin_view_as_visitor": {
+        "description": "maintenance.admin.view_as_visitor"
+    },
+    "maintenance_admin_whitelist_groups_access": "Accès de l’administration",
+    "@maintenance_admin_whitelist_groups_access": {
+        "description": "maintenance.admin.whitelist.groups.access"
+    },
+    "maintenance_admin_whitelist_groups_crisis": "Parcours de crise",
+    "@maintenance_admin_whitelist_groups_crisis": {
+        "description": "maintenance.admin.whitelist.groups.crisis"
+    },
+    "maintenance_admin_whitelist_groups_system": "Système et applications",
+    "@maintenance_admin_whitelist_groups_system": {
+        "description": "maintenance.admin.whitelist.groups.system"
+    },
+    "maintenance_admin_whitelist_items_acknowledge": "Accusé de réception d’une alerte par lien signé",
+    "@maintenance_admin_whitelist_items_acknowledge": {
+        "description": "maintenance.admin.whitelist.items.acknowledge"
+    },
+    "maintenance_admin_whitelist_items_cron": "Tâches planifiées, file d’attente et heartbeat{ping} (hors HTTP)",
+    "@maintenance_admin_whitelist_items_cron": {
+        "description": "maintenance.admin.whitelist.items.cron",
+        "placeholders": {
+            "ping": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_admin_whitelist_items_login": "Connexion et code de vérification (admin et superadmin seulement)",
+    "@maintenance_admin_whitelist_items_login": {
+        "description": "maintenance.admin.whitelist.items.login"
+    },
+    "maintenance_admin_whitelist_items_newsletter": "Newsletter (inscription et désinscription)",
+    "@maintenance_admin_whitelist_items_newsletter": {
+        "description": "maintenance.admin.whitelist.items.newsletter"
+    },
+    "maintenance_admin_whitelist_items_password": "Mot de passe oublié et réinitialisation (aucun accès : la connexion reste réservée à admin et superadmin)",
+    "@maintenance_admin_whitelist_items_password": {
+        "description": "maintenance.admin.whitelist.items.password"
+    },
+    "maintenance_admin_whitelist_items_referentials": "Référentiels du signalement : zones, types de violence, besoins (API en lecture seule)",
+    "@maintenance_admin_whitelist_items_referentials": {
+        "description": "maintenance.admin.whitelist.items.referentials"
+    },
+    "maintenance_admin_whitelist_items_report": "Signalement et suivi par code (page et API)",
+    "@maintenance_admin_whitelist_items_report": {
+        "description": "maintenance.admin.whitelist.items.report"
+    },
+    "maintenance_admin_whitelist_items_sos": "SOS (page et API)",
+    "@maintenance_admin_whitelist_items_sos": {
+        "description": "maintenance.admin.whitelist.items.sos"
+    },
+    "maintenance_admin_whitelist_items_status": "État de la plateforme (GET /api/v1/status) et santé (/up)",
+    "@maintenance_admin_whitelist_items_status": {
+        "description": "maintenance.admin.whitelist.items.status"
+    },
+    "maintenance_admin_whitelist_items_sync": "Synchronisation des appareils (sync/push) et signal de vie (heartbeat)",
+    "@maintenance_admin_whitelist_items_sync": {
+        "description": "maintenance.admin.whitelist.items.sync"
+    },
+    "maintenance_admin_whitelist_items_urgences": "Contacts d’urgence (page et API)",
+    "@maintenance_admin_whitelist_items_urgences": {
+        "description": "maintenance.admin.whitelist.items.urgences"
+    },
+    "maintenance_admin_whitelist_locked": "Verrouillé",
+    "@maintenance_admin_whitelist_locked": {
+        "description": "maintenance.admin.whitelist.locked"
+    },
+    "maintenance_admin_whitelist_text": "Ces parcours restent ouverts pendant la maintenance. La liste est fixée par le code et ne peut pas être modifiée ici (Q28).",
+    "@maintenance_admin_whitelist_text": {
+        "description": "maintenance.admin.whitelist.text"
+    },
+    "maintenance_admin_whitelist_title": "Toujours accessible (RG-01)",
+    "@maintenance_admin_whitelist_title": {
+        "description": "maintenance.admin.whitelist.title"
+    },
+    "maintenance_admin_login": "Espace administration",
     "@maintenance_admin_login": {
         "description": "maintenance.admin_login"
     },
-    "maintenance_always_available_emergency": "Contacts d’urgence",
+    "maintenance_always_available_all_contacts": "Voir tous les contacts d’urgence",
+    "@maintenance_always_available_all_contacts": {
+        "description": "maintenance.always_available.all_contacts"
+    },
+    "maintenance_always_available_call_prefix": "Appeler",
+    "@maintenance_always_available_call_prefix": {
+        "description": "maintenance.always_available.call_prefix"
+    },
+    "maintenance_always_available_emergency": "Urgences",
     "@maintenance_always_available_emergency": {
         "description": "maintenance.always_available.emergency"
+    },
+    "maintenance_always_available_nav": "Accès toujours disponibles",
+    "@maintenance_always_available_nav": {
+        "description": "maintenance.always_available.nav"
+    },
+    "maintenance_always_available_numbers_text": "En danger ? Appelez directement :",
+    "@maintenance_always_available_numbers_text": {
+        "description": "maintenance.always_available.numbers_text"
     },
     "maintenance_always_available_numbers_title": "Numéros d’urgence",
     "@maintenance_always_available_numbers_title": {
@@ -12749,54 +13888,345 @@
     "@maintenance_always_available_text": {
         "description": "maintenance.always_available.text"
     },
-    "maintenance_always_available_title": "En danger ou besoin d’aide maintenant ?",
+    "maintenance_always_available_title": "En danger ou besoin d’aide maintenant ?",
     "@maintenance_always_available_title": {
         "description": "maintenance.always_available.title"
     },
-    "maintenance_default_message": "Xomiton est en maintenance. Nous revenons très vite.",
+    "maintenance_command_active": "Maintenance : ACTIVE",
+    "@maintenance_command_active": {
+        "description": "maintenance.command.active"
+    },
+    "maintenance_command_already_active": "La maintenance est déjà active : rien n’a été modifié (utilisez « off » pour la lever).",
+    "@maintenance_command_already_active": {
+        "description": "maintenance.command.already_active"
+    },
+    "maintenance_command_disabled": "Mode maintenance désactivé ({count} fenêtre(s) en cours close(s)).",
+    "@maintenance_command_disabled": {
+        "description": "maintenance.command.disabled",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_command_enabled": "Mode maintenance activé.",
+    "@maintenance_command_enabled": {
+        "description": "maintenance.command.enabled"
+    },
+    "maintenance_command_ends": "Fin prévue : {date}",
+    "@maintenance_command_ends": {
+        "description": "maintenance.command.ends",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_command_ends_unknown": "Fin prévue : non annoncée",
+    "@maintenance_command_ends_unknown": {
+        "description": "maintenance.command.ends_unknown"
+    },
+    "maintenance_command_inactive": "Maintenance : inactive",
+    "@maintenance_command_inactive": {
+        "description": "maintenance.command.inactive"
+    },
+    "maintenance_command_invalid_minutes": "La durée --minutes doit être un entier positif.",
+    "@maintenance_command_invalid_minutes": {
+        "description": "maintenance.command.invalid_minutes"
+    },
+    "maintenance_command_message": "Message public : {message}",
+    "@maintenance_command_message": {
+        "description": "maintenance.command.message",
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_command_starts": "Début : {date}",
+    "@maintenance_command_starts": {
+        "description": "maintenance.command.starts",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_command_unknown_action": "Action inconnue « {action} » : utilisez on, off ou status.",
+    "@maintenance_command_unknown_action": {
+        "description": "maintenance.command.unknown_action",
+        "placeholders": {
+            "action": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_command_upcoming": "Fenêtres planifiées : {count}",
+    "@maintenance_command_upcoming": {
+        "description": "maintenance.command.upcoming",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_command_upcoming_line": "  - du {from} au {to} (annonce {hours} h avant)",
+    "@maintenance_command_upcoming_line": {
+        "description": "maintenance.command.upcoming_line",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "hours": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_command_whitelist": "Toujours servis (RG-01) : {paths}",
+    "@maintenance_command_whitelist": {
+        "description": "maintenance.command.whitelist",
+        "placeholders": {
+            "paths": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_day_first": "1er",
+    "@maintenance_day_first": {
+        "description": "maintenance.day_first"
+    },
+    "maintenance_default_message": "Xomiton est en maintenance. Nous revenons dès que possible.",
     "@maintenance_default_message": {
         "description": "maintenance.default_message"
     },
-    "maintenance_disconnected": "Pour protéger ton compte, ta session a été fermée. Tes brouillons restent sur ton appareil : reconnecte-toi dès la fin de la maintenance.",
+    "maintenance_disconnected": "Pour protéger votre compte, votre session a été fermée. Vos brouillons restent sur votre appareil : reconnectez-vous dès la fin de la maintenance.",
     "@maintenance_disconnected": {
         "description": "maintenance.disconnected"
     },
-    "maintenance_lock_screen_notice": "Aucune donnée n’est visible depuis l’écran de verrouillage.",
-    "@maintenance_lock_screen_notice": {
-        "description": "maintenance.lock_screen_notice"
+    "maintenance_errors_already_active": "La maintenance est déjà active : rien n’a été modifié. Rechargez l’écran pour voir son état.",
+    "@maintenance_errors_already_active": {
+        "description": "maintenance.errors.already_active"
+    },
+    "maintenance_errors_lockout": "Votre compte perdrait l’accès pendant la maintenance : seuls les comptes admin et superadmin peuvent l’activer.",
+    "@maintenance_errors_lockout": {
+        "description": "maintenance.errors.lockout"
+    },
+    "maintenance_errors_overlap": "Cette fenêtre chevauche la maintenance du {from} au {to}. Choisissez d’autres horaires.",
+    "@maintenance_errors_overlap": {
+        "description": "maintenance.errors.overlap",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_errors_window_closed": "Cette fenêtre est déjà terminée ou annulée.",
+    "@maintenance_errors_window_closed": {
+        "description": "maintenance.errors.window_closed"
+    },
+    "maintenance_errors_window_order": "La fin doit suivre le début.",
+    "@maintenance_errors_window_order": {
+        "description": "maintenance.errors.window_order"
+    },
+    "maintenance_errors_window_past": "Le début de la fenêtre est déjà passé. Choisissez une date à venir.",
+    "@maintenance_errors_window_past": {
+        "description": "maintenance.errors.window_past"
+    },
+    "maintenance_errors_window_too_long": "Une fenêtre dure {hours} heures au plus.",
+    "@maintenance_errors_window_too_long": {
+        "description": "maintenance.errors.window_too_long",
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_eyebrow": "Maintenance en cours",
+    "@maintenance_eyebrow": {
+        "description": "maintenance.eyebrow"
+    },
+    "maintenance_generic_eyebrow": "Incident technique",
+    "@maintenance_generic_eyebrow": {
+        "description": "maintenance.generic.eyebrow"
+    },
+    "maintenance_generic_help_text": "Si le SOS en ligne ne répond pas, appelez directement le {first} ou le {second}.",
+    "@maintenance_generic_help_text": {
+        "description": "maintenance.generic.help_text",
+        "placeholders": {
+            "first": {
+                "type": "String"
+            },
+            "second": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_generic_help_text_none": "Si le SOS en ligne ne répond pas, appelez directement les secours.",
+    "@maintenance_generic_help_text_none": {
+        "description": "maintenance.generic.help_text_none"
+    },
+    "maintenance_generic_help_text_one": "Si le SOS en ligne ne répond pas, appelez directement le {first}.",
+    "@maintenance_generic_help_text_one": {
+        "description": "maintenance.generic.help_text_one",
+        "placeholders": {
+            "first": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_generic_message": "Nous faisons le nécessaire pour rétablir le service au plus vite.",
+    "@maintenance_generic_message": {
+        "description": "maintenance.generic.message"
+    },
+    "maintenance_generic_meta_description": "Xomiton est momentanément indisponible. En danger, appelez directement les numéros d’urgence.",
+    "@maintenance_generic_meta_description": {
+        "description": "maintenance.generic.meta_description"
+    },
+    "maintenance_generic_page_title": "Service momentanément indisponible",
+    "@maintenance_generic_page_title": {
+        "description": "maintenance.generic.page_title"
+    },
+    "maintenance_generic_title_lead": "Xomiton est",
+    "@maintenance_generic_title_lead": {
+        "description": "maintenance.generic.title_lead"
+    },
+    "maintenance_generic_title_mark": "momentanément indisponible",
+    "@maintenance_generic_title_mark": {
+        "description": "maintenance.generic.title_mark"
+    },
+    "maintenance_generic_until": "Nous ne savons pas encore quand le service sera rétabli. Actualisez la page dans quelques minutes.",
+    "@maintenance_generic_until": {
+        "description": "maintenance.generic.until"
+    },
+    "maintenance_logo_alt": "Xomiton",
+    "@maintenance_logo_alt": {
+        "description": "maintenance.logo_alt"
+    },
+    "maintenance_meta_description": "Xomiton est momentanément en maintenance. Le SOS, le signalement et les contacts d’urgence restent disponibles.",
+    "@maintenance_meta_description": {
+        "description": "maintenance.meta_description"
     },
     "maintenance_page_title": "Maintenance en cours",
     "@maintenance_page_title": {
         "description": "maintenance.page_title"
     },
+    "maintenance_reassure_crisis_text": "SOS, signalement et contacts d’urgence fonctionnent, avec ou sans compte.",
+    "@maintenance_reassure_crisis_text": {
+        "description": "maintenance.reassure.crisis_text"
+    },
+    "maintenance_reassure_crisis_title": "L’aide d’urgence reste ouverte.",
+    "@maintenance_reassure_crisis_title": {
+        "description": "maintenance.reassure.crisis_title"
+    },
+    "maintenance_reassure_data_text": "La mise à jour respecte vos réglages de confidentialité.",
+    "@maintenance_reassure_data_text": {
+        "description": "maintenance.reassure.data_text"
+    },
+    "maintenance_reassure_data_title": "Vos données restent protégées.",
+    "@maintenance_reassure_data_title": {
+        "description": "maintenance.reassure.data_title"
+    },
+    "maintenance_reassure_drafts_text": "Ce que vous aviez commencé vous attend à la réouverture.",
+    "@maintenance_reassure_drafts_text": {
+        "description": "maintenance.reassure.drafts_text"
+    },
+    "maintenance_reassure_drafts_title": "Vos brouillons restent sur votre appareil.",
+    "@maintenance_reassure_drafts_title": {
+        "description": "maintenance.reassure.drafts_title"
+    },
+    "maintenance_reassure_title": "Pendant la maintenance",
+    "@maintenance_reassure_title": {
+        "description": "maintenance.reassure.title"
+    },
     "maintenance_refresh": "Actualiser la page",
     "@maintenance_refresh": {
         "description": "maintenance.refresh"
     },
-    "maintenance_since": "Maintenance commencée le {date} à {time}.",
+    "maintenance_since": "Maintenance commencée {when}.",
     "@maintenance_since": {
         "description": "maintenance.since",
         "placeholders": {
-            "date": {
-                "type": "String"
-            },
-            "time": {
+            "when": {
                 "type": "String"
             }
         }
     },
-    "maintenance_title": "Maintenance en cours",
-    "@maintenance_title": {
-        "description": "maintenance.title"
+    "maintenance_skip": "Aller au contenu",
+    "@maintenance_skip": {
+        "description": "maintenance.skip"
     },
-    "maintenance_until": "Reprise prévue le {date} à {time}.",
+    "maintenance_status_check": "Cette page vérifie la réouverture chaque minute et se recharge toute seule.",
+    "@maintenance_status_check": {
+        "description": "maintenance.status.check"
+    },
+    "maintenance_status_check_nojs": "Actualisez la page pour vérifier si la plateforme a rouvert.",
+    "@maintenance_status_check_nojs": {
+        "description": "maintenance.status.check_nojs"
+    },
+    "maintenance_status_ends": "Reprise prévue",
+    "@maintenance_status_ends": {
+        "description": "maintenance.status.ends"
+    },
+    "maintenance_status_overdue": "La reprise prend un peu plus de temps que prévu. Merci de votre patience.",
+    "@maintenance_status_overdue": {
+        "description": "maintenance.status.overdue"
+    },
+    "maintenance_status_progress": "Avancement estimé de la maintenance",
+    "@maintenance_status_progress": {
+        "description": "maintenance.status.progress"
+    },
+    "maintenance_status_remaining": "Temps restant",
+    "@maintenance_status_remaining": {
+        "description": "maintenance.status.remaining"
+    },
+    "maintenance_status_remaining_live": "Reprise prévue dans {minutes} minutes.",
+    "@maintenance_status_remaining_live": {
+        "description": "maintenance.status.remaining_live",
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_status_reopened": "Xomiton est de nouveau disponible. Chargement de la page…",
+    "@maintenance_status_reopened": {
+        "description": "maintenance.status.reopened"
+    },
+    "maintenance_status_soon": "Bientôt",
+    "@maintenance_status_soon": {
+        "description": "maintenance.status.soon"
+    },
+    "maintenance_status_started": "Commencée",
+    "@maintenance_status_started": {
+        "description": "maintenance.status.started"
+    },
+    "maintenance_status_title": "État de la maintenance",
+    "@maintenance_status_title": {
+        "description": "maintenance.status.title"
+    },
+    "maintenance_tagline": "Votre espace safe d’apprentissage et d’appui holistique",
+    "@maintenance_tagline": {
+        "description": "maintenance.tagline"
+    },
+    "maintenance_title_lead": "Une pause pour",
+    "@maintenance_title_lead": {
+        "description": "maintenance.title_lead"
+    },
+    "maintenance_title_mark": "mieux vous accueillir",
+    "@maintenance_title_mark": {
+        "description": "maintenance.title_mark"
+    },
+    "maintenance_until": "Reprise prévue {when}.",
     "@maintenance_until": {
         "description": "maintenance.until",
         "placeholders": {
-            "date": {
-                "type": "String"
-            },
-            "time": {
+            "when": {
                 "type": "String"
             }
         }
@@ -12804,6 +14234,61 @@
     "maintenance_until_unknown": "Nous n’avons pas encore d’heure de reprise à annoncer. Réessayez dans quelques minutes.",
     "@maintenance_until_unknown": {
         "description": "maintenance.until_unknown"
+    },
+    "maintenance_validation_acknowledge_required": "Cochez la case pour confirmer l’activation.",
+    "@maintenance_validation_acknowledge_required": {
+        "description": "maintenance.validation.acknowledge_required"
+    },
+    "maintenance_validation_date_invalid": "Indiquez une date et une heure valides.",
+    "@maintenance_validation_date_invalid": {
+        "description": "maintenance.validation.date_invalid"
+    },
+    "maintenance_validation_date_required": "Indiquez la date et l’heure.",
+    "@maintenance_validation_date_required": {
+        "description": "maintenance.validation.date_required"
+    },
+    "maintenance_validation_message_max": "Le message public ne doit pas dépasser {max} caractères.",
+    "@maintenance_validation_message_max": {
+        "description": "maintenance.validation.message_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_validation_reason_required": "Indiquez le motif interne de la maintenance.",
+    "@maintenance_validation_reason_required": {
+        "description": "maintenance.validation.reason_required"
+    },
+    "maintenance_when_date": "le {date} à {time}",
+    "@maintenance_when_date": {
+        "description": "maintenance.when.date",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_when_today": "aujourd’hui à {time}",
+    "@maintenance_when_today": {
+        "description": "maintenance.when.today",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "maintenance_when_tomorrow": "demain à {time}",
+    "@maintenance_when_tomorrow": {
+        "description": "maintenance.when.tomorrow",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
     },
     "menus_a11y_admin_nav": "Navigation de l’administration",
     "@menus_a11y_admin_nav": {
@@ -12956,6 +14441,14 @@
     "menus_admin_indicators": "Indicateurs",
     "@menus_admin_indicators": {
         "description": "menus.admin.indicators"
+    },
+    "menus_admin_maintenance": "Mode maintenance",
+    "@menus_admin_maintenance": {
+        "description": "menus.admin.maintenance"
+    },
+    "menus_admin_maintenance_on": "Actif",
+    "@menus_admin_maintenance_on": {
+        "description": "menus.admin.maintenance_on"
     },
     "menus_admin_mark_all_read": "Tout marquer comme lu",
     "@menus_admin_mark_all_read": {
@@ -13829,6 +15322,151 @@
                 "type": "String"
             }
         }
+    },
+    "microcopy_maintenance_all_contacts": "Voir tous les contacts d’urgence",
+    "@microcopy_maintenance_all_contacts": {
+        "description": "microcopy.maintenance.all_contacts"
+    },
+    "microcopy_maintenance_call_prefix": "Appeler",
+    "@microcopy_maintenance_call_prefix": {
+        "description": "microcopy.maintenance.call_prefix"
+    },
+    "microcopy_maintenance_check": "Cet écran vérifie la réouverture chaque minute et se recharge tout seul.",
+    "@microcopy_maintenance_check": {
+        "description": "microcopy.maintenance.check"
+    },
+    "microcopy_maintenance_crisis_text": "SOS, signalement et contacts d’urgence fonctionnent, avec ou sans compte.",
+    "@microcopy_maintenance_crisis_text": {
+        "description": "microcopy.maintenance.crisis_text"
+    },
+    "microcopy_maintenance_crisis_title": "L’aide d’urgence reste ouverte.",
+    "@microcopy_maintenance_crisis_title": {
+        "description": "microcopy.maintenance.crisis_title"
+    },
+    "microcopy_maintenance_data_text": "La mise à jour respecte tes réglages de confidentialité.",
+    "@microcopy_maintenance_data_text": {
+        "description": "microcopy.maintenance.data_text"
+    },
+    "microcopy_maintenance_data_title": "Tes données restent protégées.",
+    "@microcopy_maintenance_data_title": {
+        "description": "microcopy.maintenance.data_title"
+    },
+    "microcopy_maintenance_default_message": "Xomiton est en maintenance. Nous revenons dès que possible.",
+    "@microcopy_maintenance_default_message": {
+        "description": "microcopy.maintenance.default_message"
+    },
+    "microcopy_maintenance_dialog": "Maintenance de Xomiton",
+    "@microcopy_maintenance_dialog": {
+        "description": "microcopy.maintenance.dialog"
+    },
+    "microcopy_maintenance_drafts_text": "Tes envois en attente partiront à la réouverture.",
+    "@microcopy_maintenance_drafts_text": {
+        "description": "microcopy.maintenance.drafts_text"
+    },
+    "microcopy_maintenance_drafts_title": "Tes brouillons restent sur ton appareil.",
+    "@microcopy_maintenance_drafts_title": {
+        "description": "microcopy.maintenance.drafts_title"
+    },
+    "microcopy_maintenance_emergency": "Urgences",
+    "@microcopy_maintenance_emergency": {
+        "description": "microcopy.maintenance.emergency"
+    },
+    "microcopy_maintenance_ends": "Reprise prévue",
+    "@microcopy_maintenance_ends": {
+        "description": "microcopy.maintenance.ends"
+    },
+    "microcopy_maintenance_eyebrow": "Maintenance en cours",
+    "@microcopy_maintenance_eyebrow": {
+        "description": "microcopy.maintenance.eyebrow"
+    },
+    "microcopy_maintenance_help_nav": "Accès toujours disponibles",
+    "@microcopy_maintenance_help_nav": {
+        "description": "microcopy.maintenance.help_nav"
+    },
+    "microcopy_maintenance_help_text": "Le SOS, le signalement et les contacts d’urgence restent disponibles pendant la maintenance.",
+    "@microcopy_maintenance_help_text": {
+        "description": "microcopy.maintenance.help_text"
+    },
+    "microcopy_maintenance_help_title": "En danger ou besoin d’aide maintenant ?",
+    "@microcopy_maintenance_help_title": {
+        "description": "microcopy.maintenance.help_title"
+    },
+    "microcopy_maintenance_numbers_text": "En danger ? Appelle directement :",
+    "@microcopy_maintenance_numbers_text": {
+        "description": "microcopy.maintenance.numbers_text"
+    },
+    "microcopy_maintenance_numbers_title": "Numéros d’urgence",
+    "@microcopy_maintenance_numbers_title": {
+        "description": "microcopy.maintenance.numbers_title"
+    },
+    "microcopy_maintenance_overdue": "La reprise prend un peu plus de temps que prévu. Merci de ta patience.",
+    "@microcopy_maintenance_overdue": {
+        "description": "microcopy.maintenance.overdue"
+    },
+    "microcopy_maintenance_reassure_title": "Pendant la maintenance",
+    "@microcopy_maintenance_reassure_title": {
+        "description": "microcopy.maintenance.reassure_title"
+    },
+    "microcopy_maintenance_refresh": "Actualiser",
+    "@microcopy_maintenance_refresh": {
+        "description": "microcopy.maintenance.refresh"
+    },
+    "microcopy_maintenance_remaining": "Temps restant",
+    "@microcopy_maintenance_remaining": {
+        "description": "microcopy.maintenance.remaining"
+    },
+    "microcopy_maintenance_remaining_live": "Reprise prévue dans {minutes} minutes.",
+    "@microcopy_maintenance_remaining_live": {
+        "description": "microcopy.maintenance.remaining_live",
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "microcopy_maintenance_reopened": "Xomiton est de nouveau disponible. Chargement…",
+    "@microcopy_maintenance_reopened": {
+        "description": "microcopy.maintenance.reopened"
+    },
+    "microcopy_maintenance_report": "Signaler",
+    "@microcopy_maintenance_report": {
+        "description": "microcopy.maintenance.report"
+    },
+    "microcopy_maintenance_session": "Pour protéger ton compte, ta session a été fermée. Tes brouillons et tes envois en attente restent sur ton appareil : reconnecte-toi dès la fin de la maintenance.",
+    "@microcopy_maintenance_session": {
+        "description": "microcopy.maintenance.session"
+    },
+    "microcopy_maintenance_soon": "Bientôt",
+    "@microcopy_maintenance_soon": {
+        "description": "microcopy.maintenance.soon"
+    },
+    "microcopy_maintenance_sos": "SOS",
+    "@microcopy_maintenance_sos": {
+        "description": "microcopy.maintenance.sos"
+    },
+    "microcopy_maintenance_title_lead": "Une pause pour",
+    "@microcopy_maintenance_title_lead": {
+        "description": "microcopy.maintenance.title_lead"
+    },
+    "microcopy_maintenance_title_mark": "mieux t’accueillir",
+    "@microcopy_maintenance_title_mark": {
+        "description": "microcopy.maintenance.title_mark"
+    },
+    "microcopy_maintenance_until": "Reprise prévue le {date} à {time}.",
+    "@microcopy_maintenance_until": {
+        "description": "microcopy.maintenance.until",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "microcopy_maintenance_until_unknown": "Pas encore d’heure de reprise annoncée. Réessaie dans quelques minutes.",
+    "@microcopy_maintenance_until_unknown": {
+        "description": "microcopy.maintenance.until_unknown"
     },
     "microcopy_offline_available_offline": "Disponible hors connexion",
     "@microcopy_offline_available_offline": {
@@ -20527,6 +22165,194 @@
                 "type": "String"
             }
         }
+    },
+    "search_back_all": "Toutes les familles",
+    "@search_back_all": {
+        "description": "search.back_all"
+    },
+    "search_browse": "Parcourir les ressources",
+    "@search_browse": {
+        "description": "search.browse"
+    },
+    "search_empty": "Aucun résultat. Essaie un autre mot, ou parcours les ressources.",
+    "@search_empty": {
+        "description": "search.empty"
+    },
+    "search_empty_section": "Aucun résultat dans cette famille.",
+    "@search_empty_section": {
+        "description": "search.empty_section"
+    },
+    "search_errors_unavailable": "La recherche est momentanément indisponible. Réessaie dans un instant.",
+    "@search_errors_unavailable": {
+        "description": "search.errors.unavailable"
+    },
+    "search_failed": "La recherche est momentanément indisponible. Réessaie dans un instant.",
+    "@search_failed": {
+        "description": "search.failed"
+    },
+    "search_form_hint": "Au moins {min} caractères.",
+    "@search_form_hint": {
+        "description": "search.form.hint",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "search_form_label": "Rechercher",
+    "@search_form_label": {
+        "description": "search.form.label"
+    },
+    "search_form_placeholder": "Rechercher une ressource, un contact…",
+    "@search_form_placeholder": {
+        "description": "search.form.placeholder"
+    },
+    "search_form_submit": "Rechercher",
+    "@search_form_submit": {
+        "description": "search.form.submit"
+    },
+    "search_heading": "Rechercher",
+    "@search_heading": {
+        "description": "search.heading"
+    },
+    "search_hit_directory": "Voir dans l’annuaire",
+    "@search_hit_directory": {
+        "description": "search.hit.directory"
+    },
+    "search_hit_reading": "{count} min de lecture",
+    "@search_hit_reading": {
+        "description": "search.hit.reading",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "search_intro": "Ressources, thématiques, contacts de l’annuaire et membres du réseau.",
+    "@search_intro": {
+        "description": "search.intro"
+    },
+    "search_loaded": "{count, plural, =1{1 résultat de plus affiché.} other{{count} résultats de plus affichés.}}",
+    "@search_loaded": {
+        "description": "search.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "search_privacy": "Xomiton n’enregistre pas tes recherches. Ton navigateur garde l’adresse de cette page dans son historique : sur un appareil partagé, efface-le ou active le mode discret.",
+    "@search_privacy": {
+        "description": "search.privacy"
+    },
+    "search_privacy_discreet": "Xomiton n’enregistre pas tes recherches. Mode discret : le mot cherché n’apparaît pas dans l’adresse de la page.",
+    "@search_privacy_discreet": {
+        "description": "search.privacy_discreet"
+    },
+    "search_results": "{count, plural, =0{Aucun résultat} =1{1 résultat} other{{count} résultats}}",
+    "@search_results": {
+        "description": "search.results",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "search_results_unit": "{count, plural, =0{résultat} =1{résultat} other{résultats}}",
+    "@search_results_unit": {
+        "description": "search.results_unit",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "search_see_all_named": "{count, plural, =1{Voir le résultat dans « {type} »} other{Voir les {count} résultats dans « {type} »}}",
+    "@search_see_all_named": {
+        "description": "search.see_all_named",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "search_start": "Écris au moins {min} caractères pour lancer la recherche.",
+    "@search_start": {
+        "description": "search.start",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "search_suggest_count": "{count, plural, =0{Aucune suggestion.} =1{1 suggestion, flèches haut et bas pour parcourir.} other{{count} suggestions, flèches haut et bas pour parcourir.}}",
+    "@search_suggest_count": {
+        "description": "search.suggest.count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "search_suggest_label": "Suggestions",
+    "@search_suggest_label": {
+        "description": "search.suggest.label"
+    },
+    "search_suggest_loading": "Recherche en cours…",
+    "@search_suggest_loading": {
+        "description": "search.suggest.loading"
+    },
+    "search_suggest_none": "Aucune suggestion.",
+    "@search_suggest_none": {
+        "description": "search.suggest.none"
+    },
+    "search_suggest_offline": "Hors connexion : les suggestions reviendront avec le réseau.",
+    "@search_suggest_offline": {
+        "description": "search.suggest.offline"
+    },
+    "search_suggest_see_all": "Voir tous les résultats",
+    "@search_suggest_see_all": {
+        "description": "search.suggest.see_all"
+    },
+    "search_title": "Recherche",
+    "@search_title": {
+        "description": "search.title"
+    },
+    "search_too_short": "Écris au moins {min} caractères.",
+    "@search_too_short": {
+        "description": "search.too_short",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "search_types_all": "Tout",
+    "@search_types_all": {
+        "description": "search.types.all"
+    },
+    "search_types_contacts": "Contacts",
+    "@search_types_contacts": {
+        "description": "search.types.contacts"
+    },
+    "search_types_label": "Familles de résultats",
+    "@search_types_label": {
+        "description": "search.types.label"
+    },
+    "search_types_membres": "Membres",
+    "@search_types_membres": {
+        "description": "search.types.membres"
+    },
+    "search_types_ressources": "Ressources",
+    "@search_types_ressources": {
+        "description": "search.types.ressources"
+    },
+    "search_types_thematiques": "Thématiques",
+    "@search_types_thematiques": {
+        "description": "search.types.thematiques"
     },
     "seo_breadcrumb_home": "Accueil",
     "@seo_breadcrumb_home": {

@@ -5,6 +5,8 @@
 //  - 419 → `GET /sanctum/csrf-cookie` puis rejeu, une seule fois (un second 419 : toast « Session expirée ») ;
 //  - 422 → ApiError avec les erreurs par champ (`fieldErrors()` pour <XmField :error>), sans toast ;
 //  - 429 → toast « Trop de tentatives » avec le délai de Retry-After ; 5xx → toast d'erreur générique ;
+//  - 503 `maintenance` (P13-08) → aucun toast : `onMaintenance` (par défaut l'évènement `xm:maintenance`, qui ouvre
+//    l'écran plein XmMaintenance, app/shellBoot.ts) ;
 //  - réseau coupé → ApiError `network` (statut 0), sans toast : le bandeau hors connexion informe déjà, et les envois
 //    rejouables passent par le store `outbox`.
 // Corps : objet → JSON, FormData tel quel. Réponse : `{ status, data, headers }`, `data` = corps JSON entier
@@ -12,6 +14,7 @@
 import { t } from './i18n';
 import { route } from './routes';
 import { useToast } from './useToast';
+import { isMaintenanceResponse, MAINTENANCE_EVENT, type MaintenancePayload } from './shellBoot';
 import type { ToastType } from './types';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -56,6 +59,8 @@ export interface ApiDeps {
     cookies?: () => string;
     toast?: (message: string, type: ToastType) => void;
     onUnauthenticated?: () => void;
+    /** 503 `maintenance` : écran plein au lieu d'un toast (défaut : évènement `xm:maintenance` sur window). */
+    onMaintenance?: (payload: MaintenancePayload) => void;
     csrfUrl?: string;
 }
 
@@ -109,6 +114,11 @@ const parse = async (response: Response): Promise<unknown> => {
     return text === '' ? null : text;
 };
 
+const defaultMaintenance = (payload: MaintenancePayload): void => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(new CustomEvent(MAINTENANCE_EVENT, { detail: payload }));
+};
+
 const defaultLogin = (): void => {
     if (typeof window === 'undefined') return;
     window.location.assign(route('connexion', undefined, '/connexion'));
@@ -119,6 +129,7 @@ export function createApi(deps: ApiDeps = {}) {
     const cookies = deps.cookies ?? (() => (typeof document === 'undefined' ? '' : document.cookie));
     const toast = deps.toast ?? (() => undefined);
     const onUnauthenticated = deps.onUnauthenticated ?? defaultLogin;
+    const onMaintenance = deps.onMaintenance ?? defaultMaintenance;
     const csrfUrl = deps.csrfUrl ?? '/sanctum/csrf-cookie';
 
     const send = (method: HttpMethod, url: string, body: unknown, options: ApiOptions): Promise<Response> => {
@@ -183,6 +194,11 @@ export function createApi(deps: ApiDeps = {}) {
                 const message = retryAfter !== null ? t('microcopy.error.rate_limited', { seconds: retryAfter }) : t('errors.429.text_no_delay');
                 notify(message, 'warning');
                 throw new ApiError(429, code, message, {}, retryAfter, data);
+            }
+            case isMaintenanceResponse(response.status, response.headers, data): {
+                const message = serverMessage || t('microcopy.error.generic');
+                onMaintenance((data && typeof data === 'object' ? data : {}) as MaintenancePayload);
+                throw new ApiError(503, 'maintenance', message, {}, retryAfter, data);
             }
             case response.status >= 500: {
                 const message = response.status === 503 && serverMessage ? serverMessage : t('microcopy.error.generic');

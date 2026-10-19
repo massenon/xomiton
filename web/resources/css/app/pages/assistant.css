@@ -1,0 +1,15 @@
+/*
+ * Assistant `/assistant` (P8-11 ; prototype assistant.php l.14-19) : styles en ligne du prototype sortis dans la feuille
+ * (fil de discussion défilant, bulles `white-space: pre-line`, la sienne sur fond primaire, celle de l'assistant sur fond
+ * tertiaire), pastille violette de l'en-tête. Jetons uniquement ; `.xm-assistant-msg` et `.xm-typing` viennent de
+ * theme/xomiton.css.
+ */
+.xm-assistant-avatar { display: inline-flex; align-items: center; justify-content: center; background: var(--xm-accent-violet); color: var(--xm-on-primary); }
+.xm-assistant-log { height: min(56vh, 520px); overflow-y: auto; overscroll-behavior: contain; scroll-behavior: smooth; }
+.xm-assistant-log:focus-visible { outline: 2px solid var(--xm-focus-ring); outline-offset: -2px; }
+.xm-assistant-log > * { flex-grow: 0; }
+.xm-assistant-msg .bubble { white-space: pre-line; overflow-wrap: anywhere; }
+.xm-assistant-msg.me .bubble { background: var(--xm-primary); color: var(--xm-on-primary); }
+.xm-assistant-msg.bot .bubble { background: var(--bs-tertiary-bg); }
+.xm-assistant-chips .btn, .xm-assistant-msg .btn { min-height: var(--xm-target-min); }
+@media (prefers-reduced-motion: reduce) { .xm-assistant-log { scroll-behavior: auto; } }

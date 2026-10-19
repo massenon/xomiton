@@ -64,8 +64,8 @@ it('sert chaque écran membre provisoire en Inertia, titre de la route même ave
     // /profil : écran réel depuis le lot profil (P8-07, tests/Feature/Member/ProfilePagesTest.php).
     // /parametres, /notifications : écrans réels depuis le lot parametres-notifications (P8-09, P8-10,
     // tests/Feature/Member/SettingsNotificationsPagesTest.php).
-    ['/assistant', 'Assistant', 'assistant.php'],
-    ['/annuaire', 'Annuaire', 'annuaire.php'],
+    // /assistant : écran réel depuis le lot assistant (P8-11, tests/Feature/Member/AssistantPageTest.php).
+    // /annuaire : écran réel depuis le lot annuaire-membre (P8-12, tests/Feature/Member/DirectoryPageTest.php).
     ['/medias', 'Médiathèque', 'albums.php'],
     ['/ccc', 'Outils CCC', 'ccc.php'],
 ]);

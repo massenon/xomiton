@@ -1,0 +1,14 @@
+/*
+ * Recherche membre (lot recherche-membre, P8-13) : liste des suggestions du champ de l'en-tête (XmHeader,
+ * components/search/HeaderSuggest.vue) posée sous le champ, au-dessus du contenu, défilante, option active aux couleurs
+ * des jetons (souris et clavier : `aria-activedescendant`), cibles de 44 px ; page `/recherche` : champ qui ne
+ * rétrécit pas sous 12 rem, extrait des résultats sur deux lignes. Jetons uniquement.
+ */
+.xm-search-suggest { position: absolute; inset-inline: 0; top: calc(100% + var(--xm-space-1)); z-index: 1030; max-height: min(70vh, 28rem); overflow-y: auto; border-radius: var(--xm-radius-md); }
+.xm-search-suggest__option { min-height: var(--xm-target-min); cursor: pointer; color: var(--xm-text); }
+.xm-search-suggest__option.active { background: var(--xm-primary-subtle); color: var(--xm-text); box-shadow: inset 3px 0 0 var(--xm-focus-ring); }
+.xm-search-suggest__text { min-width: 0; }
+.xm-search-suggest__all { color: var(--xm-primary); }
+.xm-search-page__field { min-width: 12rem; }
+.xm-search-hit__body { min-width: 0; }
+.xm-search-hit__excerpt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
