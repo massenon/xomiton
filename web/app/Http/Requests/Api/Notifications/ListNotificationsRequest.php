@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Notifications;
 
 use App\Application\Notifications\NotificationInbox;
+use App\Application\Notifications\NotificationTab;
 use App\Models\DatabaseNotification;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -28,6 +29,8 @@ final class ListNotificationsRequest extends FormRequest
         return [
             'filter' => ['sometimes', 'string', Rule::in(NotificationInbox::FILTERS)],
             'category' => ['sometimes', 'nullable', 'string', Rule::in(DatabaseNotification::CATEGORIES)],
+            // P8-10 : filtres de la page /notifications (Toutes · Invitations · Événements · Échanges · Système).
+            'tab' => ['sometimes', 'nullable', 'string', Rule::in(NotificationTab::values())],
             'page' => ['sometimes', 'integer', 'min:1'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.(int) config('xomiton.api.max_per_page', 50)],
         ];
@@ -41,6 +44,7 @@ final class ListNotificationsRequest extends FormRequest
         return [
             'filter' => __('account.notifications.filter'),
             'category' => __('account.notifications.category'),
+            'tab' => __('account.notifications.filter'),
         ];
     }
 
@@ -56,5 +60,13 @@ final class ListNotificationsRequest extends FormRequest
         $category = $this->validated('category');
 
         return is_string($category) && $category !== '' ? $category : null;
+    }
+
+    /** Filtre de la page /notifications ; `all` ou absent → aucun. */
+    public function tab(): ?NotificationTab
+    {
+        $tab = NotificationTab::tryFrom((string) $this->validated('tab'));
+
+        return $tab === NotificationTab::All ? null : $tab;
     }
 }

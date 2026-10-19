@@ -60,10 +60,10 @@ it('sert chaque écran membre provisoire en Inertia, titre de la route même ave
     // /groupes, /pages : écrans réels depuis le lot groupes-pages (P8-02, P8-03, tests/Feature/Member/CommunityPagesTest.php).
     // /evenements : écran réel depuis le lot evenements (P8-04, tests/Feature/Member/EventsPagesTest.php).
     // /forums : écran réel depuis le lot forums (P8-05, tests/Feature/Member/ForumsPagesTest.php).
-    ['/qui-suivre', 'Qui suivre', 'who-to-follow.php'],
-    ['/profil', 'Mon profil', 'my-profile.php'],
-    ['/parametres', 'Paramètres', 'settings.php'],
-    ['/notifications', 'Notifications', 'notifications.php'],
+    // /qui-suivre : écran réel depuis le lot qui-suivre (P8-06, tests/Feature/Member/WhoToFollowPageTest.php).
+    // /profil : écran réel depuis le lot profil (P8-07, tests/Feature/Member/ProfilePagesTest.php).
+    // /parametres, /notifications : écrans réels depuis le lot parametres-notifications (P8-09, P8-10,
+    // tests/Feature/Member/SettingsNotificationsPagesTest.php).
     ['/assistant', 'Assistant', 'assistant.php'],
     ['/annuaire', 'Annuaire', 'annuaire.php'],
     ['/medias', 'Médiathèque', 'albums.php'],

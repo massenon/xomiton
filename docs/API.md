@@ -252,15 +252,33 @@ Tous les champs sont facultatifs ; un champ absent **ou `null`** est laissé tel
 | `pronouns` | ≤ 30 |
 | `zone_id` | département actif ; requis si `commune_id` est fourni |
 | `commune_id` | commune active du département (`commune_in_zone`) |
-| `member_type` | `membre` \| `pair` — `pair` place le compte `en_attente` et lui donne le rôle `pair` (RG-03), la session reste ouverte |
+| `member_type` | `membre` \| `pair` — `pair` place le compte `en_attente` et lui donne le rôle `pair` (RG-03), la session reste ouverte ; **ignoré** pour un compte du personnel (`moderateur`, `admin`, `superadmin` : ni rôle retiré, ni mise en attente, groupe marqué traité) |
 | `trusted_contact_phone` | numéro béninois (stocké chiffré) |
 | `trusted_contact_name` | ≤ 80 |
 | `discreet_mode` | bool |
 | `age_range` | `10-14` \| `15-17` \| `18-24` \| `25-34` \| `35-49` \| `50+` (`AgeRange`, P6-06) |
 | `interests` | tableau (≤ 20) de slugs **distincts** de `newsletter_interests` (`sante`, `droits`, `bien-etre`, `evenements`, `ressources`, `securite-numerique`) ; `[]` vide la liste (P6-06) |
-| `ally_status` | `allie` \| `ressource` \| `aucun` (efface) — Q10 c : stocké **chiffré** (`profiles.ally_status`), aucun droit associé, jamais montré à un autre compte (P6-06) |
+| `ally_status` | `allie` \| `ressource` \| `aucun` (efface) — Q10 c : stocké **chiffré** (`profiles.ally_status`), aucun droit associé, montré à un autre compte **seulement** s'il figure dans `shared_fields` (P6-06, P8-08) |
+| `sensitive_consent` | bool (P8-08) — nouvelle ligne `consents` `sensitive_data` (jamais mise à jour, sans IP) ; `false` **efface** `gender_identity` et `orientation` et les retire de `shared_fields` |
+| `gender_identity` | `femme_cis` \| `femme_trans` \| `homme_cis` \| `homme_trans` \| `non_binaire` \| `intersexe` \| `questionnement` \| `autre` \| `prefer_not` (efface) — stocké **chiffré** (`encrypted_columns.profiles`) ; une valeur exige un consentement `sensitive_data` en cours **ou** `sensitive_consent: true` dans la même requête, sinon **422** (`profile.progressive.sensitive_required`) ; un retrait dans la même requête l'emporte (P8-08) |
+| `orientation` | `lesbienne` \| `bisexuelle` \| `pansexuelle` \| `queer` \| `asexuelle` \| `heterosexuelle` \| `questionnement` \| `autre` \| `prefer_not` (efface) — mêmes règles que `gender_identity` |
+| `shared_fields` | tableau ⊂ `gender_identity`, `orientation`, `ally_status` : champs sensibles **montrés sur le profil** (choix explicite ; `[]` = aucun, défaut) ; `gender_identity` / `orientation` exigent le consentement (422 sur `shared_fields`) (P8-08) |
+| `answered_groups` | tableau ⊂ `pronouns`, `member_type`, `ally_status`, `gender_identity`, `orientation`, `age`, `location`, `interests` : groupes du profil progressif traités sans valeur (« Je préfère ne pas le dire ») (P8-08) |
+| `show_zone` | bool — « Afficher ma zone sur mon profil » (groupe Ville du bandeau) ; une autre personne ne voit jamais que le département (P8-08, Q80) |
+
+`pronouns` et `age_range` acceptent aussi `prefer_not` (efface). Chaque champ renseigné marque son groupe comme traité (`profiles.progressive_answered`) ; la complétion ne compte jamais les champs sensibles. Réponse `no-store`.
 
 **200** `{ "data": <user> }` (avec `profile.completion` recalculé) ; 422 par champ ; 401.
+
+**Vue « moi » du profil** (`GET me`, `GET me/profile`, réponse du `PATCH me/profile`, P8-08 — jamais les réponses de connexion, d'inscription, d'OTP ni de `me/settings`) : en plus du §1.5, `gender_identity`, `orientation` (clés ci-dessus, déchiffrées, null sinon), `shared_fields`, `cover_url` et `progressive` = `{ groups: [{key, answered}], next, done, answered, total, sensitive_consent }` (ordre : pronoms, type de membre, statut allié·e, identité de genre, orientation, âge, ville, centres d'intérêt ; `next` = premier groupe ni renseigné ni traité).
+
+### `POST me/profile/avatar` · `POST me/profile/cover` · `DELETE me/profile/{avatar|cover}` (P8-07)
+
+Multipart `image` (collection `images` : JPEG, PNG, WebP, 5 Mo ; type réel lu dans le contenu) ; envoi : **e-mail confirmé** (`verified`, **403** sinon, comme toute publication) ; envoi et retrait : limiteur `profile_image` (20 / h par compte, **429**). Image ré-encodée par `MediaUploader` (orientation appliquée, **EXIF, ICC et XMP retirés**, WebP + repli + variantes) sur le disque public (adresse ULID), ancienne image supprimée **avec son repli et ses variantes** (de même à l'anonymisation du compte), complétion recalculée ; un visuel importé `assets/…` n'est jamais supprimé. **200** `{ avatar_url, cover_url, completion, has_avatar, has_cover }` ; 422 `image` ; 401.
+
+### `GET me/activity` (P8-07)
+
+**200** journal de la personne seule (`no-store`), 40 entrées au plus, plus récentes d'abord : `{ id, type, icon, label, detail, href, at }` ; types `login`, `email`, `password`, `settings`, `security`, `data`, `device`, `group`, `page`, `event` (journal d'audit, jamais l'IP ni le navigateur), `post` et `forum` (contributions **non anonymes**), `event` (« Je participe »), `group` (groupes rejoints), `invitation` (connexions acceptées).
 
 ### `GET me/settings` (P6-06)
 
@@ -295,6 +313,22 @@ Champs facultatifs ; seuls les champs présents sont modifiés (`App\Application
 ### `DELETE me/sessions/{id}`
 
 `id` = `token-<n>` ou `web-<empreinte>` tel que listé. Révoque uniquement un appareil de la personne connectée (révoquer le jeton courant équivaut à `auth/logout`) ; les abonnements push enregistrés avec ce jeton (`push_subscriptions.token_id`) partent avec lui (P6-09). **200** `{ "data": { "revoked": true, "id": "…" } }` ; 404 `not_found` (inconnu ou d'un autre compte) ; 401. Journal `auth.session_revoked`.
+
+### `DELETE me/sessions` — tous les autres appareils (P8-09)
+
+Ferme tous les jetons Sanctum sauf le jeton courant (abonnements push en cascade) et toutes les sessions web sauf la session courante. **200** `{ "data": { "revoked": 3 } }` ; 401. Journal `auth.sessions_revoked_others` (nombre seulement).
+
+### `PUT me/password` — changer de mot de passe connecté·e (P8-09)
+
+`{ "current_password", "password", "password_confirmation" }` — actuel vérifié (`current_password:sanctum`), nouveau selon `PasswordStrength` (`StrongPassword`, même règles que la jauge), différent de l'actuel, `password_confirmation` requis et identique (`same:password` : l'erreur est rangée sous `password_confirmation`). Limiteur `account_sensitive`. Les **autres appareils sont toujours déconnectés** (`DELETE me/sessions`), l'accès courant reste ouvert (session web : identifiant régénéré ; cookie « se souvenir de moi » reposé avec le nouveau `remember_token` s'il était présent), l'e-mail système `mot-de-passe-modifie` est déposé dans `mail_outbox` (`EmailTemplateService::enqueue`, aucun SMTP pendant la requête). **200** `{ "data": { "changed": true, "revoked": 1 } }` `no-store` ; 422 par champ (`current_password` : « Le mot de passe actuel est incorrect. ») ; 429 ; 401. Journal `auth.password_changed`.
+
+### `GET me/privacy` · `PATCH me/privacy` — confidentialité du profil (P8-09)
+
+`{ "visibility": "public|community|followers|private", "show_zone": true, "searchable": true, "sos_share_gps": false, "sensitive_consent": false }` — chaque champ absent est laissé tel quel ; `searchable: false` retire le profil des suggestions « Qui suivre » ; `sensitive_consent` = consentement `sensitive_data` en cours (P8-08) : une réponse différente ajoute une ligne `consents` sans IP, un retrait efface identité de genre et orientation (et les retire de `shared_fields`). **200** même objet, `no-store` ; 422 valeur inconnue ; 401. Journal `me.settings_updated` (section `confidentialite`, noms des champs).
+
+### `GET me/identity` · `PATCH me/identity` — section « Profil » de /parametres (P8-09)
+
+`{ "name", "pseudo", "email" (lecture seule), "phone", "bio", "zone_id", "commune_id" }` — nom **facultatif** (`null` ou vide efface ; 2 à 120 caractères s'il est rempli ; jamais public, RG-02), pseudonyme unique sans casse (le sien excepté, règle `Pseudo`) : après un changement, l'ancien pseudonyme reste réservé à son compte `pseudo_reservation_days` (30 j) et un nouveau changement attend `pseudo_change_cooldown_hours` (24 h, 422 `pseudo` « Réessaie dans N h » ; la casse seule n'est pas un changement) ; téléphone béninois normalisé (`+229 01 …`, `null` efface), présentation ≤ 200 caractères (`profiles.bio`), commune du département envoyé (`CommuneInZone`) ou, sans `zone_id`, du département actuel du compte ; changer de département sans commune efface la commune ; `profiles.completion` recalculé (zone, commune, présentation). Limiteur `identity_update` (20 / h par compte). Les champs du profil progressif restent sur `PATCH me/profile`. **200** même objet, `no-store` ; 422 par champ ; 429 ; 401.
 
 ### `GET me/security` · `PATCH me/security` (P6-06, Q37)
 
@@ -459,13 +493,13 @@ Notifications en base de la personne connectée (`App\Application\Notifications\
 
 | Route | Réponse |
 |---|---|
-| `GET notifications?filter=all\|unread\|read&category=&page=&per_page=` | **200** liste paginée par page (§1.1), plus récentes d'abord ; `meta` + `filter`, `category`, `unread` ; 422 filtre ou catégorie inconnus |
-| `GET notifications/unread-count` | **200** `{ "data": { "all": 12, "unread": 3, "read": 9, "categories": { "messages": { "all": 4, "unread": 1 }, … } } }` — compteurs des onglets **Non lues · Lues · Toutes** et par catégorie ; polling 30 s avec `If-None-Match` → 304 (§1.6) |
-| `POST notifications/{id}/read` | **200** la notification lue (idempotent : `read_at` d'origine conservé) + `meta.unread` ; 404 |
-| `POST notifications/read-all` `{ "category"? }` | **200** `{ "data": { "marked": 2, "unread": 1 } }` |
+| `GET notifications?filter=all\|unread\|read&category=&tab=&page=&per_page=` | **200** liste paginée par page (§1.1), plus récentes d'abord ; `meta` + `filter`, `category`, `tab`, `unread` ; 422 filtre, catégorie ou onglet inconnus |
+| `GET notifications/unread-count` | **200** `{ "data": { "all": 12, "unread": 3, "read": 9, "categories": { "messages": { "all": 4, "unread": 1 }, … }, "tabs": { "all": {…}, "invitations": { "all": 2, "unread": 1 }, … } } }` — compteurs des onglets **Non lues · Lues · Toutes**, par catégorie et par filtre de la page /notifications (P8-10) ; polling 30 s avec `If-None-Match` → 304 (§1.6) |
+| `POST notifications/{id}/read` | **200** la notification lue (idempotent : `read_at` d'origine conservé) + `meta.unread`, `meta.tabs` ; 404 |
+| `POST notifications/read-all` `{ "category"?, "tab"? }` | **200** `{ "data": { "marked": 2, "unread": 1 } }` |
 | `DELETE notifications/{id}` | **204** ; 404 |
 
-Objet : `{ id, type, category, title, body, url, icon, sensitive, read, read_at, created_at, data }` — `type` = nom court de la classe (`invitation_received`, même valeur que `data.type` de la charge push), `data` = compléments d'ouverture profonde (identifiants, jamais de donnée sensible). Une notification sensible est **neutralisée à la lecture** (`notifications.discreet.*`, « Nouvelle notification ») tant que `mask_sensitive_notifications` est actif, même reçue avant l'activation du masquage. Catégories : `securite`, `sos`, `alertes`, `messages`, `communaute`, `evenements`, `moderation`, `systeme`. 401 sans session ni jeton.
+Objet : `{ id, type, category, tab, title, body, url, icon, sensitive, read, read_at, created_at, data }` — `tab` = filtre de la page /notifications (P8-10, `App\Application\Notifications\NotificationTab`, même règle en SQL et en PHP) : `invitations` (invitations et adhésions à un groupe), `events` (catégorie `evenements` et événement créé dans un groupe), `exchanges` (reste de `messages` et `communaute` : messages, réponses, réactions, sondages), `system` (sécurité, SOS, alertes, modération, système) ; `type` = nom court de la classe (`invitation_received`, même valeur que `data.type` de la charge push), `data` = compléments d'ouverture profonde (identifiants, jamais de donnée sensible). Une notification sensible est **neutralisée à la lecture** (`notifications.discreet.*`, « Nouvelle notification ») tant que `mask_sensitive_notifications` est actif, même reçue avant l'activation du masquage. Catégories : `securite`, `sos`, `alertes`, `messages`, `communaute`, `evenements`, `moderation`, `systeme`. 401 sans session ni jeton.
 
 ## 8. Fil et sondages `feed/`, `posts/*`, `comments/*` — `auth:sanctum` (P7-02)
 
@@ -574,7 +608,7 @@ Journal d'audit (`audit_logs`) : `auth.registered`, `auth.authenticated`, `auth.
 
 ## 10. Familles à venir
 
-`pair/`, `sync/` (P9) ; `conversations/` : livré (§12, P8-01) ; `groups/`, `pages/` : livrés (§13, §14, P8-02, P8-03) ; `events/` : livré (§15, P8-04) ; `forums/` : livré (§16, P8-05). `signalements/`, `sos/`, `urgences/` : livrés (§6) ; `me/*` (§3) et `notifications/*` (§7) : livrés (P6-06, P6-07, P6-09) ; `feed/`, `posts/*`, `comments/*` (§8) : livrés (P7-02) ; `dashboard`, `thematiques/`, `ressources/`, `users/{id}/posts` (§11) : livrés (P6-08). Chaque famille complète ce document à sa livraison.
+`pair/`, `sync/` (P9) ; `conversations/` : livré (§12, P8-01) ; `groups/`, `pages/` : livrés (§13, §14, P8-02, P8-03) ; `events/` : livré (§15, P8-04) ; `forums/` : livré (§16, P8-05) ; `follows/`, `invitations/` : livrés (§17, P8-06) ; `members/{pseudo}…`, `me/activity`, `me/profile/{avatar|cover}` : livrés (§18, §3, P8-07). `signalements/`, `sos/`, `urgences/` : livrés (§6) ; `me/*` (§3) et `notifications/*` (§7) : livrés (P6-06, P6-07, P6-09) ; `feed/`, `posts/*`, `comments/*` (§8) : livrés (P7-02) ; `dashboard`, `thematiques/`, `ressources/`, `users/{id}/posts` (§11) : livrés (P6-08). Chaque famille complète ce document à sa livraison.
 
 ## 11. Lecture mobile : tableau de bord, thématiques, ressources, publications d'un profil (P6-08)
 
@@ -740,3 +774,40 @@ Les **5 forums fixes** du prototype (`forums.php`, `forum-topic.php` ; `ForumsSe
 **Sujet** (`ForumTopicResource`) : `id` (ULID), `forum` (`{key, name, url}`), `title`, `body` (fiche seulement), `author` (pseudo, avatar, rôle, `badge` comme le prototype : « Pair animateur·rice » pour `pair`, « Équipe Xomiton » pour `admin` et `superadmin`, aucun pour `moderateur` ; anonyme ci-dessus), `is_mine`, `is_anonymous`, `is_pinned`, `is_locked`, `moderated`, `replies_count`, `views_count`, `created_at`, `last_reply_at`, `url`, `can` (`reply` : faux pour un sujet fermé, non publié ou d'un forum fermé, calculé sans requête par sujet ; `delete`, `report`).
 
 **Réponse** (`ForumReplyResource`) : `id`, `body`, `author`, `is_mine`, `is_anonymous`, `created_at`, `can` (`delete`, `report`).
+
+## 17. Qui suivre et invitations `follows/*`, `invitations/*` — `auth:sanctum` (P8-06)
+
+Page `/qui-suivre` du prototype (`who-to-follow.php`) et carte « Qui suivre » du fil. Code : `App\Domain\Community\NetworkRules`, `App\Application\Community\Network\*` (`NetworkPeople`, `NetworkSuggestions`, `InvitationDirectory`, `ManageInvitations`, `FollowMember`, `InvitationNotifier`, `NetworkLinks`), `App\Http\Controllers\Api\V1\Network\*`, `InvitationPolicy`, `FollowPolicy` ; tests `tests/Feature/Api/Community/NetworkApiTest.php`, `tests/Feature/Member/WhoToFollowPageTest.php`. `social.access` lit et agit (**403** sans ce droit) ; inviter exige un e-mail confirmé (`verified` : l'invitation notifie l'autre personne) ; tous les gestes passent par `community_write` (20/min), inviter aussi par `network_invite` (**30 par jour** et par compte, `xomiton.rate_limits.network_invites_per_day`, contre le harcèlement : chaque invitation notifie) → **429**. Listes **par curseur** (`?cursor=`, `meta.next_cursor` opaque, `meta.per_page`) : la suite reprend après le dernier élément reçu, jamais à un rang — une personne invitée ou suivie, une invitation tranchée ou annulée entre deux pages ne fait rien sauter ; curseur illisible → première page.
+
+**Aucune donnée privée (RG-02)** : une personne sort sous la forme `{id, pseudo, avatar_url, role, role_label, zone, profile_url}` — rôle **public** calculé sur tous les rôles du compte, équipe > pair > membre (`member` · `peer` « Pair animateur·rice » · `team` « Équipe Xomiton », `moderateur` sans badge comme les forums ; une pair validée garde `membre` et porte le badge pair), `zone` (`{id, name}`, département) **seulement si la personne l'affiche** (`profiles.show_zone`), `profile_url` (`/membres/{pseudo}`, P8-07) ; jamais le nom réel, l'e-mail, le téléphone, la commune, l'âge, l'identité de genre ni l'orientation. **Blocage** dans un sens ou dans l'autre (comme le fil, les événements et les forums) : la personne n'apparaît pas dans les suggestions, une invitation entre les deux disparaît des listes et des compteurs et répond **404** à tout geste ; suivre et inviter répondent le 422 neutre ci-dessous.
+
+| Route | Réponse |
+|---|---|
+| `GET follows/suggestions?q=&zone=&role=&cursor=&per_page=` | **200** suggestions par curseur (12, `xomiton.network.suggestions_per_page` ; `meta.next_cursor`, `meta.per_page`) : comptes actifs, non anonymisés, avec `social.access`, profil ouvert au réseau (`public`, `community`) et `searchable`, jamais superadmin ; sans les personnes déjà suivies, ni celles avec une invitation en attente (dans un sens ou dans l'autre), ni celles qui ont refusé une invitation de la personne depuis moins de `xomiton.network.reinvite_after_refusal_days` (30 j) ; `q` (≤ 60) « contient » sur le **pseudonyme** seulement ; `zone` : id d'une zone active, limitée aux profils qui l'affichent ; `role` : `member` · `peer` · `team` ; valeur inconnue → 422 ; même zone que la personne d'abord, puis pseudonyme |
+| `POST follows` | `{user_id}` → **200** `{user_id, following: true, changed}` — idempotent ; profil ouvert au réseau seulement : un profil « connexions » (`followers`) ou privé ne se suit qu'au travers d'une invitation acceptée ; compte inconnu, soi-même, inactif, bloqué ou fermé → **422** `follow_unavailable` (même réponse dans tous les cas) |
+| `DELETE follows/{user_id}` | **200** `{user_id, following: false, changed}` — idempotent, permis même après un blocage |
+| `GET invitations?box=received\|sent&cursor=&per_page=` | **200** invitations **en attente** reçues (défaut) ou envoyées, plus récentes d'abord (20 par page, par curseur : `meta.next_cursor`) ; `meta.box`, `meta.counts` `{received, sent}` (compteurs des onglets) |
+| `POST invitations` | `{user_id}` → **201** invitation créée (cloche `InvitationReceived`), **200** si une invitation de la personne est déjà en attente (`meta.created: false`, **jamais de doublon** : unique `(from_user_id, to_user_id)`) ; `meta.counts` ; une invitation acceptée dont la connexion a été défaite, ou refusée il y a plus de 30 j, est rouverte sur la même ligne ; **422** `invitation_unavailable` (compte inconnu, soi-même, inactif, sans `social.access`, profil non visible selon `ProfileAudience`, compte « non trouvable » (`searchable` faux, P8-09) ou superadmin sans lien déjà fait — abonnement ou invitation en attente, dans un sens ou dans l'autre —, blocage, refus récent : un seul message, rien n'est révélé), `already_connected`, `invitation_from_them` (l'autre personne a déjà invité : l'accepter) ; **429** au-delà de `network_invite` (30 par jour). Un profil « connexions » (`followers`) ne se suit pas d'un geste et n'est jamais proposé : il ne reçoit d'invitation que d'une personne qui le suit déjà ; **l'initiative du lien lui revient** (il suit ou invite lui-même, Q79) |
+| `POST invitations/{id}/accept` | **200** invitation `acceptee` + `meta.counts` : abonnement **dans les deux sens** (« Vous êtes connecté·es »), cloche `InvitationAccepted` à la personne qui avait invité ; personne invitée seulement (**403** sinon) ; répéter : 200 ; invitation refusée : **422** `invitation_not_pending` |
+| `POST invitations/{id}/refuse` | **200** invitation `refusee` + `meta.counts` ; **aucune notification** ; répéter : 200 ; acceptée : 422 `invitation_not_pending` |
+| `DELETE invitations/{id}` | **204** : la personne qui a invité annule une invitation **en attente** (ligne supprimée, nouvel envoi possible aussitôt) ; **403** pour la personne invitée ; acceptée ou refusée : **404**, comme un blocage ou une suspension (la personne qui a invité ne distingue jamais un refus, Q79) |
+
+**Suggestion** (`NetworkPersonResource`) : la personne ci-dessus + `following` et `can` (`follow` : profil ouvert au réseau ; `invite`). **Invitation** (`InvitationResource`) : `id`, `status` (`en_attente` · `acceptee` · `refusee`), `status_label`, `direction` (`received` · `sent`, pour la personne qui lit), `person` (**l'autre personne** seulement), `created_at`, `responded_at`, `can` (`accept`, `refuse` pour la personne invitée ; `cancel` pour celle qui a invité ; tant que l'invitation est en attente).
+
+**Cloche** : `InvitationReceived` (« Nouvelle invitation », `url` `/qui-suivre?tab=recues`, `data.invitation_id`, `data.user_id` = compte qui invite) et `InvitationAccepted` (« Invitation acceptée », `url` `/qui-suivre`), préférence « Communauté », pseudonyme seulement ; jamais vers un compte inactif ou bloqué ; inviter, annuler puis réinviter ne renotifie pas avant `xomiton.network.invite_renotify_hours` (24 h) ; une invitation acceptée, refusée ou annulée passe ses `InvitationReceived` à « lue ». Aucun journal d'audit (qui se connecte à qui peut révéler une identité, comme les adhésions de groupe, Q75).
+
+**Page web** `/qui-suivre` (`Community/WhoToFollow`) : `?tab=recues|envoyees`, `?q=&zone=&role=membre|pair|equipe` (lecture tolérante : valeur inconnue → défaut) ; **`?invite=<id>`** (carte « Qui suivre » du fil, `inc/render.php` l.80) **prépare** l'invitation (`invite: {status: ready|pending|connected|from_them|unavailable, person}` ; `person.following` : déjà suivie ; `person.can.invite` vrai seulement pour `ready` ; `unavailable` sans personne aussi pour un compte « non trouvable » ou superadmin sans lien, comme `POST invitations` ; aperçus bornés par `network_preview`, 30/min, **429**) et n'envoie **rien** sans confirmation : un lien ne suffit jamais à relier deux comptes (le prototype l'envoyait dès le GET). Carte « Qui suivre » du fil : prop différée `who_to_follow` (5 suggestions, `xomiton.network.card_suggestions`), « + » → `/qui-suivre?invite=<id>`.
+
+## 18. Profil d'un·e membre `members/{pseudo}…` — `auth:sanctum` (P8-07)
+
+Lot « profil » : en-tête et onglets du profil (`prototype_social/my-profile*.php`), pour la page Vue `Member/Profile` (`/profil/{onglet?}`, `/membres/{pseudo}/{onglet?}`) et l'application mobile. Profil visible selon `App\Domain\Account\ProfileAudience` (comme `users/{id}/posts`, §11) : soi-même toujours ; sinon `social.access` et `public` / `community` pour tout compte, `followers` pour ses abonné·es ; `private`, blocage dans un sens ou dans l'autre, compte suspendu, anonymisé ou inconnu → **404** (jamais 403). Toutes les réponses sont `no-store`. Publications du profil : `GET users/{id}/posts` (§11).
+
+| Route | Réponse |
+|---|---|
+| `GET members/{pseudo}` | **200** profil (`MemberProfileResource`, ci-dessous) |
+| `GET members/{pseudo}/connections?q=&page=` | **200** connexions (invitation **acceptée** dans un sens ou dans l'autre) paginées par page (24, `xomiton.profile.connections_per_page`), par pseudo ; comptes actifs seulement, sans blocage avec le profil ni avec la personne qui lit ; sur le profil d'une autre personne, seulement les connexions au profil `public` / `community` ; `q` ≤ 60 sur le pseudo (422 au-delà) ; `meta.q` |
+| `GET members/{pseudo}/media` | **200** jusqu'à 24 images : celles des publications que la personne qui lit peut voir (jamais une publication anonyme) et des albums visibles ; `{ id, url, alt, width, height, href, at }` (image privée en lien signé à fenêtre fixe) |
+| `GET members/{pseudo}/events` | **200** `data` : son profil — événements auxquels la personne participe ou qu'elle organise ; une autre personne — **seulement ceux qu'elle organise** (sa participation n'est jamais exposée) ; à venir puis passés, 12 au plus, format §15 (adresse exacte réservée) ; `suggestions` (son profil : 3 prochains événements auxquels elle ne participe pas) |
+
+**Profil** (`MemberProfileResource`) : `id, pseudo, url, is_self, avatar_url, cover_url, role, role_label, verified` (pair validé·e ou équipe), `member_type, member_type_label, pronouns, bio, zone_label` (si `show_zone`), `joined_at, joined_label, interests[{slug, label}]`, `stats{posts, connections, followers, following}` (publications que la personne qui lit peut voir), `relationship{following, follows_you, connected}` (null pour soi), `message_url` ; pour soi en plus `completion, visibility, visibility_label, show_zone, has_avatar, has_cover, can_change_images` (e-mail confirmé). `zone_label` : « commune, département » pour soi, **département seul** pour une autre personne ; `member_type` / `role_label` d'une autre personne : `membre` ou `pair`, `pair` seulement une fois validé·e (statut actif, RG-03) ; `stats.followers` / `following` sans compte suspendu, en attente, anonymisé ou bloqué. **Jamais** : nom réel, e-mail, téléphone, tranche d'âge, contact de confiance, mode discret (RG-02). `sensitive[{field, label, value, value_label, shared}]` : pour une autre personne, **seulement** les champs de `shared_fields` renseignés — et pour `gender_identity` / `orientation`, tant que le consentement `sensitive_data` du profil court ; pour soi, tous les champs renseignés avec leur état `shared`.
+

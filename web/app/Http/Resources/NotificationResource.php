@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Application\Notifications\NotificationTab;
 use App\Models\DatabaseNotification;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -44,6 +45,9 @@ final class NotificationResource extends JsonResource
             'id' => (string) $notification->getKey(),
             'type' => Str::snake(class_basename((string) $notification->type)),
             'category' => $notification->category ?? ($data['category'] ?? null),
+            // P8-10 : filtre de la page /notifications (invitations, events, exchanges, system), sur la seule colonne
+            // `category`, comme NotificationTab::apply() et counts() : l'onglet affiché est celui qui liste et compte.
+            'tab' => NotificationTab::of(is_string($notification->category) ? $notification->category : null, (string) $notification->type)->value,
             'title' => $title,
             'body' => $body,
             'url' => is_string($data['url'] ?? null) ? $data['url'] : null,

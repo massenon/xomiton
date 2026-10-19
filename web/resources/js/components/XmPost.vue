@@ -63,7 +63,16 @@ const ago = computed(() => timeAgo(current.value.published_at, t));
 const image = computed(() => current.value.media.find((media) => media.kind === 'image' && media.url) ?? null);
 const share = computed(() => shareLinks(current.value.share_url));
 const detailHref = computed(() => `${current.value.url}#commentaires`);
-const profileHref = computed(() => (current.value.is_mine && !current.value.is_anonymous ? route('profil', undefined, '/profil') : null));
+// Lot profil (P8-07) : l'autrice ou l'auteur d'une publication non anonyme mène à son profil (/membres/{pseudo}, 404 si
+// le profil est privé ou bloqué) ; jamais pour une publication anonyme (RG-02) ni sans compte (supprimé : `id` nul,
+// pseudo de repli « Membre » qui pourrait être celui d'une autre personne).
+const profileHref = computed(() => {
+    if (current.value.is_anonymous || current.value.author.anonymous) return null;
+    if (current.value.is_mine) return route('profil', undefined, '/profil');
+    if (current.value.author.id === null) return null;
+    const pseudo = current.value.author.pseudo;
+    return pseudo ? route('membres.show', { pseudo }, `/membres/${encodeURIComponent(pseudo)}`) : null;
+});
 const me = computed(() => session.user);
 
 const update = (patch: Partial<Post>) => {

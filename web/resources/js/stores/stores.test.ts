@@ -104,6 +104,46 @@ describe('store notifications', () => {
         expect(store.unread).toBe(0);
         expect(store.items.every((n) => n.read)).toBe(true);
     });
+
+    it('cloche → page /notifications : marquages de la cloche reportés sur la liste et les badges, polling des filtres', async () => {
+        const store = useNotificationsStore();
+        const page = () => [{ id: 'a', title: 'A', tab: 'invitations' as const, read: false }, { id: 'b', title: 'B', tab: 'system' as const, read: false }];
+        store.hydratePage('all', { data: page(), meta: { current_page: 1, last_page: 1 } }, { all: { all: 2, unread: 2 }, invitations: { all: 1, unread: 1 }, system: { all: 1, unread: 1 } });
+        store.items = page();
+        const served = { all: { all: 2, unread: 1 }, invitations: { all: 1, unread: 0 }, system: { all: 1, unread: 1 } };
+        const api = fakeApi({
+            post: async (url: unknown) => ({ status: 200, data: String(url).endsWith('read-all') ? { data: { marked: 1, unread: 0 } } : { meta: { unread: 1, tabs: served } }, headers: new Headers() }),
+            get: async () => ({ status: 200, data: { data: { unread: 0, tabs: { all: { all: 2, unread: 0 }, invitations: { all: 1, unread: 0 }, system: { all: 1, unread: 0 } } } }, headers: new Headers() }),
+        });
+
+        await store.markRead(api, 'a');
+        expect(store.pageItems.map((n) => n.read)).toEqual([true, false]);
+        expect(store.tabCounts.invitations.unread).toBe(0);
+        expect(store.tabCounts.all.unread).toBe(1);
+
+        await store.markAllRead(api);
+        expect(api.post).toHaveBeenLastCalledWith('/api/v1/notifications/read-all');
+        expect(store.pageItems.every((n) => n.read)).toBe(true);
+        expect(store.tabCounts.system.unread).toBe(0);
+        expect(store.tabCounts.all.unread).toBe(store.unread);
+
+        await store.refreshCount(api);
+        expect(store.tabCounts.all).toEqual({ all: 2, unread: 0 });
+    });
+
+    it('« Tout marquer comme lu » de la page refusé : page, cloche et compteurs restaurés', async () => {
+        const store = useNotificationsStore();
+        store.hydratePage('exchanges', { data: [{ id: 'c', title: 'C', tab: 'exchanges', read: false }], meta: { current_page: 1, last_page: 1 } }, { all: { all: 2, unread: 2 }, exchanges: { all: 1, unread: 1 } });
+        store.items = [{ id: 'c', title: 'C', tab: 'exchanges', read: false }, { id: 'd', title: 'D', tab: 'system', read: false }];
+        const api = fakeApi({ post: async () => { throw new Error('refus'); } });
+
+        await expect(store.markPageAllRead(api)).rejects.toThrow('refus');
+        expect(api.post).toHaveBeenCalledWith('/api/v1/notifications/read-all', { tab: 'exchanges' });
+        expect(store.pageItems[0].read).toBe(false);
+        expect(store.items.map((n) => n.read)).toEqual([false, false]);
+        expect(store.tabCounts.exchanges.unread).toBe(1);
+        expect(store.unread).toBe(2);
+    });
 });
 
 describe('store ui', () => {

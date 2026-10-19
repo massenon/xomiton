@@ -6264,6 +6264,34 @@
     "@community_api_forum_attributes_title": {
         "description": "community.api.forum_attributes.title"
     },
+    "community_api_network_attributes_box": "onglet",
+    "@community_api_network_attributes_box": {
+        "description": "community.api.network_attributes.box"
+    },
+    "community_api_network_attributes_cursor": "curseur",
+    "@community_api_network_attributes_cursor": {
+        "description": "community.api.network_attributes.cursor"
+    },
+    "community_api_network_attributes_per_page": "nombre par page",
+    "@community_api_network_attributes_per_page": {
+        "description": "community.api.network_attributes.per_page"
+    },
+    "community_api_network_attributes_q": "recherche",
+    "@community_api_network_attributes_q": {
+        "description": "community.api.network_attributes.q"
+    },
+    "community_api_network_attributes_role": "profil",
+    "@community_api_network_attributes_role": {
+        "description": "community.api.network_attributes.role"
+    },
+    "community_api_network_attributes_user_id": "personne",
+    "@community_api_network_attributes_user_id": {
+        "description": "community.api.network_attributes.user_id"
+    },
+    "community_api_network_attributes_zone": "zone",
+    "@community_api_network_attributes_zone": {
+        "description": "community.api.network_attributes.zone"
+    },
     "community_events_all": "Tous",
     "@community_events_all": {
         "description": "community.events.all"
@@ -6780,6 +6808,88 @@
     "@community_events_upcoming": {
         "description": "community.events.upcoming"
     },
+    "community_follow_actions_accept": "Accepter",
+    "@community_follow_actions_accept": {
+        "description": "community.follow.actions.accept"
+    },
+    "community_follow_actions_accept_named": "Accepter l’invitation de {name}",
+    "@community_follow_actions_accept_named": {
+        "description": "community.follow.actions.accept_named",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_follow_actions_cancel": "Annuler",
+    "@community_follow_actions_cancel": {
+        "description": "community.follow.actions.cancel"
+    },
+    "community_follow_actions_cancel_named": "Annuler l’invitation envoyée à {name}",
+    "@community_follow_actions_cancel_named": {
+        "description": "community.follow.actions.cancel_named",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_follow_actions_follow": "Suivre",
+    "@community_follow_actions_follow": {
+        "description": "community.follow.actions.follow"
+    },
+    "community_follow_actions_follow_named": "Suivre {name}",
+    "@community_follow_actions_follow_named": {
+        "description": "community.follow.actions.follow_named",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_follow_actions_following": "Abonné·e",
+    "@community_follow_actions_following": {
+        "description": "community.follow.actions.following"
+    },
+    "community_follow_actions_invite": "Envoyer une invitation",
+    "@community_follow_actions_invite": {
+        "description": "community.follow.actions.invite"
+    },
+    "community_follow_actions_invite_named": "Envoyer une invitation à {name}",
+    "@community_follow_actions_invite_named": {
+        "description": "community.follow.actions.invite_named",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_follow_actions_invited": "Invitation envoyée",
+    "@community_follow_actions_invited": {
+        "description": "community.follow.actions.invited"
+    },
+    "community_follow_actions_refuse": "Refuser",
+    "@community_follow_actions_refuse": {
+        "description": "community.follow.actions.refuse"
+    },
+    "community_follow_actions_refuse_named": "Refuser l’invitation de {name}",
+    "@community_follow_actions_refuse_named": {
+        "description": "community.follow.actions.refuse_named",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_follow_actions_unfollow_named": "Ne plus suivre {name}",
+    "@community_follow_actions_unfollow_named": {
+        "description": "community.follow.actions.unfollow_named",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "community_follow_all_roles": "Tous profils",
     "@community_follow_all_roles": {
         "description": "community.follow.all_roles"
@@ -6787,6 +6897,32 @@
     "community_follow_all_zones": "Toutes les zones",
     "@community_follow_all_zones": {
         "description": "community.follow.all_zones"
+    },
+    "community_follow_confirm_dismiss": "Pas maintenant",
+    "@community_follow_confirm_dismiss": {
+        "description": "community.follow.confirm.dismiss"
+    },
+    "community_follow_confirm_send": "Envoyer l’invitation",
+    "@community_follow_confirm_send": {
+        "description": "community.follow.confirm.send"
+    },
+    "community_follow_confirm_text": "Si {name} accepte, vous serez connecté·es : chacun·e verra les publications que l’autre réserve à ses abonné·es.",
+    "@community_follow_confirm_text": {
+        "description": "community.follow.confirm.text",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_follow_confirm_title": "Envoyer une invitation à {name} ?",
+    "@community_follow_confirm_title": {
+        "description": "community.follow.confirm.title",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     },
     "community_follow_empty_followers": "Personne ne te suit encore. Publie et participe pour te faire connaître.",
     "@community_follow_empty_followers": {
@@ -6800,9 +6936,13 @@
     "@community_follow_empty_received": {
         "description": "community.follow.empty_received"
     },
-    "community_follow_empty_sent": "Aucune invitation envoyée. Découvre les suggestions.",
+    "community_follow_empty_sent": "Aucune invitation envoyée.",
     "@community_follow_empty_sent": {
         "description": "community.follow.empty_sent"
+    },
+    "community_follow_empty_sent_link": "Découvre les suggestions",
+    "@community_follow_empty_sent_link": {
+        "description": "community.follow.empty_sent_link"
     },
     "community_follow_empty_suggestions": "Aucune suggestion pour ces critères.",
     "@community_follow_empty_suggestions": {
@@ -6812,13 +6952,37 @@
     "@community_follow_errors_already_invited": {
         "description": "community.follow.errors.already_invited"
     },
+    "community_follow_errors_connected": "Vous êtes déjà connecté·es.",
+    "@community_follow_errors_connected": {
+        "description": "community.follow.errors.connected"
+    },
+    "community_follow_errors_follow_unavailable": "Tu ne peux pas suivre cette personne pour le moment.",
+    "@community_follow_errors_follow_unavailable": {
+        "description": "community.follow.errors.follow_unavailable"
+    },
     "community_follow_errors_impossible": "Action impossible.",
     "@community_follow_errors_impossible": {
         "description": "community.follow.errors.impossible"
     },
+    "community_follow_errors_invited_you": "Cette personne t’a déjà envoyé une invitation : réponds-lui dans « Invitations reçues ».",
+    "@community_follow_errors_invited_you": {
+        "description": "community.follow.errors.invited_you"
+    },
+    "community_follow_errors_not_pending": "Cette invitation n’est plus en attente.",
+    "@community_follow_errors_not_pending": {
+        "description": "community.follow.errors.not_pending"
+    },
     "community_follow_errors_self": "Tu ne peux pas t’inviter toi-même.",
     "@community_follow_errors_self": {
         "description": "community.follow.errors.self"
+    },
+    "community_follow_errors_unavailable": "Cette personne ne peut pas être invitée pour le moment.",
+    "@community_follow_errors_unavailable": {
+        "description": "community.follow.errors.unavailable"
+    },
+    "community_follow_filter": "Filtrer",
+    "@community_follow_filter": {
+        "description": "community.follow.filter"
     },
     "community_follow_filter_role": "Profil",
     "@community_follow_filter_role": {
@@ -6827,6 +6991,10 @@
     "community_follow_filter_zone": "Zone",
     "@community_follow_filter_zone": {
         "description": "community.follow.filter_zone"
+    },
+    "community_follow_filters_label": "Filtrer les suggestions",
+    "@community_follow_filters_label": {
+        "description": "community.follow.filters_label"
     },
     "community_follow_intro": "Élargis ton réseau de soutien : invite des pair·es, des pair animateur·rices et des membres de ta zone.",
     "@community_follow_intro": {
@@ -6841,9 +7009,40 @@
             }
         }
     },
+    "community_follow_loaded": "{count, plural, =1{{count} personne de plus.} other{{count} personnes de plus.}}",
+    "@community_follow_loaded": {
+        "description": "community.follow.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "community_follow_loaded_invitations": "{count, plural, =1{{count} invitation de plus.} other{{count} invitations de plus.}}",
+    "@community_follow_loaded_invitations": {
+        "description": "community.follow.loaded_invitations",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "community_follow_mutual": "{count, plural, =1{{count} connexion en commun} other{{count} connexions en commun}}",
     "@community_follow_mutual": {
         "description": "community.follow.mutual",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "community_follow_no_access": "Le réseau n’est pas ouvert à ton compte.",
+    "@community_follow_no_access": {
+        "description": "community.follow.no_access"
+    },
+    "community_follow_pending_count": "{count, plural, =0{aucune en attente} =1{{count} en attente} other{{count} en attente}}",
+    "@community_follow_pending_count": {
+        "description": "community.follow.pending_count",
         "placeholders": {
             "count": {
                 "type": "int"
@@ -6862,9 +7061,22 @@
     "@community_follow_roles_team": {
         "description": "community.follow.roles.team"
     },
-    "community_follow_search": "Rechercher par nom ou pseudonyme…",
+    "community_follow_search": "Rechercher par pseudonyme…",
     "@community_follow_search": {
         "description": "community.follow.search"
+    },
+    "community_follow_search_label": "Rechercher",
+    "@community_follow_search_label": {
+        "description": "community.follow.search_label"
+    },
+    "community_follow_sent_ago": "envoyée {ago}",
+    "@community_follow_sent_ago": {
+        "description": "community.follow.sent_ago",
+        "placeholders": {
+            "ago": {
+                "type": "String"
+            }
+        }
     },
     "community_follow_tabs_followers": "Abonné·es",
     "@community_follow_tabs_followers": {
@@ -6886,6 +7098,10 @@
     "@community_follow_tabs_suggestions": {
         "description": "community.follow.tabs.suggestions"
     },
+    "community_follow_tabs_label": "Qui suivre et invitations",
+    "@community_follow_tabs_label": {
+        "description": "community.follow.tabs_label"
+    },
     "community_follow_title": "Qui suivre et invitations",
     "@community_follow_title": {
         "description": "community.follow.title"
@@ -6893,6 +7109,15 @@
     "community_follow_toasts_accepted": "Invitation acceptée. Vous êtes connecté·es.",
     "@community_follow_toasts_accepted": {
         "description": "community.follow.toasts.accepted"
+    },
+    "community_follow_toasts_already_invited": "Tu as déjà invité {name} : l’invitation est en attente.",
+    "@community_follow_toasts_already_invited": {
+        "description": "community.follow.toasts.already_invited",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     },
     "community_follow_toasts_blocked": "{name} est bloqué·e.",
     "@community_follow_toasts_blocked": {
@@ -6946,6 +7171,10 @@
                 "type": "String"
             }
         }
+    },
+    "community_follow_verify_to_invite": "Confirme ton adresse e-mail pour envoyer des invitations.",
+    "@community_follow_verify_to_invite": {
+        "description": "community.follow.verify_to_invite"
     },
     "community_forums_all": "Tous les forums",
     "@community_forums_all": {
@@ -15240,6 +15469,14 @@
     "@notifications_page_filters_system": {
         "description": "notifications.page.filters.system"
     },
+    "notifications_page_filters_label": "Filtrer les notifications",
+    "@notifications_page_filters_label": {
+        "description": "notifications.page.filters_label"
+    },
+    "notifications_page_load_more": "Afficher plus de notifications",
+    "@notifications_page_load_more": {
+        "description": "notifications.page.load_more"
+    },
     "notifications_page_mark_all_read": "Tout marquer comme lu",
     "@notifications_page_mark_all_read": {
         "description": "notifications.page.mark_all_read"
@@ -15247,6 +15484,15 @@
     "notifications_page_mark_read": "Marquer comme lu",
     "@notifications_page_mark_read": {
         "description": "notifications.page.mark_read"
+    },
+    "notifications_page_mark_read_label": "Marquer comme lue : {title}",
+    "@notifications_page_mark_read_label": {
+        "description": "notifications.page.mark_read_label",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
     },
     "notifications_page_new_badge": "{count, plural, =1{{count} nouvelle} other{{count} nouvelles}}",
     "@notifications_page_new_badge": {
@@ -15268,6 +15514,10 @@
     "notifications_page_title": "Notifications",
     "@notifications_page_title": {
         "description": "notifications.page.title"
+    },
+    "notifications_page_unread": "Non lue",
+    "@notifications_page_unread": {
+        "description": "notifications.page.unread"
     },
     "notifications_page_unread_badge": "{count, plural, =1{{count} non lue} other{{count} non lues}}",
     "@notifications_page_unread_badge": {
@@ -18689,6 +18939,10 @@
     "@profile_about_bio": {
         "description": "profile.about.bio"
     },
+    "profile_about_complete": "Compléter mon profil",
+    "@profile_about_complete": {
+        "description": "profile.about.complete"
+    },
     "profile_about_edit": "Modifier",
     "@profile_about_edit": {
         "description": "profile.about.edit"
@@ -18721,7 +18975,7 @@
     "@profile_about_prefer_not_say": {
         "description": "profile.about.prefer_not_say"
     },
-    "profile_about_privacy_text": "Ton nom complet n’est visible que par tes connexions. Tes publications anonymes ne sont jamais liées à ton compte publiquement.",
+    "profile_about_privacy_text": "Ton nom réel n’est jamais affiché : seul ton pseudonyme est visible. Tes publications anonymes ne sont jamais liées à ton profil.",
     "@profile_about_privacy_text": {
         "description": "profile.about.privacy_text"
     },
@@ -18733,13 +18987,141 @@
     "@profile_about_pronouns": {
         "description": "profile.about.pronouns"
     },
+    "profile_about_sensitive_private": "Visible par toi seul·e",
+    "@profile_about_sensitive_private": {
+        "description": "profile.about.sensitive_private"
+    },
+    "profile_about_sensitive_shared": "Visible sur ton profil",
+    "@profile_about_sensitive_shared": {
+        "description": "profile.about.sensitive_shared"
+    },
+    "profile_about_sensitive_title": "Informations personnelles",
+    "@profile_about_sensitive_title": {
+        "description": "profile.about.sensitive_title"
+    },
     "profile_about_title": "À propos",
     "@profile_about_title": {
         "description": "profile.about.title"
     },
+    "profile_about_visibility": "Qui voit ton profil : {value}",
+    "@profile_about_visibility": {
+        "description": "profile.about.visibility",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
     "profile_about_zone": "Zone",
     "@profile_about_zone": {
         "description": "profile.about.zone"
+    },
+    "profile_about_zone_hidden": "Zone masquée sur ton profil",
+    "@profile_about_zone_hidden": {
+        "description": "profile.about.zone_hidden"
+    },
+    "profile_activity_at": "{date} à {time}",
+    "@profile_activity_at": {
+        "description": "profile.activity.at",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_activity_connected": "Connexion avec @{pseudo}",
+    "@profile_activity_connected": {
+        "description": "profile.activity.connected",
+        "placeholders": {
+            "pseudo": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_activity_going": "Tu participes à « {title} »",
+    "@profile_activity_going": {
+        "description": "profile.activity.going",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_activity_joined": "Tu as rejoint « {name} »",
+    "@profile_activity_joined": {
+        "description": "profile.activity.joined",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_activity_private": "Visible par toi seul·e.",
+    "@profile_activity_private": {
+        "description": "profile.activity.private"
+    },
+    "profile_activity_title": "Journal de mon activité",
+    "@profile_activity_title": {
+        "description": "profile.activity.title"
+    },
+    "profile_activity_types_data": "Export de mes données",
+    "@profile_activity_types_data": {
+        "description": "profile.activity.types.data"
+    },
+    "profile_activity_types_device": "Nouvel appareil",
+    "@profile_activity_types_device": {
+        "description": "profile.activity.types.device"
+    },
+    "profile_activity_types_email": "E-mail confirmé",
+    "@profile_activity_types_email": {
+        "description": "profile.activity.types.email"
+    },
+    "profile_activity_types_event": "Événement",
+    "@profile_activity_types_event": {
+        "description": "profile.activity.types.event"
+    },
+    "profile_activity_types_forum": "Forum",
+    "@profile_activity_types_forum": {
+        "description": "profile.activity.types.forum"
+    },
+    "profile_activity_types_group": "Groupe",
+    "@profile_activity_types_group": {
+        "description": "profile.activity.types.group"
+    },
+    "profile_activity_types_invitation": "Invitation",
+    "@profile_activity_types_invitation": {
+        "description": "profile.activity.types.invitation"
+    },
+    "profile_activity_types_login": "Connexion",
+    "@profile_activity_types_login": {
+        "description": "profile.activity.types.login"
+    },
+    "profile_activity_types_page": "Page",
+    "@profile_activity_types_page": {
+        "description": "profile.activity.types.page"
+    },
+    "profile_activity_types_password": "Mot de passe",
+    "@profile_activity_types_password": {
+        "description": "profile.activity.types.password"
+    },
+    "profile_activity_types_post": "Publication",
+    "@profile_activity_types_post": {
+        "description": "profile.activity.types.post"
+    },
+    "profile_activity_types_security": "Sécurité",
+    "@profile_activity_types_security": {
+        "description": "profile.activity.types.security"
+    },
+    "profile_activity_types_settings": "Paramètres",
+    "@profile_activity_types_settings": {
+        "description": "profile.activity.types.settings"
+    },
+    "profile_aside_label": "À propos de ce profil",
+    "@profile_aside_label": {
+        "description": "profile.aside_label"
     },
     "profile_avatar_alt": "Avatar de {name}",
     "@profile_avatar_alt": {
@@ -18759,6 +19141,15 @@
             }
         }
     },
+    "profile_composer_prompt": "Partage tes pensées, {name}…",
+    "@profile_composer_prompt": {
+        "description": "profile.composer_prompt",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "profile_connections": "{count, plural, =0{Aucune connexion} =1{{count} connexion} other{{count} connexions}}",
     "@profile_connections": {
         "description": "profile.connections",
@@ -18767,6 +19158,35 @@
                 "type": "int"
             }
         }
+    },
+    "profile_connections_tab_empty_search": "Aucune connexion ne correspond à ta recherche.",
+    "@profile_connections_tab_empty_search": {
+        "description": "profile.connections_tab.empty_search"
+    },
+    "profile_connections_tab_invite": "Envoyer une invitation",
+    "@profile_connections_tab_invite": {
+        "description": "profile.connections_tab.invite"
+    },
+    "profile_connections_tab_loaded": "{count, plural, =0{Aucune connexion de plus} =1{{count} connexion de plus} other{{count} connexions de plus}}",
+    "@profile_connections_tab_loaded": {
+        "description": "profile.connections_tab.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "profile_connections_tab_search": "Rechercher une connexion",
+    "@profile_connections_tab_search": {
+        "description": "profile.connections_tab.search"
+    },
+    "profile_connections_tab_search_submit": "Rechercher",
+    "@profile_connections_tab_search_submit": {
+        "description": "profile.connections_tab.search_submit"
+    },
+    "profile_connections_tab_title": "Connexions",
+    "@profile_connections_tab_title": {
+        "description": "profile.connections_tab.title"
     },
     "profile_cover_alt": "Photo de couverture",
     "@profile_cover_alt": {
@@ -18809,6 +19229,44 @@
             }
         }
     },
+    "profile_events_tab_discover": "Découvrir les événements",
+    "@profile_events_tab_discover": {
+        "description": "profile.events_tab.discover"
+    },
+    "profile_events_tab_empty_other": "{name} n’organise aucun événement pour l’instant.",
+    "@profile_events_tab_empty_other": {
+        "description": "profile.events_tab.empty_other",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_events_tab_going": "Je participe",
+    "@profile_events_tab_going": {
+        "description": "profile.events_tab.going"
+    },
+    "profile_events_tab_organizer": "Organisé par toi",
+    "@profile_events_tab_organizer": {
+        "description": "profile.events_tab.organizer"
+    },
+    "profile_events_tab_suggestions": "À venir pour toi",
+    "@profile_events_tab_suggestions": {
+        "description": "profile.events_tab.suggestions"
+    },
+    "profile_events_tab_title_other": "Événements organisés par {name}",
+    "@profile_events_tab_title_other": {
+        "description": "profile.events_tab.title_other",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_events_tab_title_self": "Événements auxquels je participe",
+    "@profile_events_tab_title_self": {
+        "description": "profile.events_tab.title_self"
+    },
     "profile_followers": "{count, plural, =0{Aucun·e abonné·e} =1{{count} abonné·e} other{{count} abonné·es}}",
     "@profile_followers": {
         "description": "profile.followers",
@@ -18827,6 +19285,50 @@
             }
         }
     },
+    "profile_image_attribute": "image",
+    "@profile_image_attribute": {
+        "description": "profile.image_attribute"
+    },
+    "profile_images_change_avatar": "Changer l’avatar",
+    "@profile_images_change_avatar": {
+        "description": "profile.images.change_avatar"
+    },
+    "profile_images_change_cover": "Changer la couverture",
+    "@profile_images_change_cover": {
+        "description": "profile.images.change_cover"
+    },
+    "profile_images_failed": "L’image n’a pas pu être enregistrée. Réessaie avec une autre image.",
+    "@profile_images_failed": {
+        "description": "profile.images.failed"
+    },
+    "profile_images_hint": "JPEG, PNG ou WebP, 5 Mo au plus. Les métadonnées (lieu, appareil) sont retirées.",
+    "@profile_images_hint": {
+        "description": "profile.images.hint"
+    },
+    "profile_images_remove_avatar": "Retirer l’avatar",
+    "@profile_images_remove_avatar": {
+        "description": "profile.images.remove_avatar"
+    },
+    "profile_images_remove_cover": "Retirer la couverture",
+    "@profile_images_remove_cover": {
+        "description": "profile.images.remove_cover"
+    },
+    "profile_images_remove_failed": "L’image n’a pas pu être retirée. Réessaie dans un instant.",
+    "@profile_images_remove_failed": {
+        "description": "profile.images.remove_failed"
+    },
+    "profile_images_removed": "Image retirée.",
+    "@profile_images_removed": {
+        "description": "profile.images.removed"
+    },
+    "profile_images_uploading": "Envoi de l’image…",
+    "@profile_images_uploading": {
+        "description": "profile.images.uploading"
+    },
+    "profile_images_verify_first": "Confirme ton adresse e-mail pour changer ton avatar ou ta couverture.",
+    "@profile_images_verify_first": {
+        "description": "profile.images.verify_first"
+    },
     "profile_location": "{commune}, {zone}",
     "@profile_location": {
         "description": "profile.location",
@@ -18839,6 +19341,36 @@
             }
         }
     },
+    "profile_media_tab_alt": "Photo partagée par {name}",
+    "@profile_media_tab_alt": {
+        "description": "profile.media_tab.alt",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_media_tab_empty_other": "{name} n’a partagé aucune photo visible pour l’instant.",
+    "@profile_media_tab_empty_other": {
+        "description": "profile.media_tab.empty_other",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_media_tab_library": "Médiathèque",
+    "@profile_media_tab_library": {
+        "description": "profile.media_tab.library"
+    },
+    "profile_media_tab_open": "Voir la publication",
+    "@profile_media_tab_open": {
+        "description": "profile.media_tab.open"
+    },
+    "profile_media_tab_title": "Photos",
+    "@profile_media_tab_title": {
+        "description": "profile.media_tab.title"
+    },
     "profile_member_since": "Membre depuis {date}",
     "@profile_member_since": {
         "description": "profile.member_since",
@@ -18847,6 +19379,26 @@
                 "type": "String"
             }
         }
+    },
+    "profile_menu_data": "Télécharger mes données",
+    "@profile_menu_data": {
+        "description": "profile.menu.data"
+    },
+    "profile_menu_edit": "Modifier le profil",
+    "@profile_menu_edit": {
+        "description": "profile.menu.edit"
+    },
+    "profile_menu_privacy": "Confidentialité",
+    "@profile_menu_privacy": {
+        "description": "profile.menu.privacy"
+    },
+    "profile_menu_settings": "Paramètres",
+    "@profile_menu_settings": {
+        "description": "profile.menu.settings"
+    },
+    "profile_message": "Envoyer un message",
+    "@profile_message": {
+        "description": "profile.message"
     },
     "profile_more_actions": "Plus d’actions",
     "@profile_more_actions": {
@@ -18891,6 +19443,14 @@
     "@profile_progressive_banner_title": {
         "description": "profile.progressive.banner_title"
     },
+    "profile_progressive_choose": "Choisis une réponse.",
+    "@profile_progressive_choose": {
+        "description": "profile.progressive.choose"
+    },
+    "profile_progressive_consent_attribute": "consentement aux données sensibles",
+    "@profile_progressive_consent_attribute": {
+        "description": "profile.progressive.consent_attribute"
+    },
     "profile_progressive_done_text": "Tu peux revenir le compléter ou le modifier à tout moment depuis les paramètres.",
     "@profile_progressive_done_text": {
         "description": "profile.progressive.done_text"
@@ -18898,6 +19458,10 @@
     "profile_progressive_done_title": "Merci, ton profil est à jour",
     "@profile_progressive_done_title": {
         "description": "profile.progressive.done_title"
+    },
+    "profile_progressive_error": "Ta réponse n’a pas pu être enregistrée. Réessaie.",
+    "@profile_progressive_error": {
+        "description": "profile.progressive.error"
     },
     "profile_progressive_groups_age_field": "Âge",
     "@profile_progressive_groups_age_field": {
@@ -19024,6 +19588,10 @@
     "@profile_progressive_groups_location_show_zone": {
         "description": "profile.progressive.groups.location.show_zone"
     },
+    "profile_progressive_groups_location_show_zone_help": "Les autres membres ne voient que ton département, jamais ta commune.",
+    "@profile_progressive_groups_location_show_zone_help": {
+        "description": "profile.progressive.groups.location.show_zone_help"
+    },
     "profile_progressive_groups_location_title": "Où vis-tu ?",
     "@profile_progressive_groups_location_title": {
         "description": "profile.progressive.groups.location.title"
@@ -19136,9 +19704,21 @@
     "@profile_progressive_groups_trusted_contact_why": {
         "description": "profile.progressive.groups.trusted_contact.why"
     },
+    "profile_progressive_none": "Aucune",
+    "@profile_progressive_none": {
+        "description": "profile.progressive.none"
+    },
+    "profile_progressive_prefer_not": "Je préfère ne pas le dire",
+    "@profile_progressive_prefer_not": {
+        "description": "profile.progressive.prefer_not"
+    },
     "profile_progressive_save_group": "Enregistrer et continuer",
     "@profile_progressive_save_group": {
         "description": "profile.progressive.save_group"
+    },
+    "profile_progressive_saved": "C’est enregistré.",
+    "@profile_progressive_saved": {
+        "description": "profile.progressive.saved"
     },
     "profile_progressive_sensitive_consent": "J’accepte que Xomiton conserve ces informations sensibles, chiffrées, pour me proposer des contenus adaptés. Je peux retirer ce consentement à tout moment.",
     "@profile_progressive_sensitive_consent": {
@@ -19148,9 +19728,41 @@
     "@profile_progressive_sensitive_required": {
         "description": "profile.progressive.sensitive_required"
     },
+    "profile_progressive_share": "Afficher sur mon profil",
+    "@profile_progressive_share": {
+        "description": "profile.progressive.share"
+    },
+    "profile_progressive_share_help": "Décoché, cette information reste visible par toi seul·e.",
+    "@profile_progressive_share_help": {
+        "description": "profile.progressive.share_help"
+    },
+    "profile_progressive_shared_attribute": "informations visibles sur ton profil",
+    "@profile_progressive_shared_attribute": {
+        "description": "profile.progressive.shared_attribute"
+    },
     "profile_progressive_skip_group": "Passer ce groupe",
     "@profile_progressive_skip_group": {
         "description": "profile.progressive.skip_group"
+    },
+    "profile_progressive_skipped": "Groupe passé. Tu le retrouveras plus tard.",
+    "@profile_progressive_skipped": {
+        "description": "profile.progressive.skipped"
+    },
+    "profile_progressive_step": "Question {current} sur {total}",
+    "@profile_progressive_step": {
+        "description": "profile.progressive.step",
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_progressive_title": "Profil progressif",
+    "@profile_progressive_title": {
+        "description": "profile.progressive.title"
     },
     "profile_progressive_why": "Pourquoi on demande ça ?",
     "@profile_progressive_why": {
@@ -19164,6 +19776,38 @@
                 "type": "String"
             }
         }
+    },
+    "profile_relationship_connected": "Connexion",
+    "@profile_relationship_connected": {
+        "description": "profile.relationship.connected"
+    },
+    "profile_relationship_following": "Tu suis ce profil",
+    "@profile_relationship_following": {
+        "description": "profile.relationship.following"
+    },
+    "profile_relationship_follows_you": "Te suit",
+    "@profile_relationship_follows_you": {
+        "description": "profile.relationship.follows_you"
+    },
+    "profile_roles_admin": "Équipe Xomiton",
+    "@profile_roles_admin": {
+        "description": "profile.roles.admin"
+    },
+    "profile_roles_membre": "Membre",
+    "@profile_roles_membre": {
+        "description": "profile.roles.membre"
+    },
+    "profile_roles_moderateur": "Modération",
+    "@profile_roles_moderateur": {
+        "description": "profile.roles.moderateur"
+    },
+    "profile_roles_pair": "Pair éducateur·rice",
+    "@profile_roles_pair": {
+        "description": "profile.roles.pair"
+    },
+    "profile_roles_superadmin": "Équipe Xomiton",
+    "@profile_roles_superadmin": {
+        "description": "profile.roles.superadmin"
     },
     "profile_settings_appearance_applied": "Thème appliqué.",
     "@profile_settings_appearance_applied": {
@@ -19222,6 +19866,10 @@
     "@profile_settings_data_title": {
         "description": "profile.settings.data.title"
     },
+    "profile_settings_delete_admin_blocked": "Un compte de l’équipe d’administration ne se supprime pas depuis cette page. Écris à l’équipe.",
+    "@profile_settings_delete_admin_blocked": {
+        "description": "profile.settings.delete.admin_blocked"
+    },
     "profile_settings_delete_confirm_error": "Tape SUPPRIMER pour confirmer.",
     "@profile_settings_delete_confirm_error": {
         "description": "profile.settings.delete.confirm_error"
@@ -19243,6 +19891,10 @@
             }
         }
     },
+    "profile_settings_delete_password_help": "Ton mot de passe confirme que c’est bien toi.",
+    "@profile_settings_delete_password_help": {
+        "description": "profile.settings.delete.password_help"
+    },
     "profile_settings_delete_submit": "Supprimer mon compte",
     "@profile_settings_delete_submit": {
         "description": "profile.settings.delete.submit"
@@ -19260,6 +19912,44 @@
     "@profile_settings_delete_title": {
         "description": "profile.settings.delete.title"
     },
+    "profile_settings_devices_empty": "Aucun téléphone relié à ton compte.",
+    "@profile_settings_devices_empty": {
+        "description": "profile.settings.devices.empty"
+    },
+    "profile_settings_devices_intro": "Les téléphones où l’application Xomiton est reliée à ton compte.",
+    "@profile_settings_devices_intro": {
+        "description": "profile.settings.devices.intro"
+    },
+    "profile_settings_devices_last_seen": "Vu {ago}",
+    "@profile_settings_devices_last_seen": {
+        "description": "profile.settings.devices.last_seen",
+        "placeholders": {
+            "ago": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_settings_devices_revoke": "Retirer",
+    "@profile_settings_devices_revoke": {
+        "description": "profile.settings.devices.revoke"
+    },
+    "profile_settings_devices_revoke_label": "Retirer l’appareil {name}",
+    "@profile_settings_devices_revoke_label": {
+        "description": "profile.settings.devices.revoke_label",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_settings_devices_revoked": "Retiré",
+    "@profile_settings_devices_revoked": {
+        "description": "profile.settings.devices.revoked"
+    },
+    "profile_settings_devices_title": "Application mobile",
+    "@profile_settings_devices_title": {
+        "description": "profile.settings.devices.title"
+    },
     "profile_settings_errors_current_password": "Le mot de passe actuel est incorrect.",
     "@profile_settings_errors_current_password": {
         "description": "profile.settings.errors.current_password"
@@ -19268,17 +19958,39 @@
     "@profile_settings_errors_locale_unavailable": {
         "description": "profile.settings.errors.locale_unavailable"
     },
-    "profile_settings_errors_name_required": "Indique ton nom.",
-    "@profile_settings_errors_name_required": {
-        "description": "profile.settings.errors.name_required"
+    "profile_settings_errors_name_min": "Si tu indiques ton nom, il doit contenir au moins {min} caractères.",
+    "@profile_settings_errors_name_min": {
+        "description": "profile.settings.errors.name_min",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
     },
     "profile_settings_errors_password_confirmation": "La confirmation ne correspond pas.",
     "@profile_settings_errors_password_confirmation": {
         "description": "profile.settings.errors.password_confirmation"
     },
+    "profile_settings_errors_password_confirmation_required": "Confirme le nouveau mot de passe.",
+    "@profile_settings_errors_password_confirmation_required": {
+        "description": "profile.settings.errors.password_confirmation_required"
+    },
+    "profile_settings_errors_password_same": "Choisis un mot de passe différent de l’actuel.",
+    "@profile_settings_errors_password_same": {
+        "description": "profile.settings.errors.password_same"
+    },
     "profile_settings_errors_phone_invalid": "Numéro de téléphone béninois invalide (ex. +229 01 97 38 88 47).",
     "@profile_settings_errors_phone_invalid": {
         "description": "profile.settings.errors.phone_invalid"
+    },
+    "profile_settings_errors_pseudo_cooldown": "Tu as déjà changé de pseudonyme récemment. Réessaie dans {hours} h.",
+    "@profile_settings_errors_pseudo_cooldown": {
+        "description": "profile.settings.errors.pseudo_cooldown",
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
     },
     "profile_settings_errors_pseudo_format": "Le pseudonyme doit contenir {min} à {max} caractères (lettres, chiffres, _ . -).",
     "@profile_settings_errors_pseudo_format": {
@@ -19332,6 +20044,58 @@
     "@profile_settings_language_unavailable": {
         "description": "profile.settings.language.unavailable"
     },
+    "profile_settings_nav_label": "Sections des paramètres",
+    "@profile_settings_nav_label": {
+        "description": "profile.settings.nav_label"
+    },
+    "profile_settings_newsletter_interests": "Ce qui t’intéresse",
+    "@profile_settings_newsletter_interests": {
+        "description": "profile.settings.newsletter.interests"
+    },
+    "profile_settings_newsletter_interests_hint": "Facultatif : nous choisissons les sujets de ta newsletter avec ces centres d’intérêt.",
+    "@profile_settings_newsletter_interests_hint": {
+        "description": "profile.settings.newsletter.interests_hint"
+    },
+    "profile_settings_newsletter_intro": "Des nouvelles de la communauté, des fiches et des événements, sans publicité.",
+    "@profile_settings_newsletter_intro": {
+        "description": "profile.settings.newsletter.intro"
+    },
+    "profile_settings_newsletter_pending": "Confirme ton abonnement depuis l’e-mail que nous venons de t’envoyer.",
+    "@profile_settings_newsletter_pending": {
+        "description": "profile.settings.newsletter.pending"
+    },
+    "profile_settings_newsletter_subscribed": "Recevoir la newsletter Xomiton",
+    "@profile_settings_newsletter_subscribed": {
+        "description": "profile.settings.newsletter.subscribed"
+    },
+    "profile_settings_newsletter_title": "Newsletter",
+    "@profile_settings_newsletter_title": {
+        "description": "profile.settings.newsletter.title"
+    },
+    "profile_settings_notifications_caption": "Canaux de notification par catégorie",
+    "@profile_settings_notifications_caption": {
+        "description": "profile.settings.notifications.caption"
+    },
+    "profile_settings_notifications_category": "Catégorie",
+    "@profile_settings_notifications_category": {
+        "description": "profile.settings.notifications.category"
+    },
+    "profile_settings_notifications_channel_for": "{channel} : {category}",
+    "@profile_settings_notifications_channel_for": {
+        "description": "profile.settings.notifications.channel_for",
+        "placeholders": {
+            "category": {
+                "type": "String"
+            },
+            "channel": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_settings_notifications_locked": "Toujours actif",
+    "@profile_settings_notifications_locked": {
+        "description": "profile.settings.notifications.locked"
+    },
     "profile_settings_password_confirm": "Confirmation",
     "@profile_settings_password_confirm": {
         "description": "profile.settings.password.confirm"
@@ -19343,6 +20107,10 @@
     "profile_settings_password_new": "Nouveau mot de passe",
     "@profile_settings_password_new": {
         "description": "profile.settings.password.new"
+    },
+    "profile_settings_password_revoke_note": "Par sécurité, tes autres appareils seront déconnectés et un e-mail te confirmera le changement.",
+    "@profile_settings_password_revoke_note": {
+        "description": "profile.settings.password.revoke_note"
     },
     "profile_settings_password_revoke_others": "Déconnecter mes autres appareils",
     "@profile_settings_password_revoke_others": {
@@ -19364,6 +20132,10 @@
     "profile_settings_privacy_searchable": "Apparaître dans les suggestions « Qui suivre »",
     "@profile_settings_privacy_searchable": {
         "description": "profile.settings.privacy.searchable"
+    },
+    "profile_settings_privacy_searchable_help": "Désactivé, ton profil n’est plus proposé aux autres membres.",
+    "@profile_settings_privacy_searchable_help": {
+        "description": "profile.settings.privacy.searchable_help"
     },
     "profile_settings_privacy_sensitive_consent": "Conserver mes données sensibles (identité de genre, orientation), chiffrées",
     "@profile_settings_privacy_sensitive_consent": {
@@ -19414,7 +20186,7 @@
     "@profile_settings_profile_name": {
         "description": "profile.settings.profile.name"
     },
-    "profile_settings_profile_name_help": "Visible seulement par tes connexions. Jamais public.",
+    "profile_settings_profile_name_help": "Facultatif. Jamais affiché : seul ton pseudonyme est visible.",
     "@profile_settings_profile_name_help": {
         "description": "profile.settings.profile.name_help"
     },
@@ -19446,6 +20218,10 @@
     "@profile_settings_profile_zone": {
         "description": "profile.settings.profile.zone"
     },
+    "profile_settings_save": "Enregistrer",
+    "@profile_settings_save": {
+        "description": "profile.settings.save"
+    },
     "profile_settings_sections_appearance": "Apparence",
     "@profile_settings_sections_appearance": {
         "description": "profile.settings.sections.appearance"
@@ -19461,6 +20237,10 @@
     "profile_settings_sections_language": "Langue",
     "@profile_settings_sections_language": {
         "description": "profile.settings.sections.language"
+    },
+    "profile_settings_sections_newsletter": "Newsletter",
+    "@profile_settings_sections_newsletter": {
+        "description": "profile.settings.sections.newsletter"
     },
     "profile_settings_sections_notifications": "Notifications",
     "@profile_settings_sections_notifications": {
@@ -19558,6 +20338,14 @@
     "@profile_settings_sessions_intro": {
         "description": "profile.settings.sessions.intro"
     },
+    "profile_settings_sessions_kind_token": "Application",
+    "@profile_settings_sessions_kind_token": {
+        "description": "profile.settings.sessions.kind_token"
+    },
+    "profile_settings_sessions_kind_web": "Navigateur",
+    "@profile_settings_sessions_kind_web": {
+        "description": "profile.settings.sessions.kind_web"
+    },
     "profile_settings_sessions_last_active": "Dernière activité {ago}",
     "@profile_settings_sessions_last_active": {
         "description": "profile.settings.sessions.last_active",
@@ -19575,6 +20363,15 @@
     "@profile_settings_sessions_revoke_all": {
         "description": "profile.settings.sessions.revoke_all"
     },
+    "profile_settings_sessions_revoke_label": "Déconnecter {name}",
+    "@profile_settings_sessions_revoke_label": {
+        "description": "profile.settings.sessions.revoke_label",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "profile_settings_sessions_title": "Appareils connectés",
     "@profile_settings_sessions_title": {
         "description": "profile.settings.sessions.title"
@@ -19591,9 +20388,17 @@
     "@profile_settings_toasts_cover_saved": {
         "description": "profile.settings.toasts.cover_saved"
     },
+    "profile_settings_toasts_device_revoked": "Appareil retiré.",
+    "@profile_settings_toasts_device_revoked": {
+        "description": "profile.settings.toasts.device_revoked"
+    },
     "profile_settings_toasts_language_saved": "Langue enregistrée.",
     "@profile_settings_toasts_language_saved": {
         "description": "profile.settings.toasts.language_saved"
+    },
+    "profile_settings_toasts_newsletter_pending": "Un e-mail de confirmation vient de t’être envoyé.",
+    "@profile_settings_toasts_newsletter_pending": {
+        "description": "profile.settings.toasts.newsletter_pending"
     },
     "profile_settings_toasts_password_changed": "Mot de passe modifié.",
     "@profile_settings_toasts_password_changed": {
@@ -19607,9 +20412,48 @@
     "@profile_settings_toasts_saved": {
         "description": "profile.settings.toasts.saved"
     },
+    "profile_settings_toasts_session_revoked": "Appareil déconnecté.",
+    "@profile_settings_toasts_session_revoked": {
+        "description": "profile.settings.toasts.session_revoked"
+    },
     "profile_settings_toasts_sessions_revoked": "Autres appareils déconnectés.",
     "@profile_settings_toasts_sessions_revoked": {
         "description": "profile.settings.toasts.sessions_revoked"
+    },
+    "profile_side_default_bio": "Membre de l’espace safe Xomiton. Ici, on apprend, on s’entraide et on avance ensemble.",
+    "@profile_side_default_bio": {
+        "description": "profile.side.default_bio"
+    },
+    "profile_side_joined": "Inscrit·e en {date}",
+    "@profile_side_joined": {
+        "description": "profile.side.joined",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_side_role": "Profil : {role}",
+    "@profile_side_role": {
+        "description": "profile.side.role",
+        "placeholders": {
+            "role": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_side_see_all": "Tout voir",
+    "@profile_side_see_all": {
+        "description": "profile.side.see_all"
+    },
+    "profile_side_zone": "Zone : {zone}",
+    "@profile_side_zone": {
+        "description": "profile.side.zone",
+        "placeholders": {
+            "zone": {
+                "type": "String"
+            }
+        }
     },
     "profile_sidebar_about": "Présentation",
     "@profile_sidebar_about": {
@@ -19639,6 +20483,10 @@
     "@profile_sidebar_remove_connection": {
         "description": "profile.sidebar.remove_connection"
     },
+    "profile_stats_label": "Statistiques du profil",
+    "@profile_stats_label": {
+        "description": "profile.stats_label"
+    },
     "profile_tabs_about": "À propos",
     "@profile_tabs_about": {
         "description": "profile.tabs.about"
@@ -19662,6 +20510,10 @@
     "profile_tabs_posts": "Publications",
     "@profile_tabs_posts": {
         "description": "profile.tabs.posts"
+    },
+    "profile_tabs_label": "Sections du profil",
+    "@profile_tabs_label": {
+        "description": "profile.tabs_label"
     },
     "profile_title": "Mon profil",
     "@profile_title": {

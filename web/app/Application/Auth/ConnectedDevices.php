@@ -31,7 +31,9 @@ final class ConnectedDevices
      */
     public function list(User $user, ?int $currentTokenId = null, ?string $currentSessionId = null): Collection
     {
-        return $this->tokens($user, $currentTokenId)
+        // toBase() : sans jeton, map() rend une collection Eloquent vide, dont merge() appellerait getKey() sur les
+        // lignes de sessions web (500 sur me/sessions et /parametres pour un compte web seulement).
+        return $this->tokens($user, $currentTokenId)->toBase()
             ->merge($this->webSessions($user, $currentSessionId))
             ->sortByDesc(fn (array $row): int => ($row['last_active_at'] ?? $row['created_at'])?->getTimestamp() ?? 0)
             ->values();
@@ -51,6 +53,30 @@ final class ConnectedDevices
         }
 
         return false;
+    }
+
+    /**
+     * Déconnecte tous les autres appareils (P8-09 : « Déconnecter tous les autres appareils », changement de mot de
+     * passe) : jetons Sanctum sauf le jeton courant (abonnements push supprimés en cascade, P6-09) et sessions web sauf
+     * la session courante. Rend le nombre d'accès fermés ; journal `auth.sessions_revoked_others` (nombre seulement).
+     */
+    public function revokeOthers(User $user, ?int $currentTokenId = null, ?string $currentSessionId = null): int
+    {
+        $revoked = $user->tokens()
+            ->when($currentTokenId !== null, static fn ($query) => $query->whereKeyNot($currentTokenId))
+            ->delete();
+
+        if (self::hasSessionsTable()) {
+            $revoked += DB::table('sessions')->where('user_id', $user->getKey())
+                ->when($currentSessionId !== null, static fn ($query) => $query->where('id', '!=', $currentSessionId))
+                ->delete();
+        }
+
+        if ($revoked > 0) {
+            Audit::log('auth.sessions_revoked_others', $user, 'acces='.$revoked, $user);
+        }
+
+        return (int) $revoked;
     }
 
     /**

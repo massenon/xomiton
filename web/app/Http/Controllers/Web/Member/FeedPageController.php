@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Web\Member;
 
+use App\Application\Community\Network\NetworkSuggestions;
 use App\Application\Feed\FeedComposerOptions;
 use App\Application\Feed\Queries\FeedHighlights;
 use App\Application\Feed\Queries\FeedQuery;
@@ -11,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Member\FeedPageRequest;
 use App\Http\Resources\Feed\CommentResource;
 use App\Http\Resources\Feed\PostResource;
+use App\Http\Resources\Network\NetworkPersonPayload;
+use App\Models\Follow;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,6 +37,7 @@ final class FeedPageController extends Controller
         private readonly FeedQuery $feed,
         private readonly FeedHighlights $highlights,
         private readonly FeedComposerOptions $composer,
+        private readonly NetworkSuggestions $suggestions,
     ) {}
 
     public function index(FeedPageRequest $request): Response
@@ -48,6 +52,13 @@ final class FeedPageController extends Controller
             'feed' => fn (): array => $this->posts($viewer, fn (): Builder => $this->feed->feed($viewer, $tag)),
             'featured' => fn (): array => $this->highlights->thematiques(),
             'events' => fn (): array => $this->highlights->events(),
+            // P8-06 (lot qui-suivre) : carte « Qui suivre » de la colonne droite (fil.php l.86) ; vide sans social.access.
+            // Différée (Inertia::defer, chargée juste après le premier rendu) : la requête des suggestions ne retarde pas
+            // le fil, et la page servie ne nomme aucun compte en dehors des publications (RG-02).
+            'who_to_follow' => Inertia::defer(fn (): array => $viewer->can('viewAny', Follow::class)
+                ? $this->suggestions->forCard($viewer, (int) config('xomiton.network.card_suggestions', 5))
+                    ->map(static fn (User $user): array => NetworkPersonPayload::card($user))->values()->all()
+                : [], 'aside'),
             'composer' => fn (): array => $this->composer->for($viewer),
             'report_reasons' => fn (): array => $this->composer->reportReasons(),
         ])->withViewData(['title' => $title]);

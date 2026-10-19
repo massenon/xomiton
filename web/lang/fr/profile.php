@@ -27,6 +27,98 @@ return [
     'completion' => 'Profil complété à :percent %',
     'more_actions' => 'Plus d’actions',
 
+    // P8-07 (lot profil) : en-tête, menu, colonne, onglets du prototype (partials/profile-head.php, x_profile_side()).
+    'roles' => [
+        'membre' => 'Membre',
+        'pair' => 'Pair éducateur·rice',
+        'moderateur' => 'Modération',
+        'admin' => 'Équipe Xomiton',
+        'superadmin' => 'Équipe Xomiton',
+    ],
+    'image_attribute' => 'image',
+    'tabs_label' => 'Sections du profil',
+    'aside_label' => 'À propos de ce profil',
+    'stats_label' => 'Statistiques du profil',
+    'menu' => [
+        'edit' => 'Modifier le profil',
+        'privacy' => 'Confidentialité',
+        'data' => 'Télécharger mes données',
+        'settings' => 'Paramètres',
+    ],
+    'message' => 'Envoyer un message',
+    'relationship' => [
+        'following' => 'Tu suis ce profil',
+        'follows_you' => 'Te suit',
+        'connected' => 'Connexion',
+    ],
+    'composer_prompt' => 'Partage tes pensées, :name…',
+    'images' => [
+        'change_cover' => 'Changer la couverture',
+        'change_avatar' => 'Changer l’avatar',
+        'remove_cover' => 'Retirer la couverture',
+        'remove_avatar' => 'Retirer l’avatar',
+        'hint' => 'JPEG, PNG ou WebP, 5 Mo au plus. Les métadonnées (lieu, appareil) sont retirées.',
+        'uploading' => 'Envoi de l’image…',
+        'failed' => 'L’image n’a pas pu être enregistrée. Réessaie avec une autre image.',
+        'removed' => 'Image retirée.',
+        'remove_failed' => 'L’image n’a pas pu être retirée. Réessaie dans un instant.',
+        'verify_first' => 'Confirme ton adresse e-mail pour changer ton avatar ou ta couverture.',
+    ],
+    'side' => [
+        'joined' => 'Inscrit·e en :date',
+        'zone' => 'Zone : :zone',
+        'role' => 'Profil : :role',
+        'default_bio' => 'Membre de l’espace safe Xomiton. Ici, on apprend, on s’entraide et on avance ensemble.',
+        'see_all' => 'Tout voir',
+    ],
+    'connections_tab' => [
+        'title' => 'Connexions',
+        'search' => 'Rechercher une connexion',
+        'search_submit' => 'Rechercher',
+        'invite' => 'Envoyer une invitation',
+        'empty_search' => 'Aucune connexion ne correspond à ta recherche.',
+        'loaded' => '{0} Aucune connexion de plus|{1} :count connexion de plus|[2,*] :count connexions de plus',
+    ],
+    'media_tab' => [
+        'title' => 'Photos',
+        'library' => 'Médiathèque',
+        'alt' => 'Photo partagée par :name',
+        'open' => 'Voir la publication',
+        'empty_other' => ':name n’a partagé aucune photo visible pour l’instant.',
+    ],
+    'events_tab' => [
+        'title_self' => 'Événements auxquels je participe',
+        'title_other' => 'Événements organisés par :name',
+        'suggestions' => 'À venir pour toi',
+        'discover' => 'Découvrir les événements',
+        'empty_other' => ':name n’organise aucun événement pour l’instant.',
+        'organizer' => 'Organisé par toi',
+        'going' => 'Je participe',
+    ],
+    'activity' => [
+        'title' => 'Journal de mon activité',
+        'private' => 'Visible par toi seul·e.',
+        'at' => ':date à :time',
+        'going' => 'Tu participes à « :title »',
+        'joined' => 'Tu as rejoint « :name »',
+        'connected' => 'Connexion avec @:pseudo',
+        'types' => [
+            'login' => 'Connexion',
+            'email' => 'E-mail confirmé',
+            'password' => 'Mot de passe',
+            'settings' => 'Paramètres',
+            'security' => 'Sécurité',
+            'data' => 'Export de mes données',
+            'device' => 'Nouvel appareil',
+            'group' => 'Groupe',
+            'page' => 'Page',
+            'event' => 'Événement',
+            'forum' => 'Forum',
+            'post' => 'Publication',
+            'invitation' => 'Invitation',
+        ],
+    ],
+
     'tabs' => [
         'posts' => 'Publications',
         'about' => 'À propos',
@@ -54,8 +146,15 @@ return [
         'member_type' => 'Type de membre',
         'zone' => 'Zone',
         'joined' => 'Inscription',
+        'sensitive_title' => 'Informations personnelles',
+        'sensitive_shared' => 'Visible sur ton profil',
+        'sensitive_private' => 'Visible par toi seul·e',
+        'visibility' => 'Qui voit ton profil : :value',
+        'zone_hidden' => 'Zone masquée sur ton profil',
+        'complete' => 'Compléter mon profil',
         'privacy_title' => 'Confidentialité de ton profil',
-        'privacy_text' => 'Ton nom complet n’est visible que par tes connexions. Tes publications anonymes ne sont jamais liées à ton compte publiquement.',
+        // RG-02 (P8-07) : le prototype disait le nom « visible par tes connexions » ; il n'est affiché à personne.
+        'privacy_text' => 'Ton nom réel n’est jamais affiché : seul ton pseudonyme est visible. Tes publications anonymes ne sont jamais liées à ton profil.',
         'manage_privacy' => 'Gérer ma confidentialité',
         'edit' => 'Modifier',
         'not_provided' => 'Non renseigné',
@@ -85,6 +184,19 @@ return [
         'done_text' => 'Tu peux revenir le compléter ou le modifier à tout moment depuis les paramètres.',
         'sensitive_consent' => 'J’accepte que Xomiton conserve ces informations sensibles, chiffrées, pour me proposer des contenus adaptés. Je peux retirer ce consentement à tout moment.',
         'sensitive_required' => 'Pour enregistrer ton identité de genre ou ton orientation, accepte d’abord la conservation de ces données sensibles.',
+        // P8-08 (lot profil) : bandeau un groupe à la fois, partage explicite des champs sensibles.
+        'title' => 'Profil progressif',
+        'step' => 'Question :current sur :total',
+        'prefer_not' => 'Je préfère ne pas le dire',
+        'share' => 'Afficher sur mon profil',
+        'share_help' => 'Décoché, cette information reste visible par toi seul·e.',
+        'saved' => 'C’est enregistré.',
+        'skipped' => 'Groupe passé. Tu le retrouveras plus tard.',
+        'error' => 'Ta réponse n’a pas pu être enregistrée. Réessaie.',
+        'consent_attribute' => 'consentement aux données sensibles',
+        'shared_attribute' => 'informations visibles sur ton profil',
+        'choose' => 'Choisis une réponse.',
+        'none' => 'Aucune',
         'groups' => [
             'pronouns' => [
                 'title' => 'Tes pronoms',
@@ -154,6 +266,7 @@ return [
                 'zone' => 'Département',
                 'commune' => 'Commune / Ville',
                 'show_zone' => 'Afficher ma zone sur mon profil',
+                'show_zone_help' => 'Les autres membres ne voient que ton département, jamais ta commune.',
             ],
             'interests' => [
                 'title' => 'Ce qui t’intéresse',
@@ -179,6 +292,9 @@ return [
     'settings' => [
         'title' => 'Paramètres',
         'intro' => 'Gère ton compte, ta confidentialité et ta sécurité.',
+        // P8-09 (lot parametres-notifications) : navigation des sections et bouton commun.
+        'nav_label' => 'Sections des paramètres',
+        'save' => 'Enregistrer',
         'sections' => [
             'profile' => 'Profil',
             'password' => 'Mot de passe',
@@ -189,12 +305,14 @@ return [
             'security' => 'Sécurité',
             'data' => 'Mes données',
             'sessions' => 'Appareils connectés',
+            'newsletter' => 'Newsletter',
             'delete' => 'Supprimer mon compte',
         ],
 
         'profile' => [
             'name' => 'Nom complet',
-            'name_help' => 'Visible seulement par tes connexions. Jamais public.',
+            // Q81 : facultatif (RG-02, l'inscription ne le demande pas) ; le prototype l'exigeait « visible par tes connexions ».
+            'name_help' => 'Facultatif. Jamais affiché : seul ton pseudonyme est visible.',
             'pseudo' => 'Pseudonyme',
             'pseudo_help' => 'Visible par la communauté. Ton vrai nom n’est jamais demandé.',
             'email' => 'E-mail',
@@ -214,6 +332,7 @@ return [
             'confirm' => 'Confirmation',
             'rules' => 'Au moins :min caractères, avec une majuscule, une minuscule et un chiffre ; un symbole pour « Excellent ».',
             'revoke_others' => 'Déconnecter mes autres appareils',
+            'revoke_note' => 'Par sécurité, tes autres appareils seront déconnectés et un e-mail te confirmera le changement.',
             'submit' => 'Changer le mot de passe',
         ],
 
@@ -225,6 +344,15 @@ return [
             'sos_gps_help' => 'La position n’est transmise qu’au moment où tu déclenches une alerte, aux personnes ciblées de l’annuaire.',
             'sensitive_consent' => 'Conserver mes données sensibles (identité de genre, orientation), chiffrées',
             'sensitive_consent_help' => 'Si tu retires ce consentement, ces informations sont effacées de ton profil.',
+            'searchable_help' => 'Désactivé, ton profil n’est plus proposé aux autres membres.',
+        ],
+
+        // Préférences de notification par catégorie (NotificationPreferences : sécurité du compte et SOS verrouillés).
+        'notifications' => [
+            'caption' => 'Canaux de notification par catégorie',
+            'category' => 'Catégorie',
+            'locked' => 'Toujours actif',
+            'channel_for' => ':channel : :category',
         ],
 
         'language' => [
@@ -277,6 +405,30 @@ return [
             'revoke' => 'Déconnecter',
             'revoke_all' => 'Déconnecter tous les autres appareils',
             'empty' => 'Aucun autre appareil connecté.',
+            'revoke_label' => 'Déconnecter :name',
+            'kind_web' => 'Navigateur',
+            'kind_token' => 'Application',
+        ],
+
+        // Appareils de l'application mobile (me/devices, P6-09) : révoquer coupe la synchronisation et le push.
+        'devices' => [
+            'title' => 'Application mobile',
+            'intro' => 'Les téléphones où l’application Xomiton est reliée à ton compte.',
+            'last_seen' => 'Vu :ago',
+            'revoke' => 'Retirer',
+            'revoke_label' => 'Retirer l’appareil :name',
+            'revoked' => 'Retiré',
+            'empty' => 'Aucun téléphone relié à ton compte.',
+        ],
+
+        // Newsletter du compte (me/newsletter, P6-06 ; fréquence non proposée, Q70).
+        'newsletter' => [
+            'title' => 'Newsletter',
+            'intro' => 'Des nouvelles de la communauté, des fiches et des événements, sans publicité.',
+            'subscribed' => 'Recevoir la newsletter Xomiton',
+            'pending' => 'Confirme ton abonnement depuis l’e-mail que nous venons de t’envoyer.',
+            'interests' => 'Ce qui t’intéresse',
+            'interests_hint' => 'Facultatif : nous choisissons les sujets de ta newsletter avec ces centres d’intérêt.',
         ],
 
         'data' => [
@@ -294,6 +446,8 @@ return [
             'confirm_word' => 'SUPPRIMER',
             'confirm_error' => 'Tape SUPPRIMER pour confirmer.',
             'submit' => 'Supprimer mon compte',
+            'password_help' => 'Ton mot de passe confirme que c’est bien toi.',
+            'admin_blocked' => 'Un compte de l’équipe d’administration ne se supprime pas depuis cette page. Écris à l’équipe.',
             'done' => 'Ton compte est supprimé. Tes données seront effacées sous :days jours.',
         ],
 
@@ -303,17 +457,23 @@ return [
             'saved' => 'Paramètres enregistrés.',
             'language_saved' => 'Langue enregistrée.',
             'sessions_revoked' => 'Autres appareils déconnectés.',
+            'session_revoked' => 'Appareil déconnecté.',
+            'device_revoked' => 'Appareil retiré.',
+            'newsletter_pending' => 'Un e-mail de confirmation vient de t’être envoyé.',
             'avatar_saved' => 'Avatar mis à jour.',
             'cover_saved' => 'Couverture mise à jour.',
         ],
 
         'errors' => [
-            'name_required' => 'Indique ton nom.',
+            'name_min' => 'Si tu indiques ton nom, il doit contenir au moins :min caractères.',
+            'pseudo_cooldown' => 'Tu as déjà changé de pseudonyme récemment. Réessaie dans :hours h.',
+            'password_confirmation_required' => 'Confirme le nouveau mot de passe.',
             'pseudo_format' => 'Le pseudonyme doit contenir :min à :max caractères (lettres, chiffres, _ . -).',
             'pseudo_taken' => 'Ce pseudonyme est déjà utilisé.',
             'phone_invalid' => 'Numéro de téléphone béninois invalide (ex. +229 01 97 38 88 47).',
             'current_password' => 'Le mot de passe actuel est incorrect.',
             'password_confirmation' => 'La confirmation ne correspond pas.',
+            'password_same' => 'Choisis un mot de passe différent de l’actuel.',
             'locale_unavailable' => 'Cette langue n’est pas encore disponible.',
         ],
     ],

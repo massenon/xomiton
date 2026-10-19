@@ -279,6 +279,11 @@ return [
         'all_read' => 'Toutes les notifications sont marquées comme lues.',
         'empty' => 'Aucune notification.',
         'empty_filter' => 'Aucune notification dans cette catégorie.',
+        // P8-10 (lot parametres-notifications) : navigation des filtres, état non lu, suite de la liste.
+        'filters_label' => 'Filtrer les notifications',
+        'unread' => 'Non lue',
+        'mark_read_label' => 'Marquer comme lue : :title',
+        'load_more' => 'Afficher plus de notifications',
         'see_all' => 'Voir toute l’activité',
         'clear' => 'Tout effacer',
     ],

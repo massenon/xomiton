@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Application\Account\Profile\UpdateMemberProfile;
 use App\Application\Account\UserSettings;
-use App\Application\Auth\CompleteRegistrationProfile;
 use App\Application\Auth\ConnectedDevices;
 use App\Application\Auth\UpdateUserSettings;
 use App\Http\Requests\Api\Auth\UpdateProfileRequest;
 use App\Http\Requests\Api\Auth\UpdateSettingsRequest;
 use App\Http\Resources\SessionResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,8 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * /api/v1/me : mon compte (UserResource), mon profil (phases 2-3, profil progressif ; lecture P6-06), mes réglages
+ * /api/v1/me : mon compte (UserResource), mon profil (phases 2-3, profil progressif ; lecture P6-06 ; écriture
+ * App\Application\Account\Profile\UpdateMemberProfile, champs sensibles sous consentement P8-08), mes réglages
  * (thème, langue, sons, préférences de notification P3-02 ; lecture P6-06) et mes appareils connectés
  * (App\Application\Auth\ConnectedDevices). Sécurité, suppression, appareils de synchronisation, abonnements push,
  * newsletter et export : contrôleurs App\Http\Controllers\Api\V1\Me\*.
@@ -27,7 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class MeController extends ApiController
 {
     public function __construct(
-        private readonly CompleteRegistrationProfile $completeProfile,
+        private readonly UpdateMemberProfile $updateProfile,
         private readonly ConnectedDevices $devices,
         private readonly UpdateUserSettings $updateSettings,
     ) {}
@@ -37,7 +39,7 @@ final class MeController extends ApiController
         /** @var User $user */
         $user = $request->user();
 
-        return $this->data($this->userPayload($user, $request))->withHeaders(self::NO_STORE);
+        return $this->data($this->selfPayload($user, $request))->withHeaders(self::NO_STORE);
     }
 
     /**
@@ -48,7 +50,7 @@ final class MeController extends ApiController
         /** @var User $user */
         $user = $request->user();
 
-        return $this->data((array) ($this->userPayload($user, $request)['profile'] ?? []))->withHeaders(self::NO_STORE);
+        return $this->data((array) ($this->selfPayload($user, $request)['profile'] ?? []))->withHeaders(self::NO_STORE);
     }
 
     public function updateProfile(UpdateProfileRequest $request): JsonResponse
@@ -56,9 +58,22 @@ final class MeController extends ApiController
         /** @var User $user */
         $user = $request->user();
 
-        ($this->completeProfile)($user, $request->toProfileData());
+        ($this->updateProfile)($user, $request->toProfileData(), $request->toSensitiveData());
 
-        return $this->data($this->userPayload($user->fresh() ?? $user, $request));
+        return $this->data($this->selfPayload($user->fresh() ?? $user, $request))->withHeaders(self::NO_STORE);
+    }
+
+    /**
+     * Vue « moi » avec genre, orientation et profil progressif (P8-08) : `GET me`, `GET · PATCH me/profile` seulement,
+     * toujours no-store ; les autres réponses (connexion, OTP, réglages) s'en tiennent à userPayload().
+     *
+     * @return array<string, mixed>
+     */
+    private function selfPayload(User $user, Request $request): array
+    {
+        $user->loadMissing(['profile', 'settings', 'zone', 'commune', 'roles']);
+
+        return UserResource::make($user)->asSelf()->withSensitiveProfile()->resolve($request);
     }
 
     /**
@@ -115,5 +130,23 @@ final class MeController extends ApiController
         }
 
         return $this->data(['revoked' => true, 'id' => $id]);
+    }
+
+    /**
+     * DELETE me/sessions (P8-09, « Déconnecter tous les autres appareils ») : tout sauf l'accès courant.
+     */
+    public function destroyOtherSessions(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $current = $user->currentAccessToken();
+
+        $revoked = $this->devices->revokeOthers(
+            $user,
+            $current instanceof PersonalAccessToken ? (int) $current->getKey() : null,
+            $request->hasSession() ? $request->session()->getId() : null,
+        );
+
+        return $this->data(['revoked' => $revoked]);
     }
 }

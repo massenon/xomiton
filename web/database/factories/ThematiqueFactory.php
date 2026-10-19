@@ -42,7 +42,8 @@ class ThematiqueFactory extends Factory
             'related_contact_roles' => [DirectoryRole::PointFocal->value],
             'related_ids' => null,
             'status' => ContentStatus::Published,
-            'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            // Relatif à now() (Carbon::setTestNow) : dateTimeBetween(…, 'now') lit l'horloge réelle et pouvait publier « dans le futur ».
+            'published_at' => now()->subDays(fake()->numberBetween(1, 365)),
             'views_count' => fake()->numberBetween(0, 500),
             'meta_title' => Str::limit($title, 67, '…'),
             'meta_description' => null,

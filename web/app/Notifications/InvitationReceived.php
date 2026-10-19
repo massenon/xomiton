@@ -8,6 +8,8 @@ use App\Models\DatabaseNotification;
 
 /**
  * « Invitation reçue » (P3-02, page Notifications du prototype) : personne invitée ; cloche et push, préférence « Communauté ».
+ * Envoyée par App\Application\Community\Network\InvitationNotifier (P8-06) : `user_id` (compte qui invite, jamais son nom
+ * réel) sert à ne pas renotifier une invitation annulée puis renvoyée.
  */
 final class InvitationReceived extends XomitonNotification
 {
@@ -15,6 +17,7 @@ final class InvitationReceived extends XomitonNotification
         public readonly int $invitationId,
         public readonly string $fromName,
         public readonly ?string $url = null,
+        public readonly ?int $fromUserId = null,
     ) {}
 
     public function category(): string
@@ -53,7 +56,7 @@ final class InvitationReceived extends XomitonNotification
      */
     protected function extra(object $notifiable): array
     {
-        return ['invitation_id' => $this->invitationId];
+        return ['invitation_id' => $this->invitationId] + ($this->fromUserId !== null ? ['user_id' => $this->fromUserId] : []);
     }
 
     protected function subjectId(): int

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Retention;
 
+use App\Application\Shared\MediaUploader;
 use App\Enums\SubscriberStatus;
 use App\Models\Consent;
 use App\Models\NewsletterSubscriber;
@@ -14,13 +15,11 @@ use App\Models\SyncDevice;
 use App\Models\User;
 use App\Models\UserSetting;
 use App\Support\Audit;
-use App\Support\MediaUrl;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -41,6 +40,8 @@ use Illuminate\Support\Str;
 final class AnonymizeDeletedAccounts
 {
     private const CHUNK_SIZE = 100;
+
+    public function __construct(private readonly MediaUploader $uploader) {}
 
     public function graceDays(): int
     {
@@ -191,6 +192,8 @@ final class AnonymizeDeletedAccounts
             'trusted_contact_name' => null,
             'ally_status' => null,
             'interests' => null,
+            'shared_fields' => null,
+            'progressive_answered' => null,
             'website' => null,
             'visibility' => 'private',
             'show_zone' => false,
@@ -221,19 +224,18 @@ final class AnonymizeDeletedAccounts
     }
 
     /**
-     * Supprime un téléversement du disque public ; les images de démonstration de `public/assets` et les URL
-     * absolues ne sont pas des fichiers de la personne.
+     * Supprime un téléversement du disque public avec son repli et ses variantes `thumb` / `medium` (MediaUploader :
+     * fichiers frères du même ULID, dont l'adresse se déduit de la principale) ; les images de démonstration de
+     * `public/assets` et les URL absolues ne sont pas des fichiers de la personne.
      */
     private function deleteUpload(?string $path): void
     {
         $path = ltrim(trim((string) $path), '/');
 
-        if ($path === '' || str_starts_with($path, 'assets/') || str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+        if ($path === '' || str_starts_with($path, 'assets/') || preg_match('#^https?://#', $path) === 1) {
             return;
         }
 
-        if (MediaUrl::exists($path)) {
-            Storage::disk('public')->delete($path);
-        }
+        $this->uploader->delete($path, MediaUploader::publicDisk());
     }
 }

@@ -17,7 +17,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * /api/v1/notifications (P6-07, docs/API.md §7) : cloche de la personne connectée — liste paginée par page
- * (`?filter=all|unread|read`, `?category=`), compteurs par filtre et par catégorie (`unread-count`, polling 30 s, ETag),
+ * (`?filter=all|unread|read`, `?category=`, `?tab=` : filtres de la page /notifications, P8-10), compteurs par filtre,
+ * par catégorie et par onglet (`unread-count`, polling 30 s, ETag),
  * lecture d'une notification, tout marquer comme lu, suppression. Une notification d'un autre compte : 404.
  */
 final class NotificationController extends ApiController
@@ -29,13 +30,14 @@ final class NotificationController extends ApiController
         $user = $this->user($request);
         $user->loadMissing('settings');
 
-        $paginator = $this->inbox->query($user, $request->filter(), $request->category())
+        $paginator = $this->inbox->query($user, $request->filter(), $request->category(), $request->tab())
             ->paginate($this->perPage($request))
             ->withQueryString();
 
         return $this->paginated($paginator, NotificationResource::class, [
             'filter' => $request->filter(),
             'category' => $request->category(),
+            'tab' => $request->tab()?->value ?? 'all',
             'unread' => $this->inbox->counts($user)['unread'],
         ]);
     }
@@ -52,15 +54,16 @@ final class NotificationController extends ApiController
         Gate::forUser($user)->authorize('update', $row);
         $user->loadMissing('settings');
 
-        return $this->respond(new NotificationResource($this->inbox->markRead($row)), meta: [
-            'unread' => $this->inbox->counts($user)['unread'],
-        ]);
+        $marked = $this->inbox->markRead($row);
+        $counts = $this->inbox->counts($user);
+
+        return $this->respond(new NotificationResource($marked), meta: ['unread' => $counts['unread'], 'tabs' => $counts['tabs']]);
     }
 
     public function readAll(ListNotificationsRequest $request): JsonResponse
     {
         $user = $this->user($request);
-        $marked = $this->inbox->markAllRead($user, $request->category());
+        $marked = $this->inbox->markAllRead($user, $request->category(), $request->tab());
 
         return $this->data(['marked' => $marked, 'unread' => $this->inbox->counts($user)['unread']]);
     }

@@ -71,7 +71,8 @@ it('sert /fil en page Feed/Index : première page visible, sous la forme de l’
 
 it('filtre par étiquette (?tag=), ignore une étiquette inconnue et ne recharge que le fil en visite partielle', function (): void {
     $question = Post::factory()->for($this->author)->tagged(PostTag::Question)->create(['published_at' => now()]);
-    $testimony = Post::factory()->for($this->author)->create(['published_at' => now()->subMinute()]);
+    // Étiquette fixée : celle tirée au hasard par la fabrique pouvait valoir « question » (test instable).
+    $testimony = Post::factory()->for($this->author)->tagged(PostTag::Testimony)->create(['published_at' => now()->subMinute()]);
 
     $this->actingAs($this->reader)->get('/fil?tag=question')
         ->assertInertia(fn (Assert $page) => $page

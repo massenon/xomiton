@@ -35,14 +35,21 @@ use App\Http\Controllers\Api\V1\Forums\ForumReportController;
 use App\Http\Controllers\Api\V1\Me\AccountController;
 use App\Http\Controllers\Api\V1\Me\DeviceController;
 use App\Http\Controllers\Api\V1\Me\ExportController;
+use App\Http\Controllers\Api\V1\Me\IdentityController;
 use App\Http\Controllers\Api\V1\Me\NewsletterController as MeNewsletterController;
+use App\Http\Controllers\Api\V1\Me\PasswordController;
+use App\Http\Controllers\Api\V1\Me\PrivacyController;
+use App\Http\Controllers\Api\V1\Me\ProfileImageController;
 use App\Http\Controllers\Api\V1\Me\PushSubscriptionController;
 use App\Http\Controllers\Api\V1\Me\SecurityController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\Member\MemberProfileController;
 use App\Http\Controllers\Api\V1\Messaging\ConversationActionController;
 use App\Http\Controllers\Api\V1\Messaging\ConversationController;
 use App\Http\Controllers\Api\V1\Messaging\ConversationParticipantController;
 use App\Http\Controllers\Api\V1\Messaging\MessageController;
+use App\Http\Controllers\Api\V1\Network\FollowController;
+use App\Http\Controllers\Api\V1\Network\InvitationController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\ReferentialController;
 use App\Http\Middleware\BindOutboxAccount;
@@ -56,7 +63,7 @@ use Illuminate\Support\Facades\Route;
  *   2. authentifié : auth:sanctum (jeton Bearer de Flutter ou cookie de session de Vue en mode SPA).
  * Les POST rejouables par la boîte d'envoi portent `idempotent:required` (ADR-32 : même clé → même réponse), leur limiteur
  * nommé passant par `limit=<nom>` (jamais `throttle:<nom>` à côté : Laravel le trierait avant et un rejeu consommerait le quota).
- * Familles à venir : P8 communauté (conversations/ livrées, P8-01 ; groups/, pages/ livrés, P8-02, P8-03 ; events/ livré, P8-04 ; forums/ livré, P8-05), P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
+ * Familles à venir : P8 communauté (conversations/ livrées, P8-01 ; groups/, pages/ livrés, P8-02, P8-03 ; events/ livré, P8-04 ; forums/ livré, P8-05 ; follows/, invitations/ livrés, P8-06), P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
  * me/* et notifications/* livrés (P6-06, P6-07, P6-09), feed/, posts/*, comments/* livrés (P7-02), dashboard,
  * thematiques, ressources, users/{id}/posts livrés (P6-08).
  */
@@ -146,6 +153,14 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
     Route::get('dashboard', DashboardController::class)->name('api.dashboard');
     Route::get('users/{user}/posts', UserPostController::class)->whereNumber('user')->name('api.users.posts');
 
+    // --- Profil d'un·e membre (P8-07, docs/API.md §18) : par pseudo, invisible → 404 ; publications : users/{id}/posts
+    Route::prefix('members/{pseudo}')->where(['pseudo' => '[^/]{1,64}'])->as('api.members.')->group(function (): void {
+        Route::get('/', [MemberProfileController::class, 'show'])->name('show');
+        Route::get('connections', [MemberProfileController::class, 'connections'])->name('connections');
+        Route::get('media', [MemberProfileController::class, 'media'])->name('media');
+        Route::get('events', [MemberProfileController::class, 'events'])->name('events');
+    });
+
     // --- Mon compte (P2-06, P6-06, P6-09) : profil, réglages, sécurité, newsletter, export RGPD, suppression, appareils
     // connectés, appareils de l'application (sync_devices) et abonnements push -----------------------------------------
     Route::prefix('me')->as('api.me.')->group(function (): void {
@@ -153,6 +168,13 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::delete('/', [AccountController::class, 'destroy'])->middleware('throttle:account_sensitive')->name('destroy');
         Route::get('profile', [MeController::class, 'profile'])->name('profile.show');
         Route::patch('profile', [MeController::class, 'updateProfile'])->name('profile.update');
+        // P8-07 : avatar et couverture (MediaUploader, EXIF retiré ; e-mail confirmé exigé comme toute image vue des
+        // autres, P2-03), journal d'activité (soi-même seulement).
+        Route::post('profile/{kind}', [ProfileImageController::class, 'store'])->whereIn('kind', ['avatar', 'cover'])
+            ->middleware(['verified', 'throttle:profile_image'])->name('profile.image.store');
+        Route::delete('profile/{kind}', [ProfileImageController::class, 'destroy'])->whereIn('kind', ['avatar', 'cover'])
+            ->middleware('throttle:profile_image')->name('profile.image.destroy');
+        Route::get('activity', [MemberProfileController::class, 'activity'])->name('activity');
         Route::get('settings', [MeController::class, 'settings'])->name('settings.show');
         Route::patch('settings', [MeController::class, 'updateSettings'])->name('settings.update');
         Route::get('security', [SecurityController::class, 'show'])->name('security.show');
@@ -160,6 +182,13 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::get('newsletter', [MeNewsletterController::class, 'show'])->name('newsletter.show');
         Route::patch('newsletter', [MeNewsletterController::class, 'update'])->name('newsletter.update');
         Route::post('export', [ExportController::class, 'store'])->middleware('throttle:account_sensitive')->name('export');
+        // P8-09 (lot parametres-notifications) : section « Profil », confidentialité, mot de passe, autres appareils.
+        Route::get('identity', [IdentityController::class, 'show'])->name('identity.show');
+        Route::patch('identity', [IdentityController::class, 'update'])->middleware('throttle:identity_update')->name('identity.update');
+        Route::get('privacy', [PrivacyController::class, 'show'])->name('privacy.show');
+        Route::patch('privacy', [PrivacyController::class, 'update'])->name('privacy.update');
+        Route::put('password', [PasswordController::class, 'update'])->middleware('throttle:account_sensitive')->name('password.update');
+        Route::delete('sessions', [MeController::class, 'destroyOtherSessions'])->name('sessions.destroy_others');
         Route::get('sessions', [MeController::class, 'sessions'])->name('sessions.index');
         Route::delete('sessions/{id}', [MeController::class, 'destroySession'])->where('id', '[a-z]+-[A-Za-z0-9]+')->name('sessions.destroy');
         Route::get('devices', [DeviceController::class, 'index'])->name('devices.index');
@@ -289,5 +318,25 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::post('topics/{topic:ulid}/replies', [ForumReplyController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('replies.store');
         Route::delete('replies/{reply}', [ForumReplyController::class, 'destroy'])->whereNumber('reply')->name('replies.destroy');
         Route::post('replies/{reply}/report', [ForumReportController::class, 'reply'])->whereNumber('reply')->middleware('throttle:content_report')->name('replies.report');
+    });
+
+    // --- Qui suivre et invitations (P8-06, docs/API.md §17) : suggestions (pseudonyme, zone affichée, rôle public, jamais
+    // de donnée privée), suivre / ne plus suivre (idempotents), invitations reçues et envoyées en attente, inviter (sans
+    // doublon : l'invitation en attente est rendue), accepter, refuser, annuler. Blocage dans un sens ou dans l'autre :
+    // personne absente des suggestions, invitation en 404. Inviter exige un e-mail confirmé (`verified`, l'invitation
+    // notifie l'autre personne) ; tous les gestes passent par `community_write` (20/min), inviter aussi par
+    // `network_invite` (30/jour, Q79). Listes par curseur (`meta.next_cursor`).
+    Route::prefix('follows')->as('api.follows.')->group(function (): void {
+        Route::get('suggestions', [FollowController::class, 'suggestions'])->name('suggestions');
+        Route::post('/', [FollowController::class, 'store'])->middleware('throttle:community_write')->name('store');
+        Route::delete('{user}', [FollowController::class, 'destroy'])->whereNumber('user')->middleware('throttle:community_write')->name('destroy');
+    });
+
+    Route::prefix('invitations')->as('api.invitations.')->group(function (): void {
+        Route::get('/', [InvitationController::class, 'index'])->name('index');
+        Route::post('/', [InvitationController::class, 'store'])->middleware(['verified', 'throttle:community_write', 'throttle:network_invite'])->name('store');
+        Route::post('{invitation}/accept', [InvitationController::class, 'accept'])->whereNumber('invitation')->middleware('throttle:community_write')->name('accept');
+        Route::post('{invitation}/refuse', [InvitationController::class, 'refuse'])->whereNumber('invitation')->middleware('throttle:community_write')->name('refuse');
+        Route::delete('{invitation}', [InvitationController::class, 'destroy'])->whereNumber('invitation')->middleware('throttle:community_write')->name('destroy');
     });
 });

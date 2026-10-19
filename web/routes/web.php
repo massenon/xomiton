@@ -35,8 +35,12 @@ use App\Http\Controllers\Web\Member\FeedPageController;
 use App\Http\Controllers\Web\Member\ForumsPageController;
 use App\Http\Controllers\Web\Member\GroupsPageController;
 use App\Http\Controllers\Web\Member\MessagesPageController;
+use App\Http\Controllers\Web\Member\NotificationsPageController;
 use App\Http\Controllers\Web\Member\PagesPageController;
 use App\Http\Controllers\Web\Member\PlaceholderPageController;
+use App\Http\Controllers\Web\Member\ProfilePageController;
+use App\Http\Controllers\Web\Member\SettingsPageController;
+use App\Http\Controllers\Web\Member\WhoToFollowPageController;
 use App\Http\Controllers\Web\Newsletter\LegacyNewsletterRedirectController;
 use App\Http\Controllers\Web\Newsletter\NewsletterConfirmationController;
 use App\Http\Controllers\Web\Newsletter\NewsletterController;
@@ -227,10 +231,19 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     // P8-05 (lot forums) : forums et sujets par ULID (ADR-27 ; invisible → 404, vue comptée une fois par session).
     Route::get('/forums', [ForumsPageController::class, 'index'])->name('forums.index');
     Route::get('/forums/{topic:ulid}', [ForumsPageController::class, 'show'])->where('topic', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('forums.show');
-    $memberPlaceholder('/qui-suivre', 'qui-suivre', 'who_to_follow', 'who-to-follow.php');
-    $memberPlaceholder('/profil', 'profil', 'profile', 'my-profile.php');
-    $memberPlaceholder('/parametres', 'parametres', 'settings', 'settings.php');
-    $memberPlaceholder('/notifications', 'notifications', 'notifications', 'notifications.php');
+    // P8-06 (lot qui-suivre) : suggestions, invitations reçues et envoyées (?tab=recues|envoyees), filtres ; ?invite=<id>
+    // prépare une invitation sans l'envoyer (confirmation dans la page) ; `network_preview` borne ces aperçus.
+    Route::get('/qui-suivre', WhoToFollowPageController::class)->middleware('throttle:network_preview')->name('qui-suivre');
+    // P8-07, P8-08 (lot profil) : son profil et celui d'une autre personne (noindex ; invisible → 404), six onglets
+    // du prototype (Activité : son profil seulement), bandeau du profil progressif.
+    Route::get('/profil/{onglet?}', [ProfilePageController::class, 'me'])
+        ->whereIn('onglet', array_keys(ProfilePageController::TABS))->name('profil');
+    Route::get('/membres/{pseudo}/{onglet?}', [ProfilePageController::class, 'show'])->where('pseudo', '[^/]{1,64}')
+        ->whereIn('onglet', array_values(array_diff(array_keys(ProfilePageController::TABS), ['activite'])))->name('membres.show');
+    // P8-09, P8-10 (lot parametres-notifications) : paramètres (sections du prototype, API me/*) et notifications
+    // (filtres ?filtre=invitations|evenements|echanges|systeme, état lu en base, API notifications/).
+    Route::get('/parametres', SettingsPageController::class)->name('parametres');
+    Route::get('/notifications', NotificationsPageController::class)->name('notifications');
     $memberPlaceholder('/assistant', 'assistant', 'assistant', 'assistant.php');
     $memberPlaceholder('/annuaire', 'annuaire', 'directory', 'annuaire.php');
     $memberPlaceholder('/medias', 'medias', 'medias', 'albums.php');

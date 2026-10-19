@@ -292,6 +292,17 @@ class AppServiceProvider extends ServiceProvider
             ->by('account_sensitive|'.($request->route()?->getName() ?? $request->path()).'|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
 
+        // Profil (P8-07) : avatar et couverture (`POST me/profile/avatar|cover`, ré-encodage GD coûteux) par compte et par heure.
+        RateLimiter::for('profile_image', static fn (Request $request): Limit => Limit::perHour(self::limit('profile_image_per_hour'))
+            ->by('profile_image|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+
+        // Paramètres (P8-09) : section « Profil » (`PATCH me/identity`) par compte et par heure ; le pseudonyme a en plus
+        // son délai entre deux changements (App\Application\Account\Settings\PseudonymChanges, Q81).
+        RateLimiter::for('identity_update', static fn (Request $request): Limit => Limit::perHour(self::limit('identity_update_per_hour'))
+            ->by('identity_update|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+
         // Fil (P7-02) : publications et commentaires (`feed_write`) par compte et par minute, signalements de contenu
         // (`content_report`) par compte et par heure ; routes du groupe auth:sanctum, donc toujours un compte.
         RateLimiter::for('feed_write', static fn (Request $request): Limit => Limit::perMinute(self::limit('feed_write_per_minute'))
@@ -308,6 +319,17 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('community_write', static fn (Request $request): Limit => Limit::perMinute(self::limit('community_write_per_minute'))
             ->by('community_write|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
+        // Qui suivre (P8-06, Q79) : invitations envoyées par compte et par jour (chacune notifie l'autre personne : contre
+        // le harcèlement, en plus de community_write) ; `/qui-suivre?invite=<id>` (aperçu d'une personne par identifiant)
+        // par compte et par minute, sans limite pour la page sans `invite`.
+        RateLimiter::for('network_invite', static fn (Request $request): Limit => Limit::perDay(self::limit('network_invites_per_day'))
+            ->by('network_invite|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+        RateLimiter::for('network_preview', static fn (Request $request): Limit => $request->query('invite') === null
+            ? Limit::none()
+            : Limit::perMinute(self::limit('network_preview_per_minute'))
+                ->by('network_preview|'.($request->user()?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+                ->response($tooMany));
 
         // Vote « Cet article vous a-t-il aidé·e ? » (P4-05, POST /aide/{slug}/avis) : par session (un CGNAT mobile partage
         // une IP entre de nombreuses personnes, P12-03 ne doit pas perdre leurs voix), par IP pour un client sans cookie ;

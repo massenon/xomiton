@@ -64,6 +64,16 @@ describe('Page /fil', () => {
         expect(document.querySelectorAll('article[data-xm-post]')).toHaveLength(2);
     });
 
+    it('affiche la carte « Qui suivre » et ouvre l’invitation à confirmer sur /qui-suivre (P8-06)', async () => {
+        const visit = vi.spyOn(router, 'visit').mockImplementation(() => undefined as never);
+        await mount({ who_to_follow: [{ id: 7, pseudo: 'mariam-bj', avatar_url: null, href: '/qui-suivre', meta: 'Membre · Zou', invite_url: '/qui-suivre?invite=7' }] });
+
+        expect(screen.getByRole('heading', { name: 'Qui suivre' })).toBeTruthy();
+        expect(screen.getByText('Membre · Zou')).toBeTruthy();
+        await fireEvent.click(screen.getByRole('button', { name: /mariam-bj/ }));
+        expect(visit).toHaveBeenCalledWith('/qui-suivre?invite=7');
+    });
+
     it('ouvre la modale « Créer un événement » depuis la pastille Événement (P8-04)', async () => {
         await mount({ composer: composerOptions({ events_available: true, event: eventOptions() }) });
         const pill = screen.getByRole('button', { name: /^Événement$/ });

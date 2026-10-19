@@ -139,3 +139,14 @@ Choix appliqué (plan `docs/IMPLEMENTATION_PLAN.md` §7, Q22 b : choix déjà fa
 - **Icônes** : Bootstrap Icons + `.xm-fw` (ADR-18), jamais Font Awesome (présent dans le HTML du prototype).
 - **Catalogue** : `/design-system` (local et recette, hors `admin.access`) et `/design-system/vue` ; `COMPOSANTS.md` et le README citaient `/admin/design-system`.
 - **Reste à faire** : réaligner le DS Blade (`design-system/blade/components/`), `COMPOSANTS.md` et le README sur ces choix ; P6-04 reste partiel jusque-là.
+
+## Q24 — Profil : six onglets et grille du prototype (19 octobre 2026)
+Décision d'équipe (plan `docs/IMPLEMENTATION_PLAN.md` §7, Q24 a : le prototype prime sur `docs/`), appliquée par P8-07 et P8-08 (lot profil) ; écarts volontaires à `MODULE_SPECIFICATIONS.md` §B6, `FRONT_END_LAYOUT_INSTRUCTION.md` §2 et `FRONT_END_SECTION_ORDER_INSTRUCTION.md` §6 (corrigés).
+- **Onglets** : les six de `partials/profile-head.php` l.8-12 — Publications (compteur) · À propos · Connexions · Médias · Événements · Activité ; la spécification n'en avait que cinq (sans Publications). Une adresse par onglet (`/profil/a-propos`, `/connexions`, `/medias`, `/evenements`, `/activite`). Activité (journal : connexions, réglages, mot de passe) : **son profil seulement** ; `/membres/{pseudo}` en montre cinq.
+- **Grille** : 2/3 contenu + 1/3 colonne (Présentation, Médias, Connexions) comme `my-profile.php` l.23 et `x_profile_side()`, et non `col-lg-3` + `col-lg-9` ; dans le gabarit membre Vue (sidenav `col-lg-3` persistant, D9) elle devient `col-md-8 col-lg-6` + `col-md-4 col-lg-3`, comme les autres écrans membres.
+- **Identité** : pseudonyme seul (RG-02) ; le prototype affichait le nom, l'e-mail et le téléphone dans À propos et promettait le nom « visible par tes connexions » : retirés, texte corrigé. Tranche d'âge jamais affichée.
+- **Champs sensibles** (identité de genre, orientation, statut allié·e / personne ressource) : absents du prototype ; jamais montrés à une autre personne sans **choix explicite** « Afficher sur mon profil » (décoché par défaut) et, pour le genre et l'orientation, sans consentement `sensitive_data` en cours.
+- **Événements d'une autre personne** : seulement ceux qu'elle organise, jamais sa participation (le prototype ne montrait que les siens).
+- **Médias** : vignettes menant à la publication ; la visionneuse GLightbox du prototype n'est pas reprise.
+- **Profil progressif** : bandeau « Complète ton profil, c'est facultatif » en tête de son profil, un groupe à la fois (huit groupes), « Je préfère ne pas le dire », « Passer ce groupe » et « Plus tard » (session).
+

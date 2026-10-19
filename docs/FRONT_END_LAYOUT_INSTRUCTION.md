@@ -30,7 +30,7 @@ header connecté (logo · recherche · SOS · messages · réglages · notificat
 </div></main>
 modales globales (créer une publication, sondage, événement)
 ```
-Pages à deux colonnes (profil, paramètres) : `col-lg-3` + `col-lg-9` (`x_pub_open` en mode membre).
+Profil (`DECISIONS.md` Q24) : grille 2/3 + 1/3 du prototype (`my-profile.php` l.23, `x_profile_side()`), soit `col-md-8 col-lg-6` contenu + `col-md-4 col-lg-3` colonne (Présentation, Médias, Connexions) après le sidenav. Paramètres : sidenav + `col-lg-9` imbriquant `col-lg-3` / `col-lg-9` (`settings.php` l.115-122).
 
 ## 3. Gabarit pair éducateur·rice
 Même coquille que le membre ; la `sidenav` affiche le groupe « Espace pair » (Espace pair, Collecte) ; le tableau de bord pair occupe `col-lg-9`.

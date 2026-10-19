@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Rules;
 
+use App\Application\Account\Settings\PseudonymChanges;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -49,6 +50,13 @@ final class Pseudo implements ValidationRule
 
     private function isTaken(string $pseudo): bool
     {
+        // P8-09 (Q81) : l'ancien pseudonyme d'un compte lui reste réservé un temps après un changement.
+        $reservedFor = app(PseudonymChanges::class)->reservedFor($pseudo);
+
+        if ($reservedFor !== null && $reservedFor !== $this->ignoreUserId) {
+            return true;
+        }
+
         return User::withTrashed()
             ->whereRaw('LOWER(pseudo) = ?', [mb_strtolower($pseudo)])
             ->when($this->ignoreUserId !== null, fn ($query) => $query->whereKeyNot($this->ignoreUserId))

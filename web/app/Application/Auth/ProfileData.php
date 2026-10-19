@@ -30,5 +30,8 @@ final readonly class ProfileData
         public ?array $interests = null,
         public ?AllyStatus $allyStatus = null,
         public bool $clearAllyStatus = false,
+        // Profil progressif (P8-08) : « Je préfère ne pas le dire » (`prefer_not`) efface les pronoms ou la tranche d'âge.
+        public bool $clearPronouns = false,
+        public bool $clearAgeRange = false,
     ) {}
 }

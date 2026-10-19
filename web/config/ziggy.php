@@ -12,7 +12,7 @@ return [
     'groups' => [
         'member' => [
             // Espace membre et pair (routes/web.php, groupe auth + Inertia).
-            'fil', 'fil.*', 'messages', 'groupes.*', 'pages.*', 'evenements.*', 'forums.*', 'qui-suivre', 'profil',
+            'fil', 'fil.*', 'messages', 'groupes.*', 'pages.*', 'evenements.*', 'forums.*', 'qui-suivre', 'profil', 'membres.show',
             'parametres', 'notifications', 'assistant', 'annuaire', 'medias', 'ccc', 'espace-pair', 'collecte',
             'deconnexion', 'design-system', 'design-system.*',
             // Parcours de crise et pages publiques atteintes depuis l'espace connecté.

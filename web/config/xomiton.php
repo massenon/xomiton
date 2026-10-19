@@ -135,6 +135,16 @@ return [
         // Groupes et pages (P8-02, P8-03) : créations, adhésions, départs, décisions sur les demandes, abonnements aux
         // pages, par compte et par minute (limiteur `community_write`).
         'community_write_per_minute' => 20,
+        // Qui suivre (P8-06, Q79) : invitations envoyées par compte et par jour (limiteur `network_invite`, en plus de
+        // `community_write` : chacune notifie l'autre personne), aperçus `/qui-suivre?invite=<id>` par compte et par
+        // minute (limiteur `network_preview`).
+        'network_invites_per_day' => 30,
+        'network_preview_per_minute' => 30,
+        // Profil (P8-07) : téléversements d'avatar et de couverture par compte et par heure (limiteur `profile_image`).
+        'profile_image_per_hour' => 20,
+        // Paramètres (P8-09) : enregistrements de la section « Profil » (PATCH me/identity) par compte et par heure
+        // (limiteur `identity_update`).
+        'identity_update_per_hour' => 20,
     ],
 
     /*
@@ -180,6 +190,10 @@ return [
         'password_min_length' => 10,
         'pseudo_min_length' => 3,
         'pseudo_max_length' => 40,
+        // Changement de pseudonyme (P8-09, Q81) : délai minimal entre deux changements (heures) et réservation de
+        // l'ancien pseudonyme pour son compte (jours), pour qu'un autre compte ne le reprenne pas aussitôt.
+        'pseudo_change_cooldown_hours' => 24,
+        'pseudo_reservation_days' => 30,
         // Effacement différé d'un compte supprimé, avant anonymisation (jours).
         'deletion_grace_days' => 30,
         // Export RGPD (POST me/export, P6-06) : validité du lien de téléchargement envoyé par e-mail, puis fichier effacé.
@@ -271,6 +285,21 @@ return [
     ],
 
     /*
+     * Qui suivre et invitations (P8-06, lot qui-suivre ; prototype who-to-follow.php, carte « Qui suivre » de fil.php) :
+     * tailles de page (suggestions par « Charger plus », invitations), nombre de suggestions de la carte du fil
+     * (inc/render.php x_render_who_to_follow(5)), délai avant qu'une invitation annulée puis renvoyée renotifie la
+     * personne invitée, et délai pendant lequel une invitation refusée ne peut pas être renvoyée par la même personne.
+     */
+    'network' => [
+        'suggestions_per_page' => 12,
+        'invitations_per_page' => 20,
+        'card_suggestions' => 5,
+        'invite_renotify_hours' => 24,
+        'reinvite_after_refusal_days' => 30,
+        'search_max' => 60,
+    ],
+
+    /*
      * Événements (P8-04, lot evenements) : bornes de la modale « Créer un événement » (events.php, partials/modals.php
      * l.166-190), pagination des listes (prototype : 6 par « Charger plus »), heure proposée par défaut, fenêtre du rappel
      * de la veille (`events:remind`, toutes les quinze minutes) et durée d'un événement au plus.
@@ -305,6 +334,21 @@ return [
         'replies_per_page' => 30,
         'search_max' => 60,
         'view_window_minutes' => 120,
+    ],
+
+    /*
+     * Profil (P8-07, P8-08, lot profil) : connexions par page (onglet Connexions, `?q=` borné), médias affichés
+     * (prototype my-profile-media.php : 15 + lien Médiathèque), cartes de la colonne (x_profile_side() : 6 médias,
+     * 6 connexions), événements de l'onglet, entrées du journal d'activité (my-profile-activity.php : 40).
+     */
+    'profile' => [
+        'connections_per_page' => 24,
+        'media_limit' => 24,
+        'side_media' => 6,
+        'side_connections' => 6,
+        'events_limit' => 12,
+        'activity_limit' => 40,
+        'search_max' => 60,
     ],
 
     /*

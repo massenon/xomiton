@@ -66,7 +66,7 @@ Liste des conversations (recherche, non lus) · conversation (bulles, envoi, ét
 | Qui suivre | `/qui-suivre` | `who-to-follow.php` | Suggestions, invitations |
 
 ### B6. Profil — `/profil` (Réf. `my-profile*.php`)
-Onglets : **Activité** · **À propos** · **Connexions** · **Médias** · **Événements**. En-tête : couverture, avatar, pseudo, zone, statistiques, complétion du profil.
+Onglets (`DECISIONS.md` Q24, prototype `partials/profile-head.php`) : **Publications** (compteur) · **À propos** · **Connexions** · **Médias** · **Événements** · **Activité** (son profil seulement). En-tête : couverture, avatar, pseudo, zone, statistiques, complétion du profil. Profil d'une autre personne : `/membres/{pseudo}` (noindex, 404 si privé ou bloqué). Profil progressif (P8-08) : bandeau, un groupe à la fois.
 
 ### B7. Paramètres — `/parametres` (Réf. `settings.php`)
 Sections : Compte · Apparence (clair, sombre, automatique) · Notifications · **Sécurité** (masquer le contenu sensible des notifications, code PIN) · Confidentialité (export, suppression) · Newsletter. *La préférence « Sortie rapide » est retirée (D8).*

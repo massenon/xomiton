@@ -302,6 +302,7 @@ final class PersonalDataExport
             'orientation' => $profile->orientation,
             'bio' => $profile->bio,
             'interests' => $profile->interests,
+            'shared_fields' => $profile->shared_fields,
             'website' => $profile->website,
             'avatar_path' => $profile->avatar_path,
             'cover_path' => $profile->cover_path,

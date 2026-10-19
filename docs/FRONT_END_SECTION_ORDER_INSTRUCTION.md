@@ -34,7 +34,7 @@ Signalement : encadré anonymat → stepper → une question par écran → réc
 SOS : consigne → bouton → partage de position → compte à rebours → confirmation et personnes prévenues → appel du contact principal → « Je suis en sécurité ».
 
 ## 6. Profil
-Couverture → avatar, nom, pseudo, zone → statistiques → complétion → onglets (Activité, À propos, Connexions, Médias, Événements).
+(Bandeau du profil progressif sur son profil →) couverture → avatar, pseudo (jamais le nom réel) → rôle, zone, membre depuis → statistiques → complétion → onglets (Publications avec compteur, À propos, Connexions, Médias, Événements, Activité — Activité sur son profil seulement) ; colonne : Présentation, Médias, Connexions (`DECISIONS.md` Q24).
 
 ## 7. Écran de gestion (administration)
 Barre supérieure (titre, actions) → KPI → onglets éventuels → carte liste (en-tête, filtres, actions groupées, tableau, pagination) → cartes secondaires (graphiques, configuration, journal) → modales.

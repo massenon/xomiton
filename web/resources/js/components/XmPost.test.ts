@@ -62,6 +62,16 @@ describe('XmPost', () => {
         expect(screen.queryByRole('button', { name: 'Masquer' })).toBeNull();
     });
 
+    it('lie le pseudo au profil, sauf quand la publication n’a plus de compte (supprimé : id nul)', async () => {
+        await mount(makePost());
+        expect(screen.getByRole('heading', { level: 3 }).querySelector('a')?.getAttribute('href')).toContain('/membres/Awa_S');
+        unmountInertia();
+        await mount(makePost({ author: { id: null, pseudo: 'Membre', avatar_url: '/assets/images/personnage-1.png', role: null, anonymous: false } }));
+        const heading = screen.getByRole('heading', { level: 3 });
+        expect(heading.textContent?.trim()).toBe('Membre');
+        expect(heading.querySelector('a')).toBeNull();
+    });
+
     it('aime de façon optimiste puis reprend le compteur du serveur', async () => {
         let release: (response: Response) => void = () => undefined;
         const { calls } = fakeFetch(() => new Promise<Response>((resolve) => { release = resolve; }));

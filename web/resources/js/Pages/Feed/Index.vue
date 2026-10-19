@@ -9,7 +9,7 @@
 // sa modale est rouverte avec le contenu (brouillon lié à l'entrée) et les erreurs du serveur. `data-xm-feed-page` :
 // public/outbox-notices.js laisse la page annoncer elle-même ces envois. Motifs de signalement fournis aux cartes.
 // Pastille « Événement » : modale « Créer un événement » (P8-04, réglages `composer.event`), fiche ouverte après création.
-// Props : FeedPageController::index (title, tag, feed, featured, events, composer, report_reasons).
+// Props : FeedPageController::index (title, tag, feed, featured, events, who_to_follow, composer, report_reasons).
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
@@ -25,7 +25,7 @@ import { lazyComponent } from '@/feed/lazy';
 import type { ComposerOptions, CursorPage, FeaturedThematique, Option, Post } from '@/feed/types';
 import FeedComposer from '@/components/feed/FeedComposer.vue';
 import XmPost from '@/components/XmPost.vue';
-import XmRightColumn, { type EventItem } from '@/components/XmRightColumn.vue';
+import XmRightColumn, { type EventItem, type Suggestion } from '@/components/XmRightColumn.vue';
 import XmSkeleton from '@/components/XmSkeleton.vue';
 
 const props = withDefaults(defineProps<{
@@ -34,9 +34,16 @@ const props = withDefaults(defineProps<{
     feed: CursorPage<Post>;
     featured?: FeaturedThematique[];
     events?: EventItem[];
+    who_to_follow?: (Suggestion & { invite_url: string })[];
     composer: ComposerOptions;
     report_reasons?: Option[];
-}>(), { tag: null, featured: () => [], events: () => [], report_reasons: () => [] });
+}>(), { tag: null, featured: () => [], events: () => [], who_to_follow: () => [], report_reasons: () => [] });
+
+// Carte « Qui suivre » (P8-06) : « + » ouvre /qui-suivre?invite=<id>, qui demande confirmation avant d'envoyer.
+const inviteFromCard = (id: number | string) => {
+    const person = props.who_to_follow.find((item) => item.id === id);
+    if (person) router.visit(person.invite_url);
+};
 
 const postModal = lazyComponent(() => import('@/components/feed/CreatePostModal.vue'));
 const pollModal = lazyComponent(() => import('@/components/feed/CreatePollModal.vue'));
@@ -214,7 +221,7 @@ onBeforeUnmount(() => stopFlush());
             <p class="visually-hidden" role="status" aria-live="polite">{{ announce }}</p>
         </section>
     </div>
-    <XmRightColumn :events="events" />
+    <XmRightColumn :events="events" :suggestions="who_to_follow" @invite="inviteFromCard" />
 
     <component :is="CreatePostModal" v-if="modal?.kind === 'post' && CreatePostModal" :options="composer" :focus="modal.focus" :recovered="recovered" @published="onPublished" @hidden="closeModal" />
     <component :is="CreatePollModal" v-if="modal?.kind === 'poll' && CreatePollModal" :options="composer" :recovered="recovered" @published="onPublished" @hidden="closeModal" />

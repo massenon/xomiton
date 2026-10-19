@@ -69,7 +69,8 @@ it('enregistre centres d’intérêt, statut allié·e et tranche d’âge, puis
         ->assertOk()
         ->assertJsonPath('data.interests', ['sante', 'droits'])
         ->assertJsonPath('data.ally_status', 'ressource')
-        ->assertJsonMissingPath('data.gender_identity');
+        // P8-08 (lot profil) : la vue « moi » relit l'identité de genre (null ici : jamais renseignée, consentement requis).
+        ->assertJsonPath('data.gender_identity', null);
 
     $this->withToken($this->token)->getJson('/api/v1/me')->assertJsonPath('data.profile.ally_status', 'ressource');
 

@@ -48,7 +48,8 @@ class ResourceFactory extends Factory
             'image_path' => null,
             'duration_minutes' => null,
             'status' => ContentStatus::Published,
-            'published_at' => fake()->dateTimeBetween('-6 months', 'now'),
+            // Relatif à now() (Carbon::setTestNow) : dateTimeBetween(…, 'now') lit l'horloge réelle.
+            'published_at' => now()->subDays(fake()->numberBetween(1, 180)),
             'downloads_count' => 0,
             'views_count' => fake()->numberBetween(0, 200),
             'is_offline_available' => false,
