@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Application\Community\Events\EventAccess;
 use App\Models\Event;
 use App\Models\User;
 
 /**
- * Événements : `social.access` lit les événements publiés et répond présent ; l'organisateur·rice modifie ;
- * `moderation.manage` modère. Les brouillons ne sont visibles que de l'organisateur·rice et de la modération.
+ * Événements (P8-04) : `social.access` lit les événements publiés qu'il ou elle peut voir (groupe privé : membres
+ * actives, page : approuvée et active — App\Application\Community\Events\EventAccess), en crée et répond présent ;
+ * l'organisateur·rice modifie ; `moderation.manage` modère et seule ouvre un événement aux visiteur·ses (`is_public`,
+ * Q35 a : page publique indexée). Brouillons et événements masqués : organisateur·rice et modération seulement.
  */
 final class EventPolicy
 {
+    public function __construct(private readonly EventAccess $access) {}
+
     public function viewAny(User $user): bool
     {
         return $user->can('social.access');
@@ -20,11 +25,7 @@ final class EventPolicy
 
     public function view(User $user, Event $event): bool
     {
-        if ($user->can('moderation.manage') || $this->isOrganizer($user, $event)) {
-            return true;
-        }
-
-        return $user->can('social.access') && $event->isPublished();
+        return $this->access->canView($user, $event);
     }
 
     public function create(User $user): bool
@@ -32,23 +33,24 @@ final class EventPolicy
         return $user->can('social.access');
     }
 
+    /** Ouvrir un événement aux visiteur·ses (`is_public`) : modération seulement. */
+    public function publishPublicly(User $user): bool
+    {
+        return $user->can('moderation.manage');
+    }
+
     public function update(User $user, Event $event): bool
     {
-        return $this->isOrganizer($user, $event) || $user->can('moderation.manage');
+        return $this->access->isOrganizer($user, $event) || $user->can('moderation.manage');
     }
 
     public function delete(User $user, Event $event): bool
     {
-        return $this->isOrganizer($user, $event) || $user->can('moderation.manage');
+        return $this->access->isOrganizer($user, $event) || $user->can('moderation.manage');
     }
 
     public function rsvp(User $user, Event $event): bool
     {
-        return $user->can('social.access') && $event->isPublished();
-    }
-
-    private function isOrganizer(User $user, Event $event): bool
-    {
-        return $event->organizer_id !== null && (int) $event->organizer_id === (int) $user->getKey();
+        return $user->can('social.access') && $event->isPublished() && $this->access->canView($user, $event);
     }
 }

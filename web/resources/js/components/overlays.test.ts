@@ -7,6 +7,8 @@ import { h, nextTick, ref } from 'vue';
 import { renderXm } from '@/test/helpers';
 import { useToast } from '@/app/useToast';
 import { TOAST_DELAY, TOAST_MAX, useUiStore } from '@/stores/ui';
+// Bootstrap déjà chargé (comme après le montage de l'espace membre) ; chargement à la demande : XmModal.test.ts, XmToast.test.ts.
+import '@/shared/bootstrap.js';
 import XmModal from './XmModal.vue';
 import XmOfflineBar from './XmOfflineBar.vue';
 import XmToast from './XmToast.vue';

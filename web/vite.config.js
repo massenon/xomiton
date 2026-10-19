@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { fileURLToPath, URL } from 'node:url';
 
 // Service worker (P5-10, ADR-26) : précache de la coquille du paquet public (public.js, ses imports statiques et à la
 // demande, xomiton.css), de la coquille Inertia (app.ts, ses imports statiques et à la demande : pages Vue, catalogue
@@ -37,6 +38,17 @@ function shellFiles(manifestPath) {
     return files;
 }
 
+// Budget du paquet app.ts (P4-12) : au build, side-channel (dépendance de qs, lui-même tiré par @inertiajs/core) est
+// remplacé par son équivalent sur WeakMap, sans get-intrinsic ni object-inspect (~8 Ko gzip). Build seulement : le
+// pré-empaquetage esbuild de `vite dev` rendrait l'espace de noms du module ESM au require() de qs, pas sa fonction.
+const SIDE_CHANNEL_SHIM = fileURLToPath(new URL('./resources/js/app/shims/side-channel.js', import.meta.url));
+const sideChannelShim = {
+    name: 'xm-side-channel-shim',
+    apply: 'build',
+    enforce: 'pre',
+    resolveId: (source) => (source === 'side-channel' ? SIDE_CHANNEL_SHIM : null),
+};
+
 const staticEntries = () => SHELL_STATIC.filter((path) => existsSync(resolve('public', path))).map((path) => ({
     url: `/${path}`,
     revision: createHash('md5').update(readFileSync(resolve('public', path))).digest('hex'),
@@ -47,6 +59,7 @@ const staticEntries = () => SHELL_STATIC.filter((path) => existsSync(resolve('pu
 // l'espace membre et pair charge Vue + Inertia.
 export default defineConfig({
     plugins: [
+        sideChannelShim,
         laravel({
             input: [
                 'resources/css/critical.css',
@@ -95,10 +108,12 @@ export default defineConfig({
         },
     },
     // vue-i18n (P6-05) : API de composition seule (legacy retirée du paquet app.ts), sans outils de développement en production.
+    // Sans son compilateur de messages (P4-12, ~4,6 Ko gzip net) : app/i18n.ts passe app/messageCompiler.ts à createI18n.
     define: {
         __VUE_I18N_FULL_INSTALL__: true,
         __VUE_I18N_LEGACY_API__: false,
         __INTLIFY_PROD_DEVTOOLS__: false,
+        __INTLIFY_DROP_MESSAGE_COMPILER__: true,
     },
     server: {
         watch: {
@@ -108,5 +123,7 @@ export default defineConfig({
     // Vitest : seulement nos tests (les specs embarquées dans vendor/ et node_modules/ ne sont pas les nôtres).
     test: {
         include: ['resources/js/**/*.{test,spec}.{js,ts}'],
+        // Filtré : avertissement « Custom Message Compiler » de vue-i18n à chaque createI18n (app/messageCompiler.ts, voulu, P4-12).
+        onConsoleLog: (log) => (log.includes('Custom Message Compiler') ? false : undefined),
     },
 });

@@ -43,8 +43,25 @@ class EventFactory extends Factory
             'page_id' => null,
             'going_count' => 0,
             'status' => ContentStatus::Published,
+            'is_public' => false,
             'reminder_sent_at' => null,
         ];
+    }
+
+    /**
+     * Ouvert aux visiteur·ses (Q35 a, P8-04) : page publique, plan du site, JSON-LD `Event`.
+     */
+    public function openToPublic(): static
+    {
+        return $this->state(fn (array $attributes) => ['is_public' => true]);
+    }
+
+    /**
+     * Adresse exacte (réservée aux participant·es confirmé·es, P8-04).
+     */
+    public function withAddress(string $address = 'Maison des jeunes, 2e étage, porte bleue'): static
+    {
+        return $this->state(fn (array $attributes) => ['address' => $address]);
     }
 
     /**

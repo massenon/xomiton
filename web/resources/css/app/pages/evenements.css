@@ -1,0 +1,11 @@
+/*
+ * Événements `/evenements`, `/evenements/{ulid}` (lot evenements, P8-04 ; prototype events.php, event-details.php) :
+ * style en ligne du prototype sorti dans la feuille (visuel de la fiche : 260 px de haut, event-details.php l.33),
+ * description avec retours à la ligne. Pages Vue de l'espace membre et pages Blade publiques. Jetons uniquement.
+ */
+.xm-event-cover { height: 260px; overflow: hidden; }
+.xm-event-description { white-space: pre-line; overflow-wrap: anywhere; }
+
+@media (max-width: 575.98px) {
+  .xm-event-cover { height: 180px; }
+}

@@ -11,6 +11,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/vue';
 import { router } from '@inertiajs/vue3';
 import { mountInertia, unmountInertia } from '@/test/inertia';
 import { composerOptions, fakeFetch, json, makePost } from '@/test/feed';
+import { eventOptions } from '@/test/events';
 import { DRAFT_POST } from '@/feed/composer';
 import { DRAFT_STORE, setDraftOpener, useDraftsStore } from '@/stores/drafts';
 import { useOutboxStore, type FlushDetail } from '@/stores/outbox';
@@ -55,12 +56,22 @@ describe('Page /fil', () => {
             ['SOS', '/sos'], ['Signaler', '/signaler'], ['Assistant chat', '/assistant'], ['Urgences', '/urgences'],
         ]);
         expect(screen.getByRole('button', { name: 'Partage tes pensées, Awa_S…' })).toBeTruthy();
-        const event = screen.getByRole('button', { name: /Événement \(bientôt\)/ });
-        expect(event.getAttribute('aria-disabled')).toBe('true');
+        // Sans droit de création d'événement (`events_available: false`), la pastille « Événement » est masquée.
+        expect(screen.queryByRole('button', { name: /Événement/ })).toBeNull();
         expect(screen.getByRole('button', { name: /Sondage/ })).toBeTruthy();
         expect(screen.getByRole('link', { name: /Consentement et relations/ }).getAttribute('href')).toBe('/thematiques/consentement');
         expect(screen.getByRole('link', { name: 'Causerie en ligne' })).toBeTruthy();
         expect(document.querySelectorAll('article[data-xm-post]')).toHaveLength(2);
+    });
+
+    it('ouvre la modale « Créer un événement » depuis la pastille Événement (P8-04)', async () => {
+        await mount({ composer: composerOptions({ events_available: true, event: eventOptions() }) });
+        const pill = screen.getByRole('button', { name: /^Événement$/ });
+        expect(pill.getAttribute('aria-disabled')).toBeNull();
+        await fireEvent.click(pill);
+        await waitFor(() => expect(document.getElementById('modalCreateEvent')).not.toBeNull());
+        await waitFor(() => expect(document.querySelector('.modal.show')?.contains(document.activeElement)).toBe(true));
+        expect(document.querySelector('#modalCreateEvent #f-category')).not.toBeNull();
     });
 
     it('masque la carte de création sans posts.create et la pastille Sondage sans polls.create', async () => {

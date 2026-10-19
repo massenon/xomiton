@@ -2,6 +2,7 @@
 // Composant Alpine xmSos (<x-sos-button>, P5-05 / P5-08) testé sans Alpine : la fabrique renvoie un objet simple.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DOUBLE_TAP_MS, TAP_MAX_MS, closeOverlays, xmSos } from './sos-button.js';
+import { provideBootstrap } from '../shared/bootstrap-lazy.js';
 
 const make = (opts = {}) => {
   const c = xmSos({ action: 'sos-send', texts: { sending: 'Envoi…', countdownTitle: 'Envoi de ton alerte…', confirmTitle: 'Envoyer ?' }, ...opts });
@@ -159,5 +160,35 @@ describe('xmSos', () => {
     expect(make({ texts: { confirmText: 'Générique.' } }).confirmText()).toBe('Générique.');
     const bare = xmSos();
     expect(Object.values(bare.texts).every((text) => text === '')).toBe(true);
+  });
+});
+
+// Bootstrap chargé à la demande (espace membre, shared/bootstrap-lazy.js) : fausses classes Modal et Offcanvas espionnées.
+describe('closeOverlays', () => {
+  const fake = () => {
+    const hidden = [];
+    const component = () => ({ getInstance: vi.fn((el) => (el.id === 'orphan' ? null : { hide: () => hidden.push(el.id) })) });
+    return { hidden, Modal: component(), Offcanvas: component() };
+  };
+  const overlays = '<div class="modal show" id="m"></div><div class="modal" id="closed"></div><div class="modal show" id="orphan"></div><div class="offcanvas show" id="o"></div>';
+
+  afterEach(() => { provideBootstrap(null); document.body.innerHTML = ''; });
+
+  it('Bootstrap chargé : masque la modale et l’offcanvas ouverts, ignore les fermés et ceux sans instance', () => {
+    const bootstrap = fake();
+    provideBootstrap(bootstrap);
+    document.body.innerHTML = overlays;
+    closeOverlays(document);
+    expect(bootstrap.hidden).toEqual(['m', 'o']);
+    expect(bootstrap.Modal.getInstance).toHaveBeenCalledTimes(2);
+    expect(bootstrap.Offcanvas.getInstance).toHaveBeenCalledTimes(1);
+  });
+
+  it('Bootstrap absent : rien ne se passe, sans exception', () => {
+    provideBootstrap(null);
+    document.body.innerHTML = overlays;
+    expect(() => closeOverlays(document)).not.toThrow();
+    expect(document.querySelectorAll('.show')).toHaveLength(3);
+    expect(() => closeOverlays(null)).not.toThrow();
   });
 });

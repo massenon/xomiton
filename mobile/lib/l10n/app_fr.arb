@@ -6232,17 +6232,146 @@
     "@community_api_attributes_zone_id": {
         "description": "community.api.attributes.zone_id"
     },
+    "community_api_forum_attributes_body": "message",
+    "@community_api_forum_attributes_body": {
+        "description": "community.api.forum_attributes.body"
+    },
+    "community_api_forum_attributes_details": "précisions",
+    "@community_api_forum_attributes_details": {
+        "description": "community.api.forum_attributes.details"
+    },
+    "community_api_forum_attributes_forum": "forum",
+    "@community_api_forum_attributes_forum": {
+        "description": "community.api.forum_attributes.forum"
+    },
+    "community_api_forum_attributes_is_anonymous": "anonymat",
+    "@community_api_forum_attributes_is_anonymous": {
+        "description": "community.api.forum_attributes.is_anonymous"
+    },
+    "community_api_forum_attributes_per_page": "nombre par page",
+    "@community_api_forum_attributes_per_page": {
+        "description": "community.api.forum_attributes.per_page"
+    },
+    "community_api_forum_attributes_q": "recherche",
+    "@community_api_forum_attributes_q": {
+        "description": "community.api.forum_attributes.q"
+    },
+    "community_api_forum_attributes_reason": "motif",
+    "@community_api_forum_attributes_reason": {
+        "description": "community.api.forum_attributes.reason"
+    },
+    "community_api_forum_attributes_title": "titre",
+    "@community_api_forum_attributes_title": {
+        "description": "community.api.forum_attributes.title"
+    },
     "community_events_all": "Tous",
     "@community_events_all": {
         "description": "community.events.all"
+    },
+    "community_events_api_attributes_address": "adresse exacte",
+    "@community_events_api_attributes_address": {
+        "description": "community.events.api.attributes.address"
+    },
+    "community_events_api_attributes_category": "catégorie",
+    "@community_events_api_attributes_category": {
+        "description": "community.events.api.attributes.category"
+    },
+    "community_events_api_attributes_category_id": "catégorie",
+    "@community_events_api_attributes_category_id": {
+        "description": "community.events.api.attributes.category_id"
+    },
+    "community_events_api_attributes_description": "description",
+    "@community_events_api_attributes_description": {
+        "description": "community.events.api.attributes.description"
+    },
+    "community_events_api_attributes_ends_at": "fin",
+    "@community_events_api_attributes_ends_at": {
+        "description": "community.events.api.attributes.ends_at"
+    },
+    "community_events_api_attributes_filter": "filtre",
+    "@community_events_api_attributes_filter": {
+        "description": "community.events.api.attributes.filter"
+    },
+    "community_events_api_attributes_going": "participation",
+    "@community_events_api_attributes_going": {
+        "description": "community.events.api.attributes.going"
+    },
+    "community_events_api_attributes_group": "groupe",
+    "@community_events_api_attributes_group": {
+        "description": "community.events.api.attributes.group"
+    },
+    "community_events_api_attributes_is_online": "en ligne",
+    "@community_events_api_attributes_is_online": {
+        "description": "community.events.api.attributes.is_online"
+    },
+    "community_events_api_attributes_is_public": "événement public",
+    "@community_events_api_attributes_is_public": {
+        "description": "community.events.api.attributes.is_public"
+    },
+    "community_events_api_attributes_online_url": "lien de connexion",
+    "@community_events_api_attributes_online_url": {
+        "description": "community.events.api.attributes.online_url"
+    },
+    "community_events_api_attributes_per_page": "taille de page",
+    "@community_events_api_attributes_per_page": {
+        "description": "community.events.api.attributes.per_page"
+    },
+    "community_events_api_attributes_place": "ville ou zone",
+    "@community_events_api_attributes_place": {
+        "description": "community.events.api.attributes.place"
+    },
+    "community_events_api_attributes_q": "recherche",
+    "@community_events_api_attributes_q": {
+        "description": "community.events.api.attributes.q"
+    },
+    "community_events_api_attributes_reminder": "rappel",
+    "@community_events_api_attributes_reminder": {
+        "description": "community.events.api.attributes.reminder"
+    },
+    "community_events_api_attributes_starts_at": "début",
+    "@community_events_api_attributes_starts_at": {
+        "description": "community.events.api.attributes.starts_at"
+    },
+    "community_events_api_attributes_title": "titre",
+    "@community_events_api_attributes_title": {
+        "description": "community.events.api.attributes.title"
+    },
+    "community_events_api_public_private_group": "Un événement d’un groupe privé ne peut pas être public.",
+    "@community_events_api_public_private_group": {
+        "description": "community.events.api.public_private_group"
+    },
+    "community_events_api_public_reserved": "Seule l’équipe de modération peut ouvrir un événement au public.",
+    "@community_events_api_public_reserved": {
+        "description": "community.events.api.public_reserved"
+    },
+    "community_events_cancel_label": "Annuler ma participation à « {title} »",
+    "@community_events_cancel_label": {
+        "description": "community.events.cancel_label",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
     },
     "community_events_create_address": "Adresse exacte",
     "@community_events_create_address": {
         "description": "community.events.create.address"
     },
-    "community_events_create_address_help": "Visible seulement par les personnes qui répondent « Je participe ».",
+    "community_events_create_address_help": "Visible seulement par les personnes qui répondent « Je participe ».",
     "@community_events_create_address_help": {
         "description": "community.events.create.address_help"
+    },
+    "community_events_create_address_placeholder": "Quartier, bâtiment, salle…",
+    "@community_events_create_address_placeholder": {
+        "description": "community.events.create.address_placeholder"
+    },
+    "community_events_create_category": "Catégorie",
+    "@community_events_create_category": {
+        "description": "community.events.create.category"
+    },
+    "community_events_create_category_none": "Sans catégorie",
+    "@community_events_create_category_none": {
+        "description": "community.events.create.category_none"
     },
     "community_events_create_date": "Date",
     "@community_events_create_date": {
@@ -6251,6 +6380,26 @@
     "community_events_create_description": "Description",
     "@community_events_create_description": {
         "description": "community.events.create.description"
+    },
+    "community_events_create_end_time": "Heure de fin",
+    "@community_events_create_end_time": {
+        "description": "community.events.create.end_time"
+    },
+    "community_events_create_ends_after": "L’heure de fin doit venir après le début.",
+    "@community_events_create_ends_after": {
+        "description": "community.events.create.ends_after"
+    },
+    "community_events_create_group": "Groupe",
+    "@community_events_create_group": {
+        "description": "community.events.create.group"
+    },
+    "community_events_create_group_help": "Les membres du groupe sont prévenu·es ; un événement d’un groupe privé n’est visible que de ses membres.",
+    "@community_events_create_group_help": {
+        "description": "community.events.create.group_help"
+    },
+    "community_events_create_group_none": "Toute la communauté",
+    "@community_events_create_group_none": {
+        "description": "community.events.create.group_none"
     },
     "community_events_create_invalid": "Titre ({min} caractères min.) et date valides requis.",
     "@community_events_create_invalid": {
@@ -6261,9 +6410,17 @@
             }
         }
     },
+    "community_events_create_is_online": "En ligne",
+    "@community_events_create_is_online": {
+        "description": "community.events.create.is_online"
+    },
     "community_events_create_is_public": "Événement public (visible sans compte)",
     "@community_events_create_is_public": {
         "description": "community.events.create.is_public"
+    },
+    "community_events_create_is_public_help": "Affiché sur la page publique des événements et dans les moteurs de recherche, sans adresse ni lien de connexion.",
+    "@community_events_create_is_public_help": {
+        "description": "community.events.create.is_public_help"
     },
     "community_events_create_name": "Titre",
     "@community_events_create_name": {
@@ -6273,13 +6430,41 @@
     "@community_events_create_name_placeholder": {
         "description": "community.events.create.name_placeholder"
     },
-    "community_events_create_place": "Lieu ou lien",
+    "community_events_create_online_url": "Lien de connexion",
+    "@community_events_create_online_url": {
+        "description": "community.events.create.online_url"
+    },
+    "community_events_create_online_url_help": "Partagé seulement avec les participant·es.",
+    "@community_events_create_online_url_help": {
+        "description": "community.events.create.online_url_help"
+    },
+    "community_events_create_online_url_https": "Le lien doit commencer par https://.",
+    "@community_events_create_online_url_https": {
+        "description": "community.events.create.online_url_https"
+    },
+    "community_events_create_online_url_placeholder": "https://…",
+    "@community_events_create_online_url_placeholder": {
+        "description": "community.events.create.online_url_placeholder"
+    },
+    "community_events_create_online_url_required": "Indique le lien de connexion ou la ville.",
+    "@community_events_create_online_url_required": {
+        "description": "community.events.create.online_url_required"
+    },
+    "community_events_create_place": "Ville ou zone",
     "@community_events_create_place": {
         "description": "community.events.create.place"
     },
-    "community_events_create_place_placeholder": "Cotonou, Porto-Novo… ou en ligne",
+    "community_events_create_place_help": "Visible par toute la communauté.",
+    "@community_events_create_place_help": {
+        "description": "community.events.create.place_help"
+    },
+    "community_events_create_place_placeholder": "Cotonou, Porto-Novo, Parakou…",
     "@community_events_create_place_placeholder": {
         "description": "community.events.create.place_placeholder"
+    },
+    "community_events_create_starts_future": "Choisis une date et une heure à venir.",
+    "@community_events_create_starts_future": {
+        "description": "community.events.create.starts_future"
     },
     "community_events_create_submit": "Créer l’événement",
     "@community_events_create_submit": {
@@ -6293,9 +6478,31 @@
     "@community_events_create_title": {
         "description": "community.events.create.title"
     },
+    "community_events_create_title_min": "Le titre doit contenir au moins {min} caractères.",
+    "@community_events_create_title_min": {
+        "description": "community.events.create.title_min",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "community_events_create_too_long": "Un événement dure {days} jours au plus.",
+    "@community_events_create_too_long": {
+        "description": "community.events.create.too_long",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
     "community_events_detail_add_to_calendar": "Ajouter au calendrier",
     "@community_events_detail_add_to_calendar": {
         "description": "community.events.detail.add_to_calendar"
+    },
+    "community_events_detail_address": "Adresse exacte",
+    "@community_events_detail_address": {
+        "description": "community.events.detail.address"
     },
     "community_events_detail_address_hidden": "L’adresse exacte est partagée avec les participant·es.",
     "@community_events_detail_address_hidden": {
@@ -6304,6 +6511,10 @@
     "community_events_detail_all_events": "Tous les événements",
     "@community_events_detail_all_events": {
         "description": "community.events.detail.all_events"
+    },
+    "community_events_detail_breadcrumb": "Fil d’Ariane",
+    "@community_events_detail_breadcrumb": {
+        "description": "community.events.detail.breadcrumb"
     },
     "community_events_detail_charter": "L’événement se déroule dans le respect de la charte Xomiton : confidentialité, bienveillance et consentement pour toute photo.",
     "@community_events_detail_charter": {
@@ -6316,6 +6527,22 @@
     "community_events_detail_details": "Détails",
     "@community_events_detail_details": {
         "description": "community.events.detail.details"
+    },
+    "community_events_detail_link_copied": "Lien copié",
+    "@community_events_detail_link_copied": {
+        "description": "community.events.detail.link_copied"
+    },
+    "community_events_detail_link_hidden": "Le lien de connexion est partagé avec les participant·es.",
+    "@community_events_detail_link_hidden": {
+        "description": "community.events.detail.link_hidden"
+    },
+    "community_events_detail_no_description": "Aucune description renseignée.",
+    "@community_events_detail_no_description": {
+        "description": "community.events.detail.no_description"
+    },
+    "community_events_detail_online_link": "Rejoindre en ligne",
+    "@community_events_detail_online_link": {
+        "description": "community.events.detail.online_link"
     },
     "community_events_detail_organizer": "Organisé par {name}",
     "@community_events_detail_organizer": {
@@ -6330,13 +6557,50 @@
     "@community_events_detail_others": {
         "description": "community.events.detail.others"
     },
+    "community_events_detail_others_empty": "Aucun autre événement à venir.",
+    "@community_events_detail_others_empty": {
+        "description": "community.events.detail.others_empty"
+    },
+    "community_events_detail_participants_private": "Par discrétion, la liste des participant·es n’est jamais affichée.",
+    "@community_events_detail_participants_private": {
+        "description": "community.events.detail.participants_private"
+    },
     "community_events_detail_reminder": "Tu recevras un rappel la veille.",
     "@community_events_detail_reminder": {
         "description": "community.events.detail.reminder"
     },
+    "community_events_detail_reminder_toggle": "Me rappeler l’événement la veille",
+    "@community_events_detail_reminder_toggle": {
+        "description": "community.events.detail.reminder_toggle"
+    },
+    "community_events_detail_share": "Partager",
+    "@community_events_detail_share": {
+        "description": "community.events.detail.share"
+    },
+    "community_events_details": "Détails",
+    "@community_events_details": {
+        "description": "community.events.details"
+    },
+    "community_events_details_label": "Détails de « {title} »",
+    "@community_events_details_label": {
+        "description": "community.events.details_label",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "community_events_empty": "Aucun événement trouvé.",
     "@community_events_empty": {
         "description": "community.events.empty"
+    },
+    "community_events_empty_mine": "Tu ne participes à aucun événement à venir. Découvre les prochains rendez-vous de la communauté.",
+    "@community_events_empty_mine": {
+        "description": "community.events.empty_mine"
+    },
+    "community_events_empty_past": "Aucun événement passé.",
+    "@community_events_empty_past": {
+        "description": "community.events.empty_past"
     },
     "community_events_empty_upcoming": "Aucun événement à venir. Reviens bientôt ou propose le tien.",
     "@community_events_empty_upcoming": {
@@ -6349,6 +6613,40 @@
     "community_events_errors_past": "Cet événement est passé : les inscriptions sont closes.",
     "@community_events_errors_past": {
         "description": "community.events.errors.past"
+    },
+    "community_events_filters_label": "Catégories d’événements",
+    "@community_events_filters_label": {
+        "description": "community.events.filters_label"
+    },
+    "community_events_going": "Je participe",
+    "@community_events_going": {
+        "description": "community.events.going"
+    },
+    "community_events_going_ask": "Je participe ?",
+    "@community_events_going_ask": {
+        "description": "community.events.going_ask"
+    },
+    "community_events_going_cancel": "Je participe – annuler",
+    "@community_events_going_cancel": {
+        "description": "community.events.going_cancel"
+    },
+    "community_events_going_label": "Je participe à « {title} »",
+    "@community_events_going_label": {
+        "description": "community.events.going_label",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "community_events_group_badge": "Groupe {name}",
+    "@community_events_group_badge": {
+        "description": "community.events.group_badge",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     },
     "community_events_image_alt": "Visuel de l’événement : {title}",
     "@community_events_image_alt": {
@@ -6363,7 +6661,29 @@
     "@community_events_intro": {
         "description": "community.events.intro"
     },
-    "community_events_mine": "Mes événements",
+    "community_events_loaded": "{count, plural, =1{{count} événement de plus.} other{{count} événements de plus.}}",
+    "@community_events_loaded": {
+        "description": "community.events.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "community_events_location_both": "{place} · en ligne",
+    "@community_events_location_both": {
+        "description": "community.events.location.both",
+        "placeholders": {
+            "place": {
+                "type": "String"
+            }
+        }
+    },
+    "community_events_location_online": "En ligne",
+    "@community_events_location_online": {
+        "description": "community.events.location.online"
+    },
+    "community_events_mine": "Mes participations",
     "@community_events_mine": {
         "description": "community.events.mine"
     },
@@ -6388,21 +6708,45 @@
     "@community_events_past_badge": {
         "description": "community.events.past_badge"
     },
+    "community_events_place_tbd": "Lieu à préciser",
+    "@community_events_place_tbd": {
+        "description": "community.events.place_tbd"
+    },
     "community_events_public_badge": "Ouvert à tout le monde",
     "@community_events_public_badge": {
         "description": "community.events.public_badge"
+    },
+    "community_events_reminder_date": "{date} à {time}",
+    "@community_events_reminder_date": {
+        "description": "community.events.reminder_date",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
     },
     "community_events_search": "Rechercher un événement…",
     "@community_events_search": {
         "description": "community.events.search"
     },
+    "community_events_tabs_label": "Afficher les événements",
+    "@community_events_tabs_label": {
+        "description": "community.events.tabs_label"
+    },
     "community_events_title": "Événements",
     "@community_events_title": {
         "description": "community.events.title"
     },
-    "community_events_toasts_attending": "Tu participes. À bientôt !",
+    "community_events_toasts_attending": "Inscription confirmée. Un rappel t’est envoyé la veille.",
     "@community_events_toasts_attending": {
         "description": "community.events.toasts.attending"
+    },
+    "community_events_toasts_attending_no_reminder": "Inscription confirmée.",
+    "@community_events_toasts_attending_no_reminder": {
+        "description": "community.events.toasts.attending_no_reminder"
     },
     "community_events_toasts_cancelled": "Événement annulé.",
     "@community_events_toasts_cancelled": {
@@ -6412,13 +6756,21 @@
     "@community_events_toasts_created": {
         "description": "community.events.toasts.created"
     },
-    "community_events_toasts_declined": "Tu ne participes plus.",
+    "community_events_toasts_declined": "Participation annulée.",
     "@community_events_toasts_declined": {
         "description": "community.events.toasts.declined"
     },
     "community_events_toasts_interested": "Marqué comme intéressé·e.",
     "@community_events_toasts_interested": {
         "description": "community.events.toasts.interested"
+    },
+    "community_events_toasts_reminder_off": "Rappel de la veille désactivé.",
+    "@community_events_toasts_reminder_off": {
+        "description": "community.events.toasts.reminder_off"
+    },
+    "community_events_toasts_reminder_on": "Rappel de la veille activé.",
+    "@community_events_toasts_reminder_on": {
+        "description": "community.events.toasts.reminder_on"
     },
     "community_events_toasts_updated": "Événement modifié.",
     "@community_events_toasts_updated": {
@@ -6603,17 +6955,42 @@
     "@community_forums_anonymous": {
         "description": "community.forums.anonymous"
     },
+    "community_forums_badges_pair": "Pair animateur·rice",
+    "@community_forums_badges_pair": {
+        "description": "community.forums.badges.pair"
+    },
+    "community_forums_badges_team": "Équipe Xomiton",
+    "@community_forums_badges_team": {
+        "description": "community.forums.badges.team"
+    },
     "community_forums_create_anonymous": "Publier de façon anonyme",
     "@community_forums_create_anonymous": {
         "description": "community.forums.create.anonymous"
+    },
+    "community_forums_create_anonymous_help": "Ton pseudo n’apparaîtra pas : « Membre anonyme » s’affichera à la place.",
+    "@community_forums_create_anonymous_help": {
+        "description": "community.forums.create.anonymous_help"
     },
     "community_forums_create_body": "Message",
     "@community_forums_create_body": {
         "description": "community.forums.create.body"
     },
+    "community_forums_create_body_min": "Ton message doit contenir au moins {min} caractères.",
+    "@community_forums_create_body_min": {
+        "description": "community.forums.create.body_min",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
     "community_forums_create_forum": "Forum",
     "@community_forums_create_forum": {
         "description": "community.forums.create.forum"
+    },
+    "community_forums_create_forum_required": "Choisis un forum.",
+    "@community_forums_create_forum_required": {
+        "description": "community.forums.create.forum_required"
     },
     "community_forums_create_invalid": "Renseigne un titre ({title_min} caractères min.), un message ({body_min} min.) et un forum.",
     "@community_forums_create_invalid": {
@@ -6643,9 +7020,66 @@
     "@community_forums_create_title": {
         "description": "community.forums.create.title"
     },
+    "community_forums_create_title_min": "Le titre doit contenir au moins {min} caractères.",
+    "@community_forums_create_title_min": {
+        "description": "community.forums.create.title_min",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "community_forums_detail_breadcrumb": "Fil d’Ariane des forums",
+    "@community_forums_detail_breadcrumb": {
+        "description": "community.forums.detail.breadcrumb"
+    },
+    "community_forums_detail_delete_reply": "Supprimer la réponse",
+    "@community_forums_detail_delete_reply": {
+        "description": "community.forums.detail.delete_reply"
+    },
+    "community_forums_detail_delete_reply_body": "Ta réponse ne sera plus visible. Cette action est définitive.",
+    "@community_forums_detail_delete_reply_body": {
+        "description": "community.forums.detail.delete_reply_body"
+    },
+    "community_forums_detail_delete_reply_title": "Supprimer cette réponse ?",
+    "@community_forums_detail_delete_reply_title": {
+        "description": "community.forums.detail.delete_reply_title"
+    },
+    "community_forums_detail_delete_topic": "Supprimer le sujet",
+    "@community_forums_detail_delete_topic": {
+        "description": "community.forums.detail.delete_topic"
+    },
+    "community_forums_detail_delete_topic_body": "Le sujet et ses réponses ne seront plus visibles. Cette action est définitive.",
+    "@community_forums_detail_delete_topic_body": {
+        "description": "community.forums.detail.delete_topic_body"
+    },
+    "community_forums_detail_delete_topic_title": "Supprimer ce sujet ?",
+    "@community_forums_detail_delete_topic_title": {
+        "description": "community.forums.detail.delete_topic_title"
+    },
+    "community_forums_detail_replies_empty": "Pas encore de réponse. Réponds avec bienveillance : ta voix compte.",
+    "@community_forums_detail_replies_empty": {
+        "description": "community.forums.detail.replies_empty"
+    },
+    "community_forums_detail_report_reply": "Signaler cette réponse",
+    "@community_forums_detail_report_reply": {
+        "description": "community.forums.detail.report_reply"
+    },
+    "community_forums_detail_report_topic": "Signaler ce sujet",
+    "@community_forums_detail_report_topic": {
+        "description": "community.forums.detail.report_topic"
+    },
     "community_forums_empty": "Aucun sujet pour le moment. Lance la discussion !",
     "@community_forums_empty": {
         "description": "community.forums.empty"
+    },
+    "community_forums_empty_search": "Aucun sujet ne correspond à ta recherche.",
+    "@community_forums_empty_search": {
+        "description": "community.forums.empty_search"
+    },
+    "community_forums_errors_forum": "Ce forum n’existe pas ou n’est plus ouvert.",
+    "@community_forums_errors_forum": {
+        "description": "community.forums.errors.forum"
     },
     "community_forums_errors_locked": "Ce sujet est fermé : plus de réponse possible.",
     "@community_forums_errors_locked": {
@@ -6672,6 +7106,19 @@
             }
         }
     },
+    "community_forums_loaded": "{count, plural, =0{Aucun nouveau sujet} =1{{count} sujet ajouté} other{{count} sujets ajoutés}}",
+    "@community_forums_loaded": {
+        "description": "community.forums.loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "community_forums_locked": "Fermé",
+    "@community_forums_locked": {
+        "description": "community.forums.locked"
+    },
     "community_forums_messages": "{count, plural, =0{Aucun message} =1{{count} message} other{{count} messages}}",
     "@community_forums_messages": {
         "description": "community.forums.messages",
@@ -6681,13 +7128,39 @@
             }
         }
     },
+    "community_forums_moderated": "Sujet masqué en attente de relecture par la modération.",
+    "@community_forums_moderated": {
+        "description": "community.forums.moderated"
+    },
+    "community_forums_pinned": "Épinglé",
+    "@community_forums_pinned": {
+        "description": "community.forums.pinned"
+    },
     "community_forums_recent": "Sujets récents",
     "@community_forums_recent": {
         "description": "community.forums.recent"
     },
+    "community_forums_recent_in": "Sujets récents – {forum}",
+    "@community_forums_recent_in": {
+        "description": "community.forums.recent_in",
+        "placeholders": {
+            "forum": {
+                "type": "String"
+            }
+        }
+    },
     "community_forums_replies": "{count, plural, =0{Aucune réponse} =1{{count} réponse} other{{count} réponses}}",
     "@community_forums_replies": {
         "description": "community.forums.replies",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "community_forums_replies_loaded": "{count, plural, =0{Aucune nouvelle réponse} =1{{count} réponse ajoutée} other{{count} réponses ajoutées}}",
+    "@community_forums_replies_loaded": {
+        "description": "community.forums.replies_loaded",
         "placeholders": {
             "count": {
                 "type": "int"
@@ -6726,6 +7199,10 @@
     "community_forums_search": "Rechercher un sujet…",
     "@community_forums_search": {
         "description": "community.forums.search"
+    },
+    "community_forums_search_label": "Rechercher un sujet",
+    "@community_forums_search_label": {
+        "description": "community.forums.search_label"
     },
     "community_forums_title": "Forums",
     "@community_forums_title": {
@@ -10851,14 +11328,6 @@
     "feed_compose_event": "Événement",
     "@feed_compose_event": {
         "description": "feed.compose.event"
-    },
-    "feed_compose_event_soon": "Événement (bientôt)",
-    "@feed_compose_event_soon": {
-        "description": "feed.compose.event_soon"
-    },
-    "feed_compose_event_unavailable": "La création d’événements arrive bientôt.",
-    "@feed_compose_event_unavailable": {
-        "description": "feed.compose.event_unavailable"
     },
     "feed_compose_label": "Créer une publication",
     "@feed_compose_label": {
@@ -16706,6 +17175,150 @@
     "pages_do_glegbe_why_title": "Pourquoi la gestion de l’hygiène menstruelle est-elle essentielle ?",
     "@pages_do_glegbe_why_title": {
         "description": "pages/do_glegbe.why.title"
+    },
+    "pages_evenements_address_hidden": "Pour la sécurité de chacune et chacun, l’adresse exacte et le lien de connexion sont communiqués aux seules personnes inscrites.",
+    "@pages_evenements_address_hidden": {
+        "description": "pages/evenements.address_hidden"
+    },
+    "pages_evenements_back": "Tous les événements",
+    "@pages_evenements_back": {
+        "description": "pages/evenements.back"
+    },
+    "pages_evenements_charter": "L’événement se déroule dans le respect de la charte Xomiton : confidentialité, bienveillance et consentement pour toute photo.",
+    "@pages_evenements_charter": {
+        "description": "pages/evenements.charter"
+    },
+    "pages_evenements_description": "Description",
+    "@pages_evenements_description": {
+        "description": "pages/evenements.description"
+    },
+    "pages_evenements_details": "Voir l’événement",
+    "@pages_evenements_details": {
+        "description": "pages/evenements.details"
+    },
+    "pages_evenements_details_label": "Voir l’événement « {title} »",
+    "@pages_evenements_details_label": {
+        "description": "pages/evenements.details_label",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_evenements_empty": "Aucun événement public à venir pour le moment.",
+    "@pages_evenements_empty": {
+        "description": "pages/evenements.empty"
+    },
+    "pages_evenements_empty_category": "Aucun événement public à venir dans cette catégorie.",
+    "@pages_evenements_empty_category": {
+        "description": "pages/evenements.empty_category"
+    },
+    "pages_evenements_filter_all": "Tous",
+    "@pages_evenements_filter_all": {
+        "description": "pages/evenements.filter_all"
+    },
+    "pages_evenements_filters_label": "Filtrer par catégorie",
+    "@pages_evenements_filters_label": {
+        "description": "pages/evenements.filters_label"
+    },
+    "pages_evenements_image_alt": "Visuel de l’événement : {title}",
+    "@pages_evenements_image_alt": {
+        "description": "pages/evenements.image_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_evenements_intro": "Ateliers, causeries, dépistages et formations ouverts à toutes et tous, près de chez vous ou en ligne.",
+    "@pages_evenements_intro": {
+        "description": "pages/evenements.intro"
+    },
+    "pages_evenements_join_login": "Se connecter",
+    "@pages_evenements_join_login": {
+        "description": "pages/evenements.join_login"
+    },
+    "pages_evenements_join_register": "Créer un compte",
+    "@pages_evenements_join_register": {
+        "description": "pages/evenements.join_register"
+    },
+    "pages_evenements_join_text": "Créez un compte gratuit ou connectez-vous pour répondre « Je participe », recevoir l’adresse exacte et un rappel la veille.",
+    "@pages_evenements_join_text": {
+        "description": "pages/evenements.join_text"
+    },
+    "pages_evenements_join_title": "Participer à un événement",
+    "@pages_evenements_join_title": {
+        "description": "pages/evenements.join_title"
+    },
+    "pages_evenements_list_title": "Prochains événements publics",
+    "@pages_evenements_list_title": {
+        "description": "pages/evenements.list_title"
+    },
+    "pages_evenements_load_more": "Charger plus",
+    "@pages_evenements_load_more": {
+        "description": "pages/evenements.load_more"
+    },
+    "pages_evenements_members_more": "D’autres rendez-vous sont réservés aux membres de la communauté.",
+    "@pages_evenements_members_more": {
+        "description": "pages/evenements.members_more"
+    },
+    "pages_evenements_no_description": "Aucune description renseignée.",
+    "@pages_evenements_no_description": {
+        "description": "pages/evenements.no_description"
+    },
+    "pages_evenements_og_alt": "Événements Xomiton : ateliers, causeries et dépistages ouverts à la communauté",
+    "@pages_evenements_og_alt": {
+        "description": "pages/evenements.og_alt"
+    },
+    "pages_evenements_organizer": "Organisé par {name}",
+    "@pages_evenements_organizer": {
+        "description": "pages/evenements.organizer",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_evenements_others": "Autres événements",
+    "@pages_evenements_others": {
+        "description": "pages/evenements.others"
+    },
+    "pages_evenements_participants": "{count, plural, =0{Aucune inscription pour le moment} =1{{count} personne inscrite} other{{count} personnes inscrites}}",
+    "@pages_evenements_participants": {
+        "description": "pages/evenements.participants",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_evenements_participate": "Je participe",
+    "@pages_evenements_participate": {
+        "description": "pages/evenements.participate"
+    },
+    "pages_evenements_past_badge": "Événement passé",
+    "@pages_evenements_past_badge": {
+        "description": "pages/evenements.past_badge"
+    },
+    "pages_evenements_share": "Partager",
+    "@pages_evenements_share": {
+        "description": "pages/evenements.share"
+    },
+    "pages_evenements_share_copied": "Lien copié.",
+    "@pages_evenements_share_copied": {
+        "description": "pages/evenements.share_copied"
+    },
+    "pages_evenements_share_failed": "Impossible de partager le lien. Copiez l’adresse de la page.",
+    "@pages_evenements_share_failed": {
+        "description": "pages/evenements.share_failed"
+    },
+    "pages_evenements_show_all": "Voir tous les événements",
+    "@pages_evenements_show_all": {
+        "description": "pages/evenements.show_all"
+    },
+    "pages_evenements_title": "Événements",
+    "@pages_evenements_title": {
+        "description": "pages/evenements.title"
     },
     "pages_lois_category_all": "Toutes les catégories",
     "@pages_lois_category_all": {

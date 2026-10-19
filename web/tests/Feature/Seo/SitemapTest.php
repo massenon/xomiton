@@ -116,8 +116,8 @@ it('ne liste jamais l’administration, l’API, l’espace membre ni les pages 
             ->not->toStartWith('/membres')->not->toStartWith('/code-de-verification')->not->toStartWith('/newsletter/');
     }
 
-    // /evenements est encore réservé aux membres (auth) : absent tant que la liste publique n'est pas livrée (Q35).
-    expect($locs)->not->toContain(canonical('/evenements'));
+    // P8-04 (Q35 a) : /evenements est public (page Blade des événements publics pour les visiteur·ses) : listé.
+    expect($locs)->toContain(canonical('/evenements'));
 });
 
 it('inclut les contenus publiés avec lastmod et exclut les brouillons, masqués et programmés', function (): void {

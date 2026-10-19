@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Moderation;
 
+use App\Application\Community\Forums\ForumCounters;
 use App\Application\Feed\FeedCounters;
 use App\Domain\Feed\ValueObjects\ContentVerdict;
 use App\Domain\Moderation\AutoHideRule;
@@ -14,6 +15,8 @@ use App\Enums\ModerationStatus;
 use App\Enums\PostStatus;
 use App\Models\AuditLog;
 use App\Models\Comment;
+use App\Models\ForumReply;
+use App\Models\ForumTopic;
 use App\Models\Message;
 use App\Models\ModerationReport;
 use App\Models\Post;
@@ -35,6 +38,8 @@ use Throwable;
  *  - RG-16 (AutoHideRule) : au seuil de signalements **en attente** de personnes distinctes, le contenu est masqué
  *    (`status = masque`, motif lisible par l'équipe), journalisé `moderation.auto_hidden` par le système ;
  *  - l'extrait (255 car.) est figé pour rester lisible si le contenu est supprimé ; il ne sort jamais dans une notification ;
+ *  - sujet ou réponse de forum (P8-05) : même règle que le fil (dédoublonnage, RG-16 : masquage au seuil et compteurs
+ *    du sujet et du forum recalculés), extrait = titre et message du sujet ;
  *  - message privé ou personne (P8-01, `confidential()`) : même dédoublonnage, même événement, **sans extrait** (corps
  *    chiffré au repos, `excerpt` en clair, ADR-33) ni compteur ni masquage automatique.
  */
@@ -45,7 +50,10 @@ final class ReportContent
 
     private const EXCERPT_LENGTH = 250;
 
-    public function __construct(private readonly FeedCounters $counters) {}
+    public function __construct(
+        private readonly FeedCounters $counters,
+        private readonly ForumCounters $forumCounters,
+    ) {}
 
     public static function autoHideRule(): AutoHideRule
     {
@@ -60,7 +68,7 @@ final class ReportContent
         return new AutoHideRule(max(0, $threshold));
     }
 
-    public function byMember(User $reporter, Post|Comment $subject, ContentReportReason $reason, ?string $details = null): ReportOutcome
+    public function byMember(User $reporter, Post|Comment|ForumTopic|ForumReply $subject, ContentReportReason $reason, ?string $details = null): ReportOutcome
     {
         return $this->once($reporter, $subject, $reason, $details, function () use ($subject): bool {
             if ($subject instanceof Post) {
@@ -87,7 +95,7 @@ final class ReportContent
      *
      * @param  (callable(): bool)|null  $after
      */
-    private function once(User $reporter, Post|Comment|Message|User $subject, ContentReportReason $reason, ?string $details, ?callable $after): ReportOutcome
+    private function once(User $reporter, Post|Comment|ForumTopic|ForumReply|Message|User $subject, ContentReportReason $reason, ?string $details, ?callable $after): ReportOutcome
     {
         /** @var array{0: ModerationReport, 1: bool, 2: bool} $result */
         $result = DB::transaction(function () use ($reporter, $subject, $reason, $details, $after): array {
@@ -121,7 +129,7 @@ final class ReportContent
      * Signalement ouvert par le filtre de mots (`bad_words` « signaler ») : le contenu reste publié, l'équipe le relit.
      * Les termes trouvés ne sont lisibles que dans le détail du signalement (jamais renvoyés à l'auteur·rice).
      */
-    public function automatic(Post|Comment $subject, ContentVerdict $verdict): ModerationReport
+    public function automatic(Post|Comment|ForumTopic|ForumReply $subject, ContentVerdict $verdict): ModerationReport
     {
         $report = $this->createReport($subject, [
             'reporter_user_id' => null,
@@ -138,11 +146,13 @@ final class ReportContent
     /**
      * @param  array<string, mixed>  $attributes
      */
-    private function createReport(Post|Comment|Message|User $subject, array $attributes): ModerationReport
+    private function createReport(Post|Comment|ForumTopic|ForumReply|Message|User $subject, array $attributes): ModerationReport
     {
         $kind = match (true) {
             $subject instanceof Post => ModerationKind::Post,
             $subject instanceof Comment => ModerationKind::Comment,
+            $subject instanceof ForumTopic => ModerationKind::Topic,
+            $subject instanceof ForumReply => ModerationKind::Reply,
             $subject instanceof Message => ModerationKind::Message,
             default => ModerationKind::User,
         };
@@ -151,13 +161,13 @@ final class ReportContent
             'kind' => $kind,
             'subject_type' => $subject->getMorphClass(),
             'subject_id' => $subject->getKey(),
-            'excerpt' => $subject instanceof Post || $subject instanceof Comment ? self::excerpt($subject) : null,
+            'excerpt' => $subject instanceof Message || $subject instanceof User ? null : self::excerpt($subject),
             'reported_user_id' => $subject instanceof User ? $subject->getKey() : $subject->user_id,
             'status' => ModerationStatus::Pending,
         ]);
     }
 
-    private function applyAutoHide(Post|Comment $subject): bool
+    private function applyAutoHide(Post|Comment|ForumTopic|ForumReply $subject): bool
     {
         $rule = self::autoHideRule();
         $subject->refresh();
@@ -178,11 +188,20 @@ final class ReportContent
                 'status' => PostStatus::Hidden,
                 'hidden_reason' => Str::limit((string) __('feed.moderation.auto_hidden_reason', ['count' => $pending]), 200, ''),
             ])->save();
-        } else {
+        } elseif ($subject instanceof Comment) {
             $subject->forceFill(['status' => PostStatus::Hidden])->save();
 
             if ($subject->post !== null) {
                 $this->counters->recountComments($subject->post);
+            }
+        } elseif ($subject instanceof ForumTopic) {
+            $subject->forceFill(['status' => PostStatus::Hidden])->save();
+            $this->forumCounters->recountForum((int) $subject->forum_id);
+        } else {
+            $subject->forceFill(['status' => PostStatus::Hidden])->save();
+
+            if ($subject->topic !== null) {
+                $this->forumCounters->afterReplyChange($subject->topic);
             }
         }
 
@@ -202,9 +221,13 @@ final class ReportContent
         );
     }
 
-    private static function excerpt(Post|Comment $subject): ?string
+    private static function excerpt(Post|Comment|ForumTopic|ForumReply $subject): ?string
     {
         $text = trim((string) $subject->body);
+
+        if ($subject instanceof ForumTopic) {
+            $text = trim($subject->title.' — '.$text);
+        }
 
         if ($text === '' && $subject instanceof Post) {
             $text = trim((string) $subject->poll?->question);

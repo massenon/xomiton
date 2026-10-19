@@ -2,7 +2,10 @@
 // « php artisan lang:export » dans resources/js/lang/<locale>.json (clés « fichier.cle.souscle », placeholders {nom},
 // pluriels « a | b | c »). Les catalogues sont chargés à la demande (un fichier par locale, hors du paquet app.ts) : la
 // locale vient des props partagées Inertia `lang` (HandleInertiaRequests), jamais les messages eux-mêmes.
+// Messages compilés par app/messageCompiler.ts (P4-12) : le compilateur de vue-i18n est retiré du paquet app.ts
+// (__INTLIFY_DROP_MESSAGE_COMPILER__, vite.config.js).
 import { createI18n, type PathValue } from 'vue-i18n';
+import { compileMessage } from './messageCompiler';
 
 type Catalog = Record<string, string>;
 
@@ -31,6 +34,7 @@ export const i18n = createI18n({
     fallbackLocale: 'fr',
     messages: { fr: {} as Catalog } as Record<string, Catalog>,
     messageResolver: flatResolver,
+    messageCompiler: compileMessage,
     pluralRules: { fr: frenchPlural },
     missingWarn: false,
     fallbackWarn: false,

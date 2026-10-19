@@ -9,6 +9,8 @@ use App\Enums\MembershipStatus;
 use App\Enums\PostStatus;
 use App\Enums\PostTag;
 use App\Models\Comment;
+use App\Models\ForumReply;
+use App\Models\ForumTopic;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\Post;
@@ -90,7 +92,9 @@ final class FeedQuery
     }
 
     /**
-     * @template TModel of Post|Comment
+     * Aussi appliqué aux sujets et réponses de forum (App\Application\Community\Forums\ForumDirectory, P8-05).
+     *
+     * @template TModel of Post|Comment|ForumTopic|ForumReply
      *
      * @param  Builder<TModel>  $query
      * @return Builder<TModel>

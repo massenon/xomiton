@@ -1,6 +1,7 @@
 // Contrat des écrans du fil (lot fil-ecrans, P7-03 à P7-06) : objets de l'API /api/v1 (docs/API.md §8.4 :
 // App\Http\Resources\Feed\PostResource, PollResource, CommentResource) et props Inertia de
 // App\Http\Controllers\Web\Member\FeedPageController (première page sous la même forme que l'API).
+import type { EventCreateOptions } from '@/events/types';
 
 export interface FeedAuthor {
     id: number | null;
@@ -97,6 +98,8 @@ export interface ComposerOptions {
     can_post: boolean;
     can_poll: boolean;
     events_available: boolean;
+    /** Réglages de la modale « Créer un événement » (P8-04), null sans ce droit. */
+    event?: EventCreateOptions | null;
     tags: Option[];
     visibilities: Option[];
     durations: Option<number>[];

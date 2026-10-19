@@ -1,0 +1,5 @@
+/*
+ * Forums `/forums`, `/forums/{ulid}` (lot forums, P8-05 ; prototype forums.php, forum-topic.php) : message d'un sujet et
+ * d'une réponse avec ses retours à la ligne (nl2br du prototype) et coupure des mots trop longs. Jetons uniquement.
+ */
+.xm-forum-text { white-space: pre-line; overflow-wrap: anywhere; }

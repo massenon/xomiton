@@ -26,12 +26,10 @@ return [
         'prompt_anonymous' => 'Partage tes pensées…',
         'photo' => 'Photo',
         'event' => 'Événement',
-        'event_soon' => 'Événement (bientôt)',
         'poll' => 'Sondage',
         'violences' => 'Violences',
         'report' => 'Signaler',
         'label' => 'Créer une publication',
-        'event_unavailable' => 'La création d’événements arrive bientôt.',
     ],
 
     // P7-03 (lot fil-ecrans) : liste du fil, chargement à la demande, filtres.

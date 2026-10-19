@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Feed;
 
+use App\Application\Community\Events\EventCreateOptions;
 use App\Application\Shared\MediaUploader;
 use App\Enums\ContentReportReason;
 use App\Enums\PostTag;
 use App\Enums\PostVisibility;
+use App\Models\Event;
 use App\Models\Poll;
 use App\Models\Post;
 use App\Models\User;
@@ -17,16 +19,19 @@ use App\Models\User;
  * transmis en props Inertia : droits (`posts.create`, `polls.create`), étiquettes (toutes sauf « sondage », imposée au
  * sondage), visibilités, durées et bornes — les mêmes que StorePostRequest (config xomiton.feed, image : collection
  * `images` de MediaUploader), pour que la validation dans le navigateur ne contredise jamais le serveur.
- * La pastille « Événement » reste désactivée tant que la modale de création d'événement (P8-04) n'est pas livrée.
+ * Pastille « Événement » (P8-04) : active pour qui peut créer un événement ; elle ouvre la modale « Créer un événement »
+ * avec les réglages `event` (App\Application\Community\Events\EventCreateOptions ; null sans ce droit).
  */
 final class FeedComposerOptions
 {
+    public function __construct(private readonly EventCreateOptions $events) {}
+
     /** Durée proposée par défaut (prototype : « 1 semaine » sélectionnée). */
     public const DEFAULT_DURATION = 7;
 
     /**
      * @return array{
-     *     can_post: bool, can_poll: bool, events_available: bool,
+     *     can_post: bool, can_poll: bool, events_available: bool, event: array<string, mixed>|null,
      *     tags: list<array{value: string, label: string}>, visibilities: list<array{value: string, label: string}>,
      *     durations: list<array{value: int, label: string}>, default_duration: int,
      *     limits: array{body_max: int, question_min: int, question_max: int, options_min: int, options_max: int, option_max: int, image_max_kb: int, image_types: list<string>}
@@ -34,10 +39,13 @@ final class FeedComposerOptions
      */
     public function for(User $user): array
     {
+        $canEvent = $user->can('create', Event::class);
+
         return [
             'can_post' => $user->can('create', Post::class),
             'can_poll' => $user->can('createPoll', Post::class),
-            'events_available' => false,
+            'events_available' => $canEvent,
+            'event' => $canEvent ? $this->events->for($user) : null,
             'tags' => $this->tags(),
             'visibilities' => array_map(static fn (PostVisibility $visibility): array => [
                 'value' => $visibility->value,

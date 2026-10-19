@@ -23,6 +23,7 @@ use App\Http\Controllers\Web\Alerts\ReportTrackingController;
 use App\Http\Controllers\Web\ConfidentialiteController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\DoGlegbeController;
+use App\Http\Controllers\Web\EventsPageController;
 use App\Http\Controllers\Web\Feed\SharedPostController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LegacyAideRedirectController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
 use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
 use App\Http\Controllers\Web\Member\FeedPageController;
+use App\Http\Controllers\Web\Member\ForumsPageController;
 use App\Http\Controllers\Web\Member\GroupsPageController;
 use App\Http\Controllers\Web\Member\MessagesPageController;
 use App\Http\Controllers\Web\Member\PagesPageController;
@@ -55,6 +57,7 @@ use App\Http\Controllers\Web\UrgencesController;
 use App\Http\Controllers\Web\ViolencesController;
 use App\Http\Middleware\EnsureNotInMaintenance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\InertiaForMembers;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -193,6 +196,14 @@ Route::get('/mes-donnees/export/{token}', PersonalDataExportController::class)
 // Connecté·e : redirection vers le détail /fil/{ulid} (qui applique la visibilité).
 Route::get('/p/{ulid}', SharedPostController::class)->where('ulid', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('p.show');
 
+// P8-04 (lot evenements), Q35 a : une adresse, deux publics. Connecté·e : pages Vue `Events/Index`, `Events/Show`
+// (InertiaForMembers → HandleInertiaRequests, noindex) ; visiteur·se : page Blade publique indexée des seuls événements
+// publics (sans adresse), un événement réservé aux membres renvoyant vers la connexion. Par ULID (ADR-27).
+Route::middleware(InertiaForMembers::class)->group(function (): void {
+    Route::get('/evenements', [EventsPageController::class, 'index'])->name('evenements.index');
+    Route::get('/evenements/{event}', [EventsPageController::class, 'show'])->where('event', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('evenements.show');
+});
+
 // --- Espace membre et pair éducateur·rice : Vue + Inertia (P6 à P9) ---------
 // HandleInertiaRequests (P6-02) : props partagées et X-Robots-Tag noindex. Toutes les pages sont Inertia, dans le gabarit
 // membre Vue (P6-03, resources/js/layouts/MemberLayout.vue) : les écrans pas encore livrés sont `Member/Placeholder`
@@ -213,10 +224,9 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     Route::get('/pages', [PagesPageController::class, 'index'])->name('pages.index');
     Route::get('/pages/creer', [PagesPageController::class, 'create'])->name('pages.create');
     Route::get('/pages/{page:ulid}', [PagesPageController::class, 'show'])->where('page', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('pages.show');
-    $memberPlaceholder('/evenements', 'evenements.index', 'events', 'events.php');
-    $memberPlaceholder('/evenements/{event}', 'evenements.show', 'event', 'event-details.php');
-    $memberPlaceholder('/forums', 'forums.index', 'forums', 'forums.php');
-    $memberPlaceholder('/forums/{topic}', 'forums.show', 'topic', 'forum-topic.php');
+    // P8-05 (lot forums) : forums et sujets par ULID (ADR-27 ; invisible → 404, vue comptée une fois par session).
+    Route::get('/forums', [ForumsPageController::class, 'index'])->name('forums.index');
+    Route::get('/forums/{topic:ulid}', [ForumsPageController::class, 'show'])->where('topic', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('forums.show');
     $memberPlaceholder('/qui-suivre', 'qui-suivre', 'who_to_follow', 'who-to-follow.php');
     $memberPlaceholder('/profil', 'profil', 'profile', 'my-profile.php');
     $memberPlaceholder('/parametres', 'parametres', 'settings', 'settings.php');

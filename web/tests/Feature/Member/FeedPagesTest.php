@@ -133,7 +133,10 @@ it('transmet aux modales les droits et les bornes de StorePostRequest', function
         ->assertInertia(fn (Assert $page) => $page
             ->where('composer.can_post', true)
             ->where('composer.can_poll', true)
-            ->where('composer.events_available', false)
+            // P8-04 : pastille « Événement » active, réglages de la modale « Créer un événement » joints.
+            ->where('composer.events_available', true)
+            ->where('composer.event.can', true)
+            ->where('composer.event.limits.title_min', (int) config('xomiton.events.title_min'))
             ->where('composer.tags', fn ($tags): bool => array_column(collect($tags)->all(), 'value') === ['temoignage', 'question', 'ressource', 'evenement', 'violences'])
             ->where('composer.visibilities', fn ($items): bool => array_column(collect($items)->all(), 'value') === ['public', 'followers', 'me'])
             ->where('composer.durations', fn ($items): bool => array_column(collect($items)->all(), 'value') === [1, 3, 7, 14, 30, 0])

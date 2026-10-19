@@ -58,8 +58,8 @@ it('sert chaque écran membre provisoire en Inertia, titre de la route même ave
 })->with([
     // /messages : écran réel depuis le lot messagerie (P8-01, tests/Feature/Member/MessagesPageTest.php).
     // /groupes, /pages : écrans réels depuis le lot groupes-pages (P8-02, P8-03, tests/Feature/Member/CommunityPagesTest.php).
-    ['/evenements', 'Événements', 'events.php'],
-    ['/forums/7', 'Sujet', 'forum-topic.php'],
+    // /evenements : écran réel depuis le lot evenements (P8-04, tests/Feature/Member/EventsPagesTest.php).
+    // /forums : écran réel depuis le lot forums (P8-05, tests/Feature/Member/ForumsPagesTest.php).
     ['/qui-suivre', 'Qui suivre', 'who-to-follow.php'],
     ['/profil', 'Mon profil', 'my-profile.php'],
     ['/parametres', 'Paramètres', 'settings.php'],

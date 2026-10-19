@@ -9,7 +9,7 @@
 // place le focus sur son titre (`[data-sos-title]`, x-trap.noautofocus) : jamais sur « Annuler », qu'une touche Espace
 // encore maintenue activerait au relâchement. Confirmation : `opts.confirm` (fonction, prop confirmBind) ou
 // `texts.confirmText`. Aucun texte ici : tout vient de Blade (lang/fr) par `opts.texts`.
-import { Modal, Offcanvas } from '../shared/bootstrap.js';
+import { loadedBootstrap } from '../shared/bootstrap-lazy.js';
 
 /** Appui bref (en millisecondes) : au-delà, c'est un maintien interrompu, pas un appui. */
 export const TAP_MAX_MS = 350;
@@ -19,11 +19,15 @@ export const DOUBLE_TAP_MS = 450;
 
 const now = () => Date.now();
 
-/** Ferme les modales et offcanvas Bootstrap ouverts. */
+/**
+ * Ferme les modales et offcanvas Bootstrap ouverts. Bootstrap peut être chargé à la demande (espace membre,
+ * shared/bootstrap-lazy.js) : absent, aucune modale ni aucun offcanvas n'a pu s'ouvrir.
+ */
 export function closeOverlays(root = typeof document === 'undefined' ? null : document) {
   if (!root) return;
-  root.querySelectorAll('.modal.show').forEach((el) => Modal.getInstance(el)?.hide());
-  root.querySelectorAll('.offcanvas.show').forEach((el) => Offcanvas.getInstance(el)?.hide());
+  const bootstrap = loadedBootstrap();
+  root.querySelectorAll('.modal.show').forEach((el) => bootstrap?.Modal.getInstance(el)?.hide());
+  root.querySelectorAll('.offcanvas.show').forEach((el) => bootstrap?.Offcanvas.getInstance(el)?.hide());
 }
 
 export function xmSos(opts = {}) {

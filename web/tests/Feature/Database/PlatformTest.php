@@ -175,8 +175,9 @@ describe('audit_logs', function (): void {
     it('journalise une action immuable, sans updated_at, et cible les entrées à purger', function (): void {
         $user = User::factory()->create();
         $log = AuditLog::factory()->ofAction('Paramètres')->on($user)->create(['user_id' => $user->id, 'actor' => $user->email]);
-        $anonymous = AuditLog::factory()->anonymous()->create();
-        AuditLog::factory()->expired()->create();
+        // Actions fixées : l'action tirée au hasard par la fabrique pouvait valoir « Paramètres » (test instable).
+        $anonymous = AuditLog::factory()->anonymous()->ofAction('Connexion')->create();
+        AuditLog::factory()->expired()->ofAction('Connexion')->create();
 
         expect($log->updated_at)->toBeNull()
             ->and($log->subject)->toBeInstanceOf(User::class)

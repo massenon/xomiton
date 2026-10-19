@@ -13,7 +13,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
-import { Collapse, Dropdown } from '@/shared/bootstrap.js';
+import { loadedBootstrap } from '@/shared/bootstrap-lazy.js';
 import { logout } from '@/app/logout';
 import { route } from '@/app/routes';
 import { useApi } from '@/app/useApi';
@@ -54,13 +54,17 @@ const bellLabel = computed(() => t('menus.member_more.bell_label', notifications
 /** Liens des notifications : schéma autre que http(s) ou relatif écarté (l'adresse vient de l'API). */
 const bellItems = computed(() => notifications.bellItems.map((item) => ({ ...item, href: notificationTarget(item.href)?.url ?? null })));
 
-/** Ferme le menu replié (< 992 px) et les menus déroulants ouverts : l'en-tête reste monté pendant la visite. */
+/**
+ * Ferme le menu replié (< 992 px) et les menus déroulants ouverts : l'en-tête reste monté pendant la visite. Bootstrap
+ * est chargé à la demande (shared/bootstrap-lazy.js) : absent, aucun menu n'a pu s'ouvrir.
+ */
 function closeMenus() {
     const el = root.value;
-    if (!el) return;
-    el.querySelectorAll<HTMLElement>('[data-bs-toggle="dropdown"]').forEach((toggle) => Dropdown.getInstance(toggle)?.hide());
+    const bootstrap = loadedBootstrap();
+    if (!el || !bootstrap) return;
+    el.querySelectorAll<HTMLElement>('[data-bs-toggle="dropdown"]').forEach((toggle) => bootstrap.Dropdown.getInstance(toggle)?.hide());
     const collapse = el.querySelector<HTMLElement>('#memberNavbar');
-    if (collapse?.classList.contains('show')) Collapse.getOrCreateInstance(collapse, { toggle: false }).hide();
+    if (collapse?.classList.contains('show')) bootstrap.Collapse.getOrCreateInstance(collapse, { toggle: false }).hide();
 }
 
 // Cloche --------------------------------------------------------------------------------------------------------------

@@ -1,7 +1,8 @@
 // Paquet de l'espace membre et pair éducateur·rice (D9, ADR-18, ADR-30) : Vue 3 + Inertia 2 (sans SSR) + Pinia + vue-i18n.
 // Budget : app.ts + imports statiques < 150 Ko gzip (scripts/check-budgets.mjs) — chaque page Vue, le catalogue de
 // messages (resources/js/lang/<locale>.json), la boîte d'envoi (shared/outbox.js) et Chart.js sont des import() à la
-// demande. Bootstrap : import sélectif partagé avec public.js (shared/bootstrap.js), jamais le paquet complet.
+// demande. Bootstrap : import sélectif partagé avec public.js (shared/bootstrap.js), jamais le paquet complet, chargé
+// après le montage ou au premier geste sur un déclencheur data-bs-* (app/bootstrapOnDemand.ts, P4-12).
 // Au démarrage : stores hydratés depuis les props partagées (HandleInertiaRequests), catalogue de la locale chargé avant
 // le montage (le squelette x-skeleton de app.blade.php reste affiché jusque-là), titre d'onglet neutre si demandé,
 // toast flashé affiché une seule fois (app/flash.ts, jamais au retour dans l'historique) et statut gardé à l'écran
@@ -10,7 +11,6 @@
 // compte de la page, `window.XM.outbox` (contrat de shared/outbox-boot.js : remise d'un SOS hors ligne par sos.js)
 // adossé au store `outbox`. Gabarit membre persistant (layouts/MemberLayout.vue, P6-03) par défaut pour chaque page.
 // Ces deux câblages sont dans app/shellBoot.ts (testés en Vitest).
-import './shared/bootstrap.js';
 import './shared/theme.js';
 import { createApp, h, Fragment, type DefineComponent } from 'vue';
 import { createInertiaApp, router } from '@inertiajs/vue3';
@@ -20,6 +20,7 @@ import { route } from './app/routes';
 import { useToast } from './app/useToast';
 import { createFlashPresenter } from './app/flash';
 import { bindOutbox, withDefaultLayout } from './app/shellBoot';
+import { bootstrapOnDemand } from './app/bootstrapOnDemand';
 import type { SharedProps } from './app/types';
 import { useSessionStore } from './stores/session';
 import { useNotificationsStore } from './stores/notifications';
@@ -102,6 +103,7 @@ createInertiaApp({
             .use(pinia)
             .use(i18n)
             .mount(el);
+        bootstrapOnDemand();
     },
     progress: { color: 'var(--xm-primary)', showSpinner: false },
 });

@@ -271,6 +271,43 @@ return [
     ],
 
     /*
+     * Événements (P8-04, lot evenements) : bornes de la modale « Créer un événement » (events.php, partials/modals.php
+     * l.166-190), pagination des listes (prototype : 6 par « Charger plus »), heure proposée par défaut, fenêtre du rappel
+     * de la veille (`events:remind`, toutes les quinze minutes) et durée d'un événement au plus.
+     */
+    'events' => [
+        'title_min' => 3,
+        'title_max' => 200,
+        'place_max' => 120,
+        'address_max' => 255,
+        'description_max' => 2000,
+        'per_page' => 6,
+        'sidebar_others' => 3,
+        'default_time' => '15:00',
+        'reminder_hours' => 24,
+        'max_duration_days' => 31,
+    ],
+
+    /*
+     * Forums (P8-05, lot forums) : bornes de la modale « Nouveau sujet » (forums.php l.13 : titre ≥ 5, message ≥ 10 ;
+     * champ titre maxlength 140) et de la réponse (forum-topic.php l.13 : ≥ 2), pagination (prototype : 6 sujets par
+     * « Charger plus »), recherche, et fenêtre du compteur de vues pour un client sans session (jeton Bearer du mobile :
+     * une vue par compte et par sujet dans cette fenêtre ; navigateur : une par session, forum-topic.php l.46).
+     */
+    'forums' => [
+        'title_min' => 5,
+        'title_max' => 140,
+        'body_min' => 10,
+        'body_max' => 5000,
+        'reply_min' => 2,
+        'reply_max' => 2000,
+        'topics_per_page' => 6,
+        'replies_per_page' => 30,
+        'search_max' => 60,
+        'view_window_minutes' => 120,
+    ],
+
+    /*
      * Dossiers de cas (RG-06 à RG-08).
      */
     'cases' => [
@@ -536,7 +573,7 @@ return [
         // Catalogue Vue (P6-05) : textes jamais affichés par l'espace Vue (administration Livewire, pages publiques et SEO
         // Blade, maintenance, e-mails ; erreurs et noms de champs de l'API du fil, rendus par le serveur, P7-02) retirés de
         // resources/js/lang/<locale>.json ; l'ARB mobile reste complet.
-        'vue_exclude' => ['admin', 'newsletter.admin', 'newsletter.campaign_defaults', 'notifications.admin', 'pages/', 'seo', 'maintenance', 'mail', 'feed.api', 'feed.moderation', 'mobile.api', 'community.messages.api', 'community.api'],
+        'vue_exclude' => ['admin', 'newsletter.admin', 'newsletter.campaign_defaults', 'notifications.admin', 'pages/', 'seo', 'maintenance', 'mail', 'feed.api', 'feed.moderation', 'mobile.api', 'community.messages.api', 'community.api', 'community.events.api'],
     ],
 
     /*
@@ -582,6 +619,8 @@ return [
         'case_forms' => ['facts_author', 'facts_description', 'services_note', 'consent_signatory'],
         'case_followups' => ['comment'],
         'messages' => ['body'],
+        // P8-04 : adresse exacte et lien de connexion d'un événement, servis aux seul·es participant·es confirmé·es.
+        'events' => ['address', 'online_url'],
         'assistant_messages' => ['body'],
         'social_channels' => ['access_token', 'refresh_token'],
         'settings' => ['value'],

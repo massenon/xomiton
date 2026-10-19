@@ -8,6 +8,7 @@
 // connexion et envoyée plus tard (store `outbox`, type `post`) est annoncée puis le fil est relu ; refusée au rejeu,
 // sa modale est rouverte avec le contenu (brouillon lié à l'entrée) et les erreurs du serveur. `data-xm-feed-page` :
 // public/outbox-notices.js laisse la page annoncer elle-même ces envois. Motifs de signalement fournis aux cartes.
+// Pastille « Événement » : modale « Créer un événement » (P8-04, réglages `composer.event`), fiche ouverte après création.
 // Props : FeedPageController::index (title, tag, feed, featured, events, composer, report_reasons).
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -39,8 +40,11 @@ const props = withDefaults(defineProps<{
 
 const postModal = lazyComponent(() => import('@/components/feed/CreatePostModal.vue'));
 const pollModal = lazyComponent(() => import('@/components/feed/CreatePollModal.vue'));
+// P8-04 : pastille « Événement » → modale « Créer un événement » (même morceau que /evenements, chargé à la demande).
+const eventModal = lazyComponent(() => import('@/components/events/CreateEventModal.vue'));
 const CreatePostModal = postModal.component;
 const CreatePollModal = pollModal.component;
+const CreateEventModal = eventModal.component;
 
 /** Filtres du prototype (fil.php $tags) ; valeurs App\Enums\PostTag, libellés feed.filters.*. */
 const FILTERS = ['', 'temoignage', 'question', 'ressource', 'evenement', 'sondage'] as const;
@@ -50,7 +54,7 @@ const toast = useToast();
 const outbox = useOutboxStore();
 const { items, loading, hasMore, finished, announce, reset, loadMore, remove, replace, prepend } = useFeedList('feed', props.feed, () => props.tag ?? null);
 const filtering = ref(false);
-const modal = ref<{ kind: 'post' | 'poll'; focus: 'photo' | null } | null>(null);
+const modal = ref<{ kind: 'post' | 'poll' | 'event'; focus: 'photo' | null } | null>(null);
 const recovered = ref<RecoveredEntry | null>(null);
 const drafts = useDraftsStore();
 provideReportReasons(props.report_reasons);
@@ -76,17 +80,26 @@ function filter(event: MouseEvent, value: string) {
     });
 }
 
-async function open(kind: 'post' | 'poll', focus: 'photo' | null) {
+const loaderOf = (kind: 'post' | 'poll' | 'event') => (kind === 'poll' ? pollModal : kind === 'event' ? eventModal : postModal);
+
+async function open(kind: 'post' | 'poll' | 'event', focus: 'photo' | null) {
     if (kind === 'poll' && !props.composer.can_poll) return;
+    if (kind === 'event' && !props.composer.event) return;
     modal.value = { kind, focus };
-    if (!(await (kind === 'poll' ? pollModal : postModal).load())) {
+    if (!(await loaderOf(kind).load())) {
         modal.value = null;
         toast.show(t('microcopy.error.unreachable'), 'warning');
     }
 }
 
 /** Morceaux des modales demandés dès le survol de l'invite (réseau lent). */
-const warm = (kind: 'post' | 'poll') => { void (kind === 'poll' ? pollModal : postModal).load(); };
+const warm = (kind: 'post' | 'poll' | 'event') => { void loaderOf(kind).load(); };
+
+/** Événement créé depuis le fil : annoncé, puis sa fiche ouverte. */
+function onEventCreated(event: { url: string }) {
+    toast.show(t('community.events.toasts.created'), 'success');
+    router.visit(event.url);
+}
 
 function onPublished(post: Post) {
     if (!props.tag || props.tag === post.tag) prepend(post);
@@ -205,4 +218,5 @@ onBeforeUnmount(() => stopFlush());
 
     <component :is="CreatePostModal" v-if="modal?.kind === 'post' && CreatePostModal" :options="composer" :focus="modal.focus" :recovered="recovered" @published="onPublished" @hidden="closeModal" />
     <component :is="CreatePollModal" v-if="modal?.kind === 'poll' && CreatePollModal" :options="composer" :recovered="recovered" @published="onPublished" @hidden="closeModal" />
+    <component :is="CreateEventModal" v-if="modal?.kind === 'event' && CreateEventModal && composer.event" :options="composer.event" @created="onEventCreated" @hidden="closeModal" />
 </template>

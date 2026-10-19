@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Seo;
 
+use App\Application\Community\Events\EventAccess;
 use App\Application\Content\HelpCenter;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Models\Event;
 use App\Models\Resource;
 use App\Models\Thematique;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\Route;
  * Jamais listés : l'administration, l'API, l'espace membre (routes `auth`, ADR-30), l'OTP, les pages de newsletter,
  * les résultats de recherche, les écrans provisoires (PlaceholderController, servis en noindex). Une route n'est retenue
  * que si elle existe, est publique (aucun middleware `auth`), n'est plus provisoire et hors des préfixes interdits :
- * chaque page apparaît quand sa phase la livre ; `/evenements` une fois sa liste publique livrée (Q35).
+ * chaque page apparaît quand sa phase la livre ; `/evenements` et les événements publics depuis P8-04 (Q35 a).
  *
  * Les `<loc>` partent de `config('app.url')`, jamais de l'hôte de la requête : le XML mis en cache sous une clé globale
  * ne peut pas être empoisonné par un en-tête Host (cohérent avec l'annonce Sitemap de robots.txt).
@@ -101,6 +103,15 @@ final class SitemapBuilder
         if ($this->isPublicRoute('aide.show')) {
             foreach (app(HelpCenter::class)->faqs()->get(['id', 'slug', 'updated_at']) as $row) {
                 $urls[] = ['loc' => self::absolute('aide.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
+            }
+        }
+
+        // Événements publics à venir (P8-04, Q35 a) : `is_public`, publiés, hors groupe privé et page non approuvée.
+        if ($this->isPublicRoute('evenements.show')) {
+            $events = app(EventAccess::class)->forPublic(Event::query())->upcoming()->get(['events.id', 'events.ulid', 'events.updated_at']);
+
+            foreach ($events as $row) {
+                $urls[] = ['loc' => self::absolute('evenements.show', $row->ulid), 'lastmod' => $row->updated_at?->toAtomString()];
             }
         }
 

@@ -9,7 +9,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
-import { Offcanvas } from '@/shared/bootstrap.js';
+import { loadedBootstrap } from '@/shared/bootstrap-lazy.js';
 import { logout } from '@/app/logout';
 import { route } from '@/app/routes';
 import { ACCOUNT_LINKS, LINKS, SIDENAV_SECTIONS, allowed, hrefOf, isActive, type NavLink } from '@/app/memberNav';
@@ -35,9 +35,10 @@ const year = new Date().getFullYear();
 const aboutHref = `${route('home', undefined, '/')}#valeurs`;
 const privacyHref = route('confidentialite', undefined, '/confidentialite');
 
+/** Bootstrap chargé à la demande (shared/bootstrap-lazy.js) : un offcanvas ouvert implique Bootstrap chargé. */
 function close() {
     const el = offcanvas.value;
-    if (el?.classList.contains('show')) Offcanvas.getOrCreateInstance(el).hide();
+    if (el?.classList.contains('show')) loadedBootstrap()?.Offcanvas.getOrCreateInstance(el).hide();
 }
 
 /** État du bouton « Menu » (aria-expanded) : Bootstrap Offcanvas ne le tient pas à jour, ses évènements le font. */

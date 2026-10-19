@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\V1\Community\PageController;
 use App\Http\Controllers\Api\V1\Content\ResourceController;
 use App\Http\Controllers\Api\V1\Content\ThematiqueController;
 use App\Http\Controllers\Api\V1\DashboardController;
+use App\Http\Controllers\Api\V1\Events\EventController;
 use App\Http\Controllers\Api\V1\Feed\CommentController;
 use App\Http\Controllers\Api\V1\Feed\ContentReportController;
 use App\Http\Controllers\Api\V1\Feed\FeedController;
@@ -28,6 +29,9 @@ use App\Http\Controllers\Api\V1\Feed\PollVoteController;
 use App\Http\Controllers\Api\V1\Feed\PostController;
 use App\Http\Controllers\Api\V1\Feed\PostReactionController;
 use App\Http\Controllers\Api\V1\Feed\UserPostController;
+use App\Http\Controllers\Api\V1\Forums\ForumController;
+use App\Http\Controllers\Api\V1\Forums\ForumReplyController;
+use App\Http\Controllers\Api\V1\Forums\ForumReportController;
 use App\Http\Controllers\Api\V1\Me\AccountController;
 use App\Http\Controllers\Api\V1\Me\DeviceController;
 use App\Http\Controllers\Api\V1\Me\ExportController;
@@ -52,7 +56,7 @@ use Illuminate\Support\Facades\Route;
  *   2. authentifié : auth:sanctum (jeton Bearer de Flutter ou cookie de session de Vue en mode SPA).
  * Les POST rejouables par la boîte d'envoi portent `idempotent:required` (ADR-32 : même clé → même réponse), leur limiteur
  * nommé passant par `limit=<nom>` (jamais `throttle:<nom>` à côté : Laravel le trierait avant et un rejeu consommerait le quota).
- * Familles à venir : P8 communauté (conversations/ livrées, P8-01 ; groups/, pages/ livrés, P8-02, P8-03), P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
+ * Familles à venir : P8 communauté (conversations/ livrées, P8-01 ; groups/, pages/ livrés, P8-02, P8-03 ; events/ livré, P8-04 ; forums/ livré, P8-05), P9 pair et sync (groupe 2) ; signalements / sos / urgences livrés (P5-06),
  * me/* et notifications/* livrés (P6-06, P6-07, P6-09), feed/, posts/*, comments/* livrés (P7-02), dashboard,
  * thematiques, ressources, users/{id}/posts livrés (P6-08).
  */
@@ -257,5 +261,33 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::get('{page:ulid}', [PageController::class, 'show'])->name('show');
         Route::post('{page:ulid}/follow', [PageController::class, 'follow'])->middleware('throttle:community_write')->name('follow');
         Route::delete('{page:ulid}/follow', [PageController::class, 'unfollow'])->middleware('throttle:community_write')->name('unfollow');
+    });
+
+    // --- Événements (P8-04, docs/API.md §15) : par ULID (ADR-27) ; invisible (groupe privé, brouillon, masqué) → 404.
+    // `address` et `online_url` seulement pour qui a répondu « Je participe » (et l'organisation, la modération). Créer
+    // exige un e-mail confirmé (`verified`), répondre « Je participe » aussi (RespondToEvent, annuler reste possible) ;
+    // créer et répondre passent par `community_write` (20/min). Réponses `no-store` (adresse et lien déchiffrés).
+    Route::prefix('events')->as('api.events.')->group(function (): void {
+        Route::get('/', [EventController::class, 'index'])->name('index');
+        Route::post('/', [EventController::class, 'store'])->middleware(['verified', 'throttle:community_write'])->name('store');
+        Route::get('{event:ulid}', [EventController::class, 'show'])->name('show');
+        Route::post('{event:ulid}/rsvp', [EventController::class, 'rsvp'])->middleware('throttle:community_write')->name('rsvp');
+    });
+
+    // --- Forums (P8-05, docs/API.md §16) : 5 forums fixes, sujets par ULID (ADR-27), réponses par id ; sujet invisible
+    // (masqué, supprimé, forum fermé, blocage) → 404 ; anonyme → « Membre anonyme » sans identifiant (RG-02). Ouvrir un
+    // sujet et répondre exigent un e-mail confirmé (`verified`) et passent par `feed_write` (10/min), signaler par
+    // `content_report` (20/h), comme le fil.
+    Route::prefix('forums')->as('api.forums.')->group(function (): void {
+        Route::get('/', [ForumController::class, 'index'])->name('index');
+        Route::get('topics', [ForumController::class, 'topics'])->name('topics.index');
+        Route::post('topics', [ForumController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('topics.store');
+        Route::get('topics/{topic:ulid}', [ForumController::class, 'show'])->name('topics.show');
+        Route::delete('topics/{topic:ulid}', [ForumController::class, 'destroy'])->name('topics.destroy');
+        Route::post('topics/{topic:ulid}/report', [ForumReportController::class, 'topic'])->middleware('throttle:content_report')->name('topics.report');
+        Route::get('topics/{topic:ulid}/replies', [ForumReplyController::class, 'index'])->name('replies.index');
+        Route::post('topics/{topic:ulid}/replies', [ForumReplyController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('replies.store');
+        Route::delete('replies/{reply}', [ForumReplyController::class, 'destroy'])->whereNumber('reply')->name('replies.destroy');
+        Route::post('replies/{reply}/report', [ForumReportController::class, 'reply'])->whereNumber('reply')->middleware('throttle:content_report')->name('replies.report');
     });
 });

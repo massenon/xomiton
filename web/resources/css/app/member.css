@@ -6,6 +6,9 @@
  */
 #memberHeader .navbar-nav .dropdown-toggle { background: none; border: 0; }
 
+/* Déclencheur data-bs-* dont le geste attend Bootstrap, chargé à la demande (app/bootstrapOnDemand.ts, P4-12). */
+.xm-is-waiting { cursor: progress; }
+
 @media (pointer: coarse) {
   #memberHeader .icon-md,
   #memberHeader .navbar-toggler { width: var(--xm-target-min, 44px); height: var(--xm-target-min, 44px); }

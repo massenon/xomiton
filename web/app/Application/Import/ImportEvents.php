@@ -14,7 +14,8 @@ use Throwable;
 /**
  * events.json → events (date + time → starts_at, going → going_count, organizer texte → organizer_label
  * et organizer_id si un compte porte ce nom, cat → catégorie `event`, image → image_path, place « en ligne »
- * → is_online). Clé naturelle : le slug du titre.
+ * → is_online ; « Ville – lieu précis » → `place` = ville, `address` = lieu précis chiffré, P8-04). Clé naturelle : le
+ * slug du titre. Jamais public (`is_public` reste à false : le prototype réservait les événements aux membres, Q35).
  */
 final class ImportEvents extends AbstractImporter
 {
@@ -39,7 +40,7 @@ final class ImportEvents extends AbstractImporter
 
         $startsAt = $this->startsAt($row['date'] ?? null, $row['time'] ?? null)
             ?? $this->reject('date ou heure de début absente ou invalide');
-        $place = $this->text($row['place'] ?? null, 200);
+        [$place, $address] = self::splitPlace($this->text($row['place'] ?? null, 200));
         $organizer = $this->text($row['organizer'] ?? null, 120);
 
         $event = Event::withTrashed()->firstOrNew(['slug' => $slug]);
@@ -49,6 +50,7 @@ final class ImportEvents extends AbstractImporter
             'category_id' => $this->categoryId($row['cat'] ?? $row['category'] ?? null),
             'starts_at' => $startsAt,
             'place' => $place,
+            'address' => $address,
             'is_online' => $place !== null && str_contains(mb_strtolower($place), 'en ligne'),
             'description' => $this->text($row['description'] ?? null),
             'image_path' => $this->imagePath($row['image'] ?? null),
@@ -62,6 +64,22 @@ final class ImportEvents extends AbstractImporter
 
         $this->ctx->remember('events', $this->prototypeId($row, $index), (int) $event->getKey());
         $this->track($event);
+    }
+
+    /**
+     * « Cotonou – Stade de l'Amitié » → ['Cotonou', 'Stade de l'Amitié'] ; un lieu sans tiret reste la ville.
+     *
+     * @return array{0: string|null, 1: string|null}
+     */
+    private static function splitPlace(?string $place): array
+    {
+        if ($place === null || ! str_contains($place, ' – ')) {
+            return [$place, null];
+        }
+
+        [$city, $address] = array_map('trim', explode(' – ', $place, 2));
+
+        return $city === '' || $address === '' ? [$place, null] : [$city, $address];
     }
 
     private function startsAt(mixed $date, mixed $time): ?Carbon

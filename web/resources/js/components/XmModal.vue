@@ -10,9 +10,14 @@
 // Démontée ouverte (visite Inertia lancée depuis la modale) : Modal.dispose() de Bootstrap ne rend pas le défilement,
 // releaseBody() retire donc body.modal-open, le fond et les réglages de ScrollBarHelper (overflow, padding-right,
 // margin-right des éléments fixes), sauf si une autre modale reste ouverte.
+// Bootstrap chargé à la demande (P4-12, shared/bootstrap-lazy.js) : jamais importé en dur, sans quoi il reviendrait dans
+// le morceau de chaque page qui importe une modale. show() attend son arrivée (s'il n'est pas déjà là) ; hide() et la
+// libération au démontage passent par loadedBootstrap() : une modale ouverte implique Bootstrap chargé. Échec du
+// chargement : la modale reste fermée et `update:open` repasse à false (un nouvel essai refait la demande).
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Modal } from '../shared/bootstrap.js';
+import type { Modal } from '../shared/bootstrap.js';
+import { loadBootstrap, loadedBootstrap } from '../shared/bootstrap-lazy.js';
 
 const props = withDefaults(defineProps<{
     id: string;
@@ -40,6 +45,9 @@ const word = ref('');
 let instance: InstanceType<typeof Modal> | null = null;
 let opener: HTMLElement | null = null;
 let confirmedClose = false;
+let mounted = false;
+/** show() demandé avant l'arrivée de Bootstrap ; hide() ou le démontage l'annulent. */
+let wanted = false;
 
 const FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top';
 
@@ -71,15 +79,40 @@ const actionLabel = computed(() => props.action ?? (isDelete.value ? t('componen
 const actionDisabled = computed(() => props.busy || (Boolean(props.confirmWord) && word.value.trim() !== props.confirmWord));
 const staticBackdrop = computed(() => (props.static || props.dirtyGuard ? 'static' : undefined));
 
+/** Instance Bootstrap de la modale si Bootstrap est déjà chargé (celle de l'API data-bs-* si elle existe), sinon null. */
+function ensureInstance(): InstanceType<typeof Modal> | null {
+    if (instance || !root.value) return instance;
+    const bootstrap = loadedBootstrap();
+    if (!bootstrap) return null;
+    instance = bootstrap.Modal.getOrCreateInstance(root.value, { backdrop: staticBackdrop.value === 'static' ? 'static' : true }) as InstanceType<typeof Modal>;
+    return instance;
+}
+
 function show() {
-    if (!instance || !root.value) return;
-    if (!root.value.classList.contains('show')) {
-        opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-        instance.show();
+    if (!root.value || root.value.classList.contains('show')) return;
+    if (!wanted) opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const ready = ensureInstance();
+    if (ready) {
+        wanted = false;
+        ready.show();
+        return;
     }
+    if (wanted) return;
+    wanted = true;
+    loadBootstrap().then(() => {
+        if (!wanted || !mounted) return;
+        wanted = false;
+        ensureInstance()?.show();
+    }, () => {
+        if (!wanted || !mounted) return;
+        wanted = false;
+        opener = null;
+        emit('update:open', false);
+    });
 }
 function hide() {
-    instance?.hide();
+    wanted = false;
+    ensureInstance()?.hide();
 }
 
 function onHide(event: Event) {
@@ -124,13 +157,16 @@ function close() {
 
 onMounted(() => {
     if (!root.value) return;
-    instance = Modal.getOrCreateInstance(root.value, { backdrop: staticBackdrop.value === 'static' ? 'static' : true });
+    mounted = true;
+    ensureInstance();
     root.value.addEventListener('hide.bs.modal', onHide);
     root.value.addEventListener('shown.bs.modal', onShown);
     root.value.addEventListener('hidden.bs.modal', onHidden);
     if (props.open) show();
 });
 onBeforeUnmount(() => {
+    mounted = false;
+    wanted = false;
     const element = root.value;
     const wasOpen = Boolean(element?.classList.contains('show'));
     if (element) {
@@ -138,7 +174,7 @@ onBeforeUnmount(() => {
         element.removeEventListener('shown.bs.modal', onShown);
         element.removeEventListener('hidden.bs.modal', onHidden);
     }
-    instance?.dispose();
+    (instance ?? (element ? loadedBootstrap()?.Modal.getInstance(element) : null))?.dispose();
     instance = null;
     if (wasOpen || document.body.classList.contains('modal-open')) releaseBody(element);
 });

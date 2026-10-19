@@ -108,6 +108,16 @@ Schedule::command('polls:close')
     ->description('Clôt les sondages arrivés à échéance et envoie « Sondage terminé » à leur auteur·rice');
 
 /*
+ * Événements (P8-04) : rappel de la veille aux participant·es confirmé·es (cloche, push, e-mail `rappel-evenement`),
+ * une seule fois par événement (`events.reminder_sent_at`). Un quart d'heure de précision suffit pour « demain ».
+ */
+Schedule::command('events:remind')
+    ->everyFifteenMinutes()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Envoie le rappel de la veille aux participant·es des événements qui commencent dans les 24 h');
+
+/*
  * Signal de vie vers la supervision externe (D7, NFR-03) : enregistré en dernier pour être émis après les
  * autres tâches de la minute. À conditionner au succès d'`alerts:escalate` (marqueur `alerts:escalate:last_success_at`,
  * livré) et de `notifications:retry` (marqueur `notifications:retry:last_success_at`, livré) — P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte.

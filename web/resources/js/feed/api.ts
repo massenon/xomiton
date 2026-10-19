@@ -14,6 +14,16 @@ interface Envelope<T> {
     meta?: Record<string, unknown>;
 }
 
+/** Cible de la modale « Signaler » (ReportContentModal) : fil (P7-05) ou forums (P8-05, docs/API.md §16). */
+export type ReportTarget = { post: string } | { comment: number } | { topic: string } | { reply: number };
+
+function reportUrl(target: ReportTarget): string {
+    if ('post' in target) return postUrl(target.post, '/report');
+    if ('comment' in target) return `${API_BASE}/comments/${target.comment}/report`;
+    if ('topic' in target) return `${API_BASE}/forums/topics/${encodeURIComponent(target.topic)}/report`;
+    return `${API_BASE}/forums/replies/${target.reply}/report`;
+}
+
 export function feedApi(api: Api) {
     const toggle = async <T>(url: string, on: boolean, options?: ApiOptions): Promise<T> =>
         (on ? await api.post<Envelope<T>>(url, undefined, options) : await api.delete<Envelope<T>>(url, undefined, options)).data.data;
@@ -40,8 +50,9 @@ export function feedApi(api: Api) {
                 : await api.post<Envelope<Poll>>(url, { choices }, { silent: true });
             return response.data.data;
         },
-        async report(target: { post: string } | { comment: number }, reason: string, details: string | null): Promise<{ created: boolean }> {
-            const url = 'post' in target ? postUrl(target.post, '/report') : `${API_BASE}/comments/${target.comment}/report`;
+        /** Signalement d'une publication, d'un commentaire ou (P8-05) d'un sujet ou d'une réponse de forum. */
+        async report(target: ReportTarget, reason: string, details: string | null): Promise<{ created: boolean }> {
+            const url = reportUrl(target);
             const response = await api.post<Envelope<{ reported: boolean }>>(url, { reason, details: details || null });
             return { created: response.status === 201 };
         },
