@@ -20,7 +20,14 @@ import { load, preload, LIBRARIES } from './admin/lazy.js';
 
 window.Swal = Swal;
 window.XM = window.XM || {};
-window.XM.admin = { load, preload, libraries: LIBRARIES, toast: fireToast, confirm: confirmDialog };
+// Scripts d'écran à la demande (resources/js/admin/screens/<nom>.js, un chunk chacun) : un élément `data-xm-screen="nom"`
+// de la page déclenche l'import de son script, dont l'export par défaut monte l'écran (graphiques, sons…).
+const screens = import.meta.glob(['./admin/screens/*.js', '!./admin/screens/*.test.js']);
+const screen = (name) => {
+  const loader = screens[`./admin/screens/${name}.js`];
+  return loader ? loader().then((m) => (typeof m.default === 'function' ? m.default() : null)) : Promise.reject(new Error(`Écran inconnu : ${name}`));
+};
+window.XM.admin = { load, preload, screen, libraries: LIBRARIES, toast: fireToast, confirm: confirmDialog };
 
 // Avant le démarrage de Livewire (livewire:init, à DOMContentLoaded) : wire:confirm passe par la modale rouge.
 bindConfirm();
@@ -32,4 +39,5 @@ ready(() => {
   bindToasts();
   bindShell();
   preload();
+  document.querySelectorAll('[data-xm-screen]').forEach((el) => { screen(el.dataset.xmScreen).catch(() => {}); });
 });

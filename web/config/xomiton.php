@@ -157,6 +157,12 @@ return [
         // Recherche membre (P8-13) : `GET search` et `search/suggestions` par compte et par minute (limiteur `search`,
         // hors `api_per_minute` : les suggestions de l'en-tête n'épuisent pas le quota du reste de l'espace).
         'search_per_minute' => 60,
+        // Recherche globale de l'administration (P10-08, Livewire `/admin/recherche`) : recherches par compte et par minute
+        // (limiteur `admin-search`, appliqué dans le composant : un appel Livewire n'est pas une route).
+        'admin_search_per_minute' => 60,
+        // Balise anonyme des compteurs de contenu (POST /evenements-contenu/{type}, P10-06, limiteur `content-event`) : par IP
+        // (empreinte) et par minute, sans session ni cookie.
+        'content_event_per_minute' => 60,
         // Annuaire membre (P8-12) : demandes de rappel (POST directory/{id}/callback) par compte et par heure (limiteur
         // `directory_callback`, après la vérification de la clé : un rejeu ne compte pas), jamais le quota `report` par
         // IP des signalements anonymes (CGNAT mobile).
@@ -311,6 +317,21 @@ return [
     'directory' => [
         'per_page' => 24,
         'search_max' => 80,
+    ],
+
+    /*
+     * Espace pair (P9-03, P9-04, P9-08, lot espace-pair ; écrans `/espace-pair`, `/collecte`,
+     * `/espace-pair/dossiers`) : intervalle d'interrogation des alertes routées quand le compte est de garde (10 s,
+     * prototype espace-pair.php ; sinon aucune interrogation), dossiers par page de la liste, derniers dossiers montrés
+     * sous le formulaire de collecte.
+     */
+    'peer' => [
+        'alerts_poll_seconds' => 10,
+        'cases_per_page' => 15,
+        'recent_cases' => 10,
+        // Brouillon de la collecte sur l'appareil (champs quasi-identifiants d'une victime, sans les notes) : durée de
+        // vie plus courte que `alerts.draft_days` (7 j), jamais plus longue (Q88 3).
+        'collecte_draft_days' => 1,
     ],
 
     /*
@@ -531,7 +552,12 @@ return [
      */
     'reports' => [
         'chunk_rows' => 500,
-        'max_rows' => 20000,
+        // Lignes du registre détaillé d'un rapport : plafond par rapport (50 000, Excel par jobs successifs) et lignes
+        // collectées par job GenerateReport (P10-07, ADR-23 : moins de 30 s par morceau).
+        'max_rows' => 50000,
+        'rows_per_job' => 5000,
+        // Durée de conservation d'un fichier généré (jours) avant `reports:purge`.
+        'retention_days' => 30,
         // Disque Laravel des fichiers de generated_reports (hors racine web) ; purgés par reports:purge après expires_at.
         'disk' => env('XOMITON_REPORTS_DISK', 'local'),
     ],
@@ -546,6 +572,18 @@ return [
         'max_rows' => (int) env('XOMITON_EXPORT_MAX_ROWS', 20000),
         'chunk_rows' => 500,
         'link_minutes' => 2,
+        // ADR-23 : PDF et Word se construisent en mémoire ; au-delà de ce nombre de lignes de registre, l'export est
+        // refusé (422 « choisir Excel »), l'Excel étant écrit en flux.
+        // Mesuré (dompdf, 9 colonnes) : 100 lignes ≈ 70 Mo, 200 ≈ 100 Mo, 300 ≈ 130 Mo de pic, 2 000 ≈ 1,4 Go : 200 tient sous
+        // les 128 Mo d'un mutualisé.
+        'pdf_max_rows' => (int) env('XOMITON_PDF_MAX_ROWS', 200),
+    ],
+
+    /*
+     * Compteurs d'événements de contenu (P10-06) : rétention des compteurs quotidiens sans donnée personnelle.
+     */
+    'content_events' => [
+        'retention_days' => 30,
     ],
 
     /*

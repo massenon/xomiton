@@ -125,4 +125,16 @@ return [
         'body' => '<p>Bonjour {{user_first_name}},</p><p>Tu as demandé une copie de tes données {{site_name}}. Ton fichier est prêt :</p><p><a href="{{export_link}}" rel="noopener noreferrer" target="_blank"><strong>Télécharger mes données</strong></a></p><p>Ce lien est valable {{export_expiry}} et ne fonctionne que connecté·e à ton compte. Le fichier contient des informations personnelles : garde-le en lieu sûr.</p><p>Si tu n’es pas à l’origine de cette demande, change ton mot de passe et écris-nous à <a href="mailto:{{support_email}}">{{support_email}}</a>.</p>',
         'active' => true,
     ],
+    [
+        // Lot admin-indicateurs-rapports (P10-07) : envoi du fichier d'un rapport généré (planification ou destinataires de
+        // l'assistant), en pièce jointe. Adressé à l'équipe et aux partenaires : vouvoiement (administration).
+        'name' => 'Rapport généré',
+        'slug' => 'rapport-genere',
+        'category' => 'Autre',
+        'system' => true,
+        'subject' => '{{site_name}} : {{report_title}}',
+        'preheader' => 'Période {{report_period}}, format {{report_format}}.',
+        'body' => '<p>Bonjour,</p><p>Veuillez trouver ci-joint le rapport <strong>{{report_title}}</strong> pour la période {{report_period}} ({{report_format}}).</p><p>Ce document contient des chiffres issus de la plateforme {{site_name}}. Les effectifs inférieurs à 5 y sont masqués. Merci de le conserver en lieu sûr et de ne pas le transférer.</p><p>Une question sur ce rapport ? Écrivez-nous à <a href="mailto:{{support_email}}">{{support_email}}</a>.</p>',
+        'active' => true,
+    ],
 ];

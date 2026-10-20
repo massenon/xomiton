@@ -22,7 +22,7 @@ use Illuminate\Support\Carbon;
 
 /*
  * `indicators:snapshot` (P1-16) : instantané du mois précédent pour chaque indicateur intégré actif doté d'une clé
- * de calcul, national puis par département ; idempotent ; valeurs manuelles conservées ; IND-04 non calculable.
+ * de calcul, national puis par département ; idempotent ; valeurs manuelles conservées ; IND-04 (premier suivi ≤ création + 72 h) calculé.
  */
 
 function valueOf(string $code, ?Zone $zone = null): ?float
@@ -54,11 +54,12 @@ it('couvre chaque clé de calcul du catalogue : calculable ou non calculable ave
         expect($calculator->unavailableReason($key))->not->toContain('inconnue', "clé {$key}");
     }
 
-    expect($calculator->supports('pct_72h'))->toBeFalse()
+    expect($calculator->supports('pct_72h'))->toBeTrue()
+        ->and($calculator->isZonal('pct_72h'))->toBeTrue()
         ->and($calculator->supports('cas_total'))->toBeTrue()
         ->and($calculator->isZonal('cas_total'))->toBeTrue()
         ->and($calculator->isZonal('couverture'))->toBeFalse()
-        ->and(count(IndicatorCalculator::keys()))->toBe(15);
+        ->and(count(IndicatorCalculator::keys()))->toBe(16);
 });
 
 it('calcule le mois précédent au niveau national et par département, de façon idempotente', function (): void {
@@ -111,8 +112,7 @@ it('calcule le mois précédent au niveau national et par département, de faço
     ]);
 
     $this->artisan('indicators:snapshot')
-        ->expectsOutputToContain('Instantané 09/2026 : 37 valeurs enregistrées (15 indicateurs, 2 départements), 1 calcul sans donnée, 1 valeur manuelle conservée.')
-        ->expectsOutputToContain('IND-04 non calculable : aucune colonne n’horodate le premier service délivré')
+        ->expectsOutputToContain('Instantané 09/2026 : 40 valeurs enregistrées (16 indicateurs, 2 départements), 1 calcul sans donnée, 1 valeur manuelle conservée.')
         ->assertSuccessful();
 
     expect(valueOf('IND-01'))->toBe(999.0)
@@ -120,7 +120,9 @@ it('calcule le mois précédent au niveau national et par département, de faço
         ->and(valueOf('IND-01', $zoneB))->toBe(1.0)
         ->and(valueOf('IND-02'))->toBe(3.0)
         ->and(valueOf('IND-03'))->toBe(0.0)
-        ->and(valueOf('IND-04'))->toBeNull()
+        ->and(valueOf('IND-04'))->toBe(50.0)
+        ->and(valueOf('IND-04', $zoneA))->toBe(33.33)
+        ->and(valueOf('IND-04', $zoneB))->toBe(100.0)
         ->and(valueOf('IND-05'))->toBe(25.0)
         ->and(valueOf('IND-05', $zoneA))->toBe(33.33)
         ->and(valueOf('IND-06'))->toBe(50.0)
@@ -145,7 +147,7 @@ it('calcule le mois précédent au niveau national et par département, de faço
 
     $rows = IndicatorValue::query()->count();
 
-    expect(IndicatorValue::query()->computed()->count())->toBe(37)
+    expect(IndicatorValue::query()->computed()->count())->toBe(40)
         ->and(IndicatorValue::query()->manual()->count())->toBe(1);
 
     $this->artisan('indicators:snapshot', ['--month' => '2026-09'])->assertSuccessful();

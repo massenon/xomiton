@@ -99,7 +99,7 @@ final class SnapshotIndicators
             return;
         }
 
-        IndicatorValue::record($indicator, $period->start, $period->end, $zone, (float) $computation->value);
+        IndicatorValue::record($indicator, $period->start, $period->end, $zone, (float) $computation->value, false, $computation->base);
         $result->recorded++;
     }
 }

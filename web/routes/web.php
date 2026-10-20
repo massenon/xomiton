@@ -21,6 +21,7 @@ use App\Http\Controllers\Web\AlertAcknowledgementController;
 use App\Http\Controllers\Web\Alerts\ReportPageController;
 use App\Http\Controllers\Web\Alerts\ReportTrackingController;
 use App\Http\Controllers\Web\ConfidentialiteController;
+use App\Http\Controllers\Web\ContentEventController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\DoGlegbeController;
 use App\Http\Controllers\Web\EventsPageController;
@@ -39,6 +40,9 @@ use App\Http\Controllers\Web\Member\GroupsPageController;
 use App\Http\Controllers\Web\Member\MessagesPageController;
 use App\Http\Controllers\Web\Member\NotificationsPageController;
 use App\Http\Controllers\Web\Member\PagesPageController;
+use App\Http\Controllers\Web\Member\Peer\CollectePageController;
+use App\Http\Controllers\Web\Member\Peer\PeerCasesPageController;
+use App\Http\Controllers\Web\Member\Peer\PeerHomePageController;
 use App\Http\Controllers\Web\Member\PlaceholderPageController;
 use App\Http\Controllers\Web\Member\ProfilePageController;
 use App\Http\Controllers\Web\Member\SearchPageController;
@@ -63,6 +67,7 @@ use App\Http\Controllers\Web\ThematiquesShowController;
 use App\Http\Controllers\Web\UrgencesController;
 use App\Http\Controllers\Web\ViolencesController;
 use App\Http\Middleware\EnsureNotInMaintenance;
+use App\Http\Middleware\EnsurePeerSpaceAccess;
 use App\Http\Middleware\ForgetSearchTerms;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InertiaForMembers;
@@ -257,8 +262,17 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     Route::get('/annuaire', DirectoryPageController::class)->middleware('can:directory.view')->name('annuaire');
     $memberPlaceholder('/medias', 'medias', 'medias', 'albums.php');
     $memberPlaceholder('/ccc', 'ccc', 'ccc', 'ccc.php');
-    $memberPlaceholder('/espace-pair', 'espace-pair', 'peer_space', 'espace-pair.php')->middleware('can:peer_space.access');
-    $memberPlaceholder('/collecte', 'collecte', 'collecte', 'collecte.php')->middleware('can:peer_space.access');
+    // P9-03, P9-04, P9-08 (lot espace-pair) : espace pair, réservé au compte actif détenant `peer_space.access`
+    // (EnsurePeerSpaceAccess : RG-03, un·e pair·e en attente de validation reste membre → 403, comme l'API `pair/`).
+    // Tableau de bord (KPI, tâches, alertes routées vers moi), collecte hors ligne (boîte d'envoi, `client_uuid`),
+    // dossiers de la pair·e par code (scope `visibleTo` : dossier d'un autre ou code inconnu → même 404) ; `/espace-pair/
+    // indicateurs` et « Mes appareils synchronisés » : P9-08 reste, lots indicateurs et paramètres.
+    Route::middleware(EnsurePeerSpaceAccess::class)->group(function (): void {
+        Route::get('/espace-pair', PeerHomePageController::class)->name('espace-pair');
+        Route::get('/collecte', CollectePageController::class)->name('collecte');
+        Route::get('/espace-pair/dossiers', [PeerCasesPageController::class, 'index'])->name('espace-pair.dossiers');
+        Route::get('/espace-pair/dossiers/{code}', [PeerCasesPageController::class, 'show'])->where('code', '[^/]{1,20}')->name('espace-pair.dossiers.show');
+    });
 });
 
 // P8-13 (lot recherche-membre) : recherche de l'en-tête (ressources, thématiques, contacts, membres trouvables ; ?q=&type=),
@@ -316,3 +330,8 @@ Route::withoutMiddleware([EncryptCookies::class, AddQueuedCookiesToResponse::cla
 // --- Service worker (P5-10, ADR-26) : à la racine pour la portée « / », sans session ni cookie, servi en maintenance ----
 Route::withoutMiddleware([EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, ShareErrorsFromSession::class, ValidateCsrfToken::class, EnsureNotInMaintenance::class])
     ->get('/sw.js', ServiceWorkerController::class)->name('service-worker');
+
+// --- Compteurs d'événements de contenu (P10-06, CONTENT_STRATEGY.md §1) : balise anonyme des pages publiques, sans session
+// ni cookie, liste fermée de types, limiteur `content-event` (60 par minute et par adresse, `xomiton.rate_limits.content_event_per_minute`), origine contrôlée ; compteurs conservés 30 jours (content-events:purge) ----
+Route::withoutMiddleware([EncryptCookies::class, AddQueuedCookiesToResponse::class, StartSession::class, ShareErrorsFromSession::class, ValidateCsrfToken::class])
+    ->post('/evenements-contenu/{kind}', ContentEventController::class)->middleware('throttle:content-event')->name('content-event');

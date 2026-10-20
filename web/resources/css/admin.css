@@ -5,6 +5,8 @@
  */
 @import './app/admin.css';
 @import './app/pages/admin-maintenance.css';
+@import './app/pages/admin-tableau.css';
+@import './app/pages/admin-alertes.css';
 
 .swal2-popup { font-family: var(--xm-font-body); border-radius: 16px; }
 .swal2-title { font-family: var(--xm-font-heading); }

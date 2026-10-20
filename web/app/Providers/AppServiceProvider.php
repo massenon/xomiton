@@ -349,6 +349,13 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('search', static fn (Request $request): Limit => Limit::perMinute(self::limit('search_per_minute'))
             ->by('search|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
+        // Recherche globale de l'administration (P10-08) : par compte et par minute ; lu par le composant Livewire
+        // (RateLimiter::limiter), la clé ne porte jamais le terme cherché.
+        RateLimiter::for('admin-search', static fn (Request $request): Limit => Limit::perMinute(self::limit('admin_search_per_minute'))
+            ->by('admin-search|'.($request->user()?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip()))));
+        // Balise des compteurs de contenu (P10-06) : par IP (empreinte) et par minute, hors `api` ; réponse 429 sans corps.
+        RateLimiter::for('content-event', static fn (Request $request): Limit => Limit::perMinute(self::limit('content_event_per_minute'))
+            ->by('content-event|'.KeyedHash::make((string) $request->ip())));
         // Annuaire membre (P8-12) : demandes de rappel par compte et par heure (`idempotent:required,limit=directory_callback`),
         // à part du limiteur `report` par IP : les membres derrière un même CGNAT n'épuisent pas le quota des signalements.
         RateLimiter::for('directory_callback', static fn (Request $request): Limit => Limit::perHour(self::limit('directory_callback_per_hour'))

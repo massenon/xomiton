@@ -148,6 +148,14 @@
     "@admin_alerts_anonymous": {
         "description": "admin.alerts.anonymous"
     },
+    "admin_alerts_columns_acknowledged": "Accusé de réception",
+    "@admin_alerts_columns_acknowledged": {
+        "description": "admin.alerts.columns.acknowledged"
+    },
+    "admin_alerts_columns_actions": "Actions",
+    "@admin_alerts_columns_actions": {
+        "description": "admin.alerts.columns.actions"
+    },
     "admin_alerts_columns_category": "Catégorie",
     "@admin_alerts_columns_category": {
         "description": "admin.alerts.columns.category"
@@ -155,6 +163,10 @@
     "admin_alerts_columns_code": "N°",
     "@admin_alerts_columns_code": {
         "description": "admin.alerts.columns.code"
+    },
+    "admin_alerts_columns_commune": "Commune",
+    "@admin_alerts_columns_commune": {
+        "description": "admin.alerts.columns.commune"
     },
     "admin_alerts_columns_gps": "GPS",
     "@admin_alerts_columns_gps": {
@@ -184,6 +196,10 @@
     "@admin_alerts_columns_status": {
         "description": "admin.alerts.columns.status"
     },
+    "admin_alerts_columns_tracking_code": "Code de suivi",
+    "@admin_alerts_columns_tracking_code": {
+        "description": "admin.alerts.columns.tracking_code"
+    },
     "admin_alerts_columns_type": "Type",
     "@admin_alerts_columns_type": {
         "description": "admin.alerts.columns.type"
@@ -191,6 +207,24 @@
     "admin_alerts_columns_zone": "Zone",
     "@admin_alerts_columns_zone": {
         "description": "admin.alerts.columns.zone"
+    },
+    "admin_alerts_count": "{count, plural, =0{Aucune alerte} =1{{count} alerte} other{{count} alertes}}",
+    "@admin_alerts_count": {
+        "description": "admin.alerts.count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_alerts_detail_accuracy": "Précision : {meters}",
+    "@admin_alerts_detail_accuracy": {
+        "description": "admin.alerts.detail.accuracy",
+        "placeholders": {
+            "meters": {
+                "type": "String"
+            }
+        }
     },
     "admin_alerts_detail_acknowledged_at": "Réception accusée le {date} par {name}.",
     "@admin_alerts_detail_acknowledged_at": {
@@ -204,9 +238,57 @@
             }
         }
     },
+    "admin_alerts_detail_acknowledged_label": "Accusé",
+    "@admin_alerts_detail_acknowledged_label": {
+        "description": "admin.alerts.detail.acknowledged_label"
+    },
+    "admin_alerts_detail_add_note": "Ajouter la note",
+    "@admin_alerts_detail_add_note": {
+        "description": "admin.alerts.detail.add_note"
+    },
+    "admin_alerts_detail_apply": "Appliquer",
+    "@admin_alerts_detail_apply": {
+        "description": "admin.alerts.detail.apply"
+    },
+    "admin_alerts_detail_attachment_audio": "Enregistrement audio",
+    "@admin_alerts_detail_attachment_audio": {
+        "description": "admin.alerts.detail.attachment_audio"
+    },
+    "admin_alerts_detail_attachment_documents": "Document",
+    "@admin_alerts_detail_attachment_documents": {
+        "description": "admin.alerts.detail.attachment_documents"
+    },
+    "admin_alerts_detail_attachment_images": "Image",
+    "@admin_alerts_detail_attachment_images": {
+        "description": "admin.alerts.detail.attachment_images"
+    },
+    "admin_alerts_detail_attachments": "Preuves jointes",
+    "@admin_alerts_detail_attachments": {
+        "description": "admin.alerts.detail.attachments"
+    },
+    "admin_alerts_detail_cancelled": "Annulée",
+    "@admin_alerts_detail_cancelled": {
+        "description": "admin.alerts.detail.cancelled"
+    },
+    "admin_alerts_detail_change_status": "Changer le statut",
+    "@admin_alerts_detail_change_status": {
+        "description": "admin.alerts.detail.change_status"
+    },
+    "admin_alerts_detail_choose_contact": "Choisir une personne",
+    "@admin_alerts_detail_choose_contact": {
+        "description": "admin.alerts.detail.choose_contact"
+    },
+    "admin_alerts_detail_choose_status": "Choisir un statut",
+    "@admin_alerts_detail_choose_status": {
+        "description": "admin.alerts.detail.choose_status"
+    },
     "admin_alerts_detail_contact": "Contact laissé",
     "@admin_alerts_detail_contact": {
         "description": "admin.alerts.detail.contact"
+    },
+    "admin_alerts_detail_contact_label": "Personne de l’annuaire",
+    "@admin_alerts_detail_contact_label": {
+        "description": "admin.alerts.detail.contact_label"
     },
     "admin_alerts_detail_description": "Description",
     "@admin_alerts_detail_description": {
@@ -225,6 +307,10 @@
     "@admin_alerts_detail_duplicate_of": {
         "description": "admin.alerts.detail.duplicate_of"
     },
+    "admin_alerts_detail_escalated": "Escaladée",
+    "@admin_alerts_detail_escalated": {
+        "description": "admin.alerts.detail.escalated"
+    },
     "admin_alerts_detail_escalation": "Escalade au point focal national à {time} sans accusé de réception.",
     "@admin_alerts_detail_escalation": {
         "description": "admin.alerts.detail.escalation",
@@ -238,6 +324,18 @@
     "@admin_alerts_detail_history": {
         "description": "admin.alerts.detail.history"
     },
+    "admin_alerts_detail_internal_note": "Note interne",
+    "@admin_alerts_detail_internal_note": {
+        "description": "admin.alerts.detail.internal_note"
+    },
+    "admin_alerts_detail_loading": "Chargement du détail…",
+    "@admin_alerts_detail_loading": {
+        "description": "admin.alerts.detail.loading"
+    },
+    "admin_alerts_detail_national": "National",
+    "@admin_alerts_detail_national": {
+        "description": "admin.alerts.detail.national"
+    },
     "admin_alerts_detail_needs": "Besoins",
     "@admin_alerts_detail_needs": {
         "description": "admin.alerts.detail.needs"
@@ -249,6 +347,14 @@
     "admin_alerts_detail_not_routed": "Non routée",
     "@admin_alerts_detail_not_routed": {
         "description": "admin.alerts.detail.not_routed"
+    },
+    "admin_alerts_detail_note_placeholder": "Visible uniquement par l’équipe",
+    "@admin_alerts_detail_note_placeholder": {
+        "description": "admin.alerts.detail.note_placeholder"
+    },
+    "admin_alerts_detail_occurred_on": "Date des faits",
+    "@admin_alerts_detail_occurred_on": {
+        "description": "admin.alerts.detail.occurred_on"
     },
     "admin_alerts_detail_position": "Position",
     "@admin_alerts_detail_position": {
@@ -262,6 +368,14 @@
     "@admin_alerts_detail_reassign_help": {
         "description": "admin.alerts.detail.reassign_help"
     },
+    "admin_alerts_detail_reference": "Code de suivi",
+    "@admin_alerts_detail_reference": {
+        "description": "admin.alerts.detail.reference"
+    },
+    "admin_alerts_detail_route": "Réattribuer",
+    "@admin_alerts_detail_route": {
+        "description": "admin.alerts.detail.route"
+    },
     "admin_alerts_detail_routed": "Routée vers {name} ({role})",
     "@admin_alerts_detail_routed": {
         "description": "admin.alerts.detail.routed",
@@ -273,6 +387,14 @@
                 "type": "String"
             }
         }
+    },
+    "admin_alerts_detail_safe": "En sécurité",
+    "@admin_alerts_detail_safe": {
+        "description": "admin.alerts.detail.safe"
+    },
+    "admin_alerts_detail_someone": "une personne de l’équipe",
+    "@admin_alerts_detail_someone": {
+        "description": "admin.alerts.detail.someone"
     },
     "admin_alerts_detail_status_change": "{from} → {to} par {user}, le {date}",
     "@admin_alerts_detail_status_change": {
@@ -292,6 +414,10 @@
             }
         }
     },
+    "admin_alerts_detail_take_help": "Cette alerte n’a pas encore d’accusé de réception : l’escalade continue tant que personne ne la prend en charge.",
+    "@admin_alerts_detail_take_help": {
+        "description": "admin.alerts.detail.take_help"
+    },
     "admin_alerts_detail_title": "Alerte {code}",
     "@admin_alerts_detail_title": {
         "description": "admin.alerts.detail.title",
@@ -301,9 +427,17 @@
             }
         }
     },
+    "admin_alerts_detail_button": "Détail",
+    "@admin_alerts_detail_button": {
+        "description": "admin.alerts.detail_button"
+    },
     "admin_alerts_empty": "Aucune alerte ne correspond aux filtres.",
     "@admin_alerts_empty": {
         "description": "admin.alerts.empty"
+    },
+    "admin_alerts_empty_text": "Dès qu’une alerte arrivera, elle apparaîtra ici.",
+    "@admin_alerts_empty_text": {
+        "description": "admin.alerts.empty_text"
     },
     "admin_alerts_errors_already_taken": "Cette alerte est déjà prise en charge par {name}.",
     "@admin_alerts_errors_already_taken": {
@@ -330,6 +464,14 @@
     "@admin_alerts_gps_link": {
         "description": "admin.alerts.gps_link"
     },
+    "admin_alerts_gps_link_help": "Au clic, la position du SOS est transmise à Google Maps (service tiers).",
+    "@admin_alerts_gps_link_help": {
+        "description": "admin.alerts.gps_link_help"
+    },
+    "admin_alerts_has_gps": "Position transmise",
+    "@admin_alerts_has_gps": {
+        "description": "admin.alerts.has_gps"
+    },
     "admin_alerts_kpi_avg_handling": "Délai moyen de prise en charge",
     "@admin_alerts_kpi_avg_handling": {
         "description": "admin.alerts.kpi.avg_handling"
@@ -354,6 +496,91 @@
     "@admin_alerts_no_gps": {
         "description": "admin.alerts.no_gps"
     },
+    "admin_alerts_not_routed": "Non routée",
+    "@admin_alerts_not_routed": {
+        "description": "admin.alerts.not_routed"
+    },
+    "admin_alerts_of": "de l’alerte {code}",
+    "@admin_alerts_of": {
+        "description": "admin.alerts.of",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_refresh": "Actualisation automatique toutes les {seconds} s · dernière : {time}",
+    "@admin_alerts_refresh": {
+        "description": "admin.alerts.refresh",
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            },
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_routing_none": "{count, plural, =0{aucun contact éligible} =1{1 contact examiné, aucun ne convient} other{{count} contacts examinés, aucun ne convient}}",
+    "@admin_alerts_routing_none": {
+        "description": "admin.alerts.routing.none",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_alerts_routing_not_reached": "non atteint",
+    "@admin_alerts_routing_not_reached": {
+        "description": "admin.alerts.routing.not_reached"
+    },
+    "admin_alerts_routing_retained": "retenu : {name}",
+    "@admin_alerts_routing_retained": {
+        "description": "admin.alerts.routing.retained",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_routing_skipped": "ignoré (aucun département)",
+    "@admin_alerts_routing_skipped": {
+        "description": "admin.alerts.routing.skipped"
+    },
+    "admin_alerts_routing_title": "Aperçu du routage automatique (RG-04)",
+    "@admin_alerts_routing_title": {
+        "description": "admin.alerts.routing.title"
+    },
+    "admin_alerts_routing_use": "Proposer {name}",
+    "@admin_alerts_routing_use": {
+        "description": "admin.alerts.routing.use",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_search_help": "La recherche porte sur le n°, le code de suivi, le pseudonyme, la catégorie, le département, la commune et la personne routée, jamais sur le récit (chiffré).",
+    "@admin_alerts_search_help": {
+        "description": "admin.alerts.search_help"
+    },
+    "admin_alerts_search_placeholder": "N°, code de suivi, pseudonyme, commune…",
+    "@admin_alerts_search_placeholder": {
+        "description": "admin.alerts.search_placeholder"
+    },
+    "admin_alerts_tab_count": "{count, plural, =0{aucune alerte} =1{alerte} other{alertes}}",
+    "@admin_alerts_tab_count": {
+        "description": "admin.alerts.tab_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_alerts_table_caption": "Alertes et signalements",
+    "@admin_alerts_table_caption": {
+        "description": "admin.alerts.table_caption"
+    },
     "admin_alerts_tabs_all": "Toutes",
     "@admin_alerts_tabs_all": {
         "description": "admin.alerts.tabs.all"
@@ -370,9 +597,61 @@
     "@admin_alerts_tabs_sos": {
         "description": "admin.alerts.tabs.sos"
     },
+    "admin_alerts_tabs_label": "Types d’alertes",
+    "@admin_alerts_tabs_label": {
+        "description": "admin.alerts.tabs_label"
+    },
+    "admin_alerts_take": "Prendre en charge",
+    "@admin_alerts_take": {
+        "description": "admin.alerts.take"
+    },
+    "admin_alerts_timeline_created": "Alerte reçue ({status})",
+    "@admin_alerts_timeline_created": {
+        "description": "admin.alerts.timeline.created",
+        "placeholders": {
+            "status": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_timeline_escalation_manual": "Réattribuée à {name}",
+    "@admin_alerts_timeline_escalation_manual": {
+        "description": "admin.alerts.timeline.escalation.manual",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_timeline_escalation_no_ack_48h": "Escaladée au point focal national : {name}",
+    "@admin_alerts_timeline_escalation_no_ack_48h": {
+        "description": "admin.alerts.timeline.escalation.no_ack_48h",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_timeline_escalation_no_ack_5min": "Escaladée au point focal national : {name}",
+    "@admin_alerts_timeline_escalation_no_ack_5min": {
+        "description": "admin.alerts.timeline.escalation.no_ack_5min",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_alerts_timeline_system": "système",
+    "@admin_alerts_timeline_system": {
+        "description": "admin.alerts.timeline.system"
+    },
     "admin_alerts_title": "Alertes & signalements",
     "@admin_alerts_title": {
         "description": "admin.alerts.title"
+    },
+    "admin_alerts_zone_unknown": "Département inconnu",
+    "@admin_alerts_zone_unknown": {
+        "description": "admin.alerts.zone_unknown"
     },
     "admin_audit_anonymous": "anonyme",
     "@admin_audit_anonymous": {
@@ -814,9 +1093,26 @@
     "@admin_confirm_title": {
         "description": "admin.confirm.title"
     },
+    "admin_dashboard_acknowledge": "Accuser réception",
+    "@admin_dashboard_acknowledge": {
+        "description": "admin.dashboard.acknowledge"
+    },
+    "admin_dashboard_acknowledged": "Réception accusée",
+    "@admin_dashboard_acknowledged": {
+        "description": "admin.dashboard.acknowledged"
+    },
     "admin_dashboard_active_sos_map": "SOS actifs — localisation",
     "@admin_dashboard_active_sos_map": {
         "description": "admin.dashboard.active_sos_map"
+    },
+    "admin_dashboard_all_sos": "Voir les {count} SOS actifs",
+    "@admin_dashboard_all_sos": {
+        "description": "admin.dashboard.all_sos",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
     },
     "admin_dashboard_by_population": "Par population",
     "@admin_dashboard_by_population": {
@@ -838,6 +1134,14 @@
     "@admin_dashboard_cases_per_month": {
         "description": "admin.dashboard.cases_per_month"
     },
+    "admin_dashboard_chart_category": "Catégorie",
+    "@admin_dashboard_chart_category": {
+        "description": "admin.dashboard.chart_category"
+    },
+    "admin_dashboard_chart_empty": "Aucune donnée pour le moment.",
+    "@admin_dashboard_chart_empty": {
+        "description": "admin.dashboard.chart_empty"
+    },
     "admin_dashboard_chart_table": "Données du graphique « {title} »",
     "@admin_dashboard_chart_table": {
         "description": "admin.dashboard.chart_table",
@@ -851,7 +1155,7 @@
     "@admin_dashboard_latest_alerts": {
         "description": "admin.dashboard.latest_alerts"
     },
-    "admin_dashboard_map_caption": "Bénin (schéma)",
+    "admin_dashboard_map_caption": "Bénin (schéma, positions approximatives)",
     "@admin_dashboard_map_caption": {
         "description": "admin.dashboard.map_caption"
     },
@@ -863,6 +1167,27 @@
     "@admin_dashboard_no_active_sos": {
         "description": "admin.dashboard.no_active_sos"
     },
+    "admin_dashboard_nothing": "Rien à afficher pour votre rôle",
+    "@admin_dashboard_nothing": {
+        "description": "admin.dashboard.nothing"
+    },
+    "admin_dashboard_nothing_text": "Les écrans de votre menu restent accessibles.",
+    "@admin_dashboard_nothing_text": {
+        "description": "admin.dashboard.nothing_text"
+    },
+    "admin_dashboard_open_alert": "Ouvrir",
+    "@admin_dashboard_open_alert": {
+        "description": "admin.dashboard.open_alert"
+    },
+    "admin_dashboard_pending_sub": "{count, plural, =1{{count} compte à valider} other{{count} comptes à valider}}",
+    "@admin_dashboard_pending_sub": {
+        "description": "admin.dashboard.pending_sub",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "admin_dashboard_period": "Période",
     "@admin_dashboard_period": {
         "description": "admin.dashboard.period"
@@ -870,6 +1195,14 @@
     "admin_dashboard_platform_status": "État de la plateforme",
     "@admin_dashboard_platform_status": {
         "description": "admin.dashboard.platform_status"
+    },
+    "admin_dashboard_see_all": "Tout voir",
+    "@admin_dashboard_see_all": {
+        "description": "admin.dashboard.see_all"
+    },
+    "admin_dashboard_series_cases": "Cas",
+    "@admin_dashboard_series_cases": {
+        "description": "admin.dashboard.series.cases"
     },
     "admin_dashboard_shortcut_alerts": "Traiter les alertes",
     "@admin_dashboard_shortcut_alerts": {
@@ -887,6 +1220,10 @@
     "@admin_dashboard_shortcut_followup": {
         "description": "admin.dashboard.shortcut.followup"
     },
+    "admin_dashboard_shortcut_moderation": "Modération",
+    "@admin_dashboard_shortcut_moderation": {
+        "description": "admin.dashboard.shortcut.moderation"
+    },
     "admin_dashboard_shortcut_new_case": "Nouveau dossier",
     "@admin_dashboard_shortcut_new_case": {
         "description": "admin.dashboard.shortcut.new_case"
@@ -902,6 +1239,10 @@
     "admin_dashboard_shortcut_report": "Générer un rapport",
     "@admin_dashboard_shortcut_report": {
         "description": "admin.dashboard.shortcut.report"
+    },
+    "admin_dashboard_shortcut_users": "Utilisateurs & rôles",
+    "@admin_dashboard_shortcut_users": {
+        "description": "admin.dashboard.shortcut.users"
     },
     "admin_dashboard_shortcuts": "Raccourcis",
     "@admin_dashboard_shortcuts": {
@@ -924,6 +1265,14 @@
                 "type": "String"
             }
         }
+    },
+    "admin_dashboard_sound_off": "Son désactivé",
+    "@admin_dashboard_sound_off": {
+        "description": "admin.dashboard.sound_off"
+    },
+    "admin_dashboard_sound_on": "Son activé",
+    "@admin_dashboard_sound_on": {
+        "description": "admin.dashboard.sound_on"
     },
     "admin_dashboard_status_cron_last_run": "Dernier passage du cron",
     "@admin_dashboard_status_cron_last_run": {
@@ -981,9 +1330,36 @@
     "@admin_dashboard_status_version": {
         "description": "admin.dashboard.status.version"
     },
+    "admin_dashboard_sync_none": "Aucun appareil actif",
+    "@admin_dashboard_sync_none": {
+        "description": "admin.dashboard.sync_none"
+    },
+    "admin_dashboard_sync_sub": "{synced} sur {active} appareils synchronisés en moins de {hours} h",
+    "@admin_dashboard_sync_sub": {
+        "description": "admin.dashboard.sync_sub",
+        "placeholders": {
+            "active": {
+                "type": "String"
+            },
+            "hours": {
+                "type": "String"
+            },
+            "synced": {
+                "type": "String"
+            }
+        }
+    },
     "admin_dashboard_title": "Tableau de bord",
     "@admin_dashboard_title": {
         "description": "admin.dashboard.title"
+    },
+    "admin_dashboard_unknown": "Non renseigné",
+    "@admin_dashboard_unknown": {
+        "description": "admin.dashboard.unknown"
+    },
+    "admin_dashboard_view": "Voir",
+    "@admin_dashboard_view": {
+        "description": "admin.dashboard.view"
     },
     "admin_datatable_actions": "Actions",
     "@admin_datatable_actions": {
@@ -3022,6 +3398,130 @@
     "admin_users_title": "Utilisateurs & rôles",
     "@admin_users_title": {
         "description": "admin.users.title"
+    },
+    "admin_search_alert_title": "Alerte n° {id} · {type}",
+    "@admin_search_alert_title": {
+        "description": "admin_search.alert_title",
+        "placeholders": {
+            "id": {
+                "type": "String"
+            },
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_search_group_title": "Groupe : {name}",
+    "@admin_search_group_title": {
+        "description": "admin_search.group_title",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_search_groups_alerts": "Alertes et signalements",
+    "@admin_search_groups_alerts": {
+        "description": "admin_search.groups.alerts"
+    },
+    "admin_search_groups_cases": "Dossiers (registres)",
+    "@admin_search_groups_cases": {
+        "description": "admin_search.groups.cases"
+    },
+    "admin_search_groups_directory": "Annuaire",
+    "@admin_search_groups_directory": {
+        "description": "admin_search.groups.directory"
+    },
+    "admin_search_groups_journal": "Journal d’audit",
+    "@admin_search_groups_journal": {
+        "description": "admin_search.groups.journal"
+    },
+    "admin_search_groups_network": "Réseau social (événements, groupes)",
+    "@admin_search_groups_network": {
+        "description": "admin_search.groups.network"
+    },
+    "admin_search_groups_thematiques": "Thématiques",
+    "@admin_search_groups_thematiques": {
+        "description": "admin_search.groups.thematiques"
+    },
+    "admin_search_groups_users": "Utilisateur·rices",
+    "@admin_search_groups_users": {
+        "description": "admin_search.groups.users"
+    },
+    "admin_search_help": "Utilisateur·rices, dossiers, alertes, annuaire, thématiques, réseau social et journal d’audit. Au moins {min} caractères. Raccourci : Ctrl K. Les récits, notes et positions ne sont pas interrogés.",
+    "@admin_search_help": {
+        "description": "admin_search.help",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_search_label": "Rechercher dans toute l’administration",
+    "@admin_search_label": {
+        "description": "admin_search.label"
+    },
+    "admin_search_none": "Aucun résultat. Essayez un autre mot-clé ou une autre orthographe.",
+    "@admin_search_none": {
+        "description": "admin_search.none"
+    },
+    "admin_search_placeholder": "Nom, e-mail, code de dossier, thématique, annuaire…",
+    "@admin_search_placeholder": {
+        "description": "admin_search.placeholder"
+    },
+    "admin_search_see_all": "{count, plural, =1{Voir le résultat dans « {group} »} other{Voir les {count} résultats dans « {group} »}}",
+    "@admin_search_see_all": {
+        "description": "admin_search.see_all",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "group": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_search_start": "Saisissez au moins {min} caractères pour lancer la recherche.",
+    "@admin_search_start": {
+        "description": "admin_search.start",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_search_submit": "Rechercher",
+    "@admin_search_submit": {
+        "description": "admin_search.submit"
+    },
+    "admin_search_summary": "{count, plural, =0{Aucun résultat pour « {term} ».} =1{1 résultat pour « {term} ».} other{{count} résultats pour « {term} ».}}",
+    "@admin_search_summary": {
+        "description": "admin_search.summary",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "term": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_search_throttled": "Trop de recherches en peu de temps. Patientez une minute avant de relancer.",
+    "@admin_search_throttled": {
+        "description": "admin_search.throttled"
+    },
+    "admin_search_title": "Recherche globale",
+    "@admin_search_title": {
+        "description": "admin_search.title"
+    },
+    "admin_search_too_short": "Saisissez au moins {min} caractères.",
+    "@admin_search_too_short": {
+        "description": "admin_search.too_short",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
     },
     "alerts_acknowledge_already": "Cette alerte a déjà été prise en charge le {date}.",
     "@alerts_acknowledge_already": {
@@ -20963,6 +21463,909 @@
     "@pages_violences_title": {
         "description": "pages/violences.title"
     },
+    "peer_alerts_accuracy": "précision {meters} m",
+    "@peer_alerts_accuracy": {
+        "description": "peer.alerts.accuracy",
+        "placeholders": {
+            "meters": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_alerts_acknowledge": "Accuser réception",
+    "@peer_alerts_acknowledge": {
+        "description": "peer.alerts.acknowledge"
+    },
+    "peer_alerts_acknowledged": "Réception accusée. La personne est prévenue que tu t’en occupes.",
+    "@peer_alerts_acknowledged": {
+        "description": "peer.alerts.acknowledged"
+    },
+    "peer_alerts_ago": "Reçue {time}",
+    "@peer_alerts_ago": {
+        "description": "peer.alerts.ago",
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_alerts_announce_new": "{count, plural, =1{1 nouvelle alerte vient d’arriver.} other{{count} nouvelles alertes viennent d’arriver.}}",
+    "@peer_alerts_announce_new": {
+        "description": "peer.alerts.announce_new",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_alerts_anonymous": "Anonyme",
+    "@peer_alerts_anonymous": {
+        "description": "peer.alerts.anonymous"
+    },
+    "peer_alerts_cancelled": "Annulée par la personne",
+    "@peer_alerts_cancelled": {
+        "description": "peer.alerts.cancelled"
+    },
+    "peer_alerts_close": "Clore",
+    "@peer_alerts_close": {
+        "description": "peer.alerts.close"
+    },
+    "peer_alerts_close_confirm": "Clore cette alerte ? Une alerte close ne se rouvre pas.",
+    "@peer_alerts_close_confirm": {
+        "description": "peer.alerts.close_confirm"
+    },
+    "peer_alerts_close_yes": "Oui, clore",
+    "@peer_alerts_close_yes": {
+        "description": "peer.alerts.close_yes"
+    },
+    "peer_alerts_closed": "Alerte close.",
+    "@peer_alerts_closed": {
+        "description": "peer.alerts.closed"
+    },
+    "peer_alerts_detail": "Détail",
+    "@peer_alerts_detail": {
+        "description": "peer.alerts.detail"
+    },
+    "peer_alerts_detail_for": "Détail de l’alerte {type}, {place}",
+    "@peer_alerts_detail_for": {
+        "description": "peer.alerts.detail_for",
+        "placeholders": {
+            "place": {
+                "type": "String"
+            },
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_alerts_empty": "Aucune alerte pour le moment.",
+    "@peer_alerts_empty": {
+        "description": "peer.alerts.empty"
+    },
+    "peer_alerts_fields_author": "De la part de",
+    "@peer_alerts_fields_author": {
+        "description": "peer.alerts.fields.author"
+    },
+    "peer_alerts_fields_category": "Type de violence",
+    "@peer_alerts_fields_category": {
+        "description": "peer.alerts.fields.category"
+    },
+    "peer_alerts_fields_contact": "Pour la joindre",
+    "@peer_alerts_fields_contact": {
+        "description": "peer.alerts.fields.contact"
+    },
+    "peer_alerts_fields_description": "Ce qui a été écrit",
+    "@peer_alerts_fields_description": {
+        "description": "peer.alerts.fields.description"
+    },
+    "peer_alerts_fields_history": "Historique",
+    "@peer_alerts_fields_history": {
+        "description": "peer.alerts.fields.history"
+    },
+    "peer_alerts_fields_needs": "Besoins",
+    "@peer_alerts_fields_needs": {
+        "description": "peer.alerts.fields.needs"
+    },
+    "peer_alerts_fields_place": "Lieu",
+    "@peer_alerts_fields_place": {
+        "description": "peer.alerts.fields.place"
+    },
+    "peer_alerts_fields_position": "Position",
+    "@peer_alerts_fields_position": {
+        "description": "peer.alerts.fields.position"
+    },
+    "peer_alerts_fields_received": "Reçue",
+    "@peer_alerts_fields_received": {
+        "description": "peer.alerts.fields.received"
+    },
+    "peer_alerts_load_failed": "Impossible d’ouvrir cette alerte pour l’instant. Réessaie dans un moment.",
+    "@peer_alerts_load_failed": {
+        "description": "peer.alerts.load_failed"
+    },
+    "peer_alerts_modal_title": "Alerte qui m’est routée",
+    "@peer_alerts_modal_title": {
+        "description": "peer.alerts.modal_title"
+    },
+    "peer_alerts_more": "{count, plural, =1{Voir plus (1 restante)} other{Voir plus ({count} restantes)}}",
+    "@peer_alerts_more": {
+        "description": "peer.alerts.more",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_alerts_new_count": "{count, plural, =1{1 nouvelle} other{{count} nouvelles}}",
+    "@peer_alerts_new_count": {
+        "description": "peer.alerts.new_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_alerts_not_on_duty": "La liste se met à jour quand tu ouvres la page ou que tu reviens sur l’onglet.",
+    "@peer_alerts_not_on_duty": {
+        "description": "peer.alerts.not_on_duty"
+    },
+    "peer_alerts_offline": "Tu es hors ligne. Reviens sur cette alerte dès que le réseau est de retour.",
+    "@peer_alerts_offline": {
+        "description": "peer.alerts.offline"
+    },
+    "peer_alerts_on_duty": "Tu es de garde : la liste se met à jour toutes les {seconds} secondes.",
+    "@peer_alerts_on_duty": {
+        "description": "peer.alerts.on_duty",
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_alerts_open_count": "{count, plural, =1{alerte ouverte} other{alertes ouvertes}}",
+    "@peer_alerts_open_count": {
+        "description": "peer.alerts.open_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_alerts_refresh": "Actualiser",
+    "@peer_alerts_refresh": {
+        "description": "peer.alerts.refresh"
+    },
+    "peer_alerts_safe": "Personne en sécurité",
+    "@peer_alerts_safe": {
+        "description": "peer.alerts.safe"
+    },
+    "peer_alerts_shown": "{shown} alertes affichées sur {total}.",
+    "@peer_alerts_shown": {
+        "description": "peer.alerts.shown",
+        "placeholders": {
+            "shown": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_alerts_stale": "Impossible de mettre la liste à jour pour l’instant. Les alertes affichées peuvent avoir changé.",
+    "@peer_alerts_stale": {
+        "description": "peer.alerts.stale"
+    },
+    "peer_alerts_take": "Prendre en charge",
+    "@peer_alerts_take": {
+        "description": "peer.alerts.take"
+    },
+    "peer_alerts_taken": "Alerte prise en charge.",
+    "@peer_alerts_taken": {
+        "description": "peer.alerts.taken"
+    },
+    "peer_alerts_title": "Alertes qui me sont routées",
+    "@peer_alerts_title": {
+        "description": "peer.alerts.title"
+    },
+    "peer_alerts_unknown_zone": "zone inconnue",
+    "@peer_alerts_unknown_zone": {
+        "description": "peer.alerts.unknown_zone"
+    },
+    "peer_case_add_submit": "Enregistrer l’étape",
+    "@peer_case_add_submit": {
+        "description": "peer.case.add_submit"
+    },
+    "peer_case_add_title": "Ajouter une étape de suivi",
+    "@peer_case_add_title": {
+        "description": "peer.case.add_title"
+    },
+    "peer_case_age": "{range} ans",
+    "@peer_case_age": {
+        "description": "peer.case.age",
+        "placeholders": {
+            "range": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_case_anonymized": "Anonymisé",
+    "@peer_case_anonymized": {
+        "description": "peer.case.anonymized"
+    },
+    "peer_case_back": "Mes dossiers",
+    "@peer_case_back": {
+        "description": "peer.case.back"
+    },
+    "peer_case_errors_comment_max": "Le commentaire fait au plus {max} caractères.",
+    "@peer_case_errors_comment_max": {
+        "description": "peer.case.errors.comment_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_case_errors_next_before": "La prochaine date ne peut pas précéder la date de l’étape.",
+    "@peer_case_errors_next_before": {
+        "description": "peer.case.errors.next_before"
+    },
+    "peer_case_fields_comment": "Commentaire",
+    "@peer_case_fields_comment": {
+        "description": "peer.case.fields.comment"
+    },
+    "peer_case_fields_date": "Date",
+    "@peer_case_fields_date": {
+        "description": "peer.case.fields.date"
+    },
+    "peer_case_fields_next": "Prochaine date de suivi",
+    "@peer_case_fields_next": {
+        "description": "peer.case.fields.next"
+    },
+    "peer_case_fields_outcome": "Résultat",
+    "@peer_case_fields_outcome": {
+        "description": "peer.case.fields.outcome"
+    },
+    "peer_case_fields_step": "Étape",
+    "@peer_case_fields_step": {
+        "description": "peer.case.fields.step"
+    },
+    "peer_case_followup_done": "Étape marquée comme réalisée.",
+    "@peer_case_followup_done": {
+        "description": "peer.case.followup_done"
+    },
+    "peer_case_followup_saved": "Étape de suivi enregistrée.",
+    "@peer_case_followup_saved": {
+        "description": "peer.case.followup_saved"
+    },
+    "peer_case_locked": "Ce dossier est archivé ou anonymisé : il ne reçoit plus de nouvelle étape.",
+    "@peer_case_locked": {
+        "description": "peer.case.locked"
+    },
+    "peer_case_mark_done": "Marquer comme réalisée",
+    "@peer_case_mark_done": {
+        "description": "peer.case.mark_done"
+    },
+    "peer_case_offline": "Tu es hors ligne : rien n’a été enregistré. Réessaie dès que le réseau revient, ta saisie est gardée.",
+    "@peer_case_offline": {
+        "description": "peer.case.offline"
+    },
+    "peer_case_received": "faits du {date}",
+    "@peer_case_received": {
+        "description": "peer.case.received",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_case_status_choose": "Choisir un statut",
+    "@peer_case_status_choose": {
+        "description": "peer.case.status_choose"
+    },
+    "peer_case_status_label": "Passer le dossier à",
+    "@peer_case_status_label": {
+        "description": "peer.case.status_label"
+    },
+    "peer_case_status_saved": "Statut du dossier mis à jour.",
+    "@peer_case_status_saved": {
+        "description": "peer.case.status_saved"
+    },
+    "peer_case_status_submit": "Mettre à jour",
+    "@peer_case_status_submit": {
+        "description": "peer.case.status_submit"
+    },
+    "peer_case_status_title": "Statut du dossier",
+    "@peer_case_status_title": {
+        "description": "peer.case.status_title"
+    },
+    "peer_case_timeline": "Frise de suivi",
+    "@peer_case_timeline": {
+        "description": "peer.case.timeline"
+    },
+    "peer_case_timeline_empty": "Aucune étape enregistrée pour ce dossier.",
+    "@peer_case_timeline_empty": {
+        "description": "peer.case.timeline_empty"
+    },
+    "peer_cases_all_kinds": "Tous les types",
+    "@peer_cases_all_kinds": {
+        "description": "peer.cases.all_kinds"
+    },
+    "peer_cases_all_statuses": "Tous les statuts",
+    "@peer_cases_all_statuses": {
+        "description": "peer.cases.all_statuses"
+    },
+    "peer_cases_columns_code": "Code",
+    "@peer_cases_columns_code": {
+        "description": "peer.cases.columns.code"
+    },
+    "peer_cases_columns_date": "Date",
+    "@peer_cases_columns_date": {
+        "description": "peer.cases.columns.date"
+    },
+    "peer_cases_columns_followups": "Étapes",
+    "@peer_cases_columns_followups": {
+        "description": "peer.cases.columns.followups"
+    },
+    "peer_cases_columns_kind": "Type",
+    "@peer_cases_columns_kind": {
+        "description": "peer.cases.columns.kind"
+    },
+    "peer_cases_columns_place": "Lieu",
+    "@peer_cases_columns_place": {
+        "description": "peer.cases.columns.place"
+    },
+    "peer_cases_columns_status": "Statut",
+    "@peer_cases_columns_status": {
+        "description": "peer.cases.columns.status"
+    },
+    "peer_cases_columns_violence": "Violence",
+    "@peer_cases_columns_violence": {
+        "description": "peer.cases.columns.violence"
+    },
+    "peer_cases_empty": "Aucun dossier pour le moment",
+    "@peer_cases_empty": {
+        "description": "peer.cases.empty"
+    },
+    "peer_cases_empty_filtered": "Aucun dossier ne correspond à ces critères.",
+    "@peer_cases_empty_filtered": {
+        "description": "peer.cases.empty_filtered"
+    },
+    "peer_cases_empty_short": "Aucun dossier pour le moment.",
+    "@peer_cases_empty_short": {
+        "description": "peer.cases.empty_short"
+    },
+    "peer_cases_empty_text": "Les dossiers que tu collectes apparaissent ici.",
+    "@peer_cases_empty_text": {
+        "description": "peer.cases.empty_text"
+    },
+    "peer_cases_filter": "Filtrer",
+    "@peer_cases_filter": {
+        "description": "peer.cases.filter"
+    },
+    "peer_cases_filters_label": "Filtrer mes dossiers",
+    "@peer_cases_filters_label": {
+        "description": "peer.cases.filters_label"
+    },
+    "peer_cases_heading": "Mes dossiers",
+    "@peer_cases_heading": {
+        "description": "peer.cases.heading"
+    },
+    "peer_cases_intro": "Les dossiers que tu as collectés. Tu ne vois jamais ceux d’une autre personne.",
+    "@peer_cases_intro": {
+        "description": "peer.cases.intro"
+    },
+    "peer_cases_kind": "Type",
+    "@peer_cases_kind": {
+        "description": "peer.cases.kind"
+    },
+    "peer_cases_new": "Nouvelle collecte",
+    "@peer_cases_new": {
+        "description": "peer.cases.new"
+    },
+    "peer_cases_next": "Suivant",
+    "@peer_cases_next": {
+        "description": "peer.cases.next"
+    },
+    "peer_cases_open": "ouvrir la fiche",
+    "@peer_cases_open": {
+        "description": "peer.cases.open"
+    },
+    "peer_cases_page": "Page {page} sur {total}",
+    "@peer_cases_page": {
+        "description": "peer.cases.page",
+        "placeholders": {
+            "page": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_cases_pagination": "Pagination des dossiers",
+    "@peer_cases_pagination": {
+        "description": "peer.cases.pagination"
+    },
+    "peer_cases_previous": "Précédent",
+    "@peer_cases_previous": {
+        "description": "peer.cases.previous"
+    },
+    "peer_cases_reset": "Réinitialiser",
+    "@peer_cases_reset": {
+        "description": "peer.cases.reset"
+    },
+    "peer_cases_results": "{count, plural, =0{Aucun dossier} =1{1 dossier} other{{count} dossiers}}",
+    "@peer_cases_results": {
+        "description": "peer.cases.results",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_cases_search": "Code du dossier",
+    "@peer_cases_search": {
+        "description": "peer.cases.search"
+    },
+    "peer_cases_search_placeholder": "VBG-0042",
+    "@peer_cases_search_placeholder": {
+        "description": "peer.cases.search_placeholder"
+    },
+    "peer_cases_status": "Statut",
+    "@peer_cases_status": {
+        "description": "peer.cases.status"
+    },
+    "peer_cases_title": "Mes dossiers",
+    "@peer_cases_title": {
+        "description": "peer.cases.title"
+    },
+    "peer_collecte_all_cases": "Tous mes dossiers",
+    "@peer_collecte_all_cases": {
+        "description": "peer.collecte.all_cases"
+    },
+    "peer_collecte_choose": "Choisir…",
+    "@peer_collecte_choose": {
+        "description": "peer.collecte.choose"
+    },
+    "peer_collecte_draft_clear": "Effacer le brouillon",
+    "@peer_collecte_draft_clear": {
+        "description": "peer.collecte.draft_clear"
+    },
+    "peer_collecte_draft_saved": "Un brouillon (sans les notes) est gardé sur cet appareil.",
+    "@peer_collecte_draft_saved": {
+        "description": "peer.collecte.draft_saved"
+    },
+    "peer_collecte_errors_commune_in_zone": "Cette commune n’appartient pas au département choisi.",
+    "@peer_collecte_errors_commune_in_zone": {
+        "description": "peer.collecte.errors.commune_in_zone"
+    },
+    "peer_collecte_errors_date_future": "La date ne peut pas être postérieure à aujourd’hui.",
+    "@peer_collecte_errors_date_future": {
+        "description": "peer.collecte.errors.date_future"
+    },
+    "peer_collecte_errors_date_invalid": "Indique une date valide.",
+    "@peer_collecte_errors_date_invalid": {
+        "description": "peer.collecte.errors.date_invalid"
+    },
+    "peer_collecte_errors_invalid": "Choisis une valeur de la liste.",
+    "@peer_collecte_errors_invalid": {
+        "description": "peer.collecte.errors.invalid"
+    },
+    "peer_collecte_errors_notes_min": "Les notes contiennent au moins {min} caractères, ou restent vides.",
+    "@peer_collecte_errors_notes_min": {
+        "description": "peer.collecte.errors.notes_min",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_collecte_errors_required": "Renseigne ce champ.",
+    "@peer_collecte_errors_required": {
+        "description": "peer.collecte.errors.required"
+    },
+    "peer_collecte_fields_age": "Tranche d’âge",
+    "@peer_collecte_fields_age": {
+        "description": "peer.collecte.fields.age"
+    },
+    "peer_collecte_fields_commune": "Commune",
+    "@peer_collecte_fields_commune": {
+        "description": "peer.collecte.fields.commune"
+    },
+    "peer_collecte_fields_date": "Date des faits",
+    "@peer_collecte_fields_date": {
+        "description": "peer.collecte.fields.date"
+    },
+    "peer_collecte_fields_kind": "Type de dossier",
+    "@peer_collecte_fields_kind": {
+        "description": "peer.collecte.fields.kind"
+    },
+    "peer_collecte_fields_notes": "Notes",
+    "@peer_collecte_fields_notes": {
+        "description": "peer.collecte.fields.notes"
+    },
+    "peer_collecte_fields_population": "Population",
+    "@peer_collecte_fields_population": {
+        "description": "peer.collecte.fields.population"
+    },
+    "peer_collecte_fields_referral": "Orientation vers un service",
+    "@peer_collecte_fields_referral": {
+        "description": "peer.collecte.fields.referral"
+    },
+    "peer_collecte_fields_sex": "Sexe",
+    "@peer_collecte_fields_sex": {
+        "description": "peer.collecte.fields.sex"
+    },
+    "peer_collecte_fields_violence": "Type de violence",
+    "@peer_collecte_fields_violence": {
+        "description": "peer.collecte.fields.violence"
+    },
+    "peer_collecte_fields_zone": "Département",
+    "@peer_collecte_fields_zone": {
+        "description": "peer.collecte.fields.zone"
+    },
+    "peer_collecte_footnote": "Les règles de validation actives s’appliquent. Hors connexion, la fiche attend sur cet appareil, puis part toute seule au retour du réseau. Le code VBG-0000 ou VDH-0000 est attribué à l’enregistrement.",
+    "@peer_collecte_footnote": {
+        "description": "peer.collecte.footnote"
+    },
+    "peer_collecte_heading": "Collecte de données",
+    "@peer_collecte_heading": {
+        "description": "peer.collecte.heading"
+    },
+    "peer_collecte_home": "Espace pair",
+    "@peer_collecte_home": {
+        "description": "peer.collecte.home"
+    },
+    "peer_collecte_intro": "Fiche de dossier VBG / VDH, utilisable hors connexion.",
+    "@peer_collecte_intro": {
+        "description": "peer.collecte.intro"
+    },
+    "peer_collecte_no_identity": "N’écris aucun nom, téléphone, adresse ni identifiant direct, ni dans les notes.",
+    "@peer_collecte_no_identity": {
+        "description": "peer.collecte.no_identity"
+    },
+    "peer_collecte_no_identity_title": "Jamais de nom ni de coordonnées.",
+    "@peer_collecte_no_identity_title": {
+        "description": "peer.collecte.no_identity_title"
+    },
+    "peer_collecte_no_referral": "Aucune",
+    "@peer_collecte_no_referral": {
+        "description": "peer.collecte.no_referral"
+    },
+    "peer_collecte_none": "—",
+    "@peer_collecte_none": {
+        "description": "peer.collecte.none"
+    },
+    "peer_collecte_notes_hint": "Vides, ou au moins {min} caractères.",
+    "@peer_collecte_notes_hint": {
+        "description": "peer.collecte.notes_hint",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_collecte_notes_placeholder": "Résumé non identifiant : contexte, actions réalisées, suite prévue…",
+    "@peer_collecte_notes_placeholder": {
+        "description": "peer.collecte.notes_placeholder"
+    },
+    "peer_collecte_queued_offline": "Fiche gardée sur cet appareil. Elle partira dès que le réseau revient, une seule fois.",
+    "@peer_collecte_queued_offline": {
+        "description": "peer.collecte.queued_offline"
+    },
+    "peer_collecte_recent": "Derniers dossiers",
+    "@peer_collecte_recent": {
+        "description": "peer.collecte.recent"
+    },
+    "peer_collecte_refused_blocked": "Termine ou efface la fiche en cours pour reprendre celle-ci.",
+    "@peer_collecte_refused_blocked": {
+        "description": "peer.collecte.refused_blocked"
+    },
+    "peer_collecte_refused_correct": "Corriger et renvoyer",
+    "@peer_collecte_refused_correct": {
+        "description": "peer.collecte.refused_correct"
+    },
+    "peer_collecte_refused_dismiss": "Fermer",
+    "@peer_collecte_refused_dismiss": {
+        "description": "peer.collecte.refused_dismiss"
+    },
+    "peer_collecte_refused_generic": "Le serveur a refusé cette fiche. Vérifie les champs et recommence la saisie.",
+    "@peer_collecte_refused_generic": {
+        "description": "peer.collecte.refused_generic"
+    },
+    "peer_collecte_refused_lost": "Cette fiche n’est plus sur l’appareil : saisis-la de nouveau.",
+    "@peer_collecte_refused_lost": {
+        "description": "peer.collecte.refused_lost"
+    },
+    "peer_collecte_refused_title": "Le dossier n’a pas été enregistré",
+    "@peer_collecte_refused_title": {
+        "description": "peer.collecte.refused_title"
+    },
+    "peer_collecte_saved": "{count, plural, =1{Dossier {codes} enregistré.} other{Dossiers {codes} enregistrés.}}",
+    "@peer_collecte_saved": {
+        "description": "peer.collecte.saved",
+        "placeholders": {
+            "codes": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_collecte_saved_plain": "Dossier enregistré.",
+    "@peer_collecte_saved_plain": {
+        "description": "peer.collecte.saved_plain"
+    },
+    "peer_collecte_sending": "Envoi en cours… Le code du dossier s’affichera ici.",
+    "@peer_collecte_sending": {
+        "description": "peer.collecte.sending"
+    },
+    "peer_collecte_submit": "Enregistrer le dossier",
+    "@peer_collecte_submit": {
+        "description": "peer.collecte.submit"
+    },
+    "peer_collecte_title": "Collecte de données",
+    "@peer_collecte_title": {
+        "description": "peer.collecte.title"
+    },
+    "peer_collecte_waiting": "{count, plural, =0{Aucune fiche en attente} =1{1 fiche en attente} other{{count} fiches en attente}}",
+    "@peer_collecte_waiting": {
+        "description": "peer.collecte.waiting",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_home_badge": "Pair éducateur·rice",
+    "@peer_home_badge": {
+        "description": "peer.home.badge"
+    },
+    "peer_home_greeting": "Bonjour {name}",
+    "@peer_home_greeting": {
+        "description": "peer.home.greeting",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_home_intro": "Ton tableau de bord de terrain : collecte, orientation, alertes et outils d’animation.",
+    "@peer_home_intro": {
+        "description": "peer.home.intro"
+    },
+    "peer_home_kpi_closed": "Clos",
+    "@peer_home_kpi_closed": {
+        "description": "peer.home.kpi.closed"
+    },
+    "peer_home_kpi_collected": "Dossiers collectés",
+    "@peer_home_kpi_collected": {
+        "description": "peer.home.kpi.collected"
+    },
+    "peer_home_kpi_in_progress": "En cours",
+    "@peer_home_kpi_in_progress": {
+        "description": "peer.home.kpi.in_progress"
+    },
+    "peer_home_kpi_this_month": "Ce mois-ci",
+    "@peer_home_kpi_this_month": {
+        "description": "peer.home.kpi.this_month"
+    },
+    "peer_home_kpi_label": "Chiffres de tes dossiers",
+    "@peer_home_kpi_label": {
+        "description": "peer.home.kpi_label"
+    },
+    "peer_home_shortcuts_cases": "Mes dossiers",
+    "@peer_home_shortcuts_cases": {
+        "description": "peer.home.shortcuts.cases"
+    },
+    "peer_home_shortcuts_ccc": "Outils CCC",
+    "@peer_home_shortcuts_ccc": {
+        "description": "peer.home.shortcuts.ccc"
+    },
+    "peer_home_shortcuts_collecte": "Nouvelle collecte",
+    "@peer_home_shortcuts_collecte": {
+        "description": "peer.home.shortcuts.collecte"
+    },
+    "peer_home_shortcuts_directory": "Annuaire",
+    "@peer_home_shortcuts_directory": {
+        "description": "peer.home.shortcuts.directory"
+    },
+    "peer_home_shortcuts_report": "Signalement",
+    "@peer_home_shortcuts_report": {
+        "description": "peer.home.shortcuts.report"
+    },
+    "peer_home_shortcuts_resources": "Ressources",
+    "@peer_home_shortcuts_resources": {
+        "description": "peer.home.shortcuts.resources"
+    },
+    "peer_home_shortcuts_label": "Raccourcis",
+    "@peer_home_shortcuts_label": {
+        "description": "peer.home.shortcuts_label"
+    },
+    "peer_home_tasks_alerts_to_take": "{count, plural, =1{1 alerte nouvelle à traiter} other{{count} alertes nouvelles à traiter}}",
+    "@peer_home_tasks_alerts_to_take": {
+        "description": "peer.home.tasks.alerts_to_take",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_home_tasks_cases_to_contact": "{count, plural, =1{1 dossier ouvert à contacter} other{{count} dossiers ouverts à contacter}}",
+    "@peer_home_tasks_cases_to_contact": {
+        "description": "peer.home.tasks.cases_to_contact",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "peer_home_tasks_session": "Préparer la prochaine séance : boîtes à images",
+    "@peer_home_tasks_session": {
+        "description": "peer.home.tasks.session"
+    },
+    "peer_home_tasks_title": "Mes tâches du jour",
+    "@peer_home_tasks_title": {
+        "description": "peer.home.tasks.title"
+    },
+    "peer_home_title": "Espace pair",
+    "@peer_home_title": {
+        "description": "peer.home.title"
+    },
+    "peer_sheet_empty": "Pas encore renseigné.",
+    "@peer_sheet_empty": {
+        "description": "peer.sheet.empty"
+    },
+    "peer_sheet_fields_age": "Tranche d’âge",
+    "@peer_sheet_fields_age": {
+        "description": "peer.sheet.fields.age"
+    },
+    "peer_sheet_fields_consent": "Consentement donné",
+    "@peer_sheet_fields_consent": {
+        "description": "peer.sheet.fields.consent"
+    },
+    "peer_sheet_fields_contact": "Contact",
+    "@peer_sheet_fields_contact": {
+        "description": "peer.sheet.fields.contact"
+    },
+    "peer_sheet_fields_date": "Date",
+    "@peer_sheet_fields_date": {
+        "description": "peer.sheet.fields.date"
+    },
+    "peer_sheet_fields_description": "Résumé",
+    "@peer_sheet_fields_description": {
+        "description": "peer.sheet.fields.description"
+    },
+    "peer_sheet_fields_mode": "Forme",
+    "@peer_sheet_fields_mode": {
+        "description": "peer.sheet.fields.mode"
+    },
+    "peer_sheet_fields_place": "Endroit",
+    "@peer_sheet_fields_place": {
+        "description": "peer.sheet.fields.place"
+    },
+    "peer_sheet_fields_population": "Population",
+    "@peer_sheet_fields_population": {
+        "description": "peer.sheet.fields.population"
+    },
+    "peer_sheet_fields_pseudo": "Pseudonyme",
+    "@peer_sheet_fields_pseudo": {
+        "description": "peer.sheet.fields.pseudo"
+    },
+    "peer_sheet_fields_reason": "Motif",
+    "@peer_sheet_fields_reason": {
+        "description": "peer.sheet.fields.reason"
+    },
+    "peer_sheet_fields_referral": "Vers",
+    "@peer_sheet_fields_referral": {
+        "description": "peer.sheet.fields.referral"
+    },
+    "peer_sheet_fields_referral_date": "Date",
+    "@peer_sheet_fields_referral_date": {
+        "description": "peer.sheet.fields.referral_date"
+    },
+    "peer_sheet_fields_sex": "Sexe",
+    "@peer_sheet_fields_sex": {
+        "description": "peer.sheet.fields.sex"
+    },
+    "peer_sheet_fields_sharing": "Partage avec un partenaire",
+    "@peer_sheet_fields_sharing": {
+        "description": "peer.sheet.fields.sharing"
+    },
+    "peer_sheet_fields_type": "Type",
+    "@peer_sheet_fields_type": {
+        "description": "peer.sheet.fields.type"
+    },
+    "peer_sheet_fields_urgency": "Urgence",
+    "@peer_sheet_fields_urgency": {
+        "description": "peer.sheet.fields.urgency"
+    },
+    "peer_sheet_fields_zone": "Lieu",
+    "@peer_sheet_fields_zone": {
+        "description": "peer.sheet.fields.zone"
+    },
+    "peer_sheet_modes_ecrit": "Écrit",
+    "@peer_sheet_modes_ecrit": {
+        "description": "peer.sheet.modes.ecrit"
+    },
+    "peer_sheet_modes_oral": "Oral",
+    "@peer_sheet_modes_oral": {
+        "description": "peer.sheet.modes.oral"
+    },
+    "peer_sheet_no": "Non",
+    "@peer_sheet_no": {
+        "description": "peer.sheet.no"
+    },
+    "peer_sheet_no_referral": "Aucune orientation.",
+    "@peer_sheet_no_referral": {
+        "description": "peer.sheet.no_referral"
+    },
+    "peer_sheet_not_filled": "La fiche de référence n’est pas encore remplie. Les sections 1, 2 et 4 reprennent ce que tu as saisi à la collecte.",
+    "@peer_sheet_not_filled": {
+        "description": "peer.sheet.not_filled"
+    },
+    "peer_sheet_reference": "Fiche de référence {reference}",
+    "@peer_sheet_reference": {
+        "description": "peer.sheet.reference",
+        "placeholders": {
+            "reference": {
+                "type": "String"
+            }
+        }
+    },
+    "peer_sheet_sections_consent": "5. Consentement",
+    "@peer_sheet_sections_consent": {
+        "description": "peer.sheet.sections.consent"
+    },
+    "peer_sheet_sections_facts": "2. Faits",
+    "@peer_sheet_sections_facts": {
+        "description": "peer.sheet.sections.facts"
+    },
+    "peer_sheet_sections_identification": "1. Identification pseudonymisée",
+    "@peer_sheet_sections_identification": {
+        "description": "peer.sheet.sections.identification"
+    },
+    "peer_sheet_sections_orientation": "4. Orientation",
+    "@peer_sheet_sections_orientation": {
+        "description": "peer.sheet.sections.orientation"
+    },
+    "peer_sheet_sections_services": "3. Services reçus",
+    "@peer_sheet_sections_services": {
+        "description": "peer.sheet.sections.services"
+    },
+    "peer_sheet_urgency_critique": "Critique",
+    "@peer_sheet_urgency_critique": {
+        "description": "peer.sheet.urgency.critique"
+    },
+    "peer_sheet_urgency_haute": "Haute",
+    "@peer_sheet_urgency_haute": {
+        "description": "peer.sheet.urgency.haute"
+    },
+    "peer_sheet_urgency_normale": "Normale",
+    "@peer_sheet_urgency_normale": {
+        "description": "peer.sheet.urgency.normale"
+    },
+    "peer_sheet_yes": "Oui",
+    "@peer_sheet_yes": {
+        "description": "peer.sheet.yes"
+    },
+    "peer_status_offline": "Hors ligne",
+    "@peer_status_offline": {
+        "description": "peer.status.offline"
+    },
+    "peer_status_online": "En ligne",
+    "@peer_status_online": {
+        "description": "peer.status.online"
+    },
+    "peer_status_queue": "{count, plural, =0{Aucun élément en attente de synchronisation} =1{1 élément en attente de synchronisation} other{{count} éléments en attente de synchronisation}}",
+    "@peer_status_queue": {
+        "description": "peer.status.queue",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "profile_about_bio": "Présentation",
     "@profile_about_bio": {
         "description": "profile.about.bio"
@@ -22990,6 +24393,1202 @@
     "seo_title_suffix": " – Xomiton",
     "@seo_title_suffix": {
         "description": "seo.title_suffix"
+    },
+    "steering_content_columns_metric": "Mesure",
+    "@steering_content_columns_metric": {
+        "description": "steering.content.columns.metric"
+    },
+    "steering_content_columns_source": "Origine",
+    "@steering_content_columns_source": {
+        "description": "steering.content.columns.source"
+    },
+    "steering_content_columns_value": "Valeur",
+    "@steering_content_columns_value": {
+        "description": "steering.content.columns.value"
+    },
+    "steering_content_intro": "Audience des pages publiques, mesurée sans traceur tiers : compteurs anonymes côté serveur (aucun identifiant, aucune adresse IP), conservés {days} jours, et chiffres calculés sur les données de la plateforme.",
+    "@steering_content_intro": {
+        "description": "steering.content.intro",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_content_metrics_download": "Téléchargements de ressources",
+    "@steering_content_metrics_download": {
+        "description": "steering.content.metrics.download"
+    },
+    "steering_content_metrics_emergency_call": "Clics sur les numéros d’urgence",
+    "@steering_content_metrics_emergency_call": {
+        "description": "steering.content.metrics.emergency_call"
+    },
+    "steering_content_metrics_faq_no_result": "Recherches sans résultat dans l’aide",
+    "@steering_content_metrics_faq_no_result": {
+        "description": "steering.content.metrics.faq_no_result"
+    },
+    "steering_content_metrics_newsletter_confirmed": "Inscriptions newsletter confirmées",
+    "@steering_content_metrics_newsletter_confirmed": {
+        "description": "steering.content.metrics.newsletter_confirmed"
+    },
+    "steering_content_metrics_report_click": "Clics sur « Signaler »",
+    "@steering_content_metrics_report_click": {
+        "description": "steering.content.metrics.report_click"
+    },
+    "steering_content_metrics_report_completed": "Signalements envoyés",
+    "@steering_content_metrics_report_completed": {
+        "description": "steering.content.metrics.report_completed"
+    },
+    "steering_content_metrics_signup_click": "Clics sur « Créer un compte »",
+    "@steering_content_metrics_signup_click": {
+        "description": "steering.content.metrics.signup_click"
+    },
+    "steering_content_metrics_sos_delay": "Délai médian déclenchement → accusé d’un SOS",
+    "@steering_content_metrics_sos_delay": {
+        "description": "steering.content.metrics.sos_delay"
+    },
+    "steering_content_minutes": "min",
+    "@steering_content_minutes": {
+        "description": "steering.content.minutes"
+    },
+    "steering_content_sources_computed": "Calculé",
+    "@steering_content_sources_computed": {
+        "description": "steering.content.sources.computed"
+    },
+    "steering_content_sources_counter": "Compteur anonyme",
+    "@steering_content_sources_counter": {
+        "description": "steering.content.sources.counter"
+    },
+    "steering_content_title": "Contenu",
+    "@steering_content_title": {
+        "description": "steering.content.title"
+    },
+    "steering_indicators_add": "Ajouter",
+    "@steering_indicators_add": {
+        "description": "steering.indicators.add"
+    },
+    "steering_indicators_better_down": "Baisse souhaitée",
+    "@steering_indicators_better_down": {
+        "description": "steering.indicators.better_down"
+    },
+    "steering_indicators_better_up": "Hausse souhaitée",
+    "@steering_indicators_better_up": {
+        "description": "steering.indicators.better_up"
+    },
+    "steering_indicators_chart": "Graphique",
+    "@steering_indicators_chart": {
+        "description": "steering.indicators.chart"
+    },
+    "steering_indicators_chart_month": "Mois",
+    "@steering_indicators_chart_month": {
+        "description": "steering.indicators.chart_month"
+    },
+    "steering_indicators_chart_table": "Valeurs mensuelles de l’indicateur",
+    "@steering_indicators_chart_table": {
+        "description": "steering.indicators.chart_table"
+    },
+    "steering_indicators_columns_code": "Code",
+    "@steering_indicators_columns_code": {
+        "description": "steering.indicators.columns.code"
+    },
+    "steering_indicators_columns_formula": "Formule",
+    "@steering_indicators_columns_formula": {
+        "description": "steering.indicators.columns.formula"
+    },
+    "steering_indicators_columns_frequency": "Fréquence",
+    "@steering_indicators_columns_frequency": {
+        "description": "steering.indicators.columns.frequency"
+    },
+    "steering_indicators_columns_label": "Indicateur",
+    "@steering_indicators_columns_label": {
+        "description": "steering.indicators.columns.label"
+    },
+    "steering_indicators_columns_progress": "Atteinte (%)",
+    "@steering_indicators_columns_progress": {
+        "description": "steering.indicators.columns.progress"
+    },
+    "steering_indicators_columns_source": "Source",
+    "@steering_indicators_columns_source": {
+        "description": "steering.indicators.columns.source"
+    },
+    "steering_indicators_columns_source_frequency": "Source · fréquence",
+    "@steering_indicators_columns_source_frequency": {
+        "description": "steering.indicators.columns.source_frequency"
+    },
+    "steering_indicators_columns_target": "Cible",
+    "@steering_indicators_columns_target": {
+        "description": "steering.indicators.columns.target"
+    },
+    "steering_indicators_columns_trend": "Tendance",
+    "@steering_indicators_columns_trend": {
+        "description": "steering.indicators.columns.trend"
+    },
+    "steering_indicators_columns_unit": "Unité",
+    "@steering_indicators_columns_unit": {
+        "description": "steering.indicators.columns.unit"
+    },
+    "steering_indicators_columns_value": "Valeur",
+    "@steering_indicators_columns_value": {
+        "description": "steering.indicators.columns.value"
+    },
+    "steering_indicators_confirm_delete": "Supprimer l’indicateur « {label} » et son historique de valeurs ? Cette action est définitive.",
+    "@steering_indicators_confirm_delete": {
+        "description": "steering.indicators.confirm_delete",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_custom": "Personnalisé",
+    "@steering_indicators_custom": {
+        "description": "steering.indicators.custom"
+    },
+    "steering_indicators_definition": "Définition et formule",
+    "@steering_indicators_definition": {
+        "description": "steering.indicators.definition"
+    },
+    "steering_indicators_delete": "Supprimer l’indicateur",
+    "@steering_indicators_delete": {
+        "description": "steering.indicators.delete"
+    },
+    "steering_indicators_empty": "Aucun indicateur",
+    "@steering_indicators_empty": {
+        "description": "steering.indicators.empty"
+    },
+    "steering_indicators_empty_text": "Aucun indicateur ne correspond à la fréquence choisie.",
+    "@steering_indicators_empty_text": {
+        "description": "steering.indicators.empty_text"
+    },
+    "steering_indicators_errors_builtin": "Les indicateurs intégrés ne peuvent pas être supprimés.",
+    "@steering_indicators_errors_builtin": {
+        "description": "steering.indicators.errors.builtin"
+    },
+    "steering_indicators_errors_not_found": "Indicateur introuvable.",
+    "@steering_indicators_errors_not_found": {
+        "description": "steering.indicators.errors.not_found"
+    },
+    "steering_indicators_export": "Exporter CSV ({count})",
+    "@steering_indicators_export": {
+        "description": "steering.indicators.export",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_fields_better": "Sens souhaité",
+    "@steering_indicators_fields_better": {
+        "description": "steering.indicators.fields.better"
+    },
+    "steering_indicators_fields_code": "Code",
+    "@steering_indicators_fields_code": {
+        "description": "steering.indicators.fields.code"
+    },
+    "steering_indicators_fields_code_auto": "Automatique",
+    "@steering_indicators_fields_code_auto": {
+        "description": "steering.indicators.fields.code_auto"
+    },
+    "steering_indicators_fields_definition": "Définition",
+    "@steering_indicators_fields_definition": {
+        "description": "steering.indicators.fields.definition"
+    },
+    "steering_indicators_fields_formula": "Formule",
+    "@steering_indicators_fields_formula": {
+        "description": "steering.indicators.fields.formula"
+    },
+    "steering_indicators_fields_frequency": "Fréquence",
+    "@steering_indicators_fields_frequency": {
+        "description": "steering.indicators.fields.frequency"
+    },
+    "steering_indicators_fields_label": "Libellé",
+    "@steering_indicators_fields_label": {
+        "description": "steering.indicators.fields.label"
+    },
+    "steering_indicators_fields_source": "Source",
+    "@steering_indicators_fields_source": {
+        "description": "steering.indicators.fields.source"
+    },
+    "steering_indicators_fields_target": "Cible",
+    "@steering_indicators_fields_target": {
+        "description": "steering.indicators.fields.target"
+    },
+    "steering_indicators_fields_unit": "Unité",
+    "@steering_indicators_fields_unit": {
+        "description": "steering.indicators.fields.unit"
+    },
+    "steering_indicators_fields_value": "Valeur actuelle",
+    "@steering_indicators_fields_value": {
+        "description": "steering.indicators.fields.value"
+    },
+    "steering_indicators_fields_value_hint": "Valeur saisie à la main, rattachée au mois en cours.",
+    "@steering_indicators_fields_value_hint": {
+        "description": "steering.indicators.fields.value_hint"
+    },
+    "steering_indicators_fields_value_month_hint": "La valeur remplace celle déjà saisie pour le mois en cours.",
+    "@steering_indicators_fields_value_month_hint": {
+        "description": "steering.indicators.fields.value_month_hint"
+    },
+    "steering_indicators_filters_all_frequencies": "Toutes les fréquences",
+    "@steering_indicators_filters_all_frequencies": {
+        "description": "steering.indicators.filters.all_frequencies"
+    },
+    "steering_indicators_filters_all_zones": "Tous les départements",
+    "@steering_indicators_filters_all_zones": {
+        "description": "steering.indicators.filters.all_zones"
+    },
+    "steering_indicators_filters_frequency": "Fréquence",
+    "@steering_indicators_filters_frequency": {
+        "description": "steering.indicators.filters.frequency"
+    },
+    "steering_indicators_filters_from": "Du",
+    "@steering_indicators_filters_from": {
+        "description": "steering.indicators.filters.from"
+    },
+    "steering_indicators_filters_period": "Période",
+    "@steering_indicators_filters_period": {
+        "description": "steering.indicators.filters.period"
+    },
+    "steering_indicators_filters_period_invalid": "Période invalide : indiquez deux dates, la seconde après la première, sur cinq ans au plus.",
+    "@steering_indicators_filters_period_invalid": {
+        "description": "steering.indicators.filters.period_invalid"
+    },
+    "steering_indicators_filters_presets_annee": "Année en cours",
+    "@steering_indicators_filters_presets_annee": {
+        "description": "steering.indicators.filters.presets.annee"
+    },
+    "steering_indicators_filters_presets_mois": "Mois en cours",
+    "@steering_indicators_filters_presets_mois": {
+        "description": "steering.indicators.filters.presets.mois"
+    },
+    "steering_indicators_filters_presets_perso": "Personnalisée",
+    "@steering_indicators_filters_presets_perso": {
+        "description": "steering.indicators.filters.presets.perso"
+    },
+    "steering_indicators_filters_presets_prec": "Mois précédent",
+    "@steering_indicators_filters_presets_prec": {
+        "description": "steering.indicators.filters.presets.prec"
+    },
+    "steering_indicators_filters_presets_trim": "Trimestre en cours",
+    "@steering_indicators_filters_presets_trim": {
+        "description": "steering.indicators.filters.presets.trim"
+    },
+    "steering_indicators_filters_shown": "Période affichée : {period}.",
+    "@steering_indicators_filters_shown": {
+        "description": "steering.indicators.filters.shown",
+        "placeholders": {
+            "period": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_filters_title": "Filtres des indicateurs",
+    "@steering_indicators_filters_title": {
+        "description": "steering.indicators.filters.title"
+    },
+    "steering_indicators_filters_to": "Au",
+    "@steering_indicators_filters_to": {
+        "description": "steering.indicators.filters.to"
+    },
+    "steering_indicators_filters_zone": "Département",
+    "@steering_indicators_filters_zone": {
+        "description": "steering.indicators.filters.zone"
+    },
+    "steering_indicators_filters_zone_note": "Département : {zone}. Les indicateurs calculés au niveau national seulement n’ont pas de valeur par département.",
+    "@steering_indicators_filters_zone_note": {
+        "description": "steering.indicators.filters.zone_note",
+        "placeholders": {
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_footnote": "Un effectif de 1 à 4 est affiché « données masquées » ; un pourcentage l’est quand il porte sur moins de {min} dossiers ou alertes. La tendance est issue des instantanés mensuels.",
+    "@steering_indicators_footnote": {
+        "description": "steering.indicators.footnote",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_formula": "Formule :",
+    "@steering_indicators_formula": {
+        "description": "steering.indicators.formula"
+    },
+    "steering_indicators_intro": "Les 16 indicateurs de suivi sont calculés en direct sur la période choisie. La tendance reprend les six derniers instantanés mensuels. Les effectifs de moins de 5 sont masqués.",
+    "@steering_indicators_intro": {
+        "description": "steering.indicators.intro"
+    },
+    "steering_indicators_manual": "Saisie manuelle",
+    "@steering_indicators_manual": {
+        "description": "steering.indicators.manual"
+    },
+    "steering_indicators_manual_missing": "Aucune valeur saisie",
+    "@steering_indicators_manual_missing": {
+        "description": "steering.indicators.manual_missing"
+    },
+    "steering_indicators_new": "Indicateur personnalisé",
+    "@steering_indicators_new": {
+        "description": "steering.indicators.new"
+    },
+    "steering_indicators_new_title": "Nouvel indicateur personnalisé",
+    "@steering_indicators_new_title": {
+        "description": "steering.indicators.new_title"
+    },
+    "steering_indicators_no_data": "Aucune donnée sur la période",
+    "@steering_indicators_no_data": {
+        "description": "steering.indicators.no_data"
+    },
+    "steering_indicators_no_trend": "Pas encore d’instantané",
+    "@steering_indicators_no_trend": {
+        "description": "steering.indicators.no_trend"
+    },
+    "steering_indicators_progress_of": "Avancement vers la cible de {code}",
+    "@steering_indicators_progress_of": {
+        "description": "steering.indicators.progress_of",
+        "placeholders": {
+            "code": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_save_value": "Enregistrer la valeur",
+    "@steering_indicators_save_value": {
+        "description": "steering.indicators.save_value"
+    },
+    "steering_indicators_status_low": "à renforcer",
+    "@steering_indicators_status_low": {
+        "description": "steering.indicators.status.low"
+    },
+    "steering_indicators_status_masked": "valeur masquée",
+    "@steering_indicators_status_masked": {
+        "description": "steering.indicators.status.masked"
+    },
+    "steering_indicators_status_none": "sans valeur",
+    "@steering_indicators_status_none": {
+        "description": "steering.indicators.status.none"
+    },
+    "steering_indicators_status_progress": "en progression",
+    "@steering_indicators_status_progress": {
+        "description": "steering.indicators.status.progress"
+    },
+    "steering_indicators_status_reached": "cible atteinte",
+    "@steering_indicators_status_reached": {
+        "description": "steering.indicators.status.reached"
+    },
+    "steering_indicators_summary_low": "À renforcer",
+    "@steering_indicators_summary_low": {
+        "description": "steering.indicators.summary.low"
+    },
+    "steering_indicators_summary_progress": "En progression",
+    "@steering_indicators_summary_progress": {
+        "description": "steering.indicators.summary.progress"
+    },
+    "steering_indicators_summary_progress_help": "À partir de {percent} % de la cible",
+    "@steering_indicators_summary_progress_help": {
+        "description": "steering.indicators.summary.progress_help",
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_summary_reached": "Cible atteinte",
+    "@steering_indicators_summary_reached": {
+        "description": "steering.indicators.summary.reached"
+    },
+    "steering_indicators_summary_title": "Atteinte des cibles",
+    "@steering_indicators_summary_title": {
+        "description": "steering.indicators.summary.title"
+    },
+    "steering_indicators_summary_unrated": "Non évalués",
+    "@steering_indicators_summary_unrated": {
+        "description": "steering.indicators.summary.unrated"
+    },
+    "steering_indicators_summary_unrated_help": "Sans valeur ou masqués",
+    "@steering_indicators_summary_unrated_help": {
+        "description": "steering.indicators.summary.unrated_help"
+    },
+    "steering_indicators_table_caption": "Indicateurs de suivi : valeur sur la période, cible, avancement et tendance",
+    "@steering_indicators_table_caption": {
+        "description": "steering.indicators.table_caption"
+    },
+    "steering_indicators_table_title": "Indicateurs de suivi",
+    "@steering_indicators_table_title": {
+        "description": "steering.indicators.table_title"
+    },
+    "steering_indicators_target_down": "≤ {value}",
+    "@steering_indicators_target_down": {
+        "description": "steering.indicators.target_down",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_title": "Indicateurs",
+    "@steering_indicators_title": {
+        "description": "steering.indicators.title"
+    },
+    "steering_indicators_toasts_created": "Indicateur « {label} » ajouté.",
+    "@steering_indicators_toasts_created": {
+        "description": "steering.indicators.toasts.created",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_toasts_deleted": "Indicateur « {label} » supprimé.",
+    "@steering_indicators_toasts_deleted": {
+        "description": "steering.indicators.toasts.deleted",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_toasts_value_saved": "Valeur de « {label} » enregistrée.",
+    "@steering_indicators_toasts_value_saved": {
+        "description": "steering.indicators.toasts.value_saved",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_indicators_trend_down": "Tendance à la baisse",
+    "@steering_indicators_trend_down": {
+        "description": "steering.indicators.trend.down"
+    },
+    "steering_indicators_trend_flat": "Tendance stable",
+    "@steering_indicators_trend_flat": {
+        "description": "steering.indicators.trend.flat"
+    },
+    "steering_indicators_trend_up": "Tendance à la hausse",
+    "@steering_indicators_trend_up": {
+        "description": "steering.indicators.trend.up"
+    },
+    "steering_indicators_unit_count": "nombre",
+    "@steering_indicators_unit_count": {
+        "description": "steering.indicators.unit_count"
+    },
+    "steering_indicators_unit_number": "Nombre",
+    "@steering_indicators_unit_number": {
+        "description": "steering.indicators.unit_number"
+    },
+    "steering_indicators_unit_percent": "Pourcentage",
+    "@steering_indicators_unit_percent": {
+        "description": "steering.indicators.unit_percent"
+    },
+    "steering_indicators_update_value": "Nouvelle valeur",
+    "@steering_indicators_update_value": {
+        "description": "steering.indicators.update_value"
+    },
+    "steering_indicators_value_title": "Nouvelle valeur",
+    "@steering_indicators_value_title": {
+        "description": "steering.indicators.value_title"
+    },
+    "steering_reports_audit_cleared": "{count, plural, =0{Aucun rapport supprimé} =1{1 rapport supprimé} other{{count} rapports supprimés}}",
+    "@steering_reports_audit_cleared": {
+        "description": "steering.reports.audit.cleared",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "steering_reports_audit_mailed": "{count, plural, =0{Aucun envoi réussi} =1{Envoyé à 1 destinataire} other{Envoyé à {count} destinataires}}",
+    "@steering_reports_audit_mailed": {
+        "description": "steering.reports.audit.mailed",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "steering_reports_audit_rows": "{count, plural, =0{sans registre détaillé} =1{1 ligne de registre} other{{count} lignes de registre}}",
+    "@steering_reports_audit_rows": {
+        "description": "steering.reports.audit.rows",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "steering_reports_cols_cases": "Dossiers",
+    "@steering_reports_cols_cases": {
+        "description": "steering.reports.cols.cases"
+    },
+    "steering_reports_cols_indicator": "Indicateur",
+    "@steering_reports_cols_indicator": {
+        "description": "steering.reports.cols.indicator"
+    },
+    "steering_reports_cols_month": "Mois",
+    "@steering_reports_cols_month": {
+        "description": "steering.reports.cols.month"
+    },
+    "steering_reports_cols_referral": "Orientation",
+    "@steering_reports_cols_referral": {
+        "description": "steering.reports.cols.referral"
+    },
+    "steering_reports_cols_register": "Registre",
+    "@steering_reports_cols_register": {
+        "description": "steering.reports.cols.register"
+    },
+    "steering_reports_cols_result": "Résultat",
+    "@steering_reports_cols_result": {
+        "description": "steering.reports.cols.result"
+    },
+    "steering_reports_cols_share": "%",
+    "@steering_reports_cols_share": {
+        "description": "steering.reports.cols.share"
+    },
+    "steering_reports_cols_status": "Statut",
+    "@steering_reports_cols_status": {
+        "description": "steering.reports.cols.status"
+    },
+    "steering_reports_cols_total": "Total",
+    "@steering_reports_cols_total": {
+        "description": "steering.reports.cols.total"
+    },
+    "steering_reports_cols_type": "Type",
+    "@steering_reports_cols_type": {
+        "description": "steering.reports.cols.type"
+    },
+    "steering_reports_cols_value": "Valeur",
+    "@steering_reports_cols_value": {
+        "description": "steering.reports.cols.value"
+    },
+    "steering_reports_confidential": "confidentiel",
+    "@steering_reports_confidential": {
+        "description": "steering.reports.confidential"
+    },
+    "steering_reports_cross": "{a} × {b}",
+    "@steering_reports_cross": {
+        "description": "steering.reports.cross",
+        "placeholders": {
+            "a": {
+                "type": "String"
+            },
+            "b": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_detail_code": "Code du dossier",
+    "@steering_reports_detail_code": {
+        "description": "steering.reports.detail.code"
+    },
+    "steering_reports_detail_date": "Date des faits",
+    "@steering_reports_detail_date": {
+        "description": "steering.reports.detail.date"
+    },
+    "steering_reports_detail_register": "Registre",
+    "@steering_reports_detail_register": {
+        "description": "steering.reports.detail.register"
+    },
+    "steering_reports_detail_sheet": "Registre détaillé",
+    "@steering_reports_detail_sheet": {
+        "description": "steering.reports.detail.sheet"
+    },
+    "steering_reports_detail_status": "Statut",
+    "@steering_reports_detail_status": {
+        "description": "steering.reports.detail.status"
+    },
+    "steering_reports_detail_violence": "Type de violence",
+    "@steering_reports_detail_violence": {
+        "description": "steering.reports.detail.violence"
+    },
+    "steering_reports_dimension_by": "Désagrégation par {dimension}",
+    "@steering_reports_dimension_by": {
+        "description": "steering.reports.dimension_by",
+        "placeholders": {
+            "dimension": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_dimensions_age": "Tranche d’âge",
+    "@steering_reports_dimensions_age": {
+        "description": "steering.reports.dimensions.age"
+    },
+    "steering_reports_dimensions_commune": "Zone : commune",
+    "@steering_reports_dimensions_commune": {
+        "description": "steering.reports.dimensions.commune"
+    },
+    "steering_reports_dimensions_departement": "Zone : département",
+    "@steering_reports_dimensions_departement": {
+        "description": "steering.reports.dimensions.departement"
+    },
+    "steering_reports_dimensions_population": "Type de population",
+    "@steering_reports_dimensions_population": {
+        "description": "steering.reports.dimensions.population"
+    },
+    "steering_reports_dimensions_sexe": "Sexe",
+    "@steering_reports_dimensions_sexe": {
+        "description": "steering.reports.dimensions.sexe"
+    },
+    "steering_reports_dimensions_short_age": "Âge",
+    "@steering_reports_dimensions_short_age": {
+        "description": "steering.reports.dimensions_short.age"
+    },
+    "steering_reports_dimensions_short_commune": "Commune",
+    "@steering_reports_dimensions_short_commune": {
+        "description": "steering.reports.dimensions_short.commune"
+    },
+    "steering_reports_dimensions_short_departement": "Département",
+    "@steering_reports_dimensions_short_departement": {
+        "description": "steering.reports.dimensions_short.departement"
+    },
+    "steering_reports_dimensions_short_population": "Population",
+    "@steering_reports_dimensions_short_population": {
+        "description": "steering.reports.dimensions_short.population"
+    },
+    "steering_reports_dimensions_short_sexe": "Sexe",
+    "@steering_reports_dimensions_short_sexe": {
+        "description": "steering.reports.dimensions_short.sexe"
+    },
+    "steering_reports_errors_choose_excel": "Le registre détaillé compte {count} lignes, plus que les {max} d’un PDF ou d’un document Word : choisissez Excel.",
+    "@steering_reports_errors_choose_excel": {
+        "description": "steering.reports.errors.choose_excel",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_errors_day_range": "Le jour d’envoi doit être compris entre 1 et 28.",
+    "@steering_reports_errors_day_range": {
+        "description": "steering.reports.errors.day_range"
+    },
+    "steering_reports_errors_detail_no_mail": "Le registre détaillé n’est jamais envoyé par e-mail : retirez les destinataires ou le registre, puis téléchargez le fichier depuis l’historique.",
+    "@steering_reports_errors_detail_no_mail": {
+        "description": "steering.reports.errors.detail_no_mail"
+    },
+    "steering_reports_errors_failed": "La génération a échoué. Relancez le rapport ou contactez l’équipe technique.",
+    "@steering_reports_errors_failed": {
+        "description": "steering.reports.errors.failed"
+    },
+    "steering_reports_errors_format": "Choisissez un format de fichier.",
+    "@steering_reports_errors_format": {
+        "description": "steering.reports.errors.format"
+    },
+    "steering_reports_errors_formats_required": "Choisissez au moins un format.",
+    "@steering_reports_errors_formats_required": {
+        "description": "steering.reports.errors.formats_required"
+    },
+    "steering_reports_errors_mail_failed": "{count, plural, =1{1 envoi par e-mail a échoué. Le fichier reste téléchargeable.} other{{count} envois par e-mail ont échoué. Le fichier reste téléchargeable.}}",
+    "@steering_reports_errors_mail_failed": {
+        "description": "steering.reports.errors.mail_failed",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "steering_reports_errors_mail_failed_toast": "L’envoi par e-mail a échoué. Le fichier reste téléchargeable.",
+    "@steering_reports_errors_mail_failed_toast": {
+        "description": "steering.reports.errors.mail_failed_toast"
+    },
+    "steering_reports_errors_no_transport": "Rapport non envoyé : aucun service d’e-mail n’est configuré. Le fichier reste téléchargeable.",
+    "@steering_reports_errors_no_transport": {
+        "description": "steering.reports.errors.no_transport"
+    },
+    "steering_reports_errors_not_found": "Rapport introuvable.",
+    "@steering_reports_errors_not_found": {
+        "description": "steering.reports.errors.not_found"
+    },
+    "steering_reports_errors_period_invalid": "Période invalide : vérifiez les dates.",
+    "@steering_reports_errors_period_invalid": {
+        "description": "steering.reports.errors.period_invalid"
+    },
+    "steering_reports_errors_period_inverted": "La date de fin précède la date de début.",
+    "@steering_reports_errors_period_inverted": {
+        "description": "steering.reports.errors.period_inverted"
+    },
+    "steering_reports_errors_period_too_long": "La période ne peut pas dépasser {years} ans.",
+    "@steering_reports_errors_period_too_long": {
+        "description": "steering.reports.errors.period_too_long",
+        "placeholders": {
+            "years": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_errors_recipient": "Adresse e-mail invalide : {address}.",
+    "@steering_reports_errors_recipient": {
+        "description": "steering.reports.errors.recipient",
+        "placeholders": {
+            "address": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_errors_recipients_max": "{max} destinataires au plus.",
+    "@steering_reports_errors_recipients_max": {
+        "description": "steering.reports.errors.recipients_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_errors_recipients_required": "Indiquez au moins un destinataire.",
+    "@steering_reports_errors_recipients_required": {
+        "description": "steering.reports.errors.recipients_required"
+    },
+    "steering_reports_errors_too_many_pending": "Vous avez déjà {max} rapports en préparation : attendez la fin de l’un d’eux.",
+    "@steering_reports_errors_too_many_pending": {
+        "description": "steering.reports.errors.too_many_pending",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_errors_too_many_rows": "Le registre détaillé compte {count} lignes : le maximum est de {max}. Réduisez la période.",
+    "@steering_reports_errors_too_many_rows": {
+        "description": "steering.reports.errors.too_many_rows",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_errors_weekday_range": "Le jour de la semaine doit être compris entre 1 (lundi) et 7 (dimanche).",
+    "@steering_reports_errors_weekday_range": {
+        "description": "steering.reports.errors.weekday_range"
+    },
+    "steering_reports_fields_day": "Jour d’envoi (1 à 28)",
+    "@steering_reports_fields_day": {
+        "description": "steering.reports.fields.day"
+    },
+    "steering_reports_fields_detail": "Joindre le registre détaillé (dossiers pseudonymisés)",
+    "@steering_reports_fields_detail": {
+        "description": "steering.reports.fields.detail"
+    },
+    "steering_reports_fields_detail_help": "Une ligne par dossier, sans récit, notes ni position. PDF et Word : {pdf} lignes au plus ; Excel : {excel} lignes au plus.",
+    "@steering_reports_fields_detail_help": {
+        "description": "steering.reports.fields.detail_help",
+        "placeholders": {
+            "excel": {
+                "type": "String"
+            },
+            "pdf": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_fields_detail_locked": "Réservé aux comptes autorisés à exporter les dossiers.",
+    "@steering_reports_fields_detail_locked": {
+        "description": "steering.reports.fields.detail_locked"
+    },
+    "steering_reports_fields_dimensions": "Désagrégation",
+    "@steering_reports_fields_dimensions": {
+        "description": "steering.reports.fields.dimensions"
+    },
+    "steering_reports_fields_format": "Format",
+    "@steering_reports_fields_format": {
+        "description": "steering.reports.fields.format"
+    },
+    "steering_reports_fields_formats": "Formats",
+    "@steering_reports_fields_formats": {
+        "description": "steering.reports.fields.formats"
+    },
+    "steering_reports_fields_frequency": "Fréquence",
+    "@steering_reports_fields_frequency": {
+        "description": "steering.reports.fields.frequency"
+    },
+    "steering_reports_fields_from": "Du",
+    "@steering_reports_fields_from": {
+        "description": "steering.reports.fields.from"
+    },
+    "steering_reports_fields_kind": "Type de rapport",
+    "@steering_reports_fields_kind": {
+        "description": "steering.reports.fields.kind"
+    },
+    "steering_reports_fields_recipients": "Destinataires (adresses séparées par une virgule)",
+    "@steering_reports_fields_recipients": {
+        "description": "steering.reports.fields.recipients"
+    },
+    "steering_reports_fields_recipients_help": "Le fichier est envoyé en pièce jointe à la fin de la génération. 10 destinataires au plus.",
+    "@steering_reports_fields_recipients_help": {
+        "description": "steering.reports.fields.recipients_help"
+    },
+    "steering_reports_fields_recipients_placeholder": "direction@exemple.org, bailleur@exemple.org",
+    "@steering_reports_fields_recipients_placeholder": {
+        "description": "steering.reports.fields.recipients_placeholder"
+    },
+    "steering_reports_fields_sections": "Sections à inclure",
+    "@steering_reports_fields_sections": {
+        "description": "steering.reports.fields.sections"
+    },
+    "steering_reports_fields_title": "Titre",
+    "@steering_reports_fields_title": {
+        "description": "steering.reports.fields.title"
+    },
+    "steering_reports_fields_until": "Au",
+    "@steering_reports_fields_until": {
+        "description": "steering.reports.fields.until"
+    },
+    "steering_reports_fields_weekday": "Jour de la semaine (1 = lundi)",
+    "@steering_reports_fields_weekday": {
+        "description": "steering.reports.fields.weekday"
+    },
+    "steering_reports_frequencies_annuel": "Annuelle",
+    "@steering_reports_frequencies_annuel": {
+        "description": "steering.reports.frequencies.annuel"
+    },
+    "steering_reports_frequencies_hebdomadaire": "Hebdomadaire",
+    "@steering_reports_frequencies_hebdomadaire": {
+        "description": "steering.reports.frequencies.hebdomadaire"
+    },
+    "steering_reports_frequencies_mensuel": "Mensuelle",
+    "@steering_reports_frequencies_mensuel": {
+        "description": "steering.reports.frequencies.mensuel"
+    },
+    "steering_reports_frequencies_semestriel": "Semestrielle",
+    "@steering_reports_frequencies_semestriel": {
+        "description": "steering.reports.frequencies.semestriel"
+    },
+    "steering_reports_frequencies_trimestriel": "Trimestrielle",
+    "@steering_reports_frequencies_trimestriel": {
+        "description": "steering.reports.frequencies.trimestriel"
+    },
+    "steering_reports_generated_at": "Généré le",
+    "@steering_reports_generated_at": {
+        "description": "steering.reports.generated_at"
+    },
+    "steering_reports_history_all_statuses": "Tous les états",
+    "@steering_reports_history_all_statuses": {
+        "description": "steering.reports.history.all_statuses"
+    },
+    "steering_reports_history_automatic": "planifié",
+    "@steering_reports_history_automatic": {
+        "description": "steering.reports.history.automatic"
+    },
+    "steering_reports_history_caption": "Rapports générés : date, titre, période, format et état",
+    "@steering_reports_history_caption": {
+        "description": "steering.reports.history.caption"
+    },
+    "steering_reports_history_clear": "Vider l’historique",
+    "@steering_reports_history_clear": {
+        "description": "steering.reports.history.clear"
+    },
+    "steering_reports_history_columns_date": "Date",
+    "@steering_reports_history_columns_date": {
+        "description": "steering.reports.history.columns.date"
+    },
+    "steering_reports_history_columns_format": "Format",
+    "@steering_reports_history_columns_format": {
+        "description": "steering.reports.history.columns.format"
+    },
+    "steering_reports_history_columns_period": "Période",
+    "@steering_reports_history_columns_period": {
+        "description": "steering.reports.history.columns.period"
+    },
+    "steering_reports_history_columns_report": "Rapport",
+    "@steering_reports_history_columns_report": {
+        "description": "steering.reports.history.columns.report"
+    },
+    "steering_reports_history_columns_status": "État",
+    "@steering_reports_history_columns_status": {
+        "description": "steering.reports.history.columns.status"
+    },
+    "steering_reports_history_confirm_clear": "Vider l’historique ? Les rapports terminés et leurs fichiers seront supprimés ; les rapports en cours sont conservés.",
+    "@steering_reports_history_confirm_clear": {
+        "description": "steering.reports.history.confirm_clear"
+    },
+    "steering_reports_history_confirm_delete": "Supprimer ce rapport et son fichier ?",
+    "@steering_reports_history_confirm_delete": {
+        "description": "steering.reports.history.confirm_delete"
+    },
+    "steering_reports_history_delete": "Supprimer",
+    "@steering_reports_history_delete": {
+        "description": "steering.reports.history.delete"
+    },
+    "steering_reports_history_download": "Télécharger",
+    "@steering_reports_history_download": {
+        "description": "steering.reports.history.download"
+    },
+    "steering_reports_history_empty": "Aucun rapport généré",
+    "@steering_reports_history_empty": {
+        "description": "steering.reports.history.empty"
+    },
+    "steering_reports_history_empty_text": "Les rapports demandés ou planifiés apparaîtront ici.",
+    "@steering_reports_history_empty_text": {
+        "description": "steering.reports.history.empty_text"
+    },
+    "steering_reports_history_expired": "Fichier expiré",
+    "@steering_reports_history_expired": {
+        "description": "steering.reports.history.expired"
+    },
+    "steering_reports_history_resend": "Renvoyer par e-mail",
+    "@steering_reports_history_resend": {
+        "description": "steering.reports.history.resend"
+    },
+    "steering_reports_history_search_help": "Recherche dans le titre des rapports.",
+    "@steering_reports_history_search_help": {
+        "description": "steering.reports.history.search_help"
+    },
+    "steering_reports_history_search_placeholder": "Titre du rapport…",
+    "@steering_reports_history_search_placeholder": {
+        "description": "steering.reports.history.search_placeholder"
+    },
+    "steering_reports_history_title": "Historique des rapports générés",
+    "@steering_reports_history_title": {
+        "description": "steering.reports.history.title"
+    },
+    "steering_reports_intro": "Choisissez le type, la période, les désagrégations et le format, puis générez le rapport : le fichier est préparé en arrière-plan et reste téléchargeable 30 jours. Les effectifs de moins de 5 sont masqués dans tous les formats.",
+    "@steering_reports_intro": {
+        "description": "steering.reports.intro"
+    },
+    "steering_reports_kpi_alerts": "Alertes reçues",
+    "@steering_reports_kpi_alerts": {
+        "description": "steering.reports.kpi.alerts"
+    },
+    "steering_reports_kpi_cases": "Dossiers enregistrés",
+    "@steering_reports_kpi_cases": {
+        "description": "steering.reports.kpi.cases"
+    },
+    "steering_reports_kpi_closed": "Dossiers clos",
+    "@steering_reports_kpi_closed": {
+        "description": "steering.reports.kpi.closed"
+    },
+    "steering_reports_kpi_followups": "Suivis réalisés",
+    "@steering_reports_kpi_followups": {
+        "description": "steering.reports.kpi.followups"
+    },
+    "steering_reports_kpi_sos": "SOS",
+    "@steering_reports_kpi_sos": {
+        "description": "steering.reports.kpi.sos"
+    },
+    "steering_reports_kpi_vbg": "Registre VBG",
+    "@steering_reports_kpi_vbg": {
+        "description": "steering.reports.kpi.vbg"
+    },
+    "steering_reports_kpi_vdh": "Registre VDH",
+    "@steering_reports_kpi_vdh": {
+        "description": "steering.reports.kpi.vdh"
+    },
+    "steering_reports_masked": "données masquées",
+    "@steering_reports_masked": {
+        "description": "steering.reports.masked"
+    },
+    "steering_reports_masked_note": "Les effectifs de 1 à 4 sont masqués (« données masquées ») ; les totaux et pourcentages qui permettraient de les retrouver sont omis.",
+    "@steering_reports_masked_note": {
+        "description": "steering.reports.masked_note"
+    },
+    "steering_reports_not_referred": "Non orienté",
+    "@steering_reports_not_referred": {
+        "description": "steering.reports.not_referred"
+    },
+    "steering_reports_optional": "(facultatif)",
+    "@steering_reports_optional": {
+        "description": "steering.reports.optional"
+    },
+    "steering_reports_period": "Période",
+    "@steering_reports_period": {
+        "description": "steering.reports.period"
+    },
+    "steering_reports_plan_active": "Actif",
+    "@steering_reports_plan_active": {
+        "description": "steering.reports.plan.active"
+    },
+    "steering_reports_plan_add": "Planifier",
+    "@steering_reports_plan_add": {
+        "description": "steering.reports.plan.add"
+    },
+    "steering_reports_plan_aggregates_only": "Les rapports planifiés ne contiennent que des chiffres agrégés (jamais le registre détaillé). Ils couvrent la dernière période entière écoulée.",
+    "@steering_reports_plan_aggregates_only": {
+        "description": "steering.reports.plan.aggregates_only"
+    },
+    "steering_reports_plan_confirm_delete": "Supprimer cette planification ? Les rapports déjà générés sont conservés.",
+    "@steering_reports_plan_confirm_delete": {
+        "description": "steering.reports.plan.confirm_delete"
+    },
+    "steering_reports_plan_day": "le {day}",
+    "@steering_reports_plan_day": {
+        "description": "steering.reports.plan.day",
+        "placeholders": {
+            "day": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_plan_delete": "Supprimer la planification",
+    "@steering_reports_plan_delete": {
+        "description": "steering.reports.plan.delete"
+    },
+    "steering_reports_plan_next": "Prochaine génération : {date}",
+    "@steering_reports_plan_next": {
+        "description": "steering.reports.plan.next",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_plan_none": "Aucune planification.",
+    "@steering_reports_plan_none": {
+        "description": "steering.reports.plan.none"
+    },
+    "steering_reports_plan_pause": "Mettre en pause",
+    "@steering_reports_plan_pause": {
+        "description": "steering.reports.plan.pause"
+    },
+    "steering_reports_plan_paused": "En pause",
+    "@steering_reports_plan_paused": {
+        "description": "steering.reports.plan.paused"
+    },
+    "steering_reports_plan_resume": "Réactiver",
+    "@steering_reports_plan_resume": {
+        "description": "steering.reports.plan.resume"
+    },
+    "steering_reports_plan_title": "Planification automatique",
+    "@steering_reports_plan_title": {
+        "description": "steering.reports.plan.title"
+    },
+    "steering_reports_plan_weekday": "le {day}",
+    "@steering_reports_plan_weekday": {
+        "description": "steering.reports.plan.weekday",
+        "placeholders": {
+            "day": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_preview_badge": "Aperçu",
+    "@steering_reports_preview_badge": {
+        "description": "steering.reports.preview_badge"
+    },
+    "steering_reports_preview_empty": "Aucune section sélectionnée.",
+    "@steering_reports_preview_empty": {
+        "description": "steering.reports.preview_empty"
+    },
+    "steering_reports_preview_hint": "Choisissez la période et la désagrégation, puis cliquez sur « Aperçu » pour voir les chiffres avant de générer le fichier.",
+    "@steering_reports_preview_hint": {
+        "description": "steering.reports.preview_hint"
+    },
+    "steering_reports_sections_alertes": "Alertes et SOS",
+    "@steering_reports_sections_alertes": {
+        "description": "steering.reports.sections.alertes"
+    },
+    "steering_reports_sections_evol": "Évolution mensuelle des cas",
+    "@steering_reports_sections_evol": {
+        "description": "steering.reports.sections.evol"
+    },
+    "steering_reports_sections_kpi": "Chiffres clés",
+    "@steering_reports_sections_kpi": {
+        "description": "steering.reports.sections.kpi"
+    },
+    "steering_reports_sections_orient": "Orientation (services)",
+    "@steering_reports_sections_orient": {
+        "description": "steering.reports.sections.orient"
+    },
+    "steering_reports_sections_registre": "Registres VBG / VDH",
+    "@steering_reports_sections_registre": {
+        "description": "steering.reports.sections.registre"
+    },
+    "steering_reports_sections_statut": "Statut des dossiers",
+    "@steering_reports_sections_statut": {
+        "description": "steering.reports.sections.statut"
+    },
+    "steering_reports_sections_suivi": "Suivi des victimes",
+    "@steering_reports_sections_suivi": {
+        "description": "steering.reports.sections.suivi"
+    },
+    "steering_reports_sections_viol": "Répartition par type de violence",
+    "@steering_reports_sections_viol": {
+        "description": "steering.reports.sections.viol"
+    },
+    "steering_reports_summary": "Synthèse",
+    "@steering_reports_summary": {
+        "description": "steering.reports.summary"
+    },
+    "steering_reports_title": "Rapports",
+    "@steering_reports_title": {
+        "description": "steering.reports.title"
+    },
+    "steering_reports_toasts_cleared": "{count, plural, =0{Aucun rapport à supprimer.} =1{1 rapport supprimé.} other{{count} rapports supprimés.}}",
+    "@steering_reports_toasts_cleared": {
+        "description": "steering.reports.toasts.cleared",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "steering_reports_toasts_deleted": "Rapport supprimé.",
+    "@steering_reports_toasts_deleted": {
+        "description": "steering.reports.toasts.deleted"
+    },
+    "steering_reports_toasts_paused": "Planification mise en pause.",
+    "@steering_reports_toasts_paused": {
+        "description": "steering.reports.toasts.paused"
+    },
+    "steering_reports_toasts_previewed": "Aperçu calculé pour la période {period}.",
+    "@steering_reports_toasts_previewed": {
+        "description": "steering.reports.toasts.previewed",
+        "placeholders": {
+            "period": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_toasts_queued": "Rapport en préparation : il apparaîtra dans l’historique dès qu’il sera prêt.",
+    "@steering_reports_toasts_queued": {
+        "description": "steering.reports.toasts.queued"
+    },
+    "steering_reports_toasts_resent": "{count, plural, =1{Rapport renvoyé à 1 destinataire.} other{Rapport renvoyé à {count} destinataires.}}",
+    "@steering_reports_toasts_resent": {
+        "description": "steering.reports.toasts.resent",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "steering_reports_toasts_resumed": "Planification réactivée.",
+    "@steering_reports_toasts_resumed": {
+        "description": "steering.reports.toasts.resumed"
+    },
+    "steering_reports_toasts_schedule_deleted": "Planification supprimée.",
+    "@steering_reports_toasts_schedule_deleted": {
+        "description": "steering.reports.toasts.schedule_deleted"
+    },
+    "steering_reports_toasts_scheduled": "Génération automatique planifiée ({frequency}).",
+    "@steering_reports_toasts_scheduled": {
+        "description": "steering.reports.toasts.scheduled",
+        "placeholders": {
+            "frequency": {
+                "type": "String"
+            }
+        }
+    },
+    "steering_reports_unknown": "Non renseigné",
+    "@steering_reports_unknown": {
+        "description": "steering.reports.unknown"
+    },
+    "steering_reports_wizard_generate": "Générer le rapport",
+    "@steering_reports_wizard_generate": {
+        "description": "steering.reports.wizard.generate"
+    },
+    "steering_reports_wizard_preview": "Aperçu",
+    "@steering_reports_wizard_preview": {
+        "description": "steering.reports.wizard.preview"
+    },
+    "steering_reports_wizard_title": "Paramètres du rapport",
+    "@steering_reports_wizard_title": {
+        "description": "steering.reports.wizard.title"
     },
     "sync_cursor_invalid": "Le point de reprise de la synchronisation est illisible. Relance une synchronisation complète.",
     "@sync_cursor_invalid": {

@@ -24,6 +24,8 @@ class ReportSchedule extends Model
     use HasFactory;
 
     /** Fréquences admises (`frequency`) : le dictionnaire ne prévoit pas d'enum dédié. */
+    public const FREQUENCY_WEEKLY = 'hebdomadaire';
+
     public const FREQUENCY_MONTHLY = 'mensuel';
 
     public const FREQUENCY_QUARTERLY = 'trimestriel';
@@ -33,10 +35,13 @@ class ReportSchedule extends Model
     public const FREQUENCY_ANNUAL = 'annuel';
 
     /** @var list<string> */
-    public const FREQUENCIES = [self::FREQUENCY_MONTHLY, self::FREQUENCY_QUARTERLY, self::FREQUENCY_SEMIANNUAL, self::FREQUENCY_ANNUAL];
+    public const FREQUENCIES = [self::FREQUENCY_WEEKLY, self::FREQUENCY_MONTHLY, self::FREQUENCY_QUARTERLY, self::FREQUENCY_SEMIANNUAL, self::FREQUENCY_ANNUAL];
 
     /** Jour d'envoi maximal : existe dans tous les mois (prototype : 1–28). */
     public const MAX_DAY_OF_PERIOD = 28;
+
+    /** Fréquence hebdomadaire : `day_of_period` est le jour de la semaine (1 = lundi … 7 = dimanche). */
+    public const MAX_WEEKDAY = 7;
 
     /**
      * @var list<string>
@@ -125,6 +130,14 @@ class ReportSchedule extends Model
     public function computeNextRunAt(?CarbonInterface $from = null): CarbonImmutable
     {
         $from = CarbonImmutable::instance($from ?? now());
+
+        if ($this->frequency === self::FREQUENCY_WEEKLY) {
+            $weekday = max(1, min(self::MAX_WEEKDAY, $this->day_of_period));
+            $candidate = $from->startOfWeek()->addDays($weekday - 1)->startOfDay();
+
+            return $candidate->lessThanOrEqualTo($from) ? $candidate->addWeek() : $candidate;
+        }
+
         $day = max(1, min(self::MAX_DAY_OF_PERIOD, $this->day_of_period));
         $months = $this->periodMonths();
 

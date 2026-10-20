@@ -34,6 +34,9 @@ final class IndicatorCalculator
     /** Délai de traitement d'une alerte pour IND-10 (heures). */
     public const ALERT_HANDLING_HOURS = 24;
 
+    /** Délai de première prise en charge d'un dossier pour IND-04 (heures). */
+    public const FIRST_SERVICE_HOURS = 72;
+
     /**
      * calc_key => [méthode, calcul par zone ?].
      *
@@ -43,6 +46,7 @@ final class IndicatorCalculator
         'cas_total' => ['casTotal', true],
         'cas_vbg' => ['casVbg', true],
         'cas_vdh' => ['casVdh', true],
+        'pct_72h' => ['pct72h', true],
         'pct_orientes' => ['pctOrientes', true],
         'pct_clos' => ['pctClos', true],
         'pairs' => ['pairs', true],
@@ -58,13 +62,12 @@ final class IndicatorCalculator
     ];
 
     /**
-     * calc_key => raison pour laquelle le calcul n'est pas possible sur les tables existantes.
+     * calc_key => raison pour laquelle le calcul n'est pas possible sur les tables existantes (aucune à ce jour :
+     * IND-04 se calcule sur le premier `case_followups.date`, P10-06).
      *
      * @var array<string, string>
      */
-    private const UNAVAILABLE = [
-        'pct_72h' => 'aucune colonne n’horodate le premier service délivré (case_forms.referral_date et case_followups.date sont des dates sans heure et n’identifient pas un « premier service ») ; indicateur à saisir à la main ou à définir en P10',
-    ];
+    private const UNAVAILABLE = [];
 
     /**
      * Clés calculables.
@@ -139,6 +142,41 @@ final class IndicatorCalculator
         return IndicatorComputation::of(
             $this->cases($period, $zone)->ofKind(CaseKind::Vdh)->where('status', '!=', CaseStatus::Archived->value)->count()
         );
+    }
+
+    /**
+     * IND-04 : part des dossiers dont la première étape de suivi **réalisée** (`case_followups.date`, une date locale sans
+     * heure ; une étape planifiée, reportée ou annulée n'est pas une prise en charge) tombe au plus tard 72 h après
+     * l'enregistrement du dossier (`cases.created_at` + 72 h, ramené au fuseau d'affichage avant de ne garder que la
+     * date). Un dossier sans étape réalisée compte au dénominateur et pas au numérateur. Les dossiers archivés restent
+     * dans la base (comme pour IND-05 et IND-06) : seuls IND-01 à IND-03 les excluent (Q90).
+     */
+    private function pct72h(Period $period, ?Zone $zone): IndicatorComputation
+    {
+        $cases = $this->cases($period, $zone)
+            ->select(['cases.id', 'cases.created_at'])
+            ->selectSub(
+                CaseFollowup::query()->selectRaw('MIN(case_followups.date)')->whereColumn('case_followups.case_id', 'cases.id')
+                    ->where('case_followups.outcome', FollowupOutcome::Done->value),
+                'first_followup_on',
+            );
+
+        $total = 0;
+        $within = 0;
+
+        foreach ($cases->lazyById(500, 'cases.id', 'id') as $case) {
+            $total++;
+
+            /** @var string|null $firstFollowup */
+            $firstFollowup = $case->getAttribute('first_followup_on');
+
+            if ($firstFollowup !== null && $case->created_at !== null
+                && substr($firstFollowup, 0, 10) <= $case->created_at->copy()->addHours(self::FIRST_SERVICE_HOURS)->setTimezone((string) config('xomiton.display_timezone', 'UTC'))->toDateString()) {
+                $within++;
+            }
+        }
+
+        return IndicatorComputation::percentage($within, $total, 'aucun dossier enregistré sur la période');
     }
 
     /**
@@ -221,8 +259,8 @@ final class IndicatorCalculator
     // -- Alertes (IND-10 à IND-12) ---------------------------------------------------------------------
 
     /**
-     * IND-10 : part des alertes reçues sur la période (hors SOS annulés) passées à « traitée » ou « close » dans
-     * les 24 h : premier changement de statut correspondant (`alert_status_changes`), sinon `closed_at`.
+     * IND-10 : part des alertes reçues sur la période (hors alertes annulées, `cancelled_at` : une alerte annulée n'a
+     * rien à traiter, Q90) passées à « traitée » ou « close » dans les 24 h : premier changement de statut correspondant (`alert_status_changes`), sinon `closed_at`.
      */
     private function pctAlertes24(Period $period, ?Zone $zone): IndicatorComputation
     {
@@ -264,10 +302,13 @@ final class IndicatorCalculator
         return IndicatorComputation::of($this->alerts($period, $zone)->count());
     }
 
-    /** IND-12 : SOS reçus sur la période. */
+    /**
+     * IND-12 : SOS reçus sur la période avec une localisation GPS. Seule la présence de la position est testée
+     * (`whereNotNull('lat')`) : la colonne est chiffrée, sa valeur n'est jamais lue ni comparée (ADR-33).
+     */
     private function sos(Period $period, ?Zone $zone): IndicatorComputation
     {
-        return IndicatorComputation::of($this->alerts($period, $zone)->sos()->count());
+        return IndicatorComputation::of($this->alerts($period, $zone)->sos()->whereNotNull('lat')->count());
     }
 
     // -- Suivi (IND-13, IND-14) ----------------------------------------------------------------------

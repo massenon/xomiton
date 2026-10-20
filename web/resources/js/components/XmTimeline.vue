@@ -4,10 +4,14 @@
 // « date · par », commentaire, prochain suivi, « En retard » en rouge (jamais la couleur seule : badge en toutes lettres).
 // items : [{ title, date, datetime, by, kind (internal | shared | status : annoncé aux lecteurs d'écran, couleur du
 // point), badge { label, color }, text, next, late, color (prime sur kind) }] ; label (nom de la liste) ; empty.
+// Slot facultatif `actions` ({ item, index }) : gestes d'une étape (« Marquer comme réalisée », espace pair P9-08), vide
+// par défaut : le rendu reste celui de <x-timeline>.
 import { useI18n } from 'vue-i18n';
 import XmBadge from './XmBadge.vue';
 
 export interface TimelineItem {
+    /** Identifiant de l'étape (gestes du slot `actions`, clé de liste) ; sans effet sur le rendu. */
+    id?: number | string | null;
     title: string;
     date?: string | null;
     datetime?: string | null;
@@ -38,7 +42,7 @@ function dotClass(item: TimelineItem): string {
 <template>
     <p v-if="items.length === 0" class="text-secondary mb-0">{{ empty ?? t('components.timeline.empty') }}</p>
     <ol v-else class="xm-timeline list-unstyled mb-0 ms-2 border-start border-2 ps-3" :aria-label="label ?? t('components.timeline.label')">
-        <li v-for="(item, i) in items" :key="i" class="xm-timeline__item mb-3 position-relative">
+        <li v-for="(item, i) in items" :key="item.id ?? i" class="xm-timeline__item mb-3 position-relative">
             <span :class="['xm-timeline__dot position-absolute rounded-circle', dotClass(item)]" aria-hidden="true"></span>
             <div class="d-flex flex-wrap justify-content-between gap-2">
                 <div>
@@ -51,6 +55,7 @@ function dotClass(item: TimelineItem): string {
             </div>
             <div v-if="item.text" class="small">{{ item.text }}</div>
             <div v-if="item.next" :class="['small', item.late ? 'text-danger fw-semibold' : 'text-secondary']"><i class="bi bi-calendar-event me-1" aria-hidden="true"></i>{{ t('components.timeline.next', { date: item.next }) }}</div>
+            <slot name="actions" :item="item" :index="i" />
         </li>
     </ol>
 </template>

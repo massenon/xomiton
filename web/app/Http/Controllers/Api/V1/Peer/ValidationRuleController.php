@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Peer;
 
+use App\Application\Cases\CollectOptions;
 use App\Application\Cases\ValidationCatalog;
-use App\Domain\Cases\CaseNotes;
-use App\Domain\Cases\CaseReferral;
-use App\Domain\Cases\FollowupStep;
-use App\Domain\Cases\ValidationRuleKey;
-use App\Enums\AgeRange;
 use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Resources\Peer\ValidationRuleResource;
 use Illuminate\Http\JsonResponse;
@@ -23,24 +19,11 @@ use Illuminate\Http\JsonResponse;
  */
 final class ValidationRuleController extends ApiController
 {
-    public function __invoke(ValidationCatalog $catalog): JsonResponse
+    public function __invoke(ValidationCatalog $catalog, CollectOptions $options): JsonResponse
     {
-        // Tranches proposées = tranches que le serveur accepte : filtrées par les bornes seulement si `age_range` est active.
-        $ageRanges = $catalog->isActive(ValidationRuleKey::AgeRange)
-            ? $catalog->plausibility()->acceptedAgeRanges()
-            : AgeRange::cases();
-
         return $this->respond(ValidationRuleResource::collection($catalog->active()), meta: [
             'updated_at' => $catalog->lastUpdatedAt(),
-            'options' => [
-                'age_ranges' => array_map(static fn (AgeRange $range): array => [
-                    'value' => $range->value,
-                    'label' => $range->label(),
-                ], $ageRanges),
-                'referrals' => CaseReferral::OPTIONS,
-                'followup_steps' => FollowupStep::OPTIONS,
-                'notes_min_length' => CaseNotes::MIN_LENGTH,
-            ],
+            'options' => $options->lists(),
         ]);
     }
 }

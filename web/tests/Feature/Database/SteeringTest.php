@@ -88,7 +88,7 @@ describe('indicators', function (): void {
         expect($expected)->toHaveCount(16)
             ->and(array_column(IndicatorFrequency::cases(), 'value'))->toBe(['hebdomadaire', 'mensuelle', 'trimestrielle', 'semestrielle', 'annuelle'])
             ->and(array_column(ReportKind::cases(), 'value'))->toContain('semestriel')
-            ->and(ReportSchedule::FREQUENCIES)->toBe(['mensuel', 'trimestriel', 'semestriel', 'annuel']);
+            ->and(ReportSchedule::FREQUENCIES)->toBe(['hebdomadaire', 'mensuel', 'trimestriel', 'semestriel', 'annuel']);
 
         foreach ($expected as $row) {
             $indicator = Indicator::query()->whereCode($row['code'])->firstOrFail();

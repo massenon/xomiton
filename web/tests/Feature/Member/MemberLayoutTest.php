@@ -66,11 +66,12 @@ it('sert chaque écran membre provisoire en Inertia, titre de la route même ave
     // tests/Feature/Member/SettingsNotificationsPagesTest.php).
     // /assistant : écran réel depuis le lot assistant (P8-11, tests/Feature/Member/AssistantPageTest.php).
     // /annuaire : écran réel depuis le lot annuaire-membre (P8-12, tests/Feature/Member/DirectoryPageTest.php).
+    // /espace-pair, /collecte : écrans réels depuis le lot espace-pair (P9-03, P9-04, tests/Feature/Member/PeerSpacePagesTest.php).
     ['/medias', 'Médiathèque', 'albums.php'],
     ['/ccc', 'Outils CCC', 'ccc.php'],
 ]);
 
-it('réserve l’espace pair et la collecte à peer_space.access : 403 pour un·e membre, page pour un·e pair', function (string $uri, string $title, string $prototype): void {
+it('réserve l’espace pair et la collecte à peer_space.access : 403 pour un·e membre, écran réel pour un·e pair (lot espace-pair, P9-03, P9-04)', function (string $uri, string $component): void {
     $this->actingAs($this->member)->get($uri)->assertForbidden();
 
     $peer = User::factory()->create();
@@ -78,13 +79,10 @@ it('réserve l’espace pair et la collecte à peer_space.access : 403 pour un·
 
     $this->actingAs($peer)->get($uri)
         ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('Member/Placeholder')
-            ->where('title', $title)
-            ->where('prototype', $prototype));
+        ->assertInertia(fn (Assert $page) => $page->component($component));
 })->with([
-    ['/espace-pair', 'Espace pair', 'espace-pair.php'],
-    ['/collecte', 'Collecte de données', 'collecte.php'],
+    ['/espace-pair', 'PeerSpace/Home'],
+    ['/collecte', 'PeerSpace/Collecte'],
 ]);
 
 it('remplit la carte profil avec les vrais compteurs et le département du profil', function (): void {

@@ -29,6 +29,7 @@ class IndicatorValue extends Model
         'period_end',
         'zone_id',
         'value',
+        'base',
         'is_manual',
         'computed_at',
     ];
@@ -42,6 +43,7 @@ class IndicatorValue extends Model
             'period_start' => 'date',
             'period_end' => 'date',
             'value' => 'decimal:2',
+            'base' => 'integer',
             'is_manual' => 'boolean',
             'computed_at' => 'datetime',
         ];
@@ -145,7 +147,8 @@ class IndicatorValue extends Model
     /**
      * Enregistre ou met à jour la valeur d'une période (point d'entrée de `indicators:snapshot` et de la
      * saisie manuelle) : l'unicité SQL ne couvre pas les valeurs nationales (`zone_id` null, NULL distincts),
-     * c'est donc ici que le quadruplet est garanti unique.
+     * c'est donc ici que le quadruplet est garanti unique. `$base` : dénominateur d'un pourcentage calculé (masquage de
+     * la tendance).
      */
     public static function record(
         Indicator|int $indicator,
@@ -154,6 +157,7 @@ class IndicatorValue extends Model
         Zone|int|null $zone,
         float|int|string $value,
         bool $manual = false,
+        ?int $base = null,
     ): self {
         $indicatorId = $indicator instanceof Indicator ? $indicator->getKey() : $indicator;
         $zoneId = $zone instanceof Zone ? $zone->getKey() : $zone;
@@ -171,7 +175,7 @@ class IndicatorValue extends Model
             'period_end' => $end->toDateString(),
         ]);
 
-        $row->fill(['value' => $value, 'is_manual' => $manual, 'computed_at' => now()])->save();
+        $row->fill(['value' => $value, 'base' => $base, 'is_manual' => $manual, 'computed_at' => now()])->save();
 
         return $row;
     }

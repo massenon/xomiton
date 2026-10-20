@@ -5,7 +5,7 @@
 // name, label (obligatoires ; id = f-{name}, celui des liens de <XmErrorSummary>) ; type : text | email | tel | password
 // | date | number | url | search | textarea | select | checkbox | switch | radio-group | checkbox-group ; hint (lié par
 // aria-describedby) ; error (aria-invalid, texte + icône) ; optional (« (facultatif) », jamais d'astérisque seul) ;
-// options ({ valeur: libellé }) ; autocomplete, inputmode, maxlength (compteur sur textarea), placeholder, rows.
+// options ({ valeur: libellé }, ou [{ value, label }] pour garder l'ordre : un objet JS trie les clés entières) ; autocomplete, inputmode, maxlength (compteur sur textarea), placeholder, rows.
 import { computed, ref, useAttrs } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
     hint?: string | null;
     error?: string | null;
     optional?: boolean;
-    options?: Record<string, string>;
+    options?: Record<string, string> | Array<{ value: string | number; label: string }>;
     modelValue?: Value;
     id?: string | null;
     autocomplete?: string | null;
@@ -61,6 +61,10 @@ const common = computed<Record<string, unknown>>(() => ({
 }));
 const text = computed(() => (props.modelValue === null || props.modelValue === undefined ? '' : String(props.modelValue)));
 const count = computed(() => Array.from(text.value).length);
+/** Options sous forme de paires [valeur, libellé], dans l'ordre donné (un tableau garde l'ordre ; un objet à clés entières est trié par JS). */
+const entries = computed<Array<[string, string]>>(() => (Array.isArray(props.options)
+    ? props.options.map((option) => [String(option.value), option.label] as [string, string])
+    : Object.entries(props.options)));
 const checkedValues = computed(() => (Array.isArray(props.modelValue) ? props.modelValue.map(String) : []));
 
 const onInput = (event: Event) => emit('update:modelValue', (event.target as HTMLInputElement).value);
@@ -74,7 +78,7 @@ const onGroup = (event: Event, key: string) => {
     const next = new Set(checkedValues.value);
     if (input.checked) next.add(key);
     else next.delete(key);
-    emit('update:modelValue', Object.keys(props.options).filter((k) => next.has(k)));
+    emit('update:modelValue', entries.value.map(([k]) => k).filter((k) => next.has(k)));
 };
 const onBlur = (event: FocusEvent) => emit('blur', event);
 </script>
@@ -87,7 +91,7 @@ const onBlur = (event: FocusEvent) => emit('blur', event);
         </div>
         <fieldset v-else-if="isGroup" :id="fieldId" tabindex="-1" :aria-describedby="describedBy" :aria-invalid="error ? 'true' : undefined">
             <legend class="form-label fs-6">{{ label }}<template v-if="optional"> <span class="small text-secondary fw-normal">{{ t('components.field.optional') }}</span></template></legend>
-            <div v-for="(optionLabel, key, index) in options" :key="key" class="form-check">
+            <div v-for="([key, optionLabel], index) in entries" :key="key" class="form-check">
                 <input :class="['form-check-input', { 'is-invalid': Boolean(error) }]" :type="type === 'radio-group' ? 'radio' : 'checkbox'" :name="type === 'checkbox-group' ? `${name}[]` : name" :id="`${fieldId}-${index}`" :value="key" :checked="type === 'checkbox-group' ? checkedValues.includes(String(key)) : text === String(key)" @change="onGroup($event, String(key))" @blur="onBlur">
                 <label class="form-check-label" :for="`${fieldId}-${index}`">{{ optionLabel }}</label>
             </div>
@@ -99,7 +103,7 @@ const onBlur = (event: FocusEvent) => emit('blur', event);
                 <div v-if="maxlength" :id="`${fieldId}-count`" class="form-text text-end">{{ t('components.field.counter', { count, max: maxlength }) }}</div>
             </template>
             <select v-else-if="type === 'select'" v-bind="common" :class="['form-select', { 'is-invalid': Boolean(error) }]" :value="text" @change="onInput" @blur="onBlur">
-                <option v-for="(optionLabel, key) in options" :key="key" :value="key" :selected="text === String(key)">{{ optionLabel }}</option>
+                <option v-for="[key, optionLabel] in entries" :key="key" :value="key" :selected="text === key">{{ optionLabel }}</option>
             </select>
             <div v-else-if="type === 'password'" class="input-group">
                 <input v-bind="common" :class="['form-control', { 'is-invalid': Boolean(error) }]" :type="show ? 'text' : 'password'" :value="text" @input="onInput" @blur="onBlur">

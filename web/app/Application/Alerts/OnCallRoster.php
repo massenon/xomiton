@@ -71,6 +71,19 @@ final class OnCallRoster
         }
     }
 
+    /**
+     * Le compte est-il de garde comme point focal à cet instant ? (plage `focal` en cours, nationale ou d'un département ;
+     * espace pair P9-03 : l'écran interroge alors ses alertes routées toutes les 10 s). Sans plage, jamais « de garde ».
+     */
+    public function isFocalOnDuty(User $user, ?CarbonInterface $at = null): bool
+    {
+        return OnCallShift::query()
+            ->active($at ?? now())
+            ->forKind(OnCallShift::KIND_FOCAL)
+            ->where('user_id', $user->getKey())
+            ->exists();
+    }
+
     public function hasAdminOnCall(?CarbonInterface $at = null): bool
     {
         return OnCallShift::query()->active($at ?? now())->forKind(OnCallShift::KIND_ADMIN)

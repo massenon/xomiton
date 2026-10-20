@@ -20,8 +20,8 @@ function adminUris(): array
 {
     return collect(Route::getRoutes()->getRoutes())
         ->filter(fn ($route): bool => str_starts_with((string) $route->getName(), 'admin.') && in_array('GET', $route->methods(), true))
-        // Route technique d'export CSV (URL signée, jamais un écran) : couverte par Admin/DataTableTest.
-        ->reject(fn ($route): bool => $route->getName() === CsvExportLink::ROUTE)
+        // Route technique d'export CSV (URL signée, jamais un écran) : couverte par Admin/DataTableTest ; téléchargement d'un rapport (lien signé, `{report}`) : Admin/ReportsScreenTest.
+        ->reject(fn ($route): bool => in_array($route->getName(), [CsvExportLink::ROUTE, 'admin.rapports.telecharger'], true))
         ->map(fn ($route): string => '/'.ltrim($route->uri(), '/'))
         ->values()
         ->all();

@@ -28,6 +28,10 @@ class PurgeReportsCommand extends Command
             $this->countLabel($result->rowsDeleted, 'rapport supprimé', 'rapports supprimés'),
         ));
 
+        if ($result->orphansDeleted > 0) {
+            $this->info($this->countLabel($result->orphansDeleted, 'dossier temporaire de rapport abandonné supprimé', 'dossiers temporaires de rapport abandonnés supprimés').'.');
+        }
+
         return self::SUCCESS;
     }
 }

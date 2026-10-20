@@ -14,7 +14,7 @@
     $items = array_values(array_map(static function (array $item): array {
         if (! empty($item['masked'])) {
             $item['value'] = __('admin.kpi.masked');
-            $item['sub'] ??= __('admin.kpi.masked_help', ['min' => 5]);
+            $item['sub'] ??= __('admin.kpi.masked_help', ['min' => \App\Support\SmallCellMask::MIN]);
             $item['trend'] = null;
         }
 

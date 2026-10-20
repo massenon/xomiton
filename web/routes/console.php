@@ -40,6 +40,7 @@ $daily = [
     'sessions:purge' => 'Supprime les sessions en base inactives (durée de session + 1 jour)',
     'sync:prune' => 'Supprime les reçus de synchronisation de plus de 90 jours et révoque les appareils inactifs depuis 180 jours',
     'idempotency:purge' => 'Supprime les réponses idempotentes de l’API dont la fenêtre de rejeu est passée (P5-09, ADR-32)',
+    'content-events:purge' => 'Supprime les compteurs d’événements de contenu de plus de 30 jours (P10-06)',
 ];
 
 foreach ($daily as $command => $description) {
@@ -75,6 +76,16 @@ Schedule::command('indicators:snapshot')
     ->timezone($timezone)
     ->withoutOverlapping(180)
     ->description('Calcule les indicateurs intégrés du mois précédent (national et par département) dans indicator_values');
+
+/*
+ * Rapports planifiés (P10-07) : chaque jour à 04:15 (après l'instantané mensuel de 04:00), les planifications actives
+ * échues enfilent leurs jobs GenerateReport ; l'envoi par e-mail suit la fin de la génération.
+ */
+Schedule::command('reports:generate')
+    ->dailyAt('04:15')
+    ->timezone($timezone)
+    ->withoutOverlapping(180)
+    ->description('Enfile la génération des rapports planifiés échus (report_schedules) et envoie les fichiers par e-mail');
 
 /*
  * Escalade RG-05 / Q27 (P5-07) : SOS sans accusé à 5 min ± 1 vers le point focal national, rappel puis escalade des
@@ -137,8 +148,6 @@ Schedule::command('heartbeat:ping')
  *   Schedule::command('newsletter:process')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
  * P14-04 — passerelles réseaux sociaux (D4-bis) :
  *   Schedule::command('gateways:publish')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
- * P10-07 — rapports planifiés échus (report_schedules) :
- *   Schedule::command('reports:run-schedules')->dailyAt('04:00')->timezone($timezone)->withoutOverlapping(180);
  * P13-03 — sauvegardes (mysqldump + fichiers vers stockage externe chiffré) :
  *   Schedule::command('backups:run')->dailyAt('02:00')->timezone($timezone)->withoutOverlapping(180);
  */

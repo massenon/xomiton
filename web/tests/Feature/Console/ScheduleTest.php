@@ -56,10 +56,12 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
         'sessions:purge' => '0 3 * * *',
         'sync:prune' => '0 3 * * *',
         'idempotency:purge' => '0 3 * * *',
+        'content-events:purge' => '0 3 * * *',
         'reports:purge' => '30 3 * * *',
         'cache:purge-expired' => '30 3 * * *',
         'accounts:purge-exports' => '30 3 * * *',
         'indicators:snapshot' => '0 4 1 * *',
+        'reports:generate' => '15 4 * * *',
     ];
 
     expect(array_keys($events))->toEqualCanonicalizing(array_keys($expected));

@@ -74,9 +74,12 @@ final class MemberDashboard
     }
 
     /**
+     * Section « pair » (tableau de bord de l'application et écran `/espace-pair`, P9-03) ; à n'appeler que si
+     * hasPeerSpace() est vrai.
+     *
      * @return array{kpi: array{collected: int, this_month: int, in_progress: int, closed: int}, routed_alerts: array{open: int, new: int, items: \Illuminate\Support\Collection<int, Alert>}, tasks: list<array{key: string, count: int}>}
      */
-    private function peer(User $user): array
+    public function peer(User $user): array
     {
         $kpi = $this->kpi($user);
         $alerts = Alert::query()

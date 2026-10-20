@@ -159,6 +159,12 @@ class GeneratedReport extends Model
         return $this->file_path !== null && ! $this->isExpired();
     }
 
+    /** Le fichier contient le registre détaillé (lignes pseudonymisées, permission `cases.export`). */
+    public function hasDetail(): bool
+    {
+        return (bool) (($this->filters ?? [])['detail'] ?? false);
+    }
+
     /** Période affichée à la façon du prototype : « 01/01/2026 – 31/12/2026 ». */
     public function periodLabel(): string
     {

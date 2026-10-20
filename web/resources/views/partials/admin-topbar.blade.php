@@ -21,7 +21,7 @@
     <form class="xm-gsearch d-none d-md-block" action="{{ route('admin.recherche') }}" method="get" role="search">
         <div class="input-group input-group-sm">
             <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-search" aria-hidden="true"></i></span>
-            <input class="form-control border-start-0 ps-0" type="search" name="q" id="xmGlobalSearch" value="{{ request()->routeIs('admin.recherche') ? request('q') : '' }}" placeholder="{{ __('menus.admin.global_search_placeholder') }}"
+            <input class="form-control border-start-0 ps-0" type="search" name="q" id="xmGlobalSearch" value="{{ request()->routeIs('admin.recherche') && is_string(request('q')) ? mb_substr(request('q'), 0, 80) : '' }}" placeholder="{{ __('menus.admin.global_search_placeholder') }}"
                    aria-label="{{ __('menus.admin.global_search') }}" aria-keyshortcuts="Control+K Meta+K" aria-describedby="xmGlobalSearchHelp" autocomplete="off">
             <span class="input-group-text bg-transparent d-none d-xxl-flex" aria-hidden="true"><kbd class="small">{{ __('admin.topbar.search_shortcut') }}</kbd></span>
         </div>

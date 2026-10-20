@@ -43,6 +43,21 @@ describe('store drafts', () => {
         expect(await db.get(DRAFT_STORE, 'vue:acct:stale')).toBeUndefined();
     });
 
+    it('un brouillon peut avoir sa propre durée de vie, plus courte que celle du store, jamais plus longue', async () => {
+        const drafts = useDraftsStore();
+        drafts.configure('acct', 7);
+        const now = Date.now();
+        await drafts.save('collecte', { kind: 'VBG' }, now - 2 * DAY, [], 1);
+        await drafts.save('long', 'a', now - 2 * DAY, [], 30);
+        await drafts.save('plain', 'b', now - 2 * DAY);
+        expect(await drafts.purge(now)).toBe(1);
+        expect(await drafts.load('collecte', now)).toBeNull();
+        expect(await drafts.load('long', now)).toBe('a');
+        expect(await drafts.load('plain', now)).toBe('b');
+        await drafts.save('too-long', 'c', now - 8 * DAY, [], 30);
+        expect(await drafts.load('too-long', now)).toBeNull();
+    });
+
     it('n’enregistre ni secret, ni coordonnées, ni position, ni preuve, ni fichier, à toute profondeur', async () => {
         const drafts = useDraftsStore();
         drafts.configure('acct', 7);

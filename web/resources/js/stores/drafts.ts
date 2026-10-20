@@ -37,6 +37,8 @@ export function sanitizeDraft<T>(value: T, exclude: readonly string[] = []): T {
 export interface DraftRecord<T = unknown> {
     value: T;
     savedAt: number;
+    /** Durée de vie propre à ce brouillon (jours), jamais au-delà de celle du store. */
+    ttlDays?: number;
 }
 
 type Opener = () => Promise<IDBPDatabase>;
@@ -73,14 +75,18 @@ export const useDraftsStore = defineStore('drafts', {
         key(name: string): string {
             return `vue:${this.account || 'guest'}:${name}`;
         },
-        async save<T>(name: string, value: T, now = Date.now(), exclude: readonly string[] = []): Promise<void> {
-            const record: DraftRecord<T> = { value: sanitizeDraft(value, exclude), savedAt: now };
+        /** Durée de vie effective d'un brouillon : la sienne si elle est plus courte que celle du store. */
+        lifetime(record: DraftRecord): number {
+            return record.ttlDays && record.ttlDays > 0 ? Math.min(record.ttlDays, this.ttlDays) : this.ttlDays;
+        },
+        async save<T>(name: string, value: T, now = Date.now(), exclude: readonly string[] = [], ttlDays?: number): Promise<void> {
+            const record: DraftRecord<T> = { value: sanitizeDraft(value, exclude), savedAt: now, ...(ttlDays && ttlDays > 0 ? { ttlDays } : {}) };
             await (await db()).put(DRAFT_STORE, record, this.key(name));
         },
         async load<T>(name: string, now = Date.now()): Promise<T | null> {
             const record = (await (await db()).get(DRAFT_STORE, this.key(name))) as DraftRecord<T> | undefined;
             if (!record) return null;
-            if (now - record.savedAt > this.ttlDays * DAY_MS) {
+            if (now - record.savedAt > this.lifetime(record) * DAY_MS) {
                 await this.remove(name);
                 return null;
             }
@@ -96,7 +102,7 @@ export const useDraftsStore = defineStore('drafts', {
             for (const key of await base.getAllKeys(DRAFT_STORE)) {
                 if (typeof key !== 'string' || !key.startsWith('vue:')) continue;
                 const record = (await base.get(DRAFT_STORE, key)) as DraftRecord | undefined;
-                if (!record || now - record.savedAt > this.ttlDays * DAY_MS) {
+                if (!record || now - record.savedAt > this.lifetime(record) * DAY_MS) {
                     await base.delete(DRAFT_STORE, key);
                     removed++;
                 }

@@ -14,6 +14,7 @@ final readonly class ReportsPurgeResult
         public int $rowsMarked,
         public int $rowsDeleted,
         public string $disk,
+        public int $orphansDeleted = 0,
     ) {}
 
     /** Rapports expirés traités (marqués ou supprimés). */
