@@ -113,10 +113,10 @@
 
     @if ($canPurge)
         <x-admin.modal id="xmJournalPurge" type="delete" size="md" :title="__('admin.audit.purge.confirm_title')" static data-xm-confirm-word="{{ __('admin.audit.purge.word') }}">
-            @if ($purgeDays === null)
+            @if (filter_var($purgeDays, FILTER_VALIDATE_INT) === false)
                 <p>{{ __('admin.audit.purge.days_hint', ['min' => \App\Application\Retention\PurgeAuditLogs::MIN_DAYS, 'max' => $format->number(\App\Application\Retention\PurgeAuditLogs::MAX_DAYS)]) }}</p>
             @else
-                <p>{{ trans_choice('admin.audit.purge.confirm_text', $purgeCount, ['days' => $format->number(max(\App\Application\Retention\PurgeAuditLogs::MIN_DAYS, min(\App\Application\Retention\PurgeAuditLogs::MAX_DAYS, $purgeDays))), 'count' => $format->number($purgeCount)]) }}</p>
+                <p>{{ trans_choice('admin.audit.purge.confirm_text', $purgeCount, ['days' => $format->number(max(\App\Application\Retention\PurgeAuditLogs::MIN_DAYS, min(\App\Application\Retention\PurgeAuditLogs::MAX_DAYS, (int) $purgeDays))), 'count' => $format->number($purgeCount)]) }}</p>
             @endif
             @error('purgeDays')<x-alert type="danger">{{ $message }}</x-alert>@enderror
             <div class="alert alert-danger small mb-0">

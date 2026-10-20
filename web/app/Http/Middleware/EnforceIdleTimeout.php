@@ -86,6 +86,6 @@ final class EnforceIdleTimeout
             return response()->json(['message' => (string) __('auth.session_idle'), 'reason' => 'session_idle'], 401);
         }
 
-        return redirect()->guest(route('login'))->with(['toast' => (string) __('auth.session_idle'), 'toast_type' => 'info']);
+        return redirect()->guest(route('connexion'))->with(['toast' => (string) __('auth.session_idle'), 'toast_type' => 'info']);
     }
 }

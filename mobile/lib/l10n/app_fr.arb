@@ -474,7 +474,7 @@
     "@admin_audit_filters_to": {
         "description": "admin.audit.filters.to"
     },
-    "admin_audit_intro": "Chaque action sensible laisse une trace : qui, quoi, quand. Les entrées ne se modifient jamais.",
+    "admin_audit_intro": "Chaque action sensible laisse une trace : qui, quoi, quand. Les entrées ne se modifient jamais.",
     "@admin_audit_intro": {
         "description": "admin.audit.intro"
     },
@@ -498,24 +498,24 @@
     "@admin_audit_purge_action": {
         "description": "admin.audit.purge.action"
     },
-    "admin_audit_purge_audit_detail": "Purge : {count} entrée(s) de plus de {days} jours",
+    "admin_audit_purge_audit_detail": "{count, plural, =0{Purge : aucune entrée de plus de {days} jours} =1{Purge : {count} entrée de plus de {days} jours} other{Purge : {count} entrées de plus de {days} jours}}",
     "@admin_audit_purge_audit_detail": {
         "description": "admin.audit.purge.audit_detail",
         "placeholders": {
             "count": {
-                "type": "String"
+                "type": "int"
             },
             "days": {
                 "type": "String"
             }
         }
     },
-    "admin_audit_purge_confirm_text": "Les entrées de plus de {days} jours seront supprimées définitivement ({count} entrée(s) concernée(s)). Cette action ne peut pas être annulée.",
+    "admin_audit_purge_confirm_text": "{count, plural, =0{Aucune entrée n’a plus de {days} jours : rien ne sera supprimé.} =1{Les entrées de plus de {days} jours seront supprimées définitivement ({count} entrée concernée). Cette action ne peut pas être annulée.} other{Les entrées de plus de {days} jours seront supprimées définitivement ({count} entrées concernées). Cette action ne peut pas être annulée.}}",
     "@admin_audit_purge_confirm_text": {
         "description": "admin.audit.purge.confirm_text",
         "placeholders": {
             "count": {
-                "type": "String"
+                "type": "int"
             },
             "days": {
                 "type": "String"
@@ -559,7 +559,7 @@
     "@admin_audit_purge_locked": {
         "description": "admin.audit.purge.locked"
     },
-    "admin_audit_purge_text": "Supprime définitivement les entrées plus anciennes que la durée choisie. Réservé aux super-admins ; la purge elle-même est journalisée.",
+    "admin_audit_purge_text": "Supprime définitivement les entrées plus anciennes que la durée choisie. Réservé aux super-admins ; la purge elle-même est journalisée.",
     "@admin_audit_purge_text": {
         "description": "admin.audit.purge.text"
     },
@@ -673,6 +673,15 @@
     "@admin_backups_title": {
         "description": "admin.backups.title"
     },
+    "admin_bell_button": "{count, plural, =0{Notifications} =1{Notifications, {count} non lue} other{Notifications, {count} non lues}}",
+    "@admin_bell_button": {
+        "description": "admin.bell.button",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "admin_bell_marked_all": "Notifications marquées comme lues.",
     "@admin_bell_marked_all": {
         "description": "admin.bell.marked_all"
@@ -721,12 +730,12 @@
     "@admin_bulk_actions_unsubscribe": {
         "description": "admin.bulk.actions.unsubscribe"
     },
-    "admin_bulk_applied": "Action appliquée à {count} éléments.",
+    "admin_bulk_applied": "{count, plural, =1{Action appliquée à {count} élément.} other{Action appliquée à {count} éléments.}}",
     "@admin_bulk_applied": {
         "description": "admin.bulk.applied",
         "placeholders": {
             "count": {
-                "type": "String"
+                "type": "int"
             }
         }
     },
@@ -742,7 +751,7 @@
     "@admin_bulk_clear": {
         "description": "admin.bulk.clear"
     },
-    "admin_bulk_confirm": "Appliquer « {action} » à {count} éléments ?",
+    "admin_bulk_confirm": "{count, plural, =1{Appliquer « {action} » à {count} élément ?} other{Appliquer « {action} » à {count} éléments ?}}",
     "@admin_bulk_confirm": {
         "description": "admin.bulk.confirm",
         "placeholders": {
@@ -750,16 +759,16 @@
                 "type": "String"
             },
             "count": {
-                "type": "String"
+                "type": "int"
             }
         }
     },
-    "admin_bulk_confirm_delete": "Supprimer définitivement les {count} éléments sélectionnés ?",
+    "admin_bulk_confirm_delete": "{count, plural, =1{Supprimer définitivement l’élément sélectionné ?} other{Supprimer définitivement les {count} éléments sélectionnés ?}}",
     "@admin_bulk_confirm_delete": {
         "description": "admin.bulk.confirm_delete",
         "placeholders": {
             "count": {
-                "type": "String"
+                "type": "int"
             }
         }
     },
@@ -1572,12 +1581,24 @@
     "@admin_emails_title": {
         "description": "admin.emails.title"
     },
-    "admin_export_audit": "Export CSV {screen}, {count} lignes",
+    "admin_export_audit": "{count, plural, other{Export CSV {screen}, {count} lignes}}",
     "@admin_export_audit": {
         "description": "admin.export.audit",
         "placeholders": {
             "count": {
+                "type": "int"
+            },
+            "screen": {
                 "type": "String"
+            }
+        }
+    },
+    "admin_export_audit_full": "{count, plural, other{Export CSV complet {screen}, {count} lignes}}",
+    "@admin_export_audit_full": {
+        "description": "admin.export.audit_full",
+        "placeholders": {
+            "count": {
+                "type": "int"
             },
             "screen": {
                 "type": "String"
@@ -1638,6 +1659,18 @@
     "admin_export_started": "Export lancé. Le fichier sera disponible dans quelques instants.",
     "@admin_export_started": {
         "description": "admin.export.started"
+    },
+    "admin_export_too_many_rows": "Trop de lignes à exporter ({count}) : affinez les filtres, {max} lignes au plus.",
+    "@admin_export_too_many_rows": {
+        "description": "admin.export.too_many_rows",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
     },
     "admin_export_too_many_rows_pdf": "Trop de lignes pour un PDF ({max} maximum) : choisissez Excel.",
     "@admin_export_too_many_rows_pdf": {
@@ -5583,6 +5616,10 @@
     "auth_reset_requested": "Si un compte correspond à cette adresse, un code vient d’être envoyé.",
     "@auth_reset_requested": {
         "description": "auth.reset_requested"
+    },
+    "auth_session_idle": "Ta session a été fermée après une période d’inactivité. Reconnecte-toi.",
+    "@auth_session_idle": {
+        "description": "auth.session_idle"
     },
     "auth_side_text": "Filles et femmes LBTQ+ : retrouve ta communauté bienveillante, des ressources fiables et un soutien confidentiel.",
     "@auth_side_text": {

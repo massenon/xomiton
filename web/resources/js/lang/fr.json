@@ -575,6 +575,7 @@
     "auth.reset.password_confirmation": "Confirme le mot de passe",
     "auth.reset.submit": "Enregistrer le mot de passe",
     "auth.reset_requested": "Si un compte correspond à cette adresse, un code vient d’être envoyé.",
+    "auth.session_idle": "Ta session a été fermée après une période d’inactivité. Reconnecte-toi.",
     "auth.side_text": "Filles et femmes LBTQ+ : retrouve ta communauté bienveillante, des ressources fiables et un soutien confidentiel.",
     "auth.side_title": "Ton espace safe d’apprentissage et d’appui holistique.",
     "auth.suspended": "Ce compte est suspendu. Contacte-nous : {email}",

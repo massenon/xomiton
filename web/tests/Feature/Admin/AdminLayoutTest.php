@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Application\Admin\AdminNavigation;
+use App\Application\Admin\CsvExportLink;
 use App\Enums\AlertStatus;
 use App\Enums\UserStatus;
 use App\Models\Alert;
@@ -43,6 +44,7 @@ it('range les 24 écrans et le mode maintenance dans les 8 groupes de Q14, sans 
     $screens = collect(Route::getRoutes()->getRoutes())
         ->map(fn ($route): string => (string) $route->getName())
         ->filter(fn (string $name): bool => str_starts_with($name, 'admin.') && substr_count($name, '.') === 1)
+        ->reject(fn (string $name): bool => $name === CsvExportLink::ROUTE) // route technique (export CSV signé), pas un écran
         ->map(fn (string $name): string => substr($name, 6))
         ->values()->all();
 

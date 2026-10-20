@@ -51,8 +51,11 @@ final class Index extends Component
     #[SafeUrl(as: 'au', except: '')]
     public string $until = '';
 
-    // --- Purge (superadmin) : null quand le champ « jours » est vidé (refusé par la validation `required`) ---
-    public ?int $purgeDays = 90;
+    // --- Purge (superadmin) : volontairement sans type natif. Livewire ne réaffecte jamais `null` à une propriété typée
+    // lors de l'hydratation : un champ « jours » vidé reviendrait à la valeur par défaut (90) à la requête suivante au
+    // lieu d'être refusé par `required`. Valeur attendue : int, ou '' / null quand le champ est vidé. ---
+    /** @var int|string|null */
+    public $purgeDays = 90;
 
     public string $purgeWord = '';
 
@@ -137,7 +140,7 @@ final class Index extends Component
             'purgeDays' => (string) __('admin.audit.purge.days'),
         ]);
 
-        $days = (int) $this->purgeDays;
+        $days = (int) $this->purgeDays; // validé : entier entre MIN_DAYS et MAX_DAYS
         $count = $purge->run($days);
         Audit::log('audit.purged', null, trans_choice('admin.audit.purge.audit_detail', $count, ['count' => $count, 'days' => $days]));
 
@@ -274,11 +277,13 @@ final class Index extends Component
 
     private function purgeCount(): int
     {
-        if ($this->purgeDays === null) {
+        $value = filter_var($this->purgeDays, FILTER_VALIDATE_INT);
+
+        if ($value === false) {
             return 0;
         }
 
-        $days = max(PurgeAuditLogs::MIN_DAYS, min(PurgeAuditLogs::MAX_DAYS, $this->purgeDays));
+        $days = max(PurgeAuditLogs::MIN_DAYS, min(PurgeAuditLogs::MAX_DAYS, $value));
 
         return AuditLog::query()->olderThan($days)->count();
     }

@@ -210,7 +210,8 @@ describe('export CSV complet (ADR-33)', function (): void {
         Alert::factory()->create(['category' => 'numerique', 'description' => 'Autre récit', 'status' => AlertStatus::Closed]);
 
         $filtered = Livewire::withQueryParams(['st' => AlertStatus::New->value])->test(AlertsDataTableProbe::class)->call('export')->effects['redirect'];
-        $full = Livewire::test(AlertsDataTableProbe::class)->call('export', true)->effects['redirect'];
+        // withQueryParams reste mémorisé par le gestionnaire Livewire (singleton) : on le vide pour le second composant.
+        $full = Livewire::withQueryParams([])->test(AlertsDataTableProbe::class)->call('export', true)->effects['redirect'];
 
         $plain = $this->get($filtered)->assertOk()->streamedContent();
         $complete = $this->get($full)->assertOk()->streamedContent();

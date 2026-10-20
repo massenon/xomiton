@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Application\Admin\CsvExportLink;
 use Illuminate\Support\Facades\Route;
 use Tests\Feature\Authorization\Support\RoleUsers;
 
@@ -19,6 +20,8 @@ function adminUris(): array
 {
     return collect(Route::getRoutes()->getRoutes())
         ->filter(fn ($route): bool => str_starts_with((string) $route->getName(), 'admin.') && in_array('GET', $route->methods(), true))
+        // Route technique d'export CSV (URL signée, jamais un écran) : couverte par Admin/DataTableTest.
+        ->reject(fn ($route): bool => $route->getName() === CsvExportLink::ROUTE)
         ->map(fn ($route): string => '/'.ltrim($route->uri(), '/'))
         ->values()
         ->all();

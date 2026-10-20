@@ -154,6 +154,7 @@ it('prépare l’export RGPD (202), l’envoie par lien signé et le sert seulem
 
     // Expiré : le lien ne vaut plus et le fichier est purgé.
     $this->travel(49)->hours();
+    $this->flushSession(); // 49 h plus tard la session aurait expiré (EnforceIdleTimeout) : on teste le lien, pas l'inactivité.
     $this->actingAs($this->user)->get($link)->assertForbidden()->assertSee($expired)->assertHeader('Cache-Control', 'no-store, private');
     touch(Storage::disk('local')->path($files[0]), now()->subHours(49)->getTimestamp());
     $this->artisan('accounts:purge-exports')->assertSuccessful();

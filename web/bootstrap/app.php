@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Exceptions\ApiExceptionRenderer;
-use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnforceIdleTimeout;
+use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureNotInMaintenance;
 use App\Http\Middleware\ForgetSearchTerms;
 use App\Http\Middleware\HandleConditionalGet;
