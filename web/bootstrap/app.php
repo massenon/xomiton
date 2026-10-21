@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Exceptions\ApiExceptionRenderer;
+use App\Http\Middleware\ApplyPlatformSettings;
 use App\Http\Middleware\EnforceIdleTimeout;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureNotInMaintenance;
@@ -36,6 +37,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Lot securite-http (P2-08, P2-13) : en-têtes de sécurité et nonce CSP sur toutes les réponses (web, API, /up).
         $middleware->append(SecurityHeaders::class);
+        // Lot admin-systeme (P13-04) : durée de session (`session_minutes`) et fuseau d'affichage (`timezone`) lus des
+        // paramètres avant StartSession, sur le web comme sur l'API à session.
+        $middleware->prepend(ApplyPlatformSettings::class);
         // Groupe api : limiteur nommé 'api' (AppServiceProvider::registerRateLimiters, xomiton.rate_limits.api_per_minute).
         // Laravel ne l'ajoute pas tout seul : sans cet appel, /api/v1 n'est pas limité.
         $middleware->throttleApi();

@@ -64,6 +64,11 @@ it('affiche les KPI, le compte, la famille et le code de chaque action', functio
     expect(Journal::family('post.deleted_by_moderation'))->toBe('moderation')
         ->and(Journal::family('group.words_flagged'))->toBe('moderation')
         ->and(Journal::family('case_followups.created'))->toBe('cases')
+        ->and(Journal::family('backup.restored'))->toBe('backup')
+        ->and(Journal::family('settings.updated'))->toBe('settings')
+        ->and(Journal::family('optimization.sw'))->toBe('update')
+        ->and(Journal::family('update.published'))->toBe('update')
+        ->and(Journal::family('sync.conflict_resolved'))->toBe('sync')
         ->and(Journal::family('xyz'))->toBe('other')
         ->and(Journal::familyColor('alerts'))->toBe('danger');
 });

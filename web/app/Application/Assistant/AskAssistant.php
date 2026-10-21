@@ -8,6 +8,7 @@ use App\Application\Shared\Answer;
 use App\Application\Shared\KnowledgeBaseAnswerer;
 use App\Models\AssistantConversation;
 use App\Models\User;
+use App\Support\Settings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -16,7 +17,8 @@ use Throwable;
  * Question posée à l'assistant (P8-11, `POST /api/v1/assistant/question`, page /assistant), dans cet ordre :
  *  1. garde-fous de crise (KnowledgeBaseAnswerer::detectCrisis) : réponse de la base avec numéros d'urgence, SOS et
  *     escalade, **sans appel au fournisseur** (ni réseau ni latence, rien ne part vers un tiers) ;
- *  2. visiteur·se (offcanvas public, Q41 a) : la base seule, jamais de fournisseur ni d'enregistrement ;
+ *  2. visiteur·se (offcanvas public, Q41 a) : la base seule, jamais de fournisseur ni d'enregistrement ; de même pour
+ *     les membres quand l'administration a désactivé le fournisseur (`assistant_enabled`, P12-07) ;
  *  3. membre : le fournisseur configuré (AssistantProvider, pilote `kb` par défaut = la base) ; s'il échoue, la base.
  *     L'appel au fournisseur passe dans une transaction : un échange qu'il aurait déjà enregistré (record()) avant
  *     d'échouer est annulé, la base l'enregistre une seule fois (pas de messages en double).
@@ -35,7 +37,8 @@ final class AskAssistant
         $persist = $persist && $user !== null;
         $conversation = $persist && $conversationId !== null ? self::conversationOf($user, $conversationId) : null;
 
-        if ($user === null || KnowledgeBaseAnswerer::detectCrisis($question) !== null) {
+        // P12-07 : fournisseur désactivé dans /admin/assistant → la base de connaissances répond aussi aux membres.
+        if ($user === null || KnowledgeBaseAnswerer::detectCrisis($question) !== null || ! Settings::bool('assistant_enabled', true)) {
             return $this->answerer->answer($question, $user, $persist, $conversation);
         }
 

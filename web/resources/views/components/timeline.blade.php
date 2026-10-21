@@ -7,6 +7,7 @@
           'kind' => 'internal | shared | status' (note interne, note partagée, changement de statut : annoncé aux lecteurs d'écran, couleur du point),
           'badge' => ['label' => 'Réalisé', 'color' => 'success'], 'text' => 'Commentaire', 'next' => '20/03/2026', 'late' => false,
           'color' => 'primary' (couleur du point, prime sur kind),
+          'action' => ['label' => 'Marquer réalisé', 'wire' => 'markDone(12)', 'sr' => 'pour Accueil'] (bouton Livewire facultatif sous l'étape),
         ], …]
       label : nom accessible de la liste
       empty : texte affiché sans étape
@@ -39,6 +40,7 @@
                 </div>
                 @if (! empty($it['text']))<div class="small">{{ $it['text'] }}</div>@endif
                 @if (! empty($it['next']))<div class="small {{ $late ? 'text-danger fw-semibold' : 'text-secondary' }}"><i class="bi bi-calendar-event me-1" aria-hidden="true"></i>{{ __('components.timeline.next', ['date' => $it['next']]) }}</div>@endif
+                @if (! empty($it['action']))<button type="button" class="btn btn-sm btn-outline-success py-0 mt-1" wire:click="{{ $it['action']['wire'] }}" wire:loading.attr="disabled">{{ $it['action']['label'] }}@if (! empty($it['action']['sr']))<span class="visually-hidden"> {{ $it['action']['sr'] }}</span>@endif</button>@endif
             </li>
         @endforeach
     </ol>

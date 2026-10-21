@@ -7,6 +7,7 @@ namespace App\Http\Requests\Auth;
 use App\Application\Auth\OtpService;
 use App\Application\Auth\RegisterData;
 use App\Models\User;
+use App\Rules\EmailAddress;
 use App\Rules\Pseudo;
 use App\Rules\StrongPassword;
 use Illuminate\Foundation\Http\FormRequest;
@@ -40,7 +41,7 @@ final class RegisterRequest extends FormRequest
     {
         return [
             'pseudo' => ['required', 'string', new Pseudo],
-            'email' => ['required', 'string', 'email:rfc', 'max:190', Rule::unique(User::class, 'email')],
+            'email' => ['required', 'string', 'max:190', new EmailAddress, Rule::unique(User::class, 'email')],
             'password' => ['required', 'string', 'max:255', new StrongPassword],
             'cgu' => ['accepted'],
             'privacy' => ['accepted'],

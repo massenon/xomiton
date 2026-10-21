@@ -14,6 +14,18 @@ use App\Models\User;
  */
 final class SyncDevicePolicy
 {
+    /** Écran d'administration Hors connexion & synchro (P13-01) : `sync.manage` (admin, superadmin). */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('sync.manage');
+    }
+
+    /** Révocation d'un appareil par l'administration (P13-01). */
+    public function revoke(User $user, SyncDevice $device): bool
+    {
+        return $user->can('sync.manage');
+    }
+
     public function view(User $user, SyncDevice $device): bool
     {
         return $this->owns($user, $device);

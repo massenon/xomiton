@@ -97,7 +97,7 @@ final class RessourcesShowController extends Controller
             'title' => $title,
             'description' => $description,
             'type' => in_array($resource->kind, self::READABLE, true) ? 'article' : 'website',
-            'image' => $resource->cover_url,
+            'image' => $resource->og_url,
             'imageAlt' => __('pages/ressources.cover_alt', ['title' => $resource->title]),
             'breadcrumb' => $crumbs,
             'modified' => $modified,

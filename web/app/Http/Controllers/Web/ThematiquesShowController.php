@@ -83,7 +83,7 @@ final class ThematiquesShowController extends Controller
             'title' => $title,
             'description' => $description,
             'type' => 'article',
-            'image' => $thematique->cover_url,
+            'image' => $thematique->og_url,
             'imageAlt' => __('pages/thematiques.cover_alt', ['title' => $thematique->title]),
             'breadcrumb' => $crumbs,
             'modified' => $modified,

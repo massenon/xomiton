@@ -10,7 +10,8 @@ use Illuminate\Support\Carbon;
 /**
  * Ouverture des inscriptions réglée par l'administration (FR-AUTH-06, Q26) : interrupteur `registrations_open`,
  * plage horaire quotidienne facultative (`reg_window_on`, `reg_window_start`, `reg_window_end`), message de fermeture
- * (≤ 300 caractères) et date de réouverture (`reg_reopen_at`).
+ * (≤ 300 caractères), date de réouverture (`reg_reopen_at`) et validation manuelle (`reg_manual_validation`, Q26).
+ * Heures de la plage à l'heure du Bénin (`xomiton.display_timezone`, réglées par P12-02) ; la date de réouverture est affichée telle que saisie.
  */
 final class RegistrationGate
 {
@@ -26,7 +27,8 @@ final class RegistrationGate
             return true;
         }
 
-        $at ??= now();
+        // La plage est saisie à l'heure du Bénin (P12-02) : la base et `app.timezone` restent en UTC.
+        $at = ($at ?? now())->copy()->setTimezone(self::timezone());
         $start = self::minutes(Settings::string('reg_window_start', '00:00'));
         $end = self::minutes(Settings::string('reg_window_end', '23:59'));
         $current = $at->hour * 60 + $at->minute;
@@ -51,10 +53,22 @@ final class RegistrationGate
         }
 
         try {
+            // Date annoncée, affichée telle que saisie (heure murale du Bénin) : jamais convertie.
             return Carbon::parse($raw);
         } catch (\Throwable) {
             return null;
         }
+    }
+
+    /** Validation manuelle (Q26) : `peers` (pair·es seulement, par défaut) ou `all` (tous les nouveaux comptes). */
+    public static function manualValidation(): string
+    {
+        return Settings::string('reg_manual_validation', 'peers') === 'all' ? 'all' : 'peers';
+    }
+
+    private static function timezone(): string
+    {
+        return (string) config('xomiton.display_timezone', 'UTC');
     }
 
     private static function minutes(string $time): int

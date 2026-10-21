@@ -43,6 +43,9 @@ class Resource extends Model
         'file_size',
         'external_url',
         'image_path',
+        'og_image_path',
+        'subtitles_path',
+        'transcript',
         'duration_minutes',
         'status',
         'published_at',
@@ -196,6 +199,16 @@ class Resource extends Model
 
             return $this->thematique_id !== null && $this->thematique !== null ? $this->thematique->cover_url : asset(self::DEFAULT_COVER);
         });
+    }
+
+    /**
+     * Image de partage (Open Graph 1200 × 630) : image dédiée de la fiche (P12-03) si son fichier existe, sinon la couverture.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function ogUrl(): Attribute
+    {
+        return Attribute::get(fn (): string => MediaUrl::exists($this->og_image_path) ? MediaUrl::resolve($this->og_image_path, $this->cover_url) : $this->cover_url);
     }
 
     public function isPublished(): bool

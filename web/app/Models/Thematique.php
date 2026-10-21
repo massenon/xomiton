@@ -40,6 +40,7 @@ class Thematique extends Model
         'content_warning',
         'image_path',
         'cover_path',
+        'og_image_path',
         'reading_minutes',
         'related_contact_roles',
         'related_ids',
@@ -150,6 +151,16 @@ class Thematique extends Model
 
             return MediaUrl::resolve($this->cover_path, $fallback);
         });
+    }
+
+    /**
+     * Image de partage (Open Graph 1200 × 630) : image dédiée de la fiche (P12-03) si son fichier existe, sinon la couverture.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function ogUrl(): Attribute
+    {
+        return Attribute::get(fn (): string => MediaUrl::exists($this->og_image_path) ? MediaUrl::resolve($this->og_image_path, $this->cover_url) : $this->cover_url);
     }
 
     /**

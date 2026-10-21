@@ -43,6 +43,7 @@ class Group extends Model
         'members_count',
         'posts_count',
         'is_active',
+        'is_featured',
     ];
 
     /**
@@ -55,6 +56,7 @@ class Group extends Model
             'members_count' => 'integer',
             'posts_count' => 'integer',
             'is_active' => 'boolean',
+            'is_featured' => 'boolean',
         ];
     }
 

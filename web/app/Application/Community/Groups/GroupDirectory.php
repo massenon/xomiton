@@ -69,6 +69,9 @@ final class GroupDirectory
                 ->orWhereHas('zone', static fn (Builder $z) => $z->whereRaw(LikePattern::clause('zones.name'), [$pattern])));
         }
 
+        // P12-05 : un groupe mis en avant par la modération passe en tête de liste.
+        $query->orderByDesc('groups.is_featured');
+
         if ($viewer->zone_id !== null) {
             $query->orderByRaw('case when groups.zone_id = ? then 0 else 1 end', [(int) $viewer->zone_id]);
         }

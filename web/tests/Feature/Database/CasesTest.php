@@ -31,7 +31,7 @@ it('crée une règle de validation avec une clé unique et des paramètres json'
         ->toThrow(QueryException::class);
 });
 
-it('seed les 12 règles du dictionnaire sans doublon, verrouille « required » et conserve les réglages de l’administration', function (): void {
+it('seed les 12 règles du dictionnaire sans doublon, verrouille « required » et « password_strong » et conserve les réglages de l’administration', function (): void {
     $this->seed(ValidationRulesSeeder::class);
     ValidationRule::query()->whereIn('key', ['duplicates', ValidationRule::KEY_REQUIRED])->update(['is_active' => false]);
 
@@ -41,7 +41,8 @@ it('seed les 12 règles du dictionnaire sans doublon, verrouille « required » 
 
     expect(ValidationRule::query()->count())->toBe(12)
         ->and(ValidationRule::query()->active()->count())->toBe(11)
-        ->and(ValidationRule::query()->locked()->count())->toBe(1)
+        ->and(ValidationRule::query()->locked()->count())->toBe(2)
+        ->and(ValidationRule::query()->withKey('password_strong')->value('is_locked'))->toBeTrue()
         ->and($required->is_locked)->toBeTrue()
         ->and($required->is_active)->toBeTrue()
         ->and($required->canBeDisabled())->toBeFalse()
@@ -136,7 +137,7 @@ it('crée une étape de suivi chiffrée et repère les étapes en retard', funct
 it('expose le scope des règles désactivables, complément du verrou « required »', function (): void {
     $this->seed(ValidationRulesSeeder::class);
 
-    expect(ValidationRule::query()->unlockable()->count())->toBe(11)
+    expect(ValidationRule::query()->unlockable()->count())->toBe(10)
         ->and(ValidationRule::query()->unlockable()->withKey(ValidationRule::KEY_REQUIRED)->exists())->toBeFalse()
         ->and(ValidationRule::query()->locked()->count() + ValidationRule::query()->unlockable()->count())->toBe(ValidationRule::query()->count());
 });

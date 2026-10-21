@@ -47,7 +47,7 @@ final class UpdateAccountIdentity
 
             if (array_key_exists('phone', $data)) {
                 $phone = trim((string) $data['phone']);
-                $user->phone = $phone === '' ? null : PhoneBj::normalize($phone);
+                $user->phone = $phone === '' ? null : PhoneBj::format($phone);
             }
 
             if (array_key_exists('zone_id', $data)) {

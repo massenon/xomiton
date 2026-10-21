@@ -16,6 +16,7 @@ use App\Livewire\Concerns\InteractsWithUi;
 use App\Models\Indicator;
 use App\Models\User;
 use App\Models\Zone;
+use App\Rules\PositiveInteger;
 use App\Support\Audit;
 use App\Support\CsvExport;
 use App\Support\LocaleFormatter;
@@ -194,9 +195,9 @@ final class Index extends Component
             'source' => ['nullable', 'string', 'max:80'],
             'newFrequency' => ['required', Rule::enum(IndicatorFrequency::class)],
             'unit' => ['required', Rule::in([Indicator::UNIT_COUNT, Indicator::UNIT_PERCENT])],
-            'target' => ['required', 'numeric', 'min:0', 'max:99999999'],
+            'target' => ['required', 'numeric', 'min:0', 'max:99999999', ...$this->countRules($this->unit)],
             'better' => ['required', Rule::in([Indicator::BETTER_UP, Indicator::BETTER_DOWN])],
-            'value' => ['required', 'numeric', 'min:0', 'max:'.($this->unit === Indicator::UNIT_PERCENT ? 100 : 99999999)],
+            'value' => ['required', 'numeric', 'min:0', 'max:'.($this->unit === Indicator::UNIT_PERCENT ? 100 : 99999999), ...$this->countRules($this->unit)],
         ], attributes: $this->fieldNames());
 
         $indicator = $indicators->create([
@@ -248,7 +249,7 @@ final class Index extends Component
         }
 
         $data = $this->validate([
-            'editValue' => ['required', 'numeric', 'min:0', 'max:'.($indicator->isPercentage() ? 100 : 99999999)],
+            'editValue' => ['required', 'numeric', 'min:0', 'max:'.($indicator->isPercentage() ? 100 : 99999999), ...$this->countRules($indicator->unit)],
         ], attributes: ['editValue' => (string) __('steering.indicators.fields.value')]);
 
         $indicators->updateValue($indicator, $data['editValue'], $this->user());
@@ -387,6 +388,17 @@ final class Index extends Component
     private function selectedZone(): ?Zone
     {
         return ctype_digit($this->zone) && $this->zone !== '' ? Zone::query()->active()->find((int) $this->zone) : null;
+    }
+
+    /**
+     * Règle `positive_int` du catalogue (P11-05) : un effectif ou une cible en nombre est un entier ; un pourcentage
+     * garde ses décimales.
+     *
+     * @return list<PositiveInteger>
+     */
+    private function countRules(string $unit): array
+    {
+        return $unit === Indicator::UNIT_PERCENT ? [] : [new PositiveInteger];
     }
 
     /**

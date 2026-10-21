@@ -38,6 +38,7 @@ class DirectoryContact extends Model
         'is_active',
         'is_public',
         'is_national_focal',
+        'is_emergency',
         'user_id',
         'notes',
     ];
@@ -62,6 +63,7 @@ class DirectoryContact extends Model
             'is_active' => 'boolean',
             'is_public' => 'boolean',
             'is_national_focal' => 'boolean',
+            'is_emergency' => 'boolean',
         ];
     }
 

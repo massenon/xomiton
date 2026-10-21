@@ -90,6 +90,7 @@ return [
         'gateways' => 'Passerelles réseaux',
         'sync' => 'Hors connexion & synchro',
         'updates' => 'Mises à jour & optimisation',
+        'backups' => 'Sauvegardes',
         'maintenance' => 'Mode maintenance',
         'maintenance_on' => 'Actif',
         'emails' => 'Templates e-mails',

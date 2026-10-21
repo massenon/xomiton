@@ -70,7 +70,7 @@ final class CompleteRegistrationProfile
         }
 
         if ($data->trustedContactPhone !== null) {
-            $profile->trusted_contact_phone = PhoneBj::normalize($data->trustedContactPhone);
+            $profile->trusted_contact_phone = PhoneBj::format($data->trustedContactPhone);
         }
 
         if ($data->trustedContactName !== null) {

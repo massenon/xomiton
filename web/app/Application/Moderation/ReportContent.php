@@ -53,6 +53,7 @@ final class ReportContent
     public function __construct(
         private readonly FeedCounters $counters,
         private readonly ForumCounters $forumCounters,
+        private readonly ContentVisibility $visibility,
     ) {}
 
     public static function autoHideRule(): AutoHideRule
@@ -183,27 +184,7 @@ final class ReportContent
             return false;
         }
 
-        if ($subject instanceof Post) {
-            $subject->forceFill([
-                'status' => PostStatus::Hidden,
-                'hidden_reason' => Str::limit((string) __('feed.moderation.auto_hidden_reason', ['count' => $pending]), 200, ''),
-            ])->save();
-        } elseif ($subject instanceof Comment) {
-            $subject->forceFill(['status' => PostStatus::Hidden])->save();
-
-            if ($subject->post !== null) {
-                $this->counters->recountComments($subject->post);
-            }
-        } elseif ($subject instanceof ForumTopic) {
-            $subject->forceFill(['status' => PostStatus::Hidden])->save();
-            $this->forumCounters->recountForum((int) $subject->forum_id);
-        } else {
-            $subject->forceFill(['status' => PostStatus::Hidden])->save();
-
-            if ($subject->topic !== null) {
-                $this->forumCounters->afterReplyChange($subject->topic);
-            }
-        }
+        $this->visibility->hide($subject, (string) __('feed.moderation.auto_hidden_reason', ['count' => $pending]));
 
         Audit::logWithoutRequest('moderation.auto_hidden', $subject, sprintf('signalements=%d ; seuil=%d', $pending, $rule->threshold), AuditLog::ACTOR_SYSTEM);
 

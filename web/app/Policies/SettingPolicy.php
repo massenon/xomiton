@@ -32,6 +32,12 @@ final class SettingPolicy
         return $user->can('settings.manage');
     }
 
+    /** Écran Paramètres (P13-04) : écriture des clés du catalogue. */
+    public function manage(User $user): bool
+    {
+        return $user->can('settings.manage');
+    }
+
     public function updateSmtp(User $user): bool
     {
         return $user->can('settings.manage');

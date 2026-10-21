@@ -74,9 +74,10 @@ final class RegisterUser
         $user = User::query()->create([
             'pseudo' => trim($data->pseudo),
             'email' => OtpService::normalizeEmail($data->email),
-            'phone' => $data->phone === null ? null : PhoneBj::normalize($data->phone),
+            'phone' => $data->phone === null ? null : PhoneBj::format($data->phone),
             'password' => $data->password,
-            'status' => UserStatus::Active,
+            // Q26 : validation manuelle de tous les nouveaux comptes (P12-02) ; sinon actif dès maintenant.
+            'status' => RegistrationGate::manualValidation() === 'all' ? UserStatus::Pending : UserStatus::Active,
             'email_verified_at' => null,
         ]);
 

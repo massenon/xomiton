@@ -50,8 +50,9 @@ it('ferme les listes d’orientation et d’étapes de suivi sur celles du proto
         ->and(FollowupStep::isValid('Autre'))->toBeFalse();
 });
 
-it('connaît les douze clés du catalogue et ne verrouille que required', function (): void {
+it('connaît les douze clés du catalogue et ne verrouille que required et password_strong', function (): void {
     expect(ValidationRuleKey::cases())->toHaveCount(12)
-        ->and(array_filter(ValidationRuleKey::cases(), static fn (ValidationRuleKey $key): bool => $key->isLocked()))->toBe([ValidationRuleKey::Required])
+        ->and(array_filter(ValidationRuleKey::cases(), static fn (ValidationRuleKey $key): bool => $key->isLocked()))->toBe([0 => ValidationRuleKey::Required, 9 => ValidationRuleKey::PasswordStrong])
+        ->and(ValidationRuleKey::locked())->toBe([ValidationRuleKey::Required, ValidationRuleKey::PasswordStrong])
         ->and(ValidationRuleKey::forCases())->toContain(ValidationRuleKey::DateNotFuture, ValidationRuleKey::AgeRange, ValidationRuleKey::CommuneInZone);
 });

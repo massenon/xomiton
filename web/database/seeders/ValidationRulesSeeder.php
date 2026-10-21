@@ -101,11 +101,12 @@ class ValidationRulesSeeder extends Seeder
         ],
         'password_strong' => [
             'label' => 'Mot de passe fort',
-            'description' => '8 caractères minimum, une majuscule, un chiffre.',
-            'forms' => ['Inscription', 'Réinitialisation', 'Utilisateurs'],
+            'description' => '10 caractères minimum, une majuscule, une minuscule, un chiffre. Règle verrouillée : elle protège les comptes et ne se désactive pas.',
+            'forms' => ['Inscription', 'Réinitialisation', 'Paramètres'],
             'valid' => 'Xomiton2026',
             'invalid' => 'abc',
             'params' => null,
+            'locked' => true,
         ],
         'plausibility' => [
             'label' => 'Règles de plausibilité',

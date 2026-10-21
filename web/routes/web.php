@@ -71,6 +71,7 @@ use App\Http\Middleware\EnsurePeerSpaceAccess;
 use App\Http\Middleware\ForgetSearchTerms;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InertiaForMembers;
+use App\Http\Middleware\RedirectRenamedSlug;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -99,12 +100,14 @@ $memberPlaceholder = static function (string $uri, string $name, string $title, 
 Route::get('/', HomeController::class)->name('home'); // P4-01
 // P4-02 : publiques et indexables (Q19 a) ; fiche résolue par ShowThematique (publiées seulement), pas de liaison implicite.
 Route::get('/thematiques', ThematiquesIndexController::class)->name('thematiques.index');
-Route::get('/thematiques/{slug}', ThematiquesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('thematiques.show');
+Route::get('/thematiques/{slug}', ThematiquesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->middleware(RedirectRenamedSlug::class.':thematique')->name('thematiques.show'); // P12-03 : ancien slug → 301
 // P4-03 : publiques et indexables (Q19 a) ; fiche résolue par ShowResource (publiées seulement, `article` → /actualites).
 // Téléchargement : compte puis 302 vers un lien signé `media.signed` ; lecture vidéo / audio : fichier servi avec `Range`
 // (206), sans redirection. Adresses stables pour le cache hors connexion (P5-10) ; limiteur nommé `resource_download`.
 Route::get('/ressources', RessourcesIndexController::class)->name('ressources.index');
-Route::get('/ressources/{slug}', RessourcesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('ressources.show');
+Route::get('/ressources/{slug}', RessourcesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->middleware(RedirectRenamedSlug::class.':resource')->name('ressources.show'); // P12-03 : ancien slug → 301
 Route::get('/ressources/{slug}/telecharger', RessourceDownloadController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->middleware('throttle:resource_download')->name('ressources.download');
 Route::get('/ressources/{slug}/lire', RessourceStreamController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
@@ -122,7 +125,8 @@ Route::post('/aide/{slug}/avis', AideFeedbackController::class)->where('slug', '
     ->middleware('throttle:faq_feedback')->name('aide.feedback');
 // P4-10 : actualités = ressources `article` publiées (Q1 a) ; une ressource d'un autre type → 301 /ressources/{slug}.
 Route::get('/actualites', ActualitesIndexController::class)->name('actualites.index');
-Route::get('/actualites/{slug}', ActualitesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('actualites.show');
+Route::get('/actualites/{slug}', ActualitesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->middleware(RedirectRenamedSlug::class.':resource')->name('actualites.show'); // P12-03 : ancien slug → 301
 // P4-06 : gabarit sobre, tu (Q47) ; même source que GET /api/v1/urgences (ListEmergencyContacts) ; nom `urgences`
 // servi pendant la maintenance (EnsureNotInMaintenance, RG-01).
 Route::get('/urgences', UrgencesController::class)->name('urgences');

@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Cache;
  */
 final class ListEmergencyContacts
 {
-    /** Rôles d'urgence servis hors connexion, en attendant `directory_contacts.is_emergency` (P1-05). */
+    /** Rôles d'urgence servis hors connexion ; une fiche publique cochée `is_emergency` (P11-04, Q59 a) l'est aussi. */
     public const EMERGENCY_ROLES = [DirectoryRole::PointFocal, DirectoryRole::Juriste, DirectoryRole::Psychologue];
 
     /** Plafond de fiches renvoyées ; au-delà, `truncated` le signale (meta.truncated de `GET urgences`). */
@@ -83,7 +83,8 @@ final class ListEmergencyContacts
             ->public()
             ->where(fn (Builder $query) => $query
                 ->whereIn('role', array_map(static fn (DirectoryRole $role): string => $role->value, self::EMERGENCY_ROLES))
-                ->orWhere('is_national_focal', true))
+                ->orWhere('is_national_focal', true)
+                ->orWhere('is_emergency', true))
             ->with(['zone', 'commune'])
             ->when($zone !== null, fn (Builder $query) => $query->where(fn (Builder $scope) => $scope
                 ->where('zone_id', $zone?->getKey())

@@ -71,7 +71,7 @@ final class ActualitesShowController extends Controller
             'title' => MetaText::title($article->meta_title ?: (string) $article->title),
             'description' => $description,
             'type' => 'article',
-            'image' => $article->cover_url,
+            'image' => $article->og_url,
             'imageAlt' => __('pages/actualites.cover_alt', ['title' => $article->title]),
             'breadcrumb' => $crumbs,
             'modified' => $modified,

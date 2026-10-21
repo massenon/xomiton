@@ -58,6 +58,7 @@ use App\Http\Controllers\Api\V1\Peer\CaseController;
 use App\Http\Controllers\Api\V1\Peer\CaseFollowupController;
 use App\Http\Controllers\Api\V1\Peer\RoutedAlertController;
 use App\Http\Controllers\Api\V1\Peer\ValidationRuleController;
+use App\Http\Controllers\Api\V1\Platform\AppVersionController;
 use App\Http\Controllers\Api\V1\Platform\StatusController;
 use App\Http\Controllers\Api\V1\ReferentialController;
 use App\Http\Controllers\Api\V1\Search\SearchController;
@@ -92,6 +93,10 @@ Route::group([], function (): void {
     // maintenance, cache serveur 15 s (MaintenanceStatus::publicStatus). Sans session même appelé depuis le site (Referer
     // de même origine) : la réponse `Cache-Control: public` ne porte aucun Set-Cookie qu'un cache partagé garderait.
     Route::get('/status', StatusController::class)->withoutMiddleware([EnsureFrontendRequestsAreStateful::class])->name('api.status');
+
+    // --- Version de la plateforme et version minimale de l'application mobile (P13-02, docs/API.md §5) : publique, sans
+    // session (aucun Set-Cookie), `?version=` ou `X-App-Version` pour savoir si une mise à jour est disponible ou requise.
+    Route::get('/app/version', AppVersionController::class)->withoutMiddleware([EnsureFrontendRequestsAreStateful::class])->name('api.app_version');
 
     // --- Référentiels publics (P3-06) : cache serveur 24 h (App\Application\Shared\Referentials), ETag dérivé du contenu,
     // If-None-Match → 304, Cache-Control public 1 h (middleware cache.headers, config xomiton.referentials.http_max_age) ;

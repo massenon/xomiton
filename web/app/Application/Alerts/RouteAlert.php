@@ -57,6 +57,40 @@ final class RouteAlert
     }
 
     /**
+     * Décisions de plusieurs scénarios (zone, besoins) en une passe : l'annuaire actif et la garde nationale sont lus une
+     * fois, la garde de chaque département une fois ; chaque décision est celle de `__invoke()`. Sert la matrice
+     * « département × besoin » de l'aperçu du routage de l'administration (P11-04).
+     *
+     * @param  list<array{0: int|null, 1: list<string>}>  $scenarios  [identifiant du département ou null, slugs de besoins]
+     * @return list<RoutingDecision>
+     */
+    public function decisions(array $scenarios, ?CarbonInterface $at = null): array
+    {
+        $at ??= now();
+        $map = NeedRoleMap::fromNeeds($this->referentials->needs());
+        $pool = $this->candidates();
+        $national = self::candidate($this->roster->focalOnDuty(null, $at));
+        $zones = [];
+        $zoneFocal = [];
+        $decisions = [];
+
+        foreach ($scenarios as [$zoneId, $needs]) {
+            $key = (int) $zoneId;
+            $zone = $zoneId === null ? null : ($zones[$key] ??= Zone::query()->find($zoneId));
+            $zoneFocal[$key] ??= $zone === null ? null : self::candidate($this->roster->focalOnDuty($zone, $at));
+            $decisions[] = $this->router->route(
+                new RoutingRequest($zone?->getKey() === null ? null : (int) $zone->getKey(), $needs),
+                $map,
+                $pool,
+                $zoneFocal[$key],
+                $national,
+            );
+        }
+
+        return $decisions;
+    }
+
+    /**
      * Contacts éligibles : actifs, non supprimés, `is_public` et joignabilité sans effet (parité api.php l.13).
      *
      * @return list<RoutingCandidate>

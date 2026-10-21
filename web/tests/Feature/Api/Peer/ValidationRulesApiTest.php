@@ -16,13 +16,14 @@ beforeEach(function (): void {
 });
 
 it('sert les règles actives et leurs paramètres utiles au client', function (): void {
-    C::disable('password_strong');
+    C::disable('positive_int');
 
     $response = F::as($this->peer)->getJson('/api/v1/pair/validation-rules')->assertOk();
     $keys = array_column($response->json('data'), 'key');
 
-    expect($keys)->toContain('required', 'date_not_future', 'age_range', 'plausibility', 'duplicates')
-        ->not->toContain('password_strong')
+    // `password_strong` est verrouillée (P11-05) : toujours servie ; une règle désactivable désactivée ne l'est plus.
+    expect($keys)->toContain('required', 'date_not_future', 'age_range', 'plausibility', 'duplicates', 'password_strong')
+        ->not->toContain('positive_int')
         ->and($response->json('data.0.key'))->toBe('required')
         ->and($response->json('data.0.locked'))->toBeTrue();
 

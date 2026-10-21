@@ -75,6 +75,7 @@ final class AdminNavigation
             ['utilisateurs', 'people', 'users', 'users.view', 'users_pending'],
             ['inscriptions', 'person-plus', 'registrations', 'registrations.manage'],
             ['mises-a-jour', 'arrow-repeat', 'updates', 'updates.view'],
+            ['sauvegardes', 'database-down', 'backups', 'backups.create'],
             ['maintenance', 'cone-striped', 'maintenance', 'platform.maintenance'],
             ['parametres', 'gear', 'settings', 'settings.view'],
             ['journal', 'clock-history', 'audit', 'audit_logs.view'],

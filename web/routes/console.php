@@ -129,6 +129,16 @@ Schedule::command('events:remind')
     ->description('Envoie le rappel de la veille aux participant·es des événements qui commencent dans les 24 h');
 
 /*
+ * Sauvegarde nocturne (P13-03, ADR-22) : mysqldump compressé si disponible, archive JSON chiffrée de repli, vers le
+ * stockage configuré (BACKUP_DISK, Q9) ; rotation des sauvegardes automatiques. Avant la fenêtre de purges de 03:00.
+ */
+Schedule::command('backups:run')
+    ->dailyAt('02:00')
+    ->timezone($timezone)
+    ->withoutOverlapping(180)
+    ->description('Sauvegarde nocturne de la base (mysqldump, sinon archive JSON chiffrée) et rotation des sauvegardes automatiques');
+
+/*
  * Signal de vie vers la supervision externe (D7, NFR-03) : enregistré en dernier pour être émis après les
  * autres tâches de la minute. À conditionner au succès d'`alerts:escalate` (marqueur `alerts:escalate:last_success_at`,
  * livré) et de `notifications:retry` (marqueur `notifications:retry:last_success_at`, livré) — P3-07 : un cron qui tourne mais échoue doit déclencher l'alerte.
@@ -148,6 +158,4 @@ Schedule::command('heartbeat:ping')
  *   Schedule::command('newsletter:process')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
  * P14-04 — passerelles réseaux sociaux (D4-bis) :
  *   Schedule::command('gateways:publish')->everyMinute()->timezone($timezone)->withoutOverlapping(10);
- * P13-03 — sauvegardes (mysqldump + fichiers vers stockage externe chiffré) :
- *   Schedule::command('backups:run')->dailyAt('02:00')->timezone($timezone)->withoutOverlapping(180);
  */

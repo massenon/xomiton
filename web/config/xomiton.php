@@ -757,6 +757,69 @@ return [
     ],
 
     /*
+     * Sauvegardes (P13-03, ADR-22) : archive ZIP chiffrée par mot de passe (AES-256) contenant `manifest.json` et, pour
+     * chaque table, des morceaux `tables/<table>/<n>.json` de `chunk_rows` lignes (colonnes `encrypted` exportées
+     * déchiffrées : une restauration après rotation d'APP_KEY reste lisible). La sauvegarde officielle reste le
+     * `mysqldump` planifié vers un stockage externe (D7) ; ce ZIP sert à l'écran (aperçu, téléchargement) et de repli de
+     * restauration. Sans ext-zip, l'écran refuse la création et renvoie au mysqldump de l'hébergeur.
+     * `password` : mot de passe de l'archive (BACKUP_ARCHIVE_PASSWORD) ; absent, il dérive d'APP_KEY (l'écran le signale,
+     * l'archive dépend alors de la clé). `disk` : disque Laravel (Q9 : BACKUP_DISK, S3 compatible ou FTP distant).
+     * `job_budget_seconds` : temps d'un job de restauration (< 50 s, cron cPanel) ; `exclude_tables` : jamais exportées
+     * (état technique) ; `restore_skip_tables` : exportées mais jamais réécrites par une restauration (journal d'audit
+     * immuable, inventaire des sauvegardes) ; `restore_keep_settings` : paramètres que la restauration ne touche pas
+     * (le mode maintenance doit rester levé pendant et jusqu'à la fin).
+     */
+    'backup' => [
+        'disk' => env('BACKUP_DISK', 'local'),
+        'directory' => 'backups',
+        'password' => env('BACKUP_ARCHIVE_PASSWORD'),
+        'chunk_rows' => 1000,
+        'job_budget_seconds' => 40,
+        'keep_auto' => 14,
+        'preview_rows' => 5,
+        'exclude_tables' => ['migrations', 'cache', 'cache_locks', 'sessions', 'jobs', 'job_batches', 'failed_jobs', 'password_reset_tokens'],
+        'restore_skip_tables' => ['audit_logs', 'backups'],
+        'restore_keep_settings' => ['maintenance', 'maint_start', 'maint_end', 'maint_msg'],
+        'mask_columns' => '/hash|pass|token|secret|pin|otp|key/i',
+        'mysqldump' => (bool) env('XOMITON_MYSQLDUMP', true),
+        'mysqldump_binary' => env('XOMITON_MYSQLDUMP_BINARY', 'mysqldump'),
+    ],
+
+    /*
+     * Paramètres de la plateforme (P13-04, table `settings`) : catalogue des clés **typées** de l'écran /admin/parametres
+     * et de /admin/synchronisation. Chaque clé : groupe, type (bool|int|string|json|secret), valeur par défaut (celle
+     * qu'on lit tant que la base ne la porte pas), exposition publique (`public`) et règles de validation Laravel
+     * (`rules`, `item_rules` pour les éléments d'une liste). Un secret n'est jamais renvoyé à l'écran. La politique de
+     * mot de passe ne peut que **durcir** le plancher de Q30 (`accounts.password_min_length`, 10).
+     */
+    'platform_settings' => [
+        'site_name' => ['group' => 'general', 'type' => 'string', 'default' => 'Xomiton', 'public' => true, 'rules' => ['required', 'string', 'min:2', 'max:40']],
+        'contact_email' => ['group' => 'general', 'type' => 'string', 'default' => 'contact@xomiton.bj', 'public' => true, 'rules' => ['required', 'email:rfc', 'max:190']],
+        'timezone' => ['group' => 'general', 'type' => 'string', 'default' => 'Africa/Porto-Novo', 'public' => true, 'rules' => ['required', 'string', 'in:Africa/Porto-Novo,Africa/Lagos,Africa/Abidjan,UTC']],
+        'languages' => ['group' => 'general', 'type' => 'json', 'default' => ['fr'], 'public' => true, 'rules' => ['required', 'array', 'min:1'], 'item_rules' => ['string', 'in:fr,en,fon,yo']],
+        'anonymous_reports' => ['group' => 'general', 'type' => 'bool', 'default' => true, 'public' => true, 'rules' => ['boolean']],
+        'gps_sos' => ['group' => 'general', 'type' => 'bool', 'default' => true, 'public' => true, 'rules' => ['boolean']],
+        'offline_sync' => ['group' => 'synchro', 'type' => 'bool', 'default' => true, 'public' => true, 'rules' => ['boolean']],
+        'password_min_length' => ['group' => 'securite', 'type' => 'int', 'default' => 10, 'public' => false, 'rules' => ['required', 'integer', 'min:10', 'max:64']],
+        'password_require_symbol' => ['group' => 'securite', 'type' => 'bool', 'default' => false, 'public' => false, 'rules' => ['boolean']],
+        'password_expiry_days' => ['group' => 'securite', 'type' => 'int', 'default' => 0, 'public' => false, 'rules' => ['required', 'integer', 'min:0', 'max:365']],
+        'session_minutes' => ['group' => 'securite', 'type' => 'int', 'default' => 120, 'public' => false, 'rules' => ['required', 'integer', 'min:5', 'max:1440']],
+        'audit_log_days' => ['group' => 'securite', 'type' => 'int', 'default' => 90, 'public' => false, 'rules' => ['required', 'integer', 'min:7', 'max:3650']],
+        'app_min_version' => ['group' => 'general', 'type' => 'string', 'default' => '1.0.0', 'public' => true, 'rules' => ['required', 'regex:/^\d+\.\d+\.\d+$/', 'max:20']],
+        'sync_interval_minutes' => ['group' => 'synchro', 'type' => 'int', 'default' => 15, 'public' => true, 'rules' => ['required', 'integer', 'in:5,15,30,60,240']],
+        'sync_max_mb' => ['group' => 'synchro', 'type' => 'int', 'default' => 5, 'public' => true, 'rules' => ['required', 'integer', 'min:1', 'max:50']],
+        'sync_wifi_only' => ['group' => 'synchro', 'type' => 'bool', 'default' => false, 'public' => true, 'rules' => ['boolean']],
+        'smtp_host' => ['group' => 'smtp', 'type' => 'string', 'default' => '', 'public' => false, 'rules' => ['nullable', 'string', 'max:190']],
+        'smtp_port' => ['group' => 'smtp', 'type' => 'int', 'default' => 587, 'public' => false, 'rules' => ['required', 'integer', 'min:1', 'max:65535']],
+        'smtp_encryption' => ['group' => 'smtp', 'type' => 'string', 'default' => 'tls', 'public' => false, 'rules' => ['required', 'in:tls,ssl,none']],
+        'smtp_username' => ['group' => 'smtp', 'type' => 'string', 'default' => '', 'public' => false, 'rules' => ['nullable', 'string', 'max:190']],
+        'smtp_password' => ['group' => 'smtp', 'type' => 'secret', 'default' => null, 'public' => false, 'rules' => ['nullable', 'string', 'max:190']],
+        'smtp_from_email' => ['group' => 'smtp', 'type' => 'string', 'default' => 'contact@xomiton.bj', 'public' => false, 'rules' => ['required', 'email:rfc', 'max:190']],
+        'smtp_from_name' => ['group' => 'smtp', 'type' => 'string', 'default' => 'Xomiton', 'public' => false, 'rules' => ['required', 'string', 'max:80']],
+        'smtp_reply_to' => ['group' => 'smtp', 'type' => 'string', 'default' => '', 'public' => false, 'rules' => ['nullable', 'email:rfc', 'max:190']],
+    ],
+
+    /*
      * Colonnes chiffrées (cast Eloquent `encrypted`, DATABASE_DICTIONARY.md « [chiffré] ») : liste exhaustive
      * table => colonnes, parcourue par `xomiton:reencrypt` lors d'une rotation d'APP_KEY (P1-15, D7).
      * Cas particulier : `settings.value` n'est chiffrée que pour les clés de type `secret` (App\Models\Setting),

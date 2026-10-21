@@ -1,0 +1,30 @@
+/*
+ * Administration système (P13-01 à P13-04) : Synchronisation, Mises à jour, Sauvegardes, Paramètres. Jetons --xm-* seulement.
+ */
+
+/* Sauvegardes : extrait masqué d'une collection (aperçu). */
+.xm-backup-sample {
+  max-height: 16rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Synchronisation : valeur d'un conflit (notes longues) lisible sans agrandir la carte. */
+.xm-sync-value {
+  max-height: 9rem;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+/* Paramètres : identité visuelle (lecture seule). */
+.xm-settings__swatch {
+  inline-size: 3.5rem;
+  block-size: 2.25rem;
+  border-radius: var(--xm-radius-sm, .5rem);
+  border: 1px solid var(--xm-border, rgba(0, 0, 0, .12));
+}
+
+.xm-settings__dark {
+  background: var(--xm-neutral-900, #0e1020);
+}

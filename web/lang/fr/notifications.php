@@ -201,6 +201,32 @@ return [
         'discreet' => 'Signalement à modérer',
     ],
 
+    // Décisions de l'équipe adressées à la personne (P12-01, P12-06) : tu. Le motif est celui écrit par l'équipe pour elle.
+    'moderation' => [
+        'discreet' => 'Message de l’équipe',
+        'no_reason' => 'non précisé',
+        'warning' => [
+            'title' => 'Avertissement de l’équipe',
+            'body' => 'L’équipe de modération t’adresse un avertissement : :reason. Relis la charte pour que la communauté reste un espace sûr.',
+        ],
+        'content_hidden' => [
+            'title' => 'Un de tes contenus a été masqué',
+            'body' => 'L’équipe de modération a masqué un de tes contenus, car il ne respecte pas la charte. Tu peux nous écrire si tu penses à une erreur.',
+        ],
+        'suspended' => [
+            'title' => 'Ton compte est suspendu',
+            'body' => 'Ton compte est suspendu : :reason. Écris-nous si tu penses à une erreur.',
+        ],
+        'reactivated' => [
+            'title' => 'Ton compte est réactivé',
+            'body' => 'L’équipe a réactivé ton compte. Tu peux de nouveau t’en servir.',
+        ],
+        'approved' => [
+            'title' => 'Ton inscription est validée',
+            'body' => 'L’équipe Xomiton a validé ton inscription : bienvenue dans la communauté.',
+        ],
+    ],
+
     // Limiteur `sos` en mode observateur (P2-08, App\Application\Shared\SosBurstWatch) : aucun SOS n'est bloqué.
     'sos_burst' => [
         'title' => 'SOS répétés depuis une même adresse',
