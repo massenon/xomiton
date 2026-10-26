@@ -694,6 +694,8 @@ return [
      */
     'heartbeat' => [
         'url' => env('HEARTBEAT_URL'),
+        // Signal envoyé seulement si alerts:escalate et notifications:retry ont réussi dans les 3 dernières minutes.
+        'require_markers' => (bool) env('HEARTBEAT_REQUIRE_MARKERS', true),
     ],
 
     /*

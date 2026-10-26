@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Maintenance;
 
+use App\Console\Commands\Alerts\EscalateAlertsCommand;
+use App\Console\Commands\Alerts\RetryNotificationsCommand;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -12,6 +15,9 @@ use Throwable;
 /**
  * Signal de vie du cron vers la supervision externe (D7, NFR-03 : Healthchecks.io, UptimeRobot…).
  * Sans `HEARTBEAT_URL`, la commande ne fait rien et reste silencieuse.
+ * Le signal n'est envoyé que si `alerts:escalate` et `notifications:retry` ont réussi récemment (marqueurs de succès,
+ * P3-07 / P17-03) : un cron qui tourne mais dont les tâches échouent doit déclencher l'alerte de la supervision.
+ * `xomiton.heartbeat.require_markers` = false désactive cette condition (environnements sans ces tâches).
  */
 class HeartbeatPingCommand extends Command
 {
@@ -27,6 +33,15 @@ class HeartbeatPingCommand extends Command
 
         if ($url === '') {
             return self::SUCCESS;
+        }
+
+        $stale = $this->staleMarkers();
+
+        if ($stale !== []) {
+            $this->warn('Signal de vie non envoyé : tâche en échec ou absente ('.implode(', ', $stale).').');
+            Log::warning('Signal de vie retenu : marqueurs de succès absents.', ['markers' => $stale]);
+
+            return self::FAILURE;
         }
 
         try {
@@ -51,5 +66,18 @@ class HeartbeatPingCommand extends Command
         $this->info('Signal de vie envoyé.');
 
         return self::SUCCESS;
+    }
+
+    /** @return list<string> marqueurs de succès absents ou expirés (TTL 3 min posé par les commandes). */
+    private function staleMarkers(): array
+    {
+        if (! (bool) config('xomiton.heartbeat.require_markers', true)) {
+            return [];
+        }
+
+        return array_values(array_filter(
+            [EscalateAlertsCommand::SUCCESS_MARKER, RetryNotificationsCommand::SUCCESS_MARKER],
+            static fn (string $marker): bool => ! Cache::has($marker),
+        ));
     }
 }
