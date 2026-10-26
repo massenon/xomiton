@@ -445,6 +445,9 @@ return [
         'message_max_length' => 500,
         'batch_size' => 20,
         'max_attempts' => 5,
+        // P14-04 : transport des connecteurs Facebook / Telegram. `log` (défaut) n'appelle aucun réseau ; un pilote réel
+        // s'ajoute dans GatewayTransports::DRIVERS (voir GatewayTransport).
+        'driver' => env('XOMITON_GATEWAYS_DRIVER', 'log'),
         // Réseaux sans API de publication : publication manuelle assistée.
         'manual_networks' => ['Roméo', 'GanXo', 'Tinder'],
     ],

@@ -28,6 +28,26 @@ Schedule::command('mail:flush-outbox')
     ->description('Envoie les e-mails en attente dans mail_outbox (50 au plus) dès qu’un SMTP est disponible');
 
 /*
+ * Chaque minute (P14-03) : démarre les campagnes newsletter échues et dépose un lot de 200 e-mails au plus par campagne
+ * en cours dans la file `database` (SendCampaignBatch, exécuté par la seconde ligne cron).
+ */
+Schedule::command('newsletter:process')
+    ->everyMinute()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Démarre les campagnes newsletter échues et envoie leurs lots (200 par minute, rebonds, désinscription en un clic)');
+
+/*
+ * Chaque minute (P14-04, ARCH §6) : publications sortantes échues vers les passerelles (par lots de 20, rejeu des échecs ;
+ * sans connecteur utilisable, la remise reste à publier à la main).
+ */
+Schedule::command('gateways:publish')
+    ->everyMinute()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Publie les remises échues des passerelles (lots, rejeu des échecs, publication manuelle sinon)');
+
+/*
  * Quotidien à 03:00 : purges et anonymisations (DATABASE_ENGINEERING.md §6), dans l'ordre des dépendances
  * (les comptes anonymisés libèrent leurs sessions et jetons avant la purge des sessions).
  */

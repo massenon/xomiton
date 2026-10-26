@@ -12,8 +12,8 @@ use App\Models\SocialChannel;
  */
 final class SocialPublishers
 {
-    /** @var list<class-string<SocialPublisher>> connecteurs réels, ajoutés par P14-04 */
-    public const CONNECTORS = [];
+    /** @var list<class-string<SocialPublisher>> connecteurs à API (P14-04) ; TikTok : aucun, sans API de contenu publique */
+    public const CONNECTORS = [FacebookPublisher::class, TelegramPublisher::class];
 
     public function for(SocialChannel $channel): SocialPublisher
     {

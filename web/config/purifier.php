@@ -44,6 +44,17 @@ return [
             'AutoFormat.AutoParagraph' => false,
             'AutoFormat.RemoveEmpty' => true,
         ],
+        // HTML des e-mails (templates et campagnes, P14-01 / P14-02) : mise en forme simple, liens web, mailto et tel,
+        // images distantes ; ni style, ni script, ni formulaire. App\Support\EmailHtml protège les variables {{...}}.
+        'email' => [
+            'HTML.Doctype' => 'HTML 4.01 Transitional',
+            'HTML.Allowed' => 'p,br,hr,strong,b,em,i,u,s,small,blockquote,ul,ol,li,h1,h2,h3,h4,a[href|title|rel|target],img[src|alt|width|height]',
+            'Attr.AllowedFrameTargets' => ['_blank'],
+            'Attr.AllowedRel' => ['noopener', 'noreferrer'],
+            'URI.AllowedSchemes' => ['http' => true, 'https' => true, 'mailto' => true, 'tel' => true],
+            'AutoFormat.AutoParagraph' => false,
+            'AutoFormat.RemoveEmpty' => true,
+        ],
         'youtube' => [
             'HTML.SafeIframe' => 'true',
             'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',

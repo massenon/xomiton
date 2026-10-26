@@ -31,6 +31,7 @@ class NewsletterCampaignRecipient extends Model
         'bounced',
         'unsubscribed',
         'error',
+        'attempts',
     ];
 
     /**

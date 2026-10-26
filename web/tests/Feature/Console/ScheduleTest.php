@@ -43,6 +43,8 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
 
     $expected = [
         'mail:flush-outbox' => '* * * * *',
+        'newsletter:process' => '* * * * *',
+        'gateways:publish' => '* * * * *',
         'alerts:escalate' => '* * * * *',
         'notifications:retry' => '* * * * *',
         'heartbeat:ping' => '* * * * *',

@@ -59,7 +59,7 @@ it('groupe les résultats par famille et compte le total de chaque groupe', func
     $this->actingAs(searchUser('admin'));
     $zone = Zone::factory()->create(['name' => 'Xqzgnanado']);
     User::factory()->create(['name' => 'Xqzdrine Ahouansou', 'email' => 'xqzdrine@exemple.bj', 'pseudo' => 'xqzdrine']);
-    CaseRecord::factory()->vbg()->create(['code' => 'VBG-XQZ-01', 'zone_id' => $zone->id, 'collected_by' => User::factory()->create()->id]);
+    CaseRecord::factory()->vbg()->create(['code' => 'VBG-XQZ-01', 'zone_id' => $zone->id, 'referral' => 'Centre d’écoute', 'collected_by' => User::factory()->create(['pseudo' => 'collecteur-fixe'])->id]);
     Alert::factory()->create(['zone_id' => $zone->id, 'category' => 'violence']);
     DirectoryContact::factory()->create(['name' => 'Xqzdro Conseil', 'role' => DirectoryRole::Juriste, 'org' => 'ONG Xqz']);
     Thematique::factory()->create(['title' => 'Xqz : comprendre vos droits']);

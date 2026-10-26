@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Admin\Gateways;
 
-use App\Application\Gateways\SocialPublishers;
+use App\Application\Gateways\ManualPublisher;
 use App\Domain\Content\Exceptions\ContentRefused;
 use App\Enums\CccKind;
 use App\Enums\GatewayDeliveryStatus;
@@ -33,8 +33,6 @@ final class ManageGateways
     public const HANDLE_PATTERN = '/^@?[\w.\-]{3,40}$/u';
 
     public const TOKEN_MAX = 1000;
-
-    public function __construct(private readonly SocialPublishers $publishers) {}
 
     /**
      * @throws ContentRefused
@@ -171,10 +169,10 @@ final class ManageGateways
      */
     public function copyText(OutboundDelivery $delivery): string
     {
-        $channel = $delivery->channel;
         $post = $delivery->post;
 
-        return $channel === null || $post === null ? '' : (string) $this->publishers->for($channel)->publish($post, $channel)->copyText;
+        // Jamais publish() ici : « copier » ne doit pas envoyer au réseau (connecteur à API).
+        return $post === null ? '' : ManualPublisher::copyText($post);
     }
 
     /**

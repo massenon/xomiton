@@ -28,6 +28,8 @@ class TemplateMail extends Mailable
         public readonly string $fromName,
         public readonly ?string $replyToAddress = null,
         public readonly ?string $templateSlug = null,
+        /** @var array<string, string> en-têtes ajoutés à l'envoi (List-Unsubscribe…) */
+        public readonly array $extraHeaders = [],
     ) {}
 
     public function envelope(): Envelope
@@ -37,7 +39,13 @@ class TemplateMail extends Mailable
             replyTo: $this->replyToAddress === null ? [] : [new Address($this->replyToAddress)],
             subject: $this->subjectLine,
             // Version texte ajoutée au moment de l'envoi (pas de closure dans le constructeur : le Mailable reste sérialisable).
-            using: [fn (Email $message) => $message->text($this->textBody)],
+            using: [function (Email $message): void {
+                $message->text($this->textBody);
+
+                foreach ($this->extraHeaders as $name => $value) {
+                    $message->getHeaders()->addTextHeader($name, $value);
+                }
+            }],
         );
     }
 

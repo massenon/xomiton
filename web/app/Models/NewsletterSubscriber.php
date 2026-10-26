@@ -144,6 +144,25 @@ class NewsletterSubscriber extends Model
     }
 
     /**
+     * Joignable par une campagne : abonné·e actif·ve dont le compte éventuel n'est ni suspendu, ni supprimé, ni anonymisé
+     * (une personne en attente, désabonnée ou en rebond n'est jamais joignable).
+     *
+     * @param  Builder<NewsletterSubscriber>  $query
+     */
+    public function scopeDeliverable(Builder $query): void
+    {
+        $query->active()->whereNotExists(static function ($users): void {
+            $users->selectRaw('1')->from('users')
+                ->whereColumn('users.id', 'newsletter_subscribers.user_id')
+                ->where(static function ($blocked): void {
+                    $blocked->where('users.status', \App\Enums\UserStatus::Suspended->value)
+                        ->orWhereNotNull('users.deleted_at')
+                        ->orWhere('users.email', 'like', '%@anonyme.invalid');
+                });
+        });
+    }
+
+    /**
      * @param  Builder<NewsletterSubscriber>  $query
      */
     public function scopePending(Builder $query): void
@@ -206,7 +225,7 @@ class NewsletterSubscriber extends Model
      */
     public function scopeInSegment(Builder $query, array $segment): void
     {
-        $query->active();
+        $query->deliverable();
 
         if (! empty($segment['tags'])) {
             $query->withAnyTag($segment['tags']);

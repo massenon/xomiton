@@ -1,0 +1,166 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Écrans /admin/emails et /admin/newsletter (P14-01, P14-02) : textes qui complètent `admin.emails` et `newsletter.admin`
+ * (vous). Rendu des campagnes envoyées aux abonné·es : tutoiement (`newsletter.campaign_defaults`).
+ */
+return [
+    'actions' => 'Actions',
+    'edit' => 'Modifier',
+    'view' => 'Voir',
+    'duplicate' => 'Dupliquer',
+    'delete' => 'Supprimer',
+    'save' => 'Enregistrer',
+
+    'errors' => [
+        'body_empty' => 'Le corps du message est vide.',
+        'slug_invalid' => 'Slug invalide : minuscules, chiffres et tirets uniquement (ex. reinitialisation-mot-de-passe).',
+        'slug_mismatch' => 'Le slug saisi ne correspond pas : la suppression est annulée.',
+        'test_address_invalid' => 'Adresse e-mail de test invalide.',
+        'variables_unknown' => 'Variable(s) non autorisée(s) : :list. Utilisez seulement les variables proposées.',
+        'test_quota' => 'Limite quotidienne d’envois de test atteinte : réessayez demain.',
+        'already_subscribed' => 'Cette adresse est déjà inscrite.',
+        'not_pending' => 'Seule une inscription en attente de confirmation peut être relancée.',
+        'consent_required' => 'Attestez que les personnes importées ont donné leur consentement.',
+        'import_too_long' => 'Le fichier dépasse :max lignes : découpez-le.',
+        'campaign_locked' => 'Cette campagne n’est plus modifiable.',
+        'campaign_state' => 'Action impossible dans l’état actuel de la campagne.',
+        'subject_invalid' => 'Indiquez un objet (:min à :max caractères).',
+        'body_invalid' => 'Le corps du message doit contenir au moins :min caractères.',
+        'segment_empty' => 'Aucun·e abonné·e actif·ve ne correspond à ce segment : élargissez les critères.',
+        'scheduled_past' => 'La date d’envoi doit être dans le futur.',
+        'testimonial_consent' => 'Un témoignage n’est inséré qu’anonymisé et avec le consentement de la personne : cochez la case.',
+    ],
+
+    // Rendu des e-mails de campagne (tutoiement).
+    'render' => [
+        'first_name_fallback' => 'ami·e',
+    ],
+
+    'kpi' => [
+        'pending_sub' => '{0} Aucune confirmation en attente|{1} :count confirmation en attente|[2,*] :count confirmations en attente',
+    ],
+
+    'stats' => [
+        'months_caption' => 'Inscriptions et désinscriptions par mois sur les 12 derniers mois',
+        'month' => 'Mois',
+        'signups' => 'Inscriptions',
+        'leaves' => 'Désinscriptions',
+        'off_target' => 'sous la cible',
+        'delivered' => 'Délivrés',
+    ],
+
+    'emails' => [
+        'intro' => 'Les e-mails envoyés par la plateforme (comptes, alertes, newsletter) sont écrits ici. Un template désactivé refuse tout envoi ; un template système garde son slug.',
+        'new' => 'Nouveau template',
+        'edit' => 'Modifier le template',
+        'search_placeholder' => 'Nom ou slug…',
+        'all_categories' => 'Toutes les catégories',
+        'all_states' => 'Tous les états',
+        'state_active' => 'Actifs',
+        'table_caption' => 'Templates e-mails, par ordre alphabétique',
+        'deactivate' => 'Désactiver',
+        'activate' => 'Activer',
+        'env_mailer' => 'Transport de l’environnement (:mailer)',
+        'outbox_failed' => '{1} dont :count abandonné après plusieurs essais|[2,*] dont :count abandonnés après plusieurs essais',
+        'smtp_help' => 'Le serveur SMTP se règle dans Paramètres (superadmin). Sans SMTP, les e-mails attendent dans la boîte d’envoi.',
+        'open_settings' => 'Ouvrir les paramètres',
+        'failed' => 'Échec',
+        'panes' => 'Volet de la modale',
+        'pane_edit' => 'Édition',
+        'body_help' => 'HTML simple (titres, paragraphes, liens, listes) : le reste est retiré à l’enregistrement. Les variables s’écrivent {{nom}}.',
+        'variable_sample' => 'Exemple : :value',
+        'unknown_variables' => 'Variables sans valeur d’exemple : :list. Elles resteront visibles dans le message si le code ne les fournit pas.',
+        'test' => [
+            'help' => 'Dépose la version en cours d’édition dans la boîte d’envoi, avec des données fictives ; elle part dans la minute.',
+            'throttled' => 'Trop de tests : réessayez dans une minute.',
+        ],
+        'toasts' => [
+            'saved' => 'Template enregistré.',
+            'test_queued' => 'Test mis en file d’envoi : il part dans la minute.',
+            'duplicated' => 'Copie créée, désactivée.',
+            'activated' => 'Template activé.',
+            'deactivated' => 'Template désactivé.',
+            'deleted' => 'Template supprimé.',
+        ],
+    ],
+
+    'subscribers' => [
+        'confirmed_at' => 'Confirmation',
+        'csv_headers' => ['E-mail', 'Nom', 'Tags', 'Centres d’intérêt'],
+        'csv_example' => ['exemple@mail.bj', 'Prénom NOM', 'partenaire', 'Santé'],
+        'bulk_tag' => 'Ajouter le tag « :tag »',
+        'import' => 'Importer',
+        'import_file' => 'Fichier CSV',
+        'import_submit' => 'Importer',
+        'import_tag' => 'Tag ajouté à toutes les personnes importées',
+        'no_tag' => 'Aucun',
+        'uploading' => 'Téléversement…',
+        'template' => 'Télécharger le modèle',
+        'attestation' => 'J’atteste que ces personnes ont donné leur consentement pour recevoir la newsletter.',
+        'optin' => 'Envoyer un e-mail de confirmation (double opt-in, recommandé). Sinon, les personnes sont actives tout de suite.',
+        'import_report' => 'Import terminé : :imported ajouté·es, :duplicates déjà inscrit·es, :invalid ligne(s) invalide(s).',
+        'search_placeholder' => 'E-mail ou nom…',
+        'all_statuses' => 'Tous les statuts',
+        'all_tags' => 'Tous les tags',
+        'all_interests' => 'Tous les centres d’intérêt',
+        'table_caption' => 'Abonné·es à la newsletter, les plus récent·es d’abord',
+        'select' => 'Sélectionner :name',
+        'select_column' => 'Sélection',
+        'confirm_unsubscribe' => 'Désabonner cette personne ? Elle ne recevra plus la newsletter.',
+        'confirm_delete' => 'Supprimer définitivement cette personne et son historique d’envois ? Cette action est irréversible.',
+    ],
+
+    'campaigns' => [
+        'search_placeholder' => 'Objet…',
+        'all_statuses' => 'Tous les états',
+        'table_caption' => 'Campagnes, les plus récentes d’abord',
+        'progress' => ':sent / :total envoyés',
+        'stats' => 'Statistiques',
+        'view' => 'Voir la campagne',
+        'cancel_schedule' => 'Annuler la programmation',
+        'confirm_cancel' => 'Annuler la programmation ? La campagne repasse en brouillon.',
+        'confirm_delete' => 'Supprimer cette campagne ?',
+        'sections_title' => 'Insérer une rubrique',
+        'testimonial_consent' => 'Témoignage anonymisé, publié avec le consentement de la personne',
+        'send_test' => 'Envoyer le test',
+        'test_queued' => 'Test mis en file d’envoi : il part dans la minute.',
+        'send_locked' => 'Programmer ou lancer un envoi demande la permission d’envoi.',
+        'submit' => [
+            'draft' => 'Enregistrer le brouillon',
+            'schedule' => 'Programmer l’envoi',
+            'now' => 'Lancer l’envoi',
+        ],
+        'fields' => [
+            'subject' => 'Objet',
+            'from_name' => 'Nom d’expédition',
+            'reply_to' => 'E-mail de réponse',
+            'preheader' => 'Texte d’aperçu',
+            'body' => 'Corps du message',
+            'seg_tags' => 'Tags',
+            'seg_interests' => 'Centres d’intérêt',
+            'seg_since' => 'Inscrit·es depuis le',
+            'seg_until' => 'Inscrit·es jusqu’au',
+            'scheduled_at' => 'Date et heure d’envoi',
+        ],
+        'variables' => [
+            'user_first_name' => 'Prénom',
+            'user_name' => 'Nom complet',
+            'user_email' => 'E-mail',
+            'site_name' => 'Nom de la plateforme',
+            'current_year' => 'Année',
+            'login_link' => 'Lien de connexion',
+            'unsubscribe_link' => 'Lien de désinscription',
+        ],
+        // Rubriques du gabarit (tutoiement : ces textes partent aux abonné·es).
+        'sections' => [
+            'featured' => ['label' => 'À la une', 'html' => '<h2>À la une</h2><p>Le sujet du mois en deux phrases.</p><p><a href="https://xomiton.org/">Lire la suite</a></p>'],
+            'resource' => ['label' => 'Nouvelle fiche', 'html' => '<h2>Nouvelle fiche</h2><p>Une ressource utile vient d’être publiée.</p><p><a href="https://xomiton.org/ressources">Découvrir la fiche</a></p>'],
+            'event' => ['label' => 'Événement', 'html' => '<h2>À venir</h2><p>Date, lieu et façon de participer.</p><p><a href="https://xomiton.org/evenements">S’inscrire</a></p>'],
+            'testimonial' => ['label' => 'Témoignage', 'html' => '<h2>Témoignage</h2><blockquote>Texte anonymisé, relu et autorisé par la personne.</blockquote>'],
+            'emergency' => ['label' => 'Contacts d’urgence', 'html' => '<p><strong>En danger ? Appelle le 117</strong> ou utilise le bouton SOS de la plateforme.</p>'],
+        ],
+    ],
+];

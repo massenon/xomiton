@@ -8893,6 +8893,611 @@
     "@admin_network_toasts_unfeatured": {
         "description": "admin_network.toasts.unfeatured"
     },
+    "admin_newsletter_actions": "Actions",
+    "@admin_newsletter_actions": {
+        "description": "admin_newsletter.actions"
+    },
+    "admin_newsletter_campaigns_all_statuses": "Tous les états",
+    "@admin_newsletter_campaigns_all_statuses": {
+        "description": "admin_newsletter.campaigns.all_statuses"
+    },
+    "admin_newsletter_campaigns_cancel_schedule": "Annuler la programmation",
+    "@admin_newsletter_campaigns_cancel_schedule": {
+        "description": "admin_newsletter.campaigns.cancel_schedule"
+    },
+    "admin_newsletter_campaigns_confirm_cancel": "Annuler la programmation ? La campagne repasse en brouillon.",
+    "@admin_newsletter_campaigns_confirm_cancel": {
+        "description": "admin_newsletter.campaigns.confirm_cancel"
+    },
+    "admin_newsletter_campaigns_confirm_delete": "Supprimer cette campagne ?",
+    "@admin_newsletter_campaigns_confirm_delete": {
+        "description": "admin_newsletter.campaigns.confirm_delete"
+    },
+    "admin_newsletter_campaigns_fields_body": "Corps du message",
+    "@admin_newsletter_campaigns_fields_body": {
+        "description": "admin_newsletter.campaigns.fields.body"
+    },
+    "admin_newsletter_campaigns_fields_from_name": "Nom d’expédition",
+    "@admin_newsletter_campaigns_fields_from_name": {
+        "description": "admin_newsletter.campaigns.fields.from_name"
+    },
+    "admin_newsletter_campaigns_fields_preheader": "Texte d’aperçu",
+    "@admin_newsletter_campaigns_fields_preheader": {
+        "description": "admin_newsletter.campaigns.fields.preheader"
+    },
+    "admin_newsletter_campaigns_fields_reply_to": "E-mail de réponse",
+    "@admin_newsletter_campaigns_fields_reply_to": {
+        "description": "admin_newsletter.campaigns.fields.reply_to"
+    },
+    "admin_newsletter_campaigns_fields_scheduled_at": "Date et heure d’envoi",
+    "@admin_newsletter_campaigns_fields_scheduled_at": {
+        "description": "admin_newsletter.campaigns.fields.scheduled_at"
+    },
+    "admin_newsletter_campaigns_fields_seg_interests": "Centres d’intérêt",
+    "@admin_newsletter_campaigns_fields_seg_interests": {
+        "description": "admin_newsletter.campaigns.fields.seg_interests"
+    },
+    "admin_newsletter_campaigns_fields_seg_since": "Inscrit·es depuis le",
+    "@admin_newsletter_campaigns_fields_seg_since": {
+        "description": "admin_newsletter.campaigns.fields.seg_since"
+    },
+    "admin_newsletter_campaigns_fields_seg_tags": "Tags",
+    "@admin_newsletter_campaigns_fields_seg_tags": {
+        "description": "admin_newsletter.campaigns.fields.seg_tags"
+    },
+    "admin_newsletter_campaigns_fields_seg_until": "Inscrit·es jusqu’au",
+    "@admin_newsletter_campaigns_fields_seg_until": {
+        "description": "admin_newsletter.campaigns.fields.seg_until"
+    },
+    "admin_newsletter_campaigns_fields_subject": "Objet",
+    "@admin_newsletter_campaigns_fields_subject": {
+        "description": "admin_newsletter.campaigns.fields.subject"
+    },
+    "admin_newsletter_campaigns_progress": "{sent} / {total} envoyés",
+    "@admin_newsletter_campaigns_progress": {
+        "description": "admin_newsletter.campaigns.progress",
+        "placeholders": {
+            "sent": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_campaigns_search_placeholder": "Objet…",
+    "@admin_newsletter_campaigns_search_placeholder": {
+        "description": "admin_newsletter.campaigns.search_placeholder"
+    },
+    "admin_newsletter_campaigns_sections_emergency_html": "<p><strong>En danger ? Appelle le 117</strong> ou utilise le bouton SOS de la plateforme.</p>",
+    "@admin_newsletter_campaigns_sections_emergency_html": {
+        "description": "admin_newsletter.campaigns.sections.emergency.html"
+    },
+    "admin_newsletter_campaigns_sections_emergency_label": "Contacts d’urgence",
+    "@admin_newsletter_campaigns_sections_emergency_label": {
+        "description": "admin_newsletter.campaigns.sections.emergency.label"
+    },
+    "admin_newsletter_campaigns_sections_event_html": "<h2>À venir</h2><p>Date, lieu et façon de participer.</p><p><a href=\"https://xomiton.org/evenements\">S’inscrire</a></p>",
+    "@admin_newsletter_campaigns_sections_event_html": {
+        "description": "admin_newsletter.campaigns.sections.event.html"
+    },
+    "admin_newsletter_campaigns_sections_event_label": "Événement",
+    "@admin_newsletter_campaigns_sections_event_label": {
+        "description": "admin_newsletter.campaigns.sections.event.label"
+    },
+    "admin_newsletter_campaigns_sections_featured_html": "<h2>À la une</h2><p>Le sujet du mois en deux phrases.</p><p><a href=\"https://xomiton.org/\">Lire la suite</a></p>",
+    "@admin_newsletter_campaigns_sections_featured_html": {
+        "description": "admin_newsletter.campaigns.sections.featured.html"
+    },
+    "admin_newsletter_campaigns_sections_featured_label": "À la une",
+    "@admin_newsletter_campaigns_sections_featured_label": {
+        "description": "admin_newsletter.campaigns.sections.featured.label"
+    },
+    "admin_newsletter_campaigns_sections_resource_html": "<h2>Nouvelle fiche</h2><p>Une ressource utile vient d’être publiée.</p><p><a href=\"https://xomiton.org/ressources\">Découvrir la fiche</a></p>",
+    "@admin_newsletter_campaigns_sections_resource_html": {
+        "description": "admin_newsletter.campaigns.sections.resource.html"
+    },
+    "admin_newsletter_campaigns_sections_resource_label": "Nouvelle fiche",
+    "@admin_newsletter_campaigns_sections_resource_label": {
+        "description": "admin_newsletter.campaigns.sections.resource.label"
+    },
+    "admin_newsletter_campaigns_sections_testimonial_html": "<h2>Témoignage</h2><blockquote>Texte anonymisé, relu et autorisé par la personne.</blockquote>",
+    "@admin_newsletter_campaigns_sections_testimonial_html": {
+        "description": "admin_newsletter.campaigns.sections.testimonial.html"
+    },
+    "admin_newsletter_campaigns_sections_testimonial_label": "Témoignage",
+    "@admin_newsletter_campaigns_sections_testimonial_label": {
+        "description": "admin_newsletter.campaigns.sections.testimonial.label"
+    },
+    "admin_newsletter_campaigns_sections_title": "Insérer une rubrique",
+    "@admin_newsletter_campaigns_sections_title": {
+        "description": "admin_newsletter.campaigns.sections_title"
+    },
+    "admin_newsletter_campaigns_send_locked": "Programmer ou lancer un envoi demande la permission d’envoi.",
+    "@admin_newsletter_campaigns_send_locked": {
+        "description": "admin_newsletter.campaigns.send_locked"
+    },
+    "admin_newsletter_campaigns_send_test": "Envoyer le test",
+    "@admin_newsletter_campaigns_send_test": {
+        "description": "admin_newsletter.campaigns.send_test"
+    },
+    "admin_newsletter_campaigns_stats": "Statistiques",
+    "@admin_newsletter_campaigns_stats": {
+        "description": "admin_newsletter.campaigns.stats"
+    },
+    "admin_newsletter_campaigns_submit_draft": "Enregistrer le brouillon",
+    "@admin_newsletter_campaigns_submit_draft": {
+        "description": "admin_newsletter.campaigns.submit.draft"
+    },
+    "admin_newsletter_campaigns_submit_now": "Lancer l’envoi",
+    "@admin_newsletter_campaigns_submit_now": {
+        "description": "admin_newsletter.campaigns.submit.now"
+    },
+    "admin_newsletter_campaigns_submit_schedule": "Programmer l’envoi",
+    "@admin_newsletter_campaigns_submit_schedule": {
+        "description": "admin_newsletter.campaigns.submit.schedule"
+    },
+    "admin_newsletter_campaigns_table_caption": "Campagnes, les plus récentes d’abord",
+    "@admin_newsletter_campaigns_table_caption": {
+        "description": "admin_newsletter.campaigns.table_caption"
+    },
+    "admin_newsletter_campaigns_test_queued": "Test mis en file d’envoi : il part dans la minute.",
+    "@admin_newsletter_campaigns_test_queued": {
+        "description": "admin_newsletter.campaigns.test_queued"
+    },
+    "admin_newsletter_campaigns_testimonial_consent": "Témoignage anonymisé, publié avec le consentement de la personne",
+    "@admin_newsletter_campaigns_testimonial_consent": {
+        "description": "admin_newsletter.campaigns.testimonial_consent"
+    },
+    "admin_newsletter_campaigns_variables_current_year": "Année",
+    "@admin_newsletter_campaigns_variables_current_year": {
+        "description": "admin_newsletter.campaigns.variables.current_year"
+    },
+    "admin_newsletter_campaigns_variables_login_link": "Lien de connexion",
+    "@admin_newsletter_campaigns_variables_login_link": {
+        "description": "admin_newsletter.campaigns.variables.login_link"
+    },
+    "admin_newsletter_campaigns_variables_site_name": "Nom de la plateforme",
+    "@admin_newsletter_campaigns_variables_site_name": {
+        "description": "admin_newsletter.campaigns.variables.site_name"
+    },
+    "admin_newsletter_campaigns_variables_unsubscribe_link": "Lien de désinscription",
+    "@admin_newsletter_campaigns_variables_unsubscribe_link": {
+        "description": "admin_newsletter.campaigns.variables.unsubscribe_link"
+    },
+    "admin_newsletter_campaigns_variables_user_email": "E-mail",
+    "@admin_newsletter_campaigns_variables_user_email": {
+        "description": "admin_newsletter.campaigns.variables.user_email"
+    },
+    "admin_newsletter_campaigns_variables_user_first_name": "Prénom",
+    "@admin_newsletter_campaigns_variables_user_first_name": {
+        "description": "admin_newsletter.campaigns.variables.user_first_name"
+    },
+    "admin_newsletter_campaigns_variables_user_name": "Nom complet",
+    "@admin_newsletter_campaigns_variables_user_name": {
+        "description": "admin_newsletter.campaigns.variables.user_name"
+    },
+    "admin_newsletter_campaigns_view": "Voir la campagne",
+    "@admin_newsletter_campaigns_view": {
+        "description": "admin_newsletter.campaigns.view"
+    },
+    "admin_newsletter_delete": "Supprimer",
+    "@admin_newsletter_delete": {
+        "description": "admin_newsletter.delete"
+    },
+    "admin_newsletter_duplicate": "Dupliquer",
+    "@admin_newsletter_duplicate": {
+        "description": "admin_newsletter.duplicate"
+    },
+    "admin_newsletter_edit": "Modifier",
+    "@admin_newsletter_edit": {
+        "description": "admin_newsletter.edit"
+    },
+    "admin_newsletter_emails_activate": "Activer",
+    "@admin_newsletter_emails_activate": {
+        "description": "admin_newsletter.emails.activate"
+    },
+    "admin_newsletter_emails_all_categories": "Toutes les catégories",
+    "@admin_newsletter_emails_all_categories": {
+        "description": "admin_newsletter.emails.all_categories"
+    },
+    "admin_newsletter_emails_all_states": "Tous les états",
+    "@admin_newsletter_emails_all_states": {
+        "description": "admin_newsletter.emails.all_states"
+    },
+    "admin_newsletter_emails_body_help": "HTML simple (titres, paragraphes, liens, listes) : le reste est retiré à l’enregistrement. Les variables s’écrivent '{''{'nom'}''}'.",
+    "@admin_newsletter_emails_body_help": {
+        "description": "admin_newsletter.emails.body_help"
+    },
+    "admin_newsletter_emails_deactivate": "Désactiver",
+    "@admin_newsletter_emails_deactivate": {
+        "description": "admin_newsletter.emails.deactivate"
+    },
+    "admin_newsletter_emails_edit": "Modifier le template",
+    "@admin_newsletter_emails_edit": {
+        "description": "admin_newsletter.emails.edit"
+    },
+    "admin_newsletter_emails_env_mailer": "Transport de l’environnement ({mailer})",
+    "@admin_newsletter_emails_env_mailer": {
+        "description": "admin_newsletter.emails.env_mailer",
+        "placeholders": {
+            "mailer": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_emails_failed": "Échec",
+    "@admin_newsletter_emails_failed": {
+        "description": "admin_newsletter.emails.failed"
+    },
+    "admin_newsletter_emails_intro": "Les e-mails envoyés par la plateforme (comptes, alertes, newsletter) sont écrits ici. Un template désactivé refuse tout envoi ; un template système garde son slug.",
+    "@admin_newsletter_emails_intro": {
+        "description": "admin_newsletter.emails.intro"
+    },
+    "admin_newsletter_emails_new": "Nouveau template",
+    "@admin_newsletter_emails_new": {
+        "description": "admin_newsletter.emails.new"
+    },
+    "admin_newsletter_emails_open_settings": "Ouvrir les paramètres",
+    "@admin_newsletter_emails_open_settings": {
+        "description": "admin_newsletter.emails.open_settings"
+    },
+    "admin_newsletter_emails_outbox_failed": "{count, plural, =1{dont {count} abandonné après plusieurs essais} other{dont {count} abandonnés après plusieurs essais}}",
+    "@admin_newsletter_emails_outbox_failed": {
+        "description": "admin_newsletter.emails.outbox_failed",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_newsletter_emails_pane_edit": "Édition",
+    "@admin_newsletter_emails_pane_edit": {
+        "description": "admin_newsletter.emails.pane_edit"
+    },
+    "admin_newsletter_emails_panes": "Volet de la modale",
+    "@admin_newsletter_emails_panes": {
+        "description": "admin_newsletter.emails.panes"
+    },
+    "admin_newsletter_emails_search_placeholder": "Nom ou slug…",
+    "@admin_newsletter_emails_search_placeholder": {
+        "description": "admin_newsletter.emails.search_placeholder"
+    },
+    "admin_newsletter_emails_smtp_help": "Le serveur SMTP se règle dans Paramètres (superadmin). Sans SMTP, les e-mails attendent dans la boîte d’envoi.",
+    "@admin_newsletter_emails_smtp_help": {
+        "description": "admin_newsletter.emails.smtp_help"
+    },
+    "admin_newsletter_emails_state_active": "Actifs",
+    "@admin_newsletter_emails_state_active": {
+        "description": "admin_newsletter.emails.state_active"
+    },
+    "admin_newsletter_emails_table_caption": "Templates e-mails, par ordre alphabétique",
+    "@admin_newsletter_emails_table_caption": {
+        "description": "admin_newsletter.emails.table_caption"
+    },
+    "admin_newsletter_emails_test_help": "Dépose la version en cours d’édition dans la boîte d’envoi, avec des données fictives ; elle part dans la minute.",
+    "@admin_newsletter_emails_test_help": {
+        "description": "admin_newsletter.emails.test.help"
+    },
+    "admin_newsletter_emails_test_throttled": "Trop de tests : réessayez dans une minute.",
+    "@admin_newsletter_emails_test_throttled": {
+        "description": "admin_newsletter.emails.test.throttled"
+    },
+    "admin_newsletter_emails_toasts_activated": "Template activé.",
+    "@admin_newsletter_emails_toasts_activated": {
+        "description": "admin_newsletter.emails.toasts.activated"
+    },
+    "admin_newsletter_emails_toasts_deactivated": "Template désactivé.",
+    "@admin_newsletter_emails_toasts_deactivated": {
+        "description": "admin_newsletter.emails.toasts.deactivated"
+    },
+    "admin_newsletter_emails_toasts_deleted": "Template supprimé.",
+    "@admin_newsletter_emails_toasts_deleted": {
+        "description": "admin_newsletter.emails.toasts.deleted"
+    },
+    "admin_newsletter_emails_toasts_duplicated": "Copie créée, désactivée.",
+    "@admin_newsletter_emails_toasts_duplicated": {
+        "description": "admin_newsletter.emails.toasts.duplicated"
+    },
+    "admin_newsletter_emails_toasts_saved": "Template enregistré.",
+    "@admin_newsletter_emails_toasts_saved": {
+        "description": "admin_newsletter.emails.toasts.saved"
+    },
+    "admin_newsletter_emails_toasts_test_queued": "Test mis en file d’envoi : il part dans la minute.",
+    "@admin_newsletter_emails_toasts_test_queued": {
+        "description": "admin_newsletter.emails.toasts.test_queued"
+    },
+    "admin_newsletter_emails_unknown_variables": "Variables sans valeur d’exemple : {list}. Elles resteront visibles dans le message si le code ne les fournit pas.",
+    "@admin_newsletter_emails_unknown_variables": {
+        "description": "admin_newsletter.emails.unknown_variables",
+        "placeholders": {
+            "list": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_emails_variable_sample": "Exemple : {value}",
+    "@admin_newsletter_emails_variable_sample": {
+        "description": "admin_newsletter.emails.variable_sample",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_errors_already_subscribed": "Cette adresse est déjà inscrite.",
+    "@admin_newsletter_errors_already_subscribed": {
+        "description": "admin_newsletter.errors.already_subscribed"
+    },
+    "admin_newsletter_errors_body_empty": "Le corps du message est vide.",
+    "@admin_newsletter_errors_body_empty": {
+        "description": "admin_newsletter.errors.body_empty"
+    },
+    "admin_newsletter_errors_body_invalid": "Le corps du message doit contenir au moins {min} caractères.",
+    "@admin_newsletter_errors_body_invalid": {
+        "description": "admin_newsletter.errors.body_invalid",
+        "placeholders": {
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_errors_campaign_locked": "Cette campagne n’est plus modifiable.",
+    "@admin_newsletter_errors_campaign_locked": {
+        "description": "admin_newsletter.errors.campaign_locked"
+    },
+    "admin_newsletter_errors_campaign_state": "Action impossible dans l’état actuel de la campagne.",
+    "@admin_newsletter_errors_campaign_state": {
+        "description": "admin_newsletter.errors.campaign_state"
+    },
+    "admin_newsletter_errors_consent_required": "Attestez que les personnes importées ont donné leur consentement.",
+    "@admin_newsletter_errors_consent_required": {
+        "description": "admin_newsletter.errors.consent_required"
+    },
+    "admin_newsletter_errors_import_too_long": "Le fichier dépasse {max} lignes : découpez-le.",
+    "@admin_newsletter_errors_import_too_long": {
+        "description": "admin_newsletter.errors.import_too_long",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_errors_not_pending": "Seule une inscription en attente de confirmation peut être relancée.",
+    "@admin_newsletter_errors_not_pending": {
+        "description": "admin_newsletter.errors.not_pending"
+    },
+    "admin_newsletter_errors_scheduled_past": "La date d’envoi doit être dans le futur.",
+    "@admin_newsletter_errors_scheduled_past": {
+        "description": "admin_newsletter.errors.scheduled_past"
+    },
+    "admin_newsletter_errors_segment_empty": "Aucun·e abonné·e actif·ve ne correspond à ce segment : élargissez les critères.",
+    "@admin_newsletter_errors_segment_empty": {
+        "description": "admin_newsletter.errors.segment_empty"
+    },
+    "admin_newsletter_errors_slug_invalid": "Slug invalide : minuscules, chiffres et tirets uniquement (ex. reinitialisation-mot-de-passe).",
+    "@admin_newsletter_errors_slug_invalid": {
+        "description": "admin_newsletter.errors.slug_invalid"
+    },
+    "admin_newsletter_errors_slug_mismatch": "Le slug saisi ne correspond pas : la suppression est annulée.",
+    "@admin_newsletter_errors_slug_mismatch": {
+        "description": "admin_newsletter.errors.slug_mismatch"
+    },
+    "admin_newsletter_errors_subject_invalid": "Indiquez un objet ({min} à {max} caractères).",
+    "@admin_newsletter_errors_subject_invalid": {
+        "description": "admin_newsletter.errors.subject_invalid",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_errors_test_address_invalid": "Adresse e-mail de test invalide.",
+    "@admin_newsletter_errors_test_address_invalid": {
+        "description": "admin_newsletter.errors.test_address_invalid"
+    },
+    "admin_newsletter_errors_test_quota": "Limite quotidienne d’envois de test atteinte : réessayez demain.",
+    "@admin_newsletter_errors_test_quota": {
+        "description": "admin_newsletter.errors.test_quota"
+    },
+    "admin_newsletter_errors_testimonial_consent": "Un témoignage n’est inséré qu’anonymisé et avec le consentement de la personne : cochez la case.",
+    "@admin_newsletter_errors_testimonial_consent": {
+        "description": "admin_newsletter.errors.testimonial_consent"
+    },
+    "admin_newsletter_errors_variables_unknown": "Variable(s) non autorisée(s) : {list}. Utilisez seulement les variables proposées.",
+    "@admin_newsletter_errors_variables_unknown": {
+        "description": "admin_newsletter.errors.variables_unknown",
+        "placeholders": {
+            "list": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_kpi_pending_sub": "{count, plural, =0{Aucune confirmation en attente} =1{{count} confirmation en attente} other{{count} confirmations en attente}}",
+    "@admin_newsletter_kpi_pending_sub": {
+        "description": "admin_newsletter.kpi.pending_sub",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_newsletter_render_first_name_fallback": "ami·e",
+    "@admin_newsletter_render_first_name_fallback": {
+        "description": "admin_newsletter.render.first_name_fallback"
+    },
+    "admin_newsletter_save": "Enregistrer",
+    "@admin_newsletter_save": {
+        "description": "admin_newsletter.save"
+    },
+    "admin_newsletter_stats_delivered": "Délivrés",
+    "@admin_newsletter_stats_delivered": {
+        "description": "admin_newsletter.stats.delivered"
+    },
+    "admin_newsletter_stats_leaves": "Désinscriptions",
+    "@admin_newsletter_stats_leaves": {
+        "description": "admin_newsletter.stats.leaves"
+    },
+    "admin_newsletter_stats_month": "Mois",
+    "@admin_newsletter_stats_month": {
+        "description": "admin_newsletter.stats.month"
+    },
+    "admin_newsletter_stats_months_caption": "Inscriptions et désinscriptions par mois sur les 12 derniers mois",
+    "@admin_newsletter_stats_months_caption": {
+        "description": "admin_newsletter.stats.months_caption"
+    },
+    "admin_newsletter_stats_off_target": "sous la cible",
+    "@admin_newsletter_stats_off_target": {
+        "description": "admin_newsletter.stats.off_target"
+    },
+    "admin_newsletter_stats_signups": "Inscriptions",
+    "@admin_newsletter_stats_signups": {
+        "description": "admin_newsletter.stats.signups"
+    },
+    "admin_newsletter_subscribers_all_interests": "Tous les centres d’intérêt",
+    "@admin_newsletter_subscribers_all_interests": {
+        "description": "admin_newsletter.subscribers.all_interests"
+    },
+    "admin_newsletter_subscribers_all_statuses": "Tous les statuts",
+    "@admin_newsletter_subscribers_all_statuses": {
+        "description": "admin_newsletter.subscribers.all_statuses"
+    },
+    "admin_newsletter_subscribers_all_tags": "Tous les tags",
+    "@admin_newsletter_subscribers_all_tags": {
+        "description": "admin_newsletter.subscribers.all_tags"
+    },
+    "admin_newsletter_subscribers_attestation": "J’atteste que ces personnes ont donné leur consentement pour recevoir la newsletter.",
+    "@admin_newsletter_subscribers_attestation": {
+        "description": "admin_newsletter.subscribers.attestation"
+    },
+    "admin_newsletter_subscribers_bulk_tag": "Ajouter le tag « {tag} »",
+    "@admin_newsletter_subscribers_bulk_tag": {
+        "description": "admin_newsletter.subscribers.bulk_tag",
+        "placeholders": {
+            "tag": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_subscribers_confirm_delete": "Supprimer définitivement cette personne et son historique d’envois ? Cette action est irréversible.",
+    "@admin_newsletter_subscribers_confirm_delete": {
+        "description": "admin_newsletter.subscribers.confirm_delete"
+    },
+    "admin_newsletter_subscribers_confirm_unsubscribe": "Désabonner cette personne ? Elle ne recevra plus la newsletter.",
+    "@admin_newsletter_subscribers_confirm_unsubscribe": {
+        "description": "admin_newsletter.subscribers.confirm_unsubscribe"
+    },
+    "admin_newsletter_subscribers_confirmed_at": "Confirmation",
+    "@admin_newsletter_subscribers_confirmed_at": {
+        "description": "admin_newsletter.subscribers.confirmed_at"
+    },
+    "admin_newsletter_subscribers_csv_example_0": "exemple@mail.bj",
+    "@admin_newsletter_subscribers_csv_example_0": {
+        "description": "admin_newsletter.subscribers.csv_example.0"
+    },
+    "admin_newsletter_subscribers_csv_example_1": "Prénom NOM",
+    "@admin_newsletter_subscribers_csv_example_1": {
+        "description": "admin_newsletter.subscribers.csv_example.1"
+    },
+    "admin_newsletter_subscribers_csv_example_2": "partenaire",
+    "@admin_newsletter_subscribers_csv_example_2": {
+        "description": "admin_newsletter.subscribers.csv_example.2"
+    },
+    "admin_newsletter_subscribers_csv_example_3": "Santé",
+    "@admin_newsletter_subscribers_csv_example_3": {
+        "description": "admin_newsletter.subscribers.csv_example.3"
+    },
+    "admin_newsletter_subscribers_csv_headers_0": "E-mail",
+    "@admin_newsletter_subscribers_csv_headers_0": {
+        "description": "admin_newsletter.subscribers.csv_headers.0"
+    },
+    "admin_newsletter_subscribers_csv_headers_1": "Nom",
+    "@admin_newsletter_subscribers_csv_headers_1": {
+        "description": "admin_newsletter.subscribers.csv_headers.1"
+    },
+    "admin_newsletter_subscribers_csv_headers_2": "Tags",
+    "@admin_newsletter_subscribers_csv_headers_2": {
+        "description": "admin_newsletter.subscribers.csv_headers.2"
+    },
+    "admin_newsletter_subscribers_csv_headers_3": "Centres d’intérêt",
+    "@admin_newsletter_subscribers_csv_headers_3": {
+        "description": "admin_newsletter.subscribers.csv_headers.3"
+    },
+    "admin_newsletter_subscribers_import": "Importer",
+    "@admin_newsletter_subscribers_import": {
+        "description": "admin_newsletter.subscribers.import"
+    },
+    "admin_newsletter_subscribers_import_file": "Fichier CSV",
+    "@admin_newsletter_subscribers_import_file": {
+        "description": "admin_newsletter.subscribers.import_file"
+    },
+    "admin_newsletter_subscribers_import_report": "Import terminé : {imported} ajouté·es, {duplicates} déjà inscrit·es, {invalid} ligne(s) invalide(s).",
+    "@admin_newsletter_subscribers_import_report": {
+        "description": "admin_newsletter.subscribers.import_report",
+        "placeholders": {
+            "duplicates": {
+                "type": "String"
+            },
+            "imported": {
+                "type": "String"
+            },
+            "invalid": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_subscribers_import_submit": "Importer",
+    "@admin_newsletter_subscribers_import_submit": {
+        "description": "admin_newsletter.subscribers.import_submit"
+    },
+    "admin_newsletter_subscribers_import_tag": "Tag ajouté à toutes les personnes importées",
+    "@admin_newsletter_subscribers_import_tag": {
+        "description": "admin_newsletter.subscribers.import_tag"
+    },
+    "admin_newsletter_subscribers_no_tag": "Aucun",
+    "@admin_newsletter_subscribers_no_tag": {
+        "description": "admin_newsletter.subscribers.no_tag"
+    },
+    "admin_newsletter_subscribers_optin": "Envoyer un e-mail de confirmation (double opt-in, recommandé). Sinon, les personnes sont actives tout de suite.",
+    "@admin_newsletter_subscribers_optin": {
+        "description": "admin_newsletter.subscribers.optin"
+    },
+    "admin_newsletter_subscribers_search_placeholder": "E-mail ou nom…",
+    "@admin_newsletter_subscribers_search_placeholder": {
+        "description": "admin_newsletter.subscribers.search_placeholder"
+    },
+    "admin_newsletter_subscribers_select": "Sélectionner {name}",
+    "@admin_newsletter_subscribers_select": {
+        "description": "admin_newsletter.subscribers.select",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_subscribers_select_column": "Sélection",
+    "@admin_newsletter_subscribers_select_column": {
+        "description": "admin_newsletter.subscribers.select_column"
+    },
+    "admin_newsletter_subscribers_table_caption": "Abonné·es à la newsletter, les plus récent·es d’abord",
+    "@admin_newsletter_subscribers_table_caption": {
+        "description": "admin_newsletter.subscribers.table_caption"
+    },
+    "admin_newsletter_subscribers_template": "Télécharger le modèle",
+    "@admin_newsletter_subscribers_template": {
+        "description": "admin_newsletter.subscribers.template"
+    },
+    "admin_newsletter_subscribers_uploading": "Téléversement…",
+    "@admin_newsletter_subscribers_uploading": {
+        "description": "admin_newsletter.subscribers.uploading"
+    },
+    "admin_newsletter_view": "Voir",
+    "@admin_newsletter_view": {
+        "description": "admin_newsletter.view"
+    },
     "admin_search_alert_title": "Alerte n° {id} · {type}",
     "@admin_search_alert_title": {
         "description": "admin_search.alert_title",

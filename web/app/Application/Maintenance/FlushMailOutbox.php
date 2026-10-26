@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Maintenance;
 
+use App\Application\Newsletter\Campaigns\BounceRecorder;
 use App\Enums\MailTransport;
 use App\Models\MailLog;
 use App\Models\MailOutbox;
@@ -73,6 +74,13 @@ final class FlushMailOutbox
 
     private function deliver(MailOutbox $mail): bool
     {
+        // Campagne : une personne désabonnée (ou suspendue) depuis le dépôt ne reçoit plus rien.
+        if ($mail->newsletter_recipient_id !== null && ! $this->recipientStillReachable((int) $mail->newsletter_recipient_id)) {
+            $mail->forceFill(['attempts' => MailOutbox::MAX_ATTEMPTS, 'last_error' => 'exclu'])->save();
+
+            return false;
+        }
+
         try {
             Mail::html((string) $mail->html, function (Message $message) use ($mail): void {
                 $message->to($mail->to)
@@ -86,15 +94,28 @@ final class FlushMailOutbox
                 if ($mail->text !== null && $mail->text !== '') {
                     $message->text($mail->text);
                 }
+
+                foreach ((array) $mail->headers as $name => $value) {
+                    $message->getHeaders()->addTextHeader((string) $name, (string) $value);
+                }
             });
         } catch (Throwable $exception) {
-            $mail->markFailed($exception->getMessage());
-            $this->trace($mail, false, $exception->getMessage());
+            $newsletter = $mail->newsletter_recipient_id !== null;
+            // Campagne : jamais le message brut du serveur (il cite l'adresse), seulement un code.
+            $error = $newsletter ? BounceRecorder::errorCode($exception) : $exception->getMessage();
+            $mail->markFailed($error);
+            $this->trace($mail, false, $error);
+
+            if ($newsletter && BounceRecorder::isPermanent($exception)) {
+                app(BounceRecorder::class)->record((int) $mail->newsletter_recipient_id, $error);
+                // Adresse inexistante : inutile de réessayer.
+                $mail->forceFill(['attempts' => MailOutbox::MAX_ATTEMPTS])->save();
+            }
 
             Log::warning('Boîte d’envoi : échec d’envoi.', [
                 'mail_outbox_id' => $mail->getKey(),
                 'attempts' => $mail->attempts,
-                'error' => $exception->getMessage(),
+                'error' => $error,
             ]);
 
             return false;
@@ -106,11 +127,20 @@ final class FlushMailOutbox
         return true;
     }
 
+    private function recipientStillReachable(int $recipientId): bool
+    {
+        $subscriberId = \App\Models\NewsletterCampaignRecipient::query()->whereKey($recipientId)->value('subscriber_id');
+
+        return $subscriberId !== null && \App\Models\NewsletterSubscriber::query()->deliverable()->whereKey($subscriberId)->exists();
+    }
+
     private function trace(MailOutbox $mail, bool $ok, ?string $error = null): void
     {
         MailLog::query()->create([
-            'to' => $mail->to,
-            'subject' => mb_substr((string) $mail->subject, 0, 160),
+            // Une campagne ne laisse jamais l'adresse du destinataire dans les journaux.
+            'to' => $mail->newsletter_recipient_id !== null ? BounceRecorder::maskAddress((string) $mail->to) : $mail->to,
+            // L'objet d'une campagne est personnalisé (prénom) : il n'est pas conservé dans les journaux.
+            'subject' => $mail->newsletter_recipient_id !== null ? '[newsletter]' : mb_substr((string) $mail->subject, 0, 160),
             'template_slug' => $mail->template_slug,
             'context' => self::LOG_CONTEXT,
             'transport' => MailTransport::Smtp,

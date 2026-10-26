@@ -17,6 +17,7 @@ use App\Livewire\Admin\Ccc\Index as CccIndex;
 use App\Livewire\Admin\Content\Index as ContentIndex;
 use App\Livewire\Admin\Dashboard\Index as DashboardIndex;
 use App\Livewire\Admin\Directory\Index as DirectoryIndex;
+use App\Livewire\Admin\Emails\Index as EmailsIndex;
 use App\Livewire\Admin\Followups\Index as FollowupsIndex;
 use App\Livewire\Admin\Forms\Index as FormsIndex;
 use App\Livewire\Admin\Gateways\Index as GatewaysIndex;
@@ -25,6 +26,7 @@ use App\Livewire\Admin\Journal\Index as JournalIndex;
 use App\Livewire\Admin\Maintenance\Index as MaintenanceIndex;
 use App\Livewire\Admin\Moderation\Index as ModerationIndex;
 use App\Livewire\Admin\Network\Index as NetworkIndex;
+use App\Livewire\Admin\Newsletter\Index as NewsletterIndex;
 use App\Livewire\Admin\Registers\Index as RegistersIndex;
 use App\Livewire\Admin\Registrations\Index as RegistrationsIndex;
 use App\Livewire\Admin\Reports\Index as ReportsIndex;
@@ -46,9 +48,7 @@ $screens = [
     // Pilotage
     // Gestion des données
     // Plateforme
-    ['/newsletter', 'newsletter', 'Newsletter', 'admin/newsletter.php'],
     // Système
-    ['/emails', 'emails', 'Templates e-mails', 'admin/emails.php'],
 ];
 
 // P12-09 : un écran provisoire exige déjà la permission de son entrée de menu (AdminNavigation::GROUPS) ; le modérateur
@@ -151,3 +151,10 @@ Route::get('/synchronisation', SyncIndex::class)->middleware('can:sync.manage')-
 Route::get('/mises-a-jour', UpdatesIndex::class)->middleware('can:updates.view')->name('mises-a-jour');
 // Paramètres : lecture `settings.view` (admin, superadmin) ; écriture `settings.manage` et SMTP (superadmin), rejouées par le composant.
 Route::get('/parametres', SettingsIndex::class)->middleware('can:settings.view')->name('parametres');
+
+// --- Communication (P14-01, P14-02) : un écran = une permission (menu AdminNavigation) ; chaque onglet et chaque action rejouent
+// la permission et la policy de leur contenu dans le composant. Newsletter : `newsletter.manage_campaigns` (abonné·es :
+// `newsletter.manage_subscribers`, programmer ou lancer : `newsletter.send`). Templates e-mails : `email_templates.manage`
+// (suppression d'un template système : `email_templates.delete_system`).
+Route::get('/newsletter', NewsletterIndex::class)->middleware('can:newsletter.manage_campaigns')->name('newsletter');
+Route::get('/emails', EmailsIndex::class)->middleware('can:email_templates.manage')->name('emails');

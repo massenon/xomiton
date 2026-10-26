@@ -25,6 +25,14 @@ class MailOutbox extends Model
     protected $table = 'mail_outbox';
 
     /**
+     * Jamais sérialisés (JSON, Livewire, journaux) : en-têtes et corps portent le lien de désinscription, le pixel
+     * d'ouverture et les liens de suivi signés de la personne.
+     *
+     * @var list<string>
+     */
+    protected $hidden = ['headers', 'html', 'text'];
+
+    /**
      * @var list<string>
      */
     protected $fillable = [
@@ -36,6 +44,8 @@ class MailOutbox extends Model
         'html',
         'text',
         'template_slug',
+        'headers',
+        'newsletter_recipient_id',
         'attempts',
         'sent_at',
         'last_error',
@@ -47,6 +57,7 @@ class MailOutbox extends Model
     protected function casts(): array
     {
         return [
+            'headers' => 'array',
             'attempts' => 'integer',
             'sent_at' => 'datetime',
         ];
