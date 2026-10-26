@@ -6,7 +6,6 @@ import '../../../app/theme/xm_tokens.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/ui/xm_widgets.dart';
-import '../../auth/application/session_controller.dart';
 
 /// Barre d'onglets : Accueil · Fil · SOS · Messages · Profil (Q38, libellé
 /// « SOS »). Le SOS garde l'accent rouge du design system.
@@ -113,60 +112,6 @@ class ComingSoonPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-/// Onglet Profil (P15-07 à venir) : porte pour l'instant la déconnexion.
-class ProfileTabPage extends ConsumerWidget {
-  const ProfileTabPage({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(sessionProvider).user;
-    return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.all(XmSpace.gutter),
-        children: [
-          Text(
-            user?.pseudo ?? context.t('menus_mobile_profile'),
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(height: XmSpace.s3),
-          for (final e in const [
-            (Icons.flag_outlined, '/signalements', 'mobile_reports_mine_title'),
-            (Icons.search, '/suivi', 'alerts_report_tracking_title'),
-            (Icons.groups_outlined, '/groupes', 'community_groups_title'),
-            (Icons.event_outlined, '/evenements', 'community_events_title'),
-            (Icons.smart_toy_outlined, '/assistant', 'assistant_page_title'),
-            (
-              Icons.phone_in_talk_outlined,
-              '/urgences',
-              'alerts_emergency_title',
-            ),
-          ])
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Icon(e.$1),
-              title: Text(context.t(e.$3)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.push(e.$2),
-            ),
-          const SizedBox(height: XmSpace.s5),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.logout),
-            label: Text(context.t('buttons_logout')),
-            onPressed: () async {
-              await ref.read(sessionProvider.notifier).signOut();
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(context.t('auth_logout_done'))),
-                );
-              }
-            },
-          ),
-        ],
       ),
     );
   }

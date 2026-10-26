@@ -34,8 +34,9 @@ class RequestHeadersInterceptor extends Interceptor {
       options.headers['Authorization'] = 'Bearer $t';
     }
     final d = deviceId?.call();
-    if (d != null && d.isNotEmpty)
+    if (d != null && d.isNotEmpty) {
       options.headers.putIfAbsent('X-Device-Id', () => d);
+    }
     if (needsIdempotencyKey(options.method, options.path)) {
       options.headers.putIfAbsent('Idempotency-Key', () => _uuid.v4());
     }

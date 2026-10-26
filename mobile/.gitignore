@@ -55,3 +55,7 @@ android/local.properties
 *.hive
 *.lock.hive
 coverage/
+
+# Configuration Firebase : jamais dans le dépôt (voir README.md)
+**/google-services.json
+**/GoogleService-Info.plist

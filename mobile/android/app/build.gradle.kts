@@ -47,3 +47,9 @@ kotlin {
 flutter {
     source = "../.."
 }
+
+// Firebase : google-services.json n'est PAS dans le dépôt (voir mobile/README.md).
+// Sans lui, le plugin n'est pas appliqué et l'application démarre avec le push désactivé.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}

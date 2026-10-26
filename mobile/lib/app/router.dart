@@ -20,6 +20,10 @@ import '../features/home/presentation/dashboard_page.dart';
 import '../features/home/presentation/notifications_page.dart';
 import '../features/home/presentation/resources_page.dart';
 import '../features/home/presentation/themes_pages.dart';
+import '../features/profile/presentation/profile_page.dart';
+import '../features/profile/presentation/progressive_page.dart';
+import '../features/profile/presentation/security_page.dart';
+import '../features/profile/presentation/settings_page.dart';
 import '../features/shell/presentation/shell_pages.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -55,13 +59,15 @@ String? appRedirect({
   if (authenticated) {
     if (loc == '/alerte-sos') return '/sos';
     if (_guestOnly.contains(loc)) return '/home';
-    if (loc == '/otp' && uri.queryParameters['purpose'] != 'signup')
+    if (loc == '/otp' && uri.queryParameters['purpose'] != 'signup') {
       return '/home';
+    }
     return null;
   }
   if (loc == '/splash') return onboardingSeen ? '/login' : null;
-  if (_guestOnly.contains(loc) || loc == '/signup' || loc == '/otp')
+  if (_guestOnly.contains(loc) || loc == '/signup' || loc == '/otp') {
     return null;
+  }
   if (publicPrefixes.any(loc.startsWith)) return null;
   return onboardingSeen ? '/login' : '/splash';
 }
@@ -229,6 +235,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: rootNavigatorKey,
         builder: (_, _) => const AssistantPage(),
       ),
+      for (final r in <(String, Widget)>[
+        ('/mon-profil', const MyProfilePage()),
+        ('/profil-progressif', const ProgressiveProfilePage()),
+        ('/parametres', const SettingsPage()),
+        ('/securite', const SecurityPage()),
+        ('/appareils', const DevicesPage()),
+      ])
+        GoRoute(
+          path: r.$1,
+          parentNavigatorKey: rootNavigatorKey,
+          builder: (_, _) => r.$2,
+        ),
       GoRoute(
         path: '/soon/:page',
         parentNavigatorKey: rootNavigatorKey,

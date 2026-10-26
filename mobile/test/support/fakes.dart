@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:xomiton/core/platform/platform_services.dart';
+import 'package:xomiton/core/push/push_service.dart';
 
 class FakeLocation implements LocationService {
   FakeLocation([this.point = const GeoPoint(6.3703, 2.3912, 12.4)]);
@@ -87,4 +90,35 @@ Future<void> settle(WidgetTester tester, [int times = 6]) async {
 
 Future<void> disposeApp(WidgetTester tester) async {
   await tester.pumpWidget(const SizedBox());
+}
+
+/// Service push de test : permission et jeton programmables.
+class FakePush implements PushService {
+  FakePush({this.grant = true, this.fcmToken = 'fcm-token-1', this.initial});
+  bool grant;
+  String? fcmToken;
+  PushPayload? initial;
+  int permissionAsks = 0;
+  bool tokenDeleted = false;
+  final refresh = StreamController<String>.broadcast();
+  final opened = StreamController<PushPayload>.broadcast();
+
+  @override
+  bool get available => true;
+  @override
+  Future<bool> requestPermission() async {
+    permissionAsks++;
+    return grant;
+  }
+
+  @override
+  Future<String?> token() async => fcmToken;
+  @override
+  Stream<String> get onTokenRefresh => refresh.stream;
+  @override
+  Stream<PushPayload> get onOpen => opened.stream;
+  @override
+  Future<PushPayload?> initialPayload() async => initial;
+  @override
+  Future<void> deleteToken() async => tokenDeleted = true;
 }

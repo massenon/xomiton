@@ -8,6 +8,9 @@ import '../core/l10n/app_strings.dart';
 import '../core/network/app_toast.dart';
 import '../core/outbox/outbox.dart';
 import '../core/providers/core_providers.dart';
+import '../core/push/push_runner.dart';
+import '../features/profile/application/settings_providers.dart';
+import '../features/security/presentation/pin_widgets.dart';
 import 'router.dart';
 import 'theme/xm_theme.dart';
 
@@ -54,6 +57,7 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
     super.initState();
     _sub = ref.read(toastBusProvider).stream.listen(_show);
     ref.read(outboxRunnerProvider);
+    ref.read(pushRunnerProvider);
     _outSub = ref.read(outboxProvider).results.listen(_outboxDone);
   }
 
@@ -85,7 +89,8 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
       routerConfig: ref.watch(routerProvider),
       theme: buildXmTheme(Brightness.light),
       darkTheme: buildXmTheme(Brightness.dark),
-      themeMode: ThemeMode.system,
+      themeMode: ref.watch(themeModeProvider),
+      builder: (context, child) => PinGate(child: child ?? const SizedBox()),
       locale: AppStrings.locale,
       supportedLocales: const [AppStrings.locale],
       localizationsDelegates: [

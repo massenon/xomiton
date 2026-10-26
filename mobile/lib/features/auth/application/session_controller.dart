@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/core_providers.dart';
+import '../../../core/push/push_registrar.dart';
+import '../../../core/push/push_service.dart';
+import '../../security/application/pin_lock.dart';
 import '../data/app_user.dart';
 
 /// Session : jeton dans le stockage sécurisé, utilisateur en copie Hive chiffrée.
@@ -65,6 +68,10 @@ class SessionController extends Notifier<SessionState> {
   /// tout ce qui est propre au compte.
   Future<void> signOut() async {
     if (state.authenticated) {
+      // Abonnement push et appareil retirés tant que le jeton d'accès existe.
+      try {
+        await ref.read(pushRegistrarProvider).unregister();
+      } catch (_) {}
       try {
         await ref.read(dioProvider).post<dynamic>('auth/logout');
       } catch (_) {}
@@ -72,10 +79,20 @@ class SessionController extends Notifier<SessionState> {
     await expire();
   }
 
-  /// Session fermée localement (401 ou déconnexion) : jeton et données privées effacés.
+  /// Session fermée localement (401, déconnexion, PIN épuisé) : tout le
+  /// stockage privé part — jeton, appareil reconnu (le prochain accès
+  /// redemande un code OTP), Hive privé, code PIN et compteur, jeton push,
+  /// identifiant d'appareil et préférences liées au compte.
   Future<void> expire() async {
-    await ref.read(tokenStoreProvider).clear();
+    final tokens = ref.read(tokenStoreProvider);
+    await tokens.clear();
+    await tokens.clearDeviceToken();
     await ref.read(localDbProvider).clearPrivate();
+    await ref.read(pinServiceProvider).clear();
+    await ref.read(pushRegistrarProvider).wipeLocal();
+    final prefs = ref.read(sharedPreferencesProvider);
+    await prefs.remove(kPrefMaskPreviews);
+    await prefs.remove(kPrefSounds);
     state = const SessionState.signedOut();
   }
 }

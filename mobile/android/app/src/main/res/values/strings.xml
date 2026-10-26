@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Xomiton</string>
+    <!-- Nom neutre du mode discret. -->
+    <string name="app_name_discreet">Notes</string>
+</resources>

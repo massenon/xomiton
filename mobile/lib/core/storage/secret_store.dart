@@ -39,4 +39,9 @@ abstract final class SecretKeys {
   static const token = 'sanctum_token';
   static const deviceToken = 'login_device_token';
   static const hiveKey = 'hive_encryption_key';
+
+  /// Code PIN local : enregistrement haché (sel + dérivation) et compteur
+  /// d'essais. Jamais envoyé au serveur (Q37 b).
+  static const pinRecord = 'pin_record';
+  static const pinAttempts = 'pin_attempts';
 }

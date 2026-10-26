@@ -345,7 +345,9 @@ void main() {
     await pumpHome(tester, env);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text(S.t('menus_mobile_profile'))));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(S.t('buttons_logout')));
+    await tester.tap(find.byKey(const Key('profile-logout')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('logout-confirm')));
     await tester.pumpAndSettle();
     expect(find.text(S.t('auth_login_heading')), findsOneWidget);
     expect(env.db.privateCache.get('dashboard'), isNull);
