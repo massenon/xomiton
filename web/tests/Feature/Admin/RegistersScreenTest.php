@@ -272,7 +272,8 @@ it('avertit d’un doublon suspect et d’une date ancienne sans bloquer l’enr
 
 it('modifie un dossier dans la même modale : nature immuable, notes jamais pré-remplies, vide = inchangées', function (): void {
     $this->actingAs(registersUser('admin'));
-    $case = registersCase(['code' => 'VBG-0001']);
+    // Sexe fixé : une valeur tirée au hasard égale à « homme » rendait la première sauvegarde sans effet (test instable).
+    $case = registersCase(['code' => 'VBG-0001', 'sex' => 'femme']);
 
     $component = Livewire::test(Registers::class)->call('openEdit', $case->id);
 
