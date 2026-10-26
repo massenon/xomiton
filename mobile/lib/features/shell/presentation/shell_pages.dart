@@ -19,17 +19,21 @@ class AppShell extends ConsumerWidget {
     final online = ref.watch(isOnlineProvider);
     final xm = context.xm;
     return Scaffold(
-      body: Column(children: [
-        if (!online) SafeArea(bottom: false, child: const OfflineBanner()),
-        Expanded(child: navigationShell),
-      ]),
+      body: Column(
+        children: [
+          if (!online) SafeArea(bottom: false, child: const OfflineBanner()),
+          Expanded(child: navigationShell),
+        ],
+      ),
       bottomNavigationBar: Semantics(
         container: true,
         label: context.t('mobile_nav_label'),
         child: NavigationBar(
           selectedIndex: navigationShell.currentIndex,
-          onDestinationSelected: (i) =>
-              navigationShell.goBranch(i, initialLocation: i == navigationShell.currentIndex),
+          onDestinationSelected: (i) => navigationShell.goBranch(
+            i,
+            initialLocation: i == navigationShell.currentIndex,
+          ),
           destinations: [
             NavigationDestination(
               icon: const Icon(Icons.home_outlined),
@@ -65,7 +69,11 @@ class AppShell extends ConsumerWidget {
 
 /// Écran des lots suivants (P15-04 à P15-07) : texte d'attente du catalogue.
 class ComingSoonPage extends StatelessWidget {
-  const ComingSoonPage({super.key, required this.pageKey, this.showBack = false});
+  const ComingSoonPage({
+    super.key,
+    required this.pageKey,
+    this.showBack = false,
+  });
   final String pageKey;
   final bool showBack;
 
@@ -88,12 +96,21 @@ class ComingSoonPage extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(XmSpace.s5),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              Text(context.t('common_coming_soon_title'),
-                  style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
-              const SizedBox(height: XmSpace.s3),
-              Text(context.t('common_coming_soon_text', {'page': label}), textAlign: TextAlign.center),
-            ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.t('common_coming_soon_title'),
+                  style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: XmSpace.s3),
+                Text(
+                  context.t('common_coming_soon_text', {'page': label}),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -109,20 +126,48 @@ class ProfileTabPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(sessionProvider).user;
     return SafeArea(
-      child: ListView(padding: const EdgeInsets.all(XmSpace.gutter), children: [
-        Text(user?.pseudo ?? context.t('menus_mobile_profile'), style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: XmSpace.s5),
-        OutlinedButton.icon(
-          icon: const Icon(Icons.logout),
-          label: Text(context.t('buttons_logout')),
-          onPressed: () async {
-            await ref.read(sessionProvider.notifier).signOut();
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.t('auth_logout_done'))));
-            }
-          },
-        ),
-      ]),
+      child: ListView(
+        padding: const EdgeInsets.all(XmSpace.gutter),
+        children: [
+          Text(
+            user?.pseudo ?? context.t('menus_mobile_profile'),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: XmSpace.s3),
+          for (final e in const [
+            (Icons.flag_outlined, '/signalements', 'mobile_reports_mine_title'),
+            (Icons.search, '/suivi', 'alerts_report_tracking_title'),
+            (Icons.groups_outlined, '/groupes', 'community_groups_title'),
+            (Icons.event_outlined, '/evenements', 'community_events_title'),
+            (Icons.smart_toy_outlined, '/assistant', 'assistant_page_title'),
+            (
+              Icons.phone_in_talk_outlined,
+              '/urgences',
+              'alerts_emergency_title',
+            ),
+          ])
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(e.$1),
+              title: Text(context.t(e.$3)),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(e.$2),
+            ),
+          const SizedBox(height: XmSpace.s5),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.logout),
+            label: Text(context.t('buttons_logout')),
+            onPressed: () async {
+              await ref.read(sessionProvider.notifier).signOut();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(context.t('auth_logout_done'))),
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

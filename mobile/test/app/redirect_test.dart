@@ -1,8 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:xomiton/app/router.dart';
 
-String? r(String path, {bool auth = false, bool seen = false}) =>
-    appRedirect(authenticated: auth, onboardingSeen: seen, uri: Uri.parse(path));
+String? r(String path, {bool auth = false, bool seen = false}) => appRedirect(
+  authenticated: auth,
+  onboardingSeen: seen,
+  uri: Uri.parse(path),
+);
 
 void main() {
   group('sans session', () {
@@ -19,17 +22,36 @@ void main() {
     });
 
     test('écrans d’authentification toujours ouverts', () {
-      for (final p in ['/login', '/signup', '/forgot', '/reset', '/otp?purpose=login&email=a%40b.bj']) {
+      for (final p in [
+        '/login',
+        '/signup',
+        '/forgot',
+        '/reset',
+        '/otp?purpose=login&email=a%40b.bj',
+      ]) {
         expect(r(p, seen: true), isNull, reason: p);
         expect(r(p), isNull, reason: p);
       }
     });
 
-    test('routes publiques ajoutées par un lot suivant', () {
+    test('SOS, signalement, suivi et urgences : accessibles sans compte, même avant l’onboarding', () {
+      for (final p in [
+        '/alerte-sos',
+        '/signaler',
+        '/signaler?type=need',
+        '/suivi',
+        '/urgences',
+      ]) {
+        expect(r(p), isNull, reason: p);
+        expect(r(p, seen: true), isNull, reason: p);
+      }
       expect(
-        appRedirect(authenticated: false, onboardingSeen: true, uri: Uri.parse('/urgences'), publicPrefixes: {'/urgences'}),
-        isNull,
+        r('/sos', seen: true),
+        '/alerte-sos',
+        reason: 'l’onglet SOS est réservé aux membres',
       );
+      expect(r('/messages', seen: true), '/login');
+      expect(r('/feed', seen: true), '/login');
     });
   });
 
@@ -44,6 +66,12 @@ void main() {
       expect(r('/signup', auth: true), isNull);
       expect(r('/otp?purpose=signup&email=a', auth: true), isNull);
       expect(r('/otp?purpose=login&email=a', auth: true), '/home');
+    });
+
+    test('l’écran SOS plein devient l’onglet SOS', () {
+      expect(r('/alerte-sos', auth: true), '/sos');
+      expect(r('/signaler', auth: true), isNull);
+      expect(r('/sos', auth: true), isNull);
     });
 
     test('le reste est accessible', () {

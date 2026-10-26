@@ -17,7 +17,11 @@ import 'package:xomiton/features/home/application/home_providers.dart';
 
 typedef FakeHandler = FutureOr<ResponseBody> Function(RequestOptions o);
 
-ResponseBody jsonBody(int status, Object? body, {Map<String, String> headers = const {}}) {
+ResponseBody jsonBody(
+  int status,
+  Object? body, {
+  Map<String, String> headers = const {},
+}) {
   return ResponseBody.fromString(
     jsonEncode(body),
     status,
@@ -37,14 +41,18 @@ class FakeApi implements HttpClientAdapter {
   final Map<String, FakeHandler> routes;
   final List<RequestOptions> requests = [];
 
-  String _key(RequestOptions o) => '${o.method} ${o.path.replaceFirst(RegExp(r'^/+'), '')}';
+  String _key(RequestOptions o) =>
+      '${o.method} ${o.path.replaceFirst(RegExp(r'^/+'), '')}';
 
   List<RequestOptions> calls(String route) =>
       requests.where((r) => _key(r) == route).toList();
 
   @override
   Future<ResponseBody> fetch(
-      RequestOptions options, Stream<Uint8List>? requestStream, Future<void>? cancelFuture) async {
+    RequestOptions options,
+    Stream<Uint8List>? requestStream,
+    Future<void>? cancelFuture,
+  ) async {
     requests.add(options);
     final h = routes[_key(options)];
     if (h == null) {
@@ -62,17 +70,16 @@ Map<String, dynamic> userJson({
   bool emailVerified = true,
   int completion = 43,
   bool pending = false,
-}) =>
-    {
-      'id': 12,
-      'pseudo': 'Awa_S',
-      'role': role,
-      'status': 'actif',
-      'email': 'awa@exemple.bj',
-      'email_verified': emailVerified,
-      'pending_validation': pending,
-      'profile': {'completion': completion},
-    };
+}) => {
+  'id': 12,
+  'pseudo': 'Awa_S',
+  'role': role,
+  'status': 'actif',
+  'email': 'awa@exemple.bj',
+  'email_verified': emailVerified,
+  'pending_validation': pending,
+  'profile': {'completion': completion},
+};
 
 AppStrings loadStrings() =>
     AppStrings.fromArb(File('lib/l10n/app_fr.arb').readAsStringSync());
@@ -85,6 +92,7 @@ class TestEnv {
     this.cachedUser,
     this.online = true,
     this.unread = 0,
+    this.extra = const [],
   });
 
   final FakeApi api;
@@ -93,25 +101,30 @@ class TestEnv {
   final Map<String, dynamic>? cachedUser;
   final bool online;
   final int unread;
+  final List<Override> extra;
 
   final secrets = MemorySecretStore();
   final db = LocalDb.memory();
   late final ToastLog toasts;
 
   List<Override> overrides(SharedPreferences prefs) => [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-        secretStoreProvider.overrideWithValue(secrets),
-        localDbProvider.overrideWithValue(db),
-        tokenStoreProvider.overrideWithValue(TokenStore(secrets, initial: token)),
-        httpAdapterProvider.overrideWithValue(api),
-        connectivityStreamProvider.overrideWithValue(Stream<bool>.value(online)),
-        unreadCountProvider.overrideWith((ref) => Stream.value(unread)),
-      ];
+    sharedPreferencesProvider.overrideWithValue(prefs),
+    secretStoreProvider.overrideWithValue(secrets),
+    localDbProvider.overrideWithValue(db),
+    tokenStoreProvider.overrideWithValue(TokenStore(secrets, initial: token)),
+    httpAdapterProvider.overrideWithValue(api),
+    connectivityStreamProvider.overrideWithValue(Stream<bool>.value(online)),
+    unreadCountProvider.overrideWith((ref) => Stream.value(unread)),
+    outboxRetryIntervalProvider.overrideWithValue(null),
+    ...extra,
+  ];
 
   Future<Widget> app() async {
     SharedPreferences.setMockInitialValues({'onboarding_seen': seen});
     final prefs = await SharedPreferences.getInstance();
-    if (cachedUser != null) await db.session.put('user', jsonEncode(cachedUser));
+    if (cachedUser != null) {
+      await db.session.put('user', jsonEncode(cachedUser));
+    }
     return ProviderScope(
       overrides: overrides(prefs),
       child: XomitonApp(strings: loadStrings()),

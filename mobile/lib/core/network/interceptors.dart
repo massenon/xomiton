@@ -27,11 +27,15 @@ class RequestHeadersInterceptor extends Interceptor {
     options.headers.putIfAbsent('Accept', () => 'application/json');
     options.headers.putIfAbsent('Accept-Language', () => 'fr');
     final t = tokens.token;
-    if (t != null && t.isNotEmpty && !options.headers.containsKey('Authorization')) {
+    if (t != null &&
+        t.isNotEmpty &&
+        options.extra['anonymous'] != true &&
+        !options.headers.containsKey('Authorization')) {
       options.headers['Authorization'] = 'Bearer $t';
     }
     final d = deviceId?.call();
-    if (d != null && d.isNotEmpty) options.headers.putIfAbsent('X-Device-Id', () => d);
+    if (d != null && d.isNotEmpty)
+      options.headers.putIfAbsent('X-Device-Id', () => d);
     if (needsIdempotencyKey(options.method, options.path)) {
       options.headers.putIfAbsent('Idempotency-Key', () => _uuid.v4());
     }
@@ -55,10 +59,15 @@ class IdempotentReplayInterceptor extends Interceptor {
 
   static const _attemptKey = 'replay_attempt';
 
-  bool _applies(RequestOptions o) => needsIdempotencyKey(o.method, o.path);
+  /// `no_auto_replay` : corps multipart (non rejouable tel quel) — la boîte
+  /// d'envoi le reconstruit et rejoue avec la même clé.
+  bool _applies(RequestOptions o) =>
+      o.extra['no_auto_replay'] != true &&
+      needsIdempotencyKey(o.method, o.path);
 
-  Duration _delay(int attempt, int? retryAfter) =>
-      Duration(seconds: retryAfter ?? (attempt <= 1 ? 1 : (attempt * 2)).clamp(1, 8));
+  Duration _delay(int attempt, int? retryAfter) => Duration(
+    seconds: retryAfter ?? (attempt <= 1 ? 1 : (attempt * 2)).clamp(1, 8),
+  );
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
@@ -89,11 +98,15 @@ class IdempotentReplayInterceptor extends Interceptor {
     final o = err.requestOptions;
     if (!_applies(o)) return handler.next(err);
     final status = err.response?.statusCode;
-    final code = err.response?.data is Map ? (err.response!.data as Map)['code'] : null;
-    final network = err.response == null &&
+    final code = err.response?.data is Map
+        ? (err.response!.data as Map)['code']
+        : null;
+    final network =
+        err.response == null &&
         err.type != DioExceptionType.cancel &&
         err.type != DioExceptionType.badCertificate;
-    final retryable = network ||
+    final retryable =
+        network ||
         (status != null && status >= 500) ||
         (status == 429 && code == 'idempotency_in_progress');
     final attempt = (o.extra[_attemptKey] as int? ?? 0) + 1;
@@ -120,18 +133,21 @@ class ApiErrorInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.error is ApiException) return handler.next(err);
     final api = ApiException.fromResponse(err);
-    if (api.status == 401 && err.requestOptions.headers.containsKey('Authorization')) {
+    if (api.status == 401 &&
+        err.requestOptions.headers.containsKey('Authorization')) {
       toasts.emit(const SessionClosedToast());
       unawaited(onUnauthorized());
     } else if (api.status == 429 && api.code != 'idempotency_in_progress') {
       toasts.emit(RateLimitedToast(api.retryAfter ?? 60));
     }
-    handler.next(DioException(
-      requestOptions: err.requestOptions,
-      response: err.response,
-      type: err.type,
-      error: api,
-      message: api.message,
-    ));
+    handler.next(
+      DioException(
+        requestOptions: err.requestOptions,
+        response: err.response,
+        type: err.type,
+        error: api,
+        message: api.message,
+      ),
+    );
   }
 }

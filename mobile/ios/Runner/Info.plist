@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Xomiton utilise ta position, seulement quand l’application est ouverte, pour l’envoyer avec ton alerte SOS ou ton signalement si tu choisis de la partager.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Ajouter un événement auquel tu participes à ton calendrier.</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Ajouter un événement auquel tu participes à ton calendrier.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

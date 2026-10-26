@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../network/api_client.dart';
+import '../outbox/outbox.dart';
 import '../network/app_toast.dart';
 import '../storage/api_cache.dart';
 import '../storage/local_db.dart';
@@ -12,12 +15,18 @@ import '../storage/token_store.dart';
 import '../../features/auth/application/session_controller.dart';
 
 /// Initialisés dans `main()` (bootstrap) puis surchargés dans le `ProviderScope`.
-final sharedPreferencesProvider =
-    Provider<SharedPreferences>((ref) => throw UnimplementedError('sharedPreferencesProvider'));
-final localDbProvider = Provider<LocalDb>((ref) => throw UnimplementedError('localDbProvider'));
-final tokenStoreProvider =
-    Provider<TokenStore>((ref) => throw UnimplementedError('tokenStoreProvider'));
-final secretStoreProvider = Provider<SecretStore>((ref) => FlutterSecretStore());
+final sharedPreferencesProvider = Provider<SharedPreferences>(
+  (ref) => throw UnimplementedError('sharedPreferencesProvider'),
+);
+final localDbProvider = Provider<LocalDb>(
+  (ref) => throw UnimplementedError('localDbProvider'),
+);
+final tokenStoreProvider = Provider<TokenStore>(
+  (ref) => throw UnimplementedError('tokenStoreProvider'),
+);
+final secretStoreProvider = Provider<SecretStore>(
+  (ref) => FlutterSecretStore(),
+);
 
 final toastBusProvider = Provider<ToastBus>((ref) {
   final bus = ToastBus();
@@ -71,4 +80,53 @@ final connectivityProvider = StreamProvider<bool>((ref) {
   return ref.watch(connectivityStreamProvider).distinct();
 });
 
-final isOnlineProvider = Provider<bool>((ref) => ref.watch(connectivityProvider).value ?? true);
+final isOnlineProvider = Provider<bool>(
+  (ref) => ref.watch(connectivityProvider).value ?? true,
+);
+
+/// Boîte d'envoi locale (SOS, signalements, messages, publications).
+final outboxProvider = Provider<OutboxService>((ref) {
+  final svc = OutboxService(
+    dio: ref.watch(dioProvider),
+    db: ref.watch(localDbProvider),
+    ownerId: () => ref.read(sessionProvider).user?.id,
+  );
+  ref.onDispose(svc.dispose);
+  return svc;
+});
+
+/// Entrées en attente (SOS en tête) ; se met à jour à chaque changement.
+final outboxEntriesProvider = StreamProvider<List<OutboxEntry>>((ref) async* {
+  final svc = ref.watch(outboxProvider);
+  yield svc.list();
+  yield* svc.changes;
+});
+
+/// Envois aboutis depuis la boîte d'envoi (mémoire seulement).
+final outboxResultsProvider = StreamProvider<OutboxResult>(
+  (ref) => ref.watch(outboxProvider).results,
+);
+
+/// Intervalle de reprise périodique (nul dans les tests).
+final outboxRetryIntervalProvider = Provider<Duration?>(
+  (ref) => const Duration(seconds: 45),
+);
+
+/// Rejoue la boîte d'envoi : au démarrage, au retour du réseau et, tant qu'il
+/// reste des entrées, à intervalle régulier.
+final outboxRunnerProvider = Provider<void>((ref) {
+  final svc = ref.watch(outboxProvider);
+  final every = ref.watch(outboxRetryIntervalProvider);
+  void run() {
+    if (ref.read(isOnlineProvider) && svc.pending().isNotEmpty) {
+      svc.flush();
+    }
+  }
+
+  ref.listen<bool>(isOnlineProvider, (prev, now) {
+    if (now) run();
+  }, fireImmediately: true);
+  Timer? timer;
+  if (every != null) timer = Timer.periodic(every, (_) => run());
+  ref.onDispose(() => timer?.cancel());
+});

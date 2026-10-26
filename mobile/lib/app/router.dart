@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/alerts/presentation/alerts_pages.dart';
+import '../features/alerts/presentation/report_page.dart';
+import '../features/alerts/presentation/sos_page.dart';
 import '../features/auth/application/onboarding_provider.dart';
+import '../features/community/presentation/community_pages.dart';
+import '../features/community/presentation/messages_pages.dart';
+import '../features/feed/presentation/feed_pages.dart';
 import '../features/auth/application/session_controller.dart';
 import '../features/auth/data/auth_api.dart';
 import '../features/auth/presentation/login_page.dart';
@@ -18,6 +24,14 @@ import '../features/shell/presentation/shell_pages.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
+/// Parcours de sécurité accessibles SANS compte (RG-01, P15-04).
+const Set<String> kPublicPrefixes = {
+  '/alerte-sos',
+  '/signaler',
+  '/suivi',
+  '/urgences',
+};
+
 /// Écrans réservés aux personnes sans session.
 const _guestOnly = {'/splash', '/login', '/forgot', '/reset'};
 
@@ -27,22 +41,27 @@ const _guestOnly = {'/splash', '/login', '/forgot', '/reset'};
 ///   2 à 4) et l'OTP d'inscription restent ouverts, la session existant déjà
 ///   après la phase 1 ;
 /// - sans session : le carrousel d'abord (une seule fois), puis la connexion.
-///   Les écrans SOS / signalement / urgences (accessibles sans compte, RG-01)
-///   s'ajouteront à `publicPrefixes` avec le lot P15-04.
+///   Les écrans SOS / signalement / suivi / urgences restent accessibles sans
+///   compte (RG-01) : voir [kPublicPrefixes]. Le SOS d'un·e membre est l'onglet
+///   `/sos` ; sans session, `/sos` mène à l'écran plein `/alerte-sos`.
 String? appRedirect({
   required bool authenticated,
   required bool onboardingSeen,
   required Uri uri,
-  Set<String> publicPrefixes = const {},
+  Set<String> publicPrefixes = kPublicPrefixes,
 }) {
   final loc = uri.path;
+  if (!authenticated && loc == '/sos') return '/alerte-sos';
   if (authenticated) {
+    if (loc == '/alerte-sos') return '/sos';
     if (_guestOnly.contains(loc)) return '/home';
-    if (loc == '/otp' && uri.queryParameters['purpose'] != 'signup') return '/home';
+    if (loc == '/otp' && uri.queryParameters['purpose'] != 'signup')
+      return '/home';
     return null;
   }
   if (loc == '/splash') return onboardingSeen ? '/login' : null;
-  if (_guestOnly.contains(loc) || loc == '/signup' || loc == '/otp') return null;
+  if (_guestOnly.contains(loc) || loc == '/signup' || loc == '/otp')
+    return null;
   if (publicPrefixes.any(loc.startsWith)) return null;
   return onboardingSeen ? '/login' : '/splash';
 }
@@ -81,33 +100,52 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/reset',
         // La preuve de réinitialisation voyage en `extra` (jamais dans l'URL).
         redirect: (_, state) => state.extra is ResetArgs ? null : '/forgot',
-        builder: (_, state) => ResetPasswordPage(args: state.extra! as ResetArgs),
+        builder: (_, state) =>
+            ResetPasswordPage(args: state.extra! as ResetArgs),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppShell(navigationShell: shell),
         branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/home', builder: (_, _) => const DashboardPage()),
-            GoRoute(path: '/thematiques', builder: (_, _) => const ThemesPage()),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/feed', builder: (_, _) => const ComingSoonPage(pageKey: 'feed')),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/sos', builder: (_, _) => const ComingSoonPage(pageKey: 'sos')),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/messages', builder: (_, _) => const ComingSoonPage(pageKey: 'messages')),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(path: '/profile', builder: (_, _) => const ProfileTabPage()),
-          ]),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(path: '/home', builder: (_, _) => const DashboardPage()),
+              GoRoute(
+                path: '/thematiques',
+                builder: (_, _) => const ThemesPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(path: '/feed', builder: (_, _) => const FeedTabPage()),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: '/sos', builder: (_, _) => const SosPage())],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/messages',
+                builder: (_, _) => const MessagesTabPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/profile',
+                builder: (_, _) => const ProfileTabPage(),
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
         path: '/thematiques/:slug',
         parentNavigatorKey: rootNavigatorKey,
-        builder: (_, state) => ThemeDetailPage(slug: state.pathParameters['slug']!),
+        builder: (_, state) =>
+            ThemeDetailPage(slug: state.pathParameters['slug']!),
       ),
       GoRoute(
         path: '/ressources',
@@ -120,10 +158,84 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const NotificationsPageScreen(),
       ),
       GoRoute(
-        path: '/soon/:page',
+        path: '/alerte-sos',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const SosPage(standalone: true),
+      ),
+      GoRoute(
+        path: '/signaler',
         parentNavigatorKey: rootNavigatorKey,
         builder: (_, state) =>
-            ComingSoonPage(pageKey: state.pathParameters['page']!, showBack: true),
+            ReportPage(initialType: state.uri.queryParameters['type']),
+      ),
+      GoRoute(
+        path: '/suivi',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const TrackingPage(),
+      ),
+      GoRoute(
+        path: '/urgences',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const EmergencyPage(),
+      ),
+      GoRoute(
+        path: '/signalements',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const MyReportsPage(),
+      ),
+      GoRoute(
+        path: '/feed/new',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const CreatePostPage(),
+      ),
+      GoRoute(
+        path: '/feed/:id',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, state) => PostDetailPage(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/messages/new',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const NewConversationPage(),
+      ),
+      GoRoute(
+        path: '/messages/:id',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, state) =>
+            ConversationPage(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/groupes',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const GroupsPage(),
+      ),
+      GoRoute(
+        path: '/groupes/:id',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, state) => GroupDetailPage(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/evenements',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const EventsPage(),
+      ),
+      GoRoute(
+        path: '/evenements/:id',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, state) => EventDetailPage(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/assistant',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const AssistantPage(),
+      ),
+      GoRoute(
+        path: '/soon/:page',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, state) => ComingSoonPage(
+          pageKey: state.pathParameters['page']!,
+          showBack: true,
+        ),
       ),
     ],
   );

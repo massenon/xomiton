@@ -33,18 +33,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _submit() async {
     setState(() {
-      _loginError = _login.text.trim().isEmpty ? vRequired(context, 'login') : null;
-      _passwordError = _password.text.isEmpty ? vRequired(context, 'password') : null;
+      _loginError = _login.text.trim().isEmpty
+          ? vRequired(context, 'login')
+          : null;
+      _passwordError = _password.text.isEmpty
+          ? vRequired(context, 'password')
+          : null;
       _formError = null;
     });
     if (_loginError != null || _passwordError != null) return;
     setState(() => _busy = true);
     try {
-      final result = await ref.read(authApiProvider).login(_login.text, _password.text);
+      final result = await ref
+          .read(authApiProvider)
+          .login(_login.text, _password.text);
       if (!mounted) return;
       switch (result) {
         case LoginOtpRequired(:final email):
-          context.push('/otp?purpose=login&email=${Uri.encodeQueryComponent(email)}');
+          context.push(
+            '/otp?purpose=login&email=${Uri.encodeQueryComponent(email)}',
+          );
         case LoginSuccess(:final token, :final user):
           await ref.read(sessionProvider.notifier).signIn(token, user);
           if (mounted) context.go('/home');
@@ -53,7 +61,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       if (!mounted) return;
       final api = ApiException.from(e);
       // Message indifférencié : jamais « compte inconnu » (docs/API.md).
-      setState(() => _formError = api.status == 429 ? null : errorMessage(context, e));
+      setState(
+        () => _formError = api.status == 429 ? null : errorMessage(context, e),
+      );
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -68,16 +78,28 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             padding: const EdgeInsets.all(XmSpace.gutter),
             children: [
               const SizedBox(height: XmSpace.s5),
-              const Align(alignment: Alignment.centerLeft, child: XmLogo(width: 120)),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: XmLogo(width: 120),
+              ),
               const SizedBox(height: XmSpace.s5),
               Semantics(
                 header: true,
-                child: Text(context.t('auth_login_heading'), style: Theme.of(context).textTheme.headlineMedium),
+                child: Text(
+                  context.t('auth_login_heading'),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
               ),
               const SizedBox(height: XmSpace.s2),
-              Text(context.t('auth_login_intro'), style: Theme.of(context).textTheme.bodySmall),
+              Text(
+                context.t('auth_login_intro'),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
               const SizedBox(height: XmSpace.s5),
-              if (_formError != null) ...[XmAlert(_formError!), const SizedBox(height: XmSpace.s4)],
+              if (_formError != null) ...[
+                XmAlert(_formError!),
+                const SizedBox(height: XmSpace.s4),
+              ],
               TextField(
                 controller: _login,
                 keyboardType: TextInputType.emailAddress,
@@ -85,7 +107,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 textInputAction: TextInputAction.next,
                 autocorrect: false,
                 decoration: InputDecoration(
-                    labelText: context.t('auth_login_identifier'), errorText: _loginError),
+                  labelText: context.t('auth_login_identifier'),
+                  errorText: _loginError,
+                ),
               ),
               const SizedBox(height: XmSpace.s4),
               PasswordField(
@@ -98,30 +122,81 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                    onPressed: () => context.push('/forgot'),
-                    child: Text(context.t('auth_login_forgot'))),
+                  onPressed: () => context.push('/forgot'),
+                  child: Text(context.t('auth_login_forgot')),
+                ),
               ),
               const SizedBox(height: XmSpace.s2),
               FilledButton(
                 onPressed: _busy ? null : _submit,
                 child: _busy
-                    ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5))
+                    ? const SizedBox(
+                        width: 22,
+                        height: 22,
+                        child: CircularProgressIndicator(strokeWidth: 2.5),
+                      )
                     : Text(context.t('auth_login_submit')),
               ),
               const SizedBox(height: XmSpace.s5),
-              Center(child: Text(context.t('auth_login_no_account'), style: Theme.of(context).textTheme.bodySmall)),
+              Center(
+                child: Text(
+                  context.t('auth_login_no_account'),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
               const SizedBox(height: XmSpace.s2),
               OutlinedButton(
-                  onPressed: () => context.go('/signup'),
-                  child: Text(context.t('auth_login_create_account'))),
-              const SizedBox(height: XmSpace.s5),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(Icons.lock_outline, size: 16, color: context.xm.textMuted),
-                const SizedBox(width: 6),
-                Flexible(
-                    child: Text(context.t('auth_lock_screen_notice'),
-                        style: Theme.of(context).textTheme.labelSmall, textAlign: TextAlign.center)),
-              ]),
+                onPressed: () => context.go('/signup'),
+                child: Text(context.t('auth_login_create_account')),
+              ),
+              const SizedBox(height: XmSpace.s4),
+              // Sans compte (RG-01) : SOS, signalement, suivi et urgences restent ouverts.
+              Text(
+                context.t('alerts_report_sos_hint'),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: XmSpace.s2,
+                children: [
+                  TextButton(
+                    onPressed: () => context.push('/alerte-sos'),
+                    child: Text(context.t('mobile_tab_sos')),
+                  ),
+                  TextButton(
+                    onPressed: () => context.push('/signaler'),
+                    child: Text(context.t('alerts_report_title')),
+                  ),
+                  TextButton(
+                    onPressed: () => context.push('/suivi'),
+                    child: Text(context.t('alerts_report_tracking_title')),
+                  ),
+                  TextButton(
+                    onPressed: () => context.push('/urgences'),
+                    child: Text(context.t('alerts_emergency_title')),
+                  ),
+                ],
+              ),
+              const SizedBox(height: XmSpace.s4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.lock_outline,
+                    size: 16,
+                    color: context.xm.textMuted,
+                  ),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      context.t('auth_lock_screen_notice'),
+                      style: Theme.of(context).textTheme.labelSmall,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

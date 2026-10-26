@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/l10n/app_strings.dart';
 import '../core/network/app_toast.dart';
+import '../core/outbox/outbox.dart';
 import '../core/providers/core_providers.dart';
 import 'router.dart';
 import 'theme/xm_theme.dart';
@@ -24,17 +25,44 @@ class XomitonApp extends ConsumerStatefulWidget {
 
 class _XomitonAppState extends ConsumerState<XomitonApp> {
   StreamSubscription<AppToast>? _sub;
+  StreamSubscription<OutboxResult>? _outSub;
+
+  /// Envoi abouti depuis la boîte d'envoi : le code de suivi d'un signalement
+  /// est attribué par le serveur au rejeu, on le notifie ici (une seule fois).
+  void _outboxDone(OutboxResult r) {
+    final s = widget.strings;
+    final text = switch (r.entry.type) {
+      OutboxType.report =>
+        '${s.t('offline_outbox_report_sent')} ${r.data['tracking_code_display'] ?? r.data['tracking_code'] ?? ''}',
+      OutboxType.sos => s.t('offline_outbox_sos_sent'),
+      OutboxType.post => s.t('offline_outbox_post_sent'),
+      OutboxType.message => null,
+    };
+    if (text == null) return;
+    scaffoldMessengerKey.currentState
+      ?..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(text.trim()),
+          duration: const Duration(seconds: 20),
+        ),
+      );
+  }
 
   @override
   void initState() {
     super.initState();
     _sub = ref.read(toastBusProvider).stream.listen(_show);
+    ref.read(outboxRunnerProvider);
+    _outSub = ref.read(outboxProvider).results.listen(_outboxDone);
   }
 
   void _show(AppToast toast) {
     final text = switch (toast) {
-      RateLimitedToast(:final seconds) =>
-        widget.strings.t('errors_api_throttled', {'seconds': seconds}),
+      RateLimitedToast(:final seconds) => widget.strings.t(
+        'errors_api_throttled',
+        {'seconds': seconds},
+      ),
       SessionClosedToast() => widget.strings.t('auth_api_unauthenticated'),
     };
     scaffoldMessengerKey.currentState
@@ -45,6 +73,7 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
   @override
   void dispose() {
     _sub?.cancel();
+    _outSub?.cancel();
     super.dispose();
   }
 

@@ -9,6 +9,7 @@ import 'secret_store.dart';
 /// Coffre clé/valeur de chaînes JSON : Hive chiffré en production, mémoire en test.
 abstract interface class StringBox {
   String? get(String key);
+  Iterable<String> get keys;
   Future<void> put(String key, String value);
   Future<void> delete(String key);
   Future<void> clear();
@@ -19,6 +20,8 @@ class HiveStringBox implements StringBox {
   final Box<String> _box;
   @override
   String? get(String key) => _box.get(key);
+  @override
+  Iterable<String> get keys => _box.keys.cast<String>();
   @override
   Future<void> put(String key, String value) => _box.put(key, value);
   @override
@@ -32,6 +35,8 @@ class MemoryStringBox implements StringBox {
   @override
   String? get(String key) => data[key];
   @override
+  Iterable<String> get keys => data.keys.toList();
+  @override
   Future<void> put(String key, String value) async => data[key] = value;
   @override
   Future<void> delete(String key) async => data.remove(key);
@@ -42,31 +47,48 @@ class MemoryStringBox implements StringBox {
 /// Hive chiffré (AES-256). La clé est générée au premier lancement et gardée
 /// dans le stockage sécurisé, comme le jeton Sanctum.
 ///
-/// Trois coffres, tous des `Box<String>` (JSON) pour éviter les adaptateurs :
+/// Coffres, tous des `Box<String>` (JSON) pour éviter les adaptateurs :
 /// - `cache_public` : référentiels et contenus publics (survit à la déconnexion) ;
 /// - `cache_private` : réponses propres au compte (vidé à la déconnexion) ;
-/// - `session` : utilisateur de la session (vidé à la déconnexion).
+/// - `session` : utilisateur de la session (vidé à la déconnexion) ;
+/// - `outbox` : boîte d'envoi (SOS, signalements, messages, publications) ;
+///   les entrées rattachées à un compte partent à la déconnexion, jamais un SOS
+///   ni un signalement anonyme en attente ;
+/// - `drafts` : brouillons (sans contact ni position), vidé à la déconnexion.
 class LocalDb {
-  LocalDb({required this.publicCache, required this.privateCache, required this.session});
+  LocalDb({
+    required this.publicCache,
+    required this.privateCache,
+    required this.session,
+    required this.outbox,
+    required this.drafts,
+  });
 
   LocalDb.memory()
-      : publicCache = MemoryStringBox(),
-        privateCache = MemoryStringBox(),
-        session = MemoryStringBox();
+    : publicCache = MemoryStringBox(),
+      privateCache = MemoryStringBox(),
+      session = MemoryStringBox(),
+      outbox = MemoryStringBox(),
+      drafts = MemoryStringBox();
 
   final StringBox publicCache;
   final StringBox privateCache;
   final StringBox session;
+  final StringBox outbox;
+  final StringBox drafts;
 
   static Future<LocalDb> open(SecretStore secrets, {String? path}) async {
     if (path != null) Hive.init(path);
     final cipher = HiveAesCipher(await _key(secrets));
-    Future<StringBox> box(String name) async =>
-        HiveStringBox(await Hive.openBox<String>(name, encryptionCipher: cipher));
+    Future<StringBox> box(String name) async => HiveStringBox(
+      await Hive.openBox<String>(name, encryptionCipher: cipher),
+    );
     return LocalDb(
       publicCache: await box('cache_public'),
       privateCache: await box('cache_private'),
       session: await box('session'),
+      outbox: await box('outbox'),
+      drafts: await box('drafts'),
     );
   }
 
@@ -74,7 +96,9 @@ class LocalDb {
     final stored = await secrets.read(SecretKeys.hiveKey);
     if (stored != null) return base64Url.decode(stored);
     final rnd = Random.secure();
-    final key = Uint8List.fromList(List<int>.generate(32, (_) => rnd.nextInt(256)));
+    final key = Uint8List.fromList(
+      List<int>.generate(32, (_) => rnd.nextInt(256)),
+    );
     await secrets.write(SecretKeys.hiveKey, base64Url.encode(key));
     return key;
   }
@@ -83,5 +107,15 @@ class LocalDb {
   Future<void> clearPrivate() async {
     await privateCache.clear();
     await session.clear();
+    await drafts.clear();
+    // Boîte d'envoi : seules les entrées liées au compte (`owner`) partent.
+    for (final k in outbox.keys.toList()) {
+      try {
+        final m = jsonDecode(outbox.get(k) ?? '{}') as Map;
+        if (m['owner'] != null) await outbox.delete(k);
+      } catch (_) {
+        await outbox.delete(k);
+      }
+    }
   }
 }
