@@ -1,25 +1,64 @@
-<IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
+# Xomiton : racine web = web/public (D7, P17-02). Laravel + durcissement cPanel (Apache 2.4, MultiPHP).
 
+<IfModule mod_negotiation.c>
+    Options -MultiViews -Indexes
+</IfModule>
+
+# Fichiers cachés (.env, .git…) et fichiers de projet : jamais servis (sauf /.well-known pour le TLS). Si le domaine
+# pointait par erreur sur web/, rien de sensible ne doit être servi : voir DEPLOIEMENT_CPANEL.md §1 (racine = web/public).
+<IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Handle Authorization Header
+    # HTTPS obligatoire (AutoSSL) ; derrière un proxy, X-Forwarded-Proto fait foi.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https [NC]
+    RewriteCond %{REQUEST_URI} !^/\.well-known/
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    RewriteRule "(^|/)\.(?!well-known/)" - [F,L]
+    RewriteRule "^(composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml|phpstan\.neon|vite\.config\.[jt]s)$" - [F,L]
+
+    # Ressources versionnées de Vite : 1 an, immuables (PERFORMANCE.md §7).
+    RewriteRule ^build/ - [E=XM_IMMUTABLE:1]
+
+    # Authorization et X-XSRF-Token transmis à PHP (CGI / FPM).
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Handle X-XSRF-Token Header
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Redirect Trailing Slashes If Not A Folder...
+    # Barre oblique finale retirée si ce n'est pas un dossier.
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Contrôleur frontal.
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable" env=XM_IMMUTABLE
+    Header always set X-Content-Type-Options "nosniff"
+    # CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy : posés par App\Http\Middleware\SecurityHeaders.
+    # Pages HTML et service worker : jamais gardés sans revalidation.
+    <FilesMatch "(^sw\.js|\.webmanifest)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 month"
 </IfModule>
