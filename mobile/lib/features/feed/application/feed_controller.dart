@@ -75,7 +75,7 @@ class FeedController extends AsyncNotifier<FeedState> {
   }
 
   Post? byId(String id) =>
-      state.value?.items.where((p) => p.id == id).firstOrNull;
+      state.valueOrNull?.items.where((p) => p.id == id).firstOrNull;
 
   void _patch(String id, Post Function(Post) f) {
     final cur = state.value;

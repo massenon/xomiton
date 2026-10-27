@@ -138,7 +138,7 @@ class GroupDetailPage extends ConsumerWidget {
     final api = ref.read(communityApiProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.value?.name ?? context.t('community_groups_title')),
+        title: Text(state.valueOrNull?.name ?? context.t('community_groups_title')),
       ),
       body: SafeArea(
         child: state.when(
@@ -445,7 +445,7 @@ class _EventDetailPageState extends ConsumerState<EventDetailPage> {
     final state = ref.watch(eventProvider(widget.id));
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.value?.title ?? context.t('community_events_title')),
+        title: Text(state.valueOrNull?.title ?? context.t('community_events_title')),
       ),
       body: SafeArea(
         child: state.when(

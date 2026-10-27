@@ -34,7 +34,7 @@ class _ResourcesPageState extends ConsumerState<ResourcesPage> {
   Widget build(BuildContext context) {
     final query = ResourcesQuery(categorie: _categorie, q: _q);
     final res = ref.watch(resourcesProvider(query));
-    final cats = res.value?.categories ?? const <Category>[];
+    final cats = res.valueOrNull?.categories ?? const <Category>[];
     return Scaffold(
       appBar: AppBar(title: Text(context.t('pages_ressources_title'))),
       body: Column(

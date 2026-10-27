@@ -37,7 +37,7 @@ class _ThemesPageState extends ConsumerState<ThemesPage> {
     final query = ThemesQuery(categorie: _categorie, q: _q);
     final list = ref.watch(themesProvider(query));
     // Garde les puces de catégorie même pendant le rechargement.
-    final cats = list.value?.categories ?? const <Category>[];
+    final cats = list.valueOrNull?.categories ?? const <Category>[];
     return Scaffold(
       appBar: AppBar(title: Text(context.t('pages_thematiques_title'))),
       body: Column(
@@ -76,7 +76,7 @@ class _ThemesPageState extends ConsumerState<ThemesPage> {
                 children: [
                   _CategoryChip(
                     label: context.t('pages_thematiques_filter_all', {
-                      'count': list.value?.total ?? 0,
+                      'count': list.valueOrNull?.total ?? 0,
                     }),
                     selected: _categorie == null,
                     onTap: () => setState(() => _categorie = null),

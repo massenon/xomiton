@@ -360,6 +360,23 @@ void main() {
         await disposeApp(tester);
       },
     );
+
+    testWidgets(
+      'détail d’un événement : une erreur serveur ne plante pas l’écran',
+      (tester) async {
+        final api = apiWith({
+          'GET events': (_) => jsonBody(200, {
+            'data': <Map<String, dynamic>>[],
+            'meta': {'filter': 'upcoming'},
+          }),
+          'GET events/01EVT': (_) => jsonBody(500, {'message': 'Erreur'}),
+        });
+        await boot(tester, member(api), '/evenements/01EVT');
+        expect(tester.takeException(), isNull);
+        expect(find.text(S.t('community_events_title')), findsWidgets);
+        await disposeApp(tester);
+      },
+    );
   });
 
   group('assistant', () {
