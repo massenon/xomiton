@@ -352,10 +352,10 @@
         <x-slot:footer>
             @if ($detail)
                 @can('case_followups.manage')
-                    <a class="btn btn-outline-primary btn-sm" href="{{ route('admin.suivi', ['dossier' => $detail['case']->code]) }}"><i class="bi bi-person-heart me-1" aria-hidden="true"></i>{{ __('admin_data.registers.detail.followup', ['count' => $detail['followups']]) }}</a>
+                    <a wire:navigate wire:navigate.hover class="btn btn-outline-primary btn-sm" href="{{ route('admin.suivi', ['dossier' => $detail['case']->code]) }}"><i class="bi bi-person-heart me-1" aria-hidden="true"></i>{{ __('admin_data.registers.detail.followup', ['count' => $detail['followups']]) }}</a>
                 @endcan
                 @can('case_forms.manage')
-                    <a class="btn btn-outline-primary btn-sm" href="{{ route('admin.fiches', ['dossier' => $detail['case']->code]) }}"><i class="bi bi-file-earmark-medical me-1" aria-hidden="true"></i>{{ __('admin_data.registers.detail.forms', ['count' => $detail['forms']]) }}</a>
+                    <a wire:navigate wire:navigate.hover class="btn btn-outline-primary btn-sm" href="{{ route('admin.fiches', ['dossier' => $detail['case']->code]) }}"><i class="bi bi-file-earmark-medical me-1" aria-hidden="true"></i>{{ __('admin_data.registers.detail.forms', ['count' => $detail['forms']]) }}</a>
                 @endcan
             @endif
         </x-slot:footer>

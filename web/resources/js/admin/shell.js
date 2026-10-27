@@ -38,7 +38,11 @@ export function bindSidebar(doc = document) {
   if (btn) btn.addEventListener('click', () => toggleSidebar(doc));
 }
 
+let fullscreenSync = null;
+
 export function bindFullscreen(doc = document) {
+  // Navigation sans rechargement : le bouton est recréé à chaque page ; l'écouteur de `document` de la page précédente est retiré.
+  if (fullscreenSync) { doc.removeEventListener('fullscreenchange', fullscreenSync); fullscreenSync = null; }
   const btn = doc.getElementById('xmFullscreen');
   if (!btn) return;
   if (!doc.documentElement.requestFullscreen) { btn.classList.add('d-none'); btn.classList.remove('d-sm-inline-block'); return; }
@@ -52,6 +56,7 @@ export function bindFullscreen(doc = document) {
     const p = doc.fullscreenElement ? doc.exitFullscreen() : doc.documentElement.requestFullscreen();
     if (p && typeof p.catch === 'function') p.catch(() => {});
   });
+  fullscreenSync = sync;
   doc.addEventListener('fullscreenchange', sync);
 }
 
@@ -129,11 +134,17 @@ export function bindSessionExpiry(win = window) {
   else win.document.addEventListener('livewire:init', register, { once: true });
 }
 
+/** Éléments propres à chaque page (barre supérieure remplacée à chaque navigation) : appelé aussi sur `livewire:navigated`. */
+export function bindPageShell(doc = document, win = window) {
+  bindFullscreen(doc);
+  syncOnline(win.navigator.onLine !== false, doc);
+}
+
+/** Une seule fois par document : barre latérale persistée, raccourcis clavier, état de la connexion. */
 export function bindShell(doc = document, win = window) {
   bindSidebar(doc);
-  bindFullscreen(doc);
   doc.addEventListener('keydown', (e) => { handleShortcut(e, doc) || handleTabKeys(e); });
-  syncOnline(win.navigator.onLine !== false, doc);
   win.addEventListener('online', () => syncOnline(true, doc));
   win.addEventListener('offline', () => syncOnline(false, doc));
+  bindPageShell(doc, win);
 }

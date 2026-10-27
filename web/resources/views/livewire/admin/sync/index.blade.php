@@ -179,7 +179,7 @@
                     <ul class="small list-unstyled mb-3" id="xmSyncCacheList" aria-live="polite"><li class="text-secondary">{{ __('admin_system.sync.cache.reading') }}</li></ul>
                     <button type="button" class="btn btn-outline-danger btn-sm" id="xmSyncCacheClear"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('admin_system.sync.cache.clear') }}</button>
                     @can('updates.view')
-                        <a class="btn btn-link btn-sm" href="{{ route('admin.mises-a-jour') }}">{{ __('admin_system.sync.cache.update_link') }}</a>
+                        <a wire:navigate wire:navigate.hover class="btn btn-link btn-sm" href="{{ route('admin.mises-a-jour') }}">{{ __('admin_system.sync.cache.update_link') }}</a>
                     @endcan
                     <script type="application/json" id="xmSyncI18n">@json($cacheTexts)</script>
                 </div>
@@ -191,7 +191,7 @@
     <section class="card xm-admin-card" aria-labelledby="xmSyncLogTitle">
         <div class="card-header d-flex flex-wrap justify-content-between gap-2">
             <h2 class="h6 fw-bold mb-0" id="xmSyncLogTitle">{{ __('admin_system.sync.log.title') }}</h2>
-            @can('audit_logs.view')<a class="small" href="{{ route('admin.journal', ['ac' => 'sync.conflict_resolved']) }}">{{ __('admin_system.sync.log.all') }}</a>@endcan
+            @can('audit_logs.view')<a wire:navigate wire:navigate.hover class="small" href="{{ route('admin.journal', ['ac' => 'sync.conflict_resolved']) }}">{{ __('admin_system.sync.log.all') }}</a>@endcan
         </div>
         <div class="xm-table-wrap">
             <table class="table table-sm align-middle mb-0 xm-table--stack">

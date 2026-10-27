@@ -15,7 +15,9 @@ import './public/xomiton-ui.js';
 import { bindToasts, fireToast } from './admin/toasts.js';
 import { bindConfirm, confirmDialog } from './admin/confirm.js';
 import { bindModals } from './admin/modals.js';
-import { bindShell, bindSessionExpiry } from './admin/shell.js';
+import { bindShell, bindPageShell, bindSessionExpiry } from './admin/shell.js';
+import { bindNavigation, currentGeneration, registerTeardown } from './admin/navigation.js';
+import { Offcanvas } from './shared/bootstrap.js';
 import { load, preload, LIBRARIES } from './admin/lazy.js';
 
 window.Swal = Swal;
@@ -35,9 +37,36 @@ bindModals();
 bindSessionExpiry();
 
 const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
+
+// Écrans de la page : l'export par défaut d'un script d'écran peut renvoyer son démontage (écouteurs retirés, graphiques
+// détruits), appelé sur `livewire:navigating` avant que Livewire ne remplace le <body> (navigation sans rechargement).
+const mountScreens = () => {
+  preload();
+  const gen = currentGeneration();
+  document.querySelectorAll('[data-xm-screen]').forEach((el) => {
+    screen(el.dataset.xmScreen).then((teardown) => registerTeardown(teardown, gen)).catch(() => {});
+  });
+};
+
+// Ce qui ne survit pas à l'échange du <body> : tiroir de la barre latérale (< 992 px, son fond disparaît avec le <body>) et toast.
+const closeOverlays = () => {
+  const sidebar = document.getElementById('xmSidebar');
+  const offcanvas = sidebar ? Offcanvas.getInstance(sidebar) : null;
+  if (offcanvas) offcanvas.hide();
+  if (Swal.isVisible()) Swal.close();
+};
+
+bindNavigation({
+  closeOverlays,
+  mount: () => {
+    bindToasts();
+    bindPageShell();
+    mountScreens();
+  },
+});
+
 ready(() => {
   bindToasts();
   bindShell();
-  preload();
-  document.querySelectorAll('[data-xm-screen]').forEach((el) => { screen(el.dataset.xmScreen).catch(() => {}); });
+  mountScreens();
 });

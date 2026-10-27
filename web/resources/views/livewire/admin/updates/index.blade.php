@@ -123,7 +123,7 @@
                 <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmUpdMaintTitle"><i class="bi bi-cone-striped me-2" aria-hidden="true"></i>{{ __('admin_system.updates.maintenance.title') }}</h2></div>
                 <div class="card-body">
                     <p class="small mb-2">{{ $this->stats['maintenance'] ? __('admin_system.updates.maintenance.on') : __('admin_system.updates.maintenance.off') }}</p>
-                    @can('platform.maintenance')<a class="btn btn-sm btn-outline-primary" href="{{ route('admin.maintenance') }}">{{ __('admin_system.updates.maintenance.link') }}</a>@endcan
+                    @can('platform.maintenance')<a wire:navigate wire:navigate.hover class="btn btn-sm btn-outline-primary" href="{{ route('admin.maintenance') }}">{{ __('admin_system.updates.maintenance.link') }}</a>@endcan
                 </div>
             </section>
 
@@ -138,7 +138,7 @@
                             {{ __('admin_system.updates.backups.none') }}
                         @endif
                     </p>
-                    @can('backups.create')<a class="btn btn-sm btn-outline-primary" href="{{ route('admin.sauvegardes') }}">{{ __('admin_system.updates.backups.link') }}</a>@endcan
+                    @can('backups.create')<a wire:navigate wire:navigate.hover class="btn btn-sm btn-outline-primary" href="{{ route('admin.sauvegardes') }}">{{ __('admin_system.updates.backups.link') }}</a>@endcan
                 </div>
             </section>
         </div>

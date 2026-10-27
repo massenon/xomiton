@@ -165,7 +165,7 @@
             <section class="card xm-admin-card mb-4" aria-labelledby="xmModSuspTitle">
                 <div class="card-header d-flex justify-content-between align-items-center gap-2">
                     <h2 class="h6 fw-bold mb-0" id="xmModSuspTitle">{{ __('admin.moderation.suspensions_title') }}</h2>
-                    @can('users.view')<a class="small" href="{{ route('admin.utilisateurs', ['st' => 'suspendu']) }}">{{ __('admin.moderation.suspensions_all') }}</a>@endcan
+                    @can('users.view')<a wire:navigate wire:navigate.hover class="small" href="{{ route('admin.utilisateurs', ['st' => 'suspendu']) }}">{{ __('admin.moderation.suspensions_all') }}</a>@endcan
                 </div>
                 <ul class="list-group list-group-flush">
                     @forelse ($this->suspended as $account)

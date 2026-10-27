@@ -1,6 +1,6 @@
 # Spec — Navigation sans rechargement (Livewire) et assistant LLM (Gemini / OpenAI)
 
-Statut : proposition, rien n'est implémenté. Réf. : Q7 (fournisseur LLM), Q41, ADR-18, ADR-26, ADR-30, P8-11, P12-07.
+Statut : Partie 1 (navigation) implémentée le 27/10/2026 (P10-09) ; Partie 2 (assistant LLM) : proposition, rien n’est implémenté. Réf. : Q7 (fournisseur LLM), Q41, ADR-18, ADR-26, ADR-30, P8-11, P12-07.
 
 ## État actuel (vérifié dans le code)
 - **Navigation** : aucun `wire:navigate` dans le projet. Admin = Livewire 3 (rechargement complet à chaque lien) ; membre = Vue + Inertia (déjà sans rechargement) ; public = Blade + Alpine, sans Livewire (budget JS < 60 Ko).

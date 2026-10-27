@@ -36,7 +36,7 @@
             @foreach ($items as $item)
                 <div class="{{ $cols }}">
                     <x-stat :label="$item['label']" :value="$item['value']" :variant="$item['variant'] ?? ''" :icon="$item['icon'] ?? null"
-                            :trend="$item['trend'] ?? null" :direction="$item['direction'] ?? 'flat'" :sub="$item['sub'] ?? null" :href="$item['href'] ?? null"
+                            :trend="$item['trend'] ?? null" :direction="$item['direction'] ?? 'flat'" :sub="$item['sub'] ?? null" :href="$item['href'] ?? null" :navigate="true"
                             :class="empty($item['masked']) ? '' : 'xm-stat--masked'" />
                 </div>
             @endforeach

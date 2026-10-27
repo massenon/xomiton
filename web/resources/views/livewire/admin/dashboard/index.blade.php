@@ -70,7 +70,7 @@
                         @endforeach
                     </ul>
                     @if ($activeSosCount > 5)
-                        <a class="small" href="{{ route('admin.alertes', ['onglet' => 'sos']) }}">{{ __('admin.dashboard.all_sos', ['count' => $format->number($activeSosCount)]) }}</a>
+                        <a wire:navigate wire:navigate.hover class="small" href="{{ route('admin.alertes', ['onglet' => 'sos']) }}">{{ __('admin.dashboard.all_sos', ['count' => $format->number($activeSosCount)]) }}</a>
                     @endif
                 </div>
                 <button type="button" class="btn btn-sm btn-light border" data-xm-sos-sound aria-pressed="false" wire:ignore>
@@ -140,7 +140,7 @@
                 <section class="card h-100 xm-admin-card" aria-labelledby="xmLatestAlertsTitle">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h2 class="h6 mb-0" id="xmLatestAlertsTitle">{{ __('admin.dashboard.latest_alerts') }}</h2>
-                        <a href="{{ route('admin.alertes') }}" class="small">{{ __('admin.dashboard.see_all') }}</a>
+                        <a wire:navigate wire:navigate.hover href="{{ route('admin.alertes') }}" class="small">{{ __('admin.dashboard.see_all') }}</a>
                     </div>
                     <x-admin.table id="xmLatestAlerts" :caption="__('admin.dashboard.latest_alerts')" :empty="$latestAlerts->isEmpty()" :columns="[
                         ['key' => 'code', 'label' => __('admin.alerts.columns.code')],
@@ -163,7 +163,7 @@
                                             <button type="button" class="btn btn-sm btn-primary" wire:click="acknowledge({{ $alert->id }})" wire:loading.attr="disabled" wire:target="acknowledge({{ $alert->id }})">{{ __('admin.alerts.take') }}<span class="visually-hidden"> {{ __('admin.alerts.of', ['code' => '#'.$alert->id]) }}</span></button>
                                         @endcan
                                     @else
-                                        <a class="btn btn-sm btn-light border" href="{{ route('admin.alertes', ['q' => '#'.$alert->id]) }}">{{ __('admin.dashboard.view') }}<span class="visually-hidden"> {{ __('admin.alerts.of', ['code' => '#'.$alert->id]) }}</span></a>
+                                        <a wire:navigate wire:navigate.hover class="btn btn-sm btn-light border" href="{{ route('admin.alertes', ['q' => '#'.$alert->id]) }}">{{ __('admin.dashboard.view') }}<span class="visually-hidden"> {{ __('admin.alerts.of', ['code' => '#'.$alert->id]) }}</span></a>
                                     @endif
                                 </td>
                             </tr>
@@ -191,7 +191,7 @@
                                 <li class="d-flex justify-content-between gap-2 mb-1" wire:key="sos-map-{{ $sos->id }}">
                                     <span><i class="bi bi-geo-alt-fill text-danger" aria-hidden="true"></i> #{{ $sos->id }} {{ $sos->commune?->name ?? $sos->zone?->name }}</span>
                                     {{-- Aucune coordonnée exacte ici : seul le détail de l'alerte les lit, et l'ouverture est journalisée (`alerts.viewed`). --}}
-                                    <a href="{{ route('admin.alertes', ['q' => '#'.$sos->id]) }}">{{ __('admin.dashboard.open_alert') }}<span class="visually-hidden"> {{ __('admin.alerts.of', ['code' => '#'.$sos->id]) }}</span></a>
+                                    <a wire:navigate wire:navigate.hover href="{{ route('admin.alertes', ['q' => '#'.$sos->id]) }}">{{ __('admin.dashboard.open_alert') }}<span class="visually-hidden"> {{ __('admin.alerts.of', ['code' => '#'.$sos->id]) }}</span></a>
                                 </li>
                             @empty
                                 <li class="text-secondary">{{ __('admin.dashboard.no_active_sos') }}</li>
@@ -211,7 +211,7 @@
                     <div class="card-body">
                         <div class="row g-2">
                             @foreach ($shortcuts as $shortcut)
-                                <div class="col-6"><a class="btn btn-light w-100 text-start" href="{{ $shortcut['href'] }}"><i class="bi bi-{{ $shortcut['icon'] }} me-2 text-primary" aria-hidden="true"></i>{{ $shortcut['label'] }}</a></div>
+                                <div class="col-6"><a wire:navigate wire:navigate.hover class="btn btn-light w-100 text-start" href="{{ $shortcut['href'] }}"><i class="bi bi-{{ $shortcut['icon'] }} me-2 text-primary" aria-hidden="true"></i>{{ $shortcut['label'] }}</a></div>
                             @endforeach
                         </div>
                     </div>

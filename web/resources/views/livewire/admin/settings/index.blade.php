@@ -68,11 +68,11 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex flex-wrap justify-content-between gap-2 align-items-center">
                     <span><i class="bi bi-person-plus me-2" aria-hidden="true"></i>{{ __('admin_system.settings.links.registrations') }} <x-badge :color="$registrationsOpen ? 'success' : 'warning'" soft>{{ $registrationsOpen ? __('admin_system.settings.links.open') : __('admin_system.settings.links.closed') }}</x-badge></span>
-                    @can('registrations.manage')<a class="btn btn-sm btn-light border" href="{{ route('admin.inscriptions') }}">{{ __('admin_system.settings.links.manage') }}</a>@endcan
+                    @can('registrations.manage')<a wire:navigate wire:navigate.hover class="btn btn-sm btn-light border" href="{{ route('admin.inscriptions') }}">{{ __('admin_system.settings.links.manage') }}</a>@endcan
                 </li>
                 <li class="list-group-item d-flex flex-wrap justify-content-between gap-2 align-items-center">
                     <span><i class="bi bi-cone-striped me-2" aria-hidden="true"></i>{{ __('admin_system.settings.links.maintenance') }} <x-badge :color="$maintenance ? 'danger' : 'neutral'" soft>{{ $maintenance ? __('admin_system.settings.links.active') : __('admin_system.settings.links.inactive') }}</x-badge></span>
-                    @can('platform.maintenance')<a class="btn btn-sm btn-light border" href="{{ route('admin.maintenance') }}">{{ __('admin_system.settings.links.manage') }}</a>@endcan
+                    @can('platform.maintenance')<a wire:navigate wire:navigate.hover class="btn btn-sm btn-light border" href="{{ route('admin.maintenance') }}">{{ __('admin_system.settings.links.manage') }}</a>@endcan
                 </li>
             </ul>
         </section>
@@ -142,7 +142,7 @@
                 </div>
             </div>
             <div class="card-footer d-flex flex-wrap justify-content-between gap-2 align-items-center">
-                @can('audit_logs.view')<a class="small" href="{{ route('admin.journal') }}">{{ __('admin_system.settings.retention.journal_link') }}</a>@endcan
+                @can('audit_logs.view')<a wire:navigate wire:navigate.hover class="small" href="{{ route('admin.journal') }}">{{ __('admin_system.settings.retention.journal_link') }}</a>@endcan
                 @if ($canManage)<button type="submit" class="btn btn-primary btn-sm" wire:loading.attr="disabled" wire:target="save">{{ __('admin_system.common.save') }}</button>@endif
             </div>
         </form>

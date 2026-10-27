@@ -7,14 +7,15 @@
       icon         : Bootstrap Icons sans « bi- », affichée à droite
       trend        : texte de tendance (« +12 % ») ; direction : up | down | flat (flèche + mot caché pour les lecteurs d'écran)
       sub          : sous-texte facultatif (période, source…)
+      navigate     : true → wire:navigate sur le lien (écrans Livewire de l'administration seulement)
       href         : la carte entière devient un lien vers la liste filtrée (+ survol xm-card-hover)
 --}}
-@props(['label', 'value', 'variant' => '', 'icon' => null, 'trend' => null, 'direction' => 'flat', 'sub' => null, 'href' => null])
+@props(['label', 'value', 'variant' => '', 'icon' => null, 'trend' => null, 'direction' => 'flat', 'sub' => null, 'href' => null, 'navigate' => false])
 @php
     $arrows = ['up' => ['arrow-up-right', __('components.stat.trend_up')], 'down' => ['arrow-down-right', __('components.stat.trend_down')], 'flat' => ['dash', __('components.stat.trend_flat')]];
     [$arrow, $word] = $arrows[$direction] ?? $arrows['flat'];
 @endphp
-@if ($href)<a href="{{ $href }}" class="text-decoration-none text-body d-block h-100">@endif
+@if ($href)<a href="{{ $href }}" class="text-decoration-none text-body d-block h-100"{!! $navigate ? ' wire:navigate wire:navigate.hover' : '' !!}>@endif
 <div {{ $attributes->class(['card xm-stat h-100', $variant => $variant !== '', 'xm-card-hover' => (bool) $href]) }}>
     <div class="card-body d-flex justify-content-between align-items-center">
         <div>

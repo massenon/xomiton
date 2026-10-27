@@ -8,6 +8,8 @@ const FALLBACK = {
   prompt: ':word',
   promptLabel: '',
   mismatch: '',
+  pageAnnounce: 'Page : :title',
+  navReload: 'Rechargement de la page…',
 };
 
 let cache = null;

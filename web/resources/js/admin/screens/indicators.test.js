@@ -54,3 +54,17 @@ describe('écran Indicateurs : graphique à la demande (P10-06)', () => {
     expect(instance.destroy).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('écran Indicateurs : démontage à la navigation sans rechargement', () => {
+  it('retire l’écouteur de clic et détruit le graphique', async () => {
+    const { default: mount } = await import('./indicators.js');
+    document.documentElement.removeAttribute('data-xm-ind-chart-bound');
+    const instance = { destroy: vi.fn() };
+    const Chart = vi.fn(() => instance);
+    const teardown = mount(document);
+    await openChart(document.querySelector('button'), document, () => Promise.resolve(Chart));
+    teardown();
+    expect(instance.destroy).toHaveBeenCalledTimes(1);
+    expect(document.documentElement.dataset.xmIndChartBound).toBeUndefined();
+  });
+});

@@ -63,6 +63,14 @@ function colors(doc) {
 
 let chart = null;
 
+/** Détruit le graphique ouvert (navigation sans rechargement : le canevas disparaît avec la page). */
+export function destroyChart() {
+  if (chart) {
+    try { chart.destroy(); } catch (e) { /* canevas déjà retiré */ }
+    chart = null;
+  }
+}
+
 export async function openChart(button, doc = document, load = (name) => window.XM.admin.load(name)) {
   const payload = readPayload(button);
   const canvas = doc.getElementById('xmIndChartCanvas');
@@ -71,16 +79,24 @@ export async function openChart(button, doc = document, load = (name) => window.
   const modalEl = doc.getElementById('xmIndChartModal');
   if (modalEl && doc.defaultView.bootstrap && doc.defaultView.bootstrap.Modal) doc.defaultView.bootstrap.Modal.getOrCreateInstance(modalEl).show();
   const Chart = await load('chart');
-  if (chart) chart.destroy();
+  if (!canvas.isConnected) return null; // page quittée pendant le chargement de Chart.js
+  destroyChart();
   chart = new Chart(canvas, chartConfig(payload, colors(doc)));
   return chart;
 }
 
+/** Monte l'écran ; renvoie le démontage (écouteur retiré, graphique détruit). */
 export default function init(doc = document) {
-  if (doc.documentElement.dataset.xmIndChartBound === '1') return;
+  if (doc.documentElement.dataset.xmIndChartBound === '1') return () => {};
   doc.documentElement.dataset.xmIndChartBound = '1';
-  doc.addEventListener('click', (event) => {
+  const onClick = (event) => {
     const button = event.target.closest && event.target.closest('[data-xm-ind-chart]');
     if (button) openChart(button, doc).catch(() => {});
-  });
+  };
+  doc.addEventListener('click', onClick);
+  return () => {
+    doc.removeEventListener('click', onClick);
+    delete doc.documentElement.dataset.xmIndChartBound;
+    destroyChart();
+  };
 }

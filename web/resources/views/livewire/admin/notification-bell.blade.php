@@ -45,7 +45,7 @@
             @endforelse
         </div>
         @if ($canSeeAudit)
-            <div class="p-2 border-top text-center"><a class="small" href="{{ route('admin.journal') }}">{{ __('menus.admin.see_audit') }}</a></div>
+            <div class="p-2 border-top text-center"><a wire:navigate wire:navigate.hover class="small" href="{{ route('admin.journal') }}">{{ __('menus.admin.see_audit') }}</a></div>
         @endif
     </div>
 </div>

@@ -19,7 +19,7 @@
             <section class="card xm-admin-card border-warning mb-4" aria-labelledby="xmUsersPendingTitle">
                 <div class="card-header bg-warning-subtle d-flex flex-wrap align-items-center justify-content-between gap-2">
                     <h2 class="h6 fw-bold mb-0" id="xmUsersPendingTitle"><i class="bi bi-hourglass-split me-2" aria-hidden="true"></i>{{ trans_choice('admin.users.pending_count', $this->stats['pending'], ['count' => $format->number($this->stats['pending'])]) }}</h2>
-                    <a class="btn btn-sm btn-light border" href="{{ route('admin.inscriptions') }}">{{ __('admin.users.pending_all') }}</a>
+                    <a wire:navigate wire:navigate.hover class="btn btn-sm btn-light border" href="{{ route('admin.inscriptions') }}">{{ __('admin.users.pending_all') }}</a>
                 </div>
                 <ul class="list-group list-group-flush">
                     @foreach ($this->pending as $request)

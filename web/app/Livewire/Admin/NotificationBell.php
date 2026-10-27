@@ -59,7 +59,8 @@ final class NotificationBell extends Component
         $url = is_array($notification->data) ? ($notification->data['url'] ?? null) : null;
 
         if (is_string($url) && self::isInternal($url)) {
-            $this->redirect($url);
+            // Un lien d'administration suit la navigation sans rechargement ; tout autre lien interne charge la page en entier.
+            $this->redirect($url, navigate: str_starts_with((string) parse_url($url, PHP_URL_PATH), '/admin'));
         }
     }
 

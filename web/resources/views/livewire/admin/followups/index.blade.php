@@ -47,7 +47,7 @@
                     <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
                         <h2 class="h6 fw-bold mb-0" id="xmFollowupsTimelineTitle">{{ __('admin_data.followups.timeline_title', ['code' => $case->code]) }}</h2>
                         @can('case_forms.manage')
-                            <a class="small" href="{{ route('admin.fiches', ['dossier' => $case->code]) }}">{{ __('admin_data.followups.form_link') }}</a>
+                            <a wire:navigate wire:navigate.hover class="small" href="{{ route('admin.fiches', ['dossier' => $case->code]) }}">{{ __('admin_data.followups.form_link') }}</a>
                         @endcan
                     </div>
                     <div class="card-body">

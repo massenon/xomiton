@@ -99,7 +99,7 @@
                     </p>
                     <p class="text-secondary mb-2">{{ __('admin_newsletter.emails.smtp_help') }}</p>
                     @if ($canSettings && Route::has('admin.parametres'))
-                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('admin.parametres') }}"><i class="bi bi-gear me-1" aria-hidden="true"></i>{{ __('admin_newsletter.emails.open_settings') }}</a>
+                        <a wire:navigate wire:navigate.hover class="btn btn-sm btn-outline-secondary" href="{{ route('admin.parametres') }}"><i class="bi bi-gear me-1" aria-hidden="true"></i>{{ __('admin_newsletter.emails.open_settings') }}</a>
                     @endif
                 </div>
             </section>

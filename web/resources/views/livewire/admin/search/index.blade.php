@@ -39,7 +39,7 @@
                             @foreach ($group['rows'] as $row)
                                 <li class="list-group-item p-0">
                                     @if ($row['url'])
-                                        <a class="list-group-item-action d-block px-3 py-2 text-decoration-none" href="{{ $row['url'] }}">
+                                        <a wire:navigate wire:navigate.hover class="list-group-item-action d-block px-3 py-2 text-decoration-none" href="{{ $row['url'] }}">
                                             <span class="d-block fw-semibold small text-break">{{ $row['title'] }}</span>
                                             <span class="d-block small text-secondary text-truncate">{{ $row['detail'] }}</span>
                                         </a>
@@ -50,7 +50,7 @@
                             @endforeach
                         </ul>
                         @if ($group['total'] > $perGroup && $group['url'])
-                            <div class="card-footer text-center"><a class="small" href="{{ $group['url'] }}">{{ trans_choice('admin_search.see_all', $group['total'], ['count' => $group['total'], 'group' => __('admin_search.groups.'.$group['key'])]) }}</a></div>
+                            <div class="card-footer text-center"><a wire:navigate wire:navigate.hover class="small" href="{{ $group['url'] }}">{{ trans_choice('admin_search.see_all', $group['total'], ['count' => $group['total'], 'group' => __('admin_search.groups.'.$group['key'])]) }}</a></div>
                         @endif
                     </section>
                 </div>

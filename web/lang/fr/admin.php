@@ -38,6 +38,10 @@ return [
         'collapse' => 'Replier le menu',
         'expand' => 'Déplier le menu',
         'close' => 'Fermer le menu',
+        // Navigation sans rechargement (wire:navigate) : annonce vocale polie après chaque changement de page, et message du
+        // court écran de relais quand la page demandée doit être chargée en entier (session expirée, erreur, hors ligne).
+        'page_announce' => 'Page : :title',
+        'reloading' => 'Rechargement de la page…',
         'counters' => [
             'alerts_new' => '{1} :count nouvelle alerte|[2,*] :count nouvelles alertes',
             'users_pending' => '{1} :count compte en attente de validation|[2,*] :count comptes en attente de validation',

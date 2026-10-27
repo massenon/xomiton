@@ -124,31 +124,61 @@ export function syncSoundButton(doc = document) {
   if (icon) icon.className = `bi ${on ? 'bi-volume-up-fill' : 'bi-volume-mute'}`;
 }
 
+/**
+ * Branche le bouton de son et l'écoute des nouveaux SOS ; renvoie la fonction qui retire tout (navigation sans
+ * rechargement : les écouteurs de `document` / `window` survivraient sinon à l'écran et se cumuleraient au retour).
+ */
 export function bindSound(win = window) {
   const doc = win.document;
-  if (doc.documentElement.dataset.xmSosSoundBound === '1') return;
+  if (doc.documentElement.dataset.xmSosSoundBound === '1') return () => {};
   doc.documentElement.dataset.xmSosSoundBound = '1';
-  doc.addEventListener('click', (event) => {
+  const onClick = (event) => {
     const button = event.target.closest && event.target.closest('[data-xm-sos-sound]');
     if (!button) return;
     const next = soundEnabled() ? 'off' : 'on';
     store.set(next);
     if (next === 'on') beep(win);
     syncSoundButton(doc);
-  });
-  // Livewire : un SOS nouveau est apparu depuis le dernier sondage (évènement `xm-sos-new` de Dashboard\Index::refresh()).
-  win.addEventListener('xm-sos-new', () => { if (soundEnabled()) beep(win); });
-  // Le bandeau apparaît et disparaît avec les SOS : le bouton reprend son état après chaque réponse de Livewire.
-  const afterCommit = () => {
-    if (win.Livewire && typeof win.Livewire.hook === 'function') {
-      win.Livewire.hook('commit', ({ succeed }) => succeed(() => setTimeout(() => syncSoundButton(doc), 0)));
-    }
   };
-  win.Livewire ? afterCommit() : doc.addEventListener('livewire:init', afterCommit);
+  doc.addEventListener('click', onClick);
+  // Livewire : un SOS nouveau est apparu depuis le dernier sondage (évènement `xm-sos-new` de Dashboard\Index::refresh()).
+  const onNew = () => { if (soundEnabled()) beep(win); };
+  win.addEventListener('xm-sos-new', onNew);
+  // Le bandeau apparaît et disparaît avec les SOS : le bouton reprend son état après chaque réponse de Livewire.
+  let offHook = null;
+  let cancelled = false;
+  const afterCommit = () => {
+    if (cancelled || !win.Livewire || typeof win.Livewire.hook !== 'function') return;
+    const off = win.Livewire.hook('commit', ({ succeed }) => succeed(() => setTimeout(() => syncSoundButton(doc), 0)));
+    offHook = typeof off === 'function' ? off : null;
+  };
+  if (win.Livewire) afterCommit();
+  else doc.addEventListener('livewire:init', afterCommit, { once: true });
+
+  return () => {
+    cancelled = true;
+    doc.removeEventListener('click', onClick);
+    doc.removeEventListener('livewire:init', afterCommit);
+    win.removeEventListener('xm-sos-new', onNew);
+    if (offHook) offHook();
+    delete doc.documentElement.dataset.xmSosSoundBound;
+  };
 }
 
+/** Monte l'écran ; renvoie le démontage (écouteurs retirés, graphiques détruits) appelé sur `livewire:navigating`. */
 export default async function init() {
-  bindSound();
+  const unbind = bindSound();
   syncSoundButton();
-  await mountCharts();
+  let charts = [];
+  let gone = false;
+  const teardown = () => {
+    gone = true;
+    unbind();
+    charts.forEach((chart) => { try { chart.destroy(); } catch (e) { /* canevas déjà retiré */ } });
+    charts = [];
+  };
+  const mounted = await mountCharts();
+  if (gone) mounted.forEach((chart) => { try { chart.destroy(); } catch (e) { /* idem */ } });
+  else charts = mounted;
+  return teardown;
 }

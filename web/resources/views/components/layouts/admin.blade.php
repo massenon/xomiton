@@ -8,6 +8,16 @@
     Mode maintenance (P13-06, P13-08) : l'administration n'est jamais bloquée ; pendant la maintenance, bandeau rouge
     permanent (le public voit la page de maintenance) et pastille « Actif » du menu ; pendant le délai d'annonce d'une
     fenêtre planifiée, le bandeau d'annonce refermable commun aux gabarits.
+    @persist est écrit à la main (<div x-persist="nom">, ce que la directive produit) : la directive appelle
+    Livewire::forceAssetInjection(), un drapeau statique qui injecterait Livewire dans toute page servie ensuite par le
+    même processus (inject_assets=false : le public ne reçoit jamais Livewire). Noms uniques obligatoires.
+    Navigation sans rechargement (wire:navigate, resources/js/admin/navigation.js) : Livewire remplace le <body> et fusionne
+    le <head>. admin.js est posé dans le <head> (data-navigate-track, chargé une fois) ; la barre latérale (@persist) garde
+    son défilement et son état, son entrée active (aria-current) et ses pastilles sont recalculées d'après #xmNavState ;
+    la cloche est persistée (compteur et sondage ne repartent pas de zéro) ; la région aria-live #xmRouteAnnouncer annonce
+    « Page : <titre> » et le focus passe au h1. Le bandeau SOS vit dans l'écran tableau de bord (wire:poll) : il est
+    rendu par la page, pas persisté, pour ne jamais afficher un SOS périmé. Les scripts en ligne portent le nonce de la
+    requête ; le nonce d'une navigation est aligné sur celui du document par navigation.js.
 --}}
 @props(['title' => null, 'adminPage' => '', 'breadcrumb' => [], 'seo' => []])
 @php
@@ -16,12 +26,25 @@
     } catch (\Throwable) {
         $maintenanceActive = false;
     }
+    $navGroups = app(\App\Application\Admin\AdminNavigation::class)->groups(auth()->user(), $adminPage, $maintenanceActive);
+    $navState = ['current' => null, 'badges' => []];
+    foreach ($navGroups as $navGroup) {
+        foreach ($navGroup['items'] as $navItem) {
+            if ($navItem['current']) {
+                $navState['current'] = $navItem['key'];
+            }
+            if ($navItem['badge'] !== null) {
+                $navState['badges'][$navItem['key']] = ['text' => $navItem['badge'], 'color' => $navItem['badgeColor'], 'label' => $navItem['badgeLabel']];
+            }
+        }
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     @include('partials.head', ['seo' => ['title' => $title ?? __('menus.admin.breadcrumb_root'), 'index' => false] + $seo, 'css' => ['resources/css/xomiton.css', 'resources/css/admin.css']])
     @livewireStyles
+    @vite('resources/js/admin.js')
     {{-- Barre latérale repliée mémorisée sur l'appareil (P10-01) : posée avant le premier rendu, sans saut de mise en page. --}}
     <script nonce="{{ Illuminate\Support\Facades\Vite::cspNonce() }}">try { if (localStorage.getItem('xm-admin-sidebar') === 'collapsed') document.documentElement.classList.add('xm-sidebar-collapsed'); } catch (e) {}</script>
     {{ $head ?? '' }}
@@ -30,7 +53,13 @@
 <body class="xm-admin">
     <a class="xm-skip-link" href="#contenu">{{ __('menus.skip_to_content') }}</a>
     <div class="xm-offline-bar" id="xmOfflineBar" role="status"><i class="bi bi-wifi-off me-1" aria-hidden="true"></i> {{ __('menus.offline_banner_admin') }}</div>
-    @include('partials.admin-sidebar', ['adminPage' => $adminPage, 'maintenanceActive' => $maintenanceActive])
+    <div x-persist="admin-sidebar">
+        @include('partials.admin-sidebar', ['adminPage' => $adminPage, 'maintenanceActive' => $maintenanceActive, 'groups' => $navGroups])
+    </div>
+    {{-- Annonce vocale du changement de page (navigation sans rechargement) : région persistée, donc présente avant chaque annonce. --}}
+    <div x-persist="admin-announcer">
+        <div class="visually-hidden" id="xmRouteAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div>
+    </div>
     <div class="xm-admin-main">
         @include('partials.admin-topbar', ['title' => $title ?? __('menus.admin.breadcrumb_root'), 'breadcrumb' => $breadcrumb, 'actions' => $actions ?? null])
         <main class="xm-admin-content" id="contenu" tabindex="-1">
@@ -39,7 +68,7 @@
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                         <span>{{ __('maintenance.admin.banner_active') }}</span>
                         @can('platform.maintenance')
-                            @if ($adminPage !== 'maintenance')<a class="btn btn-sm btn-light border" href="{{ route('admin.maintenance') }}">{{ __('maintenance.admin.banner_manage') }}</a>@endif
+                            @if ($adminPage !== 'maintenance')<a wire:navigate wire:navigate.hover class="btn btn-sm btn-light border" href="{{ route('admin.maintenance') }}">{{ __('maintenance.admin.banner_manage') }}</a>@endif
                         @endcan
                     </div>
                 </x-alert>
@@ -69,10 +98,12 @@
             'prompt' => __('admin.confirm.prompt'),
             'promptLabel' => __('admin.confirm.prompt_label'),
             'mismatch' => __('admin.confirm.mismatch'),
+            'pageAnnounce' => __('admin.nav.page_announce'),
+            'navReload' => __('admin.nav.reloading'),
         ];
     @endphp
     <script type="application/json" id="xmAdminI18n">@json($adminI18n)</script>
-    @vite('resources/js/admin.js')
+    <script type="application/json" id="xmNavState">@json($navState)</script>
     @livewireScripts
     {{-- Scripts d'écran (ADR-18) : <script type="module" nonce> ; bibliothèques à la demande par `await XM.admin.load('chart')`. --}}
     @stack('adminScripts')

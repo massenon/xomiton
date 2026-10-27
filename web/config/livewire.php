@@ -131,9 +131,11 @@ return [
     |
     */
 
+    // Xomiton (spec navigation, Partie 1) : barre de progression visible, couleur = jeton --xm-primary
+    // (--xm-blue-500, resources/css/theme/tokens.css) ; à tenir en phase avec le jeton.
     'navigate' => [
         'show_progress_bar' => true,
-        'progress_bar_color' => '#2299dd',
+        'progress_bar_color' => '#0433C3',
     ],
 
     /*

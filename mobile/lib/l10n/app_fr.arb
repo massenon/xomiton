@@ -3156,6 +3156,19 @@
     "@admin_nav_expand": {
         "description": "admin.nav.expand"
     },
+    "admin_nav_page_announce": "Page : {title}",
+    "@admin_nav_page_announce": {
+        "description": "admin.nav.page_announce",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_nav_reloading": "Rechargement de la page…",
+    "@admin_nav_reloading": {
+        "description": "admin.nav.reloading"
+    },
     "admin_page_title": "{page} – Administration",
     "@admin_page_title": {
         "description": "admin.page_title",

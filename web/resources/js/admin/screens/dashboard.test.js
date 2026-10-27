@@ -110,3 +110,27 @@ describe('tableau de bord admin : graphiques et son (P10-04)', () => {
     expect(document.querySelector('[data-xm-sos-sound]').getAttribute('aria-pressed')).toBe('false');
   });
 });
+
+describe('tableau de bord : démontage à la navigation sans rechargement', () => {
+  it('retire les écouteurs du son et libère le drapeau pour que le retour sur l’écran ne les double pas', () => {
+    // Document neuf : les écouteurs laissés sur `document` par les tests précédents ne faussent pas le décompte.
+    const doc = document.implementation.createHTMLDocument('t');
+    doc.body.innerHTML = '<button data-xm-sos-sound><span data-xm-sos-sound-label data-on="Son activé" data-off="Son coupé"></span></button>';
+    const win = { document: doc, addEventListener: window.addEventListener.bind(window), removeEventListener: window.removeEventListener.bind(window) };
+    window.localStorage.clear();
+    const button = doc.querySelector('[data-xm-sos-sound]');
+
+    const off = bindSound(win);
+    button.click();
+    expect(soundEnabled()).toBe(true);
+    off();
+    button.click();
+    expect(soundEnabled()).toBe(true); // plus d'écouteur : l'état n'a pas bougé
+    expect(doc.documentElement.dataset.xmSosSoundBound).toBeUndefined();
+
+    const again = bindSound(win);
+    button.click();
+    expect(soundEnabled()).toBe(false); // un seul écouteur : un clic = une bascule
+    again();
+  });
+});

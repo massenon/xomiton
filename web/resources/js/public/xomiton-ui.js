@@ -7,6 +7,20 @@ import './sos-button.js';
 
 const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
 window.XM = window.XM || {};
+// Administration (navigation sans rechargement, Livewire wire:navigate) : le <body> est remplacé sans nouveau
+// DOMContentLoaded ; les montages propres à la page se rejouent sur `livewire:navigated`, uniquement après un vrai
+// `livewire:navigating` (Livewire envoie aussi `navigated` au premier chargement). Sur le site public, rien de plus.
+let navigations = 0;
+document.addEventListener('livewire:navigating', () => { navigations += 1; });
+const onPage = (fn) => {
+  ready(fn);
+  let seen = 0;
+  document.addEventListener('livewire:navigated', () => {
+    if (navigations === seen) return;
+    seen = navigations;
+    fn();
+  });
+};
 
 /* ---------- Toasts (<x-toast>) : Bootstrap Toast, coin supérieur droit, 4,5 s, aria-live ---------- */
 const TOAST_DELAY = 4500;
@@ -43,10 +57,10 @@ window.addEventListener('toast', (e) => {
   if (typeof window.XM.toastHandler === 'function') window.XM.toastHandler(d);
   else window.XM.toast(d.message, d.type || 'primary');
 });
-ready(() => document.querySelectorAll('[data-xm-toast-autoshow]').forEach(showToast));
+onPage(() => document.querySelectorAll('[data-xm-toast-autoshow]').forEach(showToast));
 
 /* ---------- Bandeaux refermables mémorisés pour la session (annonce de maintenance, P13-08) ---------- */
-ready(() => bindDismissible(document));
+onPage(() => bindDismissible(document));
 
 /* ---------- Modales (<x-modal>) : retour du focus au déclencheur, mot de confirmation, garde « formulaire modifié » ---------- */
 const syncConfirmWord = (modal) => {
@@ -80,7 +94,7 @@ document.addEventListener('input', (e) => {
 });
 
 /* ---------- Onglets (<x-tabs>) : onglet actif mémorisé dans l'URL (?tab=) ---------- */
-ready(() => {
+onPage(() => {
   document.querySelectorAll('[data-xm-tabs]').forEach((root) => {
     const param = root.dataset.xmTabs || 'tab';
     const wanted = new URLSearchParams(location.search).get(param);
@@ -99,7 +113,7 @@ ready(() => {
 });
 
 /* ---------- Cloche (<x-bell>) : filtres Non lus / Lues / Toutes, compteur, « Tout marquer comme lu » (état local, en attente du polling Livewire) ---------- */
-ready(() => {
+onPage(() => {
   document.querySelectorAll('[data-xm-bell]').forEach((bell) => {
     let tab = 'unread';
     const items = () => Array.from(bell.querySelectorAll('[data-notif-id]'));

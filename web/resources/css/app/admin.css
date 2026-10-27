@@ -110,3 +110,9 @@
 .xm-journal__detail { max-width: 36rem; overflow-wrap: anywhere; }
 .xm-journal__code { color: var(--xm-text-muted); font-size: .75rem; overflow-wrap: anywhere; }
 .xm-journal__days { width: 9.5rem; }
+
+/* ---------- Navigation sans rechargement ---------- */
+/* Focus programmatique sur le h1 après chaque page (WCAG 2.4.3) : un titre n'est pas un contrôle, pas d'anneau. */
+.xm-admin-topbar h1:focus { outline: none; }
+/* Pastille « douce » verte (journal d'audit) : texte AA sur le fond vert pâle (axe color-contrast). */
+.xm-admin .badge.bg-opacity-10.text-success { color: var(--xm-success-text) !important; }
