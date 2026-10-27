@@ -118,6 +118,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // P16-02 : toute relation chargée paresseusement (N+1) lève une exception hors production (tests compris).
+        Model::preventLazyLoading(! $this->app->isProduction());
+
         $this->registerAuthorization();
         $this->registerRateLimiters();
         $this->registerNotificationChannels();

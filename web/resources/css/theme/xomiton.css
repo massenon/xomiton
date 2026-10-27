@@ -170,3 +170,34 @@ li.xm-poll-opt { cursor: default; }
 [data-bs-theme=dark] .xm-poll-opt.is-lead .xm-poll-bar { background: rgba(124, 151, 255, .30); }
 .xm-poll-option-row .btn { min-width: 44px; }
 @media (prefers-reduced-motion: reduce) { .xm-poll-bar { transition: none; } }
+
+/* ---------- Contraste et liens (P16-01, axe-core, WCAG 1.4.1 / 1.4.3) : tout passe par les jetons des deux thèmes ---------- */
+/* Bootstrap compose la couleur des liens depuis --bs-link-color-rgb, resté bleu de marque en thème sombre dans style.css. */
+:root, [data-bs-theme="light"], [data-bs-theme="dark"] {
+  --bs-link-color-rgb: var(--xm-primary-rgb);
+  --bs-link-hover-color-rgb: var(--xm-primary-hover-rgb);
+}
+/* Un lien au milieu d'un texte se distingue par autre chose que la couleur. */
+:is(p, li, dd, td, label, .alert, .card-footer, .small) a:not(.btn, .nav-link, .dropdown-item, .page-link, .list-group-item, .xm-chip, .stretched-link, .badge, .xm-side-link, [class*="text-decoration"]) {
+  text-decoration: underline; text-underline-offset: .15em;
+}
+/* Boutons et pastilles « soft » du thème Social : couleurs en dur remplacées par les jetons (clair et sombre). */
+.btn-primary-soft { color: var(--xm-primary); background-color: rgba(var(--xm-primary-rgb), .1); }
+.btn-danger-soft { color: var(--xm-danger-text); background-color: rgba(var(--xm-secondary-rgb), .1); }
+.btn-success-soft { color: var(--xm-success-text); }
+.btn-info-soft { color: var(--xm-info); }
+.btn-warning-soft { color: var(--xm-warning-text); }
+[data-bs-theme="dark"] .btn-warning-soft { color: var(--xm-warning); }
+.badge.bg-opacity-10.text-danger, .badge.bg-opacity-25.text-danger { color: var(--xm-danger-text) !important; }
+.text-success-emphasis { color: var(--xm-success-text) !important; }
+/* Cartes teintées : le texte reste le texte courant (et non le « blanc sur plein » de .bg-primary). */
+.bg-primary.bg-opacity-10, .bg-primary.bg-opacity-25, .bg-secondary.bg-opacity-10, .bg-secondary.bg-opacity-25,
+.bg-danger.bg-opacity-10, .bg-danger.bg-opacity-25, .bg-success.bg-opacity-10, .bg-success.bg-opacity-25,
+.bg-info.bg-opacity-10, .bg-info.bg-opacity-25 { color: var(--bs-body-color); }
+.bg-primary.text-white { color: var(--xm-on-primary) !important; }
+/* Fil d'Ariane et textes d'appoint : gris du jeton « texte atténué », jamais le gris 500 du thème Social. */
+.breadcrumb { --bs-breadcrumb-item-active-color: var(--xm-text-muted); }
+.breadcrumb-item a { color: var(--xm-text-muted); }
+.xm-chip { color: var(--xm-primary); }
+.xm-side-link:hover, .xm-side-link.active { color: var(--xm-primary); }
+.xm-side-link.danger { color: var(--xm-danger-text); }

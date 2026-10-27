@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $roles = Role::query()->where('guard_name', self::GUARD)->whereIn('name', ['admin', 'superadmin'])->get();
+        $roles = Role::query()->with('permissions')->where('guard_name', self::GUARD)->whereIn('name', ['admin', 'superadmin'])->get();
         $old = Permission::query()->where('guard_name', self::GUARD)->where('name', self::OLD)->first();
 
         if ($roles->isEmpty() && $old === null) {

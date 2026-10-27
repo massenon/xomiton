@@ -125,7 +125,7 @@ return [
         'refused_generic' => 'Le serveur a refusé cette fiche. Vérifie les champs et recommence la saisie.',
         'refused_correct' => 'Corriger et renvoyer',
         'refused_blocked' => 'Termine ou efface la fiche en cours pour reprendre celle-ci.',
-        'refused_lost' => 'Cette fiche n’est plus sur l’appareil : saisis-la de nouveau.',
+        'refused_lost' => 'Cette fiche n’est plus sur l’appareil : saisis-la de nouveau.',
         'refused_dismiss' => 'Fermer',
         'recent' => 'Derniers dossiers',
         'all_cases' => 'Tous mes dossiers',

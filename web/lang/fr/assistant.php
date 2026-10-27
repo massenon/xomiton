@@ -28,7 +28,7 @@ return [
         'intro' => 'Je n’ai pas trouvé de réponse précise à ta question.',
         'suggestions' => 'Ces questions sont peut-être proches de la tienne :',
         'suggestion' => '• :question',
-        'rephrase' => 'Tu peux aussi reformuler en quelques mots (ex. « comment porter plainte ? », « contraception d’urgence », « chantage à l’outing »).',
+        'rephrase' => 'Tu peux aussi reformuler en quelques mots (ex. « comment porter plainte ? », « contraception d’urgence », « chantage à l’outing »).',
         'disclaimer' => 'Je donne des informations générales et je ne remplace pas une professionnelle de santé, de droit ou d’écoute. En cas de danger, utilise le bouton SOS.',
     ],
 

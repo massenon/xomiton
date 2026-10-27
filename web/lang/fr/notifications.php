@@ -236,7 +236,7 @@ return [
 
     'sync_conflict' => [
         'title' => 'Conflit de synchronisation',
-        'body' => ':subject · champ « :field » : deux versions à arbitrer.',
+        'body' => ':subject · champ « :field » : deux versions à arbitrer.',
         'discreet' => 'Conflit de synchronisation',
     ],
 

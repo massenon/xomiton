@@ -348,7 +348,7 @@ abstract class XomitonNotification extends Notification
             return true;
         }
 
-        return NotificationPreferences::allows($user->settings?->notification_prefs, $this->category(), $channel);
+        return NotificationPreferences::allows($user->loadMissing('settings')->settings?->notification_prefs, $this->category(), $channel);
     }
 
     /** Le destinataire possède-t-il au moins un abonnement push de ce type ? */

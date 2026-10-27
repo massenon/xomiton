@@ -11,8 +11,8 @@ return [
 
     'rejected' => [
         'unreadable' => 'Le fichier n’a pas pu être lu. Choisir un autre fichier et réessayer.',
-        'type' => 'Ce type de fichier n’est pas accepté ici. Formats acceptés : :types.',
-        'too_large' => 'Le fichier est trop lourd (:size). Poids maximal : :max.',
+        'type' => 'Ce type de fichier n’est pas accepté ici. Formats acceptés : :types.',
+        'too_large' => 'Le fichier est trop lourd (:size). Poids maximal : :max.',
         'corrupt_image' => 'Cette image est illisible ou abîmée. Choisir une autre image.',
         'too_many_pixels' => 'Cette image est trop grande (:width × :height px). Réduire ses dimensions avant de la téléverser.',
         'not_a_file' => 'Aucun fichier n’a été reçu.',

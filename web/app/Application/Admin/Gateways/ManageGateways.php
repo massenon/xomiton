@@ -169,7 +169,7 @@ final class ManageGateways
      */
     public function copyText(OutboundDelivery $delivery): string
     {
-        $post = $delivery->post;
+        $post = $delivery->loadMissing('post')->post;
 
         // Jamais publish() ici : « copier » ne doit pas envoyer au réseau (connecteur à API).
         return $post === null ? '' : ManualPublisher::copyText($post);

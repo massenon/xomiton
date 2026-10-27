@@ -319,7 +319,7 @@ return [
             'too_many_pending' => 'Vous avez déjà :max rapports en préparation : attendez la fin de l’un d’eux.',
             'recipient' => 'Adresse e-mail invalide : :address.',
             'recipients_max' => ':max destinataires au plus.',
-            'detail_no_mail' => 'Le registre détaillé n’est jamais envoyé par e-mail : retirez les destinataires ou le registre, puis téléchargez le fichier depuis l’historique.',
+            'detail_no_mail' => 'Le registre détaillé n’est jamais envoyé par e-mail : retirez les destinataires ou le registre, puis téléchargez le fichier depuis l’historique.',
             'recipients_required' => 'Indiquez au moins un destinataire.',
             'formats_required' => 'Choisissez au moins un format.',
             'day_range' => 'Le jour d’envoi doit être compris entre 1 et 28.',

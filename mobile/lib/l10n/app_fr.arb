@@ -414,7 +414,7 @@
             }
         }
     },
-    "admin_alerts_detail_take_help": "Cette alerte n’a pas encore d’accusé de réception : l’escalade continue tant que personne ne la prend en charge.",
+    "admin_alerts_detail_take_help": "Cette alerte n’a pas encore d’accusé de réception : l’escalade continue tant que personne ne la prend en charge.",
     "@admin_alerts_detail_take_help": {
         "description": "admin.alerts.detail.take_help"
     },
@@ -2901,7 +2901,7 @@
     "@admin_moderation_kpi_words": {
         "description": "admin.moderation.kpi.words"
     },
-    "admin_moderation_message_excerpt": "Message privé : son texte n’est lisible que par « Lire le message ».",
+    "admin_moderation_message_excerpt": "Message privé : son texte n’est lisible que par « Lire le message ».",
     "@admin_moderation_message_excerpt": {
         "description": "admin.moderation.message_excerpt"
     },
@@ -3093,11 +3093,11 @@
     "@admin_moderation_words_empty": {
         "description": "admin.moderation.words.empty"
     },
-    "admin_moderation_words_help": "3 à 40 caractères. « Bloquer » refuse la publication ; « signaler » la laisse passer et ouvre un signalement.",
+    "admin_moderation_words_help": "3 à 40 caractères. « Bloquer » refuse la publication ; « signaler » la laisse passer et ouvre un signalement.",
     "@admin_moderation_words_help": {
         "description": "admin.moderation.words.help"
     },
-    "admin_moderation_words_remove": "Retirer « {word} »",
+    "admin_moderation_words_remove": "Retirer « {word} »",
     "@admin_moderation_words_remove": {
         "description": "admin.moderation.words.remove",
         "placeholders": {
@@ -3263,7 +3263,7 @@
     "@admin_registrations_manual_all": {
         "description": "admin.registrations.manual.all"
     },
-    "admin_registrations_manual_help": "Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte. Avec « tous », chaque nouveau compte reste en attente jusqu’à votre validation.",
+    "admin_registrations_manual_help": "Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte. Avec « tous », chaque nouveau compte reste en attente jusqu’à votre validation.",
     "@admin_registrations_manual_help": {
         "description": "admin.registrations.manual.help"
     },
@@ -3339,7 +3339,7 @@
     "@admin_registrations_state_open_peers": {
         "description": "admin.registrations.state.open_peers"
     },
-    "admin_registrations_state_outside_window": "L’interrupteur est sur « ouvertes », mais nous sommes hors de la plage horaire ({start} à {end}, heure du Bénin) : la page affiche le message de fermeture.",
+    "admin_registrations_state_outside_window": "L’interrupteur est sur « ouvertes », mais nous sommes hors de la plage horaire ({start} à {end}, heure du Bénin) : la page affiche le message de fermeture.",
     "@admin_registrations_state_outside_window": {
         "description": "admin.registrations.state.outside_window",
         "placeholders": {
@@ -4119,7 +4119,7 @@
     "@admin_users_fields_pseudo": {
         "description": "admin.users.fields.pseudo"
     },
-    "admin_users_fields_pseudo_help": "3 à 40 caractères : lettres, chiffres, « _ », « . » et « - ».",
+    "admin_users_fields_pseudo_help": "3 à 40 caractères : lettres, chiffres, « _ », « . » et « - ».",
     "@admin_users_fields_pseudo_help": {
         "description": "admin.users.fields.pseudo_help"
     },
@@ -4131,7 +4131,7 @@
     "@admin_users_fields_send_invitation": {
         "description": "admin.users.fields.send_invitation"
     },
-    "admin_users_fields_send_invitation_help": "La personne reçoit un code et un lien pour choisir son mot de passe. Aucun mot de passe n’est affiché ni transmis. Le code expire vite : elle peut en redemander un avec « Mot de passe oublié ».",
+    "admin_users_fields_send_invitation_help": "La personne reçoit un code et un lien pour choisir son mot de passe. Aucun mot de passe n’est affiché ni transmis. Le code expire vite : elle peut en redemander un avec « Mot de passe oublié ».",
     "@admin_users_fields_send_invitation_help": {
         "description": "admin.users.fields.send_invitation_help"
     },
@@ -4163,11 +4163,11 @@
     "@admin_users_filters_search_placeholder_moderator": {
         "description": "admin.users.filters.search_placeholder_moderator"
     },
-    "admin_users_intro": "Les comptes de la plateforme : validation des demandes de pair·es, rôles, suspension et création de comptes. La matrice des permissions en bas de page est en lecture seule.",
+    "admin_users_intro": "Les comptes de la plateforme : validation des demandes de pair·es, rôles, suspension et création de comptes. La matrice des permissions en bas de page est en lecture seule.",
     "@admin_users_intro": {
         "description": "admin.users.intro"
     },
-    "admin_users_intro_moderator": "Les comptes de la plateforme, en lecture. Vous pouvez suspendre un compte de membre ou de pair·e ; les comptes d’administration restent hors de votre portée.",
+    "admin_users_intro_moderator": "Les comptes de la plateforme, en lecture. Vous pouvez suspendre un compte de membre ou de pair·e ; les comptes d’administration restent hors de votre portée.",
     "@admin_users_intro_moderator": {
         "description": "admin.users.intro_moderator"
     },
@@ -4393,7 +4393,7 @@
     "@admin_users_suspend_reason": {
         "description": "admin.users.suspend_reason"
     },
-    "admin_users_table_caption": "Comptes de la plateforme : pseudonyme, rôle, statut, département et date d’inscription.",
+    "admin_users_table_caption": "Comptes de la plateforme : pseudonyme, rôle, statut, département et date d’inscription.",
     "@admin_users_table_caption": {
         "description": "admin.users.table_caption"
     },
@@ -9299,7 +9299,7 @@
     "@admin_newsletter_errors_test_address_invalid": {
         "description": "admin_newsletter.errors.test_address_invalid"
     },
-    "admin_newsletter_errors_test_quota": "Limite quotidienne d’envois de test atteinte : réessayez demain.",
+    "admin_newsletter_errors_test_quota": "Limite quotidienne d’envois de test atteinte : réessayez demain.",
     "@admin_newsletter_errors_test_quota": {
         "description": "admin_newsletter.errors.test_quota"
     },
@@ -9307,7 +9307,7 @@
     "@admin_newsletter_errors_testimonial_consent": {
         "description": "admin_newsletter.errors.testimonial_consent"
     },
-    "admin_newsletter_errors_variables_unknown": "Variable(s) non autorisée(s) : {list}. Utilisez seulement les variables proposées.",
+    "admin_newsletter_errors_variables_unknown": "Variable(s) non autorisée(s) : {list}. Utilisez seulement les variables proposées.",
     "@admin_newsletter_errors_variables_unknown": {
         "description": "admin_newsletter.errors.variables_unknown",
         "placeholders": {
@@ -9373,7 +9373,7 @@
     "@admin_newsletter_subscribers_attestation": {
         "description": "admin_newsletter.subscribers.attestation"
     },
-    "admin_newsletter_subscribers_bulk_tag": "Ajouter le tag « {tag} »",
+    "admin_newsletter_subscribers_bulk_tag": "Ajouter le tag « {tag} »",
     "@admin_newsletter_subscribers_bulk_tag": {
         "description": "admin_newsletter.subscribers.bulk_tag",
         "placeholders": {
@@ -9715,7 +9715,7 @@
     "@admin_system_backups_empty": {
         "description": "admin_system.backups.empty"
     },
-    "admin_system_backups_empty_text": "Lancez « Sauvegarder maintenant » : la première archive prend quelques secondes.",
+    "admin_system_backups_empty_text": "Lancez « Sauvegarder maintenant » : la première archive prend quelques secondes.",
     "@admin_system_backups_empty_text": {
         "description": "admin_system.backups.empty_text"
     },
@@ -9743,7 +9743,7 @@
     "@admin_system_backups_errors_unreadable": {
         "description": "admin_system.backups.errors.unreadable"
     },
-    "admin_system_backups_errors_word_mismatch": "Saisissez exactement « RESTAURER » pour confirmer la restauration.",
+    "admin_system_backups_errors_word_mismatch": "Saisissez exactement « RESTAURER » pour confirmer la restauration.",
     "@admin_system_backups_errors_word_mismatch": {
         "description": "admin_system.backups.errors.word_mismatch"
     },
@@ -9886,7 +9886,7 @@
     "@admin_system_backups_restore_consequence_maintenance": {
         "description": "admin_system.backups.restore.consequence_maintenance"
     },
-    "admin_system_backups_restore_consequence_safety": "L’état actuel est d’abord sauvegardé automatiquement (copie « avant restauration »).",
+    "admin_system_backups_restore_consequence_safety": "L’état actuel est d’abord sauvegardé automatiquement (copie « avant restauration »).",
     "@admin_system_backups_restore_consequence_safety": {
         "description": "admin_system.backups.restore.consequence_safety"
     },
@@ -10025,7 +10025,7 @@
             }
         }
     },
-    "admin_system_backups_storage": "Stockage : disque « {disk} ».",
+    "admin_system_backups_storage": "Stockage : disque « {disk} ».",
     "@admin_system_backups_storage": {
         "description": "admin_system.backups.storage",
         "placeholders": {
@@ -10204,7 +10204,7 @@
     "@admin_system_settings_french_required": {
         "description": "admin_system.settings.french_required"
     },
-    "admin_system_settings_general_languages_hint": "Le français est obligatoire. Seul le français est complet : les autres langues sont annoncées « bientôt ».",
+    "admin_system_settings_general_languages_hint": "Le français est obligatoire. Seul le français est complet : les autres langues sont annoncées « bientôt ».",
     "@admin_system_settings_general_languages_hint": {
         "description": "admin_system.settings.general.languages_hint"
     },
@@ -10397,7 +10397,7 @@
     "@admin_system_settings_security_otp_title": {
         "description": "admin_system.settings.security.otp_title"
     },
-    "admin_system_settings_security_session_hint": "Distincte de « Rester connecté·e », qui garde la session 14 jours.",
+    "admin_system_settings_security_session_hint": "Distincte de « Rester connecté·e », qui garde la session 14 jours.",
     "@admin_system_settings_security_session_hint": {
         "description": "admin_system.settings.security.session_hint"
     },
@@ -10731,7 +10731,7 @@
     "@admin_system_sync_devices_columns_pending": {
         "description": "admin_system.sync.devices.columns.pending"
     },
-    "admin_system_sync_devices_confirm_revoke": "Révoquer l’appareil « {label} » ? Il ne pourra plus synchroniser et ses notifications push sont supprimées.",
+    "admin_system_sync_devices_confirm_revoke": "Révoquer l’appareil « {label} » ? Il ne pourra plus synchroniser et ses notifications push sont supprimées.",
     "@admin_system_sync_devices_confirm_revoke": {
         "description": "admin_system.sync.devices.confirm_revoke",
         "placeholders": {
@@ -10940,7 +10940,7 @@
     "@admin_system_sync_merge_field": {
         "description": "admin_system.sync.merge.field"
     },
-    "admin_system_sync_merge_intro": "Saisissez la valeur à conserver pour « {field} » : elle remplace la version du serveur et est enregistrée dans le dossier.",
+    "admin_system_sync_merge_intro": "Saisissez la valeur à conserver pour « {field} » : elle remplace la version du serveur et est enregistrée dans le dossier.",
     "@admin_system_sync_merge_intro": {
         "description": "admin_system.sync.merge.intro",
         "placeholders": {
@@ -11017,7 +11017,7 @@
     "@admin_system_sync_toasts_resolved_serveur": {
         "description": "admin_system.sync.toasts.resolved_serveur"
     },
-    "admin_system_sync_toasts_revoked": "Appareil « {label} » révoqué.",
+    "admin_system_sync_toasts_revoked": "Appareil « {label} » révoqué.",
     "@admin_system_sync_toasts_revoked": {
         "description": "admin_system.sync.toasts.revoked",
         "placeholders": {
@@ -12355,7 +12355,7 @@
     "@alerts_report_fields_evidence_reselect": {
         "description": "alerts.report.fields.evidence_reselect"
     },
-    "alerts_report_fields_evidence_too_large": "« {name} » dépasse {max} Mo.",
+    "alerts_report_fields_evidence_too_large": "« {name} » dépasse {max} Mo.",
     "@alerts_report_fields_evidence_too_large": {
         "description": "alerts.report.fields.evidence_too_large",
         "placeholders": {
@@ -12376,7 +12376,7 @@
             }
         }
     },
-    "alerts_report_fields_evidence_type": "« {name} » n’est ni une image, ni un PDF, ni un fichier audio.",
+    "alerts_report_fields_evidence_type": "« {name} » n’est ni une image, ni un PDF, ni un fichier audio.",
     "@alerts_report_fields_evidence_type": {
         "description": "alerts.report.fields.evidence_type",
         "placeholders": {
@@ -13274,7 +13274,7 @@
     "@assistant_fallback_intro": {
         "description": "assistant.fallback.intro"
     },
-    "assistant_fallback_rephrase": "Tu peux aussi reformuler en quelques mots (ex. « comment porter plainte ? », « contraception d’urgence », « chantage à l’outing »).",
+    "assistant_fallback_rephrase": "Tu peux aussi reformuler en quelques mots (ex. « comment porter plainte ? », « contraception d’urgence », « chantage à l’outing »).",
     "@assistant_fallback_rephrase": {
         "description": "assistant.fallback.rephrase"
     },
@@ -15590,7 +15590,7 @@
     "@community_events_api_public_reserved": {
         "description": "community.events.api.public_reserved"
     },
-    "community_events_cancel_label": "Annuler ma participation à « {title} »",
+    "community_events_cancel_label": "Annuler ma participation à « {title} »",
     "@community_events_cancel_label": {
         "description": "community.events.cancel_label",
         "placeholders": {
@@ -15603,7 +15603,7 @@
     "@community_events_create_address": {
         "description": "community.events.create.address"
     },
-    "community_events_create_address_help": "Visible seulement par les personnes qui répondent « Je participe ».",
+    "community_events_create_address_help": "Visible seulement par les personnes qui répondent « Je participe ».",
     "@community_events_create_address_help": {
         "description": "community.events.create.address_help"
     },
@@ -15827,7 +15827,7 @@
     "@community_events_details": {
         "description": "community.events.details"
     },
-    "community_events_details_label": "Détails de « {title} »",
+    "community_events_details_label": "Détails de « {title} »",
     "@community_events_details_label": {
         "description": "community.events.details_label",
         "placeholders": {
@@ -15876,7 +15876,7 @@
     "@community_events_going_cancel": {
         "description": "community.events.going_cancel"
     },
-    "community_events_going_label": "Je participe à « {title} »",
+    "community_events_going_label": "Je participe à « {title} »",
     "@community_events_going_label": {
         "description": "community.events.going_label",
         "placeholders": {
@@ -16414,7 +16414,7 @@
     "@community_forums_create_anonymous": {
         "description": "community.forums.create.anonymous"
     },
-    "community_forums_create_anonymous_help": "Ton pseudo n’apparaîtra pas : « Membre anonyme » s’affichera à la place.",
+    "community_forums_create_anonymous_help": "Ton pseudo n’apparaîtra pas : « Membre anonyme » s’affichera à la place.",
     "@community_forums_create_anonymous_help": {
         "description": "community.forums.create.anonymous_help"
     },
@@ -18061,7 +18061,7 @@
             }
         }
     },
-    "components_badge_status_prefix": "Statut :",
+    "components_badge_status_prefix": "Statut :",
     "@components_badge_status_prefix": {
         "description": "components.badge.status_prefix"
     },
@@ -18255,7 +18255,7 @@
     "@components_maintenance_notice_tomorrow": {
         "description": "components.maintenance_notice.tomorrow"
     },
-    "components_modal_confirm_word_label": "Pour confirmer, saisis le mot suivant :",
+    "components_modal_confirm_word_label": "Pour confirmer, saisis le mot suivant :",
     "@components_modal_confirm_word_label": {
         "description": "components.modal.confirm_word_label"
     },
@@ -18263,7 +18263,7 @@
     "@components_modal_delete_action": {
         "description": "components.modal.delete_action"
     },
-    "components_modal_dirty_guard": "Abandonner les modifications ?",
+    "components_modal_dirty_guard": "Abandonner les modifications ?",
     "@components_modal_dirty_guard": {
         "description": "components.modal.dirty_guard"
     },
@@ -18576,7 +18576,7 @@
     "@components_timeline_late": {
         "description": "components.timeline.late"
     },
-    "components_timeline_next": "Prochain suivi : {date}",
+    "components_timeline_next": "Prochain suivi : {date}",
     "@components_timeline_next": {
         "description": "components.timeline.next",
         "placeholders": {
@@ -18601,7 +18601,7 @@
     "@components_urgency_levels_medium": {
         "description": "components.urgency.levels.medium"
     },
-    "components_urgency_prefix": "Urgence :",
+    "components_urgency_prefix": "Urgence :",
     "@components_urgency_prefix": {
         "description": "components.urgency.prefix"
     },
@@ -19154,7 +19154,7 @@
             }
         }
     },
-    "design_system_focus_note": "Focus : anneau 3 px --xm-focus-ring décalé de 2 px (simulé ici par la classe xm-demo-focus).",
+    "design_system_focus_note": "Focus : anneau 3 px --xm-focus-ring décalé de 2 px (simulé ici par la classe xm-demo-focus).",
     "@design_system_focus_note": {
         "description": "design_system.focus_note"
     },
@@ -19162,7 +19162,7 @@
     "@design_system_heading": {
         "description": "design_system.heading"
     },
-    "design_system_hover_note": "Survol : {text} (décrit, non simulable en capture).",
+    "design_system_hover_note": "Survol : {text} (décrit, non simulable en capture).",
     "@design_system_hover_note": {
         "description": "design_system.hover_note",
         "placeholders": {
@@ -19171,7 +19171,7 @@
             }
         }
     },
-    "design_system_intro": "Chaque composant x-* dans chacun de ses états. Le HTML est celui du prototype prototype_social (thème Social + classes xm-*) ; les couleurs viennent des jetons --xm-* uniquement.",
+    "design_system_intro": "Chaque composant x-* dans chacun de ses états. Le HTML est celui du prototype prototype_social (thème Social + classes xm-*) ; les couleurs viennent des jetons --xm-* uniquement.",
     "@design_system_intro": {
         "description": "design_system.intro"
     },
@@ -19191,7 +19191,7 @@
     "@design_system_sections_cards": {
         "description": "design_system.sections.cards"
     },
-    "design_system_sections_data": "Données : tableau, chronologie, squelettes",
+    "design_system_sections_data": "Données : tableau, chronologie, squelettes",
     "@design_system_sections_data": {
         "description": "design_system.sections.data"
     },
@@ -19211,7 +19211,7 @@
     "@design_system_sections_modals": {
         "description": "design_system.sections.modals"
     },
-    "design_system_sections_navigation": "Navigation : fil d’Ariane, onglets, accordéon, étapes",
+    "design_system_sections_navigation": "Navigation : fil d’Ariane, onglets, accordéon, étapes",
     "@design_system_sections_navigation": {
         "description": "design_system.sections.navigation"
     },
@@ -19227,7 +19227,7 @@
     "@design_system_sections_stats": {
         "description": "design_system.sections.stats"
     },
-    "design_system_sections_tokens": "Jetons : couleurs et typographie",
+    "design_system_sections_tokens": "Jetons : couleurs et typographie",
     "@design_system_sections_tokens": {
         "description": "design_system.sections.tokens"
     },
@@ -22210,7 +22210,7 @@
     "@footer_thematiques": {
         "description": "footer.thematiques"
     },
-    "mail_footer_help": "Besoin d’aide ?",
+    "mail_footer_help": "Besoin d’aide ?",
     "@mail_footer_help": {
         "description": "mail.footer.help"
     },
@@ -23312,7 +23312,7 @@
     "@menus_admin_ccc": {
         "description": "menus.admin.ccc"
     },
-    "menus_admin_content": "Contenu : thématiques & ressources",
+    "menus_admin_content": "Contenu : thématiques & ressources",
     "@menus_admin_content": {
         "description": "menus.admin.content"
     },
@@ -23620,7 +23620,7 @@
     "@menus_member_view_profile": {
         "description": "menus.member.view_profile"
     },
-    "menus_member_violences": "Violences : comprendre",
+    "menus_member_violences": "Violences : comprendre",
     "@menus_member_violences": {
         "description": "menus.member.violences"
     },
@@ -26628,7 +26628,7 @@
             }
         }
     },
-    "notifications_sync_conflict_body": "{subject} · champ « {field} » : deux versions à arbitrer.",
+    "notifications_sync_conflict_body": "{subject} · champ « {field} » : deux versions à arbitrer.",
     "@notifications_sync_conflict_body": {
         "description": "notifications.sync_conflict.body",
         "placeholders": {
@@ -28108,7 +28108,7 @@
     "@pages_evenements_details": {
         "description": "pages/evenements.details"
     },
-    "pages_evenements_details_label": "Voir l’événement « {title} »",
+    "pages_evenements_details_label": "Voir l’événement « {title} »",
     "@pages_evenements_details_label": {
         "description": "pages/evenements.details_label",
         "placeholders": {
@@ -28154,7 +28154,7 @@
     "@pages_evenements_join_register": {
         "description": "pages/evenements.join_register"
     },
-    "pages_evenements_join_text": "Créez un compte gratuit ou connectez-vous pour répondre « Je participe », recevoir l’adresse exacte et un rappel la veille.",
+    "pages_evenements_join_text": "Créez un compte gratuit ou connectez-vous pour répondre « Je participe », recevoir l’adresse exacte et un rappel la veille.",
     "@pages_evenements_join_text": {
         "description": "pages/evenements.join_text"
     },
@@ -30206,7 +30206,7 @@
     "@peer_collecte_refused_generic": {
         "description": "peer.collecte.refused_generic"
     },
-    "peer_collecte_refused_lost": "Cette fiche n’est plus sur l’appareil : saisis-la de nouveau.",
+    "peer_collecte_refused_lost": "Cette fiche n’est plus sur l’appareil : saisis-la de nouveau.",
     "@peer_collecte_refused_lost": {
         "description": "peer.collecte.refused_lost"
     },
@@ -32285,7 +32285,7 @@
     "@seo_breadcrumb_home": {
         "description": "seo.breadcrumb_home"
     },
-    "seo_default_description": "Xomiton : votre espace safe d’apprentissage et d’appui holistique pour les filles et femmes LBTQ+ au Bénin. Ressources, communauté, signalement anonyme.",
+    "seo_default_description": "Xomiton : votre espace safe d’apprentissage et d’appui holistique pour les filles et femmes LBTQ+ au Bénin. Ressources, communauté, signalement anonyme.",
     "@seo_default_description": {
         "description": "seo.default_description"
     },
@@ -33200,7 +33200,7 @@
     "@steering_reports_errors_day_range": {
         "description": "steering.reports.errors.day_range"
     },
-    "steering_reports_errors_detail_no_mail": "Le registre détaillé n’est jamais envoyé par e-mail : retirez les destinataires ou le registre, puis téléchargez le fichier depuis l’historique.",
+    "steering_reports_errors_detail_no_mail": "Le registre détaillé n’est jamais envoyé par e-mail : retirez les destinataires ou le registre, puis téléchargez le fichier depuis l’historique.",
     "@steering_reports_errors_detail_no_mail": {
         "description": "steering.reports.errors.detail_no_mail"
     },
@@ -33856,7 +33856,7 @@
     "@uploads_rejected_not_a_file": {
         "description": "uploads.rejected.not_a_file"
     },
-    "uploads_rejected_too_large": "Le fichier est trop lourd ({size}). Poids maximal : {max}.",
+    "uploads_rejected_too_large": "Le fichier est trop lourd ({size}). Poids maximal : {max}.",
     "@uploads_rejected_too_large": {
         "description": "uploads.rejected.too_large",
         "placeholders": {
@@ -33880,7 +33880,7 @@
             }
         }
     },
-    "uploads_rejected_type": "Ce type de fichier n’est pas accepté ici. Formats acceptés : {types}.",
+    "uploads_rejected_type": "Ce type de fichier n’est pas accepté ici. Formats acceptés : {types}.",
     "@uploads_rejected_type": {
         "description": "uploads.rejected.type",
         "placeholders": {
@@ -34605,7 +34605,7 @@
             }
         }
     },
-    "validation_doesnt_contain": "Le champ {attribute} ne doit contenir aucune des valeurs suivantes : {values}.",
+    "validation_doesnt_contain": "Le champ {attribute} ne doit contenir aucune des valeurs suivantes : {values}.",
     "@validation_doesnt_contain": {
         "description": "validation.doesnt_contain",
         "placeholders": {
@@ -34617,7 +34617,7 @@
             }
         }
     },
-    "validation_doesnt_end_with": "Le champ {attribute} ne doit pas se terminer par : {values}.",
+    "validation_doesnt_end_with": "Le champ {attribute} ne doit pas se terminer par : {values}.",
     "@validation_doesnt_end_with": {
         "description": "validation.doesnt_end_with",
         "placeholders": {
@@ -34629,7 +34629,7 @@
             }
         }
     },
-    "validation_doesnt_start_with": "Le champ {attribute} ne doit pas commencer par : {values}.",
+    "validation_doesnt_start_with": "Le champ {attribute} ne doit pas commencer par : {values}.",
     "@validation_doesnt_start_with": {
         "description": "validation.doesnt_start_with",
         "placeholders": {
@@ -34650,7 +34650,7 @@
             }
         }
     },
-    "validation_ends_with": "Le champ {attribute} doit se terminer par : {values}.",
+    "validation_ends_with": "Le champ {attribute} doit se terminer par : {values}.",
     "@validation_ends_with": {
         "description": "validation.ends_with",
         "placeholders": {
@@ -34680,7 +34680,7 @@
             }
         }
     },
-    "validation_extensions": "Le fichier {attribute} doit avoir l’une des extensions suivantes : {values}.",
+    "validation_extensions": "Le fichier {attribute} doit avoir l’une des extensions suivantes : {values}.",
     "@validation_extensions": {
         "description": "validation.extensions",
         "placeholders": {
@@ -34845,7 +34845,7 @@
             }
         }
     },
-    "validation_in_array_keys": "Le champ {attribute} doit contenir au moins une des clés suivantes : {values}.",
+    "validation_in_array_keys": "Le champ {attribute} doit contenir au moins une des clés suivantes : {values}.",
     "@validation_in_array_keys": {
         "description": "validation.in_array_keys",
         "placeholders": {
@@ -35085,7 +35085,7 @@
             }
         }
     },
-    "validation_mimes": "Le fichier {attribute} doit être de type : {values}.",
+    "validation_mimes": "Le fichier {attribute} doit être de type : {values}.",
     "@validation_mimes": {
         "description": "validation.mimes",
         "placeholders": {
@@ -35097,7 +35097,7 @@
             }
         }
     },
-    "validation_mimetypes": "Le fichier {attribute} doit être de type : {values}.",
+    "validation_mimetypes": "Le fichier {attribute} doit être de type : {values}.",
     "@validation_mimetypes": {
         "description": "validation.mimetypes",
         "placeholders": {
@@ -35516,7 +35516,7 @@
             }
         }
     },
-    "validation_required_array_keys": "Le champ {attribute} doit contenir des entrées pour : {values}.",
+    "validation_required_array_keys": "Le champ {attribute} doit contenir des entrées pour : {values}.",
     "@validation_required_array_keys": {
         "description": "validation.required_array_keys",
         "placeholders": {
@@ -35690,7 +35690,7 @@
             }
         }
     },
-    "validation_starts_with": "Le champ {attribute} doit commencer par : {values}.",
+    "validation_starts_with": "Le champ {attribute} doit commencer par : {values}.",
     "@validation_starts_with": {
         "description": "validation.starts_with",
         "placeholders": {

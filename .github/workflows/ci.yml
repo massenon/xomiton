@@ -56,6 +56,13 @@ jobs:
           npm ci
           npm run build:nocheck
 
+      # P16-06 : typographie et longueur des textes de lang/fr (App\Support\LangLinter) ; échoue à la moindre violation.
+      - name: Lint des textes (lang:lint)
+        run: php artisan lang:lint
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+
       - name: Tests (Pest)
         run: vendor/bin/pest --ci
         env:

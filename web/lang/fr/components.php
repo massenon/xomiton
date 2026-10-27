@@ -31,7 +31,7 @@ return [
     ],
 
     'badge' => [
-        'status_prefix' => 'Statut :',
+        'status_prefix' => 'Statut :',
     ],
 
     'bell' => [
@@ -89,9 +89,9 @@ return [
     ],
 
     'modal' => [
-        'confirm_word_label' => 'Pour confirmer, saisis le mot suivant :',
+        'confirm_word_label' => 'Pour confirmer, saisis le mot suivant :',
         'delete_action' => 'Supprimer définitivement',
-        'dirty_guard' => 'Abandonner les modifications ?',
+        'dirty_guard' => 'Abandonner les modifications ?',
     ],
 
     'skeleton' => [
@@ -135,7 +135,7 @@ return [
     'timeline' => [
         'label' => 'Chronologie du dossier',
         'empty' => 'Aucune étape enregistrée pour ce dossier.',
-        'next' => 'Prochain suivi : :date',
+        'next' => 'Prochain suivi : :date',
         'late' => 'En retard',
         'kinds' => [
             'internal' => 'Note interne',
@@ -145,7 +145,7 @@ return [
     ],
 
     'urgency' => [
-        'prefix' => 'Urgence :',
+        'prefix' => 'Urgence :',
         'levels' => [
             'low' => 'Faible',
             'medium' => 'Moyenne',

@@ -6,7 +6,7 @@ declare(strict_types=1);
 return [
     'footer' => [
         'tagline' => ':site — espace safe d’apprentissage et d’appui holistique, Bénin.',
-        'help' => 'Besoin d’aide ?',
+        'help' => 'Besoin d’aide ?',
         'unsubscribe' => 'Se désinscrire de la newsletter',
     ],
 ];

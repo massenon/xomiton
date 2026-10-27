@@ -123,7 +123,7 @@ final class Index extends Component
 
     protected function csvQuery(): Builder
     {
-        return $this->filtered()->with(['roles', 'zone']);
+        return $this->filtered()->with(['roles', 'zone', 'profile']);
     }
 
     protected function csvColumns(bool $full): array
@@ -229,7 +229,7 @@ final class Index extends Component
 
     public function render(): View
     {
-        $rows = $this->paginateQuery($this->filtered()->with(['roles', 'zone']));
+        $rows = $this->paginateQuery($this->filtered()->with(['roles', 'zone', 'profile']));
         [$sortKey, $sortDirection] = $this->currentSort();
 
         return view('livewire.admin.users.index', [

@@ -156,7 +156,7 @@ it('refuse un script PHP renommé en .jpg d’après son contenu réel, sans rie
     } catch (MediaRejected $e) {
         expect($e->reason)->toBe(MediaRejected::REASON_TYPE)
             ->and($e->detectedMime)->toBe('text/x-php')
-            ->and($e->getMessage())->toBe('Ce type de fichier n’est pas accepté ici. Formats acceptés : JPEG, PNG, WebP.');
+            ->and($e->getMessage())->toBe('Ce type de fichier n’est pas accepté ici. Formats acceptés : JPEG, PNG, WebP.');
     }
 
     expect(Storage::disk('local')->allFiles())->toBe([])
@@ -180,7 +180,7 @@ it('accepte un PDF dans la collection documents et le refuse dans images', funct
         ->and(Storage::disk('local')->get($media->path))->toBe(pdfBytes());
 
     expect(fn () => $this->uploader->upload(UploadedFile::fake()->createWithContent('image.jpg', pdfBytes()), 'images'))
-        ->toThrow(MediaRejected::class, 'Formats acceptés : JPEG, PNG, WebP.');
+        ->toThrow(MediaRejected::class, 'Formats acceptés : JPEG, PNG, WebP.');
 });
 
 it('refuse un fichier plus lourd que le poids maximal de sa collection', function (): void {
@@ -192,7 +192,7 @@ it('refuse un fichier plus lourd que le poids maximal de sa collection', functio
         $this->fail('MediaRejected attendue.');
     } catch (MediaRejected $e) {
         expect($e->reason)->toBe(MediaRejected::REASON_TOO_LARGE)
-            ->and($e->getMessage())->toContain('Poids maximal : 1 Ko');
+            ->and($e->getMessage())->toContain('Poids maximal : 1 Ko');
     }
 });
 
@@ -247,7 +247,7 @@ it('expose une règle de validation UploadAllowed avec le message traduit', func
     $notAFile = Validator::make(['piece' => 'texte'], ['piece' => [new UploadAllowed('documents')]]);
 
     expect($invalid->fails())->toBeTrue()
-        ->and($invalid->errors()->first('piece'))->toBe('Ce type de fichier n’est pas accepté ici. Formats acceptés : JPEG, PNG, WebP.')
+        ->and($invalid->errors()->first('piece'))->toBe('Ce type de fichier n’est pas accepté ici. Formats acceptés : JPEG, PNG, WebP.')
         ->and($valid->passes())->toBeTrue()
         ->and($notAFile->fails())->toBeTrue()
         ->and($notAFile->errors()->first('piece'))->toBe('Aucun fichier n’a été reçu.');

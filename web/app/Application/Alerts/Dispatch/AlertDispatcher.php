@@ -132,7 +132,7 @@ final class AlertDispatcher
         $notification = $plan->notification;
 
         if ($target->user !== null) {
-            $prefs = $target->user->settings?->notification_prefs;
+            $prefs = $target->user->loadMissing('settings')->settings?->notification_prefs;
             $allows = static fn (string $channel): bool => NotificationPreferences::allows($prefs, $notification->category(), $channel);
 
             if ($allows(NotificationPreferences::CHANNEL_IN_APP)) {

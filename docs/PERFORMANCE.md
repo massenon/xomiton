@@ -59,3 +59,18 @@ Rendu serveur des pages publiques (Blade), HTML sémantique, liens explorables (
 Lighthouse CI (mobile) sur l'accueil, une thématique, les ressources et le signalement à chaque demande de fusion ; échec si un budget est dépassé.
 
 Au build : `npm run build` = `vite build && node scripts/check-budgets.mjs` ; tailles gzip lues dans `public/build/manifest.json` (entrée + imports statiques) ; strict (échec) : `public.js` < 60 Ko, `critical.css` < 50 Ko, `app.ts` < 150 Ko, et `shared/bootstrap.js` absent des imports statiques d'`app.ts` (gabarit compris) ; indicatif (avertissement) : `xomiton.css` < 120 Ko et, pour chaque `Pages/**/*.vue`, JS initial de la page (`app.ts` + morceau de page + imports statiques) < 150 Ko, Bootstrap importé en dur par une page signalé ; `npm run build:nocheck` construit sans contrôle. Mesures du 18/10/2026 : `public.js` 56,2 Ko, `critical.css` 3,1 Ko, `xomiton.css` 62,6 Ko, `app.ts` 120,0 Ko ; pages de 121,8 (Member/Placeholder) à 137,8 Ko (Community/GroupShow), Member/Messages 136,7 Ko.
+
+**Mesures locales de la revue finale (P16-02, 27/10/2026, indicatives).** Serveur intégré de PHP (`php -S`, un seul processus, sans OPcache dédié ni réseau) sur une base SQLite dédiée semée (`migrate:fresh --seed`), PHP 8.3, 20 requêtes séquentielles après une requête de chauffe, `curl` `time_starttransfer` (TTFB) moyen. Ces chiffres valident l'absence de dérive, pas le p95 de production : le **p95 < 600 ms sur `GET feed`, `POST sos`, `GET sync/pull` et le TTFB des pages publiques sur l'hébergement cible restent à mesurer en recette** (test de charge léger sur le serveur cPanel, base MySQL, données réalistes).
+
+| Requête | TTFB moyen (20 req.) |
+|---|---|
+| `GET /` | 22 ms |
+| `GET /thematiques` | 21 ms |
+| `GET /ressources` | 25 ms |
+| `GET /violences` | 22 ms |
+| `GET /urgences` | 20 ms |
+| `GET /api/v1/feed` (membre) | 28 ms |
+| `GET /api/v1/sync/pull` (pair, appareil enregistré) | 34 ms |
+| `POST /api/v1/sos` (anonyme, clé d'idempotence neuve) | 65 ms |
+
+`Model::preventLazyLoading(! app()->isProduction())` est actif dans `AppServiceProvider::boot()` : toute relation chargée à la volée lève une exception en développement et dans les tests. Les N+1 révélés par la suite Pest ont été corrigés (liste des comptes d'administration : `profile` ; copie d'une remise sociale : `post` ; préférences de notification : `settings` ; migration de renommage de permission : `permissions`).

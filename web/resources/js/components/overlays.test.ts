@@ -94,7 +94,7 @@ describe('XmModal', () => {
         expect(submits).toEqual([1]);
         await fireEvent.click(screen.getByRole('button', { name: 'Fermer' }));
         await flush();
-        expect(confirm).toHaveBeenCalledWith('Abandonner les modifications ?');
+        expect(confirm).toHaveBeenCalledWith('Abandonner les modifications ?');
         expect(modal.classList.contains('show')).toBe(true);
         confirm.mockRestore();
     });

@@ -1,0 +1,14 @@
+[
+    "admin_system.php|admin_system.updates.optimization.tasks.cache.label|libelle-longueur",
+    "admin_system.php|admin_system.updates.optimization.tasks.sw.label|libelle-longueur",
+    "admin_system.php|admin_system.updates.optimization.tasks.sitemap.label|libelle-longueur",
+    "admin_system.php|admin_system.updates.optimization.tasks.logs.label|libelle-longueur",
+    "admin_system.php|admin_system.updates.optimization.tasks.backup.label|libelle-longueur",
+    "alerts.php|alerts.report.badge|badge-longueur",
+    "buttons.php|buttons.help.in_danger_sos|bouton-longueur",
+    "buttons.php|buttons.discovery.help_center_all|bouton-longueur",
+    "buttons.php|buttons.community.change_password|bouton-longueur",
+    "buttons.php|buttons.admin.reset_password|bouton-longueur",
+    "pages/do_glegbe.php|pages/do_glegbe.hero.badge|badge-longueur",
+    "pages/violences.php|pages/violences.hero.badge|badge-longueur"
+]

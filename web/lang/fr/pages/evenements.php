@@ -22,12 +22,12 @@ return [
     'show_all' => 'Voir tous les événements',
     'participants' => '{0} Aucune inscription pour le moment|{1} :count personne inscrite|[2,*] :count personnes inscrites',
     'details' => 'Voir l’événement',
-    'details_label' => 'Voir l’événement « :title »',
+    'details_label' => 'Voir l’événement « :title »',
     'load_more' => 'Charger plus',
 
     // Encart « Rejoindre » (liste et fiche)
     'join_title' => 'Participer à un événement',
-    'join_text' => 'Créez un compte gratuit ou connectez-vous pour répondre « Je participe », recevoir l’adresse exacte et un rappel la veille.',
+    'join_text' => 'Créez un compte gratuit ou connectez-vous pour répondre « Je participe », recevoir l’adresse exacte et un rappel la veille.',
     'join_login' => 'Se connecter',
     'join_register' => 'Créer un compte',
     'members_more' => 'D’autres rendez-vous sont réservés aux membres de la communauté.',

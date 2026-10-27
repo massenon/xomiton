@@ -29,7 +29,7 @@ describe('Fiche /evenements/{ulid}', () => {
         expect(screen.getByText('Par discrétion', { exact: false })).toBeTruthy();
         expect(screen.getByRole('link', { name: 'Séance de self-défense' })).toBeTruthy();
 
-        const button = screen.getByRole('button', { name: `Je participe à « ${event.title} »` });
+        const button = screen.getByRole('button', { name: `Je participe à « ${event.title} »` });
         expect(button.hasAttribute('aria-pressed')).toBe(false);
         await fireEvent.click(button);
         await waitFor(() => expect(document.querySelector('[data-xm-exact-place]')?.textContent).toContain('Maison des jeunes, salle 3'));
@@ -37,7 +37,7 @@ describe('Fiche /evenements/{ulid}', () => {
         expect(screen.getByRole('switch', { name: 'Me rappeler l’événement la veille' })).toBeTruthy();
         expect(screen.getByText('35 participant·es')).toBeTruthy();
 
-        const cancel = screen.getByRole('button', { name: `Annuler ma participation à « ${event.title} »` });
+        const cancel = screen.getByRole('button', { name: `Annuler ma participation à « ${event.title} »` });
         expect(cancel.textContent).toContain('Je participe – annuler');
         await fireEvent.click(cancel);
         await waitFor(() => expect(document.querySelector('[data-xm-exact-place]')).toBeNull());

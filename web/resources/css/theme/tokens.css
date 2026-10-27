@@ -55,6 +55,9 @@
   --xm-focus-ring: var(--xm-blue-500);
   --xm-footer-bg: #0A1450;              /* pied de page public (repris du prototype) */
   --xm-warning-text: #8A6100;            /* texte des badges « soft » warning (fond ambre translucide, contraste AA) */
+  --xm-danger-text: #B00D0D;             /* texte rouge sur fond clair ou rouge pâle (AA, P16-01) */
+  --xm-success-text: #0A6B47;            /* texte vert sur fond vert pâle (AA, P16-01) */
+  --xm-primary-hover-rgb: 3, 36, 136;    /* survol des liens : Bootstrap compose rgba(var(--bs-link-color-rgb), …) */
   --xm-badge-primary-text-dark: #8FA6FF; /* texte des badges « soft » primaires en thème sombre */
   --xm-badge-danger-text-dark: #FF8A8A;  /* texte des badges « soft » danger en thème sombre */
   --xm-admin-sidebar-text: #C9C6DC;      /* texte de la barre latérale d'administration (fond --xm-neutral-d-0) */
@@ -148,6 +151,9 @@
   --xm-text-muted: var(--xm-neutral-d-600);
   --xm-focus-ring: var(--xm-blue-dark-accent);
   --xm-primary-rgb: 124, 151, 255;
+  --xm-primary-hover-rgb: 157, 177, 255;
+  --xm-danger-text: #FF8A8A;
+  --xm-success-text: #4DD39D;
   --xm-secondary-rgb: 255, 107, 107;
   --xm-success-rgb: 77, 211, 157;
   --xm-info-rgb: 122, 178, 255;

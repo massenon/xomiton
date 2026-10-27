@@ -126,3 +126,36 @@ it('n’écrase pas un en-tête déjà posé par la réponse', function (): void
         ->assertHeader('X-Content-Type-Options', 'nosniff')
         ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 });
+
+// P16-03 : mêmes garanties sur 5 pages types (accueil, formulaire de connexion, signalement anonyme, SOS, fil membre).
+it('pose les en-têtes de sécurité et une CSP à nonce sur 5 pages types', function (string $uri, bool $member): void {
+    if ($member) {
+        $this->actingAs(App\Models\User::factory()->create());
+    }
+
+    $response = $this->get($uri)->assertOk();
+
+    $response->assertHeader('X-Content-Type-Options', 'nosniff')
+        ->assertHeader('X-Frame-Options', 'DENY')
+        ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+        ->assertHeader('Permissions-Policy')
+        ->assertHeaderMissing('X-Powered-By');
+
+    $csp = (string) $response->headers->get('Content-Security-Policy');
+
+    expect($csp)
+        ->toContain("default-src 'self'")
+        ->toContain("object-src 'none'")
+        ->toContain("frame-ancestors 'none'")
+        ->toContain("base-uri 'self'")
+        ->toContain("form-action 'self'");
+
+    preg_match('/script-src ([^;]+)/', $csp, $scriptSrc);
+    expect($scriptSrc[1] ?? '')->toContain("'nonce-")->not->toContain("'unsafe-inline'");
+})->with([
+    'accueil' => ['/', false],
+    'connexion' => ['/connexion', false],
+    'signalement' => ['/signaler', false],
+    'sos' => ['/sos', false],
+    'fil membre' => ['/fil', true],
+]);
