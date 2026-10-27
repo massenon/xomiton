@@ -69,20 +69,25 @@ class SecurityHeaders
         $styleSources = ["'self'", "'unsafe-inline'"];
         $connectSources = ["'self'"];
 
-        // Serveur de développement Vite (fichier public/hot) : jamais présent en production.
-        if ($devServer = $this->viteDevServer()) {
-            $scriptSources[] = $devServer;
-            $styleSources[] = $devServer;
-            $connectSources[] = $devServer;
-            $connectSources[] = preg_replace('#^http#', 'ws', $devServer) ?? $devServer;
+        $fontSources = $this->debugbarEnabled() ? ["'self'", 'data:'] : ["'self'"];
+        $imgSources = ["'self'", 'data:', 'blob:'];
+
+        // Serveur de développement Vite (fichier public/hot) : jamais en production, seulement en local.
+        foreach ($this->viteDevOrigins() as $origin) {
+            $scriptSources[] = $origin;
+            $styleSources[] = $origin;
+            $fontSources[] = $origin;
+            $imgSources[] = $origin;
+            $connectSources[] = $origin;
+            $connectSources[] = preg_replace('#^http#', 'ws', $origin) ?? $origin;
         }
 
         $directives = [
             'default-src' => ["'self'"],
             'script-src' => $scriptSources,
             'style-src' => $styleSources,
-            'img-src' => ["'self'", 'data:', 'blob:'],
-            'font-src' => $this->debugbarEnabled() ? ["'self'", 'data:'] : ["'self'"],
+            'img-src' => $imgSources,
+            'font-src' => $fontSources,
             'connect-src' => $connectSources,
             'object-src' => ["'none'"],
             'frame-ancestors' => ["'none'"],
@@ -136,22 +141,30 @@ class SecurityHeaders
     }
 
     /**
-     * Origine du serveur Vite en mode développement (contenu de public/hot), sinon null.
+     * Origines du serveur Vite en développement : celle de public/hot plus localhost et [::1] sur le même port.
+     * Vide hors environnement local ou sans public/hot.
+     *
+     * @return list<string>
      */
-    private function viteDevServer(): ?string
+    private function viteDevOrigins(): array
     {
-        if (app()->isProduction() || ! Vite::isRunningHot()) {
-            return null;
+        if (! app()->isLocal() || ! Vite::isRunningHot()) {
+            return [];
         }
 
-        $url = trim((string) file_get_contents(Vite::hotFile()));
-        $parts = parse_url($url);
+        $parts = parse_url(trim((string) file_get_contents(Vite::hotFile())));
 
         if ($parts === false || ! isset($parts['scheme'], $parts['host'])) {
-            return null;
+            return [];
         }
 
-        return $parts['scheme'].'://'.$parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : '');
+        $port = (int) ($parts['port'] ?? 5173);
+
+        return array_values(array_unique([
+            $parts['scheme'].'://'.$parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : ''),
+            "http://localhost:{$port}",
+            "http://[::1]:{$port}",
+        ]));
     }
 
     private function setIfAbsent(Response $response, string $name, string $value): void

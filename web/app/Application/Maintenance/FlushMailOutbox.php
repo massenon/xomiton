@@ -15,16 +15,13 @@ use Throwable;
 
 /**
  * Renvoi des e-mails déposés dans `mail_outbox` faute de SMTP (P1-16, P3-01) : dès qu'un transport réel est
- * configuré (`MAIL_MAILER` autre que `log` / `array`), les e-mails en attente sont expédiés dans l'ordre de
+ * configuré (tout `MAIL_MAILER`, y compris `log` / `array` : le contenu apparaît alors dans laravel.log), les e-mails en attente sont expédiés dans l'ordre de
  * dépôt, par lots de 50 au plus par exécution ; chaque tentative incrémente `attempts`, consigne `last_error`
  * et laisse une trace dans `mail_logs`. Idempotent : un e-mail envoyé (`sent_at`) n'est jamais renvoyé.
  */
 final class FlushMailOutbox
 {
     public const DEFAULT_LIMIT = 50;
-
-    /** Mailers qui n'acheminent rien : la boîte d'envoi reste en attente. */
-    public const INERT_MAILERS = ['log', 'array'];
 
     public const LOG_CONTEXT = 'outbox';
 
@@ -35,9 +32,8 @@ final class FlushMailOutbox
 
     public function transportAvailable(): bool
     {
-        $mailer = $this->mailer();
-
-        return $mailer !== '' && ! in_array($mailer, self::INERT_MAILERS, true);
+        // `log` et `array` sont des transports à part entière : le contenu part dans laravel.log (ou en mémoire).
+        return $this->mailer() !== '';
     }
 
     public function run(int $limit = self::DEFAULT_LIMIT): OutboxFlushResult
@@ -82,7 +78,7 @@ final class FlushMailOutbox
         }
 
         try {
-            Mail::html((string) $mail->html, function (Message $message) use ($mail): void {
+            Mail::mailer($this->mailer())->html((string) $mail->html, function (Message $message) use ($mail): void {
                 $message->to($mail->to)
                     ->from($mail->from_address, $mail->from_name)
                     ->subject($mail->subject);

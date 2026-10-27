@@ -266,7 +266,9 @@ it('reporte sur le destinataire un refus définitif constaté au renvoi de la bo
     $this->artisan('newsletter:process', ['--sync' => true])->assertSuccessful();
 
     config(['mail.default' => 'smtp']);
-    Mail::shouldReceive('html')->once()->andThrow(new TransportException('Expected response code "250" but got code "550", with message "550 chantal@exemple.bj unknown".'));
+    $mailer = Mockery::mock();
+    Mail::shouldReceive('mailer')->with('smtp')->andReturn($mailer);
+    $mailer->shouldReceive('html')->once()->andThrow(new TransportException('Expected response code "250" but got code "550", with message "550 chantal@exemple.bj unknown".'));
     $this->artisan('mail:flush-outbox')->assertFailed();
 
     $recipient = NewsletterCampaignRecipient::query()->firstOrFail();

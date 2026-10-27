@@ -159,3 +159,33 @@ it('pose les en-têtes de sécurité et une CSP à nonce sur 5 pages types', fun
     'sos' => ['/sos', false],
     'fil membre' => ['/fil', true],
 ]);
+
+it('autorise l’origine du serveur Vite dans la CSP uniquement en local avec public/hot (B2)', function (): void {
+    $hot = tempnam(sys_get_temp_dir(), 'hot');
+    file_put_contents($hot, 'http://[::1]:5173');
+    Illuminate\Support\Facades\Vite::useHotFile($hot);
+
+    try {
+        $csp = fn (): string => $this->get('/')->assertOk()->headers->get('Content-Security-Policy');
+
+        // Environnement de test, ni local ni production : rien.
+        expect($csp())->not->toContain('5173');
+
+        $this->app['env'] = 'production';
+        expect($csp())->not->toContain('5173');
+
+        $this->app['env'] = 'local';
+        $policy = $csp();
+        foreach (['script-src', 'style-src', 'font-src', 'img-src', 'connect-src'] as $directive) {
+            preg_match('/'.$directive.' ([^;]*)/', $policy, $m);
+            expect($m[1])->toContain('http://localhost:5173')->toContain('http://[::1]:5173');
+        }
+        expect($policy)->toContain('ws://localhost:5173');
+
+        unlink($hot);
+        expect($csp())->not->toContain('5173');
+    } finally {
+        $this->app['env'] = 'testing';
+        @unlink($hot);
+    }
+});

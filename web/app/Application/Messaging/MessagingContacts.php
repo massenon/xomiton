@@ -123,7 +123,7 @@ final class MessagingContacts
         if ($term === '') {
             $query->where(fn (Builder $q) => $q->whereIn('users.id', $following)->orWhereIn('users.id', $followers));
         } else {
-            $query->whereRaw(LikePattern::clause('users.pseudo'), [LikePattern::escape($term).'%'])
+            $query->whereRaw(LikePattern::clause('users.pseudo'), [LikePattern::startsWith($term)])
                 ->where(fn (Builder $q) => $q->whereDoesntHave('profile')
                     ->orWhereHas('profile', fn (Builder $p) => $p->where('searchable', true))
                     ->orWhereIn('users.id', $following));

@@ -131,7 +131,8 @@ it('recherche sur le n°, le code de suivi, le pseudonyme, la commune et la pers
     $commune = Commune::factory()->for($zone)->create(['name' => 'Abomey-Calavi']);
     $contact = DirectoryContact::factory()->create(['name' => 'ZINSOU Mireille', 'role' => DirectoryRole::Juriste]);
     $target = Alert::factory()->for($zone, 'zone')->create(['commune_id' => $commune->id, 'routed_to' => $contact->id, 'is_anonymous' => false, 'pseudo' => 'Lune_douce', 'description' => RECIT]);
-    $other = Alert::factory()->create(['description' => 'Autre histoire']);
+    // Zone et commune fixées : la fabrique peut tirer « Atlantique » ou « Abomey-Calavi » et fausser le décompte (test instable).
+    $other = Alert::factory()->for(Zone::factory()->create(['name' => 'Mono']), 'zone')->create(['commune_id' => null, 'description' => 'Autre histoire']);
 
     $found = fn ($rows): bool => $rows->total() === 1 && $rows->first()->is($target);
 

@@ -21,7 +21,7 @@
     <p class="text-secondary xm-prose mb-3">{{ __('newsletter.admin.campaigns.batch_info', ['batch' => $batchSize]) }}</p>
 
     <x-admin.kpi id="xmNlKpis" cols="col-6 col-md-4 col-xl" :items="[
-        ['label' => __('newsletter.admin.kpi.active'), 'value' => $format->number($statusCounts['actif']), 'icon' => 'people', 'sub' => __('admin_newsletter.kpi.pending_sub', ['count' => $format->number($statusCounts['en_attente'])])],
+        ['label' => __('newsletter.admin.kpi.active'), 'value' => $format->number($statusCounts['actif']), 'icon' => 'people', 'sub' => trans_choice('admin_newsletter.kpi.pending_sub', (int) $statusCounts['en_attente'], ['count' => $format->number($statusCounts['en_attente'])])],
         $rateItem('open', __('newsletter.admin.kpi.open_rate'), 'envelope-open', 'success'),
         $rateItem('click', __('newsletter.admin.kpi.click_rate'), 'cursor', 'violet'),
         $rateItem('unsubscribe', __('newsletter.admin.kpi.unsubscribe_rate'), 'person-dash', 'warning'),

@@ -6,6 +6,7 @@
 --}}
 @php
     $statusBadge = fn ($status) => $status === \App\Enums\ContentStatus::Published ? ['success', __('admin_content.status.published')] : [$status === \App\Enums\ContentStatus::Hidden ? 'warning' : 'neutral', $status === \App\Enums\ContentStatus::Hidden ? __('admin_content.status.hidden') : __('admin_content.status.draft')];
+    $langGroup = ['ressources' => 'resources', 'faq' => 'faqs'][$tab] ?? $tab; // les onglets ne portent pas le nom du groupe de traductions
     $tabMeta = [
         'ressources' => ['label' => __('admin_content.tabs.ressources'), 'icon' => 'folder2-open'],
         'thematiques' => ['label' => __('admin_content.tabs.thematiques'), 'icon' => 'journal-text'],
@@ -24,7 +25,7 @@
 
     <section class="card xm-admin-card" aria-labelledby="xmContentTitle">
         <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
-            <h2 class="h6 fw-bold mb-0" id="xmContentTitle">{{ __('admin_content.'.$tab.'.title') }}</h2>
+            <h2 class="h6 fw-bold mb-0" id="xmContentTitle">{{ __('admin_content.'.$langGroup.'.title') }}</h2>
             <div class="d-flex flex-wrap gap-2">
                 @if ($tab === 'ressources')
                     @can('create', \App\Models\Resource::class)<button type="button" class="btn btn-primary btn-sm" wire:click="newResource"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_content.resources.new') }}</button>@endcan
@@ -50,7 +51,7 @@
         @endif
 
         <div class="card-body border-bottom">
-            <x-admin.filters id="xmContentFilters" :active="$this->activeFilterCount()" :placeholder="__('admin_content.'.$tab.'.search_placeholder')" :search-help="__('admin_content.search_help')">
+            <x-admin.filters id="xmContentFilters" :active="$this->activeFilterCount()" :placeholder="__('admin_content.'.$langGroup.'.search_placeholder')" :search-help="__('admin_content.search_help')">
                 @if (in_array($tab, ['ressources', 'thematiques', 'faq'], true))
                     <div class="col-6 col-lg-2">
                         <label class="visually-hidden" for="xmContentStatus">{{ __('admin_content.columns.status') }}</label>

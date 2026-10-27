@@ -140,7 +140,7 @@ Convention : **URL** — étapes — ✅ attendu — ⚠ si ça échoue. Ouvre l
 - [ ] **Supprimer mon compte** (sur un compte jetable comme `recette1`) : taper `SUPPRIMER` + mot de passe. ✅ déconnexion, connexion impossible ; anonymisation réelle après 30 j (`php artisan accounts:anonymize --dry-run`).
 
 ### J. Recherche et assistant
-- [ ] `/recherche?q=santé` (champ de l'en-tête) : onglets Tout / Ressources / Thématiques / Contacts / Membres. ✅ « 3 résultats ». Note : `sante` sans accent donne 0 résultat (§6).
+- [ ] `/recherche?q=santé` (champ de l'en-tête) : onglets Tout / Ressources / Thématiques / Contacts / Membres. ✅ « 3 résultats ». `sante` sans accent donne aussi 3 résultats.
 - [ ] `/assistant` : clique une suggestion (« Comment porter plainte ? ») → réponse de la base de connaissances (`ASSISTANT_PROVIDER=kb`). **Message de crise** : écris « je veux mourir, je ne vois plus d'issue ». ✅ réponse de crise avec boutons **SOS avec position GPS**, **Appeler le 117 / 118**, ligne d'écoute, « Faire un signalement », « Parler à un humain ». « Garder cette conversation » est désactivé par défaut.
 
 ### K. Espace pair et collecte hors ligne (compte `pair@xomiton.bj`)
@@ -217,11 +217,11 @@ Volontaire (voir `docs/ETAT_DES_LIEUX.md`) :
 - **Espace pair mobile** absent ; assistant en base de connaissances seulement (pas de LLM : `ASSISTANT_API_KEY` ignorée).
 
 Défauts constatés pendant mon test du lancement (aucun ne bloque un parcours, rien n'a été corrigé) :
-- **B1 — e-mails de la boîte d'envoi muets avec `MAIL_MAILER=log`** : confirmation newsletter, test de campagne, export RGPD restent dans `mail_outbox` (`mail:flush-outbox` inactif pour `log`/`array`). Contournement : `MAIL_MAILER=failover` (§2). Le README de `web/` laisse croire que `log` suffit.
-- **B2 — `npm run dev` : polices et icônes bloquées** par le CSP (`font-src 'self'` sans l'hôte Vite) ; le service worker n'y est pas enregistré. Utilise `npm run build`.
+- ~~**B1 — e-mails de la boîte d'envoi muets avec `MAIL_MAILER=log`** : confirmation newsletter, test de campagne, export RGPD restent dans `mail_outbox` (`mail:flush-outbox` inactif pour `log`/`array`). Contournement : `MAIL_MAILER=failover` (§2). Le README de `web/` laisse croire que `log` suffit.~~ **Corrigé** : `mail:flush-outbox` passe désormais par `Mail::mailer()` y compris pour `log` / `array`.
+- ~~**B2 — `npm run dev` : polices et icônes bloquées** par le CSP (`font-src 'self'` sans l'hôte Vite) ; le service worker n'y est pas enregistré. Utilise `npm run build`.~~ **Corrigé** : en local avec `public/hot`, la CSP autorise Vite (localhost / [::1] / ws) ; le service worker reste non enregistré en dev.
 - **B3 — Debugbar (`APP_DEBUG=true`)** : ~80 violations CSP dans la console de chaque page connectée. `DEBUGBAR_ENABLED=false`.
-- **B4 — libellés bruts dans l'admin** : `/admin/newsletter` affiche `{0} Aucune confirmation en attente|{1} …|[2,*] …` (clé de pluriel non traitée, `lang/fr/admin_newsletter.php:43`) ; `/admin/contenu` affiche la clé `admin_content.ressources.title`.
-- **B5 — recherche sensible aux accents** : `/recherche?q=sante` → 0 résultat, `santé` → 3.
+- ~~**B4 — libellés bruts dans l'admin** : `/admin/newsletter` affiche `{0} Aucune confirmation en attente|{1} …|[2,*] …` (clé de pluriel non traitée, `lang/fr/admin_newsletter.php:43`) ; `/admin/contenu` affiche la clé `admin_content.ressources.title`.~~ **Corrigé** (trans_choice, groupe `resources`/`faqs`) ; test générique `NoRawTranslationKeysTest`.
+- ~~**B5 — recherche sensible aux accents** : `/recherche?q=sante` → 0 résultat, `santé` → 3.~~ **Corrigé** : `SearchText::normalize` + `LikePattern` (fonction SQLite `xom_fold`, collation `_ci` sur MySQL).
 - **B6 — mélange d'hôtes** : si tu ouvres le site sur un autre hôte/port que `APP_URL`, les avatars `storage/` sont bloqués par le CSP (pas un bogue, mais déroutant).
 
 ## 7. Gabarit de rapport de bug

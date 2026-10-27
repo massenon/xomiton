@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 /*
  * `mail:flush-outbox` (P1-16, P3-01) : envoi des e-mails en attente avec le mailer par défaut quand il
- * n'est ni `log` ni `array` ; tentatives et dernière erreur tenues ; 50 au plus par exécution.
+ * soit (y compris `log` et `array`, B1) ; tentatives et dernière erreur tenues ; 50 au plus par exécution.
  */
 
 beforeEach(function (): void {
@@ -26,24 +26,19 @@ function useCapturingMailer(): void
     ]);
 }
 
-it('ne fait rien et le dit quand le mailer est log ou array', function (): void {
-    config(['mail.default' => 'log']);
-    $pending = MailOutbox::factory()->create();
+it('passe par le mailer configuré même pour log ou array (B1) : le contenu atteint le transport', function (string $mailer): void {
+    config(['mail.default' => $mailer]);
+    $pending = MailOutbox::factory()->create(['html' => '<p>Contenu-B1-visible</p>']);
 
-    $this->artisan('mail:flush-outbox')
-        ->expectsOutputToContain('Aucun transport SMTP disponible (MAIL_MAILER=log) : 1 e-mail reste en attente')
-        ->assertSuccessful();
+    $this->artisan('mail:flush-outbox')->assertSuccessful();
 
-    config(['mail.default' => 'array']);
+    expect($pending->fresh()->sent_at)->not->toBeNull();
 
-    $this->artisan('mail:flush-outbox')
-        ->expectsOutputToContain('MAIL_MAILER=array')
-        ->assertSuccessful();
-
-    expect($pending->fresh()->sent_at)->toBeNull()
-        ->and($pending->fresh()->attempts)->toBe(0)
-        ->and(MailLog::query()->count())->toBe(0);
-});
+    if ($mailer === 'array') {
+        expect(Mail::mailer('array')->getSymfonyTransport()->messages())->toHaveCount(1)
+            ->and((string) Mail::mailer('array')->getSymfonyTransport()->messages()->first()->getOriginalMessage()->getHtmlBody())->toContain('Contenu-B1-visible');
+    }
+})->with(['log', 'array']);
 
 it('envoie les e-mails en attente dans l’ordre de dépôt, les marque envoyés et les journalise', function (): void {
     useCapturingMailer();
