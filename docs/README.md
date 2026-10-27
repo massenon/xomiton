@@ -48,6 +48,7 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 | SEO | [FRONT_END_SEO_PERFECT_AUDIT.md](FRONT_END_SEO_PERFECT_AUDIT.md) | Grille d'audit par page (meta, Hn, FAQ, Schema.org, OG…) |
 | Qualité | [ACCESSIBILITE.md](ACCESSIBILITE.md) | WCAG 2.2 AA, ARIA, clavier, focus, contraste |
 | Qualité | [PERFORMANCE.md](PERFORMANCE.md) | Images, CSS, JS, chargement différé, polices, budgets |
+| Qualité | [GUIDE_RECETTE.md](GUIDE_RECETTE.md) | **Guide de recette** : lancer le web et le mobile en local, comptes de démonstration, parcours à cocher, gabarit de bug |
 
 ## Sources de vérité (par ordre de priorité)
 
