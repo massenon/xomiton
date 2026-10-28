@@ -68,8 +68,33 @@ void main() {
         await tester.pumpAndSettle();
         expect(tr(t), findsOneWidget);
       }
-      expect(tr(S.t('mobile_onboarding_start')), findsOneWidget);
+      expect(tr(S.t('auth_login_create_account')), findsOneWidget);
+      expect(tr(S.t('auth_register_sign_in')), findsOneWidget);
       expect(tr(S.t('common_next_item')), findsNothing);
+    });
+
+    testWidgets('plein écran : photo cover, « Passer » et points accessibles, « Se connecter » sur la dernière', (tester) async {
+      final handle = tester.ensureSemantics();
+      await pumpApp(tester, TestEnv(api: FakeApi(), seen: false));
+      // 4 photos plein écran, jamais déformées.
+      final images = tester.widgetList<Image>(find.byType(Image, skipOffstage: false)).where((i) => i.fit == BoxFit.cover);
+      expect(images.length, greaterThanOrEqualTo(1));
+      // « Passer » : cible d’au moins 44 px.
+      expect(tester.getSize(find.byKey(const ValueKey('splash-skip'))).height, greaterThanOrEqualTo(44));
+      // Un point par diapositive, nommé pour les lecteurs d’écran.
+      expect(find.bySemanticsLabel(S.t('mobile_onboarding_slide_label', {'current': 3, 'total': 4})), findsWidgets);
+      // Balayage vers la gauche : diapositive suivante.
+      await tester.drag(find.byType(PageView), const Offset(-400, 0));
+      await tester.pumpAndSettle();
+      expect(tr(S.t('mobile_onboarding_slide_2_title')), findsOneWidget);
+      // Point 4 : dernière diapositive, deux actions.
+      await tester.tap(find.byWidgetPredicate((w) => w is Semantics && w.properties.button == true && w.properties.label == S.t('mobile_onboarding_slide_label', {'current': 4, 'total': 4})));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('splash-signup')), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('splash-login')));
+      await tester.pumpAndSettle();
+      expect(tr(S.t('auth_login_heading')), findsOneWidget);
+      handle.dispose();
     });
 
     testWidgets('« Passer » mène à la connexion et mémorise onboarding.seen', (tester) async {
@@ -80,13 +105,13 @@ void main() {
       expect(tr(S.t('auth_login_heading')), findsOneWidget);
     });
 
-    testWidgets('« Commencer » ouvre l’inscription', (tester) async {
+    testWidgets('« Créer un compte » (dernière diapositive) ouvre l’inscription', (tester) async {
       await pumpApp(tester, TestEnv(api: FakeApi(), seen: false));
       for (var i = 0; i < 3; i++) {
         await tester.tap(tr(S.t('common_next_item')));
         await tester.pumpAndSettle();
       }
-      await tester.tap(tr(S.t('mobile_onboarding_start')));
+      await tester.tap(tr(S.t('auth_login_create_account')));
       await tester.pumpAndSettle();
       expect(tr(S.t('auth_register_account_heading')), findsOneWidget);
       expect(tr(S.t('auth_register_step_of', {'current': 1, 'total': 4})), findsOneWidget);

@@ -80,6 +80,22 @@ button { cursor: pointer; }
 .rail a[aria-current="page"] { background: var(--pg-accent-subtle); color: var(--pg-accent); font-weight: 700; }
 .rail a[aria-current="page"] .n, .rail a[aria-current="page"] .r { color: var(--pg-accent); }
 
+/* Menu des écrans repliable */
+.menu-btn { width: 44px; height: 44px; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); background: var(--pg-surface); display: inline-grid; place-items: center; padding: 0; }
+.menu-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.menu-btn[aria-expanded="true"] { background: var(--pg-accent-subtle); color: var(--pg-accent); border-color: var(--pg-accent); }
+.sim.menu-closed { grid-template-columns: minmax(0, 1fr) 380px; }
+.sim.menu-closed .rail { display: none; }
+.rail-group h2 { padding: 0; }
+.rail-group .mod { width: 100%; min-height: 40px; display: flex; align-items: center; gap: 8px; border: 0; background: none; padding: 0 8px; font: 700 13px/1.2 var(--xm-font-body); color: var(--pg-text); text-align: left; border-radius: var(--xm-radius-md); }
+.rail-group .mod:hover { background: var(--pg-bg); }
+.rail-group .mod .cv { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; transition: transform .15s; flex-shrink: 0; }
+.rail-group .mod[aria-expanded="true"] .cv { transform: rotate(90deg); }
+.rail-group .mod .cnt { margin-left: auto; font-weight: 400; font-size: 12px; color: var(--pg-muted); }
+.rail-group .mod code { font: 12px/1 var(--xm-font-body); color: var(--pg-muted); }
+.rail-group[data-collapsed="true"] .items { display: none; }
+.rail a.ext .r { color: var(--pg-accent); }
+
 /* Scène centrale */
 .stage { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 16px; min-height: 0; }
 .stage-caption { margin-top: 10px; font-size: 13px; color: var(--pg-muted); text-align: center; }
@@ -172,6 +188,9 @@ button { cursor: pointer; }
 .field label, .label { font-size: 14px; font-weight: 700; }
 .input { width: 100%; min-height: 48px; border: 1px solid var(--app-border); border-radius: var(--xm-radius-md); background: var(--app-surface); padding: 10px 14px; color: var(--app-text); }
 textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
+.compose { display: flex; gap: 12px; align-items: flex-start; padding-top: 8px; }
+.compose > .grow { flex: 1 1 0; min-width: 0; }
+.compose textarea.input { display: block; width: 100%; min-width: 0; max-width: 100%; min-height: 120px; max-height: 320px; overflow-y: auto; resize: none; padding: 10px 12px; font-size: 17px; background: var(--app-surface); }
 .input:focus { outline: 3px solid color-mix(in srgb, var(--app-primary) 35%, transparent); border-color: var(--app-primary); }
 .input[aria-invalid="true"] { border-color: var(--app-danger); }
 .err { color: var(--app-danger); font-size: 13px; display: flex; gap: 6px; align-items: flex-start; }
@@ -219,24 +238,32 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
 .stepper i { height: 5px; border-radius: 3px; background: var(--app-border); }
 .stepper i.on { background: var(--app-primary); }
 
-/* Splash / carrousel d'authentification */
-.splash { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--app-bg); }
-.slides { position: relative; flex: 1; overflow: hidden; touch-action: pan-y; }
+/* Splash / carrousel plein écran (photos) */
+.splash { position: absolute; inset: 0; background: #0B0D1A; color: #fff; }
+.slides { position: absolute; inset: 0; overflow: hidden; touch-action: pan-y; }
+.slides:focus-visible { outline-offset: -4px; outline-color: #fff; }
 .slides-track { display: flex; height: 100%; transition: transform .45s var(--xm-ease-out); }
-.slide { flex: 0 0 100%; display: flex; flex-direction: column; height: 100%; }
-.slide-art { position: relative; flex: 0 0 58%; overflow: hidden; }
-.slide-art .texture { position: absolute; inset: -30px; background: center/cover no-repeat; filter: blur(16px) saturate(1.15); transform: scale(1.1); }
-.slide-art .veil { position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--app-bg) 25%, transparent) 0%, transparent 35%, transparent 62%, var(--app-bg) 100%); }
-.slide-art img { position: absolute; left: 50%; top: calc(var(--safe-top) + 46%); transform: translate(-50%, -50%); width: 92%; max-height: 74%; object-fit: contain; border-radius: 22px; box-shadow: 0 18px 40px rgb(27 22 48 / .18); }
-.slide-copy { padding: 8px 28px 0; }
-.slide-copy p { color: var(--app-muted); margin: 10px 0 0; font-size: 16px; }
-.splash-logo { position: absolute; z-index: 3; top: calc(var(--safe-top) + 8px); left: 24px; height: 26px; }
-.splash-skip { position: absolute; z-index: 3; top: calc(var(--safe-top) + 2px); right: 12px; }
-.splash-foot { padding: 12px 24px calc(var(--safe-bottom) + 18px); display: grid; gap: 16px; }
-.dots { display: flex; gap: 8px; justify-content: center; }
-.dots button { width: 24px; height: 24px; border: 0; padding: 0; background: transparent; display: grid; place-items: center; }
-.dots button i { width: 8px; height: 8px; border-radius: 4px; background: var(--app-border); transition: width .25s var(--xm-ease-out), background-color .25s; }
-.dots button[aria-current="true"] i { width: 24px; background: var(--app-primary); }
+.slide { position: relative; flex: 0 0 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slide .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(8 10 30 / .62) 0%, rgb(8 10 30 / .12) 24%, rgb(8 10 30 / .08) 40%, rgb(8 10 30 / .78) 70%, rgb(8 10 30 / .94) 100%); }
+.slide-copy { position: relative; padding: 0 28px calc(var(--safe-bottom) + 196px); }
+.slide-copy h2 { font-size: 28px; line-height: 1.15; font-weight: 800; color: #fff; text-wrap: balance; }
+.slide-copy p { color: rgb(255 255 255 / .92); margin: 12px 0 0; font-size: 16px; line-height: 1.5; }
+.splash-bar { position: absolute; z-index: 3; top: 0; left: 0; right: 0; padding: calc(var(--safe-top) + 4px) 8px 0 24px; display: flex; align-items: center; justify-content: space-between; }
+.splash-bar img { height: 26px; width: auto; }
+.splash-skip { min-width: 44px; min-height: 44px; padding: 0 16px; border: 0; border-radius: var(--xm-radius-pill); background: rgb(8 10 30 / .38); color: #fff; font: 700 15px var(--xm-font-body); backdrop-filter: blur(6px); }
+.splash-foot { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; padding: 0 24px calc(var(--safe-bottom) + 14px); display: grid; gap: 10px; }
+.splash-actions { display: grid; gap: 10px; }
+.splash .btn { min-height: 52px; }
+.splash .btn-primary { background: #fff; color: var(--xm-blue-700); }
+.splash .btn-primary:hover { background: var(--xm-blue-50); }
+.splash .btn-ghost-light { background: rgb(8 10 30 / .3); border: 1.5px solid rgb(255 255 255 / .85); color: #fff; }
+.splash :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.dots { display: flex; gap: 0; justify-content: center; }
+.dots button { width: 32px; height: 44px; border: 0; padding: 0; background: transparent; display: grid; place-items: center; }
+.dots button i { width: 8px; height: 8px; border-radius: 4px; background: rgb(255 255 255 / .55); transition: width .25s var(--xm-ease-out), background-color .25s; }
+.dots button[aria-current="true"] i { width: 24px; background: #fff; }
+.screen:has(.splash) .homebar { background: #fff; }
 
 /* OTP */
 .otp { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
@@ -321,6 +348,7 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
   .stage { min-height: calc(100vh - 60px); }
   .panel { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--pg-border); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 24px; }
   .panel > header { grid-column: 1 / -1; }
+  .sim.menu-closed { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 820px) {
   .sim { grid-template-columns: 1fr; }
@@ -341,6 +369,7 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
 <a class="skip" href="#appareil">Aller au simulateur</a>
 <div class="sim">
   <header class="topbar">
+    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="true" aria-controls="railNav" aria-label="Afficher ou masquer la liste des écrans" title="Liste des écrans"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     <div class="brand">
       <img src="{{IMG:logo-couleur.svg}}" alt="Xomiton" width="110" height="28">
       <div><h1>Simulateur mobile</h1><div class="sub">Compte membre et pair éducateur·rice · 30 écrans · transposition Flutter</div></div>
@@ -353,16 +382,12 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
       <button type="button" data-role="membre" aria-pressed="true">Membre</button>
       <button type="button" data-role="pair" aria-pressed="false">Pair éducateur·rice</button>
     </div>
-    <div class="seg" role="group" aria-label="Thème de l’application">
-      <button type="button" data-apptheme="light" aria-pressed="true">Clair</button>
-      <button type="button" data-apptheme="dark" aria-pressed="false">Sombre</button>
-    </div>
     <button type="button" class="btn-ghost" id="reset" title="Efface l’état (onboarding vu, session, publications) et revient au splash">Réinitialiser</button>
   </header>
 
-  <nav class="rail" aria-label="Index des écrans">
+  <nav class="rail" id="railNav" aria-label="Index des écrans">
     <label class="vh" for="railSearch">Filtrer les écrans</label>
-    <input class="rail-search" id="railSearch" type="search" placeholder="Filtrer les 30 écrans…" autocomplete="off">
+    <input class="rail-search" id="railSearch" type="search" placeholder="Filtrer les écrans…" autocomplete="off">
     <label class="vh" for="railSelect">Aller à l’écran</label>
     <select class="rail-select" id="railSelect"></select>
     <div class="rail-groups" id="railGroups"></div>
@@ -397,6 +422,7 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
    ===================================================================== */
 const IMG = {
   hero04: '{{IMG:hero-04.jpg}}', hero08: '{{IMG:hero-08.jpg}}', hero09: '{{IMG:hero-09.jpg}}', hero10: '{{IMG:hero-10.jpg}}', signin: '{{IMG:sign-in.jpg}}',
+  sp1: '{{IMG:splash/ecoute.webp}}', sp2: '{{IMG:splash/sos.webp}}', sp3: '{{IMG:splash/communaute.webp}}', sp4: '{{IMG:splash/ressources.webp}}',
   logo: '{{IMG:logo-couleur.svg}}', logoWhite: '{{IMG:logo-mono-blanc.svg}}', rosace: '{{IMG:symbole-rosace-couleur.svg}}', icon: '{{IMG:icone-appli-bleu.svg}}'
 };
 const P = {
@@ -439,7 +465,7 @@ const P = {
   alert: '<path d="m10.3 3.9-8.2 14a2 2 0 0 0 1.7 3h16.4a2 2 0 0 0 1.7-3l-8.2-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
   folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>'
 };
-const logo = () => S.theme === 'dark' ? IMG.logoWhite : IMG.logo;
+const logo = () => IMG.logo;
 const ic = (n, cls) => `<svg class="ico${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" aria-hidden="true">${P[n] || ''}</svg>`;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const COLORS = ['#0433C3', '#6F2C91', '#C2255C', '#B84B00', '#0B7A4B', '#1864AB'];
@@ -450,10 +476,10 @@ const av = (name, cls) => { const i = (name || '?').split(/\s+/).map(w => w[0]).
    ===================================================================== */
 const KEY = 'xm-sim-v1';
 const DEFAULT = () => ({
-  seen: false, auth: false, role: 'membre', theme: 'light', model: 'iphone14',
+  seen: false, auth: false, role: 'membre', theme: 'light', model: 'iphone14', slide: 0,
   user: { name: 'Awa Sossou', pseudo: 'awa_s', email: 'awa@exemple.bj', pronouns: 'elle', zone: 'Littoral', city: 'Cotonou', completion: 40 },
   otp: { purpose: 'login', email: 'awa@exemple.bj' },
-  signup: { step: 1, pseudo: '', email: '', password: '', pronouns: '', zone: '', type: 'membre', trusted: '', discreet: false, cgu: false, privacy: false, sensitive: false, news: false },
+  signup: { step: 1, age15: false, pseudo: '', email: '', password: '', pronouns: '', zone: '', type: 'membre', trusted: '', discreet: false, cgu: false, privacy: false, sensitive: false, news: false },
   feedFilter: 'Tout', liked: {}, votes: {},
   posts: [
     { id: 1, author: 'Chantal Hounkpatin', role: 'Pair éducatrice', ago: '2 h', tag: 'Événement', text: 'Rappel : l’atelier « Dire non sans culpabiliser » a lieu samedi à 15 h, en ligne et à Porto-Novo. Venez avec une amie !', img: 'hero10', likes: 48, comments: 7 },
@@ -476,6 +502,7 @@ const DEFAULT = () => ({
 });
 let S;
 try { S = Object.assign(DEFAULT(), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = DEFAULT(); }
+S.theme = 'light'; // thème clair par défaut ; aucune bascule dans le simulateur (le thème sombre de l’app suit le système côté Flutter)
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* stockage indisponible (file://, navigation privée) */ } };
 let stack = [];
 
@@ -501,54 +528,64 @@ const pwField = (id, label, val, auto) => `<div class="field"><label for="${id}"
 
 /* ---------- auth ---------- */
 const SLIDES = [
-  ['hero04', 'Un espace safe, rien que pour nous', 'Rejoins une communauté bienveillante de filles et de femmes LBTQ+ au Bénin, sous ton vrai nom ou sous pseudonyme.'],
-  ['hero08', 'Du soutien quand tu en as besoin', 'Pair·es éducateur·rices, juristes et psychologues t’écoutent en toute confidentialité.'],
-  ['signin', 'Apprendre à ton rythme', 'Fiches, bandes dessinées et ateliers pour connaître tes droits et prendre soin de toi.'],
-  ['hero09', 'Ta sécurité passe d’abord', 'Un bouton SOS toujours à portée, le signalement anonyme et un mode discret.']
+  ['sp1', 'Ici, on t’écoute sans te juger', 'Parle à une pair éducatrice, à ton rythme et en toute confidentialité. Rien n’est partagé sans ton accord.', 'Portrait d’une jeune femme au regard tourné vers la lumière, des drapeaux arc-en-ciel flous derrière elle.'],
+  ['sp2', 'Une aide quand tu es en danger', 'Un bouton SOS toujours à portée de main, et un signalement anonyme si tu préfères.', 'Une jeune femme à la peau brillante de paillettes, au milieu d’un rassemblement, avec un drapeau arc-en-ciel.'],
+  ['sp3', 'Tu n’es pas seule', 'Retrouve une communauté bienveillante de filles et de femmes LBTQ+ au Bénin, sous ton nom ou sous pseudonyme.', 'Deux personnes enlacées devant un grand drapeau arc-en-ciel.'],
+  ['sp4', 'Des ressources pour avancer', 'Fiches, ateliers et contacts utiles pour connaître tes droits et prendre soin de toi.', 'Une jeune femme au regard serein au milieu de la foule, des drapeaux arc-en-ciel dans le ciel.']
 ];
-let slide = 0;
+let slide = Math.max(0, Math.min(SLIDES.length - 1, +S.slide || 0));
 def({ id: 'splash', module: 'auth', title: 'Splash et carrousel', route: '/splash', page: 'SplashCarouselPage', provider: 'onboardingProvider (seen: bool)', chrome: 'bare',
-  source: 'web/connexion.html — carrousel d’authentification, porté en plein écran mobile',
+  source: 'Carrousel plein écran : 4 photos (assets/images/splash/*.webp), dégradé de lisibilité, textes de mobile_onboarding_*',
   tree: `SplashCarouselPage
-└─ Scaffold
+└─ Scaffold(extendBodyBehindAppBar)
    └─ Stack
-      ├─ PageView.builder (4 diapositives)
+      ├─ PageView.builder (4 diapositives, balayage)
       │  └─ _Slide
-      │     ├─ ImageFiltered(blur 16) ← texture
-      │     ├─ DecoratedBox(gradient)  ← voile
-      │     ├─ Image.asset (visuel net)
-      │     └─ Text titre / Text corps
-      ├─ XmLogo + TextButton « Passer »
-      └─ _Footer
-         ├─ SmoothPageIndicator
-         └─ FilledButton « Suivant » / « Commencer »`,
-  api: [], ds: DS('XmLogo', 'FilledButton.primary', 'PageIndicator', 'Montserrat 800'),
-  warn: 'onboardingProvider persiste « seen » (SharedPreferences) : au lancement suivant, go_router redirige /splash → /login. Le carrousel ne défile jamais tout seul (respect de reduceMotion et de la lecture).',
+      │     ├─ Image.asset(fit: cover, semanticLabel)
+      │     ├─ DecoratedBox(LinearGradient sombre)
+      │     └─ Column(titre en tu + sous-titre)
+      ├─ SafeArea › Row(XmLogo blanc, TextButton « Passer »)
+      └─ SafeArea › Column
+         ├─ _Dots (cibles 44 px, cliquables)
+         └─ « Suivant »  |  dernière : « Créer un compte » + « Se connecter »`,
+  api: [], ds: DS('XmLogo', 'FilledButton', 'OutlinedButton', 'PageIndicator', 'Montserrat 800'),
+  warn: 'Pas de défilement automatique. « Passer » mène à la connexion et mémorise seen. Photos : licence et consentement à confirmer avant publication ; un visuel neutre reste possible pour le mode discret (décision client).',
   render: () => `<div class="splash">
-    <img class="splash-logo" src="${logo()}" alt="Xomiton" width="100" height="26">
-    <button class="btn-link splash-skip" data-action="skip" style="padding:0 12px">Passer</button>
     <div class="slides" id="slides" aria-roledescription="carrousel" aria-label="Présentation de Xomiton">
       <div class="slides-track" id="track" style="transform:translateX(-${slide * 100}%)">
         ${SLIDES.map((s, i) => `<section class="slide" aria-roledescription="diapositive" aria-label="${i + 1} sur ${SLIDES.length}" ${i === slide ? '' : 'aria-hidden="true"'}>
-          <div class="slide-art"><div class="texture" style="background-image:url(${IMG[s[0]]})"></div><div class="veil"></div><img src="${IMG[s[0]]}" alt="" loading="${i ? 'lazy' : 'eager'}"></div>
+          <img src="${IMG[s[0]]}" alt="${esc(s[3])}" ${i ? 'loading="lazy"' : ''}><div class="shade"></div>
           <div class="slide-copy"><h2 class="h-display">${s[1]}</h2><p>${s[2]}</p></div></section>`).join('')}
       </div>
     </div>
+    <div class="splash-bar"><img src="${IMG.logoWhite}" alt="Xomiton"><button type="button" class="splash-skip" data-action="skip">Passer</button></div>
     <div class="splash-foot">
-      <div class="dots" role="group" aria-label="Choisir une diapositive">${SLIDES.map((s, i) => `<button data-slide="${i}" aria-label="Diapositive ${i + 1}" aria-current="${i === slide}"><i></i></button>`).join('')}</div>
-      <button class="btn btn-primary btn-block" data-action="next">${slide === SLIDES.length - 1 ? 'Commencer' : 'Suivant'}</button>
-      <button class="btn btn-outline btn-block" data-action="have-account">J’ai déjà un compte</button>
+      <div class="dots" role="group" aria-label="Choisir une diapositive">${SLIDES.map((s, i) => `<button type="button" data-slide="${i}" aria-label="Diapositive ${i + 1} sur ${SLIDES.length}" aria-current="${i === slide}"><i></i></button>`).join('')}</div>
+      <div class="splash-actions" id="actions"></div>
     </div></div>`,
   mount: root => {
     const finish = to => { S.seen = true; save(); go(to); };
-    const set = i => { slide = Math.max(0, Math.min(SLIDES.length - 1, i)); render(); };
-    root.querySelector('[data-action=next]').onclick = () => slide < SLIDES.length - 1 ? set(slide + 1) : finish('signup');
+    const track = root.querySelector('#track'), actions = root.querySelector('#actions');
+    const paint = () => {
+      track.style.transform = `translateX(-${slide * 100}%)`;
+      track.querySelectorAll('.slide').forEach((el, i) => i === slide ? el.removeAttribute('aria-hidden') : el.setAttribute('aria-hidden', 'true'));
+      root.querySelectorAll('[data-slide]').forEach(b => b.setAttribute('aria-current', +b.dataset.slide === slide));
+      const last = slide === SLIDES.length - 1;
+      actions.innerHTML = last
+        ? '<button type="button" class="btn btn-primary btn-block" data-action="signup">Créer un compte</button><button type="button" class="btn btn-ghost-light btn-block" data-action="login">Se connecter</button>'
+        : '<button type="button" class="btn btn-primary btn-block" data-action="next">Suivant</button>';
+      const f = actions.querySelector('[data-action=signup]') || actions.querySelector('[data-action=next]');
+      actions.querySelectorAll('[data-action]').forEach(b => b.onclick = () => ({ next: () => set(slide + 1), signup: () => finish('signup'), login: () => finish('login') })[b.dataset.action]());
+      return f;
+    };
+    const set = i => { slide = Math.max(0, Math.min(SLIDES.length - 1, i)); S.slide = slide; save(); paint(); };
+    paint();
     root.querySelector('[data-action=skip]').onclick = () => finish('login');
-    root.querySelector('[data-action=have-account]').onclick = () => finish('login');
     root.querySelectorAll('[data-slide]').forEach(b => b.onclick = () => set(+b.dataset.slide));
     const el = root.querySelector('#slides'); let x0 = null;
     el.addEventListener('pointerdown', e => { x0 = e.clientX; });
     el.addEventListener('pointerup', e => { if (x0 === null) return; const d = e.clientX - x0; x0 = null; if (Math.abs(d) > 40) set(slide + (d < 0 ? 1 : -1)); });
+    el.addEventListener('pointercancel', () => { x0 = null; });
     el.addEventListener('keydown', e => { if (e.key === 'ArrowRight') set(slide + 1); if (e.key === 'ArrowLeft') set(slide - 1); });
     el.tabIndex = 0;
   } });
@@ -607,7 +644,8 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
     const body = [
       () => `<div class="field"><label for="sp">Pseudonyme</label><input class="input" id="sp" value="${esc(d.pseudo)}" autocomplete="nickname" required><span class="hint">Visible par la communauté. Ton vrai nom n’est jamais demandé.</span></div>
         <div class="field"><label for="se">E-mail</label><input class="input" id="se" type="email" value="${esc(d.email)}" autocomplete="email" required></div>
-        ${pwField('sw', 'Mot de passe', d.password, 'new-password')}<div class="stack" style="gap:8px" id="meter">${meter(d.password)}</div>`,
+        ${pwField('sw', 'Mot de passe', d.password, 'new-password')}<div class="stack" style="gap:8px" id="meter">${meter(d.password)}</div>
+        <div class="stack" style="gap:6px"><label class="check"><input type="checkbox" id="sa" ${d.age15 ? 'checked' : ''} aria-describedby="saHint"><span>J’ai 15 ans ou plus. <b>(obligatoire)</b></span></label><span class="hint" id="saHint" style="padding-left:34px">Xomiton est réservé aux personnes de 15 ans ou plus.</span><button type="button" class="btn-link small" id="under15" style="justify-self:start;margin-left:34px;min-height:44px">J’ai moins de 15 ans</button></div>`,
       () => `<p class="small muted" style="margin:0">Facultatif : tu peux compléter plus tard, depuis ton profil.</p>
         <div class="field"><span class="label">Pronoms</span><div class="chips wrap">${['elle', 'iel', 'il', 'Je préfère ne pas dire'].map(p => `<button type="button" class="chip" data-pick="pronouns" aria-pressed="${d.pronouns === p}">${p}</button>`).join('')}</div></div>
         <div class="field"><label for="sz">Département</label><select class="input" id="sz"><option value="">—</option>${['Alibori', 'Atacora', 'Atlantique', 'Borgou', 'Collines', 'Couffo', 'Donga', 'Littoral', 'Mono', 'Ouémé', 'Plateau', 'Zou'].map(z => `<option ${d.zone === z ? 'selected' : ''}>${z}</option>`).join('')}</select></div>
@@ -624,15 +662,20 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
     return `<div class="appbar"><button class="icon-btn" data-action="prev" aria-label="Retour">${ic('back')}</button><h2>Étape ${st} sur 4</h2>${st === 2 || st === 3 ? '<button class="btn-link small" data-action="skipstep" style="padding:0 12px">Passer</button>' : ''}</div>
     <div class="view stack-lg"><div class="stepper" style="--n:4">${[1, 2, 3, 4].map(i => `<i class="${i <= st ? 'on' : ''}"></i>`).join('')}</div>
       <h1 class="h1">${titles[st - 1]}</h1><form class="stack" id="sf" novalidate>${body}<div id="sfErr"></div>
-      <button class="btn btn-primary btn-block">${st === 4 ? 'Créer mon compte' : 'Continuer'}</button></form>
+      <button class="btn btn-primary btn-block" id="sfGo" ${st === 1 && !d.age15 ? 'disabled' : ''}>${st === 4 ? 'Créer mon compte' : 'Continuer'}</button></form>
       ${st === 1 ? '<button class="btn btn-link" data-go="login">J’ai déjà un compte</button>' : ''}</div>`; },
   mount: root => { const d = S.signup, f = root.querySelector('#sf');
     root.querySelector('[data-action=prev]').onclick = () => { if (d.step > 1) { d.step--; save(); render(); } else back(); };
     const skip = root.querySelector('[data-action=skipstep]'); if (skip) skip.onclick = () => { d.step++; save(); render(); };
+    const age = root.querySelector('#sa'), go1 = root.querySelector('#sfGo');
+    if (age) { age.onchange = () => { d.age15 = age.checked; go1.disabled = !age.checked; root.querySelector('#sfErr').innerHTML = ''; save(); };
+      root.querySelector('#under15').onclick = () => { d.age15 = false; age.checked = false; go1.disabled = true; save();
+        root.querySelector('#sfErr').innerHTML = `<div class="alert" role="status" tabindex="-1" id="ageRefus">${ic('info', 'sm')}<span><b>Merci de ta franchise.</b> Pour te protéger, Xomiton n’est pas ouvert avant 15 ans, donc nous ne pouvons pas créer ton compte. Tu n’as rien fait de mal et tu n’es pas seule : parle à une personne de confiance (un·e adulte, une infirmière scolaire, un·e enseignant·e). Si tu es en danger, appelle les secours de ta région.</span></div>`; root.querySelector('#ageRefus').focus(); }; }
     const pw = root.querySelector('#sw'); if (pw) pw.oninput = () => { d.password = pw.value; root.querySelector('#meter').innerHTML = meter(pw.value); };
     root.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => { d[b.dataset.pick] = b.dataset.val || b.textContent; save(); render(); });
     f.onsubmit = ev => { ev.preventDefault(); const err = m => { root.querySelector('#sfErr').innerHTML = `<div class="alert danger" role="alert">${ic('alert', 'sm')}<span>${m}</span></div>`; };
       if (d.step === 1) { d.pseudo = f.sp.value.trim(); d.email = f.se.value.trim();
+        if (!d.age15) return err('Pour créer ton compte, confirme que tu as 15 ans ou plus.');
         if (d.pseudo.length < 3) return err('Choisis un pseudonyme d’au moins 3 caractères.');
         if (!/^\S+@\S+\.\S+$/.test(d.email)) return err('Indique une adresse e-mail valide, par exemple nom@exemple.bj.');
         if (strength(d.password).score < 3) return err('Ton mot de passe doit être au moins « Fort » : 10 caractères, majuscule, minuscule et chiffre.'); }
@@ -1047,13 +1090,14 @@ def({ id: 'postpublication', module: 'feed', title: 'Créer une publication', ro
   ds: DS('XmTextArea', 'ChoiceChip', 'ImagePicker', 'SwitchListTile', 'XmAlert.warning'),
   warn: 'Compression et suppression des métadonnées EXIF (position GPS) avant envoi de la photo.',
   render: () => `${appbar('Nouvelle publication', '<button class="btn btn-primary btn-sm" form="pf" style="margin-right:8px">Publier</button>')}<div class="view"><form class="stack-lg" id="pf" novalidate>
-    <div class="row" style="align-items:flex-start">${av(S.user.name)}<div class="grow"><label class="vh" for="pt">Ta publication</label><textarea class="input" id="pt" rows="5" maxlength="3000" placeholder="Partage une pensée, une question, un témoignage…" style="border:0;padding:6px 0;background:transparent;font-size:17px"></textarea></div></div>
+    <div class="compose">${av(S.user.name)}<div class="grow"><label class="vh" for="pt">Ta publication</label><textarea class="input" id="pt" rows="5" maxlength="3000" placeholder="Partage une pensée, une question, un témoignage…"></textarea></div></div>
     <div class="field"><span class="label">Type</span><div class="chips wrap" id="ptag">${['Témoignage', 'Question', 'Ressource', 'Événement'].map((t, i) => `<button type="button" class="chip" aria-pressed="${!i}">${t}</button>`).join('')}</div></div>
     <div class="field"><span class="label">Photo (facultatif)</span><div class="row" id="pimg">${['hero04', 'hero08', 'hero10'].map(k => `<button type="button" class="thumb" data-img="${k}" aria-pressed="${draftImg === k}" aria-label="Choisir cette image" style="width:84px;height:64px;border:3px solid ${draftImg === k ? 'var(--app-primary)' : 'transparent'};background-image:url(${IMG[k]})"></button>`).join('')}<button type="button" class="thumb" style="width:64px;height:64px;display:grid;place-items:center;border:1px dashed var(--app-border)" aria-label="Galerie">${ic('image')}</button></div></div>
     <div class="field"><label for="pv">Visibilité</label><select class="input" id="pv"><option>Communauté</option><option>Abonné·es</option><option>Moi seulement</option></select></div>
     <label class="switch"><span><b>Publier sous pseudonyme</b><br><span class="xs muted">Ton nom n’apparaît pas.</span></span><input type="checkbox" id="pa"></label>
     <div class="alert">${ic('info', 'sm')}<span>Besoin d’aide ? Utilise plutôt le <button type="button" class="btn-link small" data-go="signalement" style="min-height:0">signalement anonyme</button> ou le SOS.</span></div><div id="pErr"></div></form></div>`,
   mount: root => { const f = root.querySelector('#pf'); setTimeout(() => f.pt.focus(), 50);
+    const grow = () => { f.pt.style.height = 'auto'; f.pt.style.height = Math.min(Math.max(f.pt.scrollHeight + 2, 120), 320) + 'px'; }; f.pt.addEventListener('input', grow);
     root.querySelectorAll('#ptag .chip').forEach(c => c.onclick = () => root.querySelectorAll('#ptag .chip').forEach(x => x.setAttribute('aria-pressed', x === c)));
     root.querySelectorAll('[data-img]').forEach(b => b.onclick = () => { draftImg = draftImg === b.dataset.img ? '' : b.dataset.img; root.querySelectorAll('[data-img]').forEach(x => { x.setAttribute('aria-pressed', x.dataset.img === draftImg); x.style.borderColor = x.dataset.img === draftImg ? 'var(--app-primary)' : 'transparent'; }); });
     f.onsubmit = e => { e.preventDefault(); const t = f.pt.value.trim(); if (t.length < 2) { root.querySelector('#pErr').innerHTML = `<div class="err" role="alert">${ic('alert', 'sm')}Écris quelques mots avant de publier.</div>`; return; }
@@ -1226,25 +1270,22 @@ def({ id: 'completer', module: 'profile', title: 'Profil progressif', route: '/p
   mount: root => { root.querySelectorAll('[data-g]').forEach(c => c.onclick = () => { const g = c.dataset.g; root.querySelectorAll(`[data-g="${g}"]`).forEach(x => { if (g !== '2') x.setAttribute('aria-pressed', x === c); }); if (g === '2') c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true'); });
     root.querySelector('#cpSave').onclick = () => { const n = new Set([...root.querySelectorAll('[aria-pressed=true]')].map(x => x.dataset.g)).size; S.user.completion = Math.min(100, 40 + n * 20); save(); back(); toast('Profil mis à jour.'); }; } });
 
-def({ id: 'parametres', module: 'profile', title: 'Paramètres', route: '/parametres', page: 'SettingsPage', provider: 'settingsProvider (persisté) + themeModeProvider', chrome: 'stack',
+def({ id: 'parametres', module: 'profile', title: 'Paramètres', route: '/parametres', page: 'SettingsPage', provider: 'settingsProvider (persisté)', chrome: 'stack',
   tree: `SettingsPage
 └─ Scaffold
    └─ ListView
-      ├─ _Section « Apparence » SegmentedButton(clair · sombre · système)
       ├─ _Section « Notifications » SwitchListTile × 2
       ├─ ListTile « Langue »
       ├─ ListTile → /securite, → /newsletter
       └─ ListTile « Se déconnecter » (confirmation)`,
-  api: [['PATCH', '/api/v1/me/settings', '{theme, notifications, sounds, locale}'], ['POST', '/api/v1/auth/logout', 'révoque le jeton Sanctum']],
-  ds: DS('SegmentedButton', 'SwitchListTile', 'ListTile', 'AlertDialog'),
-  warn: 'Le thème s’applique immédiatement (ThemeMode) et vérifie les contrastes sombres (#7C97FF, #FF6B6B) prévus par la charte.',
+  api: [['PATCH', '/api/v1/me/settings', '{notifications, sounds, locale}'], ['POST', '/api/v1/auth/logout', 'révoque le jeton Sanctum']],
+  ds: DS('SwitchListTile', 'ListTile', 'AlertDialog'),
+  warn: 'Pas de réglage de thème dans l’app : ThemeMode.system suit le réglage du téléphone (contrastes sombres #7C97FF, #FF6B6B prévus par la charte).',
   render: () => `${appbar('Paramètres')}<div class="view stack-lg">
-    <div class="card stack" style="gap:10px"><b>Apparence</b><div class="chips wrap">${[['light', 'Clair'], ['dark', 'Sombre']].map(t => `<button class="chip" data-theme-set="${t[0]}" aria-pressed="${S.theme === t[0]}">${ic(t[0] === 'dark' ? 'moon' : 'globe', 'sm')} ${t[1]}</button>`).join('')}</div></div>
     <div class="card" style="padding-top:4px;padding-bottom:4px"><label class="switch"><span><b>Notifications</b><br><span class="xs muted">Messages, réponses, événements</span></span><input type="checkbox" data-set="notif" ${S.settings.notif ? 'checked' : ''}></label><label class="switch"><span><b>Sons</b><br><span class="xs muted">Alertes SOS uniquement si coupé</span></span><input type="checkbox" data-set="sounds" ${S.settings.sounds ? 'checked' : ''}></label></div>
     <div class="card" style="padding-top:0;padding-bottom:0"><div class="list"><button id="lang">${ic('globe')}<span class="grow">Langue</span><span class="small muted">${S.settings.lang}</span>${ic('chevR', 'sm')}</button><button data-go="securite">${ic('shield')}<span class="grow">Sécurité et confidentialité</span>${ic('chevR', 'sm')}</button><button data-go="newsletter">${ic('mail')}<span class="grow">Newsletter</span>${ic('chevR', 'sm')}</button></div></div>
     <button class="btn btn-outline btn-block" id="logout" style="color:var(--app-danger)">${ic('logout', 'sm')} Se déconnecter</button><p class="xs muted" style="text-align:center;margin:0">Xomiton 1.5.0 · données hébergées au Bénin</p></div>`,
-  mount: root => { root.querySelectorAll('[data-theme-set]').forEach(b => b.onclick = () => setTheme(b.dataset.themeSet));
-    root.querySelectorAll('[data-set]').forEach(i => i.onchange = () => { S.settings[i.dataset.set] = i.checked; save(); });
+  mount: root => { root.querySelectorAll('[data-set]').forEach(i => i.onchange = () => { S.settings[i.dataset.set] = i.checked; save(); });
     root.querySelector('#lang').onclick = () => { const L = ['Français', 'Fon', 'Yoruba', 'English']; S.settings.lang = L[(L.indexOf(S.settings.lang) + 1) % L.length]; save(); render(); };
     root.querySelector('#logout').onclick = () => { if (!confirm('Se déconnecter de Xomiton sur cet appareil ?')) return; S.auth = false; save(); stack = []; go('login', { replace: true }); toast('Tu es déconnecté·e.'); }; } });
 
@@ -1309,7 +1350,6 @@ function go(id, o = {}) {
 function back() { const p = stack.pop(); if (p) { cur = p; history.replaceState(null, '', '#/' + p.id + (p.param ? '/' + p.param : '')); render(true); } else go(S.auth ? 'dashboard' : 'login', { replace: true }); }
 let toastT = null;
 function toast(msg) { const old = app.querySelector('.toast'); if (old) old.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.innerHTML = ic('check', 'sm') + '<span>' + esc(msg) + '</span>'; app.appendChild(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 3200); }
-function setTheme(t) { S.theme = t; save(); syncTop(); render(); }
 
 const TABS = [['dashboard', 'home', 'Accueil'], ['fil', 'feed', 'Fil'], ['sos', 'sos', 'SOS'], ['message', 'chat', 'Messages'], ['profil', 'user', 'Profil']];
 function render(scrollTop) {
@@ -1325,7 +1365,7 @@ function render(scrollTop) {
   app.querySelectorAll('[data-toggle-pw]').forEach(b => b.onclick = () => { const i = app.querySelector('#' + b.dataset.togglePw); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.innerHTML = ic(show ? 'eyeOff' : 'eye'); b.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe'); });
   if (s.mount) s.mount(app, cur.param);
   const v = app.querySelector('.view'); if (v && !scrollTop && !['chat', 'assistant'].includes(s.id)) v.scrollTop = prevScroll;
-  document.getElementById('screen').style.setProperty('--sb-color', s.id === 'profil' ? '#fff' : '');
+  document.getElementById('screen').style.setProperty('--sb-color', ['profil', 'splash'].includes(s.id) ? '#fff' : '');
   updatePanel(s); updateRail(s);
 }
 
@@ -1333,12 +1373,36 @@ function render(scrollTop) {
    Rail, panneau, barre supérieure
    ===================================================================== */
 const railGroups = document.getElementById('railGroups'), railSelect = document.getElementById('railSelect');
-railGroups.innerHTML = MODULES.map(m => `<div class="rail-group" data-mod="${m[0]}"><h2>${m[1]} <code>${m[0]}</code></h2>${SCREENS.filter(s => s.module === m[0]).map(s => { const n = SCREENS.indexOf(s) + 1; return `<a href="#/${s.id}" data-id="${s.id}" data-t="${(s.title + ' ' + s.route + ' ' + s.page).toLowerCase()}"><span class="n">${String(n).padStart(2, '0')}</span><span>${s.title}</span><span class="r">#/${s.id}</span></a>`; }).join('')}</div>`).join('');
-railSelect.innerHTML = MODULES.map(m => `<optgroup label="${m[1]}">${SCREENS.filter(s => s.module === m[0]).map(s => `<option value="${s.id}">${String(SCREENS.indexOf(s) + 1).padStart(2, '0')} · ${s.title}</option>`).join('')}</optgroup>`).join('');
-railSelect.onchange = () => { stack = []; go(railSelect.value, { replace: true }); };
-railGroups.addEventListener('click', e => { const a = e.target.closest('a[data-id]'); if (!a) return; e.preventDefault(); stack = []; go(a.dataset.id, { replace: true }); });
-document.getElementById('railSearch').oninput = e => { const v = e.target.value.toLowerCase().trim(); railGroups.querySelectorAll('a').forEach(a => a.hidden = v && !a.dataset.t.includes(v)); railGroups.querySelectorAll('.rail-group').forEach(g => g.hidden = ![...g.querySelectorAll('a')].some(a => !a.hidden)); };
-function updateRail(s) { railGroups.querySelectorAll('a').forEach(a => a.dataset.id === s.id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')); railSelect.value = s.id; const a = railGroups.querySelector('[aria-current]'); if (a) a.scrollIntoView({ block: 'nearest' }); }
+/* Maquettes liées (pages séparées) : entrées sans numéro, préfixées P (espace pair) et A (admin mobile). */
+const EXTERNAL = [
+  ['pair', 'Espace pair', 'espace-pair', 'P', [['accueil', 'Accueil pair'], ['alertes', 'Alertes routées vers moi'], ['alerte/a1', 'Détail d’une alerte SOS'], ['dossiers', 'Mes dossiers'], ['dossier/VBG-0042', 'Fiche dossier'], ['suivi/VBG-0042', 'Ajouter un suivi'], ['sos', 'SOS'], ['collecte?etape=1', 'Collecte : étape 1'], ['collecte?etape=5&demo=1', 'Collecte : vérification'], ['sync?net=off', 'File de synchronisation (hors ligne)'], ['sync?net=on', 'Conflit 409 à résoudre']]],
+  ['admin', 'Admin mobile', 'admin-mobile', 'A', [['tableau', 'Tableau de bord d’astreinte'], ['alertes', 'Liste des alertes'], ['alerte/2041', 'Détail d’une alerte SOS'], ['pairs', 'Validation des pairs'], ['maintenance', 'Mode maintenance'], ['notifications', 'Notifications'], ['tableau?net=off', 'Hors connexion']]]
+];
+/* État du menu (ouvert / replié, modules repliés) : mémorisé, avec repli sans erreur si le stockage est indisponible. */
+const MENU_KEY = 'xm-sim-menu-v1';
+let MENU = { open: true, collapsed: [] };
+try { Object.assign(MENU, JSON.parse(localStorage.getItem(MENU_KEY) || '{}')); if (!Array.isArray(MENU.collapsed)) MENU.collapsed = []; } catch (e) { /* stockage indisponible */ }
+const saveMenu = () => { try { localStorage.setItem(MENU_KEY, JSON.stringify(MENU)); } catch (e) { /* ignoré */ } };
+const CV = '<svg class="cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
+const groupHtml = (mod, label, code, count, items) => { const open = !MENU.collapsed.includes(mod);
+  return `<div class="rail-group" data-mod="${mod}" data-collapsed="${!open}"><h2><button type="button" class="mod" aria-expanded="${open}" aria-controls="grp-${mod}">${CV}<span>${label}</span> <code>${code}</code><span class="cnt">${count}</span></button></h2><div class="items" id="grp-${mod}">${items}</div></div>`; };
+railGroups.innerHTML = MODULES.map(m => { const list = SCREENS.filter(s => s.module === m[0]);
+  return groupHtml(m[0], m[1], m[0], list.length, list.map(s => { const n = SCREENS.indexOf(s) + 1; return `<a href="#/${s.id}" data-id="${s.id}" data-t="${(s.title + ' ' + s.route + ' ' + s.page).toLowerCase()}"><span class="n">${String(n).padStart(2, '0')}</span><span>${s.title}</span><span class="r">#/${s.id}</span></a>`; }).join('')); }).join('')
+  + EXTERNAL.map(x => groupHtml(x[0], x[1], x[2], x[4].length, x[4].map((it, i) => `<a class="ext" href="${x[2]}.html#/${it[0]}" data-t="${(x[1] + ' ' + it[1] + ' ' + it[0]).toLowerCase()}"><span class="n">${x[3]}${i + 1}</span><span>${it[1]}</span><span class="r">${x[2]}.html#/${it[0].split('?')[0]}</span></a>`).join(''))).join('');
+railSelect.innerHTML = MODULES.map(m => `<optgroup label="${m[1]}">${SCREENS.filter(s => s.module === m[0]).map(s => `<option value="${s.id}">${String(SCREENS.indexOf(s) + 1).padStart(2, '0')} · ${s.title}</option>`).join('')}</optgroup>`).join('')
+  + EXTERNAL.map(x => `<optgroup label="${x[1]}">${x[4].map((it, i) => `<option value="ext:${x[2]}.html#/${it[0]}">${x[3]}${i + 1} · ${it[1]}</option>`).join('')}</optgroup>`).join('');
+railSelect.onchange = () => { if (railSelect.value.startsWith('ext:')) { location.href = railSelect.value.slice(4); return; } stack = []; go(railSelect.value, { replace: true }); };
+railGroups.addEventListener('click', e => {
+  const m = e.target.closest('button.mod');
+  if (m) { const g = m.closest('.rail-group'), open = m.getAttribute('aria-expanded') !== 'true'; m.setAttribute('aria-expanded', open); g.dataset.collapsed = !open; MENU.collapsed = MENU.collapsed.filter(x => x !== g.dataset.mod); if (!open) MENU.collapsed.push(g.dataset.mod); saveMenu(); return; }
+  const a = e.target.closest('a[data-id]'); if (!a) return; e.preventDefault(); stack = []; go(a.dataset.id, { replace: true }); });
+document.getElementById('railSearch').oninput = e => { const v = e.target.value.toLowerCase().trim();
+  railGroups.querySelectorAll('a').forEach(a => a.hidden = !!v && !a.dataset.t.includes(v));
+  railGroups.querySelectorAll('.rail-group').forEach(g => { const any = [...g.querySelectorAll('a')].some(a => !a.hidden); g.hidden = !any; if (v) g.dataset.collapsed = 'false'; else g.dataset.collapsed = MENU.collapsed.includes(g.dataset.mod); }); };
+const menuBtn = document.getElementById('menuBtn');
+function applyMenu() { document.querySelector('.sim').classList.toggle('menu-closed', !MENU.open); menuBtn.setAttribute('aria-expanded', MENU.open); fit(); }
+menuBtn.onclick = () => { MENU.open = !MENU.open; saveMenu(); applyMenu(); };
+function updateRail(s) { railGroups.querySelectorAll('a[data-id]').forEach(a => a.dataset.id === s.id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')); railSelect.value = s.id; const a = railGroups.querySelector('[aria-current]'); if (a) a.scrollIntoView({ block: 'nearest' }); }
 function updatePanel(s) {
   const n = SCREENS.indexOf(s) + 1, mod = MODULES.find(m => m[0] === s.module);
   document.getElementById('panel').innerHTML = `<header><div class="state">Écran ${String(n).padStart(2, '0')} sur ${SCREENS.length} · module <code>${s.module}</code> (${mod[1]})</div><h2 style="margin-top:4px">${esc(s.title)}</h2><span class="route">${esc(s.route)}</span></header>
@@ -1347,19 +1411,17 @@ function updatePanel(s) {
     <section><h3>Appels API</h3>${s.api.length ? `<ul class="api">${s.api.map(a => `<li><span class="verb ${a[0]}">${a[0]}</span><span>${esc(a[1])}${a[2] ? `<br><span style="color:var(--pg-muted)">${esc(a[2])}</span>` : ''}</span></li>`).join('')}</ul>` : '<p class="state">Aucun appel réseau : écran local.</p>'}</section>
     <section><h3>Composants du design system</h3><div class="ds">${s.ds.map(d => `<span>${esc(d)}</span>`).join('')}</div></section>
     <section><h3>Point de vigilance</h3><p class="warn">${esc(s.warn)}</p></section>
-    <section><h3>État simulé</h3><p class="state">onboardingProvider.seen = <code>${S.seen}</code> · session = <code>${S.auth}</code> · rôle = <code>${S.role}</code> · thème = <code>${S.theme}</code>${s.id === 'otp' ? ` · purpose = <code>${S.otp.purpose}</code>` : ''}<br>Lien profond : <code>index.html#/${s.id}</code></p></section>`;
+    <section><h3>État simulé</h3><p class="state">onboardingProvider.seen = <code>${S.seen}</code> · session = <code>${S.auth}</code> · rôle = <code>${S.role}</code>${s.id === 'otp' ? ` · purpose = <code>${S.otp.purpose}</code>` : ''}<br>Lien profond : <code>index.html#/${s.id}</code></p></section>`;
 }
 function syncTop() {
   document.querySelectorAll('[data-model]').forEach(b => b.setAttribute('aria-pressed', b.dataset.model === S.model));
   document.querySelectorAll('[data-role]').forEach(b => b.setAttribute('aria-pressed', b.dataset.role === S.role));
-  document.querySelectorAll('[data-apptheme]').forEach(b => b.setAttribute('aria-pressed', b.dataset.apptheme === S.theme));
   document.getElementById('device').dataset.model = S.model;
   document.getElementById('caption').innerHTML = S.model === 'pixel8' ? '<b>Pixel 8</b> · 412 × 880 · Android 15 · Arial → Roboto' : '<b>iPhone 14</b> · 390 × 844 · iOS 18 · zones sûres 47 / 34';
   fit();
 }
 document.querySelectorAll('.topbar [data-model]').forEach(b => b.onclick = () => { S.model = b.dataset.model; save(); syncTop(); render(); });
 document.querySelectorAll('.topbar [data-role]').forEach(b => b.onclick = () => { S.role = b.dataset.role; save(); syncTop(); render(); });
-document.querySelectorAll('.topbar [data-apptheme]').forEach(b => b.onclick = () => setTheme(b.dataset.apptheme));
 document.getElementById('reset').onclick = () => { try { localStorage.removeItem(KEY); } catch (e) { /* indisponible */ } S = DEFAULT(); stack = []; slide = 0; syncTop(); go('splash', { replace: true }); };
 
 /* Mise à l'échelle de l'appareil dans la scène */
@@ -1376,7 +1438,7 @@ const tick = () => { document.getElementById('clock').textContent = new Date().t
 tick(); setInterval(tick, 15000);
 
 window.addEventListener('hashchange', () => { const h = parseHash(); if (h.id && byId(h.id) && (byId(h.id).id !== cur.id || h.param !== cur.param)) { stack = []; go(h.id, { param: h.param, fromHash: true, rawId: h.id }); } });
-syncTop();
+syncTop(); applyMenu();
 const h0 = parseHash();
 if (h0.id && byId(h0.id)) go(h0.id, { param: h0.param, fromHash: true, rawId: h0.id });
 else go(S.auth ? 'dashboard' : (S.seen ? 'login' : 'splash'), { replace: true }); // redirection go_router selon onboardingProvider

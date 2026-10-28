@@ -8,11 +8,11 @@ Ouvrir `index.html`. Le fichier s'ouvre aussi en double-clic (`file://`) : les v
 
 | Zone | Rôle |
 |---|---|
-| **Rail gauche** | Index des 30 écrans, groupés par module Flutter (`auth`, `home`, `sos`, `feed` (fil d'actualités), `community`, `profile`). Champ de filtre. Clic = saut direct (une session de démonstration est ouverte si l'écran demande d'être connecté·e). Sous 820 px, le rail devient une liste déroulante. |
-| **Centre** | Châssis iPhone 14 (390 × 844, encoche, zones sûres 47 / 34) ou Pixel 8 (412 × 880, poinçon, zones sûres 32 / 24) avec barre d'état, barre d'accueil et mise à l'échelle automatique. L'application à l'intérieur est **interactive** : formulaires validés, navigation avec retour, barre d'onglets, toasts, thème clair ou sombre. |
+| **Menu des écrans (rail gauche)** | Bouton ☰ (en haut à gauche) : affiche ou masque la liste, le téléphone se centre quand elle est masquée. Index des 30 écrans, numérotés 01 à 30 et groupés par module Flutter (`auth`, `home`, `sos`, `feed`, `community`, `profile`), plus deux modules liés : **Espace pair** (P1 à P11, `espace-pair.html#/…`) et **Admin mobile** (A1 à A7, `admin-mobile.html#/…`). Chaque module se replie ; l'état (menu ouvert ou non, modules repliés) est mémorisé dans `localStorage` (clé `xm-sim-menu-v1`, sans erreur si le stockage est indisponible). Champ de filtre. Clic = saut direct (une session de démonstration est ouverte si l'écran demande d'être connecté·e). Sous 820 px, le rail devient une liste déroulante. |
+| **Centre** | Châssis iPhone 14 (390 × 844, encoche, zones sûres 47 / 34) ou Pixel 8 (412 × 880, poinçon, zones sûres 32 / 24) avec barre d'état, barre d'accueil et mise à l'échelle automatique. L'application à l'intérieur est **interactive** : formulaires validés, navigation avec retour, barre d'onglets, toasts. Thème **clair** uniquement : aucune bascule de thème dans le simulateur (le thème sombre de l'application suit le réglage du téléphone côté Flutter). |
 | **Panneau droit** | Transposition Flutter de l'écran affiché : route `go_router`, page, provider Riverpod, dossier `lib/features/<module>/presentation/`, arbre de widgets, appels `/api/v1`, composants du design system, point de vigilance et état simulé. |
 
-Barre supérieure : choix de l'appareil, du type de compte (le tableau de bord, le profil et les publications changent pour un·e pair éducateur·rice), du thème de l'application, et « Réinitialiser » (efface l'état enregistré dans le navigateur et revient au splash).
+Barre supérieure : ☰, choix de l'appareil, du type de compte (le tableau de bord, le profil et les publications changent pour un·e pair éducateur·rice), et « Réinitialiser » (efface l'état enregistré dans le navigateur et revient au splash).
 
 ## Liens profonds
 
@@ -33,9 +33,9 @@ Chaque écran a une ancre : `index.html#/dashboard`, `#/login`, `#/sighub`, `#/t
 
 `splash` → `login` | `signup` → `otp` → tableau de bord, et `forgot` → `otp` → `reset` → `login`.
 
-- **Splash** (`SplashCarouselPage`, état `onboardingProvider (seen: bool)`) : carrousel d'authentification du prototype web porté en plein écran mobile, 4 diapositives avec les illustrations Xomiton (`prototype_social/assets/images/xomiton/`). Chaque visuel est traité en **texture** (flou léger, plein cadre) sous un **voile net** et une version nette au centre, pour que le texte superposé reste lisible en portrait quel que soit le format de l'image. Balayage, flèches du clavier, points, « Passer ». Une fois le carrousel terminé, `seen = true` est mémorisé : au lancement suivant, la redirection se fait directement vers la connexion.
+- **Splash** (`SplashCarouselPage`, état `onboardingProvider (seen: bool)`) : carrousel **plein écran** de 4 photos (`src/images/splash/*.webp`, WebP 900 px, ≤ 150 Ko) sous un dégradé sombre pour la lisibilité (AA). Barre supérieure avec logo blanc et « Passer » ; titre et sous-titre en tu (écoute sans jugement, SOS, communauté, ressources) ; points cliquables (cibles 44 px) ; « Suivant », puis « Créer un compte » et « Se connecter » sur la dernière diapositive. Balayage, flèches du clavier, texte alternatif sur chaque photo, `prefers-reduced-motion` respecté, aucun défilement automatique. La dernière diapositive vue est mémorisée. Un clic sur « Passer » ou sur une action mémorise `seen = true` : au lancement suivant, redirection vers la connexion. **À valider avant publication** : droits d'image des 4 photos (licence, consentement) et discrétion du visuel (spec `docs/SPEC_PROTOTYPE_MOBILE_V2.md`, §6).
 - **OTP par e-mail** (pas par SMS) : couverture universelle, coût nul, aucune dépendance opérateur. Le même écran sert la connexion, l'inscription et la réinitialisation via le paramètre `purpose`. Six cases, collage du code complet, `autocomplete="one-time-code"`, renvoi après 30 s. Démo : n'importe quel code à 6 chiffres est accepté, sauf `000000`.
-- **Inscription** en 4 phases : compte (pseudonyme, e-mail, mot de passe avec **jauge de force** et règles affichées), profil (facultatif), sécurité (facultatif), puis **consentements RGPD** en cases distinctes, jamais pré-cochées : conditions d'utilisation et confidentialité obligatoires, données sensibles et newsletter facultatives. Seule la phase 1 est obligatoire (décision D4 : inscription simplifiée).
+- **Inscription** en 4 phases : compte (pseudonyme, e-mail, mot de passe avec **jauge de force** et règles affichées), profil (facultatif), sécurité (facultatif), puis **consentements RGPD** en cases distinctes, jamais pré-cochées : conditions d'utilisation et confidentialité obligatoires, données sensibles et newsletter facultatives. Seule la phase 1 est obligatoire (décision D4 : inscription simplifiée). La phase 1 porte la case **« J'ai 15 ans ou plus »** (obligatoire, jamais pré-cochée) : « Continuer » reste désactivé tant qu'elle n'est pas cochée ; « J'ai moins de 15 ans » affiche un refus bienveillant (aucun compte créé, orientation vers une personne de confiance). Même règle que Flutter et le serveur (`age_confirmed`, `xomiton.accounts.min_age`).
 - **Mot de passe oublié** : code par e-mail, réponse volontairement indifférenciée (pas d'énumération de comptes), puis choix d'un nouveau mot de passe.
 
 ## Autres parcours à essayer
@@ -44,7 +44,7 @@ Chaque écran a une ancre : `index.html#/dashboard`, `#/login`, `#/sighub`, `#/t
 - **Signalement** : 4 étapes avec brouillon conservé, récapitulatif, code de suivi à copier, retrouvé ensuite dans « Signaler et suivre ».
 - **Fil** : j'aime, vote à un sondage (et retrait du vote), filtres, commentaires, création d'une publication ou d'un sondage (2 à 6 réponses), qui apparaît en tête du fil.
 - **Messages** : envoi d'un message et réponse simulée ; aperçus masqués si l'option de sécurité est active.
-- **Paramètres** : thème clair ou sombre appliqué immédiatement, langue, déconnexion.
+- **Paramètres** : notifications, sons, langue, déconnexion.
 
 ## Fichiers
 
@@ -52,22 +52,22 @@ Chaque écran a une ancre : `index.html#/dashboard`, `#/login`, `#/sighub`, `#/t
 |---|---|
 | `index.html` | Simulateur construit, fichier unique (≈ 330 Ko). **Ne pas modifier à la main.** |
 | `src/simulateur.html` | Source lisible (HTML, CSS, JavaScript sans dépendance). Les images y sont référencées par `{{IMG:fichier}}`. |
-| `src/images/` | Visuels du splash (JPEG 720 px recompressés) et logos SVG du design system. |
+| `src/images/` | Visuels du design system (logos SVG, illustrations JPEG) ; `splash/` : 4 photos WebP du carrousel (copie dans `mobile/assets/images/splash/`). |
 | `src/espace-pair.html`, `src/admin-mobile.html` | Sources des deux maquettes ci-dessus (`{{INCLUDE:…}}` du noyau commun, `{{IMG:…}}` des images). |
 | `src/partials/kit.css`, `kit.js` | Noyau commun des deux maquettes : jetons, châssis (copie du simulateur), composants, routage par ancre, feuilles, notifications. |
 | `build.py` | Reconstruit `index.html`, `espace-pair.html` et `admin-mobile.html` (data URI pour `{{IMG:…}}`, inclusion des fichiers de `src/partials/`) : `python3 build.py`. |
 
 ## Maquettes « Espace pair » et « Admin mobile » (P15-09, à valider)
 
-Deux maquettes cliquables complémentaires, avec le même châssis iPhone 14, les mêmes jetons `--xm-*`, Montserrat, thème clair et sombre. Données fictives et pseudonymisées, rien n'est envoyé nulle part. Elles ne modifient aucun des 30 écrans du simulateur.
+Deux maquettes cliquables complémentaires, avec le même châssis iPhone 14, les mêmes jetons `--xm-*`, Montserrat, thème clair par défaut (le sombre reste accessible par `?theme=dark`). Elles sont atteignables depuis le menu du simulateur. Données fictives et pseudonymisées, rien n'est envoyé nulle part. Elles ne modifient aucun des 30 écrans du simulateur.
 
 | Fichier | Contenu |
 |---|---|
 | `espace-pair.html` | **Espace pair** (tutoiement) : accueil (KPI, tâches, raccourcis, pastille « de garde »), alertes routées (accuser réception, prendre en charge, clore), mes dossiers (recherche, fiche en 5 sections, frise de suivi, ajouter un suivi), collecte par étapes avec avertissement de plausibilité (état « en file » puis « envoyé »), file de synchronisation avec conflit 409 (valeur serveur ou mon appareil), bandeau hors connexion, SOS toujours accessible dans la barre d'onglets. |
 | `admin-mobile.html` | **Admin mobile** (vouvoiement), compagnon d'astreinte et non l'administration complète : bandeau « Alertes SOS actives », liste des alertes (SOS / Signalements / Besoins, statut, prendre en charge), détail (position arrondie, « Ouvrir dans Maps » avec avertissement, personnes prévenues, historique, réattribuer, note interne), validation des pairs, mode maintenance avec confirmation forte, notifications. |
-| `captures/` | Captures 390 × 844 (4 par maquette, thème clair et sombre). |
+| `captures/` | Captures 390 × 844 (4 par maquette, thème clair et sombre) et captures du simulateur v2 : menu ouvert et fermé (1280 et 390), splash 4 diapositives, inscription (case 15 ans, refus), champ de publication. |
 
-Ouvrir le fichier dans un navigateur (double-clic possible ; seule la police Montserrat demande le réseau). Sur grand écran : index des écrans à gauche, bascule **Thème** (clair ou sombre) et **Réseau** (en ligne ou hors ligne) en haut. Sous 480 px de large, l'application occupe tout l'écran, sans châssis. Liens profonds : `espace-pair.html#/alertes`, `#/dossier/VBG-0042`, `#/collecte?etape=5&demo=1`, `#/sync?net=off`, `#/sos` ; `admin-mobile.html#/tableau`, `#/alerte/2041`, `#/pairs`, `#/maintenance`, `#/notifications` ; le paramètre `theme=dark` ou `net=off` s'ajoute après `?` ou `&`.
+Ouvrir le fichier dans un navigateur (double-clic possible ; seule la police Montserrat demande le réseau). Sur grand écran : index des écrans à gauche, bascule **Réseau** (en ligne ou hors ligne) en haut ; plus de bascule de thème (clair par défaut ; `?theme=dark` reste accepté pour la recette). Sous 480 px de large, l'application occupe tout l'écran, sans châssis. Liens profonds : `espace-pair.html#/alertes`, `#/dossier/VBG-0042`, `#/collecte?etape=5&demo=1`, `#/sync?net=off`, `#/sos` ; `admin-mobile.html#/tableau`, `#/alerte/2041`, `#/pairs`, `#/maintenance`, `#/notifications` ; le paramètre `theme=dark` ou `net=off` s'ajoute après `?` ou `&`.
 
 Parcours à essayer : en hors ligne, enregistrer une collecte (« En file »), puis repasser en ligne : l'envoi part tout seul (« Envoyé », code attribué) ; résoudre le conflit 409 dans la file ; côté admin, activer la maintenance (case à cocher et mot `MAINTENANCE`).
 

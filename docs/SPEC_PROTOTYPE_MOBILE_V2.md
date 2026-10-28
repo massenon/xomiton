@@ -1,6 +1,6 @@
 # Spec — Prototype mobile v2 : navigation, splash plein écran, âge 15 ans
 
-Statut : à implémenter (2026-10-28). Périmètre : `prototype_mobile/` (HTML) et, pour le splash et l'âge, l'application Flutter `mobile/`.
+Statut : implémenté (2026-10-28) ; reste à valider en recette humaine (`docs/CHECKLIST_RECETTE.md` MOB-02, MOB-11 à MOB-13) et à lever le point « droits d'image » du §6. P1 : dernière slide mémorisée et filtre du menu faits ; P2 non fait. Périmètre : `prototype_mobile/` (HTML) et, pour le splash et l'âge, l'application Flutter `mobile/`.
 
 ## 1. Problème
 Le simulateur mobile (`prototype_mobile/index.html`) liste les écrans dans une colonne fixe : impossible de la replier, les écrans de l'espace pair et de l'admin d'astreinte n'y figurent pas, et une bascule de thème y est intégrée alors que le thème par défaut doit être clair. Le splash d'accueil n'est pas un carrousel plein écran avec photos. Le champ « Créer une publication » est mal proportionné. La règle d'âge minimal (15 ans) n'est pas visible dans le prototype d'inscription.

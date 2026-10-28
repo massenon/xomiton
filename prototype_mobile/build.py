@@ -19,6 +19,6 @@ cache = {}
 for src in sorted((ROOT / 'src').glob('*.html')):
     out = ROOT / OUTS.get(src.name, src.name)
     html = re.sub(r'\{\{INCLUDE:([\w.-]+)\}\}', lambda m: (PARTIALS / m.group(1)).read_text(encoding='utf-8'), src.read_text(encoding='utf-8'))
-    html = re.sub(r'\{\{IMG:([\w.-]+)\}\}', lambda m: cache.setdefault(m.group(1), data_uri(m.group(1))), html)
+    html = re.sub(r'\{\{IMG:([\w./-]+)\}\}', lambda m: cache.setdefault(m.group(1), data_uri(m.group(1))), html)
     out.write_text(html, encoding='utf-8')
     print(f'{out.name} : {len(html) / 1024:.0f} Ko')

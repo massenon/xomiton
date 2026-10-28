@@ -164,8 +164,8 @@ En mode journal, rien n'est envoyé vraiment.
 
 | Réf. | Action | Résultat attendu | Statut | Commentaire |
 |---|---|---|---|---|
-| MOB-01 | `flutter pub get`, `flutter analyze`, `flutter test`. | « No issues found! » et « All tests passed! » (151 tests). | ☐ | |
-| MOB-02 | `flutter run` : parcourir le carrousel de présentation (Suivant, Passer, « J'ai déjà un compte »). | Le carrousel s'affiche et mène à la connexion. | ☐ | |
+| MOB-01 | `flutter pub get`, `flutter analyze`, `flutter test`. | « No issues found! » et « All tests passed! » (152 tests). | ☐ | |
+| MOB-02 | `flutter run` : parcourir le carrousel plein écran (photos, Suivant, balayage, points, Passer) ; sur la 4e diapositive, « Créer un compte » et « Se connecter ». | 4 photos plein écran, titres en tu lisibles sur la photo ; « Passer » et « Se connecter » mènent à la connexion, « Créer un compte » à l'inscription. | ☐ | |
 | MOB-03 | Créer un compte (avec la case d'âge minimal), saisir le code du journal. | Arrivée sur l'accueil (tuiles Apprendre, Signaler, Urgences, Assistant). | ☐ | |
 | MOB-04 | Se connecter, se déconnecter, se reconnecter ; tester le mot de passe oublié. | Connexion avec code si nouvel appareil. | ☐ | |
 | MOB-05 | Onglet SOS : maintenir, annuler, puis envoyer ; refuser la position. | Même comportement que le web ; l'alerte part sans position ; ligne visible dans `/admin/alertes`. | ☐ | |
@@ -173,7 +173,10 @@ En mode journal, rien n'est envoyé vraiment.
 | MOB-07 | Fil : lire, publier, commenter, « J'aime » ; Messages : écrire depuis le web et le mobile. | Les contenus se retrouvent des deux côtés. | ☐ | |
 | MOB-08 | Profil, profil progressif, paramètres, sécurité (mode discret, masquage des aperçus, appareils), suppression de compte. | Chaque écran répond ; mode discret : nom « Notes » du lanceur Android (quelques secondes). | ☐ | |
 | MOB-09 | Sécurité › activer le code PIN (4 chiffres), fermer et rouvrir l'application ; saisir 5 PIN faux. | PIN demandé ; au 5e échec, session fermée (reconnexion mot de passe + code). SOS, urgences et signalement restent accessibles sans PIN. | ☐ | |
-| MOB-10 | Ouvrir les maquettes `prototype_mobile/espace-pair.html` et `admin-mobile.html`. | Les deux maquettes s'affichent ; à valider par la coordination (elles ne sont pas encore dans l'application). | ☐ | |
+| MOB-10 | Ouvrir les maquettes `prototype_mobile/espace-pair.html` et `admin-mobile.html` (aussi depuis le menu P1 à P11 et A1 à A7 de `index.html`). | Les deux maquettes s'affichent, sans bascule de thème ; à valider par la coordination (elles ne sont pas encore dans l'application). | ☐ | |
+| MOB-11 | Ouvrir `prototype_mobile/index.html` : bouton ☰ (replier, rouvrir, recharger), replier un module, ouvrir un écran en moins de 10 s ; chercher une bascule de thème. | Menu mémorisé après rechargement ; 30 écrans numérotés 01 à 30 + Espace pair et Admin mobile ; thème clair, aucune bascule de thème. | ☐ | |
+| MOB-12 | Prototype, écran Inscription (`#/signup`) : bouton avant et après la case « J'ai 15 ans ou plus », puis « J'ai moins de 15 ans ». | « Continuer » désactivé tant que la case n'est pas cochée ; refus bienveillant sans création de compte. | ☐ | |
+| MOB-13 | Prototype, `#/postpublication` : saisir un long texte. | Le champ occupe la largeur à côté de l'avatar, hauteur minimale 120 px, croît sans déborder du châssis. | ☐ | |
 
 ## 11. Accessibilité
 

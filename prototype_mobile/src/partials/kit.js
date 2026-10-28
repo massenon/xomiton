@@ -49,7 +49,7 @@
   const hq = new URLSearchParams(location.hash.split('?')[1] || '');
   ['theme', 'net'].forEach(k => { if (hq.get(k)) q.set(k, hq.get(k)); });
   const S = Kit.S = {
-    theme: q.get('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+    theme: q.get('theme') === 'dark' ? 'dark' : 'light', // clair par défaut ; plus de bascule dans l'interface (?theme=dark reste utilisable pour la recette)
     net: q.get('net') === 'off' ? 'off' : 'on',
     route: { name: '', args: [], q: {} },
   };
@@ -65,7 +65,6 @@
 
   Kit.setTheme = th => {
     S.theme = th; app.dataset.theme = th; document.documentElement.dataset.pageTheme = th;
-    document.querySelectorAll('[data-theme-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === th)));
   };
   Kit.setNet = (n, silent) => {
     const was = S.net; S.net = n;
@@ -126,7 +125,6 @@
   <header class="topbar">
     <div class="brand"><img class="logo" src="${c.logo}" alt="Xomiton"><div><h1>${esc(c.title)}</h1><div class="sub">${esc(c.sub)}</div></div></div>
     <label class="vh" for="railSel">${esc(t('page.screens'))}</label><select class="rail-select input" id="railSel" style="width:auto">${opts}</select>
-    <div class="ctl"><span id="lblTheme">${esc(t('page.theme'))}</span><div class="seg" role="group" aria-labelledby="lblTheme"><button type="button" data-theme-set="light" aria-pressed="false">${esc(t('page.light'))}</button><button type="button" data-theme-set="dark" aria-pressed="false">${esc(t('page.dark'))}</button></div></div>
     <div class="ctl"><span id="lblNet">${esc(t('page.network'))}</span><div class="seg" role="group" aria-labelledby="lblNet"><button type="button" data-net-set="on" aria-pressed="false">${esc(t('page.online'))}</button><button type="button" data-net-set="off" aria-pressed="false">${esc(t('page.offline'))}</button></div></div>
   </header>
   <nav class="rail" aria-label="${esc(t('page.screens'))}">${rail}<p class="note">${esc(t('page.demo_note'))}</p></nav>
@@ -141,7 +139,6 @@
   </main>
 </div>`;
     app = $('#app'); frame = $('#frame'); ov = $('#ov'); live = $('#live');
-    document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => Kit.setTheme(b.dataset.themeSet)));
     document.querySelectorAll('[data-net-set]').forEach(b => b.addEventListener('click', () => Kit.setNet(b.dataset.netSet)));
     $('#railSel').addEventListener('change', e => Kit.go('#/' + e.target.value));
     app.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && cfg.actions[b.dataset.act]) cfg.actions[b.dataset.act](b.dataset, b, e); });
