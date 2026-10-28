@@ -53,7 +53,25 @@ Chaque écran a une ancre : `index.html#/dashboard`, `#/login`, `#/sighub`, `#/t
 | `index.html` | Simulateur construit, fichier unique (≈ 330 Ko). **Ne pas modifier à la main.** |
 | `src/simulateur.html` | Source lisible (HTML, CSS, JavaScript sans dépendance). Les images y sont référencées par `{{IMG:fichier}}`. |
 | `src/images/` | Visuels du splash (JPEG 720 px recompressés) et logos SVG du design system. |
-| `build.py` | Reconstruit `index.html` en remplaçant chaque `{{IMG:…}}` par une data URI : `python3 build.py`. |
+| `src/espace-pair.html`, `src/admin-mobile.html` | Sources des deux maquettes ci-dessus (`{{INCLUDE:…}}` du noyau commun, `{{IMG:…}}` des images). |
+| `src/partials/kit.css`, `kit.js` | Noyau commun des deux maquettes : jetons, châssis (copie du simulateur), composants, routage par ancre, feuilles, notifications. |
+| `build.py` | Reconstruit `index.html`, `espace-pair.html` et `admin-mobile.html` (data URI pour `{{IMG:…}}`, inclusion des fichiers de `src/partials/`) : `python3 build.py`. |
+
+## Maquettes « Espace pair » et « Admin mobile » (P15-09, à valider)
+
+Deux maquettes cliquables complémentaires, avec le même châssis iPhone 14, les mêmes jetons `--xm-*`, Montserrat, thème clair et sombre. Données fictives et pseudonymisées, rien n'est envoyé nulle part. Elles ne modifient aucun des 30 écrans du simulateur.
+
+| Fichier | Contenu |
+|---|---|
+| `espace-pair.html` | **Espace pair** (tutoiement) : accueil (KPI, tâches, raccourcis, pastille « de garde »), alertes routées (accuser réception, prendre en charge, clore), mes dossiers (recherche, fiche en 5 sections, frise de suivi, ajouter un suivi), collecte par étapes avec avertissement de plausibilité (état « en file » puis « envoyé »), file de synchronisation avec conflit 409 (valeur serveur ou mon appareil), bandeau hors connexion, SOS toujours accessible dans la barre d'onglets. |
+| `admin-mobile.html` | **Admin mobile** (vouvoiement), compagnon d'astreinte et non l'administration complète : bandeau « Alertes SOS actives », liste des alertes (SOS / Signalements / Besoins, statut, prendre en charge), détail (position arrondie, « Ouvrir dans Maps » avec avertissement, personnes prévenues, historique, réattribuer, note interne), validation des pairs, mode maintenance avec confirmation forte, notifications. |
+| `captures/` | Captures 390 × 844 (4 par maquette, thème clair et sombre). |
+
+Ouvrir le fichier dans un navigateur (double-clic possible ; seule la police Montserrat demande le réseau). Sur grand écran : index des écrans à gauche, bascule **Thème** (clair ou sombre) et **Réseau** (en ligne ou hors ligne) en haut. Sous 480 px de large, l'application occupe tout l'écran, sans châssis. Liens profonds : `espace-pair.html#/alertes`, `#/dossier/VBG-0042`, `#/collecte?etape=5&demo=1`, `#/sync?net=off`, `#/sos` ; `admin-mobile.html#/tableau`, `#/alerte/2041`, `#/pairs`, `#/maintenance`, `#/notifications` ; le paramètre `theme=dark` ou `net=off` s'ajoute après `?` ou `&`.
+
+Parcours à essayer : en hors ligne, enregistrer une collecte (« En file »), puis repasser en ligne : l'envoi part tout seul (« Envoyé », code attribué) ; résoudre le conflit 409 dans la file ; côté admin, activer la maintenance (case à cocher et mot `MAINTENANCE`).
+
+Sources : `web/resources/js/Pages/PeerSpace/*.vue`, `web/lang/fr/peer.php`, `cases.php`, `sync.php`, `admin.php`, `maintenance.php`, `enums/*.php`, `docs/ROLE_ET_PERMISSIONS.md`, `prototype_social/espace-pair.php` et `collecte.php`. Les textes sont regroupés dans l'objet `T` en tête de chaque fichier.
 
 ## Conformité au design system
 

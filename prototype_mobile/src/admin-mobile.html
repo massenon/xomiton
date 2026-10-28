@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Chaînes de la maquette (français, vouvoiement : administration). Sources : web/lang/fr/admin.php (alerts, dashboard,
+   users), maintenance.php (admin), notifications.php (admin), enums/alerts.php. Données fictives et pseudonymisées. */
+const T = {
+  title: 'Admin mobile — maquette',
+  sub: 'Compagnon d’astreinte · pas l’administration complète',
+  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', theme: 'Thème', light: 'Clair', dark: 'Sombre', network: 'Réseau', online: 'En ligne', offline: 'Hors ligne',
+    demo_note: 'Maquette cliquable : données fictives et pseudonymisées, aucun nom ni numéro réel. Rien n’est envoyé nulle part.', g_duty: 'Astreinte', g_more: 'Autres écrans' },
+  common: { cancel: 'Annuler', close: 'Fermer', none: '—', apply: 'Appliquer' },
+  nav: { label: 'Navigation de l’admin mobile', back: 'Retour', dash: 'Astreinte', alerts: 'Alertes', peers: 'Pairs', maint: 'Maintenance', notifs: 'Notifications' },
+  net: { went_off: 'Vous êtes hors connexion. Les actions d’astreinte demandent le réseau.', went_on: 'Le réseau est de retour.',
+    banner: 'Hors connexion : les actions d’astreinte demandent le réseau. En cas d’urgence, appelez directement la personne concernée.', need: 'Vous êtes hors connexion. Réessayez dès que le réseau est de retour.' },
+  duty: 'Astreinte',
+  dash: { title: 'Tableau de bord d’astreinte', hello: 'Astreinte en cours', scope: 'Compagnon d’astreinte : alertes, validation des pairs et maintenance. L’administration complète reste sur le site web.',
+    sos_banner: { one: ':count alerte SOS active', other: ':count alertes SOS actives' }, sos_text: 'Accusez réception puis appelez la personne. L’escalade vers le point focal national part après 5 min sans réponse.',
+    escalation: 'Escalade dans', escalated: 'Escaladée au point focal national', ack_stopped: 'Escalade arrêtée', kpis: 'Indicateurs clés',
+    kpi: { new_alerts: 'Nouvelles alertes', sos_active: 'SOS actifs', critical_open: 'Priorité critique ouvertes', pending_users: 'Comptes à valider' },
+    maint_title: 'Maintenance', see_list: 'Voir la liste' },
+  alerts: { title: 'Alertes & signalements', tabs: { all: 'Toutes', sos: 'SOS', reports: 'Signalements', needs: 'Besoins' }, tabs_label: 'Types d’alertes',
+    status: 'Statut', all_statuses: 'Tous les statuts', search: 'Rechercher une alerte', search_placeholder: 'N°, code de suivi, commune…',
+    count: { zero: 'Aucune alerte', one: ':count alerte', other: ':count alertes' }, empty: 'Aucune alerte ne correspond aux filtres.', reset: 'Réinitialiser',
+    take: 'Prendre en charge', taken: 'Alerte prise en charge. Réception accusée.', acknowledge: 'Accuser réception', acknowledged: 'Réception accusée. La personne est prévenue.', ack_done: 'Réception accusée',
+    detail: 'Détail', detail_title: 'Alerte :code', reassign: 'Réattribuer', note: 'Note interne', not_routed: 'Non routée', routed: 'Routée vers :name', received: 'Reçue :time', anonymous: 'Anonyme',
+    zone_unknown: 'Département inconnu',
+    fields: { code: 'N°', tracking: 'Code de suivi', zone: 'Zone', category: 'Catégorie', needs: 'Besoins', description: 'Description', contact: 'Contact laissé', position: 'Position', routed: 'Routée vers', source: 'Source', received: 'Reçue' },
+    no_contact: 'Aucun contact laissé (anonyme).', no_gps: 'Sans position', gps_rounded: 'Position arrondie (environ 1 km)', accuracy: 'Précision : ± :meters m',
+    maps: 'Ouvrir dans Maps', maps_help: 'Au clic, la position du SOS est transmise à Google Maps (service tiers).', maps_title: 'Ouvrir la position dans Google Maps ?',
+    maps_text: 'La position du SOS sera transmise à Google Maps, un service tiers. Ne continuez que si c’est nécessaire pour porter secours.', maps_go: 'Continuer vers Google Maps', maps_sim: 'Ouverture de Google Maps simulée dans cette maquette.',
+    notified: 'Personnes prévenues', notified_empty: 'Personne n’a encore été prévenue.', history: 'Notes & historique',
+    take_help: 'Cette alerte n’a pas encore d’accusé de réception : l’escalade continue tant que personne ne la prend en charge.',
+    change_status: 'Changer le statut', choose_status: 'Choisir un statut',
+    reassign_title: 'Réattribuer à une personne de l’annuaire', reassign_help: 'Les contacts du même département sont proposés en premier.', choose_contact: 'Choisir une personne', contact_label: 'Personne de l’annuaire', national: 'National',
+    reassigned: 'Alerte réattribuée à :name.', status_changed: 'Statut mis à jour.', note_title: 'Ajouter une note interne', note_placeholder: 'Visible uniquement par l’équipe', note_add: 'Ajouter la note', note_added: 'Note ajoutée.', note_empty: 'Écrivez la note avant de l’ajouter.',
+    offline_blocked: 'Cette action demande le réseau.' },
+  peers: { title: 'Validation des pairs', intro: 'Un compte de pair·e éducateur·rice doit être validé avant d’accéder à la collecte.',
+    count: { zero: 'Aucun compte à valider', one: ':count compte à valider', other: ':count comptes à valider' }, validate: 'Valider', reject: 'Rejeter', requested: 'Demande : Pair éducateur·rice', joined: 'Inscrit·e le :date',
+    approved: 'Compte de :name validé.', rejected: 'Demande de :name rejetée.', reject_title: 'Rejeter la demande de :name ?', reject_text: 'La personne n’accédera pas à la collecte. Elle en sera informée par e-mail.', reject_yes: 'Rejeter la demande',
+    validate_title: 'Valider le compte de :name ?', validate_text: 'La personne accédera à la collecte et à ses dossiers dès sa prochaine connexion.', validate_yes: 'Valider le compte',
+    empty: 'Aucun compte à valider', empty_text: 'Les demandes de pair·es apparaissent ici.', training: 'Formation initiale déclarée', no_training: 'Formation à confirmer' },
+  maint: { title: 'Mode maintenance', intro: 'Fermez temporairement la plateforme au public pendant une mise à jour importante. L’administration garde l’accès complet ; le SOS, le signalement et les urgences restent toujours ouverts.',
+    state: 'État', states: { inactive: 'Inactif', ongoing: 'En cours' }, headlines: { inactive: 'La plateforme est ouverte', ongoing: 'Maintenance en cours' },
+    state_text: { inactive: 'La plateforme est ouverte à tout le monde.', ongoing: 'Le public voit la page de maintenance. Seuls les comptes admin et superadmin peuvent se connecter.' },
+    started: 'Commencée', ends: 'Fin prévue', unknown: 'Non annoncée', none: 'Aucune',
+    enable: 'Activer la maintenance', disable: 'Désactiver la maintenance', disable_text: 'Rouvre la plateforme à tout le monde en un clic. Les fenêtres planifiées à venir sont conservées.', live_text: 'Ferme la plateforme au public tout de suite. Votre session reste ouverte.',
+    confirm_title: 'Activer le mode maintenance ?', confirm_text: 'Le public verra la page de maintenance et les membres connectés seront déconnectés. Les comptes admin et superadmin gardent l’accès.',
+    acknowledge: 'Je confirme : seuls les comptes admin et superadmin garderont l’accès.', prompt: 'Pour confirmer, saisissez : :word', prompt_label: 'Texte de confirmation', word: 'MAINTENANCE', mismatch: 'Le texte saisi ne correspond pas.',
+    reason: 'Motif interne', reason_hint: 'Visible uniquement dans le journal d’audit.', reason_default: 'Mise à jour de la base de données', duration: 'Durée estimée', message: 'Message public',
+    message_default: 'Xomiton est en maintenance. Nous revenons dès que possible.', durations: { 15: '15 minutes', 30: '30 minutes', 60: '1 heure', 120: '2 heures', 240: '4 heures', unknown: 'Inconnue (aucune heure affichée)' },
+    enable_yes: 'Activer maintenant', disable_yes: 'Désactiver maintenant', enabled: 'Maintenance activée. Le public voit la page de maintenance.', disabled: 'Maintenance désactivée. La plateforme est ouverte.',
+    open_title: 'En danger ou besoin d’aide maintenant ?', open_text: 'Le SOS, le signalement et les contacts d’urgence restent disponibles pendant la maintenance, avec ou sans compte.',
+    open_items: ['SOS (page et API)', 'Signalement et suivi par code', 'Contacts d’urgence', 'Accusé de réception d’une alerte par lien signé'], locked: 'Verrouillé', open_h: 'Toujours accessible (RG-01)',
+    banner: 'Maintenance en cours : le public est redirigé vers la page de maintenance. SOS et signalement restent ouverts.' },
+  notifs: { title: 'Notifications', label: 'Notifications de l’administration', unread_one: 'non lue', unread: { zero: 'Aucune notification non lue', one: '1 non lue', other: ':count non lues' }, mark_all: 'Tout marquer comme lu', marked_all: 'Notifications marquées comme lues.', empty: 'Aucune notification.', open: 'Ouvrir' },
+  enums: {
+    alert_type: { denonciation: 'Signalement', besoin: 'Besoin', sos: 'SOS' },
+    alert_status: { nouveau: 'Nouveau', pris_en_charge: 'Pris en charge', en_cours: 'En cours', traite: 'Traité', clos: 'Clos' },
+    alert_priority: { normale: 'Normale', haute: 'Haute', critique: 'Critique' },
+    alert_source: { web: 'Site web', app: 'Application mobile', 'sync-offline': 'Synchronisation hors connexion', annuaire: 'Demande de rappel (annuaire)' },
+    channel: { push: 'Notification push', sms: 'SMS', mail: 'E-mail', database: 'Cloche de l’administration' },
+    delivery: { pending: 'En attente', sent: 'Envoyée', failed: 'Échec', skipped: 'Abandonnée' },
+    violence: { physique: 'Violence physique', psychologique: 'Violence psychologique', sexuelle: 'Violence sexuelle', economique: 'Violence économique', numerique: 'Violence en ligne' },
+    needs: { soutien_psychologique: 'Soutien psychologique', soutien_juridique: 'Soutien juridique', soutien_medical: 'Prise en charge médicale', hebergement: 'Hébergement d’urgence', securite: 'Mise en sécurité' },
+  },
+};
+</script>
+<title>Admin mobile — maquette Xomiton</title>
+<meta name="description" content="Maquette cliquable de l’admin mobile Xomiton (compagnon d’astreinte) : alertes SOS, liste et détail des alertes, validation des pairs, mode maintenance, notifications.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0433C3">
+<link rel="icon" type="image/svg+xml" href="{{IMG:icone-appli-bleu.svg}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap">
+<style>
+{{INCLUDE:kit.css}}
+</style>
+</head>
+<body>
+<noscript>Cette maquette demande JavaScript.</noscript>
+<script>
+{{INCLUDE:kit.js}}
+</script>
+<script>
+(() => {
+  const { esc, t, ic, S } = Kit;
+  const en = (g, k) => (T.enums[g] && T.enums[g][k]) || k;
+  const badge = (c, s) => `<span class="badge ${c}">${esc(s)}</span>`;
+  const secH = (h, n, id) => `<div class="sec-h"><h2 ${id ? `id="${id}"` : ''}>${esc(h)}</h2>${n ? `<span class="n">${esc(n)}</span>` : ''}</div>`;
+  const fmtDate = d => d.split('-').reverse().join('/');
+  const NOW0 = Date.now();
+
+  /* ---------- Données fictives (pseudonymisées) ---------- */
+  const A = [
+    { id: 2041, type: 'sos', status: 'nouveau', prio: 'critique', zone: 'Atlantique', commune: 'Abomey-Calavi', ago: 4, source: 'app', lat: 6.45, lng: 2.36, acc: 35, routed: 'Point focal Atlantique', ack: false, esc: 196, cat: 'physique', needs: ['securite'], track: null, text: 'Je suis enfermée dans une cour, la personne ne me laisse pas partir.', contact: null,
+      notified: [['Point focal Atlantique', 'push', 'sent'], ['Juriste Atlantique', 'sms', 'pending'], ['Contact de confiance n° 1 (membre)', 'push', 'sent']], hist: [['il y a 4 min', 'Alerte reçue (Nouveau)'], ['il y a 4 min', 'Routée vers Point focal Atlantique (RG-04 : rôle demandé dans le département)']] },
+    { id: 2040, type: 'sos', status: 'nouveau', prio: 'critique', zone: 'Borgou', commune: 'Parakou', ago: 11, source: 'sync-offline', lat: 9.34, lng: 2.63, acc: 120, routed: 'Juriste Borgou', ack: false, esc: 58, cat: null, needs: [], track: null, text: 'Alerte envoyée hors connexion, sans message.', contact: null,
+      notified: [['Juriste Borgou', 'sms', 'sent'], ['Point focal national', 'mail', 'pending']], hist: [['il y a 11 min', 'Alerte reçue (Nouveau) : synchronisation hors connexion'], ['il y a 11 min', 'Routée vers Juriste Borgou']] },
+    { id: 2039, type: 'denonciation', status: 'nouveau', prio: 'haute', zone: 'Ouémé', commune: 'Porto-Novo', ago: 95, source: 'web', routed: 'Psychologue Ouémé', ack: false, cat: 'psychologique', needs: ['soutien_psychologique'], track: 'SIG-K4M8Q2R7TA', text: 'Menaces répétées et chantage à l’outing par un ancien partenaire.', contact: 'SMS (numéro chiffré)', notified: [['Psychologue Ouémé', 'push', 'sent']], hist: [['il y a 1 h 35', 'Alerte reçue (Nouveau)']] },
+    { id: 2038, type: 'besoin', status: 'pris_en_charge', prio: 'normale', zone: 'Zou', commune: 'Bohicon', ago: 380, source: 'web', routed: 'Point focal Zou', ack: true, cat: null, needs: ['hebergement'], track: 'SIG-W2P9D5N8LC', text: 'Besoin d’un hébergement pour quelques jours.', contact: null, notified: [['Point focal Zou', 'push', 'sent']], hist: [['il y a 6 h', 'Alerte reçue (Nouveau)'], ['il y a 5 h', 'Réception accusée par Point focal Zou']] },
+    { id: 2037, type: 'denonciation', status: 'en_cours', prio: 'haute', zone: 'Atlantique', commune: 'Ouidah', ago: 1700, source: 'app', routed: 'Juriste Atlantique', ack: true, cat: 'sexuelle', needs: ['soutien_juridique', 'soutien_medical'], track: 'SIG-B7T3H6Y1ZE', text: 'Violences sexuelles par une personne connue.', contact: 'E-mail (chiffré)', notified: [['Juriste Atlantique', 'push', 'sent']], hist: [['hier', 'Alerte reçue (Nouveau)'], ['hier', 'Pris en charge'], ['il y a 20 h', 'Passage à « En cours »']] },
+    { id: 2036, type: 'sos', status: 'clos', prio: 'critique', zone: 'Littoral', commune: 'Cotonou', ago: 3000, source: 'app', lat: 6.37, lng: 2.42, acc: 60, routed: 'Point focal Littoral', ack: true, cat: null, needs: [], track: null, text: 'Fausse alerte : la personne s’est déclarée en sécurité.', contact: null, notified: [['Point focal Littoral', 'push', 'sent']], hist: [['il y a 2 j', 'Alerte reçue (Nouveau)'], ['il y a 2 j', 'Personne en sécurité']] },
+    { id: 2035, type: 'besoin', status: 'nouveau', prio: 'normale', zone: 'Mono', commune: 'Lokossa', ago: 40, source: 'web', routed: null, ack: false, cat: null, needs: ['soutien_juridique'], track: 'SIG-M5R2J8V4QU', text: 'Besoin d’un conseil juridique sur une procédure de séparation.', contact: null, notified: [], hist: [['il y a 40 min', 'Alerte reçue (Nouveau)'], ['il y a 40 min', 'Aucun contact éligible : non routée']] },
+    { id: 2034, type: 'denonciation', status: 'traite', prio: 'normale', zone: 'Collines', commune: 'Savè', ago: 4300, source: 'web', routed: 'Point focal Collines', ack: true, cat: 'economique', needs: [], track: 'SIG-C9L1X7F3GD', text: 'Contrôle financier et privation de ressources.', contact: null, notified: [['Point focal Collines', 'push', 'sent']], hist: [['il y a 3 j', 'Alerte reçue (Nouveau)'], ['il y a 2 j', 'Traité']] },
+  ];
+  const DIR = [['Point focal Atlantique', 'Atlantique'], ['Juriste Atlantique', 'Atlantique'], ['Psychologue Atlantique', 'Atlantique'], ['Point focal Borgou', 'Borgou'], ['Juriste Borgou', 'Borgou'], ['Point focal Ouémé', 'Ouémé'], ['Point focal Zou', 'Zou'], ['Point focal Mono', 'Mono'], ['Point focal national', 'National']];
+  const P = [
+    { id: 1, pseudo: 'Pair_Cobalt', zone: 'Atlantique', joined: '2026-10-26', training: true },
+    { id: 2, pseudo: 'Pair_Lumen', zone: 'Borgou', joined: '2026-10-27', training: true },
+    { id: 3, pseudo: 'Pair_Sorgho', zone: 'Zou', joined: '2026-10-27', training: false },
+  ];
+  const N = [
+    { id: 1, k: 'sos', icon: 'alert', title: 'Alerte SOS · Atlantique', when: 'il y a 4 min', unread: true, href: 'alerte/2041' },
+    { id: 2, k: 'sos', icon: 'alert', title: 'Alerte SOS · Borgou', when: 'il y a 11 min', unread: true, href: 'alerte/2040' },
+    { id: 3, k: 'reg', icon: 'user-check', title: 'Inscription à valider · Pair_Cobalt', when: 'il y a 2 j', unread: true, href: 'pairs' },
+    { id: 4, k: 'mod', icon: 'shield', title: 'Signalement à modérer · propos haineux', when: 'il y a 3 h', unread: false, href: null },
+    { id: 5, k: 'sync', icon: 'sync', title: 'Conflit de synchronisation · VBG-0031', when: 'hier', unread: false, href: null },
+  ];
+  const M = { on: false, since: null, reason: '', duration: '60' };
+  const L = { tab: 'all', status: '', q: '' };
+  let escTimer = null;
+
+  const ago = m => (m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.floor(m / 60)} h${m % 60 ? ' ' + String(m % 60).padStart(2, '0') : ''}` : m < 2880 ? 'hier' : `il y a ${Math.round(m / 1440)} j`);
+  const byId = id => A.find(a => a.id === +id);
+  const sosActive = () => A.filter(a => a.type === 'sos' && a.status !== 'clos');
+  const newAlerts = () => A.filter(a => a.status === 'nouveau').length;
+  const crit = () => A.filter(a => a.prio === 'critique' && a.status !== 'clos').length;
+  const unread = () => N.filter(n => n.unread).length;
+  const statusB = a => badge(a.status === 'nouveau' ? '' : a.status === 'clos' ? 'mute' : 'ok', en('alert_status', a.status));
+  const prioB = p => badge(p === 'critique' ? 'danger' : p === 'haute' ? 'warn' : 'mute', en('alert_priority', p));
+  const typeB = x => badge(x === 'sos' ? 'danger' : x === 'besoin' ? '' : 'violet', en('alert_type', x));
+  const cd = a => { if (a.ack) return t('dash.ack_stopped'); const rest = Math.max(0, a.esc - Math.floor((Date.now() - NOW0) / 1000)); return rest ? `${t('dash.escalation')} ${String(Math.floor(rest / 60)).padStart(2, '0')}:${String(rest % 60).padStart(2, '0')}` : t('dash.escalated'); };
+  const needNet = () => { if (S.net === 'off') { Kit.toast(t('net.need')); return true; } return false; };
+  const roundPos = (v, c) => `${String(Math.abs(v).toFixed(2)).replace('.', ',')}° ${c}`;
+
+  /* ---------- Tableau de bord ---------- */
+  function dash() {
+    const sos = sosActive();
+    const kp = [['new_alerts', newAlerts(), 'alertes?f=all', false], ['sos_active', sos.length, 'alertes?f=sos', sos.length > 0], ['critical_open', crit(), 'alertes', false], ['pending_users', P.length, 'pairs', false]];
+    return { tab: 'dash', title: esc(t('dash.title')), plain: t('dash.title'), html: `
+      ${sos.length ? `<section class="band-sos" aria-labelledby="sosh"><h2 id="sosh"><span class="sosb" aria-hidden="true">SOS</span>${esc(t('dash.sos_banner', { count: sos.length }))}</h2>
+        <p style="margin:0;font-size:14px">${esc(t('dash.sos_text'))}</p>
+        ${sos.map(a => `<div class="item"><div class="row between wrap"><b>${esc(a.commune)} (${esc(a.zone)})</b><span class="small muted">${esc(ago(a.ago))}</span></div>
+          <div class="small mono" data-cd="${a.id}" ${a.ack ? '' : 'style="font-weight:700"'}>${ic('clock', 'sm')} ${esc(cd(a))}</div>
+          <div class="row wrap" style="gap:8px">${a.ack ? `<span class="badge ok">${ic('check', 'sm')} ${esc(t('alerts.ack_done'))}</span>` : `<button class="btn btn-primary" style="flex:2 1 150px;padding:0 10px" data-act="ack" data-id="${a.id}">${esc(t('alerts.acknowledge'))}</button>`}<a class="btn btn-outline" style="flex:1 1 80px" href="#/alerte/${a.id}">${esc(t('alerts.detail'))}</a></div></div>`).join('')}</section>` : ''}
+      <section class="stack-s" aria-labelledby="kh">${secH(t('dash.kpis'), '', 'kh')}<ul class="kpis">${kp.map(([k, v, h, hot]) => `<li class="${hot ? 'hot' : ''}"><a href="#/${h}" style="text-decoration:none;color:inherit;display:grid;gap:2px;min-height:44px"><span class="v">${v}</span><span class="l">${esc(t('dash.kpi.' + k))}</span></a></li>`).join('')}</ul></section>
+      <section class="stack-s">${secH(t('dash.maint_title'))}<a class="link-row" href="#/maintenance">${ic('tool')}<span class="grow"><b>${esc(t('maint.headlines.' + (M.on ? 'ongoing' : 'inactive')))}</b><span class="small muted" style="display:block">${esc(t('maint.state_text.' + (M.on ? 'ongoing' : 'inactive')))}</span></span>${ic('next', 'sm')}</a></section>
+      <p class="note">${ic('info', 'sm')}<span>${esc(t('dash.scope'))}</span></p>` };
+  }
+
+  /* ---------- Liste des alertes ---------- */
+  function filtered() {
+    const tt = { all: null, sos: 'sos', reports: 'denonciation', needs: 'besoin' }[L.tab];
+    return A.filter(a => (!tt || a.type === tt) && (!L.status || a.status === L.status) && (!L.q || [String(a.id), a.track || '', a.commune, a.zone].join(' ').toLowerCase().includes(L.q.trim().toLowerCase())));
+  }
+  function alertCard(a) {
+    return `<article class="acard ${a.type === 'sos' && a.status !== 'clos' ? 'sos' : ''}" aria-label="${esc(en('alert_type', a.type) + ' ' + a.id + ', ' + a.commune)}">
+      <div class="top"><b class="mono">N° ${a.id}</b>${typeB(a.type)}${prioB(a.prio)}${statusB(a)}</div>
+      <h3>${esc(a.commune)} <span class="muted" style="font-weight:400;font-size:14px">(${esc(a.zone)})</span></h3>
+      <div class="meta"><span>${ic('clock', 'sm')} ${esc(t('alerts.received', { time: ago(a.ago) }))}</span><span>${ic('users', 'sm')} ${esc(a.routed ? t('alerts.routed', { name: a.routed }) : t('alerts.not_routed'))}</span>${a.lat ? `<span>${ic('pin', 'sm')} ${esc(t('alerts.fields.position'))}</span>` : ''}</div>
+      <div class="acts">${a.status === 'nouveau' ? `<button class="btn btn-primary" data-act="take" data-id="${a.id}">${esc(t('alerts.take'))}</button>` : ''}<a class="btn btn-outline" href="#/alerte/${a.id}" aria-label="${esc(t('alerts.detail') + ' ' + t('alerts.detail_title', { code: a.id }))}">${esc(t('alerts.detail'))}</a></div></article>`;
+  }
+  function alerts() {
+    const cnt = k => A.filter(a => ({ all: true, sos: a.type === 'sos', reports: a.type === 'denonciation', needs: a.type === 'besoin' })[k]).length;
+    return { tab: 'alerts', title: esc(t('alerts.title')), plain: t('alerts.title'), html: `
+      <div class="seg-tabs" role="group" aria-label="${esc(t('alerts.tabs_label'))}">${['all', 'sos', 'reports', 'needs'].map(k => `<button class="chip" data-act="tab" data-v="${k}" aria-pressed="${L.tab === k}">${esc(t('alerts.tabs.' + k))} <span class="cnt">${cnt(k)}</span></button>`).join('')}</div>
+      <div class="search"><label class="vh" for="q">${esc(t('alerts.search'))}</label>${ic('search')}<input class="input" id="q" type="search" autocomplete="off" placeholder="${esc(t('alerts.search_placeholder'))}" value="${esc(L.q)}"></div>
+      <div class="fld"><label class="vh" for="st">${esc(t('alerts.status'))}</label><select class="input" id="st"><option value="">${esc(t('alerts.all_statuses'))}</option>${Object.entries(T.enums.alert_status).map(([k, v]) => `<option value="${k}" ${L.status === k ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+      <div id="list" class="stack" aria-live="polite"></div>`,
+      mount: pane => {
+        draw();
+        pane.querySelector('#q').addEventListener('input', e => { L.q = e.target.value; draw(); });
+        pane.querySelector('#st').addEventListener('change', e => { L.status = e.target.value; draw(); });
+      } };
+  }
+  function draw() {
+    const h = document.getElementById('list'); if (!h) return; const r = filtered();
+    h.innerHTML = `<div class="sec-h"><b>${esc(t('alerts.count', { count: r.length }))}</b>${L.q || L.status ? `<button class="btn-link" data-act="reset">${esc(t('alerts.reset'))}</button>` : ''}</div>` + (r.length ? r.map(alertCard).join('') : `<div class="empty"><b>${esc(t('alerts.empty'))}</b></div>`);
+  }
+
+  /* ---------- Détail ---------- */
+  function detail(id) {
+    const a = byId(id);
+    if (!a) return { tab: 'alerts', back: 'alertes', title: esc(t('alerts.title')), html: `<div class="empty"><b>${esc(t('alerts.empty'))}</b></div>` };
+    const dd = (k, v) => `<div><dt>${esc(t('alerts.fields.' + k))}</dt><dd>${v}</dd></div>`;
+    const pos = a.lat ? `<div class="stack-s"><span class="mono">${roundPos(a.lat, 'N')}, ${roundPos(a.lng, 'E')}</span><span class="small muted">${esc(t('alerts.gps_rounded'))} · ${esc(t('alerts.accuracy', { meters: a.acc }))}</span>
+        <button class="btn btn-outline btn-sm" style="min-height:44px;justify-self:start" data-act="maps" data-id="${a.id}">${ic('ext', 'sm')} ${esc(t('alerts.maps'))}</button><span class="small muted">${ic('info', 'sm')} ${esc(t('alerts.maps_help'))}</span></div>` : esc(t('alerts.no_gps'));
+    return { tab: 'alerts', back: 'alertes', backLabel: t('alerts.title'), title: esc(t('alerts.detail_title', { code: a.id })), plain: t('alerts.detail_title', { code: a.id }), html: `
+      <div class="row wrap">${typeB(a.type)}${prioB(a.prio)}${statusB(a)}${a.ack ? `<span class="badge ok">${ic('check', 'sm')} ${esc(t('alerts.ack_done'))}</span>` : ''}</div>
+      ${a.status === 'nouveau' && !a.ack ? `<p class="note warn">${ic('alert', 'sm')}<span>${esc(t('alerts.take_help'))}</span></p>` : ''}
+      <dl class="dl card" style="padding:4px 14px">${dd('code', `<b class="mono">${a.id}</b>`)}${a.track ? dd('tracking', `<span class="mono">${esc(a.track)}</span>`) : ''}${dd('zone', `${esc(a.commune)} (${esc(a.zone)})`)}${dd('category', esc(a.cat ? en('violence', a.cat) : T.common.none))}${dd('needs', esc(a.needs.length ? a.needs.map(n => en('needs', n)).join(', ') : T.common.none))}${dd('position', pos)}${dd('contact', esc(a.contact || t('alerts.no_contact')))}${dd('routed', esc(a.routed || t('alerts.not_routed')))}${dd('source', esc(en('alert_source', a.source)))}${dd('received', esc(ago(a.ago)))}${dd('description', esc(a.text))}</dl>
+      <section class="stack-s">${secH(t('alerts.notified'))}${a.notified.length ? `<ul class="card" style="list-style:none;margin:0;padding:4px 14px">${a.notified.map(([n, c, d]) => `<li class="row between" style="padding:10px 0;border-bottom:1px solid var(--app-border);min-height:48px"><span><b>${esc(n)}</b><span class="small muted" style="display:block">${esc(en('channel', c))}</span></span>${badge(d === 'sent' ? 'ok' : d === 'failed' ? 'danger' : 'mute', en('delivery', d))}</li>`).join('')}</ul>` : `<p class="muted card">${esc(t('alerts.notified_empty'))}</p>`}</section>
+      <section class="stack-s">${secH(t('alerts.history'))}<ol class="tl card">${a.hist.map((h, i) => `<li class="${i < a.hist.length - 1 ? 'done' : ''}"><span class="when">${esc(h[0])}</span>${esc(h[1])}</li>`).join('')}</ol></section>
+      <div class="stack-s">
+        ${a.status === 'nouveau' && !a.ack ? `<button class="btn btn-primary btn-block" data-act="ack" data-id="${a.id}">${ic('check', 'sm')} ${esc(t('alerts.acknowledge'))}</button>` : ''}
+        ${a.status === 'nouveau' ? `<button class="btn ${a.ack ? 'btn-primary' : 'btn-outline'} btn-block" data-act="take" data-id="${a.id}">${esc(t('alerts.take'))}</button>` : ''}
+        <div class="grid2"><button class="btn btn-outline" data-act="reassign" data-id="${a.id}">${ic('swap', 'sm')} ${esc(t('alerts.reassign'))}</button><button class="btn btn-outline" data-act="note" data-id="${a.id}">${ic('note', 'sm')} ${esc(t('alerts.note'))}</button></div>
+        <form class="card stack-s" data-form="status" data-id="${a.id}"><div class="fld"><label for="ns">${esc(t('alerts.change_status'))}</label><select class="input" id="ns"><option value="">${esc(t('alerts.choose_status'))}</option>${Object.entries(T.enums.alert_status).filter(([k]) => k !== a.status).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join('')}</select></div><button class="btn btn-outline" type="submit">${esc(t('common.apply'))}</button></form></div>`,
+      mount: pane => { const f = pane.querySelector('[data-form="status"]'); f.addEventListener('submit', e => { e.preventDefault(); if (needNet()) return; const v = f.querySelector('select').value; if (!v) return; a.status = v; if (v !== 'nouveau') a.ack = true; a.hist.push(['à l’instant', `${en('alert_status', a.status)} (statut changé par vous)`]); Kit.toast(t('alerts.status_changed')); Kit.render({ noFocus: true }); }); } };
+  }
+
+  /* ---------- Pairs ---------- */
+  function peers() {
+    return { tab: 'peers', title: esc(t('peers.title')), plain: t('peers.title'), html: `
+      <p class="muted small" style="margin:0">${esc(t('peers.intro'))}</p>
+      <div class="sec-h"><b>${esc(t('peers.count', { count: P.length }))}</b></div>
+      ${P.length ? P.map(p => `<article class="acard" aria-label="${esc(p.pseudo)}"><div class="row"><span class="avatar" style="background:var(--xm-blue-500)" aria-hidden="true">${esc(p.pseudo.slice(5, 6))}</span><div class="grow" style="flex:1"><h3>${esc(p.pseudo)}</h3><span class="small muted">${esc(t('peers.requested'))}</span></div></div>
+        <div class="meta"><span>${ic('pin', 'sm')} ${esc(p.zone)}</span><span>${ic('clock', 'sm')} ${esc(t('peers.joined', { date: fmtDate(p.joined) }))}</span></div>
+        <div>${badge(p.training ? 'ok' : 'warn', p.training ? t('peers.training') : t('peers.no_training'))}</div>
+        <div class="acts"><button class="btn btn-primary" data-act="approve" data-id="${p.id}">${ic('check', 'sm')} ${esc(t('peers.validate'))}</button><button class="btn btn-outline" data-act="reject" data-id="${p.id}">${esc(t('peers.reject'))}</button></div></article>`).join('')
+        : `<div class="empty"><b>${esc(t('peers.empty'))}</b>${esc(t('peers.empty_text'))}</div>` }` };
+  }
+
+  /* ---------- Maintenance ---------- */
+  function maintenance() {
+    const st = M.on ? 'ongoing' : 'inactive';
+    return { tab: 'maint', title: esc(t('maint.title')), plain: t('maint.title'), html: `
+      <section class="card state-card" aria-live="polite"><div>${badge(M.on ? 'warn' : 'ok', t('maint.states.' + st))}</div><div class="big">${esc(t('maint.headlines.' + st))}</div><p style="margin:0">${esc(t('maint.state_text.' + st))}</p>
+        <dl class="dl"><div><dt>${esc(t('maint.state'))}</dt><dd>${esc(t('maint.states.' + st))}</dd></div><div><dt>${esc(t('maint.ends'))}</dt><dd>${esc(M.on ? (M.duration === 'unknown' ? t('maint.unknown') : `~ ${t('maint.durations.' + M.duration)}`) : t('maint.none'))}</dd></div>${M.on ? `<div><dt>${esc(t('maint.started'))}</dt><dd>${esc(M.since)}</dd></div>` : ''}</dl></section>
+      <section class="card stack-s">${M.on ? `<p style="margin:0">${esc(t('maint.disable_text'))}</p><button class="btn btn-primary btn-block" data-act="mdisable">${ic('wifi', 'sm')} ${esc(t('maint.disable'))}</button>`
+        : `<p style="margin:0">${esc(t('maint.live_text'))}</p><button class="btn btn-primary btn-block" data-act="menable">${ic('tool', 'sm')} ${esc(t('maint.enable'))}</button>`}</section>
+      <section class="note ok" style="display:grid;gap:8px" aria-labelledby="oh"><b id="oh">${ic('shield', 'sm')} ${esc(t('maint.open_title'))}</b><span>${esc(t('maint.open_text'))}</span>
+        <ul class="check-list">${T.maint.open_items.map(x => `<li>${ic('check', 'sm')}<span>${esc(x)}</span></li>`).join('')}</ul></section>
+      <p class="muted small" style="margin:0">${esc(t('maint.intro'))}</p>` };
+  }
+
+  /* ---------- Notifications ---------- */
+  function notifs() {
+    const u = unread();
+    return { tab: 'notifs', title: esc(t('notifs.title')), plain: t('notifs.title'), html: `
+      <div class="row between wrap"><b>${esc(t('notifs.unread', { count: u }))}</b><button class="btn btn-outline btn-sm" style="min-height:44px" data-act="readall" ${u ? '' : 'disabled'}>${ic('check', 'sm')} ${esc(t('notifs.mark_all'))}</button></div>
+      <ul class="stack-s" style="list-style:none;margin:0;padding:0">${N.map(n => `<li>${n.href ? `<a class="link-row ${n.unread ? 'unread' : ''}" href="#/${n.href}" data-act="readone" data-id="${n.id}">` : `<button class="link-row ${n.unread ? 'unread' : ''}" data-act="readone" data-id="${n.id}">`}${ic(n.icon)}<span class="grow"><b>${esc(n.title)}</b><span class="small muted" style="display:block">${esc(n.when)}${n.unread ? ' · ' + esc(t('notifs.unread_one')) : ''}</span></span>${n.href ? ic('next', 'sm') : ''}${n.href ? '</a>' : '</button>'}</li>`).join('')}</ul>` };
+  }
+
+  /* ---------- Actions ---------- */
+  const doAck = (a, take) => { a.ack = true; if (take) a.status = 'pris_en_charge'; a.hist.push(['à l’instant', take ? 'Pris en charge par vous (réception accusée)' : 'Réception accusée par vous']); };
+  const actions = {
+    ack: d => { if (needNet()) return; doAck(byId(d.id)); Kit.toast(t('alerts.acknowledged')); Kit.render({ noFocus: true }); },
+    take: d => { if (needNet()) return; doAck(byId(d.id), true); Kit.toast(t('alerts.taken')); Kit.render({ noFocus: true }); },
+    tab: d => { L.tab = d.v; Kit.render({ noFocus: true }); },
+    reset: () => { L.q = ''; L.status = ''; Kit.render({ noFocus: true }); },
+    maps: () => Kit.confirm({ title: t('alerts.maps_title'), text: esc(t('alerts.maps_text')), body: `<p class="note warn">${ic('alert', 'sm')}<span>${esc(t('alerts.maps_help'))}</span></p>`, ok: t('alerts.maps_go'), cancel: t('common.cancel'), onOk: () => Kit.toast(t('alerts.maps_sim')) }),
+    reassign: d => {
+      const a = byId(d.id); const sorted = DIR.slice().sort((x, y) => (y[1] === a.zone) - (x[1] === a.zone));
+      Kit.confirm({ title: t('alerts.reassign_title'), text: esc(t('alerts.reassign_help')), ok: t('alerts.reassign'), disabled: true, focus: '#rc',
+        body: `<div class="fld"><label for="rc">${esc(t('alerts.contact_label'))}</label><select class="input" id="rc"><option value="">${esc(t('alerts.choose_contact'))}</option>${sorted.map(([n, z]) => `<option value="${esc(n)}">${esc(n)} — ${esc(z === 'National' ? t('alerts.national') : z)}</option>`).join('')}</select></div>`,
+        mount: sh => { const ok = sh.querySelector('#okBtn'); sh.querySelector('#rc').addEventListener('change', e => { ok.disabled = !e.target.value; }); },
+        validate: () => !needNet(),
+        onOk: sh => { const name = sh.querySelector('#rc').value; a.routed = name; a.hist.push(['à l’instant', `Réattribuée à ${name} par vous`]); Kit.toast(t('alerts.reassigned', { name })); Kit.render({ noFocus: true }); } });
+    },
+    note: d => {
+      const a = byId(d.id);
+      Kit.confirm({ title: t('alerts.note_title'), text: '', ok: t('alerts.note_add'), focus: '#nt', body: `<div class="fld"><label for="nt">${esc(t('alerts.note'))}</label><textarea class="input" id="nt" rows="4" placeholder="${esc(t('alerts.note_placeholder'))}"></textarea><span class="hint" id="nth" role="status"></span></div>`,
+        validate: sh => { const ta = sh.querySelector('#nt'); if (!ta.value.trim()) { sh.querySelector('#nth').textContent = t('alerts.note_empty'); ta.focus(); return false; } return !needNet(); },
+        onOk: sh => { a.hist.push(['à l’instant', `Note interne : ${sh.querySelector('#nt').value.trim()}`]); Kit.toast(t('alerts.note_added')); Kit.render({ noFocus: true }); } });
+    },
+    approve: d => { const p = P.find(x => x.id === +d.id); Kit.confirm({ title: t('peers.validate_title', { name: p.pseudo }), text: esc(t('peers.validate_text')), ok: t('peers.validate_yes'), onOk: () => { if (needNet()) return; P.splice(P.indexOf(p), 1); Kit.toast(t('peers.approved', { name: p.pseudo })); Kit.render({ noFocus: true }); } }); },
+    reject: d => { const p = P.find(x => x.id === +d.id); Kit.confirm({ title: t('peers.reject_title', { name: p.pseudo }), text: esc(t('peers.reject_text')), ok: t('peers.reject_yes'), onOk: () => { if (needNet()) return; P.splice(P.indexOf(p), 1); Kit.toast(t('peers.rejected', { name: p.pseudo })); Kit.render({ noFocus: true }); } }); },
+    menable: () => {
+      if (needNet()) return;
+      Kit.confirm({ title: t('maint.confirm_title'), text: esc(t('maint.confirm_text')), ok: t('maint.enable_yes'), disabled: true, focus: '#mr',
+        body: `<p class="note ok">${ic('shield', 'sm')}<span><b>${esc(t('maint.open_title'))}</b> ${esc(t('maint.open_text'))}</span></p>
+          <div class="fld"><label for="mr">${esc(t('maint.reason'))}</label><input class="input" id="mr" value="${esc(t('maint.reason_default'))}"><span class="hint">${esc(t('maint.reason_hint'))}</span></div>
+          <div class="fld"><label for="md">${esc(t('maint.duration'))}</label><select class="input" id="md">${Object.entries(T.maint.durations).map(([k, v]) => `<option value="${k}" ${k === '60' ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+          <label class="check"><input type="checkbox" id="mk"><span>${esc(t('maint.acknowledge'))}</span></label>
+          <div class="fld"><label for="mw">${esc(t('maint.prompt', { word: t('maint.word') }))}</label><input class="input" id="mw" autocomplete="off" autocapitalize="characters" aria-describedby="mwh"><span class="hint" id="mwh">${esc(t('maint.prompt_label'))}</span></div>`,
+        mount: sh => {
+          const ok = sh.querySelector('#okBtn'), k = sh.querySelector('#mk'), w = sh.querySelector('#mw');
+          const upd = () => { ok.disabled = !(k.checked && w.value.trim() === t('maint.word')); const h = sh.querySelector('#mwh'); h.textContent = w.value && w.value.trim() !== t('maint.word') ? t('maint.mismatch') : t('maint.prompt_label'); };
+          k.addEventListener('change', upd); w.addEventListener('input', upd);
+        },
+        onOk: sh => { M.on = true; M.since = '28/10/2026 à 10:12'; M.duration = sh.querySelector('#md').value; M.reason = sh.querySelector('#mr').value; Kit.toast(t('maint.enabled')); Kit.render({ noFocus: true }); } });
+    },
+    mdisable: () => { if (needNet()) return; Kit.confirm({ title: t('maint.disable') + ' ?', text: esc(t('maint.disable_text')), ok: t('maint.disable_yes'), onOk: () => { M.on = false; Kit.toast(t('maint.disabled')); Kit.render({ noFocus: true }); } }); },
+    readall: () => { N.forEach(n => { n.unread = false; }); Kit.toast(t('notifs.marked_all')); Kit.render({ noFocus: true }); },
+    readone: d => { const n = N.find(x => x.id === +d.id); n.unread = false; },
+  };
+
+  Kit.start({
+    title: T.title, sub: T.sub, home: 'tableau', logo: '{{IMG:logo-couleur.svg}}', actions,
+    tabs: [
+      { id: 'dash', href: 'tableau', icon: 'dash', label: T.nav.dash },
+      { id: 'alerts', href: 'alertes', icon: 'alert', label: T.nav.alerts, count: () => (newAlerts() ? String(newAlerts()) : '') },
+      { id: 'peers', href: 'pairs', icon: 'user-check', label: T.nav.peers, count: () => (P.length ? String(P.length) : '') },
+      { id: 'maint', href: 'maintenance', icon: 'tool', label: T.nav.maint },
+      { id: 'notifs', href: 'notifications', icon: 'bell', label: T.nav.notifs, count: () => (unread() ? String(unread()) : '') },
+    ],
+    rail: [
+      { title: T.page.g_duty, items: [{ href: 'tableau', label: 'Tableau de bord d’astreinte' }, { href: 'alertes', label: 'Liste des alertes' }, { href: 'alertes?f=sos', label: 'Alertes : filtre SOS' }, { href: 'alerte/2041', label: 'Détail d’une alerte SOS (Maps, prévenus)' }] },
+      { title: T.page.g_more, items: [{ href: 'pairs', label: 'Validation des pairs en attente' }, { href: 'maintenance', label: 'Mode maintenance' }, { href: 'notifications', label: 'Notifications' }, { href: 'tableau?net=off', label: 'Hors connexion' }] },
+    ],
+    banner: () => (S.net === 'off' ? `<div class="nb" role="status">${ic('wifi-off', 'sm')}<span>${esc(t('net.banner'))}</span></div>` : '') + (M.on ? `<div class="nb" style="background:var(--app-primary-subtle);color:var(--app-primary-subtle-text)" role="status">${ic('tool', 'sm')}<span>${esc(t('maint.banner'))}</span></div>` : ''),
+    chip: () => `<span class="pill-duty">${esc(T.duty)}</span>`,
+    onNet: () => {},
+    onRoute: r => { if (r.name === 'alertes') { const f = { sos: 'sos', all: 'all' }[r.q.f]; if (f) L.tab = f; if (r.q.f === undefined && !r.args.length) { /* conserve le filtre */ } } },
+    screen: r => {
+      switch (r.name) {
+        case 'tableau': return dash();
+        case 'alertes': return alerts();
+        case 'alerte': return detail(r.args[0]);
+        case 'pairs': return peers();
+        case 'maintenance': return maintenance();
+        case 'notifications': return notifs();
+        default: return dash();
+      }
+    },
+  });
+  setInterval(() => document.querySelectorAll('[data-cd]').forEach(el => { const a = byId(el.dataset.cd); if (a) el.lastChild.textContent = ' ' + cd(a); }), 1000);
+})();
+</script>
+</body>
+</html>

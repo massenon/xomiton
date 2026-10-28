@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Chaînes de la maquette (français, tutoiement : espace pair). Sources : web/lang/fr/peer.php, cases.php, sync.php,
+   enums/cases.php, enums/alerts.php, alerts.php, menus.php. Données fictives et pseudonymisées. */
+const T = {
+  title: 'Espace pair — maquette mobile',
+  sub: 'Pair éducateur·rice · collecte hors ligne',
+  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', theme: 'Thème', light: 'Clair', dark: 'Sombre', network: 'Réseau', online: 'En ligne', offline: 'Hors ligne',
+    demo_note: 'Maquette cliquable : données fictives et pseudonymisées, aucun nom ni numéro réel. Rien n’est envoyé nulle part.',
+    g_pair: 'Parcours pair', g_offline: 'Hors connexion' },
+  common: { cancel: 'Annuler', close: 'Fermer', save: 'Enregistrer', back: 'Retour', yes: 'Oui', no: 'Non', none: '—', detail: 'Détail', today: 'aujourd’hui' },
+  nav: { label: 'Navigation de l’espace pair', back: 'Retour', home: 'Accueil', alerts: 'Alertes', sos: 'SOS', cases: 'Dossiers', collect: 'Collecte' },
+  net: { online: 'En ligne', offline: 'Hors ligne', went_off: 'Tu es hors connexion. Tes saisies restent sur cet appareil.', went_on: 'Le réseau est de retour. La synchronisation reprend.',
+    banner: 'Tu es hors connexion : tes saisies sont conservées et seront synchronisées automatiquement.',
+    pending: { zero: 'Aucun élément en attente de synchronisation', one: '1 élément en attente de synchronisation', other: ':count éléments en attente de synchronisation' },
+    pending_short: { zero: 'À jour', one: '1 en attente', other: ':count en attente' }, open_sync: 'Ouvrir la file de synchronisation' },
+  home: { title: 'Espace pair', badge: 'Pair éducateur·rice', duty: 'De garde', greeting: 'Bonjour :name', intro: 'Ton tableau de bord de terrain : collecte, orientation, alertes et outils d’animation.',
+    kpi_label: 'Chiffres de tes dossiers', kpi: { collected: 'Dossiers collectés', this_month: 'Ce mois-ci', in_progress: 'En cours', closed: 'Clos' },
+    tasks: 'Mes tâches du jour',
+    alerts_to_take: { one: '1 alerte nouvelle à traiter', other: ':count alertes nouvelles à traiter', zero: 'Aucune alerte nouvelle à traiter' },
+    cases_to_contact: { one: '1 dossier ouvert à contacter', other: ':count dossiers ouverts à contacter', zero: 'Aucun dossier ouvert à contacter' },
+    session: 'Préparer la prochaine séance : boîtes à images',
+    shortcuts_label: 'Raccourcis', shortcuts: { collecte: 'Nouvelle collecte', cases: 'Mes dossiers', report: 'Signalement', directory: 'Annuaire', ccc: 'Outils CCC', resources: 'Ressources' },
+    out_of_scope: 'Cet écran existe déjà dans l’application (hors périmètre de cette maquette).' },
+  alerts: { title: 'Alertes routées vers moi', open_count: { one: 'alerte ouverte', other: 'alertes ouvertes' }, refresh: 'Actualiser', refreshed: 'Liste à jour.',
+    on_duty: 'Tu es de garde : la liste se met à jour toutes les 30 secondes.', empty: 'Aucune alerte pour le moment.',
+    ago: 'Reçue :time', acknowledge: 'Accuser réception', acknowledged: 'Réception accusée. La personne est prévenue que tu t’en occupes.', ack_done: 'Réception accusée',
+    take: 'Prendre en charge', taken: 'Alerte prise en charge.', close: 'Clore', closed: 'Alerte close.',
+    close_title: 'Clore cette alerte ?', close_confirm: 'Clore cette alerte ? Une alerte close ne se rouvre pas.', close_yes: 'Oui, clore',
+    detail: 'Détail', detail_for: 'Détail de l’alerte :type, :place', offline: 'Tu es hors ligne. Reviens sur cette alerte dès que le réseau est de retour.',
+    anonymous: 'Anonyme', accuracy: 'précision :meters m', not_found: 'Cette alerte n’existe plus ou ne t’est plus routée.',
+    fields: { received: 'Reçue', place: 'Lieu', category: 'Type de violence', needs: 'Besoins', author: 'De la part de', contact: 'Pour la joindre', position: 'Position (arrondie)', description: 'Ce qui a été écrit', history: 'Historique' },
+    no_contact: 'Aucun contact laissé (anonyme).', contact_masked: 'SMS, numéro visible après prise en charge', escalation: 'Sans accusé de réception, l’alerte est escaladée au point focal national.' },
+  cases: { title: 'Mes dossiers', intro: 'Les dossiers que tu as collectés. Tu ne vois jamais ceux d’une autre personne.', search: 'Code du dossier', search_placeholder: 'VBG-0042', status: 'Statut', kind: 'Type',
+    all_statuses: 'Tous les statuts', all_kinds: 'Tous les types', results: { zero: 'Aucun dossier', one: '1 dossier', other: ':count dossiers' }, new: 'Nouvelle collecte',
+    empty: 'Aucun dossier pour le moment', empty_text: 'Les dossiers que tu collectes apparaissent ici.', empty_filtered: 'Aucun dossier ne correspond à ces critères.', reset: 'Réinitialiser',
+    steps: { zero: 'aucune étape', one: '1 étape', other: ':count étapes' }, open: 'ouvrir la fiche', filters_label: 'Filtrer mes dossiers' },
+  case: { back: 'Mes dossiers', age: ':range ans', received: 'faits du :date', anonymized: 'Anonymisé',
+    status_title: 'Statut du dossier', status_label: 'Passer le dossier à', status_choose: 'Choisir un statut', status_submit: 'Mettre à jour', status_saved: 'Statut du dossier mis à jour.',
+    timeline: 'Frise de suivi', timeline_empty: 'Aucune étape enregistrée pour ce dossier.', mark_done: 'Marquer comme réalisée', followup_done: 'Étape marquée comme réalisée.', followup_saved: 'Étape de suivi enregistrée.',
+    followup_queued: 'Étape gardée sur cet appareil. Elle partira dès que le réseau revient.', add: 'Ajouter un suivi', add_title: 'Ajouter une étape de suivi', add_submit: 'Enregistrer l’étape',
+    locked: 'Ce dossier est archivé ou anonymisé : il ne reçoit plus de nouvelle étape.', next: 'Prochain suivi', in_queue: 'En file',
+    fields: { step: 'Étape', date: 'Date', outcome: 'Résultat', next: 'Prochaine date de suivi', comment: 'Commentaire' }, optional: '(facultatif)',
+    comment_hint: ':count / :max caractères', choose: 'Choisir…',
+    steps_list: ['Premier entretien', 'Orientation vers un service', 'Appel de suivi', 'Accompagnement à un rendez-vous', 'Clôture du suivi'],
+    errors: { required: 'Renseigne ce champ.', next_before: 'La prochaine date ne peut pas précéder la date de l’étape.', comment_max: 'Le commentaire fait au plus :max caractères.', date_invalid: 'Indique une date valide.' },
+    errors_title: 'Vérifie :count champ avant d’enregistrer.' },
+  sheet: { not_filled: 'La fiche de référence n’est pas encore remplie. Les sections 1, 2 et 4 reprennent ce que tu as saisi à la collecte.', reference: 'Fiche de référence :reference', empty: 'Pas encore renseigné.', no_referral: 'Aucune orientation.',
+    yes: 'Oui', no: 'Non', sections: { identification: '1. Identification pseudonymisée', facts: '2. Faits', services: '3. Services reçus', orientation: '4. Orientation', consent: '5. Consentement' },
+    fields: { services: 'Services', pseudo: 'Pseudonyme', sex: 'Sexe', age: 'Tranche d’âge', population: 'Population', zone: 'Lieu', date: 'Date', place: 'Endroit', type: 'Type', description: 'Résumé', referral: 'Vers', contact: 'Contact', referral_date: 'Date', reason: 'Motif', urgency: 'Urgence', consent: 'Consentement donné', mode: 'Forme', sharing: 'Partage avec un partenaire' },
+    modes: { ecrit: 'Écrit', oral: 'Oral' }, urgency: { normale: 'Normale', haute: 'Haute', critique: 'Critique' } },
+  col: { title: 'Collecte de données', intro: 'Fiche de dossier VBG / VDH, utilisable hors connexion.', no_identity_title: 'Jamais de nom ni de coordonnées.', no_identity: 'N’écris aucun nom, téléphone, adresse ni identifiant direct, ni dans les notes.',
+    step: 'Étape :n sur :total', steps: ['Dossier', 'Lieu', 'Personne', 'Faits', 'Vérification'], choose: 'Choisir…', no_referral: 'Aucune', next: 'Suivant', prev: 'Précédent', edit: 'Modifier',
+    draft_saved: 'Un brouillon (sans les notes) est gardé sur cet appareil.', draft_clear: 'Effacer le brouillon', draft_cleared: 'Brouillon effacé.',
+    fields: { kind: 'Type de dossier', date: 'Date des faits', violence: 'Type de violence', zone: 'Département', commune: 'Commune', population: 'Population', sex: 'Sexe', age: 'Tranche d’âge', referral: 'Orientation vers un service', notes: 'Notes' },
+    kinds: { VBG: 'VBG', VDH: 'VDH' }, kinds_long: { VBG: 'Violence basée sur le genre', VDH: 'Violation des droits humains' },
+    notes_hint: 'Vides, ou au moins :min caractères.', notes_placeholder: 'Résumé non identifiant : contexte, actions réalisées, suite prévue…',
+    commune_first: 'Choisis d’abord un département.',
+    errors: { required: 'Renseigne ce champ.', invalid: 'Choisis une valeur de la liste.', date_invalid: 'Indique une date valide.', date_future: 'La date ne peut pas être postérieure à aujourd’hui.', commune_in_zone: 'Cette commune n’appartient pas au département choisi.', notes_min: 'Les notes contiennent au moins :min caractères, ou restent vides.' },
+    errors_title: { one: 'Corrige 1 champ pour continuer.', other: 'Corrige :count champs pour continuer.' },
+    review_title: 'Vérifie avant d’enregistrer', review_text: 'Rien n’est encore enregistré. Tu peux revenir sur chaque étape.',
+    warn_title: 'Avertissement de plausibilité', warn_text: 'Ces avertissements ne bloquent pas : le dossier est bien enregistré si tu confirmes.',
+    date_old: 'La date des faits remonte à plus de :years ans. Vérifie-la : le dossier est bien enregistré.',
+    duplicate: { one: 'Un dossier que tu peux consulter ressemble beaucoup à celui-ci (:codes). Vérifie qu’il ne s’agit pas de la même personne.', other: 'Plusieurs dossiers que tu peux consulter ressemblent beaucoup à celui-ci (:codes). Vérifie qu’il ne s’agit pas de la même personne.' },
+    footnote: 'Les règles de validation actives s’appliquent. Hors connexion, la fiche attend sur cet appareil, puis part toute seule au retour du réseau. Le code VBG-0000 ou VDH-0000 est attribué à l’enregistrement.',
+    submit: 'Enregistrer le dossier', submit_offline: 'Enregistrer sur cet appareil', sending: 'Envoi en cours… Le code du dossier s’affichera ici.',
+    queued_title: 'Fiche en file sur cet appareil', queued: 'Fiche gardée sur cet appareil. Elle partira dès que le réseau revient, une seule fois.', code_later: 'Le code sera attribué à l’enregistrement.',
+    sent_title: 'Dossier enregistré', saved: 'Dossier :codes enregistré.', code: 'Code du dossier', state: 'État', state_queued: 'En file', state_sent: 'Envoyé',
+    again: 'Nouvelle collecte', see_cases: 'Mes dossiers', see_queue: 'File de synchronisation', recent: 'Derniers dossiers' },
+  sync: { title: 'File de synchronisation', last: 'Dernière synchronisation : aujourd’hui à 09:12', last_off: 'Hors ligne depuis 09:14. Dernière synchronisation à 09:12.', now: 'Synchroniser maintenant', now_off: 'Disponible dès que le réseau revient.', syncing: 'Synchronisation…',
+    done: { one: 'Synchronisation terminée : 1 élément envoyé.', other: 'Synchronisation terminée : :count éléments envoyés.' }, nothing: 'Rien à envoyer.',
+    empty: 'Rien en attente : tout est à jour.',
+    conflicts: 'Conflit à résoudre', pending: 'En attente', sent: 'Envoyés',
+    kinds: { case: 'Nouveau dossier', followup: 'Étape de suivi', status: 'Changement de statut', sos: 'Alerte SOS' },
+    states: { pending: 'En attente', sending: 'Envoi…', sent: 'Envoyé', conflict: 'Conflit 409', resolved: 'Choix envoyé' },
+    conflict_text: 'Une modification faite ailleurs croise la tienne. Choisis la valeur à garder : l’équipe valide ton choix.',
+    field: 'Champ', base: 'Valeur d’origine', server: 'Valeur du serveur', mine: 'Ma valeur (cet appareil)', keep_server: 'Garder la valeur du serveur', keep_mine: 'Garder la mienne', resolve: 'Envoyer mon choix',
+    resolved_toast: 'Choix envoyé. L’équipe valide la version retenue.', choose_first: 'Choisis une des deux valeurs.', created: 'Créé :when', uuid: 'Envoi n° :id', retries: 'Cet envoi repartira tout seul, une seule fois.' },
+  sos: { title: 'SOS', intro: 'Ton alerte part vers la personne de l’annuaire la plus proche et vers tes contacts de confiance.', help: 'Maintiens le bouton 2 secondes pour envoyer ton alerte.',
+    alt: 'Sans maintenir :', alt_btn: 'Envoyer sans maintenir', alt_title: 'Envoyer l’alerte SOS ?', alt_text: 'Ton alerte partira vers la personne de l’annuaire la plus proche, avec ta position si ton téléphone la trouve.', alt_yes: 'Envoyer l’alerte', cancel: 'Annuler',
+    done: 'Ton alerte est partie', done_text: 'Reste si possible dans un lieu public ou éclairé. La personne contactée va te rappeler.',
+    queued: 'Alerte gardée sur cet appareil', queued_text: 'Elle partira dès que le réseau revient. En danger, appelle directement un numéro d’urgence.', safe: 'Je suis en sécurité', safe_ok: 'Merci. Les personnes prévenues savent que tu es en sécurité.', again: 'Revenir à l’espace pair',
+    holding: 'Maintiens…', hint_offline: 'Hors connexion : l’alerte est mise en file et part au retour du réseau. En danger, appelle directement un numéro d’urgence.' },
+  enums: {
+    case_kind: { VBG: 'Violence basée sur le genre', VDH: 'Violation des droits humains' },
+    case_status: { ouvert: 'Ouvert', en_cours: 'En cours', clos: 'Clos', archive: 'Archivé' },
+    followup_outcome: { planifie: 'Planifié', realise: 'Réalisé', reporte: 'Reporté', annule: 'Annulé' },
+    services: { ecoute: 'Écoute / accueil', medical: 'Prise en charge médicale', psy: 'Soutien psychologique', juridique: 'Appui juridique', hebergement: 'Hébergement d’urgence', dignite: 'Kit de dignité / matériel', securite: 'Mise en sécurité', autre: 'Autre' },
+    alert_type: { denonciation: 'Signalement', besoin: 'Besoin', sos: 'SOS' },
+    alert_status: { nouveau: 'Nouveau', pris_en_charge: 'Pris en charge', en_cours: 'En cours', traite: 'Traité', clos: 'Clos' },
+    alert_priority: { normale: 'Normale', haute: 'Haute', critique: 'Critique' },
+    violence: { physique: 'Violence physique', psychologique: 'Violence psychologique', sexuelle: 'Violence sexuelle', economique: 'Violence économique', numerique: 'Violence en ligne' },
+    violence_hint: { physique: 'Coups, brûlures, séquestration, agressions.', psychologique: 'Insultes, humiliations, menaces, chantage à l’outing.', sexuelle: 'Viol, attouchements, « viols correctifs », exploitation.', economique: 'Privation de ressources, contrôle financier, exclusion.', numerique: 'Cyberharcèlement, diffusion d’images, doxxing, outing.' },
+    needs: { soutien_psychologique: 'Soutien psychologique', soutien_juridique: 'Soutien juridique', soutien_medical: 'Prise en charge médicale', hebergement: 'Hébergement d’urgence', securite: 'Mise en sécurité' },
+  },
+};
+</script>
+<title>Espace pair — maquette mobile Xomiton</title>
+<meta name="description" content="Maquette cliquable de l’espace pair mobile Xomiton : accueil, alertes routées, dossiers, collecte hors ligne et file de synchronisation.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0433C3">
+<link rel="icon" type="image/svg+xml" href="{{IMG:icone-appli-bleu.svg}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap">
+<style>
+{{INCLUDE:kit.css}}
+</style>
+</head>
+<body>
+<noscript>Cette maquette demande JavaScript.</noscript>
+<script>
+{{INCLUDE:kit.js}}
+</script>
+<script>
+(() => {
+  const { esc, t, ic, S } = Kit;
+  const TODAY = '2026-10-28';
+  const fmt = d => (d ? d.split('-').reverse().join('/') : T.common.none);
+  const en = (g, k) => (T.enums[g] && T.enums[g][k]) || k;
+  const badge = (c, s) => `<span class="badge ${c}">${esc(s)}</span>`;
+  const ZONES = { Alibori: ['Kandi', 'Malanville', 'Banikoara'], Atacora: ['Natitingou', 'Tanguiéta'], Atlantique: ['Abomey-Calavi', 'Ouidah', 'Allada'], Borgou: ['Parakou', 'Nikki', 'Tchaourou'], Collines: ['Dassa-Zoumè', 'Savalou', 'Savè'], Couffo: ['Aplahoué', 'Dogbo'], Donga: ['Djougou', 'Bassila'], Littoral: ['Cotonou'], Mono: ['Lokossa', 'Grand-Popo'], Ouémé: ['Porto-Novo', 'Sèmè-Podji', 'Adjarra'], Plateau: ['Pobè', 'Kétou'], Zou: ['Abomey', 'Bohicon', 'Covè'] };
+  const POPS = ['Femmes cis', 'Femmes lesbiennes', 'Femmes bisexuelles', 'Personnes trans / non-binaires', 'Travailleuses du sexe', 'Femmes vivant avec le VIH', 'Jeunes filles (15-24)'];
+  const AGES = ['10-14', '15-17', '18-24', '25-34', '35-49', '50+'];
+  const SEXES = ['Femme', 'Homme', 'Autre / non-binaire'];
+  const VIOL = ['physique', 'psychologique', 'sexuelle', 'economique', 'numerique'];
+
+  /* ---------- Données fictives (pseudonymisées) ---------- */
+  const ME = { pseudo: 'Aube' };
+  const mk = (code, kind, date, commune, sex, age, pop, viol, status, fu, sheet) => ({ code, kind, date, zone: 'Atlantique', commune, sex, age, pop, viol, status, fu: fu || [], sheet: sheet || null });
+  const C = [
+    mk('VBG-0048', 'VBG', '2026-10-24', 'Abomey-Calavi', 'Femme', '18-24', 'Femmes cis', 'psychologique', 'ouvert'),
+    mk('VBG-0047', 'VBG', '2026-10-20', 'Ouidah', 'Femme', '25-34', 'Femmes lesbiennes', 'physique', 'en_cours', [
+      { id: 1, step: 'Premier entretien', date: '2026-10-21', outcome: 'realise', comment: 'Écoute et information sur les services disponibles.' },
+      { id: 2, step: 'Appel de suivi', date: '2026-10-30', outcome: 'planifie', comment: '' }],
+      { ref: 'FR-2026-0047', pseudo: 'Pseudo-M09', place: 'Lieu de travail', desc: 'Violences répétées par une personne de l’entourage. Premier contact par une pair du quartier.', services: ['ecoute', 'securite'], referral: { to: 'Point focal Atlantique (annuaire)', contact: 'Coordonnées dans l’annuaire', date: '2026-10-22', reason: 'Mise en sécurité', urgency: 'haute' }, consent: { given: true, mode: 'oral', sharing: false } }),
+    mk('VDH-0044', 'VDH', '2026-10-12', 'Allada', 'Autre / non-binaire', '18-24', 'Personnes trans / non-binaires', 'psychologique', 'en_cours', [{ id: 1, step: 'Premier entretien', date: '2026-10-14', outcome: 'realise', comment: '' }]),
+    mk('VBG-0042', 'VBG', '2026-09-30', 'Abomey-Calavi', 'Femme', '15-17', 'Jeunes filles (15-24)', 'sexuelle', 'en_cours', [
+      { id: 1, step: 'Premier entretien', date: '2026-10-01', outcome: 'realise', next: '2026-10-15', comment: 'Écoute et information sur les services disponibles.' },
+      { id: 2, step: 'Orientation vers un service', date: '2026-10-15', outcome: 'realise', comment: 'Rendez-vous pris avec un service psychologique via le point focal.' },
+      { id: 3, step: 'Appel de suivi', date: '2026-10-30', outcome: 'planifie', comment: '' }],
+      { ref: 'FR-2026-0042', pseudo: 'Pseudo-K17', place: 'Domicile (non précisé)', desc: 'Violences sexuelles par une personne connue de la famille. Mineure : accompagnement renforcé.', services: ['ecoute', 'psy', 'medical'], referral: { to: 'Point focal Atlantique (annuaire)', contact: 'Coordonnées dans l’annuaire', date: '2026-10-03', reason: 'Prise en charge psychologique et médicale', urgency: 'critique' }, consent: { given: true, mode: 'ecrit', sharing: true } }),
+    mk('VBG-0039', 'VBG', '2026-09-18', 'Ouidah', 'Femme', '35-49', 'Femmes cis', 'economique', 'ouvert'),
+    mk('VBG-0036', 'VBG', '2026-09-02', 'Allada', 'Femme', '18-24', 'Femmes bisexuelles', 'numerique', 'clos', [{ id: 1, step: 'Premier entretien', date: '2026-09-04', outcome: 'realise', comment: '' }, { id: 2, step: 'Clôture du suivi', date: '2026-09-25', outcome: 'realise', comment: 'Situation stabilisée.' }]),
+    mk('VBG-0031', 'VBG', '2026-08-14', 'Abomey-Calavi', 'Femme', '25-34', 'Femmes vivant avec le VIH', 'sexuelle', 'clos', [{ id: 1, step: 'Premier entretien', date: '2026-08-15', outcome: 'realise', comment: '' }]),
+    mk('VBG-0027', 'VBG', '2026-07-02', 'Ouidah', 'Femme', '25-34', 'Travailleuses du sexe', 'physique', 'clos'),
+    mk('VDH-0022', 'VDH', '2026-05-19', 'Abomey-Calavi', 'Autre / non-binaire', '25-34', 'Personnes trans / non-binaires', 'psychologique', 'archive'),
+    mk('VBG-0015', 'VBG', '2026-03-11', 'Allada', 'Femme', '10-14', 'Jeunes filles (15-24)', 'physique', 'en_cours'),
+  ];
+  const A = [
+    { id: 'a1', type: 'sos', status: 'nouveau', prio: 'critique', ack: false, commune: 'Abomey-Calavi', zone: 'Atlantique', ago: 6, viol: 'physique', needs: ['securite'], pseudo: null, contact: null, lat: 6.45, lng: 2.36, acc: 40, text: 'Je suis enfermée dans une cour, la personne ne me laisse pas partir.', hist: [{ w: 'il y a 6 min', x: 'Alerte reçue (Nouveau)' }, { w: 'il y a 6 min', x: 'Routée vers toi : point focal de l’Atlantique' }] },
+    { id: 'a2', type: 'denonciation', status: 'nouveau', prio: 'haute', ack: false, commune: 'Ouidah', zone: 'Atlantique', ago: 130, viol: 'psychologique', needs: ['soutien_psychologique'], pseudo: null, contact: 'sms', text: 'Menaces répétées et chantage à l’outing par un ancien partenaire.', hist: [{ w: 'il y a 2 h', x: 'Alerte reçue (Nouveau)' }] },
+    { id: 'a3', type: 'besoin', status: 'pris_en_charge', prio: 'normale', ack: true, commune: 'Allada', zone: 'Atlantique', ago: 1500, viol: null, needs: ['soutien_juridique'], pseudo: null, contact: 'sms', text: 'Je voudrais savoir comment porter plainte sans être exposée.', hist: [{ w: 'hier', x: 'Alerte reçue (Nouveau)' }, { w: 'hier', x: 'Réception accusée par toi.' }, { w: 'hier', x: 'Prise en charge par toi.' }] },
+    { id: 'a4', type: 'denonciation', status: 'clos', prio: 'normale', ack: true, commune: 'Abomey-Calavi', zone: 'Atlantique', ago: 5800, viol: 'economique', needs: [], pseudo: null, contact: null, text: 'Contrôle financier et privation de ressources.', hist: [{ w: 'il y a 4 j', x: 'Alerte reçue (Nouveau)' }, { w: 'il y a 3 j', x: 'Clôturée par toi.' }] },
+  ];
+  let Q = [];   // file de synchronisation
+  let qSeq = 0;
+  const L = { q: '', status: '', kind: '' };
+  const F0 = () => ({ step: 1, kind: '', date: '', zone: '', commune: '', pop: '', sex: '', age: '', viol: '', ref: '', notes: '', errors: {} });
+  let F = F0();
+  const FU = { step: '', date: TODAY, outcome: 'planifie', next: '', comment: '', errors: {} };
+  const SOSS = { state: 'idle' };
+
+  const ago = m => (m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.round(m / 60)} h` : m < 2880 ? 'hier' : `il y a ${Math.round(m / 1440)} j`);
+  const pend = () => Q.filter(i => ['pending', 'sending', 'conflict'].includes(i.status)).length;
+  const newAlerts = () => A.filter(a => a.status === 'nouveau').length;
+  const openAlerts = () => A.filter(a => a.status !== 'clos');
+  const find = code => C.find(c => c.code === code);
+  const place = a => `${a.commune} (${a.zone})`;
+  const stBadge = s => badge(s === 'ouvert' ? '' : s === 'en_cours' ? 'violet' : s === 'clos' ? 'ok' : 'mute', en('case_status', s));
+  const kindBadge = k => badge(k === 'VBG' ? '' : 'violet', k);
+  const aStatus = a => badge(a.status === 'nouveau' ? '' : a.status === 'clos' ? 'mute' : 'ok', en('alert_status', a.status));
+  const aPrio = p => badge(p === 'critique' ? 'danger' : p === 'haute' ? 'warn' : 'mute', en('alert_priority', p));
+  const aType = x => badge(x === 'sos' ? 'danger' : x === 'besoin' ? '' : 'violet', en('alert_type', x));
+  const secH = (h, n) => `<div class="sec-h"><h2>${esc(h)}</h2>${n ? `<span class="n">${esc(n)}</span>` : ''}</div>`;
+  const nextCode = kind => `${kind}-${String(Math.max(...C.map(c => +c.code.slice(4)), 0) + 1).padStart(4, '0')}`;
+
+  /* ---------- Accueil ---------- */
+  function home() {
+    const nc = C.length, month = C.filter(c => c.date.startsWith('2026-10')).length, prog = C.filter(c => c.status === 'en_cours').length, closed = C.filter(c => c.status === 'clos').length;
+    const kpi = [['collected', nc], ['this_month', month], ['in_progress', prog], ['closed', closed]];
+    const na = newAlerts(), nco = C.filter(c => c.status === 'ouvert').length;
+    const sc = [['collecte', 'file-plus', 'collecte'], ['cases', 'folder', 'dossiers'], ['report', 'alert', null], ['directory', 'book', null], ['ccc', 'users', null], ['resources', 'list', null]];
+    return { tab: 'home', title: esc(t('home.title')), plain: t('home.title'), caption: '', html: `
+      <section class="hello"><div class="row wrap">${badge('', t('home.badge'))}<span class="pill-duty">${esc(t('home.duty'))}</span></div>
+        <h2>${esc(t('home.greeting', { name: ME.pseudo }))}</h2><p class="muted small" style="margin:0">${esc(t('home.intro'))}</p></section>
+      <section aria-labelledby="kh" class="stack-s">${secH(t('home.kpi_label')).replace('<h2>', '<h2 id="kh">')}
+        <ul class="kpis">${kpi.map(([k, v]) => `<li><span class="v">${v}</span><span class="l">${esc(t('home.kpi.' + k))}</span></li>`).join('')}</ul></section>
+      <section class="stack-s">${secH(t('home.tasks'))}
+        <a class="link-row" href="#/alertes">${ic('alert')}<span class="grow"><b>${esc(t('home.alerts_to_take', { count: na }))}</b></span>${ic('next', 'sm')}</a>
+        <a class="link-row" href="#/dossiers">${ic('folder')}<span class="grow"><b>${esc(t('home.cases_to_contact', { count: nco }))}</b></span>${ic('next', 'sm')}</a>
+        <button class="link-row" data-act="oos">${ic('users')}<span class="grow"><b>${esc(t('home.session'))}</b></span>${ic('next', 'sm')}</button></section>
+      <section class="stack-s" aria-labelledby="sh">${secH(t('home.shortcuts_label')).replace('<h2>', '<h2 id="sh">')}
+        <div class="shortcuts">${sc.map(([k, i, h]) => (h ? `<a class="tile" href="#/${h}">${ic(i, 'lg')}<b>${esc(t('home.shortcuts.' + k))}</b></a>` : `<button class="tile" data-act="oos">${ic(i, 'lg')}<b>${esc(t('home.shortcuts.' + k))}</b></button>`)).join('')}</div></section>` };
+  }
+
+  /* ---------- Alertes ---------- */
+  function actionsFor(a, full) {
+    const b = [];
+    if (a.status === 'nouveau' && !a.ack) b.push(`<button class="btn btn-primary" data-act="ack" data-id="${a.id}">${esc(t('alerts.acknowledge'))}</button>`);
+    if (a.status === 'nouveau' && a.ack) b.push(`<span class="badge ok" style="align-self:center">${ic('check', 'sm')} ${esc(t('alerts.ack_done'))}</span>`);
+    if (a.status === 'nouveau') b.push(`<button class="btn ${a.ack ? 'btn-primary' : 'btn-outline'}" data-act="take" data-id="${a.id}">${esc(t('alerts.take'))}</button>`);
+    if (a.status === 'pris_en_charge' || a.status === 'en_cours') b.push(`<button class="btn btn-primary" data-act="close" data-id="${a.id}">${esc(t('alerts.close'))}</button>`);
+    if (!full) b.push(`<a class="btn btn-outline" href="#/alerte/${a.id}" aria-label="${esc(t('alerts.detail_for', { type: en('alert_type', a.type), place: a.commune }))}">${esc(t('alerts.detail'))}</a>`);
+    return b.join('');
+  }
+  function alerts() {
+    const n = openAlerts().length;
+    return { tab: 'alerts', title: esc(t('alerts.title')), plain: t('alerts.title'), html: `
+      <div class="row wrap between"><div class="row wrap"><b>${n} ${esc(t('alerts.open_count', { count: n }))}</b></div>
+        <button class="btn btn-outline btn-sm" data-act="refresh" style="min-height:44px">${ic('sync', 'sm')} ${esc(t('alerts.refresh'))}</button></div>
+      <p class="note">${ic('bell', 'sm')}<span>${esc(t('alerts.on_duty'))}</span></p>
+      <div class="stack">${A.map(a => `<article class="acard ${a.type === 'sos' && a.status === 'nouveau' ? 'sos' : ''}" aria-label="${esc(en('alert_type', a.type) + ', ' + a.commune)}">
+        <div class="top">${aType(a.type)}${aStatus(a)}${aPrio(a.prio)}</div>
+        <h3>${esc(en('alert_type', a.type))} · ${esc(place(a))}</h3>
+        <div class="meta"><span>${ic('clock', 'sm')} ${esc(t('alerts.ago', { time: ago(a.ago) }))}</span>${a.viol ? `<span>${esc(en('violence', a.viol))}</span>` : ''}</div>
+        <div class="acts">${actionsFor(a)}</div></article>`).join('')}</div>` };
+  }
+  function alertDetail(id) {
+    const a = A.find(x => x.id === id);
+    if (!a) return { tab: 'alerts', back: 'alertes', title: esc(t('alerts.title')), html: `<div class="empty"><b>${esc(t('alerts.not_found'))}</b></div>` };
+    const dd = (k, v) => `<div><dt>${esc(t('alerts.fields.' + k))}</dt><dd>${v}</dd></div>`;
+    const pos = a.lat ? `${String(a.lat.toFixed(2)).replace('.', ',')}° N, ${String(a.lng.toFixed(2)).replace('.', ',')}° E · ${esc(t('alerts.accuracy', { meters: a.acc }))}` : esc(t('common.none'));
+    return { tab: 'alerts', back: 'alertes', backLabel: t('alerts.title'), title: `${esc(en('alert_type', a.type))} · ${esc(a.commune)}`, plain: t('alerts.detail_for', { type: en('alert_type', a.type), place: a.commune }), html: `
+      <div class="row wrap">${aType(a.type)}${aStatus(a)}${aPrio(a.prio)}</div>
+      ${a.status === 'nouveau' && !a.ack ? `<p class="note warn">${ic('alert', 'sm')}<span>${esc(t('alerts.escalation'))}</span></p>` : ''}
+      <dl class="dl card" style="padding:4px 14px">${dd('received', esc(ago(a.ago)))}${dd('place', esc(place(a)))}${dd('category', esc(a.viol ? en('violence', a.viol) : T.common.none))}${dd('needs', esc(a.needs.length ? a.needs.map(n => en('needs', n)).join(', ') : T.common.none))}${dd('author', esc(t('alerts.anonymous')))}${dd('contact', esc(a.contact ? t('alerts.contact_masked') : t('alerts.no_contact')))}${dd('position', pos)}${dd('description', esc(a.text))}</dl>
+      <section class="stack-s">${secH(t('alerts.fields.history'))}<ol class="tl card">${a.hist.map((h, i) => `<li class="${i === a.hist.length - 1 ? '' : 'done'}"><span class="when">${esc(h.w)}</span>${esc(h.x)}</li>`).join('')}</ol></section>
+      <div class="acts" style="display:flex;flex-direction:column;gap:8px">${actionsFor(a, true).replace(/class="btn /g, 'class="btn btn-block ')}</div>` };
+  }
+  function pushHist(a, x) { a.hist.push({ w: 'à l’instant', x }); }
+  function needNet() { if (S.net === 'off') { Kit.toast(t('alerts.offline')); return true; } return false; }
+
+  /* ---------- Dossiers ---------- */
+  function cases() {
+    return { tab: 'cases', title: esc(t('cases.title')), plain: t('cases.title'), html: `
+      <p class="muted small" style="margin:0">${esc(t('cases.intro'))}</p>
+      <div class="search"><label class="vh" for="q">${esc(t('cases.search'))}</label>${ic('search')}<input class="input" id="q" type="search" inputmode="text" autocomplete="off" placeholder="${esc(t('cases.search_placeholder'))}" value="${esc(L.q)}"></div>
+      <div class="stack-s" role="group" aria-label="${esc(t('cases.filters_label'))}">
+        <div class="chips wrap" id="fk">${[['', t('cases.all_kinds')], ['VBG', 'VBG'], ['VDH', 'VDH']].map(([v, l]) => `<button class="chip" data-act="fk" data-v="${v}" aria-pressed="${L.kind === v}">${esc(l)}</button>`).join('')}</div>
+        <div class="chips wrap" id="fs">${[['', t('cases.all_statuses')], ['ouvert', 'Ouvert'], ['en_cours', 'En cours'], ['clos', 'Clos'], ['archive', 'Archivé']].map(([v, l]) => `<button class="chip" data-act="fs" data-v="${v}" aria-pressed="${L.status === v}">${esc(l)}</button>`).join('')}</div></div>
+      <div id="list" class="stack-s" aria-live="polite"></div>
+      <a class="btn btn-primary btn-block" href="#/collecte" data-act="newcol">${ic('plus', 'sm')} ${esc(t('cases.new'))}</a>`,
+      mount: () => { drawList(); document.getElementById('q').addEventListener('input', e => { L.q = e.target.value; drawList(); }); } };
+  }
+  function drawList() {
+    const host = document.getElementById('list'); if (!host) return;
+    const r = C.filter(c => (!L.q || c.code.toLowerCase().includes(L.q.trim().toLowerCase())) && (!L.status || c.status === L.status) && (!L.kind || c.kind === L.kind));
+    host.innerHTML = `<div class="sec-h"><b>${esc(t('cases.results', { count: r.length }))}</b>${(L.q || L.status || L.kind) ? `<button class="btn-link" data-act="resetf">${esc(t('cases.reset'))}</button>` : ''}</div>` +
+      (r.length ? r.map(c => `<a class="link-row" href="#/dossier/${c.code}" aria-label="${esc(c.code + ', ' + en('case_status', c.status) + ', ' + t('cases.open'))}"><span class="grow"><span class="row wrap" style="gap:6px"><b>${c.code}</b>${kindBadge(c.kind)}${stBadge(c.status)}</span>
+        <span class="small muted" style="display:block;margin-top:4px">${fmt(c.date)} · ${esc(c.commune)} · ${esc(en('violence', c.viol))} · ${esc(t('cases.steps', { count: c.fu.length }))}</span></span>${ic('next', 'sm')}</a>`).join('')
+        : `<div class="empty"><b>${esc(L.q || L.status || L.kind ? t('cases.empty_filtered') : t('cases.empty'))}</b>${L.q || L.status || L.kind ? '' : esc(t('cases.empty_text'))}</div>`);
+  }
+  function sheetSec(title, rows, open) {
+    return `<details class="card" ${open ? 'open' : ''} style="padding:0"><summary class="h3" style="padding:14px 16px;min-height:48px;display:flex;align-items:center;cursor:pointer">${esc(title)}</summary><dl class="dl" style="padding:0 16px 8px">${rows.map(([k, v]) => `<div><dt>${esc(t('sheet.fields.' + k))}</dt><dd>${v == null || v === '' ? `<span class="muted">${esc(t('sheet.empty'))}</span>` : esc(v)}</dd></div>`).join('')}</dl></details>`;
+  }
+  function caseShow(code) {
+    const c = find(code);
+    if (!c) return { tab: 'cases', back: 'dossiers', title: esc(t('cases.title')), html: `<div class="empty"><b>${esc(t('cases.empty'))}</b></div>` };
+    const s = c.sheet, locked = c.status === 'archive';
+    const sc = x => (s ? x : null);
+    const fu = c.fu.slice().sort((a, b) => a.date.localeCompare(b.date));
+    return { tab: 'cases', back: 'dossiers', backLabel: t('case.back'), title: `${c.code}`, plain: c.code, html: `
+      <div class="row wrap">${kindBadge(c.kind)}${stBadge(c.status)}${badge('mute', t('case.received', { date: fmt(c.date) }))}${badge('mute', t('case.age', { range: c.age }))}</div>
+      ${s ? `<p class="muted small" style="margin:0">${esc(t('sheet.reference', { reference: s.ref }))}</p>` : `<p class="note">${ic('info', 'sm')}<span>${esc(t('sheet.not_filled'))}</span></p>`}
+      <div class="stack-s">
+      ${sheetSec(t('sheet.sections.identification'), [['pseudo', s ? s.pseudo : `Pseudo-${c.code.slice(-2)}${c.age.slice(0, 1)}`], ['sex', c.sex], ['age', c.age], ['population', c.pop], ['zone', `${c.commune} (${c.zone})`]], true)}
+      ${sheetSec(t('sheet.sections.facts'), [['date', fmt(c.date)], ['place', sc(s && s.place)], ['type', en('violence', c.viol)], ['description', sc(s && s.desc)]], true)}
+      ${sheetSec(t('sheet.sections.services'), [['services', s ? s.services.map(x => en('services', x)).join(', ') : null]])}
+      ${sheetSec(t('sheet.sections.orientation'), s ? [['referral', s.referral.to], ['contact', s.referral.contact], ['referral_date', fmt(s.referral.date)], ['reason', s.referral.reason], ['urgency', t('sheet.urgency.' + s.referral.urgency)]] : [['referral', t('sheet.no_referral')]])}
+      ${sheetSec(t('sheet.sections.consent'), s ? [['consent', s.consent.given ? t('sheet.yes') : t('sheet.no')], ['mode', t('sheet.modes.' + s.consent.mode)], ['sharing', s.consent.sharing ? t('sheet.yes') : t('sheet.no')]] : [['consent', null]])}</div>
+      ${locked ? `<p class="note">${ic('lock', 'sm')}<span>${esc(t('case.locked'))}</span></p>` : `<form class="card stack-s" data-act-form="status" data-code="${c.code}"><div class="fld"><label for="ns">${esc(t('case.status_label'))}</label><select class="input" id="ns"><option value="">${esc(t('case.status_choose'))}</option>${['ouvert', 'en_cours', 'clos', 'archive'].filter(x => x !== c.status).map(x => `<option value="${x}">${esc(en('case_status', x))}</option>`).join('')}</select></div><button class="btn btn-outline" type="submit">${esc(t('case.status_submit'))}</button></form>`}
+      <section class="stack-s" aria-labelledby="fh">${secH(t('case.timeline')).replace('<h2>', '<h2 id="fh">')}
+        ${fu.length ? `<ol class="tl card">${fu.map(f => `<li class="${f.outcome === 'realise' ? 'done' : ''} ${f.queued ? 'queued' : ''}"><span class="when">${fmt(f.date)}</span><div class="row wrap" style="gap:6px"><b>${esc(f.step)}</b>${badge(f.outcome === 'realise' ? 'ok' : f.outcome === 'planifie' ? '' : 'mute', en('followup_outcome', f.outcome))}${f.queued ? badge('warn', t('case.in_queue')) : ''}</div>
+          ${f.comment ? `<div class="small muted">${esc(f.comment)}</div>` : ''}${f.next ? `<div class="small muted">${esc(t('case.next'))} : ${fmt(f.next)}</div>` : ''}
+          ${f.outcome === 'planifie' && !locked ? `<button class="btn-link" data-act="done" data-code="${c.code}" data-id="${f.id}">${esc(t('case.mark_done'))}</button>` : ''}</li>`).join('')}</ol>` : `<p class="muted card">${esc(t('case.timeline_empty'))}</p>`}</section>
+      ${locked ? '' : `<a class="btn btn-primary btn-block" href="#/suivi/${c.code}">${ic('plus', 'sm')} ${esc(t('case.add'))}</a>`}`,
+      mount: pane => { const f = pane.querySelector('[data-act-form="status"]'); if (f) f.addEventListener('submit', e => { e.preventDefault(); const v = f.querySelector('select').value; if (!v) return; c.status = v; Kit.toast(t('case.status_saved')); Kit.render({ noFocus: true }); }); } };
+  }
+  function followForm(code) {
+    const c = find(code); if (!c) return caseShow(code);
+    const e = FU.errors; const err = k => (e[k] ? `<span class="err" id="e-${k}">${ic('alert', 'sm')}${esc(e[k])}</span>` : '');
+    const inv = k => (e[k] ? `aria-invalid="true" aria-describedby="e-${k}"` : '');
+    const ne = Object.keys(e).length;
+    return { tab: 'cases', back: `dossier/${code}`, backLabel: code, title: esc(t('case.add_title')), plain: t('case.add_title'), html: `
+      <p class="muted small" style="margin:0">${code} · ${esc(t('col.no_identity_title'))}</p>
+      ${ne ? `<div class="errsum" role="alert" tabindex="-1" id="es">${esc(t('case.errors_title', { count: ne }))}</div>` : ''}
+      <form id="ff" class="stack" novalidate>
+        <div class="fld"><label for="f-step">${esc(t('case.fields.step'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="f-step" ${inv('step')}><option value="">${esc(t('case.choose'))}</option>${T.case.steps_list.map(s => `<option ${FU.step === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>${err('step')}</div>
+        <div class="fld"><label for="f-date">${esc(t('case.fields.date'))} <span class="req" aria-hidden="true">*</span></label><input class="input" id="f-date" type="date" value="${FU.date}" ${inv('date')}>${err('date')}</div>
+        <div class="fld"><label for="f-out">${esc(t('case.fields.outcome'))}</label><select class="input" id="f-out">${Object.entries(T.enums.followup_outcome).map(([k, v]) => `<option value="${k}" ${FU.outcome === k ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+        <div class="fld"><label for="f-next">${esc(t('case.fields.next'))} <span class="muted" style="font-weight:400">${esc(t('case.optional'))}</span></label><input class="input" id="f-next" type="date" value="${FU.next}" ${inv('next')}>${err('next')}</div>
+        <div class="fld"><label for="f-com">${esc(t('case.fields.comment'))} <span class="muted" style="font-weight:400">${esc(t('case.optional'))}</span></label><textarea class="input" id="f-com" rows="4" ${inv('comment')}>${esc(FU.comment)}</textarea><span class="hint" id="cc">${esc(t('case.comment_hint', { count: FU.comment.length, max: 500 }))}</span>${err('comment')}</div>
+        <button class="btn btn-primary btn-block" type="submit">${esc(t('case.add_submit'))}</button></form>`,
+      mount: pane => {
+        const g = id => pane.querySelector('#' + id);
+        g('f-com').addEventListener('input', ev => { FU.comment = ev.target.value; g('cc').textContent = t('case.comment_hint', { count: FU.comment.length, max: 500 }); });
+        ['step', 'date', 'out', 'next'].forEach(k => g('f-' + k).addEventListener('change', ev => { FU[{ out: 'outcome' }[k] || k] = ev.target.value; }));
+        g('ff').addEventListener('submit', ev => {
+          ev.preventDefault(); const er = {};
+          if (!FU.step) er.step = t('case.errors.required');
+          if (!FU.date) er.date = t('case.errors.required');
+          if (FU.next && FU.date && FU.next < FU.date) er.next = t('case.errors.next_before');
+          if (FU.comment.length > 500) er.comment = t('case.errors.comment_max', { max: 500 });
+          FU.errors = er;
+          if (Object.keys(er).length) { Kit.render({ noFocus: true }); const s = document.getElementById('es'); s && s.focus(); return; }
+          const off = S.net === 'off'; const id = Date.now();
+          c.fu.push({ id, step: FU.step, date: FU.date, outcome: FU.outcome, next: FU.next, comment: FU.comment, queued: off });
+          if (off) Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: `${FU.step} · ${code}`, status: 'pending', when: 'à l’instant', fuRef: [code, id] });
+          Kit.toast(off ? t('case.followup_queued') : t('case.followup_saved'));
+          Object.assign(FU, { step: '', date: TODAY, outcome: 'planifie', next: '', comment: '', errors: {} });
+          Kit.go('#/dossier/' + code);
+        });
+      } };
+  }
+
+  /* ---------- Collecte ---------- */
+  function validateStep(n) {
+    const e = {};
+    if (n === 1) {
+      if (!F.kind) e.kind = t('col.errors.required');
+      if (!F.date) e.date = t('col.errors.required'); else if (isNaN(Date.parse(F.date))) e.date = t('col.errors.date_invalid'); else if (F.date > TODAY) e.date = t('col.errors.date_future');
+    }
+    if (n === 2) {
+      if (!F.zone) e.zone = t('col.errors.required');
+      if (!F.commune) e.commune = t('col.errors.required'); else if (F.zone && !(ZONES[F.zone] || []).includes(F.commune)) e.commune = t('col.errors.commune_in_zone');
+    }
+    if (n === 3) { if (!F.pop) e.pop = t('col.errors.required'); if (!F.sex) e.sex = t('col.errors.required'); if (!F.age) e.age = t('col.errors.required'); }
+    if (n === 4) { if (!F.viol) e.viol = t('col.errors.required'); const nt = F.notes.trim(); if (nt.length > 0 && nt.length < 20) e.notes = t('col.errors.notes_min', { min: 20 }); }
+    return e;
+  }
+  function warnings() {
+    const w = []; if (!F.date) return w;
+    if ((Date.parse(TODAY) - Date.parse(F.date)) / 31557600000 > 2) w.push(t('col.date_old', { years: 2 }));
+    const dup = C.filter(c => c.kind === F.kind && c.commune === F.commune && c.sex === F.sex && c.age === F.age && c.viol === F.viol).map(c => c.code);
+    if (dup.length) w.push(t('col.duplicate', { count: dup.length, codes: dup.join(', ') }));
+    return w;
+  }
+  const radio = (name, val, label, cur, extra = '', cls = '') => `<label class="opt ${cls}"><input type="radio" name="${name}" value="${esc(val)}" ${cur === val ? 'checked' : ''}><span class="dot" aria-hidden="true"></span><span class="tx">${label}${extra}</span></label>`;
+  function collecte() {
+    const e = F.errors; const ne = Object.keys(e).length;
+    const err = k => (e[k] ? `<span class="err" id="e-${k}">${ic('alert', 'sm')}${esc(e[k])}</span>` : '');
+    const inv = k => (e[k] ? `aria-invalid="true" aria-describedby="e-${k}"` : '');
+    const grp = (k, legend, body, req = true) => `<fieldset class="fld" ${e[k] ? `aria-describedby="e-${k}"` : ''}><legend>${esc(legend)} ${req ? '<span class="req" aria-hidden="true">*</span>' : ''}</legend>${body}${err(k)}</fieldset>`;
+    const steps = T.col.steps; let body = '';
+    if (F.step === 1) body = grp('kind', t('col.fields.kind'), `<div class="opts">${['VBG', 'VDH'].map(k => radio('kind', k, `<b>${k}</b>`, F.kind, `<small>${esc(T.col.kinds_long[k])}</small>`)).join('')}</div>`) +
+      `<div class="fld"><label for="date">${esc(t('col.fields.date'))} <span class="req" aria-hidden="true">*</span></label><input class="input" id="date" type="date" max="${TODAY}" value="${F.date}" ${inv('date')}>${err('date')}</div>`;
+    if (F.step === 2) body = `<div class="fld"><label for="zone">${esc(t('col.fields.zone'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="zone" ${inv('zone')}><option value="">${esc(t('col.choose'))}</option>${Object.keys(ZONES).map(z => `<option ${F.zone === z ? 'selected' : ''}>${z}</option>`).join('')}</select>${err('zone')}</div>
+      <div class="fld"><label for="commune">${esc(t('col.fields.commune'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="commune" ${F.zone ? '' : 'disabled'} ${inv('commune')}>${communeOpts()}</select>${F.zone ? '' : `<span class="hint">${esc(t('col.commune_first'))}</span>`}${err('commune')}</div>`;
+    if (F.step === 3) body = `<div class="fld"><label for="pop">${esc(t('col.fields.population'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="pop" ${inv('pop')}><option value="">${esc(t('col.choose'))}</option>${POPS.map(p => `<option ${F.pop === p ? 'selected' : ''}>${esc(p)}</option>`).join('')}</select>${err('pop')}</div>` +
+      grp('sex', t('col.fields.sex'), `<div class="opts">${SEXES.map(s => radio('sex', s, esc(s), F.sex)).join('')}</div>`) +
+      grp('age', t('col.fields.age'), `<div class="opts cols3">${AGES.map(a => radio('age', a, esc(a), F.age, '', 'sm')).join('')}</div>`);
+    if (F.step === 4) body = grp('viol', t('col.fields.violence'), `<div class="opts">${VIOL.map(v => radio('viol', v, `<b>${esc(en('violence', v))}</b>`, F.viol, `<small>${esc(en('violence_hint', v))}</small>`)).join('')}</div>`) +
+      `<div class="fld"><label for="ref">${esc(t('col.fields.referral'))}</label><select class="input" id="ref"><option value="">${esc(t('col.no_referral'))}</option>${Object.entries(T.enums.services).map(([k, v]) => `<option value="${k}" ${F.ref === k ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+      <div class="fld"><label for="notes">${esc(t('col.fields.notes'))}</label><textarea class="input" id="notes" rows="4" placeholder="${esc(t('col.notes_placeholder'))}" ${inv('notes')}>${esc(F.notes)}</textarea><span class="hint">${esc(t('col.notes_hint', { min: 20 }))}</span>${err('notes')}</div>`;
+    if (F.step === 5) {
+      const w = warnings(); const off = S.net === 'off';
+      const row = (k, v, st) => `<div class="row-r"><div><div class="k">${esc(t('col.fields.' + k))}</div><div>${esc(v || T.common.none)}</div></div><button class="btn-link" data-act="goto" data-step="${st}" aria-label="${esc(t('col.edit') + ' : ' + t('col.fields.' + k))}">${esc(t('col.edit'))}</button></div>`;
+      body = `<div><h2 class="h2" style="margin:0 0 4px">${esc(t('col.review_title'))}</h2><p class="muted small" style="margin:0">${esc(t('col.review_text'))}</p></div>
+        ${w.length ? `<div class="note warn" role="alert">${ic('alert', 'sm')}<div><b>${esc(t('col.warn_title'))}</b>${w.map(x => `<p style="margin-top:6px">${esc(x)}</p>`).join('')}<p style="margin-top:6px;font-size:13px">${esc(t('col.warn_text'))}</p></div></div>` : ''}
+        <div class="card review" style="padding:4px 14px">${row('kind', F.kind && `${F.kind} · ${T.col.kinds_long[F.kind]}`, 1)}${row('date', fmt(F.date), 1)}${row('zone', F.zone && `${F.commune} (${F.zone})`, 2)}${row('population', F.pop, 3)}${row('sex', `${F.sex} · ${F.age} ans`, 3)}${row('violence', F.viol && en('violence', F.viol), 4)}${row('referral', F.ref ? en('services', F.ref) : t('col.no_referral'), 4)}${row('notes', F.notes ? `${F.notes.length} caractères` : '', 4)}</div>
+        <p class="hint" style="margin:0">${esc(t('col.footnote'))}</p>`;
+    }
+    const last = F.step === 5; const off = S.net === 'off';
+    return { tab: 'collect', title: esc(t('col.title')), plain: t('col.title'), html: `
+      <div><div class="steplab"><b>${esc(steps[F.step - 1])}</b><span>${esc(t('col.step', { n: F.step, total: 5 }))}</span></div><div class="stepper" style="--n:5" role="img" aria-label="${esc(t('col.step', { n: F.step, total: 5 }))}">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= F.step ? 'on' : ''}"></i>`).join('')}</div></div>
+      ${F.step === 1 ? `<p class="note warn">${ic('lock', 'sm')}<span><b>${esc(t('col.no_identity_title'))}</b> ${esc(t('col.no_identity'))}</span></p>` : ''}
+      ${F.step > 1 && F.step < 5 && (F.kind || F.date) ? `<p class="hint" style="margin:0">${esc(t('col.draft_saved'))} <button class="btn-link" data-act="clear" style="min-height:44px">${esc(t('col.draft_clear'))}</button></p>` : ''}
+      ${ne ? `<div class="errsum" role="alert" tabindex="-1" id="es">${esc(t('col.errors_title', { count: ne }))}</div>` : ''}
+      <form id="cf" class="stack" novalidate>${body}
+        <div class="formnav">${F.step > 1 ? `<button type="button" class="btn btn-outline" data-act="prev">${esc(t('col.prev'))}</button>` : ''}
+        <button type="submit" class="btn btn-primary">${last ? ic(off ? 'cloud' : 'send', 'sm') + ' ' + esc(t(off ? 'col.submit_offline' : 'col.submit')) : esc(t('col.next'))}</button></div></form>`,
+      mount: pane => bindCollecte(pane) };
+  }
+  const communeOpts = () => `<option value="">${esc(t('col.choose'))}</option>` + (ZONES[F.zone] || []).map(c => `<option ${F.commune === c ? 'selected' : ''}>${esc(c)}</option>`).join('');
+  function bindCollecte(pane) {
+    const f = pane.querySelector('#cf');
+    f.addEventListener('change', ev => {
+      const el = ev.target, id = el.id || el.name;
+      const map = { kind: 'kind', date: 'date', zone: 'zone', commune: 'commune', pop: 'pop', sex: 'sex', age: 'age', viol: 'viol', ref: 'ref', notes: 'notes' };
+      if (map[id]) F[map[id]] = el.value;
+      if (id === 'zone') { F.commune = ''; const cm = pane.querySelector('#commune'); cm.disabled = !F.zone; cm.innerHTML = communeOpts(); }
+    });
+    const nt = pane.querySelector('#notes'); if (nt) nt.addEventListener('input', ev => { F.notes = ev.target.value; });
+    f.addEventListener('submit', ev => {
+      ev.preventDefault();
+      if (F.step < 5) {
+        const er = validateStep(F.step); F.errors = er;
+        if (Object.keys(er).length) { Kit.render({ noFocus: true }); const s = document.getElementById('es'); s && s.focus(); return; }
+        F.step++; Kit.render({ top: true }); document.getElementById('ttl').focus({ preventScroll: true }); return;
+      }
+      for (let i = 1; i <= 4; i++) { const er = validateStep(i); if (Object.keys(er).length) { F.step = i; F.errors = er; Kit.render({ top: true }); return; } }
+      submitCase();
+    });
+    pane.querySelector('[data-act="prev"]') && pane.querySelector('[data-act="prev"]').addEventListener('click', () => { F.errors = {}; F.step--; Kit.render({ top: true }); });
+  }
+  function submitCase() {
+    const snap = { ...F }; const id = 'q' + (++qSeq);
+    const it = { id, kind: 'case', label: `Dossier ${snap.kind} · ${snap.commune}`, status: S.net === 'off' ? 'pending' : 'sent', when: 'à l’instant', data: snap, code: null };
+    if (it.status === 'sent') it.code = addCase(snap);
+    Q.push(it); F = F0(); Kit.go('#/collecte-ok/' + id);
+  }
+  function addCase(d) {
+    const code = nextCode(d.kind);
+    C.unshift({ code, kind: d.kind, date: d.date, zone: d.zone, commune: d.commune, sex: d.sex, age: d.age, pop: d.pop, viol: d.viol, status: 'ouvert', fu: [], sheet: null });
+    return code;
+  }
+  function collecteOk(id) {
+    const it = Q.find(i => i.id === id);
+    if (!it) return collecte();
+    const sent = it.status === 'sent';
+    return { tab: 'collect', title: esc(t('col.title')), plain: t(sent ? 'col.sent_title' : 'col.queued_title'), html: `
+      <div class="state-card card" aria-live="polite">
+        <div class="row">${sent ? badge('ok', t('col.state_sent')) : badge('warn', t('col.state_queued'))}</div>
+        <div class="big">${esc(t(sent ? 'col.sent_title' : 'col.queued_title'))}</div>
+        ${sent ? `<p style="margin:0">${esc(t('col.saved', { codes: it.code }))}</p><div class="dl"><div><dt>${esc(t('col.code'))}</dt><dd><b class="h2">${it.code}</b></dd></div></div>`
+          : `<p style="margin:0">${esc(t('col.queued'))}</p><p class="muted small" style="margin:0">${esc(t('col.code_later'))}</p>${S.net === 'on' ? `<p class="muted small" style="margin:0">${esc(t('col.sending'))}</p>` : ''}`}
+      </div>
+      <div class="stack-s">${!sent ? `<a class="btn btn-primary btn-block" href="#/sync">${ic('sync', 'sm')} ${esc(t('col.see_queue'))}</a>` : `<a class="btn btn-primary btn-block" href="#/dossier/${it.code}">${esc(t('col.see_cases'))}</a>`}
+      <a class="btn btn-outline btn-block" href="#/collecte" data-act="newcol">${esc(t('col.again'))}</a></div>` };
+  }
+
+  /* ---------- Synchronisation ---------- */
+  let syncing = false;
+  function qItem(i) {
+    const st = i.status; const cls = st === 'conflict' ? 'conflict' : '';
+    const stB = st === 'sent' || st === 'resolved' ? badge('ok', t('sync.states.' + st)) : st === 'conflict' ? badge('warn', t('sync.states.conflict')) : st === 'sending' ? badge('', t('sync.states.sending')) : badge('mute', t('sync.states.pending'));
+    let extra = '';
+    if (st === 'conflict') {
+      extra = `<p class="small" style="margin:0">${esc(t('sync.conflict_text'))}</p>
+        <fieldset class="fld cmp"><legend class="vh">${esc(t('sync.field'))} : ${esc(i.field)}</legend>
+          <div class="muted small">${esc(t('sync.field'))} : <b style="color:var(--app-text)">${esc(i.field)}</b> · ${esc(t('sync.base'))} : <b style="color:var(--app-text)">${esc(i.base)}</b></div>
+          <label class="opt"><input type="radio" name="cmp-${i.id}" value="server" ${i.choice === 'server' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_server'))}</b><small>${esc(t('sync.server'))} : <b>${esc(i.server)}</b></small></span></label>
+          <label class="opt"><input type="radio" name="cmp-${i.id}" value="mine" ${i.choice === 'mine' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_mine'))}</b><small>${esc(t('sync.mine'))} : <b>${esc(i.mine)}</b></small></span></label></fieldset>
+        <button class="btn btn-primary" data-act="resolve" data-id="${i.id}">${esc(t('sync.resolve'))}</button>`;
+    }
+    return `<article class="q-item ${cls}" aria-label="${esc(i.label)}"><div class="top"><span class="grow"><h3>${esc(i.label)}</h3><div class="sub">${esc(t('sync.kinds.' + i.kind))} · ${esc(t('sync.created', { when: i.when }))}${i.code ? ` · <b>${i.code}</b>` : ''}</div></span>${stB}</div>${st === 'pending' ? `<div class="sub">${esc(t('sync.retries'))}</div>` : ''}${extra}</article>`;
+  }
+  function sync() {
+    const off = S.net === 'off'; const n = pend();
+    const conf = Q.filter(i => i.status === 'conflict'), wait = Q.filter(i => i.status === 'pending' || i.status === 'sending'), done = Q.filter(i => i.status === 'sent' || i.status === 'resolved').slice(-4).reverse();
+    return { tab: '', back: 'accueil', backLabel: t('home.title'), title: esc(t('sync.title')), plain: t('sync.title'), html: `
+      <section class="card sync-card ${off ? 'off' : ''}" aria-label="${esc(t('sync.title'))}">
+        <div class="stat">${ic(syncing ? 'sync' : 'clock', syncing ? 'spin' : off ? 'clock-off' : '')}<div><b>${esc(t('net.pending', { count: n }))}</b><div class="small muted">${esc(off ? t('sync.last_off') : t('sync.last'))}</div></div></div>
+        <button class="btn btn-primary btn-block" data-act="syncnow" ${off || syncing ? 'disabled' : ''}>${ic('sync', 'sm')} ${esc(syncing ? t('sync.syncing') : t('sync.now'))}</button>
+        ${off ? `<p class="hint" style="margin:0">${esc(t('sync.now_off'))}</p>` : ''}</section>
+      ${conf.length ? `<section class="stack-s">${secH(t('sync.conflicts'))}${conf.map(qItem).join('')}</section>` : ''}
+      ${wait.length ? `<section class="stack-s">${secH(t('sync.pending'), String(wait.length))}${wait.map(qItem).join('')}</section>` : ''}
+      ${done.length ? `<section class="stack-s">${secH(t('sync.sent'))}${done.map(qItem).join('')}</section>` : ''}
+      ${!Q.length ? `<div class="empty"><b>${esc(t('sync.empty'))}</b></div>` : ''}` };
+  }
+  function runSync() {
+    if (syncing || S.net === 'off') return; const w = Q.filter(i => i.status === 'pending'); if (!w.length) { return; }
+    syncing = true; w.forEach(i => { i.status = 'sending'; }); Kit.render({ noFocus: true });
+    setTimeout(() => {
+      syncing = false; let k = 0;
+      w.forEach(i => {
+        if (S.net === 'off') { i.status = 'pending'; return; }
+        i.status = 'sent'; k++;
+        if (i.kind === 'case') i.code = addCase(i.data);
+        if (i.kind === 'followup') { const c = find(i.fuRef[0]); const f = c && c.fu.find(x => x.id === i.fuRef[1]); if (f) f.queued = false; }
+      });
+      Kit.render({ noFocus: true }); if (k) Kit.toast(t('sync.done', { count: k }));
+    }, 1100);
+  }
+
+  /* ---------- SOS ---------- */
+  function sosScreen() {
+    const off = S.net === 'off'; const st = SOSS.state;
+    let html;
+    if (st === 'sent' || st === 'queued') {
+      html = `<div class="state-card card" aria-live="polite"><div>${badge(st === 'sent' ? 'ok' : 'warn', st === 'sent' ? t('col.state_sent') : t('col.state_queued'))}</div><div class="big">${esc(t(st === 'sent' ? 'sos.done' : 'sos.queued'))}</div><p style="margin:0">${esc(t(st === 'sent' ? 'sos.done_text' : 'sos.queued_text'))}</p></div>
+        <button class="btn btn-outline btn-block" data-act="safe">${esc(t('sos.safe'))}</button><a class="btn btn-primary btn-block" href="#/accueil" data-act="sosreset">${esc(t('sos.again'))}</a>`;
+    } else {
+      html = `<div class="sos-wrap"><p style="margin:0">${esc(t('sos.intro'))}</p>
+        <button class="sos-btn" id="sosb" aria-describedby="sosh"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" /></svg>SOS</button>
+        <p id="sosh" class="small" style="margin:0">${esc(t('sos.help'))}</p>
+        ${off ? `<p class="note warn" style="text-align:left">${ic('wifi-off', 'sm')}<span>${esc(t('sos.hint_offline'))}</span></p>` : ''}
+        <div class="stack-s" style="width:100%"><span class="muted small">${esc(t('sos.alt'))}</span><button class="btn btn-outline btn-block" data-act="sosalt">${esc(t('sos.alt_btn'))}</button></div></div>`;
+    }
+    return { tab: 'sos', title: esc(t('sos.title')), plain: t('sos.title'), html, mount: pane => {
+      const b = pane.querySelector('#sosb'); if (!b) return; let tm;
+      const stop = () => { clearTimeout(tm); b.classList.remove('holding'); };
+      b.addEventListener('pointerdown', ev => { ev.preventDefault(); b.classList.add('holding'); tm = setTimeout(() => { stop(); sendSos(); }, 2000); });
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(n => b.addEventListener(n, stop));
+      b.addEventListener('keydown', ev => { if ((ev.key === ' ' || ev.key === 'Enter') && !ev.repeat) { ev.preventDefault(); b.classList.add('holding'); tm = setTimeout(() => { stop(); sendSos(); }, 2000); } });
+      b.addEventListener('keyup', stop); b.addEventListener('blur', stop);
+    } };
+  }
+  function sendSos() { SOSS.state = S.net === 'off' ? 'queued' : 'sent'; if (S.net === 'off') Q.push({ id: 'q' + (++qSeq), kind: 'sos', label: 'Alerte SOS', status: 'pending', when: 'à l’instant', data: null, sos: true }); Kit.render({ top: true }); }
+
+  /* ---------- Actions ---------- */
+  const actions = {
+    oos: () => Kit.toast(t('home.out_of_scope')),
+    refresh: () => { if (S.net === 'off') return Kit.toast(t('alerts.offline')); Kit.toast(t('alerts.refreshed')); },
+    ack: d => { if (needNet()) return; const a = A.find(x => x.id === d.id); a.ack = true; pushHist(a, 'Réception accusée par toi.'); Kit.toast(t('alerts.acknowledged')); Kit.render({ noFocus: true }); },
+    take: d => { if (needNet()) return; const a = A.find(x => x.id === d.id); a.ack = true; a.status = 'pris_en_charge'; pushHist(a, 'Prise en charge par toi.'); Kit.toast(t('alerts.taken')); Kit.render({ noFocus: true }); },
+    close: d => { if (needNet()) return; Kit.confirm({ title: t('alerts.close_title'), text: esc(t('alerts.close_confirm')), ok: t('alerts.close_yes'), onOk: () => { const a = A.find(x => x.id === d.id); a.status = 'clos'; pushHist(a, 'Clôturée par toi.'); Kit.toast(t('alerts.closed')); Kit.render({ noFocus: true }); } }); },
+    fk: d => { L.kind = d.v; Kit.render({ noFocus: true }); },
+    fs: d => { L.status = d.v; Kit.render({ noFocus: true }); },
+    resetf: () => { L.q = ''; L.status = ''; L.kind = ''; Kit.render({ noFocus: true }); },
+    done: d => { const c = find(d.code); const f = c.fu.find(x => x.id === +d.id); f.outcome = 'realise'; if (S.net === 'off') { f.queued = true; Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: `${f.step} · ${d.code}`, status: 'pending', when: 'à l’instant', fuRef: [d.code, f.id] }); } Kit.toast(t('case.followup_done')); Kit.render({ noFocus: true }); },
+    goto: d => { F.errors = {}; F.step = +d.step; Kit.render({ top: true }); },
+    clear: () => { F = F0(); Kit.toast(t('col.draft_cleared')); Kit.render({ top: true }); },
+    newcol: () => { F = F0(); },
+    syncnow: () => runSync(),
+    pick: d => { Q.find(i => i.id === d.id).choice = document.querySelector(`input[name="cmp-${d.id}"]:checked`).value; },
+    resolve: d => { const i = Q.find(x => x.id === d.id); const ch = document.querySelector(`input[name="cmp-${d.id}"]:checked`); if (!ch) return Kit.toast(t('sync.choose_first')); i.choice = ch.value; i.status = 'resolved'; Kit.toast(t('sync.resolved_toast')); Kit.render({ noFocus: true }); },
+    sosalt: () => Kit.confirm({ title: t('sos.alt_title'), text: esc(t('sos.alt_text')), ok: t('sos.alt_yes'), cancel: t('sos.cancel'), onOk: sendSos }),
+    safe: () => Kit.toast(t('sos.safe_ok')),
+    sosreset: () => { SOSS.state = 'idle'; },
+  };
+
+  /* ---------- Démarrage ---------- */
+  function demoFill() {
+    Object.assign(F, { kind: 'VBG', date: '2024-03-14', zone: 'Atlantique', commune: 'Abomey-Calavi', pop: 'Jeunes filles (15-24)', sex: 'Femme', age: '15-17', viol: 'sexuelle', ref: 'psy', notes: 'Contexte familial, première écoute faite par la pair du quartier.', errors: {} });
+  }
+  Kit.start({
+    title: T.title, sub: T.sub, home: 'accueil', logo: '{{IMG:logo-couleur.svg}}', actions,
+    tabs: [
+      { id: 'home', href: 'accueil', icon: 'home', label: T.nav.home },
+      { id: 'alerts', href: 'alertes', icon: 'bell', label: T.nav.alerts, count: () => (newAlerts() ? String(newAlerts()) : '') },
+      { id: 'sos', href: 'sos', label: T.nav.sos, sos: true },
+      { id: 'cases', href: 'dossiers', icon: 'folder', label: T.nav.cases },
+      { id: 'collect', href: 'collecte', icon: 'file-plus', label: T.nav.collect },
+    ],
+    rail: [
+      { title: T.page.g_pair, items: [
+        { href: 'accueil', label: 'Accueil pair' }, { href: 'alertes', label: 'Alertes routées vers moi' }, { href: 'alerte/a1', label: 'Détail d’une alerte SOS' },
+        { href: 'dossiers', label: 'Mes dossiers' }, { href: 'dossier/VBG-0042', label: 'Fiche dossier (5 sections, frise)' }, { href: 'suivi/VBG-0042', label: 'Ajouter un suivi' }, { href: 'sos', label: 'SOS' } ] },
+      { title: 'Collecte', items: [
+        { href: 'collecte?etape=1', label: 'Collecte : étape 1' }, { href: 'collecte?etape=5&demo=1', label: 'Collecte : vérification + avertissement' },
+        { href: 'collecte?etape=5&demo=1&net=off&submit=1', label: 'Collecte hors ligne : en file' }, { href: 'collecte?etape=5&demo=1&net=on&submit=1', label: 'Collecte en ligne : envoyé' } ] },
+      { title: T.page.g_offline, items: [
+        { href: 'sync?net=off', label: 'File de synchronisation (hors ligne)' }, { href: 'sync?net=on', label: 'Conflit 409 à résoudre' } ] },
+    ],
+    banner: () => (S.net === 'off' ? `<div class="nb" role="status">${ic('wifi-off', 'sm')}<span>${esc(t('net.banner'))}</span></div>` : ''),
+    chip: r => { if (r.name === 'sync') return ''; const n = pend(), off = S.net === 'off'; const lab = off ? t('net.offline') + (n ? ` · ${n}` : '') : n ? t('net.pending_short', { count: n }) : t('net.online'); return `<a class="netchip ${off ? 'off' : ''}" href="#/sync" aria-label="${esc(lab + ' — ' + t('net.open_sync'))}">${ic(off ? 'wifi-off' : n ? 'clock' : 'wifi')}<span>${esc(lab)}</span></a>`; },
+    init: () => {
+      Q.push({ id: 'q' + (++qSeq), kind: 'status', label: 'Statut du dossier VBG-0031', status: 'conflict', when: 'hier à 17:40', field: 'Statut', base: 'Ouvert', server: 'Clos', mine: 'En cours', choice: '' });
+      if (S.net === 'off') {
+        Q.push({ id: 'q' + (++qSeq), kind: 'case', label: 'Dossier VBG · Ouidah', status: 'pending', when: 'aujourd’hui à 09:14', data: { kind: 'VBG', date: '2026-10-27', zone: 'Atlantique', commune: 'Ouidah', pop: 'Femmes cis', sex: 'Femme', age: '25-34', viol: 'psychologique' } });
+        Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: 'Appel de suivi · VBG-0047', status: 'pending', when: 'aujourd’hui à 09:20', fuRef: ['VBG-0047', 99] });
+      }
+    },
+    onNet: (n, was, fromUrl) => { if (n === 'on' && was === 'off') setTimeout(runSync, 600); },
+    onRoute: r => {
+      if (r.name === 'collecte' && (r.q.etape || r.q.demo)) {
+        F = F0(); if (r.q.demo) demoFill(); F.step = +(r.q.etape || 1);
+        if (r.q.submit) { for (let i = 1; i <= 4; i++) if (Object.keys(validateStep(i)).length) { F.step = i; return; } setTimeout(() => { Q.length; submitCase(); }, 0); }
+      }
+    },
+    screen: r => {
+      switch (r.name) {
+        case 'accueil': return home();
+        case 'alertes': return alerts();
+        case 'alerte': return alertDetail(r.args[0]);
+        case 'dossiers': return cases();
+        case 'dossier': return caseShow(r.args[0]);
+        case 'suivi': return followForm(r.args[0]);
+        case 'collecte': return collecte();
+        case 'collecte-ok': return collecteOk(r.args[0]);
+        case 'sync': return sync();
+        case 'sos': return sosScreen();
+        default: return home();
+      }
+    },
+  });
+})();
+</script>
+</body>
+</html>

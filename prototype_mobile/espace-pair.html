@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Chaînes de la maquette (français, tutoiement : espace pair). Sources : web/lang/fr/peer.php, cases.php, sync.php,
+   enums/cases.php, enums/alerts.php, alerts.php, menus.php. Données fictives et pseudonymisées. */
+const T = {
+  title: 'Espace pair — maquette mobile',
+  sub: 'Pair éducateur·rice · collecte hors ligne',
+  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', theme: 'Thème', light: 'Clair', dark: 'Sombre', network: 'Réseau', online: 'En ligne', offline: 'Hors ligne',
+    demo_note: 'Maquette cliquable : données fictives et pseudonymisées, aucun nom ni numéro réel. Rien n’est envoyé nulle part.',
+    g_pair: 'Parcours pair', g_offline: 'Hors connexion' },
+  common: { cancel: 'Annuler', close: 'Fermer', save: 'Enregistrer', back: 'Retour', yes: 'Oui', no: 'Non', none: '—', detail: 'Détail', today: 'aujourd’hui' },
+  nav: { label: 'Navigation de l’espace pair', back: 'Retour', home: 'Accueil', alerts: 'Alertes', sos: 'SOS', cases: 'Dossiers', collect: 'Collecte' },
+  net: { online: 'En ligne', offline: 'Hors ligne', went_off: 'Tu es hors connexion. Tes saisies restent sur cet appareil.', went_on: 'Le réseau est de retour. La synchronisation reprend.',
+    banner: 'Tu es hors connexion : tes saisies sont conservées et seront synchronisées automatiquement.',
+    pending: { zero: 'Aucun élément en attente de synchronisation', one: '1 élément en attente de synchronisation', other: ':count éléments en attente de synchronisation' },
+    pending_short: { zero: 'À jour', one: '1 en attente', other: ':count en attente' }, open_sync: 'Ouvrir la file de synchronisation' },
+  home: { title: 'Espace pair', badge: 'Pair éducateur·rice', duty: 'De garde', greeting: 'Bonjour :name', intro: 'Ton tableau de bord de terrain : collecte, orientation, alertes et outils d’animation.',
+    kpi_label: 'Chiffres de tes dossiers', kpi: { collected: 'Dossiers collectés', this_month: 'Ce mois-ci', in_progress: 'En cours', closed: 'Clos' },
+    tasks: 'Mes tâches du jour',
+    alerts_to_take: { one: '1 alerte nouvelle à traiter', other: ':count alertes nouvelles à traiter', zero: 'Aucune alerte nouvelle à traiter' },
+    cases_to_contact: { one: '1 dossier ouvert à contacter', other: ':count dossiers ouverts à contacter', zero: 'Aucun dossier ouvert à contacter' },
+    session: 'Préparer la prochaine séance : boîtes à images',
+    shortcuts_label: 'Raccourcis', shortcuts: { collecte: 'Nouvelle collecte', cases: 'Mes dossiers', report: 'Signalement', directory: 'Annuaire', ccc: 'Outils CCC', resources: 'Ressources' },
+    out_of_scope: 'Cet écran existe déjà dans l’application (hors périmètre de cette maquette).' },
+  alerts: { title: 'Alertes routées vers moi', open_count: { one: 'alerte ouverte', other: 'alertes ouvertes' }, refresh: 'Actualiser', refreshed: 'Liste à jour.',
+    on_duty: 'Tu es de garde : la liste se met à jour toutes les 30 secondes.', empty: 'Aucune alerte pour le moment.',
+    ago: 'Reçue :time', acknowledge: 'Accuser réception', acknowledged: 'Réception accusée. La personne est prévenue que tu t’en occupes.', ack_done: 'Réception accusée',
+    take: 'Prendre en charge', taken: 'Alerte prise en charge.', close: 'Clore', closed: 'Alerte close.',
+    close_title: 'Clore cette alerte ?', close_confirm: 'Clore cette alerte ? Une alerte close ne se rouvre pas.', close_yes: 'Oui, clore',
+    detail: 'Détail', detail_for: 'Détail de l’alerte :type, :place', offline: 'Tu es hors ligne. Reviens sur cette alerte dès que le réseau est de retour.',
+    anonymous: 'Anonyme', accuracy: 'précision :meters m', not_found: 'Cette alerte n’existe plus ou ne t’est plus routée.',
+    fields: { received: 'Reçue', place: 'Lieu', category: 'Type de violence', needs: 'Besoins', author: 'De la part de', contact: 'Pour la joindre', position: 'Position (arrondie)', description: 'Ce qui a été écrit', history: 'Historique' },
+    no_contact: 'Aucun contact laissé (anonyme).', contact_masked: 'SMS, numéro visible après prise en charge', escalation: 'Sans accusé de réception, l’alerte est escaladée au point focal national.' },
+  cases: { title: 'Mes dossiers', intro: 'Les dossiers que tu as collectés. Tu ne vois jamais ceux d’une autre personne.', search: 'Code du dossier', search_placeholder: 'VBG-0042', status: 'Statut', kind: 'Type',
+    all_statuses: 'Tous les statuts', all_kinds: 'Tous les types', results: { zero: 'Aucun dossier', one: '1 dossier', other: ':count dossiers' }, new: 'Nouvelle collecte',
+    empty: 'Aucun dossier pour le moment', empty_text: 'Les dossiers que tu collectes apparaissent ici.', empty_filtered: 'Aucun dossier ne correspond à ces critères.', reset: 'Réinitialiser',
+    steps: { zero: 'aucune étape', one: '1 étape', other: ':count étapes' }, open: 'ouvrir la fiche', filters_label: 'Filtrer mes dossiers' },
+  case: { back: 'Mes dossiers', age: ':range ans', received: 'faits du :date', anonymized: 'Anonymisé',
+    status_title: 'Statut du dossier', status_label: 'Passer le dossier à', status_choose: 'Choisir un statut', status_submit: 'Mettre à jour', status_saved: 'Statut du dossier mis à jour.',
+    timeline: 'Frise de suivi', timeline_empty: 'Aucune étape enregistrée pour ce dossier.', mark_done: 'Marquer comme réalisée', followup_done: 'Étape marquée comme réalisée.', followup_saved: 'Étape de suivi enregistrée.',
+    followup_queued: 'Étape gardée sur cet appareil. Elle partira dès que le réseau revient.', add: 'Ajouter un suivi', add_title: 'Ajouter une étape de suivi', add_submit: 'Enregistrer l’étape',
+    locked: 'Ce dossier est archivé ou anonymisé : il ne reçoit plus de nouvelle étape.', next: 'Prochain suivi', in_queue: 'En file',
+    fields: { step: 'Étape', date: 'Date', outcome: 'Résultat', next: 'Prochaine date de suivi', comment: 'Commentaire' }, optional: '(facultatif)',
+    comment_hint: ':count / :max caractères', choose: 'Choisir…',
+    steps_list: ['Premier entretien', 'Orientation vers un service', 'Appel de suivi', 'Accompagnement à un rendez-vous', 'Clôture du suivi'],
+    errors: { required: 'Renseigne ce champ.', next_before: 'La prochaine date ne peut pas précéder la date de l’étape.', comment_max: 'Le commentaire fait au plus :max caractères.', date_invalid: 'Indique une date valide.' },
+    errors_title: 'Vérifie :count champ avant d’enregistrer.' },
+  sheet: { not_filled: 'La fiche de référence n’est pas encore remplie. Les sections 1, 2 et 4 reprennent ce que tu as saisi à la collecte.', reference: 'Fiche de référence :reference', empty: 'Pas encore renseigné.', no_referral: 'Aucune orientation.',
+    yes: 'Oui', no: 'Non', sections: { identification: '1. Identification pseudonymisée', facts: '2. Faits', services: '3. Services reçus', orientation: '4. Orientation', consent: '5. Consentement' },
+    fields: { services: 'Services', pseudo: 'Pseudonyme', sex: 'Sexe', age: 'Tranche d’âge', population: 'Population', zone: 'Lieu', date: 'Date', place: 'Endroit', type: 'Type', description: 'Résumé', referral: 'Vers', contact: 'Contact', referral_date: 'Date', reason: 'Motif', urgency: 'Urgence', consent: 'Consentement donné', mode: 'Forme', sharing: 'Partage avec un partenaire' },
+    modes: { ecrit: 'Écrit', oral: 'Oral' }, urgency: { normale: 'Normale', haute: 'Haute', critique: 'Critique' } },
+  col: { title: 'Collecte de données', intro: 'Fiche de dossier VBG / VDH, utilisable hors connexion.', no_identity_title: 'Jamais de nom ni de coordonnées.', no_identity: 'N’écris aucun nom, téléphone, adresse ni identifiant direct, ni dans les notes.',
+    step: 'Étape :n sur :total', steps: ['Dossier', 'Lieu', 'Personne', 'Faits', 'Vérification'], choose: 'Choisir…', no_referral: 'Aucune', next: 'Suivant', prev: 'Précédent', edit: 'Modifier',
+    draft_saved: 'Un brouillon (sans les notes) est gardé sur cet appareil.', draft_clear: 'Effacer le brouillon', draft_cleared: 'Brouillon effacé.',
+    fields: { kind: 'Type de dossier', date: 'Date des faits', violence: 'Type de violence', zone: 'Département', commune: 'Commune', population: 'Population', sex: 'Sexe', age: 'Tranche d’âge', referral: 'Orientation vers un service', notes: 'Notes' },
+    kinds: { VBG: 'VBG', VDH: 'VDH' }, kinds_long: { VBG: 'Violence basée sur le genre', VDH: 'Violation des droits humains' },
+    notes_hint: 'Vides, ou au moins :min caractères.', notes_placeholder: 'Résumé non identifiant : contexte, actions réalisées, suite prévue…',
+    commune_first: 'Choisis d’abord un département.',
+    errors: { required: 'Renseigne ce champ.', invalid: 'Choisis une valeur de la liste.', date_invalid: 'Indique une date valide.', date_future: 'La date ne peut pas être postérieure à aujourd’hui.', commune_in_zone: 'Cette commune n’appartient pas au département choisi.', notes_min: 'Les notes contiennent au moins :min caractères, ou restent vides.' },
+    errors_title: { one: 'Corrige 1 champ pour continuer.', other: 'Corrige :count champs pour continuer.' },
+    review_title: 'Vérifie avant d’enregistrer', review_text: 'Rien n’est encore enregistré. Tu peux revenir sur chaque étape.',
+    warn_title: 'Avertissement de plausibilité', warn_text: 'Ces avertissements ne bloquent pas : le dossier est bien enregistré si tu confirmes.',
+    date_old: 'La date des faits remonte à plus de :years ans. Vérifie-la : le dossier est bien enregistré.',
+    duplicate: { one: 'Un dossier que tu peux consulter ressemble beaucoup à celui-ci (:codes). Vérifie qu’il ne s’agit pas de la même personne.', other: 'Plusieurs dossiers que tu peux consulter ressemblent beaucoup à celui-ci (:codes). Vérifie qu’il ne s’agit pas de la même personne.' },
+    footnote: 'Les règles de validation actives s’appliquent. Hors connexion, la fiche attend sur cet appareil, puis part toute seule au retour du réseau. Le code VBG-0000 ou VDH-0000 est attribué à l’enregistrement.',
+    submit: 'Enregistrer le dossier', submit_offline: 'Enregistrer sur cet appareil', sending: 'Envoi en cours… Le code du dossier s’affichera ici.',
+    queued_title: 'Fiche en file sur cet appareil', queued: 'Fiche gardée sur cet appareil. Elle partira dès que le réseau revient, une seule fois.', code_later: 'Le code sera attribué à l’enregistrement.',
+    sent_title: 'Dossier enregistré', saved: 'Dossier :codes enregistré.', code: 'Code du dossier', state: 'État', state_queued: 'En file', state_sent: 'Envoyé',
+    again: 'Nouvelle collecte', see_cases: 'Mes dossiers', see_queue: 'File de synchronisation', recent: 'Derniers dossiers' },
+  sync: { title: 'File de synchronisation', last: 'Dernière synchronisation : aujourd’hui à 09:12', last_off: 'Hors ligne depuis 09:14. Dernière synchronisation à 09:12.', now: 'Synchroniser maintenant', now_off: 'Disponible dès que le réseau revient.', syncing: 'Synchronisation…',
+    done: { one: 'Synchronisation terminée : 1 élément envoyé.', other: 'Synchronisation terminée : :count éléments envoyés.' }, nothing: 'Rien à envoyer.',
+    empty: 'Rien en attente : tout est à jour.',
+    conflicts: 'Conflit à résoudre', pending: 'En attente', sent: 'Envoyés',
+    kinds: { case: 'Nouveau dossier', followup: 'Étape de suivi', status: 'Changement de statut', sos: 'Alerte SOS' },
+    states: { pending: 'En attente', sending: 'Envoi…', sent: 'Envoyé', conflict: 'Conflit 409', resolved: 'Choix envoyé' },
+    conflict_text: 'Une modification faite ailleurs croise la tienne. Choisis la valeur à garder : l’équipe valide ton choix.',
+    field: 'Champ', base: 'Valeur d’origine', server: 'Valeur du serveur', mine: 'Ma valeur (cet appareil)', keep_server: 'Garder la valeur du serveur', keep_mine: 'Garder la mienne', resolve: 'Envoyer mon choix',
+    resolved_toast: 'Choix envoyé. L’équipe valide la version retenue.', choose_first: 'Choisis une des deux valeurs.', created: 'Créé :when', uuid: 'Envoi n° :id', retries: 'Cet envoi repartira tout seul, une seule fois.' },
+  sos: { title: 'SOS', intro: 'Ton alerte part vers la personne de l’annuaire la plus proche et vers tes contacts de confiance.', help: 'Maintiens le bouton 2 secondes pour envoyer ton alerte.',
+    alt: 'Sans maintenir :', alt_btn: 'Envoyer sans maintenir', alt_title: 'Envoyer l’alerte SOS ?', alt_text: 'Ton alerte partira vers la personne de l’annuaire la plus proche, avec ta position si ton téléphone la trouve.', alt_yes: 'Envoyer l’alerte', cancel: 'Annuler',
+    done: 'Ton alerte est partie', done_text: 'Reste si possible dans un lieu public ou éclairé. La personne contactée va te rappeler.',
+    queued: 'Alerte gardée sur cet appareil', queued_text: 'Elle partira dès que le réseau revient. En danger, appelle directement un numéro d’urgence.', safe: 'Je suis en sécurité', safe_ok: 'Merci. Les personnes prévenues savent que tu es en sécurité.', again: 'Revenir à l’espace pair',
+    holding: 'Maintiens…', hint_offline: 'Hors connexion : l’alerte est mise en file et part au retour du réseau. En danger, appelle directement un numéro d’urgence.' },
+  enums: {
+    case_kind: { VBG: 'Violence basée sur le genre', VDH: 'Violation des droits humains' },
+    case_status: { ouvert: 'Ouvert', en_cours: 'En cours', clos: 'Clos', archive: 'Archivé' },
+    followup_outcome: { planifie: 'Planifié', realise: 'Réalisé', reporte: 'Reporté', annule: 'Annulé' },
+    services: { ecoute: 'Écoute / accueil', medical: 'Prise en charge médicale', psy: 'Soutien psychologique', juridique: 'Appui juridique', hebergement: 'Hébergement d’urgence', dignite: 'Kit de dignité / matériel', securite: 'Mise en sécurité', autre: 'Autre' },
+    alert_type: { denonciation: 'Signalement', besoin: 'Besoin', sos: 'SOS' },
+    alert_status: { nouveau: 'Nouveau', pris_en_charge: 'Pris en charge', en_cours: 'En cours', traite: 'Traité', clos: 'Clos' },
+    alert_priority: { normale: 'Normale', haute: 'Haute', critique: 'Critique' },
+    violence: { physique: 'Violence physique', psychologique: 'Violence psychologique', sexuelle: 'Violence sexuelle', economique: 'Violence économique', numerique: 'Violence en ligne' },
+    violence_hint: { physique: 'Coups, brûlures, séquestration, agressions.', psychologique: 'Insultes, humiliations, menaces, chantage à l’outing.', sexuelle: 'Viol, attouchements, « viols correctifs », exploitation.', economique: 'Privation de ressources, contrôle financier, exclusion.', numerique: 'Cyberharcèlement, diffusion d’images, doxxing, outing.' },
+    needs: { soutien_psychologique: 'Soutien psychologique', soutien_juridique: 'Soutien juridique', soutien_medical: 'Prise en charge médicale', hebergement: 'Hébergement d’urgence', securite: 'Mise en sécurité' },
+  },
+};
+</script>
+<title>Espace pair — maquette mobile Xomiton</title>
+<meta name="description" content="Maquette cliquable de l’espace pair mobile Xomiton : accueil, alertes routées, dossiers, collecte hors ligne et file de synchronisation.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0433C3">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjI4LjkxIDguNzkgNTcuMzUgNTcuMzUiIHJvbGU9ImltZyIgYXJpYS1sYWJlbGxlZGJ5PSJ0Ij48dGl0bGUgaWQ9InQiPlhvbWl0b24sIHJvc2FjZTwvdGl0bGU+PHJlY3QgeD0iMjguOTEiIHk9IjguNzkiIHdpZHRoPSI1Ny4zNSIgaGVpZ2h0PSI1Ny4zNSIgcng9IjEyLjYyIiBmaWxsPSIjMDQzM0MzIi8+PHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTYzLjc1IDUyLjg4QzYzLjU0IDUyLjgxIDYzLjExIDUyLjU5IDYyLjc5IDUyLjM4QzYxLjMzIDUxLjQ0IDYwLjk1IDUxLjM1IDU5Ljc1IDUxLjcxQzU3LjM1IDUyLjQxIDU0LjEwIDUxLjczIDUyLjM4IDUwLjE2QzUxLjE0IDQ5LjAyIDUxLjQwIDQ4LjM5IDUzLjAzIDQ4LjU4QzU4LjIzIDQ5LjE4IDYyLjM3IDQ2LjEzIDYzLjIxIDQxLjA5QzYzLjM2IDQwLjIwIDYzLjM1IDM5Ljc5IDYzLjE2IDM4LjMzQzYyLjkzIDM2LjU4IDYzLjU0IDM2LjE2IDY0LjYxIDM3LjMzQzY2LjE4IDM5LjA4IDY3LjA0IDQyLjQ5IDY2LjQ2IDQ0LjcyQzY2LjExIDQ2LjA1IDY2LjE4IDQ2LjQ4IDY2Ljg5IDQ3LjUzQzY3LjY0IDQ4LjYxIDY3Ljc5IDQ5LjAwIDY3Ljc5IDQ5LjgzQzY3LjgwIDUxLjg3IDY1LjY1IDUzLjQ5IDYzLjc1IDUyLjg4Wk00NC40OCA0Ny41OEM0My42MiA0Ny4zNyA0Mi42NyA0Ni41NyA0Mi4yOSA0NS43M0M0MS43OSA0NC42MiA0Mi4wMCA0My41NCA0Mi45NyA0Mi4yOUM0My43MSA0MS4zMSA0My43NiA0MS4wMiA0My40MCAzOS41MEM0My4xNSAzOC40MyA0My4yMSAzNi4yMyA0My41MiAzNS4zM0M0NC4zNyAzMi44NyA0NS4zNiAzMS40NSA0Ni4xNiAzMS41MkM0Ni42NiAzMS41NiA0Ni43MiAzMS44MiA0Ni41NSAzMy4wNEM0NS44OSAzNy44OCA0OS4wOCA0Mi4yNyA1My44MyA0My4wNUM1NC42MiA0My4xOCA1NC43OCA0My4xOCA1Ny4xMCA0My4wM0M1OS41NSA0Mi44NyA1OC4xMyA0NS4wNiA1NS4xNiA0Ni4wM0M1My43MyA0Ni40OSA1MS44OSA0Ni42MSA1MC4yNiA0Ni4zM0M0OC44MiA0Ni4wOSA0OC41NiA0Ni4xNCA0Ny40OCA0Ni44NUM0Ni4zNSA0Ny42MCA0NS40NyA0Ny44MSA0NC40OCA0Ny41OFpNNjguNzEgNDMuNDJDNjguNTUgNDMuMjQgNjguNTUgNDMuMjYgNjguNzUgNDEuNDdDNjkuMzcgMzYuMDQgNjQuMTIgMzEuMDEgNTguNjcgMzEuODFDNTcuMTQgMzIuMDMgNTYuNjEgMzEuNjggNTcuMTkgMzAuODNDNTguMzYgMjkuMTAgNjIuMzYgMjguMDEgNjUuMTIgMjguNjdDNjYuMDYgMjguODkgNjYuODcgMjguNzAgNjcuNzcgMjguMDZDNjkuNTEgMjYuODIgNzAuNjQgMjYuODggNzIuMDIgMjguMjVDNzMuMjMgMjkuNDYgNzMuNDUgMzAuODYgNzIuNjQgMzIuMTdDNzIuNDggMzIuNDIgNzIuMjIgMzIuODUgNzIuMDYgMzMuMTFDNzEuNjYgMzMuNzcgNzEuNjEgMzQuMTcgNzEuODAgMzUuMjBDNzEuOTcgMzYuMTggNzEuOTkgMzguMTQgNzEuODMgMzkuMTBDNzEuNDIgNDEuNTMgNjkuNDYgNDQuMjUgNjguNzEgNDMuNDJaTTUxLjExIDM4LjA5QzQ5LjUzIDM3LjM3IDQ4LjExIDMyLjkwIDQ4LjcwIDMwLjQ3QzQ5LjA4IDI4LjkwIDQ4Ljk5IDI4LjM2IDQ4LjE2IDI3LjI1QzQ3LjI2IDI2LjAyIDQ3LjEzIDI1LjE0IDQ3LjY4IDIzLjk4QzQ4LjcxIDIxLjgyIDUwLjc3IDIxLjMxIDUyLjY4IDIyLjc0QzUzLjcyIDIzLjUxIDU0LjEwIDIzLjU4IDU1LjYwIDIzLjI4QzU4LjU3IDIyLjY5IDYyLjIzIDIzLjYzIDYzLjMxIDI1LjI3QzYzLjk4IDI2LjI4IDYzLjY4IDI2LjQ0IDYxLjEyIDI2LjQ2QzU5LjI3IDI2LjQ3IDU4Ljk3IDI2LjQ5IDU4LjQwIDI2LjY1QzU0LjIyIDI3LjgxIDUxLjQyIDMxLjkxIDUxLjk3IDM2LjA5QzUyLjIxIDM3Ljk2IDUxLjk5IDM4LjQ4IDUxLjExIDM4LjA5WiIvPjwvc3ZnPg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap">
+<style>
+/* =====================================================================
+   Jetons : copie du design system Xomiton (design-system/tokens/tokens.css)
+   ===================================================================== */
+:root {
+  --xm-blue-50:#EBEFFA; --xm-blue-100:#D7DEF5; --xm-blue-200:#AFBEEC; --xm-blue-500:#0433C3; --xm-blue-600:#032BA6; --xm-blue-700:#032488; --xm-blue-800:#021C6B; --xm-blue-900:#02134A;
+  --xm-red-50:#FDECEC; --xm-red-500:#E30E0E; --xm-red-600:#C10C0C; --xm-red-700:#9F0A0A;
+  --xm-neutral-0:#FFFFFF; --xm-neutral-25:#FBF7FA; --xm-neutral-100:#F3EDF4; --xm-neutral-200:#E4DCE6; --xm-neutral-400:#8E88A0; --xm-neutral-600:#5B5670; --xm-neutral-900:#1B1630;
+  --xm-green-700:#0B7A4B; --xm-amber-500:#F0A800; --xm-sky-700:#1864AB; --xm-violet-700:#6F2C91; --xm-rose-600:#C2255C;
+  --xm-font-heading:"Montserrat","Segoe UI",Arial,sans-serif;
+  --xm-font-body:Arial,"Liberation Sans",Helvetica,sans-serif;
+  --xm-radius-md:8px; --xm-radius-lg:16px; --xm-radius-pill:999px;
+  --xm-ease-out:cubic-bezier(.2,.8,.2,1);
+  --xm-target-min:44px;
+
+  /* Page du simulateur (hors appareil) */
+  --pg-bg: var(--xm-neutral-100);
+  --pg-surface: var(--xm-neutral-0);
+  --pg-border: var(--xm-neutral-200);
+  --pg-text: var(--xm-neutral-900);
+  --pg-muted: var(--xm-neutral-600);
+  --pg-accent: var(--xm-blue-500);
+  --pg-accent-subtle: var(--xm-blue-50);
+  --pg-code-bg: var(--xm-blue-900);
+  --pg-code-text: #DCE3FA;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-page-theme="light"]) {
+    --pg-bg:#0B0D1A; --pg-surface:#151829; --pg-border:#2A2E48; --pg-text:#EDEAF7; --pg-muted:#A9A5C0; --pg-accent:#7C97FF; --pg-accent-subtle:#1B2347; --pg-code-bg:#070917;
+    color-scheme: dark;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--pg-bg); color: var(--pg-text); font: 15px/1.5 var(--xm-font-body); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { font-family: var(--xm-font-heading); line-height: 1.2; margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--pg-accent); outline-offset: 2px; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 8px; top: -60px; z-index: 50; background: var(--pg-accent); color: #fff; padding: 10px 14px; border-radius: 8px; }
+.skip:focus { top: 8px; }
+
+/* ---------- Mise en page générale ---------- */
+.sim { display: grid; grid-template-columns: 272px minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); height: 100vh; }
+.topbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: var(--pg-surface); border-bottom: 1px solid var(--pg-border); flex-wrap: wrap; }
+.topbar .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; min-width: 0; }
+.topbar .brand img { height: 28px; width: auto; }
+.topbar h1 { font-size: 16px; font-weight: 700; }
+.topbar .sub { color: var(--pg-muted); font-size: 13px; }
+.seg { display: inline-flex; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-pill); padding: 3px; background: var(--pg-bg); }
+.seg button { border: 0; background: transparent; padding: 6px 12px; border-radius: var(--xm-radius-pill); font-size: 13px; font-weight: 700; color: var(--pg-muted); min-height: 32px; }
+.seg button[aria-pressed="true"] { background: var(--pg-surface); color: var(--pg-accent); box-shadow: 0 1px 3px rgb(27 22 48 / .14); }
+.btn-ghost { border: 1px solid var(--pg-border); background: var(--pg-surface); border-radius: var(--xm-radius-pill); padding: 6px 14px; font-size: 13px; font-weight: 700; min-height: 34px; }
+
+/* Rail gauche : index des écrans */
+.rail { overflow-y: auto; background: var(--pg-surface); border-right: 1px solid var(--pg-border); padding: 12px 10px 24px; }
+.rail-search { width: 100%; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); padding: 8px 10px; background: var(--pg-bg); margin-bottom: 8px; min-height: 38px; }
+.rail-group { margin-top: 14px; }
+.rail-group h2 { font-size: 13px; font-weight: 700; padding: 0 8px 4px; display: flex; justify-content: space-between; align-items: baseline; }
+.rail-group h2 code { font: 12px/1 var(--xm-font-body); color: var(--pg-muted); }
+.rail a { display: grid; grid-template-columns: 26px 1fr; gap: 6px; align-items: baseline; padding: 7px 8px; border-radius: var(--xm-radius-md); color: var(--pg-text); text-decoration: none; font-size: 14px; }
+.rail a .n { color: var(--pg-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.rail a .r { grid-column: 2; color: var(--pg-muted); font-size: 12px; }
+.rail a:hover { background: var(--pg-bg); }
+.rail a[aria-current="page"] { background: var(--pg-accent-subtle); color: var(--pg-accent); font-weight: 700; }
+.rail a[aria-current="page"] .n, .rail a[aria-current="page"] .r { color: var(--pg-accent); }
+
+/* Scène centrale */
+.stage { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 16px; min-height: 0; }
+.stage-caption { margin-top: 10px; font-size: 13px; color: var(--pg-muted); text-align: center; }
+.stage-caption b { color: var(--pg-text); }
+.device-wrap { transform-origin: top center; }
+
+/* ---------- Châssis ---------- */
+.device { --w: 390px; --h: 844px; --bezel: 12px; --r: 55px; --sr: 44px; --safe-top: 47px; --safe-bottom: 34px; position: relative; width: calc(var(--w) + var(--bezel) * 2); height: calc(var(--h) + var(--bezel) * 2); padding: var(--bezel); border-radius: var(--r); background: #1d1b26; box-shadow: 0 0 0 2px #4a4757 inset, 0 30px 60px rgb(27 22 48 / .28), 0 8px 18px rgb(27 22 48 / .18); }
+.device::before, .device::after { content: ""; position: absolute; background: #2b2836; border-radius: 3px; }
+.device::before { left: -3px; top: 160px; width: 3px; height: 64px; box-shadow: 0 84px 0 #2b2836; }
+.device::after { right: -3px; top: 220px; width: 3px; height: 96px; }
+.device[data-model="pixel8"] { --w: 412px; --h: 880px; --bezel: 10px; --r: 44px; --sr: 34px; --safe-top: 32px; --safe-bottom: 24px; background: #23262b; box-shadow: 0 0 0 2px #50545b inset, 0 30px 60px rgb(27 22 48 / .28), 0 8px 18px rgb(27 22 48 / .18); }
+.device[data-model="pixel8"]::before { left: auto; right: -3px; top: 150px; height: 48px; box-shadow: 0 70px 0 0 #2b2836, 0 90px 0 0 #2b2836; }
+.device[data-model="pixel8"]::after { display: none; }
+.screen { --app-bg: var(--xm-neutral-25); --app-text: var(--xm-neutral-900); position: relative; width: var(--w); height: var(--h); border-radius: var(--sr); overflow: hidden; background: var(--app-bg); isolation: isolate; }
+.notch { position: absolute; z-index: 30; left: 50%; top: 0; transform: translateX(-50%); width: 162px; height: 33px; background: #000; border-radius: 0 0 20px 20px; }
+.notch::after { content: ""; position: absolute; right: 30px; top: 11px; width: 10px; height: 10px; border-radius: 50%; background: #16151d; box-shadow: inset 0 0 0 2px #24222e; }
+.device[data-model="pixel8"] .notch { width: 14px; height: 14px; top: 10px; border-radius: 50%; }
+.device[data-model="pixel8"] .notch::after { display: none; }
+.statusbar { position: absolute; z-index: 25; left: 0; right: 0; top: 0; height: var(--safe-top); display: flex; align-items: center; justify-content: space-between; padding: 0 30px 0 34px; font: 600 15px/1 -apple-system, "SF Pro Text", var(--xm-font-body); color: var(--sb-color, var(--app-text)); pointer-events: none; }
+.statusbar .icons { display: flex; gap: 6px; align-items: center; }
+.statusbar svg { width: 17px; height: 12px; fill: currentColor; }
+.device[data-model="pixel8"] .statusbar { padding: 0 18px; font: 500 14px/1 Roboto, var(--xm-font-body); }
+.homebar { position: absolute; z-index: 25; left: 50%; bottom: 8px; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: var(--app-text); opacity: .85; pointer-events: none; }
+.device[data-model="pixel8"] .homebar { width: 108px; height: 4px; bottom: 7px; }
+
+/* ---------- Application (dans l'appareil) ---------- */
+.app {
+  --app-bg: var(--xm-neutral-25); --app-surface: var(--xm-neutral-0); --app-muted-surface: var(--xm-neutral-100); --app-border: var(--xm-neutral-200);
+  --app-text: var(--xm-neutral-900); --app-muted: var(--xm-neutral-600); --app-primary: var(--xm-blue-500); --app-primary-hover: var(--xm-blue-600); --app-on-primary: #fff;
+  --app-primary-subtle: var(--xm-blue-50); --app-primary-subtle-text: var(--xm-blue-800); --app-danger: var(--xm-red-500); --app-danger-subtle: var(--xm-red-50);
+  --app-success: var(--xm-green-700); --app-warning: var(--xm-amber-500); --app-info: var(--xm-sky-700); --app-violet: var(--xm-violet-700);
+  position: absolute; inset: 0; background: var(--app-bg); color: var(--app-text); font: 16px/1.5 var(--xm-font-body); display: flex; flex-direction: column;
+}
+.app[data-theme="dark"] {
+  --app-bg: #0E1020; --app-surface: #171A2E; --app-muted-surface: #1F2340; --app-border: #2A2E48; --app-text: #EDEAF7; --app-muted: #A9A5C0;
+  --app-primary: #7C97FF; --app-primary-hover: #9DB1FF; --app-on-primary: #0E1020; --app-primary-subtle: #1B2347; --app-primary-subtle-text: #9DB1FF;
+  --app-danger: #FF6B6B; --app-danger-subtle: #3A1519; --app-success: #4DD39D; --app-warning: #FFC94D; --app-info: #7AB2FF; --app-violet: #C79BE6;
+}
+.screen:has(.app[data-theme="dark"]) { --app-bg: #0E1020; --app-text: #EDEAF7; }
+.view { flex: 1; overflow-y: auto; overflow-x: hidden; padding: calc(var(--safe-top) + 4px) 16px calc(var(--safe-bottom) + 20px); scrollbar-width: none; overscroll-behavior: contain; }
+.view::-webkit-scrollbar { display: none; }
+.view.stack, .view.stack-lg { grid-auto-rows: max-content; align-content: start; } /* les cartes overflow:hidden ne doivent pas être compressées */
+.app.has-tabs .view { padding-bottom: calc(var(--safe-bottom) + 86px); }
+.app.has-appbar .view { padding-top: calc(var(--safe-top) + 60px); }
+.appbar { position: absolute; z-index: 20; left: 0; right: 0; top: 0; padding: var(--safe-top) 8px 0; height: calc(var(--safe-top) + 56px); display: flex; align-items: center; gap: 4px; background: color-mix(in srgb, var(--app-bg) 88%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--app-border); }
+.appbar h2 { font-size: 18px; font-weight: 700; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.icon-btn { width: 44px; height: 44px; border: 0; background: transparent; border-radius: 50%; display: inline-grid; place-items: center; color: var(--app-text); position: relative; flex-shrink: 0; }
+.icon-btn:hover { background: var(--app-muted-surface); }
+.icon-btn .dot { position: absolute; top: 9px; right: 10px; width: 9px; height: 9px; border-radius: 50%; background: var(--app-danger); border: 2px solid var(--app-bg); }
+.ico { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.ico.sm { width: 18px; height: 18px; }
+.ico.lg { width: 28px; height: 28px; }
+
+/* Barre d'onglets : 5 entrées, SOS au centre (MASTER §6) */
+.tabbar { position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; padding: 6px 6px calc(var(--safe-bottom) + 2px); display: grid; grid-template-columns: repeat(5, 1fr); align-items: end; background: color-mix(in srgb, var(--app-surface) 94%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--app-border); }
+.tabbar button { border: 0; background: transparent; display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--app-muted); padding: 6px 0; min-height: 48px; }
+.tabbar button[aria-current="page"] { color: var(--app-primary); font-weight: 700; }
+.tabbar .sos-tab { transform: translateY(-14px); }
+.tabbar .sos-tab span.b { width: 60px; height: 60px; border-radius: 50%; background: var(--app-danger); color: #fff; display: grid; place-items: center; font: 800 16px var(--xm-font-heading); box-shadow: 0 6px 16px rgb(227 14 14 / .35); border: 4px solid var(--app-surface); }
+.tabbar .sos-tab { color: var(--app-danger); font-weight: 700; }
+
+/* Composants de l'application */
+.h-display { font: 800 28px/1.15 var(--xm-font-heading); letter-spacing: -.01em; }
+.h1 { font: 800 24px/1.2 var(--xm-font-heading); }
+.h2 { font: 700 19px/1.25 var(--xm-font-heading); }
+.h3 { font: 700 16px/1.3 var(--xm-font-heading); }
+.muted { color: var(--app-muted); }
+.small { font-size: 14px; }
+.xs { font-size: 13px; }
+.stack { display: grid; gap: 12px; }
+.stack-lg { display: grid; gap: 20px; }
+.row { display: flex; align-items: center; gap: 10px; }
+.between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+.card { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--xm-radius-lg); padding: 16px; }
+.card.flat { border: 0; background: var(--app-muted-surface); }
+.card.tight { padding: 12px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: var(--xm-radius-md); border: 1px solid transparent; font: 700 15px var(--xm-font-body); text-decoration: none; transition: background-color .12s; }
+.btn-primary { background: var(--app-primary); color: var(--app-on-primary); }
+.btn-primary:hover { background: var(--app-primary-hover); }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+.btn-soft { background: var(--app-primary-subtle); color: var(--app-primary-subtle-text); }
+.btn-outline { background: transparent; border-color: var(--app-border); color: var(--app-text); }
+.btn-danger { background: var(--app-danger); color: #fff; }
+.btn-link { background: none; border: 0; color: var(--app-primary); font-weight: 700; padding: 0; min-height: 44px; }
+.btn-block { width: 100%; }
+.btn-sm { min-height: 38px; padding: 0 14px; font-size: 14px; }
+.field { display: grid; gap: 6px; }
+.field label, .label { font-size: 14px; font-weight: 700; }
+.input { width: 100%; min-height: 48px; border: 1px solid var(--app-border); border-radius: var(--xm-radius-md); background: var(--app-surface); padding: 10px 14px; color: var(--app-text); }
+textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
+.input:focus { outline: 3px solid color-mix(in srgb, var(--app-primary) 35%, transparent); border-color: var(--app-primary); }
+.input[aria-invalid="true"] { border-color: var(--app-danger); }
+.err { color: var(--app-danger); font-size: 13px; display: flex; gap: 6px; align-items: flex-start; }
+.hint { color: var(--app-muted); font-size: 13px; }
+.pw { position: relative; }
+.pw .input { padding-right: 52px; }
+.pw .icon-btn { position: absolute; right: 2px; top: 2px; }
+.check { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: start; font-size: 14px; }
+.check input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--app-primary); }
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--app-border); min-height: 56px; }
+.switch:last-child { border-bottom: 0; }
+.switch input { appearance: none; width: 46px; height: 28px; border-radius: 14px; background: var(--app-border); position: relative; flex-shrink: 0; transition: background-color .2s; cursor: pointer; }
+.switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / .25); transition: transform .2s var(--xm-ease-out); }
+.switch input:checked { background: var(--app-primary); }
+.switch input:checked::after { transform: translateX(18px); }
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips.wrap { flex-wrap: wrap; overflow: visible; }
+.chip { border: 1px solid var(--app-border); background: var(--app-surface); border-radius: var(--xm-radius-pill); padding: 0 14px; min-height: 36px; font-size: 14px; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+.chip[aria-pressed="true"] { background: var(--app-primary); border-color: var(--app-primary); color: var(--app-on-primary); font-weight: 700; }
+.badge { display: inline-flex; align-items: center; gap: 4px; border-radius: var(--xm-radius-pill); padding: 2px 10px; font-size: 12px; font-weight: 700; background: var(--app-primary-subtle); color: var(--app-primary-subtle-text); }
+.badge.ok { background: color-mix(in srgb, var(--app-success) 14%, transparent); color: var(--app-success); }
+.badge.warn { background: color-mix(in srgb, var(--app-warning) 22%, transparent); color: color-mix(in srgb, var(--app-warning) 45%, var(--app-text)); }
+.badge.danger { background: var(--app-danger-subtle); color: var(--app-danger); }
+.badge.violet { background: color-mix(in srgb, var(--app-violet) 14%, transparent); color: var(--app-violet); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 700 15px var(--xm-font-heading); color: #fff; flex-shrink: 0; }
+.avatar.lg { width: 84px; height: 84px; font-size: 28px; border: 4px solid var(--app-surface); }
+.list { display: grid; }
+.list > * { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--app-border); min-height: 56px; text-align: left; background: none; border-left: 0; border-right: 0; border-top: 0; width: 100%; color: inherit; text-decoration: none; }
+.list > *:last-child { border-bottom: 0; }
+.list .grow { flex: 1; min-width: 0; }
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.alert { border-radius: var(--xm-radius-md); padding: 12px 14px; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; background: var(--app-primary-subtle); color: var(--app-primary-subtle-text); }
+.alert.ok { background: color-mix(in srgb, var(--app-success) 12%, transparent); color: var(--app-success); }
+.alert.danger { background: var(--app-danger-subtle); color: var(--app-danger); }
+.progress { height: 8px; border-radius: 4px; background: var(--app-muted-surface); overflow: hidden; }
+.progress > i { display: block; height: 100%; background: var(--app-primary); border-radius: inherit; transition: width .3s var(--xm-ease-out); }
+.tile { display: grid; gap: 8px; align-content: start; padding: 14px; border-radius: var(--xm-radius-lg); background: var(--app-surface); border: 1px solid var(--app-border); text-align: left; min-height: 96px; color: inherit; }
+.tile .ico { color: var(--app-primary); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.thumb { border-radius: var(--xm-radius-md); background: var(--app-muted-surface) center/cover no-repeat; }
+.toast { position: absolute; z-index: 40; left: 16px; right: 16px; bottom: calc(var(--safe-bottom) + 92px); background: var(--xm-neutral-900); color: #fff; border-radius: var(--xm-radius-md); padding: 12px 14px; font-size: 14px; display: flex; gap: 10px; align-items: center; box-shadow: 0 10px 30px rgb(0 0 0 / .25); animation: toast-in .25s var(--xm-ease-out); }
+.app[data-theme="dark"] .toast { background: #EDEAF7; color: #0E1020; }
+@keyframes toast-in { from { transform: translateY(12px); opacity: 0; } }
+.stepper { display: grid; grid-template-columns: repeat(var(--n, 4), 1fr); gap: 6px; }
+.stepper i { height: 5px; border-radius: 3px; background: var(--app-border); }
+.stepper i.on { background: var(--app-primary); }
+
+
+/* =====================================================================
+   Maquettes « Espace pair » et « Admin mobile » : compléments au simulateur
+   ===================================================================== */
+:root[data-page-theme="dark"] { --pg-bg:#0B0D1A; --pg-surface:#151829; --pg-border:#2A2E48; --pg-text:#EDEAF7; --pg-muted:#A9A5C0; --pg-accent:#7C97FF; --pg-accent-subtle:#1B2347; color-scheme: dark; }
+.sim { grid-template-columns: 268px minmax(0, 1fr); }
+.topbar .brand .logo { height: 28px; width: auto; }
+.topbar .ctl { display: flex; align-items: center; gap: 8px; }
+.topbar .ctl > span { font-size: 13px; color: var(--pg-muted); }
+.seg button { min-height: 36px; }
+.rail a { grid-template-columns: 1fr; }
+.rail h2 { margin: 0; }
+.rail .note { margin: 18px 8px 0; font-size: 13px; color: var(--pg-muted); }
+.rail-select { display: none; }
+.rail a { min-height: 40px; align-items: center; }
+
+/* Jetons applicatifs complémentaires (contrastes AA) */
+.app { --app-danger-text: var(--xm-red-700); --app-on-danger: #fff; --app-warn-bg: color-mix(in srgb, var(--xm-amber-500) 22%, var(--app-bg)); --app-warn-text: #5A3D00; --app-ok-bg: color-mix(in srgb, var(--app-success) 12%, var(--app-bg)); }
+.app[data-theme="dark"] { --app-danger-text: #FF9A9A; --app-on-danger: #2A0C0C; --app-warn-bg: #3A2D0E; --app-warn-text: #FFD98A; --app-ok-bg: #12332A; }
+.app * { scrollbar-width: none; }
+.app :focus-visible { outline: 3px solid var(--app-primary); outline-offset: 2px; }
+.app [tabindex="-1"]:focus { outline: none; }
+.err { color: var(--app-danger-text); }
+.badge.danger { background: var(--app-danger-subtle); color: var(--app-danger-text); }
+.badge.warn { background: var(--app-warn-bg); color: var(--app-warn-text); }
+.badge.ok { background: var(--app-ok-bg); color: var(--app-success); }
+.badge.mute { background: var(--app-muted-surface); color: var(--app-muted); }
+.badge { min-height: 24px; }
+.btn-danger { background: var(--app-primary); color: var(--app-on-primary); }
+
+/* Cadre de l'application : en-tête, bandeau, panneau, onglets */
+.hdr { flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: var(--safe-top) 8px 6px; min-height: calc(var(--safe-top) + 54px); background: var(--app-bg); border-bottom: 1px solid var(--app-border); }
+.hdr .t { flex: 1; min-width: 0; margin: 0 0 0 4px; font: 700 18px/1.2 var(--xm-font-heading); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hdr .t small { display: block; font: 400 12px/1.2 var(--xm-font-body); color: var(--app-muted); margin-top: 2px; }
+.netchip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border-radius: var(--xm-radius-pill); border: 1px solid var(--app-border); background: var(--app-surface); color: var(--app-text); font: 700 13px var(--xm-font-body); flex-shrink: 0; }
+.netchip.off { background: var(--app-warn-bg); color: var(--app-warn-text); border-color: transparent; }
+.netchip .ico { width: 18px; height: 18px; }
+.nb { flex-shrink: 0; display: flex; gap: 10px; align-items: flex-start; padding: 10px 16px; background: var(--app-warn-bg); color: var(--app-warn-text); font-size: 13px; line-height: 1.4; border-bottom: 1px solid var(--app-border); }
+.pane { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; padding: 16px 16px 28px; display: grid; gap: 16px; align-content: start; grid-auto-rows: max-content; }
+.tb { flex-shrink: 0; display: grid; grid-template-columns: repeat(5, 1fr); align-items: end; padding: 6px 4px calc(var(--safe-bottom) + 2px); background: var(--app-surface); border-top: 1px solid var(--app-border); }
+.tb a { display: grid; justify-items: center; align-content: center; gap: 2px; min-height: 56px; padding: 4px 0; font-size: 12px; color: var(--app-muted); text-decoration: none; border-radius: var(--xm-radius-md); position: relative; }
+.tb a[aria-current="page"] { color: var(--app-primary); font-weight: 700; }
+.tb a[aria-current="page"]::before { content: ""; position: absolute; top: -7px; width: 28px; height: 3px; border-radius: 2px; background: var(--app-primary); }
+.tb a .cnt { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--app-primary); color: var(--app-on-primary); font: 700 11px/20px var(--xm-font-body); text-align: center; }
+.tb a.sos { color: var(--app-danger-text); font-weight: 700; transform: translateY(-14px); min-height: 64px; }
+.tb a.sos .b { width: 56px; height: 56px; border-radius: 50%; background: var(--app-danger); color: var(--app-on-danger); display: grid; place-items: center; font: 800 16px var(--xm-font-heading); border: 4px solid var(--app-surface); box-shadow: 0 6px 16px rgb(227 14 14 / .3); }
+.tb a.sos[aria-current="page"]::before { display: none; }
+.live { position: absolute; z-index: 40; left: 16px; right: 16px; bottom: calc(var(--safe-bottom) + 86px); pointer-events: none; }
+.live .toast { position: static; animation: toast-in .25s var(--xm-ease-out); pointer-events: auto; }
+.scrim { position: absolute; inset: 0; z-index: 35; background: rgb(10 12 28 / .6); animation: fade-in .2s; }
+.sheet { position: absolute; z-index: 36; left: 0; right: 0; bottom: 0; max-height: 90%; overflow-y: auto; background: var(--app-surface); color: var(--app-text); border-radius: 20px 20px 0 0; padding: 12px 16px calc(var(--safe-bottom) + 14px); display: grid; gap: 14px; align-content: start; box-shadow: 0 -10px 30px rgb(0 0 0 / .25); animation: sheet-in .28s var(--xm-ease-out); }
+.sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--app-border); justify-self: center; }
+.sheet h2 { font: 700 19px/1.25 var(--xm-font-heading); margin: 0; }
+@keyframes sheet-in { from { transform: translateY(40px); opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Blocs communs */
+.sec-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.sec-h h2 { font: 700 17px/1.3 var(--xm-font-heading); margin: 0; }
+.sec-h .n { font-size: 13px; color: var(--app-muted); }
+.hello { display: grid; gap: 6px; }
+.hello h2 { font: 800 24px/1.2 var(--xm-font-heading); margin: 0; }
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.kpis li { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--xm-radius-lg); padding: 12px 14px; display: grid; gap: 2px; }
+.kpis .v { font: 800 30px/1.1 var(--xm-font-heading); color: var(--app-primary); font-variant-numeric: tabular-nums; }
+.kpis .l { font-size: 13px; color: var(--app-muted); }
+.kpis li.hot { border-color: var(--app-danger); }
+.link-row { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 10px 14px; background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--xm-radius-lg); color: inherit; text-decoration: none; text-align: left; }
+.link-row .grow { flex: 1; min-width: 0; }
+.link-row .ico:first-child { color: var(--app-primary); }
+.stack-s { display: grid; gap: 8px; }
+.shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.shortcuts .tile { min-height: 84px; }
+.shortcuts .tile b { font-size: 14px; }
+.pill-duty { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; min-height: 24px; border-radius: var(--xm-radius-pill); background: var(--app-primary); color: var(--app-on-primary); font: 700 12px var(--xm-font-body); }
+.pill-duty::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.acard { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--xm-radius-lg); padding: 14px; display: grid; gap: 10px; }
+.acard.sos { border-left: 4px solid var(--app-danger); }
+.acard .top { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.acard h3 { font: 700 16px/1.3 var(--xm-font-heading); margin: 0; }
+.acard .meta { font-size: 13px; color: var(--app-muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.acard .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.acard .acts .btn { flex: 1 1 140px; }
+.dl { display: grid; gap: 0; margin: 0; }
+.dl > div { display: grid; grid-template-columns: 120px 1fr; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--app-border); font-size: 14px; }
+.dl > div:last-child { border-bottom: 0; }
+.dl dt { color: var(--app-muted); }
+.dl dd { margin: 0; overflow-wrap: anywhere; }
+.tl { list-style: none; margin: 0; padding: 0; display: grid; }
+.tl li { position: relative; padding: 0 0 18px 28px; font-size: 14px; }
+.tl li::before { content: ""; position: absolute; left: 4px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--app-surface); border: 3px solid var(--app-primary); }
+.tl li::after { content: ""; position: absolute; left: 9px; top: 20px; bottom: -2px; width: 2px; background: var(--app-border); }
+.tl li:last-child { padding-bottom: 0; }
+.tl li:last-child::after { display: none; }
+.tl li.done::before { background: var(--app-primary); }
+.tl li.queued::before { border-style: dashed; border-color: var(--app-warn-text); }
+.tl .when { font-size: 12px; color: var(--app-muted); display: block; }
+.tl .row { align-items: flex-start; }
+.seg-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0; }
+.seg-tabs .chip { min-height: 44px; padding: 0 16px; }
+.chip .cnt { font-size: 12px; opacity: .85; }
+.search { position: relative; }
+.search .ico { position: absolute; left: 14px; top: 13px; color: var(--app-muted); pointer-events: none; }
+.search .input { padding-left: 42px; }
+.empty { text-align: center; padding: 28px 12px; color: var(--app-muted); display: grid; gap: 6px; }
+.empty b { color: var(--app-text); font-family: var(--xm-font-heading); }
+
+/* Alerte (encadrés) */
+.note { border-radius: var(--xm-radius-md); padding: 12px 14px; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; background: var(--app-primary-subtle); color: var(--app-primary-subtle-text); }
+.note.warn { background: var(--app-warn-bg); color: var(--app-warn-text); }
+.note.ok { background: var(--app-ok-bg); color: var(--app-success); }
+.note p { margin: 0; }
+.note .ico { margin-top: 2px; }
+.app[data-theme="dark"] .note { color: var(--app-text); }
+.app[data-theme="dark"] .note.warn { color: var(--app-warn-text); }
+.app[data-theme="dark"] .note.ok { color: var(--app-success); }
+
+/* Formulaires */
+.fld { display: grid; gap: 6px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.fld > legend, .fld > label { font-size: 14px; font-weight: 700; padding: 0; }
+.fld .req { color: var(--app-danger-text); }
+select.input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 20px) 21px, calc(100% - 15px) 21px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 40px; }
+.opts { display: grid; gap: 8px; }
+.opts.cols2 { grid-template-columns: 1fr 1fr; }
+.opts.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+.opt { position: relative; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 14px; border: 1px solid var(--app-border); border-radius: var(--xm-radius-md); background: var(--app-surface); font-size: 15px; cursor: pointer; }
+.opt input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.opt .dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--app-muted); flex-shrink: 0; display: grid; place-items: center; }
+.opt input:checked ~ .dot { border-color: var(--app-primary); }
+.opt input:checked ~ .dot::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--app-primary); }
+.opt:has(input:checked) { border-color: var(--app-primary); background: var(--app-primary-subtle); }
+.app[data-theme="dark"] .opt:has(input:checked) { color: var(--app-text); }
+.opt:has(input:focus-visible) { outline: 3px solid var(--app-primary); outline-offset: 2px; }
+.opt small { display: block; color: var(--app-muted); font-size: 13px; line-height: 1.35; }
+.opt .tx { flex: 1; min-width: 0; }
+.opt.sm { min-height: 44px; justify-content: center; text-align: center; padding: 6px 8px; font-weight: 700; }
+.opt.sm .dot { display: none; }
+.steplab { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 13px; color: var(--app-muted); margin-bottom: 6px; }
+.steplab b { color: var(--app-text); font-family: var(--xm-font-heading); font-size: 15px; }
+.formnav { display: flex; gap: 10px; }
+.formnav .btn { flex: 1; }
+.errsum { border: 2px solid var(--app-danger-text); border-radius: var(--xm-radius-md); padding: 10px 12px; font-size: 14px; color: var(--app-text); background: var(--app-danger-subtle); }
+.app[data-theme="dark"] .errsum { color: var(--app-text); }
+.errsum:focus { outline: 3px solid var(--app-primary); }
+.review .row-r { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--app-border); font-size: 14px; }
+.review .row-r .k { color: var(--app-muted); font-size: 13px; }
+.review .row-r .btn-link { min-height: 44px; min-width: 44px; }
+
+/* File de synchronisation */
+.q-item { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--xm-radius-lg); padding: 12px 14px; display: grid; gap: 8px; }
+.q-item.conflict { border-color: var(--app-warn-text); border-width: 2px; }
+.q-item .top { display: flex; gap: 10px; align-items: flex-start; }
+.q-item .top .grow { flex: 1; min-width: 0; }
+.q-item h3 { font: 700 15px/1.3 var(--xm-font-heading); margin: 0; }
+.q-item .sub { font-size: 13px; color: var(--app-muted); }
+.clock-off { color: var(--app-muted); opacity: .75; }
+.sync-card { display: grid; gap: 12px; }
+.sync-card .stat { display: flex; align-items: center; gap: 12px; }
+.sync-card .stat .ico { width: 32px; height: 32px; color: var(--app-primary); }
+.sync-card.off .stat .ico { color: var(--app-muted); opacity: .7; }
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.cmp { display: grid; gap: 8px; }
+.cmp .opt small b { color: var(--app-text); }
+
+/* SOS */
+.sos-wrap { display: grid; justify-items: center; gap: 16px; text-align: center; }
+.sos-btn { position: relative; width: 168px; height: 168px; border-radius: 50%; border: 0; background: var(--app-danger); color: var(--app-on-danger); font: 800 34px var(--xm-font-heading); box-shadow: 0 14px 30px rgb(227 14 14 / .3); touch-action: none; user-select: none; -webkit-user-select: none; }
+.sos-btn svg { position: absolute; inset: -10px; width: calc(100% + 20px); height: calc(100% + 20px); transform: rotate(-90deg); }
+.sos-btn circle { fill: none; stroke: var(--app-danger-text); stroke-width: 6; stroke-dasharray: 600; stroke-dashoffset: 600; }
+.sos-btn.holding circle { transition: stroke-dashoffset 2s linear; stroke-dashoffset: 0; }
+
+/* Maquette : compte à rebours d'escalade, confirmation forte */
+.band-sos { background: var(--app-danger-subtle); border: 2px solid var(--app-danger); border-radius: var(--xm-radius-lg); padding: 14px; display: grid; gap: 12px; color: var(--app-text); }
+.band-sos h2 { font: 800 18px/1.25 var(--xm-font-heading); margin: 0; display: flex; gap: 8px; align-items: center; }
+.band-sos h2 .sosb { background: var(--app-danger); color: var(--app-on-danger); border-radius: var(--xm-radius-pill); padding: 2px 10px; font-size: 13px; }
+.band-sos .item { background: var(--app-surface); border-radius: var(--xm-radius-md); padding: 10px 12px; display: grid; gap: 8px; }
+.mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+.state-card { display: grid; gap: 8px; }
+.state-card .big { font: 800 22px/1.2 var(--xm-font-heading); }
+.check-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 14px; }
+.check-list li { display: flex; gap: 8px; align-items: flex-start; }
+.check-list .ico { color: var(--app-success); margin-top: 2px; }
+.unread { position: relative; }
+.unread::before { content: ""; position: absolute; left: -8px; top: 22px; width: 8px; height: 8px; border-radius: 50%; background: var(--app-primary); }
+
+/* Phone étroit : plein écran sans châssis */
+@media (max-width: 900px) {
+  .sim { grid-template-columns: 1fr; }
+  .rail { display: none; }
+  .rail-select { display: block; min-height: 40px; max-width: 220px; }
+  .topbar { padding: 8px 12px; gap: 8px; }
+  .topbar .sub { display: none; }
+}
+@media (max-width: 480px) {
+  .sim { height: 100dvh; }
+  .topbar .brand { display: none; }
+  .stage { padding: 0; justify-content: flex-start; }
+  .stage-caption { display: none; }
+  .device-wrap { width: 100% !important; height: 100% !important; transform: none !important; }
+  .device { --safe-top: 12px; --safe-bottom: 12px; width: 100%; height: 100%; padding: 0; border-radius: 0; background: none; box-shadow: none; }
+  .device::before, .device::after, .notch, .statusbar, .homebar { display: none; }
+  .screen { width: 100%; height: 100%; border-radius: 0; }
+}
+.netchip { text-decoration: none; }
+.acard .meta span { display: inline-flex; align-items: center; gap: 4px; }
+.acard .acts .btn { flex: 1 1 130px; padding: 0 12px; text-align: center; line-height: 1.2; }
+
+.netchip { padding: 0 10px; }
+.seg-tabs { flex-wrap: wrap; }
+
+/* Corrections de contraste et de cibles */
+.app { --app-success-text: #075C38; }
+.app[data-theme="dark"] { --app-success-text: var(--app-success); }
+.badge.ok, .note.ok { color: var(--app-success-text); }
+.app[data-theme="dark"] .note.ok { color: var(--app-success); }
+.chip { min-height: 44px; }
+@media (max-width: 480px) { .topbar .ctl > span { display: none; } .topbar { gap: 6px; padding: 6px 8px; } .seg button { padding: 6px 8px; } .rail-select { max-width: 100%; flex: 1 1 100%; } }
+
+</style>
+</head>
+<body>
+<noscript>Cette maquette demande JavaScript.</noscript>
+<script>
+/* Noyau commun des maquettes (Espace pair, Admin mobile) : routage par ancre, thème, réseau, feuilles, notifications.
+   Dépend de l'objet de chaînes T défini en tête du fichier de la maquette. */
+(function () {
+  'use strict';
+  const Kit = window.Kit = {};
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const t = (key, v = {}) => {
+    let o = key.split('.').reduce((a, k) => (a == null ? a : a[k]), T);
+    if (o == null) return key;
+    if (typeof o === 'object') o = v.count === 0 && o.zero !== undefined ? o.zero : v.count === 1 ? o.one : o.other;
+    return String(o).replace(/:(\w+)/g, (m, k) => (v[k] !== undefined ? v[k] : m));
+  };
+  const P = {
+    home: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+    bell: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+    alert: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+    'file-plus': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>',
+    sync: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+    clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    'wifi-off': '<line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>',
+    wifi: '<path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>',
+    search: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+    back: '<polyline points="15 18 9 12 15 6"/>',
+    next: '<polyline points="9 18 15 12 9 6"/>',
+    check: '<polyline points="20 6 9 17 4 12"/>',
+    x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+    pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+    users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    'user-check': '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/>',
+    tool: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+    send: '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+    cloud: '<polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>',
+    info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    ext: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+    shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    dash: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+    lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    note: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+    swap: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+    plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  };
+  const ic = (n, c = '') => `<svg class="ico ${c}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${P[n] || ''}</svg>`;
+  Object.assign(Kit, { esc, t, ic });
+
+  const q = new URLSearchParams(location.search);
+  const hq = new URLSearchParams(location.hash.split('?')[1] || '');
+  ['theme', 'net'].forEach(k => { if (hq.get(k)) q.set(k, hq.get(k)); });
+  const S = Kit.S = {
+    theme: q.get('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+    net: q.get('net') === 'off' ? 'off' : 'on',
+    route: { name: '', args: [], q: {} },
+  };
+  let cfg, app, frame, ov, live, lastKey = '', toastTimer, current = null;
+  const $ = (s, r = document) => r.querySelector(s);
+
+  function parse() {
+    const h = location.hash.replace(/^#\/?/, '');
+    const [p, qs = ''] = h.split('?');
+    const parts = p.split('/').filter(Boolean).map(decodeURIComponent);
+    return { name: parts[0] || cfg.home, args: parts.slice(1), q: Object.fromEntries(new URLSearchParams(qs)) };
+  }
+
+  Kit.setTheme = th => {
+    S.theme = th; app.dataset.theme = th; document.documentElement.dataset.pageTheme = th;
+    document.querySelectorAll('[data-theme-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === th)));
+  };
+  Kit.setNet = (n, silent) => {
+    const was = S.net; S.net = n;
+    document.querySelectorAll('[data-net-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.netSet === n)));
+    if (!silent && was !== n) { if (cfg.onNet) cfg.onNet(n, was); Kit.render(); Kit.say(n === 'off' ? t('net.went_off') : t('net.went_on')); }
+  };
+  Kit.say = msg => { live.innerHTML = `<div class="toast" role="status">${esc(msg)}</div>`; clearTimeout(toastTimer); toastTimer = setTimeout(() => { live.innerHTML = ''; }, 4200); };
+  Kit.toast = Kit.say;
+  Kit.go = h => { location.hash = h; };
+
+  Kit.render = (opts = {}) => {
+    const r = S.route; const d = cfg.screen(r) || cfg.screen({ name: cfg.home, args: [], q: {} });
+    const key = r.name + '/' + r.args.join('/');
+    const old = $('.pane', frame); const keep = !opts.top && key === lastKey && old ? old.scrollTop : 0;
+    const tabs = d.noTabs ? '' : `<nav class="tb" aria-label="${esc(t('nav.label'))}">${cfg.tabs.map(tb => `<a href="#/${tb.href}" ${d.tab === tb.id ? 'aria-current="page"' : ''} class="${tb.sos ? 'sos' : ''}">${tb.sos ? `<span class="b" aria-hidden="true">SOS</span><span class="vh">${esc(tb.label)}</span>` : `${ic(tb.icon)}<span>${esc(tb.label)}</span>`}${tb.count && tb.count() ? `<span class="cnt" aria-hidden="true">${esc(tb.count())}</span>` : ''}</a>`).join('')}</nav>`;
+    const chip = cfg.chip && !d.back ? cfg.chip(r) : '';
+    const banner = cfg.banner ? cfg.banner() : '';
+    frame.innerHTML = `<header class="hdr">${d.back ? `<a class="icon-btn" href="#/${d.back}" aria-label="${esc(d.backLabel || t('nav.back'))}">${ic('back')}</a>` : ''}<h1 class="t" id="ttl" tabindex="-1">${d.title}</h1>${chip}</header>${banner}<main class="pane" id="pane">${d.html}</main>${tabs}`;
+    const pane = $('.pane', frame); pane.scrollTop = keep;
+    if (key !== lastKey && !opts.noFocus) { const tt = $('#ttl', frame); if (tt) tt.focus({ preventScroll: true }); }
+    lastKey = key;
+    document.title = (d.plain || '') + (d.plain ? ' · ' : '') + cfg.title;
+    const links = [...document.querySelectorAll('.rail a')]; const cur = location.hash.replace(/^#\//, '');
+    let hit = links.find(a => a.getAttribute('href') === '#/' + cur) || links.find(a => a.dataset.name === r.name);
+    links.forEach(a => a.toggleAttribute('aria-current', a === hit)); if (hit) hit.setAttribute('aria-current', 'page');
+    const cap = $('#caption'); if (cap) cap.innerHTML = d.caption || '';
+    if (d.mount) d.mount(pane);
+  };
+
+  Kit.sheet = (html, o = {}) => {
+    const opener = document.activeElement;
+    ov.innerHTML = `<div class="scrim" data-close></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(o.label || '')}"><div class="grab" aria-hidden="true"></div>${html}</div>`;
+    const sh = $('.sheet', ov);
+    const close = () => { current = null; ov.innerHTML = ''; document.removeEventListener('keydown', key, true); if (opener && opener.focus && document.contains(opener)) opener.focus({ preventScroll: true }); if (o.onClose) o.onClose(); };
+    const focusables = () => [...sh.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])')];
+    const key = e => {
+      if (e.key === 'Escape') { e.stopPropagation(); close(); }
+      if (e.key === 'Tab') { const f = focusables(); if (!f.length) return; const a = f[0], z = f[f.length - 1]; if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); } }
+    };
+    document.addEventListener('keydown', key, true); current = close;
+    ov.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+    const f = focusables().find(x => !x.matches('[data-close]')) || sh; (o.focus ? $(o.focus, sh) || f : f).focus({ preventScroll: true });
+    if (o.onMount) o.onMount(sh, close);
+    return close;
+  };
+  Kit.confirm = o => Kit.sheet(`<h2>${esc(o.title)}</h2><p style="margin:0">${o.text || ''}</p>${o.body || ''}<div class="formnav"><button class="btn btn-outline" data-close>${esc(o.cancel || t('common.cancel'))}</button><button class="btn btn-primary" id="okBtn" ${o.disabled ? 'disabled' : ''}>${esc(o.ok)}</button></div>`, {
+    label: o.title,
+    focus: o.focus,
+    onMount: (sh, close) => { o.mount && o.mount(sh); $('#okBtn', sh).addEventListener('click', () => { if (o.validate && o.validate(sh) === false) return; close(); o.onOk && o.onOk(sh); }); },
+  });
+
+  Kit.start = c => {
+    cfg = c;
+    const rail = c.rail.map(g => `<div class="rail-group"><h2>${esc(g.title)}</h2>${g.items.map(i => `<a href="#/${i.href}" data-route="${esc(i.route || i.href.split('?')[0])}" ${i.exact ? 'data-exact="1"' : ''} data-name="${esc(i.href.split('?')[0].split('/')[0])}">${esc(i.label)}</a>`).join('')}</div>`).join('');
+    const opts = c.rail.map(g => `<optgroup label="${esc(g.title)}">${g.items.map(i => `<option value="${esc(i.href)}">${esc(i.label)}</option>`).join('')}</optgroup>`).join('');
+    document.body.innerHTML = `<a class="skip" href="#app">${esc(t('page.skip'))}</a>
+<div class="sim">
+  <header class="topbar">
+    <div class="brand"><img class="logo" src="${c.logo}" alt="Xomiton"><div><h1>${esc(c.title)}</h1><div class="sub">${esc(c.sub)}</div></div></div>
+    <label class="vh" for="railSel">${esc(t('page.screens'))}</label><select class="rail-select input" id="railSel" style="width:auto">${opts}</select>
+    <div class="ctl"><span id="lblTheme">${esc(t('page.theme'))}</span><div class="seg" role="group" aria-labelledby="lblTheme"><button type="button" data-theme-set="light" aria-pressed="false">${esc(t('page.light'))}</button><button type="button" data-theme-set="dark" aria-pressed="false">${esc(t('page.dark'))}</button></div></div>
+    <div class="ctl"><span id="lblNet">${esc(t('page.network'))}</span><div class="seg" role="group" aria-labelledby="lblNet"><button type="button" data-net-set="on" aria-pressed="false">${esc(t('page.online'))}</button><button type="button" data-net-set="off" aria-pressed="false">${esc(t('page.offline'))}</button></div></div>
+  </header>
+  <nav class="rail" aria-label="${esc(t('page.screens'))}">${rail}<p class="note">${esc(t('page.demo_note'))}</p></nav>
+  <main class="stage">
+    <div class="device-wrap" id="deviceWrap"><div class="device" data-model="iphone14"><div class="screen" id="screen">
+      <div class="notch" aria-hidden="true"></div>
+      <div class="statusbar" aria-hidden="true"><span>9:41</span><span class="icons"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 26 12" style="width:26px"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="2" height="4" rx="1" opacity=".5"/></svg></span></div>
+      <div class="app" id="app" data-theme="light"><div id="frame" style="display:flex;flex-direction:column;height:100%"></div><div id="ov"></div><div class="live" id="live" role="status" aria-live="polite"></div></div>
+      <div class="homebar" aria-hidden="true"></div>
+    </div></div></div>
+    <p class="stage-caption" id="caption"></p>
+  </main>
+</div>`;
+    app = $('#app'); frame = $('#frame'); ov = $('#ov'); live = $('#live');
+    document.querySelectorAll('[data-theme-set]').forEach(b => b.addEventListener('click', () => Kit.setTheme(b.dataset.themeSet)));
+    document.querySelectorAll('[data-net-set]').forEach(b => b.addEventListener('click', () => Kit.setNet(b.dataset.netSet)));
+    $('#railSel').addEventListener('change', e => Kit.go('#/' + e.target.value));
+    app.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && cfg.actions[b.dataset.act]) cfg.actions[b.dataset.act](b.dataset, b, e); });
+    Kit.setTheme(S.theme); Kit.setNet(S.net, true);
+    const fit = () => {
+      const w = $('#deviceWrap'), stage = $('.stage'); if (!w || !stage) return;
+      if (matchMedia('(max-width: 480px)').matches) { w.style.width = w.style.height = w.style.transform = ''; return; }
+      const dev = $('.device'); const dw = dev.offsetWidth, dh = dev.offsetHeight;
+      const k = Math.min(1, (stage.clientHeight - 56) / dh, (stage.clientWidth - 24) / dw);
+      w.style.transform = `scale(${k})`; w.style.width = dw + 'px'; w.style.height = (dh * k) + 'px';
+    };
+    addEventListener('resize', fit);
+    const onHash = () => {
+      if (current) current();
+      S.route = parse(); const r = S.route;
+      if (r.q.theme && r.q.theme !== S.theme) Kit.setTheme(r.q.theme);
+      if (r.q.net && r.q.net !== S.net) { const was = S.net; S.net = r.q.net; Kit.setNet(r.q.net, true); if (cfg.onNet) cfg.onNet(r.q.net, was, true); }
+      const rs = $('#railSel'); const cur = location.hash.replace(/^#\//, ''); if ([...rs.options].some(o => o.value === cur)) rs.value = cur;
+      if (cfg.onRoute) cfg.onRoute(r);
+      Kit.render({ top: true }); fit();
+    };
+    addEventListener('hashchange', onHash);
+    if (cfg.init) cfg.init();
+    if (!location.hash) history.replaceState(null, '', '#/' + c.home);
+    onHash();
+    document.fonts && document.fonts.ready.then(fit);
+  };
+})();
+
+</script>
+<script>
+(() => {
+  const { esc, t, ic, S } = Kit;
+  const TODAY = '2026-10-28';
+  const fmt = d => (d ? d.split('-').reverse().join('/') : T.common.none);
+  const en = (g, k) => (T.enums[g] && T.enums[g][k]) || k;
+  const badge = (c, s) => `<span class="badge ${c}">${esc(s)}</span>`;
+  const ZONES = { Alibori: ['Kandi', 'Malanville', 'Banikoara'], Atacora: ['Natitingou', 'Tanguiéta'], Atlantique: ['Abomey-Calavi', 'Ouidah', 'Allada'], Borgou: ['Parakou', 'Nikki', 'Tchaourou'], Collines: ['Dassa-Zoumè', 'Savalou', 'Savè'], Couffo: ['Aplahoué', 'Dogbo'], Donga: ['Djougou', 'Bassila'], Littoral: ['Cotonou'], Mono: ['Lokossa', 'Grand-Popo'], Ouémé: ['Porto-Novo', 'Sèmè-Podji', 'Adjarra'], Plateau: ['Pobè', 'Kétou'], Zou: ['Abomey', 'Bohicon', 'Covè'] };
+  const POPS = ['Femmes cis', 'Femmes lesbiennes', 'Femmes bisexuelles', 'Personnes trans / non-binaires', 'Travailleuses du sexe', 'Femmes vivant avec le VIH', 'Jeunes filles (15-24)'];
+  const AGES = ['10-14', '15-17', '18-24', '25-34', '35-49', '50+'];
+  const SEXES = ['Femme', 'Homme', 'Autre / non-binaire'];
+  const VIOL = ['physique', 'psychologique', 'sexuelle', 'economique', 'numerique'];
+
+  /* ---------- Données fictives (pseudonymisées) ---------- */
+  const ME = { pseudo: 'Aube' };
+  const mk = (code, kind, date, commune, sex, age, pop, viol, status, fu, sheet) => ({ code, kind, date, zone: 'Atlantique', commune, sex, age, pop, viol, status, fu: fu || [], sheet: sheet || null });
+  const C = [
+    mk('VBG-0048', 'VBG', '2026-10-24', 'Abomey-Calavi', 'Femme', '18-24', 'Femmes cis', 'psychologique', 'ouvert'),
+    mk('VBG-0047', 'VBG', '2026-10-20', 'Ouidah', 'Femme', '25-34', 'Femmes lesbiennes', 'physique', 'en_cours', [
+      { id: 1, step: 'Premier entretien', date: '2026-10-21', outcome: 'realise', comment: 'Écoute et information sur les services disponibles.' },
+      { id: 2, step: 'Appel de suivi', date: '2026-10-30', outcome: 'planifie', comment: '' }],
+      { ref: 'FR-2026-0047', pseudo: 'Pseudo-M09', place: 'Lieu de travail', desc: 'Violences répétées par une personne de l’entourage. Premier contact par une pair du quartier.', services: ['ecoute', 'securite'], referral: { to: 'Point focal Atlantique (annuaire)', contact: 'Coordonnées dans l’annuaire', date: '2026-10-22', reason: 'Mise en sécurité', urgency: 'haute' }, consent: { given: true, mode: 'oral', sharing: false } }),
+    mk('VDH-0044', 'VDH', '2026-10-12', 'Allada', 'Autre / non-binaire', '18-24', 'Personnes trans / non-binaires', 'psychologique', 'en_cours', [{ id: 1, step: 'Premier entretien', date: '2026-10-14', outcome: 'realise', comment: '' }]),
+    mk('VBG-0042', 'VBG', '2026-09-30', 'Abomey-Calavi', 'Femme', '15-17', 'Jeunes filles (15-24)', 'sexuelle', 'en_cours', [
+      { id: 1, step: 'Premier entretien', date: '2026-10-01', outcome: 'realise', next: '2026-10-15', comment: 'Écoute et information sur les services disponibles.' },
+      { id: 2, step: 'Orientation vers un service', date: '2026-10-15', outcome: 'realise', comment: 'Rendez-vous pris avec un service psychologique via le point focal.' },
+      { id: 3, step: 'Appel de suivi', date: '2026-10-30', outcome: 'planifie', comment: '' }],
+      { ref: 'FR-2026-0042', pseudo: 'Pseudo-K17', place: 'Domicile (non précisé)', desc: 'Violences sexuelles par une personne connue de la famille. Mineure : accompagnement renforcé.', services: ['ecoute', 'psy', 'medical'], referral: { to: 'Point focal Atlantique (annuaire)', contact: 'Coordonnées dans l’annuaire', date: '2026-10-03', reason: 'Prise en charge psychologique et médicale', urgency: 'critique' }, consent: { given: true, mode: 'ecrit', sharing: true } }),
+    mk('VBG-0039', 'VBG', '2026-09-18', 'Ouidah', 'Femme', '35-49', 'Femmes cis', 'economique', 'ouvert'),
+    mk('VBG-0036', 'VBG', '2026-09-02', 'Allada', 'Femme', '18-24', 'Femmes bisexuelles', 'numerique', 'clos', [{ id: 1, step: 'Premier entretien', date: '2026-09-04', outcome: 'realise', comment: '' }, { id: 2, step: 'Clôture du suivi', date: '2026-09-25', outcome: 'realise', comment: 'Situation stabilisée.' }]),
+    mk('VBG-0031', 'VBG', '2026-08-14', 'Abomey-Calavi', 'Femme', '25-34', 'Femmes vivant avec le VIH', 'sexuelle', 'clos', [{ id: 1, step: 'Premier entretien', date: '2026-08-15', outcome: 'realise', comment: '' }]),
+    mk('VBG-0027', 'VBG', '2026-07-02', 'Ouidah', 'Femme', '25-34', 'Travailleuses du sexe', 'physique', 'clos'),
+    mk('VDH-0022', 'VDH', '2026-05-19', 'Abomey-Calavi', 'Autre / non-binaire', '25-34', 'Personnes trans / non-binaires', 'psychologique', 'archive'),
+    mk('VBG-0015', 'VBG', '2026-03-11', 'Allada', 'Femme', '10-14', 'Jeunes filles (15-24)', 'physique', 'en_cours'),
+  ];
+  const A = [
+    { id: 'a1', type: 'sos', status: 'nouveau', prio: 'critique', ack: false, commune: 'Abomey-Calavi', zone: 'Atlantique', ago: 6, viol: 'physique', needs: ['securite'], pseudo: null, contact: null, lat: 6.45, lng: 2.36, acc: 40, text: 'Je suis enfermée dans une cour, la personne ne me laisse pas partir.', hist: [{ w: 'il y a 6 min', x: 'Alerte reçue (Nouveau)' }, { w: 'il y a 6 min', x: 'Routée vers toi : point focal de l’Atlantique' }] },
+    { id: 'a2', type: 'denonciation', status: 'nouveau', prio: 'haute', ack: false, commune: 'Ouidah', zone: 'Atlantique', ago: 130, viol: 'psychologique', needs: ['soutien_psychologique'], pseudo: null, contact: 'sms', text: 'Menaces répétées et chantage à l’outing par un ancien partenaire.', hist: [{ w: 'il y a 2 h', x: 'Alerte reçue (Nouveau)' }] },
+    { id: 'a3', type: 'besoin', status: 'pris_en_charge', prio: 'normale', ack: true, commune: 'Allada', zone: 'Atlantique', ago: 1500, viol: null, needs: ['soutien_juridique'], pseudo: null, contact: 'sms', text: 'Je voudrais savoir comment porter plainte sans être exposée.', hist: [{ w: 'hier', x: 'Alerte reçue (Nouveau)' }, { w: 'hier', x: 'Réception accusée par toi.' }, { w: 'hier', x: 'Prise en charge par toi.' }] },
+    { id: 'a4', type: 'denonciation', status: 'clos', prio: 'normale', ack: true, commune: 'Abomey-Calavi', zone: 'Atlantique', ago: 5800, viol: 'economique', needs: [], pseudo: null, contact: null, text: 'Contrôle financier et privation de ressources.', hist: [{ w: 'il y a 4 j', x: 'Alerte reçue (Nouveau)' }, { w: 'il y a 3 j', x: 'Clôturée par toi.' }] },
+  ];
+  let Q = [];   // file de synchronisation
+  let qSeq = 0;
+  const L = { q: '', status: '', kind: '' };
+  const F0 = () => ({ step: 1, kind: '', date: '', zone: '', commune: '', pop: '', sex: '', age: '', viol: '', ref: '', notes: '', errors: {} });
+  let F = F0();
+  const FU = { step: '', date: TODAY, outcome: 'planifie', next: '', comment: '', errors: {} };
+  const SOSS = { state: 'idle' };
+
+  const ago = m => (m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.round(m / 60)} h` : m < 2880 ? 'hier' : `il y a ${Math.round(m / 1440)} j`);
+  const pend = () => Q.filter(i => ['pending', 'sending', 'conflict'].includes(i.status)).length;
+  const newAlerts = () => A.filter(a => a.status === 'nouveau').length;
+  const openAlerts = () => A.filter(a => a.status !== 'clos');
+  const find = code => C.find(c => c.code === code);
+  const place = a => `${a.commune} (${a.zone})`;
+  const stBadge = s => badge(s === 'ouvert' ? '' : s === 'en_cours' ? 'violet' : s === 'clos' ? 'ok' : 'mute', en('case_status', s));
+  const kindBadge = k => badge(k === 'VBG' ? '' : 'violet', k);
+  const aStatus = a => badge(a.status === 'nouveau' ? '' : a.status === 'clos' ? 'mute' : 'ok', en('alert_status', a.status));
+  const aPrio = p => badge(p === 'critique' ? 'danger' : p === 'haute' ? 'warn' : 'mute', en('alert_priority', p));
+  const aType = x => badge(x === 'sos' ? 'danger' : x === 'besoin' ? '' : 'violet', en('alert_type', x));
+  const secH = (h, n) => `<div class="sec-h"><h2>${esc(h)}</h2>${n ? `<span class="n">${esc(n)}</span>` : ''}</div>`;
+  const nextCode = kind => `${kind}-${String(Math.max(...C.map(c => +c.code.slice(4)), 0) + 1).padStart(4, '0')}`;
+
+  /* ---------- Accueil ---------- */
+  function home() {
+    const nc = C.length, month = C.filter(c => c.date.startsWith('2026-10')).length, prog = C.filter(c => c.status === 'en_cours').length, closed = C.filter(c => c.status === 'clos').length;
+    const kpi = [['collected', nc], ['this_month', month], ['in_progress', prog], ['closed', closed]];
+    const na = newAlerts(), nco = C.filter(c => c.status === 'ouvert').length;
+    const sc = [['collecte', 'file-plus', 'collecte'], ['cases', 'folder', 'dossiers'], ['report', 'alert', null], ['directory', 'book', null], ['ccc', 'users', null], ['resources', 'list', null]];
+    return { tab: 'home', title: esc(t('home.title')), plain: t('home.title'), caption: '', html: `
+      <section class="hello"><div class="row wrap">${badge('', t('home.badge'))}<span class="pill-duty">${esc(t('home.duty'))}</span></div>
+        <h2>${esc(t('home.greeting', { name: ME.pseudo }))}</h2><p class="muted small" style="margin:0">${esc(t('home.intro'))}</p></section>
+      <section aria-labelledby="kh" class="stack-s">${secH(t('home.kpi_label')).replace('<h2>', '<h2 id="kh">')}
+        <ul class="kpis">${kpi.map(([k, v]) => `<li><span class="v">${v}</span><span class="l">${esc(t('home.kpi.' + k))}</span></li>`).join('')}</ul></section>
+      <section class="stack-s">${secH(t('home.tasks'))}
+        <a class="link-row" href="#/alertes">${ic('alert')}<span class="grow"><b>${esc(t('home.alerts_to_take', { count: na }))}</b></span>${ic('next', 'sm')}</a>
+        <a class="link-row" href="#/dossiers">${ic('folder')}<span class="grow"><b>${esc(t('home.cases_to_contact', { count: nco }))}</b></span>${ic('next', 'sm')}</a>
+        <button class="link-row" data-act="oos">${ic('users')}<span class="grow"><b>${esc(t('home.session'))}</b></span>${ic('next', 'sm')}</button></section>
+      <section class="stack-s" aria-labelledby="sh">${secH(t('home.shortcuts_label')).replace('<h2>', '<h2 id="sh">')}
+        <div class="shortcuts">${sc.map(([k, i, h]) => (h ? `<a class="tile" href="#/${h}">${ic(i, 'lg')}<b>${esc(t('home.shortcuts.' + k))}</b></a>` : `<button class="tile" data-act="oos">${ic(i, 'lg')}<b>${esc(t('home.shortcuts.' + k))}</b></button>`)).join('')}</div></section>` };
+  }
+
+  /* ---------- Alertes ---------- */
+  function actionsFor(a, full) {
+    const b = [];
+    if (a.status === 'nouveau' && !a.ack) b.push(`<button class="btn btn-primary" data-act="ack" data-id="${a.id}">${esc(t('alerts.acknowledge'))}</button>`);
+    if (a.status === 'nouveau' && a.ack) b.push(`<span class="badge ok" style="align-self:center">${ic('check', 'sm')} ${esc(t('alerts.ack_done'))}</span>`);
+    if (a.status === 'nouveau') b.push(`<button class="btn ${a.ack ? 'btn-primary' : 'btn-outline'}" data-act="take" data-id="${a.id}">${esc(t('alerts.take'))}</button>`);
+    if (a.status === 'pris_en_charge' || a.status === 'en_cours') b.push(`<button class="btn btn-primary" data-act="close" data-id="${a.id}">${esc(t('alerts.close'))}</button>`);
+    if (!full) b.push(`<a class="btn btn-outline" href="#/alerte/${a.id}" aria-label="${esc(t('alerts.detail_for', { type: en('alert_type', a.type), place: a.commune }))}">${esc(t('alerts.detail'))}</a>`);
+    return b.join('');
+  }
+  function alerts() {
+    const n = openAlerts().length;
+    return { tab: 'alerts', title: esc(t('alerts.title')), plain: t('alerts.title'), html: `
+      <div class="row wrap between"><div class="row wrap"><b>${n} ${esc(t('alerts.open_count', { count: n }))}</b></div>
+        <button class="btn btn-outline btn-sm" data-act="refresh" style="min-height:44px">${ic('sync', 'sm')} ${esc(t('alerts.refresh'))}</button></div>
+      <p class="note">${ic('bell', 'sm')}<span>${esc(t('alerts.on_duty'))}</span></p>
+      <div class="stack">${A.map(a => `<article class="acard ${a.type === 'sos' && a.status === 'nouveau' ? 'sos' : ''}" aria-label="${esc(en('alert_type', a.type) + ', ' + a.commune)}">
+        <div class="top">${aType(a.type)}${aStatus(a)}${aPrio(a.prio)}</div>
+        <h3>${esc(en('alert_type', a.type))} · ${esc(place(a))}</h3>
+        <div class="meta"><span>${ic('clock', 'sm')} ${esc(t('alerts.ago', { time: ago(a.ago) }))}</span>${a.viol ? `<span>${esc(en('violence', a.viol))}</span>` : ''}</div>
+        <div class="acts">${actionsFor(a)}</div></article>`).join('')}</div>` };
+  }
+  function alertDetail(id) {
+    const a = A.find(x => x.id === id);
+    if (!a) return { tab: 'alerts', back: 'alertes', title: esc(t('alerts.title')), html: `<div class="empty"><b>${esc(t('alerts.not_found'))}</b></div>` };
+    const dd = (k, v) => `<div><dt>${esc(t('alerts.fields.' + k))}</dt><dd>${v}</dd></div>`;
+    const pos = a.lat ? `${String(a.lat.toFixed(2)).replace('.', ',')}° N, ${String(a.lng.toFixed(2)).replace('.', ',')}° E · ${esc(t('alerts.accuracy', { meters: a.acc }))}` : esc(t('common.none'));
+    return { tab: 'alerts', back: 'alertes', backLabel: t('alerts.title'), title: `${esc(en('alert_type', a.type))} · ${esc(a.commune)}`, plain: t('alerts.detail_for', { type: en('alert_type', a.type), place: a.commune }), html: `
+      <div class="row wrap">${aType(a.type)}${aStatus(a)}${aPrio(a.prio)}</div>
+      ${a.status === 'nouveau' && !a.ack ? `<p class="note warn">${ic('alert', 'sm')}<span>${esc(t('alerts.escalation'))}</span></p>` : ''}
+      <dl class="dl card" style="padding:4px 14px">${dd('received', esc(ago(a.ago)))}${dd('place', esc(place(a)))}${dd('category', esc(a.viol ? en('violence', a.viol) : T.common.none))}${dd('needs', esc(a.needs.length ? a.needs.map(n => en('needs', n)).join(', ') : T.common.none))}${dd('author', esc(t('alerts.anonymous')))}${dd('contact', esc(a.contact ? t('alerts.contact_masked') : t('alerts.no_contact')))}${dd('position', pos)}${dd('description', esc(a.text))}</dl>
+      <section class="stack-s">${secH(t('alerts.fields.history'))}<ol class="tl card">${a.hist.map((h, i) => `<li class="${i === a.hist.length - 1 ? '' : 'done'}"><span class="when">${esc(h.w)}</span>${esc(h.x)}</li>`).join('')}</ol></section>
+      <div class="acts" style="display:flex;flex-direction:column;gap:8px">${actionsFor(a, true).replace(/class="btn /g, 'class="btn btn-block ')}</div>` };
+  }
+  function pushHist(a, x) { a.hist.push({ w: 'à l’instant', x }); }
+  function needNet() { if (S.net === 'off') { Kit.toast(t('alerts.offline')); return true; } return false; }
+
+  /* ---------- Dossiers ---------- */
+  function cases() {
+    return { tab: 'cases', title: esc(t('cases.title')), plain: t('cases.title'), html: `
+      <p class="muted small" style="margin:0">${esc(t('cases.intro'))}</p>
+      <div class="search"><label class="vh" for="q">${esc(t('cases.search'))}</label>${ic('search')}<input class="input" id="q" type="search" inputmode="text" autocomplete="off" placeholder="${esc(t('cases.search_placeholder'))}" value="${esc(L.q)}"></div>
+      <div class="stack-s" role="group" aria-label="${esc(t('cases.filters_label'))}">
+        <div class="chips wrap" id="fk">${[['', t('cases.all_kinds')], ['VBG', 'VBG'], ['VDH', 'VDH']].map(([v, l]) => `<button class="chip" data-act="fk" data-v="${v}" aria-pressed="${L.kind === v}">${esc(l)}</button>`).join('')}</div>
+        <div class="chips wrap" id="fs">${[['', t('cases.all_statuses')], ['ouvert', 'Ouvert'], ['en_cours', 'En cours'], ['clos', 'Clos'], ['archive', 'Archivé']].map(([v, l]) => `<button class="chip" data-act="fs" data-v="${v}" aria-pressed="${L.status === v}">${esc(l)}</button>`).join('')}</div></div>
+      <div id="list" class="stack-s" aria-live="polite"></div>
+      <a class="btn btn-primary btn-block" href="#/collecte" data-act="newcol">${ic('plus', 'sm')} ${esc(t('cases.new'))}</a>`,
+      mount: () => { drawList(); document.getElementById('q').addEventListener('input', e => { L.q = e.target.value; drawList(); }); } };
+  }
+  function drawList() {
+    const host = document.getElementById('list'); if (!host) return;
+    const r = C.filter(c => (!L.q || c.code.toLowerCase().includes(L.q.trim().toLowerCase())) && (!L.status || c.status === L.status) && (!L.kind || c.kind === L.kind));
+    host.innerHTML = `<div class="sec-h"><b>${esc(t('cases.results', { count: r.length }))}</b>${(L.q || L.status || L.kind) ? `<button class="btn-link" data-act="resetf">${esc(t('cases.reset'))}</button>` : ''}</div>` +
+      (r.length ? r.map(c => `<a class="link-row" href="#/dossier/${c.code}" aria-label="${esc(c.code + ', ' + en('case_status', c.status) + ', ' + t('cases.open'))}"><span class="grow"><span class="row wrap" style="gap:6px"><b>${c.code}</b>${kindBadge(c.kind)}${stBadge(c.status)}</span>
+        <span class="small muted" style="display:block;margin-top:4px">${fmt(c.date)} · ${esc(c.commune)} · ${esc(en('violence', c.viol))} · ${esc(t('cases.steps', { count: c.fu.length }))}</span></span>${ic('next', 'sm')}</a>`).join('')
+        : `<div class="empty"><b>${esc(L.q || L.status || L.kind ? t('cases.empty_filtered') : t('cases.empty'))}</b>${L.q || L.status || L.kind ? '' : esc(t('cases.empty_text'))}</div>`);
+  }
+  function sheetSec(title, rows, open) {
+    return `<details class="card" ${open ? 'open' : ''} style="padding:0"><summary class="h3" style="padding:14px 16px;min-height:48px;display:flex;align-items:center;cursor:pointer">${esc(title)}</summary><dl class="dl" style="padding:0 16px 8px">${rows.map(([k, v]) => `<div><dt>${esc(t('sheet.fields.' + k))}</dt><dd>${v == null || v === '' ? `<span class="muted">${esc(t('sheet.empty'))}</span>` : esc(v)}</dd></div>`).join('')}</dl></details>`;
+  }
+  function caseShow(code) {
+    const c = find(code);
+    if (!c) return { tab: 'cases', back: 'dossiers', title: esc(t('cases.title')), html: `<div class="empty"><b>${esc(t('cases.empty'))}</b></div>` };
+    const s = c.sheet, locked = c.status === 'archive';
+    const sc = x => (s ? x : null);
+    const fu = c.fu.slice().sort((a, b) => a.date.localeCompare(b.date));
+    return { tab: 'cases', back: 'dossiers', backLabel: t('case.back'), title: `${c.code}`, plain: c.code, html: `
+      <div class="row wrap">${kindBadge(c.kind)}${stBadge(c.status)}${badge('mute', t('case.received', { date: fmt(c.date) }))}${badge('mute', t('case.age', { range: c.age }))}</div>
+      ${s ? `<p class="muted small" style="margin:0">${esc(t('sheet.reference', { reference: s.ref }))}</p>` : `<p class="note">${ic('info', 'sm')}<span>${esc(t('sheet.not_filled'))}</span></p>`}
+      <div class="stack-s">
+      ${sheetSec(t('sheet.sections.identification'), [['pseudo', s ? s.pseudo : `Pseudo-${c.code.slice(-2)}${c.age.slice(0, 1)}`], ['sex', c.sex], ['age', c.age], ['population', c.pop], ['zone', `${c.commune} (${c.zone})`]], true)}
+      ${sheetSec(t('sheet.sections.facts'), [['date', fmt(c.date)], ['place', sc(s && s.place)], ['type', en('violence', c.viol)], ['description', sc(s && s.desc)]], true)}
+      ${sheetSec(t('sheet.sections.services'), [['services', s ? s.services.map(x => en('services', x)).join(', ') : null]])}
+      ${sheetSec(t('sheet.sections.orientation'), s ? [['referral', s.referral.to], ['contact', s.referral.contact], ['referral_date', fmt(s.referral.date)], ['reason', s.referral.reason], ['urgency', t('sheet.urgency.' + s.referral.urgency)]] : [['referral', t('sheet.no_referral')]])}
+      ${sheetSec(t('sheet.sections.consent'), s ? [['consent', s.consent.given ? t('sheet.yes') : t('sheet.no')], ['mode', t('sheet.modes.' + s.consent.mode)], ['sharing', s.consent.sharing ? t('sheet.yes') : t('sheet.no')]] : [['consent', null]])}</div>
+      ${locked ? `<p class="note">${ic('lock', 'sm')}<span>${esc(t('case.locked'))}</span></p>` : `<form class="card stack-s" data-act-form="status" data-code="${c.code}"><div class="fld"><label for="ns">${esc(t('case.status_label'))}</label><select class="input" id="ns"><option value="">${esc(t('case.status_choose'))}</option>${['ouvert', 'en_cours', 'clos', 'archive'].filter(x => x !== c.status).map(x => `<option value="${x}">${esc(en('case_status', x))}</option>`).join('')}</select></div><button class="btn btn-outline" type="submit">${esc(t('case.status_submit'))}</button></form>`}
+      <section class="stack-s" aria-labelledby="fh">${secH(t('case.timeline')).replace('<h2>', '<h2 id="fh">')}
+        ${fu.length ? `<ol class="tl card">${fu.map(f => `<li class="${f.outcome === 'realise' ? 'done' : ''} ${f.queued ? 'queued' : ''}"><span class="when">${fmt(f.date)}</span><div class="row wrap" style="gap:6px"><b>${esc(f.step)}</b>${badge(f.outcome === 'realise' ? 'ok' : f.outcome === 'planifie' ? '' : 'mute', en('followup_outcome', f.outcome))}${f.queued ? badge('warn', t('case.in_queue')) : ''}</div>
+          ${f.comment ? `<div class="small muted">${esc(f.comment)}</div>` : ''}${f.next ? `<div class="small muted">${esc(t('case.next'))} : ${fmt(f.next)}</div>` : ''}
+          ${f.outcome === 'planifie' && !locked ? `<button class="btn-link" data-act="done" data-code="${c.code}" data-id="${f.id}">${esc(t('case.mark_done'))}</button>` : ''}</li>`).join('')}</ol>` : `<p class="muted card">${esc(t('case.timeline_empty'))}</p>`}</section>
+      ${locked ? '' : `<a class="btn btn-primary btn-block" href="#/suivi/${c.code}">${ic('plus', 'sm')} ${esc(t('case.add'))}</a>`}`,
+      mount: pane => { const f = pane.querySelector('[data-act-form="status"]'); if (f) f.addEventListener('submit', e => { e.preventDefault(); const v = f.querySelector('select').value; if (!v) return; c.status = v; Kit.toast(t('case.status_saved')); Kit.render({ noFocus: true }); }); } };
+  }
+  function followForm(code) {
+    const c = find(code); if (!c) return caseShow(code);
+    const e = FU.errors; const err = k => (e[k] ? `<span class="err" id="e-${k}">${ic('alert', 'sm')}${esc(e[k])}</span>` : '');
+    const inv = k => (e[k] ? `aria-invalid="true" aria-describedby="e-${k}"` : '');
+    const ne = Object.keys(e).length;
+    return { tab: 'cases', back: `dossier/${code}`, backLabel: code, title: esc(t('case.add_title')), plain: t('case.add_title'), html: `
+      <p class="muted small" style="margin:0">${code} · ${esc(t('col.no_identity_title'))}</p>
+      ${ne ? `<div class="errsum" role="alert" tabindex="-1" id="es">${esc(t('case.errors_title', { count: ne }))}</div>` : ''}
+      <form id="ff" class="stack" novalidate>
+        <div class="fld"><label for="f-step">${esc(t('case.fields.step'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="f-step" ${inv('step')}><option value="">${esc(t('case.choose'))}</option>${T.case.steps_list.map(s => `<option ${FU.step === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>${err('step')}</div>
+        <div class="fld"><label for="f-date">${esc(t('case.fields.date'))} <span class="req" aria-hidden="true">*</span></label><input class="input" id="f-date" type="date" value="${FU.date}" ${inv('date')}>${err('date')}</div>
+        <div class="fld"><label for="f-out">${esc(t('case.fields.outcome'))}</label><select class="input" id="f-out">${Object.entries(T.enums.followup_outcome).map(([k, v]) => `<option value="${k}" ${FU.outcome === k ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+        <div class="fld"><label for="f-next">${esc(t('case.fields.next'))} <span class="muted" style="font-weight:400">${esc(t('case.optional'))}</span></label><input class="input" id="f-next" type="date" value="${FU.next}" ${inv('next')}>${err('next')}</div>
+        <div class="fld"><label for="f-com">${esc(t('case.fields.comment'))} <span class="muted" style="font-weight:400">${esc(t('case.optional'))}</span></label><textarea class="input" id="f-com" rows="4" ${inv('comment')}>${esc(FU.comment)}</textarea><span class="hint" id="cc">${esc(t('case.comment_hint', { count: FU.comment.length, max: 500 }))}</span>${err('comment')}</div>
+        <button class="btn btn-primary btn-block" type="submit">${esc(t('case.add_submit'))}</button></form>`,
+      mount: pane => {
+        const g = id => pane.querySelector('#' + id);
+        g('f-com').addEventListener('input', ev => { FU.comment = ev.target.value; g('cc').textContent = t('case.comment_hint', { count: FU.comment.length, max: 500 }); });
+        ['step', 'date', 'out', 'next'].forEach(k => g('f-' + k).addEventListener('change', ev => { FU[{ out: 'outcome' }[k] || k] = ev.target.value; }));
+        g('ff').addEventListener('submit', ev => {
+          ev.preventDefault(); const er = {};
+          if (!FU.step) er.step = t('case.errors.required');
+          if (!FU.date) er.date = t('case.errors.required');
+          if (FU.next && FU.date && FU.next < FU.date) er.next = t('case.errors.next_before');
+          if (FU.comment.length > 500) er.comment = t('case.errors.comment_max', { max: 500 });
+          FU.errors = er;
+          if (Object.keys(er).length) { Kit.render({ noFocus: true }); const s = document.getElementById('es'); s && s.focus(); return; }
+          const off = S.net === 'off'; const id = Date.now();
+          c.fu.push({ id, step: FU.step, date: FU.date, outcome: FU.outcome, next: FU.next, comment: FU.comment, queued: off });
+          if (off) Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: `${FU.step} · ${code}`, status: 'pending', when: 'à l’instant', fuRef: [code, id] });
+          Kit.toast(off ? t('case.followup_queued') : t('case.followup_saved'));
+          Object.assign(FU, { step: '', date: TODAY, outcome: 'planifie', next: '', comment: '', errors: {} });
+          Kit.go('#/dossier/' + code);
+        });
+      } };
+  }
+
+  /* ---------- Collecte ---------- */
+  function validateStep(n) {
+    const e = {};
+    if (n === 1) {
+      if (!F.kind) e.kind = t('col.errors.required');
+      if (!F.date) e.date = t('col.errors.required'); else if (isNaN(Date.parse(F.date))) e.date = t('col.errors.date_invalid'); else if (F.date > TODAY) e.date = t('col.errors.date_future');
+    }
+    if (n === 2) {
+      if (!F.zone) e.zone = t('col.errors.required');
+      if (!F.commune) e.commune = t('col.errors.required'); else if (F.zone && !(ZONES[F.zone] || []).includes(F.commune)) e.commune = t('col.errors.commune_in_zone');
+    }
+    if (n === 3) { if (!F.pop) e.pop = t('col.errors.required'); if (!F.sex) e.sex = t('col.errors.required'); if (!F.age) e.age = t('col.errors.required'); }
+    if (n === 4) { if (!F.viol) e.viol = t('col.errors.required'); const nt = F.notes.trim(); if (nt.length > 0 && nt.length < 20) e.notes = t('col.errors.notes_min', { min: 20 }); }
+    return e;
+  }
+  function warnings() {
+    const w = []; if (!F.date) return w;
+    if ((Date.parse(TODAY) - Date.parse(F.date)) / 31557600000 > 2) w.push(t('col.date_old', { years: 2 }));
+    const dup = C.filter(c => c.kind === F.kind && c.commune === F.commune && c.sex === F.sex && c.age === F.age && c.viol === F.viol).map(c => c.code);
+    if (dup.length) w.push(t('col.duplicate', { count: dup.length, codes: dup.join(', ') }));
+    return w;
+  }
+  const radio = (name, val, label, cur, extra = '', cls = '') => `<label class="opt ${cls}"><input type="radio" name="${name}" value="${esc(val)}" ${cur === val ? 'checked' : ''}><span class="dot" aria-hidden="true"></span><span class="tx">${label}${extra}</span></label>`;
+  function collecte() {
+    const e = F.errors; const ne = Object.keys(e).length;
+    const err = k => (e[k] ? `<span class="err" id="e-${k}">${ic('alert', 'sm')}${esc(e[k])}</span>` : '');
+    const inv = k => (e[k] ? `aria-invalid="true" aria-describedby="e-${k}"` : '');
+    const grp = (k, legend, body, req = true) => `<fieldset class="fld" ${e[k] ? `aria-describedby="e-${k}"` : ''}><legend>${esc(legend)} ${req ? '<span class="req" aria-hidden="true">*</span>' : ''}</legend>${body}${err(k)}</fieldset>`;
+    const steps = T.col.steps; let body = '';
+    if (F.step === 1) body = grp('kind', t('col.fields.kind'), `<div class="opts">${['VBG', 'VDH'].map(k => radio('kind', k, `<b>${k}</b>`, F.kind, `<small>${esc(T.col.kinds_long[k])}</small>`)).join('')}</div>`) +
+      `<div class="fld"><label for="date">${esc(t('col.fields.date'))} <span class="req" aria-hidden="true">*</span></label><input class="input" id="date" type="date" max="${TODAY}" value="${F.date}" ${inv('date')}>${err('date')}</div>`;
+    if (F.step === 2) body = `<div class="fld"><label for="zone">${esc(t('col.fields.zone'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="zone" ${inv('zone')}><option value="">${esc(t('col.choose'))}</option>${Object.keys(ZONES).map(z => `<option ${F.zone === z ? 'selected' : ''}>${z}</option>`).join('')}</select>${err('zone')}</div>
+      <div class="fld"><label for="commune">${esc(t('col.fields.commune'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="commune" ${F.zone ? '' : 'disabled'} ${inv('commune')}>${communeOpts()}</select>${F.zone ? '' : `<span class="hint">${esc(t('col.commune_first'))}</span>`}${err('commune')}</div>`;
+    if (F.step === 3) body = `<div class="fld"><label for="pop">${esc(t('col.fields.population'))} <span class="req" aria-hidden="true">*</span></label><select class="input" id="pop" ${inv('pop')}><option value="">${esc(t('col.choose'))}</option>${POPS.map(p => `<option ${F.pop === p ? 'selected' : ''}>${esc(p)}</option>`).join('')}</select>${err('pop')}</div>` +
+      grp('sex', t('col.fields.sex'), `<div class="opts">${SEXES.map(s => radio('sex', s, esc(s), F.sex)).join('')}</div>`) +
+      grp('age', t('col.fields.age'), `<div class="opts cols3">${AGES.map(a => radio('age', a, esc(a), F.age, '', 'sm')).join('')}</div>`);
+    if (F.step === 4) body = grp('viol', t('col.fields.violence'), `<div class="opts">${VIOL.map(v => radio('viol', v, `<b>${esc(en('violence', v))}</b>`, F.viol, `<small>${esc(en('violence_hint', v))}</small>`)).join('')}</div>`) +
+      `<div class="fld"><label for="ref">${esc(t('col.fields.referral'))}</label><select class="input" id="ref"><option value="">${esc(t('col.no_referral'))}</option>${Object.entries(T.enums.services).map(([k, v]) => `<option value="${k}" ${F.ref === k ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+      <div class="fld"><label for="notes">${esc(t('col.fields.notes'))}</label><textarea class="input" id="notes" rows="4" placeholder="${esc(t('col.notes_placeholder'))}" ${inv('notes')}>${esc(F.notes)}</textarea><span class="hint">${esc(t('col.notes_hint', { min: 20 }))}</span>${err('notes')}</div>`;
+    if (F.step === 5) {
+      const w = warnings(); const off = S.net === 'off';
+      const row = (k, v, st) => `<div class="row-r"><div><div class="k">${esc(t('col.fields.' + k))}</div><div>${esc(v || T.common.none)}</div></div><button class="btn-link" data-act="goto" data-step="${st}" aria-label="${esc(t('col.edit') + ' : ' + t('col.fields.' + k))}">${esc(t('col.edit'))}</button></div>`;
+      body = `<div><h2 class="h2" style="margin:0 0 4px">${esc(t('col.review_title'))}</h2><p class="muted small" style="margin:0">${esc(t('col.review_text'))}</p></div>
+        ${w.length ? `<div class="note warn" role="alert">${ic('alert', 'sm')}<div><b>${esc(t('col.warn_title'))}</b>${w.map(x => `<p style="margin-top:6px">${esc(x)}</p>`).join('')}<p style="margin-top:6px;font-size:13px">${esc(t('col.warn_text'))}</p></div></div>` : ''}
+        <div class="card review" style="padding:4px 14px">${row('kind', F.kind && `${F.kind} · ${T.col.kinds_long[F.kind]}`, 1)}${row('date', fmt(F.date), 1)}${row('zone', F.zone && `${F.commune} (${F.zone})`, 2)}${row('population', F.pop, 3)}${row('sex', `${F.sex} · ${F.age} ans`, 3)}${row('violence', F.viol && en('violence', F.viol), 4)}${row('referral', F.ref ? en('services', F.ref) : t('col.no_referral'), 4)}${row('notes', F.notes ? `${F.notes.length} caractères` : '', 4)}</div>
+        <p class="hint" style="margin:0">${esc(t('col.footnote'))}</p>`;
+    }
+    const last = F.step === 5; const off = S.net === 'off';
+    return { tab: 'collect', title: esc(t('col.title')), plain: t('col.title'), html: `
+      <div><div class="steplab"><b>${esc(steps[F.step - 1])}</b><span>${esc(t('col.step', { n: F.step, total: 5 }))}</span></div><div class="stepper" style="--n:5" role="img" aria-label="${esc(t('col.step', { n: F.step, total: 5 }))}">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= F.step ? 'on' : ''}"></i>`).join('')}</div></div>
+      ${F.step === 1 ? `<p class="note warn">${ic('lock', 'sm')}<span><b>${esc(t('col.no_identity_title'))}</b> ${esc(t('col.no_identity'))}</span></p>` : ''}
+      ${F.step > 1 && F.step < 5 && (F.kind || F.date) ? `<p class="hint" style="margin:0">${esc(t('col.draft_saved'))} <button class="btn-link" data-act="clear" style="min-height:44px">${esc(t('col.draft_clear'))}</button></p>` : ''}
+      ${ne ? `<div class="errsum" role="alert" tabindex="-1" id="es">${esc(t('col.errors_title', { count: ne }))}</div>` : ''}
+      <form id="cf" class="stack" novalidate>${body}
+        <div class="formnav">${F.step > 1 ? `<button type="button" class="btn btn-outline" data-act="prev">${esc(t('col.prev'))}</button>` : ''}
+        <button type="submit" class="btn btn-primary">${last ? ic(off ? 'cloud' : 'send', 'sm') + ' ' + esc(t(off ? 'col.submit_offline' : 'col.submit')) : esc(t('col.next'))}</button></div></form>`,
+      mount: pane => bindCollecte(pane) };
+  }
+  const communeOpts = () => `<option value="">${esc(t('col.choose'))}</option>` + (ZONES[F.zone] || []).map(c => `<option ${F.commune === c ? 'selected' : ''}>${esc(c)}</option>`).join('');
+  function bindCollecte(pane) {
+    const f = pane.querySelector('#cf');
+    f.addEventListener('change', ev => {
+      const el = ev.target, id = el.id || el.name;
+      const map = { kind: 'kind', date: 'date', zone: 'zone', commune: 'commune', pop: 'pop', sex: 'sex', age: 'age', viol: 'viol', ref: 'ref', notes: 'notes' };
+      if (map[id]) F[map[id]] = el.value;
+      if (id === 'zone') { F.commune = ''; const cm = pane.querySelector('#commune'); cm.disabled = !F.zone; cm.innerHTML = communeOpts(); }
+    });
+    const nt = pane.querySelector('#notes'); if (nt) nt.addEventListener('input', ev => { F.notes = ev.target.value; });
+    f.addEventListener('submit', ev => {
+      ev.preventDefault();
+      if (F.step < 5) {
+        const er = validateStep(F.step); F.errors = er;
+        if (Object.keys(er).length) { Kit.render({ noFocus: true }); const s = document.getElementById('es'); s && s.focus(); return; }
+        F.step++; Kit.render({ top: true }); document.getElementById('ttl').focus({ preventScroll: true }); return;
+      }
+      for (let i = 1; i <= 4; i++) { const er = validateStep(i); if (Object.keys(er).length) { F.step = i; F.errors = er; Kit.render({ top: true }); return; } }
+      submitCase();
+    });
+    pane.querySelector('[data-act="prev"]') && pane.querySelector('[data-act="prev"]').addEventListener('click', () => { F.errors = {}; F.step--; Kit.render({ top: true }); });
+  }
+  function submitCase() {
+    const snap = { ...F }; const id = 'q' + (++qSeq);
+    const it = { id, kind: 'case', label: `Dossier ${snap.kind} · ${snap.commune}`, status: S.net === 'off' ? 'pending' : 'sent', when: 'à l’instant', data: snap, code: null };
+    if (it.status === 'sent') it.code = addCase(snap);
+    Q.push(it); F = F0(); Kit.go('#/collecte-ok/' + id);
+  }
+  function addCase(d) {
+    const code = nextCode(d.kind);
+    C.unshift({ code, kind: d.kind, date: d.date, zone: d.zone, commune: d.commune, sex: d.sex, age: d.age, pop: d.pop, viol: d.viol, status: 'ouvert', fu: [], sheet: null });
+    return code;
+  }
+  function collecteOk(id) {
+    const it = Q.find(i => i.id === id);
+    if (!it) return collecte();
+    const sent = it.status === 'sent';
+    return { tab: 'collect', title: esc(t('col.title')), plain: t(sent ? 'col.sent_title' : 'col.queued_title'), html: `
+      <div class="state-card card" aria-live="polite">
+        <div class="row">${sent ? badge('ok', t('col.state_sent')) : badge('warn', t('col.state_queued'))}</div>
+        <div class="big">${esc(t(sent ? 'col.sent_title' : 'col.queued_title'))}</div>
+        ${sent ? `<p style="margin:0">${esc(t('col.saved', { codes: it.code }))}</p><div class="dl"><div><dt>${esc(t('col.code'))}</dt><dd><b class="h2">${it.code}</b></dd></div></div>`
+          : `<p style="margin:0">${esc(t('col.queued'))}</p><p class="muted small" style="margin:0">${esc(t('col.code_later'))}</p>${S.net === 'on' ? `<p class="muted small" style="margin:0">${esc(t('col.sending'))}</p>` : ''}`}
+      </div>
+      <div class="stack-s">${!sent ? `<a class="btn btn-primary btn-block" href="#/sync">${ic('sync', 'sm')} ${esc(t('col.see_queue'))}</a>` : `<a class="btn btn-primary btn-block" href="#/dossier/${it.code}">${esc(t('col.see_cases'))}</a>`}
+      <a class="btn btn-outline btn-block" href="#/collecte" data-act="newcol">${esc(t('col.again'))}</a></div>` };
+  }
+
+  /* ---------- Synchronisation ---------- */
+  let syncing = false;
+  function qItem(i) {
+    const st = i.status; const cls = st === 'conflict' ? 'conflict' : '';
+    const stB = st === 'sent' || st === 'resolved' ? badge('ok', t('sync.states.' + st)) : st === 'conflict' ? badge('warn', t('sync.states.conflict')) : st === 'sending' ? badge('', t('sync.states.sending')) : badge('mute', t('sync.states.pending'));
+    let extra = '';
+    if (st === 'conflict') {
+      extra = `<p class="small" style="margin:0">${esc(t('sync.conflict_text'))}</p>
+        <fieldset class="fld cmp"><legend class="vh">${esc(t('sync.field'))} : ${esc(i.field)}</legend>
+          <div class="muted small">${esc(t('sync.field'))} : <b style="color:var(--app-text)">${esc(i.field)}</b> · ${esc(t('sync.base'))} : <b style="color:var(--app-text)">${esc(i.base)}</b></div>
+          <label class="opt"><input type="radio" name="cmp-${i.id}" value="server" ${i.choice === 'server' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_server'))}</b><small>${esc(t('sync.server'))} : <b>${esc(i.server)}</b></small></span></label>
+          <label class="opt"><input type="radio" name="cmp-${i.id}" value="mine" ${i.choice === 'mine' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_mine'))}</b><small>${esc(t('sync.mine'))} : <b>${esc(i.mine)}</b></small></span></label></fieldset>
+        <button class="btn btn-primary" data-act="resolve" data-id="${i.id}">${esc(t('sync.resolve'))}</button>`;
+    }
+    return `<article class="q-item ${cls}" aria-label="${esc(i.label)}"><div class="top"><span class="grow"><h3>${esc(i.label)}</h3><div class="sub">${esc(t('sync.kinds.' + i.kind))} · ${esc(t('sync.created', { when: i.when }))}${i.code ? ` · <b>${i.code}</b>` : ''}</div></span>${stB}</div>${st === 'pending' ? `<div class="sub">${esc(t('sync.retries'))}</div>` : ''}${extra}</article>`;
+  }
+  function sync() {
+    const off = S.net === 'off'; const n = pend();
+    const conf = Q.filter(i => i.status === 'conflict'), wait = Q.filter(i => i.status === 'pending' || i.status === 'sending'), done = Q.filter(i => i.status === 'sent' || i.status === 'resolved').slice(-4).reverse();
+    return { tab: '', back: 'accueil', backLabel: t('home.title'), title: esc(t('sync.title')), plain: t('sync.title'), html: `
+      <section class="card sync-card ${off ? 'off' : ''}" aria-label="${esc(t('sync.title'))}">
+        <div class="stat">${ic(syncing ? 'sync' : 'clock', syncing ? 'spin' : off ? 'clock-off' : '')}<div><b>${esc(t('net.pending', { count: n }))}</b><div class="small muted">${esc(off ? t('sync.last_off') : t('sync.last'))}</div></div></div>
+        <button class="btn btn-primary btn-block" data-act="syncnow" ${off || syncing ? 'disabled' : ''}>${ic('sync', 'sm')} ${esc(syncing ? t('sync.syncing') : t('sync.now'))}</button>
+        ${off ? `<p class="hint" style="margin:0">${esc(t('sync.now_off'))}</p>` : ''}</section>
+      ${conf.length ? `<section class="stack-s">${secH(t('sync.conflicts'))}${conf.map(qItem).join('')}</section>` : ''}
+      ${wait.length ? `<section class="stack-s">${secH(t('sync.pending'), String(wait.length))}${wait.map(qItem).join('')}</section>` : ''}
+      ${done.length ? `<section class="stack-s">${secH(t('sync.sent'))}${done.map(qItem).join('')}</section>` : ''}
+      ${!Q.length ? `<div class="empty"><b>${esc(t('sync.empty'))}</b></div>` : ''}` };
+  }
+  function runSync() {
+    if (syncing || S.net === 'off') return; const w = Q.filter(i => i.status === 'pending'); if (!w.length) { return; }
+    syncing = true; w.forEach(i => { i.status = 'sending'; }); Kit.render({ noFocus: true });
+    setTimeout(() => {
+      syncing = false; let k = 0;
+      w.forEach(i => {
+        if (S.net === 'off') { i.status = 'pending'; return; }
+        i.status = 'sent'; k++;
+        if (i.kind === 'case') i.code = addCase(i.data);
+        if (i.kind === 'followup') { const c = find(i.fuRef[0]); const f = c && c.fu.find(x => x.id === i.fuRef[1]); if (f) f.queued = false; }
+      });
+      Kit.render({ noFocus: true }); if (k) Kit.toast(t('sync.done', { count: k }));
+    }, 1100);
+  }
+
+  /* ---------- SOS ---------- */
+  function sosScreen() {
+    const off = S.net === 'off'; const st = SOSS.state;
+    let html;
+    if (st === 'sent' || st === 'queued') {
+      html = `<div class="state-card card" aria-live="polite"><div>${badge(st === 'sent' ? 'ok' : 'warn', st === 'sent' ? t('col.state_sent') : t('col.state_queued'))}</div><div class="big">${esc(t(st === 'sent' ? 'sos.done' : 'sos.queued'))}</div><p style="margin:0">${esc(t(st === 'sent' ? 'sos.done_text' : 'sos.queued_text'))}</p></div>
+        <button class="btn btn-outline btn-block" data-act="safe">${esc(t('sos.safe'))}</button><a class="btn btn-primary btn-block" href="#/accueil" data-act="sosreset">${esc(t('sos.again'))}</a>`;
+    } else {
+      html = `<div class="sos-wrap"><p style="margin:0">${esc(t('sos.intro'))}</p>
+        <button class="sos-btn" id="sosb" aria-describedby="sosh"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" /></svg>SOS</button>
+        <p id="sosh" class="small" style="margin:0">${esc(t('sos.help'))}</p>
+        ${off ? `<p class="note warn" style="text-align:left">${ic('wifi-off', 'sm')}<span>${esc(t('sos.hint_offline'))}</span></p>` : ''}
+        <div class="stack-s" style="width:100%"><span class="muted small">${esc(t('sos.alt'))}</span><button class="btn btn-outline btn-block" data-act="sosalt">${esc(t('sos.alt_btn'))}</button></div></div>`;
+    }
+    return { tab: 'sos', title: esc(t('sos.title')), plain: t('sos.title'), html, mount: pane => {
+      const b = pane.querySelector('#sosb'); if (!b) return; let tm;
+      const stop = () => { clearTimeout(tm); b.classList.remove('holding'); };
+      b.addEventListener('pointerdown', ev => { ev.preventDefault(); b.classList.add('holding'); tm = setTimeout(() => { stop(); sendSos(); }, 2000); });
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(n => b.addEventListener(n, stop));
+      b.addEventListener('keydown', ev => { if ((ev.key === ' ' || ev.key === 'Enter') && !ev.repeat) { ev.preventDefault(); b.classList.add('holding'); tm = setTimeout(() => { stop(); sendSos(); }, 2000); } });
+      b.addEventListener('keyup', stop); b.addEventListener('blur', stop);
+    } };
+  }
+  function sendSos() { SOSS.state = S.net === 'off' ? 'queued' : 'sent'; if (S.net === 'off') Q.push({ id: 'q' + (++qSeq), kind: 'sos', label: 'Alerte SOS', status: 'pending', when: 'à l’instant', data: null, sos: true }); Kit.render({ top: true }); }
+
+  /* ---------- Actions ---------- */
+  const actions = {
+    oos: () => Kit.toast(t('home.out_of_scope')),
+    refresh: () => { if (S.net === 'off') return Kit.toast(t('alerts.offline')); Kit.toast(t('alerts.refreshed')); },
+    ack: d => { if (needNet()) return; const a = A.find(x => x.id === d.id); a.ack = true; pushHist(a, 'Réception accusée par toi.'); Kit.toast(t('alerts.acknowledged')); Kit.render({ noFocus: true }); },
+    take: d => { if (needNet()) return; const a = A.find(x => x.id === d.id); a.ack = true; a.status = 'pris_en_charge'; pushHist(a, 'Prise en charge par toi.'); Kit.toast(t('alerts.taken')); Kit.render({ noFocus: true }); },
+    close: d => { if (needNet()) return; Kit.confirm({ title: t('alerts.close_title'), text: esc(t('alerts.close_confirm')), ok: t('alerts.close_yes'), onOk: () => { const a = A.find(x => x.id === d.id); a.status = 'clos'; pushHist(a, 'Clôturée par toi.'); Kit.toast(t('alerts.closed')); Kit.render({ noFocus: true }); } }); },
+    fk: d => { L.kind = d.v; Kit.render({ noFocus: true }); },
+    fs: d => { L.status = d.v; Kit.render({ noFocus: true }); },
+    resetf: () => { L.q = ''; L.status = ''; L.kind = ''; Kit.render({ noFocus: true }); },
+    done: d => { const c = find(d.code); const f = c.fu.find(x => x.id === +d.id); f.outcome = 'realise'; if (S.net === 'off') { f.queued = true; Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: `${f.step} · ${d.code}`, status: 'pending', when: 'à l’instant', fuRef: [d.code, f.id] }); } Kit.toast(t('case.followup_done')); Kit.render({ noFocus: true }); },
+    goto: d => { F.errors = {}; F.step = +d.step; Kit.render({ top: true }); },
+    clear: () => { F = F0(); Kit.toast(t('col.draft_cleared')); Kit.render({ top: true }); },
+    newcol: () => { F = F0(); },
+    syncnow: () => runSync(),
+    pick: d => { Q.find(i => i.id === d.id).choice = document.querySelector(`input[name="cmp-${d.id}"]:checked`).value; },
+    resolve: d => { const i = Q.find(x => x.id === d.id); const ch = document.querySelector(`input[name="cmp-${d.id}"]:checked`); if (!ch) return Kit.toast(t('sync.choose_first')); i.choice = ch.value; i.status = 'resolved'; Kit.toast(t('sync.resolved_toast')); Kit.render({ noFocus: true }); },
+    sosalt: () => Kit.confirm({ title: t('sos.alt_title'), text: esc(t('sos.alt_text')), ok: t('sos.alt_yes'), cancel: t('sos.cancel'), onOk: sendSos }),
+    safe: () => Kit.toast(t('sos.safe_ok')),
+    sosreset: () => { SOSS.state = 'idle'; },
+  };
+
+  /* ---------- Démarrage ---------- */
+  function demoFill() {
+    Object.assign(F, { kind: 'VBG', date: '2024-03-14', zone: 'Atlantique', commune: 'Abomey-Calavi', pop: 'Jeunes filles (15-24)', sex: 'Femme', age: '15-17', viol: 'sexuelle', ref: 'psy', notes: 'Contexte familial, première écoute faite par la pair du quartier.', errors: {} });
+  }
+  Kit.start({
+    title: T.title, sub: T.sub, home: 'accueil', logo: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjguNTAgMi45MiAyMTguMTcgNTYuMDgiIHJvbGU9ImltZyIgYXJpYS1sYWJlbGxlZGJ5PSJ0Ij48dGl0bGUgaWQ9InQiPlhvbWl0b248L3RpdGxlPjxwYXRoIGZpbGw9IiMwNDMzQzMiIGQ9Ik0xOC4wMiA1MC4yNUMxNi4yNiA0OS45MyAxNC42NCA0OC41MSAxNC43NyA0Ny4zOEMxNC44MyA0Ni44MiAxNS4wNiA0Ni40NiAxNS45MSA0NS41NUMxNy4yMSA0NC4xNiAyMS4zNCAzOC4zMSAyMS45OSAzNi45MkMyMi41MCAzNS44MyAyMi4yNyAzNC45NCAyMC45OSAzMy4xNkMyMC42MSAzMi42NCAxOS45MyAzMS42NiAxOS40NyAzMS4wMEMxOC4wNyAyOC45NyAxNi4zMCAyNi41OCAxNS41OCAyNS43NUMxNC4yMSAyNC4xNyAxNC4xNiAyMy4yNyAxNS4zOCAyMi4xOUMxNy4wMyAyMC43MSAxOS41OCAyMC41MSAyMS44NCAyMS42OEMyMy4yNSAyMi40MCAyNC4yNSAyMy40MyAyNS45MiAyNS44MkMyNy4yOSAyNy43OCAyNy44MiAyOC4yMSAyOC42MSAyNy45OUMyOS4yMyAyNy44MiAyOS40OCAyNy41MSAzMS4xNyAyNC43OEMzMi4wMSAyMy40MiAzMi45NyAyMi4zOCAzMy44OCAyMS44NUMzNi4yMyAyMC40OCAzOC44OSAyMC42NiA0MC43NSAyMi4zMUM0MS44OCAyMy4zMiA0MS43NyAyNC4xOSA0MC4zMCAyNS43NEMzOS4wOSAyNy4wMSAzNy45NyAyOC41MiAzNS4xMCAzMi44MEMzMi45OSAzNS45NCAzMy4wMCAzNi4wMCAzNi4zNyA0MC41OEMzNi45MyA0MS4zNCAzNy42OCA0Mi4zOSAzOC4wNCA0Mi45MkMzOC40MCA0My40NCAzOS4wNCA0NC4zNSAzOS40NiA0NC45MkM0MC41MyA0Ni4zOCA0MC43MCA0Ni43MyA0MC43MSA0Ny40NkM0MC43MSA0OS4yNyAzOC40OCA1MC42MiAzNi4wOCA1MC4yNkMzMy43NCA0OS45MCAzMi4zMSA0OC44MyAyOS44NyA0NS42MkMyOC42MyA0NC4wMCAyOC42OCA0NC4wNSAyOC4zMCA0My44MEMyNy4zNyA0My4xOCAyNi43OCA0My41NyAyNS41NCA0NS42N0MyMy4zOSA0OS4zMSAyMC45OCA1MC43OCAxOC4wMiA1MC4yNVpNODEuMjggNTEuNzVDNzkuMTEgNTEuNDEgNzcuNTggNDkuODggNzcuMDMgNDcuNTJDNzYuODYgNDYuNzYgNzYuNzYgNDIuMjYgNzYuNzYgMzQuNDRDNzYuNzUgMjcuODAgNzYuNzYgMjcuOTEgNzYuMjYgMjYuMzBDNzUuNTEgMjMuOTAgNzYuODIgMjIuNTcgNzkuOTIgMjIuNTZDODIuMDUgMjIuNTYgODMuMjAgMjMuMTcgODQuNTEgMjUuMDFDODUuNTkgMjYuNTQgODYuMDQgMjYuNTUgODcuNzQgMjUuMTBDODkuNTUgMjMuNTQgOTEuMjQgMjIuODIgOTMuNjMgMjIuNThDOTcuMTEgMjIuMjQgOTkuNjIgMjMuMzEgMTAxLjQ1IDI1LjkyQzEwMi42MiAyNy41OCAxMDMuMDEgMjcuNTcgMTA0Ljc5IDI1Ljg0QzEwNy4xMSAyMy41OCAxMDkuMTEgMjIuNjkgMTEyLjI4IDIyLjUzQzExNi40NiAyMi4zMiAxMTkuMzcgMjQuNTUgMTIwLjQ1IDI4Ljc5QzEyMS4wMyAzMS4wNyAxMjEuMTIgMzIuNjMgMTIxLjA1IDM5LjU0QzEyMC45OSA0NS41OCAxMjEuMDMgNDYuNTIgMTIxLjQzIDQ3Ljg4QzEyMS45OCA0OS43NiAxMjEuNzEgNTAuNTEgMTIwLjIxIDUxLjIyQzExNy42OSA1Mi40MSAxMTQuNzEgNTEuNjggMTEzLjQzIDQ5LjU1QzExMi40OCA0Ny45NyAxMTIuNDkgNDguMDQgMTEyLjQyIDM5Ljg4QzExMi4zNyAzMy42OCAxMTIuMzQgMzIuODEgMTEyLjIyIDMyLjM0QzExMS4wNyAyNy45NiAxMDUuODQgMjguNTAgMTAzLjg1IDMzLjIwQzEwMy4yMSAzNC43MyAxMDMuMjIgMzQuNTkgMTAzLjE5IDQwLjQ2QzEwMy4xNSA0Ni4yMCAxMDMuMTggNDYuNjAgMTAzLjYwIDQ3LjkxQzEwNC4xMSA0OS40NyAxMDMuOTIgNTAuMjYgMTAyLjg1IDUwLjk3QzEwMC4yNiA1Mi42OCA5Ni42OSA1MS43NyA5NS4zMiA0OS4wNUM5NC42NiA0Ny43NCA5NC42NSA0Ny42NSA5NC41OSAzOS42MkM5NC41MyAzMS41OSA5NC41NyAzMi4wNCA5My44MiAzMC45MUM5MS45NSAyOC4xMiA4Ny45MyAyOS4yMyA4Ni4xNyAzMy4wM0M4NS40MiAzNC42NSA4NS4zMCAzNS45NyA4NS4zNiA0MS45NkM4NS40MSA0Ni4zNiA4NS40MyA0Ni42NCA4NS44MyA0Ny45NkM4Ni4xMSA0OC44NiA4Ni4xNiA0OS41OCA4NS45NyA1MC4wM0M4NS41MCA1MS4xNiA4My4wOSA1Mi4wNCA4MS4yOCA1MS43NVpNMTMxLjM4IDE4Ljc5QzEyNy43OSAxOC4wOCAxMjYuNTEgMTMuNjEgMTI5LjE0IDEwLjk1QzEzMS4xNiA4Ljg5IDEzMy44OSA4LjM4IDEzNS45OSA5LjY1QzE0MC43MyAxMi41MSAxMzcuMDEgMTkuOTAgMTMxLjM4IDE4Ljc5Wk0xMzMuMDQgNTEuNzBDMTMxLjA1IDUxLjI2IDEyOS42MyA0OS43NSAxMjkuMDggNDcuNDhDMTI4LjgwIDQ2LjM0IDEyOC43NSA0NC42NiAxMjguNzUgMzYuMjVDMTI4Ljc1IDI3LjYxIDEyOC43NSAyNy43MiAxMjguMjkgMjYuMjVDMTI3LjYzIDI0LjE1IDEyOC40MSAyMy4wNiAxMzAuODggMjIuNjFDMTMzLjkzIDIyLjA1IDEzNi4zMyAyMy41MiAxMzcuMTAgMjYuNDNDMTM3LjI4IDI3LjEyIDEzNy4yOCAyNy4yMSAxMzcuMzQgMzYuNjdDMTM3LjQwIDQ3LjE2IDEzNy4zNiA0Ni40NyAxMzcuOTIgNDguMTBDMTM4LjI3IDQ5LjEwIDEzOC4yOCA0OS42NiAxMzcuOTggNTAuMTlDMTM3LjI5IDUxLjM1IDEzNC44NCA1Mi4xMCAxMzMuMDQgNTEuNzBaTTE1My40MiA1MS43NEMxNTAuMTkgNTEuMzggMTQ3Ljc2IDQ5Ljg2IDE0Ni41OCA0Ny40N0MxNDUuNzYgNDUuODAgMTQ1LjcyIDQ1LjM1IDE0NS43MCAzNi45NEMxNDUuNjggMjguMzAgMTQ1LjgwIDI4Ljk2IDE0NC4wMCAyNy43OUMxNDIuNjIgMjYuODkgMTQyLjE0IDI2LjIwIDE0Mi4xMyAyNS4wOEMxNDIuMTMgMjMuOTUgMTQyLjYzIDIzLjM1IDE0NC4wNiAyMi44MkMxNDUuNzAgMjIuMjEgMTQ1Ljk3IDIxLjIwIDE0NS4wOSAxOC45M0MxNDQuNDIgMTcuMTkgMTQ1LjI0IDE2LjA3IDE0Ny41NiAxNS41NUMxNTAuOTkgMTQuNzggMTUzLjc1IDE2Ljc0IDE1NC4xMyAyMC4yMUMxNTQuMjcgMjEuNTQgMTU0LjU0IDIyLjE5IDE1NS4wOCAyMi41NUMxNTUuNjEgMjIuOTAgMTU1Ljg3IDIyLjk0IDE1OC40MiAyMi45OUMxNjEuNzAgMjMuMDYgMTYyLjI2IDIzLjMwIDE2Mi4yOCAyNC42MkMxNjIuMzAgMjYuMjcgMTYwLjQxIDI3LjU1IDE1Ny4yMSAyOC4wNUMxNTUuMzAgMjguMzUgMTU0LjY3IDI4LjcwIDE1NC40MCAyOS42MEMxNTQuMTggMzAuMzMgMTU0LjI1IDQzLjI0IDE1NC40OCA0My45NkMxNTUuMTggNDYuMTcgMTU3LjQzIDQ2LjY3IDE2MC4wNSA0NS4yMEMxNjIuMTYgNDQuMDEgMTYyLjg5IDQzLjkyIDE2My41MyA0NC43N0MxNjUuMDUgNDYuODEgMTYxLjk5IDUwLjQzIDE1Ny45MiA1MS40MEMxNTYuNDUgNTEuNzUgMTU0LjY5IDUxLjg5IDE1My40MiA1MS43NFpNMTk3LjU1IDUxLjYyQzE5Ni4wMyA1MS4yNSAxOTQuNzUgNTAuMDggMTk0LjE4IDQ4LjU1QzE5My43MiA0Ny4zNCAxOTMuNzEgNDcuMDkgMTkzLjc0IDM3LjkyQzE5My43NiAyOC42NiAxOTMuNzQgMjguMDQgMTkzLjMzIDI2LjcxQzE5Mi44OCAyNS4yMiAxOTIuOTIgMjQuNTYgMTkzLjUxIDIzLjgxQzE5NC4xNyAyMi45OCAxOTUuMjYgMjIuNTUgMTk2LjcxIDIyLjU1QzE5OC45MiAyMi41NiAyMDAuMTUgMjMuMjIgMjAxLjQxIDI1LjA4QzIwMi4zNSAyNi40OCAyMDIuODcgMjYuNTEgMjA0LjI5IDI1LjI0QzIwNS44OCAyMy44MiAyMDcuODAgMjIuOTMgMjA5LjkyIDIyLjYyQzIxNS4xNyAyMS44NSAyMTguODAgMjQuNDcgMjE5LjY3IDI5LjY3QzIxOS43MyAzMC4wMSAyMTkuNzkgMzMuMDcgMjE5LjgzIDM4LjA4QzIxOS45MSA0Ni42NyAyMTkuODggNDYuMzEgMjIwLjQxIDQ3Ljk2QzIyMS4wNSA0OS45NSAyMjAuMzUgNTEuMDQgMjE4LjA2IDUxLjU4QzIxNS41MyA1Mi4xOSAyMTMuMjEgNTEuMTggMjEyLjEzIDQ4Ljk5QzIxMS4zOSA0Ny40OSAyMTEuNDAgNDcuNjQgMjExLjM0IDM5LjY3QzIxMS4yOSAzMy40MyAyMTEuMjcgMzIuNjYgMjExLjE0IDMyLjIxQzIwOS45OSAyOC4yMyAyMDUuNDEgMjguNDYgMjAzLjIxIDMyLjYwQzIwMi4xNCAzNC42MiAyMDIuMDcgMzUuMTkgMjAyLjEwIDQxLjQ2QzIwMi4xNCA0Ny4wOCAyMDIuMDkgNDYuNTUgMjAyLjcwIDQ4LjIxQzIwMy4yMSA0OS42MCAyMDIuODUgNTAuNDggMjAxLjQ5IDUxLjE3QzIwMC40MCA1MS43MiAxOTguNzUgNTEuOTEgMTk3LjU1IDUxLjYyWiIvPjxwYXRoIGZpbGw9IiNFMzBFMEUiIGQ9Ik02My43NSA1Mi44OEM2My41NCA1Mi44MSA2My4xMSA1Mi41OSA2Mi43OSA1Mi4zOEM2MS4zMyA1MS40NCA2MC45NSA1MS4zNSA1OS43NSA1MS43MUM1Ny4zNSA1Mi40MSA1NC4xMCA1MS43MyA1Mi4zOCA1MC4xNkM1MS4xNCA0OS4wMiA1MS40MCA0OC4zOSA1My4wMyA0OC41OEM1OC4yMyA0OS4xOCA2Mi4zNyA0Ni4xMyA2My4yMSA0MS4wOUM2My4zNiA0MC4yMCA2My4zNSAzOS43OSA2My4xNiAzOC4zM0M2Mi45MyAzNi41OCA2My41NCAzNi4xNiA2NC42MSAzNy4zM0M2Ni4xOCAzOS4wOCA2Ny4wNCA0Mi40OSA2Ni40NiA0NC43MkM2Ni4xMSA0Ni4wNSA2Ni4xOCA0Ni40OCA2Ni44OSA0Ny41M0M2Ny42NCA0OC42MSA2Ny43OSA0OS4wMCA2Ny43OSA0OS44M0M2Ny44MCA1MS44NyA2NS42NSA1My40OSA2My43NSA1Mi44OFpNNDQuNDggNDcuNThDNDMuNjIgNDcuMzcgNDIuNjcgNDYuNTcgNDIuMjkgNDUuNzNDNDEuNzkgNDQuNjIgNDIuMDAgNDMuNTQgNDIuOTcgNDIuMjlDNDMuNzEgNDEuMzEgNDMuNzYgNDEuMDIgNDMuNDAgMzkuNTBDNDMuMTUgMzguNDMgNDMuMjEgMzYuMjMgNDMuNTIgMzUuMzNDNDQuMzcgMzIuODcgNDUuMzYgMzEuNDUgNDYuMTYgMzEuNTJDNDYuNjYgMzEuNTYgNDYuNzIgMzEuODIgNDYuNTUgMzMuMDRDNDUuODkgMzcuODggNDkuMDggNDIuMjcgNTMuODMgNDMuMDVDNTQuNjIgNDMuMTggNTQuNzggNDMuMTggNTcuMTAgNDMuMDNDNTkuNTUgNDIuODcgNTguMTMgNDUuMDYgNTUuMTYgNDYuMDNDNTMuNzMgNDYuNDkgNTEuODkgNDYuNjEgNTAuMjYgNDYuMzNDNDguODIgNDYuMDkgNDguNTYgNDYuMTQgNDcuNDggNDYuODVDNDYuMzUgNDcuNjAgNDUuNDcgNDcuODEgNDQuNDggNDcuNThaTTY4LjcxIDQzLjQyQzY4LjU1IDQzLjI0IDY4LjU1IDQzLjI2IDY4Ljc1IDQxLjQ3QzY5LjM3IDM2LjA0IDY0LjEyIDMxLjAxIDU4LjY3IDMxLjgxQzU3LjE0IDMyLjAzIDU2LjYxIDMxLjY4IDU3LjE5IDMwLjgzQzU4LjM2IDI5LjEwIDYyLjM2IDI4LjAxIDY1LjEyIDI4LjY3QzY2LjA2IDI4Ljg5IDY2Ljg3IDI4LjcwIDY3Ljc3IDI4LjA2QzY5LjUxIDI2LjgyIDcwLjY0IDI2Ljg4IDcyLjAyIDI4LjI1QzczLjIzIDI5LjQ2IDczLjQ1IDMwLjg2IDcyLjY0IDMyLjE3QzcyLjQ4IDMyLjQyIDcyLjIyIDMyLjg1IDcyLjA2IDMzLjExQzcxLjY2IDMzLjc3IDcxLjYxIDM0LjE3IDcxLjgwIDM1LjIwQzcxLjk3IDM2LjE4IDcxLjk5IDM4LjE0IDcxLjgzIDM5LjEwQzcxLjQyIDQxLjUzIDY5LjQ2IDQ0LjI1IDY4LjcxIDQzLjQyWk01MS4xMSAzOC4wOUM0OS41MyAzNy4zNyA0OC4xMSAzMi45MCA0OC43MCAzMC40N0M0OS4wOCAyOC45MCA0OC45OSAyOC4zNiA0OC4xNiAyNy4yNUM0Ny4yNiAyNi4wMiA0Ny4xMyAyNS4xNCA0Ny42OCAyMy45OEM0OC43MSAyMS44MiA1MC43NyAyMS4zMSA1Mi42OCAyMi43NEM1My43MiAyMy41MSA1NC4xMCAyMy41OCA1NS42MCAyMy4yOEM1OC41NyAyMi42OSA2Mi4yMyAyMy42MyA2My4zMSAyNS4yN0M2My45OCAyNi4yOCA2My42OCAyNi40NCA2MS4xMiAyNi40NkM1OS4yNyAyNi40NyA1OC45NyAyNi40OSA1OC40MCAyNi42NUM1NC4yMiAyNy44MSA1MS40MiAzMS45MSA1MS45NyAzNi4wOUM1Mi4yMSAzNy45NiA1MS45OSAzOC40OCA1MS4xMSAzOC4wOVoiLz48cGF0aCBmaWxsPSIjRTMwRTBFIiBkPSJNMTc0LjEyIDUyLjAzQzE3My45NCA1MS45MiAxNzMuNTcgNTEuNjAgMTczLjI5IDUxLjM0QzE3Mi45OSA1MS4wNCAxNzIuNTIgNTAuNzIgMTcyLjEwIDUwLjUwQzE3MC40NyA0OS42NiAxNzAuNTIgNDguNTAgMTcyLjIxIDQ3LjcxQzE3My4xOCA0Ny4yNiAxNzMuNTAgNDYuODYgMTczLjUwIDQ2LjE1QzE3My41MCA0NS4xNSAxNzMuMDAgNDQuNjMgMTcxLjU2IDQ0LjExQzE2MS4yMiA0MC40MSAxNjEuMzcgMjYuNTUgMTcxLjc5IDIzLjE2QzE3NC40MiAyMi4zMCAxNzYuODkgMjIuNTYgMTc5LjkyIDI0LjAxQzE4MS42MyAyNC44MiAxODIuMDQgMjQuNzcgMTgzLjI2IDIzLjU3QzE4NC41NiAyMi4zMSAxODQuNTQgMjEuNjcgMTgzLjIxIDIxLjI0QzE4MS45OSAyMC44NSAxODEuNjEgMTkuNzkgMTgyLjQxIDE4Ljk5QzE4Mi44OCAxOC41MSAxODMuMDkgMTguNDkgMTg2LjExIDE4LjUyQzE4OS45NCAxOC41NSAxOTAuMDIgMTguNjAgMTkwLjA3IDIxLjE2QzE5MC4xNCAyNC42NiAxODkuOTMgMjUuOTUgMTg5LjIyIDI2LjI4QzE4OC40OSAyNi42MyAxODcuOTggMjYuMzMgMTg3LjQ2IDI1LjI2QzE4Ni45MiAyNC4xNSAxODYuMzIgMjQuMTYgMTg1LjE5IDI1LjMwQzE4My45NCAyNi41OCAxODMuODIgMjcuMTkgMTg0LjU3IDI4LjY2QzE4NS4wMiAyOS41NCAxODUuNjQgMzEuNDggMTg1Ljg0IDMyLjYzQzE4Ni4xMSAzNC4yMCAxODUuNDEgMzcuNDIgMTg0LjQ0IDM5LjA0QzE4Mi45OCA0MS40NyAxODAuNzUgNDMuMjIgMTc3Ljg3IDQ0LjIyQzE3Ni43MyA0NC42MSAxNzYuMzIgNDQuOTcgMTc2LjE3IDQ1LjY5QzE3NS45NiA0Ni42OSAxNzYuMzcgNDcuMzYgMTc3LjQwIDQ3LjcwQzE3OC41MSA0OC4wNyAxNzguODYgNDguNDEgMTc4Ljg2IDQ5LjEyQzE3OC44NiA0OS44MyAxNzguNTYgNTAuMTQgMTc3LjQ4IDUwLjUxQzE3Ni44NCA1MC43MyAxNzYuNzUgNTAuNzkgMTc2LjE3IDUxLjQxQzE3NS4yOCA1Mi4zNSAxNzQuODAgNTIuNDkgMTc0LjEyIDUyLjAzWk0xNzYuNjYgNDEuODRDMTc5LjgzIDQxLjE1IDE4Mi40NSAzOC40NiAxODMuMDUgMzUuMjhDMTg0LjU5IDI3LjA5IDE3NC41NiAyMi4wMSAxNjguODIgMjguMDdDMTYzLjI3IDMzLjkzIDE2OC43NSA0My41NyAxNzYuNjYgNDEuODRaIi8+PC9zdmc+', actions,
+    tabs: [
+      { id: 'home', href: 'accueil', icon: 'home', label: T.nav.home },
+      { id: 'alerts', href: 'alertes', icon: 'bell', label: T.nav.alerts, count: () => (newAlerts() ? String(newAlerts()) : '') },
+      { id: 'sos', href: 'sos', label: T.nav.sos, sos: true },
+      { id: 'cases', href: 'dossiers', icon: 'folder', label: T.nav.cases },
+      { id: 'collect', href: 'collecte', icon: 'file-plus', label: T.nav.collect },
+    ],
+    rail: [
+      { title: T.page.g_pair, items: [
+        { href: 'accueil', label: 'Accueil pair' }, { href: 'alertes', label: 'Alertes routées vers moi' }, { href: 'alerte/a1', label: 'Détail d’une alerte SOS' },
+        { href: 'dossiers', label: 'Mes dossiers' }, { href: 'dossier/VBG-0042', label: 'Fiche dossier (5 sections, frise)' }, { href: 'suivi/VBG-0042', label: 'Ajouter un suivi' }, { href: 'sos', label: 'SOS' } ] },
+      { title: 'Collecte', items: [
+        { href: 'collecte?etape=1', label: 'Collecte : étape 1' }, { href: 'collecte?etape=5&demo=1', label: 'Collecte : vérification + avertissement' },
+        { href: 'collecte?etape=5&demo=1&net=off&submit=1', label: 'Collecte hors ligne : en file' }, { href: 'collecte?etape=5&demo=1&net=on&submit=1', label: 'Collecte en ligne : envoyé' } ] },
+      { title: T.page.g_offline, items: [
+        { href: 'sync?net=off', label: 'File de synchronisation (hors ligne)' }, { href: 'sync?net=on', label: 'Conflit 409 à résoudre' } ] },
+    ],
+    banner: () => (S.net === 'off' ? `<div class="nb" role="status">${ic('wifi-off', 'sm')}<span>${esc(t('net.banner'))}</span></div>` : ''),
+    chip: r => { if (r.name === 'sync') return ''; const n = pend(), off = S.net === 'off'; const lab = off ? t('net.offline') + (n ? ` · ${n}` : '') : n ? t('net.pending_short', { count: n }) : t('net.online'); return `<a class="netchip ${off ? 'off' : ''}" href="#/sync" aria-label="${esc(lab + ' — ' + t('net.open_sync'))}">${ic(off ? 'wifi-off' : n ? 'clock' : 'wifi')}<span>${esc(lab)}</span></a>`; },
+    init: () => {
+      Q.push({ id: 'q' + (++qSeq), kind: 'status', label: 'Statut du dossier VBG-0031', status: 'conflict', when: 'hier à 17:40', field: 'Statut', base: 'Ouvert', server: 'Clos', mine: 'En cours', choice: '' });
+      if (S.net === 'off') {
+        Q.push({ id: 'q' + (++qSeq), kind: 'case', label: 'Dossier VBG · Ouidah', status: 'pending', when: 'aujourd’hui à 09:14', data: { kind: 'VBG', date: '2026-10-27', zone: 'Atlantique', commune: 'Ouidah', pop: 'Femmes cis', sex: 'Femme', age: '25-34', viol: 'psychologique' } });
+        Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: 'Appel de suivi · VBG-0047', status: 'pending', when: 'aujourd’hui à 09:20', fuRef: ['VBG-0047', 99] });
+      }
+    },
+    onNet: (n, was, fromUrl) => { if (n === 'on' && was === 'off') setTimeout(runSync, 600); },
+    onRoute: r => {
+      if (r.name === 'collecte' && (r.q.etape || r.q.demo)) {
+        F = F0(); if (r.q.demo) demoFill(); F.step = +(r.q.etape || 1);
+        if (r.q.submit) { for (let i = 1; i <= 4; i++) if (Object.keys(validateStep(i)).length) { F.step = i; return; } setTimeout(() => { Q.length; submitCase(); }, 0); }
+      }
+    },
+    screen: r => {
+      switch (r.name) {
+        case 'accueil': return home();
+        case 'alertes': return alerts();
+        case 'alerte': return alertDetail(r.args[0]);
+        case 'dossiers': return cases();
+        case 'dossier': return caseShow(r.args[0]);
+        case 'suivi': return followForm(r.args[0]);
+        case 'collecte': return collecte();
+        case 'collecte-ok': return collecteOk(r.args[0]);
+        case 'sync': return sync();
+        case 'sos': return sosScreen();
+        default: return home();
+      }
+    },
+  });
+})();
+</script>
+</body>
+</html>
