@@ -65,5 +65,20 @@ Si `storage:link` échoue : déposer les médias publics dans un disque servi pa
 - [ ] `SANCTUM_STATEFUL_DOMAINS=xomiton.org,www.xomiton.org`, redirection `www` ↔ apex unique.
 - [ ] `scripts/deploy.sh --first`, `xomiton:preflight` (sans `--skip-cron` une fois le cron en place), crons, signal de vie, sondes, planification de `scripts/backup.sh` et copie externe.
 - [ ] `php artisan xomiton:import-prototype <dossier data/> --dry-run` puis réel, si des données réelles existent.
-- [ ] Fournisseurs réels : `WEBPUSH_DRIVER=vapid`, `FCM_DRIVER=firebase`, `SMS_PROVIDER` ; plus aucun WARN « pilote log » inattendu.
+- [ ] Fournisseurs réels : `WEBPUSH_DRIVER=vapid`, `FCM_DRIVER=fcm`, `SMS_DRIVER=vonage|twilio` (§7) ; plus aucun WARN « pilote log » inattendu.
 - [ ] Formation de l'équipe : alerte de signal de vie, SOS non escaladé, maintenance, restauration (RUNBOOK §4, §7, §9, §12) ; planning de garde renseigné.
+
+## 7. Push FCM, SMS et assistant : mise en service (Q7)
+
+Tout reste en `log` / `kb` tant que `.env` ne dit pas le contraire ; aucune file permanente : les envois partent dans la requête (SOS) ou par `notifications:retry` (cron chaque minute). Après chaque changement : `php artisan config:cache`, puis `xomiton:preflight`.
+
+**Push (FCM, gratuit)**
+1. Console Firebase : créer le projet, ajouter l'application Android (`applicationId` du `build.gradle.kts`) et iOS ; activer Cloud Messaging (API HTTP v1).
+2. Paramètres du projet > Comptes de service > Générer une clé privée : le JSON va **hors `public_html`**, par exemple `/home/CPANELUSER/secrets/firebase-sa.json`, `chmod 600`. Jamais dans le dépôt.
+3. `.env` : `FCM_DRIVER=fcm`, `FIREBASE_CREDENTIALS=/home/CPANELUSER/secrets/firebase-sa.json` (`FIREBASE_PROJECT_ID` facultatif, lu dans le JSON).
+4. Mobile : placer `google-services.json` dans `mobile/android/app/` et `GoogleService-Info.plist` dans `mobile/ios/Runner/` **sur le poste de build seulement** (ils sont ignorés par git) ; sans eux l'application démarre avec un service push inactif (`NoopPushService`).
+5. Essai : `php artisan notifications:test-push <jeton FCM d'un téléphone de recette> --urgent --yes`.
+
+**SMS** : `SMS_DRIVER=vonage` (`VONAGE_API_KEY`, `VONAGE_API_SECRET`) ou `twilio` (`TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, éventuellement `TWILIO_MESSAGING_SERVICE_SID`) ; `SMS_SENDER` = nom alphanumérique (11 caractères) ou numéro E.164, **selon ce que l'opérateur béninois accepte** (à confirmer par le devis). Essai : `php artisan notifications:test-sms +229… --yes`. Statut de livraison (webhook signé) : non livré, l'acceptation par le fournisseur est journalisée (`sms.accepted`).
+
+**Assistant Gemini** : `GEMINI_API_KEY`, `GEMINI_MODEL`, `ASSISTANT_PROVIDER=gemini` **et** `ASSISTANT_LLM_ENABLED=true` : **interdit en production avant l'avis juridique** (DECISIONS_A_VALIDER, Q7). Essai en recette seulement : `php artisan assistant:test-llm --yes`.

@@ -55,7 +55,7 @@ it('lie les pilotes log par défaut et retombe sur log pour un pilote inconnu ou
     Log::spy();
 
     expect(NotificationDrivers::effective('webpush', 'vapid', NotificationDrivers::WEBPUSH))->toBe('log')
-        ->and(NotificationDrivers::effective('fcm', 'firebase', NotificationDrivers::FCM))->toBe('log')
+        ->and(NotificationDrivers::effective('fcm', 'inconnu', NotificationDrivers::FCM))->toBe('log')
         ->and(NotificationDrivers::effective('sms', 'inconnu', NotificationDrivers::SMS))->toBe('log')
         ->and(NotificationDrivers::effective('sms', 'LOG', NotificationDrivers::SMS))->toBe('log');
 

@@ -506,18 +506,35 @@ return [
                 'driver' => env('FCM_DRIVER', 'log'),
                 // Chemin absolu du fichier JSON du compte de service Firebase, hors racine web (jamais de clé serveur héritée).
                 'credentials' => env('FIREBASE_CREDENTIALS'),
+                // Obligatoire avec le pilote `fcm` si le JSON n'est pas lisible : identifiant du projet Firebase (sinon lu dans le JSON).
+                'project_id' => env('FIREBASE_PROJECT_ID'),
+                // Cache du jeton OAuth2 (fichier, store `file`, durée = expires_in moins une marge).
+                'token_cache_store' => 'file',
             ],
         ],
     ],
 
     /*
      * SMS de secours (NOTIFICATIONS_INSTRUCTION.md §1 : SOS uniquement, Q7) : App\Domain\Notifications\Contracts\SmsSender.
-     * `provider` : `log` (journal) tant que le fournisseur n'est pas choisi ; un fournisseur inconnu retombe sur `log`.
+     * `driver` (Q7 tranchée) : `log` (défaut, journal) | `vonage` | `twilio` ; un nom inconnu retombe sur `log`.
+     * `SMS_PROVIDER` reste accepté comme ancien nom de SMS_DRIVER.
      */
     'sms' => [
-        'provider' => env('SMS_PROVIDER', 'log'),
-        'api_key' => env('SMS_API_KEY'),
+        'driver' => env('SMS_DRIVER', env('SMS_PROVIDER', 'log')),
+        // Expéditeur : nom alphanumérique (11 caractères max, selon les pays) ou numéro E.164. À confirmer avec le devis béninois.
         'sender' => env('SMS_SENDER', 'Xomiton'),
+        // Indicatif ajouté aux numéros saisis sans « + » (Bénin).
+        'default_country_code' => '229',
+        'vonage' => [
+            'api_key' => env('VONAGE_API_KEY'),
+            'api_secret' => env('VONAGE_API_SECRET'),
+        ],
+        'twilio' => [
+            'account_sid' => env('TWILIO_ACCOUNT_SID'),
+            'auth_token' => env('TWILIO_AUTH_TOKEN'),
+            // Service de messagerie (MG…) : prioritaire sur l'expéditeur si renseigné.
+            'messaging_service_sid' => env('TWILIO_MESSAGING_SERVICE_SID'),
+        ],
         // P5-03 (D6, Q50) : bornes en segments, pas en caractères (App\Domain\Notifications\SmsText : texte ramené à
         // GSM-7, 160 caractères pour un segment, 153 par segment au-delà ; 70 / 67 si un caractère reste en UCS-2).
         'max_segments' => 1,
@@ -740,6 +757,19 @@ return [
         // Fournisseur de l'assistant membre (App\Infrastructure\Assistant\AssistantProviders, Q7 non tranchée) : `kb`
         // (base de connaissances, sans LLM ni clé d'API) seul pilote livré ; vide, `null` ou inconnu → `kb`.
         'provider' => env('ASSISTANT_PROVIDER', 'kb'),
+        // Q7 : LLM Gemini branché mais DÉSACTIVÉ. Faux par défaut ; ne passer à vrai en production qu'après l'avis
+        // juridique (données de santé / violences vers un tiers hors UE, DPA Google, région) : DECISIONS_A_VALIDER.md.
+        'llm_enabled' => (bool) env('ASSISTANT_LLM_ENABLED', false),
+        'gemini' => [
+            'api_key' => env('GEMINI_API_KEY'),
+            'model' => env('GEMINI_MODEL', 'gemini-2.5-flash'),
+            'endpoint' => 'https://generativelanguage.googleapis.com/v1beta',
+            'timeout_seconds' => (float) env('GEMINI_TIMEOUT', 4),
+            'max_output_tokens' => 220,
+            'max_answer_chars' => 700,
+            // Limite de débit par membre (appels au LLM, pas questions) : par heure.
+            'per_hour' => (int) env('GEMINI_PER_HOUR', 10),
+        ],
         // « Parler à un humain » (P8-11, App\Application\Assistant\EscalateToHuman) : besoin de l'alerte créée (slug de
         // `needs`, routage RG-04 ; repli `autre` s'il n'existe plus) et longueur maximale du message.
         'escalation_need' => 'soutien_psychologique',

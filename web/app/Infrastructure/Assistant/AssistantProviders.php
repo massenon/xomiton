@@ -24,7 +24,8 @@ final class AssistantProviders
     /** @var array<string, class-string<AssistantProvider>|string> */
     public const DRIVERS = [
         KnowledgeBaseProvider::NAME => KnowledgeBaseProvider::class,
-        // Fournisseur LLM retenu (Q7) : implémenter la classe (AssistantProvider), la déclarer ici, ASSISTANT_PROVIDER=<nom>.
+        // Q7 : Gemini, désactivé par défaut (`xomiton.assistant.llm_enabled`) ; ASSISTANT_PROVIDER=gemini ne suffit pas.
+        GeminiAssistantProvider::NAME => GeminiAssistantProvider::class,
     ];
 
     private function __construct() {}
@@ -53,6 +54,11 @@ final class AssistantProviders
         if ($class === null || ! class_exists($class)) {
             Log::warning(sprintf('Assistant : pilote « %s » inconnu ou absent, repli sur %s.', $driver, self::DEFAULT));
 
+            return self::DEFAULT;
+        }
+
+        // Le drapeau llm_enabled coupe tout pilote LLM : sans lui, la base de connaissances répond (et nul appel n'est possible).
+        if ($driver !== self::DEFAULT && ! (bool) config('xomiton.assistant.llm_enabled', false)) {
             return self::DEFAULT;
         }
 

@@ -60,9 +60,13 @@ Les e-mails sans transport utilisable sont mis dans `mail_outbox` (5 tentatives 
 
 1. Identifier : `failed_jobs`, `notification_*` en échec dans Administration, `storage/logs/laravel.log` (erreurs masquées de `DeliveryError`).
 2. Les échecs sont rejoués chaque minute par `notifications:retry` (SOS d'abord, SMS de repli). Un fournisseur en panne ne bloque pas l'enregistrement du SOS.
-3. SMS : vérifier solde et clé (`SMS_API_KEY`), ou changer `SMS_PROVIDER` puis `config:cache`. Web Push / FCM : voir §8 pour les clés. Un pilote `log` signale qu'**aucun envoi réel n'a lieu** (`xomiton:preflight` le signale en WARN).
+3. SMS : vérifier solde et clés (`VONAGE_*` ou `TWILIO_*`), ou basculer `SMS_DRIVER` (`vonage` ↔ `twilio`) puis `config:cache`. Essais : `$PHP artisan notifications:test-sms +229… --yes` (texte fixe, aucune donnée réelle), `notifications:test-push <jeton FCM> [--urgent] --yes`. FCM : jeton OAuth2 en cache fichier (`storage/framework/cache/data`), effacé automatiquement sur un 401 ; un jeton d'appareil invalide (UNREGISTERED) supprime l'abonnement. Web Push : voir §8 pour les clés. Un pilote `log` signale qu'**aucun envoi réel n'a lieu** (`xomiton:preflight` le signale en WARN).
 4. Pendant la panne : joindre les contacts de confiance et le point focal par téléphone pour tout SOS actif.
 5. `$PHP artisan queue:failed` puis `queue:retry all` une fois le fournisseur rétabli ; `queue:flush` seulement après revue.
+
+### 6 bis. Assistant Gemini (désactivé par défaut)
+
+Le LLM n'est appelé que si `ASSISTANT_PROVIDER=gemini` **et** `ASSISTANT_LLM_ENABLED=true` **et** `GEMINI_API_KEY` renseignée, et seulement quand la base de connaissances ne répond pas. Crise / violence / SOS : jamais envoyés. **Ne pas activer en production sans l'avis juridique** (DECISIONS_A_VALIDER, Q7). Coupure d'urgence : `ASSISTANT_LLM_ENABLED=false` + `config:cache` (ou désactiver le fournisseur dans `/admin/assistant`) : la base répond seule. Essai : `$PHP artisan assistant:test-llm --yes` (question fixe ; refuse si le drapeau est faux). Le journal (`assistant.llm`) ne contient que issue, durée et longueurs. Limite : `GEMINI_PER_HOUR` appels par membre.
 
 ## 7. Mode maintenance
 
@@ -78,7 +82,7 @@ Les e-mails sans transport utilisable sont mis dans `mail_outbox` (5 tentatives 
 5. `xomiton:maintenance off`, `xomiton:preflight`.
 
 **VAPID** (Web Push) : générer une nouvelle paire, mettre à jour `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY`, `config:cache`. Les abonnements existants sont liés à l'ancienne clé publique : ils échouent puis sont supprimés par `notifications:retry`, les personnes se réabonnent à la prochaine visite. À planifier hors alerte active.
-**FCM** : créer une nouvelle clé du compte de service Firebase, déposer le JSON **hors `public/`** (`chmod 600`), mettre à jour `FIREBASE_CREDENTIALS`, `config:cache`, vérifier un push de test, puis révoquer l'ancienne clé dans la console Google Cloud.
+**FCM** (compte de service, aucun paquet Composer : le JWT est signé par OpenSSL, `GoogleAccessToken`) : créer une nouvelle clé du compte de service Firebase, déposer le JSON **hors `public/`** (`chmod 600`), mettre à jour `FIREBASE_CREDENTIALS`, `config:cache`, vérifier un push de test, puis révoquer l'ancienne clé dans la console Google Cloud.
 **HMAC newsletter** (`XOMITON_NEWSLETTER_KEY`) : la changer invalide les liens de suivi et de désabonnement des campagnes déjà envoyées : à ne faire qu'en cas de fuite, après avoir prévenu l'équipe.
 **Passerelles** (`FACEBOOK_*`, `TELEGRAM_BOT_TOKEN`, `TIKTOK_*`), **SMS**, **DB**, **SMTP** : régénérer chez le fournisseur, modifier `.env`, `config:cache`, `queue:restart` inutile (workers courts), tester, révoquer l'ancien jeton.
 

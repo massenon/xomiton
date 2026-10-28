@@ -93,7 +93,7 @@ final class DeliveryRunner
         return $this->providerNames[$provider] ??= match ($provider) {
             PlannedDelivery::WEBPUSH => NotificationDrivers::effective('webpush', (string) config('xomiton.notifications.push.webpush.driver', NotificationDrivers::LOG), NotificationDrivers::WEBPUSH),
             PlannedDelivery::FCM => NotificationDrivers::effective('fcm', (string) config('xomiton.notifications.push.fcm.driver', NotificationDrivers::LOG), NotificationDrivers::FCM),
-            default => NotificationDrivers::effective('sms', (string) config('xomiton.sms.provider', NotificationDrivers::LOG), NotificationDrivers::SMS),
+            default => NotificationDrivers::effective('sms', (string) config('xomiton.sms.driver', NotificationDrivers::LOG), NotificationDrivers::SMS),
         };
     }
 

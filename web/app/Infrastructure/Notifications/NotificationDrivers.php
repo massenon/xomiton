@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * Résout le pilote de chaque canal externe (ADR-25, Q7) à partir de `config/xomiton.php` :
- * `notifications.push.webpush.driver`, `notifications.push.fcm.driver`, `sms.provider`.
+ * `notifications.push.webpush.driver`, `notifications.push.fcm.driver`, `sms.driver`.
  *
  * Point d'extension : ajouter la classe du pilote dans la table correspondante (elle implémente l'interface du
  * domaine) et choisir son nom dans `.env`. Un nom inconnu, ou une classe absente parce que le paquet n'est pas
@@ -32,13 +32,16 @@ final class NotificationDrivers
     /** @var array<string, class-string<FcmSender>|string> */
     public const FCM = [
         self::LOG => LogFcmSender::class,
-        // Paquet FCM HTTP v1 + FIREBASE_CREDENTIALS, puis implémenter cette classe (voir FcmSender).
-        'firebase' => 'App\\Infrastructure\\Notifications\\FirebaseFcmSender',
+        // FCM HTTP v1 + FIREBASE_CREDENTIALS (compte de service) ; `firebase` = ancien nom de `fcm`.
+        'fcm' => FirebaseFcmSender::class,
+        'firebase' => FirebaseFcmSender::class,
     ];
 
     /** @var array<string, class-string<SmsSender>|string> */
     public const SMS = [
         self::LOG => LogSmsSender::class,
+        'vonage' => VonageSmsSender::class,
+        'twilio' => TwilioSmsSender::class,
     ];
 
     private function __construct() {}
@@ -62,7 +65,7 @@ final class NotificationDrivers
     public static function sms(Container $app): SmsSender
     {
         /** @var SmsSender $sender */
-        $sender = self::resolve($app, 'sms', (string) config('xomiton.sms.provider', self::LOG), self::SMS);
+        $sender = self::resolve($app, 'sms', (string) config('xomiton.sms.driver', self::LOG), self::SMS);
 
         return $sender;
     }

@@ -37,7 +37,8 @@ it('retombe sur kb avec un avertissement pour un pilote inconnu', function (): v
     Log::shouldHaveReceived('warning')->once()->withArgs(fn (string $message): bool => str_contains($message, '« openai »'));
 });
 
-it('ne lit aucune clé d’API : la configuration livrée ne déclare que le pilote kb', function (): void {
-    expect(array_keys(AssistantProviders::DRIVERS))->toBe(['kb'])
-        ->and(config('xomiton.assistant'))->not->toHaveKey('api_key');
+it('livre kb et gemini, ce dernier désactivé et sans clé par défaut', function (): void {
+    expect(array_keys(AssistantProviders::DRIVERS))->toBe(['kb', 'gemini'])
+        ->and(config('xomiton.assistant.llm_enabled'))->toBeFalse()
+        ->and(config('xomiton.assistant.gemini.api_key'))->toBeNull();
 });

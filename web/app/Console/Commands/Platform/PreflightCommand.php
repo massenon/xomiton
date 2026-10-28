@@ -148,7 +148,7 @@ class PreflightCommand extends Command
         foreach ([
             'Web Push' => config('xomiton.notifications.push.webpush.driver'),
             'FCM' => config('xomiton.notifications.push.fcm.driver'),
-            'SMS' => config('xomiton.sms.provider'),
+            'SMS' => config('xomiton.sms.driver'),
             'Passerelles sociales' => config('xomiton.gateways.driver'),
         ] as $label => $driver) {
             $this->check($driver !== 'log', $label.' : pilote '.$driver, $label.' : pilote « log » (rien n’est envoyé)', warn: true);
@@ -156,7 +156,7 @@ class PreflightCommand extends Command
 
         $credentials = config('xomiton.notifications.push.fcm.credentials');
 
-        if (config('xomiton.notifications.push.fcm.driver') === 'firebase') {
+        if (in_array(config('xomiton.notifications.push.fcm.driver'), ['fcm', 'firebase'], true)) {
             $inside = is_string($credentials) && str_starts_with((string) realpath($credentials), (string) realpath(base_path('public')));
             $this->check(is_string($credentials) && is_file($credentials) && ! $inside, 'FIREBASE_CREDENTIALS lisible hors public/', 'FIREBASE_CREDENTIALS absent ou sous public/');
         }
