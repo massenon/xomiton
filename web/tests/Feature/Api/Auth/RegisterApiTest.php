@@ -37,6 +37,7 @@ function registerPayload(array $overrides = []): array
         'password' => 'Xomiton2026!',
         'cgu' => true,
         'privacy' => true,
+        'age_confirmed' => true,
         'device_name' => 'Pixel 7 de Awa',
     ], $overrides);
 }
@@ -60,7 +61,7 @@ it('crée le compte, délivre un jeton immédiatement et envoie le code de confi
 
     $user = User::query()->where('email', 'awa@exemple.bj')->firstOrFail();
     expect($user->email_verified_at)->toBeNull()
-        ->and($user->consents()->count())->toBe(2)
+        ->and($user->consents()->count())->toBe(3)
         ->and($user->tokens()->count())->toBe(1)
         ->and($user->tokens()->first()?->name)->toBe('Pixel 7 de Awa')
         ->and(OtpCode::query()->forEmail('awa@exemple.bj', OtpPurpose::Signup)->valid()->count())->toBe(1)
@@ -104,7 +105,7 @@ it('accepte les phases 2-3 (profile) et 4 (consents) : un·e pair passe en atten
         ->assertJsonPath('data.user.profile.trusted_contact_phone', '+229 01 97 38 88 47');
 
     $user = User::query()->where('email', 'awa@exemple.bj')->firstOrFail();
-    expect($user->consents()->count())->toBe(4)
+    expect($user->consents()->count())->toBe(5)
         ->and($user->consents()->ofKind(ConsentKind::SensitiveData)->granted()->exists())->toBeTrue()
         ->and($user->consents()->ofKind(ConsentKind::Newsletter)->where('granted', false)->exists())->toBeTrue();
 });
@@ -158,4 +159,16 @@ it('limite les tentatives d’inscription à 5 par minute et par adresse (429)',
         ->assertHeader('Retry-After')
         ->assertJsonPath('code', 'too_many_requests')
         ->assertJsonStructure(['message', 'code', 'retry_after']);
+});
+
+it('Q68 : refuse sans la case d’âge (422 age_confirmation_required, aucun compte) et ne stocke que son horodatage', function (): void {
+    $this->postJson('/api/v1/auth/register', registerPayload(['age_confirmed' => false]))
+        ->assertUnprocessable()
+        ->assertJsonPath('code', 'age_confirmation_required')
+        ->assertJsonPath('errors.age_confirmed.0', __('auth.age_confirmation_required', ['min_age' => 15]));
+    expect(User::query()->count())->toBe(0);
+
+    $this->postJson('/api/v1/auth/register', registerPayload())->assertCreated();
+    $user = User::query()->firstOrFail();
+    expect($user->consents()->where('kind', 'age_confirmed')->where('granted', true)->exists())->toBeTrue();
 });

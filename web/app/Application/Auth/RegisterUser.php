@@ -6,6 +6,7 @@ namespace App\Application\Auth;
 
 use App\Application\Auth\Support\RegistrationGate;
 use App\Domain\Auth\ConsentVersion;
+use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
 use App\Domain\Auth\Exceptions\ConsentRequired;
 use App\Domain\Auth\Exceptions\OtpException;
 use App\Domain\Auth\Exceptions\RegistrationsClosed;
@@ -40,7 +41,7 @@ final class RegisterUser
     public function __construct(private readonly OtpService $otp) {}
 
     /**
-     * @throws RegistrationsClosed|ConsentRequired
+     * @throws RegistrationsClosed|ConsentRequired|AgeConfirmationRequired
      */
     public function __invoke(RegisterData $data): User
     {
@@ -50,6 +51,10 @@ final class RegisterUser
 
         if (! $data->acceptsTerms || ! $data->acceptsPrivacy) {
             throw new ConsentRequired;
+        }
+
+        if (! $data->confirmsAge) {
+            throw new AgeConfirmationRequired;
         }
 
         $user = DB::transaction(fn (): User => $this->createAccount($data));
@@ -98,7 +103,7 @@ final class RegisterUser
             'notification_digest' => UserSetting::DIGEST_NEVER,
         ]);
 
-        foreach ([ConsentKind::Terms, ConsentKind::Privacy] as $kind) {
+        foreach ([ConsentKind::Terms, ConsentKind::Privacy, ConsentKind::AgeConfirmed] as $kind) {
             $this->recordConsent($user, $kind, true, $data->ip, $data->userAgent);
         }
 

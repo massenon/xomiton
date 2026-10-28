@@ -37,6 +37,7 @@ final class RegisterController extends ApiController
             password: (string) $v['password'],
             acceptsTerms: true,
             acceptsPrivacy: true,
+            confirmsAge: (bool) ($v['age_confirmed'] ?? false),
             ip: $request->ip(),
             userAgent: $request->userAgent(),
             phone: isset($v['phone']) ? (string) $v['phone'] : null,

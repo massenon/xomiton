@@ -37,6 +37,8 @@
   --xm-secondary-subtle-text: var(--xm-red-700);
   --xm-on-secondary: var(--xm-neutral-0);
 
+  --xm-alert-surface: var(--xm-red-50);    /* Q54 : fond de la section #alerte (rouge très clair) ; le rouge plein reste réservé au SOS */
+  --xm-alert-border: var(--xm-red-500);    /* Q54 : bordure de la section #alerte */
   --xm-danger: var(--xm-red-500);          /* rouge = attention : SOS, signalement, critique, suppression */
   --xm-success: var(--xm-green-700);
   --xm-warning: var(--xm-amber-500);
@@ -139,6 +141,8 @@
   --xm-secondary-subtle-text: var(--xm-red-dark-accent-hover);
   --xm-on-secondary: var(--xm-neutral-d-0);
 
+  --xm-alert-surface: #2A1216;
+  --xm-alert-border: var(--xm-red-dark-accent);
   --xm-danger: var(--xm-red-dark-accent);
   --xm-success: #4DD39D; --xm-warning: #FFC94D; --xm-on-warning: var(--xm-neutral-d-0); --xm-info: #7AB2FF;
   --xm-accent-violet: #C79BE6; --xm-accent-rose: #FF8FB1; --xm-accent-orange: #FF9A5C;

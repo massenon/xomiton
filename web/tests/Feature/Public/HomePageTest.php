@@ -283,3 +283,10 @@ it('redirige les anciennes adresses du prototype vers l’accueil', function ():
     $this->get('/index.php')->assertRedirect('/')->assertStatus(301);
     $this->get('/landing.php')->assertRedirect('/')->assertStatus(301);
 });
+
+it('Q54 : la section #alerte est un fond rouge très clair avec bordure, plus une bande rouge pleine', function (): void {
+    $html = accueilHtml();
+
+    expect($html)->toContain('lp-band-alert')->not->toContain('lp-band-red')
+        ->and(file_get_contents(resource_path('css/app/pages/accueil.css')))->toContain('background: var(--xm-alert-surface)');
+});

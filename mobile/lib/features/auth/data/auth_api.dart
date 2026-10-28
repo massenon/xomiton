@@ -138,6 +138,7 @@ class AuthApi {
     required String password,
     required bool cgu,
     required bool privacy,
+    required bool ageConfirmed,
   }) async {
     final res = await _dio.post<dynamic>('auth/register', data: {
       'pseudo': pseudo.trim(),
@@ -145,6 +146,7 @@ class AuthApi {
       'password': password,
       'cgu': cgu,
       'privacy': privacy,
+      'age_confirmed': ageConfirmed,
       'device_name': _deviceName(),
     });
     final d = _data(res);

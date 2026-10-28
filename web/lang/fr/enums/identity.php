@@ -45,6 +45,7 @@ return [
         'privacy' => 'Politique de confidentialité',
         'sensitive_data' => 'Données sensibles',
         'newsletter' => 'Lettre d’information',
+        'age_confirmed' => 'Confirmation de l’âge minimal',
     ],
 
 ];

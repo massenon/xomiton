@@ -1,14 +1,14 @@
 {{--
     Section 6 — Alerte et signalement #alerte (prototype index.php l.267-295) : « Signalement » remplace « Dénonciation »
-    (Q29) ; la maquette de téléphone est décorative (données fictives, aria-hidden). Bande rouge pleine à faire valider (plan §7).
+    (Q29) ; la maquette de téléphone est décorative (données fictives, aria-hidden). Q54 tranché : fond rouge très clair + bordure (le rouge plein reste réservé au SOS).
 --}}
 <section class="lp-section pt-0" id="alerte" aria-labelledby="alerteTitre">
     <div class="container">
-        <div class="lp-band-red p-4 p-lg-5">
+        <div class="lp-band-alert p-4 p-lg-5">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
                     <div class="lp-kicker mb-3"><i class="bi bi-broadcast" aria-hidden="true"></i> {{ __('pages/accueil.alerte.kicker') }}</div>
-                    <h2 id="alerteTitre" class="lp-title text-white mb-3 lp-band-title">{{ __('pages/accueil.alerte.title_1') }}<br>{{ __('pages/accueil.alerte.title_2') }}</h2>
+                    <h2 id="alerteTitre" class="lp-title mb-3 lp-band-title">{{ __('pages/accueil.alerte.title_1') }}<br>{{ __('pages/accueil.alerte.title_2') }}</h2>
                     <p class="lp-band-text">{{ __('pages/accueil.alerte.text') }}</p>
                     <ul class="list-unstyled mb-4">
                         <li class="mb-2"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>{{ __('pages/accueil.alerte.proof_anonymous') }}</li>

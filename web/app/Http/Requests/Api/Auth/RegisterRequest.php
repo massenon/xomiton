@@ -47,6 +47,8 @@ final class RegisterRequest extends FormRequest
             'phone' => ['nullable', 'string', new PhoneBj],
             'cgu' => ['required', 'accepted'],
             'privacy' => ['required', 'accepted'],
+            // Q68 : absent ou faux → 422 `age_confirmation_required` (levé par RegisterUser, code stable), pas `validation_failed`.
+            'age_confirmed' => ['nullable', 'boolean'],
             'device_name' => ['nullable', 'string', 'max:100'],
             'profile' => ['sometimes', 'array'],
             'profile.pronouns' => ['nullable', 'string', 'max:30'],

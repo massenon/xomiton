@@ -7,6 +7,7 @@ namespace App\Application\Auth;
 /**
  * Phase 1 de l'inscription (D4, Q12 c) : la seule obligatoire. Les cases CGU + charte et confidentialité sont
  * distinctes et jamais pré-cochées ; leur acceptation est horodatée dans `consents` avec IP et navigateur.
+ * `confirmsAge` (Q68) : case « J'ai 15 ans ou plus », exigée ; aucune date de naissance n'est collectée.
  */
 final readonly class RegisterData
 {
@@ -19,5 +20,6 @@ final readonly class RegisterData
         public ?string $ip = null,
         public ?string $userAgent = null,
         public ?string $phone = null,
+        public bool $confirmsAge = false,
     ) {}
 }

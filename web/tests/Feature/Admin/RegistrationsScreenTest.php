@@ -57,6 +57,7 @@ function regData(array $overrides = []): RegisterData
         'password' => 'Xomiton2026!',
         'acceptsTerms' => true,
         'acceptsPrivacy' => true,
+        'confirmsAge' => true,
     ], $overrides));
 }
 

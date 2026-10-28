@@ -51,6 +51,7 @@ function registerData(array $overrides = []): RegisterData
         'password' => 'Xomiton2026!',
         'acceptsTerms' => true,
         'acceptsPrivacy' => true,
+        'confirmsAge' => true,
         'ip' => '41.79.1.1',
         'userAgent' => 'Mozilla/5.0 (test)',
     ], $overrides));
@@ -69,7 +70,7 @@ it('crée le compte dès la phase 1 : actif, non vérifié, rôle membre, profil
         ->and($user->hasRole('membre'))->toBeTrue()
         ->and($user->profile?->member_type)->toBe(MemberType::Member)
         ->and($user->settings?->language)->toBe('fr')
-        ->and($user->consents()->count())->toBe(2);
+        ->and($user->consents()->count())->toBe(3);
 
     $terms = $user->consents()->ofKind(ConsentKind::Terms)->granted()->firstOrFail();
     expect($terms->version)->toBe(ConsentVersion::current())
@@ -170,7 +171,7 @@ it('enregistre les consentements facultatifs, accordés ou refusés, en phase 4'
 
     expect($sensitive->granted)->toBeTrue()
         ->and($newsletter->granted)->toBeFalse()
-        ->and($user->consents()->count())->toBe(4);
+        ->and($user->consents()->count())->toBe(5);
 });
 
 it('confirme l’e-mail avec le code signup et refuse un mauvais code', function (): void {

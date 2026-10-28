@@ -13,7 +13,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | Q7 | Fournisseur SMS de secours, fournisseur LLM de l'assistant, clés VAPID / FCM | Pilotes `log` et base de connaissances ; interfaces prêtes (`SmsSender`, `AssistantProvider`) | Client (choix), Technique (branchement) | Bloquant recette |
 | Q38 | Périmètre v1 de l'app mobile, onglets, espace pair (P15-09) | 5 onglets dont SOS ; espace pair après maquettes | Client | Bloquant recette |
 | Q53 | Accueil : sections « chiffres », « témoignages », texte membre connecté | Défaut du lot P4-01 | Client | Bloquant recette |
-| Q54 | Accueil : bande rouge pleine largeur et promesses — **Ouverte** : Reste ouverte, en attente. Précision : section #alerte de l'accueil, resources/views/public/home/alerte.blade.php | a) / a) | Client | Bloquant recette |
+| Q54 | Accueil : bande rouge pleine largeur et promesses — **Tranché 2026-10-28** : bande b) fond rouge très clair (`--xm-alert-surface`) + bordure rouge, texte foncé AA clair et sombre, rouge plein réservé au SOS ; section #alerte (`alerte.blade.php`), captures `docs/captures/accueil/` | b) / a) | Client | Bloquant recette |
 | Q16 | Accueil : CTA du hero (« Rejoignez-nous » ou « Créer un compte ») — **Tranché 2026-10-28** : « Créer un compte » (hero de l'accueil) | Ordre de la vitrine, CTA à trancher | Client | Bloquant recette |
 | Q18 | Pages publiques et gabarit sobre vues par un·e membre connecté·e | Défaut du lot P4 | Client | Bloquant recette |
 | Q14 / Q87 | Barre latérale admin : correspondance des 24 écrans vers 8 groupes | `AdminNavigation::GROUPS` | Client | Bloquant recette |
@@ -29,7 +29,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 
 | Q | Sujet | Décision par défaut appliquée | Qui | Urgence |
 |---|---|---|---|---|
-| Q68 | Âge minimal d'inscription (15 ans du prototype) — **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` | Appliqué dans les écrans d'inscription | Client + conseil juridique | Avant production |
+| Q68 | Âge minimal d'inscription (15 ans du prototype) — **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` | **Appliqué** : case obligatoire « J'ai 15 ans ou plus » (web + API `age_confirmed` + Flutter), aucune date de naissance, horodatage seul (consentement `age_confirmed`) | Client + conseil juridique | Avant production |
 | Q67 | Textes légaux (confidentialité) et vote « utile » du centre d'aide | Textes du lot P4-05 / P4-08 | Client + conseil juridique | Avant production |
 | Q9 | Stockage externe des sauvegardes | Disque configurable `BACKUP_DISK`, mysqldump, JSON en repli | Client (hébergeur), Technique | Avant production |
 | Q57 | Notifications d'alerte : destinataires, SMS, `mail_outbox` en clair — **Tranché 2026-10-28** : purge du corps dès l'envoi ; échecs conservés 7 jours au plus | Appliqué par défaut (références relues à chaque tentative) | Technique | Avant production |

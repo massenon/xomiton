@@ -15,6 +15,10 @@ import '../data/auth_api.dart';
 /// `PATCH me/profile` ; la phase 4 enregistre les deux consentements
 /// facultatifs. Les consentements obligatoires (CGU + charte, confidentialité)
 /// se donnent sur l'écran 1, jamais pré-cochés.
+/// Q68 : âge minimal d'inscription, miroir de `xomiton.accounts.min_age` (web/config/xomiton.php). Seul le texte de la
+/// case en dépend ; le serveur reste l'autorité (422 `age_confirmation_required`). Aucune date de naissance n'est saisie.
+const int kMinRegistrationAge = 15;
+
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
@@ -34,6 +38,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   final _password = TextEditingController();
   bool _cgu = false;
   bool _privacy = false;
+  bool _age = false;
   final Map<String, String?> _fieldErrors = {};
 
   // Phase 2
@@ -129,9 +134,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       _fieldErrors
         ..clear()
         ..addAll(errs);
-      _formError = (_cgu && _privacy) ? null : context.t('auth_consent_required');
+      _formError = !(_cgu && _privacy)
+          ? context.t('auth_consent_required')
+          : (_age ? null : context.t('auth_age_confirmation_required', {'min_age': kMinRegistrationAge}));
     });
-    final ok = errs.isEmpty && _cgu && _privacy;
+    final ok = errs.isEmpty && _cgu && _privacy && _age;
     if (!ok) _showErrors();
     return ok;
   }
@@ -144,6 +151,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           password: _password.text,
           cgu: _cgu,
           privacy: _privacy,
+          ageConfirmed: _age,
         ));
     if (result == null || !mounted) return;
     // Le compte est créé et connecté : le routeur ne doit pas nous sortir de
@@ -312,6 +320,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           value: _privacy,
           onChanged: (v) => setState(() => _privacy = v ?? false),
           title: Text(context.t('auth_register_account_privacy', {'policy': policy})),
+        ),
+        CheckboxListTile(
+          key: const ValueKey('consent-age'),
+          contentPadding: EdgeInsets.zero,
+          controlAffinity: ListTileControlAffinity.leading,
+          value: _age,
+          onChanged: (v) => setState(() => _age = v ?? false),
+          title: Text(context.t('auth_register_account_age', {'min_age': kMinRegistrationAge})),
         ),
         const SizedBox(height: XmSpace.s4),
         FilledButton(

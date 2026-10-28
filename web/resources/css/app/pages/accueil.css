@@ -30,12 +30,8 @@
 .lp-hero .lead { color: color-mix(in srgb, var(--xm-neutral-0) 88%, transparent); }
 .lp-hero__quote { color: color-mix(in srgb, var(--xm-neutral-0) 90%, transparent); }
 .lp-hero .btn-outline-light,
-.lp-band-red .btn-outline-light { background: transparent; border-color: var(--xm-neutral-0); color: var(--xm-neutral-0); }
 .lp-hero .btn-outline-light:hover,
 .lp-hero .btn-outline-light:focus-visible { background: var(--xm-neutral-0); border-color: var(--xm-neutral-0); color: var(--xm-blue-500); }
-.lp-band-red .btn-outline-light:hover,
-.lp-band-red .btn-outline-light:focus-visible,
-.lp-band-red .btn-outline-light:active { background: var(--xm-neutral-0); border-color: var(--xm-neutral-0); color: var(--xm-red-500); }
 
 .lp-kicker {
   display: inline-flex;
@@ -102,10 +98,16 @@
 .lp-mocks .m1 { width: 56%; position: relative; z-index: 1; }
 .lp-mocks .m2 { width: 56%; margin: 3rem 0 0 -12%; }
 
-/* ---------- Bande rouge « Alerte & signalement » et maquette SOS (décorative) ---------- */
-.lp-band-red { color: var(--xm-neutral-0); border-radius: 1.5rem; background: linear-gradient(135deg, var(--xm-red-800), var(--xm-red-500)); }
+/* ---------- Section « Alerte & signalement » (Q54 : fond rouge très clair + bordure) et maquette SOS (décorative, rouge plein = SOS) ---------- */
+.lp-band-alert { color: var(--xm-text); border: 2px solid var(--xm-alert-border); border-radius: 1.5rem; background: var(--xm-alert-surface); }
+.lp-band-alert .lp-kicker { background: color-mix(in srgb, var(--xm-alert-border) 12%, transparent); border-color: color-mix(in srgb, var(--xm-alert-border) 40%, transparent); color: var(--xm-danger-text); }
+.lp-band-alert .bi-check-circle-fill { color: var(--xm-danger-text); }
+.lp-band-alert .btn-outline-light { background: transparent; border-color: var(--xm-danger-text); color: var(--xm-danger-text); }
+.lp-band-alert .btn-outline-light:hover,
+.lp-band-alert .btn-outline-light:focus-visible,
+.lp-band-alert .btn-outline-light:active { background: var(--xm-danger-text); border-color: var(--xm-danger-text); color: var(--xm-alert-surface); }
 .lp-band-title { font-size: clamp(1.35rem, 2.3vw, 1.85rem); }
-.lp-band-text { color: color-mix(in srgb, var(--xm-neutral-0) 90%, transparent); }
+.lp-band-text { color: var(--xm-text); }
 
 .phone {
   position: relative;

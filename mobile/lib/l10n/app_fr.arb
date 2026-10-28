@@ -13499,6 +13499,15 @@
     "@assistant_page_welcome": {
         "description": "assistant.page.welcome"
     },
+    "auth_age_confirmation_required": "Pour créer ton compte, confirme que tu as {min_age} ans ou plus.",
+    "@auth_age_confirmation_required": {
+        "description": "auth.age_confirmation_required",
+        "placeholders": {
+            "min_age": {
+                "type": "String"
+            }
+        }
+    },
     "auth_api_attributes_reset_token": "code ou lien de réinitialisation",
     "@auth_api_attributes_reset_token": {
         "description": "auth.api.attributes.reset_token"
@@ -13850,6 +13859,15 @@
     "auth_pending": "Ton compte est en attente de validation par l’équipe Xomiton.",
     "@auth_pending": {
         "description": "auth.pending"
+    },
+    "auth_register_account_age": "J’ai {min_age} ans ou plus.",
+    "@auth_register_account_age": {
+        "description": "auth.register.account.age",
+        "placeholders": {
+            "min_age": {
+                "type": "String"
+            }
+        }
     },
     "auth_register_account_cgu": "J’accepte les {terms} et la {charter}.",
     "@auth_register_account_cgu": {
@@ -20355,6 +20373,10 @@
     "enums_identity_ally_status_ressource": "Personne ressource",
     "@enums_identity_ally_status_ressource": {
         "description": "enums/identity.ally_status.ressource"
+    },
+    "enums_identity_consent_kind_age_confirmed": "Confirmation de l’âge minimal",
+    "@enums_identity_consent_kind_age_confirmed": {
+        "description": "enums/identity.consent_kind.age_confirmed"
     },
     "enums_identity_consent_kind_cgu": "Conditions générales d’utilisation",
     "@enums_identity_consent_kind_cgu": {
@@ -34090,6 +34112,10 @@
     "@validation_attributes_accuracy": {
         "description": "validation.attributes.accuracy"
     },
+    "validation_attributes_age_confirmed": "confirmation de l’âge",
+    "@validation_attributes_age_confirmed": {
+        "description": "validation.attributes.age_confirmed"
+    },
     "validation_attributes_age_range": "tranche d’âge",
     "@validation_attributes_age_range": {
         "description": "validation.attributes.age_range"
@@ -34465,6 +34491,15 @@
     "validation_current_password": "Le mot de passe est incorrect.",
     "@validation_current_password": {
         "description": "validation.current_password"
+    },
+    "validation_custom_age_confirmed_accepted": "Pour créer ton compte, confirme que tu as {min_age} ans ou plus.",
+    "@validation_custom_age_confirmed_accepted": {
+        "description": "validation.custom.age_confirmed.accepted",
+        "placeholders": {
+            "min_age": {
+                "type": "String"
+            }
+        }
     },
     "validation_custom_cgu_accepted": "Tu dois accepter les conditions d’utilisation et la charte pour continuer.",
     "@validation_custom_cgu_accepted": {

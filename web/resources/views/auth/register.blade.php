@@ -35,6 +35,11 @@
                 ]) !!}</label>
                 @error('privacy')<div id="f-privacy-error" class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ $message }}</div>@enderror
             </div>
+            <div class="form-check mb-3 xm-field">
+                <input class="form-check-input {{ $errors->has('age_confirmed') ? 'is-invalid' : '' }}" type="checkbox" id="f-age" name="age_confirmed" value="1" @checked(old('age_confirmed')) @if ($errors->has('age_confirmed')) aria-invalid="true" aria-describedby="f-age-error" @endif>
+                <label class="form-check-label" for="f-age">{{ __('auth.register.account.age', ['min_age' => config('xomiton.accounts.min_age')]) }}</label>
+                @error('age_confirmed')<div id="f-age-error" class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ $message }}</div>@enderror
+            </div>
         </fieldset>
 
         <div class="d-flex justify-content-between align-items-center mt-4">

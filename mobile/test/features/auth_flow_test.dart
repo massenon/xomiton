@@ -235,6 +235,7 @@ void main() {
       await tester.pump();
       await tapVisible(tester, find.byKey(const ValueKey('consent-cgu')));
       await tapVisible(tester, find.byKey(const ValueKey('consent-privacy')));
+      await tapVisible(tester, find.byKey(const ValueKey('consent-age')));
       await tester.pump();
       await tapVisible(tester, tr(S.t('auth_register_account_submit')));
       await tester.pumpAndSettle();
@@ -248,7 +249,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(tr(S.t('auth_register_step_of', {'current': 1, 'total': 4})), findsOneWidget);
       expect(tr(S.t('auth_register_skip')), findsNothing);
-      for (final k in ['consent-cgu', 'consent-privacy']) {
+      for (final k in ['consent-cgu', 'consent-privacy', 'consent-age']) {
         expect(tester.widget<CheckboxListTile>(find.byKey(ValueKey(k))).value, isFalse);
       }
       await tapVisible(tester, tr(S.t('auth_register_account_submit')));

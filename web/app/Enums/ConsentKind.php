@@ -10,6 +10,8 @@ enum ConsentKind: string
     case Privacy = 'privacy';
     case SensitiveData = 'sensitive_data';
     case Newsletter = 'newsletter';
+    /** Q68 : case « J'ai :min_age ans ou plus » ; seul l'horodatage est gardé, jamais la date de naissance. */
+    case AgeConfirmed = 'age_confirmed';
 
     public function label(): string
     {
@@ -23,6 +25,7 @@ enum ConsentKind: string
             self::Privacy => 'info',
             self::SensitiveData => 'danger',
             self::Newsletter => 'secondary',
+            self::AgeConfirmed => 'light',
         };
     }
 }

@@ -36,6 +36,7 @@ function webRegisterPayload(array $overrides = []): array
         'password' => 'Xomiton2026!',
         'cgu' => '1',
         'privacy' => '1',
+        'age_confirmed' => '1',
     ], $overrides);
 }
 
@@ -78,7 +79,7 @@ it('crée le compte et ouvre la session dès la phase 1 : rôle membre, profil, 
         ->and($user->settings)->not->toBeNull()
         ->and($user->consents()->ofKind(ConsentKind::Terms)->granted()->exists())->toBeTrue()
         ->and($user->consents()->ofKind(ConsentKind::Privacy)->granted()->exists())->toBeTrue()
-        ->and($user->consents()->count())->toBe(2)
+        ->and($user->consents()->count())->toBe(3)
         ->and(OtpCode::query()->forEmail('awa@exemple.bj', OtpPurpose::Signup)->valid()->count())->toBe(1);
 
     $slugs = [];
@@ -188,7 +189,7 @@ it('enregistre les phases 2 à 4 d’un·e pair : en attente (RG-03), rôle pair
         ->assertRedirect(route('fil'))
         ->assertSessionHas('toast', 'Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.');
 
-    expect($user->consents()->count())->toBe(4)
+    expect($user->consents()->count())->toBe(5)
         ->and($user->consents()->ofKind(ConsentKind::SensitiveData)->granted()->exists())->toBeTrue()
         ->and($user->consents()->ofKind(ConsentKind::Newsletter)->where('granted', false)->exists())->toBeTrue();
 });
@@ -203,7 +204,7 @@ it('permet de passer chaque phase facultative sans rien enregistrer', function (
     $this->post('/inscription/account/passer')->assertNotFound();
 
     expect($user->fresh()?->status)->toBe(UserStatus::Active)
-        ->and($user->consents()->count())->toBe(2)
+        ->and($user->consents()->count())->toBe(3)
         ->and($user->fresh()?->hasRole('membre'))->toBeTrue();
 });
 
@@ -213,4 +214,12 @@ it('réserve les phases 2 à 4 aux personnes connectées et la phase 1 aux visit
     $this->postJson('/inscription/consentements', [])->assertUnauthorized();
 
     $this->actingAs(User::factory()->create())->get('/inscription')->assertRedirect(route('fil'));
+});
+
+it('Q68 : affiche la case « J’ai 15 ans ou plus » et refuse l’inscription sans elle', function (): void {
+    $this->get('/inscription')->assertSee('J’ai 15 ans ou plus.')->assertSee('name="age_confirmed"', false);
+
+    $this->post('/inscription', webRegisterPayload(['age_confirmed' => null]))
+        ->assertSessionHasErrors(['age_confirmed' => __('auth.age_confirmation_required', ['min_age' => 15])]);
+    expect(User::query()->count())->toBe(0);
 });

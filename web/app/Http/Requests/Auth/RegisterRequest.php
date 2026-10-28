@@ -45,6 +45,7 @@ final class RegisterRequest extends FormRequest
             'password' => ['required', 'string', 'max:255', new StrongPassword],
             'cgu' => ['accepted'],
             'privacy' => ['accepted'],
+            'age_confirmed' => ['accepted'],
         ];
     }
 
@@ -57,6 +58,7 @@ final class RegisterRequest extends FormRequest
     {
         return [
             'email.unique' => (string) __('auth.api.email_taken'),
+            'age_confirmed.accepted' => (string) __('auth.age_confirmation_required', ['min_age' => (int) config('xomiton.accounts.min_age')]),
         ];
     }
 
@@ -68,6 +70,7 @@ final class RegisterRequest extends FormRequest
             password: (string) $this->string('password'),
             acceptsTerms: $this->boolean('cgu'),
             acceptsPrivacy: $this->boolean('privacy'),
+            confirmsAge: $this->boolean('age_confirmed'),
             ip: $this->ip(),
             userAgent: $this->userAgent(),
         );

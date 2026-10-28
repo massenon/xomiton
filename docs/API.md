@@ -46,6 +46,7 @@ Taille de page : `?per_page=` borné à `xomiton.api.max_per_page` (50) par `Api
 | `maintenance` | 503 | maintenance active (RG-14), rôle autre qu'admin / superadmin, après vérification du mot de passe | `auth.maintenance` |
 | `registrations_closed` | 403 | inscriptions fermées par l'administration (message configuré) | `auth.registrations_closed` ou texte administré |
 | `consent_required` | 422 | CGU + charte ou confidentialité non acceptées | `auth.consent_required` |
+| `age_confirmation_required` | 422 | case « J'ai 15 ans ou plus » (`age_confirmed`) absente ou fausse à l'inscription (Q68 ; `errors.age_confirmed`) | `auth.age_confirmation_required` |
 | `invalid_credentials` | 422 | identifiant inconnu **ou** mot de passe faux (message indifférencié, `errors.login`) | `auth.failed` |
 | `otp_invalid` | 422 | code faux, expiré, épuisé (5 essais), adresse inconnue, preuve de réinitialisation invalide (`errors.code` ou `errors.reset_token`) | `auth.otp.invalid` |
 | `otp_too_soon` | 429 | renvoi demandé avant 30 s (`retry_after`) | `auth.otp.too_soon` |
@@ -155,6 +156,7 @@ Corps :
 | `email` | requis, e-mail valide, unique (normalisé en minuscules) |
 | `password` | requis, ≥ 10 caractères, majuscule, minuscule, chiffre (Q30 a ; contrôle « compromis » hors test) |
 | `cgu`, `privacy` | requis, `true` chacun (cases distinctes, jamais pré-cochées) |
+| `age_confirmed` | requis, `true` (Q68 : « J'ai 15 ans ou plus », seuil `xomiton.accounts.min_age`) ; aucune date de naissance n'est collectée, seul l'horodatage est gardé (consentement `age_confirmed`). Sinon 422 `age_confirmation_required` |
 | `phone` | facultatif, numéro béninois (`+229 01 XX XX XX XX`) |
 | `device_name` | facultatif (≤ 100) : nom du jeton ; sinon navigateur ou « appareil » |
 | `profile` | facultatif (phases 2-3) : `pronouns` (≤ 30), `zone_id` (requis avec `commune_id`), `commune_id` (dans le département), `member_type` (`membre` \| `pair` → compte `en_attente`, rôle `pair`), `trusted_contact_phone` (béninois, chiffré), `trusted_contact_name` (≤ 80), `discreet_mode` (bool) |

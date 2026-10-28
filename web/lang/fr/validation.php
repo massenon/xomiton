@@ -194,6 +194,9 @@ return [
         'cgu' => [
             'accepted' => 'Tu dois accepter les conditions d’utilisation et la charte pour continuer.',
         ],
+        'age_confirmed' => [
+            'accepted' => 'Pour créer ton compte, confirme que tu as :min_age ans ou plus.',
+        ],
         'privacy' => [
             'accepted' => 'Tu dois accepter la politique de confidentialité pour continuer.',
         ],
@@ -227,6 +230,7 @@ return [
         'member_type' => 'type de membre',
         'cgu' => 'conditions d’utilisation',
         'privacy' => 'politique de confidentialité',
+        'age_confirmed' => 'confirmation de l’âge',
         'sensitive_data' => 'données sensibles',
         'newsletter' => 'newsletter',
         'name' => 'nom',
