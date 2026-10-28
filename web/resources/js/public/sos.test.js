@@ -220,19 +220,13 @@ describe('xmSosPage', () => {
     p.destroy();
   });
 
-  it('sans GPS ni zone : repli manuel, puis envoi automatique au bout du délai', async () => {
-    vi.useFakeTimers();
+  it('sans GPS ni zone (Q61) : envoi sans position après l’attente unique, sans second délai', async () => {
     const send = vi.fn().mockResolvedValue({ state: 'sent', data: { id: 'ID2' }, meta: {} });
-    const p = page({ client: { send, action: vi.fn(), stop: vi.fn() }, geolocation: null, manualSeconds: 15 });
+    const p = page({ client: { send, action: vi.fn(), stop: vi.fn() }, geolocation: null });
     await p.onSend({ resolve: vi.fn() });
-    expect(p.phase).toBe('manual');
-    expect(p.autoText()).toBe('Départ dans 15 s.');
-    p.zoneId = '5';
-    vi.advanceTimersByTime(15000);
-    await Promise.resolve();
+    expect(p.phase).not.toBe('manual');
     expect(send).toHaveBeenCalledTimes(1);
-    expect(send.mock.calls[0][0]).toMatchObject({ share_location: true, zone_id: 5 });
-    vi.useRealTimers();
+    expect(send.mock.calls[0][0]).not.toHaveProperty('lat');
     p.destroy();
   });
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Newsletter\Campaigns;
 
+use App\Application\Mail\EmailLayout;
 use App\Application\Mail\EmailTemplateService;
 use App\Application\Mail\TemplateRenderer;
 use App\Application\Newsletter\NewsletterLinks;
@@ -58,20 +59,19 @@ final class CampaignRenderer
             $body = $this->trackLinks($body, $recipient);
         }
 
-        $html = view('mail.layout', [
-            'siteName' => $vars['site_name'],
-            'supportEmail' => $vars['support_email'],
-            'preheader' => ($pre = TemplateRenderer::render($draft['preheader'], $vars, false)) !== '' ? $pre : null,
-            'bodyHtml' => $body,
-            'logoUrl' => asset('assets/images/xomiton/brand/logo-mono-blanc.svg'),
-            'unsubscribeUrl' => $vars['unsubscribe_link'],
-            'pixelUrl' => $recipient === null ? null : $this->links->openPixelUrl($recipient),
-        ])->render();
+        $layout = EmailLayout::render(
+            $vars['site_name'],
+            $vars['support_email'],
+            TemplateRenderer::render($draft['preheader'], $vars, false),
+            $body,
+            $vars['unsubscribe_link'],
+            $recipient === null ? null : $this->links->openPixelUrl($recipient),
+        );
 
         return [
             'subject' => TemplateRenderer::render($draft['subject'], $vars, false),
-            'html' => $html,
-            'text' => TemplateRenderer::toPlainText($body)."\n\n".__('mail.footer.unsubscribe').' : '.$vars['unsubscribe_link'],
+            'html' => $layout['html'],
+            'text' => $layout['text'],
             'headers' => $this->links->unsubscribeHeaders($subscriber, $draft['id']),
         ];
     }

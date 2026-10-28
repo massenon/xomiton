@@ -128,7 +128,7 @@ it('ajoute un·e abonné·e (double opt-in par la boîte d’envoi) et refuse un
 
     $subscriber = NewsletterSubscriber::query()->whereEmail('nouvelle@exemple.bj')->firstOrFail();
     expect($subscriber->status)->toBe(SubscriberStatus::Pending)->and($subscriber->source->value)->toBe('admin')
-        ->and(MailOutbox::query()->where('to', 'nouvelle@exemple.bj')->where('subject', 'like', '%newsletter%')->count())->toBe(1);
+        ->and(MailOutbox::query()->where('to', 'nouvelle@exemple.bj')->where('template_slug', 'newsletter-confirmation')->count())->toBe(1);
     Mail::assertNothingSent();
     expect(AuditLog::query()->where('action', 'newsletter.subscriber_added')->firstOrFail()->detail)->toBe('abonné='.$subscriber->id);
 });

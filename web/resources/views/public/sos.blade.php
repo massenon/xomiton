@@ -2,7 +2,7 @@
     Page /sos (P5-05 ; design-system/xomiton/pages/signaler-et-sos.md, prime sur prototype_social/sos.php — Q21 b) :
     gabarit sobre 640 px, tu, rouge réservé au bouton et au décompte. Composant Alpine xmSosPage
     (resources/js/public/sos.js) : idle → localisation (si « Partager ma position ») → repli département / commune
-    (sos.php l.62-67, envoi automatique au bout de xomiton.alerts.sos_manual_seconds, Q61) → envoi API → « Ton alerte est partie » (aria-live assertive),
+    (sos.php l.62-67, envoi sans position après xomiton.alerts.sos_locate_seconds (8 s au total), Q61) → envoi API → « Ton alerte est partie » (aria-live assertive),
     personnes prévenues (x-alerts.notified, sondage 10 s), appel du contact principal, « Je suis en sécurité »,
     repentir 60 s ; hors ligne : message, appel direct des numéros d'urgence, nouvel essai au retour du réseau.
     Variables : member, shareDefault, profile, zones, numbers (KnowledgeBaseAnswerer::emergencyNumbers), initial
@@ -25,8 +25,7 @@
         'csrfUrl' => url('/sanctum/csrf-cookie'),
         'poll' => (int) config('xomiton.alerts.sos_poll_seconds', 10),
         'pollMinutes' => (int) config('xomiton.alerts.sos_poll_minutes', 30),
-        'manualSeconds' => (int) config('xomiton.alerts.sos_manual_seconds', 15),
-        'locateTimeout' => 1000 * (int) config('xomiton.alerts.sos_locate_seconds', 12),
+        'locateTimeout' => 1000 * (int) config('xomiton.alerts.sos_locate_seconds', 8),
         'texts' => [
             'sent' => __('alerts.sos.done.title'),
             'queued' => __('alerts.sos.queued.text'),
@@ -42,7 +41,6 @@
             'confirmShared' => __('alerts.sos.confirm_shared'),
             'confirmUnshared' => __('alerts.sos.confirm_unshared'),
             'undo' => __('alerts.sos.done.undo'),
-            'auto' => __('alerts.sos.manual.auto'),
             'callPrimary' => __('alerts.notified.call_primary'),
         ],
     ];
@@ -123,7 +121,6 @@
                         </select>
                     </div>
                 </div>
-                <p class="small text-body-secondary mt-3 mb-2" x-text="autoText()"></p>
                 <div class="d-flex flex-wrap gap-2">
                     <button type="button" class="btn btn-primary btn-lg" x-on:click="submit()"><i class="bi bi-send me-1" aria-hidden="true"></i>{{ __('alerts.sos.manual.send') }}</button>
                     <button type="button" class="btn btn-dark btn-lg" x-on:click="abortManual()">{{ __('components.sos.cancel') }}</button>

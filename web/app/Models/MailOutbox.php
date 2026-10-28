@@ -107,9 +107,22 @@ class MailOutbox extends Model
         return ! $this->isSent() && $this->attempts < self::MAX_ATTEMPTS;
     }
 
+    /**
+     * Q57 : envoi réussi = contenu purgé sur-le-champ (corps, texte, en-têtes porteurs de liens signés) ; l'adresse
+     * est remplacée par une empreinte HMAC. Restent : id, gabarit, statut, dates, essais.
+     */
     public function markSent(): void
     {
-        $this->forceFill(['sent_at' => now(), 'last_error' => null])->save();
+        $this->forceFill([
+            'sent_at' => now(),
+            'last_error' => null,
+            'html' => '',
+            'text' => null,
+            'headers' => null,
+            'reply_to' => null,
+            'to' => 'hmac:'.substr(hash_hmac('sha256', mb_strtolower((string) $this->to), (string) config('app.key')), 0, 32),
+            'subject' => $this->newsletter_recipient_id !== null ? '[newsletter]' : $this->subject,
+        ])->save();
     }
 
     public function markFailed(string $error): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Admin\Emails;
 
+use App\Application\Mail\EmailLayout;
 use App\Application\Mail\EmailTemplateService;
 use App\Application\Mail\TemplateRenderer;
 use App\Models\EmailTemplate;
@@ -64,22 +65,14 @@ final class EmailPreview
         $bodyHtml = TemplateRenderer::render(EmailHtml::clean($body), $vars);
         $preheaderText = TemplateRenderer::render($preheader, $vars, false);
 
-        $html = view('mail.layout', [
-            'siteName' => $vars['site_name'],
-            'supportEmail' => $vars['support_email'],
-            'preheader' => $preheaderText !== '' ? $preheaderText : null,
-            'bodyHtml' => $bodyHtml,
-            'logoUrl' => asset('assets/images/xomiton/brand/logo-mono-blanc.svg'),
-            'unsubscribeUrl' => null,
-            'pixelUrl' => null,
-        ])->render();
+        $layout = EmailLayout::render($vars['site_name'], $vars['support_email'], $preheaderText, $bodyHtml);
 
         $known = array_keys(self::availableVariables());
 
         return [
             'subject' => TemplateRenderer::render($subject, $vars, false),
-            'html' => $html,
-            'text' => TemplateRenderer::toPlainText($bodyHtml),
+            'html' => $layout['html'],
+            'text' => $layout['text'],
             'unknown' => array_values(array_diff(EmailTemplate::extractVariables($subject, $preheader, $body), $known)),
         ];
     }

@@ -174,7 +174,7 @@ it('inclut /sos dans le plan du site : la page n’est plus provisoire', functio
 });
 
 it('définit les textes de la page en tutoyant, avec l’espace insécable avant « : ; ? ! »', function (): void {
-    foreach (['alerts.sos.title', 'alerts.sos.share', 'alerts.sos.manual.auto', 'alerts.sos.done.safe', 'alerts.sos.queued.text', 'alerts.sos.fab.offline', 'components.sos.sending'] as $key) {
+    foreach (['alerts.sos.title', 'alerts.sos.share', 'alerts.sos.done.safe', 'alerts.sos.queued.text', 'alerts.sos.fab.offline', 'components.sos.sending'] as $key) {
         expect(Lang::has($key, 'fr', false))->toBeTrue($key);
     }
 
@@ -275,7 +275,6 @@ it('lit les durées du bouton dans la configuration et masque l’étape sans nu
         'xomiton.alerts.sos_hold_ms' => 1500,
         'xomiton.alerts.sos_countdown_seconds' => 3,
         'xomiton.alerts.sos_locate_seconds' => 6,
-        'xomiton.alerts.sos_manual_seconds' => 7,
         'xomiton.assistant.emergency_numbers' => [],
     ]);
     Settings::set('emergency_numbers', []);
@@ -290,7 +289,8 @@ it('lit les durées du bouton dans la configuration et masque l’étape sans nu
         ->assertSee('alert alert-warning', false);
 
     $config = sosPageConfig($response->getContent());
-    expect($config['manualSeconds'])->toBe(7)->and($config['locateTimeout'])->toBe(6000);
+    expect($config)->not->toHaveKey('manualSeconds')->and($config['locateTimeout'])->toBe(6000);
+    expect(config('xomiton.alerts.sos_locate_seconds'))->toBe(6);
 
     Settings::set('emergency_numbers', [['label' => 'Police', 'number' => '117']]);
     $this->get('/sos')->assertSee(__('alerts.sos.done.steps.3', ['number' => '117']));

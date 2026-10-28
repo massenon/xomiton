@@ -341,21 +341,15 @@ void main() {
     );
 
     testWidgets(
-      'sans GPS : repli manuel département / commune, envoyé avec zone_id',
+      'sans GPS (Q61) : envoi direct sans position, sans seconde attente',
       (tester) async {
         final api = baseApi({'POST sos': (_) => jsonBody(201, sosData())});
         await boot(tester, member(api, loc: FakeLocation(null)), '/sos');
         await holdSos(tester);
         await countdown(tester);
-        expect(find.text(S.t('alerts_sos_manual_title')), findsOneWidget);
-        await tester.tap(find.byType(DropdownButtonFormField<int>).first);
         await settle(tester);
-        await tester.tap(find.text('Littoral').last);
-        await settle(tester);
-        await tester.tap(find.text(S.t('alerts_sos_manual_send')));
-        await settle(tester);
+        expect(find.text(S.t('alerts_sos_manual_title')), findsNothing);
         final body = api.calls('POST sos').single.data as Map;
-        expect(body['zone_id'], 1);
         expect(body.containsKey('lat'), isFalse);
         expect(find.text(S.t('alerts_sos_done_title')), findsOneWidget);
         await disposeApp(tester);

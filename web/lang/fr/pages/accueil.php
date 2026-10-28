@@ -16,7 +16,7 @@ return [
         'title' => 'Xomiton : votre espace safe d’apprentissage et d’appui holistique',
         'lead' => 'Filles et femmes LBTQ+ ? Rejoignez notre communauté bienveillante et accédez à des ressources, trouvez du soutien et faites entendre votre voix en toute sécurité.',
         // Q16 : libellé à trancher par le client (« Rejoignez-nous » ou « Créer un compte ») ; une seule clé à changer.
-        'cta_primary' => 'Rejoignez-nous',
+        'cta_primary' => 'Créer un compte',
         'quote' => '« Enfin un espace où je me sens en sécurité et comprise. »',
         'photo_1_alt' => 'Deux femmes qui se soutiennent',
         'photo_2_alt' => 'Communauté Xomiton',

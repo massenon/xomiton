@@ -35,7 +35,7 @@ function sentOtpCode(): string
 {
     $code = null;
     Mail::assertSent(TemplateMail::class, function (TemplateMail $mail) use (&$code): bool {
-        if (preg_match('/<h1>(\d{6})<\/h1>/', $mail->htmlBody, $m) === 1) {
+        if (preg_match('/>(\d{6})<\/h1>/', $mail->htmlBody, $m) === 1) {
             $code = $m[1];
         }
 

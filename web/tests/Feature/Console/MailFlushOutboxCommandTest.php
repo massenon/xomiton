@@ -6,6 +6,7 @@ use App\Enums\MailTransport;
 use App\Models\MailLog;
 use App\Models\MailOutbox;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -119,4 +120,35 @@ it('compte la tentative et conserve l’erreur quand l’envoi échoue', functio
         ->and($mail->last_error)->not->toBeNull()
         ->and(mb_strlen($mail->last_error))->toBeLessThanOrEqual(255)
         ->and(MailLog::query()->failed()->count())->toBe(1);
+});
+
+it('Q57 : après un envoi réussi, plus aucun corps, texte, en-tête ni lien signé en base', function (): void {
+    useCapturingMailer();
+    $mail = MailOutbox::factory()->create([
+        'to' => 'awa@example.test',
+        'html' => '<a href="https://xomiton.test/signed?signature=abc123">Lien</a>',
+        'text' => 'https://xomiton.test/signed?signature=abc123',
+        'headers' => ['List-Unsubscribe' => '<https://xomiton.test/desabonnement?signature=abc123>'],
+        'template_slug' => 'otp',
+    ]);
+
+    $this->artisan('mail:flush-outbox')->assertSuccessful();
+
+    $row = DB::table('mail_outbox')->where('id', $mail->id)->first();
+    expect($row->html)->toBe('')->and($row->text)->toBeNull()->and($row->headers)->toBeNull()
+        ->and($row->to)->not->toContain('awa@example.test')->and($row->to)->toStartWith('hmac:')
+        ->and($row->template_slug)->toBe('otp')->and($row->sent_at)->not->toBeNull()
+        ->and(json_encode($row))->not->toContain('abc123');
+    expect(MailLog::query()->where('to', 'awa@example.test')->exists())->toBeTrue();
+});
+
+it('Q57 : un e-mail en échec garde son contenu au plus N jours, puis mail:purge-logs le supprime', function (): void {
+    config(['xomiton.retention.mail_outbox_failed_days' => 7]);
+    $old = MailOutbox::factory()->exhausted()->create(['created_at' => now()->subDays(8)]);
+    $recent = MailOutbox::factory()->exhausted()->create(['created_at' => now()->subDays(3)]);
+
+    $this->artisan('mail:purge-logs')->assertSuccessful();
+
+    expect(MailOutbox::query()->whereKey($old->id)->exists())->toBeFalse()
+        ->and(MailOutbox::query()->whereKey($recent->id)->exists())->toBeTrue();
 });

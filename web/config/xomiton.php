@@ -72,12 +72,11 @@ return [
         'sos_admin_sms_max' => 2,
         // Durée du sondage de GET sos/{id} (sos_poll_seconds ci-dessus) après la création, en minutes (P5-03).
         'sos_poll_minutes' => 30,
-        // Bouton SOS (P5-05, P5-08, FR-ALT-03, Q39) : maintien (ms), décompte annulable (s), attente de la position sur
-        // /sos (s) puis envoi automatique du repli département / commune sans GPS (s ; délai total à trancher, Q61).
+        // Bouton SOS (P5-05, P5-08, FR-ALT-03, Q39) : maintien (ms), décompte annulable (s), attente de la position (s).
+        // Q61 tranché (2026-10-28) : 8 s AU TOTAL puis envoi sans position ; aucune seconde attente (web et mobile).
         'sos_hold_ms' => 2000,
         'sos_countdown_seconds' => 5,
-        'sos_locate_seconds' => 12,
-        'sos_manual_seconds' => 15,
+        'sos_locate_seconds' => 8,
         // Suivi par code : une alerte close depuis plus de N jours répond « code inconnu ».
         'tracking_visible_days' => 90,
         'description_min' => 20,
@@ -212,6 +211,9 @@ return [
      * Comptes et profils.
      */
     'accounts' => [
+        // Q68 tranché (2026-10-28) : âge minimal d'inscription = 15 ans. UNE seule valeur, lue par tout code (web, API, mobile
+        // via l'API) ; ne pas confondre avec `age_min` (plausibilité de la tranche d'âge, RG-08).
+        'min_age' => 15,
         'password_min_length' => 10,
         'pseudo_min_length' => 3,
         'pseudo_max_length' => 40,
@@ -540,6 +542,9 @@ return [
     'retention' => [
         'audit_log_days' => (int) env('XOMITON_AUDIT_RETENTION_DAYS', 90),
         'mail_log_days' => 180,
+        // Q57 (2026-10-28) : un e-mail de la file est vidé (corps, texte, en-têtes, adresse hachée) dès son envoi ;
+        // un e-mail en échec garde son contenu au plus N jours, puis mail:purge-logs supprime la ligne.
+        'mail_outbox_failed_days' => 7,
         // Accusés de réception de la synchronisation (sync_outbox_receipts) : fenêtre de rejeu dépassée.
         'sync_receipt_days' => 90,
         // Appareil de synchronisation sans contact au-delà : révoqué par sync:prune (jamais supprimé).

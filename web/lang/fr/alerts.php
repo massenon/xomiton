@@ -215,7 +215,6 @@ return [
             'commune' => 'Commune',
             'choose' => 'Choisir…',
             'send' => 'Envoyer maintenant',
-            'auto' => 'Sans choix de ta part, ton alerte part dans :s s.',
         ],
         'done' => [
             'title' => 'Ton alerte est partie',

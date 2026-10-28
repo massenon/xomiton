@@ -49,7 +49,7 @@ it('envoie un seul e-mail portant le code et le lien magique, et rien pour une a
 
     Mail::assertSent(TemplateMail::class, 1);
     Mail::assertSent(TemplateMail::class, function (TemplateMail $mail) use ($otp): bool {
-        preg_match('/<h1>(\d{6})<\/h1>/', $mail->htmlBody, $m);
+        preg_match('/>(\d{6})<\/h1>/', $mail->htmlBody, $m);
         preg_match('/href="([^"]+nouveau-mot-de-passe[^"]*)"/', $mail->htmlBody, $link);
 
         return $mail->templateSlug === 'reinitialisation-mot-de-passe'

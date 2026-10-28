@@ -65,7 +65,7 @@ export function buildPayload({ share = null, position = null, zoneId = null, com
 export { strip };
 
 /** Position du navigateur, ou null (refus, absence, délai dépassé) : jamais d'exception. */
-export function locate(geo = typeof navigator === 'undefined' ? null : navigator.geolocation, timeoutMs = 12000) {
+export function locate(geo = typeof navigator === 'undefined' ? null : navigator.geolocation, timeoutMs = 8000) {
   return new Promise((resolve) => {
     if (!geo || typeof geo.getCurrentPosition !== 'function') { resolve(null); return; }
     let settled = false;
@@ -236,7 +236,6 @@ export function xmSosPage(opts = {}) {
     alert: initial ? initial.data : null,
     meta: initial ? initial.meta || {} : {},
     sentAt: Date.now(),
-    autoLeft: 0,
     busy: false,
     error: '',
     announce: '',
@@ -268,11 +267,11 @@ export function xmSosPage(opts = {}) {
       this.position = null;
       if (this.share) {
         this.go('locating');
-        this.position = await locate(opts.geolocation, opts.locateTimeout || 12000);
+        this.position = await locate(opts.geolocation, opts.locateTimeout || 8000);
         if (this.phase !== 'locating') return;
       }
-      if (this.position || this.zoneId !== '') { this.submit(); return; }
-      this.manual();
+      // Q61 : 8 s au total, puis envoi sans position (pas de seconde attente).
+      this.submit();
     },
 
     /** Interrompt l'attente de la position : envoi immédiat sans elle. */
@@ -284,13 +283,7 @@ export function xmSosPage(opts = {}) {
 
     manual() {
       this.go('manual');
-      this.autoLeft = opts.manualSeconds || 15;
       clearInterval(autoTimer);
-      // Personne qui ne peut plus agir : l'alerte part quand même, sans zone si besoin (point focal national).
-      autoTimer = setInterval(() => {
-        this.autoLeft -= 1;
-        if (this.autoLeft <= 0) this.submit();
-      }, 1000);
     },
 
     /** Retour à l'écran du bouton depuis le repli manuel : rien n'est encore parti. */
@@ -300,10 +293,6 @@ export function xmSosPage(opts = {}) {
       key = null;
       this.go('idle');
       this.say(this.texts.cancelled);
-    },
-
-    autoText() {
-      return fill(this.texts.auto, { s: this.autoLeft });
     },
 
     async submit() {

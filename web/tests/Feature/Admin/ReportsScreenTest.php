@@ -383,7 +383,7 @@ it('envoie le fichier en pièce jointe aux destinataires et journalise chaque en
     expect($report->recipients)->toBe(['direction@exemple.org', 'bailleur@exemple.org']);
     Mail::assertSent(TemplateMail::class, 2);
     Mail::assertSent(TemplateMail::class, fn (TemplateMail $mail): bool => $mail->hasTo('direction@exemple.org')
-        && str_contains($mail->subjectLine, 'Rapport de septembre')
+        && str_contains($mail->htmlBody, 'Rapport de septembre')
         && count($mail->diskAttachments) === 1
         && $mail->diskAttachments[0]['name'] === 'rapport-de-septembre_2026-09-01_2026-09-30.xlsx');
     expect(MailLog::query()->where('template_slug', 'rapport-genere')->where('ok', true)->count())->toBe(2)

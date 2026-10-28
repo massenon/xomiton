@@ -25,14 +25,14 @@ enum SosPhase {
 }
 
 const sosCountdownSeconds = 5;
-const sosManualSeconds = 15;
+// Q61 : attente GPS de 8 s AU TOTAL, puis envoi sans position (pas de seconde attente).
+const sosLocateTimeout = Duration(seconds: 8);
 const sosHoldDuration = Duration(seconds: 2);
 
 class SosState {
   const SosState({
     this.phase = SosPhase.idle,
     this.countdown = sosCountdownSeconds,
-    this.manualLeft = sosManualSeconds,
     this.status,
     this.zoneId,
     this.communeId,
@@ -43,7 +43,6 @@ class SosState {
 
   final SosPhase phase;
   final int countdown;
-  final int manualLeft;
   final SosStatus? status;
   final int? zoneId;
   final int? communeId;
@@ -54,7 +53,6 @@ class SosState {
   SosState copy({
     SosPhase? phase,
     int? countdown,
-    int? manualLeft,
     SosStatus? status,
     Object? zoneId = _keep,
     Object? communeId = _keep,
@@ -64,7 +62,6 @@ class SosState {
   }) => SosState(
     phase: phase ?? this.phase,
     countdown: countdown ?? this.countdown,
-    manualLeft: manualLeft ?? this.manualLeft,
     status: status ?? this.status,
     zoneId: identical(zoneId, _keep) ? this.zoneId : zoneId as int?,
     communeId: identical(communeId, _keep) ? this.communeId : communeId as int?,
@@ -193,29 +190,16 @@ class SosController extends Notifier<SosState> {
     GeoPoint? pos;
     if (_share) {
       state = state.copy(phase: SosPhase.locating);
-      pos = await ref.read(locationServiceProvider).locate();
+      pos = await ref.read(locationServiceProvider).locate(timeout: sosLocateTimeout);
       if (state.phase != SosPhase.locating) return;
     }
-    if (pos != null || state.zoneId != null) {
-      await _submit(uuid, pos);
-    } else {
-      _manual(uuid);
-    }
+    // Q61 : 8 s au total, puis envoi sans position (le repli zone reste un choix volontaire, sans délai).
+    await _submit(uuid, pos);
   }
 
   void _manual(String uuid) {
-    state = state.copy(phase: SosPhase.manual, manualLeft: sosManualSeconds);
+    state = state.copy(phase: SosPhase.manual);
     _tick?.cancel();
-    // Personne qui ne peut plus agir : l'alerte part quand même, sans zone.
-    _tick = Timer.periodic(const Duration(seconds: 1), (t) {
-      final left = state.manualLeft - 1;
-      if (left <= 0) {
-        t.cancel();
-        _submit(uuid, null);
-      } else {
-        state = state.copy(manualLeft: left);
-      }
-    });
   }
 
   /// « Envoyer maintenant » du repli manuel.

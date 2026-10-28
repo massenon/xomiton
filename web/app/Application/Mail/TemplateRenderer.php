@@ -59,6 +59,17 @@ final class TemplateRenderer
      */
     public static function toPlainText(string $html): string
     {
+        // Texte brut : chaque lien https garde son adresse (« libellé : https://… »), sinon il serait perdu.
+        $html = (string) preg_replace_callback(
+            '#<a\s[^>]*?href="(https://[^"]+)"[^>]*>(.*?)</a>#is',
+            static function (array $m): string {
+                $label = trim(strip_tags($m[2]));
+
+                return $label === '' || $label === $m[1] ? $m[1] : $label.' : '.$m[1];
+            },
+            $html,
+        );
+
         $text = preg_replace(
             ['#<head.*?</head>#is', '#<div style="display:none[^>]*>.*?</div>#is', '#<(/p|/tr|/h\d|/div|/ul|/ol)[^>]*>#i', '#<(br|/li)[^>]*>#i'],
             ['', '', "\n\n", "\n"],

@@ -296,14 +296,6 @@ class _SosPageState extends ConsumerState<SosPage> {
           ),
         ],
         const SizedBox(height: XmSpace.s3),
-        Semantics(
-          liveRegion: true,
-          child: Text(
-            context.t('alerts_sos_manual_auto', {'s': s.manualLeft}),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ),
-        const SizedBox(height: XmSpace.s3),
         FilledButton(
           style: FilledButton.styleFrom(
             backgroundColor: context.xm.danger,

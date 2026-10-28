@@ -1800,7 +1800,6 @@
     "alerts.sos.intro": "Ton alerte part vers la personne de l’annuaire la plus proche (point focal, juriste, psychologue…) et, si tu as un compte, vers tes contacts de confiance.",
     "alerts.sos.locating": "Récupération de ta position…",
     "alerts.sos.locating_help": "Si ta position n’arrive pas, tu pourras indiquer ta zone.",
-    "alerts.sos.manual.auto": "Sans choix de ta part, ton alerte part dans {s} s.",
     "alerts.sos.manual.choose": "Choisir…",
     "alerts.sos.manual.commune": "Commune",
     "alerts.sos.manual.send": "Envoyer maintenant",

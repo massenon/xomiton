@@ -13,26 +13,26 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | Q7 | Fournisseur SMS de secours, fournisseur LLM de l'assistant, clés VAPID / FCM | Pilotes `log` et base de connaissances ; interfaces prêtes (`SmsSender`, `AssistantProvider`) | Client (choix), Technique (branchement) | Bloquant recette |
 | Q38 | Périmètre v1 de l'app mobile, onglets, espace pair (P15-09) | 5 onglets dont SOS ; espace pair après maquettes | Client | Bloquant recette |
 | Q53 | Accueil : sections « chiffres », « témoignages », texte membre connecté | Défaut du lot P4-01 | Client | Bloquant recette |
-| Q54 | Accueil : bande rouge pleine largeur et promesses | a) / a) | Client | Bloquant recette |
-| Q16 | Accueil : CTA du hero (« Rejoignez-nous » ou « Créer un compte ») | Ordre de la vitrine, CTA à trancher | Client | Bloquant recette |
+| Q54 | Accueil : bande rouge pleine largeur et promesses — **Ouverte** : Reste ouverte, en attente. Précision : section #alerte de l'accueil, resources/views/public/home/alerte.blade.php | a) / a) | Client | Bloquant recette |
+| Q16 | Accueil : CTA du hero (« Rejoignez-nous » ou « Créer un compte ») — **Tranché 2026-10-28** : « Créer un compte » (hero de l'accueil) | Ordre de la vitrine, CTA à trancher | Client | Bloquant recette |
 | Q18 | Pages publiques et gabarit sobre vues par un·e membre connecté·e | Défaut du lot P4 | Client | Bloquant recette |
 | Q14 / Q87 | Barre latérale admin : correspondance des 24 écrans vers 8 groupes | `AdminNavigation::GROUPS` | Client | Bloquant recette |
 | Q59 | Contacts d'urgence hors connexion : drapeau `is_emergency` | a) appliqué (migration + admin + import) | Client | Bloquant recette |
-| Q58 | 18 questions FAQ semées par `ThematiqueFaqSeeder` | Brouillon en production | Client (éditorial) | Bloquant recette |
-| Q64 | Quiz vrai / faux sur `/violences` (contenu santé) | Quiz de 5 affirmations écrit pour le lot | Client (santé) | Bloquant recette |
-| Q56 | Registre (tu / vous) de l'offcanvas de l'assistant | Vous (`VOICE_AND_TONE.md` §3) | Client (éditorial) | Bloquant recette |
+| Q58 | 18 questions FAQ semées par `ThematiqueFaqSeeder` — **Tranché 2026-10-28** : FAQ maintenue (déjà validée) | Brouillon en production | Client (éditorial) | Bloquant recette |
+| Q64 | Quiz vrai / faux sur `/violences` (contenu santé) — **Tranché 2026-10-28** : quiz maintenu (déjà validé) | Quiz de 5 affirmations écrit pour le lot | Client (santé) | Bloquant recette |
+| Q56 | Registre (tu / vous) de l'offcanvas de l'assistant — **Tranché 2026-10-28** : tu dans l'assistant et le SOS, vous sur le site public | Vous (`VOICE_AND_TONE.md` §3) | Client (éditorial) | Bloquant recette |
 | Q10 | Types de membre : allié·e / personne ressource | c) membre / pair, `ally_status` facultatif | Client | Bloquant recette |
-| Q89 | Lien Google Maps dans le détail d'une alerte (position du SOS) | Lien explicite au clic, signalé | Client | Bloquant recette |
-| Q61 | Délai d'envoi d'un SOS sans GPS (case « Partager ma position ») | Délais du lot `sos` | Client (terrain) | Bloquant recette |
+| Q89 | Lien Google Maps dans le détail d'une alerte (position du SOS) — **Tranché 2026-10-28** : lien Google Maps gardé avec avertissement | Lien explicite au clic, signalé | Client | Bloquant recette |
+| Q61 | Délai d'envoi d'un SOS sans GPS (case « Partager ma position ») — **Tranché 2026-10-28** : 8 s au total, puis envoi sans position, sans second délai | Délais du lot `sos` | Client (terrain) | Bloquant recette |
 
 ## 2. Avant production
 
 | Q | Sujet | Décision par défaut appliquée | Qui | Urgence |
 |---|---|---|---|---|
-| Q68 | Âge minimal d'inscription (15 ans du prototype) | Appliqué dans les écrans d'inscription | Client + conseil juridique | Avant production |
+| Q68 | Âge minimal d'inscription (15 ans du prototype) — **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` | Appliqué dans les écrans d'inscription | Client + conseil juridique | Avant production |
 | Q67 | Textes légaux (confidentialité) et vote « utile » du centre d'aide | Textes du lot P4-05 / P4-08 | Client + conseil juridique | Avant production |
 | Q9 | Stockage externe des sauvegardes | Disque configurable `BACKUP_DISK`, mysqldump, JSON en repli | Client (hébergeur), Technique | Avant production |
-| Q57 | Notifications d'alerte : destinataires, SMS, `mail_outbox` en clair | Appliqué par défaut (références relues à chaque tentative) | Technique | Avant production |
+| Q57 | Notifications d'alerte : destinataires, SMS, `mail_outbox` en clair — **Tranché 2026-10-28** : purge du corps dès l'envoi ; échecs conservés 7 jours au plus | Appliqué par défaut (références relues à chaque tentative) | Technique | Avant production |
 | Q50 | Accusé de réception par lien signé (POST, limiteur dédié, lien dans un SMS) | b) appliqué ; variable `{{acknowledge_link}}` à trancher | Technique | Avant production |
 | Q66 | Newsletter : confirmation par bouton (un clic de plus) | POST de confirmation | Client | Avant production |
 | Q37 | Code PIN local et mode discret (iOS : icône seulement) | PIN haché local, seul `pin_enabled` synchronisé | Client | Avant production |

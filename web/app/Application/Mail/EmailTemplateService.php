@@ -65,20 +65,19 @@ final class EmailTemplateService
         $preheader = TemplateRenderer::render((string) $template->preheader, $vars, false);
         $bodyHtml = TemplateRenderer::render((string) $template->body, $vars);
 
-        $html = view('mail.layout', [
-            'siteName' => (string) $vars['site_name'],
-            'supportEmail' => (string) $vars['support_email'],
-            'preheader' => $preheader !== '' ? $preheader : null,
-            'bodyHtml' => $bodyHtml,
-            'logoUrl' => asset('assets/images/xomiton/brand/logo-mono-blanc.svg'),
-            'unsubscribeUrl' => isset($vars['unsubscribe_link']) ? (string) $vars['unsubscribe_link'] : null,
-            'pixelUrl' => isset($vars['tracking_pixel']) ? (string) $vars['tracking_pixel'] : null,
-        ])->render();
+        $layout = EmailLayout::render(
+            (string) $vars['site_name'],
+            (string) $vars['support_email'],
+            $preheader,
+            $bodyHtml,
+            isset($vars['unsubscribe_link']) ? (string) $vars['unsubscribe_link'] : null,
+            isset($vars['tracking_pixel']) ? (string) $vars['tracking_pixel'] : null,
+        );
 
         return [
             'subject' => $subject,
-            'html' => $html,
-            'text' => TemplateRenderer::toPlainText($bodyHtml),
+            'html' => $layout['html'],
+            'text' => $layout['text'],
             'unknown_vars' => TemplateRenderer::unknownVariables(
                 $vars,
                 (string) $template->subject,

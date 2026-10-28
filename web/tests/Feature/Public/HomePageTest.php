@@ -71,11 +71,11 @@ it('garde l’ordre des sections du prototype, chaque section reliée à son tit
     }
 });
 
-it('propose « Rejoignez-nous » et « Se connecter » à un·e visiteur·se, un seul rouge plein dans le hero', function (): void {
+it('propose « Créer un compte » et « Se connecter » à un·e visiteur·se, un seul rouge plein dans le hero', function (): void {
     $html = accueilHtml();
     $hero = accueilBetween($html, 'class="lp-hero"', 'id="valeurs"');
 
-    expect(__('pages/accueil.hero.cta_primary'))->toBe('Rejoignez-nous')
+    expect(__('pages/accueil.hero.cta_primary'))->toBe('Créer un compte')
         ->and($hero)->toContain('href="'.route('inscription').'"')
         ->toContain(__('pages/accueil.hero.cta_primary'))
         ->toContain('href="'.route('connexion').'"')

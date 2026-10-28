@@ -117,8 +117,9 @@ final class FlushMailOutbox
             return false;
         }
 
-        $mail->markSent();
+        // Journal d'abord (adresse et objet réels), puis purge du contenu (Q57).
         $this->trace($mail, true);
+        $mail->markSent();
 
         return true;
     }
