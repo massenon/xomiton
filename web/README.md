@@ -13,13 +13,15 @@ Avant toute tâche, lire `../docs/MASTER_PROMPT.md` puis `../docs/IMPLEMENTATION
 
 ## Installation locale
 
+Recette humaine : `scripts/recette-local.sh` puis `scripts/recette-lancer.sh` (à la racine du dépôt), détaillés dans `../docs/GUIDE_RECETTE.md`. Pas à pas manuel :
+
 ```bash
 cd web
 composer install
 npm install
-cp .env.example .env            # puis DB_CONNECTION=sqlite pour un démarrage rapide
+cp .env.example .env            # déjà réglé pour SQLite (database/recette.sqlite)
 php artisan key:generate
-touch database/database.sqlite
+touch database/recette.sqlite
 php artisan migrate --seed
 npm run build                   # ou npm run dev pendant le développement
 php artisan serve               # http://localhost:8000
@@ -95,9 +97,12 @@ config/xomiton.php         réglages métier (délais, limites, lots)
 
 | Rôle | E-mail | Mot de passe |
 |---|---|---|
-| Admin | admin@xomiton.bj | Admin123! |
-| Membre | membre@xomiton.bj | Membre123! |
+| Super-admin | admin@xomiton.bj | Admin123! |
+| Admin | moderation@xomiton.bj | Admin123! |
+| Modérateur·rice | moderateur@xomiton.bj | Modo123! |
+| Membre | membre@xomiton.bj, membre2@xomiton.bj | Membre123! |
 | Pair | pair@xomiton.bj | Pair123! |
+| Pair en attente de validation | pair.attente@xomiton.bj | Pair123! |
 
 ## Références
 

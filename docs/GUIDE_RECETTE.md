@@ -1,246 +1,228 @@
-# Guide de recette — lancer Xomiton en local et le tester à la main
+# Guide de recette : lancer Xomiton sur votre ordinateur et le tester à la main
 
-Pour toi qui possèdes le projet. Tout ce qui est écrit ici a été exécuté le 27/10/2026 sur une copie propre (PHP 8.3.6, Node 22, Flutter 3.47.8) ; ce qui n'a pas pu l'être est marqué **(non vérifié)**. Coche les cases au fur et à mesure (`- [x]`). Chemins : `xomiton/` = racine du dépôt, `web/` = Laravel, `mobile/` = Flutter.
+Ce guide s'adresse à la personne qui réceptionne Xomiton : aucune connaissance technique n'est requise, il suffit de recopier les commandes. Les parcours à vérifier se trouvent dans la **[checklist de recette](CHECKLIST_RECETTE.md)**, à cocher au fur et à mesure.
 
-## 1. Prérequis
+Les commandes de ce guide ont été exécutées le 28/10/2026 (PHP 8.3.6, Node 22, base SQLite de démonstration, sans accès à Internet). Ce qui n'a pas pu être vérifié est marqué **(non vérifié)**.
 
-| Outil | Version | Pour quoi |
-|---|---|---|
-| PHP | **8.3** (`php -v`) | Laravel 12 |
-| Extensions PHP | `ctype dom fileinfo filter gd hash iconv json libxml mbstring openssl pcre phar session simplexml tokenizer xml xmlreader xmlwriter zip` (exigées par `composer.lock`), plus **`pdo_sqlite` + `sqlite3`** (base locale) et **`intl`** (formats de langue). `bcmath` est installé par la CI mais pas exigé. | `php -m` doit les lister |
-| Composer | 2.x | `composer install` |
-| Node + npm | **22** / 10 | compilation Vite |
-| Flutter SDK | **3.47.8** stable (Dart 3.13.7, comme la CI) | application mobile |
-| Chromium | celui de Playwright (`npx playwright install chromium`) ou ton Chrome | seulement pour `npm run e2e` ; la recette manuelle se fait dans ton navigateur |
-| Android Studio / SDK + émulateur, ou un téléphone | Android 8+ (`minSdk 26`) | lancer l'app mobile **(non vérifié ici : pas d'Android SDK)** |
+Repères : `xomiton/` est le dossier du projet, `web/` le site (Laravel), `mobile/` l'application (Flutter).
 
-Vérifie les extensions : `php -m | grep -iE 'pdo_sqlite|sqlite3|intl|gd|zip|mbstring'` doit afficher les six.
+## 1. En bref
 
-## 2. Lancement web, pas à pas
+```bash
+cd xomiton
+scripts/recette-local.sh        # installe, crée la base de démonstration, compile le site (≈ 5 min la première fois)
+scripts/recette-lancer.sh       # démarre le site, le planificateur et la file (Ctrl+C pour tout arrêter)
+```
+
+Ouvrez ensuite **http://localhost:8000** (exactement cette adresse) et connectez-vous avec un compte du §5. Les e-mails, SMS et notifications ne partent pas vraiment : ils sont écrits dans un fichier journal (§6).
+
+## 2. Ce qu'il faut installer d'abord
+
+| Outil | Version | Pour quoi | Vérifier |
+|---|---|---|---|
+| PHP | **8.3** | le site | `php -v` |
+| Extensions PHP | `pdo_sqlite`, `sqlite3`, `intl`, `gd`, `zip`, `mbstring`, `curl`, `openssl`, `xml`, `dom`, `fileinfo`, `tokenizer`, `ctype` | le site | `php -m` |
+| Composer | 2.x | dépendances PHP | `composer -V` |
+| Node.js + npm | **22** (20 minimum) | compilation du site | `node -v` |
+| Google Chrome | récent | navigateur de recette conseillé (outils de développement F12) | |
+| Flutter SDK | **3.47.8** stable (Dart 3.13) | application mobile (facultatif) | `flutter --version` |
+| Android Studio + émulateur, ou un téléphone Android 8+ | | lancer l'application mobile (facultatif) | `flutter doctor` |
+
+Pour la partie web seule, Flutter et Android ne sont pas nécessaires. Sous Windows, utilisez WSL (Ubuntu) ou Git Bash pour les scripts `.sh`.
+
+## 3. Installation pas à pas
+
+### 3.1 Méthode automatique (recommandée)
+
+```bash
+cd xomiton
+scripts/recette-local.sh
+```
+
+Le script, rejouable à volonté : vérifie les prérequis, lance `composer install` et `npm ci`, crée `web/.env` depuis `web/.env.example` s'il n'existe pas (sans jamais modifier un `.env` existant), génère la clé, **crée la base de recette** `web/database/recette.sqlite` avec les données de démonstration, compile le site, puis affiche les adresses et les comptes.
+
+Options : `--yes` (aucune question), `--no-reset` (conserve une base existante et la met à jour sans rien effacer), `--skip-install`, `--skip-build`, `--db CHEMIN`. **Si une base existe déjà, le script demande confirmation avant de l'effacer** (`--yes` répond oui d'avance).
+
+### 3.2 Méthode manuelle (équivalente)
 
 ```bash
 cd xomiton/web
 composer install
 npm ci
-cp .env.example .env
+cp .env.example .env                  # déjà réglé pour la recette locale : SQLite, journaux, rien d'externe
 php artisan key:generate
+touch database/recette.sqlite
+php artisan migrate:fresh --seed      # ≈ 5 s ; ATTENTION : efface la base de recette
+php artisan storage:link
+npm run build                         # ≈ 30 s ; se termine par le contrôle des budgets (« ok »)
 ```
 
-**Piège n° 1 — `.env.example` vise MySQL et SMTP, pas ton poste.** Édite `.env` (garde `APP_ENV=local` : les comptes de démonstration ne sont semés qu'en `local`, `testing` ou `staging`) :
+## 4. Lancement
 
-```dotenv
-APP_URL=http://localhost:8000
-DB_CONNECTION=sqlite
-DB_DATABASE=/chemin/absolu/vers/xomiton/web/database/recette.sqlite
-MAIL_MAILER=failover
-DEBUGBAR_ENABLED=false
-```
-Commente aussi `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD` (inutiles en SQLite). Pourquoi ces choix :
-- **Base dédiée** : `touch database/recette.sqlite`. N'utilise pas `database/database.sqlite` : `migrate:fresh` l'efface. Les `*.sqlite` sont ignorés par git. Si tu laisses `DB_DATABASE=xomiton` avec sqlite, Laravel cherche un fichier nommé `xomiton` et échoue.
-- **`MAIL_MAILER=failover`** (smtp puis log) plutôt que `log` : voir piège n° 3.
-- **`DEBUGBAR_ENABLED=false`** : sinon la console du navigateur affiche ~80 erreurs CSP « Refused to execute inline script » venant de `/_debugbar/...` sur chaque page connectée. Sans effet sur le site.
-- **`APP_URL=http://localhost:8000` et on ouvre toujours `http://localhost:8000`** (pas `127.0.0.1`, pas un autre port) : les avatars et le CSP s'appuient sur `APP_URL` ; sur un autre hôte/port les images `storage/` sont bloquées.
+### 4.1 Tout en un
 
 ```bash
-touch database/recette.sqlite
-php artisan migrate:fresh --seed        # ≈ 5 s ; dit « DONE » pour DemoAccountsSeeder, DemoResourcesSeeder, DemoNewsSeeder
-npm run build                           # ≈ 30 s ; finit par le contrôle de budgets (doit afficher « ok »)
-php artisan serve                       # http://localhost:8000
+cd xomiton
+scripts/recette-lancer.sh             # options : --port 8001, --host 0.0.0.0, --no-queue, --no-schedule
 ```
-Vérifie : `curl -s -o /dev/null -w '%{http_code}\n' localhost:8000/up` → `200`.
 
-### Terminaux à garder ouverts
+Trois processus démarrent, leurs messages portent un préfixe `[site]`, `[planif]`, `[file]`. **Ctrl+C** les arrête proprement. Le script refuse de démarrer si le port est déjà pris. Vérification : `curl -s -o /dev/null -w '%{http_code}\n' localhost:8000/up` affiche `200`.
+
+### 4.2 À la main (un terminal par ligne), depuis `xomiton/web`
+
 | Terminal | Commande | Rôle |
 |---|---|---|
-| 1 | `php artisan serve` | le site |
-| 2 | `php artisan schedule:work` | planificateur (chaque minute : `alerts:escalate`, `notifications:retry`, `mail:flush-outbox`, `newsletter:process`, `polls:close`…) ; liste : `php artisan schedule:list` |
-| 3 | `php artisan queue:work --stop-when-empty` | **à relancer à la main** après une action qui met un job en file (export de données, etc.) ; la file est en base (`QUEUE_CONNECTION=database`) |
-| 4 | `tail -f storage/logs/laravel.log` | e-mails, SMS, push, OTP |
+| 1 | `php artisan serve` | le site, sur http://localhost:8000 |
+| 2 | `php artisan schedule:work` | planificateur « cron » simulé : chaque minute `alerts:escalate` (escalade des SOS), `notifications:retry`, `mail:flush-outbox`, `newsletter:process`, `gateways:publish` ; toutes les 5 min `polls:close` ; liste : `php artisan schedule:list` |
+| 3 | `php artisan queue:work` | traite la file (exports de données, envois en file). Variante ponctuelle : `queue:work --stop-when-empty` |
+| 4 | `tail -f storage/logs/laravel.log` | e-mails, SMS, push, codes OTP (§6) |
 
-`npm run dev` est possible mais **piège n° 2** : en mode dev, le CSP bloque les polices et les icônes (`font-src 'self'` sans `127.0.0.1:5173`) → icônes manquantes, 5 erreurs console. De plus le service worker (hors connexion) **n'est enregistré qu'en build de production**. Pour la recette : `npm run build`, pas `npm run dev`. Après un build, rien d'autre à faire ; si tu modifies du JS, relance le build.
+Après toute modification de `.env`, **redémarrez** `php artisan serve` : il ne relit pas `.env` à chaud.
 
-### Où lire quoi (tout dans `web/storage/logs/laravel.log`)
-- **Code OTP** (connexion, inscription, mot de passe oublié) : `grep -a "Subject: Ton code Xomiton" storage/logs/laravel.log | tail -1` → le code est dans le sujet (`Ton code Xomiton : 123456`) et dans le corps `<h1>`. Valable 10 min. Seul son hachage est en base : on ne peut pas le lire autrement. **Une connexion sur un appareil inconnu exige un OTP ; les comptes admin/superadmin en exigent un à chaque connexion.**
-- **E-mails** : même fichier (`To: …`, `Subject: …`). Les sujets accentués sont encodés (`=?utf-8?Q?…`) ; les liens longs peuvent être coupés par `=` en fin de ligne (quoted-printable) : recolle-les.
-- **SMS** : lignes `[sms:log] SMS consigné (aucun envoi)` (numéro masqué). **Push** : `[webpush:log]` / `[fcm:log]` `Notification push consignée`. Rien ne part réellement (§6).
-- **Tracé SOS** : `alerts.sos_created`, `alerts.dispatched … "purpose":"sos_triggered"` ; sans accusé au bout de 5 min, `alerts.dispatched … "purpose":"sos_unacknowledged"` (c'est `alerts:escalate`, donc `schedule:work` doit tourner).
-- **Table ou ligne précise** : `php artisan tinker --execute='echo App\Models\Alert::count();'`.
+### 4.3 Compiler le site : `build` plutôt que `dev`
 
-### Pièges rencontrés en testant
-3. **E-mails « en file » invisibles avec `MAIL_MAILER=log`.** L'OTP, la bienvenue, etc. partent directement et apparaissent dans le log. Mais la **confirmation de newsletter**, l'**e-mail de test de campagne**, l'**export RGPD** passent par la table `mail_outbox`, et `mail:flush-outbox` répond « Aucun transport SMTP disponible (MAIL_MAILER=log) : rien n'est envoyé ». Avec `MAIL_MAILER=failover` (SMTP injoignable → repli log), `php artisan mail:flush-outbox` (ou `schedule:work`) les vide dans `laravel.log`. Sans cela : `php artisan tinker --execute='echo App\Models\NewsletterSubscriber::latest("id")->value("token");'` donne le jeton (lien `/newsletter/confirmer/<jeton>`).
-4. **Limites volontaires** (réponse « 429 Trop de tentatives » ou « Trop de codes demandés pour cette adresse ») : 5 connexions par minute et par IP, **5 codes OTP par heure et par adresse**, 10 publications du fil par minute. Après une série de tests : `php artisan tinker --execute='App\Models\OtpCode::query()->delete();'` puis `php artisan cache:clear`.
-5. **Mot de passe « compromis »** : à l'inscription l'application interroge un service externe ; hors ligne ou derrière un proxy, une ligne `local.ERROR: HTTP request returned status code 403` apparaît dans le log mais l'inscription réussit.
-6. **`/sitemap.xml` répond 404** en local : normal (indexation interdite hors production).
-7. **`php artisan serve` ne relit pas `.env` à chaud** : redémarre-le après chaque changement.
-8. Données de départ : 5 comptes, 18 ressources, 29 thématiques, 28 FAQ, 5 forums ; **fil, groupes, événements, messages et sujets de forum sont vides** : tu les crées pendant la recette.
+Pour la recette, utilisez `npm run build` (déjà fait par le script). `npm run dev` fonctionne mais le mode hors ligne (service worker) n'y est **pas** enregistré, et il faut supprimer `public/hot` pour revenir au build. Si vous modifiez du JavaScript, relancez le build.
 
-## 3. Comptes de démonstration (`DemoAccountsSeeder`)
-
-| Rôle | Identifiant | Mot de passe | Accès |
-|---|---|---|---|
-| Super-admin | `admin@xomiton.bj` (pseudo `admin`) | `Admin123!` | `/admin` complet + espace membre |
-| Admin (modération/contenu) | `moderation@xomiton.bj` (`moderatrice`) | `Admin123!` | `/admin` |
-| Membre | `membre@xomiton.bj` (`awa_s`) | `Membre123!` | espace membre ; `/admin`, `/espace-pair`, `/collecte` → 403 |
-| Pair éducatrice | `pair@xomiton.bj` (`pair_chantal`) | `Pair123!` | espace membre + `/espace-pair`, `/collecte` ; `/admin` → 403 |
-
-Le champ « identifiant » de `/connexion` accepte l'e-mail ou le pseudo. Chaque connexion d'un nouvel appareil/navigateur : lis le code dans le log (§2) et saisis-le sur `/code-de-verification` (le dernier chiffre valide tout seul). Astuce : une fenêtre de navigation privée par rôle.
-
-## 4. Recette manuelle, parcours par parcours
-
-Convention : **URL** — étapes — ✅ attendu — ⚠ si ça échoue. Ouvre la console (F12) : aucune erreur rouge n'est attendue (sauf celles listées en §6).
-
-### A. Site public (sans compte)
-- [ ] **Accueil** `/` : page « Xomiton – Espace safe LBTQ+… », menu, bouton **SOS** visible. ✅ aucune erreur console. ⚠ page blanche/non stylée : `npm run build` oublié, ou `public/hot` présent (supprime-le).
-- [ ] **Thématiques** `/thematiques` → ouvre une fiche (`/thematiques/<slug>`). ✅ 29 fiches, fiche lisible, FAQ en bas.
-- [ ] **Ressources** `/ressources` (+ `/ressources/<slug>`, `/actualites`) : liste, recherche, détail, badge « Hors ligne » sur certaines. ✅ 17 ressources publiées.
-- [ ] **Aide** `/aide` (FAQ, 28 questions) et **Urgences** `/urgences` : numéros 117, 118, ligne d'écoute `+229 01 97 38 88 47`. ✅ liens `tel:`.
-- [ ] **Newsletter double opt-in** `/newsletter` : e-mail `nl1@exemple.bj`, un centre d'intérêt, case de consentement, « S'inscrire ». ✅ page « Merci ! Un e-mail de confirmation… ». Puis `php artisan mail:flush-outbox` et cherche `Confirmez votre inscription` dans le log (ou jeton, §2 piège 3), ouvre `/newsletter/confirmer/<jeton>`, clique **Confirmer mon inscription**. ✅ statut `actif` dans `/admin/newsletter` › Abonné·es. Lien de désinscription `/newsletter/desinscription/<jeton>` : désabonne en un clic. ⚠ rien dans le log : `MAIL_MAILER=log` (piège 3).
-- [ ] Pages légales `/confidentialite`, `/lois`, `/violences`, `/do-glegbe`, `/mot-de-passe-oublie` : elles s'affichent.
-
-### B. Signalement anonyme + suivi par code
-- [ ] `/signaler` (6 étapes, sans compte) : type « Signaler une violence » (`#f-type-0`), catégorie, **Suivant** ; description ≥ quelques phrases ; département ; étapes 4 et 5 facultatives ; étape 6 récapitulatif « Rien n'est encore parti », **Envoyer**. ✅ `/signaler/confirmation` : « Ton signalement est envoyé » + code `SIG-XXXXXXXXXX` **affiché une seule fois** (copie-le). ⚠ si l'envoi reste bloqué : onglet Réseau, requête `POST /api/v1/signalements` ; ligne d'erreur dans `laravel.log`.
-- [ ] `/suivi` : saisis le code. ✅ « Statut : Nouveau », « Reçu. Une personne formée va le lire ». Avec un code inexistant : message neutre, pas de fuite.
-- [ ] `/admin/alertes` (super-admin) : la ligne apparaît (type Signalement, anonyme). Change son statut (Pris en charge) puis recharge `/suivi` : le statut suit.
-
-### C. SOS
-- [ ] `/sos` : **maintiens le bouton rouge 2 secondes** (souris ou doigt). ✅ décompte « Envoi de ton alerte dans 5… Tu peux encore annuler ».
-- [ ] **Annulation** : pendant le décompte, **Annuler l'alerte**. ✅ « Alerte annulée » ; `php artisan tinker --execute='echo App\Models\Alert::count();'` inchangé ; aucune ligne `alerts.dispatched`.
-- [ ] **Envoi** : recommence et ne touche à rien 5 s. ✅ « Ton alerte est partie », « Fausse alerte ? Tu peux encore annuler pendant 58 s », boutons « Appeler le 117 », « Je suis en sécurité ». Autorise ou refuse la position (case « Partager ma position »). Sans maintien : double clic ou Entrée sur le bouton, puis confirmation.
-- [ ] **Journal** : `grep -a "alerts\.\|sms:log" storage/logs/laravel.log | tail` → `alerts.sos_created`, `alerts.dispatched … sos_triggered … "sent":N`, `[sms:log]`. Après 5 min sans accusé (avec `schedule:work`), `sos_unacknowledged`.
-- [ ] **Admin** : `/admin` (bandeau rouge « 1 alerte SOS active », **Accuser réception**, tuile « SOS actifs ») et `/admin/alertes` (onglet SOS, filtre Statut). ✅ après accusé, le bandeau disparaît. Le bouton rond SOS flottant existe aussi sur les pages membre.
-
-### D. Inscription → OTP → fil
-- [ ] `/inscription` : pseudo `recette1`, e-mail `recette1@exemple.bj`, mot de passe `Mot-de-passe-solide-2026!`, cases CGU et confidentialité, **Créer mon compte**. ✅ arrivée sur `/inscription/profil` ; étapes facultatives profil, sécurité, consentements (**Passer**) ; e-mail « Bienvenue » dans le log.
-- [ ] `/code-de-verification` : lis le code (§2), saisis-le. ✅ compte vérifié ; arrive sur `/fil`. Un code faux : message d'erreur et compteur d'essais ; **Renvoyer** respecte un délai.
-- [ ] Déconnexion puis `/connexion` avec ce compte, et « Mot de passe oublié » (`/mot-de-passe-oublie` → code dans le log → `/nouveau-mot-de-passe`). ⚠ « Trop de codes » : piège 4.
-
-### E. Fil : publier, sondage, commentaire (connecté en `membre@xomiton.bj`)
-- [ ] `/fil` → « Partage tes pensées… » : texte, thème (Témoignage/Question…), visibilité, **Publier**. ✅ la carte apparaît en haut, compteur « Publications » +1.
-- [ ] **Sondage** : question, deux réponses (+ « Ajouter une réponse »), durée, **Publier le sondage** ; vote (**Voter**), résultat affiché. ✅ après l'échéance (`schedule:work`, `polls:close`) le vote est refusé.
-- [ ] **Commentaire** sous une publication ; **J'aime** ; **Partager** ; enregistrement (`/fil/enregistres`) ; détail `/fil/<id>`.
-- [ ] Publier avec « Anonyme » coché : le pseudo n'apparaît pas. Signaler une publication (menu ⋯) puis la retrouver dans `/admin/moderation`.
-
-### F. Messagerie
-- [ ] `/messages` → **Nouvelle conversation** › Message privé › cherche `pair` › `pair_chantal` ; écris et envoie. ✅ message affiché ; dans une autre session (`pair@xomiton.bj`) la conversation arrive (cloche + liste). Onglet « Non lues », recherche de conversation, conversation de groupe (onglet Groupe).
-
-### G. Groupes, événements, forums
-- [ ] **Groupes** `/groupes` → **Créer un groupe** (nom, description, Privé/Public, zone). ✅ redirection `/groupes/<id>` + « Groupe créé ». Depuis le compte pair : rejoindre (si public).
-- [ ] **Événements** `/evenements` → **Créer un événement** : titre, **date obligatoire**, heure, lieu ou « en ligne ». ✅ listé sous « À venir » ; **Participer** depuis un autre compte ; rappel de la veille (`events:remind`) dans `laravel.log`.
-- [ ] **Forums** `/forums` → **Nouveau sujet** (forum, titre, message, option anonyme). ✅ « Ton sujet est publié » ; réponse depuis un autre compte.
-
-### H. Profil progressif et confidentialité
-- [ ] `/profil` : la fenêtre « Complète ton profil, c'est facultatif » pose **un groupe de questions à la fois** (« Question 2 sur 8 »), avec « Je préfère ne pas le dire », « Passer ce groupe », « Plus tard ». ✅ la jauge « Profil complété à X % » monte. Change avatar/couverture, onglets À propos, Connexions, Médias, Événements, Activité.
-- [ ] `/parametres` › **Confidentialité** : visibilité du profil (Tout le monde / Communauté / …), « Afficher ma zone », « Trouvable dans la recherche », partage GPS du SOS. Vérifie avec l'autre compte (`/membres/<pseudo>`, `/recherche`) que le réglage est respecté.
-
-### I. Paramètres
-- [ ] **Mot de passe** : actuel + nouveau ×2 → **Changer le mot de passe** ; reconnecte-toi avec le nouveau.
-- [ ] **Sécurité › Mode discret** : titre d'onglet neutre, aperçus masqués. **Appareils connectés** → « Déconnecter tous les appareils ».
-- [ ] **Notifications** (grille par thème × canal), **Langue**, **Apparence** (Clair/Sombre/Automatique), **Newsletter**.
-- [ ] **Mes données › Télécharger mes données** : toast « Ton export est en préparation… ». Lance `php artisan queue:work --stop-when-empty` puis `php artisan mail:flush-outbox` ; cherche `mes-donnees/export/` dans le log et ouvre le lien (48 h). ✅ JSON téléchargé.
-- [ ] **Supprimer mon compte** (sur un compte jetable comme `recette1`) : taper `SUPPRIMER` + mot de passe. ✅ déconnexion, connexion impossible ; anonymisation réelle après 30 j (`php artisan accounts:anonymize --dry-run`).
-
-### J. Recherche et assistant
-- [ ] `/recherche?q=santé` (champ de l'en-tête) : onglets Tout / Ressources / Thématiques / Contacts / Membres. ✅ « 3 résultats ». `sante` sans accent donne aussi 3 résultats.
-- [ ] `/assistant` : clique une suggestion (« Comment porter plainte ? ») → réponse de la base de connaissances (`ASSISTANT_PROVIDER=kb`). **Message de crise** : écris « je veux mourir, je ne vois plus d'issue ». ✅ réponse de crise avec boutons **SOS avec position GPS**, **Appeler le 117 / 118**, ligne d'écoute, « Faire un signalement », « Parler à un humain ». « Garder cette conversation » est désactivé par défaut.
-
-### K. Espace pair et collecte hors ligne (compte `pair@xomiton.bj`)
-- [ ] `/espace-pair` : tableau de bord (dossiers, alertes routées), `/espace-pair/dossiers`.
-- [ ] `/collecte` en ligne : type de dossier, type de violence, département, population, sexe, âge, **Enregistrer le dossier**. ✅ bandeau « En ligne / Aucune fiche en attente ».
-- [ ] **Hors ligne** : sur `/collecte`, DevTools › Réseau › **Hors connexion** (le service worker de la page publique `/urgences` n'est enregistré qu'avec `npm run build`). Remplis et enregistre. ✅ bandeau « Hors ligne · 1 fiche en attente ». Remets « En ligne » : ✅ en quelques secondes « Aucune fiche en attente » et le dossier est en base (`DB::table('cases')->count()` +1 ; visible dans `/admin/registres`). Idem `/signaler` hors ligne : à l'envoi il part au retour du réseau et affiche son code.
-
-### L. Administration (super-admin `admin@xomiton.bj`, code OTP à chaque connexion)
-- [ ] **Tableau de bord** `/admin` : tuiles (Nouvelles alertes, SOS actifs, Comptes…), graphiques, bandeau SOS (parcours C). Menu : une entrée par écran ci-dessous ; Ctrl K = recherche globale.
-- [ ] **Navigation sans rechargement** : dans la console du navigateur, tape `window.__nav = 1`, puis clique Alertes, Registres, Indicateurs, Maintenance, Journal et le tableau de bord dans le menu. ✅ l'URL et l'onglet changent, `window.__nav` vaut toujours `1` (pas de rechargement), une barre bleue fine défile en haut, une seule entrée du menu est marquée active (`aria-current`), le focus est sur le titre de la page et le lecteur d'écran annonce « Page : … ». Le graphique du tableau de bord n'apparaît qu'une fois après un aller-retour ; le bouton « Replier le menu » et le thème sombre restent. Les liens « Site public », « Voir le site membre », « Déconnexion », les téléchargements (sauvegardes, PDF des fiches) et « Voir comme un visiteur » rechargent la page en entier. Supprime les cookies du site (DevTools › Application) puis clique une entrée du menu : ✅ tu arrives sur `/connexion`, sans page blanche.
-- [ ] **Alertes** `/admin/alertes` : filtres, actualisation auto toutes les 10 s, accuser réception, notes, **Exporter CSV**.
-- [ ] **Registres** `/admin/registres` (dossiers VBG/VDH, **Nouveau dossier**, le récit n'est jamais dans la liste) ; **Fiches** `/admin/fiches` (édition d'une fiche déjà créée : voir §6).
-- [ ] **Utilisateurs** `/admin/utilisateurs` : filtre par rôle, **Créer un compte**, suspendre/réactiver, valider un pair, matrice des permissions (lecture seule).
-- [ ] **Modération** `/admin/moderation` : file « À traiter », décision (confirmer/rétablir), mots surveillés (7).
-- [ ] **Contenu** `/admin/contenu` : onglets Ressources / Thématiques / FAQ / Catégories ; **Nouvelle ressource** ; « Passer en brouillon » retire la fiche du public (vérifie `/ressources`).
-- [ ] **Newsletter** `/admin/newsletter` › Campagnes › **Nouvelle campagne** : objet, corps (variables `{{user_first_name}}`, `{{unsubscribe_link}}`), segment, e-mail dans « Envoyer le test » (`#xmNlTestTo`) → **Envoyer le test**. ✅ toast « Test mis en file d'envoi : il part dans la minute » ; `php artisan mail:flush-outbox` ; sujet `[TEST] …` dans le log. Planifier/envoyer : `newsletter:process` (par lots de 200, via `schedule:work`). Statistiques : taux d'ouverture/clic quand le pixel est chargé.
-- [ ] **Sauvegardes** `/admin/sauvegardes` : **Sauvegarder maintenant** ; archive chiffrée listée et téléchargeable (avertissement normal : `BACKUP_ARCHIVE_PASSWORD` non défini).
-- [ ] **Paramètres** `/admin/parametres` (Général, Sécurité, Conservation, Messagerie SMTP, Système) : une valeur hors bornes est refusée. **Journal d'audit** `/admin/journal` : tes actions récentes (`auth.otp_verified`, `alerts.sos_triggered`…), filtre, export CSV.
-- [ ] **Mode maintenance** `/admin/maintenance` : **Activer la maintenance** › saisis un **Motif interne**, durée, coche « Je confirme », **Activer maintenant**. ✅ bandeau rouge « Mode maintenance actif… » et décompte. **Vérifie en navigation privée (visiteur)** :
-  - ouverts (200) : `/sos` (envoie un SOS complet : il part), `/signaler` (envoie un signalement : il part), `/suivi`, `/urgences`, `/connexion`, `/newsletter`, `/up`, `/sw.js` ;
-  - fermés (503, page « Maintenance en cours — Une pause pour mieux vous accueillir », rappel SOS/Signaler/Urgences, compte à rebours) : `/`, `/inscription`, `/thematiques`, `/aide`, `/fil`, `/admin` ;
-  - les membres connectés sont déconnectés ; l'admin garde `/admin` et `/fil`. « Voir comme un visiteur » montre le rendu.
-  - **Désactive** ensuite (bouton vert « Désactiver la maintenance ») et vérifie que `/` redevient 200. Planifie aussi une fenêtre (début/fin/annonce préalable).
-
-### M. Pages d'erreur
-- [ ] **404** : `/n-importe-quoi` ou `/thematiques/x`. ✅ « Erreur 404 – Xomiton » avec rappel SOS/urgences.
-- [ ] **403** : connecté en `membre@xomiton.bj`, ouvre `/admin` (ou `/espace-pair`). ✅ « Erreur 403 ». (`/admin/export` répond aussi 403 sans lien signé : normal.)
-- [ ] **419** : ouvre `/connexion`, supprime les cookies du site (DevTools › Application), envoie le formulaire. ✅ « Erreur 419 — Votre session a expiré… les informations saisies n'ont pas été envoyées ».
-- [ ] **503** : maintenance active (ci-dessus). **429** : enchaîne 6 connexions fausses en une minute. ✅ « Trop de tentatives… Nouvelle tentative possible dans N secondes ».
-
-## 5. Mobile Flutter
+### 4.4 Application mobile
 
 ```bash
-# Installer le SDK (Linux) : version identique à la CI (.github/workflows/mobile.yml)
-curl -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.47.8-stable.tar.xz
-tar xf flutter_linux_3.47.8-stable.tar.xz && export PATH="$PWD/flutter/bin:$PATH"   # macOS/Windows : flutter.dev/install
 cd xomiton/mobile
-flutter pub get      # ≈ 30 s
-flutter analyze      # ≈ 30 s : « No issues found! »
-flutter test         # ≈ 1 min 15 : « All tests passed! » (151 tests)
+flutter pub get
+flutter analyze && flutter test       # 151 tests, vérifiés le 27/10/2026
+flutter run                           # émulateur Android (API http://10.0.2.2:8000/api/v1 par défaut)
 ```
-Les trois commandes ci-dessus ont été exécutées avec Flutter 3.47.8 : OK. `flutter doctor` doit être vert pour Android (SDK + licences) avant de lancer sur un appareil.
 
-**URL de l'API** : `--dart-define=API_BASE_URL=<racine>/api/v1` (le suffixe **`/api/v1` est obligatoire**). Défaut : `http://10.0.2.2:8000/api/v1`.
-- Émulateur Android, build **debug** : `flutter run` suffit (10.0.2.2 = le `localhost` de ton PC ; le trafic http en clair n'est autorisé qu'en debug/profile).
-- Téléphone réel, debug : `php artisan serve --host=0.0.0.0`, puis `flutter run --dart-define=API_BASE_URL=http://192.168.X.Y:8000/api/v1` (même Wi-Fi, pare-feu ouvert).
-- **Release** : `flutter build apk --release --dart-define=API_BASE_URL=https://ton-domaine/api/v1`. En release une URL non https fait **refuser le démarrage** (`API_BASE_URL doit être une URL https en production`).
-- Les codes OTP du mobile arrivent aussi dans `web/storage/logs/laravel.log` (§2). Mêmes limites 429 qu'au web.
+L'adresse de l'API se règle avec `--dart-define=API_BASE_URL=<racine>/api/v1` (le suffixe **`/api/v1` est obligatoire**) :
 
-Parcours (compte `membre@xomiton.bj`) :
-- [ ] **Onboarding** : carrousel de présentation (Suivant, Passer, « J'ai déjà un compte »).
-- [ ] **Inscription** `/signup` → code OTP (log) → arrivée sur l'accueil. **Mot de passe oublié** → `/reset`.
-- [ ] **Connexion** : identifiant + mot de passe → OTP si nouvel appareil → accueil (tuiles Apprendre, Signaler, Urgences, Assistant). Déconnexion puis reconnexion.
-- [ ] **SOS** (onglet SOS) : maintien du bouton, décompte annulable, envoi ; vérifie `alerts.sos_created` dans le log et la ligne dans `/admin/alertes`. Position GPS : autorise la permission, ou refuse (l'alerte part quand même).
-- [ ] **Signalement** (`/signaler`) anonyme ou connecté, code de suivi, puis `/suivi`. Sans réseau : l'envoi est mis en file (Hive) et part au retour.
-- [ ] **Fil** : lire, publier (`/feed/new`), commenter, J'aime. **Messages** : nouvelle conversation, envoi, réception depuis le web.
-- [ ] **Profil** : `/mon-profil`, profil progressif, `/parametres`, `/securite` (**mode discret**, masquage des notifications, appareils), suppression de compte.
-- [ ] **Code PIN** (`/securite` › activer) : 4 chiffres ; ferme et rouvre l'app (le PIN est demandé) ; 5 erreurs → session fermée (reconnexion mot de passe + OTP). SOS, urgences et signalement restent accessibles sans PIN.
+- **Émulateur Android** : `flutter run` suffit (`10.0.2.2` désigne votre ordinateur). Le trafic http en clair n'est accepté qu'en debug.
+- **Téléphone réel** (même Wi-Fi, pare-feu ouvert) : `scripts/recette-lancer.sh --host 0.0.0.0`, puis `flutter run --dart-define=API_BASE_URL=http://192.168.X.Y:8000/api/v1` (192.168.X.Y = adresse de votre ordinateur).
+- **Release** : `flutter build apk --release --dart-define=API_BASE_URL=https://votre-domaine/api/v1` ; en release, une URL non https empêche le démarrage.
+- **`flutter run -d chrome` n'est pas prévu** : le projet n'a pas de dossier `web/` Flutter et le serveur n'autorise pas les appels d'un autre site (CORS). Utilisez un émulateur Android ou un téléphone.
+- Les codes de vérification de l'application arrivent dans le même fichier journal que ceux du site (§6).
 
-**Ne peut PAS marcher sans configuration** :
-- **Push (Firebase)** : sans `mobile/android/app/google-services.json` (jamais versionné), l'app démarre en `NoopPushService` : aucune permission demandée, aucune notification. Côté serveur `FCM_DRIVER=log` : même avec Firebase, rien n'est envoyé (§6). Procédure : `mobile/README.md`.
-- **iOS** : `GoogleService-Info.plist`, capacité Push, clé APNs non livrés ; l'icône alternative du mode discret n'existe pas (le nom ne peut pas changer). Build iOS **(non vérifié, nécessite macOS)**.
-- Les tuiles du tableau de bord dont l'écran n'est pas livré ouvrent `/soon/<page>` (« bientôt ») ; l'**espace pair n'existe pas côté mobile**.
-- Le SDK Android n'était pas disponible dans mon environnement : `flutter run`/`build apk` et les parcours ci-dessus sont **(non vérifiés)** ; seuls `pub get`, `analyze`, `test` le sont.
+Seuls `pub get`, `analyze` et `test` ont été exécutés ; le lancement sur appareil est **(non vérifié)** faute de SDK Android dans l'environnement de préparation.
 
-## 6. Ce qui ne marche volontairement pas encore (et défauts constatés)
+## 5. Comptes de démonstration
 
-Volontaire (voir `docs/ETAT_DES_LIEUX.md`) :
-- **SMS** : `SMS_PROVIDER=log` — consignés, jamais envoyés. **Push** : `WEBPUSH_DRIVER=log` / `FCM_DRIVER=log` — consignés, jamais envoyés (paquets et clés VAPID/Firebase absents).
-- **SMTP** : aucun envoi réel ; réglable dans Administration › Paramètres › Messagerie (SMTP) ou `MAIL_*`.
-- **Réseaux sociaux** : passerelles `/admin/passerelles` sans clés (`FACEBOOK_*`, `TELEGRAM_BOT_TOKEN`, `TIKTOK_*`) : « publication manuelle ».
-- **`notifications:digest`** n'existe pas : le réglage de synthèse quotidienne/hebdomadaire n'a aucun effet (idem `alerts:anonymize`).
-- **P11-02** : éditer une fiche VBG/VDH **déjà créée** n'est pas possible (`/admin/fiches`).
-- **Espace pair mobile** absent ; assistant en base de connaissances seulement (pas de LLM : `ASSISTANT_API_KEY` ignorée).
+Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en production : garde-fou dans `DatabaseSeeder` et test automatisé). Le champ « identifiant » de `/connexion` accepte l'e-mail ou le pseudo. La page de connexion propose aussi trois boutons de remplissage automatique.
 
-Défauts constatés pendant mon test du lancement (aucun ne bloque un parcours, rien n'a été corrigé) :
-- ~~**B1 — e-mails de la boîte d'envoi muets avec `MAIL_MAILER=log`** : confirmation newsletter, test de campagne, export RGPD restent dans `mail_outbox` (`mail:flush-outbox` inactif pour `log`/`array`). Contournement : `MAIL_MAILER=failover` (§2). Le README de `web/` laisse croire que `log` suffit.~~ **Corrigé** : `mail:flush-outbox` passe désormais par `Mail::mailer()` y compris pour `log` / `array`.
-- ~~**B2 — `npm run dev` : polices et icônes bloquées** par le CSP (`font-src 'self'` sans l'hôte Vite) ; le service worker n'y est pas enregistré. Utilise `npm run build`.~~ **Corrigé** : en local avec `public/hot`, la CSP autorise Vite (localhost / [::1] / ws) ; le service worker reste non enregistré en dev.
-- **B3 — Debugbar (`APP_DEBUG=true`)** : ~80 violations CSP dans la console de chaque page connectée. `DEBUGBAR_ENABLED=false`.
-- ~~**B4 — libellés bruts dans l'admin** : `/admin/newsletter` affiche `{0} Aucune confirmation en attente|{1} …|[2,*] …` (clé de pluriel non traitée, `lang/fr/admin_newsletter.php:43`) ; `/admin/contenu` affiche la clé `admin_content.ressources.title`.~~ **Corrigé** (trans_choice, groupe `resources`/`faqs`) ; test générique `NoRawTranslationKeysTest`.
-- ~~**B5 — recherche sensible aux accents** : `/recherche?q=sante` → 0 résultat, `santé` → 3.~~ **Corrigé** : `SearchText::normalize` + `LikePattern` (fonction SQLite `xom_fold`, collation `_ci` sur MySQL).
-- **B6 — mélange d'hôtes** : si tu ouvres le site sur un autre hôte/port que `APP_URL`, les avatars `storage/` sont bloqués par le CSP (pas un bogue, mais déroutant).
+| Rôle | Identifiant | Pseudo | Mot de passe | Accès attendu |
+|---|---|---|---|---|
+| Super-administrateur·rice | `admin@xomiton.bj` | `admin` | `Admin123!` | `/admin` complet, espace membre |
+| Administrateur·rice | `moderation@xomiton.bj` | `moderatrice` | `Admin123!` | `/admin` (sans les droits réservés au super-admin) |
+| Modérateur·rice | `moderateur@xomiton.bj` | `modo_rose` | `Modo123!` | modération, utilisateurs (suspension), espace membre |
+| Membre | `membre@xomiton.bj` | `awa_s` | `Membre123!` | espace membre ; `/admin`, `/espace-pair`, `/collecte` refusés (403) |
+| Membre (second compte) | `membre2@xomiton.bj` | `fatou_k` | `Membre123!` | pour les tests à deux : messages, groupes, événements |
+| Pair éducateur·rice | `pair@xomiton.bj` | `pair_chantal` | `Pair123!` | espace membre, `/espace-pair`, `/collecte` ; `/admin` refusé |
+| Pair en attente de validation | `pair.attente@xomiton.bj` | `pair_en_attente` | `Pair123!` | se connecte avec un bandeau « en attente » ; à valider dans Administration › Utilisateurs (règle RG-03) |
 
-## 7. Gabarit de rapport de bug
+Les permissions détaillées de chaque rôle sont dans [ROLE_ET_PERMISSIONS.md](ROLE_ET_PERMISSIONS.md) §3.
 
-Copie ceci dans un ticket (une anomalie = un rapport) :
+**Code de vérification (OTP) en mode journal.** Une connexion depuis un appareil ou un navigateur inconnu exige un code à 6 chiffres, et les comptes admin et super-admin en exigent un à **chaque** connexion. Aucun e-mail ne part : lisez le code dans le journal.
+
+```bash
+grep -a "Subject: Ton code Xomiton" web/storage/logs/laravel.log | tail -1
+# Subject: Ton code Xomiton : 386776
+```
+
+Saisissez-le sur `/code-de-verification` (le dernier chiffre valide tout seul). Il est valable 10 minutes. Astuce : une fenêtre de navigation privée par rôle. Limites volontaires : 5 connexions par minute et par adresse IP, 5 codes par heure et par adresse. Après une série d'essais, pour repartir de zéro : `php artisan tinker --execute='App\Models\OtpCode::query()->delete();'` puis `php artisan cache:clear`.
+
+## 6. Données de démonstration
+
+Après `migrate:fresh --seed` : 7 comptes (§5), 12 zones et 29 communes du Bénin, 18 ressources (dont les actualités), 29 thématiques, 28 questions d'aide, 5 forums, 12 modèles d'e-mails, 38 réglages. **Le fil, les groupes, les événements, les messages, les sujets de forum et l'annuaire sont vides** : vous les créez pendant la recette. Pour tout recommencer : `scripts/recette-local.sh` (avec confirmation) ou `php artisan migrate:fresh --seed`. Aucune donnée réelle, aucun appel à un service externe.
+
+## 7. Où lire les e-mails, SMS et notifications (mode journal)
+
+Tout est dans **`web/storage/logs/laravel.log`** (`tail -f` pour suivre en direct).
+
+| Quoi | Comment le retrouver |
+|---|---|
+| Code OTP | `grep -a "Subject: Ton code Xomiton" web/storage/logs/laravel.log \| tail -1` |
+| E-mails | lignes `To: …` et `Subject: …`. Les sujets accentués sont encodés (`=?utf-8?Q?…`) ; les liens longs sont coupés par `=` en fin de ligne : recollez-les |
+| SMS de secours du SOS | `grep -a "sms:log" …` : `[sms:log] SMS consigné (aucun envoi)` (numéro masqué) |
+| Notifications push | `grep -a "webpush:log\|fcm:log" …` : `Notification push consignée (aucun envoi)` |
+| Trace d'un SOS | `grep -a "alerts\." …` : `alerts.sos_created`, `alerts.dispatched … sos_triggered`, et après 5 minutes sans accusé `sos_unacknowledged` (le planificateur doit tourner) |
+| Une table précise | `php artisan tinker --execute='echo App\Models\Alert::count();'` |
+
+**Boîte d'envoi.** La confirmation de newsletter, le test de campagne et l'export de données passent par une boîte d'envoi : `php artisan mail:flush-outbox` (ou le planificateur) la vide dans le journal. `MAIL_MAILER=failover`, réglage par défaut, tente le SMTP puis retombe sur le journal.
+
+## 8. Tester les canaux réels (désactivés par défaut)
+
+Tout est éteint par défaut (`log`). N'activez un canal que pour un essai ponctuel, avec vos propres clés, dans `web/.env` ; **ne commitez jamais `.env`**. Redémarrez le serveur après modification. Les commandes d'essai n'envoient qu'un texte fixe, sans donnée réelle, et demandent confirmation (sauf `--yes`).
+
+| Canal | Variables `.env` à renseigner | Commande d'essai |
+|---|---|---|
+| Push mobile (Firebase FCM, API HTTP v1) | `FCM_DRIVER=fcm`, `FIREBASE_CREDENTIALS=` chemin **absolu** du JSON du compte de service (hors `public/`), `FIREBASE_PROJECT_ID=` (facultatif) | `php artisan notifications:test-push <jeton FCM de l'appareil> --urgent --yes` |
+| SMS Vonage | `SMS_DRIVER=vonage`, `VONAGE_API_KEY=`, `VONAGE_API_SECRET=`, `SMS_SENDER=` | `php artisan notifications:test-sms +229XXXXXXXX --yes` (facturé par le fournisseur) |
+| SMS Twilio | `SMS_DRIVER=twilio`, `TWILIO_ACCOUNT_SID=`, `TWILIO_AUTH_TOKEN=`, `TWILIO_MESSAGING_SERVICE_SID=` (facultatif) | idem |
+| Assistant Gemini | `ASSISTANT_PROVIDER=gemini`, `ASSISTANT_LLM_ENABLED=true`, `GEMINI_API_KEY=` | `php artisan assistant:test-llm --yes` |
+| E-mail réel | `MAIL_MAILER=smtp`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` (ou Administration › Paramètres › Messagerie) | Administration › Templates e-mails › essai d'envoi |
+
+Résultat attendu sans clé, vérifié : `notifications:test-sms` et `notifications:test-push` répondent « Pilote … : log » puis « Envoi accepté par le pilote » (rien ne part, une ligne apparaît dans le journal) ; `assistant:test-llm` répond que `ASSISTANT_LLM_ENABLED` est faux et n'appelle rien. Avec les clés, l'appareil ou le téléphone doit recevoir le message dans la minute.
+
+À savoir : **Gemini ne doit pas être activé en production avant l'avis juridique** (données de santé et de violences envoyées à un tiers : [DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md), Q7) ; les messages de crise et de SOS ne lui sont jamais envoyés. Le push navigateur (Web Push VAPID) demande en plus `composer require minishlink/web-push` et des clés VAPID (non livrés). La commande `php artisan xomiton:preflight --skip-cron` résume l'état des canaux ; en local elle signale normalement des avertissements (pilotes `log`) et deux échecs (`APP_URL` non https, cookie non sécurisé) sans gravité hors production.
+
+## 9. Fonctions particulières à connaître avant de tester
+
+### Mode maintenance
+Administration › **Maintenance** : « Activer la maintenance », motif interne, durée, case de confirmation. En ligne de commande : `php artisan xomiton:maintenance on --minutes=30 --message="…" --reason="…"`, `off --reason="…"`, `status` (n'utilisez jamais `artisan down`). Pour les visiteur·ses : restent ouverts `/sos`, `/signaler`, `/suivi`, `/urgences`, `/connexion`, `/newsletter`, `/up` ; le reste affiche la page « Maintenance en cours » (503). Les membres sont déconnectés ; l'administration garde l'accès. **N'oubliez pas de désactiver la maintenance** après l'essai.
+
+### Hors ligne et synchronisation
+Le service worker (build uniquement) met en cache les pages d'urgence et la bibliothèque. Test : ouvrez `/urgences`, puis dans F12 › Réseau choisissez **Hors connexion** ; `/collecte` (compte pair) enregistre alors la fiche dans l'appareil (« Hors ligne · 1 fiche en attente ») et la transmet au retour du réseau. `/signaler` se comporte de même. Mobile : file Hive, rejouée au retour du réseau.
+
+### SOS : maintien, décompte, attente de la position
+Sur `/sos` : maintenir le bouton **2 secondes**, puis décompte annulable de **5 secondes**. Le navigateur attend la position GPS **8 secondes au total** ; passé ce délai, ou si vous refusez le partage, l'alerte part **sans position** (décision Q61). Le bouton rond flottant des pages connectées envoie immédiatement, sans position. Aucun SMS ni push réel en mode journal.
+
+### Inscription : case d'âge minimal
+`/inscription` comporte une case obligatoire de confirmation de l'âge minimal (15 ans, décision Q68), en plus des cases CGU et confidentialité. Sans elle, le compte n'est pas créé. L'application mobile applique la même règle.
+
+### Accueil : bandeau d'alerte
+La page d'accueil `/` comporte la section rouge très clair « alerte » (ancre `/#alerte`, décision Q54) avec les boutons « Signaler » et « Numéros d'urgence ». Vérifiez le texte, les boutons et le contraste.
+
+### E-mails au design premium
+Administration › **Templates e-mails** (`/admin/emails`, super-admin ou admin) : liste des 12 modèles, aperçu rendu dans le gabarit premium, essai d'envoi. Le rendu final se vérifie aussi en lisant un vrai message dans le journal (§7) ou, avec un SMTP réel, dans une boîte de réception.
+
+### Maquettes du prototype mobile
+Ouvrez par double-clic (aucun serveur nécessaire) dans `prototype_mobile/` : `index.html` (simulateur des 30 écrans), **`espace-pair.html`** (espace pair mobile) et **`admin-mobile.html`** (administration d'astreinte). Ce sont des **maquettes à valider** : l'espace pair et l'administration n'existent pas encore dans l'application Flutter. La police Montserrat demande Internet ; sans réseau, une police de secours s'affiche.
+
+## 10. Dépannage
+
+| Symptôme | Cause et remède |
+|---|---|
+| Page blanche ou non stylée | build oublié (`npm run build`) ou fichier `web/public/hot` présent : supprimez-le |
+| `could not find driver` / base introuvable | extension `pdo_sqlite` absente (`php -m`), ou `DB_DATABASE` ne pointe pas sur un fichier existant |
+| Images et avatars bloqués, erreurs CSP | ouvrez exactement `APP_URL` (`http://localhost:8000`), pas `127.0.0.1` ni un autre port |
+| 429 « Trop de tentatives » | limites volontaires (§5) : attendez une minute ou videz les codes |
+| Pas d'e-mail pour une confirmation de newsletter | exécutez `php artisan mail:flush-outbox` |
+| ~80 erreurs CSP venant de `/_debugbar/` | `DEBUGBAR_ENABLED=false` (déjà le cas dans `.env.example`) |
+| `/sitemap.xml` répond 404 | normal : l'indexation est interdite hors production |
+| « Mot de passe compromis » : erreur 403 dans le journal à l'inscription | le service externe de vérification est injoignable hors ligne ; l'inscription réussit |
+| `composer install` ou `npm ci` échoue | accès réseau nécessaire pour ces deux commandes uniquement |
+| Le port 8000 est occupé | `scripts/recette-lancer.sh --port 8001`, puis mettez `APP_URL=http://localhost:8001` dans `.env` et ouvrez cette adresse |
+
+## 11. Signaler une anomalie
+
+Une anomalie = un rapport. Copiez ce gabarit dans votre outil de suivi :
 
 ```markdown
 **Titre** : [zone] phrase courte (ex. « [SOS] le décompte ne s'annule pas sur mobile »)
-**Parcours du guide** : § … (ex. 4.C SOS)   **Gravité** : bloquant / majeur / mineur / cosmétique
-**Environnement** : web (navigateur + version) ou mobile (appareil, Android/iOS, version de l'app) ;
-  commit (`git rev-parse --short HEAD`) ; `APP_ENV`, `MAIL_MAILER` ; `npm run build` ou `dev` ; compte utilisé
+**Ligne de la checklist** : (ex. SOS-03)   **Gravité** : bloquant / majeur / mineur / cosmétique
+**Environnement** : web (navigateur + version) ou mobile (appareil, Android/iOS, version) ;
+  commit (`git rev-parse --short HEAD`) ; build ou dev ; compte utilisé
 **Étapes** :
 1. …
-2. …
-**Résultat attendu** : (copie la ligne « ✅ » du guide)
+**Résultat attendu** : (copie de la colonne « Résultat attendu »)
 **Résultat obtenu** :
-**Capture** : (écran complet avec l'URL visible ; pour un flux, courte vidéo)
-**Console du navigateur** : (F12 › Console, texte des erreurs rouges ; onglet Réseau : requête en échec, statut HTTP)
-**Ligne de laravel.log** : (`tail -n 50 web/storage/logs/laravel.log` ; garde la ligne `local.ERROR` et sa première ligne de pile)
+**Capture** : (écran complet, URL visible ; courte vidéo pour un flux)
+**Console du navigateur** : (F12 › Console : erreurs rouges ; onglet Réseau : requête en échec et statut HTTP)
+**Journal** : (`tail -n 50 web/storage/logs/laravel.log` : ligne `local.ERROR` et sa première ligne de pile)
 **Reproductible** : toujours / parfois / une fois     **Contournement** : …
 ```
-Ne colle jamais de vrai mot de passe, de vrai code de suivi ou de données de personnes réelles dans un rapport ; les comptes de démonstration du §3 sont sans risque.
+
+Ne collez jamais de vrai mot de passe, de vrai code de suivi ni de donnée de personne réelle dans un rapport : les comptes du §5 sont sans risque.
+
+## 12. Pour aller plus loin
+
+- Parcours à cocher, par rôle : [CHECKLIST_RECETTE.md](CHECKLIST_RECETTE.md) (avec la liste de ce qui n'est pas encore fonctionnel).
+- Mise en ligne : [DEPLOIEMENT_CPANEL.md](DEPLOIEMENT_CPANEL.md) et [RUNBOOK.md](RUNBOOK.md) (procédures d'exploitation).
+- État d'avancement : [ETAT_DES_LIEUX.md](ETAT_DES_LIEUX.md) et [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) ; décisions en attente : [DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md).

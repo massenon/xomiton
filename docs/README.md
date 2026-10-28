@@ -48,7 +48,8 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 | SEO | [FRONT_END_SEO_PERFECT_AUDIT.md](FRONT_END_SEO_PERFECT_AUDIT.md) | Grille d'audit par page (meta, Hn, FAQ, Schema.org, OG…) |
 | Qualité | [ACCESSIBILITE.md](ACCESSIBILITE.md) | WCAG 2.2 AA, ARIA, clavier, focus, contraste |
 | Qualité | [PERFORMANCE.md](PERFORMANCE.md) | Images, CSS, JS, chargement différé, polices, budgets |
-| Qualité | [GUIDE_RECETTE.md](GUIDE_RECETTE.md) | **Guide de recette** : lancer le web et le mobile en local, comptes de démonstration, parcours à cocher, gabarit de bug |
+| Qualité | [GUIDE_RECETTE.md](GUIDE_RECETTE.md) | **Guide de recette** : installer et lancer le web et le mobile en local (scripts `scripts/recette-local.sh` et `recette-lancer.sh`), comptes de démonstration, journaux, canaux réels, gabarit de bug |
+| Qualité | [CHECKLIST_RECETTE.md](CHECKLIST_RECETTE.md) | **Checklist de recette humaine** : tableau cochable par parcours (visiteur·se, membre, pair, modération, admin, SOS, e-mails, notifications, mobile, accessibilité, performance, sécurité) et liste de ce qui n'est pas encore fonctionnel |
 | Décisions | [FEUILLE_DE_DECISION.md](FEUILLE_DE_DECISION.md) | **Feuille de décision** : les questions qui bloquent la recette, avec une recommandation et une case à cocher |
 
 ## Sources de vérité (par ordre de priorité)

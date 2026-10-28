@@ -217,7 +217,7 @@ describe('seeders', function (): void {
         $peer = User::where('email', 'pair@xomiton.bj')->firstOrFail();
         $member = User::where('email', 'membre@xomiton.bj')->firstOrFail();
 
-        expect(User::count())->toBe(4)
+        expect(User::count())->toBe(count(DemoAccountsSeeder::accounts()))
             ->and($admin->hasRole('superadmin'))->toBeTrue()
             ->and($admin->can('roles.assign_admin'))->toBeTrue()
             ->and($admin->can('admin.access'))->toBeTrue()

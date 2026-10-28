@@ -59,6 +59,19 @@ it('crée les comptes de démonstration en testing et jamais en production', fun
         ->and(Zone::count())->toBe(12);
 });
 
+it('sème un compte de démonstration par rôle, dont modérateur·rice et pair en attente, rejouable sans doublon', function (): void {
+    $this->seed(DatabaseSeeder::class);
+    $this->seed(DemoAccountsSeeder::class);
+
+    $roles = collect(DemoAccountsSeeder::accounts())->pluck('role')->unique()->sort()->values()->all();
+
+    expect($roles)->toBe(['admin', 'membre', 'moderateur', 'pair', 'superadmin'])
+        ->and(User::count())->toBe(count(DemoAccountsSeeder::accounts()))
+        ->and(User::where('email', 'moderateur@xomiton.bj')->first()?->hasRole('moderateur'))->toBeTrue()
+        ->and(User::where('email', 'pair.attente@xomiton.bj')->first()?->status)->toBe(App\Enums\UserStatus::Pending)
+        ->and(User::where('email', 'membre@xomiton.bj')->first()?->status)->toBe(App\Enums\UserStatus::Active);
+});
+
 it('déclare les seeders de référence dans l’ordre des dépendances', function (): void {
     $order = DatabaseSeeder::REFERENCE_SEEDERS;
 

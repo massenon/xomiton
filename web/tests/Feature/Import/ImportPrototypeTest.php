@@ -225,7 +225,7 @@ it('n’importe ni les contacts ni les contenus de démonstration en production 
         ->and(SyncDevice::count())->toBe(0)
         // Les comptes sans empreinte de mot de passe sont rejetés et journalisés ; les quatre comptes du prototype passent.
         ->and($report['users']['rejected'])->toBe(16)
-        ->and(User::count())->toBe(4)
+        ->and(User::count())->toBe(count(Database\Seeders\DemoAccountsSeeder::accounts()))
         ->and(AuditLog::ofAction(ImportContext::AUDIT_REJECTED)->where('detail', 'like', 'users #5 : %')->exists())->toBeTrue()
         ->and(SocialChannel::connected()->count())->toBe(2);
 
@@ -234,7 +234,7 @@ it('n’importe ni les contacts ni les contenus de démonstration en production 
 
     expect($full['annuaire']['created'])->toBe(10)
         ->and(CaseRecord::count())->toBe(72)
-        ->and(User::count())->toBe(22);
+        ->and(User::count())->toBe(18 + count(Database\Seeders\DemoAccountsSeeder::accounts()));
 });
 
 it('chiffre les champs sensibles : lisibles via le modèle, illisibles en base brute', function (): void {
