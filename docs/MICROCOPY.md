@@ -34,7 +34,7 @@ Le registre (tu / vous) de chaque libellé suit la page qui l'affiche : règle p
 | S'inscrire (newsletter) | « S'inscrire » | « Merci ! Un e-mail de confirmation vient de vous être envoyé. » |
 
 ## 3. Champs (libellé · aide)
-- Pseudonyme · « Visible par la communauté. Ton vrai nom n'est jamais demandé. »
+- Pseudonyme · « 3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas. » (plus de mention « visible par la communauté », retour client du 28/10/2026)
 - Mot de passe · règles affichées avant la saisie, jauge « Trop court, Faible, Moyen, Fort, Excellent ».
 - Slug unique · « Minuscules, chiffres et tirets. Identifiant utilisé par le code pour envoyer cet e-mail. »
 - Texte d'aperçu · « Affiché après l'objet dans la boîte de réception. »

@@ -1998,7 +1998,7 @@
     "auth.register.account.privacy": "J’ai lu la {policy} et j’accepte le traitement de mes données.",
     "auth.register.account.privacy_policy": "politique de confidentialité",
     "auth.register.account.pseudo": "Pseudonyme",
-    "auth.register.account.pseudo_hint": "C’est ce que les autres verront. 3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
+    "auth.register.account.pseudo_hint": "3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
     "auth.register.account.submit": "Créer mon compte",
     "auth.register.closed.newsletter_text": "La newsletter annonce la réouverture des inscriptions, avec les nouvelles ressources et les événements de la communauté.",
     "auth.register.closed.newsletter_title": "Être prévenu·e de la réouverture",

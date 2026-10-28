@@ -188,7 +188,7 @@ cat <<RECAP
   Pair en attente (RG-03)     pair.attente@xomiton.bj     Pair123!  (connecté avec un bandeau « en attente »)
 
   Code de vérification (OTP) à chaque nouvel appareil, et à chaque connexion admin :
-    grep -a "Subject: Ton code Xomiton" "$WEB/storage/logs/laravel.log" | tail -1
+    grep -a "\[otp:log\]" "$WEB/storage/logs/laravel.log" | tail -1
 
   Guide complet : docs/GUIDE_RECETTE.md   ·   Cases à cocher : docs/CHECKLIST_RECETTE.md
 RECAP

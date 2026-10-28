@@ -56,7 +56,7 @@ button { cursor: pointer; }
 .skip:focus { top: 8px; }
 
 /* ---------- Mise en page générale ---------- */
-.sim { display: grid; grid-template-columns: 272px minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); height: 100vh; }
+.sim { display: grid; grid-template-columns: minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); height: 100vh; }
 .topbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: var(--pg-surface); border-bottom: 1px solid var(--pg-border); flex-wrap: wrap; }
 .topbar .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; min-width: 0; }
 .topbar .brand img { height: 28px; width: auto; }
@@ -67,34 +67,12 @@ button { cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--pg-surface); color: var(--pg-accent); box-shadow: 0 1px 3px rgb(27 22 48 / .14); }
 .btn-ghost { border: 1px solid var(--pg-border); background: var(--pg-surface); border-radius: var(--xm-radius-pill); padding: 6px 14px; font-size: 13px; font-weight: 700; min-height: 34px; }
 
-/* Rail gauche : index des écrans */
-.rail { overflow-y: auto; background: var(--pg-surface); border-right: 1px solid var(--pg-border); padding: 12px 10px 24px; }
-.rail-search { width: 100%; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); padding: 8px 10px; background: var(--pg-bg); margin-bottom: 8px; min-height: 38px; }
-.rail-group { margin-top: 14px; }
-.rail-group h2 { font-size: 13px; font-weight: 700; padding: 0 8px 4px; display: flex; justify-content: space-between; align-items: baseline; }
-.rail-group h2 code { font: 12px/1 var(--xm-font-body); color: var(--pg-muted); }
-.rail a { display: grid; grid-template-columns: 26px 1fr; gap: 6px; align-items: baseline; padding: 7px 8px; border-radius: var(--xm-radius-md); color: var(--pg-text); text-decoration: none; font-size: 14px; }
-.rail a .n { color: var(--pg-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-.rail a .r { grid-column: 2; color: var(--pg-muted); font-size: 12px; }
-.rail a:hover { background: var(--pg-bg); }
-.rail a[aria-current="page"] { background: var(--pg-accent-subtle); color: var(--pg-accent); font-weight: 700; }
-.rail a[aria-current="page"] .n, .rail a[aria-current="page"] .r { color: var(--pg-accent); }
-
-/* Menu des écrans repliable */
-.menu-btn { width: 44px; height: 44px; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); background: var(--pg-surface); display: inline-grid; place-items: center; padding: 0; }
-.menu-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
-.menu-btn[aria-expanded="true"] { background: var(--pg-accent-subtle); color: var(--pg-accent); border-color: var(--pg-accent); }
-.sim.menu-closed { grid-template-columns: minmax(0, 1fr) 380px; }
-.sim.menu-closed .rail { display: none; }
-.rail-group h2 { padding: 0; }
-.rail-group .mod { width: 100%; min-height: 40px; display: flex; align-items: center; gap: 8px; border: 0; background: none; padding: 0 8px; font: 700 13px/1.2 var(--xm-font-body); color: var(--pg-text); text-align: left; border-radius: var(--xm-radius-md); }
-.rail-group .mod:hover { background: var(--pg-bg); }
-.rail-group .mod .cv { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; transition: transform .15s; flex-shrink: 0; }
-.rail-group .mod[aria-expanded="true"] .cv { transform: rotate(90deg); }
-.rail-group .mod .cnt { margin-left: auto; font-weight: 400; font-size: 12px; color: var(--pg-muted); }
-.rail-group .mod code { font: 12px/1 var(--xm-font-body); color: var(--pg-muted); }
-.rail-group[data-collapsed="true"] .items { display: none; }
-.rail a.ext .r { color: var(--pg-accent); }
+/* Décor des écrans connexion / inscription : ruban arc-en-ciel et petites illustrations (SVG en ligne, aria-hidden, statique). */
+.view.has-deco { position: relative; isolation: isolate; }
+.deco { pointer-events: none; user-select: none; }
+.deco-top { position: absolute; z-index: -1; top: 0; left: 0; right: 0; height: 52px; }
+.deco-top svg, .deco-end svg { display: block; width: 100%; height: 100%; }
+.deco-end { height: 84px; margin: 0 -16px calc(-1 * (var(--safe-bottom) + 20px)); }
 
 /* Scène centrale */
 .stage { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 16px; min-height: 0; }
@@ -343,33 +321,113 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
 
 /* ---------- Réactif ---------- */
 @media (max-width: 1280px) {
-  .sim { grid-template-columns: 240px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; height: auto; min-height: 100vh; }
-  .rail { max-height: calc(100vh - 60px); position: sticky; top: 0; }
+  .sim { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; height: auto; min-height: 100vh; }
   .stage { min-height: calc(100vh - 60px); }
   .panel { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--pg-border); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 24px; }
   .panel > header { grid-column: 1 / -1; }
-  .sim.menu-closed { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 820px) {
   .sim { grid-template-columns: 1fr; }
-  .rail { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--pg-border); }
-  .rail-groups { display: none; }
-  .rail-select { display: block !important; }
   .topbar { padding: 10px 16px; }
   .topbar .sub { display: none; }
   .stage { padding: 12px 0; min-height: 0; }
 }
-.rail-select { display: none; width: 100%; min-height: 44px; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); background: var(--pg-bg); padding: 0 10px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
 </style>
 </head>
 <body>
+<!-- Menu des écrans partagé (index, espace-pair, admin-mobile) : bouton ☰ FIXE en haut à gauche de la page, hors du châssis
+     téléphone, et tiroir listant les 30 écrans membre, l'espace pair (P1 à P11) et l'admin mobile (A1 à A7).
+     Les éléments sont ajoutés à <html> (pas à <body>) : les maquettes réécrivent le contenu de <body> au démarrage. -->
+<style id="xmNavCss">
+.xmnav-fab { --xmn-bg: #0433C3; --xmn-fg: #fff; position: fixed; top: 10px; left: 10px; z-index: 10000; width: 48px; height: 48px; min-width: 44px; min-height: 44px; display: grid; place-items: center; padding: 0; border: 2px solid #fff; border-radius: 14px; background: var(--xmn-bg); color: var(--xmn-fg); box-shadow: 0 2px 10px rgb(2 28 107 / .45); cursor: pointer; }
+.xmnav-fab:hover { background: #021C6B; }
+.xmnav-fab:focus-visible, .xmnav a:focus-visible, .xmnav button:focus-visible, .xmnav input:focus-visible { outline: 3px solid #F0A800; outline-offset: 2px; }
+.xmnav-fab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.xmnav { --xmn-surface: #fff; --xmn-text: #1B1630; --xmn-muted: #5B5670; --xmn-border: #E4DCE6; --xmn-bg: #F7F3F8; --xmn-accent: #0433C3; --xmn-accent-subtle: #EBEFFA; position: fixed; inset: 0; z-index: 9999; font: 15px/1.4 "Montserrat", "Segoe UI", Arial, sans-serif; }
+.xmnav[hidden] { display: none; }
+.xmnav-scrim { position: absolute; inset: 0; background: rgb(11 13 26 / .5); }
+.xmnav-panel { position: absolute; top: 0; bottom: 0; left: 0; width: min(360px, 92vw); display: flex; flex-direction: column; background: var(--xmn-surface); color: var(--xmn-text); box-shadow: 4px 0 24px rgb(0 0 0 / .25); }
+.xmnav-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px 10px 70px; min-height: 68px; border-bottom: 1px solid var(--xmn-border); }
+.xmnav-head h2 { flex: 1; margin: 0; font-size: 16px; font-weight: 700; }
+.xmnav-close { width: 44px; height: 44px; border: 1px solid var(--xmn-border); border-radius: 12px; background: var(--xmn-surface); color: var(--xmn-text); font-size: 22px; line-height: 1; cursor: pointer; }
+.xmnav-search { margin: 10px 12px 0; padding: 0 12px; min-height: 44px; border: 1px solid var(--xmn-border); border-radius: 12px; background: var(--xmn-bg); color: var(--xmn-text); font: inherit; }
+.xmnav-list { flex: 1; overflow-y: auto; padding: 6px 12px 24px; overscroll-behavior: contain; }
+.xmnav details { margin-top: 10px; }
+.xmnav summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 8px; font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 10px; }
+.xmnav summary:hover { background: var(--xmn-bg); }
+.xmnav summary .cnt { margin-left: auto; font-weight: 400; color: var(--xmn-muted); font-size: 12px; }
+.xmnav li { list-style: none; }
+.xmnav ul { margin: 0; padding: 0; }
+.xmnav a { display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 6px; min-height: 44px; padding: 6px 8px; border-radius: 10px; color: var(--xmn-text); text-decoration: none; font-size: 14px; }
+.xmnav a .n { color: var(--xmn-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.xmnav a:hover { background: var(--xmn-bg); }
+.xmnav a[aria-current="page"] { background: var(--xmn-accent-subtle); color: var(--xmn-accent); font-weight: 700; }
+.xmnav a[aria-current="page"] .n { color: var(--xmn-accent); }
+.xmnav-empty { padding: 16px 8px; color: var(--xmn-muted); font-size: 14px; }
+@media (prefers-color-scheme: dark) {
+  .xmnav { --xmn-surface: #151829; --xmn-text: #EDEAF7; --xmn-muted: #A9A5C0; --xmn-border: #2A2E48; --xmn-bg: #0B0D1A; --xmn-accent: #9DB1FF; --xmn-accent-subtle: #1B2347; }
+}
+/* Le contenu des pages laisse la place au bouton fixe (coin haut-gauche). */
+.topbar { padding-left: 72px !important; }
+</style>
+<script>
+(() => {
+  const MODS = [{"id":"auth","label":"Authentification","items":[["01","Splash et carrousel","index.html#/splash"],["02","Connexion","index.html#/login"],["03","Inscription (4 phases)","index.html#/signup"],["04","Code par e-mail (OTP)","index.html#/otp"],["05","Mot de passe oublié","index.html#/forgot"],["06","Nouveau mot de passe","index.html#/reset"]]},{"id":"home","label":"Accueil","items":[["07","Tableau de bord","index.html#/dashboard"],["08","Thématiques","index.html#/thematiques"],["09","Fiche thématique","index.html#/thematique"],["10","Ressources","index.html#/ressources"],["11","Notifications","index.html#/notifications"]]},{"id":"sos","label":"SOS & signalement","items":[["12","Signaler et suivre","index.html#/sighub"],["13","SOS","index.html#/sos"],["14","Alerte envoyée","index.html#/sos-envoye"],["15","Signalement (4 étapes)","index.html#/signalement"],["16","Contacts d’urgence","index.html#/urgences"]]},{"id":"feed","label":"Fil d’actualités","items":[["17","Fil d’actualités","index.html#/fil"],["18","Publication et commentaires","index.html#/post"],["19","Créer une publication","index.html#/postpublication"],["20","Créer un sondage","index.html#/sondage"]]},{"id":"community","label":"Communauté","items":[["21","Messages","index.html#/message"],["22","Conversation","index.html#/chat"],["23","Groupes","index.html#/groupes"],["24","Événements","index.html#/evenements"],["25","Assistant","index.html#/assistant"]]},{"id":"profile","label":"Profil","items":[["26","Mon profil","index.html#/profil"],["27","Profil progressif","index.html#/completer"],["28","Paramètres","index.html#/parametres"],["29","Sécurité et confidentialité","index.html#/securite"],["30","Newsletter","index.html#/newsletter"]]},{"id":"pair","label":"Espace pair","items":[["P1","Accueil pair","espace-pair.html#/accueil"],["P2","Alertes routées vers moi","espace-pair.html#/alertes"],["P3","Détail d’une alerte SOS","espace-pair.html#/alerte/a1"],["P4","Mes dossiers","espace-pair.html#/dossiers"],["P5","Fiche dossier","espace-pair.html#/dossier/VBG-0042"],["P6","Ajouter un suivi","espace-pair.html#/suivi/VBG-0042"],["P7","SOS","espace-pair.html#/sos"],["P8","Collecte : étape 1","espace-pair.html#/collecte?etape=1"],["P9","Collecte : vérification","espace-pair.html#/collecte?etape=5&demo=1"],["P10","File de synchronisation (hors ligne)","espace-pair.html#/sync?net=off"],["P11","Conflit 409 à résoudre","espace-pair.html#/sync?net=on"]]},{"id":"admin","label":"Admin mobile","items":[["A1","Tableau de bord d’astreinte","admin-mobile.html#/tableau"],["A2","Liste des alertes","admin-mobile.html#/alertes"],["A3","Détail d’une alerte SOS","admin-mobile.html#/alerte/2041"],["A4","Validation des pairs","admin-mobile.html#/pairs"],["A5","Mode maintenance","admin-mobile.html#/maintenance"],["A6","Notifications","admin-mobile.html#/notifications"],["A7","Hors connexion","admin-mobile.html#/tableau?net=off"]]}];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const file = () => (location.pathname.split('/').pop() || 'index.html');
+  const hashOf = h => { const i = h.indexOf('#'); return i < 0 ? '' : h.slice(i); };
+  const root = document.documentElement;
+  const css = document.getElementById('xmNavCss'); if (css) root.appendChild(css); /* hors de <body>, que les maquettes réécrivent */
+  const fab = document.createElement('button');
+  fab.type = 'button'; fab.id = 'xmNavBtn'; fab.className = 'xmnav-fab'; fab.setAttribute('aria-label', 'Menu des écrans'); fab.title = 'Menu des écrans';
+  fab.setAttribute('aria-expanded', 'false'); fab.setAttribute('aria-controls', 'xmNav');
+  fab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+  const nav = document.createElement('div');
+  nav.className = 'xmnav'; nav.id = 'xmNav'; nav.hidden = true;
+  nav.innerHTML = `<div class="xmnav-scrim" data-close></div><nav class="xmnav-panel" role="dialog" aria-modal="true" aria-label="Menu des écrans">
+    <div class="xmnav-head"><h2>Menu des écrans</h2><button type="button" class="xmnav-close" data-close aria-label="Fermer le menu">×</button></div>
+    <label class="vh" for="xmNavQ" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Filtrer les écrans</label>
+    <input class="xmnav-search" id="xmNavQ" type="search" placeholder="Filtrer les écrans…" autocomplete="off">
+    <div class="xmnav-list" id="xmNavList">${MODS.map(m => `<details open data-mod="${m.id}"><summary>${esc(m.label)}<span class="cnt">${m.items.length}</span></summary><ul>${m.items.map(i => `<li><a href="${esc(i[2])}" data-t="${esc((i[0] + ' ' + i[1] + ' ' + m.label).toLowerCase())}"><span class="n">${esc(i[0])}</span><span>${esc(i[1])}</span></a></li>`).join('')}</ul></details>`).join('')}<p class="xmnav-empty" hidden>Aucun écran ne correspond.</p></div></nav>`;
+  const list = nav.querySelector('#xmNavList'), q = nav.querySelector('#xmNavQ');
+  const open = () => { nav.hidden = false; fab.setAttribute('aria-expanded', 'true'); mark(); q.focus(); };
+  const close = (back = true) => { nav.hidden = true; fab.setAttribute('aria-expanded', 'false'); if (back) fab.focus(); };
+  fab.addEventListener('click', () => (nav.hidden ? open() : close()));
+  nav.addEventListener('click', e => { if (e.target.closest('[data-close]')) close(); else if (e.target.closest('a')) close(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !nav.hidden) { e.stopPropagation(); close(); } }, true);
+  q.addEventListener('input', () => {
+    const v = q.value.toLowerCase().trim(); let any = false;
+    list.querySelectorAll('a').forEach(a => { a.parentElement.hidden = !!v && !a.dataset.t.includes(v); });
+    list.querySelectorAll('details').forEach(d => { const n = [...d.querySelectorAll('li')].some(li => !li.hidden); d.hidden = !n; any = any || n; if (v && n) d.open = true; });
+    list.querySelector('.xmnav-empty').hidden = any;
+  });
+  /* Écran courant : même fichier et même ancre (la requête ?net=… ne compte que si l'entrée la porte). */
+  function mark() {
+    const f = file(), h = hashOf(location.href); const path = h.split('?')[0];
+    let best = null;
+    list.querySelectorAll('a').forEach(a => {
+      a.removeAttribute('aria-current');
+      const u = a.getAttribute('href'), uf = u.split('#')[0] || 'index.html', uh = hashOf(u);
+      if (uf !== f) return;
+      if (uh === h) best = a; else if (!best && uh.split('?')[0] === path && !uh.includes('?')) best = a; else if (!best && uh.split('?')[0] === path) best = a;
+    });
+    if (best) best.setAttribute('aria-current', 'page');
+  }
+  addEventListener('hashchange', mark);
+  const mount = () => { root.appendChild(fab); root.appendChild(nav); mark(); };
+  mount();
+  /* Les maquettes réécrivent <body> ; <html> reste intact. Sécurité : remonte les éléments si on les a perdus. */
+  addEventListener('DOMContentLoaded', () => { if (!fab.isConnected) mount(); });
+  window.XmNav = { open, close, mark };
+})();
+</script>
+
 <a class="skip" href="#appareil">Aller au simulateur</a>
 <div class="sim">
   <header class="topbar">
-    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="true" aria-controls="railNav" aria-label="Afficher ou masquer la liste des écrans" title="Liste des écrans"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     <div class="brand">
       <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjguNTAgMi45MiAyMTguMTcgNTYuMDgiIHJvbGU9ImltZyIgYXJpYS1sYWJlbGxlZGJ5PSJ0Ij48dGl0bGUgaWQ9InQiPlhvbWl0b248L3RpdGxlPjxwYXRoIGZpbGw9IiMwNDMzQzMiIGQ9Ik0xOC4wMiA1MC4yNUMxNi4yNiA0OS45MyAxNC42NCA0OC41MSAxNC43NyA0Ny4zOEMxNC44MyA0Ni44MiAxNS4wNiA0Ni40NiAxNS45MSA0NS41NUMxNy4yMSA0NC4xNiAyMS4zNCAzOC4zMSAyMS45OSAzNi45MkMyMi41MCAzNS44MyAyMi4yNyAzNC45NCAyMC45OSAzMy4xNkMyMC42MSAzMi42NCAxOS45MyAzMS42NiAxOS40NyAzMS4wMEMxOC4wNyAyOC45NyAxNi4zMCAyNi41OCAxNS41OCAyNS43NUMxNC4yMSAyNC4xNyAxNC4xNiAyMy4yNyAxNS4zOCAyMi4xOUMxNy4wMyAyMC43MSAxOS41OCAyMC41MSAyMS44NCAyMS42OEMyMy4yNSAyMi40MCAyNC4yNSAyMy40MyAyNS45MiAyNS44MkMyNy4yOSAyNy43OCAyNy44MiAyOC4yMSAyOC42MSAyNy45OUMyOS4yMyAyNy44MiAyOS40OCAyNy41MSAzMS4xNyAyNC43OEMzMi4wMSAyMy40MiAzMi45NyAyMi4zOCAzMy44OCAyMS44NUMzNi4yMyAyMC40OCAzOC44OSAyMC42NiA0MC43NSAyMi4zMUM0MS44OCAyMy4zMiA0MS43NyAyNC4xOSA0MC4zMCAyNS43NEMzOS4wOSAyNy4wMSAzNy45NyAyOC41MiAzNS4xMCAzMi44MEMzMi45OSAzNS45NCAzMy4wMCAzNi4wMCAzNi4zNyA0MC41OEMzNi45MyA0MS4zNCAzNy42OCA0Mi4zOSAzOC4wNCA0Mi45MkMzOC40MCA0My40NCAzOS4wNCA0NC4zNSAzOS40NiA0NC45MkM0MC41MyA0Ni4zOCA0MC43MCA0Ni43MyA0MC43MSA0Ny40NkM0MC43MSA0OS4yNyAzOC40OCA1MC42MiAzNi4wOCA1MC4yNkMzMy43NCA0OS45MCAzMi4zMSA0OC44MyAyOS44NyA0NS42MkMyOC42MyA0NC4wMCAyOC42OCA0NC4wNSAyOC4zMCA0My44MEMyNy4zNyA0My4xOCAyNi43OCA0My41NyAyNS41NCA0NS42N0MyMy4zOSA0OS4zMSAyMC45OCA1MC43OCAxOC4wMiA1MC4yNVpNODEuMjggNTEuNzVDNzkuMTEgNTEuNDEgNzcuNTggNDkuODggNzcuMDMgNDcuNTJDNzYuODYgNDYuNzYgNzYuNzYgNDIuMjYgNzYuNzYgMzQuNDRDNzYuNzUgMjcuODAgNzYuNzYgMjcuOTEgNzYuMjYgMjYuMzBDNzUuNTEgMjMuOTAgNzYuODIgMjIuNTcgNzkuOTIgMjIuNTZDODIuMDUgMjIuNTYgODMuMjAgMjMuMTcgODQuNTEgMjUuMDFDODUuNTkgMjYuNTQgODYuMDQgMjYuNTUgODcuNzQgMjUuMTBDODkuNTUgMjMuNTQgOTEuMjQgMjIuODIgOTMuNjMgMjIuNThDOTcuMTEgMjIuMjQgOTkuNjIgMjMuMzEgMTAxLjQ1IDI1LjkyQzEwMi42MiAyNy41OCAxMDMuMDEgMjcuNTcgMTA0Ljc5IDI1Ljg0QzEwNy4xMSAyMy41OCAxMDkuMTEgMjIuNjkgMTEyLjI4IDIyLjUzQzExNi40NiAyMi4zMiAxMTkuMzcgMjQuNTUgMTIwLjQ1IDI4Ljc5QzEyMS4wMyAzMS4wNyAxMjEuMTIgMzIuNjMgMTIxLjA1IDM5LjU0QzEyMC45OSA0NS41OCAxMjEuMDMgNDYuNTIgMTIxLjQzIDQ3Ljg4QzEyMS45OCA0OS43NiAxMjEuNzEgNTAuNTEgMTIwLjIxIDUxLjIyQzExNy42OSA1Mi40MSAxMTQuNzEgNTEuNjggMTEzLjQzIDQ5LjU1QzExMi40OCA0Ny45NyAxMTIuNDkgNDguMDQgMTEyLjQyIDM5Ljg4QzExMi4zNyAzMy42OCAxMTIuMzQgMzIuODEgMTEyLjIyIDMyLjM0QzExMS4wNyAyNy45NiAxMDUuODQgMjguNTAgMTAzLjg1IDMzLjIwQzEwMy4yMSAzNC43MyAxMDMuMjIgMzQuNTkgMTAzLjE5IDQwLjQ2QzEwMy4xNSA0Ni4yMCAxMDMuMTggNDYuNjAgMTAzLjYwIDQ3LjkxQzEwNC4xMSA0OS40NyAxMDMuOTIgNTAuMjYgMTAyLjg1IDUwLjk3QzEwMC4yNiA1Mi42OCA5Ni42OSA1MS43NyA5NS4zMiA0OS4wNUM5NC42NiA0Ny43NCA5NC42NSA0Ny42NSA5NC41OSAzOS42MkM5NC41MyAzMS41OSA5NC41NyAzMi4wNCA5My44MiAzMC45MUM5MS45NSAyOC4xMiA4Ny45MyAyOS4yMyA4Ni4xNyAzMy4wM0M4NS40MiAzNC42NSA4NS4zMCAzNS45NyA4NS4zNiA0MS45NkM4NS40MSA0Ni4zNiA4NS40MyA0Ni42NCA4NS44MyA0Ny45NkM4Ni4xMSA0OC44NiA4Ni4xNiA0OS41OCA4NS45NyA1MC4wM0M4NS41MCA1MS4xNiA4My4wOSA1Mi4wNCA4MS4yOCA1MS43NVpNMTMxLjM4IDE4Ljc5QzEyNy43OSAxOC4wOCAxMjYuNTEgMTMuNjEgMTI5LjE0IDEwLjk1QzEzMS4xNiA4Ljg5IDEzMy44OSA4LjM4IDEzNS45OSA5LjY1QzE0MC43MyAxMi41MSAxMzcuMDEgMTkuOTAgMTMxLjM4IDE4Ljc5Wk0xMzMuMDQgNTEuNzBDMTMxLjA1IDUxLjI2IDEyOS42MyA0OS43NSAxMjkuMDggNDcuNDhDMTI4LjgwIDQ2LjM0IDEyOC43NSA0NC42NiAxMjguNzUgMzYuMjVDMTI4Ljc1IDI3LjYxIDEyOC43NSAyNy43MiAxMjguMjkgMjYuMjVDMTI3LjYzIDI0LjE1IDEyOC40MSAyMy4wNiAxMzAuODggMjIuNjFDMTMzLjkzIDIyLjA1IDEzNi4zMyAyMy41MiAxMzcuMTAgMjYuNDNDMTM3LjI4IDI3LjEyIDEzNy4yOCAyNy4yMSAxMzcuMzQgMzYuNjdDMTM3LjQwIDQ3LjE2IDEzNy4zNiA0Ni40NyAxMzcuOTIgNDguMTBDMTM4LjI3IDQ5LjEwIDEzOC4yOCA0OS42NiAxMzcuOTggNTAuMTlDMTM3LjI5IDUxLjM1IDEzNC44NCA1Mi4xMCAxMzMuMDQgNTEuNzBaTTE1My40MiA1MS43NEMxNTAuMTkgNTEuMzggMTQ3Ljc2IDQ5Ljg2IDE0Ni41OCA0Ny40N0MxNDUuNzYgNDUuODAgMTQ1LjcyIDQ1LjM1IDE0NS43MCAzNi45NEMxNDUuNjggMjguMzAgMTQ1LjgwIDI4Ljk2IDE0NC4wMCAyNy43OUMxNDIuNjIgMjYuODkgMTQyLjE0IDI2LjIwIDE0Mi4xMyAyNS4wOEMxNDIuMTMgMjMuOTUgMTQyLjYzIDIzLjM1IDE0NC4wNiAyMi44MkMxNDUuNzAgMjIuMjEgMTQ1Ljk3IDIxLjIwIDE0NS4wOSAxOC45M0MxNDQuNDIgMTcuMTkgMTQ1LjI0IDE2LjA3IDE0Ny41NiAxNS41NUMxNTAuOTkgMTQuNzggMTUzLjc1IDE2Ljc0IDE1NC4xMyAyMC4yMUMxNTQuMjcgMjEuNTQgMTU0LjU0IDIyLjE5IDE1NS4wOCAyMi41NUMxNTUuNjEgMjIuOTAgMTU1Ljg3IDIyLjk0IDE1OC40MiAyMi45OUMxNjEuNzAgMjMuMDYgMTYyLjI2IDIzLjMwIDE2Mi4yOCAyNC42MkMxNjIuMzAgMjYuMjcgMTYwLjQxIDI3LjU1IDE1Ny4yMSAyOC4wNUMxNTUuMzAgMjguMzUgMTU0LjY3IDI4LjcwIDE1NC40MCAyOS42MEMxNTQuMTggMzAuMzMgMTU0LjI1IDQzLjI0IDE1NC40OCA0My45NkMxNTUuMTggNDYuMTcgMTU3LjQzIDQ2LjY3IDE2MC4wNSA0NS4yMEMxNjIuMTYgNDQuMDEgMTYyLjg5IDQzLjkyIDE2My41MyA0NC43N0MxNjUuMDUgNDYuODEgMTYxLjk5IDUwLjQzIDE1Ny45MiA1MS40MEMxNTYuNDUgNTEuNzUgMTU0LjY5IDUxLjg5IDE1My40MiA1MS43NFpNMTk3LjU1IDUxLjYyQzE5Ni4wMyA1MS4yNSAxOTQuNzUgNTAuMDggMTk0LjE4IDQ4LjU1QzE5My43MiA0Ny4zNCAxOTMuNzEgNDcuMDkgMTkzLjc0IDM3LjkyQzE5My43NiAyOC42NiAxOTMuNzQgMjguMDQgMTkzLjMzIDI2LjcxQzE5Mi44OCAyNS4yMiAxOTIuOTIgMjQuNTYgMTkzLjUxIDIzLjgxQzE5NC4xNyAyMi45OCAxOTUuMjYgMjIuNTUgMTk2LjcxIDIyLjU1QzE5OC45MiAyMi41NiAyMDAuMTUgMjMuMjIgMjAxLjQxIDI1LjA4QzIwMi4zNSAyNi40OCAyMDIuODcgMjYuNTEgMjA0LjI5IDI1LjI0QzIwNS44OCAyMy44MiAyMDcuODAgMjIuOTMgMjA5LjkyIDIyLjYyQzIxNS4xNyAyMS44NSAyMTguODAgMjQuNDcgMjE5LjY3IDI5LjY3QzIxOS43MyAzMC4wMSAyMTkuNzkgMzMuMDcgMjE5LjgzIDM4LjA4QzIxOS45MSA0Ni42NyAyMTkuODggNDYuMzEgMjIwLjQxIDQ3Ljk2QzIyMS4wNSA0OS45NSAyMjAuMzUgNTEuMDQgMjE4LjA2IDUxLjU4QzIxNS41MyA1Mi4xOSAyMTMuMjEgNTEuMTggMjEyLjEzIDQ4Ljk5QzIxMS4zOSA0Ny40OSAyMTEuNDAgNDcuNjQgMjExLjM0IDM5LjY3QzIxMS4yOSAzMy40MyAyMTEuMjcgMzIuNjYgMjExLjE0IDMyLjIxQzIwOS45OSAyOC4yMyAyMDUuNDEgMjguNDYgMjAzLjIxIDMyLjYwQzIwMi4xNCAzNC42MiAyMDIuMDcgMzUuMTkgMjAyLjEwIDQxLjQ2QzIwMi4xNCA0Ny4wOCAyMDIuMDkgNDYuNTUgMjAyLjcwIDQ4LjIxQzIwMy4yMSA0OS42MCAyMDIuODUgNTAuNDggMjAxLjQ5IDUxLjE3QzIwMC40MCA1MS43MiAxOTguNzUgNTEuOTEgMTk3LjU1IDUxLjYyWiIvPjxwYXRoIGZpbGw9IiNFMzBFMEUiIGQ9Ik02My43NSA1Mi44OEM2My41NCA1Mi44MSA2My4xMSA1Mi41OSA2Mi43OSA1Mi4zOEM2MS4zMyA1MS40NCA2MC45NSA1MS4zNSA1OS43NSA1MS43MUM1Ny4zNSA1Mi40MSA1NC4xMCA1MS43MyA1Mi4zOCA1MC4xNkM1MS4xNCA0OS4wMiA1MS40MCA0OC4zOSA1My4wMyA0OC41OEM1OC4yMyA0OS4xOCA2Mi4zNyA0Ni4xMyA2My4yMSA0MS4wOUM2My4zNiA0MC4yMCA2My4zNSAzOS43OSA2My4xNiAzOC4zM0M2Mi45MyAzNi41OCA2My41NCAzNi4xNiA2NC42MSAzNy4zM0M2Ni4xOCAzOS4wOCA2Ny4wNCA0Mi40OSA2Ni40NiA0NC43MkM2Ni4xMSA0Ni4wNSA2Ni4xOCA0Ni40OCA2Ni44OSA0Ny41M0M2Ny42NCA0OC42MSA2Ny43OSA0OS4wMCA2Ny43OSA0OS44M0M2Ny44MCA1MS44NyA2NS42NSA1My40OSA2My43NSA1Mi44OFpNNDQuNDggNDcuNThDNDMuNjIgNDcuMzcgNDIuNjcgNDYuNTcgNDIuMjkgNDUuNzNDNDEuNzkgNDQuNjIgNDIuMDAgNDMuNTQgNDIuOTcgNDIuMjlDNDMuNzEgNDEuMzEgNDMuNzYgNDEuMDIgNDMuNDAgMzkuNTBDNDMuMTUgMzguNDMgNDMuMjEgMzYuMjMgNDMuNTIgMzUuMzNDNDQuMzcgMzIuODcgNDUuMzYgMzEuNDUgNDYuMTYgMzEuNTJDNDYuNjYgMzEuNTYgNDYuNzIgMzEuODIgNDYuNTUgMzMuMDRDNDUuODkgMzcuODggNDkuMDggNDIuMjcgNTMuODMgNDMuMDVDNTQuNjIgNDMuMTggNTQuNzggNDMuMTggNTcuMTAgNDMuMDNDNTkuNTUgNDIuODcgNTguMTMgNDUuMDYgNTUuMTYgNDYuMDNDNTMuNzMgNDYuNDkgNTEuODkgNDYuNjEgNTAuMjYgNDYuMzNDNDguODIgNDYuMDkgNDguNTYgNDYuMTQgNDcuNDggNDYuODVDNDYuMzUgNDcuNjAgNDUuNDcgNDcuODEgNDQuNDggNDcuNThaTTY4LjcxIDQzLjQyQzY4LjU1IDQzLjI0IDY4LjU1IDQzLjI2IDY4Ljc1IDQxLjQ3QzY5LjM3IDM2LjA0IDY0LjEyIDMxLjAxIDU4LjY3IDMxLjgxQzU3LjE0IDMyLjAzIDU2LjYxIDMxLjY4IDU3LjE5IDMwLjgzQzU4LjM2IDI5LjEwIDYyLjM2IDI4LjAxIDY1LjEyIDI4LjY3QzY2LjA2IDI4Ljg5IDY2Ljg3IDI4LjcwIDY3Ljc3IDI4LjA2QzY5LjUxIDI2LjgyIDcwLjY0IDI2Ljg4IDcyLjAyIDI4LjI1QzczLjIzIDI5LjQ2IDczLjQ1IDMwLjg2IDcyLjY0IDMyLjE3QzcyLjQ4IDMyLjQyIDcyLjIyIDMyLjg1IDcyLjA2IDMzLjExQzcxLjY2IDMzLjc3IDcxLjYxIDM0LjE3IDcxLjgwIDM1LjIwQzcxLjk3IDM2LjE4IDcxLjk5IDM4LjE0IDcxLjgzIDM5LjEwQzcxLjQyIDQxLjUzIDY5LjQ2IDQ0LjI1IDY4LjcxIDQzLjQyWk01MS4xMSAzOC4wOUM0OS41MyAzNy4zNyA0OC4xMSAzMi45MCA0OC43MCAzMC40N0M0OS4wOCAyOC45MCA0OC45OSAyOC4zNiA0OC4xNiAyNy4yNUM0Ny4yNiAyNi4wMiA0Ny4xMyAyNS4xNCA0Ny42OCAyMy45OEM0OC43MSAyMS44MiA1MC43NyAyMS4zMSA1Mi42OCAyMi43NEM1My43MiAyMy41MSA1NC4xMCAyMy41OCA1NS42MCAyMy4yOEM1OC41NyAyMi42OSA2Mi4yMyAyMy42MyA2My4zMSAyNS4yN0M2My45OCAyNi4yOCA2My42OCAyNi40NCA2MS4xMiAyNi40NkM1OS4yNyAyNi40NyA1OC45NyAyNi40OSA1OC40MCAyNi42NUM1NC4yMiAyNy44MSA1MS40MiAzMS45MSA1MS45NyAzNi4wOUM1Mi4yMSAzNy45NiA1MS45OSAzOC40OCA1MS4xMSAzOC4wOVoiLz48cGF0aCBmaWxsPSIjRTMwRTBFIiBkPSJNMTc0LjEyIDUyLjAzQzE3My45NCA1MS45MiAxNzMuNTcgNTEuNjAgMTczLjI5IDUxLjM0QzE3Mi45OSA1MS4wNCAxNzIuNTIgNTAuNzIgMTcyLjEwIDUwLjUwQzE3MC40NyA0OS42NiAxNzAuNTIgNDguNTAgMTcyLjIxIDQ3LjcxQzE3My4xOCA0Ny4yNiAxNzMuNTAgNDYuODYgMTczLjUwIDQ2LjE1QzE3My41MCA0NS4xNSAxNzMuMDAgNDQuNjMgMTcxLjU2IDQ0LjExQzE2MS4yMiA0MC40MSAxNjEuMzcgMjYuNTUgMTcxLjc5IDIzLjE2QzE3NC40MiAyMi4zMCAxNzYuODkgMjIuNTYgMTc5LjkyIDI0LjAxQzE4MS42MyAyNC44MiAxODIuMDQgMjQuNzcgMTgzLjI2IDIzLjU3QzE4NC41NiAyMi4zMSAxODQuNTQgMjEuNjcgMTgzLjIxIDIxLjI0QzE4MS45OSAyMC44NSAxODEuNjEgMTkuNzkgMTgyLjQxIDE4Ljk5QzE4Mi44OCAxOC41MSAxODMuMDkgMTguNDkgMTg2LjExIDE4LjUyQzE4OS45NCAxOC41NSAxOTAuMDIgMTguNjAgMTkwLjA3IDIxLjE2QzE5MC4xNCAyNC42NiAxODkuOTMgMjUuOTUgMTg5LjIyIDI2LjI4QzE4OC40OSAyNi42MyAxODcuOTggMjYuMzMgMTg3LjQ2IDI1LjI2QzE4Ni45MiAyNC4xNSAxODYuMzIgMjQuMTYgMTg1LjE5IDI1LjMwQzE4My45NCAyNi41OCAxODMuODIgMjcuMTkgMTg0LjU3IDI4LjY2QzE4NS4wMiAyOS41NCAxODUuNjQgMzEuNDggMTg1Ljg0IDMyLjYzQzE4Ni4xMSAzNC4yMCAxODUuNDEgMzcuNDIgMTg0LjQ0IDM5LjA0QzE4Mi45OCA0MS40NyAxODAuNzUgNDMuMjIgMTc3Ljg3IDQ0LjIyQzE3Ni43MyA0NC42MSAxNzYuMzIgNDQuOTcgMTc2LjE3IDQ1LjY5QzE3NS45NiA0Ni42OSAxNzYuMzcgNDcuMzYgMTc3LjQwIDQ3LjcwQzE3OC41MSA0OC4wNyAxNzguODYgNDguNDEgMTc4Ljg2IDQ5LjEyQzE3OC44NiA0OS44MyAxNzguNTYgNTAuMTQgMTc3LjQ4IDUwLjUxQzE3Ni44NCA1MC43MyAxNzYuNzUgNTAuNzkgMTc2LjE3IDUxLjQxQzE3NS4yOCA1Mi4zNSAxNzQuODAgNTIuNDkgMTc0LjEyIDUyLjAzWk0xNzYuNjYgNDEuODRDMTc5LjgzIDQxLjE1IDE4Mi40NSAzOC40NiAxODMuMDUgMzUuMjhDMTg0LjU5IDI3LjA5IDE3NC41NiAyMi4wMSAxNjguODIgMjguMDdDMTYzLjI3IDMzLjkzIDE2OC43NSA0My41NyAxNzYuNjYgNDEuODRaIi8+PC9zdmc+" alt="Xomiton" width="110" height="28">
       <div><h1>Simulateur mobile</h1><div class="sub">Compte membre et pair éducateur·rice · 30 écrans · transposition Flutter</div></div>
@@ -385,13 +443,6 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
     <button type="button" class="btn-ghost" id="reset" title="Efface l’état (onboarding vu, session, publications) et revient au splash">Réinitialiser</button>
   </header>
 
-  <nav class="rail" id="railNav" aria-label="Index des écrans">
-    <label class="vh" for="railSearch">Filtrer les écrans</label>
-    <input class="rail-search" id="railSearch" type="search" placeholder="Filtrer les écrans…" autocomplete="off">
-    <label class="vh" for="railSelect">Aller à l’écran</label>
-    <select class="rail-select" id="railSelect"></select>
-    <div class="rail-groups" id="railGroups"></div>
-  </nav>
 
   <main class="stage" id="appareil" tabindex="-1" aria-label="Appareil simulé">
     <div class="device-wrap" id="deviceWrap">
@@ -590,7 +641,25 @@ def({ id: 'splash', module: 'auth', title: 'Splash et carrousel', route: '/splas
     el.tabIndex = 0;
   } });
 
+/* Décor arc-en-ciel (six couleurs standard atténuées, opacité modérée) : jamais derrière un champ, jamais sur SOS / signalement. */
+const RB = ['#EE8E8E', '#F5B27A', '#F3DA82', '#8FCB9F', '#86B5E0', '#B39BDD'];
+const decoTop = () => `<div class="deco deco-top" aria-hidden="true"><svg viewBox="0 0 390 52" preserveAspectRatio="none" focusable="false">${RB.map((c, i) => `<path d="M-10 ${7 + i * 6.5} C 90 ${17 + i * 6.5}, 220 ${-3 + i * 6.5}, 400 ${11 + i * 6.5}" fill="none" stroke="${c}" stroke-width="7.5" opacity=".62"/>`).join('')}</svg></div>`;
+const decoEnd = () => `<div class="deco deco-end" aria-hidden="true"><svg viewBox="0 0 390 84" preserveAspectRatio="xMidYMax slice" focusable="false">
+  <g fill="none" stroke-width="6" opacity=".55">${RB.map((c, i) => `<path d="M${14 + i * 6} 84 A ${64 - i * 6} ${64 - i * 6} 0 0 1 ${142 - i * 6 - 0} 84" stroke="${c}" transform="translate(0 0)"/>`).join('')}</g>
+  <g fill="#fff" stroke="#C9D3F2" stroke-width="1.5" opacity=".8"><path d="M138 84v-8a11 11 0 0 1 11-11 14 14 0 0 1 27 2 9 9 0 0 1 10 9v8z"/></g>
+  <path d="M316 40c-9-7-17-1-14 7 2 5 9 10 14 14 5-4 12-9 14-14 3-8-5-14-14-7z" fill="#EE8E8E" opacity=".5"/>
+  <path d="M262 34l2.6 6 6.4.6-4.9 4.2 1.5 6.3-5.6-3.4-5.6 3.4 1.5-6.3-4.9-4.2 6.4-.6z" fill="#F3DA82" opacity=".75"/>
+  <path d="M356 18l1.8 4.2 4.5.4-3.4 3 1 4.4-3.9-2.4-3.9 2.4 1-4.4-3.4-3 4.5-.4z" fill="#B39BDD" opacity=".7"/>
+  <circle cx="224" cy="66" r="3" fill="#86B5E0" opacity=".7"/><circle cx="372" cy="70" r="4" fill="#8FCB9F" opacity=".7"/>
+</svg></div>`;
 let loginErr = '';
+/* Comptes de démonstration (mêmes identifiants que le site : docs/GUIDE_RECETTE.md §5) : le compte choisi mène à son espace. */
+const DEMO_ACCOUNTS = [
+  { label: 'Membre', email: 'membre@xomiton.bj', pseudo: 'awa_s', password: 'Membre123!', role: 'membre', dest: 'dashboard', where: 'Tableau de bord' },
+  { label: 'Pair éducateur·rice', email: 'pair@xomiton.bj', pseudo: 'pair_chantal', password: 'Pair123!', role: 'pair', dest: 'espace-pair.html#/accueil', where: 'Espace pair' },
+  { label: 'Administrateur·rice', email: 'admin@xomiton.bj', pseudo: 'admin', password: 'Admin123!', role: 'admin', dest: 'admin-mobile.html#/tableau', where: 'Admin mobile' }
+];
+const demoFor = l => DEMO_ACCOUNTS.find(a => a.email === l.toLowerCase() || a.pseudo === l.toLowerCase());
 def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'LoginPage', provider: 'authControllerProvider (AsyncNotifier<Session?>)', chrome: 'bare',
   tree: `LoginPage
 └─ Scaffold
@@ -606,7 +675,7 @@ def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'L
   api: [['POST', '/api/v1/auth/login', '{login, password} → 202 {otp_sent: true}'], ['POST', '/api/v1/auth/otp/send', '{purpose: login}']],
   ds: DS('XmTextField', 'XmPasswordField', 'FilledButton.primary', 'ErrorSummary'),
   warn: 'Message d’erreur indifférencié (« Identifiants incorrects ») : ne jamais révéler si un compte existe. Collage autorisé, aucun CAPTCHA à image (WCAG 2.2, 3.3.8).',
-  render: () => `<div class="view stack-lg" style="padding-top:calc(var(--safe-top) + 28px)">
+  render: () => `<div class="view stack-lg has-deco" style="padding-top:calc(var(--safe-top) + 28px)">${decoTop()}
     <img src="${logo()}" alt="Xomiton" width="120" height="31">
     <div><h1 class="h1">Bon retour</h1><p class="muted" style="margin:6px 0 0">Connecte-toi pour retrouver ta communauté. Un code de vérification te sera envoyé par e-mail.</p></div>
     ${loginErr ? `<div class="alert danger" role="alert" tabindex="-1" id="loginErr">${ic('alert', 'sm')}<span>${esc(loginErr)}</span></div>` : ''}
@@ -618,13 +687,19 @@ def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'L
     </form>
     <div class="row" style="gap:12px"><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"><span class="xs muted">Pas encore de compte ?</span><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"></div>
     <button class="btn btn-outline btn-block" data-go="signup">Créer un compte</button>
+    <section class="stack" style="gap:8px" aria-labelledby="demoTtl"><h2 class="h3" id="demoTtl" style="font-size:14px">Comptes de démonstration</h2>
+      ${DEMO_ACCOUNTS.map(a => `<button type="button" class="btn btn-outline btn-block" data-demo="${a.email}" style="justify-content:space-between;text-align:left"><span>${a.label}</span><span class="xs muted">${a.where}</span></button>`).join('')}
+    </section>
     <p class="xs muted" style="text-align:center;margin:0">${ic('lock', 'sm')} Aucune donnée n’est visible depuis l’écran de verrouillage.</p>
+    ${decoEnd()}
   </div>`,
   mount: root => {
     const f = root.querySelector('#loginForm'); const e = root.querySelector('#loginErr'); if (e) e.focus();
     f.onsubmit = ev => { ev.preventDefault(); const l = f.lg.value.trim(), p = f.lp.value;
-      if (!l || p.length < 6) { loginErr = !l ? 'Indique ton e-mail ou ton pseudonyme.' : 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.'; return render(); }
-      loginErr = ''; S.otp = { purpose: 'login', email: l.includes('@') ? l : S.user.email }; save(); go('otp'); };
+      const demo = demoFor(l);
+      if (!l || p.length < 6 || (demo && demo.password !== p)) { loginErr = !l ? 'Indique ton e-mail ou ton pseudonyme.' : 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.'; return render(); }
+      loginErr = ''; S.otp = { purpose: 'login', email: demo ? demo.email : (l.includes('@') ? l : S.user.email), dest: demo ? demo.dest : 'dashboard', role: demo ? demo.role : 'membre' }; save(); go('otp'); };
+    root.querySelectorAll('[data-demo]').forEach(b => b.onclick = () => { const a = DEMO_ACCOUNTS.find(x => x.email === b.dataset.demo); f.lg.value = a.email; f.lp.value = a.password; f.lp.type = 'password'; f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event('submit', { cancelable: true })); });
   } });
 
 def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/signup?step=1..4', page: 'SignupPage', provider: 'signupFormProvider (Notifier<SignupDraft>)', chrome: 'bare',
@@ -642,7 +717,7 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
   warn: 'Seule la phase 1 est obligatoire (DECISIONS D4 : inscription simplifiée). Consentements RGPD en cases distinctes, jamais pré-cochées ; « données sensibles » (orientation, identité de genre) reste facultatif et séparé.',
   render: () => { const d = S.signup, st = d.step; const titles = ['Ton compte', 'Ton profil', 'Ta sécurité', 'Tes consentements'];
     const body = [
-      () => `<div class="field"><label for="sp">Pseudonyme</label><input class="input" id="sp" value="${esc(d.pseudo)}" autocomplete="nickname" required><span class="hint">Visible par la communauté. Ton vrai nom n’est jamais demandé.</span></div>
+      () => `<div class="field"><label for="sp">Pseudonyme</label><input class="input" id="sp" value="${esc(d.pseudo)}" autocomplete="nickname" required><span class="hint">3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.</span></div>
         <div class="field"><label for="se">E-mail</label><input class="input" id="se" type="email" value="${esc(d.email)}" autocomplete="email" required></div>
         ${pwField('sw', 'Mot de passe', d.password, 'new-password')}<div class="stack" style="gap:8px" id="meter">${meter(d.password)}</div>
         <div class="stack" style="gap:6px"><label class="check"><input type="checkbox" id="sa" ${d.age15 ? 'checked' : ''} aria-describedby="saHint"><span>J’ai 15 ans ou plus. <b>(obligatoire)</b></span></label><span class="hint" id="saHint" style="padding-left:34px">Xomiton est réservé aux personnes de 15 ans ou plus.</span><button type="button" class="btn-link small" id="under15" style="justify-self:start;margin-left:34px;min-height:44px">J’ai moins de 15 ans</button></div>`,
@@ -659,11 +734,11 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
         <label class="check"><input type="checkbox" id="c4" ${d.news ? 'checked' : ''}><span>Je souhaite recevoir la newsletter Xomiton. <span class="muted">(facultatif, désinscription en un clic)</span></span></label>
         <div id="consentErr"></div>`
     ][st - 1]();
-    return `<div class="appbar"><button class="icon-btn" data-action="prev" aria-label="Retour">${ic('back')}</button><h2>Étape ${st} sur 4</h2>${st === 2 || st === 3 ? '<button class="btn-link small" data-action="skipstep" style="padding:0 12px">Passer</button>' : ''}</div>
+    return `<div class="appbar">${decoTop()}<button class="icon-btn" data-action="prev" aria-label="Retour">${ic('back')}</button><h2>Étape ${st} sur 4</h2>${st === 2 || st === 3 ? '<button class="btn-link small" data-action="skipstep" style="padding:0 12px">Passer</button>' : ''}</div>
     <div class="view stack-lg"><div class="stepper" style="--n:4">${[1, 2, 3, 4].map(i => `<i class="${i <= st ? 'on' : ''}"></i>`).join('')}</div>
       <h1 class="h1">${titles[st - 1]}</h1><form class="stack" id="sf" novalidate>${body}<div id="sfErr"></div>
       <button class="btn btn-primary btn-block" id="sfGo" ${st === 1 && !d.age15 ? 'disabled' : ''}>${st === 4 ? 'Créer mon compte' : 'Continuer'}</button></form>
-      ${st === 1 ? '<button class="btn btn-link" data-go="login">J’ai déjà un compte</button>' : ''}</div>`; },
+      ${st === 1 ? '<button class="btn btn-link" data-go="login">J’ai déjà un compte</button>' : ''}${decoEnd()}</div>`; },
   mount: root => { const d = S.signup, f = root.querySelector('#sf');
     root.querySelector('[data-action=prev]').onclick = () => { if (d.step > 1) { d.step--; save(); render(); } else back(); };
     const skip = root.querySelector('[data-action=skipstep]'); if (skip) skip.onclick = () => { d.step++; save(); render(); };
@@ -728,7 +803,11 @@ def({ id: 'otp', module: 'auth', title: 'Code par e-mail (OTP)', route: '/otp?pu
       if (code === '000000') { otpErr = 'Ce code est incorrect ou a expiré. Vérifie le dernier e-mail reçu ou demande un nouveau code.'; return render(); }
       otpErr = ''; otpLeft = 30; clearInterval(otpTimer);
       if (S.otp.purpose === 'reset') return go('reset');
-      S.auth = true; save(); stack = []; go('dashboard', { replace: true });
+      S.auth = true; const dest = S.otp.purpose === 'login' && S.otp.dest || 'dashboard';
+      if (S.otp.purpose === 'login' && S.otp.role === 'membre') S.role = 'membre'; else if (S.otp.role === 'pair') S.role = 'pair';
+      save(); stack = [];
+      if (dest.includes('.html')) { location.href = dest; return; } // espace pair / admin mobile : autres maquettes
+      go('dashboard', { replace: true });
       toast(S.otp.purpose === 'signup' ? 'Bienvenue sur Xomiton, ton compte est actif.' : 'Connexion réussie.'); };
   } });
 
@@ -1366,43 +1445,9 @@ function render(scrollTop) {
   if (s.mount) s.mount(app, cur.param);
   const v = app.querySelector('.view'); if (v && !scrollTop && !['chat', 'assistant'].includes(s.id)) v.scrollTop = prevScroll;
   document.getElementById('screen').style.setProperty('--sb-color', ['profil', 'splash'].includes(s.id) ? '#fff' : '');
-  updatePanel(s); updateRail(s);
+  updatePanel(s); if (window.XmNav) XmNav.mark();
 }
 
-/* =====================================================================
-   Rail, panneau, barre supérieure
-   ===================================================================== */
-const railGroups = document.getElementById('railGroups'), railSelect = document.getElementById('railSelect');
-/* Maquettes liées (pages séparées) : entrées sans numéro, préfixées P (espace pair) et A (admin mobile). */
-const EXTERNAL = [
-  ['pair', 'Espace pair', 'espace-pair', 'P', [['accueil', 'Accueil pair'], ['alertes', 'Alertes routées vers moi'], ['alerte/a1', 'Détail d’une alerte SOS'], ['dossiers', 'Mes dossiers'], ['dossier/VBG-0042', 'Fiche dossier'], ['suivi/VBG-0042', 'Ajouter un suivi'], ['sos', 'SOS'], ['collecte?etape=1', 'Collecte : étape 1'], ['collecte?etape=5&demo=1', 'Collecte : vérification'], ['sync?net=off', 'File de synchronisation (hors ligne)'], ['sync?net=on', 'Conflit 409 à résoudre']]],
-  ['admin', 'Admin mobile', 'admin-mobile', 'A', [['tableau', 'Tableau de bord d’astreinte'], ['alertes', 'Liste des alertes'], ['alerte/2041', 'Détail d’une alerte SOS'], ['pairs', 'Validation des pairs'], ['maintenance', 'Mode maintenance'], ['notifications', 'Notifications'], ['tableau?net=off', 'Hors connexion']]]
-];
-/* État du menu (ouvert / replié, modules repliés) : mémorisé, avec repli sans erreur si le stockage est indisponible. */
-const MENU_KEY = 'xm-sim-menu-v1';
-let MENU = { open: true, collapsed: [] };
-try { Object.assign(MENU, JSON.parse(localStorage.getItem(MENU_KEY) || '{}')); if (!Array.isArray(MENU.collapsed)) MENU.collapsed = []; } catch (e) { /* stockage indisponible */ }
-const saveMenu = () => { try { localStorage.setItem(MENU_KEY, JSON.stringify(MENU)); } catch (e) { /* ignoré */ } };
-const CV = '<svg class="cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
-const groupHtml = (mod, label, code, count, items) => { const open = !MENU.collapsed.includes(mod);
-  return `<div class="rail-group" data-mod="${mod}" data-collapsed="${!open}"><h2><button type="button" class="mod" aria-expanded="${open}" aria-controls="grp-${mod}">${CV}<span>${label}</span> <code>${code}</code><span class="cnt">${count}</span></button></h2><div class="items" id="grp-${mod}">${items}</div></div>`; };
-railGroups.innerHTML = MODULES.map(m => { const list = SCREENS.filter(s => s.module === m[0]);
-  return groupHtml(m[0], m[1], m[0], list.length, list.map(s => { const n = SCREENS.indexOf(s) + 1; return `<a href="#/${s.id}" data-id="${s.id}" data-t="${(s.title + ' ' + s.route + ' ' + s.page).toLowerCase()}"><span class="n">${String(n).padStart(2, '0')}</span><span>${s.title}</span><span class="r">#/${s.id}</span></a>`; }).join('')); }).join('')
-  + EXTERNAL.map(x => groupHtml(x[0], x[1], x[2], x[4].length, x[4].map((it, i) => `<a class="ext" href="${x[2]}.html#/${it[0]}" data-t="${(x[1] + ' ' + it[1] + ' ' + it[0]).toLowerCase()}"><span class="n">${x[3]}${i + 1}</span><span>${it[1]}</span><span class="r">${x[2]}.html#/${it[0].split('?')[0]}</span></a>`).join(''))).join('');
-railSelect.innerHTML = MODULES.map(m => `<optgroup label="${m[1]}">${SCREENS.filter(s => s.module === m[0]).map(s => `<option value="${s.id}">${String(SCREENS.indexOf(s) + 1).padStart(2, '0')} · ${s.title}</option>`).join('')}</optgroup>`).join('')
-  + EXTERNAL.map(x => `<optgroup label="${x[1]}">${x[4].map((it, i) => `<option value="ext:${x[2]}.html#/${it[0]}">${x[3]}${i + 1} · ${it[1]}</option>`).join('')}</optgroup>`).join('');
-railSelect.onchange = () => { if (railSelect.value.startsWith('ext:')) { location.href = railSelect.value.slice(4); return; } stack = []; go(railSelect.value, { replace: true }); };
-railGroups.addEventListener('click', e => {
-  const m = e.target.closest('button.mod');
-  if (m) { const g = m.closest('.rail-group'), open = m.getAttribute('aria-expanded') !== 'true'; m.setAttribute('aria-expanded', open); g.dataset.collapsed = !open; MENU.collapsed = MENU.collapsed.filter(x => x !== g.dataset.mod); if (!open) MENU.collapsed.push(g.dataset.mod); saveMenu(); return; }
-  const a = e.target.closest('a[data-id]'); if (!a) return; e.preventDefault(); stack = []; go(a.dataset.id, { replace: true }); });
-document.getElementById('railSearch').oninput = e => { const v = e.target.value.toLowerCase().trim();
-  railGroups.querySelectorAll('a').forEach(a => a.hidden = !!v && !a.dataset.t.includes(v));
-  railGroups.querySelectorAll('.rail-group').forEach(g => { const any = [...g.querySelectorAll('a')].some(a => !a.hidden); g.hidden = !any; if (v) g.dataset.collapsed = 'false'; else g.dataset.collapsed = MENU.collapsed.includes(g.dataset.mod); }); };
-const menuBtn = document.getElementById('menuBtn');
-function applyMenu() { document.querySelector('.sim').classList.toggle('menu-closed', !MENU.open); menuBtn.setAttribute('aria-expanded', MENU.open); fit(); }
-menuBtn.onclick = () => { MENU.open = !MENU.open; saveMenu(); applyMenu(); };
-function updateRail(s) { railGroups.querySelectorAll('a[data-id]').forEach(a => a.dataset.id === s.id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')); railSelect.value = s.id; const a = railGroups.querySelector('[aria-current]'); if (a) a.scrollIntoView({ block: 'nearest' }); }
 function updatePanel(s) {
   const n = SCREENS.indexOf(s) + 1, mod = MODULES.find(m => m[0] === s.module);
   document.getElementById('panel').innerHTML = `<header><div class="state">Écran ${String(n).padStart(2, '0')} sur ${SCREENS.length} · module <code>${s.module}</code> (${mod[1]})</div><h2 style="margin-top:4px">${esc(s.title)}</h2><span class="route">${esc(s.route)}</span></header>
@@ -1438,7 +1483,7 @@ const tick = () => { document.getElementById('clock').textContent = new Date().t
 tick(); setInterval(tick, 15000);
 
 window.addEventListener('hashchange', () => { const h = parseHash(); if (h.id && byId(h.id) && (byId(h.id).id !== cur.id || h.param !== cur.param)) { stack = []; go(h.id, { param: h.param, fromHash: true, rawId: h.id }); } });
-syncTop(); applyMenu();
+syncTop();
 const h0 = parseHash();
 if (h0.id && byId(h0.id)) go(h0.id, { param: h0.param, fromHash: true, rawId: h0.id });
 else go(S.auth ? 'dashboard' : (S.seen ? 'login' : 'splash'), { replace: true }); // redirection go_router selon onboardingProvider

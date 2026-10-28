@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/xm_tokens.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/network/api_exception.dart';
+import '../../../core/ui/xm_rainbow_deco.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/password_strength.dart';
 import '../application/session_controller.dart';
@@ -229,7 +230,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               ),
           ],
         ),
-        body: SafeArea(
+        body: XmAuthDecor(
+          child: SafeArea(
+          top: false,
           child: ListView(
             controller: _scroll,
             padding: const EdgeInsets.all(XmSpace.gutter),
@@ -250,6 +253,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               },
             ],
           ),
+        ),
         ),
       ),
     );

@@ -13930,7 +13930,7 @@
     "@auth_register_account_pseudo": {
         "description": "auth.register.account.pseudo"
     },
-    "auth_register_account_pseudo_hint": "C’est ce que les autres verront. 3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
+    "auth_register_account_pseudo_hint": "3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
     "@auth_register_account_pseudo_hint": {
         "description": "auth.register.account.pseudo_hint"
     },

@@ -137,7 +137,7 @@ Lecture dans `web/storage/logs/laravel.log` (mode journal).
 
 | Réf. | Action | Résultat attendu | Statut | Commentaire |
 |---|---|---|---|---|
-| EML-01 | Demander un code de connexion. | E-mail « Ton code Xomiton : NNNNNN » dans le journal, sans donnée personnelle dans l'objet. | ☐ | |
+| EML-01 | Demander un code de connexion. | E-mail « Ton code de vérification Xomiton » dans le journal (objet sans code ni donnée personnelle) et ligne `[otp:log] Code NNNNNN pour …` (local). | ☐ | |
 | EML-02 | S'inscrire (AUT-02). | E-mail « Bienvenue » reçu. | ☐ | |
 | EML-03 | Mot de passe oublié. | E-mail avec le code et le lien de réinitialisation. | ☐ | |
 | EML-04 | Confirmation de newsletter (VIS-07). | E-mail « Confirmez votre inscription » après `mail:flush-outbox`. | ☐ | |

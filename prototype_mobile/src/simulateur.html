@@ -56,7 +56,7 @@ button { cursor: pointer; }
 .skip:focus { top: 8px; }
 
 /* ---------- Mise en page générale ---------- */
-.sim { display: grid; grid-template-columns: 272px minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); height: 100vh; }
+.sim { display: grid; grid-template-columns: minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); height: 100vh; }
 .topbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: var(--pg-surface); border-bottom: 1px solid var(--pg-border); flex-wrap: wrap; }
 .topbar .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; min-width: 0; }
 .topbar .brand img { height: 28px; width: auto; }
@@ -67,34 +67,12 @@ button { cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--pg-surface); color: var(--pg-accent); box-shadow: 0 1px 3px rgb(27 22 48 / .14); }
 .btn-ghost { border: 1px solid var(--pg-border); background: var(--pg-surface); border-radius: var(--xm-radius-pill); padding: 6px 14px; font-size: 13px; font-weight: 700; min-height: 34px; }
 
-/* Rail gauche : index des écrans */
-.rail { overflow-y: auto; background: var(--pg-surface); border-right: 1px solid var(--pg-border); padding: 12px 10px 24px; }
-.rail-search { width: 100%; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); padding: 8px 10px; background: var(--pg-bg); margin-bottom: 8px; min-height: 38px; }
-.rail-group { margin-top: 14px; }
-.rail-group h2 { font-size: 13px; font-weight: 700; padding: 0 8px 4px; display: flex; justify-content: space-between; align-items: baseline; }
-.rail-group h2 code { font: 12px/1 var(--xm-font-body); color: var(--pg-muted); }
-.rail a { display: grid; grid-template-columns: 26px 1fr; gap: 6px; align-items: baseline; padding: 7px 8px; border-radius: var(--xm-radius-md); color: var(--pg-text); text-decoration: none; font-size: 14px; }
-.rail a .n { color: var(--pg-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-.rail a .r { grid-column: 2; color: var(--pg-muted); font-size: 12px; }
-.rail a:hover { background: var(--pg-bg); }
-.rail a[aria-current="page"] { background: var(--pg-accent-subtle); color: var(--pg-accent); font-weight: 700; }
-.rail a[aria-current="page"] .n, .rail a[aria-current="page"] .r { color: var(--pg-accent); }
-
-/* Menu des écrans repliable */
-.menu-btn { width: 44px; height: 44px; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); background: var(--pg-surface); display: inline-grid; place-items: center; padding: 0; }
-.menu-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
-.menu-btn[aria-expanded="true"] { background: var(--pg-accent-subtle); color: var(--pg-accent); border-color: var(--pg-accent); }
-.sim.menu-closed { grid-template-columns: minmax(0, 1fr) 380px; }
-.sim.menu-closed .rail { display: none; }
-.rail-group h2 { padding: 0; }
-.rail-group .mod { width: 100%; min-height: 40px; display: flex; align-items: center; gap: 8px; border: 0; background: none; padding: 0 8px; font: 700 13px/1.2 var(--xm-font-body); color: var(--pg-text); text-align: left; border-radius: var(--xm-radius-md); }
-.rail-group .mod:hover { background: var(--pg-bg); }
-.rail-group .mod .cv { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; transition: transform .15s; flex-shrink: 0; }
-.rail-group .mod[aria-expanded="true"] .cv { transform: rotate(90deg); }
-.rail-group .mod .cnt { margin-left: auto; font-weight: 400; font-size: 12px; color: var(--pg-muted); }
-.rail-group .mod code { font: 12px/1 var(--xm-font-body); color: var(--pg-muted); }
-.rail-group[data-collapsed="true"] .items { display: none; }
-.rail a.ext .r { color: var(--pg-accent); }
+/* Décor des écrans connexion / inscription : ruban arc-en-ciel et petites illustrations (SVG en ligne, aria-hidden, statique). */
+.view.has-deco { position: relative; isolation: isolate; }
+.deco { pointer-events: none; user-select: none; }
+.deco-top { position: absolute; z-index: -1; top: 0; left: 0; right: 0; height: 52px; }
+.deco-top svg, .deco-end svg { display: block; width: 100%; height: 100%; }
+.deco-end { height: 84px; margin: 0 -16px calc(-1 * (var(--safe-bottom) + 20px)); }
 
 /* Scène centrale */
 .stage { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 16px; min-height: 0; }
@@ -343,33 +321,27 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
 
 /* ---------- Réactif ---------- */
 @media (max-width: 1280px) {
-  .sim { grid-template-columns: 240px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; height: auto; min-height: 100vh; }
-  .rail { max-height: calc(100vh - 60px); position: sticky; top: 0; }
+  .sim { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; height: auto; min-height: 100vh; }
   .stage { min-height: calc(100vh - 60px); }
   .panel { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--pg-border); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 24px; }
   .panel > header { grid-column: 1 / -1; }
-  .sim.menu-closed { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 820px) {
   .sim { grid-template-columns: 1fr; }
-  .rail { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--pg-border); }
-  .rail-groups { display: none; }
-  .rail-select { display: block !important; }
   .topbar { padding: 10px 16px; }
   .topbar .sub { display: none; }
   .stage { padding: 12px 0; min-height: 0; }
 }
-.rail-select { display: none; width: 100%; min-height: 44px; border: 1px solid var(--pg-border); border-radius: var(--xm-radius-md); background: var(--pg-bg); padding: 0 10px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
 </style>
 </head>
 <body>
+{{INCLUDE:navmenu.html}}
 <a class="skip" href="#appareil">Aller au simulateur</a>
 <div class="sim">
   <header class="topbar">
-    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="true" aria-controls="railNav" aria-label="Afficher ou masquer la liste des écrans" title="Liste des écrans"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
     <div class="brand">
       <img src="{{IMG:logo-couleur.svg}}" alt="Xomiton" width="110" height="28">
       <div><h1>Simulateur mobile</h1><div class="sub">Compte membre et pair éducateur·rice · 30 écrans · transposition Flutter</div></div>
@@ -385,13 +357,6 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
     <button type="button" class="btn-ghost" id="reset" title="Efface l’état (onboarding vu, session, publications) et revient au splash">Réinitialiser</button>
   </header>
 
-  <nav class="rail" id="railNav" aria-label="Index des écrans">
-    <label class="vh" for="railSearch">Filtrer les écrans</label>
-    <input class="rail-search" id="railSearch" type="search" placeholder="Filtrer les écrans…" autocomplete="off">
-    <label class="vh" for="railSelect">Aller à l’écran</label>
-    <select class="rail-select" id="railSelect"></select>
-    <div class="rail-groups" id="railGroups"></div>
-  </nav>
 
   <main class="stage" id="appareil" tabindex="-1" aria-label="Appareil simulé">
     <div class="device-wrap" id="deviceWrap">
@@ -590,7 +555,25 @@ def({ id: 'splash', module: 'auth', title: 'Splash et carrousel', route: '/splas
     el.tabIndex = 0;
   } });
 
+/* Décor arc-en-ciel (six couleurs standard atténuées, opacité modérée) : jamais derrière un champ, jamais sur SOS / signalement. */
+const RB = ['#EE8E8E', '#F5B27A', '#F3DA82', '#8FCB9F', '#86B5E0', '#B39BDD'];
+const decoTop = () => `<div class="deco deco-top" aria-hidden="true"><svg viewBox="0 0 390 52" preserveAspectRatio="none" focusable="false">${RB.map((c, i) => `<path d="M-10 ${7 + i * 6.5} C 90 ${17 + i * 6.5}, 220 ${-3 + i * 6.5}, 400 ${11 + i * 6.5}" fill="none" stroke="${c}" stroke-width="7.5" opacity=".62"/>`).join('')}</svg></div>`;
+const decoEnd = () => `<div class="deco deco-end" aria-hidden="true"><svg viewBox="0 0 390 84" preserveAspectRatio="xMidYMax slice" focusable="false">
+  <g fill="none" stroke-width="6" opacity=".55">${RB.map((c, i) => `<path d="M${14 + i * 6} 84 A ${64 - i * 6} ${64 - i * 6} 0 0 1 ${142 - i * 6 - 0} 84" stroke="${c}" transform="translate(0 0)"/>`).join('')}</g>
+  <g fill="#fff" stroke="#C9D3F2" stroke-width="1.5" opacity=".8"><path d="M138 84v-8a11 11 0 0 1 11-11 14 14 0 0 1 27 2 9 9 0 0 1 10 9v8z"/></g>
+  <path d="M316 40c-9-7-17-1-14 7 2 5 9 10 14 14 5-4 12-9 14-14 3-8-5-14-14-7z" fill="#EE8E8E" opacity=".5"/>
+  <path d="M262 34l2.6 6 6.4.6-4.9 4.2 1.5 6.3-5.6-3.4-5.6 3.4 1.5-6.3-4.9-4.2 6.4-.6z" fill="#F3DA82" opacity=".75"/>
+  <path d="M356 18l1.8 4.2 4.5.4-3.4 3 1 4.4-3.9-2.4-3.9 2.4 1-4.4-3.4-3 4.5-.4z" fill="#B39BDD" opacity=".7"/>
+  <circle cx="224" cy="66" r="3" fill="#86B5E0" opacity=".7"/><circle cx="372" cy="70" r="4" fill="#8FCB9F" opacity=".7"/>
+</svg></div>`;
 let loginErr = '';
+/* Comptes de démonstration (mêmes identifiants que le site : docs/GUIDE_RECETTE.md §5) : le compte choisi mène à son espace. */
+const DEMO_ACCOUNTS = [
+  { label: 'Membre', email: 'membre@xomiton.bj', pseudo: 'awa_s', password: 'Membre123!', role: 'membre', dest: 'dashboard', where: 'Tableau de bord' },
+  { label: 'Pair éducateur·rice', email: 'pair@xomiton.bj', pseudo: 'pair_chantal', password: 'Pair123!', role: 'pair', dest: 'espace-pair.html#/accueil', where: 'Espace pair' },
+  { label: 'Administrateur·rice', email: 'admin@xomiton.bj', pseudo: 'admin', password: 'Admin123!', role: 'admin', dest: 'admin-mobile.html#/tableau', where: 'Admin mobile' }
+];
+const demoFor = l => DEMO_ACCOUNTS.find(a => a.email === l.toLowerCase() || a.pseudo === l.toLowerCase());
 def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'LoginPage', provider: 'authControllerProvider (AsyncNotifier<Session?>)', chrome: 'bare',
   tree: `LoginPage
 └─ Scaffold
@@ -606,7 +589,7 @@ def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'L
   api: [['POST', '/api/v1/auth/login', '{login, password} → 202 {otp_sent: true}'], ['POST', '/api/v1/auth/otp/send', '{purpose: login}']],
   ds: DS('XmTextField', 'XmPasswordField', 'FilledButton.primary', 'ErrorSummary'),
   warn: 'Message d’erreur indifférencié (« Identifiants incorrects ») : ne jamais révéler si un compte existe. Collage autorisé, aucun CAPTCHA à image (WCAG 2.2, 3.3.8).',
-  render: () => `<div class="view stack-lg" style="padding-top:calc(var(--safe-top) + 28px)">
+  render: () => `<div class="view stack-lg has-deco" style="padding-top:calc(var(--safe-top) + 28px)">${decoTop()}
     <img src="${logo()}" alt="Xomiton" width="120" height="31">
     <div><h1 class="h1">Bon retour</h1><p class="muted" style="margin:6px 0 0">Connecte-toi pour retrouver ta communauté. Un code de vérification te sera envoyé par e-mail.</p></div>
     ${loginErr ? `<div class="alert danger" role="alert" tabindex="-1" id="loginErr">${ic('alert', 'sm')}<span>${esc(loginErr)}</span></div>` : ''}
@@ -618,13 +601,19 @@ def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'L
     </form>
     <div class="row" style="gap:12px"><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"><span class="xs muted">Pas encore de compte ?</span><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"></div>
     <button class="btn btn-outline btn-block" data-go="signup">Créer un compte</button>
+    <section class="stack" style="gap:8px" aria-labelledby="demoTtl"><h2 class="h3" id="demoTtl" style="font-size:14px">Comptes de démonstration</h2>
+      ${DEMO_ACCOUNTS.map(a => `<button type="button" class="btn btn-outline btn-block" data-demo="${a.email}" style="justify-content:space-between;text-align:left"><span>${a.label}</span><span class="xs muted">${a.where}</span></button>`).join('')}
+    </section>
     <p class="xs muted" style="text-align:center;margin:0">${ic('lock', 'sm')} Aucune donnée n’est visible depuis l’écran de verrouillage.</p>
+    ${decoEnd()}
   </div>`,
   mount: root => {
     const f = root.querySelector('#loginForm'); const e = root.querySelector('#loginErr'); if (e) e.focus();
     f.onsubmit = ev => { ev.preventDefault(); const l = f.lg.value.trim(), p = f.lp.value;
-      if (!l || p.length < 6) { loginErr = !l ? 'Indique ton e-mail ou ton pseudonyme.' : 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.'; return render(); }
-      loginErr = ''; S.otp = { purpose: 'login', email: l.includes('@') ? l : S.user.email }; save(); go('otp'); };
+      const demo = demoFor(l);
+      if (!l || p.length < 6 || (demo && demo.password !== p)) { loginErr = !l ? 'Indique ton e-mail ou ton pseudonyme.' : 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.'; return render(); }
+      loginErr = ''; S.otp = { purpose: 'login', email: demo ? demo.email : (l.includes('@') ? l : S.user.email), dest: demo ? demo.dest : 'dashboard', role: demo ? demo.role : 'membre' }; save(); go('otp'); };
+    root.querySelectorAll('[data-demo]').forEach(b => b.onclick = () => { const a = DEMO_ACCOUNTS.find(x => x.email === b.dataset.demo); f.lg.value = a.email; f.lp.value = a.password; f.lp.type = 'password'; f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event('submit', { cancelable: true })); });
   } });
 
 def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/signup?step=1..4', page: 'SignupPage', provider: 'signupFormProvider (Notifier<SignupDraft>)', chrome: 'bare',
@@ -642,7 +631,7 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
   warn: 'Seule la phase 1 est obligatoire (DECISIONS D4 : inscription simplifiée). Consentements RGPD en cases distinctes, jamais pré-cochées ; « données sensibles » (orientation, identité de genre) reste facultatif et séparé.',
   render: () => { const d = S.signup, st = d.step; const titles = ['Ton compte', 'Ton profil', 'Ta sécurité', 'Tes consentements'];
     const body = [
-      () => `<div class="field"><label for="sp">Pseudonyme</label><input class="input" id="sp" value="${esc(d.pseudo)}" autocomplete="nickname" required><span class="hint">Visible par la communauté. Ton vrai nom n’est jamais demandé.</span></div>
+      () => `<div class="field"><label for="sp">Pseudonyme</label><input class="input" id="sp" value="${esc(d.pseudo)}" autocomplete="nickname" required><span class="hint">3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.</span></div>
         <div class="field"><label for="se">E-mail</label><input class="input" id="se" type="email" value="${esc(d.email)}" autocomplete="email" required></div>
         ${pwField('sw', 'Mot de passe', d.password, 'new-password')}<div class="stack" style="gap:8px" id="meter">${meter(d.password)}</div>
         <div class="stack" style="gap:6px"><label class="check"><input type="checkbox" id="sa" ${d.age15 ? 'checked' : ''} aria-describedby="saHint"><span>J’ai 15 ans ou plus. <b>(obligatoire)</b></span></label><span class="hint" id="saHint" style="padding-left:34px">Xomiton est réservé aux personnes de 15 ans ou plus.</span><button type="button" class="btn-link small" id="under15" style="justify-self:start;margin-left:34px;min-height:44px">J’ai moins de 15 ans</button></div>`,
@@ -659,11 +648,11 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
         <label class="check"><input type="checkbox" id="c4" ${d.news ? 'checked' : ''}><span>Je souhaite recevoir la newsletter Xomiton. <span class="muted">(facultatif, désinscription en un clic)</span></span></label>
         <div id="consentErr"></div>`
     ][st - 1]();
-    return `<div class="appbar"><button class="icon-btn" data-action="prev" aria-label="Retour">${ic('back')}</button><h2>Étape ${st} sur 4</h2>${st === 2 || st === 3 ? '<button class="btn-link small" data-action="skipstep" style="padding:0 12px">Passer</button>' : ''}</div>
+    return `<div class="appbar">${decoTop()}<button class="icon-btn" data-action="prev" aria-label="Retour">${ic('back')}</button><h2>Étape ${st} sur 4</h2>${st === 2 || st === 3 ? '<button class="btn-link small" data-action="skipstep" style="padding:0 12px">Passer</button>' : ''}</div>
     <div class="view stack-lg"><div class="stepper" style="--n:4">${[1, 2, 3, 4].map(i => `<i class="${i <= st ? 'on' : ''}"></i>`).join('')}</div>
       <h1 class="h1">${titles[st - 1]}</h1><form class="stack" id="sf" novalidate>${body}<div id="sfErr"></div>
       <button class="btn btn-primary btn-block" id="sfGo" ${st === 1 && !d.age15 ? 'disabled' : ''}>${st === 4 ? 'Créer mon compte' : 'Continuer'}</button></form>
-      ${st === 1 ? '<button class="btn btn-link" data-go="login">J’ai déjà un compte</button>' : ''}</div>`; },
+      ${st === 1 ? '<button class="btn btn-link" data-go="login">J’ai déjà un compte</button>' : ''}${decoEnd()}</div>`; },
   mount: root => { const d = S.signup, f = root.querySelector('#sf');
     root.querySelector('[data-action=prev]').onclick = () => { if (d.step > 1) { d.step--; save(); render(); } else back(); };
     const skip = root.querySelector('[data-action=skipstep]'); if (skip) skip.onclick = () => { d.step++; save(); render(); };
@@ -728,7 +717,11 @@ def({ id: 'otp', module: 'auth', title: 'Code par e-mail (OTP)', route: '/otp?pu
       if (code === '000000') { otpErr = 'Ce code est incorrect ou a expiré. Vérifie le dernier e-mail reçu ou demande un nouveau code.'; return render(); }
       otpErr = ''; otpLeft = 30; clearInterval(otpTimer);
       if (S.otp.purpose === 'reset') return go('reset');
-      S.auth = true; save(); stack = []; go('dashboard', { replace: true });
+      S.auth = true; const dest = S.otp.purpose === 'login' && S.otp.dest || 'dashboard';
+      if (S.otp.purpose === 'login' && S.otp.role === 'membre') S.role = 'membre'; else if (S.otp.role === 'pair') S.role = 'pair';
+      save(); stack = [];
+      if (dest.includes('.html')) { location.href = dest; return; } // espace pair / admin mobile : autres maquettes
+      go('dashboard', { replace: true });
       toast(S.otp.purpose === 'signup' ? 'Bienvenue sur Xomiton, ton compte est actif.' : 'Connexion réussie.'); };
   } });
 
@@ -1366,43 +1359,9 @@ function render(scrollTop) {
   if (s.mount) s.mount(app, cur.param);
   const v = app.querySelector('.view'); if (v && !scrollTop && !['chat', 'assistant'].includes(s.id)) v.scrollTop = prevScroll;
   document.getElementById('screen').style.setProperty('--sb-color', ['profil', 'splash'].includes(s.id) ? '#fff' : '');
-  updatePanel(s); updateRail(s);
+  updatePanel(s); if (window.XmNav) XmNav.mark();
 }
 
-/* =====================================================================
-   Rail, panneau, barre supérieure
-   ===================================================================== */
-const railGroups = document.getElementById('railGroups'), railSelect = document.getElementById('railSelect');
-/* Maquettes liées (pages séparées) : entrées sans numéro, préfixées P (espace pair) et A (admin mobile). */
-const EXTERNAL = [
-  ['pair', 'Espace pair', 'espace-pair', 'P', [['accueil', 'Accueil pair'], ['alertes', 'Alertes routées vers moi'], ['alerte/a1', 'Détail d’une alerte SOS'], ['dossiers', 'Mes dossiers'], ['dossier/VBG-0042', 'Fiche dossier'], ['suivi/VBG-0042', 'Ajouter un suivi'], ['sos', 'SOS'], ['collecte?etape=1', 'Collecte : étape 1'], ['collecte?etape=5&demo=1', 'Collecte : vérification'], ['sync?net=off', 'File de synchronisation (hors ligne)'], ['sync?net=on', 'Conflit 409 à résoudre']]],
-  ['admin', 'Admin mobile', 'admin-mobile', 'A', [['tableau', 'Tableau de bord d’astreinte'], ['alertes', 'Liste des alertes'], ['alerte/2041', 'Détail d’une alerte SOS'], ['pairs', 'Validation des pairs'], ['maintenance', 'Mode maintenance'], ['notifications', 'Notifications'], ['tableau?net=off', 'Hors connexion']]]
-];
-/* État du menu (ouvert / replié, modules repliés) : mémorisé, avec repli sans erreur si le stockage est indisponible. */
-const MENU_KEY = 'xm-sim-menu-v1';
-let MENU = { open: true, collapsed: [] };
-try { Object.assign(MENU, JSON.parse(localStorage.getItem(MENU_KEY) || '{}')); if (!Array.isArray(MENU.collapsed)) MENU.collapsed = []; } catch (e) { /* stockage indisponible */ }
-const saveMenu = () => { try { localStorage.setItem(MENU_KEY, JSON.stringify(MENU)); } catch (e) { /* ignoré */ } };
-const CV = '<svg class="cv" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
-const groupHtml = (mod, label, code, count, items) => { const open = !MENU.collapsed.includes(mod);
-  return `<div class="rail-group" data-mod="${mod}" data-collapsed="${!open}"><h2><button type="button" class="mod" aria-expanded="${open}" aria-controls="grp-${mod}">${CV}<span>${label}</span> <code>${code}</code><span class="cnt">${count}</span></button></h2><div class="items" id="grp-${mod}">${items}</div></div>`; };
-railGroups.innerHTML = MODULES.map(m => { const list = SCREENS.filter(s => s.module === m[0]);
-  return groupHtml(m[0], m[1], m[0], list.length, list.map(s => { const n = SCREENS.indexOf(s) + 1; return `<a href="#/${s.id}" data-id="${s.id}" data-t="${(s.title + ' ' + s.route + ' ' + s.page).toLowerCase()}"><span class="n">${String(n).padStart(2, '0')}</span><span>${s.title}</span><span class="r">#/${s.id}</span></a>`; }).join('')); }).join('')
-  + EXTERNAL.map(x => groupHtml(x[0], x[1], x[2], x[4].length, x[4].map((it, i) => `<a class="ext" href="${x[2]}.html#/${it[0]}" data-t="${(x[1] + ' ' + it[1] + ' ' + it[0]).toLowerCase()}"><span class="n">${x[3]}${i + 1}</span><span>${it[1]}</span><span class="r">${x[2]}.html#/${it[0].split('?')[0]}</span></a>`).join(''))).join('');
-railSelect.innerHTML = MODULES.map(m => `<optgroup label="${m[1]}">${SCREENS.filter(s => s.module === m[0]).map(s => `<option value="${s.id}">${String(SCREENS.indexOf(s) + 1).padStart(2, '0')} · ${s.title}</option>`).join('')}</optgroup>`).join('')
-  + EXTERNAL.map(x => `<optgroup label="${x[1]}">${x[4].map((it, i) => `<option value="ext:${x[2]}.html#/${it[0]}">${x[3]}${i + 1} · ${it[1]}</option>`).join('')}</optgroup>`).join('');
-railSelect.onchange = () => { if (railSelect.value.startsWith('ext:')) { location.href = railSelect.value.slice(4); return; } stack = []; go(railSelect.value, { replace: true }); };
-railGroups.addEventListener('click', e => {
-  const m = e.target.closest('button.mod');
-  if (m) { const g = m.closest('.rail-group'), open = m.getAttribute('aria-expanded') !== 'true'; m.setAttribute('aria-expanded', open); g.dataset.collapsed = !open; MENU.collapsed = MENU.collapsed.filter(x => x !== g.dataset.mod); if (!open) MENU.collapsed.push(g.dataset.mod); saveMenu(); return; }
-  const a = e.target.closest('a[data-id]'); if (!a) return; e.preventDefault(); stack = []; go(a.dataset.id, { replace: true }); });
-document.getElementById('railSearch').oninput = e => { const v = e.target.value.toLowerCase().trim();
-  railGroups.querySelectorAll('a').forEach(a => a.hidden = !!v && !a.dataset.t.includes(v));
-  railGroups.querySelectorAll('.rail-group').forEach(g => { const any = [...g.querySelectorAll('a')].some(a => !a.hidden); g.hidden = !any; if (v) g.dataset.collapsed = 'false'; else g.dataset.collapsed = MENU.collapsed.includes(g.dataset.mod); }); };
-const menuBtn = document.getElementById('menuBtn');
-function applyMenu() { document.querySelector('.sim').classList.toggle('menu-closed', !MENU.open); menuBtn.setAttribute('aria-expanded', MENU.open); fit(); }
-menuBtn.onclick = () => { MENU.open = !MENU.open; saveMenu(); applyMenu(); };
-function updateRail(s) { railGroups.querySelectorAll('a[data-id]').forEach(a => a.dataset.id === s.id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')); railSelect.value = s.id; const a = railGroups.querySelector('[aria-current]'); if (a) a.scrollIntoView({ block: 'nearest' }); }
 function updatePanel(s) {
   const n = SCREENS.indexOf(s) + 1, mod = MODULES.find(m => m[0] === s.module);
   document.getElementById('panel').innerHTML = `<header><div class="state">Écran ${String(n).padStart(2, '0')} sur ${SCREENS.length} · module <code>${s.module}</code> (${mod[1]})</div><h2 style="margin-top:4px">${esc(s.title)}</h2><span class="route">${esc(s.route)}</span></header>
@@ -1438,7 +1397,7 @@ const tick = () => { document.getElementById('clock').textContent = new Date().t
 tick(); setInterval(tick, 15000);
 
 window.addEventListener('hashchange', () => { const h = parseHash(); if (h.id && byId(h.id) && (byId(h.id).id !== cur.id || h.param !== cur.param)) { stack = []; go(h.id, { param: h.param, fromHash: true, rawId: h.id }); } });
-syncTop(); applyMenu();
+syncTop();
 const h0 = parseHash();
 if (h0.id && byId(h0.id)) go(h0.id, { param: h0.param, fromHash: true, rawId: h0.id });
 else go(S.auth ? 'dashboard' : (S.seen ? 'login' : 'splash'), { replace: true }); // redirection go_router selon onboardingProvider

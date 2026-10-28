@@ -1,0 +1,86 @@
+<!-- Menu des écrans partagé (index, espace-pair, admin-mobile) : bouton ☰ FIXE en haut à gauche de la page, hors du châssis
+     téléphone, et tiroir listant les 30 écrans membre, l'espace pair (P1 à P11) et l'admin mobile (A1 à A7).
+     Les éléments sont ajoutés à <html> (pas à <body>) : les maquettes réécrivent le contenu de <body> au démarrage. -->
+<style id="xmNavCss">
+.xmnav-fab { --xmn-bg: #0433C3; --xmn-fg: #fff; position: fixed; top: 10px; left: 10px; z-index: 10000; width: 48px; height: 48px; min-width: 44px; min-height: 44px; display: grid; place-items: center; padding: 0; border: 2px solid #fff; border-radius: 14px; background: var(--xmn-bg); color: var(--xmn-fg); box-shadow: 0 2px 10px rgb(2 28 107 / .45); cursor: pointer; }
+.xmnav-fab:hover { background: #021C6B; }
+.xmnav-fab:focus-visible, .xmnav a:focus-visible, .xmnav button:focus-visible, .xmnav input:focus-visible { outline: 3px solid #F0A800; outline-offset: 2px; }
+.xmnav-fab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.xmnav { --xmn-surface: #fff; --xmn-text: #1B1630; --xmn-muted: #5B5670; --xmn-border: #E4DCE6; --xmn-bg: #F7F3F8; --xmn-accent: #0433C3; --xmn-accent-subtle: #EBEFFA; position: fixed; inset: 0; z-index: 9999; font: 15px/1.4 "Montserrat", "Segoe UI", Arial, sans-serif; }
+.xmnav[hidden] { display: none; }
+.xmnav-scrim { position: absolute; inset: 0; background: rgb(11 13 26 / .5); }
+.xmnav-panel { position: absolute; top: 0; bottom: 0; left: 0; width: min(360px, 92vw); display: flex; flex-direction: column; background: var(--xmn-surface); color: var(--xmn-text); box-shadow: 4px 0 24px rgb(0 0 0 / .25); }
+.xmnav-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px 10px 70px; min-height: 68px; border-bottom: 1px solid var(--xmn-border); }
+.xmnav-head h2 { flex: 1; margin: 0; font-size: 16px; font-weight: 700; }
+.xmnav-close { width: 44px; height: 44px; border: 1px solid var(--xmn-border); border-radius: 12px; background: var(--xmn-surface); color: var(--xmn-text); font-size: 22px; line-height: 1; cursor: pointer; }
+.xmnav-search { margin: 10px 12px 0; padding: 0 12px; min-height: 44px; border: 1px solid var(--xmn-border); border-radius: 12px; background: var(--xmn-bg); color: var(--xmn-text); font: inherit; }
+.xmnav-list { flex: 1; overflow-y: auto; padding: 6px 12px 24px; overscroll-behavior: contain; }
+.xmnav details { margin-top: 10px; }
+.xmnav summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 8px; font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 10px; }
+.xmnav summary:hover { background: var(--xmn-bg); }
+.xmnav summary .cnt { margin-left: auto; font-weight: 400; color: var(--xmn-muted); font-size: 12px; }
+.xmnav li { list-style: none; }
+.xmnav ul { margin: 0; padding: 0; }
+.xmnav a { display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 6px; min-height: 44px; padding: 6px 8px; border-radius: 10px; color: var(--xmn-text); text-decoration: none; font-size: 14px; }
+.xmnav a .n { color: var(--xmn-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.xmnav a:hover { background: var(--xmn-bg); }
+.xmnav a[aria-current="page"] { background: var(--xmn-accent-subtle); color: var(--xmn-accent); font-weight: 700; }
+.xmnav a[aria-current="page"] .n { color: var(--xmn-accent); }
+.xmnav-empty { padding: 16px 8px; color: var(--xmn-muted); font-size: 14px; }
+@media (prefers-color-scheme: dark) {
+  .xmnav { --xmn-surface: #151829; --xmn-text: #EDEAF7; --xmn-muted: #A9A5C0; --xmn-border: #2A2E48; --xmn-bg: #0B0D1A; --xmn-accent: #9DB1FF; --xmn-accent-subtle: #1B2347; }
+}
+/* Le contenu des pages laisse la place au bouton fixe (coin haut-gauche). */
+.topbar { padding-left: 72px !important; }
+</style>
+<script>
+(() => {
+  const MODS = [{"id":"auth","label":"Authentification","items":[["01","Splash et carrousel","index.html#/splash"],["02","Connexion","index.html#/login"],["03","Inscription (4 phases)","index.html#/signup"],["04","Code par e-mail (OTP)","index.html#/otp"],["05","Mot de passe oublié","index.html#/forgot"],["06","Nouveau mot de passe","index.html#/reset"]]},{"id":"home","label":"Accueil","items":[["07","Tableau de bord","index.html#/dashboard"],["08","Thématiques","index.html#/thematiques"],["09","Fiche thématique","index.html#/thematique"],["10","Ressources","index.html#/ressources"],["11","Notifications","index.html#/notifications"]]},{"id":"sos","label":"SOS & signalement","items":[["12","Signaler et suivre","index.html#/sighub"],["13","SOS","index.html#/sos"],["14","Alerte envoyée","index.html#/sos-envoye"],["15","Signalement (4 étapes)","index.html#/signalement"],["16","Contacts d’urgence","index.html#/urgences"]]},{"id":"feed","label":"Fil d’actualités","items":[["17","Fil d’actualités","index.html#/fil"],["18","Publication et commentaires","index.html#/post"],["19","Créer une publication","index.html#/postpublication"],["20","Créer un sondage","index.html#/sondage"]]},{"id":"community","label":"Communauté","items":[["21","Messages","index.html#/message"],["22","Conversation","index.html#/chat"],["23","Groupes","index.html#/groupes"],["24","Événements","index.html#/evenements"],["25","Assistant","index.html#/assistant"]]},{"id":"profile","label":"Profil","items":[["26","Mon profil","index.html#/profil"],["27","Profil progressif","index.html#/completer"],["28","Paramètres","index.html#/parametres"],["29","Sécurité et confidentialité","index.html#/securite"],["30","Newsletter","index.html#/newsletter"]]},{"id":"pair","label":"Espace pair","items":[["P1","Accueil pair","espace-pair.html#/accueil"],["P2","Alertes routées vers moi","espace-pair.html#/alertes"],["P3","Détail d’une alerte SOS","espace-pair.html#/alerte/a1"],["P4","Mes dossiers","espace-pair.html#/dossiers"],["P5","Fiche dossier","espace-pair.html#/dossier/VBG-0042"],["P6","Ajouter un suivi","espace-pair.html#/suivi/VBG-0042"],["P7","SOS","espace-pair.html#/sos"],["P8","Collecte : étape 1","espace-pair.html#/collecte?etape=1"],["P9","Collecte : vérification","espace-pair.html#/collecte?etape=5&demo=1"],["P10","File de synchronisation (hors ligne)","espace-pair.html#/sync?net=off"],["P11","Conflit 409 à résoudre","espace-pair.html#/sync?net=on"]]},{"id":"admin","label":"Admin mobile","items":[["A1","Tableau de bord d’astreinte","admin-mobile.html#/tableau"],["A2","Liste des alertes","admin-mobile.html#/alertes"],["A3","Détail d’une alerte SOS","admin-mobile.html#/alerte/2041"],["A4","Validation des pairs","admin-mobile.html#/pairs"],["A5","Mode maintenance","admin-mobile.html#/maintenance"],["A6","Notifications","admin-mobile.html#/notifications"],["A7","Hors connexion","admin-mobile.html#/tableau?net=off"]]}];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const file = () => (location.pathname.split('/').pop() || 'index.html');
+  const hashOf = h => { const i = h.indexOf('#'); return i < 0 ? '' : h.slice(i); };
+  const root = document.documentElement;
+  const css = document.getElementById('xmNavCss'); if (css) root.appendChild(css); /* hors de <body>, que les maquettes réécrivent */
+  const fab = document.createElement('button');
+  fab.type = 'button'; fab.id = 'xmNavBtn'; fab.className = 'xmnav-fab'; fab.setAttribute('aria-label', 'Menu des écrans'); fab.title = 'Menu des écrans';
+  fab.setAttribute('aria-expanded', 'false'); fab.setAttribute('aria-controls', 'xmNav');
+  fab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+  const nav = document.createElement('div');
+  nav.className = 'xmnav'; nav.id = 'xmNav'; nav.hidden = true;
+  nav.innerHTML = `<div class="xmnav-scrim" data-close></div><nav class="xmnav-panel" role="dialog" aria-modal="true" aria-label="Menu des écrans">
+    <div class="xmnav-head"><h2>Menu des écrans</h2><button type="button" class="xmnav-close" data-close aria-label="Fermer le menu">×</button></div>
+    <label class="vh" for="xmNavQ" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Filtrer les écrans</label>
+    <input class="xmnav-search" id="xmNavQ" type="search" placeholder="Filtrer les écrans…" autocomplete="off">
+    <div class="xmnav-list" id="xmNavList">${MODS.map(m => `<details open data-mod="${m.id}"><summary>${esc(m.label)}<span class="cnt">${m.items.length}</span></summary><ul>${m.items.map(i => `<li><a href="${esc(i[2])}" data-t="${esc((i[0] + ' ' + i[1] + ' ' + m.label).toLowerCase())}"><span class="n">${esc(i[0])}</span><span>${esc(i[1])}</span></a></li>`).join('')}</ul></details>`).join('')}<p class="xmnav-empty" hidden>Aucun écran ne correspond.</p></div></nav>`;
+  const list = nav.querySelector('#xmNavList'), q = nav.querySelector('#xmNavQ');
+  const open = () => { nav.hidden = false; fab.setAttribute('aria-expanded', 'true'); mark(); q.focus(); };
+  const close = (back = true) => { nav.hidden = true; fab.setAttribute('aria-expanded', 'false'); if (back) fab.focus(); };
+  fab.addEventListener('click', () => (nav.hidden ? open() : close()));
+  nav.addEventListener('click', e => { if (e.target.closest('[data-close]')) close(); else if (e.target.closest('a')) close(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !nav.hidden) { e.stopPropagation(); close(); } }, true);
+  q.addEventListener('input', () => {
+    const v = q.value.toLowerCase().trim(); let any = false;
+    list.querySelectorAll('a').forEach(a => { a.parentElement.hidden = !!v && !a.dataset.t.includes(v); });
+    list.querySelectorAll('details').forEach(d => { const n = [...d.querySelectorAll('li')].some(li => !li.hidden); d.hidden = !n; any = any || n; if (v && n) d.open = true; });
+    list.querySelector('.xmnav-empty').hidden = any;
+  });
+  /* Écran courant : même fichier et même ancre (la requête ?net=… ne compte que si l'entrée la porte). */
+  function mark() {
+    const f = file(), h = hashOf(location.href); const path = h.split('?')[0];
+    let best = null;
+    list.querySelectorAll('a').forEach(a => {
+      a.removeAttribute('aria-current');
+      const u = a.getAttribute('href'), uf = u.split('#')[0] || 'index.html', uh = hashOf(u);
+      if (uf !== f) return;
+      if (uh === h) best = a; else if (!best && uh.split('?')[0] === path && !uh.includes('?')) best = a; else if (!best && uh.split('?')[0] === path) best = a;
+    });
+    if (best) best.setAttribute('aria-current', 'page');
+  }
+  addEventListener('hashchange', mark);
+  const mount = () => { root.appendChild(fab); root.appendChild(nav); mark(); };
+  mount();
+  /* Les maquettes réécrivent <body> ; <html> reste intact. Sécurité : remonte les éléments si on les a perdus. */
+  addEventListener('DOMContentLoaded', () => { if (!fab.isConnected) mount(); });
+  window.XmNav = { open, close, mark };
+})();
+</script>

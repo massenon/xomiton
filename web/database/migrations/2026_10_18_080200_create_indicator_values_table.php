@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamp('computed_at');
             $table->timestamps();
 
-            $table->unique(['indicator_id', 'period_start', 'period_end', 'zone_id']);
+            $table->unique(['indicator_id', 'period_start', 'period_end', 'zone_id'], 'indicator_values_period_zone_unique');
         });
     }
 

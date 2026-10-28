@@ -104,6 +104,20 @@ class XmColors extends ThemeExtension<XmColors> {
 }
 
 /// Espacement, formes et tailles (jetons `space`, `radius`, `target-min`).
+/// Palette décorative « arc-en-ciel » (charte §3.5 : illustrations seulement, jamais d'information
+/// fonctionnelle, absente des écrans SOS, signalement, cas et tableau de bord). Le design system n'en
+/// définit pas : six couleurs standard atténuées, utilisées à opacité modérée.
+abstract final class XmRainbow {
+  static const List<Color> stripes = [
+    Color(0xFFEE8E8E),
+    Color(0xFFF5B27A),
+    Color(0xFFF3DA82),
+    Color(0xFF8FCB9F),
+    Color(0xFF86B5E0),
+    Color(0xFFB39BDD),
+  ];
+}
+
 abstract final class XmSpace {
   static const double s1 = 4;
   static const double s2 = 8;

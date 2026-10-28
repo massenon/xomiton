@@ -121,6 +121,14 @@ void main() {
       await pumpApp(tester, TestEnv(api: FakeApi()));
       expect(tr(S.t('auth_login_heading')), findsOneWidget);
     });
+
+    testWidgets('connexion et inscription affichent le ruban arc-en-ciel décoratif', (tester) async {
+      await pumpApp(tester, TestEnv(api: FakeApi()));
+      expect(find.byKey(const ValueKey('xm-rainbow-ribbon')), findsOneWidget);
+      await tester.tap(tr(S.t('auth_login_create_account')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('xm-rainbow-ribbon')), findsOneWidget);
+    });
   });
 
   group('connexion', () {
@@ -274,6 +282,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(tr(S.t('auth_register_step_of', {'current': 1, 'total': 4})), findsOneWidget);
       expect(tr(S.t('auth_register_skip')), findsNothing);
+      // Le pseudonyme ne porte plus de mention « visible par la communauté » (retour client) : seule la règle de format reste.
+      expect(find.textContaining('Visible par la communauté'), findsNothing);
+      expect(find.textContaining('vrai nom'), findsNothing);
+      expect(find.textContaining('les autres verront'), findsNothing);
+      expect(tr(S.t('auth_register_account_pseudo_hint')), findsOneWidget);
       for (final k in ['consent-cgu', 'consent-privacy', 'consent-age']) {
         expect(tester.widget<CheckboxListTile>(find.byKey(ValueKey(k))).value, isFalse);
       }

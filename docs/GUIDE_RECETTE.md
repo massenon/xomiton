@@ -110,7 +110,7 @@ Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en p
 |---|---|---|---|---|
 | Super-administrateur·rice | `admin@xomiton.bj` | `admin` | `Admin123!` | `/admin` complet, espace membre |
 | Administrateur·rice | `moderation@xomiton.bj` | `moderatrice` | `Admin123!` | `/admin` (sans les droits réservés au super-admin) |
-| Modérateur·rice | `moderateur@xomiton.bj` | `modo_rose` | `Modo123!` | modération, utilisateurs (suspension), espace membre |
+| Modérateur·rice | `moderateur@xomiton.bj` | `modo_rose` | `Modo123!` | arrive sur `/admin` : modération, utilisateurs (suspension) ; l'espace membre reste accessible ; `/espace-pair` refusé (403) |
 | Membre | `membre@xomiton.bj` | `awa_s` | `Membre123!` | espace membre ; `/admin`, `/espace-pair`, `/collecte` refusés (403) |
 | Membre (second compte) | `membre2@xomiton.bj` | `fatou_k` | `Membre123!` | pour les tests à deux : messages, groupes, événements |
 | Pair éducateur·rice | `pair@xomiton.bj` | `pair_chantal` | `Pair123!` | espace membre, `/espace-pair`, `/collecte` ; `/admin` refusé |
@@ -118,14 +118,22 @@ Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en p
 
 Les permissions détaillées de chaque rôle sont dans [ROLE_ET_PERMISSIONS.md](ROLE_ET_PERMISSIONS.md) §3.
 
-**Code de vérification (OTP) en mode journal.** Une connexion depuis un appareil ou un navigateur inconnu exige un code à 6 chiffres, et les comptes admin et super-admin en exigent un à **chaque** connexion. Aucun e-mail ne part : lisez le code dans le journal.
+**Page d'arrivée après la connexion.** Super-admin, administrateur·rice et modérateur·rice : `/admin`. Membre, second membre, pair éducateur·rice et pair en attente : `/fil` (le pair ouvre ensuite `/espace-pair` depuis le menu ; le pair en attente voit un bandeau « en attente » et `/espace-pair` lui est refusé tant qu'il n'est pas validé). Ces parcours sont vérifiés par `tests/Feature/Auth/Web/DemoAccountsLoginTest.php` et ont été rejoués par de vraies requêtes HTTP (cookies, jeton CSRF, redirections) sur MariaDB 10.11, avec `localhost` et `127.0.0.1`.
+
+**Code de vérification (OTP) en mode journal.** Une connexion depuis un appareil ou un navigateur inconnu exige un code à 6 chiffres (donc **la toute première connexion de chaque compte, membre compris**), et les comptes admin et super-admin en exigent un à **chaque** connexion. Aucun e-mail ne part : l'écran vous envoie sur `/code-de-verification` et le code se lit dans le journal `web/storage/logs/laravel.log`. Le sujet de l'e-mail ne contient volontairement jamais le code (« Ton code de vérification Xomiton ») : ne cherchez pas le code dans le sujet. Chaque émission écrit une ligne dédiée `[otp:log]` (environnement `local` seulement) :
 
 ```bash
-grep -a "Subject: Ton code Xomiton" web/storage/logs/laravel.log | tail -1
-# Subject: Ton code Xomiton : 386776
+grep -a "\[otp:log\]" web/storage/logs/laravel.log | tail -1
+# [otp:log] Code 386776 pour admin@xomiton.bj (login), valable 10 min.
 ```
 
-Saisissez-le sur `/code-de-verification` (le dernier chiffre valide tout seul). Il est valable 10 minutes. Astuce : une fenêtre de navigation privée par rôle. Limites volontaires : 5 connexions par minute et par adresse IP, 5 codes par heure et par adresse. Après une série d'essais, pour repartir de zéro : `php artisan tinker --execute='App\Models\OtpCode::query()->delete();'` puis `php artisan cache:clear`.
+Sous Windows (PowerShell) : `Select-String "\[otp:log\]" web\storage\logs\laravel.log | Select-Object -Last 1`. Le code figure aussi dans le corps HTML de l'e-mail consigné (bloc en gros chiffres espacés).
+
+Saisissez-le sur `/code-de-verification` (le dernier chiffre valide tout seul). Il est valable 10 minutes. Astuce : une fenêtre de navigation privée par rôle. Limites volontaires : 5 connexions par minute et par adresse IP, 5 codes par heure et par adresse, 5 essais par code. Après une série d'essais, pour repartir de zéro : `php artisan tinker --execute='App\Models\OtpCode::query()->delete();'` puis `php artisan cache:clear`.
+
+**Avec MySQL ou MariaDB au lieu de SQLite** (par exemple XAMPP, Laragon, WAMP). Créez une base vide en `utf8mb4_unicode_ci`, puis dans `web/.env` : `DB_CONNECTION=mysql`, `DB_HOST=127.0.0.1`, `DB_PORT=3306`, `DB_DATABASE=xomiton`, `DB_USERNAME=…`, `DB_PASSWORD=…`. Gardez `APP_URL=http://localhost:8000` et ouvrez exactement cette adresse. Relancez `php artisan config:clear`, puis `php artisan migrate:fresh --seed` : **la commande doit finir sans ligne rouge et le dernier seeder (`DemoNewsSeeder`) doit s'afficher `DONE`**. Vérification : `php artisan tinker --execute='echo App\Models\User::count();'` affiche `7`. Si `migrate:fresh` s'arrête sur « Identifier name … is too long », la base est restée à moitié vide : aucun compte n'existe et aucune connexion ne peut réussir (corrigé dans `2026_10_18_080200_create_indicator_values_table.php`).
+
+**Si la page `/connexion` affiche une erreur 500 « Vite manifest not found »** : le site n'est pas compilé. Lancez `npm ci` puis `npm run build` dans `web/` (le dossier `web/public/build` n'est pas versionné).
 
 ## 6. Données de démonstration
 
@@ -137,7 +145,7 @@ Tout est dans **`web/storage/logs/laravel.log`** (`tail -f` pour suivre en direc
 
 | Quoi | Comment le retrouver |
 |---|---|
-| Code OTP | `grep -a "Subject: Ton code Xomiton" web/storage/logs/laravel.log \| tail -1` |
+| Code OTP | `grep -a "\[otp:log\]" web/storage/logs/laravel.log \| tail -1` (§5) |
 | E-mails | lignes `To: …` et `Subject: …`. Les sujets accentués sont encodés (`=?utf-8?Q?…`) ; les liens longs sont coupés par `=` en fin de ligne : recollez-les |
 | SMS de secours du SOS | `grep -a "sms:log" …` : `[sms:log] SMS consigné (aucun envoi)` (numéro masqué) |
 | Notifications push | `grep -a "webpush:log\|fcm:log" …` : `Notification push consignée (aucun envoi)` |

@@ -101,7 +101,7 @@ return [
         'account' => [
             'heading' => 'Qui es-tu ?',
             'pseudo' => 'Pseudonyme',
-            'pseudo_hint' => 'C’est ce que les autres verront. 3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.',
+            'pseudo_hint' => '3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.',
             'email' => 'Adresse e-mail',
             'email_hint' => 'Pour confirmer ton compte et te renvoyer un code. Jamais partagée.',
             'password' => 'Mot de passe',

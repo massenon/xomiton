@@ -12,6 +12,7 @@ use App\Enums\OtpPurpose;
 use App\Models\OtpCode;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -65,6 +66,12 @@ class OtpService
             'expires_at' => now()->addMinutes(self::ttlMinutes()),
             'ip' => $ip === null ? null : Str::limit($ip, 45, ''),
         ]);
+
+        // Recette locale seulement : e-mails écrits dans le journal, objet sans code (discrétion). Une ligne dédiée
+        // et facile à retrouver évite de chercher le code dans le HTML de l'e-mail. Jamais en staging ni en production.
+        if (app()->environment('local') && in_array(config('mail.default'), ['log', 'array'], true)) {
+            Log::info('[otp:log] Code '.$code.' pour '.$email.' ('.$purpose->value.'), valable '.self::ttlMinutes().' min.');
+        }
 
         return new IssuedOtp($record, $code);
     }
