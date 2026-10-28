@@ -49,6 +49,7 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 | Qualité | [ACCESSIBILITE.md](ACCESSIBILITE.md) | WCAG 2.2 AA, ARIA, clavier, focus, contraste |
 | Qualité | [PERFORMANCE.md](PERFORMANCE.md) | Images, CSS, JS, chargement différé, polices, budgets |
 | Qualité | [GUIDE_RECETTE.md](GUIDE_RECETTE.md) | **Guide de recette** : lancer le web et le mobile en local, comptes de démonstration, parcours à cocher, gabarit de bug |
+| Décisions | [FEUILLE_DE_DECISION.md](FEUILLE_DE_DECISION.md) | **Feuille de décision** : les questions qui bloquent la recette, avec une recommandation et une case à cocher |
 
 ## Sources de vérité (par ordre de priorité)
 
