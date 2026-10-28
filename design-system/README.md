@@ -1,17 +1,18 @@
 # Design system Xomiton — dossier de construction
 
-Version 1.0 · 8 octobre 2026. Charte graphique et design system de Xomiton, à construire avec **Bootstrap 5 (thème Social) + Laravel + Livewire + Alpine**.
+Version 1.1 · 28 octobre 2026 (1.0 : 8 octobre 2026). Charte graphique et design system de Xomiton, à construire avec **Bootstrap 5 (thème Social) + Laravel + Livewire + Alpine**.
 
 ## Ouvrir en premier
-1. **`Charte-graphique-Xomiton-v1.0.pdf`** : la charte graphique, 125 pages A4 paysage, qui suit le sommaire de `INSTRUCTION-CHARTE-GRAPHIQUE.txt` (14 chapitres : les 11 du sommaire, plus 12 Supports de communication et 13 Data visualisation ajoutés à la demande, puis Contact). PDF balisé (accessible), en français, avec 119 signets.
-2. **`preview/index.html`** : aperçu vivant des composants (palette, typographie, boutons, cartes, formulaire, SOS, modale, thème sombre).
-3. `DECISIONS.md` : D2, D4 (révisée par D4-bis), D5, D6, D7, D8, D9 actées, avec conséquences (dont hébergement cPanel et sécurité).
+1. **`Charte-graphique-Xomiton-v1.1.pdf`** (copie identique au nom historique `Charte-graphique-Xomiton-v1.0.pdf`, conservé pour les liens existants) : la charte graphique, 129 pages A4 paysage, qui suit le sommaire de `INSTRUCTION-CHARTE-GRAPHIQUE.txt` (14 chapitres : les 11 du sommaire, plus 12 Supports de communication et 13 Data visualisation ajoutés à la demande, puis Contact). PDF balisé (accessible), en français, avec 123 signets. La v1.1 ajoute quatre pages au chapitre 7 (photographies fournies, écrans d'ouverture, ton et interdits, mode discret).
+2. **`preview/index.html`** : aperçu vivant des composants (palette, typographie, boutons, cartes, formulaire, SOS, modale, thème sombre, photographies et écrans d'ouverture).
+3. `DECISIONS.md` (dont « Images fournies par le client » du 28 octobre 2026) : D2, D4 (révisée par D4-bis), D5, D6, D7, D8, D9 actées, avec conséquences (dont hébergement cPanel et sécurité).
 
 ## Contenu
 | Chemin | Rôle |
 |---|---|
-| `Charte-graphique-Xomiton-v1.0.pdf` | Charte graphique complète (A4 paysage, 125 pages) |
-| `charte-pdf/` | Sources du PDF : `build.py` (assemblage et rendu), `structure.py` (sommaire), `kit.py` (mise en page), `front.py`, `ch01_03.py` à `ch10_12.py` (contenu par chapitre). Régénérer : `python build.py` |
+| `Charte-graphique-Xomiton-v1.1.pdf` (et `-v1.0.pdf`, même fichier) | Charte graphique complète (A4 paysage, 129 pages) |
+| `assets/` | Visuels fournis par le client (licence confirmée le 28 octobre 2026) : `illustrations/` (4), `splash/` (4 alternatives portrait) et `splash/references-a-eviter/` (2, jamais à publier) ; WebP sans EXIF, 352 Ko au total ; texte alternatif et usage dans `MANIFEST.json`. Règles : charte §7.1 et `DECISIONS.md` |
+| `charte-pdf/` | Sources du PDF : `build.py` (assemblage et rendu), `structure.py` (sommaire), `kit.py` (mise en page), `front.py`, `ch01_03.py` à `ch10_12.py` (contenu par chapitre). Régénérer : `python build.py` (dépendances : `pip install playwright pymupdf pillow` ; Chromium via `XM_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome`) ; produit le v1.1 et recopie le v1.0 ; `ch07b.py` = pages ajoutées en v1.1 ; `_img/` (JPEG de travail) n'est pas versionné |
 | `logo/` | Logos vectoriels (14 SVG) et PNG haute définition (28 fichiers, jusqu'à 6000 px) ; `build_logo.py` (vectorisation), `render_png.py` (rendu) |
 | `blade/` | **Composants Blade `x-*` implémentés** (19 : button, field, error-summary, card, img, urgency, status, alert, modal, breadcrumb+JSON-LD, accordion, tabs, stat, sos-button, toast, empty-state, stepper, avatar, logo), `js/xomiton-ui.js` (Alpine : SOS), `styleguide.blade.php` (catalogue vivant selon le sommaire de la charte), `render-test.php` (rendu avec le vrai Blade de `xomiton/vendor` ; `cd xomiton && php ../design-system/blade/render-test.php`) |
 | `tokens/components.css` | Styles des composants absents du thème Social (stepper, avatar, statut violet, modale, `x-cloak`) |
@@ -26,7 +27,7 @@ Version 1.0 · 8 octobre 2026. Charte graphique et design system de Xomiton, à 
 
 ## Réserves à connaître
 - **Le dessin vectoriel du logo est une reconstitution** à partir du seul fichier disponible (`images/logo.png`, 240 × 66 px). Il est fidèle à la silhouette mais n'est pas le fichier source du ou de la graphiste : à faire valider ou à remplacer avant une impression grand format. Le `night-logo.png` d'origine était identique au logo clair ; la variante sombre est donc nouvelle.
-- Les **photographies et illustrations** montrées dans la charte sont des images de travail du projet : leurs **droits d'usage ne sont pas confirmés**.
+- Les **photographies et illustrations** montrées dans la charte sont des images de travail du projet : leurs **droits d'usage ne sont pas confirmés**, **sauf les dix visuels de `assets/`** (licence d'usage commercial confirmée par le client le 28 octobre 2026, preuve à archiver hors dépôt).
 - Les **chiffres des infographies sont fictifs** (signalés comme tels sur chaque page).
 - Les **valeurs CMJN** sont des conversions mathématiques ; Pantone et CMJN d'impression sont à valider sur épreuve.
 - Les pages « Photographie : culture et lieux » et « Schémas pédagogiques » sont des **emplacements à produire** (aucune photographie de lieux béninois ni schéma validé n'existe aujourd'hui).

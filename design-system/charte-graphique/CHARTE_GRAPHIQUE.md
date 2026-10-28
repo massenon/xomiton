@@ -1,6 +1,6 @@
-# Charte graphique Xomiton — v1.0
+# Charte graphique Xomiton — v1.1
 
-Version 1.0 · 8 octobre 2026 · Référentiel de l'identité visuelle de Xomiton, *espace safe d'apprentissage et d'appui holistique* pour filles, femmes et personnes LBTQ+.
+Version 1.1 · 28 octobre 2026 (1.0 : 8 octobre 2026 ; 1.1 : ajout du §7.1 Photographie et illustrations, écrans d'ouverture) · Référentiel de l'identité visuelle de Xomiton, *espace safe d'apprentissage et d'appui holistique* pour filles, femmes et personnes LBTQ+.
 Modèle de structure : la charte *Human First* (règle prioritaire, valeurs chiffrées opposables, interdits, gouvernance). Voir `../research/ANALYSE_CHARTES_EXEMPLES.md`.
 
 ## Préambule
@@ -113,6 +113,22 @@ Breakpoints : Mobile < 768, Tablet 768-991, Laptop 992-1199, Desktop ≥ 1200 (`
 - **Illustrations** (`images/hero-*.jpg`, `group-chat.svg`) : style plat, personnages divers (couleurs de peau, morphologies, expressions), drapeaux et rubans arc-en-ciel, fonds rose pâle ; à fournir en SVG/AVIF/WebP, avec `alt` descriptif.
 - **Photographie** : seulement avec consentement écrit et libre de droits ; **jamais** de photographie identifiable de personnes ayant subi des violences ni de mise en scène de violence ; cadrage chaleureux, lumière naturelle ; voile garantissant 4,5:1 sous tout texte.
 - **Cartes et données** : voir `xomiton_implementation/06 §10` (palette catégorielle daltonien-safe, étiquettes directes, cellules < 5 masquées).
+
+### 7.1 Photographie et illustrations, écrans d'ouverture
+Visuels fournis par le client et rangés dans `assets/` (voir `assets/MANIFEST.json`) : 4 illustrations (`assets/illustrations/`), 4 photographies de splash portrait (`assets/splash/`) et 2 références à ne pas publier (`assets/splash/references-a-eviter/`). **Droits d'image : licence d'usage commercial confirmée par le client le 2026-10-28, preuve archivée hors dépôt.**
+
+| Règle | Valeur |
+|---|---|
+| **Cadrage** | Portrait **9:16** pour le splash, regard dans le tiers supérieur et texte dans le tiers inférieur ; paysage 3:2 ou 16:9 pour bandeaux et cartes, sujet gardé d'un côté pour laisser une zone calme. Ne jamais couper un visage ni une main. Largeur minimale 675 px (écran), 2400 px à produire pour l'impression. |
+| **Traitement** | Couleurs naturelles chaudes, retouche limitée à ±10 % (exposition, contraste), pas de filtre ni de recoloration, pas de lissage de peau. WebP qualité 78-82, sans EXIF, 100 Ko au plus par image (splash : 900 px de large au plus). |
+| **Dégradé de lisibilité** | Sous tout texte sur photographie : dégradé encre (`rgb(8 10 30)`) de 88 % en bas, **au moins 62 % d'opacité jusqu'à 45 % de la hauteur** (sous tout le texte), puis 0 % à 72 % : même sur une photographie blanche, le texte blanc garde plus de **4,5:1** (5,6:1 calculé) ; le logo et « Passer » se posent sur une pastille ou une zone calme. |
+| **Ton** | Joie calme, solidarité, dignité, regard vers l'avant ; personnes actrices, jamais en position de victime. Un seul visuel dominant par écran. |
+| **À éviter** | Texte incrusté (surtout en anglais : non traduisible, non lu par les lecteurs d'écran) ; nudité ; bâillons, scotch, mains sur la bouche, mise en scène de violence ou de détresse ; arc-en-ciel décoratif sur les écrans de signalement, de SOS et de dossier ; logos ou pastilles de plateformes de banque d'images ; image générée par IA présentée comme une vraie personne. |
+| **Accessibilité** | `alt` obligatoire et descriptif (sujet, geste, lieu), `alt=""` seulement si l'image est purement décorative ; contraste du texte par-dessus mesuré, pas estimé ; aucun défilement automatique ; `prefers-reduced-motion` respecté ; aucune information portée par l'image seule. |
+| **Mode discret** | L'écran d'ouverture devient neutre : logo sur fond uni, sans photographie ni drapeau. Le mode discret se propose dès la première ouverture ; il remplace aussi les visuels des notifications et de l'aperçu de partage. |
+| **Consentement** | Aucune photographie de personne identifiable pour un contenu sensible (violence, santé, signalement, SOS) sans consentement écrit, libre et retirable ; ces visuels illustrent l'esprit de la communauté, jamais une membre ou une victime réelle. |
+
+Statut des visuels : `splash-paillettes-drapeau`, `splash-couple-etreinte-drapeau`, `splash-regard-lumiere-chaude`, `splash-lumiere-doree-drapeau` sont des **alternatives** au carrousel actuel (quatre diapositives, 247 Ko ; plafond 700 Ko) ; `design-system-3` et `splash-3` sont signalées « Ai » (générées par IA) ; `splash-4` (texte incrusté et nudité) et `splash-5` (bouches scotchées) sont écartées de l'onboarding. Les pastilles de la plateforme source ont été retirées par recadrage du bas, sans retouche.
 
 ## 8. Mouvement et son
 Durées : 120 ms (retours), 200 ms (transitions), 300 ms (panneaux). `prefers-reduced-motion` : toute animation supprimée. Aucun clignotement. Le son n'existe que pour l'**alerte sonore par cloche** (SOS et cas critiques destinés aux agent·e·s concerné·e·s), jamais en lecture automatique pour le public, toujours doublé d'un signal visuel et d'une vibration.

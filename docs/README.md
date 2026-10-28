@@ -55,7 +55,7 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 ## Sources de vérité (par ordre de priorité)
 
 1. Décisions du client : `design-system/DECISIONS.md` (D2, D4 révisée par D4-bis, D5 à D9).
-2. Design system : `design-system/xomiton/MASTER.md` puis `design-system/xomiton/pages/*.md` (les pages priment sur MASTER), jetons `design-system/tokens/`.
+2. Design system : `design-system/xomiton/MASTER.md` puis `design-system/xomiton/pages/*.md` (les pages priment sur MASTER), jetons `design-system/tokens/`. Charte graphique : `design-system/Charte-graphique-Xomiton-v1.1.pdf` (v1.1 du 28 octobre 2026 ; `Charte-graphique-Xomiton-v1.0.pdf` en est la copie au nom historique) et sa version texte `design-system/charte-graphique/CHARTE_GRAPHIQUE.md` ; visuels fournis par le client : `design-system/assets/` (règles : §7.1).
 3. Prototype de référence visuelle et fonctionnelle : `prototype_social/` (web) et `prototype_mobile/` (mobile).
 4. Ces documents `docs/`.
 

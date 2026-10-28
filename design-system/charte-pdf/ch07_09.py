@@ -81,6 +81,8 @@ def build(doc):
         + good(f'<div style="width:100%;height:100%;overflow:hidden">{ph(PHOTOS[1], extra="filter:blur(7px);transform:scale(1.08)")}</div>', 'Visage flouté (consentement absent)', 88, 120, '#fff', 'width:100%;height:100%')
         + '</div>' + NOTE_PH, visclass='tint')
 
+    from ch07b import build7b; build7b(doc)
+
     # =============================== CHAPITRE 8 : ILLUSTRATIONS ===============================
     doc.divider(ch_of(8)); C = 8
     doc.section(C, 'concept', 'Concept', 'Concept',

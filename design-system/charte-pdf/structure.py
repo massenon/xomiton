@@ -62,6 +62,10 @@ CHAPTERS = [
         ('digital', 'Usage numérique', 'Digital application'),
         ('adding', 'Ajouter des éléments', 'Adding elements'),
         ('post', 'Post-traitement', 'Post-processing'),
+        ('provided', 'Photographies fournies et droits', 'Supplied photographs and rights'),
+        ('opening', 'Écrans d\'ouverture : cadrage et lisibilité', 'Opening screens'),
+        ('tone', 'Ton, interdits et accessibilité', 'Tone, prohibitions and accessibility'),
+        ('discreet', 'Mode discret et poids des visuels', 'Discreet mode and weight'),
     ]),
     (8, 'Illustrations', 'Illustrations', 'green', [
         ('concept', 'Concept', 'Concept'),

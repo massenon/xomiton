@@ -1,0 +1,66 @@
+{
+  "licence": "Licence d'usage commercial confirmée par le client le 2026-10-28 ; preuve à archiver hors dépôt. Originaux non modifiés dans images/.",
+  "traitement": "Copies WebP sans EXIF, pastilles de la plateforme source (couronne, Ai) rognées par recadrage du bas ; aucune retouche de couleur.",
+  "fichiers": [
+    {
+      "fichier": "illustrations/illustration-selfie-sourire-drapeau.webp",
+      "alt": "Jeune femme souriante en salopette en jean tenant un petit drapeau arc-en-ciel, en extérieur",
+      "format": "paysage 920x551",
+      "usage": "Illustrations, bandeaux, cartes de thématique"
+    },
+    {
+      "fichier": "illustrations/illustration-drapeau-ciel-urbain.webp",
+      "alt": "Personne aux bras ouverts devant un grand drapeau arc-en-ciel, immeubles en arrière-plan",
+      "format": "paysage 919x615",
+      "usage": "Héros, bandeaux (sujet à gauche)"
+    },
+    {
+      "fichier": "illustrations/illustration-profil-fond-rose.webp",
+      "alt": "Jeune femme de profil, souriante, les yeux fermés, un drapeau arc-en-ciel sur l'épaule, fond rose",
+      "format": "paysage 919x541 · image générée par IA (pastille Ai du site source)",
+      "usage": "Bandeaux, cartes ; ne pas présenter comme une vraie membre"
+    },
+    {
+      "fichier": "illustrations/illustration-couple-drapeau-fond-terracotta.webp",
+      "alt": "Deux femmes enlacées, enveloppées dans un drapeau arc-en-ciel, fond de tissu terracotta",
+      "format": "portrait 695x915",
+      "usage": "Illustration d'article, carte portrait"
+    },
+    {
+      "fichier": "splash/splash-paillettes-drapeau.webp",
+      "alt": "Jeune femme aux tresses et aux paillettes sur le visage, regard au loin, drapeau arc-en-ciel flou derrière elle",
+      "format": "portrait 900x1600",
+      "usage": "Splash : diapositive communauté (alternative)"
+    },
+    {
+      "fichier": "splash/splash-couple-etreinte-drapeau.webp",
+      "alt": "Deux femmes enlacées devant un drapeau arc-en-ciel, front contre front",
+      "format": "portrait 705x995",
+      "usage": "Splash : diapositive écoute et soutien (alternative)"
+    },
+    {
+      "fichier": "splash/splash-regard-lumiere-chaude.webp",
+      "alt": "Jeune femme au regard levé vers la lumière, foule et drapeaux arc-en-ciel flous derrière elle",
+      "format": "portrait 692x970 · image générée par IA (pastille Ai du site source)",
+      "usage": "Splash : diapositive ressources (alternative)"
+    },
+    {
+      "fichier": "splash/splash-lumiere-doree-drapeau.webp",
+      "alt": "Jeune femme aux cheveux bouclés éclairés par le soleil couchant, drapeau arc-en-ciel au second plan",
+      "format": "portrait 675x1204",
+      "usage": "Splash : diapositive communauté ou espoir (alternative)"
+    },
+    {
+      "fichier": "splash/references-a-eviter/reference-texte-incruste-a-eviter.webp",
+      "alt": "Épaule et main d'une femme couvertes de bandelettes de texte anglais (slogans féministes), symbole de Vénus peint sur la joue",
+      "format": "portrait 480x739 (réduite)",
+      "usage": "AUCUN : référence de ce qu'il ne faut pas faire (texte incrusté, anglais, nudité)"
+    },
+    {
+      "fichier": "splash/references-a-eviter/reference-bouche-scotchee-campagne-seulement.webp",
+      "alt": "Deux femmes enlacées devant un drapeau arc-en-ciel, la bouche couverte d'un ruban adhésif gris",
+      "format": "portrait 480x661 (réduite)",
+      "usage": "AUCUN en ouverture : image de campagne de sensibilisation sur le silence imposé, jamais en splash ni onboarding"
+    }
+  ]
+}

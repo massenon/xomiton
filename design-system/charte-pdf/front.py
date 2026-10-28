@@ -16,7 +16,7 @@ def cover(doc):
     doc.cur_ch = None
     html = ('<div class="page white" style="background:#fff">' + arcs_svg() +
             '<div class="abs" style="left:12mm;top:11mm">%s</div>' % logo('couleur', 12) +
-            '<div class="abs mt" style="right:12mm;top:12mm;font-size:7.5pt;font-weight:700;text-align:right;line-height:1.5">Version 1.0<br>Octobre 2026</div>'
+            '<div class="abs mt" style="right:12mm;top:12mm;font-size:7.5pt;font-weight:700;text-align:right;line-height:1.5">Version 1.1<br>Octobre 2026</div>'
             '<div class="abs" style="left:12mm;top:122mm;width:150mm"><h1 style="font:800 40pt/0.98 Montserrat;letter-spacing:-.02em;text-transform:uppercase">Charte<br>graphique</h1>'
             '<div class="mt" style="margin-top:5mm;font:600 11pt/1.35 Montserrat;max-width:110mm">Xomiton : votre espace safe d\'apprentissage et d\'appui holistique</div>'
             '<div style="margin-top:3mm;font-size:8pt;color:#5B5670;max-width:115mm;line-height:1.45">Référentiel de l\'identité visuelle, du design system et des règles d\'usage, pour toute personne qui produit un support au nom de Xomiton.</div></div>'

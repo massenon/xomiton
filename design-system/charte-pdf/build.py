@@ -9,11 +9,25 @@ import front
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT_HTML = os.path.join(HERE, 'charte-graphique-xomiton.html')
-OUT_PDF = os.path.join(os.path.dirname(HERE), 'Charte-graphique-Xomiton-v1.0.pdf')
+OUT_PDF = os.path.join(os.path.dirname(HERE), 'Charte-graphique-Xomiton-v%s.pdf' % VERSION)
+OUT_PDF_STABLE = os.path.join(os.path.dirname(HERE), 'Charte-graphique-Xomiton-v1.0.pdf')  # nom attendu par les liens existants : même contenu
 
 MODULES = ['ch01_03', 'ch04_06', 'ch07_09', 'ch10_12', 'ch12_14']
 
+def prep_images():
+    """JPEG de travail (_img/, non versionné) : Chromium intègre les JPEG tels quels, ce qui garde le PDF léger."""
+    from PIL import Image
+    import glob
+    out = os.path.join(HERE, '_img')
+    os.makedirs(out, exist_ok=True)
+    for f in glob.glob(os.path.join(os.path.dirname(HERE), 'assets', '**', '*.webp'), recursive=True):
+        Image.open(f).convert('RGB').save(os.path.join(out, os.path.splitext(os.path.basename(f))[0] + '.jpg'), 'JPEG', quality=88)
+    o = os.path.join(os.path.dirname(os.path.dirname(HERE)), 'images', 'design-system-4.png')
+    if os.path.exists(o):  # contre-exemple : pastille de la banque d'images dans l'original (recadrage du coin)
+        Image.open(o).convert('RGB').crop((0, 700, 300, 977)).save(os.path.join(out, 'pastille-banque-images.jpg'), 'JPEG', quality=88)
+
 def main():
+    prep_images()
     doc = Doc()
     front.cover(doc)
     front.statement(doc)
@@ -62,11 +76,12 @@ def main():
             if k in doc.sec_pages:
                 toc.append([2, s[1], doc.sec_pages[k]])
     d.set_toc(toc)
-    d.set_metadata({'title': 'Charte graphique Xomiton v1.0', 'author': 'Xomiton', 'subject': 'Identité visuelle et design system', 'keywords': 'Xomiton, charte graphique, design system'})
+    d.set_metadata({'title': 'Charte graphique Xomiton v%s' % VERSION, 'author': 'Xomiton', 'subject': 'Identité visuelle et design system', 'keywords': 'Xomiton, charte graphique, design system'})
     tmp = OUT_PDF + '.tmp'
     d.save(tmp, garbage=3, deflate=True); d.close()
     os.replace(tmp, OUT_PDF)
     d = pymupdf.open(OUT_PDF)
+    import shutil; shutil.copyfile(OUT_PDF, OUT_PDF_STABLE)
     print('PDF:', OUT_PDF, '| pages', d.page_count, '| taille', round(os.path.getsize(OUT_PDF) / 1048576, 1), 'Mo | format', d[0].rect.width, 'x', d[0].rect.height, 'pt')
 
 if __name__ == '__main__':
