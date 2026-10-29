@@ -399,6 +399,35 @@ void main() {
       expect(find.byKey(const ValueKey('col-next')), findsNothing);
     });
 
+    testWidgets('aucune version des règles sur l’appareil : la collecte attend (rien n’est supposé)', (tester) async {
+      await openPair(
+        tester,
+        online: false,
+        routes: collectRoutes(extra: {'GET pair/validation-rules': (o) => throw offline(o)}),
+        goTo_: '/pair/dossiers/collecte',
+      );
+      expect(find.text(S.t('mobile_pair_col_rules_missing')), findsOneWidget);
+      expect(find.byKey(const ValueKey('col-next')), findsNothing);
+    });
+
+    testWidgets('règles en cache (hors ligne) : la collecte fonctionne et la date des règles est affichée', (tester) async {
+      await openPair(
+        tester,
+        online: false,
+        routes: collectRoutes(extra: {'GET pair/validation-rules': (o) => throw offline(o)}),
+        before: (env) => env.db.peerData.put(
+          'rules',
+          jsonEncode({'etag': '"r1"', 'body': rulesBody(updatedAt: '2026-10-20T09:30:00+00:00')}),
+        ),
+        goTo_: '/pair/dossiers/collecte',
+      );
+      expect(find.byKey(const ValueKey('col-next')), findsOneWidget);
+      expect(find.byKey(const ValueKey('col-rules-date')), findsOneWidget);
+      final shown = tester.widget<Text>(find.byKey(const ValueKey('col-rules-date'))).data!;
+      expect(shown, startsWith('Règles de validation du'));
+      expect(shown, contains('2026'));
+    });
+
     testWidgets('modifier depuis la vérification : retour sur l’étape concernée', (tester) async {
       await openPair(tester, routes: collectRoutes(), before: draftAtReview, goTo_: '/pair/dossiers/collecte');
       await tester.ensureVisible(find.byKey(const ValueKey('col-edit-lieu')));

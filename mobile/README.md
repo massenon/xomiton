@@ -81,8 +81,56 @@ Sécurité renforcée des espaces Pair et Admin :
 - **Effacement** : déconnexion, 401, 5 codes faux, 403 `device_revoked` (tout est
   purgé, un nouvel identifiant d'appareil sera créé) et plus de 14 jours sans
   contact avec le serveur (données Pair seulement, horloge reculée = expirée).
-  L'ordre d'effacement à distance (`device.wipe`, `POST me/devices/{uuid}/wiped`)
-  attend le volet serveur de P15-11. Un téléphone éteint ou hors réseau ne le
-  reçoit pas : l'expiration locale est le filet de sécurité.
+  L'ordre d'effacement à distance (`wipe` du signal de vie, accusé
+  `POST me/devices/{uuid}/wiped`) vide le coffre du pair, ferme la session et
+  prévient la personne. Un téléphone éteint ou hors réseau ne le reçoit pas :
+  l'expiration locale est le filet de sécurité.
 - **Mode discret** activé par défaut au premier accès à l'espace Pair ou Admin
   (la personne est prévenue et peut le désactiver).
+
+## Synchronisation hors ligne (P15-12)
+
+`lib/core/sync/` : `SyncEngine`, `SyncQueue`, `CollectionStore`.
+
+- **Appareil** : `POST me/devices` avant toute synchro (une fois par lancement) ;
+  `X-Device-Id` sur chaque requête. 403 `device_required` avec un appareil déjà
+  enregistré, ou 403 `device_revoked` : purge totale et retour à la connexion.
+- **Envoi** (`sync/push`) : lots de 50 au plus ; `Idempotency-Key` = uuid du lot,
+  **posé dans les entrées avant l'envoi** : un rejeu repart avec la même clé et le
+  même corps, un nouvel élément ne rejoint jamais un lot déjà posé. Résultat lu
+  élément par élément (`created/updated/duplicate` parti, `conflict` à trancher,
+  `rejected` « à corriger », 429 et 503 repartent dans un nouveau lot). Les suivis
+  et les marques « réalisée » passent par leurs routes dédiées (`client_uuid` =
+  uuid de l'entrée). Un suivi d'un dossier encore en file attend son code.
+- **Lecture** (`sync/pull`) : curseur, `reset`, `deletes`, `has_more` ; les pages
+  sont appliquées en bloc et le curseur est écrit en dernier. Collections du pair :
+  `cases`, `case_followups`, `alerts`, `validation_rules` ; communes (coffre
+  public, préfixe `sync:`) : `emergency_contacts`, `directory_contacts`,
+  `thematiques`.
+- **Quand** : à l'ouverture, au retour du réseau, au retour au premier plan, toutes
+  les 5 min (signal de vie compris) et sur « Synchroniser maintenant ». Après un
+  échec : attente exponentielle avec gigue (5 s à 5 min), une action de la
+  personne passe outre. Pas de tâche d'arrière-plan en v1 (plan §8.5).
+- **Coffres chiffrés** : coffres Membre (`cache_*`, `session`, `outbox`, `drafts`)
+  avec une clé ; coffre du pair (`pair_data`) avec **une clé propre**
+  (`hive_encryption_key_peer`). L'effacement du pair supprime la boîte et détruit la
+  clé. L'espace Admin ne garde rien. La boîte d'envoi Membre (SOS, signalement,
+  message, publication) garde ses routes dédiées : le moteur la vide avant le lot du pair.
+
+## Espace pair (P15-13 à P15-15)
+
+`lib/features/pair/` : accueil (KPI, tâches), alertes routées (liste relue toutes
+les 10 s si de garde, 30 s sinon ; accusé, prise en charge, clôture selon `can{…}`
+du serveur ; avertissement avant Maps), dossiers (liste, fiche en 5 sections, frise,
+suivi, statut), collecte par étapes (règles actives en cache, brouillon sans notes,
+avertissements de plausibilité), file de synchronisation et écran de conflit 409
+(**le pair tranche**). Les écrans de détail restent dans la barre d'onglets
+(SOS et Réseau toujours à portée). Routes : `/pair/accueil`, `/pair/alertes[/:id]`,
+`/pair/dossiers[/collecte|/:code[/suivi]]`, `/pair/accueil/synchro[/conflit/:id]`.
+
+Ne pas lancer `dart format` sur tout `lib/` : le formateur « tall » de Dart 3.13
+réécrit les fichiers existants (le style du dépôt est antérieur) ; formater
+uniquement les fichiers neufs.
+
+Limites connues (endpoints à créer côté serveur, voir `docs/PLAN_MOBILE_APP_UNIQUE.md` §11.1) :
+`on_duty`, `GET pair/collect-options` (populations), fiche de référence du dossier.

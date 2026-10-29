@@ -146,6 +146,8 @@ const Map<String, String> kPendingStringsFr = {
   'mobile_pair_col_state': 'État',
   'mobile_pair_col_again': 'Nouvelle collecte',
   'mobile_pair_col_draft_cleared': 'Brouillon effacé.',
+  'mobile_pair_col_rules_missing': 'Les règles de validation ne sont pas encore sur ce téléphone. Ouvre l’application une fois avec du réseau : la collecte reprend ensuite, même sans connexion.',
+  'mobile_pair_col_rules_date': 'Règles de validation du {date}',
   'mobile_pair_col_lists_missing': 'Les listes de la collecte (départements, populations, types de violence) ne sont pas encore sur ce téléphone. Ouvre l’application une fois avec du réseau pour les charger.',
   'mobile_sync_title': 'File de synchronisation',
   'mobile_sync_last': 'Dernière synchronisation : {date}',

@@ -7,6 +7,7 @@ import '../../../app/theme/xm_tokens.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/ui/xm_widgets.dart';
+import '../../../core/util/dates.dart';
 import '../application/collect_controller.dart';
 import '../application/collect_logic.dart';
 import '../application/pair_providers.dart';
@@ -64,6 +65,10 @@ class _PairCollectPageState extends ConsumerState<PairCollectPage> {
           if (rulesA.isLoading || listsA.isLoading) return const LoadingView();
           final rules = rulesA.valueOrNull ?? const ValidationRules();
           final lists = listsA.valueOrNull ?? const CollectLists();
+          if (!rules.loaded) {
+            // Aucune version des règles sur l'appareil : la collecte attend, rien n'est supposé.
+            return EmptyView(context.t('mobile_pair_col_rules_missing'));
+          }
           if (lists.zones.isEmpty || lists.violenceTypes.isEmpty) {
             return EmptyView(context.t('mobile_pair_col_lists_missing'));
           }
@@ -281,6 +286,15 @@ class _PairCollectPageState extends ConsumerState<PairCollectPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(context.t('peer_collecte_intro'), style: theme.textTheme.bodySmall),
+          if (_rulesDate(context, rules) != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text(
+                context.t('mobile_pair_col_rules_date', {'date': _rulesDate(context, rules)}),
+                key: const ValueKey('col-rules-date'),
+                style: theme.textTheme.bodySmall,
+              ),
+            ),
           const SizedBox(height: XmSpace.s3),
           Semantics(
             container: true,
@@ -367,6 +381,12 @@ class _PairCollectPageState extends ConsumerState<PairCollectPage> {
     if (lists.communeName(f.communeId) != null) 'commune': lists.communeName(f.communeId)!,
     if (lists.violenceLabel(f.violenceTypeId) != null) 'violence': lists.violenceLabel(f.violenceTypeId)!,
   };
+
+  /// Date de la version des règles en cache (`meta.updated_at`), si lisible.
+  String? _rulesDate(BuildContext context, ValidationRules rules) {
+    final d = DateTime.tryParse(rules.updatedAt ?? '');
+    return d == null ? null : formatDateTime(context, d);
+  }
 
   String _display(String? iso) {
     if (iso == null || iso.isEmpty) return '';
