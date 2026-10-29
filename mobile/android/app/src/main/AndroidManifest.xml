@@ -1,17 +1,37 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Permissions minimales (revue : docs/BUILD_ANDROID_WINDOWS.md §Permissions). -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- Localisation précise : seulement pour joindre la position à une alerte SOS,
+         demandée au moment du SOS, jamais au démarrage ni en arrière-plan. La position
+         approximative est déclarée avec elle (Android 12+ laisse la personne choisir). -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <!-- Android 13+ : autorisation des notifications, demandée après la 1re connexion (P15-08). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- Photos, caméra, micro, stockage, agenda : l'application n'en a pas besoin (les pièces
+         jointes passent par le sélecteur de fichiers du système, l'agenda par une intention).
+         Retirées explicitement au cas où un plugin les ajouterait à la fusion des manifestes. -->
+    <uses-permission android:name="android.permission.CAMERA" tools:node="remove"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR" tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" tools:node="remove"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" tools:node="remove"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" tools:node="remove"/>
     <application
-        android:label="Xomiton"
+        android:label="@string/app_name"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:usesCleartextTraffic="false"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
