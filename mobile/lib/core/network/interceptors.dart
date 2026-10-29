@@ -166,6 +166,7 @@ class ApiErrorInterceptor extends Interceptor {
     required this.toasts,
     this.onSpaceForbidden,
     this.onDeviceRevoked,
+    this.deviceRegistered,
   });
 
   final Future<void> Function() onUnauthorized;
@@ -175,6 +176,12 @@ class ApiErrorInterceptor extends Interceptor {
   /// 403 `device_revoked` : purge totale (sauf sur `me/devices`, où l'application
   /// génère elle-même un nouvel identifiant d'appareil).
   final Future<void> Function()? onDeviceRevoked;
+
+  /// Cet appareil a-t-il déjà été enregistré (`POST me/devices`) ? Alors un 403
+  /// `device_required` veut dire que le serveur ne le connaît plus : même purge
+  /// que `device_revoked`. Sinon c'est au moteur de synchronisation d'enregistrer
+  /// l'appareil d'abord, rien n'est purgé.
+  final bool Function()? deviceRegistered;
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -187,7 +194,7 @@ class ApiErrorInterceptor extends Interceptor {
     } else if (api.status == 429 && api.code != 'idempotency_in_progress') {
       toasts.emit(RateLimitedToast(api.retryAfter ?? 60));
     } else if (api.status == 403 &&
-        api.code == 'device_revoked' &&
+        (api.code == 'device_revoked' || (api.code == 'device_required' && (deviceRegistered?.call() ?? false))) &&
         err.requestOptions.headers.containsKey('Authorization') &&
         !_isDeviceRegistration(err.requestOptions.path) &&
         onDeviceRevoked != null) {

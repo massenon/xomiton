@@ -27,6 +27,11 @@ class DeviceRevokedToast extends AppToast {
   const DeviceRevokedToast();
 }
 
+/// `heartbeat` a annoncé un effacement à distance : données de l'espace Pair effacées, session fermée.
+class DeviceWipedToast extends AppToast {
+  const DeviceWipedToast();
+}
+
 /// Plus de N jours sans contact : données de l'espace Pair effacées.
 class OfflineExpiredToast extends AppToast {
   const OfflineExpiredToast(this.days);

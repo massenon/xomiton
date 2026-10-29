@@ -89,6 +89,7 @@ const Map<String, String> kPendingStringsFr = {
   'mobile_pin_required_back': 'Retourner à l’espace Membre',
   'mobile_pin_required_cannot_disable': 'Le code est obligatoire pour ton espace pair ou admin : tu ne peux pas le désactiver.',
   'mobile_device_revoked': 'Cet appareil n’est plus autorisé sur ton compte. Les données de ce téléphone sont effacées : reconnecte-toi.',
+  'mobile_device_wiped': 'L’équipe a demandé l’effacement de cet appareil. Les données de l’espace pair sont supprimées : reconnecte-toi.',
   'mobile_offline_expired': 'Plus de {days} jours sans contact avec Xomiton : par sécurité, les données de l’espace pair sont effacées de ce téléphone. Reconnecte-toi.',
   'mobile_discreet_default_applied': 'Mode discret activé : l’icône et le nom deviennent « Notes » et les aperçus sont masqués. Tu peux le changer dans Profil › Sécurité.',
   // P15-04 : SOS, signalement, suivi (textes propres au mobile).

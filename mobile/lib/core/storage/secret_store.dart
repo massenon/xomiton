@@ -40,6 +40,9 @@ abstract final class SecretKeys {
   static const deviceToken = 'login_device_token';
   static const hiveKey = 'hive_encryption_key';
 
+  /// Clé du coffre de l'espace Pair (distincte de celle des coffres Membre, P15-12).
+  static const hiveKeyPeer = 'hive_encryption_key_peer';
+
   /// Code PIN local : enregistrement haché (sel + dérivation) et compteur
   /// d'essais. Jamais envoyé au serveur (Q37 b).
   static const pinRecord = 'pin_record';

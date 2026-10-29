@@ -11,7 +11,16 @@ import 'package:xomiton/core/util/password_strength.dart';
 import '../support/harness.dart';
 
 /// Clés d'API (pas des textes) qui ressemblent à des clés de texte.
-const _apiKeys = {'alerts_to_take', 'cases_to_contact'};
+/// Noms d'API (collections de `sync/pull`, codes d'erreur, clés de tâches) qui ressemblent à des clés de texte.
+const _apiKeys = {
+  'alerts_to_take',
+  'cases_to_contact',
+  'validation_rules',
+  'directory_contacts',
+  'emergency_contacts',
+  'case_followups',
+  'validation_failed',
+};
 
 void main() {
   group('formatIcu', () {

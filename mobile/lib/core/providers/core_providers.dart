@@ -35,8 +35,9 @@ final toastBusProvider = Provider<ToastBus>((ref) {
   return bus;
 });
 
-/// Identifiant d'appareil enregistré (`POST me/devices`, lot suivant) renvoyé
-/// en `X-Device-Id` ; absent tant que l'appareil n'est pas enregistré.
+/// Identifiant d'appareil enregistré (`POST me/devices`, par le moteur de
+/// synchronisation ou l'abonnement push) renvoyé en `X-Device-Id` ; absent
+/// tant que l'appareil n'est pas enregistré.
 const kDeviceUuidPref = 'device_uuid';
 
 /// Adaptateur HTTP, surchargé dans les tests.
@@ -52,6 +53,7 @@ final dioProvider = Provider<Dio>((ref) {
     onUnauthorized: () => ref.read(sessionProvider.notifier).expire(),
     onSpaceForbidden: () => ref.read(sessionProvider.notifier).refresh(),
     onDeviceRevoked: () => ref.read(sessionProvider.notifier).expire(),
+    deviceRegistered: () => (prefs.getString(kDeviceUuidPref) ?? '').isNotEmpty,
     onContact: (date) => ref.read(contactClockProvider).record(parseServerDate(date)),
   );
 });

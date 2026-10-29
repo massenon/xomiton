@@ -28,6 +28,7 @@ Dio buildApiClient({
   required Future<void> Function() onUnauthorized,
   Future<void> Function()? onSpaceForbidden,
   Future<void> Function()? onDeviceRevoked,
+  bool Function()? deviceRegistered,
   void Function(String? dateHeader)? onContact,
   String baseUrl = kApiBaseUrl,
   String? Function()? deviceId,
@@ -56,6 +57,7 @@ Dio buildApiClient({
       toasts: toasts,
       onSpaceForbidden: onSpaceForbidden,
       onDeviceRevoked: onDeviceRevoked,
+      deviceRegistered: deviceRegistered,
     ),
   ]);
   return dio;

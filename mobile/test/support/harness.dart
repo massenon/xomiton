@@ -13,6 +13,7 @@ import 'package:xomiton/core/providers/core_providers.dart';
 import 'package:xomiton/core/storage/local_db.dart';
 import 'package:xomiton/core/storage/secret_store.dart';
 import 'package:xomiton/core/storage/token_store.dart';
+import 'package:xomiton/core/sync/sync_providers.dart';
 import 'package:xomiton/features/home/application/home_providers.dart';
 import 'package:xomiton/features/security/application/pin_lock.dart';
 import 'package:xomiton/features/security/application/pin_service.dart';
@@ -132,6 +133,7 @@ class TestEnv {
     connectivityStreamProvider.overrideWithValue(Stream<bool>.value(online)),
     unreadCountProvider.overrideWith((ref) => Stream.value(unread)),
     outboxRetryIntervalProvider.overrideWithValue(null),
+    syncIntervalProvider.overrideWithValue(null),
     pinIterationsProvider.overrideWithValue(2),
     ...extra,
   ];
