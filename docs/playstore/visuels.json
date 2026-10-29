@@ -1,0 +1,415 @@
+{
+  "_notes": "Configuration du générateur build_playstore.py. Couleurs = jetons de design-system/tokens/tokens.css (sans le préfixe --xm-). Textes : un bloc par langue ; le bloc « en » est un gabarit à remplir (voir PUBLICATION_PLAY_STORE.md §11).",
+  "version": "1.0.0",
+  "application": "Xomiton",
+  "tokens_css": "../../design-system/tokens/tokens.css",
+  "police_montserrat": "../../design-system/fonts/Montserrat-latin-normal.woff2",
+  "logo_blanc": "../../design-system/logo/logo-mono-blanc.svg",
+  "prototype": "../../prototype_mobile/index.html",
+  "sortie": "assets",
+  "cache": ".cache",
+  "capture": {
+    "viewport": [
+      1700,
+      1300
+    ],
+    "ecran": [
+      390,
+      844
+    ],
+    "device_scale": 3,
+    "heure": "9:41",
+    "etat_prototype": {
+      "seen": true,
+      "auth": true,
+      "role": "membre",
+      "model": "iphone14",
+      "theme": "light"
+    }
+  },
+  "contraintes": {
+    "feature_graphic": {
+      "largeur": 1024,
+      "hauteur": 500,
+      "poids_max_mo": 15
+    },
+    "captures": {
+      "largeur": 1080,
+      "hauteur": 1920,
+      "nombre": 8,
+      "poids_max_mo": 8,
+      "texte_max_pct": 20
+    },
+    "alt_max": 140,
+    "contraste_min": 4.5,
+    "mots_interdits": [
+      "meilleur",
+      "meilleure",
+      "n°1",
+      "n° 1",
+      "numéro 1",
+      "nouveau",
+      "nouvelle",
+      "gratuit",
+      "gratuite",
+      "remise",
+      "promo",
+      "millions",
+      "télécharger",
+      "installer",
+      "essayer",
+      "google play",
+      "top"
+    ],
+    "mots_interdits_regex_extra": [
+      "\\bn\\s?[°º]\\s?1\\b",
+      "\\b\\d+\\s?(millions?|M)\\s+de\\s+t[ée]l[ée]chargements"
+    ]
+  },
+  "couleurs": {
+    "texte": "neutral-0",
+    "puce_fond": "neutral-0",
+    "puce_texte": "neutral-900",
+    "puce_icone_fond": "blue-500",
+    "puce_icone": "neutral-0",
+    "cadre_appareil": "neutral-900"
+  },
+  "feature_graphic": {
+    "fichier": "feature-graphic-1024x500.png",
+    "fond": {
+      "de": "blue-400",
+      "vers": "blue-700",
+      "angle": 125
+    },
+    "halos": [
+      {
+        "couleur": "blue-300",
+        "x": 14,
+        "y": 10,
+        "rayon": 380,
+        "opacite": 0.35
+      },
+      {
+        "couleur": "violet-700",
+        "x": 92,
+        "y": 105,
+        "rayon": 420,
+        "opacite": 0.55
+      }
+    ],
+    "ecrans": {
+      "gauche": "01-accueil",
+      "droite": "04-messages"
+    },
+    "textes": {
+      "fr": {
+        "slogan": "Écoute, sécurité, communauté",
+        "alt": "Logo Xomiton et mots « écoute, sécurité, communauté » sur fond bleu, entre deux écrans de l'application."
+      },
+      "en": {
+        "slogan": "",
+        "alt": ""
+      }
+    }
+  },
+  "captures_ecrans": [
+    {
+      "id": "01-accueil",
+      "fichier": "01-accueil.png",
+      "source": {
+        "route": "#/dashboard",
+        "css": ".chips .thumb{display:none!important}",
+        "js": ""
+      },
+      "fond": {
+        "de": "blue-500",
+        "vers": "blue-800",
+        "angle": 160
+      },
+      "puces": [
+        {
+          "icone": "shield",
+          "cote": "droite",
+          "y": 1570,
+          "texte_ref": "confidentiel"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Un espace sûr, tout près",
+          "puces": {
+            "confidentiel": "Confidentiel"
+          },
+          "alt": "Accueil de l'application : accès rapide au signalement, aux urgences, à l'assistant et aux thématiques, avec la touche SOS en bas."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "confidentiel": ""
+          },
+          "alt": ""
+        }
+      }
+    },
+    {
+      "id": "02-sos",
+      "fichier": "02-sos.png",
+      "source": {
+        "route": "#/sos"
+      },
+      "fond": {
+        "de": "blue-700",
+        "vers": "violet-700",
+        "angle": 160
+      },
+      "puces": [
+        {
+          "icone": "pin",
+          "cote": "gauche",
+          "y": 1620,
+          "texte_ref": "position"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Alerter les personnes de confiance",
+          "puces": {
+            "position": "Position partagée avec accord"
+          },
+          "alt": "Écran SOS : grand bouton rouge à maintenir deux secondes, option pour partager sa position, lien vers les numéros d'urgence."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "position": ""
+          },
+          "alt": ""
+        }
+      }
+    },
+    {
+      "id": "03-signaler",
+      "fichier": "03-signaler.png",
+      "source": {
+        "route": "#/sighub"
+      },
+      "fond": {
+        "de": "sky-700",
+        "vers": "blue-700",
+        "angle": 160
+      },
+      "puces": [
+        {
+          "icone": "lock",
+          "cote": "droite",
+          "y": 1490,
+          "texte_ref": "anonyme"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Signaler, même anonymement",
+          "puces": {
+            "anonyme": "Anonyme si besoin"
+          },
+          "alt": "Écran Signaler et suivre : alerte SOS, faire un signalement en quatre étapes, exprimer un besoin et suivre un dossier avec un code."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "anonyme": ""
+          },
+          "alt": ""
+        }
+      }
+    },
+    {
+      "id": "04-messages",
+      "fichier": "04-messages.png",
+      "source": {
+        "route": "#/chat"
+      },
+      "fond": {
+        "de": "violet-700",
+        "vers": "blue-600",
+        "angle": 160
+      },
+      "puces": [
+        {
+          "icone": "chat",
+          "cote": "gauche",
+          "y": 1330,
+          "texte_ref": "ecoute"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Des échanges à son rythme",
+          "puces": {
+            "ecoute": "Écoute sans jugement"
+          },
+          "alt": "Conversation écrite avec une pair éducatrice : messages reçus et envoyés, champ de saisie en bas de l'écran."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "ecoute": ""
+          },
+          "alt": ""
+        }
+      }
+    },
+    {
+      "id": "05-assistant",
+      "fichier": "05-assistant.png",
+      "source": {
+        "route": "#/assistant"
+      },
+      "fond": {
+        "de": "blue-400",
+        "vers": "blue-800",
+        "angle": 160
+      },
+      "puces": [
+        {
+          "icone": "bot",
+          "cote": "droite",
+          "y": 1290,
+          "texte_ref": "orienter"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Un assistant pour s'orienter",
+          "puces": {
+            "orienter": "Oriente, ne remplace pas"
+          },
+          "alt": "Écran Assistant : message d'accueil, rappel qu'il ne remplace pas un professionnel et suggestions de questions."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "orienter": ""
+          },
+          "alt": ""
+        }
+      }
+    },
+    {
+      "id": "06-ressources",
+      "fichier": "06-ressources.png",
+      "source": {
+        "route": "#/ressources"
+      },
+      "fond": {
+        "de": "blue-500",
+        "vers": "sky-700",
+        "angle": 160
+      },
+      "puces": [
+        {
+          "icone": "wifioff",
+          "cote": "gauche",
+          "y": 1500,
+          "texte_ref": "hors"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Des ressources fiables à portée de main",
+          "puces": {
+            "hors": "Lisibles hors ligne"
+          },
+          "alt": "Écran Ressources : recherche et filtres, fiches pratiques, textes de loi, bande dessinée et vidéo, avec la taille de chaque fichier."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "hors": ""
+          },
+          "alt": ""
+        }
+      }
+    },
+    {
+      "id": "07-communaute",
+      "fichier": "07-communaute.png",
+      "source": {
+        "route": "#/fil",
+        "css": ".post-img{display:none!important}",
+        "js": ""
+      },
+      "fond": {
+        "de": "violet-700",
+        "vers": "blue-800",
+        "angle": 160
+      },
+      "puces": [
+        {
+          "icone": "users",
+          "cote": "droite",
+          "y": 1590,
+          "texte_ref": "bienveillante"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Une communauté bienveillante",
+          "puces": {
+            "bienveillante": "Échanges modérés"
+          },
+          "alt": "Fil de la communauté : zone pour partager une pensée, filtres par thème et publication d'une pair éducatrice sur un atelier."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "bienveillante": ""
+          },
+          "alt": ""
+        }
+      }
+    },
+    {
+      "id": "08-confidentialite",
+      "fichier": "08-confidentialite.png",
+      "source": {
+        "route": "#/securite"
+      },
+      "fond": {
+        "de": "blue-900",
+        "vers": "blue-500",
+        "angle": 200
+      },
+      "puces": [
+        {
+          "icone": "eyeoff",
+          "cote": "gauche",
+          "y": 1450,
+          "texte_ref": "discret"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Vie privée et mode discret",
+          "puces": {
+            "discret": "Icône et nom neutres"
+          },
+          "alt": "Écran Sécurité : mode discret, masquage des aperçus, verrouillage par code, appareils connectés, téléchargement et suppression des données."
+        },
+        "en": {
+          "titre": "",
+          "puces": {
+            "discret": ""
+          },
+          "alt": ""
+        }
+      }
+    }
+  ],
+  "remplacements": {
+    "Hounkpatin": "H.",
+    "Adjovi": "A.",
+    "Kpadonou": "K.",
+    "Agbo": "A."
+  }
+}

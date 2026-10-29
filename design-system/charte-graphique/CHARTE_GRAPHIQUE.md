@@ -130,6 +130,9 @@ Visuels fournis par le client et rangés dans `assets/` (voir `assets/MANIFEST.j
 
 Statut des visuels : `splash-paillettes-drapeau`, `splash-couple-etreinte-drapeau`, `splash-regard-lumiere-chaude`, `splash-lumiere-doree-drapeau` sont des **alternatives** au carrousel actuel (quatre diapositives, 247 Ko ; plafond 700 Ko) ; `design-system-3` et `splash-3` sont signalées « Ai » (générées par IA) ; `splash-4` (texte incrusté et nudité) et `splash-5` (bouches scotchées) sont écartées de l'onboarding. Les pastilles de la plateforme source ont été retirées par recadrage du bas, sans retouche.
 
+### 7.2 Visuels de la fiche Google Play
+Image de présentation (1024 × 500) et 8 captures (1080 × 1920) rangées dans `assets/playstore/`, produites par `docs/playstore/build_playstore.py` à partir des jetons et de l'interface réelle du prototype mobile. Règles : fond en dégradé de jetons (bleu, violet, ciel ; rouge réservé à l'interface), un titre court en Montserrat 800 en blanc (contraste mesuré ≥ 4,5:1, texte ajouté ≤ 20 % de l'image), logo blanc monochrome, cadre d'appareil générique, aucune photographie, aucun drapeau arc-en-ciel, aucun appel à l'action ni mot promotionnel. **Discrétion** : nom visible neutre (« Xomiton : écoute et sécurité »), valeur annoncée = écoute, sécurité, communauté, ressources, jamais une catégorie de personnes. Détail, texte alternatif et contrôles : `docs/playstore/PUBLICATION_PLAY_STORE.md`. Le PDF de la charte n'est pas régénéré.
+
 ## 8. Mouvement et son
 Durées : 120 ms (retours), 200 ms (transitions), 300 ms (panneaux). `prefers-reduced-motion` : toute animation supprimée. Aucun clignotement. Le son n'existe que pour l'**alerte sonore par cloche** (SOS et cas critiques destinés aux agent·e·s concerné·e·s), jamais en lecture automatique pour le public, toujours doublé d'un signal visuel et d'une vibration.
 

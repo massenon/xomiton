@@ -1,0 +1,785 @@
+{
+ "langue": "fr",
+ "resultats": [
+  {
+   "visuel": "ensemble",
+   "controle": "nombre de captures",
+   "ok": true,
+   "detail": "8 (attendu 8)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1024x500"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.27 Mo (< 15 Mo)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.7 %"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 6.57:1"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "couleurs vives (blanc < 25 %, noir < 3 %, saturation moyenne > 0,45)",
+   "ok": true,
+   "detail": "blanc 19 %, noir 0.0 %, saturation 0.56"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.51 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.0 %"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 9.75:1"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "blue-500 s=0.98 v=0.76 ; blue-800 s=0.98 v=0.42"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.53 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "9.5 %"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.09:1"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "blue-700 s=0.98 v=0.53 ; violet-700 s=0.70 v=0.57"
+  },
+  {
+   "visuel": "02-sos",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.54 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.8 %"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 6.48:1"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "sky-700 s=0.86 v=0.67 ; blue-700 s=0.98 v=0.53"
+  },
+  {
+   "visuel": "03-signaler",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.45 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.5 %"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 8.90:1"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "violet-700 s=0.70 v=0.57 ; blue-600 s=0.98 v=0.65"
+  },
+  {
+   "visuel": "04-messages",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.52 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.8 %"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.65:1"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "blue-400 s=0.68 v=0.82 ; blue-800 s=0.98 v=0.42"
+  },
+  {
+   "visuel": "05-assistant",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.48 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "9.2 %"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 8.60:1"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "blue-500 s=0.98 v=0.76 ; sky-700 s=0.86 v=0.67"
+  },
+  {
+   "visuel": "06-ressources",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.59 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.9 %"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 9.01:1"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "violet-700 s=0.70 v=0.57 ; blue-800 s=0.98 v=0.42"
+  },
+  {
+   "visuel": "07-communaute",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.47 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.2 %"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 14.65:1"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "fond de marque vif (dégradé de jetons saturés, ni noir ni blanc)",
+   "ok": true,
+   "detail": "blue-900 s=0.97 v=0.29 ; blue-500 s=0.98 v=0.76"
+  },
+  {
+   "visuel": "08-confidentialite",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"svgs\": 3, \"remplissage\": \"19\"}"
+  },
+  {
+   "visuel": "feature-graphic/slogan",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "104"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Logo Xomiton et mots « écoute, sécurité,"
+  },
+  {
+   "visuel": "01-accueil/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "130"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Accueil de l'application : accès rapide "
+  },
+  {
+   "visuel": "01-accueil/puce:confidentiel",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-sos/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-sos/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-sos/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "124"
+  },
+  {
+   "visuel": "02-sos/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Écran SOS : grand bouton rouge à mainten"
+  },
+  {
+   "visuel": "02-sos/puce:position",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-signaler/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-signaler/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-signaler/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "131"
+  },
+  {
+   "visuel": "03-signaler/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Écran Signaler et suivre : alerte SOS, f"
+  },
+  {
+   "visuel": "03-signaler/puce:anonyme",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-messages/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-messages/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-messages/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "108"
+  },
+  {
+   "visuel": "04-messages/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Conversation écrite avec une pair éducat"
+  },
+  {
+   "visuel": "04-messages/puce:ecoute",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-assistant/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-assistant/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-assistant/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "111"
+  },
+  {
+   "visuel": "05-assistant/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Écran Assistant : message d'accueil, rap"
+  },
+  {
+   "visuel": "05-assistant/puce:orienter",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-ressources/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-ressources/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-ressources/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "132"
+  },
+  {
+   "visuel": "06-ressources/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Écran Ressources : recherche et filtres,"
+  },
+  {
+   "visuel": "06-ressources/puce:hors",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-communaute/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-communaute/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-communaute/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "124"
+  },
+  {
+   "visuel": "07-communaute/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Fil de la communauté : zone pour partage"
+  },
+  {
+   "visuel": "07-communaute/puce:bienveillante",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-confidentialite/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-confidentialite/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-confidentialite/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "139"
+  },
+  {
+   "visuel": "08-confidentialite/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Écran Sécurité : mode discret, masquage "
+  },
+  {
+   "visuel": "08-confidentialite/puce:discret",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "fiche/nom",
+   "controle": "longueur <= 30",
+   "ok": true,
+   "detail": "28"
+  },
+  {
+   "visuel": "fiche/nom",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "fiche/court",
+   "controle": "longueur <= 80",
+   "ok": true,
+   "detail": "79"
+  },
+  {
+   "visuel": "fiche/court",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "fiche/long",
+   "controle": "longueur <= 4000",
+   "ok": true,
+   "detail": "2188"
+  },
+  {
+   "visuel": "fiche/long",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  }
+ ]
+}

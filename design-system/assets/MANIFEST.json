@@ -51,16 +51,22 @@
       "usage": "Splash : diapositive communauté ou espoir (alternative)"
     },
     {
+      "fichier": "splash/splash-symbole-venus-recadre.webp",
+      "alt": "Visage de femme de profil, en partie hors cadre, symbole de Vénus peint en blanc sur la joue, main sous le menton",
+      "format": "paysage 480x392 · recadrage du haut de reference-texte-incruste-a-eviter.webp (texte anglais et buste retirés), sans retouche",
+      "usage": "Onboarding : illustration d'une diapositive (autorisé par le client le 29/10/2026) ; basse résolution, un doigt coupé en bas à droite : à remplacer par l'original fourni en haute définition si possible"
+    },
+    {
       "fichier": "splash/references-a-eviter/reference-texte-incruste-a-eviter.webp",
       "alt": "Épaule et main d'une femme couvertes de bandelettes de texte anglais (slogans féministes), symbole de Vénus peint sur la joue",
       "format": "portrait 480x739 (réduite)",
-      "usage": "AUCUN : référence de ce qu'il ne faut pas faire (texte incrusté, anglais, nudité)"
+      "usage": "Original : jamais tel quel (texte anglais incrusté, buste dénudé). Autorisé en onboarding à la demande du client (29/10/2026) uniquement sous la forme recadrée splash/splash-symbole-venus-recadre.webp"
     },
     {
       "fichier": "splash/references-a-eviter/reference-bouche-scotchee-campagne-seulement.webp",
       "alt": "Deux femmes enlacées devant un drapeau arc-en-ciel, la bouche couverte d'un ruban adhésif gris",
       "format": "portrait 480x661 (réduite)",
-      "usage": "AUCUN en ouverture : image de campagne de sensibilisation sur le silence imposé, jamais en splash ni onboarding"
+      "usage": "Autorisée dans l'onboarding à la demande du client (29/10/2026), sans recadrage nécessaire (ni texte ni nudité) ; jamais sur la fiche Google Play ni sur les écrans de signalement et de SOS (image anxiogène, discrétion)"
     }
   ]
 }

@@ -51,6 +51,7 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 | Qualité | [PERFORMANCE.md](PERFORMANCE.md) | Images, CSS, JS, chargement différé, polices, budgets |
 | Qualité | [GUIDE_RECETTE.md](GUIDE_RECETTE.md) | **Guide de recette** : installer et lancer le web et le mobile en local (scripts `scripts/recette-local.sh` et `recette-lancer.sh`), comptes de démonstration, journaux, canaux réels, gabarit de bug |
 | Qualité | [CHECKLIST_RECETTE.md](CHECKLIST_RECETTE.md) | **Checklist de recette humaine** : tableau cochable par parcours (visiteur·se, membre, pair, modération, admin, SOS, e-mails, notifications, mobile, accessibilité, performance, sécurité) et liste de ce qui n'est pas encore fonctionnel |
+| Publication | [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md) | **Dossier de publication Google Play** : fiche (nom, descriptions), sécurité des données, permissions, politiques à risque, checklist, visuels (`playstore/assets/`, générés par `playstore/build_playstore.py`) et ce que le client doit fournir |
 | Décisions | [FEUILLE_DE_DECISION.md](FEUILLE_DE_DECISION.md) | **Feuille de décision** : les questions qui bloquent la recette, avec une recommandation et une case à cocher |
 
 ## Sources de vérité (par ordre de priorité)
