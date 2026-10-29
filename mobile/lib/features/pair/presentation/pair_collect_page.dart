@@ -216,7 +216,13 @@ class _PairCollectPageState extends ConsumerState<PairCollectPage> {
             label: '${context.t('peer_collecte_fields_sex')} *',
             value: form.sex,
             field: 'sex',
-            items: [for (final s in kSexes) DropdownMenuItem(value: s, child: Text(context.sexLabel(s)))],
+            items: [
+              if (lists.sexes.isNotEmpty)
+                for (final s in lists.sexes)
+                  DropdownMenuItem(value: s.value, child: Text(s.label.isEmpty ? context.sexLabel(s.value) : s.label))
+              else
+                for (final s in kSexes) DropdownMenuItem(value: s, child: Text(context.sexLabel(s))),
+            ],
             onChanged: (s) => ctl.update(form.copyWith(sex: s)),
           ),
           const SizedBox(height: XmSpace.s4),
@@ -226,7 +232,7 @@ class _PairCollectPageState extends ConsumerState<PairCollectPage> {
             value: form.ageRange,
             field: 'age_range',
             items: [
-              for (final a in rules.ageRanges)
+              for (final a in (rules.ageRanges.isNotEmpty ? rules.ageRanges : lists.ageRanges))
                 DropdownMenuItem(value: a.value, child: Text(a.label.isEmpty ? context.ageLabel(a.value) : a.label)),
             ],
             onChanged: (a) => ctl.update(form.copyWith(ageRange: a)),
@@ -251,7 +257,7 @@ class _PairCollectPageState extends ConsumerState<PairCollectPage> {
             decoration: InputDecoration(labelText: context.t('peer_collecte_fields_referral'), errorText: err('referral')),
             items: [
               DropdownMenuItem(value: '', child: Text(context.t('peer_collecte_no_referral'))),
-              for (final r in rules.referrals) DropdownMenuItem(value: r, child: Text(r)),
+              for (final r in (rules.referrals.isNotEmpty ? rules.referrals : lists.referrals)) DropdownMenuItem(value: r, child: Text(r)),
             ],
             onChanged: (r) => ctl.update(r == null || r.isEmpty ? form.copyWith(clearReferral: true) : form.copyWith(referral: r)),
           ),

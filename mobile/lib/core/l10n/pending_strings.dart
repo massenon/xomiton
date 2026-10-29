@@ -116,6 +116,8 @@ const Map<String, String> kPendingStringsFr = {
   'mobile_pair_alert_treated_done': 'Alerte marquée comme traitée.',
   'mobile_pair_alert_ack_done': 'Réception accusée',
   'mobile_pair_confirm_title': 'Confirmer',
+  'mobile_pair_sheet_services_items': 'Services reçus',
+  'mobile_pair_sheet_services_note': 'Précisions',
   // P15-14 : mes dossiers, fiche, suivi.
   'mobile_pair_case_steps': '{count, plural, =0{aucune étape} =1{1 étape} other{{count} étapes}}',
   'mobile_pair_case_queued_title': 'Nouveau dossier',

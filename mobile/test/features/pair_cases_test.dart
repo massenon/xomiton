@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:xomiton/core/sync/sync_providers.dart';
+import 'package:xomiton/features/pair/data/pair_models.dart' show CaseSheet;
 import 'package:xomiton/core/sync/sync_queue.dart';
 
 import '../support/fakes.dart';
@@ -193,6 +194,55 @@ void main() {
       expect(find.text('Premier entretien'), findsOneWidget);
       expect(find.text('Appel de suivi'), findsOneWidget);
       expect(find.byType(NavigationBar), findsOneWidget);
+    });
+
+    Map<String, dynamic> sheetJson({bool filled = true}) => {
+      'filled': filled,
+      'reference': filled ? 'FR-0042' : null,
+      'identification': {'pseudo': 'Pseudo-42', 'sex': 'Femme', 'age_range': '18-24 ans', 'population': 'Femmes cis', 'zone': 'Littoral', 'commune': 'Cotonou'},
+      'facts': {'date': '2026-10-01', 'place': 'Au domicile', 'type': 'Violence physique', 'description': 'Récit de la fiche.'},
+      'services': {'items': filled ? ['Soutien psychologique', 'Soutien juridique'] : [], 'note': filled ? 'Deux séances.' : null},
+      'orientation': {'referral': 'Centre de santé', 'contact': 'Dr. K.', 'date': '2026-10-03', 'reason': 'Soins', 'urgency': 'haute'},
+      'consent': filled ? {'given': true, 'mode': 'oral', 'sharing': false} : null,
+    };
+
+    testWidgets('fiche de référence remplie (data.sheet) : sections 3 et 5, référence, plus d’avis « non remplie »', (tester) async {
+      final c = {...caseJson('VBG-0042', notes: 'Résumé'), 'sheet': sheetJson()};
+      await openPair(tester, routes: caseRoutes(c), goTo_: '/pair/dossiers/VBG-0042');
+      expect(find.text(S.t('peer_sheet_not_filled')), findsNothing);
+      expect(find.text(S.t('peer_sheet_reference', {'reference': 'FR-0042'})), findsOneWidget);
+      expect(find.text('Pseudo-42'), findsOneWidget);
+      await revealFinder(tester, find.text(S.t('peer_sheet_sections_services')));
+      await tester.tap(find.text(S.t('peer_sheet_sections_services')));
+      await tester.pumpAndSettle();
+      expect(find.text('Soutien psychologique\nSoutien juridique'), findsOneWidget);
+      expect(find.text('Deux séances.'), findsOneWidget);
+      await revealFinder(tester, find.text(S.t('peer_sheet_sections_consent')));
+      await tester.tap(find.text(S.t('peer_sheet_sections_consent')));
+      await tester.pumpAndSettle();
+      expect(find.text(S.t('peer_sheet_modes_oral')), findsOneWidget);
+      expect(find.text(S.t('peer_sheet_yes')), findsOneWidget);
+      expect(find.text(S.t('peer_sheet_no')), findsOneWidget); // partage : non
+      await revealFinder(tester, find.text(S.t('peer_sheet_sections_orientation')));
+      await tester.tap(find.text(S.t('peer_sheet_sections_orientation')));
+      await tester.pumpAndSettle();
+      expect(find.text(S.t('peer_sheet_urgency_haute')), findsOneWidget);
+      expect(find.text('Dr. K.'), findsOneWidget);
+    });
+
+    testWidgets('fiche non remplie (filled: false, consentement nul) : avis conservé, sections 1, 2, 4 de la collecte', (tester) async {
+      final c = {...caseJson('VBG-0042', notes: 'Résumé'), 'sheet': sheetJson(filled: false)};
+      await openPair(tester, routes: caseRoutes(c), goTo_: '/pair/dossiers/VBG-0042');
+      expect(find.text(S.t('peer_sheet_not_filled')), findsOneWidget);
+      expect(find.text(S.t('peer_sheet_reference', {'reference': 'FR-0042'})), findsNothing);
+    });
+
+    test('modèle tolérant : sheet absente ou partielle', () {
+      expect(CaseSheet.maybe(null), isNull);
+      final s = CaseSheet.maybe({'filled': false})!;
+      expect(s.consent, isNull);
+      expect(s.serviceItems, isEmpty);
+      expect(s.identification, isEmpty);
     });
 
     testWidgets('dossier d’un autre pair ou inconnu : 404 neutre, rien n’est révélé', (tester) async {

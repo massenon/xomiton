@@ -106,42 +106,49 @@ class PairApi {
         : ValidationRules.fromBody(entry['body']);
   }
 
+  /// Listes de la collecte. Source : `GET pair/collect-options` (ETag, copie
+  /// chiffrée : zones et communes, populations, sexes, types de violence,
+  /// tranches d'âge, orientations, étapes). Les caches publics `zones` et
+  /// `violence-types` ne servent que si le serveur ne les donne pas (version
+  /// plus ancienne) : la collecte n'invente jamais une liste.
   Future<CollectLists> lists() async {
-    var zones = <CollectZone>[];
-    var types = <IdLabel>[];
-    var populations = <IdLabel>[];
+    var d = <String, dynamic>{};
     try {
-      final z = await _cache.get('zones');
-      zones = [
-        for (final r in _list(z.data))
-          CollectZone(_int(r['id']) ?? 0, '${r['name']}', [
-            for (final c in _list(r['communes']))
-              IdLabel(_int(c['id']) ?? 0, '${c['name']}'),
-          ]),
-      ];
-      final t = await _cache.get('violence-types');
-      types = [
-        for (final r in _list(t.data))
-          IdLabel(_int(r['id']) ?? 0, '${r['label']}'),
-      ];
-    } on DioException catch (e) {
-      if (!ApiException.from(e).isNetwork) rethrow;
-    }
-    try {
-      // Populations : source `pair/collect-options` (CollectOptions::form) ; tolérant si absente.
-      final p = await _cache.get('pair/collect-options', private: true);
-      final d = _map(p.data);
-      populations = [
-        for (final r in _list(d['populations']))
-          IdLabel(_int(r['id']) ?? 0, '${r['label']}'),
-      ];
+      d = _map((await _cache.get('pair/collect-options', private: true)).data);
     } on DioException catch (_) {
-      // Liste vide : le champ le dira, la collecte n'invente rien.
+      // Route absente ou refusée : repli sur les référentiels publics ci-dessous.
+    }
+    List<CollectZone> zonesOf(List<Map<String, dynamic>> rows) => [
+      for (final r in rows)
+        CollectZone(_int(r['id']) ?? 0, '${r['name']}', [
+          for (final c in _list(r['communes'])) IdLabel(_int(c['id']) ?? 0, '${c['name']}'),
+        ]),
+    ];
+    List<IdLabel> idLabels(List<Map<String, dynamic>> rows) => [
+      for (final r in rows) IdLabel(_int(r['id']) ?? 0, '${r['label']}'),
+    ];
+    List<Option> options(Object? v) => [
+      for (final r in _list(v)) Option('${r['value']}', '${r['label'] ?? r['value']}'),
+    ];
+    var zones = zonesOf(_list(d['zones']));
+    var types = idLabels(_list(d['violence_types']));
+    if (zones.isEmpty || types.isEmpty) {
+      try {
+        if (zones.isEmpty) zones = zonesOf(_list((await _cache.get('zones')).data));
+        if (types.isEmpty) types = idLabels(_list((await _cache.get('violence-types')).data));
+      } on DioException catch (e) {
+        if (!ApiException.from(e).isNetwork) rethrow;
+      }
     }
     return CollectLists(
       zones: zones,
-      populations: populations,
+      populations: idLabels(_list(d['populations'])),
       violenceTypes: types,
+      kinds: options(d['kinds']),
+      sexes: options(d['sexes']),
+      ageRanges: options(d['age_ranges']),
+      referrals: [for (final r in (d['referrals'] as List?) ?? const []) '$r'],
+      followupSteps: [for (final r in (d['followup_steps'] as List?) ?? const []) '$r'],
     );
   }
 

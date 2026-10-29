@@ -384,6 +384,29 @@ class _PairCasePageState extends ConsumerState<PairCasePage> {
     );
   }
 
+  /// « Commune (Département) » depuis la fiche, sinon `null` (repli sur la collecte).
+  String? _sheetZone(CaseSheet? sheet) {
+    final commune = sheet?.identification['commune'];
+    final zone = sheet?.identification['zone'];
+    if (commune == null && zone == null) return null;
+    return [?commune, if (zone != null) (commune != null ? '($zone)' : zone)].join(' ');
+  }
+
+  String? _yesNo(Object? v) =>
+      v == null ? null : context.t(v == true || v == 1 || v == 'true' ? 'peer_sheet_yes' : 'peer_sheet_no');
+
+  String? _mode(Object? v) {
+    if (v == null || '$v'.isEmpty) return null;
+    final key = 'peer_sheet_modes_$v';
+    return AppStrings.of(context).has(key) ? context.t(key) : '$v';
+  }
+
+  String? _urgency(String? v) {
+    if (v == null || v.isEmpty) return null;
+    final key = 'peer_sheet_urgency_$v';
+    return AppStrings.of(context).has(key) ? context.t(key) : v;
+  }
+
   Widget _content(PeerCase c) {
     final theme = Theme.of(context);
     Widget section(
@@ -451,6 +474,7 @@ class _PairCasePageState extends ConsumerState<PairCasePage> {
         if (s != c.status) s,
     ];
     final fu = c.followups;
+    final sheet = c.sheet;
     return SingleChildScrollView(
       key: const ValueKey('pair-case'),
       padding: const EdgeInsets.all(XmSpace.gutter),
@@ -483,49 +507,72 @@ class _PairCasePageState extends ConsumerState<PairCasePage> {
             ],
           ),
           const SizedBox(height: XmSpace.s3),
-          XmAlert(
-            context.t('peer_sheet_not_filled'),
-            icon: Icons.info_outline,
-            tone: context.xm.info,
-          ),
-          const SizedBox(height: XmSpace.s3),
+          if (sheet == null || !sheet.filled) ...[
+            XmAlert(
+              context.t('peer_sheet_not_filled'),
+              icon: Icons.info_outline,
+              tone: context.xm.info,
+            ),
+            const SizedBox(height: XmSpace.s3),
+          ] else if (sheet.reference != null) ...[
+            PairBadge(
+              context.t('peer_sheet_reference', {'reference': sheet.reference}),
+              icon: Icons.description_outlined,
+            ),
+            const SizedBox(height: XmSpace.s3),
+          ],
           section('peer_sheet_sections_identification', [
-            (context.t('peer_sheet_fields_pseudo'), c.code),
+            (context.t('peer_sheet_fields_pseudo'), sheet?.identification['pseudo'] ?? c.code),
             (
               context.t('peer_sheet_fields_sex'),
-              c.sex == null ? null : (c.sexLabel ?? context.sexLabel(c.sex!)),
+              sheet?.identification['sex'] ?? (c.sex == null ? null : (c.sexLabel ?? context.sexLabel(c.sex!))),
             ),
             (
               context.t('peer_sheet_fields_age'),
-              c.ageRange == null
-                  ? null
-                  : (c.ageRangeLabel ?? context.ageLabel(c.ageRange!)),
+              sheet?.identification['age_range'] ??
+                  (c.ageRange == null ? null : (c.ageRangeLabel ?? context.ageLabel(c.ageRange!))),
             ),
-            (context.t('peer_sheet_fields_population'), c.population),
-            (context.t('peer_sheet_fields_zone'), zone),
+            (context.t('peer_sheet_fields_population'), sheet?.identification['population'] ?? c.population),
+            (
+              context.t('peer_sheet_fields_zone'),
+              _sheetZone(sheet) ?? zone,
+            ),
           ], open: true),
           section('peer_sheet_sections_facts', [
             (
               context.t('peer_sheet_fields_date'),
-              formatDay(context, c.occurredOn),
+              formatDay(context, sheet?.facts['date'] ?? c.occurredOn),
             ),
-            (context.t('peer_sheet_fields_place'), null),
-            (context.t('peer_sheet_fields_type'), c.violence),
-            (context.t('peer_sheet_fields_description'), c.notes),
+            (context.t('peer_sheet_fields_place'), sheet?.facts['place']),
+            (context.t('peer_sheet_fields_type'), sheet?.facts['type'] ?? c.violence),
+            (context.t('peer_sheet_fields_description'), sheet?.facts['description'] ?? c.notes),
           ], open: true),
           section('peer_sheet_sections_services', [
-            (context.t('peer_sheet_fields_description'), null),
+            (
+              context.t('mobile_pair_sheet_services_items'),
+              (sheet?.serviceItems.isEmpty ?? true) ? null : sheet!.serviceItems.join('\n'),
+            ),
+            (context.t('mobile_pair_sheet_services_note'), sheet?.serviceNote),
           ]),
           section('peer_sheet_sections_orientation', [
             (
               context.t('peer_sheet_fields_referral'),
-              (c.referral == null || c.referral!.isEmpty)
+              (sheet?.orientation['referral'] ?? c.referral ?? '').isEmpty
                   ? context.t('peer_sheet_no_referral')
-                  : c.referral,
+                  : (sheet?.orientation['referral'] ?? c.referral),
             ),
+            (context.t('peer_sheet_fields_contact'), sheet?.orientation['contact']),
+            (
+              context.t('peer_sheet_fields_referral_date'),
+              sheet?.orientation['date'] == null ? null : formatDay(context, sheet!.orientation['date']),
+            ),
+            (context.t('peer_sheet_fields_reason'), sheet?.orientation['reason']),
+            (context.t('peer_sheet_fields_urgency'), _urgency(sheet?.orientation['urgency'])),
           ]),
           section('peer_sheet_sections_consent', [
-            (context.t('peer_sheet_fields_consent'), null),
+            (context.t('peer_sheet_fields_consent'), _yesNo(sheet?.consent?['given'])),
+            (context.t('peer_sheet_fields_mode'), _mode(sheet?.consent?['mode'])),
+            (context.t('peer_sheet_fields_sharing'), _yesNo(sheet?.consent?['sharing'])),
           ]),
           const SizedBox(height: XmSpace.s2),
           if (c.locked)

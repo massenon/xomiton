@@ -257,6 +257,57 @@ class CaseCan {
   final bool addFollowup;
 }
 
+/// Fiche de référence en cinq sections (`data.sheet` de `GET pair/cases/{code}`,
+/// API §22). Tolérante : une section ou un champ absent donne `null` ou une liste
+/// vide ; le consentement est `null` tant qu'aucune fiche n'est remplie. Jamais
+/// l'auteur·e présumé·e des faits ni le signataire (le serveur ne les sert pas).
+class CaseSheet {
+  const CaseSheet({
+    this.filled = false,
+    this.reference,
+    this.identification = const {},
+    this.facts = const {},
+    this.serviceItems = const [],
+    this.serviceNote,
+    this.orientation = const {},
+    this.consent,
+  });
+
+  final bool filled;
+  final String? reference;
+  final Map<String, String?> identification;
+  final Map<String, String?> facts;
+  final List<String> serviceItems;
+  final String? serviceNote;
+  final Map<String, String?> orientation;
+
+  /// `{given, mode, sharing}` ; `null` sans fiche.
+  final Map<String, Object?>? consent;
+
+  static CaseSheet? maybe(Object? v) {
+    if (v is! Map) return null;
+    final j = _map(v);
+    Map<String, String?> strings(Object? m) => {
+      for (final e in _map(m).entries) e.key: _str(e.value),
+    };
+    final services = _map(j['services']);
+    final consent = j['consent'];
+    return CaseSheet(
+      filled: j['filled'] == true,
+      reference: _str(j['reference']),
+      identification: strings(j['identification']),
+      facts: strings(j['facts']),
+      serviceItems: [
+        for (final i in (services['items'] is List ? services['items'] as List : const []))
+          if (i != null && '$i'.isNotEmpty) '$i',
+      ],
+      serviceNote: _str(services['note']),
+      orientation: strings(j['orientation']),
+      consent: consent is Map ? _map(consent) : null,
+    );
+  }
+}
+
 /// Dossier (liste ou fiche). Les notes ne viennent que du détail ; en liste
 /// elles sont toujours absentes (ADR-33).
 class PeerCase {
@@ -286,6 +337,7 @@ class PeerCase {
     this.createdAt,
     this.updatedAt,
     this.closedAt,
+    this.sheet,
   });
 
   final int? id;
@@ -315,6 +367,9 @@ class PeerCase {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final DateTime? closedAt;
+
+  /// Fiche de référence (détail seulement, absente de la liste et hors ligne).
+  final CaseSheet? sheet;
 
   bool get queued => queuedUuid != null;
   bool get locked => anonymized || status == 'archive';
@@ -349,6 +404,7 @@ class PeerCase {
     createdAt: createdAt,
     updatedAt: updatedAt,
     closedAt: closedAt,
+    sheet: sheet,
   );
 
   factory PeerCase.fromJson(Map<String, dynamic> j) {
@@ -384,6 +440,7 @@ class PeerCase {
       createdAt: _date(j['created_at']),
       updatedAt: _date(j['updated_at']),
       closedAt: _date(j['closed_at']),
+      sheet: CaseSheet.maybe(j['sheet']),
     );
   }
 }
@@ -499,10 +556,23 @@ class CollectLists {
     this.zones = const [],
     this.populations = const [],
     this.violenceTypes = const [],
+    this.kinds = const [],
+    this.sexes = const [],
+    this.ageRanges = const [],
+    this.referrals = const [],
+    this.followupSteps = const [],
   });
   final List<CollectZone> zones;
   final List<IdLabel> populations;
   final List<IdLabel> violenceTypes;
+
+  /// Autres listes de `GET pair/collect-options` (vides si le serveur ne les donne pas) :
+  /// elles complètent celles des règles de validation, jamais l'inverse.
+  final List<Option> kinds;
+  final List<Option> sexes;
+  final List<Option> ageRanges;
+  final List<String> referrals;
+  final List<String> followupSteps;
 
   String? zoneName(int? id) {
     for (final z in zones) {
