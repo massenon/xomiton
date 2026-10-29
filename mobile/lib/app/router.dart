@@ -27,7 +27,9 @@ import '../features/home/presentation/resources_page.dart';
 import '../features/home/presentation/themes_pages.dart';
 import '../features/pair/presentation/pair_alerts_pages.dart';
 import '../features/pair/presentation/pair_cases_pages.dart';
+import '../features/pair/presentation/pair_collect_page.dart';
 import '../features/pair/presentation/pair_home_page.dart';
+import '../features/pair/presentation/pair_sync_pages.dart';
 import '../features/profile/presentation/profile_page.dart';
 import '../features/profile/presentation/progressive_page.dart';
 import '../features/profile/presentation/security_page.dart';
@@ -216,7 +218,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
         branches: [
           StatefulShellBranch(routes: [
-            GoRoute(path: '/pair/accueil', builder: (_, _) => const PairHomePage()),
+            GoRoute(
+              path: '/pair/accueil',
+              builder: (_, _) => const PairHomePage(),
+              routes: [
+                GoRoute(
+                  path: 'synchro',
+                  builder: (_, _) => const PairSyncPage(),
+                  routes: [
+                    GoRoute(
+                      path: 'conflit/:id',
+                      builder: (_, state) => PairConflictPage(id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
@@ -233,6 +250,8 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: '/pair/dossiers',
               builder: (_, _) => const PairCasesPage(),
               routes: [
+                // Avant `:code`, sinon « collecte » serait lu comme un code de dossier.
+                GoRoute(path: 'collecte', builder: (_, _) => const PairCollectPage()),
                 GoRoute(
                   path: ':code',
                   builder: (_, state) => PairCasePage(code: state.pathParameters['code']!),

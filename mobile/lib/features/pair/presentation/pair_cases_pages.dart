@@ -879,7 +879,7 @@ class _PairFollowupFormPageState extends ConsumerState<PairFollowupFormPage> {
               onChanged: (s) => setState(() => _step = s),
             ),
           const SizedBox(height: XmSpace.s3),
-          _DateField(
+          PairDateField(
             fieldKey: const ValueKey('fu-date'),
             label: '${context.t('peer_case_fields_date')} *',
             value: _fmt(_date),
@@ -904,7 +904,7 @@ class _PairFollowupFormPageState extends ConsumerState<PairFollowupFormPage> {
             onChanged: (o) => setState(() => _outcome = o ?? 'planifie'),
           ),
           const SizedBox(height: XmSpace.s3),
-          _DateField(
+          PairDateField(
             fieldKey: const ValueKey('fu-next'),
             label:
                 '${context.t('peer_case_fields_next')} (${context.t('mobile_pair_optional')})',
@@ -940,45 +940,4 @@ class _PairFollowupFormPageState extends ConsumerState<PairFollowupFormPage> {
       ),
     );
   }
-}
-
-class _DateField extends StatelessWidget {
-  const _DateField({
-    required this.fieldKey,
-    required this.label,
-    required this.value,
-    required this.onTap,
-    this.error,
-    this.onClear,
-  });
-  final Key fieldKey;
-  final String label;
-  final String value;
-  final String? error;
-  final VoidCallback onTap;
-  final VoidCallback? onClear;
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-    key: fieldKey,
-    borderRadius: BorderRadius.circular(XmSpace.radiusMd),
-    onTap: onTap,
-    child: InputDecorator(
-      decoration: InputDecoration(
-        labelText: label,
-        errorText: error,
-        suffixIcon: onClear != null
-            ? IconButton(
-                tooltip: context.t('common_cancel'),
-                icon: const Icon(Icons.clear),
-                onPressed: onClear,
-              )
-            : const Icon(Icons.calendar_today_outlined),
-      ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 24),
-        child: Text(value.isEmpty ? ' ' : value),
-      ),
-    ),
-  );
 }

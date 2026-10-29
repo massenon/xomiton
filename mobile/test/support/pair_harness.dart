@@ -67,6 +67,42 @@ Map<String, dynamic> alertRow(
       .toIso8601String(),
 };
 
+/// Réponse de `GET pair/validation-rules` : règles actives et listes fermées.
+Map<String, dynamic> rulesBody({List<Map<String, dynamic>>? rules, String updatedAt = 'r1'}) => {
+  'data':
+      rules ??
+      [
+        {'key': 'required', 'locked': true},
+        {'key': 'date_not_future'},
+        {'key': 'age_range'},
+        {'key': 'commune_in_zone'},
+        {'key': 'min_len_20'},
+        {
+          'key': 'plausibility',
+          'params': {'max_past_years': 5},
+        },
+        {
+          'key': 'duplicates',
+          'params': {
+            'fields': ['date', 'commune', 'population', 'age'],
+          },
+        },
+      ],
+  'meta': {
+    'updated_at': updatedAt,
+    'options': {
+      'age_ranges': [
+        {'value': '10-14', 'label': '10-14 ans'},
+        {'value': '15-17', 'label': '15-17 ans'},
+        {'value': '18-24', 'label': '18-24 ans'},
+      ],
+      'referrals': ['Centre de santé', 'Service juridique'],
+      'followup_steps': ['Premier entretien', 'Appel de suivi'],
+      'notes_min_length': 20,
+    },
+  },
+};
+
 /// Routes communes de l'espace pair ; `extra` complète ou remplace.
 Map<String, FakeHandler> pairRoutes({
   Map<String, dynamic>? peer,
@@ -105,25 +141,51 @@ Map<String, FakeHandler> pairRoutes({
     'data': [],
     'meta': {'open': 0},
   }),
-  'GET pair/validation-rules': (_) => jsonBody(
+  'GET pair/validation-rules': (_) => jsonBody(200, rulesBody(), headers: {'ETag': '"r1"'}),
+  'GET zones': (_) => jsonBody(
     200,
     {
-      'data': [],
-      'meta': {
-        'updated_at': 'r1',
-        'options': {
-          'age_ranges': [
-            {'value': '10-14', 'label': '10-14 ans'},
-            {'value': '15-17', 'label': '15-17 ans'},
-            {'value': '18-24', 'label': '18-24 ans'},
+      'data': [
+        {
+          'id': 1,
+          'name': 'Littoral',
+          'communes': [
+            {'id': 3, 'name': 'Cotonou'},
           ],
-          'referrals': ['Centre de santé', 'Service juridique'],
-          'followup_steps': ['Premier entretien', 'Appel de suivi'],
-          'notes_min_length': 20,
         },
+        {
+          'id': 2,
+          'name': 'Atlantique',
+          'communes': [
+            {'id': 5, 'name': 'Abomey-Calavi'},
+            {'id': 6, 'name': 'Ouidah'},
+          ],
+        },
+      ],
+    },
+    headers: {'ETag': '"z"'},
+  ),
+  'GET violence-types': (_) => jsonBody(
+    200,
+    {
+      'data': [
+        {'id': 4, 'slug': 'physique', 'label': 'Violence physique'},
+        {'id': 5, 'slug': 'sexuelle', 'label': 'Violence sexuelle'},
+      ],
+    },
+    headers: {'ETag': '"v"'},
+  ),
+  'GET pair/collect-options': (_) => jsonBody(
+    200,
+    {
+      'data': {
+        'populations': [
+          {'id': 2, 'label': 'Femmes cis'},
+          {'id': 3, 'label': 'Hommes gays'},
+        ],
       },
     },
-    headers: {'ETag': '"r1"'},
+    headers: {'ETag': '"p"'},
   ),
   ...extra,
 };
@@ -191,3 +253,15 @@ Future<void> revealFinder(WidgetTester tester, Finder f) async {
 
 Future<void> revealKey(WidgetTester tester, String key) =>
     revealFinder(tester, find.byKey(ValueKey(key)));
+
+/// Choisit une valeur dans une liste déroulante repérée par le début de sa clé
+/// (la clé change avec la valeur, pour que la liste suive l'état).
+Future<void> pickDropdown(WidgetTester tester, String keyPrefix, String option) async {
+  final f = find.byWidgetPredicate((w) => w.key is ValueKey && '${(w.key as ValueKey).value}'.startsWith(keyPrefix));
+  await tester.ensureVisible(f.first);
+  await tester.pumpAndSettle();
+  await tester.tap(f.first);
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(option).last);
+  await tester.pumpAndSettle();
+}

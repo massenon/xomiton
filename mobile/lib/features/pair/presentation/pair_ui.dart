@@ -7,6 +7,7 @@ import '../../../app/theme/xm_tokens.dart';
 import '../../../core/auth_spaces/presentation/space_widgets.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/network/api_exception.dart';
+import '../../../core/outbox/outbox.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/sync/sync_providers.dart';
 import '../../../core/sync/sync_queue.dart';
@@ -125,7 +126,10 @@ class SyncStatusChip extends ConsumerWidget {
     final online = ref.watch(isOnlineProvider);
     final entries =
         ref.watch(syncQueueEntriesProvider).value ?? const <QueueEntry>[];
-    final waiting = entries.where((e) => e.status != QueueStatus.sent).length;
+    final sos = (ref.watch(outboxEntriesProvider).valueOrNull ?? const <OutboxEntry>[])
+        .where((o) => o.type == OutboxType.sos)
+        .length;
+    final waiting = entries.where((e) => e.status != QueueStatus.sent).length + sos;
     final conflicts = entries
         .where((e) => e.status == QueueStatus.conflict)
         .length;
@@ -238,9 +242,14 @@ class PairDetailScaffold extends StatelessWidget {
     appBar: AppBar(
       title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
       actions: [
-        const Padding(
-          padding: EdgeInsets.only(right: XmSpace.s2),
-          child: SyncStatusChip(),
+        Padding(
+          padding: const EdgeInsets.only(right: XmSpace.s2),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.sizeOf(context).width * 0.55,
+            ),
+            child: const SyncStatusChip(),
+          ),
         ),
         ...?actions,
       ],
@@ -363,4 +372,47 @@ void showSnack(BuildContext context, String text) {
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(SnackBar(content: Text(text)));
+}
+
+/// Champ de date (sélecteur natif), cible d'au moins 44 px.
+class PairDateField extends StatelessWidget {
+  const PairDateField({
+    super.key,
+    required this.fieldKey,
+    required this.label,
+    required this.value,
+    required this.onTap,
+    this.error,
+    this.onClear,
+  });
+  final Key fieldKey;
+  final String label;
+  final String value;
+  final String? error;
+  final VoidCallback onTap;
+  final VoidCallback? onClear;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    key: fieldKey,
+    borderRadius: BorderRadius.circular(XmSpace.radiusMd),
+    onTap: onTap,
+    child: InputDecorator(
+      decoration: InputDecoration(
+        labelText: label,
+        errorText: error,
+        suffixIcon: onClear != null
+            ? IconButton(
+                tooltip: context.t('common_cancel'),
+                icon: const Icon(Icons.clear),
+                onPressed: onClear,
+              )
+            : const Icon(Icons.calendar_today_outlined),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 24),
+        child: Text(value.isEmpty ? ' ' : value),
+      ),
+    ),
+  );
 }
