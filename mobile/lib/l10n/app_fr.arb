@@ -35,6 +35,10 @@
     "@account_deletion_newsletter_reason": {
         "description": "account.deletion.newsletter_reason"
     },
+    "account_devices_current": "C’est l’appareil que tu utilises. Déconnecte-toi pour l’effacer.",
+    "@account_devices_current": {
+        "description": "account.devices.current"
+    },
     "account_devices_fields_app_version": "Version de l’application",
     "@account_devices_fields_app_version": {
         "description": "account.devices.fields.app_version"

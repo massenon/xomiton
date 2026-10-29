@@ -251,3 +251,59 @@ it('marque à effacer au passage pair → membre (PUT admin/members/{id}/role) m
     app(ManagePeerRole::class)->apply($keeps, $this->admin);
     expect($keepsDevice->refresh()->wipe_requested_at)->toBeNull();
 });
+
+it('laisse la personne effacer elle-même un de ses autres appareils (mot de passe ressaisi), idempotent, journalisé', function (): void {
+    config(['xomiton.rate_limits.account_sensitive_per_hour' => 50]);
+    $pair = User::factory()->withProfile()->create(['password' => 'Motdepasse-2026!']);
+    $pair->assignRole('pair');
+    $lost = SyncDevice::factory()->create(['user_id' => $pair->id, 'label' => 'Tecno perdu']);
+    $current = SyncDevice::factory()->create(['user_id' => $pair->id]);
+    PushSubscription::factory()->create(['user_id' => $pair->id, 'sync_device_id' => $lost->id, 'kind' => 'fcm']);
+
+    $call = fn (array $body, SyncDevice $target, ?SyncDevice $from = null) => asDevice($pair, $from ?? $current)
+        ->postJson('/api/v1/me/devices/'.$target->device_uuid.'/wipe', $body);
+
+    $call([], $lost)->assertStatus(422)->assertJsonValidationErrors('password');
+    $call(['password' => 'mauvais'], $lost)->assertStatus(422);
+    expect($lost->refresh()->wipe_requested_at)->toBeNull();
+
+    $call(['password' => 'Motdepasse-2026!'], $lost)->assertStatus(202)
+        ->assertJsonPath('data.wipe.reason', 'owner')->assertJsonPath('data.revoked', true)->assertJsonPath('meta.already_requested', false);
+    $first = $lost->refresh()->wipe_requested_at;
+    expect(PushSubscription::query()->where('sync_device_id', $lost->id)->count())->toBe(0)
+        ->and(AuditLog::query()->where('action', 'device.wipe_requested')->latest('id')->first()->detail)->toContain('Tecno perdu')->toContain('motif=owner');
+
+    $this->travel(3)->minutes();
+    $call(['password' => 'Motdepasse-2026!'], $lost)->assertOk()->assertJsonPath('meta.already_requested', true);
+    expect($lost->refresh()->wipe_requested_at->equalTo($first))->toBeTrue();
+
+    // L'appareil lit l'ordre puis accuse, comme pour un ordre de l'administration.
+    asDevice($pair, $lost)->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.device.wipe.reason', 'owner');
+    asDevice($pair, $lost)->postJson('/api/v1/me/devices/'.$lost->device_uuid.'/wiped')->assertOk();
+
+    // Jamais l'appareil de la requête, jamais celui d'un autre compte.
+    $call(['password' => 'Motdepasse-2026!'], $current)->assertStatus(422)->assertJsonValidationErrors('device_uuid');
+    $stranger = SyncDevice::factory()->create();
+    $call(['password' => 'Motdepasse-2026!'], $stranger)->assertNotFound();
+    expect($stranger->refresh()->wipe_requested_at)->toBeNull()->and($current->refresh()->wipe_requested_at)->toBeNull();
+
+    Sanctum::actingAs($pair);
+    $this->flushHeaders()->postJson('/api/v1/me/devices/'.(string) Str::uuid().'/wipe', ['password' => 'Motdepasse-2026!'])->assertNotFound();
+});
+
+it('exige un compte connecté pour effacer un appareil', function (): void {
+    $this->postJson('/api/v1/me/devices/'.$this->device->device_uuid.'/wipe', ['password' => 'x'])->assertUnauthorized();
+});
+
+it('limite l’effacement par la personne (5 essais par heure) contre le devinage du mot de passe', function (): void {
+    $pair = User::factory()->withProfile()->create(['password' => 'Motdepasse-2026!']);
+    $pair->assignRole('pair');
+    $target = SyncDevice::factory()->create(['user_id' => $pair->id]);
+
+    foreach (range(1, 5) as $_) {
+        asDevice($pair, $this->device)->postJson('/api/v1/me/devices/'.$target->device_uuid.'/wipe', ['password' => 'mauvais'])->assertStatus(422);
+    }
+
+    asDevice($pair, $this->device)->postJson('/api/v1/me/devices/'.$target->device_uuid.'/wipe', ['password' => 'Motdepasse-2026!'])->assertStatus(429);
+    expect($target->refresh()->wipe_requested_at)->toBeNull();
+});

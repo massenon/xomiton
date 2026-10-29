@@ -5,6 +5,7 @@
     "Membre anonyme": "Membre anonyme",
     "The given data was invalid.": "Les données envoyées sont invalides.",
     "account.deletion.newsletter_reason": "Compte supprimé",
+    "account.devices.current": "C’est l’appareil que tu utilises. Déconnecte-toi pour l’effacer.",
     "account.devices.fields.app_version": "Version de l’application",
     "account.devices.fields.device_uuid": "Identifiant de l’appareil",
     "account.devices.fields.label": "Nom de l’appareil",

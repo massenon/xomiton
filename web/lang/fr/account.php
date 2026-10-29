@@ -32,6 +32,7 @@ return [
     'devices' => [
         'revoked' => 'Cet appareil a été déconnecté de ton compte. Réinstalle ou réinitialise l’application pour l’enregistrer à nouveau.',
         'taken' => 'Cet identifiant d’appareil est déjà utilisé. Réinitialise l’application pour en générer un nouveau.',
+        'current' => 'C’est l’appareil que tu utilises. Déconnecte-toi pour l’effacer.',
         'wipe_not_requested' => 'Aucun effacement n’est demandé pour cet appareil.',
         'fields' => [
             'device_uuid' => 'Identifiant de l’appareil',

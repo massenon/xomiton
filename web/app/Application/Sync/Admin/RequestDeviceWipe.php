@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\DB;
  * (la date et le motif d'origine restent) ; un appareil déjà effacé ne l'est plus. Journal `device.wipe_requested`
  * (libellé et motif, jamais l'UUID).
  *
- * Deux déclencheurs : l'action de l'administration (web Livewire et `admin/devices/{uuid}/wipe`), et le **retrait du rôle
+ * Trois déclencheurs : l'action de l'administration (web Livewire et `admin/devices/{id}/wipe`), la personne elle-même pour
+ * un de ses appareils (`POST me/devices/{uuid}/wipe`, mot de passe ressaisi) et le **retrait du rôle
  * pair** (`forAccount`, sans contrôle de permission : l'appelant a déjà été autorisé à retirer le rôle) qui marque tous les
  * appareils encore actifs de la personne.
  */
@@ -30,8 +31,11 @@ final class RequestDeviceWipe
 
     public const REASON_PEER_ROLE_REMOVED = 'peer_role_removed';
 
+    /** La personne efface elle-même un de ses appareils (téléphone perdu ou volé), depuis un autre appareil. */
+    public const REASON_OWNER = 'owner';
+
     /** @var list<string> */
-    public const REASONS = [self::REASON_ADMIN, self::REASON_PEER_ROLE_REMOVED];
+    public const REASONS = [self::REASON_ADMIN, self::REASON_PEER_ROLE_REMOVED, self::REASON_OWNER];
 
     /**
      * Action de l'administration sur un appareil.
@@ -45,6 +49,23 @@ final class RequestDeviceWipe
         }
 
         $this->mark($device, self::REASON_ADMIN, $by);
+
+        return $device->refresh();
+    }
+
+    /**
+     * La personne efface un de SES appareils (téléphone perdu ou volé) : `POST me/devices/{uuid}/wipe`. Le mot de passe a
+     * été ressaisi par l'appelant ; un appareil d'un autre compte n'est jamais touché (AuthorizationException).
+     *
+     * @throws AuthorizationException
+     */
+    public function byOwner(User $owner, SyncDevice $device): SyncDevice
+    {
+        if ((int) $device->user_id !== (int) $owner->getKey()) {
+            throw new AuthorizationException;
+        }
+
+        $this->mark($device, self::REASON_OWNER, $owner);
 
         return $device->refresh();
     }

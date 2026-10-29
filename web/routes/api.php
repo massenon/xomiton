@@ -246,6 +246,7 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
         Route::post('devices', [DeviceController::class, 'store'])->name('devices.store');
         Route::delete('devices/{uuid}', [DeviceController::class, 'destroy'])->whereUuid('uuid')->name('devices.destroy');
         // P15-11 : accusé d'effacement à distance (naturellement idempotent), seul appel permis à un appareil révoqué par l'ordre.
+        Route::post('devices/{uuid}/wipe', [DeviceController::class, 'wipe'])->whereUuid('uuid')->middleware('throttle:account_sensitive')->name('devices.wipe');
         Route::post('devices/{uuid}/wiped', [DeviceController::class, 'wiped'])->whereUuid('uuid')->name('devices.wiped');
         // D-MOB-15 : demander le rôle pair depuis le profil (jamais d'auto-attribution : la décision est celle d'un·e admin).
         Route::get('role-requests', [MeRoleRequestController::class, 'index'])->name('role_requests.index');
