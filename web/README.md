@@ -13,6 +13,8 @@ Avant toute tâche, lire `../docs/MASTER_PROMPT.md` puis `../docs/IMPLEMENTATION
 
 ## Installation locale
 
+Guides pour le client (français, pas à pas) : installation sur son ordinateur Windows, macOS ou Linux [`../docs/INSTALLATION_LOCALE.md`](../docs/INSTALLATION_LOCALE.md) ; mise en production cPanel [`../docs/GUIDE_DEPLOIEMENT.md`](../docs/GUIDE_DEPLOIEMENT.md) ; état réel et reste à faire [`../docs/PLAN_FINALISATION.md`](../docs/PLAN_FINALISATION.md). Variables d'environnement : `.env.example` (dont le bloc « Informations légales », à compléter par le client).
+
 Recette humaine : `scripts/recette-local.sh` puis `scripts/recette-lancer.sh` (à la racine du dépôt), détaillés dans `../docs/GUIDE_RECETTE.md`. Pas à pas manuel :
 
 ```bash
