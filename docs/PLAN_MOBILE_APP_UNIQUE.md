@@ -214,7 +214,7 @@ Règles clés (déjà garanties par le serveur, API §21) : élément dédoublon
 | Sujet | Décision |
 |---|---|
 | Charge utile | données seules `{type, id}` (contrat P15-08) ; le texte est choisi par l'application (neutre si aperçus masqués) ; **aucun récit, nom ni position** dans la charge |
-| Destinataires du push SOS et alertes (décision 6) | **les admins ET les pairs éducateurs** ; « de garde seulement » ou « tous » (D-MOB-10) reste à préciser : recommandation, admins de garde + pairs de la zone, escalade nationale à 5 min |
+| Destinataires du push SOS et alertes (décision 6) | **les admins ET les pairs éducateurs** ; **Tranché 2026-10-29 (recommandation retenue, D-MOB-10)** : admins de garde + pairs de la zone, puis escalade nationale à 5 min sans accusé (tous les admins et tous les pairs) |
 | Types ajoutés | `alert_routed` (pair : ouvre `/pair/alertes/:id`), `duty_sos` (admin : ouvre `/admin/alertes/:id`), `peer_pending` (admin : inscription ou demande à valider), `content_reported` (admin : contenu signalé), `rules` (pair : rafraîchir `validation-rules`), `sync` (pair : lancer un cycle) ; types inconnus → `/notifications` (existant) |
 | Canaux Android | « SOS et alertes » (existant, haute importance) + **« Astreinte »** pour l'admin / pair de garde (haute importance, son d'alarme) ; ne pas demander `USE_FULL_SCREEN_INTENT` (restreint depuis Android 14 : rejet Play probable) |
 | Fiabilité | le push n'est **jamais l'unique** chemin : polling au premier plan, liste d'alertes toujours relue à l'ouverture ; escalade serveur RG-05 (5 min sans accusé) indépendante de l'application |
@@ -343,7 +343,7 @@ Mesures qui rendent A réversible : modules `features/pair` et `features/admin` 
 | Permissions | localisation en premier plan (SOS), notifications (Android 13) | pas de `USE_FULL_SCREEN_INTENT`, pas de localisation en arrière-plan, pas de `SYSTEM_ALERT_WINDOW` |
 | Nom / icône neutres du mode discret | une icône « Notes » peut être lue comme trompeuse | l'alias est choisi par l'utilisateur·rice, documenté dans l'application et la fiche ; point à valider avec le client |
 | Cadence de mise à jour | revue de 1 à 7 jours | **une seule version Play** (décision 7) : pistes interne → fermée → production, déploiement progressif (10 % → 100 %) ; les interrupteurs serveur par espace restent utiles pour couper un espace sans republier, plus pour étaler deux versions |
-| Fiche Play (décision 8) | tranches d'âge, pays, prix, langue | âge minimal de l'application 15 ans ; **tranches d'âge Play « 16-17 » et « 18+ » seulement** (point de cohérence : la tranche la plus basse déclarée est supérieure à l'âge minimal de 15 ans, D-MOB-18) ; **pas de tarif** (gratuite, sans achat) ; **tous les pays** ; **français uniquement** (aucune fiche ni localisation anglaise : le gabarit « en » de `docs/playstore/` reste vide) |
+| Fiche Play (décision 8) | tranches d'âge, pays, prix, langue | âge minimal de l'application 15 ans ; **tranches d'âge Play « 16-17 » et « 18+ » seulement** (point de cohérence D-MOB-18, **conservé** : la tranche la plus basse déclarée est supérieure à l'âge minimal de 15 ans ; à valider par le conseil juridique avant publication ; l'application affiche la règle des 15 ans à l'inscription) ; **pas de tarif** (gratuite, sans achat) ; **tous les pays** ; **français uniquement** (aucune fiche ni localisation anglaise : le gabarit « en » de `docs/playstore/` reste vide) |
 | Politique de contenu sensible (VBG, LBTQ+) | catégories examinées avec attention | descriptions factuelles ; pas de capture d'écran de contenus réels ; ressources d'aide mentionnées |
 
 ### 8.4 Risque de fuite d'écrans admin dans l'APK
@@ -466,7 +466,7 @@ Jalons internes (pistes de test, **pas des versions Play distinctes**) : **A —
 
 **P15-19 — Push SOS et alertes (admins ET pairs)** (4 M + 3 S)
 
-| Contenu | Canal Android « Astreinte » ; types `alert_routed`, `duty_sos`, `peer_pending`, `content_reported`, `sync`, `rules` ; ouverture profonde avec changement d'espace après PIN ; textes neutres si aperçus masqués ; serveur : **le push SOS et alertes va aux admins ET aux pairs éducateurs** (décision 6 ; admins de garde `OnCallRoster` ou tous, D-MOB-10) dans la requête SOS (D7), reprise par `notifications:retry` ; iOS : APNs (humain : compte Apple) |
+| Contenu | Canal Android « Astreinte » ; types `alert_routed`, `duty_sos`, `peer_pending`, `content_reported`, `sync`, `rules` ; ouverture profonde avec changement d'espace après PIN ; textes neutres si aperçus masqués ; serveur : **le push SOS et alertes va aux admins ET aux pairs éducateurs** (décision 6 ; admins de garde + pairs de la zone, escalade nationale à 5 min, D-MOB-10 tranché) dans la requête SOS (D7), reprise par `notifications:retry` ; iOS : APNs (humain : compte Apple) |
 |---|---|
 | Acceptation | notification reçue app fermée ouvre l'écran cible ; charge `{type, id}` seulement (test) ; un admin non de garde n'est pas réveillé la nuit par un signalement non critique ; SOS : push reçu < 30 s sur 4G (mesure de recette) |
 | Tests | test de charge utile (aucun champ sensible) ; test de routage des types ; recette sur appareil réel (MOB-17) |
@@ -508,28 +508,28 @@ Jalons internes (pistes de test, **pas des versions Play distinctes**) : **A —
 
 ## 10. Décisions du client (29/10/2026) et points restant à valider
 
-**Tranché 2026-10-29** : le client a rendu les décisions suivantes (D-MOB-1 à D-MOB-5, D-MOB-10 en partie, D-MOB-11, D-MOB-12, D-MOB-14). Les décisions D-MOB-6 à D-MOB-9 et D-MOB-13, que le client n'a pas évoquées, gardent **la recommandation du plan, retenue par défaut**, à confirmer au passage des maquettes. Le plan reste la source ; `FEUILLE_DE_DECISION.md` (§E) et `DECISIONS_A_VALIDER.md` (§4) reprennent l'état des décisions.
+**Tranché 2026-10-29** : le client a rendu les décisions suivantes (D-MOB-1 à D-MOB-5, D-MOB-10, D-MOB-11, D-MOB-12, D-MOB-14). Le client a ensuite répondu « ALLONS Y » aux six arbitrages D-MOB-4, 10, 15, 16, 17, 18 : **recommandation de chaque ligne retenue**, appliquée dans le serveur (voir `API.md` §23, `ROLE_ET_PERMISSIONS.md`). Les décisions D-MOB-6 à D-MOB-9 et D-MOB-13, que le client n'a pas évoquées, gardent **la recommandation du plan, retenue par défaut**, à confirmer au passage des maquettes. Le plan reste la source ; `FEUILLE_DE_DECISION.md` (§E) et `DECISIONS_A_VALIDER.md` (§4) reprennent l'état des décisions.
 
 | Réf. | Décision | Statut / décision du client | Effet sur le plan |
 |---|---|---|---|
 | D-MOB-1 | **Une seule application** (option A du §8.1), un seul login ; inscription publique = membres seulement ; rôle pair ajouté sur invitation ou attribution (membre ET pair) ; l'admin est aussi membre ; l'admin crée un·e pair par invitation et valide inscriptions et demandes depuis le web ou le mobile | **Tranché 2026-10-29** (option A) ; l'option C reste le plan B si la revue Play l'exige | §6 (modèle de rôles), P15-10, P15-24 |
 | D-MOB-2 | Espace pair dans la v1 (`FEUILLE_DE_DECISION.md` Q38 recommandait l'inverse : **recommandation corrigée**) | **Tranché 2026-10-29** : espace pair dans la v1 | jalon A maintenu (P15-12 à P15-15, P15-20) |
 | D-MOB-3 | Périmètre admin mobile | **Tranché 2026-10-29, élargi** : alertes, inscriptions et pairs, rôles et invitations, maintenance, notifications, modération essentielle (contenus signalés), recherche de membre, astreinte | + P15-24 (8 M + 6 S), P15-18 +1 M ; total 115 j.p. |
-| D-MOB-4 | Position du SOS affichée aux admins | **Tranché 2026-10-29** : **arrondie** (~1 km). L'option « exacte sur demande journalisée » est abandonnée ; point à confirmer : aucune position exacte pour l'admin, même en intervention | route `admin/alerts/{ulid}/position` retirée (§11.2) |
+| D-MOB-4 | Position du SOS affichée aux admins | **Tranché 2026-10-29** : **arrondie** (~1 km). L'option « exacte sur demande journalisée » est abandonnée. **Tranché 2026-10-29 (recommandation retenue)** : **jamais exacte pour l'admin, même en intervention** ; vérifié par test (aucune route `admin/*` de position, aucune réponse ne porte les coordonnées exactes, `AdminMobileApiTest`) | route `admin/alerts/{ulid}/position` retirée (§11.2) |
 | D-MOB-5 | Conflit 409 | **Tranché 2026-10-29** : **le pair tranche lui-même** (valeur du serveur ou mon appareil) | endpoint de résolution obligatoire ; P15-15 +1 M ; règle métier à écrire |
 | D-MOB-6 | PIN obligatoire pour pair et admin ; verrouillage 60 s / 30 s | recommandation retenue par défaut | P15-11 |
 | D-MOB-7 | Expiration des données pair hors contact : 14 jours | recommandation retenue par défaut, à adapter au terrain | P15-11 |
 | D-MOB-8 | Mode discret activé par défaut pour pair et admin | recommandation retenue par défaut | P15-11 |
 | D-MOB-9 | Durée de vie du jeton admin (7 jours glissants) et `step-up` pour maintenance / refus d'inscription | recommandation retenue par défaut | P15-16 |
-| D-MOB-10 | Qui reçoit le push SOS et alertes | **Tranché 2026-10-29** : **les admins ET les pairs éducateurs** ; reste à préciser : admins « de garde » seulement ou tous (recommandation : de garde + escalade nationale à 5 min) | P15-19 |
+| D-MOB-10 | Qui reçoit le push SOS et alertes | **Tranché 2026-10-29** : **les admins ET les pairs éducateurs**. **Tranché 2026-10-29 (recommandation retenue)** : à la création, **admins DE GARDE + pairs DE LA ZONE** de l'alerte (`xomiton.alerts.peer_recipients = zone`, repli sur tous les pairs si la zone n'en a pas) ; **escalade nationale à 5 minutes sans accusé de réception** (tous les admins et tous les pairs, en plus du point focal national ; durée `alerts.escalation.sos.escalate_after_minutes` / `XOMITON_ESCALATION_MINUTES`) ; l'accusé de n'importe quel destinataire arrête l'escalade (`alerts:escalate`) | P15-19 |
 | D-MOB-11 | Mise en ligne | **Tranché 2026-10-29** : **une seule version Play** | §8.3, §9.1 : jalons A et B internes, release unique |
 | D-MOB-12 | Maquettes (`index.html`, `espace-pair.html`, `admin-mobile.html`), droits d'image du splash | **Tranché 2026-10-29** : les **maquettes sont validées par le client avant tout code mobile** ; droits d'image du splash : licence confirmée le 28/10 (`design-system/DECISIONS.md`) | aucun lot mobile ne démarre avant la validation (MOB-10) |
 | D-MOB-13 | Nom / icône « Notes » du mode discret au regard des règles Play | recommandation retenue par défaut (maintenir, expliquer) | P15-11, P15-22 |
 | D-MOB-14 | Fiche Play | **Tranché 2026-10-29** : âge minimal 15 ans, **pas de tarif**, **tous les pays**, tranches d'âge Play « 16-17 » et « 18+ » seulement, **français uniquement** | P15-22 ; `docs/playstore/` (non modifié ici) à aligner par son responsable |
-| D-MOB-15 | Un membre peut-il **demander** le rôle pair depuis son profil (en plus de l'invitation et de l'attribution) ? Les maquettes le proposent | **À valider** (proposition des maquettes) | `POST me/role-requests`, carte « Mes espaces » |
-| D-MOB-16 | Le rôle **admin** s'attribue-t-il seulement depuis le site web ? Les maquettes l'affichent ainsi | **À valider** (recommandé : oui, risque d'élévation de privilège) | P15-24 |
-| D-MOB-17 | Faut-il valider **toutes** les inscriptions de membres ou seulement les cas signalés (e-mail jetable, etc.) ? Les maquettes montrent des cas signalés ; l'inscription membre actuelle est immédiate après le code e-mail | **À valider** (voir aussi Q91 `reg_manual_validation`) | A4, P15-18 |
-| D-MOB-18 | Cohérence âge : l'application exige 15 ans, la fiche Play déclare « 16-17 » et « 18+ » | **À valider** par le client avec le conseil juridique (une personne de 15 ans est dans l'application mais hors des tranches déclarées) | fiche Play, Data safety |
+| D-MOB-15 | Un membre peut-il **demander** le rôle pair depuis son profil (en plus de l'invitation et de l'attribution) ? Les maquettes le proposent | **Tranché 2026-10-29 (recommandation retenue)** : **oui**, un membre peut **demander** le rôle pair (motif court facultatif, une demande en cours à la fois, jamais d'auto-attribution) ; l'admin approuve ou refuse avec motif depuis la file web (page Inscriptions) ou l'appli, avec `step-up` | `POST me/role-requests`, carte « Mes espaces » |
+| D-MOB-16 | Le rôle **admin** s'attribue-t-il seulement depuis le site web ? Les maquettes l'affichent ainsi | **Tranché 2026-10-29 (recommandation retenue)** : **oui**, le rôle admin (comme modérateur·rice et super-admin) ne s'attribue **que depuis le web, par un·e super-admin** ; l'API mobile répond 403 (rôle ou invitation d'administration), vérifié par test | P15-24 |
+| D-MOB-17 | Faut-il valider **toutes** les inscriptions de membres ou seulement les cas signalés (e-mail jetable, etc.) ? Les maquettes montrent des cas signalés ; l'inscription membre actuelle est immédiate après le code e-mail | **Tranché 2026-10-29 (recommandation retenue)** : **seules les inscriptions SIGNALÉES** attendent la validation (e-mail jetable, inscriptions répétées avec la même empreinte en peu de temps) ; le reste est immédiat après confirmation de l'e-mail ; `reg_manual_validation = all` (Q91) reste l'interrupteur « tout valider » | A4, P15-18 |
+| D-MOB-18 | Cohérence âge : l'application exige 15 ans, la fiche Play déclare « 16-17 » et « 18+ » | **Tranché 2026-10-29 (recommandation retenue)** : **conservé : application 15 ans, tranches Play 16-17 et 18+, à valider par le conseil juridique avant publication** ; l'application affiche la règle des 15 ans à l'inscription (une personne de 15 ans est dans l'application mais hors des tranches déclarées) | fiche Play, Data safety |
 
 ## 11. API : existant et à créer
 
@@ -545,7 +545,7 @@ Jalons internes (pistes de test, **pas des versions Play distinctes**) : **A —
 | `heartbeat` : champs `wipe`, `rules_updated_at` | **à créer** | P15-11, P15-12 |
 | `POST me/devices/{uuid}/wiped` et action « Effacer à distance » | **à créer** | P15-11 |
 | `POST sync/conflicts/{id}/resolve` `{choice: server ou mine}` | **à créer (obligatoire : le pair tranche, D-MOB-5)** ; historique des deux versions, journal d'audit | P15-15 |
-| `GET me` : liste `roles[]` cumulée ; `POST auth/register` avec code d'invitation ; `POST me/role-requests` (demande du rôle pair, D-MOB-15) | **à confirmer / à créer** (voir `API.md`, tenu par un autre agent) | P15-10, P15-24 |
+| `GET me` : liste `roles[]` cumulée ; `POST auth/register` avec code d'invitation ; `POST me/role-requests` (demande du rôle pair, D-MOB-15) | **livré côté serveur** (`me/role-requests` : `API.md` §23.3 bis ; `GET me` et `auth/register` : voir `API.md`) | P15-10, P15-24 |
 | Push `rules`, `sync`, `alert_routed` | **à créer** (types de notification) | P15-19, P15-20 |
 
 ### 11.2 Espace admin d'astreinte (tout est à créer, sauf l'authentification)
@@ -608,7 +608,7 @@ Règles communes : réponses `Cache-Control: no-store, private` ; enveloppe `{da
 4. Aucun contenu sensible dans les notifications, les journaux ni les captures ; `FLAG_SECURE` vérifié sur tous les écrans pair / admin.
 5. Taille de l'AAB mesurée et consignée, sous le budget fixé en P15-10.
 6. Fiche Play prête : comptes de test par rôle, Data safety à jour, permissions justifiées.
-7. Décisions D-MOB-1 à D-MOB-18 tranchées (D-MOB-1 à 5, 10 à 12, 14 le 29/10/2026 ; D-MOB-15 à 18 à valider) et consignées dans `DECISIONS_A_VALIDER.md`.
+7. Décisions D-MOB-1 à D-MOB-18 tranchées le 29/10/2026 (D-MOB-4, 10, 15 à 18 : recommandation retenue) et consignées dans `DECISIONS_A_VALIDER.md`.
 8. **Maquettes (simulateur, espace pair, admin) validées par le client (MOB-10) avant tout code mobile**, donc avant P15-10.
 
 ## 13. Risques et points à revisiter

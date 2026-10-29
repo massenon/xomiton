@@ -71,8 +71,10 @@ return [
         // Au plus N admins de garde reçoivent un SMS de repli par SOS (coût) ; les autres gardent cloche et push.
         'sos_admin_sms_max' => 2,
         // Destinataires des SOS et alertes (décisions client du 2026-10-29) : les admins ET les pair·es éducateur·rices.
-        // `all` (défaut) : tous les pair·es actifs ; `zone` : ceux du département de l'alerte (repli sur tous s'il n'y en a pas).
-        'peer_recipients' => 'all',
+        // D-MOB-10 (tranché 2026-10-29) : à la création, admins DE GARDE + pair·es DE LA ZONE de l'alerte (`zone`, défaut ;
+        // repli sur tous les pair·es s'il n'y en a pas) ; `all` : tous les pair·es. Sans accusé à `escalation.sos.escalate_after_minutes`
+        // (5 min, XOMITON_ESCALATION_MINUTES), escalade nationale : tous les admins et tous les pair·es.
+        'peer_recipients' => env('XOMITON_PEER_RECIPIENTS', 'zone'),
         // Position d'un SOS vue par l'admin sur mobile (admin/alerts/{id}) : ARRONDIE (décision client du 2026-10-29), nombre de
         // décimales des degrés (2 ≈ 1 km). La position exacte n'est jamais servie à l'API admin.
         'admin_position_decimals' => 2,
@@ -177,6 +179,8 @@ return [
         // `directory_callback`, après la vérification de la clé : un rejeu ne compte pas), jamais le quota `report` par
         // IP des signalements anonymes (CGNAT mobile).
         'directory_callback_per_hour' => 10,
+        // Demande du rôle pair depuis le profil (D-MOB-15, limiteur `role_request`) : par compte et par jour.
+        'role_request_per_day' => 3,
         // Synchronisation (P9-06) : lots `POST sync/push` par compte et par minute (limiteur `sync_push`, rejeux non
         // comptés) ; un lot qui porte un SOS n'est jamais limité (RG-01).
         'sync_push_per_minute' => 20,
@@ -226,6 +230,24 @@ return [
         // via l'API) ; ne pas confondre avec `age_min` (plausibilité de la tranche d'âge, RG-08).
         'min_age' => 15,
         'password_min_length' => 10,
+        // D-MOB-17 (tranché 2026-10-29) : seules les inscriptions SIGNALÉES attendent la validation de l'équipe (le reste est
+        // immédiat après confirmation de l'e-mail ; `reg_manual_validation = all` valide tout). Signaux déterministes :
+        //  - `disposable_email` : domaine de l'adresse dans cette liste (XOMITON_DISPOSABLE_DOMAINS, séparés par des virgules,
+        //    s'ajoute à la liste ci-dessous ; un sous-domaine du domaine listé compte aussi) ;
+        //  - `repeated_fingerprint` : plus de `burst_max` inscriptions en `burst_minutes` minutes avec la même empreinte
+        //    (adresse IP + navigateur, lue dans les consentements d'inscription ; jamais conservée comme signal).
+        'registration_flags' => [
+            'disposable_domains' => [
+                'mailinator.com', 'guerrillamail.com', 'guerrillamail.net', 'sharklasers.com', 'yopmail.com', 'yopmail.fr',
+                '10minutemail.com', 'tempmail.com', 'temp-mail.org', 'throwawaymail.com', 'trashmail.com', 'getnada.com',
+                'maildrop.cc', 'dispostable.com', 'fakeinbox.com', 'mintemail.com', 'mohmal.com', 'emailondeck.com',
+                'tempail.com', 'burnermail.io',
+            ],
+            // Domaines à ajouter sans toucher au code : XOMITON_DISPOSABLE_DOMAINS="a.com,b.org".
+            'extra_domains' => (string) env('XOMITON_DISPOSABLE_DOMAINS', ''),
+            'burst_max' => 3,
+            'burst_minutes' => 60,
+        ],
         'pseudo_min_length' => 3,
         'pseudo_max_length' => 40,
         // Changement de pseudonyme (P8-09, Q81) : délai minimal entre deux changements (heures) et réservation de

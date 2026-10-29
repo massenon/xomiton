@@ -24,6 +24,7 @@ use Database\Seeders\ReferenceDataSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Database\Seeders\SettingsSeeder;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Tests\Support\FeedFixtures as F;
 
@@ -70,6 +71,7 @@ it('refuse (403) le groupe admin à un membre, un pair, un modérateur et à un 
         ['POST', 'invitations'], ['DELETE', 'invitations/1'], ['GET', 'maintenance'], ['POST', 'maintenance/enable'], ['POST', 'maintenance/disable'],
         ['GET', 'moderation/reports'], ['POST', 'moderation/reports/1/hide'], ['POST', 'moderation/reports/1/restore'], ['POST', 'moderation/reports/1/dismiss'],
         ['GET', 'notifications'], ['POST', 'notifications/read-all'],
+        ['GET', 'role-requests'], ['POST', 'role-requests/01ARZ3NDEKTSV4RRFFQ69G5FAV/approve'], ['POST', 'role-requests/01ARZ3NDEKTSV4RRFFQ69G5FAV/reject'],
     ];
 
     $stripped = F::member('admin');
@@ -187,6 +189,28 @@ it('détaille une alerte avec la position ARRONDIE, jamais exacte, et le récit'
     admCall($this->admin, 'GET', 'alerts/'.$alert->ulid)->assertJsonPath('data.position.lat', 6.4);
 
     admCall($this->admin, 'GET', 'alerts/01ARZ3NDEKTSV4RRFFQ69G5FAV')->assertNotFound();
+});
+
+it('ne renvoie JAMAIS la position exacte à un·e admin (D-MOB-4) : aucune route de position précise, aucune réponse ne la porte', function (): void {
+    $alert = Alert::factory()->sos()->located(6.370312, 2.391234)->withContact('+229 01 97 38 88 47')->create();
+
+    $paths = collect(Route::getRoutes()->getRoutes())->map->uri()->filter(fn (string $uri): bool => str_starts_with($uri, 'api/v1/admin/'));
+    expect($paths->filter(fn (string $uri): bool => str_contains($uri, 'position'))->all())->toBe([]);
+
+    $bodies = [];
+    foreach (['dashboard', 'alerts', 'alerts?state=all', 'alerts/'.$alert->ulid, 'alerts/'.$alert->ulid.'/contacts', 'notifications', 'registrations'] as $path) {
+        $bodies[$path] = admCall($this->admin, 'GET', $path)->assertOk()->getContent();
+    }
+    $bodies['acknowledge'] = admCall($this->admin, 'POST', 'alerts/'.$alert->ulid.'/acknowledge')->getContent();
+    $bodies['take'] = admCall($this->admin, 'POST', 'alerts/'.$alert->ulid.'/take')->getContent();
+    $bodies['note'] = admCall($this->admin, 'POST', 'alerts/'.$alert->ulid.'/notes', ['body' => 'Appel passé.'])->getContent();
+
+    foreach ($bodies as $where => $body) {
+        expect($body)->not->toContain('6.370312', $where)->not->toContain('2.391234', $where)->not->toContain('6.3703', $where)->not->toContain('2.3912', $where);
+    }
+    // Même super-admin, même en intervention (prise en charge faite) : détail toujours arrondi.
+    $detail = admCall($this->super, 'GET', 'alerts/'.$alert->ulid)->assertOk();
+    expect($detail->getContent())->not->toContain('6.3703')->and($detail->json('data.position.rounded'))->toBeTrue();
 });
 
 it('accuse réception, prend en charge et clôt une alerte : mêmes règles que le web, audit source=mobile', function (): void {
@@ -334,7 +358,7 @@ it('empêche l’escalade : un admin ne se donne ni ne donne un rôle d’admini
     $target->syncRoles(['membre', 'pair']);
 
     admCall($this->admin, 'PUT', 'members/'.$target->id.'/role', ['role' => 'admin'], stepUp: true)->assertForbidden();
-    admCall($this->admin, 'PUT', 'members/'.$this->admin->id.'/role', ['role' => 'superadmin'], stepUp: true)->assertStatus(422);
+    admCall($this->admin, 'PUT', 'members/'.$this->admin->id.'/role', ['role' => 'superadmin'], stepUp: true)->assertForbidden();
     expect($target->fresh()->hasRole('admin'))->toBeFalse();
 
     // Pair et membre : jamais d'accès à l'API admin, même pour s'attribuer un rôle.
@@ -343,8 +367,19 @@ it('empêche l’escalade : un admin ne se donne ni ne donne un rôle d’admini
     admCall($peer, 'POST', 'members/'.$peer->id.'/roles/peer')->assertForbidden();
     expect($peer->fresh()->hasRole('superadmin'))->toBeFalse();
 
-    admCall($this->super, 'PUT', 'members/'.$target->id.'/role', ['role' => 'admin'], stepUp: true)->assertOk()
-        ->assertJsonPath('data.roles', ['admin', 'membre', 'pair']);
+    // D-MOB-16 : même un·e super-admin ne donne pas (ni ne retire) de rôle d'administration depuis le mobile.
+    foreach (['moderateur', 'admin', 'superadmin'] as $level) {
+        admCall($this->super, 'PUT', 'members/'.$target->id.'/role', ['role' => $level], stepUp: true)->assertForbidden();
+    }
+    expect($target->fresh()->hasAnyRole(['moderateur', 'admin', 'superadmin']))->toBeFalse();
+
+    $other = User::factory()->withProfile()->create();
+    $other->syncRoles(['membre', 'admin']);
+    admCall($this->super, 'PUT', 'members/'.$other->id.'/role', ['role' => 'membre'], stepUp: true)->assertForbidden();
+    expect($other->fresh()->hasRole('admin'))->toBeTrue();
+
+    // Membre ↔ pair reste possible.
+    admCall($this->super, 'PUT', 'members/'.$target->id.'/role', ['role' => 'membre'], stepUp: true)->assertOk();
 });
 
 // --- Invitations ----------------------------------------------------------------------------------------------------------------
@@ -366,12 +401,17 @@ it('crée une invitation pair (code et lien rendus une seule fois), la liste san
     expect(RoleInvitation::query()->find($id)->status)->toBe(RoleInvitation::STATUS_REVOKED);
 });
 
-it('réserve l’invitation d’un·e admin au super-admin', function (): void {
+it('réserve l’invitation d’un·e admin au web (super-admin) : refusée sur le mobile', function (): void {
     admCall($this->admin, 'POST', 'invitations', ['role' => 'admin'], stepUp: true)->assertForbidden();
     admCall($this->admin, 'POST', 'invitations', ['role' => 'chef'], stepUp: true)->assertStatus(422);
-    admCall($this->super, 'POST', 'invitations', ['role' => 'admin'], stepUp: true)->assertCreated()->assertJsonPath('data.role', 'admin');
+    // D-MOB-16 : pas d'invitation d'administration depuis le mobile, même pour un·e super-admin (web seulement).
+    foreach (['moderateur', 'admin', 'superadmin'] as $level) {
+        admCall($this->super, 'POST', 'invitations', ['role' => $level], stepUp: true)->assertForbidden();
+    }
+    expect(RoleInvitation::query()->whereIn('role', ['moderateur', 'admin', 'superadmin'])->exists())->toBeFalse();
 
-    // L'admin ne voit pas les invitations d'administration.
+    // L'admin ne voit pas les invitations d'administration créées depuis le web.
+    RoleInvitation::query()->create(['role' => 'admin', 'code_hash' => RoleInvitation::hash('ABCD2345EFGH'), 'code_hint' => 'EFGH', 'expires_at' => now()->addDay(), 'invited_by' => $this->super->id, 'status' => RoleInvitation::STATUS_PENDING]);
     expect(array_column(admCall($this->admin, 'GET', 'invitations')->json('data'), 'role'))->not->toContain('admin');
     expect(array_column(admCall($this->super, 'GET', 'invitations')->json('data'), 'role'))->toContain('admin');
 });

@@ -478,4 +478,15 @@ return [
         ],
     ],
 
+    // Demande du rôle pair depuis le profil (D-MOB-15) : tu.
+    'role_requests' => [
+        'errors' => [
+            'not_active' => 'Ton compte doit être actif pour demander ce rôle.',
+            'email_unverified' => 'Confirme d’abord ton adresse e-mail pour demander ce rôle.',
+            'already_peer' => 'Tu es déjà pair éducateur·rice.',
+            'request_open' => 'Tu as déjà une demande en cours : l’équipe te répondra bientôt.',
+            'already_decided' => 'Cette demande a déjà été traitée.',
+        ],
+    ],
+
 ];

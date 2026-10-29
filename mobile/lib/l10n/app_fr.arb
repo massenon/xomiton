@@ -3248,6 +3248,14 @@
     "@admin_registrations_errors_window_order": {
         "description": "admin.registrations.errors.window_order"
     },
+    "admin_registrations_flags_disposable_email": "Adresse e-mail jetable",
+    "@admin_registrations_flags_disposable_email": {
+        "description": "admin.registrations.flags.disposable_email"
+    },
+    "admin_registrations_flags_repeated_fingerprint": "Inscriptions répétées",
+    "@admin_registrations_flags_repeated_fingerprint": {
+        "description": "admin.registrations.flags.repeated_fingerprint"
+    },
     "admin_registrations_immediate": "Effet immédiat sur la page d’inscription.",
     "@admin_registrations_immediate": {
         "description": "admin.registrations.immediate"
@@ -3421,6 +3429,66 @@
     "@admin_registrations_reopen_help": {
         "description": "admin.registrations.reopen_help"
     },
+    "admin_registrations_role_requests_asks": "demande le rôle {role}",
+    "@admin_registrations_role_requests_asks": {
+        "description": "admin.registrations.role_requests.asks",
+        "placeholders": {
+            "role": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_role_requests_confirm_reject": "Refuser la demande de {name} ? Elle restera membre et recevra le motif.",
+    "@admin_registrations_role_requests_confirm_reject": {
+        "description": "admin.registrations.role_requests.confirm_reject",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_role_requests_empty": "Aucune demande de rôle",
+    "@admin_registrations_role_requests_empty": {
+        "description": "admin.registrations.role_requests.empty"
+    },
+    "admin_registrations_role_requests_empty_text": "Les membres qui demandent à devenir pair·e éducateur·rice depuis leur profil apparaissent ici.",
+    "@admin_registrations_role_requests_empty_text": {
+        "description": "admin.registrations.role_requests.empty_text"
+    },
+    "admin_registrations_role_requests_help": "Approuver donne le rôle de pair·e : la personne reste membre et en est prévenue. Refuser envoie le motif et ne change rien d’autre à son compte.",
+    "@admin_registrations_role_requests_help": {
+        "description": "admin.registrations.role_requests.help"
+    },
+    "admin_registrations_role_requests_reason": "Motif du refus, écrit pour la personne (obligatoire pour refuser)",
+    "@admin_registrations_role_requests_reason": {
+        "description": "admin.registrations.role_requests.reason"
+    },
+    "admin_registrations_role_requests_refuse": "Refuser",
+    "@admin_registrations_role_requests_refuse": {
+        "description": "admin.registrations.role_requests.refuse"
+    },
+    "admin_registrations_role_requests_title": "Demandes du rôle de pair·e",
+    "@admin_registrations_role_requests_title": {
+        "description": "admin.registrations.role_requests.title"
+    },
+    "admin_registrations_role_requests_toasts_approved": "{name} est maintenant pair éducateur·rice.",
+    "@admin_registrations_role_requests_toasts_approved": {
+        "description": "admin.registrations.role_requests.toasts.approved",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_role_requests_toasts_rejected": "Demande de {name} refusée, la personne en est prévenue.",
+    "@admin_registrations_role_requests_toasts_rejected": {
+        "description": "admin.registrations.role_requests.toasts.rejected",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "admin_registrations_save": "Enregistrer les options",
     "@admin_registrations_save": {
         "description": "admin.registrations.save"
@@ -3437,7 +3505,7 @@
     "@admin_registrations_state_open_all": {
         "description": "admin.registrations.state.open_all"
     },
-    "admin_registrations_state_open_peers": "Toute personne peut créer un compte. Les pair·es éducateur·rices sont validé·es par l’équipe avant d’accéder à la collecte.",
+    "admin_registrations_state_open_peers": "Toute personne peut créer un compte. Seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent la validation de l’équipe ; le rôle de pair·e éducateur·rice est toujours validé.",
     "@admin_registrations_state_open_peers": {
         "description": "admin.registrations.state.open_peers"
     },
@@ -4320,6 +4388,10 @@
     "admin_users_matrix_help": "Générée depuis les rôles de la plateforme, en lecture seule. Un rôle de modération ou d’administration ne s’attribue que par un·e super-admin.",
     "@admin_users_matrix_help": {
         "description": "admin.users.matrix_help"
+    },
+    "admin_users_mobile_web_only": "Les rôles d’administration s’attribuent uniquement depuis le site web, par un·e super-admin.",
+    "@admin_users_mobile_web_only": {
+        "description": "admin.users.mobile_web_only"
     },
     "admin_users_module": "Module",
     "@admin_users_module": {
@@ -26650,6 +26722,19 @@
     "@notifications_role_peer_revoked_title": {
         "description": "notifications.role.peer_revoked.title"
     },
+    "notifications_role_requested_body": "{name} demande le rôle de pair éducateur·rice. Ouvrez la file des inscriptions pour répondre.",
+    "@notifications_role_requested_body": {
+        "description": "notifications.role_requested.body",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_role_requested_title": "Nouvelle demande de rôle de pair·e",
+    "@notifications_role_requested_title": {
+        "description": "notifications.role_requested.title"
+    },
     "notifications_sos_acknowledged_body": "{name} a bien reçu ton alerte et va t’appeler.",
     "@notifications_sos_acknowledged_body": {
         "description": "notifications.sos_acknowledged.body",
@@ -33009,6 +33094,26 @@
     "profile_relationship_follows_you": "Te suit",
     "@profile_relationship_follows_you": {
         "description": "profile.relationship.follows_you"
+    },
+    "profile_role_requests_errors_already_decided": "Cette demande a déjà été traitée.",
+    "@profile_role_requests_errors_already_decided": {
+        "description": "profile.role_requests.errors.already_decided"
+    },
+    "profile_role_requests_errors_already_peer": "Tu es déjà pair éducateur·rice.",
+    "@profile_role_requests_errors_already_peer": {
+        "description": "profile.role_requests.errors.already_peer"
+    },
+    "profile_role_requests_errors_email_unverified": "Confirme d’abord ton adresse e-mail pour demander ce rôle.",
+    "@profile_role_requests_errors_email_unverified": {
+        "description": "profile.role_requests.errors.email_unverified"
+    },
+    "profile_role_requests_errors_not_active": "Ton compte doit être actif pour demander ce rôle.",
+    "@profile_role_requests_errors_not_active": {
+        "description": "profile.role_requests.errors.not_active"
+    },
+    "profile_role_requests_errors_request_open": "Tu as déjà une demande en cours : l’équipe te répondra bientôt.",
+    "@profile_role_requests_errors_request_open": {
+        "description": "profile.role_requests.errors.request_open"
     },
     "profile_roles_admin": "Équipe Xomiton",
     "@profile_roles_admin": {

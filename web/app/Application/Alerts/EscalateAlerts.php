@@ -210,7 +210,7 @@ final class EscalateAlerts
 
     /**
      * Cible de l'escalade : point focal national (garde, puis fiche), sauf s'il est déjà le contact routé ; sinon
-     * l'équipe — admins et pair·es éducateur·rices (OnCallRoster::alertTeam).
+     * l'équipe — admins et pair·es éducateur·rices (OnCallRoster::escalationTeam : tous les admins et tous les pair·es, D-MOB-10).
      *
      * @return array{0: DirectoryContact|null, 1: list<int>}
      */
@@ -233,7 +233,7 @@ final class EscalateAlerts
      */
     private function adminIds(CarbonImmutable $now): array
     {
-        return $this->roster->alertTeam($now)->map(static fn (User $user): int => (int) $user->getKey())->values()->all();
+        return $this->roster->escalationTeam($now)->map(static fn (User $user): int => (int) $user->getKey())->values()->all();
     }
 
     private function report(EscalationRunResult $result, Alert $alert, EscalationAction $action, CarbonImmutable $now, ?DirectoryContact $target): void

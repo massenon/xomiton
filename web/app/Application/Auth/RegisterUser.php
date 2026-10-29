@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Auth;
 
 use App\Application\Admin\Roles\TeamInvitations;
+use App\Application\Auth\Support\RegistrationFlags;
 use App\Application\Auth\Support\RegistrationGate;
 use App\Domain\Auth\ConsentVersion;
 use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
@@ -31,7 +32,8 @@ use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 /**
- * Phase 1 de l'inscription (P2-03, Q12 c) : compte créé et actif dès maintenant, e-mail non vérifié (accès limité),
+ * Phase 1 de l'inscription (P2-03, Q12 c) : compte créé et actif dès maintenant (en attente de validation seulement s'il est SIGNALÉ,
+ * D-MOB-17, ou si « tout valider » est réglé, Q26), e-mail non vérifié (accès limité),
  * rôle `membre` (jamais un autre : pair et admin ne s'obtiennent que par invitation ou attribution de l'administration),
  * profil et réglages par défaut, consentements CGU + charte et confidentialité horodatés, code OTP
  * `signup` envoyé aussitôt puis e-mail `bienvenue` (notification UserRegistered, canal mail par template : un seul
@@ -87,7 +89,7 @@ final class RegisterUser
 
         $user->notify(new UserRegisteredNotification);
 
-        Audit::log('auth.registered', $user, sprintf('pseudo=%s', $user->pseudo), $user);
+        Audit::log('auth.registered', $user, sprintf('pseudo=%s%s', $user->pseudo, $user->registration_flags === null ? '' : ' ; signalements='.$user->registration_flags), $user);
         UserRegistered::dispatch($user);
 
         return $user;
@@ -95,13 +97,20 @@ final class RegisterUser
 
     private function createAccount(RegisterData $data): User
     {
+        $email = OtpService::normalizeEmail($data->email);
+        // D-MOB-17 : seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent l'équipe.
+        $flags = RegistrationFlags::evaluate($email, $data->ip, $data->userAgent);
+        $manual = RegistrationGate::manualValidation() === 'all' || $flags !== [];
+
         $user = User::query()->create([
             'pseudo' => trim($data->pseudo),
-            'email' => OtpService::normalizeEmail($data->email),
+            'email' => $email,
             'phone' => $data->phone === null ? null : PhoneBj::format($data->phone),
             'password' => $data->password,
-            // Q26 : validation manuelle de tous les nouveaux comptes (P12-02) ; sinon actif dès maintenant.
-            'status' => RegistrationGate::manualValidation() === 'all' ? UserStatus::Pending : UserStatus::Active,
+            // Q26 : `reg_manual_validation = all` valide tous les nouveaux comptes (interrupteur « tout valider ») ;
+            // D-MOB-17 : sinon seulement les comptes signalés ; le reste est actif dès maintenant.
+            'status' => $manual ? UserStatus::Pending : UserStatus::Active,
+            'registration_flags' => $flags === [] ? null : implode(',', $flags),
             'email_verified_at' => null,
         ]);
 

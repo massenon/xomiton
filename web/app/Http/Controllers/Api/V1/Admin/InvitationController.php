@@ -44,6 +44,8 @@ final class InvitationController extends AdminApiController
             'note' => ['sometimes', 'nullable', 'string', 'max:190'],
         ]);
         $admin = $this->admin($request);
+        // D-MOB-16 : une invitation à un rôle d'administration ne se crée QUE depuis le web (super-admin).
+        abort_if((string) $validated['role'] !== 'pair', 403, (string) __('admin.users.mobile_web_only'));
         Gate::forUser($admin)->authorize('invite', [RoleInvitation::class, (string) $validated['role']]);
         $this->confirm($request);
 

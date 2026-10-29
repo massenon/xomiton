@@ -74,14 +74,17 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | D-MOB-1 | **Une seule application**, un seul login ; inscription publique = membres seulement ; rôle pair ajouté (invitation ou attribution) ; l'admin est aussi membre | **Tranché 2026-10-29** |
 | D-MOB-2 | Espace pair **dans la v1** (contredit l'ancienne recommandation de Q38, corrigée) | **Tranché 2026-10-29** |
 | D-MOB-3 | Périmètre admin mobile **élargi** : alertes, inscriptions, rôles et invitations, maintenance, notifications, modération essentielle, recherche de membre, astreinte | **Tranché 2026-10-29** |
-| D-MOB-4 | Position du SOS **arrondie** pour les admins | **Tranché 2026-10-29** |
+| D-MOB-4 | Position du SOS **arrondie** pour les admins, jamais exacte même en intervention | **Tranché 2026-10-29** ; **Tranché 2026-10-29 (recommandation retenue)** : aucune position exacte pour l'admin (vérifié par test) |
 | D-MOB-5 | Conflit 409 **tranché par le pair** (serveur ou mon appareil) | **Tranché 2026-10-29** |
-| D-MOB-10 | Push SOS et alertes vers les **admins ET les pairs** (de garde seulement ou tous : à préciser) | **Tranché 2026-10-29** (destinataires) ; précision ouverte |
+| D-MOB-10 | Push SOS et alertes vers les **admins ET les pairs** : admins de garde + pairs de la zone, puis **escalade nationale à 5 min** sans accusé (tous les admins et tous les pairs) | **Tranché 2026-10-29** ; **Tranché 2026-10-29 (recommandation retenue)** pour la précision (`peer_recipients = zone`, escalade configurable) |
 | D-MOB-11 | **Une seule version** Play | **Tranché 2026-10-29** |
 | D-MOB-12 | Maquettes **validées par le client avant tout code mobile** | **Tranché 2026-10-29** |
 | D-MOB-14 | Fiche Play : âge 15 ans, pas de tarif, tous les pays, tranches « 16-17 » et « 18+ » seulement, français uniquement | **Tranché 2026-10-29** |
 | D-MOB-6, 7, 8, 9, 13 | PIN obligatoire pair et admin, expiration 14 jours, mode discret par défaut, jeton admin court et confirmation renforcée, nom « Notes » | Recommandation du plan retenue par défaut ; **non contestée** le 29/10/2026, à confirmer au passage des maquettes |
-| D-MOB-15 à 18 | Proposés par les maquettes : demande du rôle pair par un membre ; rôle admin attribuable seulement depuis le site web ; validation de toutes les inscriptions membres ou seulement des cas signalés ; cohérence âge 15 ans / tranche Play « 16-17 » | **À valider** (maquettes) |
+| D-MOB-15 | Un membre peut **demander** le rôle pair depuis son profil (motif court facultatif, une demande à la fois, décision de l'admin avec motif) | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-16 | Le rôle **admin** ne s'attribue que depuis le **site web** (super-admin) ; jamais depuis l'API mobile | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-17 | Valider manuellement **seulement les inscriptions signalées** (e-mail jetable, inscriptions répétées) ; `reg_manual_validation = all` reste l'interrupteur « tout valider » | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-18 | Âge : **conservé**, application 15 ans, tranches Play 16-17 et 18+, **à valider par le conseil juridique avant publication** ; l'application affiche la règle des 15 ans à l'inscription | **Tranché 2026-10-29 (recommandation retenue)** |
 
 ## 5. Lecture
 

@@ -510,6 +510,7 @@ return [
         ],
         'pending_count' => '{0} Aucun compte à valider|{1} :count compte à valider|[2,*] :count comptes à valider',
         'pending_all' => 'Voir les inscriptions',
+        'mobile_web_only' => 'Les rôles d’administration s’attribuent uniquement depuis le site web, par un·e super-admin.',
         'list_title' => 'Tous les comptes',
         'table_caption' => 'Comptes de la plateforme : pseudonyme, rôle, statut, département et date d’inscription.',
         'filters' => [
@@ -679,7 +680,7 @@ return [
             'reject' => 'Rejeter la demande de :name ? Le compte sera supprimé.',
         ],
         'state' => [
-            'open_peers' => 'Toute personne peut créer un compte. Les pair·es éducateur·rices sont validé·es par l’équipe avant d’accéder à la collecte.',
+            'open_peers' => 'Toute personne peut créer un compte. Seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent la validation de l’équipe ; le rôle de pair·e éducateur·rice est toujours validé.',
             'open_all' => 'Toute personne peut créer un compte, mais chaque nouveau compte doit être validé par l’équipe.',
             'closed' => 'La page d’inscription affiche le message de fermeture.',
             'outside_window' => 'L’interrupteur est sur « ouvertes », mais nous sommes hors de la plage horaire (:start à :end, heure du Bénin) : la page affiche le message de fermeture.',
@@ -709,6 +710,24 @@ return [
         'signups' => 'Inscriptions',
         'week_label' => 'Sem. du :date',
         'pending' => 'Demandes en attente',
+        'flags' => [
+            'disposable_email' => 'Adresse e-mail jetable',
+            'repeated_fingerprint' => 'Inscriptions répétées',
+        ],
+        'role_requests' => [
+            'title' => 'Demandes du rôle de pair·e',
+            'asks' => 'demande le rôle :role',
+            'empty' => 'Aucune demande de rôle',
+            'empty_text' => 'Les membres qui demandent à devenir pair·e éducateur·rice depuis leur profil apparaissent ici.',
+            'refuse' => 'Refuser',
+            'confirm_reject' => 'Refuser la demande de :name ? Elle restera membre et recevra le motif.',
+            'reason' => 'Motif du refus, écrit pour la personne (obligatoire pour refuser)',
+            'help' => 'Approuver donne le rôle de pair·e : la personne reste membre et en est prévenue. Refuser envoie le motif et ne change rien d’autre à son compte.',
+            'toasts' => [
+                'approved' => ':name est maintenant pair éducateur·rice.',
+                'rejected' => 'Demande de :name refusée, la personne en est prévenue.',
+            ],
+        ],
         'approve' => 'Approuver',
         'reject' => 'Rejeter',
         'reject_help' => 'Rejeter une inscription supprime le compte et ferme ses accès ; la personne reçoit l’e-mail de suppression. Refuser une demande de pair garde le compte de membre et prévient la personne avec le motif.',

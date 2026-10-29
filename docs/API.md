@@ -1011,9 +1011,18 @@ API de l'espace **Admin** de l'application mobile unique (alertes et SOS d'astre
 
 | Route | Effet |
 |---|---|
-| `GET admin/registrations` | comptes `en_attente`, les plus anciens d'abord ; chaque ligne : compte (§23.4) + `kind` = `peer_request` (demande de rôle pair) ou `registration` ; `meta.pending` |
+| `GET admin/registrations` | comptes `en_attente`, les plus anciens d'abord ; chaque ligne : compte (§23.4) + `kind` = `peer_request` (demande de rôle pair) ou `registration`, et `flags[]` = motifs du **signalement** (`disposable_email`, `repeated_fingerprint`) ; `meta.pending`. **D-MOB-17 (tranché 2026-10-29, recommandation retenue)** : seules les inscriptions signalées attendent ici (le réglage `reg_manual_validation = all` met tout le monde en attente) |
 | `POST admin/registrations/{user}/approve` | valide : compte actif, notification ; une demande de pair reçoit le rôle `pair` (et reste membre) ; une invitation à l'équipe en attente est honorée ; déjà traité → 422 |
 | `POST admin/registrations/{user}/reject` | `{reason}` (3–200, **écrit pour la personne**, `step-up`) : une **demande de pair** refusée laisse un compte **membre actif**, notifié avec le motif (`RoleNotice`, journal `users.peer_refused`) ; une **inscription** refusée supprime le compte (e-mail `compte-supprime`, journal `users.registration_rejected`) |
+
+### 23.3 bis Demander le rôle pair — `me/role-requests` (membre connecté, D-MOB-15)
+
+**Tranché 2026-10-29 (recommandation retenue)** : un membre peut **demander** le rôle pair depuis son profil (carte « Mes espaces »). **Jamais d'auto-attribution** : la demande crée seulement une ligne `pending` ; le rôle ne vient que de la décision d'un compte habilité (§23.4 bis). Le corps n'accepte aucun champ de rôle (seul le rôle `pair` est demandable).
+
+| Route | Effet |
+|---|---|
+| `POST me/role-requests` | `{reason?}` (≤ 200 caractères, facultatif, court). **`Idempotency-Key` obligatoire** (`idempotent:required,limit=role_request` : même clé → même réponse rejouée, `Idempotent-Replayed: true`), limiteur `role_request` (`xomiton.rate_limits.role_request_per_day`, 3/jour par compte, 429 au-delà). **Une seule demande en cours à la fois** (index unique en base, sûr en cas de requêtes simultanées). → **201** `{id (ULID), role: "pair", status: "pending", reason, decision_reason: null, created_at, decided_at: null}`. Erreurs 422 : `already_peer`, `request_open`, `email_unverified`, `not_active` ; `reason` trop long → 422. Journal `roles.request_created`, notification `RoleRequested` (cloche + push) aux comptes habilités (`peers.assign`) |
+| `GET me/role-requests` | mes 20 dernières demandes (plus récentes d'abord) ; `meta.can_request` (faux si déjà pair ou demande en cours). Après un refus, `decision_reason` porte le motif écrit pour la personne ; elle peut redemander |
 
 ### 23.4 Recherche d'un membre et rôles — `admin/members` (`users.view`, `peers.assign`, `roles.assign_admin`)
 
@@ -1023,9 +1032,19 @@ API de l'espace **Admin** de l'application mobile unique (alertes et SOS d'astre
 | `GET admin/members/{id}` | un compte (même objet) |
 | `POST admin/members/{id}/roles/peer` | **donner le rôle pair** à un membre existant (`peers.assign`, `step-up`) : il **reste membre**, `profile.member_type = pair`, notification `RoleNotice`, journal `roles.peer_granted` → **201** (200 si déjà pair, `meta.changed`). Compte non actif → 422 `not_active` ; e-mail non confirmé → 422 `email_unverified` ; soi-même → 403 |
 | `DELETE admin/members/{id}/roles/peer` | `{reason?}` — **retirer le rôle pair** (`step-up`) : il reste membre, journal `roles.peer_revoked`, notification |
-| `PUT admin/members/{id}/role` | `{role: membre\|pair\|moderateur\|admin\|superadmin}` (`step-up`) — niveau de rôle (ChangeUserRole, RG-15) : `moderateur` / `admin` / `superadmin` demandent `roles.assign_admin` (**super-admin seulement**, sinon 403) ; jamais son propre rôle (422 `own_role`) ni le dernier super-admin (422 `last_superadmin`) ; le rôle `membre` est toujours conservé, `pair` aussi quand on devient admin ; journal `users.role_changed` |
+| `PUT admin/members/{id}/role` | `{role: membre\|pair}` (`step-up`) — bascule membre ↔ pair (ChangeUserRole) ; **D-MOB-16 (tranché 2026-10-29, recommandation retenue) : le rôle `moderateur` / `admin` / `superadmin` ne s'attribue ni ne se retire QUE depuis le web (super-admin) : tout niveau d'administration demandé, ou toute cible déjà administratrice, répond 403, même pour un·e super-admin** ; jamais son propre rôle (422 `own_role`) ; le rôle `membre` est toujours conservé ; journal `users.role_changed`. `can.change_role` est faux pour une cible administratrice |
 
 **Non-escalade** : un·e pair·e ou un membre ne peut pas appeler `admin/*` (403) ; un·e admin ne peut ni se donner ni donner un rôle d'administration ; aucun rôle ne s'obtient par l'inscription ni par `PATCH me/profile` (`member_type: pair` → 422).
+
+### 23.4 bis Demandes du rôle pair — `admin/role-requests` (`peers.assign`, D-MOB-15)
+
+File des demandes faites par les membres (§23.3 bis ci-dessous, `POST me/role-requests`). Mêmes cas d'usage que la file web (page Inscriptions), `ReviewRoleRequest` : le rôle est donné par `ManagePeerRole` (la personne **reste membre**), jamais à soi-même (403, `assignPeerRole`).
+
+| Route | Effet |
+|---|---|
+| `GET admin/role-requests?status=pending\|approved\|rejected\|all` | demandes (en attente par défaut, les plus anciennes d'abord) : `{id (ULID), role: "pair", status, reason (motif de la personne), decision_reason, user{id, pseudo, avatar_url, zone, created_at}, created_at, decided_at, can{decide}}` ; `meta.pending` ; jamais l'e-mail ni le téléphone |
+| `POST admin/role-requests/{ulid}/approve` | **approuve** (`step-up`) : rôle `pair` donné, notification `RoleNotice` (`peer_granted`), journal `roles.request_approved` + `roles.peer_granted via=role_request` → **200** ; déjà traitée → 422 `already_decided` |
+| `POST admin/role-requests/{ulid}/reject` | `{reason}` (3–200, **écrit pour la personne**, `step-up`) : la demande est close, le compte reste membre actif, notification `RoleNotice` (`peer_refused`) avec le motif, journal `roles.request_rejected` → **200** |
 
 ### 23.5 Notifications — `admin/notifications`
 
@@ -1038,7 +1057,7 @@ Un lien / code **signé, à usage unique** (7 jours, `xomiton.accounts.team_invi
 | Route | Effet |
 |---|---|
 | `GET admin/invitations?status=` | invitations récentes `{id, role, status (pending\|redeemed\|accepted\|refused\|revoked\|expired), code_hint (4 derniers caractères), email, note, invited_by, user, expires_at, redeemed_at}` ; un·e admin ne voit que les invitations `pair` |
-| `POST admin/invitations` | `{role: pair\|moderateur\|admin\|superadmin, email?, note?}` (`step-up`) → **201** invitation + **`code`** (`XM-ABCD-EFGH-JKMN`) et **`link`** (URL signée), **rendus une seule fois** (le code n'est conservé qu'en SHA-256 et n'apparaît jamais au journal). `pair` : `peers.invite` ; les autres rôles : `roles.assign_admin` (super-admin seulement, sinon 403). Adresse e-mail facultative : lie l'invitation à cette adresse |
+| `POST admin/invitations` | `{role: pair, email?, note?}` (`step-up`) → **201** invitation + **`code`** (`XM-ABCD-EFGH-JKMN`) et **`link`** (URL signée), **rendus une seule fois** (le code n'est conservé qu'en SHA-256 et n'apparaît jamais au journal). `pair` : `peers.invite`. **D-MOB-16 : une invitation `moderateur` / `admin` / `superadmin` ne se crée QUE depuis le web (super-admin) ; l'API mobile répond 403** (valeur inconnue → 422). Adresse e-mail facultative : lie l'invitation à cette adresse |
 | `DELETE admin/invitations/{id}` | annule (`step-up`) → 204 ; déjà utilisée ou annulée → 422 |
 
 ### 23.7 Modération essentielle — `admin/moderation/reports` (`moderation.manage`)

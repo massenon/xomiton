@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Api\V1\Admin\ModerationController as AdminModerationController;
 use App\Http\Controllers\Api\V1\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Api\V1\Admin\RegistrationController as AdminRegistrationController;
+use App\Http\Controllers\Api\V1\Admin\RoleRequestController as AdminRoleRequestController;
 use App\Http\Controllers\Api\V1\Alerts\EmergencyContactController;
 use App\Http\Controllers\Api\V1\Alerts\ReportController;
 use App\Http\Controllers\Api\V1\Alerts\SosController;
@@ -52,6 +53,7 @@ use App\Http\Controllers\Api\V1\Me\PasswordController;
 use App\Http\Controllers\Api\V1\Me\PrivacyController;
 use App\Http\Controllers\Api\V1\Me\ProfileImageController;
 use App\Http\Controllers\Api\V1\Me\PushSubscriptionController;
+use App\Http\Controllers\Api\V1\Me\RoleRequestController as MeRoleRequestController;
 use App\Http\Controllers\Api\V1\Me\SecurityController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Member\MemberProfileController;
@@ -240,6 +242,9 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::get('devices', [DeviceController::class, 'index'])->name('devices.index');
         Route::post('devices', [DeviceController::class, 'store'])->name('devices.store');
         Route::delete('devices/{uuid}', [DeviceController::class, 'destroy'])->whereUuid('uuid')->name('devices.destroy');
+        // D-MOB-15 : demander le rôle pair depuis le profil (jamais d'auto-attribution : la décision est celle d'un·e admin).
+        Route::get('role-requests', [MeRoleRequestController::class, 'index'])->name('role_requests.index');
+        Route::post('role-requests', [MeRoleRequestController::class, 'store'])->middleware('idempotent:required,limit=role_request')->name('role_requests.store');
         Route::get('push-subscriptions', [PushSubscriptionController::class, 'index'])->name('push_subscriptions.index');
         Route::post('push-subscriptions', [PushSubscriptionController::class, 'store'])->name('push_subscriptions.store');
         Route::delete('push-subscriptions', [PushSubscriptionController::class, 'destroy'])->name('push_subscriptions.destroy');
@@ -469,6 +474,11 @@ Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', 'condition
     Route::get('registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
     Route::post('registrations/{user}/approve', [AdminRegistrationController::class, 'approve'])->whereNumber('user')->middleware($write)->name('registrations.approve');
     Route::post('registrations/{user}/reject', [AdminRegistrationController::class, 'reject'])->whereNumber('user')->middleware($write)->name('registrations.reject');
+
+    // D-MOB-15 : file des demandes du rôle pair (`peers.assign`) ; décider exige le step-up.
+    Route::get('role-requests', [AdminRoleRequestController::class, 'index'])->name('role_requests.index');
+    Route::post('role-requests/{roleRequest:ulid}/approve', [AdminRoleRequestController::class, 'approve'])->middleware($write)->name('role_requests.approve');
+    Route::post('role-requests/{roleRequest:ulid}/reject', [AdminRoleRequestController::class, 'reject'])->middleware($write)->name('role_requests.reject');
 
     Route::get('members', [AdminMemberController::class, 'index'])->name('members.index');
     Route::get('members/{user}', [AdminMemberController::class, 'show'])->whereNumber('user')->name('members.show');

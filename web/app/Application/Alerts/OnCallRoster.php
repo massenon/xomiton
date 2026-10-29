@@ -52,19 +52,34 @@ final class OnCallRoster
     }
 
     /**
-     * Équipe prévenue d'une alerte (décisions client du 2026-10-29) : **les admins et les pair·es éducateur·rices**, pas
-     * seulement l'admin de garde. Admins : ceux de garde (plage en cours) **et** tous les comptes admin / superadmin
-     * habilités `alerts.take` ; pair·es : comptes actifs de rôle `pair` détenant `alerts.take` (tous, ou ceux du
-     * département de l'alerte avec `xomiton.alerts.peer_recipients = zone`, repli sur tous quand personne n'y est). Une
-     * personne n'apparaît qu'une fois, par identifiant croissant ; l'accusé de réception de l'une arrête l'escalade pour toutes.
+     * Équipe prévenue À LA CRÉATION d'une alerte (D-MOB-10, tranché 2026-10-29) : les admins DE GARDE (plage en cours ;
+     * sans planning, repli sur les comptes admin habilités `alerts.take`, cf. adminsOnCall) **et** les pair·es
+     * éducateur·rices DE LA ZONE de l'alerte (`xomiton.alerts.peer_recipients = zone`, défaut ; repli sur tous les
+     * pair·es quand personne n'y est). Au-delà de 5 minutes sans accusé, escalationTeam() prend le relais (tout le
+     * monde). Une personne n'apparaît qu'une fois, par identifiant croissant ; l'accusé de l'une arrête l'escalade.
      *
      * @return Collection<int, User>
      */
     public function alertTeam(?CarbonInterface $at = null, ?Alert $alert = null): Collection
     {
         return $this->adminsOnCall($at)
-            ->merge($this->fallbackAdmins())
             ->merge($this->activePeers($alert?->zone_id))
+            ->unique(static fn (User $user): int => (int) $user->getKey())
+            ->sortBy('id')
+            ->values();
+    }
+
+    /**
+     * ESCALADE NATIONALE (D-MOB-10) : sans accusé à `alerts.escalation.sos.escalate_after_minutes` (5 min par défaut),
+     * tous les admins (de garde ou non) et tous les pair·es éducateur·rices actifs sont prévenus, quelle que soit la zone.
+     *
+     * @return Collection<int, User>
+     */
+    public function escalationTeam(?CarbonInterface $at = null): Collection
+    {
+        return $this->adminsOnCall($at)
+            ->merge($this->fallbackAdmins())
+            ->merge($this->activePeers(null))
             ->unique(static fn (User $user): int => (int) $user->getKey())
             ->sortBy('id')
             ->values();

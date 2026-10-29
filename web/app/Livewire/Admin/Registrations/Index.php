@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Registrations;
 
+use App\Application\Account\RoleRequests\ReviewRoleRequest;
 use App\Application\Admin\Registrations\RegistrationSettings;
 use App\Application\Admin\Roles\TeamInvitations;
 use App\Application\Admin\Users\ReviewRegistration;
 use App\Application\Auth\Support\RegistrationGate;
 use App\Domain\Account\Exceptions\AccountActionRefused;
+use App\Domain\Account\Exceptions\RoleRequestRefused;
 use App\Enums\UserStatus;
 use App\Livewire\Concerns\InteractsWithUi;
 use App\Models\RoleInvitation;
+use App\Models\RoleRequest;
 use App\Models\User;
 use App\Support\LocaleFormatter;
 use Illuminate\Contracts\View\View;
@@ -48,6 +51,9 @@ final class Index extends Component
 
     /** Motif écrit pour la personne quand une demande est rejetée ou refusée (≤ 200 caractères). */
     public string $rejectReason = '';
+
+    /** Motif écrit pour la personne quand une demande de rôle pair est refusée (obligatoire, 3 à 200 caractères). */
+    public string $roleRejectReason = '';
 
     // --- Invitations à l'équipe (lien / code à usage unique) ---
     public string $inviteRole = 'pair';
@@ -139,6 +145,38 @@ final class Index extends Component
             unset($this->pending, $this->kpis);
             $this->toast((string) __('admin.registrations.toasts.rejected', ['name' => $account->pseudo]), 'warning');
         }
+    }
+
+    public function approveRoleRequest(int $id, ReviewRoleRequest $review): void
+    {
+        $request = RoleRequest::query()->with('user')->findOrFail($id);
+
+        if ($this->attempt(fn () => $review->approve($request, $this->actor()))) {
+            unset($this->roleRequests);
+            $this->toast((string) __('admin.registrations.role_requests.toasts.approved', ['name' => $request->user->pseudo]));
+        }
+    }
+
+    public function rejectRoleRequest(int $id, ReviewRoleRequest $review): void
+    {
+        $request = RoleRequest::query()->with('user')->findOrFail($id);
+
+        if ($this->attempt(fn () => $review->reject($request, $this->actor(), $this->roleRejectReason))) {
+            $this->roleRejectReason = '';
+            unset($this->roleRequests);
+            $this->toast((string) __('admin.registrations.role_requests.toasts.rejected', ['name' => $request->user->pseudo]), 'warning');
+        }
+    }
+
+    /**
+     * Demandes du rôle pair faites par des membres depuis leur profil (D-MOB-15), les plus anciennes d'abord.
+     *
+     * @return Collection<int, RoleRequest>
+     */
+    #[Computed]
+    public function roleRequests(): Collection
+    {
+        return RoleRequest::query()->pending()->with(['user.zone', 'user.profile'])->orderBy('id')->limit(25)->get();
     }
 
     public function invite(TeamInvitations $invitations): void
@@ -279,6 +317,7 @@ final class Index extends Component
         return view('livewire.admin.registrations.index', [
             'format' => $this->formatter(),
             'canValidate' => (bool) auth()->user()?->can('users.validate_peers'),
+            'canAssignPeer' => (bool) auth()->user()?->can('peers.assign'),
             'canInvite' => (bool) (auth()->user()?->can('peers.invite') || auth()->user()?->can('roles.assign_admin')),
             'canInviteAdmin' => (bool) auth()->user()?->can('roles.assign_admin'),
             'messageMax' => RegistrationSettings::MESSAGE_MAX,
@@ -300,7 +339,7 @@ final class Index extends Component
     {
         try {
             $action();
-        } catch (AccountActionRefused $refused) {
+        } catch (AccountActionRefused|RoleRequestRefused $refused) {
             $this->toast($refused->userMessage(), 'error');
 
             return false;

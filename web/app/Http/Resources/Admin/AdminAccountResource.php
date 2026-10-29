@@ -6,6 +6,7 @@ namespace App\Http\Resources\Admin;
 
 use App\Application\Admin\Users\AdminRoles;
 use App\Application\Admin\Users\ReviewRegistration;
+use App\Application\Auth\Support\RegistrationFlags;
 use App\Application\Member\AccountSpaces;
 use App\Enums\UserStatus;
 use App\Models\User;
@@ -44,13 +45,15 @@ final class AdminAccountResource extends JsonResource
             'zone' => $account->zone === null ? null : ['id' => (int) $account->zone->getKey(), 'name' => $account->zone->name],
             'email_verified' => $account->email_verified_at !== null,
             'member_type' => $account->profile?->member_type?->value,
+            'flags' => $pending ? RegistrationFlags::parse($account->registration_flags) : [],
             'requested_role' => $pending && ReviewRegistration::isPeerRequest($account) ? 'pair' : null,
             'created_at' => $account->created_at?->toIso8601String(),
             'last_seen_at' => $account->last_seen_at?->toIso8601String(),
             'can' => [
                 'grant_peer' => $viewer instanceof User && ! $account->hasRole('pair') && $account->isActive() && $viewer->can('assignPeerRole', $account),
                 'revoke_peer' => $viewer instanceof User && $account->hasRole('pair') && $viewer->can('revokePeerRole', $account),
-                'change_role' => $viewer instanceof User && $viewer->can('assignAdminRole', $account),
+                // D-MOB-16 : le mobile ne change que membre ↔ pair, jamais un rôle d'administration (web seulement).
+                'change_role' => $viewer instanceof User && ! AdminRoles::isAdministration(AdminRoles::of($account)) && $viewer->can('assignRole', $account),
                 'validate' => $viewer instanceof User && $pending && $viewer->can('validatePeer', $account),
             ],
         ];

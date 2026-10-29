@@ -184,8 +184,15 @@ Le service worker (build uniquement) met en cache les pages d'urgence et la bibl
 ### SOS : maintien, décompte, attente de la position
 Sur `/sos` : maintenir le bouton **2 secondes**, puis décompte annulable de **5 secondes**. Le navigateur attend la position GPS **8 secondes au total** ; passé ce délai, ou si vous refusez le partage, l'alerte part **sans position** (décision Q61). Le bouton rond flottant des pages connectées envoie immédiatement, sans position. Aucun SMS ni push réel en mode journal.
 
+**Qui est prévenu (D-MOB-10, tranché 2026-10-29).** À l'envoi, les admins **de garde** et les pair·es **de la zone** de l'alerte (`XOMITON_PEER_RECIPIENTS=zone`, défaut ; `all` pour tous les pair·es). Sans accusé de réception au bout de **5 minutes** (`XOMITON_ESCALATION_MINUTES`), `alerts:escalate` prévient **tous** les admins et **tous** les pair·es, en plus du point focal national ; l'accusé de n'importe lequel arrête l'escalade. L'admin ne voit jamais la position exacte (arrondie à environ 1 km, D-MOB-4).
+
 ### Inscription : case d'âge minimal
-`/inscription` comporte une case obligatoire de confirmation de l'âge minimal (15 ans, décision Q68), en plus des cases CGU et confidentialité. Sans elle, le compte n'est pas créé. L'application mobile applique la même règle.
+`/inscription` comporte une case obligatoire de confirmation de l'âge minimal (15 ans, décision Q68), en plus des cases CGU et confidentialité. Sans elle, le compte n'est pas créé. L'application mobile applique la même règle. Les tranches d'âge de la fiche Play (16-17 et 18+) sont conservées et restent à valider par le conseil juridique avant publication (D-MOB-18, tranché 2026-10-29).
+
+### Inscriptions signalées et demandes de rôle pair (D-MOB-15 et D-MOB-17)
+Seules les inscriptions **signalées** attendent la validation de l'équipe : adresse e-mail d'un domaine jetable (liste `xomiton.accounts.registration_flags.disposable_domains`, ajouts par `XOMITON_DISPOSABLE_DOMAINS`) ou plus de 3 inscriptions en 60 minutes avec la même empreinte (IP + navigateur). Les autres comptes sont actifs après la confirmation de l'e-mail. Essai : s'inscrire avec `test@mailinator.com`, le compte apparaît dans Administration › Inscriptions avec le motif « Adresse e-mail jetable ». Le réglage « Tous les nouveaux comptes » (`reg_manual_validation = all`) remet la validation de tout le monde.
+
+Un membre demande le rôle de pair depuis son profil (`POST /api/v1/me/role-requests`, motif court facultatif, une demande à la fois, 3 par jour) ; la demande apparaît dans Administration › Inscriptions › « Demandes du rôle de pair·e » (et dans l'API `admin/role-requests`). L'admin approuve ou refuse avec un motif ; le rôle n'est jamais donné automatiquement. Le rôle admin ne se donne que depuis le site web (D-MOB-16).
 
 ### Accueil : bandeau d'alerte
 La page d'accueil `/` comporte la section rouge très clair « alerte » (ancre `/#alerte`, décision Q54) avec les boutons « Signaler » et « Numéros d'urgence ». Vérifiez le texte, les boutons et le contraste.

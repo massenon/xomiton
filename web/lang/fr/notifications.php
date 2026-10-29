@@ -226,6 +226,12 @@ return [
         ],
     ],
 
+    // Cloche de l'administration (D-MOB-15) : vous. Jamais le motif de la personne.
+    'role_requested' => [
+        'title' => 'Nouvelle demande de rôle de pair·e',
+        'body' => ':name demande le rôle de pair éducateur·rice. Ouvrez la file des inscriptions pour répondre.',
+    ],
+
     // Décisions de l'équipe adressées à la personne (P12-01, P12-06) : tu. Le motif est celui écrit par l'équipe pour elle.
     'moderation' => [
         'discreet' => 'Message de l’équipe',

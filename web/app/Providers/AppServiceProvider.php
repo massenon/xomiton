@@ -371,6 +371,11 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('directory_callback', static fn (Request $request): Limit => Limit::perHour(self::limit('directory_callback_per_hour'))
             ->by('directory_callback|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
+        // Demande du rôle pair (D-MOB-15, `POST me/role-requests`, `idempotent:required,limit=role_request`) : quelques demandes
+        // par compte et par jour ; un rejeu de la même clé ne compte pas. S'ajoute à la règle « une demande en cours à la fois ».
+        RateLimiter::for('role_request', static fn (Request $request): Limit => Limit::perDay(self::limit('role_request_per_day'))
+            ->by('role_request|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
         // Synchronisation (P9-06) : lots `sync/push` par compte (`idempotent:required,limit=sync_push` : un rejeu ne compte
         // pas) ; seul un lot fait uniquement de SOS n'est jamais limité (RG-01, comme POST sos) : un SOS rejoué ne fait pas
         // passer les autres éléments. Chaque message et signalement d'un lot compte en plus sur `messages_write` / `report`

@@ -43,6 +43,7 @@ class User extends Authenticatable
         'phone',
         'password',
         'status',
+        'registration_flags',
         'zone_id',
         'commune_id',
         'email_verified_at',

@@ -136,6 +136,13 @@
                         <div class="flex-grow-1 min-w-0">
                             <div class="fw-semibold text-break">{{ $request->pseudo }}@if ($request->name) <span class="text-secondary fw-normal">· {{ $request->name }}</span>@endif</div>
                             <div class="small text-secondary">{{ $request->email }}@if ($request->zone) · {{ $request->zone->name }}@endif · {{ __('admin.users.columns.requested_role', ['role' => $request->profile?->member_type?->label() ?? __('admin.users.roles.membre')]) }} · {{ $format->ago($request->created_at) }}</div>
+                            @if ($flags = \App\Application\Auth\Support\RegistrationFlags::parse($request->registration_flags))
+                                <div class="mt-1 d-flex flex-wrap gap-1">
+                                    @foreach ($flags as $flag)
+                                        <x-badge color="warning" soft icon="flag-fill">{{ __('admin.registrations.flags.'.$flag) }}</x-badge>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                         @if ($canValidate)
                             <div class="d-flex gap-2">
@@ -155,6 +162,37 @@
             </div>
         @endif
     </section>
+
+    @if ($canAssignPeer)
+        <section class="card xm-admin-card mb-4" aria-labelledby="xmRoleReqTitle">
+            <div class="card-header bg-info-subtle"><h2 class="h6 fw-bold mb-0" id="xmRoleReqTitle"><i class="bi bi-person-plus-fill me-2" aria-hidden="true"></i>{{ __('admin.registrations.role_requests.title') }}</h2></div>
+            @if ($this->roleRequests->isEmpty())
+                <div class="card-body"><x-admin.empty icon="check2-circle" :title="__('admin.registrations.role_requests.empty')">{{ __('admin.registrations.role_requests.empty_text') }}</x-admin.empty></div>
+            @else
+                <ul class="list-group list-group-flush">
+                    @foreach ($this->roleRequests as $roleRequest)
+                        <li class="list-group-item d-flex flex-wrap align-items-center gap-3" wire:key="role-request-{{ $roleRequest->id }}">
+                            <x-avatar :name="$roleRequest->user->pseudo" :src="$roleRequest->user->avatar_url" size="sm" />
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="fw-semibold text-break">{{ $roleRequest->user->pseudo }}</div>
+                                <div class="small text-secondary">@if ($roleRequest->user->zone){{ $roleRequest->user->zone->name }} · @endif{{ __('admin.registrations.role_requests.asks', ['role' => __('admin.users.roles.pair')]) }} · {{ $format->ago($roleRequest->created_at) }}</div>
+                                @if ($roleRequest->reason)<div class="small text-break mt-1">« {{ $roleRequest->reason }} »</div>@endif
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-success" wire:click="approveRoleRequest({{ $roleRequest->id }})" wire:loading.attr="disabled" wire:target="approveRoleRequest({{ $roleRequest->id }})"><i class="bi bi-check-lg me-1" aria-hidden="true"></i>{{ __('admin.registrations.approve') }}<span class="visually-hidden"> {{ $roleRequest->user->pseudo }}</span></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger" wire:click="rejectRoleRequest({{ $roleRequest->id }})" wire:confirm="{{ __('admin.registrations.role_requests.confirm_reject', ['name' => $roleRequest->user->pseudo]) }}" wire:loading.attr="disabled" wire:target="rejectRoleRequest({{ $roleRequest->id }})">{{ __('admin.registrations.role_requests.refuse') }}<span class="visually-hidden"> {{ $roleRequest->user->pseudo }}</span></button>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="card-footer small text-secondary">
+                    <label class="form-label small fw-semibold" for="xmRoleRejectReason">{{ __('admin.registrations.role_requests.reason') }}</label>
+                    <input type="text" class="form-control form-control-sm mb-2" id="xmRoleRejectReason" wire:model="roleRejectReason" minlength="3" maxlength="200" autocomplete="off">
+                    {{ __('admin.registrations.role_requests.help') }}
+                </div>
+            @endif
+        </section>
+    @endif
 
     @if ($canInvite)
         <section class="card xm-admin-card mb-4" aria-labelledby="xmRegInviteTitle">

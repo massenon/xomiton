@@ -18,8 +18,7 @@ use Illuminate\Validation\Rule;
 /**
  * Recherche d'un membre et attribution de rôles (`admin/members`, P15-16, décisions client du 2026-10-29) : trouver un
  * compte par pseudonyme (ou e-mail pour `users.manage`), lui **donner ou retirer le rôle pair** (ManagePeerRole,
- * `peers.assign` : il reste membre) ou changer son niveau d'administration (ChangeUserRole, RG-15 : super-admin seulement
- * pour modération / admin / super-admin, jamais soi-même). Chaque changement exige la confirmation `step-up`, est
+ * `peers.assign` : il reste membre) ou passer membre ↔ pair (ChangeUserRole ; les rôles d'administration ne s'attribuent QUE depuis le web, D-MOB-16). Chaque changement exige la confirmation `step-up`, est
  * journalisé (`roles.*`, `users.role_changed`, `source=mobile`) et notifie la personne.
  */
 final class MemberController extends AdminApiController
@@ -89,11 +88,20 @@ final class MemberController extends AdminApiController
         return $this->data(AdminAccountResource::make($user->fresh(['profile', 'zone', 'roles']))->resolve($request), 200, ['changed' => $changed]);
     }
 
-    /** Changer le niveau de rôle (membre · pair · moderateur · admin · superadmin), RG-15. */
+    /** Changer le niveau de rôle membre ↔ pair seulement : jamais un rôle d'administration depuis le mobile (D-MOB-16). */
     public function changeRole(Request $request, User $user, ChangeUserRole $change): JsonResponse
     {
         $validated = $request->validate(['role' => ['required', 'string', Rule::in(AdminRoles::ALL)]]);
         $admin = $this->admin($request);
+
+        // D-MOB-16 (tranché 2026-10-29) : les rôles d'administration (modérateur·rice, admin, super-admin) ne s'attribuent
+        // ni ne se retirent QUE depuis le web (super-admin) ; l'API mobile ne gère que membre ↔ pair.
+        abort_if(
+            AdminRoles::isAdministration((string) $validated['role']) || AdminRoles::isAdministration(AdminRoles::of($user)),
+            403,
+            (string) __('admin.users.mobile_web_only'),
+        );
+
         $this->confirm($request);
 
         $change($user, (string) $validated['role'], $admin);

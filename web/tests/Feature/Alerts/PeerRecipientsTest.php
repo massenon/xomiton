@@ -43,12 +43,12 @@ function sosEvent(Alert $alert): void
     SosTriggered::dispatch((int) $alert->id, $alert->user_id, $alert->zone_id, $alert->commune_id, true, $alert->routed_to, new DateTimeImmutable);
 }
 
-it('prévient tous les admins et tous les pairs actifs d’un SOS, jamais un membre, un pair suspendu ou l’auteur·e', function (): void {
+it('prévient les admins de garde et les pairs de la zone d’un SOS (défaut `zone`), jamais un membre, un pair suspendu ou l’auteur·e', function (): void {
     $scene = SosScenario::make();
     $secondAdmin = F::member('admin');
     $secondAdmin->givePermissionTo('alerts.take');
-    $peer = peerFor();
-    $otherPeer = peerFor();
+    $peer = peerFor(['zone_id' => $scene->zone->id]);
+    $otherPeer = peerFor(['zone_id' => $scene->zone->id]);
     $suspendedPeer = peerFor(['status' => UserStatus::Suspended]);
     $authorPeer = $scene->member;
     $authorPeer->syncRoles(['membre', 'pair']);
@@ -56,8 +56,8 @@ it('prévient tous les admins et tous les pairs actifs d’un SOS, jamais un mem
 
     $references = collect(app(SosRecipients::class)->for($scene->alert))->map->reference->all();
 
-    expect($references)->toContain('user:'.$scene->admin->id, 'user:'.$secondAdmin->id, 'user:'.$peer->id, 'user:'.$otherPeer->id)
-        ->and($references)->not->toContain('user:'.$suspendedPeer->id, 'user:'.$plainMember->id, 'user:'.$authorPeer->id);
+    expect($references)->toContain('user:'.$scene->admin->id, 'user:'.$peer->id, 'user:'.$otherPeer->id)
+        ->and($references)->not->toContain('user:'.$secondAdmin->id, 'user:'.$suspendedPeer->id, 'user:'.$plainMember->id, 'user:'.$authorPeer->id);
 });
 
 it('écrit cloche et push pour chaque pair prévenu d’un SOS', function (): void {
@@ -135,23 +135,51 @@ it('n’ouvre pas à un pair les alertes où il n’a été prévenu qu’en tan
     F::as($authorPeer)->getJson('/api/v1/pair/alerts/'.$scene->alert->ulid)->assertForbidden();
 });
 
-it('escalade vers le point focal national et l’équipe (admins + pairs) ; l’accusé d’un pair arrête l’escalade', function (): void {
+it('escalade à 5 min vers le point focal national, TOUS les admins et TOUS les pairs (hors zone compris)', function (): void {
     Event::fake([AlertEscalated::class, AlertReminderDue::class]);
     Event::listen(AlertEscalated::class, static fn (): null => null);
     Event::listen(AlertReminderDue::class, static fn (): null => null);
     Event::fake([AlertEscalated::class, AlertReminderDue::class]);
 
     $scene = SosScenario::make();
-    $peer = peerFor();
+    $secondAdmin = F::member('admin');
+    $secondAdmin->givePermissionTo('alerts.take');
+    $peer = peerFor(['zone_id' => $scene->zone->id]);
+    $elsewhere = peerFor(['zone_id' => App\Models\Zone::factory()->create()->id]);
     $alert = $scene->alert;
-    $alert->forceFill(['created_at' => now()->subMinutes(6)])->save();
 
+    // 4 min : pas encore d'escalade.
+    $alert->forceFill(['created_at' => now()->subMinutes(4)])->save();
+    $this->artisan('alerts:escalate')->assertSuccessful();
+    Event::assertNotDispatched(AlertEscalated::class);
+
+    $alert->forceFill(['created_at' => now()->subMinutes(6)])->save();
     $this->artisan('alerts:escalate')->assertSuccessful();
 
     Event::assertDispatched(AlertEscalated::class, fn (AlertEscalated $e): bool => $e->alertId === $alert->id
         && $e->toContactId === $scene->national->id
         && in_array($peer->id, $e->adminIds, true)
+        && in_array($elsewhere->id, $e->adminIds, true)
+        && in_array($secondAdmin->id, $e->adminIds, true)
         && in_array($scene->admin->id, $e->adminIds, true));
+});
+
+it('rend la durée avant escalade configurable (alerts.escalation.sos.escalate_after_minutes)', function (): void {
+    Event::fake([AlertEscalated::class, AlertReminderDue::class]);
+    Event::listen(AlertEscalated::class, static fn (): null => null);
+    Event::listen(AlertReminderDue::class, static fn (): null => null);
+    Event::fake([AlertEscalated::class, AlertReminderDue::class]);
+
+    config(['xomiton.alerts.escalation.sos.escalate_after_minutes' => 10]);
+    $scene = SosScenario::make();
+    $scene->alert->forceFill(['created_at' => now()->subMinutes(6)])->save();
+
+    $this->artisan('alerts:escalate')->assertSuccessful();
+    Event::assertNotDispatched(AlertEscalated::class);
+
+    $scene->alert->forceFill(['created_at' => now()->subMinutes(11)])->save();
+    $this->artisan('alerts:escalate')->assertSuccessful();
+    Event::assertDispatched(AlertEscalated::class);
 });
 
 it('n’escalade pas un SOS dont un pair a accusé réception', function (): void {
