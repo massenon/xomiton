@@ -8,6 +8,7 @@ use App\Enums\AlertStatus;
 use App\Enums\DirectoryRole;
 use App\Models\Alert;
 use App\Models\DirectoryContact;
+use App\Models\OnCallShift;
 use Illuminate\Support\Facades\Event;
 use Tests\Support\CaseFixtures as C;
 use Tests\Support\FeedFixtures as F;
@@ -156,4 +157,14 @@ it('refuse les alertes routées à un compte pair sans alerts.view_routed', func
 
     F::as($this->peer->fresh())->getJson('/api/v1/pair/alerts')->assertForbidden();
     F::as($this->peer->fresh())->postJson('/api/v1/pair/alerts/'.$alert->ulid.'/status', ['status' => 'clos'])->assertForbidden();
+});
+
+it('dit dans meta.on_duty si le pair est de garde comme point focal (plage focal en cours)', function (): void {
+    F::as($this->peer)->getJson('/api/v1/pair/alerts')->assertOk()->assertJsonPath('meta.on_duty', false);
+
+    OnCallShift::factory()->forUser($this->peer)->focal()->create();
+    OnCallShift::factory()->forUser($this->elsewhere->user)->focal()->between(now()->addDay(), now()->addDays(2))->create();
+
+    F::as($this->peer)->getJson('/api/v1/pair/alerts')->assertOk()->assertJsonPath('meta.on_duty', true);
+    F::as($this->elsewhere->user)->getJson('/api/v1/pair/alerts')->assertOk()->assertJsonPath('meta.on_duty', false);
 });

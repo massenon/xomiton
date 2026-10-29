@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\CaseStatus;
 use App\Models\CaseFollowup;
+use App\Models\CaseForm;
 use App\Models\CaseRecord;
 use App\Models\Commune;
 use App\Models\User;
@@ -298,4 +299,38 @@ it('refuse une étape de suivi datée du futur ou hors liste', function (): void
         'step' => 'Thérapie de conversion',
         'outcome' => 'fini',
     ])->assertUnprocessable()->assertJsonValidationErrors(['date', 'step', 'outcome']);
+});
+
+it('sert la fiche de référence dans le détail, sans auteur des faits ni signataire, pour le seul pair du dossier', function (): void {
+    $case = peerCase($this->peer);
+    $form = CaseForm::factory()->shareable()->create([
+        'case_id' => $case->id,
+        'facts_place' => 'Marché de Dantokpa',
+        'facts_author' => 'Voisin du quartier',
+        'consent_signatory' => 'Nom du signataire',
+        'services' => CaseForm::normalizeServices(['ecoute' => true, 'juridique' => true]),
+    ]);
+
+    $response = F::as($this->peer)->getJson('/api/v1/pair/cases/'.$case->code)->assertOk()
+        ->assertJsonPath('data.sheet.filled', true)
+        ->assertJsonPath('data.sheet.reference', $form->reference)
+        ->assertJsonPath('data.sheet.facts.place', 'Marché de Dantokpa')
+        ->assertJsonPath('data.sheet.services.items', ['Écoute / accueil', 'Appui juridique'])
+        ->assertJsonPath('data.sheet.consent.given', true)
+        ->assertJsonPath('data.sheet.consent.sharing', true);
+
+    expect($response->getContent())->not->toContain('Voisin du quartier')->not->toContain('Nom du signataire');
+
+    F::as($this->other)->getJson('/api/v1/pair/cases/'.$case->code)->assertNotFound();
+    F::as($this->peer)->getJson('/api/v1/pair/cases')->assertOk();
+    expect(F::as($this->peer)->getJson('/api/v1/pair/cases')->json('data.0'))->not->toHaveKey('sheet');
+});
+
+it('sert une fiche vide (filled false) sans fiche de référence', function (): void {
+    $case = peerCase($this->peer);
+
+    F::as($this->peer)->getJson('/api/v1/pair/cases/'.$case->code)->assertOk()
+        ->assertJsonPath('data.sheet.filled', false)
+        ->assertJsonPath('data.sheet.services.items', [])
+        ->assertJsonPath('data.sheet.consent.given', null);
 });

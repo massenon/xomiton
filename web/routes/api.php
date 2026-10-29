@@ -67,6 +67,7 @@ use App\Http\Controllers\Api\V1\Network\InvitationController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\Peer\CaseController;
 use App\Http\Controllers\Api\V1\Peer\CaseFollowupController;
+use App\Http\Controllers\Api\V1\Peer\CollectOptionsController;
 use App\Http\Controllers\Api\V1\Peer\RoutedAlertController;
 use App\Http\Controllers\Api\V1\Peer\ValidationRuleController;
 use App\Http\Controllers\Api\V1\Platform\AppVersionController;
@@ -430,7 +431,7 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
     // → même 404), collecte et suivi idempotents par `client_uuid` et `Idempotency-Key` facultative (ADR-32 : autre
     // contenu → 422 `idempotency_key_reused`), pas de suppression ; suivi des victimes ; alertes
     // routées vers mes fiches d'annuaire (accuser, prendre en charge, clore — ni réattribution ni export ; non routée →
-    // 403, même pour l'administration : EnsureAlertRoutedToViewer) ; règles de validation actives (ETag). Réponses
+    // 403, même pour l'administration : EnsureAlertRoutedToViewer) ; règles de validation actives et listes du formulaire de collecte (ETag). Réponses
     // no-store sauf les règles.
     Route::prefix('pair')->as('api.pair.')->middleware(EnsurePeerSpaceAccess::class)->group(function (): void {
         Route::get('cases', [CaseController::class, 'index'])->name('cases.index');
@@ -449,6 +450,7 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
             Route::post('alerts/{alert:ulid}/status', [RoutedAlertController::class, 'status'])->name('alerts.status');
         });
         Route::get('validation-rules', ValidationRuleController::class)->name('validation_rules.index');
+        Route::get('collect-options', CollectOptionsController::class)->name('collect_options.index');
     });
 });
 

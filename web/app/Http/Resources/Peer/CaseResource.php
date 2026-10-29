@@ -23,6 +23,23 @@ final class CaseResource extends JsonResource
 {
     private bool $withNotes = false;
 
+    /** @var array<string, mixed>|null */
+    private ?array $sheet = null;
+
+    /**
+     * Fiche de référence en cinq sections (CaseSheet), servie au seul détail `GET pair/cases/{code}` : la même que
+     * celle de l'écran web du dossier (mêmes colonnes, mêmes exclusions : jamais l'auteur·e présumé·e des faits ni le
+     * signataire du consentement).
+     *
+     * @param  array<string, mixed>  $sheet
+     */
+    public function withSheet(array $sheet): static
+    {
+        $this->sheet = $sheet;
+
+        return $this;
+    }
+
     public function withNotes(bool $withNotes = true): static
     {
         $this->withNotes = $withNotes;
@@ -69,6 +86,7 @@ final class CaseResource extends JsonResource
                     static fn (CaseFollowup $followup): string => ($followup->date?->format('Y-m-d') ?? '').sprintf('%010d', (int) $followup->getKey()),
                 )->values())->resolve($request),
             ),
+            'sheet' => $this->when($this->sheet !== null, fn (): ?array => $this->sheet),
             'created_at' => $case->created_at?->toIso8601String(),
             'updated_at' => $case->updated_at?->toIso8601String(),
             'closed_at' => $case->closed_at?->toIso8601String(),

@@ -57,6 +57,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | Administration mobile (API `admin/*`, espace Admin de l'application) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Collecte de données & registres | ❌ | ❌ | ✅ (ses dossiers) | ❌ | ✅ | ✅ |
 | Fiches VBG / VDH | ❌ | ❌ | 👁 (ses dossiers) | ❌ | ✅ | ✅ |
+<!-- API : la fiche de référence en lecture (`sheet` de GET pair/cases/{code}, lieu précis compris) suit cette ligne : `case_forms.view_own` sur ses dossiers, jamais l'auteur·e des faits ni le signataire ; `pair/collect-options` et `meta.on_duty` de `pair/alerts` : accès `peer_space.access`, sans donnée de dossier. -->
 | Suivi des victimes | ❌ | ❌ | 👁 (ses dossiers) | ❌ | ✅ | ✅ |
 | Alertes & signalements (administration) | ❌ | ❌ | 👁 (routées vers lui·elle **ou dont l'équipe l'a prévenu·e**) | ❌ | ✅ | ✅ |
 | Annuaire dynamique | ❌ | 👁 (contacts publics) | 👁 | 👁 | ✅ | ✅ |

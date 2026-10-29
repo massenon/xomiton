@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Peer;
 
+use App\Application\Cases\CaseSheet;
 use App\Application\Cases\CreateCase;
 use App\Application\Cases\Queries\ListCases;
 use App\Application\Cases\UpdateCase;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Dossiers de l'espace pair (P9-02, docs/API.md §22) : liste et détail **dans le scope** `CaseRecord::visibleTo`
  * (un pair ne voit que les dossiers qu'il a collectés ; dossier d'un autre ou code inconnu → même 404), collecte
  * (CreateCase : code attribué par le serveur, idempotente par `client_uuid`, 201 ou 200 au rejeu), modification
- * (UpdateCase). Pas de suppression : un dossier se clôt (`status: clos`) puis s'archive (administration). Réponses
+ * (UpdateCase). Le détail porte aussi `sheet`, la fiche de référence en cinq sections (CaseSheet, comme l'écran web). Pas de suppression : un dossier se clôt (`status: clos`) puis s'archive (administration). Réponses
  * `no-store` (notes déchiffrées dans le détail) ; avertissements non bloquants dans `meta.warnings`.
  */
 final class CaseController extends ApiController
@@ -54,13 +55,13 @@ final class CaseController extends ApiController
             : $this->respond($resource, 200, $meta, headers: self::NO_STORE);
     }
 
-    public function show(Request $request, string $code, ListCases $cases): JsonResponse
+    public function show(Request $request, string $code, ListCases $cases, CaseSheet $sheet): JsonResponse
     {
         /** @var User $viewer */
         $viewer = $request->user();
         $case = $cases->find($viewer, $code) ?? throw new NotFoundHttpException;
 
-        return $this->respond($this->resource($case), headers: self::NO_STORE);
+        return $this->respond($this->resource($case)->withSheet($sheet($viewer, $case)), headers: self::NO_STORE);
     }
 
     public function update(UpdateCaseRequest $request, UpdateCase $update): JsonResponse

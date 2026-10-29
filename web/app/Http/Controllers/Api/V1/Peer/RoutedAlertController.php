@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\V1\Peer;
 
 use App\Application\Alerts\AcknowledgeAlert;
 use App\Application\Alerts\ChangeAlertStatus;
+use App\Application\Alerts\OnCallRoster;
 use App\Application\Cases\Queries\ListRoutedAlerts;
 use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Requests\Alerts\ChangeAlertStatusRequest;
@@ -29,7 +30,7 @@ use Illuminate\Support\Facades\Gate;
  */
 final class RoutedAlertController extends ApiController
 {
-    public function index(ListRoutedAlertsRequest $request, ListRoutedAlerts $alerts): JsonResponse
+    public function index(ListRoutedAlertsRequest $request, ListRoutedAlerts $alerts, OnCallRoster $roster): JsonResponse
     {
         /** @var User $viewer */
         $viewer = $request->user();
@@ -38,6 +39,8 @@ final class RoutedAlertController extends ApiController
         return $this->paginated($page, RoutedAlertResource::class, [
             'state' => $request->state(),
             'new' => $alerts->query($viewer)->unacknowledged()->count(),
+            // De garde (plage `focal` en cours) : le client interroge alors plus souvent (10 s, comme l'écran web).
+            'on_duty' => $roster->isFocalOnDuty($viewer),
         ])->withHeaders(self::NO_STORE);
     }
 
