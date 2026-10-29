@@ -1,6 +1,10 @@
 # Xomiton — application mobile (Flutter)
 
-SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`.
+SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`
+(454 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
+
+Build Android depuis Windows (SDK, émulateur ou téléphone, API locale `10.0.2.2`, APK debug, clé de
+signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../docs/BUILD_ANDROID_WINDOWS.md).
 
 ## Notifications push (P15-08) : mise en place de Firebase
 
@@ -176,3 +180,48 @@ Ouverture : l'espace est activé puis l'écran empilé, **après le code PIN**, 
 seulement si le serveur a déclaré l'espace au compte. Aperçus masqués : titre
 « Xomiton », corps neutre (jamais SOS, lieu ni motif). iOS : APNs à configurer
 (compte Apple).
+
+## Finalisation de l'espace membre (P15-23)
+
+- **Mode maintenance (RG-14)** : `lib/core/maintenance/` + `features/shell/presentation/maintenance_page.dart`.
+  Un 503 `maintenance` (corps : `maintenance_message`, `ends_at`, `overdue`, `timezone`) active l'écran plein
+  `/maintenance` ; `GET status` est sondé toutes les 60 s et au bouton « Vérifier maintenant ». Restent
+  ouverts : SOS, signalement, suivi, urgences, connexion (l'équipe garde tout l'accès, jamais de jeton
+  révoqué, la boîte d'envoi est conservée).
+- **Erreurs** : `errorMessage` (`core/ui/xm_widgets.dart`) donne un texte clair par statut (401, 403, 404,
+  413, 422, 429, 503 maintenance, réseau) ; le message français du serveur prime quand il existe.
+- **Hors ligne** : tout compte connecté tire `sync/pull` (urgences, annuaire public, thématiques) ;
+  `GET urgences`, les thématiques et leur fiche se replient sur ces lignes sans réseau ni copie d'API.
+- **Newsletter** : `/newsletter` (Paramètres) — abonnement et centres d'intérêt ; pas de fréquence (le schéma
+  n'en a pas, `docs/API.md` §3).
+- Aucune page d'attente : `/soon/:page` n'existe plus.
+
+## Tests d'intégration (P15-21)
+
+`test/integration/e2e_test.dart` fait tourner l'application réelle (routeur, gardes d'espace, code PIN,
+file de synchronisation, push) contre `test/support/sim_server.dart` : un serveur simulé à **état unique**
+derrière un adaptateur Dio (coupure réseau, maintenance, droit retiré, effacement, conflit 409 y sont des
+interrupteurs). Treize scénarios : connexion membre, pair + membre, admin + membre ; retrait d'un droit ;
+collecte et statut hors ligne puis conflit 409 tranché par le pair ; accusé par un pair puis un admin ; push
+après le code PIN ; effacement à distance ; expiration de 14 jours ; maintenance. Ce ne sont pas des
+`integration_test` sur émulateur (recette sur appareil : `docs/CHECKLIST_RECETTE.md`, MOB-01 à MOB-37).
+
+## Release Android (P15-22)
+
+Configuration prête, **jamais construite à ce jour** (aucun SDK Android dans l'environnement de rédaction).
+
+- `android/app/build.gradle.kts` : `applicationId` `bj.xomiton.xomiton`, `versionName` / `versionCode` lus de
+  `pubspec.yaml` (`version: 1.0.0+1` ; garder `kAppVersion` identique), signature par `android/key.properties`
+  (**jamais commité**, modèle `android/key.properties.example`, repli sur la clé de debug avec avertissement),
+  R8 (`isMinifyEnabled`, `isShrinkResources`, `proguard-rules.pro`).
+- Commande de publication : `flutter build appbundle --release --obfuscate --split-debug-info=build/symbols
+  --dart-define=API_BASE_URL=https://…/api/v1` (garder `build/symbols` et `mapping.txt` hors dépôt).
+- Icônes (classique, adaptative, monochrome, Play 512) et rosace de démarrage : `python3 tool/android_icons.py`
+  (Pillow seul) depuis `design-system/logo/icone-appli-bleu.svg`. Écran de démarrage natif clair, sombre et
+  Android 12.
+- Sécurité : `FLAG_SECURE` (`MainActivity.kt`), HTTPS seul (`res/xml/network_security_config.xml` ;
+  `src/debug/res/xml/` autorise `http` vers `10.0.2.2`, `localhost`, `127.0.0.1` en debug seulement), permissions
+  minimales (localisation précise pour le SOS, notifications ; le reste retiré explicitement).
+- `google-services.json` : attendu dans `android/app/`, **ignoré par git** (voir « Notifications push »).
+- CI `.github/workflows/mobile.yml` : analyse, tests, APK debug, APK release arm64 et budget de taille
+  (`tool/size_budget.json`, `tool/check_size.py`).
