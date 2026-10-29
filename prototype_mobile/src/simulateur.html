@@ -228,6 +228,8 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
 .slides-track { display: flex; height: 100%; transition: transform .45s var(--xm-ease-out); }
 .slide { position: relative; flex: 0 0 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
 .slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slide.is-banner { background: #0B0D1A; }
+.slide.is-banner img { inset: 0 auto auto 0; height: auto; object-fit: fill; -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%); mask-image: linear-gradient(180deg, #000 55%, transparent 100%); }
 .slide .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(8 10 30 / .62) 0%, rgb(8 10 30 / .12) 24%, rgb(8 10 30 / .08) 40%, rgb(8 10 30 / .78) 70%, rgb(8 10 30 / .94) 100%); }
 .slide-copy { position: relative; padding: 0 28px calc(var(--safe-bottom) + 196px); }
 .slide-copy h2 { font-size: 28px; line-height: 1.15; font-weight: 800; color: #fff; text-wrap: balance; }
@@ -396,7 +398,7 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
    ===================================================================== */
 const IMG = {
   hero04: '{{IMG:hero-04.jpg}}', hero08: '{{IMG:hero-08.jpg}}', hero09: '{{IMG:hero-09.jpg}}', hero10: '{{IMG:hero-10.jpg}}', signin: '{{IMG:sign-in.jpg}}',
-  sp1: '{{IMG:splash/ecoute.webp}}', sp2: '{{IMG:splash/sos.webp}}', sp3: '{{IMG:splash/communaute.webp}}', sp4: '{{IMG:splash/ressources.webp}}',
+  sp1: '{{IMG:splash/paillettes.webp}}', sp2: '{{IMG:splash/bouche-scotchee.webp}}', sp3: '{{IMG:splash/couple-etreinte.webp}}', sp4: '{{IMG:splash/foule-drapeaux.webp}}', sp5: '{{IMG:splash/lumiere-doree.webp}}', sp6: '{{IMG:splash/symbole-venus.webp}}',
   logo: '{{IMG:logo-couleur.svg}}', logoWhite: '{{IMG:logo-mono-blanc.svg}}', rosace: '{{IMG:symbole-rosace-couleur.svg}}', icon: '{{IMG:icone-appli-bleu.svg}}'
 };
 const P = {
@@ -505,21 +507,23 @@ const meter = pw => { const s = strength(pw); return `<div class="meter" aria-hi
 const pwField = (id, label, val, auto) => `<div class="field"><label for="${id}">${label}</label><div class="pw"><input class="input" id="${id}" type="password" value="${esc(val)}" autocomplete="${auto}" required><button type="button" class="icon-btn" data-toggle-pw="${id}" aria-label="Afficher le mot de passe">${ic('eye')}</button></div></div>`;
 
 /* ---------- auth ---------- */
-const SLIDES = [
-  ['sp1', 'Ici, on t’écoute sans te juger', 'Parle à une pair éducatrice, à ton rythme et en toute confidentialité. Rien n’est partagé sans ton accord.', 'Portrait d’une jeune femme au regard tourné vers la lumière, des drapeaux arc-en-ciel flous derrière elle.'],
-  ['sp2', 'Une aide quand tu es en danger', 'Un bouton SOS toujours à portée de main, et un signalement anonyme si tu préfères.', 'Une jeune femme à la peau brillante de paillettes, au milieu d’un rassemblement, avec un drapeau arc-en-ciel.'],
-  ['sp3', 'Tu n’es pas seule', 'Retrouve une communauté bienveillante de filles et de femmes LBTQ+ au Bénin, sous ton nom ou sous pseudonyme.', 'Deux personnes enlacées devant un grand drapeau arc-en-ciel.'],
-  ['sp4', 'Des ressources pour avancer', 'Fiches, ateliers et contacts utiles pour connaître tes droits et prendre soin de toi.', 'Une jeune femme au regard serein au milieu de la foule, des drapeaux arc-en-ciel dans le ciel.']
+const SLIDES = [ // six textes validés par le client le 29/10/2026 (tutoiement) ; 5e valeur : 'banner' = visuel basse résolution, affiché à la largeur de l’écran puis fondu dans le fond
+  ['sp1', 'Un espace à toi.', 'Ici, tu peux être toi-même. Xomiton t’écoute, sans jugement.', 'Jeune femme aux tresses et aux paillettes sur le visage, regard au loin, drapeau arc-en-ciel flou derrière elle.'],
+  ['sp2', 'Ta parole compte.', 'Tu n’as plus à te taire. Raconte, demande, partage, à ton rythme.', 'Deux femmes enlacées devant un drapeau arc-en-ciel, la bouche couverte d’un ruban adhésif gris.', 'banner'],
+  ['sp3', 'En sécurité.', 'Un bouton SOS et un signalement anonyme sont toujours à portée de main.', 'Deux femmes enlacées devant un drapeau arc-en-ciel, front contre front.'],
+  ['sp4', 'Une communauté qui te comprend.', 'Rencontre des personnes qui vivent la même chose que toi.', 'Jeune femme au regard levé vers la lumière, foule et drapeaux arc-en-ciel flous derrière elle.'],
+  ['sp5', 'Des réponses fiables.', 'Ressources, droits, santé : de l’information claire, vérifiée.', 'Jeune femme aux cheveux bouclés éclairés par le soleil couchant, drapeau arc-en-ciel au second plan.'],
+  ['sp6', 'Ta vie privée d’abord.', 'Tu décides de ce que tu montres. Ton vrai nom n’est jamais demandé.', 'Visage de femme de profil, en partie hors cadre, symbole de Vénus peint en blanc sur la joue, main sous le menton.', 'banner']
 ];
 let slide = Math.max(0, Math.min(SLIDES.length - 1, +S.slide || 0));
 def({ id: 'splash', module: 'auth', title: 'Splash et carrousel', route: '/splash', page: 'SplashCarouselPage', provider: 'onboardingProvider (seen: bool)', chrome: 'bare',
-  source: 'Carrousel plein écran : 4 photos (assets/images/splash/*.webp), dégradé de lisibilité, textes de mobile_onboarding_*',
+  source: 'Carrousel plein écran : 6 diapositives, une photo chacune (assets/images/splash/*.webp, 382 Ko d’images pour toute l’application), dégradé de lisibilité, textes de mobile_onboarding_slide_1 à 6 (validés le 29/10/2026)',
   tree: `SplashCarouselPage
 └─ Scaffold(extendBodyBehindAppBar)
    └─ Stack
-      ├─ PageView.builder (4 diapositives, balayage)
+      ├─ PageView.builder (6 diapositives, balayage)
       │  └─ _Slide
-      │     ├─ Image.asset(fit: cover, semanticLabel)
+      │     ├─ Image.asset(fit: cover, semanticLabel)  ·  ShaderMask + fitWidth pour les 2 visuels basse résolution
       │     ├─ DecoratedBox(LinearGradient sombre)
       │     └─ Column(titre en tu + sous-titre)
       ├─ SafeArea › Row(XmLogo blanc, TextButton « Passer »)
@@ -531,7 +535,7 @@ def({ id: 'splash', module: 'auth', title: 'Splash et carrousel', route: '/splas
   render: () => `<div class="splash">
     <div class="slides" id="slides" aria-roledescription="carrousel" aria-label="Présentation de Xomiton">
       <div class="slides-track" id="track" style="transform:translateX(-${slide * 100}%)">
-        ${SLIDES.map((s, i) => `<section class="slide" aria-roledescription="diapositive" aria-label="${i + 1} sur ${SLIDES.length}" ${i === slide ? '' : 'aria-hidden="true"'}>
+        ${SLIDES.map((s, i) => `<section class="slide${s[4] ? ' is-banner' : ''}" aria-roledescription="diapositive" aria-label="${i + 1} sur ${SLIDES.length}" ${i === slide ? '' : 'aria-hidden="true"'}>
           <img src="${IMG[s[0]]}" alt="${esc(s[3])}" ${i ? 'loading="lazy"' : ''}><div class="shade"></div>
           <div class="slide-copy"><h2 class="h-display">${s[1]}</h2><p>${s[2]}</p></div></section>`).join('')}
       </div>

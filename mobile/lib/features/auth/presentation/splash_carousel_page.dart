@@ -7,15 +7,29 @@ import '../../../core/l10n/app_strings.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../application/onboarding_provider.dart';
 
-/// Photos plein écran (WebP portrait, ~900 px) : écoute, SOS, communauté, ressources.
-const _slideImages = [
-  'assets/images/splash/ecoute.webp',
-  'assets/images/splash/sos.webp',
-  'assets/images/splash/communaute.webp',
-  'assets/images/splash/ressources.webp',
+/// Une diapositive = un texte validé + une photo. [fit] : `cover` pour les
+/// photos haute définition ; `banner` pour les deux visuels basse résolution
+/// (visage recadré 480 px) qui s'affichent à la largeur de l'écran, en haut,
+/// puis se fondent dans le fond sombre (jamais agrandis ni déformés).
+enum SlideFit { cover, banner }
+
+class SplashSlideSpec {
+  const SplashSlideSpec(this.image, {this.fit = SlideFit.cover});
+  final String image;
+  final SlideFit fit;
+}
+
+/// Ordre = ordre des six textes `mobile_onboarding_slide_N_*`.
+const kSplashSlides = <SplashSlideSpec>[
+  SplashSlideSpec('assets/images/splash/paillettes.webp'), // 1 Un espace à toi
+  SplashSlideSpec('assets/images/splash/bouche-scotchee.webp', fit: SlideFit.banner), // 2 Ta parole compte
+  SplashSlideSpec('assets/images/splash/couple-etreinte.webp'), // 3 En sécurité
+  SplashSlideSpec('assets/images/splash/foule-drapeaux.webp'), // 4 Une communauté
+  SplashSlideSpec('assets/images/splash/lumiere-doree.webp'), // 5 Réponses fiables
+  SplashSlideSpec('assets/images/splash/symbole-venus.webp', fit: SlideFit.banner), // 6 Vie privée
 ];
 
-/// Splash plein écran : carrousel de 4 photos avec dégradé de lisibilité, titre
+/// Splash plein écran : carrousel de six diapositives (une photo chacune) avec dégradé de lisibilité, titre
 /// et sous-titre en tu, « Passer », points, puis « Suivant » ; la dernière
 /// diapositive propose « Créer un compte » et « Se connecter ». Jamais de
 /// défilement automatique : la personne avance elle-même (bouton, point, balayage).
@@ -25,6 +39,8 @@ class SplashCarouselPage extends ConsumerStatefulWidget {
   @override
   ConsumerState<SplashCarouselPage> createState() => _SplashCarouselPageState();
 }
+
+const _splashBg = Color(0xFF0B0D1A);
 
 final ButtonStyle _lightFilled = FilledButton.styleFrom(
   backgroundColor: Colors.white,
@@ -61,7 +77,7 @@ class _SplashCarouselPageState extends ConsumerState<SplashCarouselPage> {
 
   @override
   Widget build(BuildContext context) {
-    final last = _index == _slideImages.length - 1;
+    final last = _index == kSplashSlides.length - 1;
     return Scaffold(
       body: Stack(children: [
         Semantics(
@@ -69,7 +85,7 @@ class _SplashCarouselPageState extends ConsumerState<SplashCarouselPage> {
           label: context.t('mobile_onboarding_carousel_label'),
           child: PageView.builder(
             controller: _controller,
-            itemCount: _slideImages.length,
+            itemCount: kSplashSlides.length,
             onPageChanged: (i) => setState(() => _index = i),
             itemBuilder: (context, i) => _Slide(index: i),
           ),
@@ -100,12 +116,12 @@ class _SplashCarouselPageState extends ConsumerState<SplashCarouselPage> {
               padding: const EdgeInsets.all(XmSpace.gutter),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  for (var i = 0; i < _slideImages.length; i++)
+                  for (var i = 0; i < kSplashSlides.length; i++)
                     Semantics(
                       button: true,
                       selected: i == _index,
                       label: context.t('mobile_onboarding_slide_label',
-                          {'current': i + 1, 'total': _slideImages.length}),
+                          {'current': i + 1, 'total': kSplashSlides.length}),
                       child: InkResponse(
                         onTap: () => _goTo(i),
                         radius: 24,
@@ -169,14 +185,37 @@ class _Slide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final n = index + 1;
+    final spec = kSplashSlides[index];
     return Semantics(
-      label: context.t('mobile_onboarding_slide_label', {'current': n, 'total': _slideImages.length}),
+      label: context.t('mobile_onboarding_slide_label', {'current': n, 'total': kSplashSlides.length}),
       child: Stack(fit: StackFit.expand, children: [
-        Image.asset(
-          _slideImages[index],
-          fit: BoxFit.cover,
-          semanticLabel: context.t('mobile_onboarding_slide_${n}_alt'),
-        ),
+        const ColoredBox(color: _splashBg),
+        if (spec.fit == SlideFit.banner)
+          Align(
+            alignment: Alignment.topCenter,
+            // Fondu du bas de l'image dans le fond : aucun bord franc, quelle que soit la hauteur.
+            child: ShaderMask(
+              blendMode: BlendMode.dstIn,
+              shaderCallback: (r) => const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.white, Colors.white, Color(0x00FFFFFF)],
+                stops: [0, 0.55, 1],
+              ).createShader(r),
+              child: Image.asset(
+                spec.image,
+                width: double.infinity,
+                fit: BoxFit.fitWidth,
+                semanticLabel: context.t('mobile_onboarding_slide_${n}_alt'),
+              ),
+            ),
+          )
+        else
+          Image.asset(
+            spec.image,
+            fit: BoxFit.cover,
+            semanticLabel: context.t('mobile_onboarding_slide_${n}_alt'),
+          ),
         const DecoratedBox(
           decoration: BoxDecoration(
             gradient: LinearGradient(

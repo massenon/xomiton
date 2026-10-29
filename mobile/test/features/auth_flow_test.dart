@@ -54,7 +54,7 @@ void main() {
   setUpAll(() => initializeDateFormatting('fr'));
 
   group('carrousel', () {
-    testWidgets('4 diapositives, aucun défilement automatique', (tester) async {
+    testWidgets('6 diapositives validées (tutoiement), aucun défilement automatique', (tester) async {
       await pumpApp(tester, TestEnv(api: FakeApi(), seen: false));
       expect(tr(S.t('mobile_onboarding_slide_1_title')), findsOneWidget);
       // 60 s plus tard, on est toujours sur la première diapositive.
@@ -62,7 +62,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(tr(S.t('mobile_onboarding_slide_1_title')), findsOneWidget);
       expect(find.byType(PageView), findsOneWidget);
-      final titles = [S.t('mobile_onboarding_slide_2_title'), S.t('mobile_onboarding_slide_3_title'), S.t('mobile_onboarding_slide_4_title')];
+      final titles = [S.t('mobile_onboarding_slide_2_title'), S.t('mobile_onboarding_slide_3_title'), S.t('mobile_onboarding_slide_4_title'), S.t('mobile_onboarding_slide_5_title'), S.t('mobile_onboarding_slide_6_title')];
       for (final t in titles) {
         await tester.tap(tr(S.t('common_next_item')));
         await tester.pumpAndSettle();
@@ -82,13 +82,13 @@ void main() {
       // « Passer » : cible d’au moins 44 px.
       expect(tester.getSize(find.byKey(const ValueKey('splash-skip'))).height, greaterThanOrEqualTo(44));
       // Un point par diapositive, nommé pour les lecteurs d’écran.
-      expect(find.bySemanticsLabel(S.t('mobile_onboarding_slide_label', {'current': 3, 'total': 4})), findsWidgets);
+      expect(find.bySemanticsLabel(S.t('mobile_onboarding_slide_label', {'current': 3, 'total': 6})), findsWidgets);
       // Balayage vers la gauche : diapositive suivante.
       await tester.drag(find.byType(PageView), const Offset(-400, 0));
       await tester.pumpAndSettle();
       expect(tr(S.t('mobile_onboarding_slide_2_title')), findsOneWidget);
-      // Point 4 : dernière diapositive, deux actions.
-      await tester.tap(find.byWidgetPredicate((w) => w is Semantics && w.properties.button == true && w.properties.label == S.t('mobile_onboarding_slide_label', {'current': 4, 'total': 4})));
+      // Point 6 : dernière diapositive, deux actions.
+      await tester.tap(find.byWidgetPredicate((w) => w is Semantics && w.properties.button == true && w.properties.label == S.t('mobile_onboarding_slide_label', {'current': 6, 'total': 6})));
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('splash-signup')), findsOneWidget);
       await tester.tap(find.byKey(const ValueKey('splash-login')));
@@ -107,7 +107,7 @@ void main() {
 
     testWidgets('« Créer un compte » (dernière diapositive) ouvre l’inscription', (tester) async {
       await pumpApp(tester, TestEnv(api: FakeApi(), seen: false));
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < 5; i++) {
         await tester.tap(tr(S.t('common_next_item')));
         await tester.pumpAndSettle();
       }

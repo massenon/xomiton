@@ -74,8 +74,8 @@ void main() {
     for (final a in ['login', 'password', 'pseudo', 'email', 'code']) {
       if (!s.has('validation_attributes_$a')) missing.add('validation_attributes_$a');
     }
-    for (var i = 1; i <= 4; i++) {
-      for (final p in ['title', 'body']) {
+    for (var i = 1; i <= 6; i++) {
+      for (final p in ['title', 'body', 'alt']) {
         if (!s.has('mobile_onboarding_slide_${i}_$p')) missing.add('mobile_onboarding_slide_${i}_$p');
       }
     }
