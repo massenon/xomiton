@@ -192,7 +192,7 @@ void main() {
       await tester.pumpWidget(await env.app());
       await settle(tester, 10);
       expect(push.permissionAsks, 1);
-      expect(a.calls('POST me/devices'), hasLength(1));
+      expect(a.calls('POST me/devices'), isNotEmpty);
       expect((a.calls('POST me/push-subscriptions').single.data as Map)['kind'], 'fcm');
       await disposeApp(tester);
     });

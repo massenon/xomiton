@@ -59,10 +59,33 @@ class XmAlert extends StatelessWidget {
 String errorMessage(BuildContext context, Object error) {
   final e = ApiException.from(error);
   if (e.isNetwork) return context.t('microcopy_error_unreachable');
-  if (e.status == 429) {
-    return context.t('errors_api_throttled', {'seconds': e.retryAfter ?? 60});
+  final server = (e.message != null && e.message!.isNotEmpty) ? e.message! : null;
+  switch (e.status) {
+    case 401:
+      return context.t('auth_api_unauthenticated');
+    case 403:
+      // Compte suspendu, étape de confirmation manquante, appareil ou espace
+      // retiré : le serveur sait dire pourquoi (message français), sinon texte générique.
+      return server ?? context.t('microcopy_error_forbidden');
+    case 404:
+      return context.t('microcopy_error_not_found');
+    case 413:
+      return context.t('errors_api_payload_too_large');
+    case 422:
+      // Message français du serveur, sinon premier message de champ, sinon texte générique.
+      if (server != null) return server;
+      for (final list in e.errors.values) {
+        if (list.isNotEmpty) return list.first;
+      }
+      return context.t('microcopy_error_form');
+    case 429:
+      return context.t('errors_api_throttled', {'seconds': e.retryAfter ?? 60});
+    case 503:
+      return e.code == 'maintenance'
+          ? context.t('errors_api_maintenance')
+          : (server ?? context.t('errors_api_server'));
   }
-  if (e.message != null && e.message!.isNotEmpty) return e.message!;
+  if (server != null) return server;
   if ((e.status ?? 0) >= 500) return context.t('errors_api_server');
   return context.t('microcopy_error_generic');
 }

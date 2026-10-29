@@ -230,8 +230,12 @@ void main() {
       push.silent.add(const PushPayload('sync', null));
       push.silent.add(const PushPayload('rules', null));
       await settle(tester, 10);
-      expect(api.calls('GET sync/pull'), isEmpty);
+      // Un membre tire seulement les collections communes (P15-23), jamais celles du pair.
+      for (final r in api.calls('GET sync/pull')) {
+        expect((r.queryParameters['collections'] as List), isNot(contains('cases')));
+      }
       expect(api.calls('GET pair/validation-rules'), isEmpty);
+      expect(api.calls('POST heartbeat'), isEmpty);
     });
   });
 }

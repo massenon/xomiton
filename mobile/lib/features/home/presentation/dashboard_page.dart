@@ -258,7 +258,7 @@ class _Tiles extends StatelessWidget {
         'report' => '/signaler',
         'emergency' => '/urgences',
         'assistant' => '/assistant',
-        _ => '/soon/${t.key}',
+        _ => '/thematiques',
       }),
     );
     // Deux colonnes, hauteur suivant le contenu (texte agrandi, libellés longs).
@@ -345,7 +345,7 @@ class _CompletionCard extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () => context.push('/soon/profile'),
+                onPressed: () => context.push('/profil-progressif'),
                 child: Text(context.t('buttons_community_complete_profile')),
               ),
             ],

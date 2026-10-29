@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../core/auth_spaces/app_space.dart';
 import '../core/auth_spaces/presentation/space_widgets.dart';
 import '../core/auth_spaces/space_providers.dart';
+import '../core/maintenance/maintenance.dart';
 import '../features/admin/presentation/admin_alerts_pages.dart';
 import '../features/admin/presentation/admin_duty_page.dart';
 import '../features/admin/presentation/admin_more_pages.dart';
@@ -34,10 +35,12 @@ import '../features/pair/presentation/pair_cases_pages.dart';
 import '../features/pair/presentation/pair_collect_page.dart';
 import '../features/pair/presentation/pair_home_page.dart';
 import '../features/pair/presentation/pair_sync_pages.dart';
+import '../features/profile/presentation/newsletter_page.dart';
 import '../features/profile/presentation/profile_page.dart';
 import '../features/profile/presentation/progressive_page.dart';
 import '../features/profile/presentation/security_page.dart';
 import '../features/profile/presentation/settings_page.dart';
+import '../features/shell/presentation/maintenance_page.dart';
 import '../features/shell/presentation/shell_pages.dart';
 import '../features/alerts/presentation/sos_page.dart' show SosPage;
 import 'shells/space_shells.dart';
@@ -82,8 +85,24 @@ String? appRedirect({
   AppSpace activeSpace = AppSpace.member,
   bool spaceChoicePending = false,
   bool pinSetupNeeded = false,
+  bool maintenance = false,
+  bool teamAccount = false,
 }) {
   final loc = uri.path;
+  // Mode maintenance (RG-14) : tout compte hors équipe est ramené à l'écran de
+  // maintenance, sauf les parcours de crise (RG-01) et les écrans de connexion
+  // (l'équipe garde l'accès). Maintenance levée : on quitte l'écran.
+  if (loc == '/maintenance') {
+    if (!maintenance || teamAccount) return '/home';
+    return null;
+  }
+  if (maintenance && !teamAccount) {
+    final open = loc == '/sos' ||
+        _guestOnly.contains(loc) ||
+        loc == '/otp' ||
+        kPublicPrefixes.any(loc.startsWith);
+    if (!open) return '/maintenance';
+  }
   if (!authenticated && loc == '/sos') return '/alerte-sos';
   if (authenticated) {
     final several = spaces.length > 1;
@@ -124,6 +143,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(sessionProvider, (_, _) => refresh.value++);
   ref.listen(onboardingProvider, (_, _) => refresh.value++);
   ref.listen(activeSpaceProvider, (_, _) => refresh.value++);
+  ref.listen(maintenanceProvider.select((m) => m.active), (_, _) => refresh.value++);
   ref.listen(pinLockProvider.select((s) => s.ready && !s.configured), (_, _) => refresh.value++);
 
   final router = GoRouter(
@@ -141,9 +161,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         activeSpace: ref.read(activeSpaceProvider),
         spaceChoicePending: session.spaceChoicePending,
         pinSetupNeeded: pin.ready && !pin.configured,
+        maintenance: ref.read(maintenanceProvider).active,
+        teamAccount: session.user != null &&
+            (session.user!.roles.contains('admin') ||
+                session.user!.roles.contains('superadmin') ||
+                session.user!.role == 'admin' ||
+                session.user!.role == 'superadmin'),
       );
     },
     routes: [
+      GoRoute(path: '/maintenance', builder: (_, _) => const MaintenancePage()),
       GoRoute(path: '/splash', builder: (_, _) => const SplashCarouselPage()),
       GoRoute(path: '/login', builder: (_, _) => const LoginPage()),
       GoRoute(path: '/signup', builder: (_, _) => const SignupPage()),
@@ -402,6 +429,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ('/profil-progressif', const ProgressiveProfilePage()),
         ('/parametres', const SettingsPage()),
         ('/securite', const SecurityPage()),
+        ('/newsletter', const NewsletterPage()),
         ('/appareils', const DevicesPage()),
       ])
         GoRoute(
@@ -409,14 +437,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           parentNavigatorKey: rootNavigatorKey,
           builder: (_, _) => r.$2,
         ),
-      GoRoute(
-        path: '/soon/:page',
-        parentNavigatorKey: rootNavigatorKey,
-        builder: (_, state) => ComingSoonPage(
-          pageKey: state.pathParameters['page']!,
-          showBack: true,
-        ),
-      ),
     ],
   );
   ref.onDispose(router.dispose);

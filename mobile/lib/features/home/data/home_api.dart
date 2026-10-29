@@ -2,7 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/core_providers.dart';
+import '../../../core/network/api_exception.dart';
 import '../../../core/storage/api_cache.dart';
+import '../../../core/sync/collection_store.dart';
+import '../../../core/sync/sync_providers.dart';
 import 'home_models.dart';
 
 List<Category> _categories(Object? v) => v is List
@@ -12,9 +15,13 @@ List<Category> _categories(Object? v) => v is List
 /// Lectures de l'accueil mobile (docs/API.md §7 et §11). Toute lecture passe
 /// par [ApiCache] : ETag + copie Hive chiffrée, lisible hors connexion.
 class HomeApi {
-  HomeApi(this._dio, this._cache);
+  HomeApi(this._dio, this._cache, [this._common]);
   final Dio _dio;
   final ApiCache _cache;
+
+  /// Collections communes de `sync/pull` (thématiques) : repli hors ligne quand
+  /// la lecture directe n'a ni réseau ni copie (P15-23).
+  final CollectionStore? _common;
 
   Future<DashboardData> dashboard() async {
     final r = await _cache.get('dashboard', private: true);
@@ -22,7 +29,21 @@ class HomeApi {
   }
 
   Future<ThemeList> themes({String? categorie, String? q}) async {
-    final r = await _cache.get('thematiques', query: {'categorie': categorie, 'q': q});
+    final CachedJson r;
+    try {
+      r = await _cache.get('thematiques', query: {'categorie': categorie, 'q': q});
+    } on DioException catch (e) {
+      final rows = ApiException.from(e).isNetwork ? _common?.rows('thematiques') : null;
+      if (rows == null || rows.isEmpty) rethrow;
+      final needle = (q ?? '').trim().toLowerCase();
+      final list = [
+        for (final j in rows)
+          if (needle.isEmpty ||
+              '${j['title']} ${j['summary'] ?? ''}'.toLowerCase().contains(needle))
+            ThemeCardData.fromJson(j),
+      ];
+      return ThemeList(items: list, categories: const [], total: rows.length, stale: true);
+    }
     final items = (r.data as List)
         .map((e) => ThemeCardData.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList();
@@ -35,7 +56,16 @@ class HomeApi {
   }
 
   Future<ThemeDetailData> theme(String slug) async {
-    final r = await _cache.get('thematiques/$slug');
+    final CachedJson r;
+    try {
+      r = await _cache.get('thematiques/$slug');
+    } on DioException catch (e) {
+      final row = ApiException.from(e).isNetwork
+          ? _common?.rows('thematiques').where((j) => j['slug'] == slug).firstOrNull
+          : null;
+      if (row == null) rethrow;
+      return ThemeDetailData.fromJson(row);
+    }
     return ThemeDetailData.fromJson(Map<String, dynamic>.from(r.data as Map));
   }
 
@@ -98,4 +128,4 @@ class HomeApi {
 }
 
 final homeApiProvider = Provider<HomeApi>(
-    (ref) => HomeApi(ref.watch(dioProvider), ref.watch(apiCacheProvider)));
+    (ref) => HomeApi(ref.watch(dioProvider), ref.watch(apiCacheProvider), ref.watch(commonStoreProvider)));

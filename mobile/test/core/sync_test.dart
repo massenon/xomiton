@@ -702,12 +702,17 @@ void main() {
       expect(c.read(syncEngineProvider).state.lastSync, isNotNull);
     });
 
-    test('membre seul : le moteur ne démarre pas', () async {
+    test('membre seul : ni signal de vie ni règles, seulement les collections communes', () async {
       final (c, env) = await boot(['member']);
       c.read(syncRunnerProvider);
       await Future<void>.delayed(const Duration(milliseconds: 100));
       expect(env.api.calls('POST heartbeat'), isEmpty);
-      expect(env.api.calls('GET sync/pull'), isEmpty);
+      expect(env.api.calls('GET pair/validation-rules'), isEmpty);
+      final pulls = env.api.calls('GET sync/pull');
+      expect(pulls, isNotEmpty);
+      for (final r in pulls) {
+        expect(r.queryParameters['collections'], ['emergency_contacts', 'directory_contacts', 'thematiques']);
+      }
     });
 
     test('un autre compte sur ce téléphone : rien du précédent ne reste dans le coffre du pair', () async {

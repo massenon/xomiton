@@ -53,7 +53,7 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
     flushMemberOutbox: () => ref.read(outboxProvider).flush(),
     extraPending: () => ref.read(outboxProvider).pending().length,
     runPair: peer,
-    runCommon: peer,
+    runCommon: true,
     appVersion: kAppVersion,
     onWipe: () async {
       final prefs = ref.read(sharedPreferencesProvider);
@@ -91,7 +91,9 @@ final syncIntervalProvider = Provider<Duration?>(
 final syncRunnerProvider = Provider<void>((ref) {
   final auth = ref.watch(sessionProvider.select((s) => s.authenticated));
   final peer = ref.watch(hasPeerSpaceProvider);
-  if (!auth || !peer) return;
+  // Tout compte connecté tire les collections communes (urgences, thématiques,
+  // annuaire public : lisibles hors ligne, P15-23) ; le pair y ajoute les siennes.
+  if (!auth) return;
   final engine = ref.watch(syncEngineProvider);
   final every = ref.watch(syncIntervalProvider);
   var started = false;
@@ -106,6 +108,10 @@ final syncRunnerProvider = Provider<void>((ref) {
         await ref.read(localDbProvider).clearPeer();
       }
       await store.putText('owner', '$uid');
+    }
+    if (!peer) {
+      await engine.sync(force: true);
+      return;
     }
     if (await engine.heartbeat()) await engine.sync(force: true);
   }
@@ -129,7 +135,7 @@ final syncRunnerProvider = Provider<void>((ref) {
   if (every != null) {
     timer = Timer.periodic(every, (_) {
       if (!ref.read(isOnlineProvider)) return;
-      unawaited(engine.heartbeat());
+      if (peer) unawaited(engine.heartbeat());
       unawaited(engine.sync());
     });
   }
@@ -138,7 +144,7 @@ final syncRunnerProvider = Provider<void>((ref) {
       ? null
       : _ResumeObserver(() {
           if (ref.read(isOnlineProvider)) {
-            unawaited(engine.heartbeat());
+            if (peer) unawaited(engine.heartbeat());
             unawaited(engine.sync());
           }
         });

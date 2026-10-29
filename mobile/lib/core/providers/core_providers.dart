@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../maintenance/maintenance.dart';
 import '../network/api_client.dart';
 import '../outbox/outbox.dart';
 import '../network/app_toast.dart';
@@ -54,6 +55,7 @@ final dioProvider = Provider<Dio>((ref) {
     onSpaceForbidden: () => ref.read(sessionProvider.notifier).refresh(),
     onDeviceRevoked: () => ref.read(sessionProvider.notifier).expire(),
     deviceRegistered: () => (prefs.getString(kDeviceUuidPref) ?? '').isNotEmpty,
+    onMaintenance: (body) => ref.read(maintenanceProvider.notifier).enter(body),
     onContact: (date) => ref.read(contactClockProvider).record(parseServerDate(date)),
   );
 });

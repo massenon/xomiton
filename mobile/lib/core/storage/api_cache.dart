@@ -78,7 +78,7 @@ class ApiCache {
       return CachedJson(res.data);
     } on DioException catch (e) {
       final api = ApiException.from(e);
-      if (entry != null && api.isNetwork) {
+      if (entry != null && (api.isNetwork || api.status == 503)) {
         return CachedJson(entry['body'], stale: true, fromCache: true);
       }
       rethrow;

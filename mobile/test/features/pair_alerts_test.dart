@@ -53,7 +53,7 @@ void main() {
       expect(find.text(S.t('peer_home_tasks_alerts_to_take', {'count': 1})), findsOneWidget);
       expect(find.text(S.t('peer_home_tasks_cases_to_contact', {'count': 2})), findsOneWidget);
       await tester.scrollUntilVisible(find.text(S.t('peer_home_shortcuts_collecte')), 200);
-      for (final k in ['collecte', 'cases', 'report', 'directory', 'ccc', 'resources']) {
+      for (final k in ['collecte', 'cases', 'report', 'directory', 'resources']) {
         expect(find.text(S.t('peer_home_shortcuts_$k')), findsOneWidget);
       }
     });

@@ -119,6 +119,14 @@ class SettingsPage extends ConsumerWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.push('/securite'),
           ),
+          ListTile(
+            key: const Key('tile-newsletter'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.mail_outline),
+            title: Text(context.t('mobile_newsletter_title')),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push('/newsletter'),
+          ),
           const SizedBox(height: XmSpace.s4),
           OutlinedButton.icon(
             key: const Key('logout'),

@@ -210,7 +210,6 @@ class _Shortcuts extends StatelessWidget {
       ('peer_home_shortcuts_cases', Icons.folder_outlined, '/pair/dossiers'),
       ('peer_home_shortcuts_report', Icons.campaign_outlined, '/signaler'),
       ('peer_home_shortcuts_directory', Icons.menu_book_outlined, '/urgences'),
-      ('peer_home_shortcuts_ccc', Icons.groups_2_outlined, '/soon/ccc'),
       (
         'peer_home_shortcuts_resources',
         Icons.library_books_outlined,

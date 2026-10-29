@@ -319,12 +319,12 @@ class _Detail extends StatelessWidget {
               ),
               const SizedBox(height: XmSpace.s2),
               OutlinedButton(
-                onPressed: () => context.push('/soon/emergency'),
+                onPressed: () => context.push('/urgences'),
                 child: Text(context.t('pages_thematiques_link_emergency')),
               ),
               const SizedBox(height: XmSpace.s2),
               OutlinedButton(
-                onPressed: () => context.push('/soon/sos'),
+                onPressed: () => context.push('/alerte-sos'),
                 child: Text(context.t('pages_thematiques_link_sos')),
               ),
             ],

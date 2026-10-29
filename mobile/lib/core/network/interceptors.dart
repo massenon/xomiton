@@ -167,7 +167,12 @@ class ApiErrorInterceptor extends Interceptor {
     this.onSpaceForbidden,
     this.onDeviceRevoked,
     this.deviceRegistered,
+    this.onMaintenance,
   });
+
+  /// 503 `maintenance` (RG-14) : reçoit le corps de la réponse (message public,
+  /// reprise prévue). Jamais appelé pour `GET status`, qui sert à sonder.
+  final void Function(Map<dynamic, dynamic> body)? onMaintenance;
 
   final Future<void> Function() onUnauthorized;
   final ToastBus toasts;
@@ -191,6 +196,12 @@ class ApiErrorInterceptor extends Interceptor {
         err.requestOptions.headers.containsKey('Authorization')) {
       toasts.emit(const SessionClosedToast());
       unawaited(onUnauthorized());
+    } else if (api.status == 503 &&
+        api.code == 'maintenance' &&
+        onMaintenance != null &&
+        !_isStatusProbe(err.requestOptions.path)) {
+      final body = err.response?.data;
+      onMaintenance!(body is Map ? body : const {});
     } else if (api.status == 429 && api.code != 'idempotency_in_progress') {
       toasts.emit(RateLimitedToast(api.retryAfter ?? 60));
     } else if (api.status == 403 &&
@@ -217,3 +228,5 @@ class ApiErrorInterceptor extends Interceptor {
     );
   }
 }
+
+bool _isStatusProbe(String path) => path.replaceFirst(RegExp(r'^/+'), '') == 'status';

@@ -6,7 +6,6 @@ import 'package:xomiton/core/sync/collection_store.dart';
 import 'package:xomiton/core/sync/sync_queue.dart';
 import 'package:xomiton/features/pair/data/pair_api.dart';
 
-import '../support/fakes.dart';
 import '../support/harness.dart';
 
 PairApi api(FakeApi fake) {

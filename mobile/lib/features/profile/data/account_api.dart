@@ -117,6 +117,30 @@ class Progressive {
   }
 }
 
+/// `GET me/newsletter` (docs/API.md §3 : pas de fréquence dans le schéma).
+class NewsletterPrefs {
+  const NewsletterPrefs({
+    this.subscribed = false,
+    this.pendingConfirmation = false,
+    this.interests = const {},
+    this.options = const [],
+  });
+  final bool subscribed;
+  final bool pendingConfirmation;
+  final Set<String> interests;
+  final List<({String slug, String label})> options;
+
+  factory NewsletterPrefs.fromJson(Map<String, dynamic> j) => NewsletterPrefs(
+    subscribed: j['subscribed'] == true,
+    pendingConfirmation: j['pending_confirmation'] == true,
+    interests: {for (final e in (j['interests'] as List?) ?? const []) '$e'},
+    options: [
+      for (final e in (j['available_interests'] as List?) ?? const [])
+        if (e is Map) (slug: '${e['slug']}', label: '${e['label']}'),
+    ],
+  );
+}
+
 class AccountApi {
   AccountApi(this._dio);
   final Dio _dio;
@@ -167,6 +191,19 @@ class AccountApi {
         .map((e) => (slug: '${(e as Map)['slug']}', label: '${e['label']}'))
         .toList();
   }
+
+  Future<NewsletterPrefs> newsletter() async =>
+      NewsletterPrefs.fromJson(_data(await _dio.get<dynamic>('me/newsletter')));
+
+  Future<NewsletterPrefs> patchNewsletter({bool? subscribed, Set<String>? interests}) async =>
+      NewsletterPrefs.fromJson(
+        _data(
+          await _dio.patch<dynamic>(
+            'me/newsletter',
+            data: {'subscribed': ?subscribed, 'interests': ?interests?.toList()},
+          ),
+        ),
+      );
 
   Future<Progressive> patchProfile(Map<String, Object?> body) async {
     final d = _data(await _dio.patch<dynamic>('me/profile', data: body));
