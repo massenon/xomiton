@@ -1,12 +1,20 @@
 /// Routes qui exigent un `Idempotency-Key` (docs/API.md §1.3, ADR-32) :
 /// `POST signalements`, `POST sos`, `POST sync/push`, `POST me/role-requests` (D-MOB-15).
+///
+/// Écritures de l'API admin (`POST` / `PUT` / `DELETE admin/*`, §23) : clé
+/// OBLIGATOIRE ; seul `admin/step-up` (jeton à usage unique, jamais rejoué) en
+/// est dispensé.
 bool needsIdempotencyKey(String method, String path) {
-  if (method.toUpperCase() != 'POST') return false;
+  final m = method.toUpperCase();
   var p = path;
   final q = p.indexOf('?');
   if (q >= 0) p = p.substring(0, q);
   p = p.replaceAll(RegExp(r'^/+|/+$'), '');
   p = p.replaceFirst(RegExp(r'^(api/)?v1/'), '');
+  if (p.startsWith('admin/') && p != 'admin/step-up') {
+    return m == 'POST' || m == 'PUT' || m == 'DELETE';
+  }
+  if (m != 'POST') return false;
   return p == 'signalements' || p == 'sos' || p == 'sync/push' || p == 'me/role-requests';
 }
 

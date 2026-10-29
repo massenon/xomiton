@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../core/auth_spaces/app_space.dart';
 import '../core/auth_spaces/presentation/space_widgets.dart';
 import '../core/auth_spaces/space_providers.dart';
+import '../features/admin/presentation/admin_alerts_pages.dart';
+import '../features/admin/presentation/admin_duty_page.dart';
 import '../features/alerts/presentation/alerts_pages.dart';
 import '../features/alerts/presentation/report_page.dart';
 import '../features/alerts/presentation/sos_page.dart';
@@ -276,15 +278,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
         branches: [
           StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/admin/astreinte',
-              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_duty'),
-            ),
+            GoRoute(path: '/admin/astreinte', builder: (_, _) => const AdminDutyPage()),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/admin/alertes',
-              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_alerts'),
+              builder: (_, _) => const AdminAlertsPage(),
+              routes: [
+                GoRoute(path: ':id', builder: (_, state) => AdminAlertDetailPage(id: state.pathParameters['id']!)),
+              ],
             ),
           ]),
           StatefulShellBranch(routes: [

@@ -201,7 +201,7 @@ class ApiErrorInterceptor extends Interceptor {
       toasts.emit(const DeviceRevokedToast());
       unawaited(onDeviceRevoked!());
     } else if (api.status == 403 &&
-        api.code == 'forbidden' &&
+        (api.code == 'forbidden' || api.code == 'space_disabled') &&
         isSpaceApiPath(err.requestOptions.path) &&
         onSpaceForbidden != null) {
       unawaited(onSpaceForbidden!());

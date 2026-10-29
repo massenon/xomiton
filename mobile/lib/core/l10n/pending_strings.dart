@@ -1,8 +1,11 @@
+import 'admin_strings.dart';
+
 /// Textes mobiles qui n'existent pas encore dans `web/lang/fr` (donc pas dans
 /// `lib/l10n/app_fr.arb`). À migrer vers `web/lang/fr/mobile.php` puis à
 /// régénérer par `php artisan lang:export` : cette table s'efface alors
 /// d'elle-même (l'ARB prime toujours sur cette table).
 const Map<String, String> kPendingStringsFr = {
+  ...kAdminStringsFr,
   // Onboarding : six textes validés par le client le 2026-10-29 (tutoiement), une photo chacun.
   'mobile_onboarding_slide_1_title': 'Un espace à toi.',
   'mobile_onboarding_slide_1_body': 'Ici, tu peux être toi-même. Xomiton t’écoute, sans jugement.',
