@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Member;
 
+use App\Application\Admin\Users\AdminRoles;
 use App\Application\Messaging\ConversationDirectory;
 use App\Application\Notifications\NotificationInbox;
 use App\Application\Shared\KnowledgeBaseAnswerer;
@@ -57,8 +58,10 @@ final class MemberShell
             'id' => $user->getKey(),
             'pseudo' => $user->pseudo,
             'avatar_url' => $user->avatar_url,
-            'role' => $user->getRoleNames()->first(),
+            'role' => AdminRoles::of($user),
             'roles' => $user->getRoleNames()->values()->all(),
+            // Espaces disponibles (menus du gabarit) : member, peer, admin — rôles cumulables, un seul compte.
+            'spaces' => AccountSpaces::for($user, AccountSpaces::SURFACE_WEB),
             'email_verified' => $user->email_verified_at !== null,
             'pending_validation' => $user->status === UserStatus::Pending,
             'profile' => [

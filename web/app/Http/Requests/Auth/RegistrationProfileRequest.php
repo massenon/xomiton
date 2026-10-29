@@ -39,7 +39,7 @@ final class RegistrationProfileRequest extends FormRequest
             'pronouns' => ['nullable', 'string', Rule::in(self::PRONOUNS)],
             'zone_id' => ['nullable', 'integer', Rule::exists(Zone::class, 'id')->where('is_active', true)],
             'commune_id' => ['nullable', 'integer', 'required_with:zone_id', new CommuneInZone('zone_id')],
-            'member_type' => ['nullable', 'string', Rule::in([MemberType::Member->value, MemberType::Peer->value])],
+            'member_type' => ['nullable', 'string', Rule::in([MemberType::Member->value])],
         ];
     }
 

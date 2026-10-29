@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth\Support;
 
 use App\Application\Auth\DeviceTrust;
+use App\Application\Member\AccountSpaces;
 use App\Enums\UserStatus;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -13,8 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Ouverture de la session web après un mot de passe (appareil reconnu) ou un code OTP `login` vérifié :
- * Auth::login, régénération de session, cookie d'appareil de confiance, puis destination (administration pour
- * `admin.access`, sinon `next` interne ou le fil). Un compte pair `en_attente` entre avec un bandeau.
+ * Auth::login, régénération de session, cookie d'appareil de confiance, puis destination (`next` interne ou le fil
+ * pour tout compte membre, administration pour un compte qui n'a pas l'espace membre). Un compte pair `en_attente` entre avec un bandeau.
  */
 final class LoginRedirect
 {
@@ -40,7 +41,9 @@ final class LoginRedirect
 
     public function destination(User $user, ?string $next): string
     {
-        if ($user->can('admin.access')) {
+        // Un seul compte, rôles cumulables : tout compte membre (pair et admin compris) arrive sur le fil ; l'espace pair
+        // et l'administration s'ouvrent par les menus selon les rôles. Un compte sans espace membre arrive sur l'admin.
+        if (AccountSpaces::landing($user) === AccountSpaces::ADMIN) {
             return route('admin.dashboard');
         }
 

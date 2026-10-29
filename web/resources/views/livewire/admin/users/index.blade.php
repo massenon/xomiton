@@ -237,6 +237,20 @@
                 <p class="small text-secondary"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ __('admin.users.detail.role_locked') }}</p>
             @endif
 
+            @if (! $isMe && $account->status === \App\Enums\UserStatus::Active && $me?->can('peers.assign'))
+                <div class="border rounded p-3 mb-3 d-flex flex-wrap align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <div class="small fw-semibold">{{ __('admin.users.peer_role.title') }}</div>
+                        <div class="small text-secondary">{{ $account->hasRole('pair') ? __('admin.users.peer_role.is_peer') : __('admin.users.peer_role.is_not_peer') }}</div>
+                    </div>
+                    @if ($account->hasRole('pair'))
+                        <button type="button" class="btn btn-sm btn-outline-danger" wire:click="revokePeer" wire:confirm="{{ __('admin.users.peer_role.confirm_revoke', ['name' => $account->pseudo]) }}" wire:loading.attr="disabled" wire:target="revokePeer">{{ __('admin.users.peer_role.revoke') }}</button>
+                    @else
+                        <button type="button" class="btn btn-sm btn-primary" wire:click="grantPeer" wire:loading.attr="disabled" wire:target="grantPeer">{{ __('admin.users.peer_role.grant') }}</button>
+                    @endif
+                </div>
+            @endif
+
             @if (! $isMe && $account->status === \App\Enums\UserStatus::Active)
                 @can('suspend', $account)
                     <form class="border rounded p-3 mb-3" wire:submit="suspend" novalidate>

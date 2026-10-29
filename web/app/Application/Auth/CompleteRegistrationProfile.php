@@ -6,22 +6,18 @@ namespace App\Application\Auth;
 
 use App\Domain\Auth\ProfileCompletion;
 use App\Enums\MemberType;
-use App\Enums\UserStatus;
 use App\Models\Profile;
 use App\Models\User;
 use App\Rules\PhoneBj;
-use App\Support\Audit;
-use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 
 /**
  * Phases 2 et 3 de l'inscription, facultatives (« Passer ») : pronoms, département → commune, type de membre,
  * contact de confiance (chiffré), mode discret ; profil progressif de l'API (P6-06) : tranche d'âge, centres
- * d'intérêt, statut allié·e / personne ressource (chiffré, Q10 c, aucun droit associé). Choisir « pair éducateur·rice » place le compte `en_attente`
- * et lui donne le rôle `pair` (RG-03) : la session reste ouverte, l'accès à la collecte attend la validation. Un compte du
- * personnel (STAFF_ROLES) ne change jamais de type par ce chemin : `member_type = pair` est ignoré (groupe traité), ni
- * rôle retiré, ni compte remis en attente.
+ * d'intérêt, statut allié·e / personne ressource (chiffré, Q10 c, aucun droit associé). **Aucun rôle ne s'obtient par ce
+ * chemin** (décisions client du 2026-10-29) : `member_type = pair` est ignoré, le compte reste membre et actif ; le rôle
+ * pair vient d'une invitation de l'équipe ou d'une attribution de l'administration. Un compte du personnel (STAFF_ROLES)
+ * ne change jamais de type par ce chemin non plus.
  */
 final class CompleteRegistrationProfile
 {
@@ -45,10 +41,6 @@ final class CompleteRegistrationProfile
 
             if ($data->zoneId !== null) {
                 $profile->markAnswered('location');
-            }
-
-            if ($data->memberType === MemberType::Peer && ! self::isStaff($user)) {
-                $this->requestPeerStatus($user, $profile);
             }
 
             $profile->completion = self::completion($user, $profile);
@@ -82,7 +74,9 @@ final class CompleteRegistrationProfile
         }
 
         if ($data->memberType !== null) {
-            if (! $staff) {
+            // Jamais « pair » (rôle attribué par l'équipe) ni le type d'un compte du personnel ; l'état d'un compte pair
+            // existant ne se défait pas par ce chemin.
+            if (! $staff && $data->memberType !== MemberType::Peer && $profile->member_type !== MemberType::Peer) {
                 $profile->member_type = $data->memberType;
             }
 
@@ -122,19 +116,6 @@ final class CompleteRegistrationProfile
         if ($data->communeId !== null) {
             $user->commune_id = $data->communeId;
         }
-    }
-
-    private function requestPeerStatus(User $user, Profile $profile): void
-    {
-        $profile->member_type = MemberType::Peer;
-
-        if ($user->status !== UserStatus::Suspended) {
-            $user->status = UserStatus::Pending;
-        }
-
-        $user->syncRoles([Role::findOrCreate(self::PEER_ROLE, RolesAndPermissionsSeeder::GUARD)]);
-
-        Audit::log('auth.peer_requested', $user, null, $user);
     }
 
     /**

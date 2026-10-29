@@ -21,5 +21,7 @@ final readonly class RegisterData
         public ?string $userAgent = null,
         public ?string $phone = null,
         public bool $confirmsAge = false,
+        // Lien / code d'invitation à l'équipe (pair, admin) : l'inscription reste celle d'un membre, le rôle suit à la validation.
+        public ?string $invitationCode = null,
     ) {}
 }

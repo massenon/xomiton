@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Users;
 
+use App\Application\Admin\Roles\ManagePeerRole;
 use App\Application\Admin\Users\AccountSuspension;
 use App\Application\Admin\Users\AdminRoles;
 use App\Application\Admin\Users\ChangeUserRole;
@@ -275,6 +276,27 @@ final class Index extends Component
         if ($this->attempt(fn () => $change($account, $this->roleChoice, $this->actor()))) {
             $this->refreshAfter();
             $this->toast((string) __('admin.users.toasts.role_changed', ['name' => $account->pseudo, 'role' => AdminRoles::label($this->roleChoice)]));
+        }
+    }
+
+    /** Rôle pair en plus du rôle membre (un seul compte, rôles cumulables) : attribué ou retiré sans toucher aux autres rôles. */
+    public function grantPeer(ManagePeerRole $peers): void
+    {
+        $account = $this->target();
+
+        if ($this->attempt(fn () => $peers->grant($account, $this->actor()))) {
+            $this->refreshAfter();
+            $this->toast((string) __('admin.users.toasts.peer_granted', ['name' => $account->pseudo]));
+        }
+    }
+
+    public function revokePeer(ManagePeerRole $peers): void
+    {
+        $account = $this->target();
+
+        if ($this->attempt(fn () => $peers->revoke($account, $this->actor()))) {
+            $this->refreshAfter();
+            $this->toast((string) __('admin.users.toasts.peer_revoked', ['name' => $account->pseudo]), 'warning');
         }
     }
 

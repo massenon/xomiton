@@ -325,7 +325,7 @@ it('change un rôle selon RG-15 : admin pour membre et pair, superadmin seul pou
     Profile::factory()->create(['user_id' => $member->id, 'member_type' => MemberType::Member]);
 
     usrScreen($admin)->call('open', $member->id)->set('roleChoice', 'pair')->call('changeRole')->assertHasNoErrors();
-    expect($member->refresh()->hasRole('pair'))->toBeTrue()->and($member->hasRole('membre'))->toBeFalse()
+    expect($member->refresh()->hasRole('pair'))->toBeTrue()->and($member->hasRole('membre'))->toBeTrue()
         ->and($member->profile?->member_type)->toBe(MemberType::Peer)
         ->and(AuditLog::query()->where('action', 'users.role_changed')->where('detail', 'like', '%ancien=membre%nouveau=pair%')->exists())->toBeTrue();
 

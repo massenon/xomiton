@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Auth;
 
+use App\Application\Admin\Roles\TeamInvitations;
 use App\Application\Auth\Support\RegistrationGate;
 use App\Domain\Auth\ConsentVersion;
 use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
 use App\Domain\Auth\Exceptions\ConsentRequired;
+use App\Domain\Auth\Exceptions\InvitationInvalid;
 use App\Domain\Auth\Exceptions\OtpException;
 use App\Domain\Auth\Exceptions\RegistrationsClosed;
 use App\Enums\ConsentKind;
@@ -30,7 +32,8 @@ use Spatie\Permission\Models\Role;
 
 /**
  * Phase 1 de l'inscription (P2-03, Q12 c) : compte créé et actif dès maintenant, e-mail non vérifié (accès limité),
- * rôle `membre`, profil et réglages par défaut, consentements CGU + charte et confidentialité horodatés, code OTP
+ * rôle `membre` (jamais un autre : pair et admin ne s'obtiennent que par invitation ou attribution de l'administration),
+ * profil et réglages par défaut, consentements CGU + charte et confidentialité horodatés, code OTP
  * `signup` envoyé aussitôt puis e-mail `bienvenue` (notification UserRegistered, canal mail par template : un seul
  * envoi, Q44 a). La session est ouverte par le contrôleur appelant.
  */
@@ -38,14 +41,22 @@ final class RegisterUser
 {
     public const ROLE = 'membre';
 
-    public function __construct(private readonly OtpService $otp) {}
+    public function __construct(
+        private readonly OtpService $otp,
+        private readonly TeamInvitations $invitations,
+    ) {}
 
     /**
-     * @throws RegistrationsClosed|ConsentRequired|AgeConfirmationRequired
+     * @throws RegistrationsClosed|ConsentRequired|AgeConfirmationRequired|InvitationInvalid
      */
     public function __invoke(RegisterData $data): User
     {
-        if (! RegistrationGate::isOpen()) {
+        $code = $data->invitationCode === null || trim($data->invitationCode) === '' ? null : $data->invitationCode;
+
+        // Une invitation valide ouvre l'inscription même fermée au public ; elle ne change jamais le rôle de départ (membre).
+        if ($code !== null) {
+            $this->invitations->peek($code, $data->email);
+        } elseif (! RegistrationGate::isOpen()) {
             throw new RegistrationsClosed(RegistrationGate::closedMessage());
         }
 
@@ -57,7 +68,15 @@ final class RegisterUser
             throw new AgeConfirmationRequired;
         }
 
-        $user = DB::transaction(fn (): User => $this->createAccount($data));
+        $user = DB::transaction(function () use ($data, $code): User {
+            $user = $this->createAccount($data);
+
+            if ($code !== null) {
+                $this->invitations->redeem($code, $user);
+            }
+
+            return $user;
+        });
 
         try {
             $this->otp->issue($user->email, OtpPurpose::Signup, $data->ip);

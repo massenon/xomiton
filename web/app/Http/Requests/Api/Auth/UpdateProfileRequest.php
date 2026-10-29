@@ -45,7 +45,7 @@ final class UpdateProfileRequest extends FormRequest
             'pronouns' => ['sometimes', 'nullable', 'string', 'max:30'],
             'zone_id' => ['sometimes', 'nullable', 'integer', Rule::exists('zones', 'id')->where('is_active', true), 'required_with:commune_id'],
             'commune_id' => ['sometimes', 'nullable', 'integer', new CommuneInZone('zone_id')],
-            'member_type' => ['sometimes', 'nullable', Rule::in([MemberType::Member->value, MemberType::Peer->value])],
+            'member_type' => ['sometimes', 'nullable', Rule::in([MemberType::Member->value])],
             'trusted_contact_phone' => ['sometimes', 'nullable', 'string', new PhoneBj],
             'trusted_contact_name' => ['sometimes', 'nullable', 'string', 'max:80'],
             'discreet_mode' => ['sometimes', 'nullable', 'boolean'],

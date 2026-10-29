@@ -46,6 +46,8 @@ final class RegisterRequest extends FormRequest
             'cgu' => ['accepted'],
             'privacy' => ['accepted'],
             'age_confirmed' => ['accepted'],
+            // Lien / code d'invitation à l'équipe (champ caché rempli par le lien) : l'inscription reste celle d'un membre.
+            'invitation' => ['nullable', 'string', 'max:40'],
         ];
     }
 
@@ -71,6 +73,7 @@ final class RegisterRequest extends FormRequest
             acceptsTerms: $this->boolean('cgu'),
             acceptsPrivacy: $this->boolean('privacy'),
             confirmsAge: $this->boolean('age_confirmed'),
+            invitationCode: $this->filled('invitation') ? (string) $this->string('invitation') : null,
             ip: $this->ip(),
             userAgent: $this->userAgent(),
         );

@@ -120,7 +120,7 @@ it('refuse l’inscription quand l’administration l’a fermée, avec le messa
     }
 });
 
-it('complète le profil en phases 2-3 et place un·e pair en attente de validation sans fermer la session', function (): void {
+it('complète le profil en phases 2-3 sans jamais donner le rôle pair : le choix « pair » est ignoré, le compte reste membre actif', function (): void {
     $zone = Zone::factory()->create();
     $commune = Commune::factory()->create(['zone_id' => $zone->id]);
     $user = app(RegisterUser::class)(registerData());
@@ -137,18 +137,18 @@ it('complète le profil en phases 2-3 et place un·e pair en attente de validati
 
     $user->refresh();
 
-    expect($user->status)->toBe(UserStatus::Pending)
-        ->and($user->hasRole('pair'))->toBeTrue()
-        ->and($user->hasRole('membre'))->toBeFalse()
+    expect($user->status)->toBe(UserStatus::Active)
+        ->and($user->hasRole('pair'))->toBeFalse()
+        ->and($user->hasRole('membre'))->toBeTrue()
         ->and($user->zone_id)->toBe($zone->id)
         ->and($user->commune_id)->toBe($commune->id)
-        ->and($user->profile?->member_type)->toBe(MemberType::Peer)
+        ->and($user->profile?->member_type)->toBe(MemberType::Member)
         ->and($user->profile?->pronouns)->toBe('elle')
         ->and($user->profile?->discreet_mode)->toBeTrue()
         ->and($user->profile?->trusted_contact_phone)->toBe('+229 01 97 38 88 47')
         ->and($user->profile?->getRawOriginal('trusted_contact_phone'))->not->toContain('97 38 88 47')
         ->and($user->profile?->completion)->toBe(57)
-        ->and(AuditLog::query()->ofAction('auth.peer_requested')->forSubject($user)->exists())->toBeTrue();
+        ->and(AuditLog::query()->ofAction('auth.peer_requested')->forSubject($user)->exists())->toBeFalse();
 });
 
 it('laisse un compte membre actif quand les phases facultatives sont passées', function (): void {

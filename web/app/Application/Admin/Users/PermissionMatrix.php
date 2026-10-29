@@ -48,13 +48,13 @@ final class PermissionMatrix
         'newsletter' => ['newsletter.manage_subscribers', 'newsletter.manage_campaigns', 'newsletter.send'],
         'gateways' => ['gateways.connect', 'gateways.publish'],
         'emails' => ['email_templates.manage', 'email_templates.delete_system'],
-        'users' => ['users.view', 'users.suspend', 'users.manage', 'users.validate_peers'],
+        'users' => ['users.view', 'users.suspend', 'users.manage', 'users.validate_peers', 'peers.assign', 'peers.invite'],
         'registrations' => ['registrations.manage'],
         'admin_roles' => ['roles.assign_admin'],
-        'sync' => ['sync.view_own', 'sync.manage'],
+        'sync' => ['sync.view_own', 'sync.resolve_own', 'sync.manage'],
         'platform' => ['updates.view', 'updates.manage', 'platform.maintenance', 'backups.create', 'backups.download', 'backups.restore', 'backups.delete'],
         'settings' => ['settings.view', 'settings.manage', 'audit_logs.view', 'audit_logs.purge'],
-        'admin_access' => ['admin.access'],
+        'admin_access' => ['admin.access', 'admin_mobile.access'],
     ];
 
     /**

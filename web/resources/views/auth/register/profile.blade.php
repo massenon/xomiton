@@ -48,9 +48,6 @@
             </div>
         </div>
 
-        <x-field name="member_type" type="radio-group" :label="__('auth.register.profile.member_type')" :hint="__('auth.register.profile.member_type_hint')"
-                 :value="$profile?->member_type?->value" :options="__('auth.register.profile.member_types')" />
-
         <div class="d-flex justify-content-between align-items-center mt-4 gap-2">
             <a class="btn btn-light" href="{{ route('fil') }}">{{ __('common.back') }}</a>
             <div class="d-flex gap-2">

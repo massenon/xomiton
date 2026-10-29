@@ -19,6 +19,11 @@ use Spatie\Permission\Models\Role;
 /**
  * Comptes de démonstration du prototype (prototype_social/data/users.json, sign-in.php).
  * Jamais exécuté en production ; dépend de RolesAndPermissionsSeeder pour les rôles.
+ *
+ * Un seul compte, des rôles cumulables (décisions client du 2026-10-29) : `role` est le rôle principal, `roles` la liste
+ * complète (toujours avec `membre`). `pair@` = pair + membre, `moderation@` = admin + membre, `equipe@` = admin + pair +
+ * membre (les trois espaces, pour le sélecteur d'espace du mobile), `pair.attente@` = membre dont le rôle pair est en
+ * attente de validation.
  */
 class DemoAccountsSeeder extends Seeder
 {
@@ -32,6 +37,7 @@ class DemoAccountsSeeder extends Seeder
                 'email' => 'admin@xomiton.bj',
                 'password' => 'Admin123!',
                 'role' => 'superadmin',
+                'roles' => ['membre', 'superadmin'],
                 'pseudo' => 'admin',
                 'name' => 'Administrateur Xomiton',
                 'phone' => '+229 01 97 00 00 01',
@@ -45,6 +51,7 @@ class DemoAccountsSeeder extends Seeder
                 'email' => 'moderation@xomiton.bj',
                 'password' => 'Admin123!',
                 'role' => 'admin',
+                'roles' => ['membre', 'admin'],
                 'pseudo' => 'moderatrice',
                 'name' => 'Gestionnaire de contenu',
                 'phone' => '+229 01 97 00 00 02',
@@ -71,6 +78,7 @@ class DemoAccountsSeeder extends Seeder
                 'email' => 'pair@xomiton.bj',
                 'password' => 'Pair123!',
                 'role' => 'pair',
+                'roles' => ['membre', 'pair'],
                 'pseudo' => 'pair_chantal',
                 'name' => 'Chantal Hounkpatin',
                 'phone' => '+229 01 66 22 33 44',
@@ -84,6 +92,7 @@ class DemoAccountsSeeder extends Seeder
                 'email' => 'moderateur@xomiton.bj',
                 'password' => 'Modo123!',
                 'role' => 'moderateur',
+                'roles' => ['membre', 'moderateur'],
                 'pseudo' => 'modo_rose',
                 'name' => 'Rose Adjovi',
                 'phone' => '+229 01 97 00 00 03',
@@ -109,7 +118,8 @@ class DemoAccountsSeeder extends Seeder
             [
                 'email' => 'pair.attente@xomiton.bj',
                 'password' => 'Pair123!',
-                'role' => 'pair',
+                'role' => 'membre',
+                'roles' => ['membre'],
                 'pseudo' => 'pair_en_attente',
                 'name' => 'Pair en attente de validation',
                 'phone' => '+229 01 66 22 33 55',
@@ -119,6 +129,20 @@ class DemoAccountsSeeder extends Seeder
                 'member_type' => MemberType::Peer,
                 'bio' => 'Demande de validation à traiter dans Administration › Utilisateurs (RG-03).',
                 'status' => UserStatus::Pending,
+            ],
+            [
+                'email' => 'equipe@xomiton.bj',
+                'password' => 'Equipe123!',
+                'role' => 'admin',
+                'roles' => ['membre', 'pair', 'admin'],
+                'pseudo' => 'equipe_xom',
+                'name' => 'Équipe tous espaces',
+                'phone' => '+229 01 97 00 00 04',
+                'zone' => 'Littoral',
+                'commune' => 'Cotonou',
+                'avatar' => 'avatars/avatar3.png',
+                'member_type' => MemberType::Peer,
+                'bio' => 'Compte qui cumule membre, pair éducateur·rice et admin : sélecteur d’espace du mobile.',
             ],
         ];
     }
@@ -186,8 +210,11 @@ class DemoAccountsSeeder extends Seeder
             ],
         );
 
-        if (Role::where('name', $account['role'])->where('guard_name', RolesAndPermissionsSeeder::GUARD)->exists()) {
-            $user->syncRoles([$account['role']]);
+        $roles = array_values(array_unique(array_merge(['membre'], $account['roles'] ?? [$account['role']])));
+        $existing = Role::query()->where('guard_name', RolesAndPermissionsSeeder::GUARD)->whereIn('name', $roles)->pluck('name')->all();
+
+        if ($existing !== []) {
+            $user->syncRoles($existing);
         }
     }
 

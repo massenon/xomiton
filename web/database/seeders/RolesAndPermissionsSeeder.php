@@ -51,6 +51,14 @@ class RolesAndPermissionsSeeder extends Seeder
             // Espace pair (tâches, outils d'animation)
             'peer_space.access' => $peerAndAdmin,
 
+            // Un seul compte, des rôles cumulables (décisions client du 2026-10-29) : attribuer ou retirer le rôle pair à un
+            // membre existant (`peers.assign`), inviter un·e pair·e par lien à usage unique (`peers.invite`) ; inviter ou
+            // nommer un·e admin reste réservé à `roles.assign_admin` (superadmin). `admin_mobile.access` ouvre le groupe
+            // `admin/*` de l'API (espace « Admin » de l'application mobile).
+            'peers.assign' => $admins,
+            'peers.invite' => $admins,
+            'admin_mobile.access' => $admins,
+
             // Collecte de données, registres, fiches VBG/VDH, suivi des victimes
             'cases.create' => $peerAndAdmin,
             'cases.update_own' => $peerAndAdmin,
@@ -118,6 +126,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // Hors connexion et synchronisation
             'sync.view_own' => $peerAndAdmin,
+            // Le pair tranche lui-même ses conflits 409 (valeur serveur ou valeur de l'appareil) sur ses dossiers.
+            'sync.resolve_own' => $peerAndAdmin,
             'sync.manage' => $admins,
 
             // Mises à jour, maintenance, sauvegardes. `platform.maintenance` (écran /admin/maintenance, P13-06 : admin et

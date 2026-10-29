@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Auth;
 
+use App\Application\Admin\Roles\GrantInvitedRole;
 use App\Domain\Auth\Exceptions\OtpInvalid;
 use App\Enums\OtpPurpose;
 use App\Events\Auth\EmailVerified;
@@ -15,7 +16,10 @@ use App\Support\Audit;
  */
 final class VerifyEmail
 {
-    public function __construct(private readonly OtpService $otp) {}
+    public function __construct(
+        private readonly OtpService $otp,
+        private readonly GrantInvitedRole $invitedRole,
+    ) {}
 
     /**
      * @throws OtpInvalid
@@ -34,5 +38,8 @@ final class VerifyEmail
 
         Audit::log('auth.email_verified', $user, null, $user);
         EmailVerified::dispatch($user);
+
+        // Invitation à l'équipe : le rôle suit la validation du compte (actif + e-mail confirmé).
+        ($this->invitedRole)($user);
     }
 }

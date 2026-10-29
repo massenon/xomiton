@@ -201,6 +201,31 @@ return [
         'discreet' => 'Signalement à modérer',
     ],
 
+    // Rôles donnés ou retirés, demande de pair refusée (un seul compte, rôles cumulables) : tu. Le motif est écrit pour la personne.
+    'role' => [
+        'no_reason' => 'non précisé',
+        'peer_granted' => [
+            'title' => 'Tu es pair éducateur·rice',
+            'body' => 'L’équipe Xomiton t’a donné le rôle de pair éducateur·rice. Tu restes membre : l’espace pair s’ajoute à ton compte.',
+        ],
+        'peer_revoked' => [
+            'title' => 'Ton rôle de pair a été retiré',
+            'body' => 'L’espace pair n’est plus disponible sur ton compte. Tu restes membre de la communauté.',
+        ],
+        'peer_refused' => [
+            'title' => 'Ta demande de rôle de pair n’a pas été retenue',
+            'body' => 'L’équipe n’a pas retenu ta demande : :reason. Tu restes membre de la communauté.',
+        ],
+        'admin_granted' => [
+            'title' => 'Tu rejoins l’équipe d’administration',
+            'body' => 'L’espace d’administration s’ajoute à ton compte. Tu restes membre de la communauté.',
+        ],
+        'admin_revoked' => [
+            'title' => 'Ton accès à l’administration a été retiré',
+            'body' => 'L’espace d’administration n’est plus disponible sur ton compte. Tu restes membre de la communauté.',
+        ],
+    ],
+
     // Décisions de l'équipe adressées à la personne (P12-01, P12-06) : tu. Le motif est celui écrit par l'équipe pour elle.
     'moderation' => [
         'discreet' => 'Message de l’équipe',

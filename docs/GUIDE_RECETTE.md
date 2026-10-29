@@ -108,17 +108,20 @@ Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en p
 
 | Rôle | Identifiant | Pseudo | Mot de passe | Accès attendu |
 |---|---|---|---|---|
-| Super-administrateur·rice | `admin@xomiton.bj` | `admin` | `Admin123!` | `/admin` complet, espace membre |
-| Administrateur·rice | `moderation@xomiton.bj` | `moderatrice` | `Admin123!` | `/admin` (sans les droits réservés au super-admin) |
-| Modérateur·rice | `moderateur@xomiton.bj` | `modo_rose` | `Modo123!` | arrive sur `/admin` : modération, utilisateurs (suspension) ; l'espace membre reste accessible ; `/espace-pair` refusé (403) |
+| Super-administrateur·rice (+ membre) | `admin@xomiton.bj` | `admin` | `Admin123!` | arrive sur le fil ; `/admin` complet par le menu ; espace membre |
+| Administrateur·rice (+ membre) | `moderation@xomiton.bj` | `moderatrice` | `Admin123!` | arrive sur le fil ; `/admin` par le menu (sans les droits réservés au super-admin) |
+| Modérateur·rice (+ membre) | `moderateur@xomiton.bj` | `modo_rose` | `Modo123!` | arrive sur le fil ; `/admin` par le menu : modération, utilisateurs (suspension) ; `/espace-pair` refusé (403) |
 | Membre | `membre@xomiton.bj` | `awa_s` | `Membre123!` | espace membre ; `/admin`, `/espace-pair`, `/collecte` refusés (403) |
 | Membre (second compte) | `membre2@xomiton.bj` | `fatou_k` | `Membre123!` | pour les tests à deux : messages, groupes, événements |
-| Pair éducateur·rice | `pair@xomiton.bj` | `pair_chantal` | `Pair123!` | espace membre, `/espace-pair`, `/collecte` ; `/admin` refusé |
-| Pair en attente de validation | `pair.attente@xomiton.bj` | `pair_en_attente` | `Pair123!` | se connecte avec un bandeau « en attente » ; à valider dans Administration › Utilisateurs (règle RG-03) |
+| Pair éducateur·rice (+ membre) | `pair@xomiton.bj` | `pair_chantal` | `Pair123!` | espace membre (réseau social), `/espace-pair`, `/collecte` ; `/admin` refusé |
+| Pair en attente de validation (membre) | `pair.attente@xomiton.bj` | `pair_en_attente` | `Pair123!` | se connecte avec un bandeau « en attente » ; n'a que le rôle membre ; à valider dans Administration › Utilisateurs (règle RG-03) |
+| Admin + pair + membre (tous les espaces) | `equipe@xomiton.bj` | `equipe_xom` | `Equipe123!` | arrive sur le fil ; menus vers `/espace-pair` et `/admin` ; `GET /api/v1/me` renvoie `spaces: [member, peer, admin]` (sélecteur d'espace du mobile) |
 
 Les permissions détaillées de chaque rôle sont dans [ROLE_ET_PERMISSIONS.md](ROLE_ET_PERMISSIONS.md) §3.
 
-**Page d'arrivée après la connexion.** Super-admin, administrateur·rice et modérateur·rice : `/admin`. Membre, second membre, pair éducateur·rice et pair en attente : `/fil` (le pair ouvre ensuite `/espace-pair` depuis le menu ; le pair en attente voit un bandeau « en attente » et `/espace-pair` lui est refusé tant qu'il n'est pas validé). Ces parcours sont vérifiés par `tests/Feature/Auth/Web/DemoAccountsLoginTest.php` et ont été rejoués par de vraies requêtes HTTP (cookies, jeton CSRF, redirections) sur MariaDB 10.11, avec `localhost` et `127.0.0.1`.
+**Un seul compte, un seul login.** Membre, pair éducateur·rice et admin se connectent par les mêmes écrans (`/connexion`, code OTP compris). Les rôles se cumulent : le pair et l'admin restent membres (réseau social), le rôle pair se donne ou se retire à un membre existant (Administration › Utilisateurs) ou s'obtient par un lien d'invitation à usage unique (Administration › Inscriptions › Inviter dans l'équipe) ; l'inscription publique ne crée que des membres.
+
+**Page d'arrivée après la connexion.** Tous les comptes arrivent sur `/fil` (le menu mène à `/espace-pair` et `/admin` selon les rôles ; le pair en attente voit un bandeau « en attente » et `/espace-pair` lui est refusé tant qu'il n'est pas validé). Ces parcours sont vérifiés par `tests/Feature/Auth/Web/DemoAccountsLoginTest.php` et ont été rejoués par de vraies requêtes HTTP (cookies, jeton CSRF, redirections) sur MariaDB 10.11, avec `localhost` et `127.0.0.1`.
 
 **Code de vérification (OTP) en mode journal.** Une connexion depuis un appareil ou un navigateur inconnu exige un code à 6 chiffres (donc **la toute première connexion de chaque compte, membre compris**), et les comptes admin et super-admin en exigent un à **chaque** connexion. Aucun e-mail ne part : l'écran vous envoie sur `/code-de-verification` et le code se lit dans le journal `web/storage/logs/laravel.log`. Le sujet de l'e-mail ne contient volontairement jamais le code (« Ton code de vérification Xomiton ») : ne cherchez pas le code dans le sujet. Chaque émission écrit une ligne dédiée `[otp:log]` (environnement `local` seulement) :
 

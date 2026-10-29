@@ -41,6 +41,7 @@ final class RegisterController extends ApiController
             ip: $request->ip(),
             userAgent: $request->userAgent(),
             phone: isset($v['phone']) ? (string) $v['phone'] : null,
+            invitationCode: isset($v['invitation']) ? (string) $v['invitation'] : null,
         ));
 
         if (isset($v['profile']) && is_array($v['profile']) && $v['profile'] !== []) {

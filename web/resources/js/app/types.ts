@@ -6,6 +6,8 @@ export interface SharedUser {
     avatar_url: string | null;
     role: string | null;
     roles: string[];
+    /** Espaces disponibles (un seul compte, rôles cumulables) : `member`, `peer`, `admin`. */
+    spaces?: Array<'member' | 'peer' | 'admin'>;
     email_verified: boolean;
     pending_validation: boolean;
     profile: {

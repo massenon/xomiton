@@ -105,6 +105,11 @@ return [
      */
     'rate_limits' => [
         'login_per_minute' => 5,
+        // API admin mobile (groupe `admin/*`, P15-16) : par compte et par minute (limiteur `admin_api`), écritures par
+        // compte et par minute (limiteur `admin_write`) ; l'étape de confirmation (`admin/step-up`) a son propre plafond.
+        'admin_api_per_minute' => 120,
+        'admin_write_per_minute' => 30,
+        'admin_step_up_per_hour' => 10,
         'otp_per_hour' => 5,
         'report_per_hour_per_ip' => 10,
         'newsletter_seconds_between' => 20,
@@ -231,6 +236,10 @@ return [
         'export_link_hours' => 48,
         'age_min' => 10,
         'age_max' => 99,
+        // Invitations à rejoindre l'équipe (pair, admin ; décisions client du 2026-10-29) : validité du lien / code à usage
+        // unique (jours) et durée de l'étape de confirmation (`step-up`) exigée par l'API admin mobile (minutes).
+        'team_invitation_days' => 7,
+        'step_up_minutes' => 5,
     ],
 
     /*

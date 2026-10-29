@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Registrations;
 
 use App\Application\Admin\Registrations\RegistrationSettings;
+use App\Application\Admin\Roles\TeamInvitations;
 use App\Application\Admin\Users\ReviewRegistration;
 use App\Application\Auth\Support\RegistrationGate;
 use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Enums\UserStatus;
 use App\Livewire\Concerns\InteractsWithUi;
+use App\Models\RoleInvitation;
 use App\Models\User;
 use App\Support\LocaleFormatter;
 use Illuminate\Contracts\View\View;
@@ -43,6 +45,19 @@ final class Index extends Component
     public string $windowStart = '08:00';
 
     public string $windowEnd = '20:00';
+
+    /** Motif écrit pour la personne quand une demande est rejetée ou refusée (≤ 200 caractères). */
+    public string $rejectReason = '';
+
+    // --- Invitations à l'équipe (lien / code à usage unique) ---
+    public string $inviteRole = 'pair';
+
+    public string $inviteEmail = '';
+
+    public string $inviteNote = '';
+
+    /** Dernier lien créé : montré une fois (le code n'est jamais conservé en clair). @var array{code: string, link: string, role: string}|null */
+    public ?array $createdInvite = null;
 
     public function mount(): void
     {
@@ -119,10 +134,66 @@ final class Index extends Component
     {
         $account = User::query()->findOrFail($id);
 
-        if ($this->attempt(fn () => $review->reject($account, $this->actor()))) {
+        if ($this->attempt(fn () => $review->reject($account, $this->actor(), $this->rejectReason))) {
+            $this->rejectReason = '';
             unset($this->pending, $this->kpis);
             $this->toast((string) __('admin.registrations.toasts.rejected', ['name' => $account->pseudo]), 'warning');
         }
+    }
+
+    public function invite(TeamInvitations $invitations): void
+    {
+        $actor = $this->actor();
+        abort_unless($actor->can('peers.invite') || $actor->can('roles.assign_admin'), 403);
+
+        $this->validate([
+            'inviteRole' => ['required', Rule::in(TeamInvitations::ROLES)],
+            'inviteEmail' => ['nullable', 'email:rfc', 'max:190'],
+            'inviteNote' => ['nullable', 'string', 'max:190'],
+        ], [], [
+            'inviteEmail' => (string) __('admin.registrations.invitations.email'),
+            'inviteNote' => (string) __('admin.registrations.invitations.note'),
+        ]);
+
+        $created = null;
+
+        if ($this->attempt(function () use ($invitations, $actor, &$created): void {
+            $created = $invitations->create($actor, $this->inviteRole, $this->inviteEmail, $this->inviteNote);
+        }) && is_array($created)) {
+            $this->createdInvite = ['code' => $created['code'], 'link' => $created['link'], 'role' => $this->inviteRole];
+            $this->reset('inviteEmail', 'inviteNote');
+            unset($this->invitationList);
+            $this->toast((string) __('admin.registrations.invitations.created'));
+        }
+    }
+
+    public function revokeInvitation(int $id, TeamInvitations $invitations): void
+    {
+        $invitation = RoleInvitation::query()->findOrFail($id);
+
+        if ($this->attempt(fn () => $invitations->revoke($invitation, $this->actor()))) {
+            unset($this->invitationList);
+            $this->toast((string) __('admin.registrations.invitations.revoked'), 'warning');
+        }
+    }
+
+    /**
+     * Invitations récentes (20 plus récentes) ; les rôles de modération et d'administration ne se voient qu'avec
+     * `roles.assign_admin`.
+     *
+     * @return Collection<int, RoleInvitation>
+     */
+    #[Computed]
+    public function invitationList(): Collection
+    {
+        $actor = $this->actor();
+
+        return RoleInvitation::query()
+            ->when(! $actor->can('roles.assign_admin'), fn ($query) => $query->where('role', 'pair'))
+            ->with(['inviter:id,pseudo', 'user:id,pseudo'])
+            ->orderByDesc('id')
+            ->limit(20)
+            ->get();
     }
 
     /**
@@ -208,6 +279,8 @@ final class Index extends Component
         return view('livewire.admin.registrations.index', [
             'format' => $this->formatter(),
             'canValidate' => (bool) auth()->user()?->can('users.validate_peers'),
+            'canInvite' => (bool) (auth()->user()?->can('peers.invite') || auth()->user()?->can('roles.assign_admin')),
+            'canInviteAdmin' => (bool) auth()->user()?->can('roles.assign_admin'),
             'messageMax' => RegistrationSettings::MESSAGE_MAX,
         ])->layout('components.layouts.admin', [
             'title' => __('admin.registrations.title'),

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Application\Admin\Roles\TeamInvitations;
 use App\Application\Auth\RegisterUser;
 use App\Application\Auth\Support\RegistrationGate;
 use App\Domain\Auth\Exceptions\AuthException;
+use App\Domain\Auth\Exceptions\InvitationInvalid;
 use App\Http\Controllers\Auth\Support\RegistrationSteps;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -21,9 +23,24 @@ use Illuminate\Http\Request;
  */
 final class RegisterController extends Controller
 {
-    public function create(): View
+    public function create(Request $request, TeamInvitations $invitations): View
     {
-        if (! RegistrationGate::isOpen()) {
+        $code = $request->query('invitation');
+        $invitation = null;
+
+        if (is_string($code) && $code !== '') {
+            try {
+                $invitation = $invitations->peek($code);
+            } catch (InvitationInvalid) {
+                // Lien invalide ou expiré : la page l'annonce (le formulaire reste celui de l'inscription ouverte).
+                $request->session()->now('status', __('auth.invitation_invalid'));
+                $request->session()->now('status_type', 'warning');
+                $code = null;
+            }
+        }
+
+        // Une invitation valide ouvre l'inscription même fermée au public.
+        if ($invitation === null && ! RegistrationGate::isOpen()) {
             return view('auth.register-closed', [
                 'message' => RegistrationGate::closedMessage(),
                 'reopensAt' => RegistrationGate::reopensAt(),
@@ -33,6 +50,8 @@ final class RegisterController extends Controller
         return view('auth.register', [
             'step' => 'account',
             'steps' => RegistrationSteps::labels(),
+            'invitationCode' => $invitation === null ? null : $code,
+            'invitationRole' => $invitation?->role,
         ]);
     }
 
@@ -41,8 +60,8 @@ final class RegisterController extends Controller
         try {
             $user = $register($request->toRegisterData());
         } catch (AuthException $e) {
-            return redirect()->route('inscription')
-                ->withErrors(['pseudo' => $e->userMessage()])
+            return redirect()->route('inscription', $e instanceof InvitationInvalid ? [] : array_filter(['invitation' => $request->input('invitation')]))
+                ->withErrors([$e instanceof InvitationInvalid ? 'invitation' : 'pseudo' => $e->userMessage()])
                 ->withInput($request->only(['pseudo', 'email']));
         }
 

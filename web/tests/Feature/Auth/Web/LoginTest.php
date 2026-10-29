@@ -187,7 +187,7 @@ it('signale un compte suspendu et la maintenance seulement après vérification 
     $this->assertGuest();
 });
 
-it('impose l’OTP à l’administration même sur un appareil reconnu, puis redirige vers /admin', function (): void {
+it('impose l’OTP à l’administration même sur un appareil reconnu, puis redirige vers le fil (l’admin reste membre)', function (): void {
     $admin = User::factory()->create(['email' => 'admin@exemple.bj', 'password' => 'Admin2026!!']);
     $admin->assignRole('admin');
 
@@ -199,7 +199,7 @@ it('impose l’OTP à l’administration même sur un appareil reconnu, puis red
     webLoginOtpCode('admin@exemple.bj');
 
     $this->post('/code-de-verification', ['purpose' => 'login', 'code' => '246810'])
-        ->assertRedirect(route('admin.dashboard'));
+        ->assertRedirect(route('fil'));
 
     $this->assertAuthenticatedAs($admin);
 });

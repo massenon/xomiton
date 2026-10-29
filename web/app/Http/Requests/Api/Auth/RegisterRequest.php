@@ -49,12 +49,14 @@ final class RegisterRequest extends FormRequest
             'privacy' => ['required', 'accepted'],
             // Q68 : absent ou faux → 422 `age_confirmation_required` (levé par RegisterUser, code stable), pas `validation_failed`.
             'age_confirmed' => ['nullable', 'boolean'],
+            // Lien / code d'invitation à l'équipe : l'inscription reste celle d'un membre, le rôle suit à la validation.
+            'invitation' => ['nullable', 'string', 'max:40'],
             'device_name' => ['nullable', 'string', 'max:100'],
             'profile' => ['sometimes', 'array'],
             'profile.pronouns' => ['nullable', 'string', 'max:30'],
             'profile.zone_id' => ['nullable', 'integer', Rule::exists('zones', 'id')->where('is_active', true), 'required_with:profile.commune_id'],
             'profile.commune_id' => ['nullable', 'integer', new CommuneInZone('profile.zone_id')],
-            'profile.member_type' => ['nullable', Rule::in([MemberType::Member->value, MemberType::Peer->value])],
+            'profile.member_type' => ['nullable', Rule::in([MemberType::Member->value])],
             'profile.trusted_contact_phone' => ['nullable', 'string', new PhoneBj],
             'profile.trusted_contact_name' => ['nullable', 'string', 'max:80'],
             'profile.discreet_mode' => ['nullable', 'boolean'],

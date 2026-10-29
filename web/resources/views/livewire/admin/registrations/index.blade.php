@@ -146,9 +146,72 @@
                     </li>
                 @endforeach
             </ul>
-            <div class="card-footer small text-secondary">{{ __('admin.registrations.reject_help') }}</div>
+            <div class="card-footer small text-secondary">
+                @if ($canValidate)
+                    <label class="form-label small fw-semibold" for="xmRegRejectReason">{{ __('admin.registrations.reject_reason') }}</label>
+                    <input type="text" class="form-control form-control-sm mb-2" id="xmRegRejectReason" wire:model="rejectReason" maxlength="200" autocomplete="off">
+                @endif
+                {{ __('admin.registrations.reject_help') }}
+            </div>
         @endif
     </section>
+
+    @if ($canInvite)
+        <section class="card xm-admin-card mb-4" aria-labelledby="xmRegInviteTitle">
+            <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmRegInviteTitle"><i class="bi bi-envelope-heart me-2" aria-hidden="true"></i>{{ __('admin.registrations.invitations.title') }}</h2></div>
+            <div class="card-body">
+                <p class="small text-secondary">{{ __('admin.registrations.invitations.help') }}</p>
+                <form class="row g-2 align-items-end" wire:submit="invite" novalidate>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold" for="xmInviteRole">{{ __('admin.registrations.invitations.role') }}</label>
+                        <select class="form-select form-select-sm" id="xmInviteRole" wire:model="inviteRole">
+                            <option value="pair">{{ __('admin.users.roles.pair') }}</option>
+                            @if ($canInviteAdmin)
+                                @foreach (['moderateur', 'admin', 'superadmin'] as $teamRole)
+                                    <option value="{{ $teamRole }}">{{ __('admin.users.roles.'.$teamRole) }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold" for="xmInviteEmail">{{ __('admin.registrations.invitations.email') }}</label>
+                        <input type="email" class="form-control form-control-sm @error('inviteEmail') is-invalid @enderror" id="xmInviteEmail" wire:model="inviteEmail" maxlength="190" autocomplete="off">
+                        @error('inviteEmail')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold" for="xmInviteNote">{{ __('admin.registrations.invitations.note') }}</label>
+                        <input type="text" class="form-control form-control-sm" id="xmInviteNote" wire:model="inviteNote" maxlength="190" autocomplete="off">
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-sm btn-primary" wire:loading.attr="disabled" wire:target="invite">{{ __('admin.registrations.invitations.create') }}</button>
+                    </div>
+                </form>
+
+                @if ($createdInvite)
+                    <div class="alert alert-success mt-3 mb-0" role="status">
+                        <div class="fw-semibold">{{ __('admin.registrations.invitations.once') }}</div>
+                        <div class="small">{{ __('admin.registrations.invitations.code') }} <code>{{ $createdInvite['code'] }}</code></div>
+                        <div class="small text-break">{{ __('admin.registrations.invitations.link') }} <code class="user-select-all">{{ $createdInvite['link'] }}</code></div>
+                    </div>
+                @endif
+            </div>
+            <ul class="list-group list-group-flush">
+                @forelse ($this->invitationList as $invitation)
+                    <li class="list-group-item d-flex flex-wrap align-items-center gap-2" wire:key="reg-invite-{{ $invitation->id }}">
+                        <span class="fw-semibold">{{ __('admin.users.roles.'.$invitation->role) }}</span>
+                        <code class="small">…{{ $invitation->code_hint }}</code>
+                        <x-badge :color="match ($invitation->status) { 'accepted' => 'success', 'redeemed' => 'info', 'pending' => 'primary', default => 'secondary' }" soft>{{ __('admin.registrations.invitations.status.'.$invitation->status) }}</x-badge>
+                        <span class="small text-secondary">{{ $invitation->email }}@if ($invitation->user) · {{ $invitation->user->pseudo }}@endif · {{ __('admin.registrations.invitations.expires', ['date' => $format->shortDate($invitation->expires_at)]) }}</span>
+                        @if (in_array($invitation->status, ['pending', 'redeemed'], true))
+                            <button type="button" class="btn btn-sm btn-outline-danger ms-auto" wire:click="revokeInvitation({{ $invitation->id }})" wire:confirm="{{ __('admin.registrations.invitations.confirm_revoke') }}" wire:loading.attr="disabled" wire:target="revokeInvitation({{ $invitation->id }})">{{ __('admin.registrations.invitations.revoke') }}</button>
+                        @endif
+                    </li>
+                @empty
+                    <li class="list-group-item text-secondary">{{ __('admin.registrations.invitations.empty') }}</li>
+                @endforelse
+            </ul>
+        </section>
+    @endif
 
     <section class="card xm-admin-card" aria-labelledby="xmRegRecentTitle">
         <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmRegRecentTitle">{{ __('admin.registrations.recent') }}</h2></div>

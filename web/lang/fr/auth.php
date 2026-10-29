@@ -64,6 +64,7 @@ return [
         'rate_limited' => 'Trop de codes demandés pour cette adresse. Réessaie dans :minutes minutes.',
         'expiry' => ':minutes minutes',
     ],
+    'invitation_invalid' => 'Ce lien d’invitation n’est plus valable (déjà utilisé, expiré ou annulé). Demande-en un nouveau à l’équipe Xomiton.',
     'age_confirmation_required' => 'Pour créer ton compte, confirme que tu as :min_age ans ou plus.',
     'consent_required' => 'Pour créer ton compte, accepte les conditions d’utilisation et la charte, puis la politique de confidentialité.',
     'registrations_closed' => 'Les inscriptions sont momentanément fermées. Reviens bientôt ou inscris-toi à la newsletter.',
@@ -80,6 +81,12 @@ return [
         'home' => 'Xomiton, accueil',
     ],
     'register' => [
+        'invitation' => [
+            'banner' => [
+                'pair' => 'Tu as été invité·e à rejoindre l’équipe des pair·es éducateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.',
+                'admin' => 'Tu as été invité·e à rejoindre l’équipe d’administration. Crée ton compte membre : le rôle s’ajoutera à la validation de ton compte.',
+            ],
+        ],
         'heading' => 'Créer mon compte',
         'intro' => 'Un espace safe, confidentiel et gratuit. Déjà inscrit·e ?',
         'sign_in' => 'Se connecter',

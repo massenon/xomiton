@@ -143,7 +143,7 @@ it('remplace le formulaire par le message configuré, la newsletter et la connex
     expect(User::query()->count())->toBe(0);
 });
 
-it('enregistre les phases 2 à 4 d’un·e pair : en attente (RG-03), rôle pair, contact de confiance, consentements', function (): void {
+it('enregistre les phases 2 à 4 : profil, contact de confiance, consentements ; l’inscription publique ne crée jamais un·e pair', function (): void {
     $zone = Zone::factory()->create(['is_active' => true]);
     $commune = Commune::factory()->create(['zone_id' => $zone->getKey(), 'is_active' => true]);
     $otherCommune = Commune::factory()->create(['is_active' => true]);
@@ -156,19 +156,23 @@ it('enregistre les phases 2 à 4 d’un·e pair : en attente (RG-03), rôle pair
         ->assertRedirect('/inscription/profil')
         ->assertSessionHasErrors(['commune_id']);
 
-    $this->post('/inscription/profil', ['pronouns' => 'elle', 'zone_id' => $zone->getKey(), 'commune_id' => $commune->getKey(), 'member_type' => 'pair'])
+    // « pair » n'est plus un choix de l'inscription publique (rôle donné par l'équipe) : refusé, rien n'est modifié.
+    $this->from('/inscription/profil')->post('/inscription/profil', ['zone_id' => $zone->getKey(), 'member_type' => 'pair'])
+        ->assertSessionHasErrors(['member_type']);
+
+    $this->post('/inscription/profil', ['pronouns' => 'elle', 'zone_id' => $zone->getKey(), 'commune_id' => $commune->getKey()])
         ->assertRedirect(route('inscription.securite'));
 
     $user->refresh()->load('profile');
-    expect($user->status)->toBe(UserStatus::Pending)
-        ->and($user->hasRole('pair'))->toBeTrue()
-        ->and($user->hasRole('membre'))->toBeFalse()
+    expect($user->status)->toBe(UserStatus::Active)
+        ->and($user->hasRole('pair'))->toBeFalse()
+        ->and($user->hasRole('membre'))->toBeTrue()
         ->and($user->zone_id)->toBe($zone->getKey())
         ->and($user->commune_id)->toBe($commune->getKey())
         ->and($user->profile?->pronouns)->toBe('elle')
-        ->and($user->profile?->member_type)->toBe(MemberType::Peer);
+        ->and($user->profile?->member_type)->toBe(MemberType::Member);
 
-    $this->assertAuthenticatedAs($user); // la session reste ouverte, l'accès à la collecte attend la validation
+    $this->assertAuthenticatedAs($user);
 
     $this->get('/inscription/securite')->assertOk()->assertSee('Étape 3 sur 4');
 

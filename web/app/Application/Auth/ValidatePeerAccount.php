@@ -30,6 +30,9 @@ final class ValidatePeerAccount
                 $peer->profile->forceFill(['member_type' => MemberType::Peer])->save();
             }
 
+            // Rôles cumulables : la personne reste membre et gagne l'espace pair.
+            $peer->assignRole(Role::findOrCreate('membre', RolesAndPermissionsSeeder::GUARD));
+
             if (! $peer->hasRole(CompleteRegistrationProfile::PEER_ROLE)) {
                 $peer->assignRole(Role::findOrCreate(CompleteRegistrationProfile::PEER_ROLE, RolesAndPermissionsSeeder::GUARD));
             }

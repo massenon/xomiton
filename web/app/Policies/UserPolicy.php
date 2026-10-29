@@ -63,6 +63,22 @@ final class UserPolicy
     }
 
     /**
+     * Donner le rôle `pair` à un compte existant (`peers.assign`) : jamais à soi-même.
+     */
+    public function assignPeerRole(User $user, User $target): bool
+    {
+        return $user->can('peers.assign') && ! $user->is($target);
+    }
+
+    /**
+     * Retirer le rôle `pair` : même permission, et RG-15 si le compte est de l'équipe d'administration.
+     */
+    public function revokePeerRole(User $user, User $target): bool
+    {
+        return $user->can('peers.assign') && $this->mayActOn($user, $target);
+    }
+
+    /**
      * RG-15 : seuls les comptes détenant `roles.assign_admin` attribuent ou retirent admin / superadmin.
      */
     public function assignAdminRole(User $user, User $target): bool

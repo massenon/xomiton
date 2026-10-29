@@ -22,9 +22,11 @@ beforeEach(function (): void {
 });
 
 dataset('demo-accounts', [
-    'super-administrateur·rice' => ['admin@xomiton.bj', 'Admin123!', '/admin'],
-    'administrateur·rice' => ['moderation@xomiton.bj', 'Admin123!', '/admin'],
-    'modérateur·rice' => ['moderateur@xomiton.bj', 'Modo123!', '/admin'],
+    // Un seul compte, rôles cumulables : toute personne membre (admin et modération comprises) arrive sur le fil.
+    'super-administrateur·rice' => ['admin@xomiton.bj', 'Admin123!', '/fil'],
+    'administrateur·rice' => ['moderation@xomiton.bj', 'Admin123!', '/fil'],
+    'modérateur·rice' => ['moderateur@xomiton.bj', 'Modo123!', '/fil'],
+    'admin + pair + membre' => ['equipe@xomiton.bj', 'Equipe123!', '/fil'],
     'membre' => ['membre@xomiton.bj', 'Membre123!', '/fil'],
     'membre (pseudo)' => ['awa_s', 'Membre123!', '/fil'],
     'second membre' => ['membre2@xomiton.bj', 'Membre123!', '/fil'],

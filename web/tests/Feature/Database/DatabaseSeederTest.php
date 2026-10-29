@@ -72,6 +72,19 @@ it('sème un compte de démonstration par rôle, dont modérateur·rice et pair 
         ->and(User::where('email', 'membre@xomiton.bj')->first()?->status)->toBe(App\Enums\UserStatus::Active);
 });
 
+it('sème des comptes aux rôles cumulés : pair + membre, admin + membre, admin + pair + membre ; le pair en attente reste membre', function (): void {
+    $this->seed(DatabaseSeeder::class);
+    $this->seed(DemoAccountsSeeder::class);
+
+    $roles = fn (string $email): array => User::where('email', $email)->firstOrFail()->getRoleNames()->sort()->values()->all();
+
+    expect($roles('pair@xomiton.bj'))->toBe(['membre', 'pair'])
+        ->and($roles('moderation@xomiton.bj'))->toBe(['admin', 'membre'])
+        ->and($roles('admin@xomiton.bj'))->toBe(['membre', 'superadmin'])
+        ->and($roles('equipe@xomiton.bj'))->toBe(['admin', 'membre', 'pair'])
+        ->and($roles('pair.attente@xomiton.bj'))->toBe(['membre']);
+});
+
 it('déclare les seeders de référence dans l’ordre des dépendances', function (): void {
     $order = DatabaseSeeder::REFERENCE_SEEDERS;
 

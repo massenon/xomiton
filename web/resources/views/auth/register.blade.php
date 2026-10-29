@@ -9,8 +9,16 @@
     @include('auth.partials.status')
     <x-error-summary />
 
+    @if (! empty($invitationCode))
+        <div class="alert alert-info d-flex gap-2" role="status"><i class="bi bi-envelope-heart-fill" aria-hidden="true"></i><div>{{ __('auth.register.invitation.banner.'.($invitationRole === 'pair' ? 'pair' : 'admin')) }}</div></div>
+    @endif
+
     <form method="post" action="{{ route('inscription.store') }}" novalidate data-xm-auth-form>
         @csrf
+        @if (! empty($invitationCode))
+            <input type="hidden" name="invitation" value="{{ $invitationCode }}">
+        @endif
+        @error('invitation')<div class="alert alert-danger" role="alert">{{ $message }}</div>@enderror
         <h2 class="h4 mb-3">{{ __('auth.register.account.heading') }}</h2>
         <x-field name="pseudo" :label="__('auth.register.account.pseudo')" :hint="__('auth.register.account.pseudo_hint')" autocomplete="username" maxlength="40" required autofocus />
         <x-field name="email" type="email" :label="__('auth.register.account.email')" :hint="__('auth.register.account.email_hint')" autocomplete="email" inputmode="email" maxlength="190" required />

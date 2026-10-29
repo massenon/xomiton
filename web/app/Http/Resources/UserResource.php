@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use App\Application\Account\Profile\ProgressiveProfileState;
+use App\Application\Admin\Users\AdminRoles;
+use App\Application\Member\AccountSpaces;
 use App\Domain\Account\SensitiveProfile;
 use App\Enums\AllyStatus;
 use App\Enums\UserStatus;
@@ -67,7 +69,8 @@ final class UserResource extends JsonResource
             'avatar_url' => $user->avatar_url,
             'status' => $user->status instanceof UserStatus ? $user->status->value : (string) $user->status,
             'pending_validation' => $user->status === UserStatus::Pending,
-            'role' => $user->getRoleNames()->first(),
+            // `role` : le rôle le plus étendu (les rôles sont cumulables : un·e pair·e ou un·e admin reste membre) ; `roles` : tous.
+            'role' => AdminRoles::of($user),
             'roles' => $user->getRoleNames()->values()->all(),
             'profile' => $this->profile($profile, $self, $user),
             'created_at' => $user->created_at?->toIso8601String(),
@@ -79,6 +82,8 @@ final class UserResource extends JsonResource
                 'email_verified' => $user->email_verified_at !== null,
                 'email_verified_at' => $user->email_verified_at?->toIso8601String(),
                 'permissions' => $user->getAllPermissions()->pluck('name')->sort()->values()->all(),
+                // Sélecteur d'espace du mobile : member, peer (compte actif avec l'espace pair), admin (`admin_mobile.access`).
+                'spaces' => AccountSpaces::for($user, AccountSpaces::SURFACE_MOBILE),
                 'settings' => $this->settings($user->settings),
                 'last_login_at' => $user->last_login_at?->toIso8601String(),
             ];
