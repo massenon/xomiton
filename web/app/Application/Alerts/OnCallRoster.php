@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Alerts;
 
+use App\Models\Alert;
 use App\Models\DirectoryContact;
 use App\Models\OnCallShift;
 use App\Models\User;
@@ -48,6 +49,52 @@ final class OnCallRoster
             ->get();
 
         return $onCall->isNotEmpty() ? $onCall : $this->fallbackAdmins();
+    }
+
+    /**
+     * Équipe prévenue d'une alerte (décisions client du 2026-10-29) : **les admins et les pair·es éducateur·rices**, pas
+     * seulement l'admin de garde. Admins : ceux de garde (plage en cours) **et** tous les comptes admin / superadmin
+     * habilités `alerts.take` ; pair·es : comptes actifs de rôle `pair` détenant `alerts.take` (tous, ou ceux du
+     * département de l'alerte avec `xomiton.alerts.peer_recipients = zone`, repli sur tous quand personne n'y est). Une
+     * personne n'apparaît qu'une fois, par identifiant croissant ; l'accusé de réception de l'une arrête l'escalade pour toutes.
+     *
+     * @return Collection<int, User>
+     */
+    public function alertTeam(?CarbonInterface $at = null, ?Alert $alert = null): Collection
+    {
+        return $this->adminsOnCall($at)
+            ->merge($this->fallbackAdmins())
+            ->merge($this->activePeers($alert?->zone_id))
+            ->unique(static fn (User $user): int => (int) $user->getKey())
+            ->sortBy('id')
+            ->values();
+    }
+
+    /**
+     * Pair·es éducateur·rices à prévenir : comptes actifs de rôle `pair` détenant `alerts.take` (permission des pair·es
+     * routé·es, ROLE_ET_PERMISSIONS.md §4).
+     *
+     * @return Collection<int, User>
+     */
+    public function activePeers(int|string|null $zoneId = null): Collection
+    {
+        try {
+            $peers = static fn (): Builder => User::query()->active()->role('pair')->permission(self::PERMISSION)->orderBy('id');
+
+            if ((string) config('xomiton.alerts.peer_recipients', 'all') === 'zone' && $zoneId !== null) {
+                $inZone = $peers()->where('zone_id', $zoneId)->get();
+
+                if ($inZone->isNotEmpty()) {
+                    return $inZone;
+                }
+            }
+
+            return $peers()->get();
+        } catch (PermissionDoesNotExist|RoleDoesNotExist $exception) {
+            Log::warning('Garde : rôle pair ou permission absents, aucun pair à prévenir.', ['error' => $exception->getMessage()]);
+
+            return new Collection;
+        }
     }
 
     /**

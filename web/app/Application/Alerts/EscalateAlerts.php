@@ -148,7 +148,7 @@ final class EscalateAlerts
             'motif=%s ; de=%s ; vers=%s ; apres=%d min',
             $reason,
             $fresh->routed_to === null ? '-' : '#'.$fresh->routed_to,
-            $target === null ? 'admins('.count($admins).')' : '#'.$target->getKey(),
+            ($target === null ? 'admins(' : '#'.$target->getKey().' + equipe(').count($admins).')',
             $minutes,
         ), AuditLog::ACTOR_SYSTEM);
 
@@ -209,8 +209,8 @@ final class EscalateAlerts
     }
 
     /**
-     * Cible de l'escalade : point focal national (garde, puis fiche), sauf s'il est déjà le contact routé ; sinon les
-     * admins de garde (repli : admins habilités `alerts.take`).
+     * Cible de l'escalade : point focal national (garde, puis fiche), sauf s'il est déjà le contact routé ; sinon
+     * l'équipe — admins et pair·es éducateur·rices (OnCallRoster::alertTeam).
      *
      * @return array{0: DirectoryContact|null, 1: list<int>}
      */
@@ -218,11 +218,14 @@ final class EscalateAlerts
     {
         $national = $this->roster->nationalFocal($now);
 
+        // L'équipe (admins et pair·es) est prévenue dans les deux cas : le point focal national s'y ajoute, il ne la remplace pas.
+        $team = $this->adminIds($now);
+
         if ($national !== null && (int) $national->getKey() !== (int) $alert->routed_to) {
-            return [$national, []];
+            return [$national, $team];
         }
 
-        return [null, $this->adminIds($now)];
+        return [null, $team];
     }
 
     /**
@@ -230,7 +233,7 @@ final class EscalateAlerts
      */
     private function adminIds(CarbonImmutable $now): array
     {
-        return $this->roster->adminsOnCall($now)->map(static fn (User $user): int => (int) $user->getKey())->values()->all();
+        return $this->roster->alertTeam($now)->map(static fn (User $user): int => (int) $user->getKey())->values()->all();
     }
 
     private function report(EscalationRunResult $result, Alert $alert, EscalationAction $action, CarbonImmutable $now, ?DirectoryContact $target): void

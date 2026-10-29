@@ -186,7 +186,7 @@ it('prévient le point focal national quand ni contact routé ni focal de zone n
     Log::shouldHaveReceived('warning')->with('alerts.unrouted', Mockery::any());
 });
 
-it('prévient l’admin de garde de nuit et, sans plage, les admins habilités', function (): void {
+it('prévient l’admin de garde de nuit en plus des autres admins habilités (l’équipe, pas seulement la garde)', function (): void {
     $scene = SosScenario::make();
     $night = User::factory()->withProfile()->create();
     $this->travelTo(now()->setTime(3, 0));
@@ -194,7 +194,7 @@ it('prévient l’admin de garde de nuit et, sans plage, les admins habilités',
     App\Models\OnCallShift::factory()->admin()->night()->forUser($night)->create();
 
     $references = array_map(static fn ($t): string => $t->reference, app(SosRecipients::class)->for($scene->alert->fresh(['zone', 'routedContact.user', 'user.profile'])));
-    expect($references)->toContain('user:'.$night->id)->not->toContain('user:'.$scene->admin->id);
+    expect($references)->toContain('user:'.$night->id, 'user:'.$scene->admin->id);
 
     App\Models\OnCallShift::query()->delete();
     $references = array_map(static fn ($t): string => $t->reference, app(SosRecipients::class)->for($scene->alert->fresh(['zone', 'routedContact.user', 'user.profile'])));

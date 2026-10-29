@@ -7,13 +7,15 @@ namespace App\Application\Cases\Queries;
 use App\Models\Alert;
 use App\Models\DirectoryContact;
 use App\Models\User;
+use App\Policies\Scopes\AlertScope;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Alertes routées vers moi (P9-02, `GET pair/alerts` ; prototype espace-pair.php l.20-26) : celles dont le contact
  * routé est une fiche d'annuaire liée au compte (`directory_contacts.user_id`, branche `alerts.view_routed`
- * d'AlertScope) — **jamais toutes les alertes, même pour un compte `alerts.view`** : l'espace pair est personnel,
+ * d'AlertScope) **et celles dont l'équipe m'a prévenu·e** (SOS, alerte routée, rappel, escalade : admins et pair·es sont
+ * destinataires) — **jamais toutes les alertes, même pour un compte `alerts.view`** : l'espace pair est personnel,
  * l'administration des alertes est en P10. Sans `alerts.view_routed`, aucune. `state=open` (défaut) : non
  * terminées ; `state=all` : toutes. Les plus récentes d'abord.
  */
@@ -45,7 +47,10 @@ final class ListRoutedAlerts
             return $query->whereRaw('1 = 0');
         }
 
-        $query->whereIn('routed_to', DirectoryContact::query()->select('id')->where('user_id', $viewer->getKey()));
+        $query->where(function (Builder $visible) use ($viewer): void {
+            $visible->whereIn('routed_to', DirectoryContact::query()->select('id')->where('user_id', $viewer->getKey()))
+                ->orWhereIn('id', AlertScope::notifiedAlertIds($viewer));
+        });
 
         if ($state !== self::STATE_ALL) {
             $query->open();

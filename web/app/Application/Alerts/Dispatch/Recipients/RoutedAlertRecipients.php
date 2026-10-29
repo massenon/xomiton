@@ -12,7 +12,8 @@ use Carbon\CarbonInterface;
 
 /**
  * Destinataires d'une alerte routée, d'une réattribution et d'un rappel (NOTIFICATIONS §2 « Alerte routée ») : contact
- * de l'annuaire ciblé (actuel) puis admins de garde, une fois par personne, jamais l'auteur·e.
+ * de l'annuaire ciblé (actuel) puis l'équipe (admins et pair·es éducateur·rices, OnCallRoster::alertTeam), une fois par
+ * personne, jamais l'auteur·e.
  */
 final class RoutedAlertRecipients
 {
@@ -30,8 +31,8 @@ final class RoutedAlertRecipients
             $targets->add(RecipientTarget::forDirectoryContact($routed, primary: true));
         }
 
-        foreach ($this->roster->adminsOnCall($at ?? now()) as $admin) {
-            $targets->add(RecipientTarget::account($admin, RecipientKind::Team));
+        foreach ($this->roster->alertTeam($at ?? now(), $alert) as $member) {
+            $targets->add(RecipientTarget::account($member, RecipientKind::Team));
         }
 
         return $targets->all();

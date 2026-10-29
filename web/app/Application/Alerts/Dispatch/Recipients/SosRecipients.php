@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
  *  R2 contact routé (`alerts.routed_to`, RG-04 calculé par le lot domaine : jamais rerouté ici) ;
  *  R3 point focal de la zone (garde, sinon fiche), s'il diffère de R2 ;
  *  R4 point focal national, seulement si R2 et R3 manquent (quelqu'un de l'annuaire est toujours prévenu) ;
- *  R5 admins de garde (repli : admins habilités `alerts.take`).
+ *  R5 l'équipe : admins (de garde et habilités `alerts.take`) **et pair·es éducateur·rices** (OnCallRoster::alertTeam).
  * Une personne n'apparaît qu'une fois (un admin lié à une fiche garde le libellé de sa fiche) ; l'auteur·e est exclu·e.
  */
 final class SosRecipients
@@ -63,8 +63,8 @@ final class SosRecipients
             $targets->add(RecipientTarget::forDirectoryContact($national, primary: true));
         }
 
-        foreach ($this->roster->adminsOnCall($at) as $admin) {
-            $targets->add(RecipientTarget::account($admin, RecipientKind::Team));
+        foreach ($this->roster->alertTeam($at, $alert) as $member) {
+            $targets->add(RecipientTarget::account($member, RecipientKind::Team));
         }
 
         return $targets->all();

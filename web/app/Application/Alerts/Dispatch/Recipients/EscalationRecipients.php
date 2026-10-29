@@ -11,7 +11,7 @@ use App\Models\User;
 
 /**
  * Destinataires d'une escalade (RG-05, Q48, AlertEscalated) : la cible (point focal national, par son compte lié ou
- * directement) et, quand il n'y en a pas, les admins de garde désignés par la commande. Jamais l'auteur·e.
+ * directement) et, quand il n'y en a pas, l'équipe (admins et pair·es) désignée par la commande. Jamais l'auteur·e.
  */
 final class EscalationRecipients
 {
