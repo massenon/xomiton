@@ -393,7 +393,9 @@ it('exporte en CSV les filtres actifs par lien signé, sans notes, et journalise
     registersCase(['code' => 'VBG-0009'])->update(['status' => CaseStatus::Archived, 'archived_at' => now()]);
 
     $url = Livewire::withQueryParams(['reg' => 'VBG'])->test(Registers::class)->call('export')->effects['redirect'] ?? null;
-    expect($url)->toBeString()->toContain('/admin/export?')->not->toContain('VBG');
+    // La signature du lien est aléatoire : elle peut contenir « VBG » par hasard, seuls le chemin et les paramètres comptent.
+    expect($url)->toBeString()->toContain('/admin/export?')
+        ->and(preg_replace('/([?&])signature=[^&]*/', '$1', $url))->not->toContain('VBG');
 
     $response = $this->get($url)->assertOk()->assertDownload(CsvExport::filename('registres'));
     $csv = $response->streamedContent();
