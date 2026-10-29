@@ -14508,18 +14508,6 @@
             }
         }
     },
-    "auth_register_step_of_optional": "Étape {current} sur {total}, facultative",
-    "@auth_register_step_of_optional": {
-        "description": "auth.register.step_of_optional",
-        "placeholders": {
-            "current": {
-                "type": "String"
-            },
-            "total": {
-                "type": "String"
-            }
-        }
-    },
     "auth_register_steps_account": "Compte",
     "@auth_register_steps_account": {
         "description": "auth.register.steps.account"

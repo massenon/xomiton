@@ -2065,7 +2065,6 @@
     "auth.register.skip": "Passer",
     "auth.register.skip_step": "Passer cette étape",
     "auth.register.step_of": "Étape {current} sur {total}",
-    "auth.register.step_of_optional": "Étape {current} sur {total}, facultative",
     "auth.register.steps.account": "Compte",
     "auth.register.steps.consents": "Consentements",
     "auth.register.steps.profile": "Profil",

@@ -6,10 +6,10 @@
     de page sur 1280×720 (design-system/DECISIONS.md, inscription compacte).
     Écart consigné (design-system/DECISIONS.md, Q20) : sign-in.php est en 6/6 et 520 px, sign-up.php en 5/7 et 640 px,
     forgot-password.php en colonne centrée.
-    Props : seo (lang/fr/seo.php ; noindex par défaut, /connexion et /inscription passent index => true), image
+    Props : decor (ruban et motifs, <x-auth-decor> : connexion et inscription seulement), seo (lang/fr/seo.php ; noindex par défaut, /connexion et /inscription passent index => true), image
     (public/assets/images/xomiton/), maxWidth, slot `side` (contenu de l'illustration).
 --}}
-@props(['seo' => [], 'image' => 'sign-in.jpg', 'maxWidth' => 440, 'compact' => false])
+@props(['seo' => [], 'image' => 'sign-in.jpg', 'maxWidth' => 440, 'compact' => false, 'decor' => false])
 @php
     $maxWidth = max(440, min(520, (int) $maxWidth));
     // Écrans haute densité : variante `{nom}-2x.webp` (recadrage portrait de l'original, colonne 5/12 pleine hauteur)
@@ -45,7 +45,8 @@
                         @endisset
                     </div>
                 </div>
-                <div class="col-lg-7 d-flex align-items-center">
+                <div @class(['col-lg-7 d-flex align-items-center', 'position-relative xm-auth-main' => $decor])>
+                    @if ($decor)<x-auth-decor />@endif
                     <div @class(['w-100 mx-auto xm-auth-form', 'p-4 p-md-5' => ! $compact, 'xm-auth-form--compact px-3 px-md-4 py-3' => $compact]) style="max-width:{{ $maxWidth }}px">
                         <x-logo :class="$compact ? 'd-lg-none d-inline-block mb-2' : 'd-lg-none d-inline-block mb-4'" :href="route('home')" :width="148" />
                         {{-- P13-08 : annonce préalable d'une maintenance planifiée (refermable). --}}

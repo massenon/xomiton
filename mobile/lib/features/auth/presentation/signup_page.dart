@@ -12,7 +12,7 @@ import '../application/session_controller.dart';
 import '../data/auth_api.dart';
 
 /// Inscription en 4 phases (D4, Q12 c). La phase 1 crée le compte et ouvre la
-/// session ; les phases 2 et 3 sont facultatives (« Passer ») et passent par
+/// session ; les phases 2 et 3 se passent (« Passer ») et passent par
 /// `PATCH me/profile` ; la phase 4 enregistre les deux consentements
 /// facultatifs. Les consentements obligatoires (CGU + charte, confidentialité)
 /// se donnent sur l'écran 1, jamais pré-cochés.
@@ -218,7 +218,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   @override
   Widget build(BuildContext context) {
     final optional = _step == 2 || _step == 3;
-    final titleKey = optional ? 'auth_register_step_of_optional' : 'auth_register_step_of';
     final headings = [
       'auth_register_account_heading',
       'auth_register_profile_heading',
@@ -233,7 +232,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       child: Scaffold(
         appBar: AppBar(
           leading: BackButton(onPressed: _back),
-          title: Text(context.t(titleKey, {'current': _step, 'total': 4})),
+          title: Text(context.t('auth_register_step_of', {'current': _step, 'total': 4})),
           actions: [
             if (optional)
               TextButton(
@@ -509,22 +508,50 @@ class _Stepper extends StatelessWidget {
   const _Stepper({required this.step});
   final int step;
 
+  static const _labels = [
+    'auth_register_steps_account',
+    'auth_register_steps_profile',
+    'auth_register_steps_security',
+    'auth_register_steps_consents',
+  ];
+
   @override
   Widget build(BuildContext context) {
     final xm = context.xm;
-    return ExcludeSemantics(
-      child: Row(children: [
-        for (var i = 1; i <= 4; i++)
-          Expanded(
-            child: Container(
-              height: 6,
-              margin: EdgeInsets.only(right: i < 4 ? 6 : 0),
-              decoration: BoxDecoration(
-                color: i <= step ? xm.primary : xm.border,
-                borderRadius: BorderRadius.circular(3),
+    final style = Theme.of(context).textTheme.labelMedium;
+    return Semantics(
+      container: true,
+      label: context.t(_labels[step - 1]),
+      excludeSemantics: true,
+      child: Column(children: [
+        Row(children: [
+          for (var i = 1; i <= 4; i++)
+            Expanded(
+              child: Container(
+                height: 6,
+                margin: EdgeInsets.only(right: i < 4 ? 6 : 0),
+                decoration: BoxDecoration(
+                  color: i <= step ? xm.primary : xm.border,
+                  borderRadius: BorderRadius.circular(3),
+                ),
               ),
             ),
-          ),
+        ]),
+        const SizedBox(height: XmSpace.s2),
+        Row(children: [
+          for (var i = 1; i <= 4; i++)
+            Expanded(
+              child: Text(
+                context.t(_labels[i - 1]),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: style?.copyWith(
+                  fontWeight: i == step ? FontWeight.w700 : FontWeight.w500,
+                  color: i == step ? xm.text : xm.textMuted,
+                ),
+              ),
+            ),
+        ]),
       ]),
     );
   }

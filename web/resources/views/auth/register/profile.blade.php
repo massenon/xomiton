@@ -1,5 +1,5 @@
 {{-- Phase 2 « Profil » (facultative) : pronoms, département → commune en cascade (Alpine, données injectées), type de membre. --}}
-<x-layouts.auth :seo="\App\Http\Controllers\Auth\Support\RegistrationSteps::seo($step)" image="hero-12.jpg" :max-width="520" compact>
+<x-layouts.auth :seo="\App\Http\Controllers\Auth\Support\RegistrationSteps::seo($step)" image="hero-12.jpg" :max-width="520" compact decor>
     <x-slot:side>@include('auth.partials.register-side')</x-slot:side>
 
     <h1 class="h3 fw-bold mb-2">{{ __('auth.register.heading') }}</h1>

@@ -106,7 +106,7 @@ void main() {
       expect(body['invitation'], 'XM-ABCD-EFGH-JKMN');
       expect(body['age_confirmed'], true);
       // La phase 2 s'ouvre : le compte est créé, le rôle viendra à la validation.
-      expect(find.text(S.t('auth_register_step_of_optional', {'current': 2, 'total': 4})), findsOneWidget);
+      expect(find.text(S.t('auth_register_step_of', {'current': 2, 'total': 4})), findsOneWidget);
     });
 
     testWidgets('lien collé dans le champ : seul le code part au serveur', (tester) async {

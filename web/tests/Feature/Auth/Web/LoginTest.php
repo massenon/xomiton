@@ -52,7 +52,9 @@ it('affiche l’écran de connexion fidèle au prototype, dans le gabarit 5/12 �
         ->assertSee('Urgences')
         ->assertDontSee('Aucune donnée n’est visible depuis l’écran de verrouillage.')
         ->assertSee('class="col-lg-5 d-none d-lg-flex xm-auth-side', false)
-        ->assertSee('class="col-lg-7 d-flex align-items-center"', false)
+        ->assertSee('class="col-lg-7 d-flex align-items-center position-relative xm-auth-main"', false)
+        ->assertSee('class="xm-auth-decor" aria-hidden="true"', false)
+        ->assertSee('--xm-rainbow-6', false)
         ->assertSee('style="max-width:440px"', false)
         ->assertSee('class="d-lg-none d-inline-block mb-4"', false)
         ->assertDontSee('Comptes de démonstration')
@@ -220,4 +222,9 @@ it('ignore une destination `next` externe et redirige une personne déjà connec
 it('renvoie vers la connexion quand aucun code n’est attendu', function (): void {
     $this->get('/code-de-verification')->assertRedirect(route('connexion'));
     $this->get('/code-de-verification?purpose=login')->assertRedirect(route('connexion'));
+});
+
+it('affiche le décor ruban sur l’inscription mais pas sur le mot de passe oublié', function (): void {
+    $this->get(route('inscription'))->assertOk()->assertSee('class="xm-auth-decor" aria-hidden="true"', false);
+    $this->get(route('mot-de-passe-oublie'))->assertOk()->assertDontSee('xm-auth-decor', false);
 });

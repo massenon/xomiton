@@ -1,5 +1,5 @@
 {{-- /inscription — phase 1 « Compte », la seule obligatoire (prototype sign-up.php, D4, Q12 c, Q30 a). --}}
-<x-layouts.auth :seo="\App\Http\Controllers\Auth\Support\RegistrationSteps::seo('account')" image="hero-12.jpg" :max-width="520" compact>
+<x-layouts.auth :seo="\App\Http\Controllers\Auth\Support\RegistrationSteps::seo('account')" image="hero-12.jpg" :max-width="520" compact decor>
     <x-slot:side>@include('auth.partials.register-side')</x-slot:side>
 
     <h1 class="h3 fw-bold mb-1">{{ __('auth.register.heading') }}</h1>

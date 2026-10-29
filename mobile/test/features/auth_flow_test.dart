@@ -311,9 +311,14 @@ void main() {
       expect(reg['privacy'], true);
       expect(env.secrets.data[SecretKeys.token], '3|reg');
 
-      // Phase 2 : facultative, avec « Passer ».
-      expect(tr(S.t('auth_register_step_of_optional', {'current': 2, 'total': 4})), findsOneWidget);
+      // Phase 2 : avec « Passer », mais sans « facultative » (texte visible ni semantics) ; intitulés comme sur le web.
+      expect(tr(S.t('auth_register_step_of', {'current': 2, 'total': 4})), findsOneWidget);
       expect(tr(S.t('auth_register_skip')), findsOneWidget);
+      expect(find.textContaining('facultative', findRichText: true), findsNothing);
+      expect(find.bySemanticsLabel(RegExp('facultative')), findsNothing);
+      for (final k in ['account', 'profile', 'security', 'consents']) {
+        expect(find.text(S.t('auth_register_steps_$k')), findsOneWidget);
+      }
       // Les départements viennent de GET zones.
       await tester.tap(find.widgetWithText(ChoiceChip, S.t('auth_register_profile_pronouns_options_elle')));
       await tester.pump();
@@ -331,7 +336,7 @@ void main() {
       expect(profile, {'pronouns': 'elle', 'zone_id': 1, 'commune_id': 3});
 
       // Phase 3 : « Passer » sans rien envoyer.
-      expect(tr(S.t('auth_register_step_of_optional', {'current': 3, 'total': 4})), findsOneWidget);
+      expect(tr(S.t('auth_register_step_of', {'current': 3, 'total': 4})), findsOneWidget);
       await tester.tap(tr(S.t('auth_register_skip')));
       await tester.pumpAndSettle();
       expect(api.calls('PATCH me/profile'), hasLength(1));

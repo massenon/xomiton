@@ -21,6 +21,8 @@
 
   --xm-violet-700:#6F2C91; --xm-rose-600:#C2255C; --xm-orange-700:#B84B00;
   --xm-green-700:#0B7A4B;  --xm-amber-500:#F0A800; --xm-sky-700:#1864AB;
+  /* Décor connexion / inscription (ruban et motifs) : six couleurs atténuées, identiques au prototype mobile (XmRainbow). Jamais sur SOS, signalement, cas ni tableaux de bord. */
+  --xm-rainbow-1:#EE8E8E; --xm-rainbow-2:#F5B27A; --xm-rainbow-3:#F3DA82; --xm-rainbow-4:#8FCB9F; --xm-rainbow-5:#86B5E0; --xm-rainbow-6:#B39BDD;
 
   /* ---------- 2. SEMANTIC (thème clair) ---------- */
   --xm-primary: var(--xm-blue-500);

@@ -98,8 +98,6 @@ return [
             'consents' => 'Consentements',
         ],
         'step_of' => 'Étape :current sur :total',
-        // Encore lu par l'application mobile (signup_page.dart) ; le web n'affiche plus « facultative ».
-        'step_of_optional' => 'Étape :current sur :total, facultative',
         'account' => [
             'heading' => 'Qui es-tu ?',
             'pseudo' => 'Pseudonyme',

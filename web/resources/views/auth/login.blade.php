@@ -1,5 +1,5 @@
 {{-- /connexion (prototype sign-in.php, LOGIN §3, Q13 b, Q36 : tutoiement). Page publique indexée (seo.pages.connexion) ; pas de rouge hors erreurs (lien Urgences neutre). --}}
-<x-layouts.auth :seo="['title' => __('seo.pages.connexion.title'), 'description' => __('seo.pages.connexion.description'), 'index' => true]" image="sign-in.jpg" :max-width="440">
+<x-layouts.auth :seo="['title' => __('seo.pages.connexion.title'), 'description' => __('seo.pages.connexion.description'), 'index' => true]" image="sign-in.jpg" :max-width="440" decor>
     <h1 class="h2 fw-bold">{{ __('auth.login.heading') }}</h1>
     <p class="text-body-secondary">{{ __('auth.login.intro') }}</p>
 

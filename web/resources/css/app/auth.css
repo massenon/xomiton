@@ -75,3 +75,16 @@
 .xm-pw-meter--compact .xm-pw-meter__segments { flex: 1 1 8rem; }
 .xm-pw-meter--compact .xm-pw-meter__label { flex: 0 0 auto; margin: 0 !important; min-height: 0; font-size: .8125rem; }
 .xm-pw-meter--compact .xm-pw-meter__rules { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 0 var(--xm-space-3, .75rem); font-size: .75rem; line-height: 1.4; }
+
+/* ---------- Décor connexion / inscription (composant x-auth-decor) ---------- */
+/* Statique, derrière le contenu, hors flux : aucune hauteur ajoutée, aucune animation (rien à désactiver en mouvement réduit). */
+.xm-auth-main { isolation: isolate; overflow: hidden; }
+.xm-auth-decor { position: absolute; inset: 0; z-index: -1; pointer-events: none; user-select: none; }
+.xm-auth-decor svg { position: absolute; left: 0; width: 100%; display: block; }
+.xm-auth-decor__top { top: 0; height: 52px; }
+.xm-auth-decor__end { bottom: 0; height: 84px; }
+@media (min-width: 992px) { .xm-auth-decor__top { height: 64px; } .xm-auth-decor__end { height: 104px; } }
+@media (max-height: 560px) { .xm-auth-decor__end { display: none; } }
+/* Parcours d'inscription (compact) : ruban fin, et illustrations du bas seulement si la hauteur laisse de la place au-dessus du pied d'actions collant. */
+.xm-auth-main:has(.xm-auth-form--compact) .xm-auth-decor__top { height: 30px; }
+@media (max-height: 899px) { .xm-auth-main:has(.xm-auth-form--compact) .xm-auth-decor__end { display: none; } }
