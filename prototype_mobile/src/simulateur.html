@@ -132,6 +132,11 @@ button { cursor: pointer; }
 .tabbar { position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; padding: 6px 6px calc(var(--safe-bottom) + 2px); display: grid; grid-template-columns: repeat(5, 1fr); align-items: end; background: color-mix(in srgb, var(--app-surface) 94%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--app-border); }
 .tabbar button { border: 0; background: transparent; display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--app-muted); padding: 6px 0; min-height: 48px; }
 .tabbar button[aria-current="page"] { color: var(--app-primary); font-weight: 700; }
+.tabbar a.tab-space { display: grid; justify-items: center; gap: 2px; font-size: 11px; color: var(--app-primary-subtle-text); padding: 6px 0; min-height: 48px; text-decoration: none; font-weight: 700; position: relative; }
+.tabbar a.tab-space::after { content: ""; position: absolute; top: 4px; right: calc(50% - 20px); width: 8px; height: 8px; border-radius: 50%; background: var(--app-violet); }
+.tabbar a.tab-space .ico { color: var(--app-violet); }
+.space-card { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px; text-decoration: none; color: inherit; border-color: var(--app-primary); }
+.space-card .ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--app-primary); color: var(--app-on-primary); }
 .tabbar .sos-tab { transform: translateY(-14px); }
 .tabbar .sos-tab span.b { width: 60px; height: 60px; border-radius: 50%; background: var(--app-danger); color: #fff; display: grid; place-items: center; font: 800 16px var(--xm-font-heading); box-shadow: 0 6px 16px rgb(227 14 14 / .35); border: 4px solid var(--app-surface); }
 .tabbar .sos-tab { color: var(--app-danger); font-weight: 700; }
@@ -339,20 +344,24 @@ textarea.input { min-height: 96px; resize: none; line-height: 1.45; }
 </head>
 <body>
 {{INCLUDE:navmenu.html}}
+<script>
+{{INCLUDE:espaces.js}}
+</script>
 <a class="skip" href="#appareil">Aller au simulateur</a>
 <div class="sim">
   <header class="topbar">
     <div class="brand">
       <img src="{{IMG:logo-couleur.svg}}" alt="Xomiton" width="110" height="28">
-      <div><h1>Simulateur mobile</h1><div class="sub">Compte membre et pair éducateur·rice · 30 écrans · transposition Flutter</div></div>
+      <div><h1>Simulateur mobile</h1><div class="sub">Une seule appli, un seul compte (membre, pair, admin) · 31 écrans · transposition Flutter</div></div>
     </div>
     <div class="seg" role="group" aria-label="Appareil">
       <button type="button" data-model="iphone14" aria-pressed="true">iPhone 14</button>
       <button type="button" data-model="pixel8" aria-pressed="false">Pixel 8</button>
     </div>
-    <div class="seg" role="group" aria-label="Type de compte">
-      <button type="button" data-role="membre" aria-pressed="true">Membre</button>
-      <button type="button" data-role="pair" aria-pressed="false">Pair éducateur·rice</button>
+    <div class="seg" role="group" aria-label="Compte de démonstration (rôles du compte connecté)">
+      <button type="button" data-acct="membre" aria-pressed="true">Membre</button>
+      <button type="button" data-acct="pair" aria-pressed="false">Pair + membre</button>
+      <button type="button" data-acct="admin" aria-pressed="false">Admin + membre</button>
     </div>
     <button type="button" class="btn-ghost" id="reset" title="Efface l’état (onboarding vu, session, publications) et revient au splash">Réinitialiser</button>
   </header>
@@ -467,6 +476,10 @@ const DEFAULT = () => ({
 });
 let S;
 try { S = Object.assign(DEFAULT(), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = DEFAULT(); }
+const ACCT = { membre: ['membre'], pair: ['membre', 'pair'], admin: ['membre', 'admin'] };
+if (XmSpace.isNew()) { XmSpace.setRoles(ACCT[S.role] || ['membre']); XmSpace.setSpace('membre'); } // état historique {role:'pair'} = membre + pair
+const isPair = () => XmSpace.has('pair'), isAdmin = () => XmSpace.has('admin'), isMulti = () => XmSpace.multi();
+const acctOf = () => (isAdmin() ? 'admin' : isPair() ? 'pair' : 'membre');
 S.theme = 'light'; // thème clair par défaut ; aucune bascule dans le simulateur (le thème sombre de l’app suit le système côté Flutter)
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* stockage indisponible (file://, navigation privée) */ } };
 let stack = [];
@@ -567,11 +580,12 @@ const decoEnd = () => `<div class="deco deco-end" aria-hidden="true"><svg viewBo
   <circle cx="224" cy="66" r="3" fill="#86B5E0" opacity=".7"/><circle cx="372" cy="70" r="4" fill="#8FCB9F" opacity=".7"/>
 </svg></div>`;
 let loginErr = '';
-/* Comptes de démonstration (mêmes identifiants que le site : docs/GUIDE_RECETTE.md §5) : le compte choisi mène à son espace. */
+/* Comptes de démonstration (mêmes identifiants que le site : docs/GUIDE_RECETTE.md §5). Écran de connexion UNIQUE pour tous les rôles (décision du 29/10/2026) :
+   après le code, un sélecteur d'espace s'affiche si le compte cumule plusieurs rôles. */
 const DEMO_ACCOUNTS = [
-  { label: 'Membre', email: 'membre@xomiton.bj', pseudo: 'awa_s', password: 'Membre123!', role: 'membre', dest: 'dashboard', where: 'Tableau de bord' },
-  { label: 'Pair éducateur·rice', email: 'pair@xomiton.bj', pseudo: 'pair_chantal', password: 'Pair123!', role: 'pair', dest: 'espace-pair.html#/accueil', where: 'Espace pair' },
-  { label: 'Administrateur·rice', email: 'admin@xomiton.bj', pseudo: 'admin', password: 'Admin123!', role: 'admin', dest: 'admin-mobile.html#/tableau', where: 'Admin mobile' }
+  { label: 'Membre', email: 'membre@xomiton.bj', pseudo: 'awa_s', password: 'Membre123!', acct: 'membre', where: 'Membre' },
+  { label: 'Pair éducateur·rice', email: 'pair@xomiton.bj', pseudo: 'pair_chantal', password: 'Pair123!', acct: 'pair', where: 'Membre + Pair' },
+  { label: 'Administrateur·rice', email: 'admin@xomiton.bj', pseudo: 'admin', password: 'Admin123!', acct: 'admin', where: 'Membre + Admin' }
 ];
 const demoFor = l => DEMO_ACCOUNTS.find(a => a.email === l.toLowerCase() || a.pseudo === l.toLowerCase());
 def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'LoginPage', provider: 'authControllerProvider (AsyncNotifier<Session?>)', chrome: 'bare',
@@ -588,10 +602,10 @@ def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'L
          └─ OutlinedButton « Créer un compte »`,
   api: [['POST', '/api/v1/auth/login', '{login, password} → 202 {otp_sent: true}'], ['POST', '/api/v1/auth/otp/send', '{purpose: login}']],
   ds: DS('XmTextField', 'XmPasswordField', 'FilledButton.primary', 'ErrorSummary'),
-  warn: 'Message d’erreur indifférencié (« Identifiants incorrects ») : ne jamais révéler si un compte existe. Collage autorisé, aucun CAPTCHA à image (WCAG 2.2, 3.3.8).',
+  warn: 'Écran UNIQUE pour tous les rôles (D-MOB-1) : l’appli ne demande jamais « quel type de compte ? ». Message d’erreur indifférencié (« Identifiants incorrects ») : ne jamais révéler si un compte existe. Collage autorisé, aucun CAPTCHA à image (WCAG 2.2, 3.3.8).',
   render: () => `<div class="view stack-lg has-deco" style="padding-top:calc(var(--safe-top) + 28px)">${decoTop()}
     <img src="${logo()}" alt="Xomiton" width="120" height="31">
-    <div><h1 class="h1">Bon retour</h1><p class="muted" style="margin:6px 0 0">Connecte-toi pour retrouver ta communauté. Un code de vérification te sera envoyé par e-mail.</p></div>
+    <div><h1 class="h1">Bon retour</h1><p class="muted" style="margin:6px 0 0">Connecte-toi pour retrouver ta communauté. Un code de vérification te sera envoyé par e-mail. Même écran pour les membres, les pair·es éducateur·rice·s et l’équipe.</p></div>
     ${loginErr ? `<div class="alert danger" role="alert" tabindex="-1" id="loginErr">${ic('alert', 'sm')}<span>${esc(loginErr)}</span></div>` : ''}
     <form class="stack" id="loginForm" novalidate>
       <div class="field"><label for="lg">E-mail ou pseudonyme</label><input class="input" id="lg" autocomplete="username" value="${esc(S.user.email)}" required></div>
@@ -601,7 +615,7 @@ def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'L
     </form>
     <div class="row" style="gap:12px"><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"><span class="xs muted">Pas encore de compte ?</span><hr style="flex:1;border:0;border-top:1px solid var(--app-border)"></div>
     <button class="btn btn-outline btn-block" data-go="signup">Créer un compte</button>
-    <section class="stack" style="gap:8px" aria-labelledby="demoTtl"><h2 class="h3" id="demoTtl" style="font-size:14px">Comptes de démonstration</h2>
+    <section class="stack" style="gap:8px" aria-labelledby="demoTtl"><h2 class="h3" id="demoTtl" style="font-size:14px">Comptes de démonstration (un seul écran de connexion)</h2>
       ${DEMO_ACCOUNTS.map(a => `<button type="button" class="btn btn-outline btn-block" data-demo="${a.email}" style="justify-content:space-between;text-align:left"><span>${a.label}</span><span class="xs muted">${a.where}</span></button>`).join('')}
     </section>
     <p class="xs muted" style="text-align:center;margin:0">${ic('lock', 'sm')} Aucune donnée n’est visible depuis l’écran de verrouillage.</p>
@@ -612,24 +626,24 @@ def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'L
     f.onsubmit = ev => { ev.preventDefault(); const l = f.lg.value.trim(), p = f.lp.value;
       const demo = demoFor(l);
       if (!l || p.length < 6 || (demo && demo.password !== p)) { loginErr = !l ? 'Indique ton e-mail ou ton pseudonyme.' : 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.'; return render(); }
-      loginErr = ''; S.otp = { purpose: 'login', email: demo ? demo.email : (l.includes('@') ? l : S.user.email), dest: demo ? demo.dest : 'dashboard', role: demo ? demo.role : 'membre' }; save(); go('otp'); };
+      loginErr = ''; S.otp = { purpose: 'login', email: demo ? demo.email : (l.includes('@') ? l : S.user.email), acct: demo ? demo.acct : 'membre' }; save(); go('otp'); };
     root.querySelectorAll('[data-demo]').forEach(b => b.onclick = () => { const a = DEMO_ACCOUNTS.find(x => x.email === b.dataset.demo); f.lg.value = a.email; f.lp.value = a.password; f.lp.type = 'password'; f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event('submit', { cancelable: true })); });
   } });
 
-def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/signup?step=1..4', page: 'SignupPage', provider: 'signupFormProvider (Notifier<SignupDraft>)', chrome: 'bare',
+def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/signup/:invite?  (étapes 1..4)', page: 'SignupPage', provider: 'signupFormProvider (Notifier<SignupDraft>)', chrome: 'bare',
   tree: `SignupPage
 └─ Scaffold
    ├─ AppBar(leading: BackButton, title: « Étape n sur 4 »)
    ├─ XmStepper(4)
    └─ PageView (physics: Never)
       ├─ _AccountStep   pseudo · e-mail · mot de passe + XmPasswordStrength
-      ├─ _ProfileStep   pronoms · département · type (membre / pair) — facultatif
+      ├─ _ProfileStep   pronoms · département — facultatif (aucun choix de rôle : tout le monde est membre)
       ├─ _SafetyStep    contact de confiance · mode discret — facultatif
       └─ _ConsentStep   CGU · confidentialité · données sensibles · newsletter`,
   api: [['GET', '/api/v1/zones', 'départements et communes'], ['POST', '/api/v1/auth/register', '{pseudo, email, password, profile?, consents[]} → 201'], ['POST', '/api/v1/auth/otp/send', '{purpose: signup}']],
   ds: DS('XmStepper', 'XmPasswordStrength', 'XmCheckbox', 'XmChoiceChip', 'FilledButton.primary'),
-  warn: 'Seule la phase 1 est obligatoire (DECISIONS D4 : inscription simplifiée). Consentements RGPD en cases distinctes, jamais pré-cochées ; « données sensibles » (orientation, identité de genre) reste facultatif et séparé.',
-  render: () => { const d = S.signup, st = d.step; const titles = ['Ton compte', 'Ton profil', 'Ta sécurité', 'Tes consentements'];
+  warn: 'L’inscription publique ne crée que des membres (D-MOB-1). Lien d’invitation pair : #/signup/PAIR-7K4M-Q2, mêmes écrans, rôle pair validé ensuite par l’admin. Seule la phase 1 est obligatoire (DECISIONS D4 : inscription simplifiée). Consentements RGPD en cases distinctes, jamais pré-cochées ; « données sensibles » (orientation, identité de genre) reste facultatif et séparé.',
+  render: (inv) => { const d = S.signup, st = d.step; const titles = ['Ton compte', 'Ton profil', 'Ta sécurité', 'Tes consentements'];
     const body = [
       () => `<div class="field"><label for="sp">Pseudonyme</label><input class="input" id="sp" value="${esc(d.pseudo)}" autocomplete="nickname" required><span class="hint">3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.</span></div>
         <div class="field"><label for="se">E-mail</label><input class="input" id="se" type="email" value="${esc(d.email)}" autocomplete="email" required></div>
@@ -638,7 +652,7 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
       () => `<p class="small muted" style="margin:0">Facultatif : tu peux compléter plus tard, depuis ton profil.</p>
         <div class="field"><span class="label">Pronoms</span><div class="chips wrap">${['elle', 'iel', 'il', 'Je préfère ne pas dire'].map(p => `<button type="button" class="chip" data-pick="pronouns" aria-pressed="${d.pronouns === p}">${p}</button>`).join('')}</div></div>
         <div class="field"><label for="sz">Département</label><select class="input" id="sz"><option value="">—</option>${['Alibori', 'Atacora', 'Atlantique', 'Borgou', 'Collines', 'Couffo', 'Donga', 'Littoral', 'Mono', 'Ouémé', 'Plateau', 'Zou'].map(z => `<option ${d.zone === z ? 'selected' : ''}>${z}</option>`).join('')}</select></div>
-        <div class="field"><span class="label">Je m’inscris comme</span><div class="chips wrap">${[['membre', 'Membre'], ['pair', 'Pair éducateur·rice']].map(p => `<button type="button" class="chip" data-pick="type" data-val="${p[0]}" aria-pressed="${d.type === p[0]}">${p[1]}</button>`).join('')}</div><span class="hint">Les comptes pair éducateur·rice sont validés par l’équipe.</span></div>`,
+        <p class="note-role"><span class="badge">Membre</span> <span class="small muted">Tout le monde s’inscrit comme membre. Le rôle de pair éducateur·rice s’ajoute ensuite, par invitation de l’équipe ou sur demande validée.</span></p>`,
       () => `<p class="small muted" style="margin:0">Facultatif, mais utile en cas d’alerte SOS.</p>
         <div class="field"><label for="st">Contact de confiance (téléphone)</label><input class="input" id="st" inputmode="tel" value="${esc(d.trusted)}" placeholder="+229 01 97 00 00 00" autocomplete="tel"><span class="hint">Prévenu·e uniquement si tu déclenches un SOS.</span></div>
         <label class="switch"><span><b>Mode discret</b><br><span class="xs muted">Icône et nom neutres, notifications sans contenu.</span></span><input type="checkbox" id="sd" ${d.discreet ? 'checked' : ''}></label>`,
@@ -650,10 +664,10 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
     ][st - 1]();
     return `<div class="appbar">${decoTop()}<button class="icon-btn" data-action="prev" aria-label="Retour">${ic('back')}</button><h2>Étape ${st} sur 4</h2>${st === 2 || st === 3 ? '<button class="btn-link small" data-action="skipstep" style="padding:0 12px">Passer</button>' : ''}</div>
     <div class="view stack-lg"><div class="stepper" style="--n:4">${[1, 2, 3, 4].map(i => `<i class="${i <= st ? 'on' : ''}"></i>`).join('')}</div>
-      <h1 class="h1">${titles[st - 1]}</h1><form class="stack" id="sf" novalidate>${body}<div id="sfErr"></div>
+      <h1 class="h1">${titles[st - 1]}</h1>${inv ? `<div class="alert" role="status">${ic('shield', 'sm')}<span><b>Invitation de l’équipe Xomiton</b> (code ${esc(inv)}). Tu t’inscris comme tout le monde ; une fois ton compte créé, l’équipe valide ton rôle de pair éducateur·rice.</span></div>` : ''}<form class="stack" id="sf" novalidate>${body}<div id="sfErr"></div>
       <button class="btn btn-primary btn-block" id="sfGo" ${st === 1 && !d.age15 ? 'disabled' : ''}>${st === 4 ? 'Créer mon compte' : 'Continuer'}</button></form>
       ${st === 1 ? '<button class="btn btn-link" data-go="login">J’ai déjà un compte</button>' : ''}${decoEnd()}</div>`; },
-  mount: root => { const d = S.signup, f = root.querySelector('#sf');
+  mount: (root, inv) => { const d = S.signup, f = root.querySelector('#sf');
     root.querySelector('[data-action=prev]').onclick = () => { if (d.step > 1) { d.step--; save(); render(); } else back(); };
     const skip = root.querySelector('[data-action=skipstep]'); if (skip) skip.onclick = () => { d.step++; save(); render(); };
     const age = root.querySelector('#sa'), go1 = root.querySelector('#sfGo');
@@ -672,8 +686,8 @@ def({ id: 'signup', module: 'auth', title: 'Inscription (4 phases)', route: '/si
       if (d.step === 3) { d.trusted = f.st.value.trim(); d.discreet = f.sd.checked; }
       if (d.step === 4) { d.cgu = f.c1.checked; d.privacy = f.c2.checked; d.sensitive = f.c3.checked; d.news = f.c4.checked;
         if (!d.cgu || !d.privacy) { save(); return err('Pour créer ton compte, accepte les conditions d’utilisation et la politique de confidentialité.'); }
-        S.user = Object.assign(S.user, { pseudo: d.pseudo, email: d.email, name: d.pseudo, zone: d.zone || S.user.zone }); S.role = d.type; S.newsletter.on = d.news;
-        S.otp = { purpose: 'signup', email: d.email }; d.step = 1; save(); syncTop(); return go('otp'); }
+        S.user = Object.assign(S.user, { pseudo: d.pseudo, email: d.email, name: d.pseudo, zone: d.zone || S.user.zone }); S.newsletter.on = d.news;
+        S.otp = { purpose: 'signup', email: d.email, invite: inv || '' }; d.step = 1; save(); syncTop(); return go('otp'); }
       d.step++; save(); render(); };
   } });
 
@@ -717,12 +731,11 @@ def({ id: 'otp', module: 'auth', title: 'Code par e-mail (OTP)', route: '/otp?pu
       if (code === '000000') { otpErr = 'Ce code est incorrect ou a expiré. Vérifie le dernier e-mail reçu ou demande un nouveau code.'; return render(); }
       otpErr = ''; otpLeft = 30; clearInterval(otpTimer);
       if (S.otp.purpose === 'reset') return go('reset');
-      S.auth = true; const dest = S.otp.purpose === 'login' && S.otp.dest || 'dashboard';
-      if (S.otp.purpose === 'login' && S.otp.role === 'membre') S.role = 'membre'; else if (S.otp.role === 'pair') S.role = 'pair';
+      S.auth = true; const login = S.otp.purpose === 'login';
+      XmSpace.setRoles(login ? (ACCT[S.otp.acct] || ['membre']) : ['membre']); XmSpace.setSpace('membre'); // l'inscription ne crée que des membres
       save(); stack = [];
-      if (dest.includes('.html')) { location.href = dest; return; } // espace pair / admin mobile : autres maquettes
-      go('dashboard', { replace: true });
-      toast(S.otp.purpose === 'signup' ? 'Bienvenue sur Xomiton, ton compte est actif.' : 'Connexion réussie.'); };
+      go(login && isMulti() ? 'espaces' : 'dashboard', { replace: true }); // plusieurs rôles : sélecteur d'espace
+      toast(S.otp.purpose === 'signup' ? (S.otp.invite ? 'Bienvenue ! Ton compte membre est actif ; l’équipe valide ton rôle de pair sous 48 h.' : 'Bienvenue sur Xomiton, ton compte est actif.') : 'Connexion réussie.'); };
   } });
 
 let forgotSent = false;
@@ -785,16 +798,16 @@ def({ id: 'dashboard', module: 'home', title: 'Tableau de bord', route: '/dashbo
    └─ CustomScrollView
       ├─ SliverAppBar(salutation, cloche)
       ├─ _QuickActions (Grid 2×2)
-      ├─ if pair → _PairTasks (KPI, alertes routées)
+      ├─ if pair|admin → _SpaceShortcut (carte « Espace pair » / « Administration »)
       ├─ _ProfileProgress (profil progressif)
       ├─ _ThemesCarousel (ListView horizontal)
       └─ _NextEvent`,
   api: [['GET', '/api/v1/dashboard', 'role-aware : tuiles, compteurs, prochains événements'], ['GET', '/api/v1/notifications/unread-count', 'polling 30 s']],
   ds: DS('XmTabBar', 'XmTile', 'XmCard', 'XmProgress', 'Badge'),
-  warn: 'La tuile SOS reste visible quelle que soit la longueur de la page (barre d’onglets) ; le pair éducateur·rice voit en plus ses tâches et les alertes qui lui sont routées.',
-  render: () => { const pair = S.role === 'pair', first = S.user.name.split(' ')[0];
+  warn: 'La tuile SOS reste visible quelle que soit la longueur de la page (barre d’onglets). Un compte pair ou admin voit en plus une carte d’accès à son espace (et le bouton « Espace pair » / « Admin » de la barre d’onglets) ; ses outils vivent dans l’espace pair ou admin, pas dans le tableau de bord membre.',
+  render: () => { const first = S.user.name.split(' ')[0];
     return `<div class="view stack-lg">
-      <div class="row between"><div><div class="xs muted">${pair ? 'Espace pair éducateur·rice' : 'Bonjour'}</div><h1 class="h1">${pair ? 'Bonjour ' : ''}${esc(first)}</h1></div>
+      <div class="row between"><div><div class="xs muted">${isMulti() ? 'Espace membre' : 'Bonjour'}</div><h1 class="h1">${esc(first)}</h1></div>
         <button class="icon-btn" data-go="notifications" aria-label="Notifications, 3 non lues">${ic('bell')}<span class="dot"></span></button></div>
       <div class="grid2">
         <button class="tile" data-go="sighub">${ic('flag')}<b>Signaler</b><span class="xs muted">Anonymement si tu veux</span></button>
@@ -802,9 +815,8 @@ def({ id: 'dashboard', module: 'home', title: 'Tableau de bord', route: '/dashbo
         <button class="tile" data-go="assistant">${ic('bot')}<b>Assistant</b><span class="xs muted">Trouver de l’aide</span></button>
         <button class="tile" data-go="thematiques">${ic('book')}<b>Apprendre</b><span class="xs muted">${THEMES.length} thématiques</span></button>
       </div>
-      ${pair ? `<div class="card stack"><div class="row between"><h2 class="h3">Mes tâches</h2><span class="badge violet">Pair</span></div>
-        <div class="grid2" style="gap:8px"><div class="card flat tight"><div class="xs muted">Dossiers ce mois</div><div class="h1">12</div></div><div class="card flat tight"><div class="xs muted">Alertes routées</div><div class="h1" style="color:var(--app-danger)">2</div></div></div>
-        <div class="list small"><button data-go="sighub">${ic('bell', 'sm')}<span class="grow">2 alertes nouvelles à prendre en charge</span>${ic('chevR', 'sm')}</button><button data-go="evenements">${ic('calendar', 'sm')}<span class="grow">Préparer la causerie de samedi</span>${ic('chevR', 'sm')}</button></div></div>` : ''}
+      ${isPair() ? `<a class="card space-card" href="espace-pair.html#/accueil" data-xmsp-go="pair"><span class="ic">${ic('shield')}</span><span><b>Espace pair éducateur·rice</b><br><span class="xs muted">2 alertes à prendre en charge · 1 conflit à résoudre</span></span>${ic('chevR', 'sm')}</a>` : ''}
+      ${isAdmin() ? `<a class="card space-card" href="admin-mobile.html#/tableau" data-xmsp-go="admin"><span class="ic">${ic('chart')}</span><span><b>Administration</b><br><span class="xs muted">2 SOS actifs · 4 inscriptions à valider · 3 contenus signalés</span></span>${ic('chevR', 'sm')}</a>` : ''}
       <div class="card stack" style="gap:10px"><div class="row between"><b>Ton profil est complété à ${S.user.completion} %</b><button class="btn-link small" data-go="completer">Compléter</button></div><div class="progress"><i style="width:${S.user.completion}%"></i></div><span class="xs muted">Facultatif : chaque information est expliquée.</span></div>
       <div class="stack"><div class="row between"><h2 class="h2">À la une</h2><button class="btn-link small" data-go="thematiques">Tout voir</button></div>
         <div class="chips" style="gap:12px">${THEMES.map(t => `<button class="card tight" data-go="thematique" data-param="${t[0]}" style="width:200px;flex-shrink:0;text-align:left;padding:0;overflow:hidden;color:inherit"><div class="thumb" style="height:96px;border-radius:0;background-image:url(${IMG[t[3]]})"></div><div style="padding:10px 12px"><b class="small" style="display:block;white-space:normal">${t[1]}</b><span class="xs muted">${t[4]} min de lecture</span></div></button>`).join('')}</div></div>
@@ -941,9 +953,9 @@ def({ id: 'sos-envoye', module: 'sos', title: 'Alerte envoyée', route: '/sos/se
       └─ OutlinedButton « Je suis en sécurité »`,
   api: [['GET', '/api/v1/sos/{id}', 'accusés de réception (polling 10 s)'], ['POST', '/api/v1/sos/{id}/safe', 'clôture + message aux contacts']],
   ds: DS('XmAlert.success', 'XmContactTile', 'FilledButton.primary'),
-  warn: 'Escalade côté serveur : sans accusé de réception sous 5 min, le cron relance le point focal national (DECISIONS D7).',
+  warn: 'Escalade côté serveur : sans accusé de réception sous 5 min, le cron relance le point focal national (DECISIONS D7). Le push SOS part vers les admins ET les pair·es éducateur·rice·s (décision du 29/10/2026) ; la position est arrondie (~1 km) pour les admins.',
   render: () => `${appbar('Alerte envoyée')}<div class="view stack-lg"><div class="alert ok" role="status" aria-live="assertive" style="font-size:16px">${ic('check')}<span><b>Ton alerte est partie.</b><br>${S.sos.share ? 'Ta position a été partagée.' : 'Ta position n’a pas été partagée.'}</span></div>
-    <div class="card stack"><h2 class="h3">Personnes prévenues</h2><div class="list">${[['Chantal Hounkpatin', 'Pair éducatrice · a vu l’alerte', 1], ['Point focal Littoral', 'Envoyé · en attente', 0], ['Contact de confiance', 'SMS envoyé', 0]].map(p => `<div>${av(p[0])}<span class="grow small"><b>${p[0]}</b><br><span class="xs muted">${p[1]}</span></span>${p[2] ? '<span class="badge ok">Vu</span>' : ''}</div>`).join('')}</div></div>
+    <div class="card stack"><h2 class="h3">Personnes prévenues</h2><div class="list">${[['Chantal Hounkpatin', 'Pair éducatrice · push reçu · a vu l’alerte', 1], ['Équipe d’astreinte (admins)', 'Push reçu · position arrondie', 0], ['Point focal Littoral', 'Envoyé · en attente', 0], ['Contact de confiance', 'SMS envoyé', 0]].map(p => `<div>${av(p[0])}<span class="grow small"><b>${p[0]}</b><br><span class="xs muted">${p[1]}</span></span>${p[2] ? '<span class="badge ok">Vu</span>' : ''}</div>`).join('')}</div></div>
     <a class="btn btn-primary btn-block" href="tel:+22901000000">${ic('phone', 'sm')} Appeler Chantal</a>
     <button class="btn btn-outline btn-block" id="safe">Je suis en sécurité</button></div>`,
   mount: root => { root.querySelector('#safe').onclick = () => { stack = []; go('dashboard', { replace: true }); toast('Merci. Tes contacts savent que tu es en sécurité.'); }; } });
@@ -1095,7 +1107,7 @@ def({ id: 'postpublication', module: 'feed', title: 'Créer une publication', ro
     root.querySelectorAll('[data-img]').forEach(b => b.onclick = () => { draftImg = draftImg === b.dataset.img ? '' : b.dataset.img; root.querySelectorAll('[data-img]').forEach(x => { x.setAttribute('aria-pressed', x.dataset.img === draftImg); x.style.borderColor = x.dataset.img === draftImg ? 'var(--app-primary)' : 'transparent'; }); });
     f.onsubmit = e => { e.preventDefault(); const t = f.pt.value.trim(); if (t.length < 2) { root.querySelector('#pErr').innerHTML = `<div class="err" role="alert">${ic('alert', 'sm')}Écris quelques mots avant de publier.</div>`; return; }
       const tag = root.querySelector('#ptag [aria-pressed=true]').textContent, anon = f.pa.checked;
-      S.posts.unshift({ id: Date.now(), author: anon ? 'Membre anonyme' : S.user.name, role: anon ? 'Pseudonyme' : (S.role === 'pair' ? 'Pair éducateur·rice' : 'Membre'), ago: 'à l’instant', tag, text: t, img: draftImg, likes: 0, comments: 0 });
+      S.posts.unshift({ id: Date.now(), author: anon ? 'Membre anonyme' : S.user.name, role: anon ? 'Pseudonyme' : (isPair() ? 'Pair éducateur·rice' : 'Membre'), ago: 'à l’instant', tag, text: t, img: draftImg, likes: 0, comments: 0 });
       draftImg = ''; S.feedFilter = 'Tout'; save(); go('fil', { replace: true }); toast('Ta publication est en ligne.'); };
   } });
 
@@ -1132,7 +1144,7 @@ def({ id: 'sondage', module: 'feed', title: 'Créer un sondage', route: '/postpu
       if (q.length < 5) return er('Écris une question d’au moins 5 caractères.');
       if (opts.length < 2) return er('Propose au moins 2 réponses.');
       if (new Set(opts.map(o => o.toLowerCase())).size !== opts.length) return er('Deux réponses sont identiques.');
-      S.posts.unshift({ id: Date.now(), author: S.user.name, role: S.role === 'pair' ? 'Pair éducateur·rice' : 'Membre', ago: 'à l’instant', tag: 'Sondage', text: f.qt.value.trim(), likes: 0, comments: 0,
+      S.posts.unshift({ id: Date.now(), author: S.user.name, role: isPair() ? 'Pair éducateur·rice' : 'Membre', ago: 'à l’instant', tag: 'Sondage', text: f.qt.value.trim(), likes: 0, comments: 0,
         poll: { q, multi: f.qm.checked, ends: f.qd.value === 'Sans date de fin' ? 'Sans date de fin' : 'Se termine dans ' + f.qd.value, opts: opts.map(o => [o, 0]) } });
       S.feedFilter = 'Tout'; save(); go('fil', { replace: true }); toast('Ton sondage est en ligne.'); };
   } });
@@ -1238,10 +1250,13 @@ def({ id: 'profil', module: 'profile', title: 'Mon profil', route: '/profil', pa
       └─ TabBar(Publications · À propos)`,
   api: [['GET', '/api/v1/me', ''], ['GET', '/api/v1/users/{id}/posts', '?cursor=']],
   ds: DS('XmAvatar', 'XmStat', 'TabBar', 'XmProgress', 'Badge'),
-  warn: 'Pseudonyme affiché par défaut ; le nom réel n’est jamais public. Le badge « Pair éducateur·rice » n’apparaît qu’après validation par l’équipe.',
-  render: () => { const pair = S.role === 'pair', mine = S.posts.filter(p => p.author === S.user.name);
+  warn: 'Pseudonyme affiché par défaut ; le nom réel n’est jamais public. Le badge « Pair éducateur·rice » n’apparaît qu’après validation par l’équipe. La carte « Mes espaces » ouvre le sélecteur d’espace (Membre / Pair / Admin selon les rôles) ; un membre simple peut demander le rôle pair.',
+  render: () => { const pair = isPair(), mine = S.posts.filter(p => p.author === S.user.name);
     return `<div class="view stack"><div class="cover" style="background-image:url(${IMG.hero09})"><button class="icon-btn" data-go="parametres" aria-label="Paramètres" style="position:absolute;z-index:2;right:8px;top:calc(var(--safe-top) + 4px);color:#fff">${ic('sliders')}</button></div>
-      <div class="stack" style="justify-items:center;text-align:center;margin-top:-46px;gap:6px">${av(S.user.name, 'lg')}<h1 class="h2">${esc(S.user.name)}</h1><div class="small muted">@${esc(S.user.pseudo)} · ${esc(S.user.pronouns)} · ${esc(S.user.zone)}</div><span class="badge ${pair ? 'violet' : ''}">${pair ? 'Pair éducateur·rice' : 'Membre'}</span></div>
+      <div class="stack" style="justify-items:center;text-align:center;margin-top:-46px;gap:6px">${av(S.user.name, 'lg')}<h1 class="h2">${esc(S.user.name)}</h1><div class="small muted">@${esc(S.user.pseudo)} · ${esc(S.user.pronouns)} · ${esc(S.user.zone)}</div><span class="chips" style="justify-content:center"><span class="badge">Membre</span>${pair ? '<span class="badge violet">Pair éducateur·rice</span>' : ''}${isAdmin() ? '<span class="badge warn">Admin</span>' : ''}</span></div>
+      <section class="card stack" aria-labelledby="mesEsp" style="gap:10px"><h2 class="h3" id="mesEsp">Mes espaces</h2>
+        <p class="xs muted" style="margin:0">Un seul compte et une seule connexion. ${isMulti() ? 'Tu peux passer d’un espace à l’autre à tout moment.' : 'Le rôle de pair éducateur·rice s’ajoute à ton rôle de membre sur invitation de l’équipe, ou après une demande validée.'}</p>
+        ${isMulti() ? `<button class="btn btn-primary btn-block" data-xmsp-open data-xmsp-cur="membre">${ic('users', 'sm')} Changer d’espace</button>` : `<button class="btn btn-outline btn-block" data-askpair>${ic('shield', 'sm')} Demander le rôle pair éducateur·rice</button>`}</section>
       <div class="grid2" style="grid-template-columns:repeat(3,1fr);text-align:center">${[[mine.length + 24, 'Publications'], [182, 'Abonné·es'], [96, 'Abonnements']].map(s => `<div class="card tight"><div class="h2">${s[0]}</div><div class="xs muted">${s[1]}</div></div>`).join('')}</div>
       <button class="card stack" data-go="completer" style="text-align:left;color:inherit;gap:8px"><span class="row between"><b class="small">Profil complété à ${S.user.completion} %</b>${ic('chevR', 'sm')}</span><span class="progress"><i style="width:${S.user.completion}%"></i></span></button>
       <div class="list">${[['edit', 'Compléter mon profil', 'completer'], ['users', 'Mes groupes', 'groupes'], ['calendar', 'Mes événements', 'evenements'], ['mail', 'Newsletter', 'newsletter'], ['shield', 'Sécurité et confidentialité', 'securite'], ['sliders', 'Paramètres', 'parametres']].map(l => `<button data-go="${l[2]}">${ic(l[0])}<span class="grow">${l[1]}</span>${ic('chevR', 'sm')}</button>`).join('')}</div></div>`; } });
@@ -1323,6 +1338,28 @@ def({ id: 'newsletter', module: 'profile', title: 'Newsletter', route: '/newslet
     root.querySelectorAll('[data-int]').forEach(b => b.onclick = () => { const i = b.dataset.int; n.interests = n.interests.includes(i) ? n.interests.filter(x => x !== i) : [...n.interests, i]; save(); render(); });
     root.querySelectorAll('[data-freq]').forEach(b => b.onclick = () => { n.freq = b.dataset.freq; save(); render(); }); } });
 
+def({ id: 'espaces', module: 'auth', title: 'Choix de l’espace', route: '/espaces', page: 'SpaceSelectorPage', provider: 'sessionProvider (roles[], activeSpace)', chrome: 'bare',
+  tree: `SpaceSelectorPage
+└─ Scaffold
+   └─ SafeArea › Column
+      ├─ XmLogo + Text.headlineMedium « Bonjour <pseudo> »
+      ├─ XmSpaceTile(Membre)            → /dashboard
+      ├─ XmSpaceTile(Pair éducateur·rice) si roles ∋ pair  → /pair
+      ├─ XmSpaceTile(Administration)    si roles ∋ admin   → /admin
+      └─ Text « Changer d’espace : en-tête ou Profil › Mes espaces »
+(même feuille XmSpaceSheet depuis l’en-tête et le profil)`,
+  api: [['GET', '/api/v1/me', '{roles: [membre, pair?, admin?]} : les espaces proposés viennent du serveur, jamais du client']],
+  ds: DS('XmSpaceTile', 'XmSpaceSheet', 'XmAvatar'),
+  warn: 'Affiché après la connexion seulement si le compte a plusieurs rôles (sinon : tableau de bord). Un seul binaire et un seul login (D-MOB-1) ; l’autorisation réelle reste vérifiée côté serveur (policies), le choix d’espace n’est que de la navigation.',
+  render: () => `<div class="view stack-lg has-deco" style="padding-top:calc(var(--safe-top) + 28px)">${decoTop()}
+    <img src="${logo()}" alt="Xomiton" width="120" height="31">
+    <div><h1 class="h1">Bonjour ${esc(S.user.name.split(' ')[0])}</h1><p class="muted" style="margin:6px 0 0">Ton compte a plusieurs rôles. Choisis l’espace où tu veux aller : tu pourras changer à tout moment.</p></div>
+    <div class="xmsp-list" role="group" aria-label="Espaces disponibles">${XmSpace.options('')}</div>
+    <p class="xs muted" style="margin:0">${ic('info', 'sm')} Changer d’espace : bouton en haut de l’écran ou Profil › Mes espaces.</p>
+    <button class="btn btn-link" id="spOut">Se déconnecter</button>
+    ${decoEnd()}</div>`,
+  mount: root => { root.querySelector('#spOut').onclick = () => { S.auth = false; save(); stack = []; go('login', { replace: true }); toast('Tu es déconnecté·e.'); }; } });
+
 /* =====================================================================
    Navigation (équivalent go_router)
    ===================================================================== */
@@ -1351,12 +1388,16 @@ function render(scrollTop) {
   app.dataset.theme = S.theme;
   app.className = 'app' + (s.chrome === 'tabs' ? ' has-tabs' : '') + (s.chrome === 'stack' || ['otp', 'forgot', 'reset', 'signup'].includes(s.id) ? ' has-appbar' : '');
   let html = s.render(cur.param);
-  if (s.chrome === 'tabs') html += `<nav class="tabbar" aria-label="Navigation principale">${TABS.map(t => `<button data-go="${t[0]}" class="${t[0] === 'sos' ? 'sos-tab' : ''}" ${s.tab === t[0] ? 'aria-current="page"' : ''}>${t[0] === 'sos' ? '<span class="b">SOS</span>' : ic(t[1])}<span>${t[0] === 'sos' ? 'Alerte' : t[2]}</span></button>`).join('')}</nav>`;
+  if (s.id !== 'espaces' && s.module !== 'auth') XmSpace.setSpace('membre');
+  const extra = isPair() && isAdmin() ? `<button data-xmsp-open data-xmsp-cur="membre" class="tab-space-btn">${ic('users')}<span>Espaces</span></button>` : isPair() ? `<a class="tab-space" href="espace-pair.html#/accueil" data-xmsp-go="pair">${ic('shield')}<span>Espace pair</span></a>` : isAdmin() ? `<a class="tab-space" href="admin-mobile.html#/tableau" data-xmsp-go="admin">${ic('chart')}<span>Admin</span></a>` : '';
+  if (s.chrome === 'tabs') html += `<nav class="tabbar" aria-label="Navigation principale" ${extra ? 'style="grid-template-columns:repeat(6,1fr)"' : ''}>${TABS.map(t => `<button data-go="${t[0]}" class="${t[0] === 'sos' ? 'sos-tab' : ''}" ${s.tab === t[0] ? 'aria-current="page"' : ''}>${t[0] === 'sos' ? '<span class="b">SOS</span>' : ic(t[1])}<span>${t[0] === 'sos' ? 'Alerte' : t[2]}</span></button>`).join('')}${extra}</nav>`;
   app.innerHTML = html;
+  if (s.chrome === 'tabs' && isMulti() && s.id !== 'profil') { const v = app.querySelector('.view'); if (v) v.insertAdjacentHTML('afterbegin', `<div class="xmsp-strip">${XmSpace.pill('membre')}</div>`); }
   app.querySelectorAll('[data-back]').forEach(b => b.onclick = back);
   app.querySelectorAll('[data-go]').forEach(b => { if (!b.onclick) b.onclick = e => { e.preventDefault(); go(b.dataset.go, { param: b.dataset.param || '' }); }; });
   app.querySelectorAll('[data-toggle-pw]').forEach(b => b.onclick = () => { const i = app.querySelector('#' + b.dataset.togglePw); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.innerHTML = ic(show ? 'eyeOff' : 'eye'); b.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe'); });
   if (s.mount) s.mount(app, cur.param);
+  app.querySelectorAll('.tab-space-btn').forEach(b => { b.style.cssText = 'border:0;background:transparent;display:grid;justify-items:center;gap:2px;font-size:11px;font-weight:700;color:var(--app-primary-subtle-text);padding:6px 0;min-height:48px'; });
   const v = app.querySelector('.view'); if (v && !scrollTop && !['chat', 'assistant'].includes(s.id)) v.scrollTop = prevScroll;
   document.getElementById('screen').style.setProperty('--sb-color', ['profil', 'splash'].includes(s.id) ? '#fff' : '');
   updatePanel(s); if (window.XmNav) XmNav.mark();
@@ -1370,18 +1411,19 @@ function updatePanel(s) {
     <section><h3>Appels API</h3>${s.api.length ? `<ul class="api">${s.api.map(a => `<li><span class="verb ${a[0]}">${a[0]}</span><span>${esc(a[1])}${a[2] ? `<br><span style="color:var(--pg-muted)">${esc(a[2])}</span>` : ''}</span></li>`).join('')}</ul>` : '<p class="state">Aucun appel réseau : écran local.</p>'}</section>
     <section><h3>Composants du design system</h3><div class="ds">${s.ds.map(d => `<span>${esc(d)}</span>`).join('')}</div></section>
     <section><h3>Point de vigilance</h3><p class="warn">${esc(s.warn)}</p></section>
-    <section><h3>État simulé</h3><p class="state">onboardingProvider.seen = <code>${S.seen}</code> · session = <code>${S.auth}</code> · rôle = <code>${S.role}</code>${s.id === 'otp' ? ` · purpose = <code>${S.otp.purpose}</code>` : ''}<br>Lien profond : <code>index.html#/${s.id}</code></p></section>`;
+    <section><h3>État simulé</h3><p class="state">onboardingProvider.seen = <code>${S.seen}</code> · session = <code>${S.auth}</code> · rôles = <code>${XmSpace.roles().join(' + ')}</code> · espace = <code>${XmSpace.space()}</code>${s.id === 'otp' ? ` · purpose = <code>${S.otp.purpose}</code>` : ''}<br>Lien profond : <code>index.html#/${s.id}</code></p></section>`;
 }
 function syncTop() {
   document.querySelectorAll('[data-model]').forEach(b => b.setAttribute('aria-pressed', b.dataset.model === S.model));
-  document.querySelectorAll('[data-role]').forEach(b => b.setAttribute('aria-pressed', b.dataset.role === S.role));
+  document.querySelectorAll('[data-acct]').forEach(b => b.setAttribute('aria-pressed', b.dataset.acct === acctOf()));
   document.getElementById('device').dataset.model = S.model;
   document.getElementById('caption').innerHTML = S.model === 'pixel8' ? '<b>Pixel 8</b> · 412 × 880 · Android 15 · Arial → Roboto' : '<b>iPhone 14</b> · 390 × 844 · iOS 18 · zones sûres 47 / 34';
   fit();
 }
 document.querySelectorAll('.topbar [data-model]').forEach(b => b.onclick = () => { S.model = b.dataset.model; save(); syncTop(); render(); });
-document.querySelectorAll('.topbar [data-role]').forEach(b => b.onclick = () => { S.role = b.dataset.role; save(); syncTop(); render(); });
-document.getElementById('reset').onclick = () => { try { localStorage.removeItem(KEY); } catch (e) { /* indisponible */ } S = DEFAULT(); stack = []; slide = 0; syncTop(); go('splash', { replace: true }); };
+document.querySelectorAll('.topbar [data-acct]').forEach(b => b.onclick = () => { XmSpace.setRoles(ACCT[b.dataset.acct]); XmSpace.setSpace('membre'); save(); syncTop(); render(); });
+app.addEventListener('click', e => { if (e.target.closest('[data-askpair]')) toast('Demande envoyée. L’équipe la valide depuis son tableau de bord ou l’appli, sous 48 h.'); });
+document.getElementById('reset').onclick = () => { try { localStorage.removeItem(KEY); } catch (e) { /* indisponible */ } XmSpace.reset(); S = DEFAULT(); stack = []; slide = 0; syncTop(); go('splash', { replace: true }); };
 
 /* Mise à l'échelle de l'appareil dans la scène */
 function fit() {

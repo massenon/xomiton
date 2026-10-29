@@ -40,6 +40,14 @@
     book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
     list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
     swap: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+    feed: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+    chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12Z"/>',
+    flag: '<path d="M4 22V4M4 4h13l-2 4 2 4H4"/>',
+    copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
+    link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+    userplus: '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>',
+    eyeoff: '<path d="M9.9 4.2A10 10 0 0 1 12 4c6.5 0 10 8 10 8a17 17 0 0 1-2.2 3.2M6.6 6.6A17 17 0 0 0 2 12s3.5 8 10 8a10 10 0 0 0 5.4-1.6"/><path d="M2 2l20 20M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+    more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
     plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
   };
   const ic = (n, c = '') => `<svg class="ico ${c}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${P[n] || ''}</svg>`;
@@ -75,14 +83,18 @@
   Kit.toast = Kit.say;
   Kit.go = h => { location.hash = h; };
 
+  /* Notification push (aperçu) : bannière en haut de l'écran du téléphone, appui = ouverture de l'alerte. */
+  const pushHtml = p => `<a class="pushbn" role="alert" href="#/${esc(p.href)}"><span class="pb-app">${ic('bell', 'sm')}<span>Xomiton</span><span class="pb-when">maintenant</span></span><b>${esc(p.title)}</b><span>${esc(p.text)}</span><span class="pb-aud">${esc(p.audience)}</span></a>`;
+
   Kit.render = (opts = {}) => {
     const r = S.route; const d = cfg.screen(r) || cfg.screen({ name: cfg.home, args: [], q: {} });
     const key = r.name + '/' + r.args.join('/');
     const old = $('.pane', frame); const keep = !opts.top && key === lastKey && old ? old.scrollTop : 0;
-    const tabs = d.noTabs ? '' : `<nav class="tb" aria-label="${esc(t('nav.label'))}">${cfg.tabs.map(tb => `<a href="#/${tb.href}" ${d.tab === tb.id ? 'aria-current="page"' : ''} class="${tb.sos ? 'sos' : ''}">${tb.sos ? `<span class="b" aria-hidden="true">SOS</span><span class="vh">${esc(tb.label)}</span>` : `${ic(tb.icon)}<span>${esc(tb.label)}</span>`}${tb.count && tb.count() ? `<span class="cnt" aria-hidden="true">${esc(tb.count())}</span>` : ''}</a>`).join('')}</nav>`;
-    const chip = cfg.chip && !d.back ? cfg.chip(r) : '';
+    const tabs = d.noTabs ? '' : `<nav class="tb" aria-label="${esc(t('nav.label'))}">${cfg.tabs.map(tb => `<a href="${tb.ext ? tb.href : '#/' + tb.href}" ${d.tab === tb.id ? 'aria-current="page"' : ''} class="${tb.sos ? 'sos' : ''} ${tb.ext ? 'ext' : ''}" ${tb.ext ? 'data-xmsp-go="membre"' : ''}>${tb.sos ? `<span class="b" aria-hidden="true">SOS</span><span class="vh">${esc(tb.label)}</span>` : `${ic(tb.icon)}<span>${esc(tb.label)}</span>`}${tb.count && tb.count() ? `<span class="cnt" aria-hidden="true">${esc(tb.count())}</span>` : ''}</a>`).join('')}</nav>`;
+    const sp = window.XmSpace && !d.back ? XmSpace.pill(cfg.space, 'hdr-sp') : '';
+    const chip = (cfg.chip && !d.back ? cfg.chip(r) : '') + sp;
     const banner = cfg.banner ? cfg.banner() : '';
-    frame.innerHTML = `<header class="hdr">${d.back ? `<a class="icon-btn" href="#/${d.back}" aria-label="${esc(d.backLabel || t('nav.back'))}">${ic('back')}</a>` : ''}<h1 class="t" id="ttl" tabindex="-1">${d.title}</h1>${chip}</header>${banner}<main class="pane" id="pane">${d.html}</main>${tabs}`;
+    frame.innerHTML = `<header class="hdr">${d.back ? `<a class="icon-btn" href="#/${d.back}" aria-label="${esc(d.backLabel || t('nav.back'))}">${ic('back')}</a>` : ''}<h1 class="t" id="ttl" tabindex="-1">${d.title}</h1>${chip}</header>${banner}<main class="pane" id="pane">${d.html}</main>${tabs}${d.push ? pushHtml(d.push) : ''}`;
     const pane = $('.pane', frame); pane.scrollTop = keep;
     if (key !== lastKey && !opts.noFocus) { const tt = $('#ttl', frame); if (tt) tt.focus({ preventScroll: true }); }
     lastKey = key;
@@ -118,6 +130,7 @@
 
   Kit.start = c => {
     cfg = c;
+    if (window.XmSpace && c.space) XmSpace.enter(c.space);
     const rail = c.rail.map(g => `<div class="rail-group"><h2>${esc(g.title)}</h2>${g.items.map(i => `<a href="#/${i.href}" data-route="${esc(i.route || i.href.split('?')[0])}" ${i.exact ? 'data-exact="1"' : ''} data-name="${esc(i.href.split('?')[0].split('/')[0])}">${esc(i.label)}</a>`).join('')}</div>`).join('');
     const opts = c.rail.map(g => `<optgroup label="${esc(g.title)}">${g.items.map(i => `<option value="${esc(i.href)}">${esc(i.label)}</option>`).join('')}</optgroup>`).join('');
     document.body.innerHTML = `<a class="skip" href="#app">${esc(t('page.skip'))}</a>

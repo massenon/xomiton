@@ -8,18 +8,18 @@
    users), maintenance.php (admin), notifications.php (admin), enums/alerts.php. Données fictives et pseudonymisées. */
 const T = {
   title: 'Admin mobile — maquette',
-  sub: 'Compagnon d’astreinte · pas l’administration complète',
-  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', network: 'Réseau', online: 'En ligne', offline: 'Hors ligne',
+  sub: 'Même appli, même compte · espace admin + réseau social',
+  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', network: 'Connexion', online: 'En ligne', offline: 'Hors ligne',
     demo_note: 'Maquette cliquable : données fictives et pseudonymisées, aucun nom ni numéro réel. Rien n’est envoyé nulle part.', g_duty: 'Astreinte', g_more: 'Autres écrans' },
   common: { cancel: 'Annuler', close: 'Fermer', none: '—', apply: 'Appliquer' },
-  nav: { label: 'Navigation de l’admin mobile', back: 'Retour', dash: 'Astreinte', alerts: 'Alertes', peers: 'Pairs', maint: 'Maintenance', notifs: 'Notifications' },
+  nav: { label: 'Navigation de l’admin mobile', back: 'Retour', dash: 'Astreinte', alerts: 'Alertes', manage: 'Gérer', maint: 'Maintenance', notifs: 'Notifs', network: 'Réseau' },
   net: { went_off: 'Vous êtes hors connexion. Les actions d’astreinte demandent le réseau.', went_on: 'Le réseau est de retour.',
     banner: 'Hors connexion : les actions d’astreinte demandent le réseau. En cas d’urgence, appelez directement la personne concernée.', need: 'Vous êtes hors connexion. Réessayez dès que le réseau est de retour.' },
   duty: 'Astreinte',
-  dash: { title: 'Tableau de bord d’astreinte', hello: 'Astreinte en cours', scope: 'Compagnon d’astreinte : alertes, validation des pairs et maintenance. L’administration complète reste sur le site web.',
+  dash: { title: 'Tableau de bord d’astreinte', short: 'Astreinte', hello: 'Astreinte en cours', scope: 'L’appli mobile couvre l’essentiel : alertes, inscriptions, rôles et invitations, modération, maintenance et notifications. La configuration avancée, les rapports et les exports restent sur le site web.', todo: 'À traiter',
     sos_banner: { one: ':count alerte SOS active', other: ':count alertes SOS actives' }, sos_text: 'Accusez réception puis appelez la personne. L’escalade vers le point focal national part après 5 min sans réponse.',
     escalation: 'Escalade dans', escalated: 'Escaladée au point focal national', ack_stopped: 'Escalade arrêtée', kpis: 'Indicateurs clés',
-    kpi: { new_alerts: 'Nouvelles alertes', sos_active: 'SOS actifs', critical_open: 'Priorité critique ouvertes', pending_users: 'Comptes à valider' },
+    kpi: { new_alerts: 'Nouvelles alertes', sos_active: 'SOS actifs', critical_open: 'Priorité critique ouvertes', pending_users: 'Inscriptions à valider' },
     maint_title: 'Maintenance', see_list: 'Voir la liste' },
   alerts: { title: 'Alertes & signalements', tabs: { all: 'Toutes', sos: 'SOS', reports: 'Signalements', needs: 'Besoins' }, tabs_label: 'Types d’alertes',
     status: 'Statut', all_statuses: 'Tous les statuts', search: 'Rechercher une alerte', search_placeholder: 'N°, code de suivi, commune…',
@@ -37,11 +37,32 @@ const T = {
     reassign_title: 'Réattribuer à une personne de l’annuaire', reassign_help: 'Les contacts du même département sont proposés en premier.', choose_contact: 'Choisir une personne', contact_label: 'Personne de l’annuaire', national: 'National',
     reassigned: 'Alerte réattribuée à :name.', status_changed: 'Statut mis à jour.', note_title: 'Ajouter une note interne', note_placeholder: 'Visible uniquement par l’équipe', note_add: 'Ajouter la note', note_added: 'Note ajoutée.', note_empty: 'Écrivez la note avant de l’ajouter.',
     offline_blocked: 'Cette action demande le réseau.' },
-  peers: { title: 'Validation des pairs', intro: 'Un compte de pair·e éducateur·rice doit être validé avant d’accéder à la collecte.',
-    count: { zero: 'Aucun compte à valider', one: ':count compte à valider', other: ':count comptes à valider' }, validate: 'Valider', reject: 'Rejeter', requested: 'Demande : Pair éducateur·rice', joined: 'Inscrit·e le :date',
-    approved: 'Compte de :name validé.', rejected: 'Demande de :name rejetée.', reject_title: 'Rejeter la demande de :name ?', reject_text: 'La personne n’accédera pas à la collecte. Elle en sera informée par e-mail.', reject_yes: 'Rejeter la demande',
-    validate_title: 'Valider le compte de :name ?', validate_text: 'La personne accédera à la collecte et à ses dossiers dès sa prochaine connexion.', validate_yes: 'Valider le compte',
-    empty: 'Aucun compte à valider', empty_text: 'Les demandes de pair·es apparaissent ici.', training: 'Formation initiale déclarée', no_training: 'Formation à confirmer' },
+  manage: { title: 'Gérer', intro: 'Les tâches d’administration disponibles dans l’appli. Le reste (configuration avancée, rapports, exports) se fait sur le site web.',
+    reg: 'Inscriptions à valider', roles: 'Rôles et invitations', mod: 'Modération', maint: 'Mode maintenance', web: 'Sur le site web : configuration avancée, rapports, exports, attribution du rôle admin.' },
+  reg: { title: 'Inscriptions à valider', intro: 'Vous validez ici, ou sur le tableau de bord web : les deux écrans sont synchronisés. Une personne validée comme pair·e accède à la collecte à sa prochaine connexion.',
+    count: { zero: 'Rien à valider', one: ':count demande à valider', other: ':count demandes à valider' }, tabs_label: 'Types de demandes', tabs: { all: 'Toutes', invite: 'Pairs invité·es', demande: 'Demandes de rôle', membre: 'Membres' },
+    kinds: { invite: 'Invitation acceptée : inscription terminée', demande: 'Un membre demande le rôle pair éducateur·rice', membre: 'Inscription membre à vérifier (e-mail jetable détecté)' },
+    validate: 'Valider', reject: 'Rejeter', joined: 'Inscrit·e le :date', approved_pair: 'Rôle pair éducateur·rice accordé à :name.', approved_member: 'Compte de :name validé.', rejected: 'Demande de :name rejetée.',
+    reject_title: 'Rejeter la demande de :name ?', reject_text: 'La personne n’obtiendra pas ce qu’elle demande. Elle en sera informée par e-mail. Un compte membre existant reste actif.', reject_yes: 'Rejeter la demande',
+    validate_title: 'Valider :name ?', validate_pair: 'La personne sera à la fois membre ET pair éducateur·rice : réseau social et espace pair avec la collecte, dès sa prochaine connexion.', validate_member: 'Le compte membre sera activé : réseau social, messages et SOS.', validate_yes: 'Valider',
+    empty: 'Rien à valider', empty_text: 'Les inscriptions et les demandes apparaissent ici.', training: 'Formation initiale déclarée', no_training: 'Formation à confirmer' },
+  roles: { title: 'Rôles et invitations', intro: 'Un seul compte : toute personne est membre ; le rôle pair éducateur·rice s’ajoute au rôle membre.',
+    invite_h: 'Inviter un·e pair éducateur·rice', invite_help: 'La personne s’inscrit comme n’importe qui (mêmes écrans), puis arrive dans « Inscriptions à valider ». Le lien ou le code ne sert qu’une fois.', zone: 'Département', validity: 'Validité', email: 'E-mail de la personne', email_hint: 'Facultatif : sans e-mail, vous partagez le lien ou le code vous-même.',
+    validities: { 3: '3 jours', 7: '7 jours', 30: '30 jours' }, create: 'Créer l’invitation', created: 'Invitation créée', link: 'Lien d’invitation', code: 'Code', copy_link: 'Copier le lien', copy_code: 'Copier le code', copied: 'Copié dans le presse-papiers (simulé).', expires: 'Expire dans :days jours',
+    pending_h: 'Invitations en cours', pending_none: 'Aucune invitation en cours.', revoke: 'Révoquer', revoked: 'Invitation révoquée.', revoke_title: 'Révoquer cette invitation ?', revoke_text: 'Le lien et le code ne fonctionneront plus.', revoke_yes: 'Révoquer',
+    search_h: 'Rechercher un membre', search: 'Pseudonyme ou département', search_placeholder: 'Ex. Chantal, Atlantique…', count: { zero: 'Aucun membre', one: ':count membre', other: ':count membres' }, empty: 'Aucun membre ne correspond.',
+    member: 'Membre', pair: 'Pair éducateur·rice', joined: 'Inscrit·e le :date', give: 'Donner le rôle pair éducateur·rice', take: 'Retirer le rôle pair éducateur·rice', close: 'Fermer',
+    give_title: 'Donner le rôle pair à :name ?', give_text: ':name sera membre ET pair éducateur·rice : réseau social et espace pair. La collecte et les dossiers s’ouvrent à sa prochaine connexion.', give_yes: 'Donner le rôle', gave: 'Rôle pair accordé à :name.',
+    take_title: 'Retirer le rôle pair à :name ?', take_text: ':name reste membre (réseau social, messages, SOS) mais perd l’accès à l’espace pair. Ses dossiers déjà collectés sont conservés par l’équipe.', take_yes: 'Retirer le rôle', took: 'Rôle pair retiré à :name.',
+    web_only: 'Le rôle admin ne s’attribue que depuis le site web.' },
+  mod: { title: 'Modération', intro: 'Contenus signalés par les membres. Les messages privés ne sont jamais modérés ici.', tabs_label: 'Filtrer les contenus', tabs: { todo: 'À traiter', done: 'Traités' },
+    count: { zero: 'Aucun contenu', one: ':count contenu', other: ':count contenus' }, empty: 'Aucun contenu signalé à traiter.', kinds: { post: 'Publication', comment: 'Commentaire' }, reports: { one: ':count signalement', other: ':count signalements' },
+    status: { todo: 'À traiter', hidden: 'Masqué', kept: 'Conservé', warned: 'Auteur·rice averti·e' }, detail_title: 'Contenu signalé', back: 'Modération', author: 'Auteur·rice', where: 'Où', reasons: 'Motifs des signalements', content: 'Contenu', when: 'Publié',
+    hide: 'Masquer le contenu', keep: 'Conserver (aucune infraction)', warn: 'Avertir l’auteur·rice', hide_title: 'Masquer ce contenu ?', hide_text: 'Le contenu disparaît du fil pour tout le monde. L’auteur·rice est prévenu·e et peut faire appel.', hide_yes: 'Masquer',
+    keep_title: 'Conserver ce contenu ?', keep_text: 'Les signalements sont classés. Le contenu reste visible.', keep_yes: 'Conserver', warn_title: 'Avertir l’auteur·rice ?', warn_text: 'Un message de rappel des règles de la communauté est envoyé. Le contenu reste visible.', warn_yes: 'Envoyer l’avertissement',
+    hidden: 'Contenu masqué.', kept: 'Contenu conservé, signalements classés.', warned: 'Avertissement envoyé.', done_note: 'Décision prise par vous. Elle apparaît dans le journal d’audit.', suspend_web: 'La suspension d’un compte se fait depuis le site web.' },
+  push: { sos_title: 'SOS · Abomey-Calavi (Atlantique)', sos_text: 'Position arrondie (environ 1 km). Accusez réception : l’escalade vers le point focal national s’arrête.', audience: 'Envoyée aux admins d’astreinte ET aux pair·es éducateur·rice·s de la zone.',
+    caption: '<b>Notification push SOS</b> vue côté admin. Même notification côté pair·e (décision du 29/10/2026) : admins et pair·es éducateur·rice·s la reçoivent.' },
   maint: { title: 'Mode maintenance', intro: 'Fermez temporairement la plateforme au public pendant une mise à jour importante. L’administration garde l’accès complet ; le SOS, le signalement et les urgences restent toujours ouverts.',
     state: 'État', states: { inactive: 'Inactif', ongoing: 'En cours' }, headlines: { inactive: 'La plateforme est ouverte', ongoing: 'Maintenance en cours' },
     state_text: { inactive: 'La plateforme est ouverte à tout le monde.', ongoing: 'Le public voit la page de maintenance. Seuls les comptes admin et superadmin peuvent se connecter.' },
@@ -84,6 +105,9 @@ const T = {
 {{INCLUDE:navmenu.html}}
 <noscript>Cette maquette demande JavaScript.</noscript>
 <script>
+{{INCLUDE:espaces.js}}
+</script>
+<script>
 {{INCLUDE:kit.js}}
 </script>
 <script>
@@ -109,18 +133,38 @@ const T = {
     { id: 2034, type: 'denonciation', status: 'traite', prio: 'normale', zone: 'Collines', commune: 'Savè', ago: 4300, source: 'web', routed: 'Point focal Collines', ack: true, cat: 'economique', needs: [], track: 'SIG-C9L1X7F3GD', text: 'Contrôle financier et privation de ressources.', contact: null, notified: [['Point focal Collines', 'push', 'sent']], hist: [['il y a 3 j', 'Alerte reçue (Nouveau)'], ['il y a 2 j', 'Traité']] },
   ];
   const DIR = [['Point focal Atlantique', 'Atlantique'], ['Juriste Atlantique', 'Atlantique'], ['Psychologue Atlantique', 'Atlantique'], ['Point focal Borgou', 'Borgou'], ['Juriste Borgou', 'Borgou'], ['Point focal Ouémé', 'Ouémé'], ['Point focal Zou', 'Zou'], ['Point focal Mono', 'Mono'], ['Point focal national', 'National']];
+  /* Inscriptions et demandes à valider : invitation de pair acceptée, demande de rôle d'un membre, inscription membre à vérifier. */
   const P = [
-    { id: 1, pseudo: 'Pair_Cobalt', zone: 'Atlantique', joined: '2026-10-26', training: true },
-    { id: 2, pseudo: 'Pair_Lumen', zone: 'Borgou', joined: '2026-10-27', training: true },
-    { id: 3, pseudo: 'Pair_Sorgho', zone: 'Zou', joined: '2026-10-27', training: false },
+    { id: 1, pseudo: 'Pair_Cobalt', zone: 'Atlantique', joined: '2026-10-26', kind: 'invite', training: true },
+    { id: 2, pseudo: 'Pair_Lumen', zone: 'Borgou', joined: '2026-10-27', kind: 'demande', training: true },
+    { id: 3, pseudo: 'Pair_Sorgho', zone: 'Zou', joined: '2026-10-27', kind: 'invite', training: false },
+    { id: 4, pseudo: 'Lys_Cotonou', zone: 'Littoral', joined: '2026-10-28', kind: 'membre', training: null },
+  ];
+  const MEM = [
+    { id: 1, pseudo: 'Awa_S', zone: 'Littoral', joined: '2026-03-14', pair: false },
+    { id: 2, pseudo: 'Estelle_D', zone: 'Atlantique', joined: '2026-05-02', pair: false },
+    { id: 3, pseudo: 'Chantal_H', zone: 'Ouémé', joined: '2026-01-20', pair: true },
+    { id: 4, pseudo: 'Aube', zone: 'Atlantique', joined: '2026-02-11', pair: true },
+    { id: 5, pseudo: 'Mireille_K', zone: 'Borgou', joined: '2026-08-30', pair: false },
+    { id: 6, pseudo: 'Nadège_A', zone: 'Zou', joined: '2026-09-18', pair: false },
+  ];
+  const INV = [{ code: 'PAIR-7K4M-Q2', zone: 'Atlantique', days: 6 }, { code: 'PAIR-C9XD-4H', zone: 'Mono', days: 2 }];
+  const MOD = [
+    { id: 'm1', kind: 'post', author: 'Membre anonyme', where: 'Fil · Témoignages', ago: 180, reports: 3, reasons: ['Propos haineux', 'Harcèlement'], text: 'Personne ne veut de vous ici. Partez et ne revenez pas.', status: 'todo' },
+    { id: 'm2', kind: 'comment', author: 'Nadège_A', where: 'Commentaire sous « Atelier du samedi »', ago: 520, reports: 1, reasons: ['Publicité'], text: 'Gagnez de l’argent vite, écrivez-moi en message privé !', status: 'todo' },
+    { id: 'm3', kind: 'post', author: 'Mireille_K', where: 'Fil · Ressources', ago: 1500, reports: 2, reasons: ['Informations personnelles'], text: 'Voici le numéro et l’adresse de la personne dont je parle…', status: 'todo' },
+    { id: 'm4', kind: 'comment', author: 'Awa_S', where: 'Commentaire sous « Sondage de novembre »', ago: 2900, reports: 1, reasons: ['Désaccord'], text: 'Je ne suis pas d’accord avec le choix du thème.', status: 'kept' },
   ];
   const N = [
     { id: 1, k: 'sos', icon: 'alert', title: 'Alerte SOS · Atlantique', when: 'il y a 4 min', unread: true, href: 'alerte/2041' },
     { id: 2, k: 'sos', icon: 'alert', title: 'Alerte SOS · Borgou', when: 'il y a 11 min', unread: true, href: 'alerte/2040' },
-    { id: 3, k: 'reg', icon: 'user-check', title: 'Inscription à valider · Pair_Cobalt', when: 'il y a 2 j', unread: true, href: 'pairs' },
-    { id: 4, k: 'mod', icon: 'shield', title: 'Signalement à modérer · propos haineux', when: 'il y a 3 h', unread: false, href: null },
-    { id: 5, k: 'sync', icon: 'sync', title: 'Conflit de synchronisation · VBG-0031', when: 'hier', unread: false, href: null },
+    { id: 3, k: 'reg', icon: 'user-check', title: 'Inscription à valider · Pair_Cobalt', when: 'il y a 2 j', unread: true, href: 'inscriptions' },
+    { id: 4, k: 'mod', icon: 'shield', title: 'Contenu signalé · propos haineux (3 signalements)', when: 'il y a 3 h', unread: true, href: 'contenu/m1' },
+    { id: 5, k: 'reg', icon: 'userplus', title: 'Invitation acceptée · Pair_Sorgho', when: 'hier', unread: false, href: 'inscriptions' },
   ];
+  const R = { q: '', inv: null };
+  const RG = { tab: 'all' };
+  const MD = { tab: 'todo' };
   const M = { on: false, since: null, reason: '', duration: '60' };
   const L = { tab: 'all', status: '', q: '' };
   let escTimer = null;
@@ -131,6 +175,8 @@ const T = {
   const newAlerts = () => A.filter(a => a.status === 'nouveau').length;
   const crit = () => A.filter(a => a.prio === 'critique' && a.status !== 'clos').length;
   const unread = () => N.filter(n => n.unread).length;
+  const modTodo = () => MOD.filter(m => m.status === 'todo').length;
+  const manageCount = () => P.length + modTodo();
   const statusB = a => badge(a.status === 'nouveau' ? '' : a.status === 'clos' ? 'mute' : 'ok', en('alert_status', a.status));
   const prioB = p => badge(p === 'critique' ? 'danger' : p === 'haute' ? 'warn' : 'mute', en('alert_priority', p));
   const typeB = x => badge(x === 'sos' ? 'danger' : x === 'besoin' ? '' : 'violet', en('alert_type', x));
@@ -141,14 +187,18 @@ const T = {
   /* ---------- Tableau de bord ---------- */
   function dash() {
     const sos = sosActive();
-    const kp = [['new_alerts', newAlerts(), 'alertes?f=all', false], ['sos_active', sos.length, 'alertes?f=sos', sos.length > 0], ['critical_open', crit(), 'alertes', false], ['pending_users', P.length, 'pairs', false]];
-    return { tab: 'dash', title: esc(t('dash.title')), plain: t('dash.title'), html: `
+    const kp = [['new_alerts', newAlerts(), 'alertes?f=all', false], ['sos_active', sos.length, 'alertes?f=sos', sos.length > 0], ['critical_open', crit(), 'alertes', false], ['pending_users', P.length, 'inscriptions', false]];
+    return { tab: 'dash', title: esc(t('dash.short')), plain: t('dash.title'), html: `
       ${sos.length ? `<section class="band-sos" aria-labelledby="sosh"><h2 id="sosh"><span class="sosb" aria-hidden="true">SOS</span>${esc(t('dash.sos_banner', { count: sos.length }))}</h2>
         <p style="margin:0;font-size:14px">${esc(t('dash.sos_text'))}</p>
         ${sos.map(a => `<div class="item"><div class="row between wrap"><b>${esc(a.commune)} (${esc(a.zone)})</b><span class="small muted">${esc(ago(a.ago))}</span></div>
           <div class="small mono" data-cd="${a.id}" ${a.ack ? '' : 'style="font-weight:700"'}>${ic('clock', 'sm')} ${esc(cd(a))}</div>
           <div class="row wrap" style="gap:8px">${a.ack ? `<span class="badge ok">${ic('check', 'sm')} ${esc(t('alerts.ack_done'))}</span>` : `<button class="btn btn-primary" style="flex:2 1 150px;padding:0 10px" data-act="ack" data-id="${a.id}">${esc(t('alerts.acknowledge'))}</button>`}<a class="btn btn-outline" style="flex:1 1 80px" href="#/alerte/${a.id}">${esc(t('alerts.detail'))}</a></div></div>`).join('')}</section>` : ''}
       <section class="stack-s" aria-labelledby="kh">${secH(t('dash.kpis'), '', 'kh')}<ul class="kpis">${kp.map(([k, v, h, hot]) => `<li class="${hot ? 'hot' : ''}"><a href="#/${h}" style="text-decoration:none;color:inherit;display:grid;gap:2px;min-height:44px"><span class="v">${v}</span><span class="l">${esc(t('dash.kpi.' + k))}</span></a></li>`).join('')}</ul></section>
+      <section class="stack-s">${secH(t('dash.todo'))}
+        <a class="link-row" href="#/inscriptions">${ic('user-check')}<span class="grow"><b>${esc(t('reg.count', { count: P.length }))}</b></span>${ic('next', 'sm')}</a>
+        <a class="link-row" href="#/moderation">${ic('flag')}<span class="grow"><b>${esc(t('mod.count', { count: modTodo() }))} ${esc(t('mod.tabs.todo').toLowerCase())}</b></span>${ic('next', 'sm')}</a>
+        <a class="link-row" href="#/roles">${ic('userplus')}<span class="grow"><b>${esc(t('manage.roles'))}</b></span>${ic('next', 'sm')}</a></section>
       <section class="stack-s">${secH(t('dash.maint_title'))}<a class="link-row" href="#/maintenance">${ic('tool')}<span class="grow"><b>${esc(t('maint.headlines.' + (M.on ? 'ongoing' : 'inactive')))}</b><span class="small muted" style="display:block">${esc(t('maint.state_text.' + (M.on ? 'ongoing' : 'inactive')))}</span></span>${ic('next', 'sm')}</a></section>
       <p class="note">${ic('info', 'sm')}<span>${esc(t('dash.scope'))}</span></p>` };
   }
@@ -204,22 +254,103 @@ const T = {
       mount: pane => { const f = pane.querySelector('[data-form="status"]'); f.addEventListener('submit', e => { e.preventDefault(); if (needNet()) return; const v = f.querySelector('select').value; if (!v) return; a.status = v; if (v !== 'nouveau') a.ack = true; a.hist.push(['à l’instant', `${en('alert_status', a.status)} (statut changé par vous)`]); Kit.toast(t('alerts.status_changed')); Kit.render({ noFocus: true }); }); } };
   }
 
-  /* ---------- Pairs ---------- */
-  function peers() {
-    return { tab: 'peers', title: esc(t('peers.title')), plain: t('peers.title'), html: `
-      <p class="muted small" style="margin:0">${esc(t('peers.intro'))}</p>
-      <div class="sec-h"><b>${esc(t('peers.count', { count: P.length }))}</b></div>
-      ${P.length ? P.map(p => `<article class="acard" aria-label="${esc(p.pseudo)}"><div class="row"><span class="avatar" style="background:var(--xm-blue-500)" aria-hidden="true">${esc(p.pseudo.slice(5, 6))}</span><div class="grow" style="flex:1"><h3>${esc(p.pseudo)}</h3><span class="small muted">${esc(t('peers.requested'))}</span></div></div>
-        <div class="meta"><span>${ic('pin', 'sm')} ${esc(p.zone)}</span><span>${ic('clock', 'sm')} ${esc(t('peers.joined', { date: fmtDate(p.joined) }))}</span></div>
-        <div>${badge(p.training ? 'ok' : 'warn', p.training ? t('peers.training') : t('peers.no_training'))}</div>
-        <div class="acts"><button class="btn btn-primary" data-act="approve" data-id="${p.id}">${ic('check', 'sm')} ${esc(t('peers.validate'))}</button><button class="btn btn-outline" data-act="reject" data-id="${p.id}">${esc(t('peers.reject'))}</button></div></article>`).join('')
-        : `<div class="empty"><b>${esc(t('peers.empty'))}</b>${esc(t('peers.empty_text'))}</div>` }` };
+  /* ---------- Gérer (hub) ---------- */
+  function manage() {
+    const row = (href, icon, label, sub, cnt) => `<a class="link-row" href="#/${href}">${ic(icon)}<span class="grow"><b>${esc(label)}</b>${sub ? `<span class="small muted" style="display:block">${esc(sub)}</span>` : ''}</span>${cnt ? `<span class="badge">${esc(cnt)}</span>` : ''}${ic('next', 'sm')}</a>`;
+    return { tab: 'manage', title: esc(t('manage.title')), plain: t('manage.title'), html: `
+      <p class="muted small" style="margin:0">${esc(t('manage.intro'))}</p>
+      <div class="stack-s">${row('inscriptions', 'user-check', t('manage.reg'), t('reg.count', { count: P.length }), P.length)}
+        ${row('roles', 'userplus', t('manage.roles'), 'Inviter un·e pair, donner ou retirer le rôle, chercher un membre', '')}
+        ${row('moderation', 'flag', t('manage.mod'), t('mod.count', { count: modTodo() }) + ' ' + t('mod.tabs.todo').toLowerCase(), modTodo())}
+        ${row('maintenance', 'tool', t('manage.maint'), t('maint.headlines.' + (M.on ? 'ongoing' : 'inactive')), '')}</div>
+      <p class="note">${ic('info', 'sm')}<span>${esc(t('manage.web'))}</span></p>` };
+  }
+
+  /* ---------- Inscriptions à valider ---------- */
+  function regs() {
+    const rows = P.filter(p => RG.tab === 'all' || p.kind === RG.tab);
+    const cnt = k => P.filter(p => k === 'all' || p.kind === k).length;
+    return { tab: 'manage', back: 'gerer', backLabel: t('manage.title'), title: esc(t('reg.title')), plain: t('reg.title'), html: `
+      <p class="muted small" style="margin:0">${esc(t('reg.intro'))}</p>
+      <div class="seg-tabs" role="group" aria-label="${esc(t('reg.tabs_label'))}">${['all', 'invite', 'demande', 'membre'].map(k => `<button class="chip" data-act="rtab" data-v="${k}" aria-pressed="${RG.tab === k}">${esc(t('reg.tabs.' + k))} <span class="cnt">${cnt(k)}</span></button>`).join('')}</div>
+      <div class="sec-h"><b>${esc(t('reg.count', { count: rows.length }))}</b></div>
+      ${rows.length ? rows.map(p => `<article class="acard" aria-label="${esc(p.pseudo)}"><div class="row"><span class="avatar" style="background:var(--xm-blue-500)" aria-hidden="true">${esc(p.pseudo.slice(0, 1))}</span><div class="grow" style="flex:1"><h3>${esc(p.pseudo)}</h3><span class="small muted">${esc(t('reg.kinds.' + p.kind))}</span></div></div>
+        <div class="meta"><span>${ic('pin', 'sm')} ${esc(p.zone)}</span><span>${ic('clock', 'sm')} ${esc(t('reg.joined', { date: fmtDate(p.joined) }))}</span></div>
+        ${p.training === null ? '' : `<div>${badge(p.training ? 'ok' : 'warn', p.training ? t('reg.training') : t('reg.no_training'))}</div>`}
+        <div class="acts"><button class="btn btn-primary" data-act="approve" data-id="${p.id}">${ic('check', 'sm')} ${esc(t('reg.validate'))}</button><button class="btn btn-outline" data-act="reject" data-id="${p.id}">${esc(t('reg.reject'))}</button></div></article>`).join('')
+        : `<div class="empty"><b>${esc(t('reg.empty'))}</b>${esc(t('reg.empty_text'))}</div>` }` };
+  }
+
+  /* ---------- Rôles et invitations ---------- */
+  const ZONES = ['Alibori', 'Atacora', 'Atlantique', 'Borgou', 'Collines', 'Couffo', 'Donga', 'Littoral', 'Mono', 'Ouémé', 'Plateau', 'Zou'];
+  const rolesBadges = m => badge('', t('roles.member')) + (m.pair ? badge('violet', t('roles.pair')) : '');
+  function roles() {
+    const iv = R.inv;
+    return { tab: 'manage', back: 'gerer', backLabel: t('manage.title'), title: esc(t('roles.title')), plain: t('roles.title'), html: `
+      <p class="muted small" style="margin:0">${esc(t('roles.intro'))}</p>
+      <section class="card stack-s" aria-labelledby="ivh"><div class="sec-h"><h2 id="ivh">${esc(t('roles.invite_h'))}</h2></div><p class="small muted" style="margin:0">${esc(t('roles.invite_help'))}</p>
+        ${iv ? `<div class="note ok" style="display:grid;gap:8px" role="status"><b>${ic('check', 'sm')} ${esc(t('roles.created'))} · ${esc(iv.zone)} · ${esc(t('roles.expires', { days: iv.days }))}</b>
+            <div><span class="small muted">${esc(t('roles.code'))}</span><div class="invite-code">${esc(iv.code)}</div></div>
+            <div><span class="small muted">${esc(t('roles.link'))}</span><div class="mono small" style="word-break:break-all">https://xomiton.bj/inviter/${esc(iv.code)}</div></div>
+            <div class="seg-line"><button class="btn btn-outline btn-sm" style="min-height:44px" data-act="copy" data-w="link">${ic('link', 'sm')} ${esc(t('roles.copy_link'))}</button><button class="btn btn-outline btn-sm" style="min-height:44px" data-act="copy" data-w="code">${ic('copy', 'sm')} ${esc(t('roles.copy_code'))}</button></div></div>` : ''}
+        <form id="ivf" class="stack-s" novalidate>
+          <div class="fld"><label for="iz">${esc(t('roles.zone'))}</label><select class="input" id="iz">${ZONES.map(z => `<option ${z === 'Atlantique' ? 'selected' : ''}>${z}</option>`).join('')}</select></div>
+          <div class="fld"><label for="id">${esc(t('roles.validity'))}</label><select class="input" id="id">${Object.entries(T.roles.validities).map(([k, v]) => `<option value="${k}" ${k === '7' ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+          <div class="fld"><label for="ie">${esc(t('roles.email'))}</label><input class="input" id="ie" type="email" autocomplete="off" inputmode="email"><span class="hint">${esc(t('roles.email_hint'))}</span></div>
+          <button class="btn btn-primary btn-block" type="submit">${ic('userplus', 'sm')} ${esc(t('roles.create'))}</button></form></section>
+      <section class="stack-s" aria-labelledby="ph"><div class="sec-h"><h2 id="ph">${esc(t('roles.pending_h'))}</h2><span class="n">${INV.length}</span></div>
+        ${INV.length ? INV.map(i => `<div class="link-row" style="cursor:default"><span class="grow"><b class="mono">${esc(i.code)}</b><span class="small muted" style="display:block">${esc(i.zone)} · ${esc(t('roles.expires', { days: i.days }))}</span></span><button class="btn btn-outline btn-sm" style="min-height:44px" data-act="revoke" data-code="${esc(i.code)}">${esc(t('roles.revoke'))}</button></div>`).join('') : `<p class="muted card">${esc(t('roles.pending_none'))}</p>`}</section>
+      <section class="stack-s" aria-labelledby="sh2"><div class="sec-h"><h2 id="sh2">${esc(t('roles.search_h'))}</h2></div>
+        <div class="search"><label class="vh" for="mq">${esc(t('roles.search'))}</label>${ic('search')}<input class="input" id="mq" type="search" autocomplete="off" placeholder="${esc(t('roles.search_placeholder'))}" value="${esc(R.q)}"></div>
+        <div id="mlist" class="stack-s" aria-live="polite"></div></section>
+      <p class="note">${ic('lock', 'sm')}<span>${esc(t('roles.web_only'))}</span></p>`,
+      mount: pane => {
+        drawMembers();
+        pane.querySelector('#mq').addEventListener('input', e => { R.q = e.target.value; drawMembers(); });
+        pane.querySelector('#ivf').addEventListener('submit', e => {
+          e.preventDefault(); if (needNet()) return;
+          const rnd = n => Array.from({ length: n }, () => 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[Math.floor(Math.random() * 31)]).join('');
+          R.inv = { code: `PAIR-${rnd(4)}-${rnd(2)}`, zone: pane.querySelector('#iz').value, days: +pane.querySelector('#id').value };
+          INV.unshift({ code: R.inv.code, zone: R.inv.zone, days: R.inv.days });
+          Kit.toast(t('roles.created')); Kit.render({ noFocus: true });
+        });
+      } };
+  }
+  function drawMembers() {
+    const h = document.getElementById('mlist'); if (!h) return; const q = R.q.trim().toLowerCase();
+    const r = MEM.filter(m => !q || (m.pseudo + ' ' + m.zone).toLowerCase().includes(q));
+    h.innerHTML = `<div class="sec-h"><b>${esc(t('roles.count', { count: r.length }))}</b></div>` + (r.length ? r.map(m => `<button class="link-row" data-act="member" data-id="${m.id}" aria-label="${esc(m.pseudo)}, ${esc(m.zone)}">${ic('users')}<span class="grow"><b>${esc(m.pseudo)}</b><span class="small muted" style="display:block">${esc(m.zone)}</span><span class="tag-line" style="margin-top:4px">${rolesBadges(m)}</span></span>${ic('next', 'sm')}</button>`).join('') : `<div class="empty"><b>${esc(t('roles.empty'))}</b></div>`);
+  }
+
+  /* ---------- Modération ---------- */
+  const modB = m => badge(m.status === 'todo' ? 'warn' : m.status === 'hidden' ? 'danger' : 'ok', t('mod.status.' + m.status));
+  function moderation() {
+    const rows = MOD.filter(m => (MD.tab === 'todo') === (m.status === 'todo'));
+    return { tab: 'manage', back: 'gerer', backLabel: t('manage.title'), title: esc(t('mod.title')), plain: t('mod.title'), html: `
+      <p class="muted small" style="margin:0">${esc(t('mod.intro'))}</p>
+      <div class="seg-tabs" role="group" aria-label="${esc(t('mod.tabs_label'))}">${['todo', 'done'].map(k => `<button class="chip" data-act="mtab" data-v="${k}" aria-pressed="${MD.tab === k}">${esc(t('mod.tabs.' + k))} <span class="cnt">${MOD.filter(m => (k === 'todo') === (m.status === 'todo')).length}</span></button>`).join('')}</div>
+      <div class="sec-h"><b>${esc(t('mod.count', { count: rows.length }))}</b></div>
+      ${rows.length ? rows.map(m => `<article class="acard" aria-label="${esc(t('mod.kinds.' + m.kind) + ' de ' + m.author)}"><div class="top">${badge('violet', t('mod.kinds.' + m.kind))}${modB(m)}${badge(m.reports > 1 ? 'danger' : 'mute', t('mod.reports', { count: m.reports }))}</div>
+        <h3>${esc(m.author)}</h3><p style="margin:0;font-size:14px">« ${esc(m.text)} »</p>
+        <div class="meta"><span>${ic('flag', 'sm')} ${esc(m.reasons.join(', '))}</span><span>${ic('clock', 'sm')} ${esc(ago(m.ago))}</span></div>
+        <div class="acts"><a class="btn btn-primary" href="#/contenu/${m.id}">${esc(t('alerts.detail'))}</a></div></article>`).join('') : `<div class="empty"><b>${esc(t('mod.empty'))}</b></div>`}` };
+  }
+  function modDetail(id) {
+    const m = MOD.find(x => x.id === id);
+    if (!m) return { tab: 'manage', back: 'moderation', title: esc(t('mod.title')), html: `<div class="empty"><b>${esc(t('mod.empty'))}</b></div>` };
+    const dd = (k, v) => `<div><dt>${esc(t('mod.' + k))}</dt><dd>${v}</dd></div>`;
+    return { tab: 'manage', back: 'moderation', backLabel: t('mod.back'), title: esc(t('mod.detail_title')), plain: t('mod.detail_title'), html: `
+      <div class="row wrap">${badge('violet', t('mod.kinds.' + m.kind))}${modB(m)}${badge(m.reports > 1 ? 'danger' : 'mute', t('mod.reports', { count: m.reports }))}</div>
+      <dl class="dl card" style="padding:4px 14px">${dd('author', esc(m.author))}${dd('where', esc(m.where))}${dd('when', esc(ago(m.ago)))}${dd('reasons', esc(m.reasons.join(', ')))}${dd('content', `« ${esc(m.text)} »`)}</dl>
+      ${m.status === 'todo' ? `<div class="stack-s"><button class="btn btn-primary btn-block" data-act="mhide" data-id="${m.id}">${ic('eyeoff', 'sm')} ${esc(t('mod.hide'))}</button>
+        <button class="btn btn-outline btn-block" data-act="mwarn" data-id="${m.id}">${esc(t('mod.warn'))}</button><button class="btn btn-outline btn-block" data-act="mkeep" data-id="${m.id}">${esc(t('mod.keep'))}</button></div>
+        <p class="note">${ic('info', 'sm')}<span>${esc(t('mod.suspend_web'))}</span></p>` : `<p class="note ok">${ic('check', 'sm')}<span>${esc(t('mod.done_note'))}</span></p>`}` };
   }
 
   /* ---------- Maintenance ---------- */
   function maintenance() {
     const st = M.on ? 'ongoing' : 'inactive';
-    return { tab: 'maint', title: esc(t('maint.title')), plain: t('maint.title'), html: `
+    return { tab: 'manage', back: 'gerer', backLabel: t('manage.title'), title: esc(t('maint.title')), plain: t('maint.title'), html: `
       <section class="card state-card" aria-live="polite"><div>${badge(M.on ? 'warn' : 'ok', t('maint.states.' + st))}</div><div class="big">${esc(t('maint.headlines.' + st))}</div><p style="margin:0">${esc(t('maint.state_text.' + st))}</p>
         <dl class="dl"><div><dt>${esc(t('maint.state'))}</dt><dd>${esc(t('maint.states.' + st))}</dd></div><div><dt>${esc(t('maint.ends'))}</dt><dd>${esc(M.on ? (M.duration === 'unknown' ? t('maint.unknown') : `~ ${t('maint.durations.' + M.duration)}`) : t('maint.none'))}</dd></div>${M.on ? `<div><dt>${esc(t('maint.started'))}</dt><dd>${esc(M.since)}</dd></div>` : ''}</dl></section>
       <section class="card stack-s">${M.on ? `<p style="margin:0">${esc(t('maint.disable_text'))}</p><button class="btn btn-primary btn-block" data-act="mdisable">${ic('wifi', 'sm')} ${esc(t('maint.disable'))}</button>`
@@ -259,8 +390,27 @@ const T = {
         validate: sh => { const ta = sh.querySelector('#nt'); if (!ta.value.trim()) { sh.querySelector('#nth').textContent = t('alerts.note_empty'); ta.focus(); return false; } return !needNet(); },
         onOk: sh => { a.hist.push(['à l’instant', `Note interne : ${sh.querySelector('#nt').value.trim()}`]); Kit.toast(t('alerts.note_added')); Kit.render({ noFocus: true }); } });
     },
-    approve: d => { const p = P.find(x => x.id === +d.id); Kit.confirm({ title: t('peers.validate_title', { name: p.pseudo }), text: esc(t('peers.validate_text')), ok: t('peers.validate_yes'), onOk: () => { if (needNet()) return; P.splice(P.indexOf(p), 1); Kit.toast(t('peers.approved', { name: p.pseudo })); Kit.render({ noFocus: true }); } }); },
-    reject: d => { const p = P.find(x => x.id === +d.id); Kit.confirm({ title: t('peers.reject_title', { name: p.pseudo }), text: esc(t('peers.reject_text')), ok: t('peers.reject_yes'), onOk: () => { if (needNet()) return; P.splice(P.indexOf(p), 1); Kit.toast(t('peers.rejected', { name: p.pseudo })); Kit.render({ noFocus: true }); } }); },
+    approve: d => { const p = P.find(x => x.id === +d.id); const pair = p.kind !== 'membre'; Kit.confirm({ title: t('reg.validate_title', { name: p.pseudo }), text: esc(t(pair ? 'reg.validate_pair' : 'reg.validate_member')), ok: t('reg.validate_yes'), onOk: () => { if (needNet()) return; P.splice(P.indexOf(p), 1); if (pair) { const m = MEM.find(x => x.pseudo === p.pseudo); if (m) m.pair = true; else MEM.unshift({ id: Date.now(), pseudo: p.pseudo, zone: p.zone, joined: p.joined, pair: true }); } Kit.toast(t(pair ? 'reg.approved_pair' : 'reg.approved_member', { name: p.pseudo })); Kit.render({ noFocus: true }); } }); },
+    reject: d => { const p = P.find(x => x.id === +d.id); Kit.confirm({ title: t('reg.reject_title', { name: p.pseudo }), text: esc(t('reg.reject_text')), ok: t('reg.reject_yes'), onOk: () => { if (needNet()) return; P.splice(P.indexOf(p), 1); Kit.toast(t('reg.rejected', { name: p.pseudo })); Kit.render({ noFocus: true }); } }); },
+    rtab: d => { RG.tab = d.v; Kit.render({ noFocus: true }); },
+    mtab: d => { MD.tab = d.v; Kit.render({ noFocus: true }); },
+    copy: () => Kit.toast(t('roles.copied')),
+    revoke: d => Kit.confirm({ title: t('roles.revoke_title'), text: esc(t('roles.revoke_text')), ok: t('roles.revoke_yes'), onOk: () => { if (needNet()) return; const i = INV.findIndex(x => x.code === d.code); if (i >= 0) INV.splice(i, 1); if (R.inv && R.inv.code === d.code) R.inv = null; Kit.toast(t('roles.revoked')); Kit.render({ noFocus: true }); } }),
+    member: d => {
+      const m = MEM.find(x => x.id === +d.id);
+      Kit.sheet(`<h2>${esc(m.pseudo)}</h2><div class="tag-line">${rolesBadges(m)}</div><p class="small muted" style="margin:0">${ic('pin', 'sm')} ${esc(m.zone)} · ${esc(t('roles.joined', { date: fmtDate(m.joined) }))}</p>
+        <button class="btn ${m.pair ? 'btn-outline' : 'btn-primary'} btn-block" id="rb">${ic(m.pair ? 'x' : 'userplus', 'sm')} ${esc(t(m.pair ? 'roles.take' : 'roles.give'))}</button>
+        <p class="note">${ic('lock', 'sm')}<span>${esc(t('roles.web_only'))}</span></p><button class="btn btn-outline btn-block" data-close>${esc(t('roles.close'))}</button>`, { label: m.pseudo,
+        onMount: (sh, close) => sh.querySelector('#rb').addEventListener('click', () => { close(); actions.rolechg({ id: m.id }); }) });
+    },
+    rolechg: d => {
+      const m = MEM.find(x => x.id === +d.id); const give = !m.pair;
+      Kit.confirm({ title: t(give ? 'roles.give_title' : 'roles.take_title', { name: m.pseudo }), text: esc(t(give ? 'roles.give_text' : 'roles.take_text', { name: m.pseudo })), ok: t(give ? 'roles.give_yes' : 'roles.take_yes'),
+        onOk: () => { if (needNet()) return; m.pair = give; Kit.toast(t(give ? 'roles.gave' : 'roles.took', { name: m.pseudo })); drawMembers(); } });
+    },
+    mhide: d => Kit.confirm({ title: t('mod.hide_title'), text: esc(t('mod.hide_text')), ok: t('mod.hide_yes'), onOk: () => { if (needNet()) return; MOD.find(x => x.id === d.id).status = 'hidden'; Kit.toast(t('mod.hidden')); Kit.render({ noFocus: true }); } }),
+    mkeep: d => Kit.confirm({ title: t('mod.keep_title'), text: esc(t('mod.keep_text')), ok: t('mod.keep_yes'), onOk: () => { if (needNet()) return; MOD.find(x => x.id === d.id).status = 'kept'; Kit.toast(t('mod.kept')); Kit.render({ noFocus: true }); } }),
+    mwarn: d => Kit.confirm({ title: t('mod.warn_title'), text: esc(t('mod.warn_text')), ok: t('mod.warn_yes'), onOk: () => { if (needNet()) return; MOD.find(x => x.id === d.id).status = 'warned'; Kit.toast(t('mod.warned')); Kit.render({ noFocus: true }); } }),
     menable: () => {
       if (needNet()) return;
       Kit.confirm({ title: t('maint.confirm_title'), text: esc(t('maint.confirm_text')), ok: t('maint.enable_yes'), disabled: true, focus: '#mr',
@@ -282,28 +432,33 @@ const T = {
   };
 
   Kit.start({
-    title: T.title, sub: T.sub, home: 'tableau', logo: '{{IMG:logo-couleur.svg}}', actions,
+    title: T.title, sub: T.sub, home: 'tableau', space: 'admin', logo: '{{IMG:logo-couleur.svg}}', actions,
     tabs: [
       { id: 'dash', href: 'tableau', icon: 'dash', label: T.nav.dash },
       { id: 'alerts', href: 'alertes', icon: 'alert', label: T.nav.alerts, count: () => (newAlerts() ? String(newAlerts()) : '') },
-      { id: 'peers', href: 'pairs', icon: 'user-check', label: T.nav.peers, count: () => (P.length ? String(P.length) : '') },
-      { id: 'maint', href: 'maintenance', icon: 'tool', label: T.nav.maint },
+      { id: 'manage', href: 'gerer', icon: 'list', label: T.nav.manage, count: () => (manageCount() ? String(manageCount()) : '') },
       { id: 'notifs', href: 'notifications', icon: 'bell', label: T.nav.notifs, count: () => (unread() ? String(unread()) : '') },
+      { id: 'net', href: 'index.html#/fil', ext: true, icon: 'feed', label: T.nav.network },
     ],
     rail: [
-      { title: T.page.g_duty, items: [{ href: 'tableau', label: 'Tableau de bord d’astreinte' }, { href: 'alertes', label: 'Liste des alertes' }, { href: 'alertes?f=sos', label: 'Alertes : filtre SOS' }, { href: 'alerte/2041', label: 'Détail d’une alerte SOS (Maps, prévenus)' }] },
-      { title: T.page.g_more, items: [{ href: 'pairs', label: 'Validation des pairs en attente' }, { href: 'maintenance', label: 'Mode maintenance' }, { href: 'notifications', label: 'Notifications' }, { href: 'tableau?net=off', label: 'Hors connexion' }] },
+      { title: T.page.g_duty, items: [{ href: 'tableau', label: 'Tableau de bord d’astreinte' }, { href: 'alertes', label: 'Liste des alertes' }, { href: 'alertes?f=sos', label: 'Alertes : filtre SOS' }, { href: 'alerte/2041', label: 'Détail d’une alerte SOS (Maps, prévenus)' }, { href: 'push-sos', label: 'Push SOS reçu (admins ET pair·es)' }] },
+      { title: T.page.g_more, items: [{ href: 'gerer', label: 'Menu « Gérer »' }, { href: 'inscriptions', label: 'Inscriptions à valider' }, { href: 'roles', label: 'Rôles et invitations (inviter, rôle pair, chercher un membre)' }, { href: 'moderation', label: 'Modération (contenus signalés)' }, { href: 'contenu/m1', label: 'Contenu signalé : décision' }, { href: 'maintenance', label: 'Mode maintenance' }, { href: 'notifications', label: 'Notifications' }, { href: 'tableau?net=off', label: 'Hors connexion' }] },
     ],
     banner: () => (S.net === 'off' ? `<div class="nb" role="status">${ic('wifi-off', 'sm')}<span>${esc(t('net.banner'))}</span></div>` : '') + (M.on ? `<div class="nb" style="background:var(--app-primary-subtle);color:var(--app-primary-subtle-text)" role="status">${ic('tool', 'sm')}<span>${esc(t('maint.banner'))}</span></div>` : ''),
-    chip: () => `<span class="pill-duty">${esc(T.duty)}</span>`,
+    chip: () => '',
     onNet: () => {},
-    onRoute: r => { if (r.name === 'alertes') { const f = { sos: 'sos', all: 'all' }[r.q.f]; if (f) L.tab = f; if (r.q.f === undefined && !r.args.length) { /* conserve le filtre */ } } },
+    onRoute: r => { if (r.name === 'alertes') { const f = { sos: 'sos', all: 'all' }[r.q.f]; if (f) L.tab = f; } },
     screen: r => {
       switch (r.name) {
         case 'tableau': return dash();
         case 'alertes': return alerts();
         case 'alerte': return detail(r.args[0]);
-        case 'pairs': return peers();
+        case 'gerer': return manage();
+        case 'inscriptions': case 'pairs': return regs();
+        case 'roles': return roles();
+        case 'moderation': return moderation();
+        case 'contenu': return modDetail(r.args[0]);
+        case 'push-sos': { const d = dash(); d.push = { href: 'alerte/2041', title: t('push.sos_title'), text: t('push.sos_text'), audience: t('push.audience') }; d.caption = t('push.caption'); return d; }
         case 'maintenance': return maintenance();
         case 'notifications': return notifs();
         default: return dash();

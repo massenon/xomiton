@@ -8,12 +8,12 @@
    enums/cases.php, enums/alerts.php, alerts.php, menus.php. Données fictives et pseudonymisées. */
 const T = {
   title: 'Espace pair — maquette mobile',
-  sub: 'Pair éducateur·rice · collecte hors ligne',
-  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', network: 'Réseau', online: 'En ligne', offline: 'Hors ligne',
+  sub: 'Même appli, même compte · espace pair + réseau social',
+  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', network: 'Connexion', online: 'En ligne', offline: 'Hors ligne',
     demo_note: 'Maquette cliquable : données fictives et pseudonymisées, aucun nom ni numéro réel. Rien n’est envoyé nulle part.',
     g_pair: 'Parcours pair', g_offline: 'Hors connexion' },
   common: { cancel: 'Annuler', close: 'Fermer', save: 'Enregistrer', back: 'Retour', yes: 'Oui', no: 'Non', none: '—', detail: 'Détail', today: 'aujourd’hui' },
-  nav: { label: 'Navigation de l’espace pair', back: 'Retour', home: 'Accueil', alerts: 'Alertes', sos: 'SOS', cases: 'Dossiers', collect: 'Collecte' },
+  nav: { label: 'Navigation de l’espace pair', back: 'Retour', home: 'Accueil', alerts: 'Alertes', sos: 'SOS', cases: 'Dossiers', collect: 'Collecte', network: 'Réseau' },
   net: { online: 'En ligne', offline: 'Hors ligne', went_off: 'Tu es hors connexion. Tes saisies restent sur cet appareil.', went_on: 'Le réseau est de retour. La synchronisation reprend.',
     banner: 'Tu es hors connexion : tes saisies sont conservées et seront synchronisées automatiquement.',
     pending: { zero: 'Aucun élément en attente de synchronisation', one: '1 élément en attente de synchronisation', other: ':count éléments en attente de synchronisation' },
@@ -26,15 +26,15 @@ const T = {
     session: 'Préparer la prochaine séance : boîtes à images',
     shortcuts_label: 'Raccourcis', shortcuts: { collecte: 'Nouvelle collecte', cases: 'Mes dossiers', report: 'Signalement', directory: 'Annuaire', ccc: 'Outils CCC', resources: 'Ressources' },
     out_of_scope: 'Cet écran existe déjà dans l’application (hors périmètre de cette maquette).' },
-  alerts: { title: 'Alertes routées vers moi', open_count: { one: 'alerte ouverte', other: 'alertes ouvertes' }, refresh: 'Actualiser', refreshed: 'Liste à jour.',
+  alerts: { title: 'Alertes routées vers moi', short: 'Alertes', open_count: { one: 'alerte ouverte', other: 'alertes ouvertes' }, refresh: 'Actualiser', refreshed: 'Liste à jour.',
     on_duty: 'Tu es de garde : la liste se met à jour toutes les 30 secondes.', empty: 'Aucune alerte pour le moment.',
     ago: 'Reçue :time', acknowledge: 'Accuser réception', acknowledged: 'Réception accusée. La personne est prévenue que tu t’en occupes.', ack_done: 'Réception accusée',
     take: 'Prendre en charge', taken: 'Alerte prise en charge.', close: 'Clore', closed: 'Alerte close.',
     close_title: 'Clore cette alerte ?', close_confirm: 'Clore cette alerte ? Une alerte close ne se rouvre pas.', close_yes: 'Oui, clore',
     detail: 'Détail', detail_for: 'Détail de l’alerte :type, :place', offline: 'Tu es hors ligne. Reviens sur cette alerte dès que le réseau est de retour.',
     anonymous: 'Anonyme', accuracy: 'précision :meters m', not_found: 'Cette alerte n’existe plus ou ne t’est plus routée.',
-    fields: { received: 'Reçue', place: 'Lieu', category: 'Type de violence', needs: 'Besoins', author: 'De la part de', contact: 'Pour la joindre', position: 'Position (arrondie)', description: 'Ce qui a été écrit', history: 'Historique' },
-    no_contact: 'Aucun contact laissé (anonyme).', contact_masked: 'SMS, numéro visible après prise en charge', escalation: 'Sans accusé de réception, l’alerte est escaladée au point focal national.' },
+    fields: { notified: 'Prévenu·es', received: 'Reçue', place: 'Lieu', category: 'Type de violence', needs: 'Besoins', author: 'De la part de', contact: 'Pour la joindre', position: 'Position (arrondie)', description: 'Ce qui a été écrit', history: 'Historique' },
+    notified_text: 'Toi, le point focal de l’Atlantique et les admins d’astreinte (push)', no_contact: 'Aucun contact laissé (anonyme).', contact_masked: 'SMS, numéro visible après prise en charge', escalation: 'Sans accusé de réception, l’alerte est escaladée au point focal national.' },
   cases: { title: 'Mes dossiers', intro: 'Les dossiers que tu as collectés. Tu ne vois jamais ceux d’une autre personne.', search: 'Code du dossier', search_placeholder: 'VBG-0042', status: 'Statut', kind: 'Type',
     all_statuses: 'Tous les statuts', all_kinds: 'Tous les types', results: { zero: 'Aucun dossier', one: '1 dossier', other: ':count dossiers' }, new: 'Nouvelle collecte',
     empty: 'Aucun dossier pour le moment', empty_text: 'Les dossiers que tu collectes apparaissent ici.', empty_filtered: 'Aucun dossier ne correspond à ces critères.', reset: 'Réinitialiser',
@@ -53,7 +53,7 @@ const T = {
     yes: 'Oui', no: 'Non', sections: { identification: '1. Identification pseudonymisée', facts: '2. Faits', services: '3. Services reçus', orientation: '4. Orientation', consent: '5. Consentement' },
     fields: { services: 'Services', pseudo: 'Pseudonyme', sex: 'Sexe', age: 'Tranche d’âge', population: 'Population', zone: 'Lieu', date: 'Date', place: 'Endroit', type: 'Type', description: 'Résumé', referral: 'Vers', contact: 'Contact', referral_date: 'Date', reason: 'Motif', urgency: 'Urgence', consent: 'Consentement donné', mode: 'Forme', sharing: 'Partage avec un partenaire' },
     modes: { ecrit: 'Écrit', oral: 'Oral' }, urgency: { normale: 'Normale', haute: 'Haute', critique: 'Critique' } },
-  col: { title: 'Collecte de données', intro: 'Fiche de dossier VBG / VDH, utilisable hors connexion.', no_identity_title: 'Jamais de nom ni de coordonnées.', no_identity: 'N’écris aucun nom, téléphone, adresse ni identifiant direct, ni dans les notes.',
+  col: { title: 'Collecte', intro: 'Fiche de dossier VBG / VDH, utilisable hors connexion.', no_identity_title: 'Jamais de nom ni de coordonnées.', no_identity: 'N’écris aucun nom, téléphone, adresse ni identifiant direct, ni dans les notes.',
     step: 'Étape :n sur :total', steps: ['Dossier', 'Lieu', 'Personne', 'Faits', 'Vérification'], choose: 'Choisir…', no_referral: 'Aucune', next: 'Suivant', prev: 'Précédent', edit: 'Modifier',
     draft_saved: 'Un brouillon (sans les notes) est gardé sur cet appareil.', draft_clear: 'Effacer le brouillon', draft_cleared: 'Brouillon effacé.',
     fields: { kind: 'Type de dossier', date: 'Date des faits', violence: 'Type de violence', zone: 'Département', commune: 'Commune', population: 'Population', sex: 'Sexe', age: 'Tranche d’âge', referral: 'Orientation vers un service', notes: 'Notes' },
@@ -76,10 +76,21 @@ const T = {
     empty: 'Rien en attente : tout est à jour.',
     conflicts: 'Conflit à résoudre', pending: 'En attente', sent: 'Envoyés',
     kinds: { case: 'Nouveau dossier', followup: 'Étape de suivi', status: 'Changement de statut', sos: 'Alerte SOS' },
-    states: { pending: 'En attente', sending: 'Envoi…', sent: 'Envoyé', conflict: 'Conflit 409', resolved: 'Choix envoyé' },
-    conflict_text: 'Une modification faite ailleurs croise la tienne. Choisis la valeur à garder : l’équipe valide ton choix.',
+    states: { pending: 'En attente', sending: 'Envoi…', sent: 'Envoyé', conflict: 'Conflit 409', resolved: 'Tranché par toi' },
+    conflict_text: 'Une modification faite ailleurs croise la tienne. C’est toi qui tranches : aucune autre personne ne valide à ta place.', resolve_open: 'Résoudre le conflit',
     field: 'Champ', base: 'Valeur d’origine', server: 'Valeur du serveur', mine: 'Ma valeur (cet appareil)', keep_server: 'Garder la valeur du serveur', keep_mine: 'Garder la mienne', resolve: 'Envoyer mon choix',
-    resolved_toast: 'Choix envoyé. L’équipe valide la version retenue.', choose_first: 'Choisis une des deux valeurs.', created: 'Créé :when', uuid: 'Envoi n° :id', retries: 'Cet envoi repartira tout seul, une seule fois.' },
+    resolved_toast: 'C’est réglé. La version que tu as choisie est appliquée tout de suite.', choose_first: 'Choisis une des deux valeurs.', created: 'Créé :when', uuid: 'Envoi n° :id', retries: 'Cet envoi repartira tout seul, une seule fois.' },
+  conflict: { title: 'Conflit à résoudre', back: 'File de synchronisation', code: 'Erreur 409',
+    what_h: 'Que s’est-il passé ?', what: 'Pendant que ton téléphone était hors ligne, la fiche a aussi été modifiée ailleurs (sur le serveur). Les deux versions ne peuvent pas être gardées en même temps, et l’application ne devine pas laquelle est la bonne.',
+    you_h: 'C’est toi qui choisis', you: 'Tu connais la situation de terrain : tu décides de la valeur à garder pour ce champ. Ton choix s’applique tout de suite, sans validation par l’équipe.',
+    field: 'Fiche et champ concernés', base: 'Valeur de départ (avant les deux modifications)', pick: 'Quelle valeur garder ?',
+    server: 'Valeur du serveur', server_help: 'La version déjà enregistrée. Ta modification faite hors ligne est abandonnée pour ce champ.', server_by: 'Modifiée hier à 18:02 par l’équipe',
+    mine: 'Mon appareil', mine_help: 'La version saisie sur ce téléphone. Elle remplace celle du serveur.', mine_by: 'Modifiée hier à 17:40 sur cet appareil',
+    history: 'Rien n’est perdu : l’historique du dossier garde les deux versions et ton choix.', confirm: 'Confirmer mon choix', choose_first: 'Choisis une des deux valeurs pour continuer.',
+    confirm_title: 'Garder « :value » ?', confirm_server: 'Tu gardes la valeur du serveur. Ta modification faite hors ligne ne sera pas appliquée.', confirm_mine: 'Tu gardes la valeur de ton appareil. Elle remplace celle du serveur.', yes: 'Oui, garder cette valeur', done_title: 'Conflit résolu',
+    done_text: 'Valeur retenue : :value. Elle est appliquée au dossier.', back_queue: 'Retour à la file', not_found: 'Ce conflit est déjà résolu ou n’existe plus.' },
+  push: { sos_title: 'SOS · Abomey-Calavi (Atlantique)', sos_text: 'Une alerte vient d’être routée vers toi. Touche pour accuser réception : l’escalade au point focal national s’arrête.',
+    audience: 'Envoyée aux admins d’astreinte ET aux pair·es éducateur·rice·s de la zone.', caption: '<b>Notification push SOS</b> vue côté pair·e. Même notification côté admin (décision du 29/10/2026) : admins et pair·es éducateur·rice·s la reçoivent.' },
   sos: { title: 'SOS', intro: 'Ton alerte part vers la personne de l’annuaire la plus proche et vers tes contacts de confiance.', help: 'Maintiens le bouton 2 secondes pour envoyer ton alerte.',
     alt: 'Sans maintenir :', alt_btn: 'Envoyer sans maintenir', alt_title: 'Envoyer l’alerte SOS ?', alt_text: 'Ton alerte partira vers la personne de l’annuaire la plus proche, avec ta position si ton téléphone la trouve.', alt_yes: 'Envoyer l’alerte', cancel: 'Annuler',
     done: 'Ton alerte est partie', done_text: 'Reste si possible dans un lieu public ou éclairé. La personne contactée va te rappeler.',
@@ -535,11 +546,29 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .chip { min-height: 44px; }
 @media (max-width: 480px) { .topbar .ctl > span { display: none; } .topbar { gap: 6px; padding: 6px 8px; } .seg button { padding: 6px 8px; } .rail-select { max-width: 100%; flex: 1 1 100%; } }
 
+/* ---------- Décision 29/10/2026 : un seul compte, plusieurs espaces ---------- */
+.hdr .hdr-sp { flex-shrink: 0; padding: 0 8px 0 10px; }
+.hdr .hdr-sp span { max-width: 64px; overflow: hidden; text-overflow: ellipsis; }
+.tb a.ext { color: var(--app-primary-subtle-text); }
+.tb a.ext::after { content: ""; position: absolute; top: 6px; right: calc(50% - 18px); width: 7px; height: 7px; border-radius: 50%; background: var(--app-violet); }
+.pushbn { position: absolute; z-index: 40; left: 8px; right: 8px; top: calc(var(--safe-top) + 4px); display: grid; gap: 3px; padding: 12px 14px; border-radius: 20px; text-decoration: none; background: color-mix(in srgb, var(--app-surface) 94%, transparent); color: var(--app-text); backdrop-filter: blur(14px); border: 1px solid var(--app-border); box-shadow: 0 10px 30px rgb(10 12 28 / .28); font-size: 14px; line-height: 1.35; }
+.pushbn .pb-app { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--app-muted); text-transform: uppercase; letter-spacing: .04em; }
+.pushbn .pb-when { margin-left: auto; text-transform: none; letter-spacing: 0; }
+.pushbn b { font-size: 15px; color: var(--app-danger-text); }
+.pushbn .pb-aud { font-size: 12px; color: var(--app-muted); border-top: 1px solid var(--app-border); padding-top: 6px; margin-top: 3px; }
+.pushbn:focus-visible { outline: 3px solid var(--app-primary); outline-offset: 2px; }
+.choice { display: grid; gap: 10px; }
+.choice .opt { align-items: flex-start; }
+.tag-line { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.invite-code { font: 800 22px/1.2 var(--xm-font-heading); letter-spacing: .08em; word-break: break-all; }
+.seg-line { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 480px) { .topbar { flex-wrap: wrap; } .rail-select { width: 100% !important; min-width: 0; } .sim, .stage, .topbar { min-width: 0; max-width: 100vw; } }
+
 </style>
 </head>
 <body>
 <!-- Menu des écrans partagé (index, espace-pair, admin-mobile) : bouton ☰ FIXE en haut à gauche de la page, hors du châssis
-     téléphone, et tiroir listant les 30 écrans membre, l'espace pair (P1 à P11) et l'admin mobile (A1 à A7).
+     téléphone, et tiroir listant les écrans membre (01 à 31), l'espace pair (P1 à P12) et l'admin mobile (A1 à A12).
      Les éléments sont ajoutés à <html> (pas à <body>) : les maquettes réécrivent le contenu de <body> au démarrage. -->
 <style id="xmNavCss">
 .xmnav-fab { --xmn-bg: #0433C3; --xmn-fg: #fff; position: fixed; top: 10px; left: 10px; z-index: 10000; width: 48px; height: 48px; min-width: 44px; min-height: 44px; display: grid; place-items: center; padding: 0; border: 2px solid #fff; border-radius: 14px; background: var(--xmn-bg); color: var(--xmn-fg); box-shadow: 0 2px 10px rgb(2 28 107 / .45); cursor: pointer; }
@@ -575,7 +604,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 </style>
 <script>
 (() => {
-  const MODS = [{"id":"auth","label":"Authentification","items":[["01","Splash et carrousel","index.html#/splash"],["02","Connexion","index.html#/login"],["03","Inscription (4 phases)","index.html#/signup"],["04","Code par e-mail (OTP)","index.html#/otp"],["05","Mot de passe oublié","index.html#/forgot"],["06","Nouveau mot de passe","index.html#/reset"]]},{"id":"home","label":"Accueil","items":[["07","Tableau de bord","index.html#/dashboard"],["08","Thématiques","index.html#/thematiques"],["09","Fiche thématique","index.html#/thematique"],["10","Ressources","index.html#/ressources"],["11","Notifications","index.html#/notifications"]]},{"id":"sos","label":"SOS & signalement","items":[["12","Signaler et suivre","index.html#/sighub"],["13","SOS","index.html#/sos"],["14","Alerte envoyée","index.html#/sos-envoye"],["15","Signalement (4 étapes)","index.html#/signalement"],["16","Contacts d’urgence","index.html#/urgences"]]},{"id":"feed","label":"Fil d’actualités","items":[["17","Fil d’actualités","index.html#/fil"],["18","Publication et commentaires","index.html#/post"],["19","Créer une publication","index.html#/postpublication"],["20","Créer un sondage","index.html#/sondage"]]},{"id":"community","label":"Communauté","items":[["21","Messages","index.html#/message"],["22","Conversation","index.html#/chat"],["23","Groupes","index.html#/groupes"],["24","Événements","index.html#/evenements"],["25","Assistant","index.html#/assistant"]]},{"id":"profile","label":"Profil","items":[["26","Mon profil","index.html#/profil"],["27","Profil progressif","index.html#/completer"],["28","Paramètres","index.html#/parametres"],["29","Sécurité et confidentialité","index.html#/securite"],["30","Newsletter","index.html#/newsletter"]]},{"id":"pair","label":"Espace pair","items":[["P1","Accueil pair","espace-pair.html#/accueil"],["P2","Alertes routées vers moi","espace-pair.html#/alertes"],["P3","Détail d’une alerte SOS","espace-pair.html#/alerte/a1"],["P4","Mes dossiers","espace-pair.html#/dossiers"],["P5","Fiche dossier","espace-pair.html#/dossier/VBG-0042"],["P6","Ajouter un suivi","espace-pair.html#/suivi/VBG-0042"],["P7","SOS","espace-pair.html#/sos"],["P8","Collecte : étape 1","espace-pair.html#/collecte?etape=1"],["P9","Collecte : vérification","espace-pair.html#/collecte?etape=5&demo=1"],["P10","File de synchronisation (hors ligne)","espace-pair.html#/sync?net=off"],["P11","Conflit 409 à résoudre","espace-pair.html#/sync?net=on"]]},{"id":"admin","label":"Admin mobile","items":[["A1","Tableau de bord d’astreinte","admin-mobile.html#/tableau"],["A2","Liste des alertes","admin-mobile.html#/alertes"],["A3","Détail d’une alerte SOS","admin-mobile.html#/alerte/2041"],["A4","Validation des pairs","admin-mobile.html#/pairs"],["A5","Mode maintenance","admin-mobile.html#/maintenance"],["A6","Notifications","admin-mobile.html#/notifications"],["A7","Hors connexion","admin-mobile.html#/tableau?net=off"]]}];
+  const MODS = [{"id":"auth","label":"Authentification","items":[["01","Splash et carrousel","index.html#/splash"],["02","Connexion (unique : tous les rôles)","index.html#/login"],["03","Inscription (4 phases)","index.html#/signup"],["04","Code par e-mail (OTP)","index.html#/otp"],["05","Mot de passe oublié","index.html#/forgot"],["06","Nouveau mot de passe","index.html#/reset"],["31","Choix de l’espace (après connexion)","index.html#/espaces"]]},{"id":"home","label":"Accueil","items":[["07","Tableau de bord","index.html#/dashboard"],["08","Thématiques","index.html#/thematiques"],["09","Fiche thématique","index.html#/thematique"],["10","Ressources","index.html#/ressources"],["11","Notifications","index.html#/notifications"]]},{"id":"sos","label":"SOS & signalement","items":[["12","Signaler et suivre","index.html#/sighub"],["13","SOS","index.html#/sos"],["14","Alerte envoyée","index.html#/sos-envoye"],["15","Signalement (4 étapes)","index.html#/signalement"],["16","Contacts d’urgence","index.html#/urgences"]]},{"id":"feed","label":"Fil d’actualités","items":[["17","Fil d’actualités","index.html#/fil"],["18","Publication et commentaires","index.html#/post"],["19","Créer une publication","index.html#/postpublication"],["20","Créer un sondage","index.html#/sondage"]]},{"id":"community","label":"Communauté","items":[["21","Messages","index.html#/message"],["22","Conversation","index.html#/chat"],["23","Groupes","index.html#/groupes"],["24","Événements","index.html#/evenements"],["25","Assistant","index.html#/assistant"]]},{"id":"profile","label":"Profil","items":[["26","Mon profil","index.html#/profil"],["27","Profil progressif","index.html#/completer"],["28","Paramètres","index.html#/parametres"],["29","Sécurité et confidentialité","index.html#/securite"],["30","Newsletter","index.html#/newsletter"]]},{"id":"pair","label":"Espace pair","items":[["P1","Accueil pair","espace-pair.html#/accueil"],["P2","Alertes routées vers moi","espace-pair.html#/alertes"],["P3","Détail d’une alerte SOS","espace-pair.html#/alerte/a1"],["P4","Mes dossiers","espace-pair.html#/dossiers"],["P5","Fiche dossier","espace-pair.html#/dossier/VBG-0042"],["P6","Ajouter un suivi","espace-pair.html#/suivi/VBG-0042"],["P7","SOS","espace-pair.html#/sos"],["P8","Collecte : étape 1","espace-pair.html#/collecte?etape=1"],["P9","Collecte : vérification","espace-pair.html#/collecte?etape=5&demo=1"],["P10","File de synchronisation (hors ligne)","espace-pair.html#/sync?net=off"],["P11","Conflit 409 : je choisis (serveur ou mon appareil)","espace-pair.html#/conflit/q1"],["P12","Push SOS reçu (côté pair)","espace-pair.html#/push-sos"]]},{"id":"admin","label":"Admin mobile","items":[["A1","Tableau de bord d’astreinte","admin-mobile.html#/tableau"],["A2","Liste des alertes","admin-mobile.html#/alertes"],["A3","Détail d’une alerte SOS","admin-mobile.html#/alerte/2041"],["A4","Inscriptions à valider","admin-mobile.html#/inscriptions"],["A5","Mode maintenance","admin-mobile.html#/maintenance"],["A6","Notifications","admin-mobile.html#/notifications"],["A7","Hors connexion","admin-mobile.html#/tableau?net=off"],["A8","Rôles et invitations (chercher un membre)","admin-mobile.html#/roles"],["A9","Modération : contenus signalés","admin-mobile.html#/moderation"],["A10","Contenu signalé : décision","admin-mobile.html#/contenu/m1"],["A11","Menu « Gérer »","admin-mobile.html#/gerer"],["A12","Push SOS reçu (côté admin)","admin-mobile.html#/push-sos"]]}];
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const file = () => (location.pathname.split('/').pop() || 'index.html');
   const hashOf = h => { const i = h.indexOf('#'); return i < 0 ? '' : h.slice(i); };
@@ -627,6 +656,104 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 
 <noscript>Cette maquette demande JavaScript.</noscript>
 <script>
+/* Session et sélecteur d'espace partagés (simulateur, espace pair, admin mobile) — décision client du 29/10/2026 :
+   UNE SEULE application, un seul compte ; un compte peut cumuler Membre + Pair éducateur·rice et/ou Admin.
+   Après connexion, un sélecteur d'espace s'affiche selon les rôles ; un commutateur reste dans l'en-tête et dans le profil.
+   La session de démonstration est partagée entre les trois pages par localStorage (clé xm-session-v1) ;
+   sans stockage disponible (file://, navigation privée), chaque page retombe sur des rôles de démonstration. */
+(function () {
+  'use strict';
+  const KEY = 'xm-session-v1';
+  const ORDER = ['membre', 'pair', 'admin'];
+  const DEST = { membre: 'index.html#/dashboard', pair: 'espace-pair.html#/accueil', admin: 'admin-mobile.html#/tableau' };
+  const LAB = { membre: 'Membre', pair: 'Pair éducateur·rice', admin: 'Administration' };
+  const SHORT = { membre: 'Membre', pair: 'Pair', admin: 'Admin' };
+  const DESC = {
+    membre: 'Réseau social, messages, SOS, ressources et événements.',
+    pair: 'Alertes routées vers toi, dossiers, collecte hors ligne, file de synchronisation.',
+    admin: 'Astreinte, inscriptions, rôles et invitations, modération, maintenance.',
+  };
+  const ICO = {
+    membre: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    pair: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/>',
+    admin: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+  };
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const svg = (n, c) => `<svg class="${c || 'xmsp-i'}" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICO[n] || ''}</svg>`;
+  const clean = r => { const s = new Set(['membre', ...(Array.isArray(r) ? r : [])]); return ORDER.filter(x => s.has(x)); };
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } };
+  let mem = null, created = false;
+  const state = () => mem || (mem = read() || (created = true, { roles: ['membre'], space: 'membre' }));
+  const write = () => { try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) { /* stockage indisponible */ } };
+
+  const X = window.XmSpace = {
+    ORDER, DEST, LAB, SHORT, DESC, esc, svg,
+    isNew: () => { state(); return created; },
+    reset: () => { mem = { roles: ['membre'], space: 'membre' }; created = true; write(); },
+    roles: () => clean(state().roles),
+    space: () => state().space || 'membre',
+    multi: () => X.roles().length > 1,
+    has: r => X.roles().includes(r),
+    setRoles: r => { state().roles = clean(r); if (!X.has(state().space)) state().space = 'membre'; write(); },
+    setSpace: s => { state().space = s; write(); },
+    /* Chaque page déclare son espace. En mode recette (menu ☰), le rôle manquant est ajouté au compte de démonstration. */
+    enter: space => { const s = state(); const r = new Set(clean(s.roles)); r.add(space); s.roles = clean([...r]); s.space = space; write(); },
+    /* Bouton de l'en-tête : espace courant + chevron ; n'existe que pour un compte à plusieurs rôles. */
+    pill: (cur, cls) => (X.multi() ? `<button type="button" class="xmsp-pill ${cls || ''}" data-xmsp-open aria-haspopup="dialog" aria-label="Espace actuel : ${esc(LAB[cur])}. Changer d’espace">${svg(cur)}<span>${esc(SHORT[cur])}</span><svg class="xmsp-c" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>` : ''),
+    /* Liste des espaces accessibles (écran de choix et feuille). */
+    options: cur => X.roles().map(r => `<a class="xmsp-opt" href="${DEST[r]}" data-xmsp-go="${r}" ${r === cur ? 'aria-current="page"' : ''}><span class="xmsp-ic">${svg(r)}</span><span class="xmsp-tx"><b>${esc(LAB[r])}</b><small>${esc(DESC[r])}</small></span>${r === cur ? '<span class="xmsp-here">Ici</span>' : '<svg class="xmsp-c2" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'}</a>`).join(''),
+    /* Feuille « Choisir mon espace » dans l'écran du téléphone. */
+    open: (host, cur) => {
+      host = host || document.getElementById('app'); if (!host) return;
+      cur = cur || X.space();
+      const opener = document.activeElement;
+      const el = document.createElement('div'); el.className = 'xmsp-ov';
+      el.innerHTML = `<div class="xmsp-scrim" data-xmsp-close></div><div class="xmsp-sheet" role="dialog" aria-modal="true" aria-labelledby="xmspT"><div class="xmsp-grab" aria-hidden="true"></div>
+        <h2 id="xmspT">Choisir mon espace</h2><p class="xmsp-p">Un seul compte, une seule connexion. Tes rôles : ${X.roles().map(r => `<b>${esc(LAB[r])}</b>`).join(', ')}.</p>
+        <div class="xmsp-list">${X.options(cur)}</div><button type="button" class="xmsp-x" data-xmsp-close>Fermer</button></div>`;
+      host.appendChild(el);
+      const close = () => { document.removeEventListener('keydown', key, true); el.remove(); if (opener && opener.focus && document.contains(opener)) opener.focus({ preventScroll: true }); };
+      const key = e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
+      document.addEventListener('keydown', key, true);
+      el.addEventListener('click', e => { if (e.target.closest('[data-xmsp-close]')) close(); });
+      const a = el.querySelector('.xmsp-opt:not([aria-current])') || el.querySelector('.xmsp-opt'); if (a) a.focus({ preventScroll: true });
+    },
+  };
+
+  document.addEventListener('click', e => {
+    const o = e.target.closest('[data-xmsp-open]'); if (o) { e.preventDefault(); X.open(document.getElementById('app'), o.dataset.xmspCur); return; }
+    const g = e.target.closest('[data-xmsp-go]'); if (g) { X.setSpace(g.dataset.xmspGo); /* la navigation suit le lien */ }
+  });
+
+  const css = document.createElement('style'); css.id = 'xmspCss';
+  css.textContent = `
+.xmsp-pill { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 10px 0 12px; border-radius: 999px; border: 1.5px solid var(--app-primary, #0433C3); background: var(--app-primary-subtle, #EBEFFA); color: var(--app-primary-subtle-text, #021C6B); font: 700 13px var(--xm-font-body, Arial, sans-serif); cursor: pointer; white-space: nowrap; }
+.xmsp-pill:hover { background: var(--app-surface, #fff); }
+.xmsp-pill .xmsp-i { width: 18px; height: 18px; } .xmsp-pill .xmsp-c { width: 16px; height: 16px; }
+.xmsp-pill:focus-visible { outline: 3px solid var(--app-primary, #0433C3); outline-offset: 2px; }
+.xmsp-ov { position: absolute; inset: 0; z-index: 60; }
+.xmsp-scrim { position: absolute; inset: 0; background: rgb(10 12 28 / .6); }
+.xmsp-sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92%; overflow-y: auto; background: var(--app-surface, #fff); color: var(--app-text, #1B1630); border-radius: 20px 20px 0 0; padding: 12px 16px calc(var(--safe-bottom, 34px) + 14px); display: grid; gap: 12px; font-family: var(--xm-font-body, Arial, sans-serif); }
+.xmsp-grab { width: 40px; height: 4px; border-radius: 2px; background: var(--app-border, #E4DCE6); justify-self: center; }
+.xmsp-sheet h2 { font: 700 19px/1.25 var(--xm-font-heading, Montserrat, sans-serif); margin: 0; }
+.xmsp-p { margin: 0; font-size: 14px; color: var(--app-muted, #5B5670); }
+.xmsp-list { display: grid; gap: 10px; }
+.xmsp-opt { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px; border: 1.5px solid var(--app-border, #E4DCE6); border-radius: 16px; color: inherit; text-decoration: none; background: var(--app-surface, #fff); }
+.xmsp-opt[aria-current="page"] { border-color: var(--app-primary, #0433C3); background: var(--app-primary-subtle, #EBEFFA); }
+.xmsp-opt:focus-visible { outline: 3px solid var(--app-primary, #0433C3); outline-offset: 2px; }
+.xmsp-ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--app-primary, #0433C3); color: var(--app-on-primary, #fff); }
+.xmsp-ic .xmsp-i { width: 24px; height: 24px; }
+.xmsp-tx { display: grid; gap: 2px; min-width: 0; } .xmsp-tx b { font-size: 16px; } .xmsp-tx small { font-size: 13px; color: var(--app-muted, #5B5670); line-height: 1.35; }
+.xmsp-here { font-size: 12px; font-weight: 700; color: var(--app-primary-subtle-text, #021C6B); }
+.xmsp-c2 { width: 20px; height: 20px; color: var(--app-muted, #5B5670); }
+.xmsp-x { min-height: 48px; border-radius: 12px; border: 1px solid var(--app-border, #E4DCE6); background: transparent; color: inherit; font: 700 15px var(--xm-font-body, Arial, sans-serif); cursor: pointer; }
+.xmsp-strip { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-bottom: -4px; }
+`;
+  document.head.appendChild(css);
+})();
+
+</script>
+<script>
 /* Noyau commun des maquettes (Espace pair, Admin mobile) : routage par ancre, thème, réseau, feuilles, notifications.
    Dépend de l'objet de chaînes T défini en tête du fichier de la maquette. */
 (function () {
@@ -669,6 +796,14 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
     book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
     list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
     swap: '<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+    feed: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+    chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12Z"/>',
+    flag: '<path d="M4 22V4M4 4h13l-2 4 2 4H4"/>',
+    copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
+    link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+    userplus: '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>',
+    eyeoff: '<path d="M9.9 4.2A10 10 0 0 1 12 4c6.5 0 10 8 10 8a17 17 0 0 1-2.2 3.2M6.6 6.6A17 17 0 0 0 2 12s3.5 8 10 8a10 10 0 0 0 5.4-1.6"/><path d="M2 2l20 20M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+    more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
     plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
   };
   const ic = (n, c = '') => `<svg class="ico ${c}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${P[n] || ''}</svg>`;
@@ -704,14 +839,18 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
   Kit.toast = Kit.say;
   Kit.go = h => { location.hash = h; };
 
+  /* Notification push (aperçu) : bannière en haut de l'écran du téléphone, appui = ouverture de l'alerte. */
+  const pushHtml = p => `<a class="pushbn" role="alert" href="#/${esc(p.href)}"><span class="pb-app">${ic('bell', 'sm')}<span>Xomiton</span><span class="pb-when">maintenant</span></span><b>${esc(p.title)}</b><span>${esc(p.text)}</span><span class="pb-aud">${esc(p.audience)}</span></a>`;
+
   Kit.render = (opts = {}) => {
     const r = S.route; const d = cfg.screen(r) || cfg.screen({ name: cfg.home, args: [], q: {} });
     const key = r.name + '/' + r.args.join('/');
     const old = $('.pane', frame); const keep = !opts.top && key === lastKey && old ? old.scrollTop : 0;
-    const tabs = d.noTabs ? '' : `<nav class="tb" aria-label="${esc(t('nav.label'))}">${cfg.tabs.map(tb => `<a href="#/${tb.href}" ${d.tab === tb.id ? 'aria-current="page"' : ''} class="${tb.sos ? 'sos' : ''}">${tb.sos ? `<span class="b" aria-hidden="true">SOS</span><span class="vh">${esc(tb.label)}</span>` : `${ic(tb.icon)}<span>${esc(tb.label)}</span>`}${tb.count && tb.count() ? `<span class="cnt" aria-hidden="true">${esc(tb.count())}</span>` : ''}</a>`).join('')}</nav>`;
-    const chip = cfg.chip && !d.back ? cfg.chip(r) : '';
+    const tabs = d.noTabs ? '' : `<nav class="tb" aria-label="${esc(t('nav.label'))}">${cfg.tabs.map(tb => `<a href="${tb.ext ? tb.href : '#/' + tb.href}" ${d.tab === tb.id ? 'aria-current="page"' : ''} class="${tb.sos ? 'sos' : ''} ${tb.ext ? 'ext' : ''}" ${tb.ext ? 'data-xmsp-go="membre"' : ''}>${tb.sos ? `<span class="b" aria-hidden="true">SOS</span><span class="vh">${esc(tb.label)}</span>` : `${ic(tb.icon)}<span>${esc(tb.label)}</span>`}${tb.count && tb.count() ? `<span class="cnt" aria-hidden="true">${esc(tb.count())}</span>` : ''}</a>`).join('')}</nav>`;
+    const sp = window.XmSpace && !d.back ? XmSpace.pill(cfg.space, 'hdr-sp') : '';
+    const chip = (cfg.chip && !d.back ? cfg.chip(r) : '') + sp;
     const banner = cfg.banner ? cfg.banner() : '';
-    frame.innerHTML = `<header class="hdr">${d.back ? `<a class="icon-btn" href="#/${d.back}" aria-label="${esc(d.backLabel || t('nav.back'))}">${ic('back')}</a>` : ''}<h1 class="t" id="ttl" tabindex="-1">${d.title}</h1>${chip}</header>${banner}<main class="pane" id="pane">${d.html}</main>${tabs}`;
+    frame.innerHTML = `<header class="hdr">${d.back ? `<a class="icon-btn" href="#/${d.back}" aria-label="${esc(d.backLabel || t('nav.back'))}">${ic('back')}</a>` : ''}<h1 class="t" id="ttl" tabindex="-1">${d.title}</h1>${chip}</header>${banner}<main class="pane" id="pane">${d.html}</main>${tabs}${d.push ? pushHtml(d.push) : ''}`;
     const pane = $('.pane', frame); pane.scrollTop = keep;
     if (key !== lastKey && !opts.noFocus) { const tt = $('#ttl', frame); if (tt) tt.focus({ preventScroll: true }); }
     lastKey = key;
@@ -747,6 +886,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 
   Kit.start = c => {
     cfg = c;
+    if (window.XmSpace && c.space) XmSpace.enter(c.space);
     const rail = c.rail.map(g => `<div class="rail-group"><h2>${esc(g.title)}</h2>${g.items.map(i => `<a href="#/${i.href}" data-route="${esc(i.route || i.href.split('?')[0])}" ${i.exact ? 'data-exact="1"' : ''} data-name="${esc(i.href.split('?')[0].split('/')[0])}">${esc(i.label)}</a>`).join('')}</div>`).join('');
     const opts = c.rail.map(g => `<optgroup label="${esc(g.title)}">${g.items.map(i => `<option value="${esc(i.href)}">${esc(i.label)}</option>`).join('')}</optgroup>`).join('');
     document.body.innerHTML = `<a class="skip" href="#app">${esc(t('page.skip'))}</a>
@@ -892,7 +1032,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
   }
   function alerts() {
     const n = openAlerts().length;
-    return { tab: 'alerts', title: esc(t('alerts.title')), plain: t('alerts.title'), html: `
+    return { tab: 'alerts', title: esc(t('alerts.short')), plain: t('alerts.title'), html: `
       <div class="row wrap between"><div class="row wrap"><b>${n} ${esc(t('alerts.open_count', { count: n }))}</b></div>
         <button class="btn btn-outline btn-sm" data-act="refresh" style="min-height:44px">${ic('sync', 'sm')} ${esc(t('alerts.refresh'))}</button></div>
       <p class="note">${ic('bell', 'sm')}<span>${esc(t('alerts.on_duty'))}</span></p>
@@ -910,7 +1050,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
     return { tab: 'alerts', back: 'alertes', backLabel: t('alerts.title'), title: `${esc(en('alert_type', a.type))} · ${esc(a.commune)}`, plain: t('alerts.detail_for', { type: en('alert_type', a.type), place: a.commune }), html: `
       <div class="row wrap">${aType(a.type)}${aStatus(a)}${aPrio(a.prio)}</div>
       ${a.status === 'nouveau' && !a.ack ? `<p class="note warn">${ic('alert', 'sm')}<span>${esc(t('alerts.escalation'))}</span></p>` : ''}
-      <dl class="dl card" style="padding:4px 14px">${dd('received', esc(ago(a.ago)))}${dd('place', esc(place(a)))}${dd('category', esc(a.viol ? en('violence', a.viol) : T.common.none))}${dd('needs', esc(a.needs.length ? a.needs.map(n => en('needs', n)).join(', ') : T.common.none))}${dd('author', esc(t('alerts.anonymous')))}${dd('contact', esc(a.contact ? t('alerts.contact_masked') : t('alerts.no_contact')))}${dd('position', pos)}${dd('description', esc(a.text))}</dl>
+      <dl class="dl card" style="padding:4px 14px">${dd('received', esc(ago(a.ago)))}${a.type === 'sos' ? dd('notified', esc(t('alerts.notified_text'))) : ''}${dd('place', esc(place(a)))}${dd('category', esc(a.viol ? en('violence', a.viol) : T.common.none))}${dd('needs', esc(a.needs.length ? a.needs.map(n => en('needs', n)).join(', ') : T.common.none))}${dd('author', esc(t('alerts.anonymous')))}${dd('contact', esc(a.contact ? t('alerts.contact_masked') : t('alerts.no_contact')))}${dd('position', pos)}${dd('description', esc(a.text))}</dl>
       <section class="stack-s">${secH(t('alerts.fields.history'))}<ol class="tl card">${a.hist.map((h, i) => `<li class="${i === a.hist.length - 1 ? '' : 'done'}"><span class="when">${esc(h.w)}</span>${esc(h.x)}</li>`).join('')}</ol></section>
       <div class="acts" style="display:flex;flex-direction:column;gap:8px">${actionsFor(a, true).replace(/class="btn /g, 'class="btn btn-block ')}</div>` };
   }
@@ -1048,7 +1188,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
         <p class="hint" style="margin:0">${esc(t('col.footnote'))}</p>`;
     }
     const last = F.step === 5; const off = S.net === 'off';
-    return { tab: 'collect', title: esc(t('col.title')), plain: t('col.title'), html: `
+    return { tab: 'cases', title: esc(t('col.title')), plain: t('col.title'), html: `
       <div><div class="steplab"><b>${esc(steps[F.step - 1])}</b><span>${esc(t('col.step', { n: F.step, total: 5 }))}</span></div><div class="stepper" style="--n:5" role="img" aria-label="${esc(t('col.step', { n: F.step, total: 5 }))}">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= F.step ? 'on' : ''}"></i>`).join('')}</div></div>
       ${F.step === 1 ? `<p class="note warn">${ic('lock', 'sm')}<span><b>${esc(t('col.no_identity_title'))}</b> ${esc(t('col.no_identity'))}</span></p>` : ''}
       ${F.step > 1 && F.step < 5 && (F.kind || F.date) ? `<p class="hint" style="margin:0">${esc(t('col.draft_saved'))} <button class="btn-link" data-act="clear" style="min-height:44px">${esc(t('col.draft_clear'))}</button></p>` : ''}
@@ -1095,7 +1235,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
     const it = Q.find(i => i.id === id);
     if (!it) return collecte();
     const sent = it.status === 'sent';
-    return { tab: 'collect', title: esc(t('col.title')), plain: t(sent ? 'col.sent_title' : 'col.queued_title'), html: `
+    return { tab: 'cases', title: esc(t('col.title')), plain: t(sent ? 'col.sent_title' : 'col.queued_title'), html: `
       <div class="state-card card" aria-live="polite">
         <div class="row">${sent ? badge('ok', t('col.state_sent')) : badge('warn', t('col.state_queued'))}</div>
         <div class="big">${esc(t(sent ? 'col.sent_title' : 'col.queued_title'))}</div>
@@ -1114,11 +1254,8 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
     let extra = '';
     if (st === 'conflict') {
       extra = `<p class="small" style="margin:0">${esc(t('sync.conflict_text'))}</p>
-        <fieldset class="fld cmp"><legend class="vh">${esc(t('sync.field'))} : ${esc(i.field)}</legend>
-          <div class="muted small">${esc(t('sync.field'))} : <b style="color:var(--app-text)">${esc(i.field)}</b> · ${esc(t('sync.base'))} : <b style="color:var(--app-text)">${esc(i.base)}</b></div>
-          <label class="opt"><input type="radio" name="cmp-${i.id}" value="server" ${i.choice === 'server' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_server'))}</b><small>${esc(t('sync.server'))} : <b>${esc(i.server)}</b></small></span></label>
-          <label class="opt"><input type="radio" name="cmp-${i.id}" value="mine" ${i.choice === 'mine' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_mine'))}</b><small>${esc(t('sync.mine'))} : <b>${esc(i.mine)}</b></small></span></label></fieldset>
-        <button class="btn btn-primary" data-act="resolve" data-id="${i.id}">${esc(t('sync.resolve'))}</button>`;
+        <div class="muted small">${esc(t('sync.field'))} : <b style="color:var(--app-text)">${esc(i.field)}</b> · ${esc(t('sync.server'))} : <b style="color:var(--app-text)">${esc(i.server)}</b> · ${esc(t('sync.mine'))} : <b style="color:var(--app-text)">${esc(i.mine)}</b></div>
+        <a class="btn btn-primary" href="#/conflit/${i.id}">${ic('swap', 'sm')} ${esc(t('sync.resolve_open'))}</a>`;
     }
     return `<article class="q-item ${cls}" aria-label="${esc(i.label)}"><div class="top"><span class="grow"><h3>${esc(i.label)}</h3><div class="sub">${esc(t('sync.kinds.' + i.kind))} · ${esc(t('sync.created', { when: i.when }))}${i.code ? ` · <b>${i.code}</b>` : ''}</div></span>${stB}</div>${st === 'pending' ? `<div class="sub">${esc(t('sync.retries'))}</div>` : ''}${extra}</article>`;
   }
@@ -1148,6 +1285,33 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
       });
       Kit.render({ noFocus: true }); if (k) Kit.toast(t('sync.done', { count: k }));
     }, 1100);
+  }
+
+  /* ---------- Notification push SOS (aperçu) ---------- */
+  function pushSos() { const h = home(); h.push = { href: 'alerte/a1', title: t('push.sos_title'), text: t('push.sos_text'), audience: t('push.audience') }; h.caption = t('push.caption'); return h; }
+
+  /* ---------- Conflit 409 : le pair tranche lui-même (décision 29/10/2026) ---------- */
+  const CF = { pick: '' };
+  function conflit(id) {
+    const i = Q.find(x => x.id === id);
+    if (!i || (i.status !== 'conflict' && i.status !== 'resolved')) return { tab: '', back: 'sync', backLabel: t('conflict.back'), title: esc(t('conflict.title')), plain: t('conflict.title'), html: `<div class="empty"><b>${esc(t('conflict.not_found'))}</b></div><a class="btn btn-primary btn-block" href="#/sync">${esc(t('conflict.back_queue'))}</a>` };
+    if (i.status === 'resolved') {
+      const v = i.choice === 'server' ? i.server : i.mine;
+      return { tab: '', back: 'sync', backLabel: t('conflict.back'), title: esc(t('conflict.done_title')), plain: t('conflict.done_title'), html: `
+        <div class="state-card card" aria-live="polite"><div>${badge('ok', t('sync.states.resolved'))}</div><div class="big">${esc(t('conflict.done_title'))}</div><p style="margin:0">${esc(t('conflict.done_text', { value: v }))}</p><p class="muted small" style="margin:0">${esc(t('conflict.history'))}</p></div>
+        <a class="btn btn-primary btn-block" href="#/sync">${esc(t('conflict.back_queue'))}</a>` };
+    }
+    const card = (k, label, help, by, val) => `<label class="opt" style="align-items:flex-start;padding:14px"><input type="radio" name="cf" value="${k}" ${CF.pick === k ? 'checked' : ''} data-act="cfpick" data-k="${k}"><span class="dot" aria-hidden="true" style="margin-top:3px"></span><span class="tx" style="display:grid;gap:4px"><b>${esc(label)}</b><span class="h2" style="margin:0">${esc(val)}</span><small>${esc(help)}</small><small>${ic('clock', 'sm')} ${esc(by)}</small></span></label>`;
+    return { tab: '', back: 'sync', backLabel: t('conflict.back'), title: esc(t('conflict.title')), plain: t('conflict.title'), html: `
+      <div class="row wrap">${badge('warn', t('conflict.code'))}${badge('mute', i.label)}</div>
+      <section class="stack-s"><h2 class="h3" style="margin:0">${esc(t('conflict.what_h'))}</h2><p style="margin:0">${esc(t('conflict.what'))}</p></section>
+      <p class="note ok">${ic('user-check', 'sm')}<span><b>${esc(t('conflict.you_h'))}.</b> ${esc(t('conflict.you'))}</span></p>
+      <dl class="dl card" style="padding:4px 14px"><div><dt>${esc(t('conflict.field'))}</dt><dd>${esc(i.label)} · <b>${esc(i.field)}</b></dd></div><div><dt>${esc(t('conflict.base'))}</dt><dd>${esc(i.base)}</dd></div></dl>
+      <fieldset class="fld choice"><legend>${esc(t('conflict.pick'))}</legend>
+        ${card('server', t('conflict.server'), t('conflict.server_help'), t('conflict.server_by'), i.server)}${card('mine', t('conflict.mine'), t('conflict.mine_help'), t('conflict.mine_by'), i.mine)}</fieldset>
+      <p class="hint" style="margin:0">${ic('info', 'sm')} ${esc(t('conflict.history'))}</p>
+      <button class="btn btn-primary btn-block" data-act="cfgo" data-id="${i.id}" ${CF.pick ? '' : 'disabled'}>${esc(t('conflict.confirm'))}</button>
+      <a class="btn btn-outline btn-block" href="#/sync">${esc(t('common.cancel'))}</a>` };
   }
 
   /* ---------- SOS ---------- */
@@ -1190,8 +1354,13 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
     clear: () => { F = F0(); Kit.toast(t('col.draft_cleared')); Kit.render({ top: true }); },
     newcol: () => { F = F0(); },
     syncnow: () => runSync(),
-    pick: d => { Q.find(i => i.id === d.id).choice = document.querySelector(`input[name="cmp-${d.id}"]:checked`).value; },
-    resolve: d => { const i = Q.find(x => x.id === d.id); const ch = document.querySelector(`input[name="cmp-${d.id}"]:checked`); if (!ch) return Kit.toast(t('sync.choose_first')); i.choice = ch.value; i.status = 'resolved'; Kit.toast(t('sync.resolved_toast')); Kit.render({ noFocus: true }); },
+    cfpick: d => { CF.pick = d.k; const b = document.querySelector('[data-act="cfgo"]'); if (b) b.disabled = false; },
+    cfgo: d => {
+      const i = Q.find(x => x.id === d.id); if (!CF.pick) return Kit.toast(t('conflict.choose_first'));
+      const v = CF.pick === 'server' ? i.server : i.mine;
+      Kit.confirm({ title: t('conflict.confirm_title', { value: v }), text: esc(t(CF.pick === 'server' ? 'conflict.confirm_server' : 'conflict.confirm_mine')), ok: t('conflict.yes'),
+        onOk: () => { i.choice = CF.pick; i.status = 'resolved'; if (i.caseCode) { const c = find(i.caseCode); if (c) c.status = { 'Clos': 'clos', 'En cours': 'en_cours', 'Ouvert': 'ouvert' }[v] || c.status; } CF.pick = ''; Kit.toast(t('sync.resolved_toast')); Kit.render({ noFocus: true }); } });
+    },
     sosalt: () => Kit.confirm({ title: t('sos.alt_title'), text: esc(t('sos.alt_text')), ok: t('sos.alt_yes'), cancel: t('sos.cancel'), onOk: sendSos }),
     safe: () => Kit.toast(t('sos.safe_ok')),
     sosreset: () => { SOSS.state = 'idle'; },
@@ -1202,13 +1371,13 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
     Object.assign(F, { kind: 'VBG', date: '2024-03-14', zone: 'Atlantique', commune: 'Abomey-Calavi', pop: 'Jeunes filles (15-24)', sex: 'Femme', age: '15-17', viol: 'sexuelle', ref: 'psy', notes: 'Contexte familial, première écoute faite par la pair du quartier.', errors: {} });
   }
   Kit.start({
-    title: T.title, sub: T.sub, home: 'accueil', logo: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjguNTAgMi45MiAyMTguMTcgNTYuMDgiIHJvbGU9ImltZyIgYXJpYS1sYWJlbGxlZGJ5PSJ0Ij48dGl0bGUgaWQ9InQiPlhvbWl0b248L3RpdGxlPjxwYXRoIGZpbGw9IiMwNDMzQzMiIGQ9Ik0xOC4wMiA1MC4yNUMxNi4yNiA0OS45MyAxNC42NCA0OC41MSAxNC43NyA0Ny4zOEMxNC44MyA0Ni44MiAxNS4wNiA0Ni40NiAxNS45MSA0NS41NUMxNy4yMSA0NC4xNiAyMS4zNCAzOC4zMSAyMS45OSAzNi45MkMyMi41MCAzNS44MyAyMi4yNyAzNC45NCAyMC45OSAzMy4xNkMyMC42MSAzMi42NCAxOS45MyAzMS42NiAxOS40NyAzMS4wMEMxOC4wNyAyOC45NyAxNi4zMCAyNi41OCAxNS41OCAyNS43NUMxNC4yMSAyNC4xNyAxNC4xNiAyMy4yNyAxNS4zOCAyMi4xOUMxNy4wMyAyMC43MSAxOS41OCAyMC41MSAyMS44NCAyMS42OEMyMy4yNSAyMi40MCAyNC4yNSAyMy40MyAyNS45MiAyNS44MkMyNy4yOSAyNy43OCAyNy44MiAyOC4yMSAyOC42MSAyNy45OUMyOS4yMyAyNy44MiAyOS40OCAyNy41MSAzMS4xNyAyNC43OEMzMi4wMSAyMy40MiAzMi45NyAyMi4zOCAzMy44OCAyMS44NUMzNi4yMyAyMC40OCAzOC44OSAyMC42NiA0MC43NSAyMi4zMUM0MS44OCAyMy4zMiA0MS43NyAyNC4xOSA0MC4zMCAyNS43NEMzOS4wOSAyNy4wMSAzNy45NyAyOC41MiAzNS4xMCAzMi44MEMzMi45OSAzNS45NCAzMy4wMCAzNi4wMCAzNi4zNyA0MC41OEMzNi45MyA0MS4zNCAzNy42OCA0Mi4zOSAzOC4wNCA0Mi45MkMzOC40MCA0My40NCAzOS4wNCA0NC4zNSAzOS40NiA0NC45MkM0MC41MyA0Ni4zOCA0MC43MCA0Ni43MyA0MC43MSA0Ny40NkM0MC43MSA0OS4yNyAzOC40OCA1MC42MiAzNi4wOCA1MC4yNkMzMy43NCA0OS45MCAzMi4zMSA0OC44MyAyOS44NyA0NS42MkMyOC42MyA0NC4wMCAyOC42OCA0NC4wNSAyOC4zMCA0My44MEMyNy4zNyA0My4xOCAyNi43OCA0My41NyAyNS41NCA0NS42N0MyMy4zOSA0OS4zMSAyMC45OCA1MC43OCAxOC4wMiA1MC4yNVpNODEuMjggNTEuNzVDNzkuMTEgNTEuNDEgNzcuNTggNDkuODggNzcuMDMgNDcuNTJDNzYuODYgNDYuNzYgNzYuNzYgNDIuMjYgNzYuNzYgMzQuNDRDNzYuNzUgMjcuODAgNzYuNzYgMjcuOTEgNzYuMjYgMjYuMzBDNzUuNTEgMjMuOTAgNzYuODIgMjIuNTcgNzkuOTIgMjIuNTZDODIuMDUgMjIuNTYgODMuMjAgMjMuMTcgODQuNTEgMjUuMDFDODUuNTkgMjYuNTQgODYuMDQgMjYuNTUgODcuNzQgMjUuMTBDODkuNTUgMjMuNTQgOTEuMjQgMjIuODIgOTMuNjMgMjIuNThDOTcuMTEgMjIuMjQgOTkuNjIgMjMuMzEgMTAxLjQ1IDI1LjkyQzEwMi42MiAyNy41OCAxMDMuMDEgMjcuNTcgMTA0Ljc5IDI1Ljg0QzEwNy4xMSAyMy41OCAxMDkuMTEgMjIuNjkgMTEyLjI4IDIyLjUzQzExNi40NiAyMi4zMiAxMTkuMzcgMjQuNTUgMTIwLjQ1IDI4Ljc5QzEyMS4wMyAzMS4wNyAxMjEuMTIgMzIuNjMgMTIxLjA1IDM5LjU0QzEyMC45OSA0NS41OCAxMjEuMDMgNDYuNTIgMTIxLjQzIDQ3Ljg4QzEyMS45OCA0OS43NiAxMjEuNzEgNTAuNTEgMTIwLjIxIDUxLjIyQzExNy42OSA1Mi40MSAxMTQuNzEgNTEuNjggMTEzLjQzIDQ5LjU1QzExMi40OCA0Ny45NyAxMTIuNDkgNDguMDQgMTEyLjQyIDM5Ljg4QzExMi4zNyAzMy42OCAxMTIuMzQgMzIuODEgMTEyLjIyIDMyLjM0QzExMS4wNyAyNy45NiAxMDUuODQgMjguNTAgMTAzLjg1IDMzLjIwQzEwMy4yMSAzNC43MyAxMDMuMjIgMzQuNTkgMTAzLjE5IDQwLjQ2QzEwMy4xNSA0Ni4yMCAxMDMuMTggNDYuNjAgMTAzLjYwIDQ3LjkxQzEwNC4xMSA0OS40NyAxMDMuOTIgNTAuMjYgMTAyLjg1IDUwLjk3QzEwMC4yNiA1Mi42OCA5Ni42OSA1MS43NyA5NS4zMiA0OS4wNUM5NC42NiA0Ny43NCA5NC42NSA0Ny42NSA5NC41OSAzOS42MkM5NC41MyAzMS41OSA5NC41NyAzMi4wNCA5My44MiAzMC45MUM5MS45NSAyOC4xMiA4Ny45MyAyOS4yMyA4Ni4xNyAzMy4wM0M4NS40MiAzNC42NSA4NS4zMCAzNS45NyA4NS4zNiA0MS45NkM4NS40MSA0Ni4zNiA4NS40MyA0Ni42NCA4NS44MyA0Ny45NkM4Ni4xMSA0OC44NiA4Ni4xNiA0OS41OCA4NS45NyA1MC4wM0M4NS41MCA1MS4xNiA4My4wOSA1Mi4wNCA4MS4yOCA1MS43NVpNMTMxLjM4IDE4Ljc5QzEyNy43OSAxOC4wOCAxMjYuNTEgMTMuNjEgMTI5LjE0IDEwLjk1QzEzMS4xNiA4Ljg5IDEzMy44OSA4LjM4IDEzNS45OSA5LjY1QzE0MC43MyAxMi41MSAxMzcuMDEgMTkuOTAgMTMxLjM4IDE4Ljc5Wk0xMzMuMDQgNTEuNzBDMTMxLjA1IDUxLjI2IDEyOS42MyA0OS43NSAxMjkuMDggNDcuNDhDMTI4LjgwIDQ2LjM0IDEyOC43NSA0NC42NiAxMjguNzUgMzYuMjVDMTI4Ljc1IDI3LjYxIDEyOC43NSAyNy43MiAxMjguMjkgMjYuMjVDMTI3LjYzIDI0LjE1IDEyOC40MSAyMy4wNiAxMzAuODggMjIuNjFDMTMzLjkzIDIyLjA1IDEzNi4zMyAyMy41MiAxMzcuMTAgMjYuNDNDMTM3LjI4IDI3LjEyIDEzNy4yOCAyNy4yMSAxMzcuMzQgMzYuNjdDMTM3LjQwIDQ3LjE2IDEzNy4zNiA0Ni40NyAxMzcuOTIgNDguMTBDMTM4LjI3IDQ5LjEwIDEzOC4yOCA0OS42NiAxMzcuOTggNTAuMTlDMTM3LjI5IDUxLjM1IDEzNC44NCA1Mi4xMCAxMzMuMDQgNTEuNzBaTTE1My40MiA1MS43NEMxNTAuMTkgNTEuMzggMTQ3Ljc2IDQ5Ljg2IDE0Ni41OCA0Ny40N0MxNDUuNzYgNDUuODAgMTQ1LjcyIDQ1LjM1IDE0NS43MCAzNi45NEMxNDUuNjggMjguMzAgMTQ1LjgwIDI4Ljk2IDE0NC4wMCAyNy43OUMxNDIuNjIgMjYuODkgMTQyLjE0IDI2LjIwIDE0Mi4xMyAyNS4wOEMxNDIuMTMgMjMuOTUgMTQyLjYzIDIzLjM1IDE0NC4wNiAyMi44MkMxNDUuNzAgMjIuMjEgMTQ1Ljk3IDIxLjIwIDE0NS4wOSAxOC45M0MxNDQuNDIgMTcuMTkgMTQ1LjI0IDE2LjA3IDE0Ny41NiAxNS41NUMxNTAuOTkgMTQuNzggMTUzLjc1IDE2Ljc0IDE1NC4xMyAyMC4yMUMxNTQuMjcgMjEuNTQgMTU0LjU0IDIyLjE5IDE1NS4wOCAyMi41NUMxNTUuNjEgMjIuOTAgMTU1Ljg3IDIyLjk0IDE1OC40MiAyMi45OUMxNjEuNzAgMjMuMDYgMTYyLjI2IDIzLjMwIDE2Mi4yOCAyNC42MkMxNjIuMzAgMjYuMjcgMTYwLjQxIDI3LjU1IDE1Ny4yMSAyOC4wNUMxNTUuMzAgMjguMzUgMTU0LjY3IDI4LjcwIDE1NC40MCAyOS42MEMxNTQuMTggMzAuMzMgMTU0LjI1IDQzLjI0IDE1NC40OCA0My45NkMxNTUuMTggNDYuMTcgMTU3LjQzIDQ2LjY3IDE2MC4wNSA0NS4yMEMxNjIuMTYgNDQuMDEgMTYyLjg5IDQzLjkyIDE2My41MyA0NC43N0MxNjUuMDUgNDYuODEgMTYxLjk5IDUwLjQzIDE1Ny45MiA1MS40MEMxNTYuNDUgNTEuNzUgMTU0LjY5IDUxLjg5IDE1My40MiA1MS43NFpNMTk3LjU1IDUxLjYyQzE5Ni4wMyA1MS4yNSAxOTQuNzUgNTAuMDggMTk0LjE4IDQ4LjU1QzE5My43MiA0Ny4zNCAxOTMuNzEgNDcuMDkgMTkzLjc0IDM3LjkyQzE5My43NiAyOC42NiAxOTMuNzQgMjguMDQgMTkzLjMzIDI2LjcxQzE5Mi44OCAyNS4yMiAxOTIuOTIgMjQuNTYgMTkzLjUxIDIzLjgxQzE5NC4xNyAyMi45OCAxOTUuMjYgMjIuNTUgMTk2LjcxIDIyLjU1QzE5OC45MiAyMi41NiAyMDAuMTUgMjMuMjIgMjAxLjQxIDI1LjA4QzIwMi4zNSAyNi40OCAyMDIuODcgMjYuNTEgMjA0LjI5IDI1LjI0QzIwNS44OCAyMy44MiAyMDcuODAgMjIuOTMgMjA5LjkyIDIyLjYyQzIxNS4xNyAyMS44NSAyMTguODAgMjQuNDcgMjE5LjY3IDI5LjY3QzIxOS43MyAzMC4wMSAyMTkuNzkgMzMuMDcgMjE5LjgzIDM4LjA4QzIxOS45MSA0Ni42NyAyMTkuODggNDYuMzEgMjIwLjQxIDQ3Ljk2QzIyMS4wNSA0OS45NSAyMjAuMzUgNTEuMDQgMjE4LjA2IDUxLjU4QzIxNS41MyA1Mi4xOSAyMTMuMjEgNTEuMTggMjEyLjEzIDQ4Ljk5QzIxMS4zOSA0Ny40OSAyMTEuNDAgNDcuNjQgMjExLjM0IDM5LjY3QzIxMS4yOSAzMy40MyAyMTEuMjcgMzIuNjYgMjExLjE0IDMyLjIxQzIwOS45OSAyOC4yMyAyMDUuNDEgMjguNDYgMjAzLjIxIDMyLjYwQzIwMi4xNCAzNC42MiAyMDIuMDcgMzUuMTkgMjAyLjEwIDQxLjQ2QzIwMi4xNCA0Ny4wOCAyMDIuMDkgNDYuNTUgMjAyLjcwIDQ4LjIxQzIwMy4yMSA0OS42MCAyMDIuODUgNTAuNDggMjAxLjQ5IDUxLjE3QzIwMC40MCA1MS43MiAxOTguNzUgNTEuOTEgMTk3LjU1IDUxLjYyWiIvPjxwYXRoIGZpbGw9IiNFMzBFMEUiIGQ9Ik02My43NSA1Mi44OEM2My41NCA1Mi44MSA2My4xMSA1Mi41OSA2Mi43OSA1Mi4zOEM2MS4zMyA1MS40NCA2MC45NSA1MS4zNSA1OS43NSA1MS43MUM1Ny4zNSA1Mi40MSA1NC4xMCA1MS43MyA1Mi4zOCA1MC4xNkM1MS4xNCA0OS4wMiA1MS40MCA0OC4zOSA1My4wMyA0OC41OEM1OC4yMyA0OS4xOCA2Mi4zNyA0Ni4xMyA2My4yMSA0MS4wOUM2My4zNiA0MC4yMCA2My4zNSAzOS43OSA2My4xNiAzOC4zM0M2Mi45MyAzNi41OCA2My41NCAzNi4xNiA2NC42MSAzNy4zM0M2Ni4xOCAzOS4wOCA2Ny4wNCA0Mi40OSA2Ni40NiA0NC43MkM2Ni4xMSA0Ni4wNSA2Ni4xOCA0Ni40OCA2Ni44OSA0Ny41M0M2Ny42NCA0OC42MSA2Ny43OSA0OS4wMCA2Ny43OSA0OS44M0M2Ny44MCA1MS44NyA2NS42NSA1My40OSA2My43NSA1Mi44OFpNNDQuNDggNDcuNThDNDMuNjIgNDcuMzcgNDIuNjcgNDYuNTcgNDIuMjkgNDUuNzNDNDEuNzkgNDQuNjIgNDIuMDAgNDMuNTQgNDIuOTcgNDIuMjlDNDMuNzEgNDEuMzEgNDMuNzYgNDEuMDIgNDMuNDAgMzkuNTBDNDMuMTUgMzguNDMgNDMuMjEgMzYuMjMgNDMuNTIgMzUuMzNDNDQuMzcgMzIuODcgNDUuMzYgMzEuNDUgNDYuMTYgMzEuNTJDNDYuNjYgMzEuNTYgNDYuNzIgMzEuODIgNDYuNTUgMzMuMDRDNDUuODkgMzcuODggNDkuMDggNDIuMjcgNTMuODMgNDMuMDVDNTQuNjIgNDMuMTggNTQuNzggNDMuMTggNTcuMTAgNDMuMDNDNTkuNTUgNDIuODcgNTguMTMgNDUuMDYgNTUuMTYgNDYuMDNDNTMuNzMgNDYuNDkgNTEuODkgNDYuNjEgNTAuMjYgNDYuMzNDNDguODIgNDYuMDkgNDguNTYgNDYuMTQgNDcuNDggNDYuODVDNDYuMzUgNDcuNjAgNDUuNDcgNDcuODEgNDQuNDggNDcuNThaTTY4LjcxIDQzLjQyQzY4LjU1IDQzLjI0IDY4LjU1IDQzLjI2IDY4Ljc1IDQxLjQ3QzY5LjM3IDM2LjA0IDY0LjEyIDMxLjAxIDU4LjY3IDMxLjgxQzU3LjE0IDMyLjAzIDU2LjYxIDMxLjY4IDU3LjE5IDMwLjgzQzU4LjM2IDI5LjEwIDYyLjM2IDI4LjAxIDY1LjEyIDI4LjY3QzY2LjA2IDI4Ljg5IDY2Ljg3IDI4LjcwIDY3Ljc3IDI4LjA2QzY5LjUxIDI2LjgyIDcwLjY0IDI2Ljg4IDcyLjAyIDI4LjI1QzczLjIzIDI5LjQ2IDczLjQ1IDMwLjg2IDcyLjY0IDMyLjE3QzcyLjQ4IDMyLjQyIDcyLjIyIDMyLjg1IDcyLjA2IDMzLjExQzcxLjY2IDMzLjc3IDcxLjYxIDM0LjE3IDcxLjgwIDM1LjIwQzcxLjk3IDM2LjE4IDcxLjk5IDM4LjE0IDcxLjgzIDM5LjEwQzcxLjQyIDQxLjUzIDY5LjQ2IDQ0LjI1IDY4LjcxIDQzLjQyWk01MS4xMSAzOC4wOUM0OS41MyAzNy4zNyA0OC4xMSAzMi45MCA0OC43MCAzMC40N0M0OS4wOCAyOC45MCA0OC45OSAyOC4zNiA0OC4xNiAyNy4yNUM0Ny4yNiAyNi4wMiA0Ny4xMyAyNS4xNCA0Ny42OCAyMy45OEM0OC43MSAyMS44MiA1MC43NyAyMS4zMSA1Mi42OCAyMi43NEM1My43MiAyMy41MSA1NC4xMCAyMy41OCA1NS42MCAyMy4yOEM1OC41NyAyMi42OSA2Mi4yMyAyMy42MyA2My4zMSAyNS4yN0M2My45OCAyNi4yOCA2My42OCAyNi40NCA2MS4xMiAyNi40NkM1OS4yNyAyNi40NyA1OC45NyAyNi40OSA1OC40MCAyNi42NUM1NC4yMiAyNy44MSA1MS40MiAzMS45MSA1MS45NyAzNi4wOUM1Mi4yMSAzNy45NiA1MS45OSAzOC40OCA1MS4xMSAzOC4wOVoiLz48cGF0aCBmaWxsPSIjRTMwRTBFIiBkPSJNMTc0LjEyIDUyLjAzQzE3My45NCA1MS45MiAxNzMuNTcgNTEuNjAgMTczLjI5IDUxLjM0QzE3Mi45OSA1MS4wNCAxNzIuNTIgNTAuNzIgMTcyLjEwIDUwLjUwQzE3MC40NyA0OS42NiAxNzAuNTIgNDguNTAgMTcyLjIxIDQ3LjcxQzE3My4xOCA0Ny4yNiAxNzMuNTAgNDYuODYgMTczLjUwIDQ2LjE1QzE3My41MCA0NS4xNSAxNzMuMDAgNDQuNjMgMTcxLjU2IDQ0LjExQzE2MS4yMiA0MC40MSAxNjEuMzcgMjYuNTUgMTcxLjc5IDIzLjE2QzE3NC40MiAyMi4zMCAxNzYuODkgMjIuNTYgMTc5LjkyIDI0LjAxQzE4MS42MyAyNC44MiAxODIuMDQgMjQuNzcgMTgzLjI2IDIzLjU3QzE4NC41NiAyMi4zMSAxODQuNTQgMjEuNjcgMTgzLjIxIDIxLjI0QzE4MS45OSAyMC44NSAxODEuNjEgMTkuNzkgMTgyLjQxIDE4Ljk5QzE4Mi44OCAxOC41MSAxODMuMDkgMTguNDkgMTg2LjExIDE4LjUyQzE4OS45NCAxOC41NSAxOTAuMDIgMTguNjAgMTkwLjA3IDIxLjE2QzE5MC4xNCAyNC42NiAxODkuOTMgMjUuOTUgMTg5LjIyIDI2LjI4QzE4OC40OSAyNi42MyAxODcuOTggMjYuMzMgMTg3LjQ2IDI1LjI2QzE4Ni45MiAyNC4xNSAxODYuMzIgMjQuMTYgMTg1LjE5IDI1LjMwQzE4My45NCAyNi41OCAxODMuODIgMjcuMTkgMTg0LjU3IDI4LjY2QzE4NS4wMiAyOS41NCAxODUuNjQgMzEuNDggMTg1Ljg0IDMyLjYzQzE4Ni4xMSAzNC4yMCAxODUuNDEgMzcuNDIgMTg0LjQ0IDM5LjA0QzE4Mi45OCA0MS40NyAxODAuNzUgNDMuMjIgMTc3Ljg3IDQ0LjIyQzE3Ni43MyA0NC42MSAxNzYuMzIgNDQuOTcgMTc2LjE3IDQ1LjY5QzE3NS45NiA0Ni42OSAxNzYuMzcgNDcuMzYgMTc3LjQwIDQ3LjcwQzE3OC41MSA0OC4wNyAxNzguODYgNDguNDEgMTc4Ljg2IDQ5LjEyQzE3OC44NiA0OS44MyAxNzguNTYgNTAuMTQgMTc3LjQ4IDUwLjUxQzE3Ni44NCA1MC43MyAxNzYuNzUgNTAuNzkgMTc2LjE3IDUxLjQxQzE3NS4yOCA1Mi4zNSAxNzQuODAgNTIuNDkgMTc0LjEyIDUyLjAzWk0xNzYuNjYgNDEuODRDMTc5LjgzIDQxLjE1IDE4Mi40NSAzOC40NiAxODMuMDUgMzUuMjhDMTg0LjU5IDI3LjA5IDE3NC41NiAyMi4wMSAxNjguODIgMjguMDdDMTYzLjI3IDMzLjkzIDE2OC43NSA0My41NyAxNzYuNjYgNDEuODRaIi8+PC9zdmc+', actions,
+    title: T.title, sub: T.sub, home: 'accueil', space: 'pair', logo: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjguNTAgMi45MiAyMTguMTcgNTYuMDgiIHJvbGU9ImltZyIgYXJpYS1sYWJlbGxlZGJ5PSJ0Ij48dGl0bGUgaWQ9InQiPlhvbWl0b248L3RpdGxlPjxwYXRoIGZpbGw9IiMwNDMzQzMiIGQ9Ik0xOC4wMiA1MC4yNUMxNi4yNiA0OS45MyAxNC42NCA0OC41MSAxNC43NyA0Ny4zOEMxNC44MyA0Ni44MiAxNS4wNiA0Ni40NiAxNS45MSA0NS41NUMxNy4yMSA0NC4xNiAyMS4zNCAzOC4zMSAyMS45OSAzNi45MkMyMi41MCAzNS44MyAyMi4yNyAzNC45NCAyMC45OSAzMy4xNkMyMC42MSAzMi42NCAxOS45MyAzMS42NiAxOS40NyAzMS4wMEMxOC4wNyAyOC45NyAxNi4zMCAyNi41OCAxNS41OCAyNS43NUMxNC4yMSAyNC4xNyAxNC4xNiAyMy4yNyAxNS4zOCAyMi4xOUMxNy4wMyAyMC43MSAxOS41OCAyMC41MSAyMS44NCAyMS42OEMyMy4yNSAyMi40MCAyNC4yNSAyMy40MyAyNS45MiAyNS44MkMyNy4yOSAyNy43OCAyNy44MiAyOC4yMSAyOC42MSAyNy45OUMyOS4yMyAyNy44MiAyOS40OCAyNy41MSAzMS4xNyAyNC43OEMzMi4wMSAyMy40MiAzMi45NyAyMi4zOCAzMy44OCAyMS44NUMzNi4yMyAyMC40OCAzOC44OSAyMC42NiA0MC43NSAyMi4zMUM0MS44OCAyMy4zMiA0MS43NyAyNC4xOSA0MC4zMCAyNS43NEMzOS4wOSAyNy4wMSAzNy45NyAyOC41MiAzNS4xMCAzMi44MEMzMi45OSAzNS45NCAzMy4wMCAzNi4wMCAzNi4zNyA0MC41OEMzNi45MyA0MS4zNCAzNy42OCA0Mi4zOSAzOC4wNCA0Mi45MkMzOC40MCA0My40NCAzOS4wNCA0NC4zNSAzOS40NiA0NC45MkM0MC41MyA0Ni4zOCA0MC43MCA0Ni43MyA0MC43MSA0Ny40NkM0MC43MSA0OS4yNyAzOC40OCA1MC42MiAzNi4wOCA1MC4yNkMzMy43NCA0OS45MCAzMi4zMSA0OC44MyAyOS44NyA0NS42MkMyOC42MyA0NC4wMCAyOC42OCA0NC4wNSAyOC4zMCA0My44MEMyNy4zNyA0My4xOCAyNi43OCA0My41NyAyNS41NCA0NS42N0MyMy4zOSA0OS4zMSAyMC45OCA1MC43OCAxOC4wMiA1MC4yNVpNODEuMjggNTEuNzVDNzkuMTEgNTEuNDEgNzcuNTggNDkuODggNzcuMDMgNDcuNTJDNzYuODYgNDYuNzYgNzYuNzYgNDIuMjYgNzYuNzYgMzQuNDRDNzYuNzUgMjcuODAgNzYuNzYgMjcuOTEgNzYuMjYgMjYuMzBDNzUuNTEgMjMuOTAgNzYuODIgMjIuNTcgNzkuOTIgMjIuNTZDODIuMDUgMjIuNTYgODMuMjAgMjMuMTcgODQuNTEgMjUuMDFDODUuNTkgMjYuNTQgODYuMDQgMjYuNTUgODcuNzQgMjUuMTBDODkuNTUgMjMuNTQgOTEuMjQgMjIuODIgOTMuNjMgMjIuNThDOTcuMTEgMjIuMjQgOTkuNjIgMjMuMzEgMTAxLjQ1IDI1LjkyQzEwMi42MiAyNy41OCAxMDMuMDEgMjcuNTcgMTA0Ljc5IDI1Ljg0QzEwNy4xMSAyMy41OCAxMDkuMTEgMjIuNjkgMTEyLjI4IDIyLjUzQzExNi40NiAyMi4zMiAxMTkuMzcgMjQuNTUgMTIwLjQ1IDI4Ljc5QzEyMS4wMyAzMS4wNyAxMjEuMTIgMzIuNjMgMTIxLjA1IDM5LjU0QzEyMC45OSA0NS41OCAxMjEuMDMgNDYuNTIgMTIxLjQzIDQ3Ljg4QzEyMS45OCA0OS43NiAxMjEuNzEgNTAuNTEgMTIwLjIxIDUxLjIyQzExNy42OSA1Mi40MSAxMTQuNzEgNTEuNjggMTEzLjQzIDQ5LjU1QzExMi40OCA0Ny45NyAxMTIuNDkgNDguMDQgMTEyLjQyIDM5Ljg4QzExMi4zNyAzMy42OCAxMTIuMzQgMzIuODEgMTEyLjIyIDMyLjM0QzExMS4wNyAyNy45NiAxMDUuODQgMjguNTAgMTAzLjg1IDMzLjIwQzEwMy4yMSAzNC43MyAxMDMuMjIgMzQuNTkgMTAzLjE5IDQwLjQ2QzEwMy4xNSA0Ni4yMCAxMDMuMTggNDYuNjAgMTAzLjYwIDQ3LjkxQzEwNC4xMSA0OS40NyAxMDMuOTIgNTAuMjYgMTAyLjg1IDUwLjk3QzEwMC4yNiA1Mi42OCA5Ni42OSA1MS43NyA5NS4zMiA0OS4wNUM5NC42NiA0Ny43NCA5NC42NSA0Ny42NSA5NC41OSAzOS42MkM5NC41MyAzMS41OSA5NC41NyAzMi4wNCA5My44MiAzMC45MUM5MS45NSAyOC4xMiA4Ny45MyAyOS4yMyA4Ni4xNyAzMy4wM0M4NS40MiAzNC42NSA4NS4zMCAzNS45NyA4NS4zNiA0MS45NkM4NS40MSA0Ni4zNiA4NS40MyA0Ni42NCA4NS44MyA0Ny45NkM4Ni4xMSA0OC44NiA4Ni4xNiA0OS41OCA4NS45NyA1MC4wM0M4NS41MCA1MS4xNiA4My4wOSA1Mi4wNCA4MS4yOCA1MS43NVpNMTMxLjM4IDE4Ljc5QzEyNy43OSAxOC4wOCAxMjYuNTEgMTMuNjEgMTI5LjE0IDEwLjk1QzEzMS4xNiA4Ljg5IDEzMy44OSA4LjM4IDEzNS45OSA5LjY1QzE0MC43MyAxMi41MSAxMzcuMDEgMTkuOTAgMTMxLjM4IDE4Ljc5Wk0xMzMuMDQgNTEuNzBDMTMxLjA1IDUxLjI2IDEyOS42MyA0OS43NSAxMjkuMDggNDcuNDhDMTI4LjgwIDQ2LjM0IDEyOC43NSA0NC42NiAxMjguNzUgMzYuMjVDMTI4Ljc1IDI3LjYxIDEyOC43NSAyNy43MiAxMjguMjkgMjYuMjVDMTI3LjYzIDI0LjE1IDEyOC40MSAyMy4wNiAxMzAuODggMjIuNjFDMTMzLjkzIDIyLjA1IDEzNi4zMyAyMy41MiAxMzcuMTAgMjYuNDNDMTM3LjI4IDI3LjEyIDEzNy4yOCAyNy4yMSAxMzcuMzQgMzYuNjdDMTM3LjQwIDQ3LjE2IDEzNy4zNiA0Ni40NyAxMzcuOTIgNDguMTBDMTM4LjI3IDQ5LjEwIDEzOC4yOCA0OS42NiAxMzcuOTggNTAuMTlDMTM3LjI5IDUxLjM1IDEzNC44NCA1Mi4xMCAxMzMuMDQgNTEuNzBaTTE1My40MiA1MS43NEMxNTAuMTkgNTEuMzggMTQ3Ljc2IDQ5Ljg2IDE0Ni41OCA0Ny40N0MxNDUuNzYgNDUuODAgMTQ1LjcyIDQ1LjM1IDE0NS43MCAzNi45NEMxNDUuNjggMjguMzAgMTQ1LjgwIDI4Ljk2IDE0NC4wMCAyNy43OUMxNDIuNjIgMjYuODkgMTQyLjE0IDI2LjIwIDE0Mi4xMyAyNS4wOEMxNDIuMTMgMjMuOTUgMTQyLjYzIDIzLjM1IDE0NC4wNiAyMi44MkMxNDUuNzAgMjIuMjEgMTQ1Ljk3IDIxLjIwIDE0NS4wOSAxOC45M0MxNDQuNDIgMTcuMTkgMTQ1LjI0IDE2LjA3IDE0Ny41NiAxNS41NUMxNTAuOTkgMTQuNzggMTUzLjc1IDE2Ljc0IDE1NC4xMyAyMC4yMUMxNTQuMjcgMjEuNTQgMTU0LjU0IDIyLjE5IDE1NS4wOCAyMi41NUMxNTUuNjEgMjIuOTAgMTU1Ljg3IDIyLjk0IDE1OC40MiAyMi45OUMxNjEuNzAgMjMuMDYgMTYyLjI2IDIzLjMwIDE2Mi4yOCAyNC42MkMxNjIuMzAgMjYuMjcgMTYwLjQxIDI3LjU1IDE1Ny4yMSAyOC4wNUMxNTUuMzAgMjguMzUgMTU0LjY3IDI4LjcwIDE1NC40MCAyOS42MEMxNTQuMTggMzAuMzMgMTU0LjI1IDQzLjI0IDE1NC40OCA0My45NkMxNTUuMTggNDYuMTcgMTU3LjQzIDQ2LjY3IDE2MC4wNSA0NS4yMEMxNjIuMTYgNDQuMDEgMTYyLjg5IDQzLjkyIDE2My41MyA0NC43N0MxNjUuMDUgNDYuODEgMTYxLjk5IDUwLjQzIDE1Ny45MiA1MS40MEMxNTYuNDUgNTEuNzUgMTU0LjY5IDUxLjg5IDE1My40MiA1MS43NFpNMTk3LjU1IDUxLjYyQzE5Ni4wMyA1MS4yNSAxOTQuNzUgNTAuMDggMTk0LjE4IDQ4LjU1QzE5My43MiA0Ny4zNCAxOTMuNzEgNDcuMDkgMTkzLjc0IDM3LjkyQzE5My43NiAyOC42NiAxOTMuNzQgMjguMDQgMTkzLjMzIDI2LjcxQzE5Mi44OCAyNS4yMiAxOTIuOTIgMjQuNTYgMTkzLjUxIDIzLjgxQzE5NC4xNyAyMi45OCAxOTUuMjYgMjIuNTUgMTk2LjcxIDIyLjU1QzE5OC45MiAyMi41NiAyMDAuMTUgMjMuMjIgMjAxLjQxIDI1LjA4QzIwMi4zNSAyNi40OCAyMDIuODcgMjYuNTEgMjA0LjI5IDI1LjI0QzIwNS44OCAyMy44MiAyMDcuODAgMjIuOTMgMjA5LjkyIDIyLjYyQzIxNS4xNyAyMS44NSAyMTguODAgMjQuNDcgMjE5LjY3IDI5LjY3QzIxOS43MyAzMC4wMSAyMTkuNzkgMzMuMDcgMjE5LjgzIDM4LjA4QzIxOS45MSA0Ni42NyAyMTkuODggNDYuMzEgMjIwLjQxIDQ3Ljk2QzIyMS4wNSA0OS45NSAyMjAuMzUgNTEuMDQgMjE4LjA2IDUxLjU4QzIxNS41MyA1Mi4xOSAyMTMuMjEgNTEuMTggMjEyLjEzIDQ4Ljk5QzIxMS4zOSA0Ny40OSAyMTEuNDAgNDcuNjQgMjExLjM0IDM5LjY3QzIxMS4yOSAzMy40MyAyMTEuMjcgMzIuNjYgMjExLjE0IDMyLjIxQzIwOS45OSAyOC4yMyAyMDUuNDEgMjguNDYgMjAzLjIxIDMyLjYwQzIwMi4xNCAzNC42MiAyMDIuMDcgMzUuMTkgMjAyLjEwIDQxLjQ2QzIwMi4xNCA0Ny4wOCAyMDIuMDkgNDYuNTUgMjAyLjcwIDQ4LjIxQzIwMy4yMSA0OS42MCAyMDIuODUgNTAuNDggMjAxLjQ5IDUxLjE3QzIwMC40MCA1MS43MiAxOTguNzUgNTEuOTEgMTk3LjU1IDUxLjYyWiIvPjxwYXRoIGZpbGw9IiNFMzBFMEUiIGQ9Ik02My43NSA1Mi44OEM2My41NCA1Mi44MSA2My4xMSA1Mi41OSA2Mi43OSA1Mi4zOEM2MS4zMyA1MS40NCA2MC45NSA1MS4zNSA1OS43NSA1MS43MUM1Ny4zNSA1Mi40MSA1NC4xMCA1MS43MyA1Mi4zOCA1MC4xNkM1MS4xNCA0OS4wMiA1MS40MCA0OC4zOSA1My4wMyA0OC41OEM1OC4yMyA0OS4xOCA2Mi4zNyA0Ni4xMyA2My4yMSA0MS4wOUM2My4zNiA0MC4yMCA2My4zNSAzOS43OSA2My4xNiAzOC4zM0M2Mi45MyAzNi41OCA2My41NCAzNi4xNiA2NC42MSAzNy4zM0M2Ni4xOCAzOS4wOCA2Ny4wNCA0Mi40OSA2Ni40NiA0NC43MkM2Ni4xMSA0Ni4wNSA2Ni4xOCA0Ni40OCA2Ni44OSA0Ny41M0M2Ny42NCA0OC42MSA2Ny43OSA0OS4wMCA2Ny43OSA0OS44M0M2Ny44MCA1MS44NyA2NS42NSA1My40OSA2My43NSA1Mi44OFpNNDQuNDggNDcuNThDNDMuNjIgNDcuMzcgNDIuNjcgNDYuNTcgNDIuMjkgNDUuNzNDNDEuNzkgNDQuNjIgNDIuMDAgNDMuNTQgNDIuOTcgNDIuMjlDNDMuNzEgNDEuMzEgNDMuNzYgNDEuMDIgNDMuNDAgMzkuNTBDNDMuMTUgMzguNDMgNDMuMjEgMzYuMjMgNDMuNTIgMzUuMzNDNDQuMzcgMzIuODcgNDUuMzYgMzEuNDUgNDYuMTYgMzEuNTJDNDYuNjYgMzEuNTYgNDYuNzIgMzEuODIgNDYuNTUgMzMuMDRDNDUuODkgMzcuODggNDkuMDggNDIuMjcgNTMuODMgNDMuMDVDNTQuNjIgNDMuMTggNTQuNzggNDMuMTggNTcuMTAgNDMuMDNDNTkuNTUgNDIuODcgNTguMTMgNDUuMDYgNTUuMTYgNDYuMDNDNTMuNzMgNDYuNDkgNTEuODkgNDYuNjEgNTAuMjYgNDYuMzNDNDguODIgNDYuMDkgNDguNTYgNDYuMTQgNDcuNDggNDYuODVDNDYuMzUgNDcuNjAgNDUuNDcgNDcuODEgNDQuNDggNDcuNThaTTY4LjcxIDQzLjQyQzY4LjU1IDQzLjI0IDY4LjU1IDQzLjI2IDY4Ljc1IDQxLjQ3QzY5LjM3IDM2LjA0IDY0LjEyIDMxLjAxIDU4LjY3IDMxLjgxQzU3LjE0IDMyLjAzIDU2LjYxIDMxLjY4IDU3LjE5IDMwLjgzQzU4LjM2IDI5LjEwIDYyLjM2IDI4LjAxIDY1LjEyIDI4LjY3QzY2LjA2IDI4Ljg5IDY2Ljg3IDI4LjcwIDY3Ljc3IDI4LjA2QzY5LjUxIDI2LjgyIDcwLjY0IDI2Ljg4IDcyLjAyIDI4LjI1QzczLjIzIDI5LjQ2IDczLjQ1IDMwLjg2IDcyLjY0IDMyLjE3QzcyLjQ4IDMyLjQyIDcyLjIyIDMyLjg1IDcyLjA2IDMzLjExQzcxLjY2IDMzLjc3IDcxLjYxIDM0LjE3IDcxLjgwIDM1LjIwQzcxLjk3IDM2LjE4IDcxLjk5IDM4LjE0IDcxLjgzIDM5LjEwQzcxLjQyIDQxLjUzIDY5LjQ2IDQ0LjI1IDY4LjcxIDQzLjQyWk01MS4xMSAzOC4wOUM0OS41MyAzNy4zNyA0OC4xMSAzMi45MCA0OC43MCAzMC40N0M0OS4wOCAyOC45MCA0OC45OSAyOC4zNiA0OC4xNiAyNy4yNUM0Ny4yNiAyNi4wMiA0Ny4xMyAyNS4xNCA0Ny42OCAyMy45OEM0OC43MSAyMS44MiA1MC43NyAyMS4zMSA1Mi42OCAyMi43NEM1My43MiAyMy41MSA1NC4xMCAyMy41OCA1NS42MCAyMy4yOEM1OC41NyAyMi42OSA2Mi4yMyAyMy42MyA2My4zMSAyNS4yN0M2My45OCAyNi4yOCA2My42OCAyNi40NCA2MS4xMiAyNi40NkM1OS4yNyAyNi40NyA1OC45NyAyNi40OSA1OC40MCAyNi42NUM1NC4yMiAyNy44MSA1MS40MiAzMS45MSA1MS45NyAzNi4wOUM1Mi4yMSAzNy45NiA1MS45OSAzOC40OCA1MS4xMSAzOC4wOVoiLz48cGF0aCBmaWxsPSIjRTMwRTBFIiBkPSJNMTc0LjEyIDUyLjAzQzE3My45NCA1MS45MiAxNzMuNTcgNTEuNjAgMTczLjI5IDUxLjM0QzE3Mi45OSA1MS4wNCAxNzIuNTIgNTAuNzIgMTcyLjEwIDUwLjUwQzE3MC40NyA0OS42NiAxNzAuNTIgNDguNTAgMTcyLjIxIDQ3LjcxQzE3My4xOCA0Ny4yNiAxNzMuNTAgNDYuODYgMTczLjUwIDQ2LjE1QzE3My41MCA0NS4xNSAxNzMuMDAgNDQuNjMgMTcxLjU2IDQ0LjExQzE2MS4yMiA0MC40MSAxNjEuMzcgMjYuNTUgMTcxLjc5IDIzLjE2QzE3NC40MiAyMi4zMCAxNzYuODkgMjIuNTYgMTc5LjkyIDI0LjAxQzE4MS42MyAyNC44MiAxODIuMDQgMjQuNzcgMTgzLjI2IDIzLjU3QzE4NC41NiAyMi4zMSAxODQuNTQgMjEuNjcgMTgzLjIxIDIxLjI0QzE4MS45OSAyMC44NSAxODEuNjEgMTkuNzkgMTgyLjQxIDE4Ljk5QzE4Mi44OCAxOC41MSAxODMuMDkgMTguNDkgMTg2LjExIDE4LjUyQzE4OS45NCAxOC41NSAxOTAuMDIgMTguNjAgMTkwLjA3IDIxLjE2QzE5MC4xNCAyNC42NiAxODkuOTMgMjUuOTUgMTg5LjIyIDI2LjI4QzE4OC40OSAyNi42MyAxODcuOTggMjYuMzMgMTg3LjQ2IDI1LjI2QzE4Ni45MiAyNC4xNSAxODYuMzIgMjQuMTYgMTg1LjE5IDI1LjMwQzE4My45NCAyNi41OCAxODMuODIgMjcuMTkgMTg0LjU3IDI4LjY2QzE4NS4wMiAyOS41NCAxODUuNjQgMzEuNDggMTg1Ljg0IDMyLjYzQzE4Ni4xMSAzNC4yMCAxODUuNDEgMzcuNDIgMTg0LjQ0IDM5LjA0QzE4Mi45OCA0MS40NyAxODAuNzUgNDMuMjIgMTc3Ljg3IDQ0LjIyQzE3Ni43MyA0NC42MSAxNzYuMzIgNDQuOTcgMTc2LjE3IDQ1LjY5QzE3NS45NiA0Ni42OSAxNzYuMzcgNDcuMzYgMTc3LjQwIDQ3LjcwQzE3OC41MSA0OC4wNyAxNzguODYgNDguNDEgMTc4Ljg2IDQ5LjEyQzE3OC44NiA0OS44MyAxNzguNTYgNTAuMTQgMTc3LjQ4IDUwLjUxQzE3Ni44NCA1MC43MyAxNzYuNzUgNTAuNzkgMTc2LjE3IDUxLjQxQzE3NS4yOCA1Mi4zNSAxNzQuODAgNTIuNDkgMTc0LjEyIDUyLjAzWk0xNzYuNjYgNDEuODRDMTc5LjgzIDQxLjE1IDE4Mi40NSAzOC40NiAxODMuMDUgMzUuMjhDMTg0LjU5IDI3LjA5IDE3NC41NiAyMi4wMSAxNjguODIgMjguMDdDMTYzLjI3IDMzLjkzIDE2OC43NSA0My41NyAxNzYuNjYgNDEuODRaIi8+PC9zdmc+', actions,
     tabs: [
       { id: 'home', href: 'accueil', icon: 'home', label: T.nav.home },
       { id: 'alerts', href: 'alertes', icon: 'bell', label: T.nav.alerts, count: () => (newAlerts() ? String(newAlerts()) : '') },
       { id: 'sos', href: 'sos', label: T.nav.sos, sos: true },
       { id: 'cases', href: 'dossiers', icon: 'folder', label: T.nav.cases },
-      { id: 'collect', href: 'collecte', icon: 'file-plus', label: T.nav.collect },
+      { id: 'net', href: 'index.html#/fil', ext: true, icon: 'feed', label: T.nav.network },
     ],
     rail: [
       { title: T.page.g_pair, items: [
@@ -1218,12 +1387,13 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
         { href: 'collecte?etape=1', label: 'Collecte : étape 1' }, { href: 'collecte?etape=5&demo=1', label: 'Collecte : vérification + avertissement' },
         { href: 'collecte?etape=5&demo=1&net=off&submit=1', label: 'Collecte hors ligne : en file' }, { href: 'collecte?etape=5&demo=1&net=on&submit=1', label: 'Collecte en ligne : envoyé' } ] },
       { title: T.page.g_offline, items: [
-        { href: 'sync?net=off', label: 'File de synchronisation (hors ligne)' }, { href: 'sync?net=on', label: 'Conflit 409 à résoudre' } ] },
+        { href: 'sync?net=off', label: 'File de synchronisation (hors ligne)' }, { href: 'sync?net=on', label: 'File : conflit 409 signalé' }, { href: 'conflit/q1', label: 'Conflit 409 : je choisis (serveur ou mon appareil)' } ] },
+      { title: 'Notifications', items: [{ href: 'push-sos', label: 'Push SOS reçu (admins ET pair·es)' }] },
     ],
     banner: () => (S.net === 'off' ? `<div class="nb" role="status">${ic('wifi-off', 'sm')}<span>${esc(t('net.banner'))}</span></div>` : ''),
     chip: r => { if (r.name === 'sync') return ''; const n = pend(), off = S.net === 'off'; const lab = off ? t('net.offline') + (n ? ` · ${n}` : '') : n ? t('net.pending_short', { count: n }) : t('net.online'); return `<a class="netchip ${off ? 'off' : ''}" href="#/sync" aria-label="${esc(lab + ' — ' + t('net.open_sync'))}">${ic(off ? 'wifi-off' : n ? 'clock' : 'wifi')}<span>${esc(lab)}</span></a>`; },
     init: () => {
-      Q.push({ id: 'q' + (++qSeq), kind: 'status', label: 'Statut du dossier VBG-0031', status: 'conflict', when: 'hier à 17:40', field: 'Statut', base: 'Ouvert', server: 'Clos', mine: 'En cours', choice: '' });
+      Q.push({ id: 'q' + (++qSeq), kind: 'status', label: 'Statut du dossier VBG-0031', status: 'conflict', when: 'hier à 17:40', field: 'Statut', base: 'Ouvert', server: 'Clos', mine: 'En cours', choice: '', caseCode: 'VBG-0031' });
       if (S.net === 'off') {
         Q.push({ id: 'q' + (++qSeq), kind: 'case', label: 'Dossier VBG · Ouidah', status: 'pending', when: 'aujourd’hui à 09:14', data: { kind: 'VBG', date: '2026-10-27', zone: 'Atlantique', commune: 'Ouidah', pop: 'Femmes cis', sex: 'Femme', age: '25-34', viol: 'psychologique' } });
         Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: 'Appel de suivi · VBG-0047', status: 'pending', when: 'aujourd’hui à 09:20', fuRef: ['VBG-0047', 99] });
@@ -1247,6 +1417,8 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
         case 'collecte': return collecte();
         case 'collecte-ok': return collecteOk(r.args[0]);
         case 'sync': return sync();
+        case 'conflit': return conflit(r.args[0]);
+        case 'push-sos': return pushSos();
         case 'sos': return sosScreen();
         default: return home();
       }

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Construit les pages (fichiers uniques, ouvrables en double-clic) à partir de src/*.html :
-remplace chaque {{INCLUDE:fichier}} par le contenu de src/partials/ (noyau commun des maquettes), puis chaque
+remplace chaque {{INCLUDE:fichier}} par le contenu de src/partials/ (noyau commun, menu ☰, session et sélecteur d espace), puis chaque
 {{IMG:fichier}} par l'image de src/images/ encodée en data URI.
 src/simulateur.html -> index.html ; src/espace-pair.html -> espace-pair.html ; src/admin-mobile.html -> admin-mobile.html.
 Usage : python3 build.py"""

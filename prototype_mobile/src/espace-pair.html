@@ -8,12 +8,12 @@
    enums/cases.php, enums/alerts.php, alerts.php, menus.php. Données fictives et pseudonymisées. */
 const T = {
   title: 'Espace pair — maquette mobile',
-  sub: 'Pair éducateur·rice · collecte hors ligne',
-  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', network: 'Réseau', online: 'En ligne', offline: 'Hors ligne',
+  sub: 'Même appli, même compte · espace pair + réseau social',
+  page: { skip: 'Aller à l’application', screens: 'Écrans de la maquette', network: 'Connexion', online: 'En ligne', offline: 'Hors ligne',
     demo_note: 'Maquette cliquable : données fictives et pseudonymisées, aucun nom ni numéro réel. Rien n’est envoyé nulle part.',
     g_pair: 'Parcours pair', g_offline: 'Hors connexion' },
   common: { cancel: 'Annuler', close: 'Fermer', save: 'Enregistrer', back: 'Retour', yes: 'Oui', no: 'Non', none: '—', detail: 'Détail', today: 'aujourd’hui' },
-  nav: { label: 'Navigation de l’espace pair', back: 'Retour', home: 'Accueil', alerts: 'Alertes', sos: 'SOS', cases: 'Dossiers', collect: 'Collecte' },
+  nav: { label: 'Navigation de l’espace pair', back: 'Retour', home: 'Accueil', alerts: 'Alertes', sos: 'SOS', cases: 'Dossiers', collect: 'Collecte', network: 'Réseau' },
   net: { online: 'En ligne', offline: 'Hors ligne', went_off: 'Tu es hors connexion. Tes saisies restent sur cet appareil.', went_on: 'Le réseau est de retour. La synchronisation reprend.',
     banner: 'Tu es hors connexion : tes saisies sont conservées et seront synchronisées automatiquement.',
     pending: { zero: 'Aucun élément en attente de synchronisation', one: '1 élément en attente de synchronisation', other: ':count éléments en attente de synchronisation' },
@@ -26,15 +26,15 @@ const T = {
     session: 'Préparer la prochaine séance : boîtes à images',
     shortcuts_label: 'Raccourcis', shortcuts: { collecte: 'Nouvelle collecte', cases: 'Mes dossiers', report: 'Signalement', directory: 'Annuaire', ccc: 'Outils CCC', resources: 'Ressources' },
     out_of_scope: 'Cet écran existe déjà dans l’application (hors périmètre de cette maquette).' },
-  alerts: { title: 'Alertes routées vers moi', open_count: { one: 'alerte ouverte', other: 'alertes ouvertes' }, refresh: 'Actualiser', refreshed: 'Liste à jour.',
+  alerts: { title: 'Alertes routées vers moi', short: 'Alertes', open_count: { one: 'alerte ouverte', other: 'alertes ouvertes' }, refresh: 'Actualiser', refreshed: 'Liste à jour.',
     on_duty: 'Tu es de garde : la liste se met à jour toutes les 30 secondes.', empty: 'Aucune alerte pour le moment.',
     ago: 'Reçue :time', acknowledge: 'Accuser réception', acknowledged: 'Réception accusée. La personne est prévenue que tu t’en occupes.', ack_done: 'Réception accusée',
     take: 'Prendre en charge', taken: 'Alerte prise en charge.', close: 'Clore', closed: 'Alerte close.',
     close_title: 'Clore cette alerte ?', close_confirm: 'Clore cette alerte ? Une alerte close ne se rouvre pas.', close_yes: 'Oui, clore',
     detail: 'Détail', detail_for: 'Détail de l’alerte :type, :place', offline: 'Tu es hors ligne. Reviens sur cette alerte dès que le réseau est de retour.',
     anonymous: 'Anonyme', accuracy: 'précision :meters m', not_found: 'Cette alerte n’existe plus ou ne t’est plus routée.',
-    fields: { received: 'Reçue', place: 'Lieu', category: 'Type de violence', needs: 'Besoins', author: 'De la part de', contact: 'Pour la joindre', position: 'Position (arrondie)', description: 'Ce qui a été écrit', history: 'Historique' },
-    no_contact: 'Aucun contact laissé (anonyme).', contact_masked: 'SMS, numéro visible après prise en charge', escalation: 'Sans accusé de réception, l’alerte est escaladée au point focal national.' },
+    fields: { notified: 'Prévenu·es', received: 'Reçue', place: 'Lieu', category: 'Type de violence', needs: 'Besoins', author: 'De la part de', contact: 'Pour la joindre', position: 'Position (arrondie)', description: 'Ce qui a été écrit', history: 'Historique' },
+    notified_text: 'Toi, le point focal de l’Atlantique et les admins d’astreinte (push)', no_contact: 'Aucun contact laissé (anonyme).', contact_masked: 'SMS, numéro visible après prise en charge', escalation: 'Sans accusé de réception, l’alerte est escaladée au point focal national.' },
   cases: { title: 'Mes dossiers', intro: 'Les dossiers que tu as collectés. Tu ne vois jamais ceux d’une autre personne.', search: 'Code du dossier', search_placeholder: 'VBG-0042', status: 'Statut', kind: 'Type',
     all_statuses: 'Tous les statuts', all_kinds: 'Tous les types', results: { zero: 'Aucun dossier', one: '1 dossier', other: ':count dossiers' }, new: 'Nouvelle collecte',
     empty: 'Aucun dossier pour le moment', empty_text: 'Les dossiers que tu collectes apparaissent ici.', empty_filtered: 'Aucun dossier ne correspond à ces critères.', reset: 'Réinitialiser',
@@ -53,7 +53,7 @@ const T = {
     yes: 'Oui', no: 'Non', sections: { identification: '1. Identification pseudonymisée', facts: '2. Faits', services: '3. Services reçus', orientation: '4. Orientation', consent: '5. Consentement' },
     fields: { services: 'Services', pseudo: 'Pseudonyme', sex: 'Sexe', age: 'Tranche d’âge', population: 'Population', zone: 'Lieu', date: 'Date', place: 'Endroit', type: 'Type', description: 'Résumé', referral: 'Vers', contact: 'Contact', referral_date: 'Date', reason: 'Motif', urgency: 'Urgence', consent: 'Consentement donné', mode: 'Forme', sharing: 'Partage avec un partenaire' },
     modes: { ecrit: 'Écrit', oral: 'Oral' }, urgency: { normale: 'Normale', haute: 'Haute', critique: 'Critique' } },
-  col: { title: 'Collecte de données', intro: 'Fiche de dossier VBG / VDH, utilisable hors connexion.', no_identity_title: 'Jamais de nom ni de coordonnées.', no_identity: 'N’écris aucun nom, téléphone, adresse ni identifiant direct, ni dans les notes.',
+  col: { title: 'Collecte', intro: 'Fiche de dossier VBG / VDH, utilisable hors connexion.', no_identity_title: 'Jamais de nom ni de coordonnées.', no_identity: 'N’écris aucun nom, téléphone, adresse ni identifiant direct, ni dans les notes.',
     step: 'Étape :n sur :total', steps: ['Dossier', 'Lieu', 'Personne', 'Faits', 'Vérification'], choose: 'Choisir…', no_referral: 'Aucune', next: 'Suivant', prev: 'Précédent', edit: 'Modifier',
     draft_saved: 'Un brouillon (sans les notes) est gardé sur cet appareil.', draft_clear: 'Effacer le brouillon', draft_cleared: 'Brouillon effacé.',
     fields: { kind: 'Type de dossier', date: 'Date des faits', violence: 'Type de violence', zone: 'Département', commune: 'Commune', population: 'Population', sex: 'Sexe', age: 'Tranche d’âge', referral: 'Orientation vers un service', notes: 'Notes' },
@@ -76,10 +76,21 @@ const T = {
     empty: 'Rien en attente : tout est à jour.',
     conflicts: 'Conflit à résoudre', pending: 'En attente', sent: 'Envoyés',
     kinds: { case: 'Nouveau dossier', followup: 'Étape de suivi', status: 'Changement de statut', sos: 'Alerte SOS' },
-    states: { pending: 'En attente', sending: 'Envoi…', sent: 'Envoyé', conflict: 'Conflit 409', resolved: 'Choix envoyé' },
-    conflict_text: 'Une modification faite ailleurs croise la tienne. Choisis la valeur à garder : l’équipe valide ton choix.',
+    states: { pending: 'En attente', sending: 'Envoi…', sent: 'Envoyé', conflict: 'Conflit 409', resolved: 'Tranché par toi' },
+    conflict_text: 'Une modification faite ailleurs croise la tienne. C’est toi qui tranches : aucune autre personne ne valide à ta place.', resolve_open: 'Résoudre le conflit',
     field: 'Champ', base: 'Valeur d’origine', server: 'Valeur du serveur', mine: 'Ma valeur (cet appareil)', keep_server: 'Garder la valeur du serveur', keep_mine: 'Garder la mienne', resolve: 'Envoyer mon choix',
-    resolved_toast: 'Choix envoyé. L’équipe valide la version retenue.', choose_first: 'Choisis une des deux valeurs.', created: 'Créé :when', uuid: 'Envoi n° :id', retries: 'Cet envoi repartira tout seul, une seule fois.' },
+    resolved_toast: 'C’est réglé. La version que tu as choisie est appliquée tout de suite.', choose_first: 'Choisis une des deux valeurs.', created: 'Créé :when', uuid: 'Envoi n° :id', retries: 'Cet envoi repartira tout seul, une seule fois.' },
+  conflict: { title: 'Conflit à résoudre', back: 'File de synchronisation', code: 'Erreur 409',
+    what_h: 'Que s’est-il passé ?', what: 'Pendant que ton téléphone était hors ligne, la fiche a aussi été modifiée ailleurs (sur le serveur). Les deux versions ne peuvent pas être gardées en même temps, et l’application ne devine pas laquelle est la bonne.',
+    you_h: 'C’est toi qui choisis', you: 'Tu connais la situation de terrain : tu décides de la valeur à garder pour ce champ. Ton choix s’applique tout de suite, sans validation par l’équipe.',
+    field: 'Fiche et champ concernés', base: 'Valeur de départ (avant les deux modifications)', pick: 'Quelle valeur garder ?',
+    server: 'Valeur du serveur', server_help: 'La version déjà enregistrée. Ta modification faite hors ligne est abandonnée pour ce champ.', server_by: 'Modifiée hier à 18:02 par l’équipe',
+    mine: 'Mon appareil', mine_help: 'La version saisie sur ce téléphone. Elle remplace celle du serveur.', mine_by: 'Modifiée hier à 17:40 sur cet appareil',
+    history: 'Rien n’est perdu : l’historique du dossier garde les deux versions et ton choix.', confirm: 'Confirmer mon choix', choose_first: 'Choisis une des deux valeurs pour continuer.',
+    confirm_title: 'Garder « :value » ?', confirm_server: 'Tu gardes la valeur du serveur. Ta modification faite hors ligne ne sera pas appliquée.', confirm_mine: 'Tu gardes la valeur de ton appareil. Elle remplace celle du serveur.', yes: 'Oui, garder cette valeur', done_title: 'Conflit résolu',
+    done_text: 'Valeur retenue : :value. Elle est appliquée au dossier.', back_queue: 'Retour à la file', not_found: 'Ce conflit est déjà résolu ou n’existe plus.' },
+  push: { sos_title: 'SOS · Abomey-Calavi (Atlantique)', sos_text: 'Une alerte vient d’être routée vers toi. Touche pour accuser réception : l’escalade au point focal national s’arrête.',
+    audience: 'Envoyée aux admins d’astreinte ET aux pair·es éducateur·rice·s de la zone.', caption: '<b>Notification push SOS</b> vue côté pair·e. Même notification côté admin (décision du 29/10/2026) : admins et pair·es éducateur·rice·s la reçoivent.' },
   sos: { title: 'SOS', intro: 'Ton alerte part vers la personne de l’annuaire la plus proche et vers tes contacts de confiance.', help: 'Maintiens le bouton 2 secondes pour envoyer ton alerte.',
     alt: 'Sans maintenir :', alt_btn: 'Envoyer sans maintenir', alt_title: 'Envoyer l’alerte SOS ?', alt_text: 'Ton alerte partira vers la personne de l’annuaire la plus proche, avec ta position si ton téléphone la trouve.', alt_yes: 'Envoyer l’alerte', cancel: 'Annuler',
     done: 'Ton alerte est partie', done_text: 'Reste si possible dans un lieu public ou éclairé. La personne contactée va te rappeler.',
@@ -114,6 +125,9 @@ const T = {
 <body>
 {{INCLUDE:navmenu.html}}
 <noscript>Cette maquette demande JavaScript.</noscript>
+<script>
+{{INCLUDE:espaces.js}}
+</script>
 <script>
 {{INCLUDE:kit.js}}
 </script>
@@ -211,7 +225,7 @@ const T = {
   }
   function alerts() {
     const n = openAlerts().length;
-    return { tab: 'alerts', title: esc(t('alerts.title')), plain: t('alerts.title'), html: `
+    return { tab: 'alerts', title: esc(t('alerts.short')), plain: t('alerts.title'), html: `
       <div class="row wrap between"><div class="row wrap"><b>${n} ${esc(t('alerts.open_count', { count: n }))}</b></div>
         <button class="btn btn-outline btn-sm" data-act="refresh" style="min-height:44px">${ic('sync', 'sm')} ${esc(t('alerts.refresh'))}</button></div>
       <p class="note">${ic('bell', 'sm')}<span>${esc(t('alerts.on_duty'))}</span></p>
@@ -229,7 +243,7 @@ const T = {
     return { tab: 'alerts', back: 'alertes', backLabel: t('alerts.title'), title: `${esc(en('alert_type', a.type))} · ${esc(a.commune)}`, plain: t('alerts.detail_for', { type: en('alert_type', a.type), place: a.commune }), html: `
       <div class="row wrap">${aType(a.type)}${aStatus(a)}${aPrio(a.prio)}</div>
       ${a.status === 'nouveau' && !a.ack ? `<p class="note warn">${ic('alert', 'sm')}<span>${esc(t('alerts.escalation'))}</span></p>` : ''}
-      <dl class="dl card" style="padding:4px 14px">${dd('received', esc(ago(a.ago)))}${dd('place', esc(place(a)))}${dd('category', esc(a.viol ? en('violence', a.viol) : T.common.none))}${dd('needs', esc(a.needs.length ? a.needs.map(n => en('needs', n)).join(', ') : T.common.none))}${dd('author', esc(t('alerts.anonymous')))}${dd('contact', esc(a.contact ? t('alerts.contact_masked') : t('alerts.no_contact')))}${dd('position', pos)}${dd('description', esc(a.text))}</dl>
+      <dl class="dl card" style="padding:4px 14px">${dd('received', esc(ago(a.ago)))}${a.type === 'sos' ? dd('notified', esc(t('alerts.notified_text'))) : ''}${dd('place', esc(place(a)))}${dd('category', esc(a.viol ? en('violence', a.viol) : T.common.none))}${dd('needs', esc(a.needs.length ? a.needs.map(n => en('needs', n)).join(', ') : T.common.none))}${dd('author', esc(t('alerts.anonymous')))}${dd('contact', esc(a.contact ? t('alerts.contact_masked') : t('alerts.no_contact')))}${dd('position', pos)}${dd('description', esc(a.text))}</dl>
       <section class="stack-s">${secH(t('alerts.fields.history'))}<ol class="tl card">${a.hist.map((h, i) => `<li class="${i === a.hist.length - 1 ? '' : 'done'}"><span class="when">${esc(h.w)}</span>${esc(h.x)}</li>`).join('')}</ol></section>
       <div class="acts" style="display:flex;flex-direction:column;gap:8px">${actionsFor(a, true).replace(/class="btn /g, 'class="btn btn-block ')}</div>` };
   }
@@ -367,7 +381,7 @@ const T = {
         <p class="hint" style="margin:0">${esc(t('col.footnote'))}</p>`;
     }
     const last = F.step === 5; const off = S.net === 'off';
-    return { tab: 'collect', title: esc(t('col.title')), plain: t('col.title'), html: `
+    return { tab: 'cases', title: esc(t('col.title')), plain: t('col.title'), html: `
       <div><div class="steplab"><b>${esc(steps[F.step - 1])}</b><span>${esc(t('col.step', { n: F.step, total: 5 }))}</span></div><div class="stepper" style="--n:5" role="img" aria-label="${esc(t('col.step', { n: F.step, total: 5 }))}">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= F.step ? 'on' : ''}"></i>`).join('')}</div></div>
       ${F.step === 1 ? `<p class="note warn">${ic('lock', 'sm')}<span><b>${esc(t('col.no_identity_title'))}</b> ${esc(t('col.no_identity'))}</span></p>` : ''}
       ${F.step > 1 && F.step < 5 && (F.kind || F.date) ? `<p class="hint" style="margin:0">${esc(t('col.draft_saved'))} <button class="btn-link" data-act="clear" style="min-height:44px">${esc(t('col.draft_clear'))}</button></p>` : ''}
@@ -414,7 +428,7 @@ const T = {
     const it = Q.find(i => i.id === id);
     if (!it) return collecte();
     const sent = it.status === 'sent';
-    return { tab: 'collect', title: esc(t('col.title')), plain: t(sent ? 'col.sent_title' : 'col.queued_title'), html: `
+    return { tab: 'cases', title: esc(t('col.title')), plain: t(sent ? 'col.sent_title' : 'col.queued_title'), html: `
       <div class="state-card card" aria-live="polite">
         <div class="row">${sent ? badge('ok', t('col.state_sent')) : badge('warn', t('col.state_queued'))}</div>
         <div class="big">${esc(t(sent ? 'col.sent_title' : 'col.queued_title'))}</div>
@@ -433,11 +447,8 @@ const T = {
     let extra = '';
     if (st === 'conflict') {
       extra = `<p class="small" style="margin:0">${esc(t('sync.conflict_text'))}</p>
-        <fieldset class="fld cmp"><legend class="vh">${esc(t('sync.field'))} : ${esc(i.field)}</legend>
-          <div class="muted small">${esc(t('sync.field'))} : <b style="color:var(--app-text)">${esc(i.field)}</b> · ${esc(t('sync.base'))} : <b style="color:var(--app-text)">${esc(i.base)}</b></div>
-          <label class="opt"><input type="radio" name="cmp-${i.id}" value="server" ${i.choice === 'server' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_server'))}</b><small>${esc(t('sync.server'))} : <b>${esc(i.server)}</b></small></span></label>
-          <label class="opt"><input type="radio" name="cmp-${i.id}" value="mine" ${i.choice === 'mine' ? 'checked' : ''} data-act="pick" data-id="${i.id}"><span class="dot" aria-hidden="true"></span><span class="tx"><b>${esc(t('sync.keep_mine'))}</b><small>${esc(t('sync.mine'))} : <b>${esc(i.mine)}</b></small></span></label></fieldset>
-        <button class="btn btn-primary" data-act="resolve" data-id="${i.id}">${esc(t('sync.resolve'))}</button>`;
+        <div class="muted small">${esc(t('sync.field'))} : <b style="color:var(--app-text)">${esc(i.field)}</b> · ${esc(t('sync.server'))} : <b style="color:var(--app-text)">${esc(i.server)}</b> · ${esc(t('sync.mine'))} : <b style="color:var(--app-text)">${esc(i.mine)}</b></div>
+        <a class="btn btn-primary" href="#/conflit/${i.id}">${ic('swap', 'sm')} ${esc(t('sync.resolve_open'))}</a>`;
     }
     return `<article class="q-item ${cls}" aria-label="${esc(i.label)}"><div class="top"><span class="grow"><h3>${esc(i.label)}</h3><div class="sub">${esc(t('sync.kinds.' + i.kind))} · ${esc(t('sync.created', { when: i.when }))}${i.code ? ` · <b>${i.code}</b>` : ''}</div></span>${stB}</div>${st === 'pending' ? `<div class="sub">${esc(t('sync.retries'))}</div>` : ''}${extra}</article>`;
   }
@@ -467,6 +478,33 @@ const T = {
       });
       Kit.render({ noFocus: true }); if (k) Kit.toast(t('sync.done', { count: k }));
     }, 1100);
+  }
+
+  /* ---------- Notification push SOS (aperçu) ---------- */
+  function pushSos() { const h = home(); h.push = { href: 'alerte/a1', title: t('push.sos_title'), text: t('push.sos_text'), audience: t('push.audience') }; h.caption = t('push.caption'); return h; }
+
+  /* ---------- Conflit 409 : le pair tranche lui-même (décision 29/10/2026) ---------- */
+  const CF = { pick: '' };
+  function conflit(id) {
+    const i = Q.find(x => x.id === id);
+    if (!i || (i.status !== 'conflict' && i.status !== 'resolved')) return { tab: '', back: 'sync', backLabel: t('conflict.back'), title: esc(t('conflict.title')), plain: t('conflict.title'), html: `<div class="empty"><b>${esc(t('conflict.not_found'))}</b></div><a class="btn btn-primary btn-block" href="#/sync">${esc(t('conflict.back_queue'))}</a>` };
+    if (i.status === 'resolved') {
+      const v = i.choice === 'server' ? i.server : i.mine;
+      return { tab: '', back: 'sync', backLabel: t('conflict.back'), title: esc(t('conflict.done_title')), plain: t('conflict.done_title'), html: `
+        <div class="state-card card" aria-live="polite"><div>${badge('ok', t('sync.states.resolved'))}</div><div class="big">${esc(t('conflict.done_title'))}</div><p style="margin:0">${esc(t('conflict.done_text', { value: v }))}</p><p class="muted small" style="margin:0">${esc(t('conflict.history'))}</p></div>
+        <a class="btn btn-primary btn-block" href="#/sync">${esc(t('conflict.back_queue'))}</a>` };
+    }
+    const card = (k, label, help, by, val) => `<label class="opt" style="align-items:flex-start;padding:14px"><input type="radio" name="cf" value="${k}" ${CF.pick === k ? 'checked' : ''} data-act="cfpick" data-k="${k}"><span class="dot" aria-hidden="true" style="margin-top:3px"></span><span class="tx" style="display:grid;gap:4px"><b>${esc(label)}</b><span class="h2" style="margin:0">${esc(val)}</span><small>${esc(help)}</small><small>${ic('clock', 'sm')} ${esc(by)}</small></span></label>`;
+    return { tab: '', back: 'sync', backLabel: t('conflict.back'), title: esc(t('conflict.title')), plain: t('conflict.title'), html: `
+      <div class="row wrap">${badge('warn', t('conflict.code'))}${badge('mute', i.label)}</div>
+      <section class="stack-s"><h2 class="h3" style="margin:0">${esc(t('conflict.what_h'))}</h2><p style="margin:0">${esc(t('conflict.what'))}</p></section>
+      <p class="note ok">${ic('user-check', 'sm')}<span><b>${esc(t('conflict.you_h'))}.</b> ${esc(t('conflict.you'))}</span></p>
+      <dl class="dl card" style="padding:4px 14px"><div><dt>${esc(t('conflict.field'))}</dt><dd>${esc(i.label)} · <b>${esc(i.field)}</b></dd></div><div><dt>${esc(t('conflict.base'))}</dt><dd>${esc(i.base)}</dd></div></dl>
+      <fieldset class="fld choice"><legend>${esc(t('conflict.pick'))}</legend>
+        ${card('server', t('conflict.server'), t('conflict.server_help'), t('conflict.server_by'), i.server)}${card('mine', t('conflict.mine'), t('conflict.mine_help'), t('conflict.mine_by'), i.mine)}</fieldset>
+      <p class="hint" style="margin:0">${ic('info', 'sm')} ${esc(t('conflict.history'))}</p>
+      <button class="btn btn-primary btn-block" data-act="cfgo" data-id="${i.id}" ${CF.pick ? '' : 'disabled'}>${esc(t('conflict.confirm'))}</button>
+      <a class="btn btn-outline btn-block" href="#/sync">${esc(t('common.cancel'))}</a>` };
   }
 
   /* ---------- SOS ---------- */
@@ -509,8 +547,13 @@ const T = {
     clear: () => { F = F0(); Kit.toast(t('col.draft_cleared')); Kit.render({ top: true }); },
     newcol: () => { F = F0(); },
     syncnow: () => runSync(),
-    pick: d => { Q.find(i => i.id === d.id).choice = document.querySelector(`input[name="cmp-${d.id}"]:checked`).value; },
-    resolve: d => { const i = Q.find(x => x.id === d.id); const ch = document.querySelector(`input[name="cmp-${d.id}"]:checked`); if (!ch) return Kit.toast(t('sync.choose_first')); i.choice = ch.value; i.status = 'resolved'; Kit.toast(t('sync.resolved_toast')); Kit.render({ noFocus: true }); },
+    cfpick: d => { CF.pick = d.k; const b = document.querySelector('[data-act="cfgo"]'); if (b) b.disabled = false; },
+    cfgo: d => {
+      const i = Q.find(x => x.id === d.id); if (!CF.pick) return Kit.toast(t('conflict.choose_first'));
+      const v = CF.pick === 'server' ? i.server : i.mine;
+      Kit.confirm({ title: t('conflict.confirm_title', { value: v }), text: esc(t(CF.pick === 'server' ? 'conflict.confirm_server' : 'conflict.confirm_mine')), ok: t('conflict.yes'),
+        onOk: () => { i.choice = CF.pick; i.status = 'resolved'; if (i.caseCode) { const c = find(i.caseCode); if (c) c.status = { 'Clos': 'clos', 'En cours': 'en_cours', 'Ouvert': 'ouvert' }[v] || c.status; } CF.pick = ''; Kit.toast(t('sync.resolved_toast')); Kit.render({ noFocus: true }); } });
+    },
     sosalt: () => Kit.confirm({ title: t('sos.alt_title'), text: esc(t('sos.alt_text')), ok: t('sos.alt_yes'), cancel: t('sos.cancel'), onOk: sendSos }),
     safe: () => Kit.toast(t('sos.safe_ok')),
     sosreset: () => { SOSS.state = 'idle'; },
@@ -521,13 +564,13 @@ const T = {
     Object.assign(F, { kind: 'VBG', date: '2024-03-14', zone: 'Atlantique', commune: 'Abomey-Calavi', pop: 'Jeunes filles (15-24)', sex: 'Femme', age: '15-17', viol: 'sexuelle', ref: 'psy', notes: 'Contexte familial, première écoute faite par la pair du quartier.', errors: {} });
   }
   Kit.start({
-    title: T.title, sub: T.sub, home: 'accueil', logo: '{{IMG:logo-couleur.svg}}', actions,
+    title: T.title, sub: T.sub, home: 'accueil', space: 'pair', logo: '{{IMG:logo-couleur.svg}}', actions,
     tabs: [
       { id: 'home', href: 'accueil', icon: 'home', label: T.nav.home },
       { id: 'alerts', href: 'alertes', icon: 'bell', label: T.nav.alerts, count: () => (newAlerts() ? String(newAlerts()) : '') },
       { id: 'sos', href: 'sos', label: T.nav.sos, sos: true },
       { id: 'cases', href: 'dossiers', icon: 'folder', label: T.nav.cases },
-      { id: 'collect', href: 'collecte', icon: 'file-plus', label: T.nav.collect },
+      { id: 'net', href: 'index.html#/fil', ext: true, icon: 'feed', label: T.nav.network },
     ],
     rail: [
       { title: T.page.g_pair, items: [
@@ -537,12 +580,13 @@ const T = {
         { href: 'collecte?etape=1', label: 'Collecte : étape 1' }, { href: 'collecte?etape=5&demo=1', label: 'Collecte : vérification + avertissement' },
         { href: 'collecte?etape=5&demo=1&net=off&submit=1', label: 'Collecte hors ligne : en file' }, { href: 'collecte?etape=5&demo=1&net=on&submit=1', label: 'Collecte en ligne : envoyé' } ] },
       { title: T.page.g_offline, items: [
-        { href: 'sync?net=off', label: 'File de synchronisation (hors ligne)' }, { href: 'sync?net=on', label: 'Conflit 409 à résoudre' } ] },
+        { href: 'sync?net=off', label: 'File de synchronisation (hors ligne)' }, { href: 'sync?net=on', label: 'File : conflit 409 signalé' }, { href: 'conflit/q1', label: 'Conflit 409 : je choisis (serveur ou mon appareil)' } ] },
+      { title: 'Notifications', items: [{ href: 'push-sos', label: 'Push SOS reçu (admins ET pair·es)' }] },
     ],
     banner: () => (S.net === 'off' ? `<div class="nb" role="status">${ic('wifi-off', 'sm')}<span>${esc(t('net.banner'))}</span></div>` : ''),
     chip: r => { if (r.name === 'sync') return ''; const n = pend(), off = S.net === 'off'; const lab = off ? t('net.offline') + (n ? ` · ${n}` : '') : n ? t('net.pending_short', { count: n }) : t('net.online'); return `<a class="netchip ${off ? 'off' : ''}" href="#/sync" aria-label="${esc(lab + ' — ' + t('net.open_sync'))}">${ic(off ? 'wifi-off' : n ? 'clock' : 'wifi')}<span>${esc(lab)}</span></a>`; },
     init: () => {
-      Q.push({ id: 'q' + (++qSeq), kind: 'status', label: 'Statut du dossier VBG-0031', status: 'conflict', when: 'hier à 17:40', field: 'Statut', base: 'Ouvert', server: 'Clos', mine: 'En cours', choice: '' });
+      Q.push({ id: 'q' + (++qSeq), kind: 'status', label: 'Statut du dossier VBG-0031', status: 'conflict', when: 'hier à 17:40', field: 'Statut', base: 'Ouvert', server: 'Clos', mine: 'En cours', choice: '', caseCode: 'VBG-0031' });
       if (S.net === 'off') {
         Q.push({ id: 'q' + (++qSeq), kind: 'case', label: 'Dossier VBG · Ouidah', status: 'pending', when: 'aujourd’hui à 09:14', data: { kind: 'VBG', date: '2026-10-27', zone: 'Atlantique', commune: 'Ouidah', pop: 'Femmes cis', sex: 'Femme', age: '25-34', viol: 'psychologique' } });
         Q.push({ id: 'q' + (++qSeq), kind: 'followup', label: 'Appel de suivi · VBG-0047', status: 'pending', when: 'aujourd’hui à 09:20', fuRef: ['VBG-0047', 99] });
@@ -566,6 +610,8 @@ const T = {
         case 'collecte': return collecte();
         case 'collecte-ok': return collecteOk(r.args[0]);
         case 'sync': return sync();
+        case 'conflit': return conflit(r.args[0]);
+        case 'push-sos': return pushSos();
         case 'sos': return sosScreen();
         default: return home();
       }
