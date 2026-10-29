@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Exceptions\ApiExceptionRenderer;
 use App\Http\Middleware\ApplyPlatformSettings;
 use App\Http\Middleware\EnforceIdleTimeout;
+use App\Http\Middleware\EnsureAdminMobile;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\EnsureNotInMaintenance;
 use App\Http\Middleware\ForgetSearchTerms;
@@ -17,6 +18,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -77,6 +79,10 @@ return Application::configure(basePath: dirname(__DIR__))
             // Lot api-me (P6-01) : ETag + If-None-Match → 304 sur les lectures du groupe auth:sanctum de routes/api.php.
             'conditional' => HandleConditionalGet::class,
         ]);
+
+        // API admin mobile (P15-16) : la permission est vérifiée AVANT la liaison des modèles de route — un compte sans
+        // `admin_mobile.access` reçoit 403 (jamais 404) pour un identifiant inexistant, aucune énumération des alertes ni des comptes.
+        $middleware->prependToPriorityList(SubstituteBindings::class, EnsureAdminMobile::class);
 
         $middleware->redirectGuestsTo(fn () => route('connexion'));
         $middleware->redirectUsersTo(fn () => route('fil'));

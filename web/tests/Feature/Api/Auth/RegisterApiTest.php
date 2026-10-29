@@ -79,7 +79,7 @@ it('crée le compte, délivre un jeton immédiatement et envoie le code de confi
     $this->withToken($token)->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.email_verified', false);
 });
 
-it('accepte les phases 2-3 (profile) et 4 (consents) : un·e pair passe en attente, chaque consentement est horodaté', function (): void {
+it('accepte les phases 2-3 (profile) et 4 (consents) : le compte reste un membre actif, chaque consentement est horodaté', function (): void {
     $zone = Zone::factory()->create();
     $commune = Commune::factory()->create(['zone_id' => $zone->id]);
 
@@ -88,7 +88,6 @@ it('accepte les phases 2-3 (profile) et 4 (consents) : un·e pair passe en atten
             'pronouns' => 'elle',
             'zone_id' => $zone->id,
             'commune_id' => $commune->id,
-            'member_type' => 'pair',
             'trusted_contact_phone' => '97 38 88 47',
             'discreet_mode' => true,
         ],
@@ -96,9 +95,9 @@ it('accepte les phases 2-3 (profile) et 4 (consents) : un·e pair passe en atten
     ]));
 
     $response->assertCreated()
-        ->assertJsonPath('data.user.status', UserStatus::Pending->value)
-        ->assertJsonPath('data.user.pending_validation', true)
-        ->assertJsonPath('data.user.role', 'pair')
+        ->assertJsonPath('data.user.status', UserStatus::Active->value)
+        ->assertJsonPath('data.user.pending_validation', false)
+        ->assertJsonPath('data.user.role', 'membre')
         ->assertJsonPath('data.user.profile.pronouns', 'elle')
         ->assertJsonPath('data.user.profile.zone.id', $zone->id)
         ->assertJsonPath('data.user.profile.discreet_mode', true)

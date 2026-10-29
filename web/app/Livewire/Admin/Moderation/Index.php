@@ -6,6 +6,7 @@ namespace App\Livewire\Admin\Moderation;
 
 use App\Application\Moderation\DecideReport;
 use App\Application\Moderation\ReadReportedMessage;
+use App\Application\Moderation\ReportQueue;
 use App\Domain\Moderation\Exceptions\ModerationRefused;
 use App\Enums\BadWordSeverity;
 use App\Enums\ModerationKind;
@@ -336,18 +337,13 @@ final class Index extends Component
     }
 
     /**
-     * Une ligne par contenu signalé en attente : le plus ancien signalement de chaque cible.
+     * Une ligne par contenu signalé en attente : le plus ancien signalement de chaque cible (ReportQueue, partagée avec l'API admin mobile).
      *
      * @return Builder<ModerationReport>
      */
     private function pendingGroups(): Builder
     {
-        $oldest = ModerationReport::query()->toBase()
-            ->where('status', ModerationStatus::Pending->value)
-            ->groupBy('subject_type', 'subject_id')
-            ->selectRaw('min(id)');
-
-        return ModerationReport::query()->whereIn('id', $oldest);
+        return app(ReportQueue::class)->pendingGroups();
     }
 
     /**
@@ -377,24 +373,7 @@ final class Index extends Component
      */
     private function siblings(Collection $rows): array
     {
-        if ($rows->isEmpty()) {
-            return [];
-        }
-
-        $found = ModerationReport::query()->pending()->where(function (Builder $where) use ($rows): void {
-            foreach ($rows as $row) {
-                $where->orWhere(fn (Builder $one) => $one->where('subject_type', $row->subject_type)->where('subject_id', $row->subject_id));
-            }
-        })->toBase()->groupBy('subject_type', 'subject_id')
-            ->selectRaw('subject_type, subject_id, count(*) as reports, count(distinct reporter_user_id) as people')->get();
-
-        $map = [];
-
-        foreach ($found as $line) {
-            $map[$line->subject_type.':'.$line->subject_id] = ['reports' => (int) $line->reports, 'people' => (int) $line->people];
-        }
-
-        return $map;
+        return app(ReportQueue::class)->siblings($rows);
     }
 
     /**

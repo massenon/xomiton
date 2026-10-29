@@ -119,23 +119,22 @@ it('ne fait jamais compter les données sensibles dans la complétion', function
 
 // --- Revue du lot profil ------------------------------------------------------------------------------------------------
 
-it('ne propose pas le type de membre au personnel et ignore « pair » sans retirer de rôle ni mettre en attente', function (): void {
+it('ne propose pas le type de membre au personnel et refuse « pair » pour tout le monde, sans toucher aux rôles ni au statut', function (): void {
     $admin = F::member('admin');
     $admin->profile->forceFill(['member_type' => App\Enums\MemberType::Member, 'progressive_answered' => null])->save();
 
     $groups = collect(F::as($admin)->getJson('/api/v1/me/profile')->assertOk()->json('data.progressive.groups'))->pluck('answered', 'key');
     expect($groups['member_type'])->toBeTrue();
 
-    F::as($admin)->patchJson('/api/v1/me/profile', ['member_type' => 'pair'])->assertOk()
-        ->assertJsonPath('data.profile.member_type', 'membre')
-        ->assertJsonPath('data.status', 'actif');
+    F::as($admin)->patchJson('/api/v1/me/profile', ['member_type' => 'pair'])->assertUnprocessable()->assertJsonValidationErrors('member_type');
 
     $admin = User::query()->findOrFail($admin->id);
     expect($admin->getRoleNames()->all())->toBe(['admin'])
         ->and($admin->status)->toBe(App\Enums\UserStatus::Active);
 
-    // Un compte « membre » garde la demande de statut pair (RG-03).
-    F::as($this->awa)->patchJson('/api/v1/me/profile', ['member_type' => 'pair'])->assertOk()->assertJsonPath('data.status', 'en_attente');
+    // Un compte « membre » ne s'attribue pas non plus le rôle pair (décision client du 2026-10-29).
+    F::as($this->awa)->patchJson('/api/v1/me/profile', ['member_type' => 'pair'])->assertUnprocessable();
+    expect($this->awa->fresh()->hasRole('pair'))->toBeFalse()->and($this->awa->fresh()->status)->toBe(App\Enums\UserStatus::Active);
 });
 
 it('règle « Afficher ma zone » depuis le groupe Ville du bandeau', function (): void {

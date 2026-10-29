@@ -125,7 +125,7 @@ it('laisse l’administration se connecter (OTP) et travailler dans /admin penda
     maintenanceLoginOtp('admin@exemple.bj');
 
     $this->post('/code-de-verification', ['purpose' => 'login', 'code' => '135790'])
-        ->assertRedirect(route('admin.dashboard'));
+        ->assertRedirect(route('fil'));
 
     $this->assertAuthenticatedAs($admin);
     $this->get(route('admin.dashboard'))->assertOk();

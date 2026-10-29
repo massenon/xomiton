@@ -73,6 +73,9 @@ return [
         // Destinataires des SOS et alertes (décisions client du 2026-10-29) : les admins ET les pair·es éducateur·rices.
         // `all` (défaut) : tous les pair·es actifs ; `zone` : ceux du département de l'alerte (repli sur tous s'il n'y en a pas).
         'peer_recipients' => 'all',
+        // Position d'un SOS vue par l'admin sur mobile (admin/alerts/{id}) : ARRONDIE (décision client du 2026-10-29), nombre de
+        // décimales des degrés (2 ≈ 1 km). La position exacte n'est jamais servie à l'API admin.
+        'admin_position_decimals' => 2,
         // Durée du sondage de GET sos/{id} (sos_poll_seconds ci-dessus) après la création, en minutes (P5-03).
         'sos_poll_minutes' => 30,
         // Bouton SOS (P5-05, P5-08, FR-ALT-03, Q39) : maintien (ms), décompte annulable (s), attente de la position (s).

@@ -63,7 +63,7 @@ it('prévient tous les admins et tous les pairs actifs d’un SOS, jamais un mem
 it('écrit cloche et push pour chaque pair prévenu d’un SOS', function (): void {
     $scene = SosScenario::make();
     $peer = peerFor();
-    \App\Models\PushSubscription::factory()->forUser($peer)->create();
+    App\Models\PushSubscription::factory()->forUser($peer)->create();
     sosEvent($scene->alert);
 
     $rows = AlertNotification::query()->forAlert($scene->alert)->ofPurpose(NotificationPurpose::SosTriggered)->where('user_id', $peer->id)->get();
@@ -75,7 +75,7 @@ it('écrit cloche et push pour chaque pair prévenu d’un SOS', function (): vo
 it('ne prévient que les pairs du département avec peer_recipients = zone, et se replie sur tous les pairs s’il n’y en a pas', function (): void {
     $scene = SosScenario::make();
     $inZone = peerFor(['zone_id' => $scene->zone->id]);
-    $elsewhere = peerFor(['zone_id' => \App\Models\Zone::factory()->create()->id]);
+    $elsewhere = peerFor(['zone_id' => App\Models\Zone::factory()->create()->id]);
 
     config(['xomiton.alerts.peer_recipients' => 'all']);
     expect(app(OnCallRoster::class)->alertTeam(null, $scene->alert)->pluck('id')->all())->toContain($inZone->id, $elsewhere->id);

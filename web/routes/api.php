@@ -2,6 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\V1\Admin\AlertController as AdminAlertController;
+use App\Http\Controllers\Api\V1\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Api\V1\Admin\InvitationController as AdminInvitationController;
+use App\Http\Controllers\Api\V1\Admin\MaintenanceController as AdminMaintenanceController;
+use App\Http\Controllers\Api\V1\Admin\MemberController as AdminMemberController;
+use App\Http\Controllers\Api\V1\Admin\ModerationController as AdminModerationController;
+use App\Http\Controllers\Api\V1\Admin\NotificationController as AdminNotificationController;
+use App\Http\Controllers\Api\V1\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Api\V1\Alerts\EmergencyContactController;
 use App\Http\Controllers\Api\V1\Alerts\ReportController;
 use App\Http\Controllers\Api\V1\Alerts\SosController;
@@ -65,6 +73,7 @@ use App\Http\Controllers\Api\V1\Search\SearchController;
 use App\Http\Controllers\Api\V1\Sync\HeartbeatController;
 use App\Http\Controllers\Api\V1\Sync\SyncController;
 use App\Http\Middleware\BindOutboxAccount;
+use App\Http\Middleware\EnsureAdminMobile;
 use App\Http\Middleware\EnsureAlertRoutedToViewer;
 use App\Http\Middleware\EnsurePeerSpaceAccess;
 use App\Http\Middleware\ForgetSearchTerms;
@@ -430,6 +439,58 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         });
         Route::get('validation-rules', ValidationRuleController::class)->name('validation_rules.index');
     });
+});
+
+// === 2 bis. API admin mobile (P15-16, application mobile unique, docs/API.md §23) ================================
+// Groupe `admin/*` : compte actif détenant `admin_mobile.access` (admin, superadmin ; EnsureAdminMobile, sinon 403), limiteur
+// `admin_api` par compte en plus de `api`, réponses `no-store`, journal d'audit `source=mobile`. Les mêmes cas d'usage que
+// l'administration Livewire (aucune logique dupliquée ; chacun autorise par policy). Écritures : `Idempotency-Key`
+// obligatoire (`idempotent:required,limit=admin_write` : un rejeu rend la réponse d'origine et ne consomme pas le quota) ;
+// actions à fort impact (maintenance, rôles, invitations, refus d'une demande, réattribution) : confirmation `step-up`
+// (`POST admin/step-up` → en-tête `X-Step-Up-Token`, usage unique).
+Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', 'conditional', EnsureAdminMobile::class, 'throttle:admin_api'])->group(function (): void {
+    $write = 'idempotent:required,limit=admin_write';
+
+    Route::get('dashboard', [AdminDashboardController::class, 'show'])->name('dashboard');
+    Route::post('step-up', [AdminDashboardController::class, 'stepUp'])->middleware('throttle:admin_step_up')->name('step_up');
+
+    Route::prefix('alerts')->as('alerts.')->group(function () use ($write): void {
+        Route::get('/', [AdminAlertController::class, 'index'])->name('index');
+        Route::get('{alert:ulid}', [AdminAlertController::class, 'show'])->name('show');
+        Route::get('{alert:ulid}/contacts', [AdminAlertController::class, 'contacts'])->name('contacts');
+        Route::post('{alert:ulid}/acknowledge', [AdminAlertController::class, 'acknowledge'])->middleware($write)->name('acknowledge');
+        Route::post('{alert:ulid}/take', [AdminAlertController::class, 'take'])->middleware($write)->name('take');
+        Route::post('{alert:ulid}/status', [AdminAlertController::class, 'status'])->middleware($write)->name('status');
+        Route::post('{alert:ulid}/close', [AdminAlertController::class, 'close'])->middleware($write)->name('close');
+        Route::post('{alert:ulid}/reassign', [AdminAlertController::class, 'reassign'])->middleware($write)->name('reassign');
+        Route::post('{alert:ulid}/notes', [AdminAlertController::class, 'note'])->middleware($write)->name('notes.store');
+    });
+
+    Route::get('registrations', [AdminRegistrationController::class, 'index'])->name('registrations.index');
+    Route::post('registrations/{user}/approve', [AdminRegistrationController::class, 'approve'])->whereNumber('user')->middleware($write)->name('registrations.approve');
+    Route::post('registrations/{user}/reject', [AdminRegistrationController::class, 'reject'])->whereNumber('user')->middleware($write)->name('registrations.reject');
+
+    Route::get('members', [AdminMemberController::class, 'index'])->name('members.index');
+    Route::get('members/{user}', [AdminMemberController::class, 'show'])->whereNumber('user')->name('members.show');
+    Route::post('members/{user}/roles/peer', [AdminMemberController::class, 'grantPeer'])->whereNumber('user')->middleware($write)->name('members.peer.grant');
+    Route::delete('members/{user}/roles/peer', [AdminMemberController::class, 'revokePeer'])->whereNumber('user')->middleware($write)->name('members.peer.revoke');
+    Route::put('members/{user}/role', [AdminMemberController::class, 'changeRole'])->whereNumber('user')->middleware($write)->name('members.role');
+
+    Route::get('invitations', [AdminInvitationController::class, 'index'])->name('invitations.index');
+    Route::post('invitations', [AdminInvitationController::class, 'store'])->middleware($write)->name('invitations.store');
+    Route::delete('invitations/{invitation}', [AdminInvitationController::class, 'destroy'])->whereNumber('invitation')->middleware($write)->name('invitations.destroy');
+
+    Route::get('maintenance', [AdminMaintenanceController::class, 'show'])->name('maintenance.show');
+    Route::post('maintenance/enable', [AdminMaintenanceController::class, 'enable'])->middleware($write)->name('maintenance.enable');
+    Route::post('maintenance/disable', [AdminMaintenanceController::class, 'disable'])->middleware($write)->name('maintenance.disable');
+
+    Route::get('moderation/reports', [AdminModerationController::class, 'index'])->name('moderation.index');
+    Route::post('moderation/reports/{report}/hide', [AdminModerationController::class, 'hide'])->whereNumber('report')->middleware($write)->name('moderation.hide');
+    Route::post('moderation/reports/{report}/restore', [AdminModerationController::class, 'restore'])->whereNumber('report')->middleware($write)->name('moderation.restore');
+    Route::post('moderation/reports/{report}/dismiss', [AdminModerationController::class, 'dismiss'])->whereNumber('report')->middleware($write)->name('moderation.dismiss');
+
+    Route::get('notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
+    Route::post('notifications/read-all', [AdminNotificationController::class, 'readAll'])->middleware($write)->name('notifications.read_all');
 });
 
 // === 3. Recherche membre (P8-13, lot recherche-membre, docs/API.md §20) ==========================================

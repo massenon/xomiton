@@ -36,6 +36,9 @@ final class Audit
         'gender_identity', 'sexual_orientation', 'trusted_contact_phone', 'authorization', 'cookie',
     ];
 
+    /** Clé du conteneur posée par l'API admin mobile (EnsureAdminMobile) : les lignes d'audit écrites pendant la requête portent `source=mobile`. */
+    public const SOURCE_BINDING = 'audit.source';
+
     private function __construct() {}
 
     /**
@@ -52,7 +55,7 @@ final class Audit
             'action' => Str::limit($action, 80, ''),
             'subject_type' => $subject?->getMorphClass(),
             'subject_id' => $subject?->getKey(),
-            'detail' => $detail === null ? null : self::redactString($detail),
+            'detail' => self::withSource($detail === null ? null : self::redactString($detail)),
             'ip' => $request?->ip(),
             'user_agent' => $request === null ? null : Str::limit((string) $request->userAgent(), 255, ''),
         ]);
@@ -141,6 +144,18 @@ final class Audit
 
         // `audit_logs.detail` est un TEXT MySQL : la limite est en octets, pas en caractères (accents, « » …).
         return mb_strcut($masked ?? $text, 0, self::DETAIL_MAX_BYTES);
+    }
+
+    /** Ajoute `source=mobile` au détail quand l'action vient de l'API admin mobile (journal d'audit des actions mobiles, P15-16). */
+    private static function withSource(?string $detail): ?string
+    {
+        $source = app()->bound(self::SOURCE_BINDING) ? app(self::SOURCE_BINDING) : null;
+
+        if (! is_string($source) || $source === '') {
+            return $detail;
+        }
+
+        return mb_strcut(($detail === null || $detail === '' ? '' : $detail.' ; ').'source='.$source, 0, self::DETAIL_MAX_BYTES);
     }
 
     private static function currentUser(): ?User

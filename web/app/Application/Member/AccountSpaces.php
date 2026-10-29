@@ -9,7 +9,7 @@ use App\Models\User;
 
 /**
  * Espaces proposés à un compte (un seul compte, rôles cumulables — décisions client du 2026-10-29) : `member` (réseau
- * social, tout compte), `peer` (espace pair : compte actif détenant `peer_space.access`, RG-03) et `admin`. C'est le
+ * social, tout compte), `peer` (espace pair : rôle `pair`, compte actif détenant `peer_space.access`, RG-03) et `admin`. C'est le
  * sélecteur d'espace du mobile et les menus du web ; de l'ergonomie, jamais de la sécurité : chaque route
  * `pair/*` et `admin/*` revérifie permission, policy et scope côté serveur.
  *
@@ -41,7 +41,8 @@ final class AccountSpaces
             $spaces[] = self::MEMBER;
         }
 
-        if (PeerSpace::allows($user)) {
+        // L'espace pair suppose le rôle `pair` : un·e admin sans ce rôle n'est le destinataire d'aucune alerte « pair » (il·elle a l'espace Admin).
+        if ($user->hasRole('pair') && PeerSpace::allows($user)) {
             $spaces[] = self::PEER;
         }
 

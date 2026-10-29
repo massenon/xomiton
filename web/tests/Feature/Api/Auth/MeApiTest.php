@@ -68,7 +68,7 @@ it('renvoie mon compte : pseudo, rôle, permissions, profil, réglages, e-mail c
         ->and(json_encode($response->json()))->not->toContain('Sossou');
 });
 
-it('complète le profil (phases 2-3) et place un·e pair en attente ; 422 commune hors département ou téléphone invalide', function (): void {
+it('complète le profil (phases 2-3) sans jamais donner le rôle pair ; 422 commune hors département, téléphone invalide ou type « pair »', function (): void {
     $zone = Zone::factory()->create();
     $commune = Commune::factory()->create(['zone_id' => $zone->id]);
     $elsewhere = Commune::factory()->create();
@@ -81,20 +81,20 @@ it('complète le profil (phases 2-3) et place un·e pair en attente ; 422 commun
         'pronouns' => 'elle',
         'zone_id' => $zone->id,
         'commune_id' => $commune->id,
-        'member_type' => 'pair',
         'discreet_mode' => true,
     ])
         ->assertOk()
         ->assertJsonPath('data.profile.pronouns', 'elle')
         ->assertJsonPath('data.profile.commune.id', $commune->id)
         ->assertJsonPath('data.profile.discreet_mode', true)
-        ->assertJsonPath('data.status', UserStatus::Pending->value)
-        ->assertJsonPath('data.role', 'pair');
+        ->assertJsonPath('data.status', UserStatus::Active->value)
+        ->assertJsonPath('data.role', 'membre');
 
-    expect($this->user->fresh()?->hasRole('pair'))->toBeTrue();
+    // Décision client du 2026-10-29 : aucun rôle n'est auto-attribuable, « pair » n'est plus un choix du profil.
+    $this->withToken($this->token)->patchJson('/api/v1/me/profile', ['member_type' => 'pair'])->assertUnprocessable()->assertJsonValidationErrors('member_type');
+    expect($this->user->fresh()?->hasRole('pair'))->toBeFalse()->and($this->user->fresh()?->status)->toBe(UserStatus::Active);
 
-    // La session API reste ouverte (RG-03 : seul l'accès à la collecte attend la validation).
-    $this->withToken($this->token)->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.pending_validation', true);
+    $this->withToken($this->token)->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.pending_validation', false);
 });
 
 it('liste mes appareils connectés (jetons et sessions web) et révoque un jeton ou une session, jamais ceux d’un autre compte', function (): void {
