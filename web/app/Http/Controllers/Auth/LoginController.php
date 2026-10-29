@@ -23,7 +23,6 @@ final class LoginController extends Controller
     {
         return view('auth.login', [
             'next' => LoginRequest::internalPath($request->query('next')),
-            'showDemo' => app()->environment('local'),
         ]);
     }
 

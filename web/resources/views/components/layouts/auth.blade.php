@@ -2,13 +2,14 @@
     Gabarit authentification (design-system/xomiton/pages/authentification.md, prime sur le prototype — décision Q20 a) :
     plein écran, ≥ 992 px deux colonnes : illustration 5/12 (logo blanc + promesse) · formulaire 7/12 centré, 440 px
     (prop maxWidth bornée 440–520) ; < 992 px : formulaire seul, logo au-dessus. Pas de SOS flottant, pas de rouge
-    hors erreurs. Mention discrète « Aucune donnée n'est visible depuis l'écran de verrouillage » sous le formulaire.
+    hors erreurs. `compact` (parcours d'inscription) : marges resserrées pour que chaque étape tienne sans défilement
+    de page sur 1280×720 (design-system/DECISIONS.md, inscription compacte).
     Écart consigné (design-system/DECISIONS.md, Q20) : sign-in.php est en 6/6 et 520 px, sign-up.php en 5/7 et 640 px,
     forgot-password.php en colonne centrée.
     Props : seo (lang/fr/seo.php ; noindex par défaut, /connexion et /inscription passent index => true), image
     (public/assets/images/xomiton/), maxWidth, slot `side` (contenu de l'illustration).
 --}}
-@props(['seo' => [], 'image' => 'sign-in.jpg', 'maxWidth' => 440])
+@props(['seo' => [], 'image' => 'sign-in.jpg', 'maxWidth' => 440, 'compact' => false])
 @php
     $maxWidth = max(440, min(520, (int) $maxWidth));
     // Écrans haute densité : variante `{nom}-2x.webp` (recadrage portrait de l'original, colonne 5/12 pleine hauteur)
@@ -45,12 +46,11 @@
                     </div>
                 </div>
                 <div class="col-lg-7 d-flex align-items-center">
-                    <div class="w-100 p-4 p-md-5 mx-auto xm-auth-form" style="max-width:{{ $maxWidth }}px">
-                        <x-logo class="d-lg-none d-inline-block mb-4" :href="route('home')" :width="148" />
+                    <div @class(['w-100 mx-auto xm-auth-form', 'p-4 p-md-5' => ! $compact, 'xm-auth-form--compact px-3 px-md-4 py-3' => $compact]) style="max-width:{{ $maxWidth }}px">
+                        <x-logo :class="$compact ? 'd-lg-none d-inline-block mb-2' : 'd-lg-none d-inline-block mb-4'" :href="route('home')" :width="148" />
                         {{-- P13-08 : annonce préalable d'une maintenance planifiée (refermable). --}}
                         @include('partials.maintenance-notice', ['class' => 'mb-4'])
                         {{ $slot }}
-                        <p class="xm-lock-notice small text-body-secondary mt-4 mb-0"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>{{ __('auth.lock_screen_notice') }}</p>
                     </div>
                 </div>
             </div>

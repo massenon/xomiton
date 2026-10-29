@@ -86,29 +86,10 @@ export function initResend(root = document) {
   });
 }
 
-/* ---------- Comptes de démonstration (bloc rendu seulement en environnement local) ---------- */
-export function initDemoAccounts(root = document) {
-  root.querySelectorAll('[data-xm-demo-accounts] [data-demo]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const [identifier, password] = (button.dataset.demo || '').split('|');
-      const form = document.querySelector('[data-xm-auth-form]');
-      if (!form) return;
-      const id = form.querySelector('[name="identifier"]');
-      const pw = form.querySelector('[name="password"]');
-      if (id) id.value = identifier || '';
-      if (pw) {
-        pw.value = password || '';
-        pw.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-    });
-  });
-}
-
 ready(() => {
   initOtp();
   initResend();
-  initDemoAccounts();
 });
 
 window.XM = window.XM || {};
-window.XM.auth = { initOtp, initResend, initDemoAccounts };
+window.XM.auth = { initOtp, initResend };

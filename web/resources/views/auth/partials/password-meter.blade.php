@@ -5,10 +5,11 @@
     champ vide = data-level="empty", texte neutre (pas de rouge avant la saisie, authentification.md).
     Règles affichées avant la saisie et liées au champ : la page passe aria-describedby="{$id}-rules" à x-field (lues au focus).
     Seul le niveau est en aria-live, réécrit seulement quand il change (password-meter.js).
-    Paramètre : $id (identifiant de la jauge, référencé par data-password-meter sur le champ).
+    Paramètres : $id (identifiant de la jauge, référencé par data-password-meter sur le champ) ; $compact (optionnel :
+    segments et niveau sur une ligne, règles en ligne, pour l'inscription).
 --}}
 @php($rules = ['length', 'uppercase', 'lowercase', 'digit', 'symbol'])
-<div id="{{ $id }}" class="xm-pw-meter mt-2" data-level="empty" data-labels='@json(__('auth.password_strength'))'>
+<div id="{{ $id }}" @class(['xm-pw-meter', 'xm-pw-meter--compact mt-1' => ($compact ?? false), 'mt-2' => ! ($compact ?? false)]) data-level="empty" data-labels='@json(__('auth.password_strength'))'>
     <div class="xm-pw-meter__segments" aria-hidden="true">
         @for ($i = 0; $i < \App\Domain\Auth\PasswordStrength::SEGMENTS; $i++)<span class="xm-pw-meter__segment"></span>@endfor
     </div>

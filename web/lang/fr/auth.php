@@ -34,10 +34,6 @@ return [
         // Lot ecrans-web (P4-09, P2-02)
         'otp_expired' => 'Ta demande de connexion a expiré. Reconnecte-toi.',
         'welcome_back' => 'Content·e de te revoir !',
-        'demo_title' => 'Comptes de démonstration',
-        'demo_member' => 'Membre',
-        'demo_peer' => 'Pair éducateur·rice',
-        'demo_admin' => 'Administrateur·rice',
     ],
 
     // --- Lot templates-otp-auth (P2-02 à P2-05, Q8, Q12, Q13, Q30) : textes des cas d'usage et de la jauge ---
@@ -70,7 +66,6 @@ return [
     'registrations_closed' => 'Les inscriptions sont momentanément fermées. Reviens bientôt ou inscris-toi à la newsletter.',
     'email_not_verified' => 'Confirme ton e-mail pour continuer.',
     'reset_requested' => 'Si un compte correspond à cette adresse, un code vient d’être envoyé.',
-    'lock_screen_notice' => 'Aucune donnée n’est visible depuis l’écran de verrouillage.',
     'peer_validated' => [
         'title' => 'Ton compte pair est validé',
         'body' => 'L’équipe Xomiton a validé ton inscription : l’espace pair et la collecte te sont ouverts.',
@@ -103,23 +98,22 @@ return [
             'consents' => 'Consentements',
         ],
         'step_of' => 'Étape :current sur :total',
-        'step_of_optional' => 'Étape :current sur :total, facultative',
-        'optional_step' => 'facultative',
         'account' => [
             'heading' => 'Qui es-tu ?',
             'pseudo' => 'Pseudonyme',
-            'pseudo_hint' => '3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.',
+            'pseudo_hint' => '3 à 40 : lettres, chiffres, . - _',
             'email' => 'Adresse e-mail',
-            'email_hint' => 'Pour confirmer ton compte et te renvoyer un code. Jamais partagée.',
+            'email_hint' => 'Pour ton code de vérification. Jamais partagée.',
             'password' => 'Mot de passe',
             'password_hint' => 'Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.',
+            'password_confirmation' => 'Confirmation',
             'cgu' => 'J’accepte les :terms et la :charter.',
             'cgu_terms' => 'conditions d’utilisation',
             'cgu_charter' => 'charte de la communauté',
             'privacy' => 'J’ai lu la :policy et j’accepte le traitement de mes données.',
             'age' => 'J’ai :min_age ans ou plus.',
             'privacy_policy' => 'politique de confidentialité',
-            'submit' => 'Créer mon compte',
+            'submit' => 'Continuer',
             'created' => 'Ton compte est créé. Bienvenue sur Xomiton !',
         ],
         'profile' => [
@@ -163,7 +157,7 @@ return [
             'newsletter' => 'Je veux recevoir la lettre d’information par e-mail.',
             'saved' => 'Consentements enregistrés.',
         ],
-        'skip' => 'Passer',
+        'skip' => 'Passer cette étape',
         'finish' => 'Terminer',
         'done' => 'Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.',
         'closed' => [

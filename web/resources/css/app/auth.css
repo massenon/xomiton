@@ -7,10 +7,45 @@
 /* ---------- Gabarit ---------- */
 .xm-auth .xm-auth-side__content { max-width: 480px; }
 .xm-auth .xm-auth-form { max-width: 440px; }
-.xm-auth .xm-lock-notice { display: flex; align-items: flex-start; gap: var(--xm-space-1, .25rem); line-height: 1.4; }
 .xm-auth .xm-stepper__item span:last-child { font-size: var(--xm-fs-small, .875rem); }
 @media (max-width: 575.98px) {
   .xm-auth .xm-stepper { gap: var(--xm-space-2, .5rem) 1rem; }
+}
+
+/* ---------- Inscription compacte (design-system/DECISIONS.md : chaque étape tient dans 1280×720 sans défilement de page) ---------- */
+.xm-auth-form--compact { --xm-auth-px: 1rem; }
+@media (min-width: 768px) { .xm-auth-form--compact { --xm-auth-px: 1.5rem; } }
+.xm-auth-progress { display: flex; flex-wrap: wrap; align-items: center; gap: var(--xm-space-1, .25rem) var(--xm-space-4, 1rem); margin-bottom: var(--xm-space-4, 1rem); }
+.xm-auth-progress .xm-stepper { margin: 0 !important; gap: var(--xm-space-2, .5rem); flex-wrap: nowrap; }
+.xm-stepper--compact .xm-stepper__dot { width: 24px; height: 24px; border-width: 2px; font-size: var(--xm-fs-caption, .75rem); }
+.xm-stepper--compact .xm-stepper__item { gap: var(--xm-space-2, .5rem); }
+.xm-stepper--compact .xm-stepper__item:not(:last-child)::after { content: ""; width: 1.25rem; height: 2px; background: var(--xm-border, var(--bs-border-color)); }
+.xm-stepper--compact .xm-stepper__item.is-done:not(:last-child)::after { background: var(--xm-success, var(--bs-success)); }
+/* Libellé visible pour l'étape courante seulement ; les autres restent annoncés aux lecteurs d'écran. */
+.xm-stepper--compact .xm-stepper__item:not(.is-current) > span:last-child { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.xm-auth-form--compact .xm-field { margin-bottom: var(--xm-space-2, .5rem) !important; }
+@media (min-width: 768px) { .xm-auth-form--compact .row > [class*="col"] > .xm-field { min-height: 5.5rem; } }
+.xm-auth-form--compact .xm-auth-checks .form-check { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--xm-space-2, .5rem); min-height: 2.75rem; padding-left: 0; }
+.xm-auth-form--compact .xm-auth-checks .form-check-input { float: none; margin: 0; flex: none; }
+.xm-auth-form--compact .xm-auth-checks .form-check-label { flex: 1 1 0; min-width: 0; }
+.xm-auth-form--compact .xm-auth-checks .invalid-feedback { flex: 1 1 100%; padding-left: 1.75rem; }
+.xm-auth-form--compact .form-label { margin-bottom: var(--xm-space-1, .25rem); }
+.xm-auth-form--compact .form-text,
+.xm-auth-form--compact .invalid-feedback { margin-top: .125rem; font-size: .8125rem; line-height: 1.25; }
+/* L'erreur prend la place de l'aide (même ligne, pas de décalage) ; l'aide reste liée par aria-describedby. */
+.xm-auth-form--compact .xm-field:has(> .invalid-feedback) > .form-text { display: none; }
+.xm-auth-form--compact .alert { margin-bottom: var(--xm-space-3, .75rem); padding: var(--xm-space-2, .5rem) var(--xm-space-3, .75rem); }
+
+/* Pied d'actions collant : « Continuer » toujours visible, même en défilement naturel sur mobile. */
+.xm-auth-actions { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: var(--xm-space-2, .5rem) var(--xm-space-3, .75rem); margin: var(--xm-space-2, .5rem) calc(var(--xm-auth-px, 1rem) * -1) 0; padding: var(--xm-space-3, .75rem) var(--xm-auth-px, 1rem) calc(var(--xm-space-3, .75rem) + env(safe-area-inset-bottom, 0px)); background: var(--xm-bg, var(--bs-body-bg)); border-top: 1px solid var(--xm-border, var(--bs-border-color)); }
+.xm-auth-actions .btn { display: inline-flex; align-items: center; justify-content: center; }
+.xm-auth-actions__skip { margin-left: auto; }
+.xm-auth-actions__primary { margin-left: auto; min-width: 8rem; }
+.xm-auth-actions__skip + .xm-auth-actions__primary { margin-left: 0; }
+@media (max-width: 575.98px) {
+  .xm-auth-actions__primary { flex: 1 1 100%; margin-left: 0; }
+  .xm-auth-actions:not(:has(.xm-auth-actions__skip)) .xm-auth-actions__primary { flex: 1 1 auto; }
 }
 
 /* ---------- Jauge de solidité (4 segments + texte, couleur jamais seule) ---------- */
@@ -34,3 +69,9 @@
 
 /* ---------- Bandeau « Confirme ton e-mail » ---------- */
 .xm-verify-banner .btn { min-height: 36px; }
+
+/* Jauge compacte : segments + niveau sur une ligne, règles en ligne dessous. */
+.xm-pw-meter--compact { display: flex; flex-wrap: wrap; align-items: center; gap: var(--xm-space-1, .25rem) var(--xm-space-3, .75rem); }
+.xm-pw-meter--compact .xm-pw-meter__segments { flex: 1 1 8rem; }
+.xm-pw-meter--compact .xm-pw-meter__label { flex: 0 0 auto; margin: 0 !important; min-height: 0; font-size: .8125rem; }
+.xm-pw-meter--compact .xm-pw-meter__rules { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 0 var(--xm-space-3, .75rem); font-size: .75rem; line-height: 1.4; }

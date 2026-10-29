@@ -22,6 +22,7 @@ test('inscription → code de vérification → fil', async ({ page }) => {
   await page.locator('#f-pseudo').fill(`parcours${Date.now() % 100000}`);
   await page.locator('#f-email').fill(email);
   await page.locator('#f-password').fill('Mot-de-passe-solide-2026!');
+  await page.locator('#f-password_confirmation').fill('Mot-de-passe-solide-2026!');
   await page.locator('#f-cgu').check();
   await page.locator('#f-privacy').check();
   await page.getByRole('button', { name: 'Créer mon compte' }).click();

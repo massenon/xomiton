@@ -30,13 +30,14 @@ Erreur unique et indifférenciée : « Identifiants incorrects. Vérifie ton e-m
 ## 4. Inscription en 4 phases
 | Phase | Obligatoire | Champs | Validation |
 |---|---|---|---|
-| 1. Compte | **Oui** | Pseudonyme (3–40, unique), e-mail (unique), mot de passe + **jauge de solidité** | Mot de passe ≥ « Fort » : 10 caractères, majuscule + minuscule, chiffre ; symbole pour « Excellent » |
+| 1. Compte | **Oui** | Pseudonyme (3–40, unique), e-mail (unique), mot de passe + confirmation + **jauge de solidité** | Mot de passe ≥ « Fort » : 10 caractères, majuscule + minuscule, chiffre ; symbole pour « Excellent » |
 | 2. Profil | Non (« Passer ») | Pronoms, département (→ commune), type : membre / **pair éducateur·rice** | Un compte pair est créé `en_attente` (RG-03) |
 | 3. Sécurité | Non (« Passer ») | Contact de confiance (téléphone), mode discret | Téléphone au format béninois |
 | 4. Consentements | **Oui** | CGU + charte (obligatoire), confidentialité (obligatoire), données sensibles (facultatif), newsletter (facultatif) | Cases **distinctes, jamais pré-cochées** ; chaque consentement est horodaté dans `consents` |
 
 Règles d'interface :
-- Stepper « Étape n sur 4 » (`aria-current="step"`), bouton Retour toujours présent, données conservées entre les étapes.
+- Stepper compact « Étape n sur 4 » (`aria-current="step"`), intitulés simples (« Compte », « Profil », « Sécurité », « Consentements ») sans le mot « facultative » ; seule l'étape courante garde son libellé visible. Les étapes 2 à 4 se passent avec le bouton « Passer cette étape » ; l'étape 1 n'en a pas. Bouton Retour toujours présent, données conservées entre les étapes.
+- Chaque étape tient dans 1280×720 sans défilement de page (étape 1 : pseudonyme + e-mail, mot de passe + confirmation côte à côte dès `md`, jauge compacte, trois cases) ; pied d'actions collant avec « Continuer » toujours visible. Voir `design-system/DECISIONS.md` et `docs/captures/inscription/`.
 - Jauge : 4 segments + **texte** (« Trop court, Faible, Moyen, Fort, Excellent ») + liste des règles cochées en direct ; couleur jamais seule.
 - Erreurs : résumé focalisable en haut + message sous le champ.
 - Inscriptions fermées par l'administration : formulaire remplacé par un message et un lien vers la newsletter.

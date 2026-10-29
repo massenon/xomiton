@@ -123,15 +123,18 @@ it('titre chaque phase de l’inscription « étape n sur 4 » et ne laisse inde
         expect($html)
             ->toContain('<title>Créer mon compte, étape '.$n.' sur 4 – Xomiton</title>')
             ->toContain('<meta name="robots" content="noindex, nofollow">')
-            ->toContain('data-xm-step-counter>Étape '.$n.' sur 4, facultative</p>');
+            ->toContain('data-xm-step-counter>Étape '.$n.' sur 4</p>')
+            ->not->toContain('facultative')
+            ->toContain('Passer cette étape');
     }
 });
 
-it('marque l’étape courante facultative dans le compteur, jamais la phase 1 obligatoire', function (): void {
+it('n’écrit jamais « facultative » dans le compteur ni dans le stepper ; la phase 1 n’a pas de bouton « Passer »', function (): void {
     $this->get('/inscription')
         ->assertOk()
         ->assertSee('data-xm-step-counter>Étape 1 sur 4</p>', false)
-        ->assertDontSee('Étape 1 sur 4, facultative');
+        ->assertDontSee('facultative')
+        ->assertDontSee('Passer cette étape');
 });
 
 it('n’affiche aucun rouge hors erreurs sur la connexion : le lien Urgences est neutre, avec une icône', function (): void {
@@ -145,7 +148,7 @@ it('écrit la jauge en texte et en couleur : niveau préfixé pour les lecteurs 
     $html = (string) $this->get('/inscription')->assertOk()->getContent();
 
     expect($html)
-        ->toContain('class="xm-pw-meter mt-2" data-level="empty"')
+        ->toContain('class="xm-pw-meter xm-pw-meter--compact mt-1" data-level="empty"')
         ->toContain('<p class="xm-pw-meter__label small fw-bold mb-1" aria-live="polite" aria-atomic="true"><span class="visually-hidden">Solidité du mot de passe'."\u{00A0}".': </span><span data-password-label>Saisis un mot de passe</span></p>')
         ->and(substr_count($html, 'class="xm-pw-meter__segment"'))->toBe(4)
         ->and(substr_count($html, 'data-rule="'))->toBe(5);
@@ -156,8 +159,7 @@ it('relie le champ mot de passe à la liste des règles (aria-describedby), sur 
 
     expect($html)
         ->toContain('<ul id="pwMeter-rules" class="xm-pw-meter__rules')
-        ->toMatch('/<input[^>]*id="f-password"[^>]*aria-describedby="f-password-hint pwMeter-rules"/')
-        ->not->toContain('data-password-meter="#pwMeter" aria-describedby="pwMeter-rules"');
+        ->toMatch('/<input[^>]*id="f-password"[^>]*aria-describedby="pwMeter-rules"/');
 
     // L'erreur s'ajoute sans écraser l'aide ni les règles.
     $field = Blade::render('<x-field name="password" type="password" label="Mot de passe" hint="Aide" error="Trop faible." aria-describedby="pwMeter-rules" />');

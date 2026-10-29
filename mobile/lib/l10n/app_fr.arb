@@ -13941,29 +13941,9 @@
     "@auth_layout_home": {
         "description": "auth.layout.home"
     },
-    "auth_lock_screen_notice": "Aucune donnée n’est visible depuis l’écran de verrouillage.",
-    "@auth_lock_screen_notice": {
-        "description": "auth.lock_screen_notice"
-    },
     "auth_login_create_account": "Créer un compte",
     "@auth_login_create_account": {
         "description": "auth.login.create_account"
-    },
-    "auth_login_demo_admin": "Administrateur·rice",
-    "@auth_login_demo_admin": {
-        "description": "auth.login.demo_admin"
-    },
-    "auth_login_demo_member": "Membre",
-    "@auth_login_demo_member": {
-        "description": "auth.login.demo_member"
-    },
-    "auth_login_demo_peer": "Pair éducateur·rice",
-    "@auth_login_demo_peer": {
-        "description": "auth.login.demo_peer"
-    },
-    "auth_login_demo_title": "Comptes de démonstration",
-    "@auth_login_demo_title": {
-        "description": "auth.login.demo_title"
     },
     "auth_login_emergencies": "Urgences",
     "@auth_login_emergencies": {
@@ -14258,7 +14238,7 @@
     "@auth_register_account_email": {
         "description": "auth.register.account.email"
     },
-    "auth_register_account_email_hint": "Pour confirmer ton compte et te renvoyer un code. Jamais partagée.",
+    "auth_register_account_email_hint": "Pour ton code de vérification. Jamais partagée.",
     "@auth_register_account_email_hint": {
         "description": "auth.register.account.email_hint"
     },
@@ -14269,6 +14249,10 @@
     "auth_register_account_password": "Mot de passe",
     "@auth_register_account_password": {
         "description": "auth.register.account.password"
+    },
+    "auth_register_account_password_confirmation": "Confirmation",
+    "@auth_register_account_password_confirmation": {
+        "description": "auth.register.account.password_confirmation"
     },
     "auth_register_account_password_hint": "Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.",
     "@auth_register_account_password_hint": {
@@ -14291,11 +14275,11 @@
     "@auth_register_account_pseudo": {
         "description": "auth.register.account.pseudo"
     },
-    "auth_register_account_pseudo_hint": "3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
+    "auth_register_account_pseudo_hint": "3 à 40 : lettres, chiffres, . - _",
     "@auth_register_account_pseudo_hint": {
         "description": "auth.register.account.pseudo_hint"
     },
-    "auth_register_account_submit": "Créer mon compte",
+    "auth_register_account_submit": "Continuer",
     "@auth_register_account_submit": {
         "description": "auth.register.account.submit"
     },
@@ -14367,10 +14351,6 @@
     "auth_register_invitation_banner_pair": "Tu as été invité·e à rejoindre l’équipe des pair·es éducateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.",
     "@auth_register_invitation_banner_pair": {
         "description": "auth.register.invitation.banner.pair"
-    },
-    "auth_register_optional_step": "facultative",
-    "@auth_register_optional_step": {
-        "description": "auth.register.optional_step"
     },
     "auth_register_profile_choose": "Choisir…",
     "@auth_register_profile_choose": {
@@ -14496,25 +14476,13 @@
     "@auth_register_sign_in": {
         "description": "auth.register.sign_in"
     },
-    "auth_register_skip": "Passer",
+    "auth_register_skip": "Passer cette étape",
     "@auth_register_skip": {
         "description": "auth.register.skip"
     },
     "auth_register_step_of": "Étape {current} sur {total}",
     "@auth_register_step_of": {
         "description": "auth.register.step_of",
-        "placeholders": {
-            "current": {
-                "type": "String"
-            },
-            "total": {
-                "type": "String"
-            }
-        }
-    },
-    "auth_register_step_of_optional": "Étape {current} sur {total}, facultative",
-    "@auth_register_step_of_optional": {
-        "description": "auth.register.step_of_optional",
         "placeholders": {
             "current": {
                 "type": "String"

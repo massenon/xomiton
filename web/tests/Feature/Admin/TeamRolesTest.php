@@ -271,7 +271,7 @@ it('ouvre l’inscription fermée au public à qui porte une invitation valable'
         ->assertSee('pair');
 
     $this->post('/inscription', [
-        'pseudo' => 'Invitee_Web', 'email' => 'invitee@exemple.bj', 'password' => 'Xomiton2026!',
+        'pseudo' => 'Invitee_Web', 'email' => 'invitee@exemple.bj', 'password' => 'Xomiton2026!', 'password_confirmation' => 'Xomiton2026!',
         'cgu' => '1', 'privacy' => '1', 'age_confirmed' => '1', 'invitation' => $created['code'],
     ])->assertRedirect();
 
@@ -281,7 +281,7 @@ it('ouvre l’inscription fermée au public à qui porte une invitation valable'
     $this->flushSession();
 
     $this->post('/inscription', [
-        'pseudo' => 'Invitee_Bis', 'email' => 'bis@exemple.bj', 'password' => 'Xomiton2026!',
+        'pseudo' => 'Invitee_Bis', 'email' => 'bis@exemple.bj', 'password' => 'Xomiton2026!', 'password_confirmation' => 'Xomiton2026!',
         'cgu' => '1', 'privacy' => '1', 'age_confirmed' => '1', 'invitation' => $created['code'],
     ])->assertSessionHasErrors('invitation');
 });

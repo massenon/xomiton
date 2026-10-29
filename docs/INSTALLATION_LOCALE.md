@@ -168,7 +168,7 @@ Vérifié : MariaDB 10.11. **MySQL 8 : jamais exécuté** (voir [PLAN_FINALISATI
 
 ## 5. Comptes de démonstration
 
-Ils n'existent qu'en environnement local, de test ou de préproduction : **jamais en production** (garde-fou dans le code). Le champ « Identifiant » de la page de connexion (`/connexion`) accepte l'e-mail ou le pseudo. Source : `web/database/seeders/DemoAccountsSeeder.php`.
+Ils n'existent qu'en environnement local, de test ou de préproduction : **jamais en production** (garde-fou dans le code). Le champ « Identifiant » de la page de connexion (`/connexion`) accepte l'e-mail ou le pseudo. Les écrans de connexion (site et application) ne préremplissent rien : saisissez à la main les identifiants ci-dessous. Source : `web/database/seeders/DemoAccountsSeeder.php`.
 
 | Rôle | E-mail | Pseudo | Mot de passe |
 |---|---|---|---|

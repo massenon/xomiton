@@ -97,6 +97,8 @@ config/xomiton.php         réglages métier (délais, limites, lots)
 
 ## Comptes de démonstration (local uniquement, après `migrate --seed`)
 
+À saisir à la main sur `/connexion` : aucun bouton de préremplissage n'est proposé.
+
 | Rôle | E-mail | Mot de passe |
 |---|---|---|
 | Super-admin | admin@xomiton.bj | Admin123! |

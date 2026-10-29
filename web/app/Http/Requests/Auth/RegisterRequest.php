@@ -42,7 +42,7 @@ final class RegisterRequest extends FormRequest
         return [
             'pseudo' => ['required', 'string', new Pseudo],
             'email' => ['required', 'string', 'max:190', new EmailAddress, Rule::unique(User::class, 'email')],
-            'password' => ['required', 'string', 'max:255', new StrongPassword],
+            'password' => ['required', 'string', 'max:255', 'confirmed', new StrongPassword],
             'cgu' => ['accepted'],
             'privacy' => ['accepted'],
             'age_confirmed' => ['accepted'],

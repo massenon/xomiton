@@ -1,8 +1,8 @@
 {{-- Phase 2 « Profil » (facultative) : pronoms, département → commune en cascade (Alpine, données injectées), type de membre. --}}
-<x-layouts.auth :seo="\App\Http\Controllers\Auth\Support\RegistrationSteps::seo($step)" image="hero-12.jpg" :max-width="520">
+<x-layouts.auth :seo="\App\Http\Controllers\Auth\Support\RegistrationSteps::seo($step)" image="hero-12.jpg" :max-width="520" compact>
     <x-slot:side>@include('auth.partials.register-side')</x-slot:side>
 
-    <h1 class="h2 fw-bold">{{ __('auth.register.heading') }}</h1>
+    <h1 class="h3 fw-bold mb-2">{{ __('auth.register.heading') }}</h1>
     @include('auth.partials.stepper')
     @include('auth.partials.verify-banner')
     @include('auth.partials.status')
@@ -15,8 +15,8 @@
     <form method="post" action="{{ route('inscription.profil.store') }}" novalidate
           x-data="{ zone: @js($zoneValue === null ? '' : (string) $zoneValue), commune: @js($communeValue === null ? '' : (string) $communeValue), communes: @js($communesByZone) }">
         @csrf
-        <h2 class="h4 mb-1">{{ __('auth.register.profile.heading') }}</h2>
-        <p class="text-body-secondary small">{{ __('auth.register.profile.intro') }}</p>
+        <h2 class="h5 mb-1">{{ __('auth.register.profile.heading') }}</h2>
+        <p class="text-body-secondary small mb-2">{{ __('auth.register.profile.intro') }}</p>
 
         <x-field name="pronouns" type="select" :label="__('auth.register.profile.pronouns')" optional :value="$profile?->pronouns"
                  :options="['' => __('auth.register.profile.pronouns_placeholder')] + __('auth.register.profile.pronouns_options')" />
@@ -48,12 +48,10 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mt-4 gap-2">
+        <div class="xm-auth-actions">
             <a class="btn btn-light" href="{{ route('fil') }}">{{ __('common.back') }}</a>
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-link text-decoration-none" form="skip-profile">{{ __('auth.register.skip') }}</button>
-                <x-button type="submit">{{ __('common.next') }}</x-button>
-            </div>
+            <button type="submit" class="btn btn-link text-decoration-none xm-auth-actions__skip" form="skip-profile">{{ __('auth.register.skip') }}</button>
+            <x-button type="submit" class="xm-auth-actions__primary">{{ __('common.next') }}</x-button>
         </div>
     </form>
     <form id="skip-profile" method="post" action="{{ route('inscription.passer', ['etape' => 'profile']) }}" class="d-none">@csrf</form>

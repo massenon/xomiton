@@ -50,7 +50,7 @@ it('affiche l’écran de connexion fidèle au prototype, dans le gabarit 5/12 �
         ->assertSee('Mot de passe oublié ?')
         ->assertSee('Signaler (sans compte)')
         ->assertSee('Urgences')
-        ->assertSee('Aucune donnée n’est visible depuis l’écran de verrouillage.')
+        ->assertDontSee('Aucune donnée n’est visible depuis l’écran de verrouillage.')
         ->assertSee('class="col-lg-5 d-none d-lg-flex xm-auth-side', false)
         ->assertSee('class="col-lg-7 d-flex align-items-center"', false)
         ->assertSee('style="max-width:440px"', false)
@@ -59,13 +59,18 @@ it('affiche l’écran de connexion fidèle au prototype, dans le gabarit 5/12 �
         ->assertDontSee('xm-sos-fab');
 });
 
-it('propose les comptes de démonstration uniquement en environnement local', function (): void {
+it('ne sert jamais de comptes ni de mots de passe de démonstration, même en local', function (): void {
     $this->app['env'] = 'local';
 
     $this->get('/connexion')
         ->assertOk()
-        ->assertSee('Comptes de démonstration')
-        ->assertSee('data-demo="membre@xomiton.bj|Membre123!"', false);
+        ->assertDontSee('data-xm-demo-accounts', false)
+        ->assertDontSee('data-demo', false)
+        ->assertDontSee('Comptes de démonstration')
+        ->assertDontSee('Membre123!')
+        ->assertDontSee('Pair123!')
+        ->assertDontSee('Admin123!')
+        ->assertDontSee('écran de verrouillage');
 });
 
 it('ouvre la session sans OTP sur un appareil reconnu et redirige vers le fil', function (): void {

@@ -104,7 +104,7 @@ Seuls `pub get`, `analyze` et `test` ont été exécutés ; le lancement sur app
 
 ## 5. Comptes de démonstration
 
-Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en production : garde-fou dans `DatabaseSeeder` et test automatisé). Le champ « identifiant » de `/connexion` accepte l'e-mail ou le pseudo. La page de connexion propose aussi trois boutons de remplissage automatique.
+Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en production : garde-fou dans `DatabaseSeeder` et test automatisé). Le champ « identifiant » de `/connexion` accepte l'e-mail ou le pseudo. La page de connexion ne propose aucun bouton de remplissage automatique (ni sur le site ni dans l'application) : saisissez ces identifiants à la main, tels que listés ci-dessous.
 
 | Rôle | Identifiant | Pseudo | Mot de passe | Accès attendu |
 |---|---|---|---|---|

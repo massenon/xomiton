@@ -2,7 +2,7 @@
 
 À remplir pendant la recette, avec le [guide de recette](GUIDE_RECETTE.md) (installation, lancement, comptes de démonstration). Une ligne = une action à faire et un résultat à constater. Dans la colonne **Statut**, remplacez `☐` par `✅` (conforme), `❌` (anomalie : la décrire en commentaire avec le gabarit du guide §11) ou `➖` (non testé, avec la raison). Les identifiants (VIS-01…) servent de référence dans les rapports d'anomalie.
 
-Prérequis : `scripts/recette-local.sh` puis `scripts/recette-lancer.sh` ; ouvrir **http://localhost:8000** ; journal : `web/storage/logs/laravel.log`. Mots de passe de démonstration : guide §5.
+Prérequis : `scripts/recette-local.sh` puis `scripts/recette-lancer.sh` ; ouvrir **http://localhost:8000** ; journal : `web/storage/logs/laravel.log`. Identifiants de démonstration : à saisir à la main (aucun bouton de préremplissage sur les écrans de connexion), listés dans le guide §5.
 
 - Recette réalisée par : ____________   Date : ____________   Commit (`git rev-parse --short HEAD`) : ____________
 - Navigateur et version : ____________   Appareil mobile : ____________

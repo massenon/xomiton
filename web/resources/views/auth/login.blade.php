@@ -23,18 +23,4 @@
 
     <p class="text-center mt-4 mb-2">{{ __('auth.login.no_account') }} <a href="{{ route('inscription') }}" class="fw-bold">{{ __('auth.login.create_account') }}</a></p>
     <p class="text-center small"><a href="{{ route('signaler') }}"><i class="bi bi-megaphone me-1" aria-hidden="true"></i>{{ __('auth.login.report_without_account') }}</a> · <a href="{{ route('urgences') }}"><i class="bi bi-telephone me-1" aria-hidden="true"></i>{{ __('auth.login.emergencies') }}</a></p>
-
-    @if ($showDemo)
-        {{-- Environnement local seulement : comptes de DemoAccountsSeeder (prototype sign-in.php). --}}
-        <div class="card bg-primary bg-opacity-10 border-0 mt-4" data-xm-demo-accounts>
-            <div class="card-body py-3 small">
-                <p class="fw-bold mb-1"><i class="bi bi-info-circle me-1" aria-hidden="true"></i>{{ __('auth.login.demo_title') }}</p>
-                <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-sm btn-primary-soft" data-demo="membre@xomiton.bj|Membre123!">{{ __('auth.login.demo_member') }}</button>
-                    <button type="button" class="btn btn-sm btn-primary-soft" data-demo="pair@xomiton.bj|Pair123!">{{ __('auth.login.demo_peer') }}</button>
-                    <button type="button" class="btn btn-sm btn-primary-soft" data-demo="admin@xomiton.bj|Admin123!">{{ __('auth.login.demo_admin') }}</button>
-                </div>
-            </div>
-        </div>
-    @endif
 </x-layouts.auth>

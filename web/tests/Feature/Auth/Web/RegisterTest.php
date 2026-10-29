@@ -34,21 +34,25 @@ function webRegisterPayload(array $overrides = []): array
         'pseudo' => 'Awa_S',
         'email' => 'Awa@Exemple.bj',
         'password' => 'Xomiton2026!',
+        'password_confirmation' => 'Xomiton2026!',
         'cgu' => '1',
         'privacy' => '1',
         'age_confirmed' => '1',
     ], $overrides);
 }
 
-it('affiche la phase 1 avec le stepper (étapes 2 à 4 facultatives), la jauge et des cases jamais pré-cochées', function (): void {
+it('affiche la phase 1 avec le stepper compact (intitulés simples), la jauge et des cases jamais pré-cochées', function (): void {
     $response = $this->get('/inscription')
         ->assertOk()
         ->assertSee('<title>Créer un compte'."\u{00A0}".': rejoindre la communauté – Xomiton</title>', false)
         ->assertSee('Étape 1 sur 4')
         ->assertSee('aria-current="step"', false)
-        ->assertSee('Profil (facultative)')
-        ->assertSee('Sécurité (facultative)')
-        ->assertSee('Consentements (facultative)')
+        ->assertSee('Profil')
+        ->assertSee('Sécurité')
+        ->assertSee('Consentements')
+        ->assertDontSee('(facultative)')
+        ->assertSee('name="password_confirmation"', false)
+        ->assertSee('xm-auth-actions__primary', false)
         ->assertSee('autocomplete="new-password"', false)
         ->assertSee('data-password-meter="#pwMeter"', false)
         ->assertSee('class="xm-pw-meter', false)
@@ -57,7 +61,7 @@ it('affiche la phase 1 avec le stepper (étapes 2 à 4 facultatives), la jauge e
         ->assertSee('class="col-lg-5 d-none d-lg-flex xm-auth-side', false)
         ->assertSee('Rejoins une communauté bienveillante.')
         ->assertSee('(nouvelle fenêtre)')
-        ->assertSee('Aucune donnée n’est visible depuis l’écran de verrouillage.');
+        ->assertDontSee('écran de verrouillage');
 
     expect($response->getContent())->not->toContain('name="cgu" value="1" checked')
         ->and($response->getContent())->not->toContain('name="privacy" value="1" checked');
@@ -102,14 +106,14 @@ it('crée le compte et ouvre la session dès la phase 1 : rôle membre, profil, 
 it('refuse chaque règle : pseudo pris (casse ignorée), e-mail pris, mot de passe faible, consentements manquants', function (): void {
     User::factory()->create(['pseudo' => 'awa_s', 'email' => 'deja@exemple.bj']);
 
-    $this->from('/inscription')->post('/inscription', webRegisterPayload(['email' => 'DEJA@exemple.bj', 'password' => 'faible', 'cgu' => '', 'privacy' => '0']))
+    $this->from('/inscription')->post('/inscription', webRegisterPayload(['email' => 'DEJA@exemple.bj', 'password' => 'faible', 'password_confirmation' => 'faible', 'cgu' => '', 'privacy' => '0']))
         ->assertRedirect('/inscription')
         ->assertSessionHasErrors(['pseudo', 'email', 'password', 'cgu', 'privacy'])
         ->assertSessionHasErrors(['pseudo' => 'Ce pseudonyme est déjà pris. Choisis-en un autre.'])
         ->assertSessionHasErrors(['email' => 'Un compte existe déjà avec cette adresse e-mail. Connecte-toi ou utilise « Mot de passe oublié ».']);
 
     foreach (['Court1Ab', 'sansmajuscule2026', 'SANSMINUSCULE2026', 'SansChiffreIci'] as $weak) {
-        $this->postJson('/inscription', webRegisterPayload(['pseudo' => 'Nouvelle_'.strlen($weak), 'password' => $weak]))
+        $this->postJson('/inscription', webRegisterPayload(['pseudo' => 'Nouvelle_'.strlen($weak), 'password' => $weak, 'password_confirmation' => $weak]))
             ->assertStatus(422)
             ->assertJsonValidationErrors(['password'])
             ->assertJsonMissingValidationErrors(['pseudo', 'email']);
@@ -226,4 +230,15 @@ it('Q68 : affiche la case « J’ai 15 ans ou plus » et refuse l’inscription 
     $this->post('/inscription', webRegisterPayload(['age_confirmed' => null]))
         ->assertSessionHasErrors(['age_confirmed' => __('auth.age_confirmation_required', ['min_age' => 15])]);
     expect(User::query()->count())->toBe(0);
+});
+
+it('exige la confirmation du mot de passe, identique au mot de passe', function (): void {
+    $this->from('/inscription')->post('/inscription', webRegisterPayload(['password_confirmation' => 'Autre2026!x']))
+        ->assertSessionHasErrors(['password' => 'Les deux mots de passe ne correspondent pas.']);
+    $this->assertGuest();
+
+    $payload = webRegisterPayload();
+    unset($payload['password_confirmation']);
+    $this->post('/inscription', $payload)->assertSessionHasErrors('password');
+    $this->assertGuest();
 });
