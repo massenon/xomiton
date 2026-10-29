@@ -132,5 +132,47 @@ Ne pas lancer `dart format` sur tout `lib/` : le formateur « tall » de Dart 3.
 réécrit les fichiers existants (le style du dépôt est antérieur) ; formater
 uniquement les fichiers neufs.
 
-Limites connues (endpoints à créer côté serveur, voir `docs/PLAN_MOBILE_APP_UNIQUE.md` §11.1) :
-`on_duty`, `GET pair/collect-options` (populations), fiche de référence du dossier.
+Listes de la collecte : `GET pair/collect-options` (copie chiffrée, repli sur
+`zones` / `violence-types`). Fiche du dossier : `data.sheet` de
+`GET pair/cases/{code}` (cinq sections, `filled`). Garde : `meta.on_duty` de
+`GET pair/alerts` et `peer.on_duty` du tableau de bord.
+
+## Espace admin d'astreinte (P15-17, P15-18, P15-24)
+
+`lib/features/admin/` : API `admin/*` (docs/API.md §23), **rien n'est persisté**
+(pas de boîte Hive, pas de cache : une lecture est toujours faite au réseau).
+
+- **Écrans** : tableau d'astreinte `/admin/astreinte` (SOS actifs, compte à
+  rebours d'escalade, indicateurs, relecture 10 s / 30 s), alertes
+  `/admin/alertes[/:id]` (filtres, accusé, prise en charge, statut, note,
+  réattribution, clôture, position **arrondie**, avertissement avant Maps),
+  « Gérer » `/admin/gerer` → inscriptions `/admin/inscriptions`, rôles et
+  invitations `/admin/roles`, modération `/admin/moderation[/:id]`, maintenance
+  `/admin/maintenance`, notifications `/admin/notifications`.
+- **`step-up`** : les actions à fort impact (réattribution, refus d'une
+  inscription ou d'une demande, approbation d'une demande de rôle, invitation et
+  révocation, don et retrait du rôle pair, maintenance) redemandent le mot de
+  passe (`POST admin/step-up`) ; le jeton obtenu est à usage unique et part en
+  `X-Step-Up-Token` ; le mot de passe n'est jamais envoyé à l'action ni gardé.
+- **Écritures** : `Idempotency-Key` posée automatiquement sur tout
+  `POST/PUT/DELETE admin/*` (hors `step-up`), rejeu avec la même clé.
+- **Le rôle admin n'est jamais attribuable depuis le mobile** : `AdminApi` n'a
+  aucune méthode qui prenne un nom de rôle (seulement `grantPeerRole` /
+  `revokePeerRole`) ; un compte d'équipe n'a aucun bouton de rôle.
+- **Hors ligne** : bandeau « appelez directement la personne », boutons
+  désactivés, aucune requête d'écriture.
+- Messages privés : jamais proposés à la modération (filtrés aussi côté client).
+
+## Push d'équipe (P15-19)
+
+`lib/core/push/` : charge `{type, id}` seulement. Types : `alert_routed`
+(→ `/pair/alertes/:id`), `duty_sos` et `duty_alert` (→ `/admin/alertes/:id`),
+`peer_pending` (→ `/admin/inscriptions`), `content_reported` (→
+`/admin/moderation`), silencieux `sync` (→ cycle de synchronisation) et `rules`
+(→ relecture des règles ; reçu application fermée, la demande est notée dans les
+préférences et traitée au prochain démarrage). Canal Android **« Astreinte »**
+(`duty`, importance maximale) pour l'astreinte, « Communauté » pour le reste.
+Ouverture : l'espace est activé puis l'écran empilé, **après le code PIN**, et
+seulement si le serveur a déclaré l'espace au compte. Aperçus masqués : titre
+« Xomiton », corps neutre (jamais SOS, lieu ni motif). iOS : APNs à configurer
+(compte Apple).
