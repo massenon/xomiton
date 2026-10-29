@@ -634,7 +634,9 @@ class SyncEngine {
           ? Map<String, dynamic>.from((res.data as Map)['data'] as Map)
           : <String, dynamic>{};
       final device = data['device'] is Map ? Map<String, dynamic>.from(data['device'] as Map) : <String, dynamic>{};
-      if (device['wipe'] == true || data['wipe'] == true) {
+      // `wipe` : {requested_at, reason} tant que l'ordre attend son accusé, sinon null (API §3, §21.6).
+      final wipe = data['wipe'] ?? device['wipe'];
+      if (wipe != null && wipe != false) {
         await onWipe?.call();
         return false;
       }

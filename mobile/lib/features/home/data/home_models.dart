@@ -229,11 +229,20 @@ class PeerTask {
 }
 
 class PeerSection {
-  const PeerSection({required this.kpi, required this.routedOpen, required this.routedNew, required this.tasks});
+  const PeerSection({
+    required this.kpi,
+    required this.routedOpen,
+    required this.routedNew,
+    required this.tasks,
+    this.onDuty = false,
+  });
   final PeerKpi kpi;
   final int routedOpen;
   final int routedNew;
   final List<PeerTask> tasks;
+
+  /// De garde (`peer.on_duty`, si le serveur l'annonce) : la liste des alertes se relit toutes les 10 s.
+  final bool onDuty;
 }
 
 class NextEvent {
@@ -298,6 +307,7 @@ class DashboardData {
               routedOpen: _int(_map(peer['routed_alerts'])['open']) ?? 0,
               routedNew: _int(_map(peer['routed_alerts'])['new']) ?? 0,
               tasks: _list(peer['tasks']).map((t) => PeerTask('${t['key']}', _int(t['count']) ?? 0)).toList(),
+              onDuty: peer['on_duty'] == true,
             ),
       stale: stale,
     );

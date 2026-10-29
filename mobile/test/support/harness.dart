@@ -15,6 +15,7 @@ import 'package:xomiton/core/storage/secret_store.dart';
 import 'package:xomiton/core/storage/token_store.dart';
 import 'package:xomiton/core/sync/sync_providers.dart';
 import 'package:xomiton/features/home/application/home_providers.dart';
+import 'package:xomiton/features/pair/application/pair_providers.dart';
 import 'package:xomiton/features/security/application/pin_lock.dart';
 import 'package:xomiton/features/security/application/pin_service.dart';
 
@@ -134,6 +135,7 @@ class TestEnv {
     unreadCountProvider.overrideWith((ref) => Stream.value(unread)),
     outboxRetryIntervalProvider.overrideWithValue(null),
     syncIntervalProvider.overrideWithValue(null),
+    peerPollEnabledProvider.overrideWithValue(false),
     pinIterationsProvider.overrideWithValue(2),
     ...extra,
   ];

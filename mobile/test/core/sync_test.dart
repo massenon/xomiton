@@ -458,7 +458,7 @@ void main() {
       expect(off.engine.state.offline, isTrue);
 
       final rig = Rig(base(extra: {
-        'POST heartbeat': (_) => jsonBody(200, {'data': {'device': {'wipe': true}, 'open_conflicts': 0}}),
+        'POST heartbeat': (_) => jsonBody(200, {'data': {'server_time': 'x', 'wipe': {'requested_at': 'x', 'reason': 'admin'}}}),
       }), onWipe: () async => wiped++);
       await rig.engine.heartbeat();
       expect(wiped, 1);
@@ -680,7 +680,7 @@ void main() {
     );
 
     Future<(ProviderContainer, TestEnv)> boot(List<String> spaces, {Map<String, FakeHandler>? extra}) async {
-      SharedPreferences.setMockInitialValues({});
+      SharedPreferences.setMockInitialValues({kDeviceUuidPref: 'x'});
       final prefs = await SharedPreferences.getInstance();
       final env = TestEnv(api: FakeApi({...routes(), ...?extra}), token: 'tok');
       await env.db.session.put('user', jsonEncode(user(spaces)));
@@ -711,7 +711,7 @@ void main() {
     });
 
     test('un autre compte sur ce téléphone : rien du précédent ne reste dans le coffre du pair', () async {
-      SharedPreferences.setMockInitialValues({});
+      SharedPreferences.setMockInitialValues({kDeviceUuidPref: 'x'});
       final prefs = await SharedPreferences.getInstance();
       final env = TestEnv(api: FakeApi(routes()), token: 'tok');
       await env.db.session.put('user', jsonEncode(user(['member', 'peer'])));
@@ -728,14 +728,15 @@ void main() {
 
     test('effacement à distance annoncé par heartbeat : coffre vidé, session fermée', () async {
       final (c, env) = await boot(['member', 'peer'], extra: {
-        'POST heartbeat': (_) => jsonBody(200, {'data': {'device': {'wipe': true}}}),
-        'POST me/devices/x/wiped': (_) => jsonBody(204, null),
+        'POST heartbeat': (_) => jsonBody(200, {'data': {'server_time': 'x', 'wipe': {'requested_at': 'x', 'reason': 'peer_role_removed'}}}),
+        'POST me/devices/x/wiped': (_) => jsonBody(200, {'data': {'wipe': null}}),
       });
       await env.db.peerData.put('c:cases:1', '{}');
       c.read(syncRunnerProvider);
       await Future<void>.delayed(const Duration(milliseconds: 150));
       expect(c.read(sessionProvider).authenticated, isFalse);
       expect(env.db.peerData.keys, isEmpty);
+      expect(env.api.calls('POST me/devices/x/wiped'), hasLength(1), reason: 'l’accusé part avant la purge');
     });
   });
 }

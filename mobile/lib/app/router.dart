@@ -25,6 +25,8 @@ import '../features/home/presentation/dashboard_page.dart';
 import '../features/home/presentation/notifications_page.dart';
 import '../features/home/presentation/resources_page.dart';
 import '../features/home/presentation/themes_pages.dart';
+import '../features/pair/presentation/pair_alerts_pages.dart';
+import '../features/pair/presentation/pair_home_page.dart';
 import '../features/profile/presentation/profile_page.dart';
 import '../features/profile/presentation/progressive_page.dart';
 import '../features/profile/presentation/security_page.dart';
@@ -213,15 +215,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
         branches: [
           StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/pair/accueil',
-              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.peer, titleKey: 'menus_mobile_home'),
-            ),
+            GoRoute(path: '/pair/accueil', builder: (_, _) => const PairHomePage()),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/pair/alertes',
-              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.peer, titleKey: 'mobile_peer_tab_alerts'),
+              builder: (_, _) => const PairAlertsPage(),
+              routes: [
+                GoRoute(path: ':id', builder: (_, state) => PairAlertDetailPage(id: state.pathParameters['id']!)),
+              ],
             ),
           ]),
           StatefulShellBranch(routes: [GoRoute(path: '/pair/sos', builder: (_, _) => const SosPage())]),
