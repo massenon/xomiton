@@ -67,7 +67,7 @@ class _AdminDutyPageState extends ConsumerState<AdminDutyPage> with WidgetsBindi
       if ((c?.fresh ?? 0) > 0) _Todo('mobile_admin_todo_alerts', c!.fresh, '/admin/alertes'),
       if (d.pendingPeople > 0) _Todo('mobile_admin_todo_people', d.pendingPeople, '/admin/inscriptions'),
       if ((d.pendingModeration ?? 0) > 0) _Todo('mobile_admin_todo_moderation', d.pendingModeration!, '/admin/moderation'),
-      if ((d.openSyncConflicts ?? 0) > 0) _Todo('mobile_admin_todo_conflicts', d.openSyncConflicts!, null),
+      if ((d.openSyncConflicts ?? 0) > 0) _Todo('mobile_admin_todo_conflicts_web', d.openSyncConflicts!, null),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +135,7 @@ class _AdminDutyPageState extends ConsumerState<AdminDutyPage> with WidgetsBindi
                   ? Card(
                       child: Padding(
                         padding: const EdgeInsets.all(XmSpace.s4),
-                        child: Text(context.t('${t.key}_web', {'count': t.count}), style: theme.textTheme.bodyMedium),
+                        child: Text(context.t(t.key, {'count': t.count}), style: theme.textTheme.bodyMedium),
                       ),
                     )
                   : LinkRow(

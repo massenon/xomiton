@@ -14,6 +14,9 @@ import '../support/harness.dart';
 /// Noms d'API (collections de `sync/pull`, codes d'erreur, clés de tâches) qui ressemblent à des clés de texte.
 const _apiKeys = {
   'alerts_to_take',
+  'peer_request',
+  'disposable_email',
+  'repeated_fingerprint',
   'cases_to_contact',
   'validation_rules',
   'directory_contacts',
