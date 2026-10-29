@@ -7,6 +7,8 @@ import '../core/auth_spaces/presentation/space_widgets.dart';
 import '../core/auth_spaces/space_providers.dart';
 import '../features/admin/presentation/admin_alerts_pages.dart';
 import '../features/admin/presentation/admin_duty_page.dart';
+import '../features/admin/presentation/admin_more_pages.dart';
+import '../features/admin/presentation/admin_people_pages.dart';
 import '../features/alerts/presentation/alerts_pages.dart';
 import '../features/alerts/presentation/report_page.dart';
 import '../features/alerts/presentation/sos_page.dart';
@@ -290,17 +292,20 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ]),
           StatefulShellBranch(routes: [
+            GoRoute(path: '/admin/gerer', builder: (_, _) => const AdminManagePage()),
+            GoRoute(path: '/admin/inscriptions', builder: (_, _) => const AdminRegistrationsPage()),
+            GoRoute(path: '/admin/roles', builder: (_, _) => const AdminRolesPage()),
             GoRoute(
-              path: '/admin/gerer',
-              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_manage'),
+              path: '/admin/moderation',
+              builder: (_, _) => const AdminModerationPage(),
+              routes: [
+                GoRoute(path: ':id', builder: (_, state) => AdminReportPage(id: state.pathParameters['id']!)),
+              ],
             ),
+            GoRoute(path: '/admin/maintenance', builder: (_, _) => const AdminMaintenancePage()),
           ]),
           StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/admin/notifications',
-              builder: (_, _) =>
-                  const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_notifications'),
-            ),
+            GoRoute(path: '/admin/notifications', builder: (_, _) => const AdminNotificationsPage()),
           ]),
         ],
       ),

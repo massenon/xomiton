@@ -207,3 +207,8 @@ final adminNotificationsProvider = FutureProvider.autoDispose<List<Map<String, d
     category: ref.watch(adminNotifCategoryProvider),
   ),
 );
+
+/// Compteurs seuls (menu « Gérer »).
+final adminDashboardProvider = FutureProvider.autoDispose<AdminDashboard>(
+  (ref) => ref.read(adminApiProvider).dashboard(),
+);

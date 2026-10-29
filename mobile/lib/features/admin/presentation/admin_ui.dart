@@ -309,3 +309,6 @@ mixin AdminPolling<T extends ConsumerStatefulWidget> on ConsumerState<T>, Widget
     if (state == AppLifecycleState.resumed && ref.read(isOnlineProvider)) _pollTick?.call();
   }
 }
+
+/// Vrai quand le téléphone est hors ligne : les boutons d'action se désactivent.
+final adminOfflineProvider = Provider<bool>((ref) => !ref.watch(isOnlineProvider));
