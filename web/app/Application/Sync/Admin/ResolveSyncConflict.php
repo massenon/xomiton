@@ -15,11 +15,14 @@ use App\Models\User;
 use App\Support\Audit;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Résolution d'un conflit de synchronisation par l'administration (P13-01, `sync.manage`) : valeur du **serveur** (déjà en
- * place, rien à écrire), de l'**appareil** ou **fusion** saisie à la main (champs texte seulement : notes, orientation).
+ * Résolution d'un conflit de synchronisation (P13-01) par l'administration (`sync.manage`, tous les conflits) ou par le·la
+ * pair sur ses propres dossiers (`sync.resolve_own`, SyncConflictPolicy `resolve` ; décision client du 2026-10-29) : valeur
+ * du **serveur** (déjà en place, rien à écrire), de l'**appareil** ou **fusion** saisie à la main (administration
+ * seulement ; champs texte : notes, orientation).
  * La valeur retenue est appliquée au dossier par UpdateCase après les règles de la collecte (CaseValidator : catalogue,
  * commune ↔ département, transitions de statut, dossier verrouillé refusé) ; le conflit passe à « résolu » avec
  * `resolved_value` chiffrée, `resolved_by` et `resolved_at` ; le compteur de l'appareil baisse ; la décision est
@@ -41,7 +44,11 @@ final class ResolveSyncConflict
      */
     public function __invoke(User $by, SyncConflict $conflict, string $resolution, ?string $merged = null): SyncConflict
     {
-        if (! $by->can('sync.manage')) {
+        if (! Gate::forUser($by)->allows('resolve', $conflict)) {
+            throw new AuthorizationException;
+        }
+
+        if ($resolution === SyncConflict::RESOLUTION_MERGE && ! Gate::forUser($by)->allows('merge', $conflict)) {
             throw new AuthorizationException;
         }
 
@@ -80,8 +87,9 @@ final class ResolveSyncConflict
         });
 
         Audit::log('sync.conflict_resolved', $conflict, sprintf(
-            'choix=%s ; sujet=%s #%d ; champ=%s ; appareil=%s',
+            'choix=%s ; par=%s ; sujet=%s #%d ; champ=%s ; appareil=%s',
             $resolution,
+            $by->can('sync.manage') ? 'admin' : 'pair',
             class_basename((string) $conflict->subject_type),
             $conflict->subject_id,
             $conflict->field,

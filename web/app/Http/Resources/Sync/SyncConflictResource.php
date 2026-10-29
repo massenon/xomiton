@@ -42,6 +42,11 @@ final class SyncConflictResource extends JsonResource
             'server_value' => $visible ? $conflict->server_value : null,
             'device_value' => $visible ? $conflict->device_value : null,
             'resolved_value' => $visible ? $conflict->resolved_value : null,
+            // Le pair tranche lui-même (serveur ou appareil) ses conflits sur ses dossiers ; `merge` : administration seulement.
+            'can' => [
+                'resolve' => $conflict->isOpen() && $viewer instanceof User && $viewer->can('resolve', $conflict),
+                'merge' => $conflict->isOpen() && $viewer instanceof User && $viewer->can('merge', $conflict),
+            ],
             'created_at' => $conflict->created_at?->toIso8601String(),
             'resolved_at' => $conflict->resolved_at?->toIso8601String(),
         ];

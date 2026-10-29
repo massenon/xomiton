@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api\V1\Sync;
 use App\Application\Cases\CaseValidator;
 use App\Application\Shared\KnowledgeBaseAnswerer;
 use App\Application\Shared\SosBurstWatch;
+use App\Application\Sync\Admin\ResolveSyncConflict;
 use App\Application\Sync\Pull\PullChanges;
 use App\Application\Sync\Pull\PullCursor;
 use App\Application\Sync\Push\ItemOutcome;
@@ -17,6 +18,7 @@ use App\Enums\ConflictStatus;
 use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Requests\Api\Sync\ListConflictsRequest;
 use App\Http\Requests\Api\Sync\PullRequest;
+use App\Http\Requests\Api\Sync\ResolveConflictRequest;
 use App\Http\Requests\Api\Sync\PushRequest;
 use App\Http\Requests\Api\Sync\SyncItemDecoder;
 use App\Http\Requests\Api\Sync\SyncItemLimiter;
@@ -98,6 +100,29 @@ final class SyncController extends ApiController
         return $this->paginated($conflicts, SyncConflictResource::class, [
             'open' => SyncConflict::query()->forDevice((int) $device->getKey())->open()->count(),
         ])->withHeaders(self::PRIVATE_HEADERS);
+    }
+
+    /**
+     * POST sync/conflicts/{conflict}/resolve : le pair tranche lui-même un conflit 409 de ses appareils sur ses propres
+     * dossiers (valeur du serveur ou de l'appareil ; SyncConflictPolicy `resolve`, audit `sync.conflict_resolved`) ;
+     * l'administration peut aussi fusionner. Conflit d'un autre compte ou d'un dossier qui n'est pas à soi → 404 neutre ;
+     * déjà tranché → 422 `conflict_already_resolved`.
+     */
+    public function resolve(ResolveConflictRequest $request, SyncConflict $conflict, ResolveSyncConflict $resolve): JsonResponse
+    {
+        $user = $this->user($request);
+        $device = $this->devices->resolve($user, $request);
+        $conflict->loadMissing(['device', 'subject']);
+
+        // Hors périmètre (autre compte, autre dossier) : même réponse que pour un identifiant inconnu.
+        abort_unless($user->can('resolve', $conflict), 404);
+
+        $resolved = $resolve($user, $conflict, $request->resolution(), $request->merged());
+        $this->devices->touch($device, synced: false);
+
+        return $this->respond(new SyncConflictResource($resolved->load('subject')), 200, [
+            'open' => SyncConflict::query()->forDevice((int) $conflict->device_id)->open()->count(),
+        ], headers: self::PRIVATE_HEADERS);
     }
 
     private function user(Request $request): User

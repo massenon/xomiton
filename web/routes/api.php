@@ -389,6 +389,9 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
             ->withoutMiddleware('throttle:api')->middleware('idempotent:required,nonblocking,limit=sync_push')->name('push');
         Route::get('pull', [SyncController::class, 'pull'])->name('pull');
         Route::get('conflicts', [SyncController::class, 'conflicts'])->name('conflicts');
+        // Le pair tranche lui-même un conflit 409 de ses appareils (valeur serveur ou appareil), sur ses propres dossiers.
+        Route::post('conflicts/{conflict}/resolve', [SyncController::class, 'resolve'])->whereNumber('conflict')
+            ->middleware('idempotent')->name('conflicts.resolve');
     });
     Route::post('heartbeat', HeartbeatController::class)->name('api.heartbeat');
 
