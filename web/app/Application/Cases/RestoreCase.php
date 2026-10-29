@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Cases;
 
+use App\Application\Push\PushToPeers;
 use App\Domain\Cases\Exceptions\CaseLocked;
 use App\Domain\Cases\Exceptions\InvalidCaseTransition;
 use App\Enums\CaseStatus;
@@ -48,6 +49,7 @@ final class RestoreCase
         });
 
         Audit::log('cases.restored', $restored, sprintf('code=%s ; statut=%s→%s', $restored->code, CaseStatus::Archived->value, CaseStatus::Closed->value), $by);
+        app(PushToPeers::class)->caseChangedBy($restored, $by);
 
         return $restored;
     }

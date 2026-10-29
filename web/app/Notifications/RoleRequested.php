@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\DatabaseNotification;
+use App\Notifications\Concerns\MasksInDiscreetMode;
 
 /**
  * Nouvelle demande du rôle pair (D-MOB-15), adressée aux comptes habilités à l'attribuer (`peers.assign`) : cloche et push
- * de l'administration, ouverture sur la file des inscriptions. Jamais le motif de la personne dans la notification.
+ * de l'administration, ouverture sur la file des inscriptions (type de push `peer_pending`, P15-19). Sensible : texte neutre
+ * quand les aperçus sont masqués ou en mode discret. Jamais le motif de la personne dans la notification.
  */
 final class RoleRequested extends XomitonNotification
 {
+    use MasksInDiscreetMode;
+
     public function __construct(
         public readonly int $requestId,
         public readonly string $pseudo,
@@ -24,7 +28,7 @@ final class RoleRequested extends XomitonNotification
 
     public function isSensitive(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -38,6 +42,14 @@ final class RoleRequested extends XomitonNotification
             'url' => self::urlTo('admin.inscriptions', [], '/admin/inscriptions'),
             'icon' => 'person-plus-fill',
         ];
+    }
+
+    /**
+     * @return array{title: string, body: string}
+     */
+    protected function discreetContent(object $notifiable): array
+    {
+        return self::discreetFrom('notifications.role_requested.discreet');
     }
 
     /**
@@ -55,6 +67,6 @@ final class RoleRequested extends XomitonNotification
 
     protected function pushType(): string
     {
-        return 'role_request';
+        return 'peer_pending';
     }
 }

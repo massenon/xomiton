@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\DatabaseNotification;
+use App\Notifications\Concerns\TargetsMobileSpace;
 
 /**
  * « SOS non accusé » (NOTIFICATIONS §2, RG-05) : point focal national après le délai d'escalade ; cloche, push, SMS
@@ -12,12 +13,17 @@ use App\Models\DatabaseNotification;
  */
 final class SosUnacknowledged extends XomitonNotification
 {
+    use TargetsMobileSpace;
+
     public function __construct(
         public readonly int $alertId,
         public readonly string $code,
         public readonly int $minutes,
         public readonly ?string $zoneLabel = null,
         public readonly ?string $url = null,
+        // Espace mobile du destinataire (`pair`, `admin`, null) et ULID de l'alerte : type et `id` du push (P15-19).
+        public readonly ?string $audience = null,
+        public readonly ?string $alertUlid = null,
     ) {}
 
     public function category(): string
@@ -94,14 +100,14 @@ final class SosUnacknowledged extends XomitonNotification
         return ['alert_id' => $this->alertId, 'code' => $this->code, 'minutes' => $this->minutes];
     }
 
-    protected function subjectId(): int
+    protected function subjectId(): int|string
     {
-        return $this->alertId;
+        return $this->idFor($this->alertId);
     }
 
     protected function pushType(): string
     {
-        return 'sos';
+        return $this->typeFor('duty_sos', 'sos');
     }
 
     private function targetUrl(): string

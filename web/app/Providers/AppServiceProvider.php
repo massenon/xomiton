@@ -15,6 +15,7 @@ use App\Application\Alerts\Listeners\NotifySosCancelled;
 use App\Application\Alerts\Listeners\NotifySosSafe;
 use App\Application\Alerts\Listeners\NotifySosTriggered;
 use App\Application\Assistant\AssistantProvider;
+use App\Application\Auth\Listeners\NotifyValidatorsOfPendingAccount;
 use App\Application\Moderation\Listeners\NotifyModerators;
 use App\Application\Newsletter\Listeners\LogCampaignSent;
 use App\Application\Shared\SosBurstWatch;
@@ -35,6 +36,7 @@ use App\Domain\Notifications\Contracts\FcmSender;
 use App\Domain\Notifications\Contracts\PushSender;
 use App\Domain\Notifications\Contracts\SmsSender;
 use App\Domain\Sync\Events\SyncConflictDetected;
+use App\Events\Auth\UserRegistered;
 use App\Infrastructure\Assistant\AssistantProviders;
 use App\Infrastructure\Notifications\NotificationDrivers;
 use App\Infrastructure\Session\GuestPrivateDatabaseSessionHandler;
@@ -93,6 +95,8 @@ class AppServiceProvider extends ServiceProvider
         AlertAcknowledged::class => [MarkAlertNotificationsSeen::class],
         AlertStatusChanged::class => [NotifyAuthorOfStatusChange::class],
         ContentReported::class => [NotifyModerators::class],
+        // P15-19 : compte en attente de validation → push `peer_pending` aux comptes qui valident les inscriptions.
+        UserRegistered::class => [NotifyValidatorsOfPendingAccount::class],
         SyncConflictDetected::class => [NotifyAdminsOfSyncConflict::class],
         CampaignSent::class => [LogCampaignSent::class],
     ];

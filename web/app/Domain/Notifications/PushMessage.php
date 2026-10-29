@@ -22,7 +22,23 @@ final readonly class PushMessage
         public ?string $url,
         public array $data,
         public ?string $icon = null,
+        // Message « données seules » (P15-19) : rien à afficher (ni titre ni corps), l'application agit (cycle de synchro,
+        // relecture des règles). Le pilote FCM n'envoie alors aucun bloc `notification`.
+        public bool $silent = false,
     ) {}
+
+    /** Types d'astreinte (admin de garde, pair·e routé·e) : canal Android « Astreinte » (`duty`), priorité haute. */
+    public const DUTY_TYPES = ['duty_sos', 'duty_alert', 'alert_routed'];
+
+    /** Canal Android (`FirebaseFcmSender`) : `duty` (Astreinte), `sos_alerts` (SOS et alertes), sinon `community`. */
+    public function channel(): string
+    {
+        if (in_array($this->data['type'], self::DUTY_TYPES, true)) {
+            return 'duty';
+        }
+
+        return $this->isUrgent() ? 'sos_alerts' : 'community';
+    }
 
     public function isUrgent(): bool
     {
@@ -40,6 +56,7 @@ final readonly class PushMessage
             'url' => $this->url,
             'icon' => $this->icon,
             'data' => $this->data,
+            'silent' => $this->silent,
         ];
     }
 

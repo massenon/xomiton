@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\DatabaseNotification;
+use App\Notifications\Concerns\TargetsMobileSpace;
 use App\Support\LocaleFormatter;
 use DateTimeInterface;
 
@@ -15,6 +16,8 @@ use DateTimeInterface;
  */
 final class AlertRouted extends XomitonNotification
 {
+    use TargetsMobileSpace;
+
     public function __construct(
         public readonly int $alertId,
         public readonly string $reference,
@@ -24,6 +27,9 @@ final class AlertRouted extends XomitonNotification
         public readonly ?string $url = null,
         // Rappel à 24 h sans accusé (Q27, P5-03) : titre « Rappel : … », contexte e-mail `alerte_rappel`.
         public readonly bool $reminder = false,
+        // Espace mobile du destinataire (`pair`, `admin`, null) et ULID de l'alerte : type et `id` du push (P15-19).
+        public readonly ?string $audience = null,
+        public readonly ?string $alertUlid = null,
     ) {}
 
     public function category(): string
@@ -90,13 +96,13 @@ final class AlertRouted extends XomitonNotification
         return ['alert_id' => $this->alertId];
     }
 
-    protected function subjectId(): int
+    protected function subjectId(): int|string
     {
-        return $this->alertId;
+        return $this->idFor($this->alertId);
     }
 
     protected function pushType(): string
     {
-        return 'alert';
+        return $this->typeFor('duty_alert', 'alert');
     }
 }

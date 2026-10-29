@@ -530,6 +530,10 @@ return [
         // `POST sync/push` : budget de temps d'un lot (sous les 30 s de D7) ; au-delà, les éléments restants repartent
         // en 503 `retry_later` sans reçu (PushBatch).
         'push_time_budget_seconds' => 20,
+        // Pushs silencieux vers les pair·es (P15-19, PushToPeers) : un même pair ne reçoit pas deux `sync` (ni deux `rules`)
+        // en moins de ce nombre de secondes.
+        'push_debounce_seconds' => 20,
+        'rules_push_debounce_seconds' => 20,
     ],
 
     /*
@@ -548,8 +552,10 @@ return [
             'messages' => ['in_app' => true, 'email' => false, 'push' => true, 'locked' => false],
             'communaute' => ['in_app' => true, 'email' => false, 'push' => true, 'locked' => false],
             'evenements' => ['in_app' => true, 'email' => true, 'push' => false, 'locked' => false],
-            'moderation' => ['in_app' => true, 'email' => false, 'push' => false, 'locked' => false],
-            'systeme' => ['in_app' => true, 'email' => false, 'push' => false, 'locked' => false],
+            // P15-19 : push actif par défaut pour « contenu signalé » (moderation) et « inscription à valider » (systeme), les
+            // notifications de l'espace Admin mobile ; la personne peut les couper (Réglages › Notifications).
+            'moderation' => ['in_app' => true, 'email' => false, 'push' => true, 'locked' => false],
+            'systeme' => ['in_app' => true, 'email' => false, 'push' => true, 'locked' => false],
         ],
         'push' => [
             'webpush' => [

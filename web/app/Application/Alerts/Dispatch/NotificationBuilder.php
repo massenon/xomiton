@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Application\Alerts\Dispatch;
 
 use App\Application\Alerts\Dispatch\Recipients\RecipientTarget;
+use App\Application\Member\AccountSpaces;
+use App\Domain\Alerts\Dispatch\RecipientKind;
 use App\Enums\AlertType;
 use App\Enums\NotificationPurpose;
 use App\Models\Alert;
@@ -33,6 +35,8 @@ final class NotificationBuilder
         $id = (int) $alert->getKey();
         $code = self::code($alert);
         $url = AlertLinks::for($alert, $target);
+        $audience = self::audience($target);
+        $ulid = (string) $alert->ulid;
 
         return match ($purpose) {
             NotificationPurpose::SosTriggered => new SosTriggered(
@@ -43,6 +47,8 @@ final class NotificationBuilder
                 pseudo: $alert->is_anonymous ? null : $alert->authorLabel(),
                 url: $url,
                 acknowledgeable: AlertLinks::canAcknowledge($alert, $target),
+                audience: $audience,
+                alertUlid: $ulid,
             ),
             NotificationPurpose::AlertRouted, NotificationPurpose::AlertReminder, NotificationPurpose::AlertEscalated => new AlertRouted(
                 alertId: $id,
@@ -52,6 +58,8 @@ final class NotificationBuilder
                 receivedAt: $alert->created_at ?? CarbonImmutable::now(),
                 url: $url,
                 reminder: $purpose === NotificationPurpose::AlertReminder,
+                audience: $audience,
+                alertUlid: $ulid,
             ),
             NotificationPurpose::SosUnacknowledged => new SosUnacknowledged(
                 alertId: $id,
@@ -59,6 +67,8 @@ final class NotificationBuilder
                 minutes: (int) ($extra['minutes'] ?? self::minutesSince($alert)),
                 zoneLabel: $alert->zoneLabel(),
                 url: $url,
+                audience: $audience,
+                alertUlid: $ulid,
             ),
             NotificationPurpose::SosCancelled => new SosCancelled($id, $code, $target->hasAccount() ? $url : null),
             NotificationPurpose::SosSafe => new SosSafe($id, $code, $target->hasAccount() ? $url : null),
@@ -75,6 +85,32 @@ final class NotificationBuilder
                 url: $url,
             ),
         };
+    }
+
+    /**
+     * Espace mobile par lequel la personne ouvre l'alerte (P15-19) : `admin` (espace Admin, `admin_mobile.access`) ou `pair`
+     * (espace pair), null sans compte, pour l'auteur·e et pour un compte qui n'a ni l'un ni l'autre. Un compte de l'équipe
+     * prévenu comme tel (admin de garde, pair de la zone) est d'abord admin ; une fiche d'annuaire liée à un compte
+     * (contact routé, point focal) est d'abord pair.
+     */
+    public static function audience(RecipientTarget $target): ?string
+    {
+        if ($target->user === null || $target->kind === RecipientKind::Author) {
+            return null;
+        }
+
+        $spaces = AccountSpaces::for($target->user, AccountSpaces::SURFACE_MOBILE);
+        $order = $target->kind === RecipientKind::Team
+            ? [AccountSpaces::ADMIN => 'admin', AccountSpaces::PEER => 'pair']
+            : [AccountSpaces::PEER => 'pair', AccountSpaces::ADMIN => 'admin'];
+
+        foreach ($order as $space => $audience) {
+            if (in_array($space, $spaces, true)) {
+                return $audience;
+            }
+        }
+
+        return null;
     }
 
     public static function code(Alert $alert): string

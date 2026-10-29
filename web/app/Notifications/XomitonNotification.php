@@ -132,6 +132,28 @@ abstract class XomitonNotification extends Notification
         return true;
     }
 
+    /**
+     * Notification « données seules » (types `sync`, `rules`, P15-19) : rien n'est affiché, l'application agit. Servie par
+     * FCM seulement (jamais Web Push, qui afficherait une notification vide), sans cloche, et sans tenir compte des
+     * préférences de notification de la personne (elle ne voit rien) ni de ses abonnements Web Push.
+     */
+    protected function isSilent(): bool
+    {
+        return false;
+    }
+
+    /** Le Web Push est-il prévu pour ce destinataire ? Par défaut oui ; faux pour les alertes mobiles réservées à FCM. */
+    protected function wantsWebPush(object $notifiable): bool
+    {
+        return true;
+    }
+
+    /** Le push FCM (application mobile) est-il prévu pour ce destinataire ? Par défaut oui. */
+    protected function wantsFcm(object $notifiable): bool
+    {
+        return true;
+    }
+
     /** Type court de la charge push (`data.type`, ouverture profonde P15-08). */
     protected function pushType(): string
     {
@@ -158,6 +180,10 @@ abstract class XomitonNotification extends Notification
         $user = $notifiable instanceof User ? $notifiable : null;
         $channels = [];
 
+        if ($this->isSilent()) {
+            return $this->hasSubscription($notifiable, PushSubscription::KIND_FCM) ? [self::CHANNEL_FCM] : [];
+        }
+
         if ($this->wantsDatabase() && method_exists($notifiable, 'notifications') && $this->allows($user, NotificationPreferences::CHANNEL_IN_APP)) {
             $channels[] = self::CHANNEL_DATABASE;
         }
@@ -167,11 +193,11 @@ abstract class XomitonNotification extends Notification
         }
 
         if ($this->wantsPush() && $this->allows($user, NotificationPreferences::CHANNEL_PUSH)) {
-            if ($this->hasSubscription($notifiable, PushSubscription::KIND_WEBPUSH)) {
+            if ($this->wantsWebPush($notifiable) && $this->hasSubscription($notifiable, PushSubscription::KIND_WEBPUSH)) {
                 $channels[] = self::CHANNEL_WEBPUSH;
             }
 
-            if ($this->hasSubscription($notifiable, PushSubscription::KIND_FCM)) {
+            if ($this->wantsFcm($notifiable) && $this->hasSubscription($notifiable, PushSubscription::KIND_FCM)) {
                 $channels[] = self::CHANNEL_FCM;
             }
         }
@@ -259,6 +285,7 @@ abstract class XomitonNotification extends Notification
                 'category' => $this->category(),
             ],
             icon: is_string($data['icon'] ?? null) ? $data['icon'] : null,
+            silent: $this->isSilent(),
         );
     }
 

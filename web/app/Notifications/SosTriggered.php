@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\DatabaseNotification;
+use App\Notifications\Concerns\TargetsMobileSpace;
 use Illuminate\Notifications\AnonymousNotifiable;
 
 /**
@@ -15,6 +16,8 @@ use Illuminate\Notifications\AnonymousNotifiable;
  */
 final class SosTriggered extends XomitonNotification
 {
+    use TargetsMobileSpace;
+
     public function __construct(
         public readonly int $alertId,
         public readonly string $code,
@@ -25,6 +28,9 @@ final class SosTriggered extends XomitonNotification
         // Faux pour une fiche sans compte qui ne peut pas accuser réception (prévenue en copie, P5-03 / Q57) : SMS
         // `sms_copy`, sans « Accusez réception » ni lien.
         public readonly bool $acknowledgeable = true,
+        // Espace mobile du destinataire (`pair`, `admin`, null) et ULID de l'alerte : type et `id` du push (P15-19).
+        public readonly ?string $audience = null,
+        public readonly ?string $alertUlid = null,
     ) {}
 
     public function category(): string
@@ -115,14 +121,14 @@ final class SosTriggered extends XomitonNotification
         return ['alert_id' => $this->alertId, 'code' => $this->code];
     }
 
-    protected function subjectId(): int
+    protected function subjectId(): int|string
     {
-        return $this->alertId;
+        return $this->idFor($this->alertId);
     }
 
     protected function pushType(): string
     {
-        return 'sos';
+        return $this->typeFor('duty_sos', 'sos');
     }
 
     private function targetUrl(): string

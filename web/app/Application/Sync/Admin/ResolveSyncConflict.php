@@ -6,6 +6,7 @@ namespace App\Application\Sync\Admin;
 
 use App\Application\Cases\CaseValidator;
 use App\Application\Cases\UpdateCase;
+use App\Application\Push\PushToPeers;
 use App\Application\Sync\Conflicts\ApplyCaseChanges;
 use App\Domain\Sync\Exceptions\ConflictResolutionRefused;
 use App\Models\CaseRecord;
@@ -95,6 +96,13 @@ final class ResolveSyncConflict
             $conflict->field,
             $conflict->device_id ?? '-',
         ), $by);
+
+        // P15-19 : tranché par quelqu'un d'autre que le propriétaire de l'appareil → réveil silencieux (`sync`).
+        $owner = $conflict->device_id === null ? null : SyncDevice::query()->whereKey($conflict->device_id)->first()?->user_id;
+
+        if ($owner !== null && (int) $owner !== (int) $by->getKey() && ($peer = User::query()->active()->whereKey($owner)->first()) instanceof User) {
+            app(PushToPeers::class)->syncRequested($peer);
+        }
 
         return $conflict;
     }

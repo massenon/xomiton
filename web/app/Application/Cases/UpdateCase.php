@@ -6,6 +6,7 @@ namespace App\Application\Cases;
 
 use App\Application\Cases\Data\CaseChanges;
 use App\Application\Cases\Results\CaseWritten;
+use App\Application\Push\PushToPeers;
 use App\Domain\Cases\Exceptions\CaseLocked;
 use App\Domain\Cases\Exceptions\InvalidCaseTransition;
 use App\Enums\CaseStatus;
@@ -22,7 +23,8 @@ use Illuminate\Support\Facades\Gate;
  * `cases.update_own`). Statut : transitions fermées de CaseStatus (422 `invalid_transition`) ; `clos` pose
  * `closed_at`, une réouverture l'efface ; `archive` (administration seulement, `cases.view_all`) pose `archived_at`.
  * Dossier archivé ou anonymisé : lecture seule (422 `case_locked`). Pas de suppression : un dossier se clôt.
- * Journal d'audit « cases.updated » (champs modifiés et statut, jamais leur contenu).
+ * Journal d'audit « cases.updated » (champs modifiés et statut, jamais leur contenu). Modifié par une autre personne que le pair
+ * qui l'a collecté : push silencieux `sync` à ce pair (PushToPeers).
  */
 final class UpdateCase
 {
@@ -78,6 +80,9 @@ final class UpdateCase
                 $fields === [] ? '-' : implode(',', $fields),
                 $from !== $to ? sprintf(' ; statut=%s→%s', $from->value, $to->value) : '',
             ), $by);
+
+            // P15-19 : modifié par quelqu'un d'autre que le pair qui l'a collecté → réveil silencieux (`sync`).
+            app(PushToPeers::class)->caseChangedBy($fresh, $by);
         }
 
         return new CaseWritten($fresh, created: false, warnings: $this->quality->warnings($fresh, $by));

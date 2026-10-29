@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Validation;
 
+use App\Application\Push\PushToPeers;
 use App\Domain\Cases\DuplicateCriteria;
 use App\Domain\Cases\ValidationRuleKey;
 use App\Models\User;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Gate;
  * Réglages du catalogue des règles de validation (P11-05, Administration › Règles de validation ; prototype
  * admin/validation.php l.22-48) : interrupteur de chaque règle, bornes de plausibilité, champs de doublons suspects. Lus par
  * ValidationCatalog (formulaires, API `pair/`, `sync/push`, règles `email`, `phone_bj`, `positive_int`) : un réglage prend
- * effet à la requête suivante, et `updated_at` renouvelle la version servie aux clients mobiles. Autorisation :
+ * effet à la requête suivante, et `updated_at` renouvelle la version servie aux clients mobiles (push silencieux `rules` aux pair·es, P15-20). Autorisation :
  * `ValidationRulePolicy::update` (`validation_rules.manage`). Les règles **verrouillées** (`required`, `password_strong`) restent actives
  * quoi qu'on demande : la demande est ignorée et rapportée. Journal d'audit « validation.rules_updated »,
  * « validation.plausibility_updated », « validation.duplicates_updated » (clés et bornes, jamais de donnée de dossier).
@@ -65,6 +66,7 @@ final class ManageValidationRules
         });
 
         if ($changed !== []) {
+            $this->notifyPeers();
             Audit::log('validation.rules_updated', null, sprintf('règles=%s', implode(',', array_map(
                 fn (string $key): string => $key.'='.($active[$key] ? 'on' : 'off'),
                 $changed,
@@ -87,6 +89,7 @@ final class ManageValidationRules
         $rule->is_active = $active;
         $rule->save();
 
+        $this->notifyPeers();
         Audit::log('validation.plausibility_updated', $rule, sprintf('âge=%d-%d ; ancienneté=%d ans ; active=%s', $ageMin, $ageMax, $maxPastYears, $active ? 'oui' : 'non'), $by);
 
         return $rule;
@@ -108,9 +111,16 @@ final class ManageValidationRules
         $rule->is_active = $active;
         $rule->save();
 
+        $this->notifyPeers();
         Audit::log('validation.duplicates_updated', $rule, sprintf('champs=%s ; active=%s', implode('+', $fields), $active ? 'oui' : 'non'), $by);
 
         return $rule;
+    }
+
+    /** Réveille les pair·es (push silencieux `rules`, P15-20) : ils relisent `pair/validation-rules` à leur prochain contact. */
+    private function notifyPeers(): void
+    {
+        app(PushToPeers::class)->rulesChanged();
     }
 
     private function rule(string $key): ValidationRule

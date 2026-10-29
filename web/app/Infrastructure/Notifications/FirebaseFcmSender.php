@@ -20,7 +20,8 @@ use Throwable;
  * Charge utile discrète : le titre et le corps sont ceux du PushMessage (déjà neutralisés si la personne masque les
  * aperçus, NOTIFICATIONS §4.1) ; les données se limitent à `type`, `id`, `category` (+ `url` relatif) : le détail est
  * relu dans l'application après authentification. Priorité haute et canal Android `sos_alerts` pour les catégories
- * urgentes (`sos`, `alertes`). Jeton invalide ou désinscrit (UNREGISTERED, INVALID_ARGUMENT sur le jeton, 404) →
+ * urgentes (`sos`, `alertes`), canal `duty` (Astreinte) pour les types d'astreinte (`duty_sos`, `duty_alert`, `alert_routed`) ;
+ * aucun bloc `notification` pour les types silencieux (`sync`, `rules`, P15-19). Jeton invalide ou désinscrit (UNREGISTERED, INVALID_ARGUMENT sur le jeton, 404) →
  * `DeliveryResult::gone()` : le canal supprime l'abonnement. Le jeton d'appareil n'est jamais journalisé.
  */
 final class FirebaseFcmSender implements FcmSender, PoolablePushSender
@@ -121,13 +122,27 @@ final class FirebaseFcmSender implements FcmSender, PoolablePushSender
             $data['url'] = $url;
         }
 
+        if ($message->silent) {
+            // Données seules (types `sync`, `rules`) : rien n'est affiché par le système, l'application agit. Réveil en
+            // priorité normale (économie de batterie), regroupé par type : seul le dernier ordre compte.
+            return [
+                'token' => $token,
+                'data' => $data,
+                'android' => ['priority' => 'NORMAL', 'collapse_key' => $data['type']],
+                'apns' => [
+                    'headers' => ['apns-priority' => '5', 'apns-push-type' => 'background'],
+                    'payload' => ['aps' => ['content-available' => 1]],
+                ],
+            ];
+        }
+
         return [
             'token' => $token,
             'notification' => ['title' => $message->title, 'body' => $message->body],
             'data' => $data,
             'android' => [
                 'priority' => $urgent ? 'HIGH' : 'NORMAL',
-                'notification' => ['channel_id' => $urgent ? 'sos_alerts' : 'community'],
+                'notification' => ['channel_id' => $message->channel()],
             ],
             'apns' => ['headers' => ['apns-priority' => $urgent ? '10' : '5']],
         ];

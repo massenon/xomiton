@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Cases;
 
+use App\Application\Push\PushToPeers;
 use App\Domain\Cases\Exceptions\CaseLocked;
 use App\Enums\CaseStatus;
 use App\Models\CaseRecord;
@@ -46,6 +47,7 @@ final class ArchiveCase
 
         [$fresh, $from] = $outcome;
         Audit::log('cases.archived', $fresh, sprintf('code=%s ; statut=%s→%s', $fresh->code, $from->value, CaseStatus::Archived->value), $by);
+        app(PushToPeers::class)->caseChangedBy($fresh, $by);
 
         return $fresh;
     }

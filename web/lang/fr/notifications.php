@@ -230,6 +230,14 @@ return [
     'role_requested' => [
         'title' => 'Nouvelle demande de rôle de pair·e',
         'body' => ':name demande le rôle de pair éducateur·rice. Ouvrez la file des inscriptions pour répondre.',
+        'discreet' => 'Nouvelle demande',
+    ],
+
+    // Compte qui attend la validation de l'équipe (inscription signalée, pair·e invité·e) : vous.
+    'peer_pending' => [
+        'title' => 'Inscription à valider',
+        'body' => ':name attend votre validation. Ouvrez la file des inscriptions pour répondre.',
+        'discreet' => 'Nouvelle demande',
     ],
 
     // Décisions de l'équipe adressées à la personne (P12-01, P12-06) : tu. Le motif est celui écrit par l'équipe pour elle.
