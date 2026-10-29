@@ -127,7 +127,8 @@ class MaintenancePage extends ConsumerWidget {
                             child: FilledButton(
                               key: const Key('maintenance-sos'),
                               style: FilledButton.styleFrom(backgroundColor: xm.danger, minimumSize: const Size(0, 48)),
-                              onPressed: () => context.push(authenticated ? '/sos' : '/alerte-sos'),
+                              // Connecté·e : l'onglet SOS (route de la barre du bas) ; sinon l'écran plein public.
+                              onPressed: () => authenticated ? context.go('/sos') : context.push('/alerte-sos'),
                               child: Text(context.t('maintenance_always_available_sos')),
                             ),
                           ),
