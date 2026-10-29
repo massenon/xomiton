@@ -13,6 +13,7 @@ import '../storage/local_db.dart';
 import '../storage/secret_store.dart';
 import '../storage/token_store.dart';
 import '../../features/auth/application/session_controller.dart';
+import '../security/offline_expiry.dart';
 
 /// Initialisés dans `main()` (bootstrap) puis surchargés dans le `ProviderScope`.
 final sharedPreferencesProvider = Provider<SharedPreferences>(
@@ -50,6 +51,8 @@ final dioProvider = Provider<Dio>((ref) {
     deviceId: () => prefs.getString(kDeviceUuidPref),
     onUnauthorized: () => ref.read(sessionProvider.notifier).expire(),
     onSpaceForbidden: () => ref.read(sessionProvider.notifier).refresh(),
+    onDeviceRevoked: () => ref.read(sessionProvider.notifier).expire(),
+    onContact: (date) => ref.read(contactClockProvider).record(parseServerDate(date)),
   );
 });
 

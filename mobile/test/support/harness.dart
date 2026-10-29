@@ -14,6 +14,8 @@ import 'package:xomiton/core/storage/local_db.dart';
 import 'package:xomiton/core/storage/secret_store.dart';
 import 'package:xomiton/core/storage/token_store.dart';
 import 'package:xomiton/features/home/application/home_providers.dart';
+import 'package:xomiton/features/security/application/pin_lock.dart';
+import 'package:xomiton/features/security/application/pin_service.dart';
 
 typedef FakeHandler = FutureOr<ResponseBody> Function(RequestOptions o);
 
@@ -100,6 +102,7 @@ class TestEnv {
     this.unread = 0,
     this.extra = const [],
     this.initialPrefs = const {},
+    this.pin,
   });
 
   final FakeApi api;
@@ -112,6 +115,9 @@ class TestEnv {
 
   /// Préférences supplémentaires (ex. espace actif mémorisé).
   final Map<String, Object> initialPrefs;
+
+  /// Code PIN déjà choisi sur l'appareil (l'application démarre alors verrouillée).
+  final String? pin;
 
   final secrets = MemorySecretStore();
   final db = LocalDb.memory();
@@ -126,6 +132,7 @@ class TestEnv {
     connectivityStreamProvider.overrideWithValue(Stream<bool>.value(online)),
     unreadCountProvider.overrideWith((ref) => Stream.value(unread)),
     outboxRetryIntervalProvider.overrideWithValue(null),
+    pinIterationsProvider.overrideWithValue(2),
     ...extra,
   ];
 
@@ -135,6 +142,7 @@ class TestEnv {
     if (cachedUser != null) {
       await db.session.put('user', jsonEncode(cachedUser));
     }
+    if (pin != null) await PinService(secrets, iterations: 2).set(pin!);
     return ProviderScope(
       overrides: overrides(prefs),
       child: XomitonApp(strings: loadStrings()),

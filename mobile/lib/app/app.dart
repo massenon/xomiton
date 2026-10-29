@@ -8,6 +8,8 @@ import '../core/l10n/app_strings.dart';
 import '../core/network/app_toast.dart';
 import '../core/outbox/outbox.dart';
 import '../core/providers/core_providers.dart';
+import '../core/security/offline_expiry.dart';
+import '../core/security/screen_security.dart';
 import '../core/push/push_runner.dart';
 import '../features/profile/application/settings_providers.dart';
 import '../features/security/presentation/pin_widgets.dart';
@@ -58,6 +60,7 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
     _sub = ref.read(toastBusProvider).stream.listen(_show);
     ref.read(outboxRunnerProvider);
     ref.read(pushRunnerProvider);
+    ref.read(offlineExpiryGuardProvider).start();
     _outSub = ref.read(outboxProvider).results.listen(_outboxDone);
   }
 
@@ -69,6 +72,9 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
       ),
       SessionClosedToast() => widget.strings.t('auth_api_unauthenticated'),
       SpaceUnavailableToast() => widget.strings.t('mobile_space_unavailable'),
+      DeviceRevokedToast() => widget.strings.t('mobile_device_revoked'),
+      OfflineExpiredToast(:final days) => widget.strings.t('mobile_offline_expired', {'days': days}),
+      DiscreetDefaultToast() => widget.strings.t('mobile_discreet_default_applied'),
     };
     scaffoldMessengerKey.currentState
       ?..hideCurrentSnackBar()
@@ -91,7 +97,7 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
       theme: buildXmTheme(Brightness.light),
       darkTheme: buildXmTheme(Brightness.dark),
       themeMode: ref.watch(themeModeProvider),
-      builder: (context, child) => PinGate(child: child ?? const SizedBox()),
+      builder: (context, child) => ScreenSecurityGate(child: PinGate(child: child ?? const SizedBox())),
       locale: AppStrings.locale,
       supportedLocales: const [AppStrings.locale],
       localizationsDelegates: [

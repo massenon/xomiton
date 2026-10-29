@@ -61,6 +61,7 @@ class _MessagesTabPageState extends ConsumerState<MessagesTabPage> {
     return Scaffold(
       appBar: AppBar(title: Text(context.t('community_messages_title'))),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'fab-messages-new', // deux onglets ont un bouton : tags distincts (sinon assertion Hero au changement d'écran)
         onPressed: () => context.push('/messages/new'),
         icon: const Icon(Icons.edit_outlined),
         label: Text(context.t('community_messages_new')),

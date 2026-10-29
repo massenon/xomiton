@@ -8,6 +8,7 @@ import '../../../core/platform/discreet_icon.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/dates.dart';
 import '../../auth/application/session_controller.dart';
+import '../../../core/auth_spaces/space_providers.dart';
 import '../../security/application/pin_lock.dart';
 import '../../security/presentation/pin_widgets.dart';
 import '../application/settings_providers.dart';
@@ -43,6 +44,11 @@ class SecurityPage extends ConsumerWidget {
         await guard(() => ref.read(securityProvider.notifier).setPinEnabled(true));
         if (context.mounted) _toast(context, context.t('mobile_pin_enabled'));
       } else {
+        // Le code est obligatoire pour l'espace Pair ou Admin (D-MOB-6) : on ne le retire pas.
+        if (ref.read(spacesProvider).any(spaceRequiresPin)) {
+          _toast(context, context.t('mobile_pin_required_cannot_disable'));
+          return;
+        }
         final pin = await askPin(context, 'mobile_pin_current_title');
         if (pin == null) return;
         final res = await ctrl.disable(pin);

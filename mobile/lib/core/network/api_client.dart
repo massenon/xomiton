@@ -27,6 +27,8 @@ Dio buildApiClient({
   required ToastBus toasts,
   required Future<void> Function() onUnauthorized,
   Future<void> Function()? onSpaceForbidden,
+  Future<void> Function()? onDeviceRevoked,
+  void Function(String? dateHeader)? onContact,
   String baseUrl = kApiBaseUrl,
   String? Function()? deviceId,
   HttpClientAdapter? adapter,
@@ -46,12 +48,14 @@ Dio buildApiClient({
   if (adapter != null) dio.httpClientAdapter = adapter;
   dio.interceptors.addAll([
     RequestHeadersInterceptor(tokens, deviceId: deviceId),
+    if (onContact != null) ContactInterceptor(onContact),
     // Ordre : le rejeu voit l'erreur brute avant la normalisation (toast / 401).
     IdempotentReplayInterceptor(dio, wait: replayWait),
     ApiErrorInterceptor(
       onUnauthorized: onUnauthorized,
       toasts: toasts,
       onSpaceForbidden: onSpaceForbidden,
+      onDeviceRevoked: onDeviceRevoked,
     ),
   ]);
   return dio;

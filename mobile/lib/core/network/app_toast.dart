@@ -22,6 +22,22 @@ class SpaceUnavailableToast extends AppToast {
   const SpaceUnavailableToast();
 }
 
+/// 403 `device_revoked` : l'appareil n'est plus autorisé, tout est effacé.
+class DeviceRevokedToast extends AppToast {
+  const DeviceRevokedToast();
+}
+
+/// Plus de N jours sans contact : données de l'espace Pair effacées.
+class OfflineExpiredToast extends AppToast {
+  const OfflineExpiredToast(this.days);
+  final int days;
+}
+
+/// Mode discret appliqué par défaut au premier accès à l'espace Pair ou Admin (D-MOB-8).
+class DiscreetDefaultToast extends AppToast {
+  const DiscreetDefaultToast();
+}
+
 class ToastBus {
   final StreamController<AppToast> _c = StreamController<AppToast>.broadcast();
   Stream<AppToast> get stream => _c.stream;

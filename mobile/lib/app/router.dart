@@ -9,6 +9,8 @@ import '../features/alerts/presentation/alerts_pages.dart';
 import '../features/alerts/presentation/report_page.dart';
 import '../features/alerts/presentation/sos_page.dart';
 import '../features/auth/application/onboarding_provider.dart';
+import '../features/security/application/pin_lock.dart';
+import '../features/security/presentation/pin_setup_page.dart';
 import '../features/community/presentation/community_pages.dart';
 import '../features/community/presentation/messages_pages.dart';
 import '../features/feed/presentation/feed_pages.dart';
@@ -50,6 +52,8 @@ const _guestOnly = {'/splash', '/login', '/forgot', '/reset'};
 /// pair au compte (`spaces` de `GET me`), `/admin/**` idem, sinon retour à
 /// l'accueil Membre. Le verrou PIN (3) est posé par `PinGate`, au-dessus du routeur.
 ///
+/// (4 bis) code PIN : `/pin-setup` tant qu'aucun code n'existe pour entrer en Pair ou Admin.
+///
 /// - session ouverte : jamais sur les écrans invités ; l'inscription (phases
 ///   2 à 4) et l'OTP d'inscription restent ouverts, la session existant déjà
 ///   après la phase 1 ;
@@ -68,6 +72,7 @@ String? appRedirect({
   Set<AppSpace> spaces = const {AppSpace.member},
   AppSpace activeSpace = AppSpace.member,
   bool spaceChoicePending = false,
+  bool pinSetupNeeded = false,
 }) {
   final loc = uri.path;
   if (!authenticated && loc == '/sos') return '/alerte-sos';
@@ -86,6 +91,14 @@ String? appRedirect({
     if (loc == '/spaces') return several ? null : AppSpace.member.homeRoute;
     final owner = AppSpace.forPath(loc);
     if (owner != null && !spaces.contains(owner)) return AppSpace.member.homeRoute;
+    // Code PIN obligatoire pour entrer dans l'espace Pair ou Admin (D-MOB-6) :
+    // tant qu'aucun code n'existe, on choisit d'abord le code.
+    if (spaceRequiresPin(owner) && pinSetupNeeded) {
+      return '/pin-setup?from=${Uri.encodeQueryComponent(uri.toString())}';
+    }
+    if (loc == '/pin-setup' && !pinSetupNeeded && uri.queryParameters['from'] != null) {
+      return uri.queryParameters['from'];
+    }
     return null;
   }
   if (loc == '/splash') return onboardingSeen ? '/login' : null;
@@ -102,6 +115,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(sessionProvider, (_, _) => refresh.value++);
   ref.listen(onboardingProvider, (_, _) => refresh.value++);
   ref.listen(activeSpaceProvider, (_, _) => refresh.value++);
+  ref.listen(pinLockProvider.select((s) => s.ready && !s.configured), (_, _) => refresh.value++);
 
   final router = GoRouter(
     navigatorKey: rootNavigatorKey,
@@ -109,6 +123,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: refresh,
     redirect: (context, state) {
       final session = ref.read(sessionProvider);
+      final pin = ref.read(pinLockProvider);
       return appRedirect(
         authenticated: session.authenticated,
         onboardingSeen: ref.read(onboardingProvider).seen,
@@ -116,6 +131,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         spaces: ref.read(spacesProvider).toSet(),
         activeSpace: ref.read(activeSpaceProvider),
         spaceChoicePending: session.spaceChoicePending,
+        pinSetupNeeded: pin.ready && !pin.configured,
       );
     },
     routes: [
@@ -128,6 +144,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => SignupPage(invitation: state.pathParameters['invitation']),
       ),
       GoRoute(path: '/spaces', builder: (_, _) => const SpaceSelectorPage()),
+      GoRoute(
+        path: '/pin-setup',
+        builder: (_, state) => PinSetupPage(from: state.uri.queryParameters['from']),
+      ),
       GoRoute(
         path: '/otp',
         builder: (_, state) => OtpPage(

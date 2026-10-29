@@ -54,7 +54,12 @@ class MemoryStringBox implements StringBox {
 /// - `outbox` : boîte d'envoi (SOS, signalements, messages, publications) ;
 ///   les entrées rattachées à un compte partent à la déconnexion, jamais un SOS
 ///   ni un signalement anonyme en attente ;
-/// - `drafts` : brouillons (sans contact ni position), vidé à la déconnexion.
+/// - `drafts` : brouillons (sans contact ni position), vidé à la déconnexion ;
+/// - `pair_data` : données de l'espace Pair (dossiers, suivis, règles de
+///   validation, file de synchronisation), vidé à la déconnexion, après 5 codes
+///   faux, après `device_revoked` et après 14 jours sans contact ; vide tant que
+///   les lots P15-12 à P15-15 ne sont pas livrés. L'espace Admin ne persiste
+///   aucun contenu (plan §7.5).
 class LocalDb {
   LocalDb({
     required this.publicCache,
@@ -62,20 +67,23 @@ class LocalDb {
     required this.session,
     required this.outbox,
     required this.drafts,
-  });
+    StringBox? peerData,
+  }) : peerData = peerData ?? MemoryStringBox();
 
   LocalDb.memory()
     : publicCache = MemoryStringBox(),
       privateCache = MemoryStringBox(),
       session = MemoryStringBox(),
       outbox = MemoryStringBox(),
-      drafts = MemoryStringBox();
+      drafts = MemoryStringBox(),
+      peerData = MemoryStringBox();
 
   final StringBox publicCache;
   final StringBox privateCache;
   final StringBox session;
   final StringBox outbox;
   final StringBox drafts;
+  final StringBox peerData;
 
   static Future<LocalDb> open(SecretStore secrets, {String? path}) async {
     if (path != null) Hive.init(path);
@@ -89,6 +97,7 @@ class LocalDb {
       session: await box('session'),
       outbox: await box('outbox'),
       drafts: await box('drafts'),
+      peerData: await box('pair_data'),
     );
   }
 
@@ -103,9 +112,13 @@ class LocalDb {
     return key;
   }
 
+  /// Données de l'espace Pair seulement (expiration hors contact, espace retiré).
+  Future<void> clearPeer() => peerData.clear();
+
   /// Données propres au compte, à effacer à la déconnexion.
   Future<void> clearPrivate() async {
     await privateCache.clear();
+    await peerData.clear();
     await session.clear();
     await drafts.clear();
     // Boîte d'envoi : seules les entrées liées au compte (`owner`) partent.

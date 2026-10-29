@@ -46,11 +46,31 @@ Map<String, FakeHandler> routes(Map<String, dynamic> Function() me, {Map<String,
       ...extra,
     };
 
-Future<void> pump(WidgetTester tester, TestEnv env) async {
+Future<void> tapPin(WidgetTester tester, String pin) async {
+  for (final d in pin.split('')) {
+    await tester.tap(find.byKey(Key('pin-key-$d')));
+    await tester.pump();
+  }
+  await tester.pumpAndSettle();
+}
+
+/// Premier accès à l'espace Pair ou Admin : le code est obligatoire, on le choisit (deux saisies).
+Future<void> choosePin(WidgetTester tester, [String pin = '4821']) async {
+  expect(find.byKey(const ValueKey('pin-setup-choose')), findsOneWidget);
+  await tester.tap(find.byKey(const ValueKey('pin-setup-choose')));
+  await tester.pumpAndSettle();
+  await tapPin(tester, pin);
+  await tapPin(tester, pin);
+}
+
+const _pin = '4821';
+
+Future<void> pump(WidgetTester tester, TestEnv env, {bool unlock = false}) async {
   usePhone(tester);
   addTearDown(tester.view.reset);
   await tester.pumpWidget(await env.app());
   await tester.pumpAndSettle();
+  if (unlock) await tapPin(tester, _pin);
 }
 
 GoRouter routerOf(WidgetTester tester) => GoRouter.of(tester.element(find.byType(Scaffold).first));
@@ -122,8 +142,9 @@ void main() {
         token: 'tok',
         cachedUser: peer(),
         initialPrefs: {'active_space': 'peer'},
+        pin: _pin,
       );
-      await pump(tester, env);
+      await pump(tester, env, unlock: true);
       expect(path(tester), '/pair/accueil');
       expect(find.byKey(const ValueKey('space-tile-peer')), findsNothing);
     });
@@ -171,6 +192,8 @@ void main() {
       expect(path(tester), '/spaces');
       await tester.tap(find.byKey(const ValueKey('space-tile-admin')));
       await tester.pumpAndSettle();
+      expect(path(tester), '/pin-setup', reason: 'premier accès : code obligatoire');
+      await choosePin(tester);
       expect(path(tester), '/admin/astreinte');
       expect(containerOf(tester).read(activeSpaceProvider), AppSpace.admin);
       // Barre Admin : Astreinte · Alertes · Gérer · Notifs · Réseau.
@@ -192,6 +215,7 @@ void main() {
       await signInThroughLogin(tester);
       await tester.tap(find.byKey(const ValueKey('space-tile-peer')));
       await tester.pumpAndSettle();
+      await choosePin(tester);
       expect(path(tester), '/pair/accueil');
       for (final k in ['menus_mobile_home', 'mobile_peer_tab_alerts', 'mobile_tab_sos', 'mobile_peer_tab_cases', 'mobile_tab_network']) {
         expect(find.descendant(of: find.byType(NavigationBar), matching: find.text(S.t(k))), findsOneWidget, reason: k);
@@ -203,7 +227,7 @@ void main() {
     });
 
     testWidgets('pair + admin : l’onglet « Espaces » ouvre la feuille « Choisir mon espace »', (tester) async {
-      await pump(tester, TestEnv(api: FakeApi(routes(peerAdmin)), seen: true, token: 'tok', cachedUser: peerAdmin()));
+      await pump(tester, TestEnv(api: FakeApi(routes(peerAdmin)), seen: true, token: 'tok', cachedUser: peerAdmin(), pin: _pin), unlock: true);
       expect(find.descendant(of: find.byType(NavigationBar), matching: find.text(S.t('mobile_space_tab_both'))), findsOneWidget);
       await tester.tap(find.byKey(const ValueKey('tab-other-space')));
       await tester.pumpAndSettle();
@@ -218,7 +242,7 @@ void main() {
     });
 
     testWidgets('pastille d’en-tête : feuille de choix, bascule Membre → Pair', (tester) async {
-      await pump(tester, TestEnv(api: FakeApi(routes(peer)), seen: true, token: 'tok', cachedUser: peer()));
+      await pump(tester, TestEnv(api: FakeApi(routes(peer)), seen: true, token: 'tok', cachedUser: peer(), pin: _pin), unlock: true);
       await tester.tap(find.byKey(const ValueKey('space-pill')));
       await tester.pumpAndSettle();
       expect(find.text(S.t('mobile_space_choose_title')), findsOneWidget);
@@ -250,7 +274,7 @@ void main() {
     testWidgets('droit retiré en cours de session : GET me relu, espace fermé, message affiché', (tester) async {
       var current = peer();
       final api = FakeApi(routes(() => current));
-      await pump(tester, TestEnv(api: api, seen: true, token: 'tok', cachedUser: peer()));
+      await pump(tester, TestEnv(api: api, seen: true, token: 'tok', cachedUser: peer(), pin: _pin), unlock: true);
       routerOf(tester).go('/pair/accueil');
       await tester.pumpAndSettle();
       expect(path(tester), '/pair/accueil');
@@ -341,7 +365,7 @@ void main() {
     }
 
     testWidgets('compte à plusieurs espaces : rôles et bouton « Changer d’espace »', (tester) async {
-      await pump(tester, TestEnv(api: FakeApi(routes(peer)), seen: true, token: 'tok', cachedUser: peer()));
+      await pump(tester, TestEnv(api: FakeApi(routes(peer)), seen: true, token: 'tok', cachedUser: peer(), pin: _pin), unlock: true);
       await openProfile(tester);
       expect(find.byKey(const ValueKey('my-spaces-card')), findsOneWidget);
       expect(find.text(S.t('mobile_my_spaces_title')), findsOneWidget);

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/router.dart';
 import '../../../app/theme/xm_tokens.dart';
+import '../../../core/auth_spaces/app_space.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../application/pin_lock.dart';
 
@@ -15,6 +16,7 @@ const Set<String> kPinFreePrefixes = {
   '/urgences',
   '/signaler',
   '/suivi',
+  '/pair/sos', // l'onglet SOS de l'espace Pair
 };
 
 bool isPinFreeLocation(String path) => kPinFreePrefixes.any(path.startsWith);
@@ -285,13 +287,23 @@ class _PinGateState extends ConsumerState<PinGate> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final locked = ref.watch(pinLockProvider.select((s) => s.locked));
+    final ready = ref.watch(pinLockProvider.select((s) => s.ready));
     // Écran du dessus (y compris poussé avec `push`).
     final path = _delegate.currentConfiguration.isEmpty ? '' : _delegate.state.matchedLocation;
-    final show = locked && !isPinFreeLocation(path);
+    final free = isPinFreeLocation(path);
+    // Espace Pair ou Admin : tant que l'état du code n'est pas lu, rien n'est montré.
+    final unknown = !ready && spaceRequiresPin(AppSpace.forPath(path)) && !free;
+    final show = (locked && !free) || unknown;
     return Stack(
       children: [
         ExcludeSemantics(excluding: show, child: IgnorePointer(ignoring: show, child: widget.child)),
-        if (show) const Positioned.fill(child: PinLockScreen()),
+        if (unknown && !locked)
+          Positioned.fill(
+            key: const ValueKey('pin-gate-pending'),
+            child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: const Center(child: CircularProgressIndicator())),
+          )
+        else if (show)
+          const Positioned.fill(child: PinLockScreen()),
       ],
     );
   }

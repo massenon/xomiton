@@ -25,6 +25,7 @@ class FeedTabPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(context.t('feed_page_title'))),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'fab-feed-new',
         onPressed: () => context.push('/feed/new'),
         icon: const Icon(Icons.edit_outlined),
         label: Text(context.t('feed_compose_label')),

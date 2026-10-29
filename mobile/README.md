@@ -58,3 +58,31 @@ sel, comparaison à temps constant, 5 essais (compteur persistant) puis session
 fermée et reconnexion mot de passe + OTP. Seul `pin_enabled` est envoyé
 (`PATCH me/security`). SOS, urgences et signalement anonyme restent
 accessibles sans code.
+
+## Un seul compte, trois espaces (P15-10, P15-11)
+
+`GET me` déclare `roles[]` (cumulés) et `spaces[]` (`member`, `peer`, `admin`) : le
+client ne fait qu'**afficher** ; chaque route `pair/*` et `admin/*` est
+revérifiée par le serveur (un 403 `forbidden` relit `GET me` et ferme l'espace).
+Sans `spaces`, le compte n'a que l'espace Membre. `--dart-define=SPACES=member,pair,admin`
+(défaut : les trois) limite les espaces d'un build (variante « membre seul »).
+
+Sécurité renforcée des espaces Pair et Admin :
+
+- **Code PIN obligatoire** pour y entrer (écran `/pin-setup` au premier accès,
+  impossible à désactiver ensuite) ; verrou après 60 s en Pair, 30 s en Admin ;
+  SOS, urgences et signalement restent sans code.
+- **Captures d'écran interdites** (`FLAG_SECURE`, canal `xomiton/secure`) sur
+  tout `pair/**` et `admin/**`, et côté Membre sur messages, signalement, suivi,
+  SOS et sécurité. Le fil reste capturable. Build de recette :
+  `--dart-define=ALLOW_SCREENSHOTS=true`, **ignoré en `release`**. **iOS** n'a pas
+  d'équivalent : un recouvrement opaque masque l'écran dès que l'application
+  quitte le premier plan (limite connue, à vérifier sur iPhone, MOB-15).
+- **Effacement** : déconnexion, 401, 5 codes faux, 403 `device_revoked` (tout est
+  purgé, un nouvel identifiant d'appareil sera créé) et plus de 14 jours sans
+  contact avec le serveur (données Pair seulement, horloge reculée = expirée).
+  L'ordre d'effacement à distance (`device.wipe`, `POST me/devices/{uuid}/wiped`)
+  attend le volet serveur de P15-11. Un téléphone éteint ou hors réseau ne le
+  reçoit pas : l'expiration locale est le filet de sécurité.
+- **Mode discret** activé par défaut au premier accès à l'espace Pair ou Admin
+  (la personne est prévenue et peut le désactiver).

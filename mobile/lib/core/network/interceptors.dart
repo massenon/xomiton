@@ -130,15 +130,51 @@ bool isSpaceApiPath(String path) {
   return p.startsWith('pair/') || p.startsWith('admin/');
 }
 
+bool _isDeviceRegistration(String path) {
+  final p = path.replaceAll(RegExp(r'^/+'), '').replaceFirst(RegExp(r'^(api/)?v1/'), '');
+  return p == 'me/devices';
+}
+
+/// Note chaque contact réussi avec le serveur (date de la réponse) : sert à
+/// l'expiration des données Pair hors contact (D-MOB-7).
+class ContactInterceptor extends Interceptor {
+  ContactInterceptor(this.onContact);
+  final void Function(String? dateHeader) onContact;
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    final status = response.statusCode ?? 0;
+    if (status >= 200 && status < 500) onContact(response.headers.value('date'));
+    handler.next(response);
+  }
+
+  /// Une réponse d'erreur (4xx, 5xx) prouve aussi que le serveur a répondu.
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    final res = err.response;
+    if (res != null) onContact(res.headers.value('date'));
+    handler.next(err);
+  }
+}
+
 /// Normalise les erreurs en [ApiException] ; 401 → déconnexion ; 429 → toast ;
 /// 403 `forbidden` sur `pair/*` ou `admin/*` → relecture de `GET me` (le
 /// serveur seul décide des espaces : plan §6.1).
 class ApiErrorInterceptor extends Interceptor {
-  ApiErrorInterceptor({required this.onUnauthorized, required this.toasts, this.onSpaceForbidden});
+  ApiErrorInterceptor({
+    required this.onUnauthorized,
+    required this.toasts,
+    this.onSpaceForbidden,
+    this.onDeviceRevoked,
+  });
 
   final Future<void> Function() onUnauthorized;
   final ToastBus toasts;
   final Future<void> Function()? onSpaceForbidden;
+
+  /// 403 `device_revoked` : purge totale (sauf sur `me/devices`, où l'application
+  /// génère elle-même un nouvel identifiant d'appareil).
+  final Future<void> Function()? onDeviceRevoked;
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -150,6 +186,13 @@ class ApiErrorInterceptor extends Interceptor {
       unawaited(onUnauthorized());
     } else if (api.status == 429 && api.code != 'idempotency_in_progress') {
       toasts.emit(RateLimitedToast(api.retryAfter ?? 60));
+    } else if (api.status == 403 &&
+        api.code == 'device_revoked' &&
+        err.requestOptions.headers.containsKey('Authorization') &&
+        !_isDeviceRegistration(err.requestOptions.path) &&
+        onDeviceRevoked != null) {
+      toasts.emit(const DeviceRevokedToast());
+      unawaited(onDeviceRevoked!());
     } else if (api.status == 403 &&
         api.code == 'forbidden' &&
         isSpaceApiPath(err.requestOptions.path) &&

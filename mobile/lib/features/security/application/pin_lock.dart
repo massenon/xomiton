@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/auth_spaces/app_space.dart';
+import '../../../core/auth_spaces/space_providers.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../auth/application/session_controller.dart';
 import 'pin_service.dart';
@@ -11,36 +13,48 @@ final pinServiceProvider = Provider<PinService>(
   (ref) => PinService(ref.watch(secretStoreProvider), iterations: ref.watch(pinIterationsProvider)),
 );
 
-/// Délai passé en arrière-plan avant que le code soit redemandé.
+/// Délai passé en arrière-plan avant que le code soit redemandé : 60 s en
+/// Membre (réglage par défaut) et en Pair, 30 s en Admin (D-MOB-6, plan §7.1).
 final pinLockDelayProvider = Provider<Duration>((_) => const Duration(seconds: 60));
+final pinLockDelayPeerProvider = Provider<Duration>((_) => const Duration(seconds: 60));
+final pinLockDelayAdminProvider = Provider<Duration>((_) => const Duration(seconds: 30));
+
+/// Le code est OBLIGATOIRE pour entrer dans ces espaces (D-MOB-6) ; facultatif en Membre.
+bool spaceRequiresPin(AppSpace? space) => space == AppSpace.peer || space == AppSpace.admin;
 
 /// Horloge injectable (tests).
 final clockProvider = Provider<DateTime Function()>((_) => DateTime.now);
 
 class PinLockState {
-  const PinLockState({this.configured = false, this.locked = false, this.remaining});
+  const PinLockState({this.configured = false, this.locked = false, this.remaining, this.ready = false});
   final bool configured;
   final bool locked;
+
+  /// Vrai quand l'état du code a été lu dans le stockage sécurisé : avant, rien
+  /// ne prouve qu'un code existe (un écran sensible reste alors masqué).
+  final bool ready;
 
   /// Essais restants après une erreur (null = aucune erreur affichée).
   final int? remaining;
 
-  PinLockState copyWith({bool? configured, bool? locked, int? remaining, bool clearRemaining = false}) =>
+  PinLockState copyWith({bool? configured, bool? locked, int? remaining, bool clearRemaining = false, bool? ready}) =>
       PinLockState(
         configured: configured ?? this.configured,
         locked: locked ?? this.locked,
         remaining: clearRemaining ? null : (remaining ?? this.remaining),
+        ready: ready ?? this.ready,
       );
 }
 
 /// Verrou local : demandé à l'ouverture et au retour en avant-plan après délai.
 class PinLockController extends Notifier<PinLockState> {
   DateTime? _backgroundAt;
+  AppSpace _backgroundSpace = AppSpace.member;
 
   @override
   PinLockState build() {
     ref.listen(sessionProvider.select((s) => s.authenticated), (prev, now) {
-      if (!now) state = const PinLockState();
+      if (!now) state = const PinLockState(ready: true);
     });
     Future<void>.microtask(_init);
     return const PinLockState();
@@ -49,7 +63,7 @@ class PinLockController extends Notifier<PinLockState> {
   Future<void> _init() async {
     final set = await ref.read(pinServiceProvider).isSet();
     final auth = ref.read(sessionProvider).authenticated;
-    state = PinLockState(configured: set && auth, locked: set && auth);
+    state = PinLockState(configured: set && auth, locked: set && auth, ready: true);
   }
 
   /// Vérifie un code. Après le dernier essai raté, la session est fermée et
@@ -72,7 +86,7 @@ class PinLockController extends Notifier<PinLockState> {
 
   Future<void> enable(String pin) async {
     await ref.read(pinServiceProvider).set(pin);
-    state = const PinLockState(configured: true);
+    state = const PinLockState(configured: true, ready: true);
   }
 
   /// Retire le code après vérification de l'actuel.
@@ -80,7 +94,7 @@ class PinLockController extends Notifier<PinLockState> {
     final res = await check(currentPin);
     if (res.ok) {
       await ref.read(pinServiceProvider).clear();
-      state = const PinLockState();
+      state = const PinLockState(ready: true);
     }
     return res;
   }
@@ -89,13 +103,23 @@ class PinLockController extends Notifier<PinLockState> {
     if (state.configured) state = state.copyWith(locked: true, clearRemaining: true);
   }
 
-  void onBackground() => _backgroundAt = ref.read(clockProvider)();
+  void onBackground() {
+    _backgroundAt = ref.read(clockProvider)();
+    _backgroundSpace = ref.read(activeSpaceProvider);
+  }
+
+  /// Délai du dernier espace actif avant la mise en arrière-plan.
+  Duration delayFor(AppSpace space) => switch (space) {
+        AppSpace.member => ref.read(pinLockDelayProvider),
+        AppSpace.peer => ref.read(pinLockDelayPeerProvider),
+        AppSpace.admin => ref.read(pinLockDelayAdminProvider),
+      };
 
   void onForeground() {
     final at = _backgroundAt;
     _backgroundAt = null;
     if (at == null || !state.configured) return;
-    if (ref.read(clockProvider)().difference(at) >= ref.read(pinLockDelayProvider)) lockNow();
+    if (ref.read(clockProvider)().difference(at) >= delayFor(_backgroundSpace)) lockNow();
   }
 }
 

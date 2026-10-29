@@ -82,6 +82,15 @@ const Map<String, String> kPendingStringsFr = {
   'mobile_signup_invitation_label': 'Code ou lien d’invitation (facultatif)',
   'mobile_signup_invitation_hint': 'Reçu de l’équipe Xomiton. Sans invitation, laisse vide.',
   'mobile_signup_invitation_banner': 'Tu t’inscris avec une invitation de l’équipe. Crée ton compte membre : le rôle s’ajoutera à la validation de ton compte.',
+  // P15-11 : sécurité renforcée des espaces Pair et Admin.
+  'mobile_pin_required_title': 'Un code pour protéger cet espace',
+  'mobile_pin_required_text': 'Cet espace contient des informations sensibles. Choisis un code à 4 chiffres : il reste sur ce téléphone et nous ne le recevons jamais. Le SOS, les urgences et le signalement restent accessibles sans code.',
+  'mobile_pin_required_choose': 'Choisir mon code',
+  'mobile_pin_required_back': 'Retourner à l’espace Membre',
+  'mobile_pin_required_cannot_disable': 'Le code est obligatoire pour ton espace pair ou admin : tu ne peux pas le désactiver.',
+  'mobile_device_revoked': 'Cet appareil n’est plus autorisé sur ton compte. Les données de ce téléphone sont effacées : reconnecte-toi.',
+  'mobile_offline_expired': 'Plus de {days} jours sans contact avec Xomiton : par sécurité, les données de l’espace pair sont effacées de ce téléphone. Reconnecte-toi.',
+  'mobile_discreet_default_applied': 'Mode discret activé : l’icône et le nom deviennent « Notes » et les aperçus sont masqués. Tu peux le changer dans Profil › Sécurité.',
   // P15-04 : SOS, signalement, suivi (textes propres au mobile).
   'mobile_sos_queued_saved': 'Ton alerte est enregistrée sur ce téléphone et partira dès que le réseau revient, même si tu fermes l’application.',
   'mobile_report_waiting_title': 'En attente d’envoi',

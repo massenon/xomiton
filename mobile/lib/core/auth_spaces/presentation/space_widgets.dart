@@ -27,9 +27,12 @@ extension AppSpaceText on AppSpace {
 /// devient le sien (si le serveur l'a déclaré au compte), pour que la pastille
 /// d'en-tête et le relancement retombent sur le bon espace.
 class SpaceScope extends ConsumerStatefulWidget {
-  const SpaceScope({super.key, required this.space, required this.child});
+  const SpaceScope({super.key, required this.space, required this.child, this.onEnter});
   final AppSpace space;
   final Widget child;
+
+  /// Appelé une fois l'espace activé (premier accès : mode discret par défaut).
+  final void Function(WidgetRef ref)? onEnter;
 
   @override
   ConsumerState<SpaceScope> createState() => _SpaceScopeState();
@@ -40,7 +43,8 @@ class _SpaceScopeState extends ConsumerState<SpaceScope> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) ref.read(activeSpaceProvider.notifier).select(widget.space);
+      if (!mounted) return;
+      if (ref.read(activeSpaceProvider.notifier).select(widget.space)) widget.onEnter?.call(ref);
     });
   }
 

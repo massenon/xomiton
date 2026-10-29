@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/auth_spaces/app_space.dart';
 import '../../../core/network/app_toast.dart';
 import '../../../core/providers/core_providers.dart';
+import '../../../core/security/offline_expiry.dart' show kPrefLastContactLocal, kPrefLastContactServer;
 import '../../../core/push/push_registrar.dart';
 import '../../../core/push/push_service.dart';
 import '../../security/application/pin_lock.dart';
@@ -35,6 +36,9 @@ class SessionState {
 /// Préférence : dernier espace actif (jamais une autorisation : relue puis
 /// validée contre les `spaces` du serveur).
 const kPrefActiveSpace = 'active_space';
+
+/// Le mode discret par défaut a déjà été proposé à ce compte sur cet appareil (D-MOB-8).
+const kPrefDiscreetDefaultApplied = 'discreet_default_applied';
 
 const _userKey = 'user';
 
@@ -123,6 +127,9 @@ class SessionController extends Notifier<SessionState> {
     await prefs.remove(kPrefMaskPreviews);
     await prefs.remove(kPrefSounds);
     await prefs.remove(kPrefActiveSpace);
+    await prefs.remove(kPrefLastContactLocal);
+    await prefs.remove(kPrefLastContactServer);
+    await prefs.remove(kPrefDiscreetDefaultApplied);
     state = const SessionState.signedOut();
   }
 }
