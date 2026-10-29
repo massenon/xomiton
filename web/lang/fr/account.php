@@ -17,6 +17,18 @@ return [
         'category' => 'Catégorie',
     ],
 
+    'spaces' => [
+        'disabled' => 'Cet espace est momentanément indisponible dans l’application. Réessaie plus tard.',
+        'command' => [
+            'unknown' => 'Espace inconnu : :space. Choisis « peer » ou « admin ».',
+            'invalid_state' => 'État inconnu : :state. Choisis « on », « off » ou « status ».',
+            'changed' => 'Espace :space : :state.',
+            'status' => 'Espace :space : :state.',
+            'on' => 'ouvert',
+            'off' => 'coupé',
+        ],
+    ],
+
     'devices' => [
         'revoked' => 'Cet appareil a été déconnecté de ton compte. Réinstalle ou réinitialise l’application pour l’enregistrer à nouveau.',
         'taken' => 'Cet identifiant d’appareil est déjà utilisé. Réinitialise l’application pour en générer un nouveau.',

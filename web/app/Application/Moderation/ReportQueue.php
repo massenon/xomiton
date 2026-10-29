@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Moderation;
 
+use App\Enums\ModerationKind;
 use App\Enums\ModerationStatus;
 use App\Models\ModerationReport;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,6 +16,17 @@ use Illuminate\Database\Eloquent\Builder;
  */
 final class ReportQueue
 {
+    /**
+     * File de l'application mobile (P15-24) : comme pendingGroups(), **sans les messages privés** (kind `message`), qui ne
+     * sont jamais proposés à la modération mobile ; ils se traitent sur le web.
+     *
+     * @return Builder<ModerationReport>
+     */
+    public function pendingGroupsForMobile(): Builder
+    {
+        return $this->pendingGroups()->where('kind', '!=', ModerationKind::Message->value);
+    }
+
     /**
      * @return Builder<ModerationReport>
      */

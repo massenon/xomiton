@@ -81,6 +81,7 @@ use App\Http\Middleware\EnsureAlertRoutedToViewer;
 use App\Http\Middleware\EnsureDeviceNotRevoked;
 use App\Http\Middleware\EnsurePeerSpaceAccess;
 use App\Http\Middleware\ForgetSearchTerms;
+use App\Http\Middleware\SlideMobileTokenExpiry;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
@@ -183,7 +184,7 @@ Route::group([], function (): void {
 
 // === 2. Groupe authentifié (auth:sanctum) =========================================================================
 // `conditional` (P6-01) : ETag + If-None-Match → 304 sur toute lecture 200 du groupe (Cache-Control: private, no-cache).
-Route::middleware(['auth:sanctum', EnsureDeviceNotRevoked::class, 'conditional'])->group(function (): void {
+Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNotRevoked::class, 'conditional'])->group(function (): void {
     Route::prefix('auth')->as('api.auth.')->group(function (): void {
         Route::post('logout', LogoutController::class)->name('logout');
     });
@@ -457,7 +458,7 @@ Route::middleware(['auth:sanctum', EnsureDeviceNotRevoked::class, 'conditional']
 // obligatoire (`idempotent:required,limit=admin_write` : un rejeu rend la réponse d'origine et ne consomme pas le quota) ;
 // actions à fort impact (maintenance, rôles, invitations, refus d'une demande, réattribution) : confirmation `step-up`
 // (`POST admin/step-up` → en-tête `X-Step-Up-Token`, usage unique).
-Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', EnsureDeviceNotRevoked::class, 'conditional', EnsureAdminMobile::class, 'throttle:admin_api'])->group(function (): void {
+Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNotRevoked::class, 'conditional', EnsureAdminMobile::class, 'throttle:admin_api'])->group(function (): void {
     $write = 'idempotent:required,limit=admin_write';
 
     Route::get('dashboard', [AdminDashboardController::class, 'show'])->name('dashboard');
@@ -503,6 +504,9 @@ Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', EnsureDevi
     Route::post('maintenance/disable', [AdminMaintenanceController::class, 'disable'])->middleware($write)->name('maintenance.disable');
 
     Route::get('moderation/reports', [AdminModerationController::class, 'index'])->name('moderation.index');
+    Route::get('moderation/reports/{report}', [AdminModerationController::class, 'show'])->whereNumber('report')->name('moderation.show');
+    Route::post('moderation/reports/{report}/decision', [AdminModerationController::class, 'decision'])->whereNumber('report')->middleware($write)->name('moderation.decision');
+    Route::post('moderation/reports/{report}/warn', [AdminModerationController::class, 'warn'])->whereNumber('report')->middleware($write)->name('moderation.warn');
     Route::post('moderation/reports/{report}/hide', [AdminModerationController::class, 'hide'])->whereNumber('report')->middleware($write)->name('moderation.hide');
     Route::post('moderation/reports/{report}/restore', [AdminModerationController::class, 'restore'])->whereNumber('report')->middleware($write)->name('moderation.restore');
     Route::post('moderation/reports/{report}/dismiss', [AdminModerationController::class, 'dismiss'])->whereNumber('report')->middleware($write)->name('moderation.dismiss');
@@ -517,7 +521,7 @@ Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', EnsureDevi
 // la session, même pour une requête refusée) ; hors `throttle:api` : les suggestions instantanées de l'en-tête
 // (anti-rebond) ont leur propre quota `search` par compte et n'épuisent pas celui du reste de l'espace (cloche, messages).
 // `conditional` comme tout le groupe authentifié : sans effet ici (réponses no-store, jamais d'ETag).
-Route::middleware([ForgetSearchTerms::class.':sanctum', 'auth:sanctum', EnsureDeviceNotRevoked::class, 'conditional', 'throttle:search'])
+Route::middleware([ForgetSearchTerms::class.':sanctum', 'auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNotRevoked::class, 'conditional', 'throttle:search'])
     ->withoutMiddleware('throttle:api')
     ->prefix('search')->as('api.search.')->group(function (): void {
         Route::get('/', [SearchController::class, 'index'])->name('index');

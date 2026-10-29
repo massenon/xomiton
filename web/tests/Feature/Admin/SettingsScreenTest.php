@@ -53,6 +53,8 @@ function settingsCases(): array
         'session_minutes' => [4, 240],
         'audit_log_days' => [6, 365],
         'app_min_version' => ['1.5', '1.4.0'],
+        'mobile_space_peer_enabled' => ['peut-être', false],
+        'mobile_space_admin_enabled' => ['peut-être', false],
         'sync_interval_minutes' => [7, 30],
         'sync_max_mb' => [0, 12],
         'sync_wifi_only' => ['peut-être', true],

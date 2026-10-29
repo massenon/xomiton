@@ -226,6 +226,13 @@ return [
      * Comptes et profils.
      */
     'accounts' => [
+        // P15-11 : au-delà de ce nombre de jours sans contact avec le serveur, l'application mobile purge les données de l'espace
+        // pair (expiration locale, plan §7.3) ; servi par GET app/version (`offline_expiry_days`).
+        'offline_expiry_days' => 14,
+        // D-MOB-9 (recommandation retenue) : durée de vie GLISSANTE du jeton de l'application selon l'espace le plus sensible du
+        // compte (admin_mobile.access : 7 jours ; espace pair : 30 jours ; membre : sans expiration propre). Chaque requête
+        // authentifiée par jeton prolonge l'échéance (au plus une écriture par jour et par jeton).
+        'mobile_token_days' => ['admin' => 7, 'peer' => 30],
         // Q68 tranché (2026-10-28) : âge minimal d'inscription = 15 ans. UNE seule valeur, lue par tout code (web, API, mobile
         // via l'API) ; ne pas confondre avec `age_min` (plausibilité de la tranche d'âge, RG-08).
         'min_age' => 15,
@@ -913,6 +920,9 @@ return [
         'session_minutes' => ['group' => 'securite', 'type' => 'int', 'default' => 120, 'public' => false, 'rules' => ['required', 'integer', 'min:5', 'max:1440']],
         'audit_log_days' => ['group' => 'securite', 'type' => 'int', 'default' => 90, 'public' => false, 'rules' => ['required', 'integer', 'min:7', 'max:3650']],
         'app_min_version' => ['group' => 'general', 'type' => 'string', 'default' => '1.0.0', 'public' => true, 'rules' => ['required', 'regex:/^\d+\.\d+\.\d+$/', 'max:20']],
+        // P15-22 : interrupteurs par espace de l'application mobile (couper Pair ou Admin sans republier ; MobileSpaces).
+        'mobile_space_peer_enabled' => ['group' => 'general', 'type' => 'bool', 'default' => true, 'public' => false, 'rules' => ['boolean']],
+        'mobile_space_admin_enabled' => ['group' => 'general', 'type' => 'bool', 'default' => true, 'public' => false, 'rules' => ['boolean']],
         'sync_interval_minutes' => ['group' => 'synchro', 'type' => 'int', 'default' => 15, 'public' => true, 'rules' => ['required', 'integer', 'in:5,15,30,60,240']],
         'sync_max_mb' => ['group' => 'synchro', 'type' => 'int', 'default' => 5, 'public' => true, 'rules' => ['required', 'integer', 'min:1', 'max:50']],
         'sync_wifi_only' => ['group' => 'synchro', 'type' => 'bool', 'default' => false, 'public' => true, 'rules' => ['boolean']],

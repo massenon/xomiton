@@ -69,7 +69,9 @@ Taille de page : `?per_page=` borné à `xomiton.api.max_per_page` (50) par `Api
 | `step_up_required` | 403 | action admin à fort impact sans jeton de confirmation valable (absent, expiré, déjà utilisé, d'un autre compte ; §23.1) | `admin.users.errors.step_up_required` |
 | `maintenance_lockout` | 403 | `admin/maintenance/enable` par un compte qui perdrait l'accès (garde-fou P13-06, §23.8) | `maintenance.errors.lockout` |
 | `conflict_already_resolved` · `conflict_not_mergeable` · `conflict_invalid_value` · `conflict_unknown_resolution` · `conflict_subject_missing` | 422 | `POST sync/conflicts/{id}/resolve` (§21.5) | `admin_system.sync.errors.*` |
-| `device_revoked` | 403 | `POST me/devices` sur un appareil révoqué : l'application génère un nouvel UUID (§3, P6-09) | `account.devices.revoked` |
+| `device_revoked` | 403 | `POST me/devices` sur un appareil révoqué, **et toute requête authentifiée portant le `X-Device-Id` d'un appareil révoqué** (par la personne, l'équipe, `sync:prune` ou un ordre d'effacement à distance, §3) : l'application purge ses données locales et génère un nouvel UUID | `account.devices.revoked` |
+| `wipe_not_requested` | 422 | `POST me/devices/{uuid}/wiped` pour un appareil que personne n'a marqué à effacer (§3) | `account.devices.wipe_not_requested` |
+| `space_disabled` | 403 | espace Pair ou Admin coupé par l'interrupteur serveur (§24 bis) : `admin/*` et `pair/*` appelés avec le jeton de l'application ; l'application relit `GET me` | `account.spaces.disabled` |
 | `device_taken` | 422 | `POST me/devices` avec l'UUID d'un appareil d'un autre compte (`errors.device_uuid`) | `account.devices.taken` |
 | `device_required` | 403 | `sync/*`, `heartbeat` sans `X-Device-Id` d'un appareil enregistré du compte (§21, P9-06) | `sync.device.required` |
 | `cursor_invalid` | 422 | `GET sync/pull?since=` illisible : relancer un tirage complet (`errors.since`, §21.3) | `sync.cursor_invalid` |
@@ -250,7 +252,7 @@ Révoque le jeton de la requête (ou ferme la session web d'un client Vue en mod
 
 ### `GET me`
 
-**200** `{ "data": <user vue « moi »> }` (voir §1). 401 `unauthenticated`.
+**200** `{ "data": <user vue « moi »> }` (voir §1) : `roles[]` cumulés, `permissions[]`, `spaces[]` (`member`, `peer`, `admin`, le sélecteur d'espace de l'application ; un espace coupé par l'interrupteur serveur n'y figure plus, §24 bis) et, quand la requête porte un `X-Device-Id` du compte, `device` = `{device_uuid, revoked, wipe}` (`wipe` = ordre d'effacement à distance en attente d'accusé, `{requested_at, reason}`, sinon `null`, voir « Effacement à distance » plus bas). 401 `unauthenticated`.
 
 ### `GET me/profile` (P6-06)
 
@@ -450,6 +452,8 @@ Sans authentification ni session (aucun `Set-Cookie`), `throttle:api`, `Cache-Co
 
 **200** `{ "data": { "current": "1.5.0", "minimum": "1.4.0", "released_at": "…" | null, "kind": "correctif" | "fonctionnalite" | "securite" | null, "notes": "…" | null, "client_version": "1.4.2" | null, "update_available": true | false | null, "update_required": true | false | null } }` — `current` : dernière version déployée (`app_versions`) ; `minimum` : paramètre `app_min_version` réglé dans *Mises à jour & optimisation* (jamais au-dessus de `current`) ; `update_available` : le client est en dessous de `current` ; `update_required` : le client est en dessous de `minimum`, l'application bloque l'écran jusqu'à la mise à jour (`null` sans version annoncée).
 
+
+**Application mobile unique (P15-11, P15-22)** : la réponse porte aussi `offline_expiry_days` (14 par défaut, `xomiton.accounts.offline_expiry_days` : jours sans contact avec le serveur au-delà desquels l'application purge les données de l'espace pair ; horloge locale **et** dernier `server_time` vu) et `spaces_enabled` = `{peer: bool, admin: bool}` (interrupteurs serveur, §24 bis). Aucune de ces valeurs n'est sensible.
 ### `POST assistant/question` — assistant public et membre (P4-01, Q41 a, Q55 ; P8-11)
 
 Offcanvas de l'accueil (`<x-assistant-offcanvas>`, `resources/js/public/assistant.js`) et page membre `/assistant` (`Assistant/Index`) ; même contrat pour Vue et Flutter. Groupe public, `throttle:api` + `throttle:assistant` (20/min **par IP**, `rate_limits.assistant_per_minute`), `Cache-Control: no-store, private`. `App\Application\Assistant\AskAssistant` : garde-fous de crise d'abord (**jamais d'appel au fournisseur** pour un message de crise), visiteur·se = base `assistant_kb` seule (`KnowledgeBaseAnswerer`, Q41), compte connecté (cookie ou Bearer) = fournisseur `AssistantProvider` configuré (`xomiton.assistant.provider`, pilote `kb` seul livré, Q7 ; échec du pilote → la base), sinon repli. **Rien n'est enregistré** pour un·e visiteur·se, ni pour un compte sans `persist` ; seul `hits_count` de l'entrée appariée augmente.
@@ -1011,7 +1015,7 @@ API de l'espace **Admin** de l'application mobile unique (alertes et SOS d'astre
 | Route | Effet |
 |---|---|
 | `GET admin/alerts?type=sos\|report\|need&status=&priority=&zone_id=&state=open\|all&unacknowledged=1&per_page=` | liste (ouvertes par défaut, les plus récentes d'abord) ; `meta{state, new}`. Résumé : `id` (ULID), `code`, `type`, `status`, `priority`, `place` (commune sinon département), `zone`, `commune`, `routed_to`, `acknowledged(_at)`, `escalated`, `age_minutes` — **jamais** le récit, le contact ni la position |
-| `GET admin/alerts/{ulid}` | détail : résumé + `category`, `needs[]`, `occurred_on`, `description`, `author` (pseudonyme, « Anonyme » si l'alerte l'est), `contact`, `preferred_channel`, **`position{lat, lng, precision_m, rounded: true}` ARRONDIE** (décision client du 2026-10-29 : `xomiton.alerts.admin_position_decimals`, 2 décimales ≈ 1 km ; la position exacte n'est jamais servie à l'admin mobile ; `null` sans position), `history[]`, `notes[]` (notes internes `{id, author, body, at}`), `escalations[]`, `can{acknowledge, take, close, reassign, note, statuses[]}` ; jamais le code de suivi, la clé d'idempotence ni le compte de l'auteur·e |
+| `GET admin/alerts/{ulid}` | détail : résumé + `category`, `needs[]`, `occurred_on`, `description`, `author` (pseudonyme, « Anonyme » si l'alerte l'est), `contact`, `preferred_channel`, **`position{lat, lng, precision_m, rounded: true}` ARRONDIE** (décision client du 2026-10-29 : `xomiton.alerts.admin_position_decimals`, 2 décimales ≈ 1 km ; la position exacte n'est jamais servie à l'admin mobile ; `null` sans position), `history[]`, `notes[]` (notes internes `{id, author, body, at}`), `escalations[]`, **`notified[]`** (personnes prévenues, y compris l'équipe : admins de garde et pair·es destinataires du push — `{key (empreinte opaque), kind, label, role, state, state_label, phone, seen_at, updated_at}` ; libellés publics, jamais le nom d'un·e admin ; `phone` nul pour le contact de confiance de l'auteur·e), `can{acknowledge, take, close, reassign, note, statuses[]}` ; jamais le code de suivi, la clé d'idempotence ni le compte de l'auteur·e |
 | `POST admin/alerts/{ulid}/acknowledge` | **accuser réception** (arrête l'escalade RG-05) → **200** détail, `meta{acknowledged_now, already_acknowledged, closed}` (idempotent) |
 | `POST admin/alerts/{ulid}/take` | **prendre en charge** : statut `en_cours` (vaut accusé s'il manque) |
 | `POST admin/alerts/{ulid}/status` | `{status}` (`pris_en_charge`, `en_cours`, `traite`, `clos`) ; transition refusée → **422** `invalid_transition` |
@@ -1024,7 +1028,7 @@ API de l'espace **Admin** de l'application mobile unique (alertes et SOS d'astre
 
 | Route | Effet |
 |---|---|
-| `GET admin/registrations` | comptes `en_attente`, les plus anciens d'abord ; chaque ligne : compte (§23.4) + `kind` = `peer_request` (demande de rôle pair) ou `registration`, et `flags[]` = motifs du **signalement** (`disposable_email`, `repeated_fingerprint`) ; `meta.pending`. **D-MOB-17 (tranché 2026-10-29, recommandation retenue)** : seules les inscriptions signalées attendent ici (le réglage `reg_manual_validation = all` met tout le monde en attente) |
+| `GET admin/registrations?kind=` | comptes `en_attente`, les plus anciens d'abord ; filtre `kind` = `registration` (inscription signalée ou à valider), `peer_request` (demande de pair ou pair·e invité·e), `invited` (pair·e invité·e dont l'inscription attend la validation), autre valeur → 422 ; chaque ligne : compte (§23.4) + `kind` = `peer_request` (demande de rôle pair) ou `registration`, `invited` (booléen : invitation à l'équipe utilisée), et `flags[]` = motifs du **signalement** (`disposable_email`, `repeated_fingerprint`) ; `meta.pending`. **D-MOB-17 (tranché 2026-10-29, recommandation retenue)** : seules les inscriptions signalées attendent ici (le réglage `reg_manual_validation = all` met tout le monde en attente) |
 | `POST admin/registrations/{user}/approve` | valide : compte actif, notification ; une demande de pair reçoit le rôle `pair` (et reste membre) ; une invitation à l'équipe en attente est honorée ; déjà traité → 422 |
 | `POST admin/registrations/{user}/reject` | `{reason}` (3–200, **écrit pour la personne**, `step-up`) : une **demande de pair** refusée laisse un compte **membre actif**, notifié avec le motif (`RoleNotice`, journal `users.peer_refused`) ; une **inscription** refusée supprime le compte (e-mail `compte-supprime`, journal `users.registration_rejected`) |
 
@@ -1082,7 +1086,13 @@ Un lien / code **signé, à usage unique** (7 jours, `xomiton.accounts.team_invi
 | `POST admin/moderation/reports/{id}/restore` | **rendre visible** un contenu masqué (RG-16 ou décision) sans toucher au signalement |
 | `POST admin/moderation/reports/{id}/dismiss` | **ignorer** (signalements rejetés ; un masquage automatique est levé) |
 
-Avertir et suspendre un compte restent sur le web (`/admin/moderation`).
+| Route | Effet |
+|---|---|
+| `GET admin/moderation/reports/{id}` | un signalement (même objet que la liste, avec `reports` / `people` du même contenu) |
+| `POST admin/moderation/reports/{id}/warn` | `{reason}` (3–200, écrit pour la personne) — **avertir** l'auteur·e (ligne `user_warnings`, notification `ModerationNotice`) ; vaut pour tous les signalements en attente du même contenu |
+| `POST admin/moderation/reports/{id}/decision` | décision unique de l'écran : `{action: hide\|keep\|warn, reason?}` (`reason` obligatoire pour `warn`) ; `keep` = conserver le contenu (équivaut à `dismiss`) ; autre action (dont `suspend`) → 422 |
+
+`can` d'un signalement : `hide`, `restore`, `dismiss`, `warn`. **Les messages privés** (kind `message`) ne sont **jamais** proposés à la modération mobile : absents de la liste, du compteur (`meta.pending`, `admin/dashboard.pending_moderation`), **404** en détail et en décision ; ils se traitent sur le web. **Suspendre un compte** reste sur le web (`/admin/moderation`).
 
 ### 23.8 Mode maintenance — `admin/maintenance` (`platform.maintenance`, RG-14)
 
@@ -1128,3 +1138,11 @@ Types historiques inchangés pour les autres personnes : `sos` et `alert` (auteu
 **Préférences** : `moderation` et `systeme` ont désormais le push actif par défaut (nouveaux comptes), pour que `content_reported` et `peer_pending` arrivent sans réglage ; la personne peut les couper (`PATCH me/settings`). Les catégories `sos` et `securite` restent non désactivables.
 
 Tests : `tests/Feature/Notifications/MobilePushTypesTest.php`.
+
+### 24 bis. Interrupteurs d'espace et durée de vie du jeton (P15-22, D-MOB-9)
+
+**Interrupteurs par espace** (`App\Application\Member\MobileSpaces`, réglages `mobile_space_peer_enabled` / `mobile_space_admin_enabled`, vrais par défaut) : couper l'espace Pair ou l'espace Admin de l'application **sans la republier** (revue Play, incident). Commande de secours cPanel / SSH / cron : `php artisan xomiton:mobile-space admin off` (`peer` ou `admin` ; `on`, `off` ou `status`), journal `platform.mobile_space_switched` (acteur « système »). Un espace coupé : est retiré de `GET me` → `spaces` ; fait répondre **403 `space_disabled`** à `admin/*` et à `pair/*` quand ils sont appelés avec un **jeton Bearer** (application) ; reste visible dans `GET app/version` → `spaces_enabled`. Le site web (session) et l'API qu'il utilise ne sont **jamais** touchés ; l'espace Membre ne se coupe pas (SOS, signalement, urgences : RG-01). L'application traite `space_disabled` comme un retrait de droit : relire `GET me`, retirer l'espace, afficher « Cet espace n'est plus disponible ».
+
+**Durée de vie glissante du jeton** (`SlideMobileTokenExpiry`, `xomiton.accounts.mobile_token_days`, recommandation retenue de D-MOB-9) : le jeton Sanctum de l'application expire s'il reste **inutilisé** 7 jours pour un compte qui a l'espace Admin (`admin_mobile.access`), 30 jours pour un compte pair ; un compte membre garde un jeton sans échéance propre. Chaque requête authentifiée repousse l'échéance (au plus une écriture par jour et par jeton) ; l'échéance suit le rôle **actuel** (un jeton qui reçoit l'espace Admin est ramené à 7 jours). Un jeton expiré répond **401 `unauthenticated`** : reconnexion (et OTP pour un compte admin, Q13 b). Sans effet pour une session web. Le jeton ne porte aucune capacité figée (écart assumé avec la capacité `admin-mobile` du plan §6.3) : les rôles se cumulent et changent sans reconnexion, la permission lue à chaque requête reste la seule vérité.
+
+Tests : `tests/Feature/Api/MobileSpacesAndTokensApiTest.php`.

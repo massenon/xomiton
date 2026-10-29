@@ -43,7 +43,7 @@ final class DutyDashboard
             ] : null,
             'pending_accounts' => $user->can('users.validate_peers') ? User::query()->pending()->count() : null,
             'pending_peer_requests' => $user->can('users.validate_peers') ? $this->peerRequests() : null,
-            'pending_moderation' => $user->can('moderation.manage') ? $this->reports->pendingGroups()->toBase()->count() : null,
+            'pending_moderation' => $user->can('moderation.manage') ? $this->reports->pendingGroupsForMobile()->toBase()->count() : null,
             'open_sync_conflicts' => $user->can('sync.manage') ? SyncConflict::query()->open()->count() : null,
             'maintenance' => [
                 'state' => $overview->state->value,

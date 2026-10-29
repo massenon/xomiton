@@ -148,6 +148,60 @@
     "@account_security_pin_never_sent": {
         "description": "account.security.pin_never_sent"
     },
+    "account_spaces_command_changed": "Espace {space} : {state}.",
+    "@account_spaces_command_changed": {
+        "description": "account.spaces.command.changed",
+        "placeholders": {
+            "space": {
+                "type": "String"
+            },
+            "state": {
+                "type": "String"
+            }
+        }
+    },
+    "account_spaces_command_invalid_state": "État inconnu : {state}. Choisis « on », « off » ou « status ».",
+    "@account_spaces_command_invalid_state": {
+        "description": "account.spaces.command.invalid_state",
+        "placeholders": {
+            "state": {
+                "type": "String"
+            }
+        }
+    },
+    "account_spaces_command_off": "coupé",
+    "@account_spaces_command_off": {
+        "description": "account.spaces.command.off"
+    },
+    "account_spaces_command_on": "ouvert",
+    "@account_spaces_command_on": {
+        "description": "account.spaces.command.on"
+    },
+    "account_spaces_command_status": "Espace {space} : {state}.",
+    "@account_spaces_command_status": {
+        "description": "account.spaces.command.status",
+        "placeholders": {
+            "space": {
+                "type": "String"
+            },
+            "state": {
+                "type": "String"
+            }
+        }
+    },
+    "account_spaces_command_unknown": "Espace inconnu : {space}. Choisis « peer » ou « admin ».",
+    "@account_spaces_command_unknown": {
+        "description": "account.spaces.command.unknown",
+        "placeholders": {
+            "space": {
+                "type": "String"
+            }
+        }
+    },
+    "account_spaces_disabled": "Cet espace est momentanément indisponible dans l’application. Réessaie plus tard.",
+    "@account_spaces_disabled": {
+        "description": "account.spaces.disabled"
+    },
     "admin_alerts_anonymous": "Anonyme",
     "@admin_alerts_anonymous": {
         "description": "admin.alerts.anonymous"

@@ -71,6 +71,8 @@ it('refuse (403) le groupe admin à un membre, un pair, un modérateur et à un 
         ['POST', 'invitations'], ['DELETE', 'invitations/1'], ['GET', 'maintenance'], ['POST', 'maintenance/enable'], ['POST', 'maintenance/disable'],
         ['GET', 'moderation/reports'], ['POST', 'moderation/reports/1/hide'], ['POST', 'moderation/reports/1/restore'], ['POST', 'moderation/reports/1/dismiss'],
         ['GET', 'notifications'], ['POST', 'notifications/read-all'],
+        ['GET', 'moderation/reports/1'], ['POST', 'moderation/reports/1/decision'], ['POST', 'moderation/reports/1/warn'],
+        ['GET', 'members/1/devices'], ['POST', 'devices/1/wipe'],
         ['GET', 'role-requests'], ['POST', 'role-requests/01ARZ3NDEKTSV4RRFFQ69G5FAV/approve'], ['POST', 'role-requests/01ARZ3NDEKTSV4RRFFQ69G5FAV/reject'],
     ];
 

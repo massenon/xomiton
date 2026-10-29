@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Admin;
 
+use App\Application\Alerts\Dispatch\NotifiedPeople;
+use App\Application\Alerts\Dispatch\NotifiedPerson;
 use App\Application\Shared\Referentials;
+use App\Domain\Alerts\Dispatch\RecipientKind;
 use App\Enums\AlertStatus;
 use App\Http\Resources\Alerts\AlertResource;
+use App\Http\Resources\Alerts\NotifiedPersonResource;
 use App\Models\Alert;
 use App\Models\AlertEscalation;
 use App\Models\AlertNote;
@@ -60,6 +64,26 @@ final class AdminAlertResource extends JsonResource
     }
 
     /**
+     * Personnes prévenues (dont l'équipe : admins de garde et pair·es destinataires du push) : libellé public, rôle, état
+     * de remise (envoyé, vu, abandonné…), jamais le nom d'un·e admin, une référence interne, un endpoint push ni le
+     * numéro du contact de confiance de l'auteur·e.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private static function notified(Alert $alert, Request $request): array
+    {
+        return NotifiedPeople::for($alert)->map(static function (NotifiedPerson $person) use ($request): array {
+            $row = NotifiedPersonResource::make($person)->resolve($request);
+
+            if ($person->kind === RecipientKind::Trusted) {
+                $row['phone'] = null;
+            }
+
+            return $row;
+        })->values()->all();
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
@@ -110,6 +134,7 @@ final class AdminAlertResource extends JsonResource
             'contact' => $alert->contact,
             'preferred_channel' => $alert->preferred_channel?->value,
             'position' => self::roundedPosition($alert),
+            'notified' => self::notified($alert, $request),
             'closed_at' => $alert->closed_at?->toIso8601String(),
             'history' => $alert->relationLoaded('statusChanges')
                 ? $alert->statusChanges->sortBy('id')->map(static fn (AlertStatusChange $change): array => [

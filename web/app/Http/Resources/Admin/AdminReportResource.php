@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 /**
  * Signalement de contenu en file de modération (`admin/moderation/reports`, P15-16) : nature, motif, extrait court du
  * contenu (200 caractères), auteur·rice signalé·e par son pseudonyme, nombre de signalements et de personnes distinctes
- * pour ce contenu, état et gestes permis (masquer, rendre visible, ignorer). Jamais l'identité de la personne qui signale.
+ * pour ce contenu, état et gestes permis (masquer, rendre visible, ignorer, avertir). Jamais l'identité de la personne qui signale.
  *
  * @property ModerationReport $resource
  */
@@ -53,6 +53,7 @@ final class AdminReportResource extends JsonResource
                 'hide' => $report->isPending() && ContentVisibility::hideable($subject) && ! $hidden,
                 'restore' => $hidden,
                 'dismiss' => $report->isPending(),
+                'warn' => $report->isPending() && $report->reportedUser !== null,
             ],
         ];
     }

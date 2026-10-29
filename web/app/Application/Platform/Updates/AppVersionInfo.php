@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Platform\Updates;
 
+use App\Application\Member\MobileSpaces;
 use App\Models\AppVersion;
 use App\Support\Settings;
 
@@ -18,7 +19,7 @@ final class AppVersionInfo
     public const PATTERN = '/^\d+\.\d+\.\d+$/';
 
     /**
-     * @return array{current: string, minimum: string, released_at: string|null, kind: string|null, notes: string|null, client_version: string|null, update_available: bool|null, update_required: bool|null}
+     * @return array{current: string, minimum: string, released_at: string|null, kind: string|null, notes: string|null, client_version: string|null, update_available: bool|null, update_required: bool|null, offline_expiry_days: int, spaces_enabled: array{peer: bool, admin: bool}}
      */
     public static function for(?string $clientVersion): array
     {
@@ -37,6 +38,9 @@ final class AppVersionInfo
             'client_version' => $client,
             'update_available' => $client === null ? null : version_compare($client, $current, '<'),
             'update_required' => $client === null ? null : version_compare($client, $minimum, '<'),
+            // Application mobile (P15-11, P15-22) : jours sans contact avant la purge locale des données pair ; espaces ouverts.
+            'offline_expiry_days' => max(1, (int) config('xomiton.accounts.offline_expiry_days', 14)),
+            'spaces_enabled' => MobileSpaces::all(),
         ];
     }
 }

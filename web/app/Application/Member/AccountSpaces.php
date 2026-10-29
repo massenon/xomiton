@@ -42,11 +42,14 @@ final class AccountSpaces
         }
 
         // L'espace pair suppose le rôle `pair` : un·e admin sans ce rôle n'est le destinataire d'aucune alerte « pair » (il·elle a l'espace Admin).
-        if ($user->hasRole('pair') && PeerSpace::allows($user)) {
+        // Surface mobile : un espace coupé par l'interrupteur serveur (MobileSpaces, P15-22) n'est plus proposé.
+        $mobile = $surface === self::SURFACE_MOBILE;
+
+        if ($user->hasRole('pair') && PeerSpace::allows($user) && (! $mobile || MobileSpaces::enabled(self::PEER))) {
             $spaces[] = self::PEER;
         }
 
-        if ($user->can($surface === self::SURFACE_WEB ? 'admin.access' : 'admin_mobile.access')) {
+        if ($user->can($mobile ? 'admin_mobile.access' : 'admin.access') && (! $mobile || MobileSpaces::enabled(self::ADMIN))) {
             $spaces[] = self::ADMIN;
         }
 
