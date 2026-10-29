@@ -12,11 +12,21 @@ Implémentation : **spatie/laravel-permission** (rôles + permissions), Policies
 | Rôle | Code | Qui | Création |
 |---|---|---|---|
 | Visiteur·se | (non connecté) | Toute personne | — |
-| Membre | `membre` | Filles, femmes, personnes LBTQ+, allié·es | Inscription libre (si ouverte) |
-| Pair éducateur·rice | `pair` | Animateur·rices formé·es | Inscription puis **validation** par l'administration (RG-03) |
-| Modérateur·rice | `moderateur` | Équipe de modération | Attribué par admin *(rôle proposé, à valider)* |
-| Administrateur·rice | `admin` | Équipe de coordination | Attribué par superadmin |
-| Super-administrateur·rice | `superadmin` | Responsable technique / direction | Attribué par superadmin |
+| Membre | `membre` | Filles, femmes, personnes LBTQ+, allié·es | Inscription libre (si ouverte) : **la seule chose que crée l'inscription publique** |
+| Pair éducateur·rice | `pair` | Animateur·rices formé·es | **Jamais auto-attribué.** Donné à un·e membre existant·e par l'administration (`peers.assign`) **ou** par invitation à l'équipe (lien / code signé à usage unique, `peers.invite`) puis validation du compte (RG-03) |
+| Modérateur·rice | `moderateur` | Équipe de modération | Attribué par superadmin (`roles.assign_admin`, RG-15) |
+| Administrateur·rice | `admin` | Équipe de coordination | Attribué ou invité par superadmin |
+| Super-administrateur·rice | `superadmin` | Responsable technique / direction | Attribué ou invité par superadmin |
+
+### 1 bis. Un seul compte, un seul login, rôles cumulables (décisions client du 2026-10-29)
+
+Membre, pair éducateur·rice et admin se connectent par **les mêmes écrans et endpoints** (`/connexion`, `auth/login`, code OTP compris). Les rôles **se cumulent** sur un même compte :
+
+- **`membre` est toujours conservé** : un·e pair·e et un·e admin gardent le réseau social (fil, messages, groupes, événements, forums). Le niveau d'administration (`moderateur`, `admin`, `superadmin`) s'ajoute ; `pair` se conserve quand on devient admin (ses dossiers lui restent) et ne tombe que si l'on repasse à « membre » ou que l'on retire le rôle pair.
+- **Espaces** (`AccountSpaces`, props Inertia `auth.user.spaces` et `GET me` → `spaces`) : `member` (tout compte), `peer` (rôle `pair` + compte actif, RG-03), `admin` (web : `admin.access` ; mobile : `admin_mobile.access`). C'est le sélecteur d'espace du mobile et les menus du web ; **un compte multi-rôle arrive toujours sur le fil** (`/fil`), l'espace pair (`/espace-pair`) et l'administration (`/admin`) s'ouvrent par les menus. Ergonomie seulement : chaque route revérifie permission, policy et scope.
+- **Aucun rôle n'est auto-attribuable** : `member_type = pair` n'est plus un choix du profil (inscription, `PATCH me/profile` : 422). La seule voie sans administrateur est une **invitation** créée par l'administration, qui mène à l'inscription ordinaire (case 15 ans comprise) ; le rôle suit à la validation du compte (e-mail confirmé, ou approbation si la validation manuelle est active) et seulement si la personne qui a invité détient encore le droit.
+- **Gestion par l'administration** (écran Utilisateurs & rôles et Inscriptions, **et** API `admin/*`, API.md §23) : donner / retirer le rôle pair à un membre (`peers.assign`), inviter un·e pair·e (`peers.invite`) ou un·e admin (`roles.assign_admin`, super-admin), valider ou refuser (avec **motif**) les inscriptions et demandes de pair en attente (`users.validate_peers`). Chaque changement est **journalisé** (`roles.peer_granted`, `roles.peer_revoked`, `roles.admin_granted`, `users.role_changed`, `users.peer_refused`, `invitations.*`) et **notifié** à l'intéressé·e (`RoleNotice` : cloche + push).
+- **Non-escalade** (tests `tests/Feature/Admin/TeamRolesTest.php`, `tests/Feature/Api/Admin/AdminMobileApiTest.php`) : un·e pair·e ne peut pas se donner admin, un membre ne peut pas appeler l'API admin (403 sur chaque route), un·e admin ne peut ni se donner ni donner un rôle d'administration (RG-15).
 | Intervenant·e de l'annuaire | (contact, pas un compte obligatoire) | Points focaux, juristes, psychologues… | Fiche annuaire ; peut avoir un compte `pair` ou `admin` |
 
 ## 2. Principes
@@ -39,10 +49,11 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | Réseau social (fil, sondages, chat, groupes, événements, forums) | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Ressources & outils CCC (lecture) | 👁 | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Espace pair (tâches, outils d'animation) | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ |
+| Administration mobile (API `admin/*`, espace Admin de l'application) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Collecte de données & registres | ❌ | ❌ | ✅ (ses dossiers) | ❌ | ✅ | ✅ |
 | Fiches VBG / VDH | ❌ | ❌ | 👁 (ses dossiers) | ❌ | ✅ | ✅ |
 | Suivi des victimes | ❌ | ❌ | 👁 (ses dossiers) | ❌ | ✅ | ✅ |
-| Alertes & signalements (administration) | ❌ | ❌ | 👁 (routées vers lui·elle) | ❌ | ✅ | ✅ |
+| Alertes & signalements (administration) | ❌ | ❌ | 👁 (routées vers lui·elle **ou dont l'équipe l'a prévenu·e**) | ❌ | ✅ | ✅ |
 | Annuaire dynamique | ❌ | 👁 (contacts publics) | 👁 | 👁 | ✅ | ✅ |
 | Règles de validation | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Indicateurs & rapports automatisés | ❌ | ❌ | 👁 (sa zone) | ❌ | ✅ | ✅ |
@@ -55,8 +66,9 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | **Templates e-mails** | ❌ | ❌ | ❌ | ❌ | ✅ (sauf suppression système) | ✅ |
 | Utilisateurs (membres, pair·es) | ❌ | ❌ | ❌ | 👁 (suspendre) | ✅ | ✅ |
 | Inscriptions (ouvrir / fermer) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| Rôles d'administration | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Hors connexion & synchro (conflits) | ❌ | ❌ | 👁 (ses appareils) | ❌ | ✅ | ✅ |
+| Rôle pair : donner / retirer, inviter | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Rôles d'administration (attribuer, inviter) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Hors connexion & synchro (conflits) | ❌ | ❌ | 👁 (ses appareils) ; **tranche lui·elle-même** ses conflits sur ses dossiers (serveur ou appareil) | ❌ | ✅ | ✅ |
 | Mises à jour, maintenance, **sauvegardes** | ❌ | ❌ | ❌ | ❌ | 👁 (créer, aperçu, télécharger) | ✅ (restaurer, supprimer) |
 | Paramètres système, SMTP, purge du journal | ❌ | ❌ | ❌ | ❌ | 👁 | ✅ |
 | Journal d'audit | ❌ | ❌ | ❌ | ❌ | 👁 | ✅ |
@@ -69,7 +81,11 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `posts.moderate` | | | ✅ | ✅ | ✅ |
 | `cases.create`, `cases.update_own` | | ✅ | | ✅ | ✅ |
 | `cases.view_all`, `cases.export` | | | | ✅ | ✅ |
-| `alerts.take`, `alerts.close` | | routées | | ✅ | ✅ |
+| `alerts.take`, `alerts.close` | | routées ou notifiées | | ✅ | ✅ |
+| `peers.assign` (donner / retirer le rôle pair) | | | | ✅ | ✅ |
+| `peers.invite` (inviter un·e pair·e) | | | | ✅ | ✅ |
+| `admin_mobile.access` (API `admin/*`, retirable par le super-admin) | | | | ✅ | ✅ |
+| `sync.resolve_own` (trancher ses propres conflits 409) | | ✅ | | ✅ | ✅ |
 | `directory.manage` | | | | ✅ | ✅ |
 | `newsletter.manage_subscribers`, `newsletter.send` | | | | ✅ | ✅ |
 | `gateways.connect`, `gateways.publish` | | | | ✅ | ✅ |
@@ -78,11 +94,13 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `platform.maintenance` (écran `/admin/maintenance`, P13-06 ; remplace `maintenance.manage`, Q85) | | | | ✅ | ✅ |
 | `backups.create`, `backups.download` | | | | ✅ | ✅ |
 | `backups.restore`, `backups.delete` | | | | | ✅ |
-| `roles.assign_admin` | | | | | ✅ |
+| `roles.assign_admin` (attribuer ou inviter modération / admin / super-admin) | | | | | ✅ |
 
 ## 5. Règles d'accès aux données
 
-- Requêtes « pair » toujours portées par un scope : `Case::visibleTo($user)` → `where('collected_by', $user->id)` ; `Alert::routedTo($user)` → contact d'annuaire lié au compte.
+- Requêtes « pair » toujours portées par un scope : `Case::visibleTo($user)` → `where('collected_by', $user->id)` ; `Alert::routedTo($user)` (`AlertScope`) → contact d'annuaire lié au compte **ou alerte dont l'équipe a notifié le compte** (SOS, alerte routée, rappel, escalade : les admins **et les pair·es** sont destinataires, décision client du 2026-10-29 ; une alerte jamais notifiée à un·e pair·e reste fermée).
+- Conflit de synchronisation : le pair ne tranche (serveur ou appareil) que les conflits **de ses appareils** sur **ses dossiers** (`SyncConflictPolicy`) ; la fusion à la main est réservée à `sync.manage`.
+- Position d'une alerte : **arrondie** (≈ 1 km) pour l'admin mobile ; la position exacte reste réservée au contact routé / pair notifié et à l'écran web d'administration.
 - Les exports (CSV, PDF) appliquent le même scope que l'écran.
 - Les votes de sondage, les adresses IP de consentement et les jetons de newsletter ne sont **jamais** exposés hors de l'administration.
 - La maintenance (RG-14) bloque la connexion de tous les rôles sauf admin et superadmin ; SOS, signalement, urgences et leur API restent servis (RG-01, Q28), ainsi que les référentiels du signalement (zones, types de violence, besoins) et « mot de passe oublié » / réinitialisation (anti-verrouillage : la réinitialisation ne connecte personne). Seuls ces deux rôles détiennent `platform.maintenance` (migration de données depuis `maintenance.manage`, Q85) : personne ne peut activer une maintenance qui l'exclurait (garde-fou anti-verrouillage, P13-06) ; une maintenance déjà active n'est jamais réactivée.

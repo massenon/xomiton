@@ -65,6 +65,10 @@ Taille de page : `?per_page=` borné à `xomiton.api.max_per_page` (50) par `Api
 | `idempotency_key_invalid` | 422 | `Idempotency-Key` qui n'est pas un UUID (`errors.idempotency_key`) | `errors.api.idempotency.*` |
 | `idempotency_key_reused` | 422 | même clé, même route, même acteur, **corps différent** (`errors.idempotency_key` ; erreur du client, jamais un rejeu ; jamais 409, réservé au conflit de `sync/push` : ADR-32) | `errors.api.idempotency.*` |
 | `idempotency_in_progress` | 429 | même clé encore en cours de traitement après 2 s d'attente (`retry_after`) : rejouable ; jamais sur `POST sos` (202 `processing`, §1.3) | `errors.api.idempotency.*` |
+| `invitation_invalid` | 422 | lien / code d'invitation à l'équipe inconnu, expiré, déjà utilisé, annulé ou lié à une autre adresse (`errors.invitation`, §2, §23.6) | `auth.invitation_invalid` |
+| `step_up_required` | 403 | action admin à fort impact sans jeton de confirmation valable (absent, expiré, déjà utilisé, d'un autre compte ; §23.1) | `admin.users.errors.step_up_required` |
+| `maintenance_lockout` | 403 | `admin/maintenance/enable` par un compte qui perdrait l'accès (garde-fou P13-06, §23.8) | `maintenance.errors.lockout` |
+| `conflict_already_resolved` · `conflict_not_mergeable` · `conflict_invalid_value` · `conflict_unknown_resolution` · `conflict_subject_missing` | 422 | `POST sync/conflicts/{id}/resolve` (§21.5) | `admin_system.sync.errors.*` |
 | `device_revoked` | 403 | `POST me/devices` sur un appareil révoqué : l'application génère un nouvel UUID (§3, P6-09) | `account.devices.revoked` |
 | `device_taken` | 422 | `POST me/devices` avec l'UUID d'un appareil d'un autre compte (`errors.device_uuid`) | `account.devices.taken` |
 | `device_required` | 403 | `sync/*`, `heartbeat` sans `X-Device-Id` d'un appareil enregistré du compte (§21, P9-06) | `sync.device.required` |
@@ -100,6 +104,8 @@ Empreinte du corps : HMAC-SHA256 (clé d'application) des champs triés par cl�
 | 1. public, anonyme | `throttle:api` + un limiteur nommé sur chaque écriture | `health`, `status` (P13-08), `zones`, `violence-types`, `needs`, `auth/*` (sauf `logout`), `assistant/question` (`throttle:assistant`, P4-01), `urgences`, `signalements` (`idempotent:required,limit=report`), `signalements/{code}` (`throttle:tracking`), `sos` (`idempotent:required,nonblocking,limit=sos` sans `throttle:api`), `sos/{id}`, `sos/{id}/cancel` · `safe` (`throttle:sos_owner`) — P5-06, §6 ; `thematiques`, `thematiques/{slug}`, `ressources`, `ressources/{id}/download` (`conditional` ; téléchargement `throttle:resource_download`) — P6-08, §11 |
 | 2. authentifié | `auth:sanctum` (jeton Bearer ou cookie de session SPA) + `conditional` (§1.6) | `auth/logout`, `me/*` (§3), `notifications/*` (§7), `signalements/mine` (P5-06), `feed/`, `posts/*`, `comments/*` (§8, P7-02), `dashboard`, `users/{id}/posts` (§11, P6-08), `conversations/*` (§12, P8-01), `pair/*` (§22, P9-02), `sync/*`, `heartbeat` (§21, P9-06 ; `sync/push` sans `throttle:api`, `idempotent:required,limit=sync_push`) |
 
+| 2 bis. administration mobile | `auth:sanctum` + `conditional` + `EnsureAdminMobile` (compte actif détenant `admin_mobile.access`, sinon **403**, **avant** la liaison des modèles de route : jamais de 404 qui révélerait un identifiant) + `throttle:admin_api` (120/min par compte) ; écritures `idempotent:required,limit=admin_write` (30/min) ; réponses `Cache-Control: no-store, private`, journal d'audit `source=mobile` | `admin/*` (§23, P15-16) |
+
 Un test (`tests/Feature/Api/ApiFoundationTest.php`) refuse toute route publique hors des familles d'ADR-31 et toute écriture publique sans limiteur nommé (`throttle:<nom>` ou `idempotent:…,limit=<nom>`).
 
 ### 1.5 Objet `user` (`App\Http\Resources\UserResource`)
@@ -110,7 +116,7 @@ Vue « moi » (réponses d'inscription, de connexion, `GET me`) :
 {
   "id": 12, "pseudo": "Awa_S", "avatar_url": "https://…/avatar1.png",
   "status": "actif", "pending_validation": false,
-  "role": "membre", "roles": ["membre"],
+  "role": "membre", "roles": ["membre"], "spaces": ["member"],
   "profile": {
     "pronouns": "elle", "member_type": "membre", "bio": null, "completion": 30, "visibility": "communaute",
     "zone": {"id": 1, "name": "Littoral"}, "commune": {"id": 3, "name": "Cotonou"},
@@ -128,12 +134,14 @@ Vue « moi » (réponses d'inscription, de connexion, `GET me`) :
 }
 ```
 
+**Un seul compte, des rôles cumulables** (décisions client du 2026-10-29). `roles` liste **tous** les rôles du compte ; `role` est le plus étendu (`membre` < `pair` < `moderateur` < `admin` < `superadmin`). Un·e pair·e et un·e admin **restent membres** (réseau social) : un compte `pair` a `roles: ["membre", "pair"]`, un·e admin `["membre", "admin"]` (et `"pair"` s'il·elle l'est aussi). **`spaces`** (vue « moi » seulement) : espaces proposés au **sélecteur d'espace** du mobile — `member` (réseau social, tout compte), `peer` (rôle `pair`, compte actif avec `peer_space.access` ; un compte `pair` en attente reste en `member`), `admin` (`admin_mobile.access` : admin et super-admin, un·e modérateur·rice n'a pas d'espace Admin mobile). Un compte multi-rôle arrive toujours sur l'espace `member` (le fil) et ouvre les autres par un menu ; c'est de l'ergonomie, chaque route `pair/*` et `admin/*` revérifie permission, policy et scope (un 403 est la seule vérité : relire `GET me`). Les mêmes `spaces` sont dans les props Inertia partagées (`auth.user.spaces`, surface web : `admin` ⇔ `admin.access`).
+
 Vue « autre compte » (futures routes `users/{id}`) : seuls `id`, `pseudo`, `avatar_url`, `status`, `pending_validation`, `role`, `roles`, `created_at` et un `profile` réduit (`pronouns`, `member_type`, `bio`, `completion`, `visibility`, `zone` / `commune` si `show_zone`). **Le nom réel, le téléphone, l'identité de genre et l'orientation ne sortent jamais** (RG-02).
 
 | `status` | Sens |
 |---|---|
 | `actif` | accès normal (limité à lecture, SOS, signalement, profil tant que `email_verified` est faux) |
-| `en_attente` | pair éducateur·rice en attente de validation (RG-03) : session ouverte, bandeau « compte en attente », collecte fermée |
+| `en_attente` | compte à valider par l'équipe (validation manuelle de tous les comptes, Q26, ou demande de pair, RG-03) : session ouverte, bandeau « compte en attente », collecte fermée |
 | `suspendu` | connexion refusée (403 `account_suspended`) |
 
 ### 1.6 Lectures conditionnelles et Sanctum SPA (P6-01)
@@ -158,8 +166,9 @@ Corps :
 | `cgu`, `privacy` | requis, `true` chacun (cases distinctes, jamais pré-cochées) |
 | `age_confirmed` | requis, `true` (Q68 : « J'ai 15 ans ou plus », seuil `xomiton.accounts.min_age`) ; aucune date de naissance n'est collectée, seul l'horodatage est gardé (consentement `age_confirmed`). Sinon 422 `age_confirmation_required` |
 | `phone` | facultatif, numéro béninois (`+229 01 XX XX XX XX`) |
+| `invitation` | facultatif (≤ 40) : **code ou lien d'invitation à l'équipe** (pair, admin ; §23.6). L'inscription reste celle d'un membre (mêmes champs, case 15 ans comprise) ; le rôle est donné à la validation du compte (e-mail confirmé, ou approbation si la validation manuelle est active). Une invitation valable ouvre aussi l'inscription fermée au public. Code inconnu, expiré, déjà utilisé, annulé ou lié à une autre adresse → 422 `invitation_invalid` (`errors.invitation`), aucun compte créé |
 | `device_name` | facultatif (≤ 100) : nom du jeton ; sinon navigateur ou « appareil » |
-| `profile` | facultatif (phases 2-3) : `pronouns` (≤ 30), `zone_id` (requis avec `commune_id`), `commune_id` (dans le département), `member_type` (`membre` \| `pair` → compte `en_attente`, rôle `pair`), `trusted_contact_phone` (béninois, chiffré), `trusted_contact_name` (≤ 80), `discreet_mode` (bool) |
+| `profile` | facultatif (phases 2-3) : `pronouns` (≤ 30), `zone_id` (requis avec `commune_id`), `commune_id` (dans le département), `member_type` (**`membre` seulement** : « pair » est refusé en 422, aucun rôle n'est auto-attribuable), `trusted_contact_phone` (béninois, chiffré), `trusted_contact_name` (≤ 80), `discreet_mode` (bool) |
 | `consents` | facultatif (phase 4) : `sensitive_data` (bool), `newsletter` (bool) — chaque réponse, acceptée ou refusée, est horodatée dans `consents` |
 
 Réponses :
@@ -640,7 +649,7 @@ Journal d'audit (`audit_logs`) : `auth.registered`, `auth.authenticated`, `auth.
 
 ## 10. Familles à venir
 
-`sync/*`, `heartbeat` : livrés (§21, P9-06) ; `pair/` : livré (§22, P9-02) ; `conversations/` : livré (§12, P8-01) ; `groups/`, `pages/` : livrés (§13, §14, P8-02, P8-03) ; `events/` : livré (§15, P8-04) ; `forums/` : livré (§16, P8-05) ; `follows/`, `invitations/` : livrés (§17, P8-06) ; `members/{pseudo}…`, `me/activity`, `me/profile/{avatar|cover}` : livrés (§18, §3, P8-07) ; `directory/*` : livré (§19, P8-12). `signalements/`, `sos/`, `urgences/` : livrés (§6) ; `me/*` (§3) et `notifications/*` (§7) : livrés (P6-06, P6-07, P6-09) ; `feed/`, `posts/*`, `comments/*` (§8) : livrés (P7-02) ; `dashboard`, `thematiques/`, `ressources/`, `users/{id}/posts` (§11) : livrés (P6-08). Chaque famille complète ce document à sa livraison.
+`admin/*` : livré (§23, P15-16) ; `sync/*`, `heartbeat` : livrés (§21, P9-06) ; `pair/` : livré (§22, P9-02) ; `conversations/` : livré (§12, P8-01) ; `groups/`, `pages/` : livrés (§13, §14, P8-02, P8-03) ; `events/` : livré (§15, P8-04) ; `forums/` : livré (§16, P8-05) ; `follows/`, `invitations/` : livrés (§17, P8-06) ; `members/{pseudo}…`, `me/activity`, `me/profile/{avatar|cover}` : livrés (§18, §3, P8-07) ; `directory/*` : livré (§19, P8-12). `signalements/`, `sos/`, `urgences/` : livrés (§6) ; `me/*` (§3) et `notifications/*` (§7) : livrés (P6-06, P6-07, P6-09) ; `feed/`, `posts/*`, `comments/*` (§8) : livrés (P7-02) ; `dashboard`, `thematiques/`, `ressources/`, `users/{id}/posts` (§11) : livrés (P6-08). Chaque famille complète ce document à sa livraison.
 
 ## 11. Lecture mobile : tableau de bord, thématiques, ressources, publications d'un profil (P6-08)
 
@@ -885,6 +894,7 @@ Moteur de SOFTWARE_ARCHITECTURE §5 pour l'application mobile (boîte d'envoi Hi
 | `POST sync/push` | lot de 50 éléments au plus (`xomiton.sync.push_batch_size`), `Idempotency-Key` = **uuid du lot** (obligatoire ; lot encore en cours : **202** `{data: {status: processing, retry_after}}` + `Retry-After`, à rejouer tel quel, jamais 429) ; hors `throttle:api`, limiteur `sync_push` (20 lots/min par compte, rejeux non comptés, **jamais limité si le lot n'a que des SOS**) et quotas des routes dédiées **par élément** (§21.2) |
 | `GET sync/pull?since=&collections[]=` | deltas par collection depuis le jeton `since` (§21.3) |
 | `GET sync/conflicts?status=open\|resolved\|all&per_page=` | conflits de l'appareil, par page ; `meta.open` |
+| `POST sync/conflicts/{id}/resolve` | **le pair tranche lui-même** un conflit 409 de ses appareils (§21.5) |
 | `POST heartbeat` | signal de vie `{pending?, app_version?}` → `{server_time, device{device_uuid, last_seen_at, last_sync_at, pending_count}, open_conflicts}` |
 
 ### 21.2 `POST sync/push`
@@ -925,17 +935,23 @@ Idempotence (ADR-32) : même lot + même clé → **réponse d'origine** (middle
 
 Fusion d'un `collecte` en `op: update` (SOFTWARE_ARCHITECTURE §5), dossier relu sous verrou (`lockForUpdate`) : champ inchangé côté serveur depuis `base` → valeur de l'appareil appliquée ; modifié des deux côtés → **statut** (et l'attribution, jamais modifiable depuis l'appareil) : le serveur gagne (`kept`) ; **notes** : l'appareil gagne si son compte a collecté le dossier ; **autre champ** : conflit — `result: conflict`, `status: 409`, `conflicts[{field, conflict_id}]`, la valeur serveur reste en place, ligne `sync_conflicts` (valeurs chiffrées), `sync_devices.conflicts_count` + 1, `SyncConflictDetected` → cloche admin `SyncConflict` (`sync.manage`) et journal sans les valeurs ; tranché dans *Administration › Hors connexion & synchro* (P13). Dossier d'une autre personne : 404 neutre ; archivé ou anonymisé : 422 `case_locked`. `GET sync/conflicts` : `{id, subject{type: collecte, server_id, reference}, field, status (a_resoudre | resolu), resolution, server_value, device_value, resolved_value, created_at, resolved_at}` — valeurs et sujet servis seulement si le compte voit encore le dossier.
 
-### 21.5 `POST heartbeat`
+### 21.5 `POST sync/conflicts/{id}/resolve` — le pair tranche lui-même (décision client du 2026-10-29)
+
+Corps `{resolution: serveur | appareil}` (`fusion` + `merged` : administration seulement). `serveur` garde la valeur déjà en place ; `appareil` applique la valeur de l'appareil au dossier, après les règles de la collecte (`CaseValidator`, dossier verrouillé refusé). `X-Device-Id` d'un appareil enregistré du compte (comme tout `sync/*`) ; `Idempotency-Key` facultative. **Autorisation** (`SyncConflictPolicy`, permission `sync.resolve_own`, pair et admin) : seulement un conflit **de l'un de ses appareils** sur **un dossier qu'il·elle a collecté** (`CaseRecordPolicy::update`) ; le conflit d'un autre compte, d'un dossier qui n'est plus à soi, ou un identifiant inconnu → **404** neutre ; `fusion` par un·e pair·e → **403** ; conflit déjà tranché → **422** `conflict_already_resolved`. **200** : le conflit (`status: resolu`, `resolution`, `resolved_value`, `can`), `meta.open` (conflits encore ouverts de l'appareil). Effets : `sync_devices.conflicts_count` − 1 ; journal `sync.conflict_resolved` (choix, `par=pair|admin`, sujet, champ, appareil — **jamais les valeurs**). `GET sync/conflicts` annonce `can{resolve, merge}` pour le compte. L'administration (`sync.manage`) peut toujours trancher et fusionner depuis *Hors connexion & synchro* (Livewire). Tests `tests/Feature/Api/Sync/SyncConflictResolveApiTest.php`.
+
+### 21.6 `POST heartbeat`
 
 Signal de vie (prototype `api.php ping`) : `last_seen_at`, `pending_count` et `app_version` de l'appareil ; jamais de donnée de compte en retour hormis l'appareil et le nombre de conflits ouverts.
 
-### 21.6 Boîte d'envoi web (P9-07)
+### 21.7 Boîte d'envoi web (P9-07)
 
 Le web n'utilise pas `sync/push` (navigateur non enregistré, ADR-26) : `resources/js/shared/outbox.js` rejoue chaque entrée sur sa route dédiée avec son `Idempotency-Key` — `sos` → `POST sos`, `signalement` → `POST signalements`, `collecte` → `POST pair/cases` (`client_uuid` = clé ajouté au corps), `message` → `POST conversations/{ulid}/messages` (`client_uuid`) ; ordre SOS, signalement, collecte, message ; au retour du réseau, toutes les 5 min et au retour sur l'onglet ; **un SOS mis en file part tout de suite si le réseau est là** (hors du passage en cours et du verrou entre onglets). Store Pinia `outbox` : `queue(type, payload, {idempotencyKey?, url?})`, `byType` (envois en attente du compte de la page par type).
 
 ## 22. Espace pair `pair/*` — `auth:sanctum` (P9-01, P9-02)
 
 Dossiers VBG / VDH, suivi des victimes, alertes routées et règles de validation de l'espace pair éducateur·rice (prototype `collecte.php`, `espace-pair.php`, `admin/suivi.php` ; écrans P9-03, P9-04, P9-08). Code : domaine `App\Domain\Cases\{CaseCode, Plausibility, DuplicateCriteria, ValidationRuleKey, CaseNotes, CaseReferral, FollowupStep, Exceptions\*}` ; application `App\Application\Cases\{ValidationCatalog, CaseRules, CaseValidator, CaseQuality, CreateCase, UpdateCase, AddFollowup, UpdateFollowup, PeerSpace, Queries\{ListCases, ListRoutedAlerts}}` ; alertes : `AcknowledgeAlert`, `ChangeAlertStatus` (P5-02) ; règles `App\Rules\{NotFutureDate, MinimumLength, AgeRangeWithinBounds, CaseCodeFormat, CommuneInZone}` ; `App\Http\Controllers\Api\V1\Peer\*`, `App\Http\Requests\Peer\*`, `App\Http\Resources\Peer\*`, middleware `EnsurePeerSpaceAccess` ; tests `tests/Unit/Domain/Cases/*`, `tests/Feature/Cases/*`, `tests/Feature/Api/Peer/*`.
+
+**Notifications SOS et alertes** : destinataires = **les admins et les pair·es éducateur·rices** (`OnCallRoster::alertTeam` ; option `xomiton.alerts.peer_recipients = zone` pour limiter aux pair·es du département), pas seulement l'admin de garde ; push FCM / Web Push, cloche et SMS de repli inchangés ; `alerts:escalate` (SOS sans accusé à 5 min, rappel 24 h, escalade 48 h) prévient le point focal national **et** l'équipe ; l'accusé de réception d'un·e admin ou d'un·e pair·e arrête l'escalade pour tous. Une alerte jamais notifiée à un·e pair·e (et non routée vers lui·elle) reste fermée (403).
 
 **Accès** : compte **actif** détenant `peer_space.access` (pair validé·e, administration ; RG-03 : un compte pair en attente reste membre) — sinon **403** `forbidden`, sans détail. **Scope** (ROLE_ET_PERMISSIONS.md §5) : les dossiers passent **toujours** par `CaseRecord::visibleTo` (le pair : ceux qu'il a collectés ; l'administration : tous). Le code d'un dossier est énumérable : dossier d'un autre pair, code inconnu ou illisible → **le même 404** `not_found`, en lecture comme en écriture (aucun oracle). Les alertes sont adressées par ULID opaque (ADR-27) : alerte non routée vers le compte → **403** (`AlertPolicy`). Réponses **`Cache-Control: no-store, private`** (notes, commentaires, récit, contact et position déchiffrés), sauf `validation-rules` (ETag, 304).
 
@@ -950,7 +966,7 @@ Dossiers VBG / VDH, suivi des victimes, alertes routées et règles de validatio
 | `GET pair/cases/{code}/followups` | **200** étapes chronologiques `{id, date, step, outcome, outcome_label, next_on, overdue, comment, author (pseudonyme), by_me}` |
 | `POST pair/cases/{code}/followups` | `{date (non future), step (liste de admin/suivi.php), outcome (planifie\|realise\|reporte\|annule), next_on? (≥ date), comment? (≤ 1 000), client_uuid?}` → **201** ; **200** `meta.duplicate: true` au rejeu (même contenu) ; **422** `idempotency_key_reused` (même `client_uuid`, autre contenu), `client_uuid_conflict`, `case_locked` ; `Idempotency-Key` facultative comme `POST pair/cases` |
 | `PATCH pair/cases/{code}/followups/{id}` | Champs envoyés seulement (« marquer comme réalisée ») ; étape d'un autre dossier → **404** ; dossier archivé ou anonymisé → **422** `case_locked` ; pas de suppression pour un pair (`case_followups.manage`) |
-| `GET pair/alerts?state=open\|all&page=` | **200** alertes **routées vers les fiches d'annuaire du compte** (`directory_contacts.user_id`) — même pour un compte `alerts.view` : l'administration des alertes est en P10 — résumé `RoutedAlertResource` (§11), `meta{state, new}` (non accusées) ; sans `alerts.view_routed` → **403** |
+| `GET pair/alerts?state=open\|all&page=` | **200** alertes **routées vers les fiches d'annuaire du compte** (`directory_contacts.user_id`) **ou dont l'équipe l'a prévenu·e** (SOS, alerte routée, rappel, escalade : les pair·es éducateur·rices sont destinataires, décision client du 2026-10-29) — même pour un compte `alerts.view` : l'administration des alertes est en P10 / `admin/alerts` — résumé `RoutedAlertResource` (§11), `meta{state, new}` (non accusées) ; sans `alerts.view_routed` → **403** |
 | `GET pair/alerts/{ulid}` | **200** détail pour répondre : `type, status, priority, category(_label), needs[{slug, label}], occurred_on, description, author` (pseudonyme, « Anonyme » si l'alerte l'est, RG-01/RG-02), `contact, preferred_channel, place, zone, commune, position{lat, lng, accuracy}` (SOS géolocalisé), `acknowledged(_at), cancelled, safe, history[], can{acknowledge, take, close, statuses[]}` ; jamais le code de suivi, la clé d'idempotence ni le compte de l'autrice ou de l'auteur |
 | `POST pair/alerts/{ulid}/acknowledge` | Accusé de réception (AcknowledgeAlert, P5-02 : `nouveau → pris_en_charge`, arrêt de l'escalade RG-05) → **200** détail, `meta{acknowledged_now, already_acknowledged, closed}` (idempotent) |
 | `POST pair/alerts/{ulid}/status` | `{status}` (ChangeAlertStatus, P5-02) : `pris_en_charge`, `en_cours` (prendre en charge, `alerts.take` ; vaut accusé s'il manque), `traite`, `clos` (`alerts.close`) → **200** détail ; **422** `invalid_transition` ; **403** si l'alerte n'est pas routée vers le compte, **même pour l'administration** (`alerts.view` : middleware `EnsureAlertRoutedToViewer` sur le détail, l'accusé et le statut, avant la validation du corps). **Ni réattribution, ni note interne, ni export** (`alerts.manage`) |
@@ -959,3 +975,89 @@ Dossiers VBG / VDH, suivi des victimes, alertes routées et règles de validatio
 **Catalogue de règles activables** (table `validation_rules`, Administration › Règles de validation, `ValidationCatalog`) — les mêmes règles s'appliquent côté serveur (`CaseRules`, partagées par les Form Requests et par `sync/push` via `CaseValidator`) et côté client (`validation-rules`). Règle absente du catalogue = active ; `required` verrouillée. Toujours appliqués : champs obligatoires de la collecte, valeurs des listes, référentiels actifs, formats. Selon l'interrupteur : `date_not_future` (RG-07, jour calendaire du Bénin), `age_range` (RG-08 reformulée par **Q25 a** : tranche d'âge de la liste, jamais un âge exact, comprise entre `age_min` et `age_max` de la plausibilité — 10 et 99 par défaut, soit 10-14 à 50+), `commune_in_zone` (RG-08 ; désactivée, la commune doit seulement exister et être active ; une commune envoyée seule est contrôlée contre le département du dossier, sans revalider ce département), `min_len_20` (notes vides ou ≥ 20 caractères). **Avertissements non bloquants** (`meta.warnings[{code, message, codes[]}]`, après enregistrement) : `date_old` (date de plus de `max_past_years` ans, règle `plausibility`, RG-07) ; `duplicate_suspected` (règle `duplicates` : dossiers partageant les champs `params.fields`, **parmi ceux que le compte voit** — un pair ne découvre jamais l'existence du dossier d'un autre ; le rapprochement entre pair·es relève du rapport de qualité, P11). `email`, `phone_bj`, `positive_int`, `password_strong`, `case_code` : règles des autres formulaires (`App\Rules`), servies au client par la même route. **Pas encore activables** : `email`, `phone_bj`, `positive_int` et `password_strong` sont **toujours** appliquées par les Form Requests de leurs formulaires (inscription, profil, SOS, paramètres), qui ne lisent pas le catalogue ; leur interrupteur n'a d'effet que sur cette liste (désactivée → absente de la réponse, contrôle serveur maintenu). Branchement prévu avec l'écran *Règles de validation* (P11-05 ; `password_strong` à verrouiller, `is_locked`).
 
 **Journal d'audit** : `cases.created` (code, nature, source), `cases.updated` (noms des champs modifiés, transition de statut), `case_followups.created`, `case_followups.updated` — jamais le contenu des notes ni des commentaires. Notes et commentaires sont chiffrés au repos (`encrypted_columns`).
+
+## 23. Administration mobile `admin/*` — `auth:sanctum` + `admin_mobile.access` (P15-16)
+
+API de l'espace **Admin** de l'application mobile unique (alertes et SOS d'astreinte, demandes de pair, rôles, invitations, maintenance, modération essentielle). Elle **réutilise les cas d'usage de l'administration Livewire** (`AcknowledgeAlert`, `ChangeAlertStatus`, `ReassignAlert`, `AddInternalNote`, `ReviewRegistration`, `ManagePeerRole`, `ChangeUserRole`, `TeamInvitations`, `EnableMaintenance` / `DisableMaintenance`, `DecideReport`, `ReportQueue`, `NotificationInbox`) : aucune règle n'est dupliquée, chaque cas d'usage autorise par policy ; les contrôleurs `App\Http\Controllers\Api\V1\Admin\*` ne font que valider, appeler et présenter (`App\Http\Resources\Admin\*`). Tests `tests/Feature/Api/Admin/AdminMobileApiTest.php`.
+
+**Accès.** Middleware `EnsureAdminMobile` : compte **actif** détenant la permission `admin_mobile.access` (rôles `admin` et `superadmin`, retirable au rôle par le super-admin), sinon **403** `forbidden`, **avant** la liaison des modèles de route (un identifiant inexistant donne 403, pas 404). Membre, pair, modérateur·rice, compte suspendu ou admin sans la permission : 403 sur **chaque** route. Le jeton Sanctum ne fige aucune capacité : les rôles sont cumulables et changent sans reconnexion, la permission lue à chaque requête est la seule vérité (écart assumé avec la capacité `admin-mobile` du plan §6.3). Les actions d'audit de la requête portent `source=mobile` dans leur détail.
+
+**Écritures.** `Idempotency-Key` (UUID) **obligatoire** sur tout `POST` / `PUT` / `DELETE` (`idempotent:required,limit=admin_write` : même clé et même corps → réponse d'origine rejouée, `Idempotent-Replayed: true`, sans second effet ; autre corps → 422 `idempotency_key_reused` ; absente → 422 `idempotency_key_required`). Limiteurs : `admin_api` 120/min par compte sur toutes les routes (en plus de `api`), `admin_write` 30/min sur les écritures, `admin_step_up` 10/h sur le mot de passe. Réponses `Cache-Control: no-store, private`. Listes paginées `{data, meta{current_page, last_page, per_page, total, …}, links}` (`?per_page=`, 50 max).
+
+### 23.1 Confirmation `step-up` et tableau d'astreinte
+
+| Route | Effet |
+|---|---|
+| `POST admin/step-up` | `{password}` (mot de passe du compte) → **200** `{token, expires_in (300 s, xomiton.accounts.step_up_minutes), header: "X-Step-Up-Token"}` ; mot de passe faux → **422** `errors.password`. Le jeton est **à usage unique**, lié au compte, gardé en empreinte |
+| `GET admin/dashboard` | **200** compteurs d'astreinte : `alerts{new, sos_active, critical_open, handled, sos_unacknowledged, open}` (`alerts.view`), `pending_accounts`, `pending_peer_requests` (`users.validate_peers`), `pending_moderation` (`moderation.manage`), `open_sync_conflicts` (`sync.manage`) — un bloc sans la permission vaut `null` —, `maintenance{state, active, ends_at}`, `on_call{me, admins, peers}`, `poll_seconds` (10 pour la garde, 30 sinon), `server_time` |
+
+**Actions à fort impact** (maintenance, attribution / retrait de rôle, invitations, refus d'une demande, réattribution d'une alerte) : l'application appelle `POST admin/step-up`, puis renvoie l'action avec l'en-tête `X-Step-Up-Token` ; sans jeton valable (absent, expiré, déjà utilisé, d'un autre compte) → **403** `step_up_required`.
+
+### 23.2 Alertes et SOS — `admin/alerts` (`alerts.view`, `alerts.take`, `alerts.close`, `alerts.manage`)
+
+| Route | Effet |
+|---|---|
+| `GET admin/alerts?type=sos\|report\|need&status=&priority=&zone_id=&state=open\|all&unacknowledged=1&per_page=` | liste (ouvertes par défaut, les plus récentes d'abord) ; `meta{state, new}`. Résumé : `id` (ULID), `code`, `type`, `status`, `priority`, `place` (commune sinon département), `zone`, `commune`, `routed_to`, `acknowledged(_at)`, `escalated`, `age_minutes` — **jamais** le récit, le contact ni la position |
+| `GET admin/alerts/{ulid}` | détail : résumé + `category`, `needs[]`, `occurred_on`, `description`, `author` (pseudonyme, « Anonyme » si l'alerte l'est), `contact`, `preferred_channel`, **`position{lat, lng, precision_m, rounded: true}` ARRONDIE** (décision client du 2026-10-29 : `xomiton.alerts.admin_position_decimals`, 2 décimales ≈ 1 km ; la position exacte n'est jamais servie à l'admin mobile ; `null` sans position), `history[]`, `notes[]` (notes internes `{id, author, body, at}`), `escalations[]`, `can{acknowledge, take, close, reassign, note, statuses[]}` ; jamais le code de suivi, la clé d'idempotence ni le compte de l'auteur·e |
+| `POST admin/alerts/{ulid}/acknowledge` | **accuser réception** (arrête l'escalade RG-05) → **200** détail, `meta{acknowledged_now, already_acknowledged, closed}` (idempotent) |
+| `POST admin/alerts/{ulid}/take` | **prendre en charge** : statut `en_cours` (vaut accusé s'il manque) |
+| `POST admin/alerts/{ulid}/status` | `{status}` (`pris_en_charge`, `en_cours`, `traite`, `clos`) ; transition refusée → **422** `invalid_transition` |
+| `POST admin/alerts/{ulid}/close` | **clore** (`clos`, définitif) |
+| `GET admin/alerts/{ulid}/contacts?role=&all_zones=1` | contacts de l'annuaire proposés à la réattribution (même département d'abord) `[{id, name, role, zone}]` |
+| `POST admin/alerts/{ulid}/reassign` | `{contact_id}` — **réattribuer** (`alerts.manage`, `step-up`) ; contact inactif → 422 ; alerte close → 422 |
+| `POST admin/alerts/{ulid}/notes` | `{body}` — **note interne** (chiffrée, jamais modifiée ni supprimée) → **201** détail |
+
+### 23.3 Inscriptions et demandes de pair en attente — `admin/registrations` (`users.validate_peers`)
+
+| Route | Effet |
+|---|---|
+| `GET admin/registrations` | comptes `en_attente`, les plus anciens d'abord ; chaque ligne : compte (§23.4) + `kind` = `peer_request` (demande de rôle pair) ou `registration` ; `meta.pending` |
+| `POST admin/registrations/{user}/approve` | valide : compte actif, notification ; une demande de pair reçoit le rôle `pair` (et reste membre) ; une invitation à l'équipe en attente est honorée ; déjà traité → 422 |
+| `POST admin/registrations/{user}/reject` | `{reason}` (3–200, **écrit pour la personne**, `step-up`) : une **demande de pair** refusée laisse un compte **membre actif**, notifié avec le motif (`RoleNotice`, journal `users.peer_refused`) ; une **inscription** refusée supprime le compte (e-mail `compte-supprime`, journal `users.registration_rejected`) |
+
+### 23.4 Recherche d'un membre et rôles — `admin/members` (`users.view`, `peers.assign`, `roles.assign_admin`)
+
+| Route | Effet |
+|---|---|
+| `GET admin/members?q=&role=&status=` | recherche (`q` 2–60) par pseudonyme ou nom ; l'e-mail aussi pour `users.manage` ; compte : `id, pseudo, avatar_url, status, role, roles[], spaces[], is_peer, zone, email_verified, member_type, requested_role, created_at, last_seen_at, can{grant_peer, revoke_peer, change_role, validate}` (+ `email`, `phone` pour `users.manage`) — **jamais** le nom réel, le contact de confiance ni un réglage |
+| `GET admin/members/{id}` | un compte (même objet) |
+| `POST admin/members/{id}/roles/peer` | **donner le rôle pair** à un membre existant (`peers.assign`, `step-up`) : il **reste membre**, `profile.member_type = pair`, notification `RoleNotice`, journal `roles.peer_granted` → **201** (200 si déjà pair, `meta.changed`). Compte non actif → 422 `not_active` ; e-mail non confirmé → 422 `email_unverified` ; soi-même → 403 |
+| `DELETE admin/members/{id}/roles/peer` | `{reason?}` — **retirer le rôle pair** (`step-up`) : il reste membre, journal `roles.peer_revoked`, notification |
+| `PUT admin/members/{id}/role` | `{role: membre\|pair\|moderateur\|admin\|superadmin}` (`step-up`) — niveau de rôle (ChangeUserRole, RG-15) : `moderateur` / `admin` / `superadmin` demandent `roles.assign_admin` (**super-admin seulement**, sinon 403) ; jamais son propre rôle (422 `own_role`) ni le dernier super-admin (422 `last_superadmin`) ; le rôle `membre` est toujours conservé, `pair` aussi quand on devient admin ; journal `users.role_changed` |
+
+**Non-escalade** : un·e pair·e ou un membre ne peut pas appeler `admin/*` (403) ; un·e admin ne peut ni se donner ni donner un rôle d'administration ; aucun rôle ne s'obtient par l'inscription ni par `PATCH me/profile` (`member_type: pair` → 422).
+
+### 23.5 Notifications — `admin/notifications`
+
+`GET admin/notifications?filter=all\|unread\|read&category=sos\|alertes\|moderation\|systeme\|securite` : la cloche du compte restreinte aux catégories d'astreinte, `meta.unread_by_category` ; `POST admin/notifications/read-all` → `{marked}`. Mêmes objets que `GET notifications` (§7).
+
+### 23.6 Invitations à l'équipe — `admin/invitations`
+
+Un lien / code **signé, à usage unique** (7 jours, `xomiton.accounts.team_invitation_days`) mène à l'inscription **ordinaire** (`/inscription?invitation=…` ou champ `invitation` de `POST auth/register`, §2) : la personne crée un compte membre (case 15 ans comprise) et reçoit le rôle **à la validation** de son compte (e-mail confirmé ; ou approbation par l'équipe si la validation manuelle est active) — à condition que la personne qui a invité détienne encore le droit (sinon l'invitation est refusée, jamais d'escalade).
+
+| Route | Effet |
+|---|---|
+| `GET admin/invitations?status=` | invitations récentes `{id, role, status (pending\|redeemed\|accepted\|refused\|revoked\|expired), code_hint (4 derniers caractères), email, note, invited_by, user, expires_at, redeemed_at}` ; un·e admin ne voit que les invitations `pair` |
+| `POST admin/invitations` | `{role: pair\|moderateur\|admin\|superadmin, email?, note?}` (`step-up`) → **201** invitation + **`code`** (`XM-ABCD-EFGH-JKMN`) et **`link`** (URL signée), **rendus une seule fois** (le code n'est conservé qu'en SHA-256 et n'apparaît jamais au journal). `pair` : `peers.invite` ; les autres rôles : `roles.assign_admin` (super-admin seulement, sinon 403). Adresse e-mail facultative : lie l'invitation à cette adresse |
+| `DELETE admin/invitations/{id}` | annule (`step-up`) → 204 ; déjà utilisée ou annulée → 422 |
+
+### 23.7 Modération essentielle — `admin/moderation/reports` (`moderation.manage`)
+
+| Route | Effet |
+|---|---|
+| `GET admin/moderation/reports?state=pending\|handled\|rejected\|all` | une ligne par contenu signalé en attente : `id, kind, reason, excerpt (≤ 200), reported_user{id, pseudo}, status, action, hidden, reports, people, created_at, handled_at, can{hide, restore, dismiss}` ; `meta.pending` ; jamais l'identité de la personne qui signale |
+| `POST admin/moderation/reports/{id}/hide` | `{reason?}` — **masquer** le contenu (auteur·e prévenu·e) ; vaut pour tous les signalements en attente du même contenu → `meta.closed` |
+| `POST admin/moderation/reports/{id}/restore` | **rendre visible** un contenu masqué (RG-16 ou décision) sans toucher au signalement |
+| `POST admin/moderation/reports/{id}/dismiss` | **ignorer** (signalements rejetés ; un masquage automatique est levé) |
+
+Avertir et suspendre un compte restent sur le web (`/admin/moderation`).
+
+### 23.8 Mode maintenance — `admin/maintenance` (`platform.maintenance`, RG-14)
+
+| Route | Effet |
+|---|---|
+| `GET admin/maintenance` | `{state (inactive\|announced\|ongoing\|ended), state_label, active, message, starts_at, ends_at, overdue, announced_at, upcoming[]}` |
+| `POST admin/maintenance/enable` | `{reason (3–255, motif interne), duration_minutes? (5–1440), message? (≤ 280), confirm: true}` + **`step-up`** → état ; déjà active → **422** ; compte qui perdrait l'accès → **403** `maintenance_lockout` (admin et super-admin gardent l'accès : l'API `admin/*` reste servie pendant la maintenance) |
+| `POST admin/maintenance/disable` | `{confirm: true, reason?}` + **`step-up`** → état |
+
+**Journal d'audit** : toute action écrite ici l'est comme sur le web, avec `source=mobile` en fin de détail (`alerts.acknowledged`, `alerts.status_changed`, `alerts.reassigned`, `alerts.note_added`, `users.registration_approved`, `users.peer_refused`, `roles.peer_granted`, `roles.peer_revoked`, `users.role_changed`, `invitations.created`, `invitations.revoked`, `maintenance.enabled`, `maintenance.disabled`, `moderation.*`, `admin.step_up_failed`) ; jamais le corps d'une note, le récit, le contact ni la position.
