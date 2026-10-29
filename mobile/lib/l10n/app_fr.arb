@@ -14230,6 +14230,10 @@
     "@auth_register_account_cgu_terms": {
         "description": "auth.register.account.cgu_terms"
     },
+    "auth_register_account_continue": "Continuer",
+    "@auth_register_account_continue": {
+        "description": "auth.register.account.continue"
+    },
     "auth_register_account_created": "Ton compte est créé. Bienvenue sur Xomiton !",
     "@auth_register_account_created": {
         "description": "auth.register.account.created"
@@ -14238,9 +14242,13 @@
     "@auth_register_account_email": {
         "description": "auth.register.account.email"
     },
-    "auth_register_account_email_hint": "Pour ton code de vérification. Jamais partagée.",
+    "auth_register_account_email_hint": "Pour confirmer ton compte et te renvoyer un code. Jamais partagée.",
     "@auth_register_account_email_hint": {
         "description": "auth.register.account.email_hint"
+    },
+    "auth_register_account_email_hint_short": "Pour ton code de vérification. Jamais partagée.",
+    "@auth_register_account_email_hint_short": {
+        "description": "auth.register.account.email_hint_short"
     },
     "auth_register_account_heading": "Qui es-tu ?",
     "@auth_register_account_heading": {
@@ -14275,11 +14283,15 @@
     "@auth_register_account_pseudo": {
         "description": "auth.register.account.pseudo"
     },
-    "auth_register_account_pseudo_hint": "3 à 40 : lettres, chiffres, . - _",
+    "auth_register_account_pseudo_hint": "3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
     "@auth_register_account_pseudo_hint": {
         "description": "auth.register.account.pseudo_hint"
     },
-    "auth_register_account_submit": "Continuer",
+    "auth_register_account_pseudo_hint_short": "3 à 40 : lettres, chiffres, . - _",
+    "@auth_register_account_pseudo_hint_short": {
+        "description": "auth.register.account.pseudo_hint_short"
+    },
+    "auth_register_account_submit": "Créer mon compte",
     "@auth_register_account_submit": {
         "description": "auth.register.account.submit"
     },
@@ -14476,13 +14488,29 @@
     "@auth_register_sign_in": {
         "description": "auth.register.sign_in"
     },
-    "auth_register_skip": "Passer cette étape",
+    "auth_register_skip": "Passer",
     "@auth_register_skip": {
         "description": "auth.register.skip"
+    },
+    "auth_register_skip_step": "Passer cette étape",
+    "@auth_register_skip_step": {
+        "description": "auth.register.skip_step"
     },
     "auth_register_step_of": "Étape {current} sur {total}",
     "@auth_register_step_of": {
         "description": "auth.register.step_of",
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "auth_register_step_of_optional": "Étape {current} sur {total}, facultative",
+    "@auth_register_step_of_optional": {
+        "description": "auth.register.step_of_optional",
         "placeholders": {
             "current": {
                 "type": "String"

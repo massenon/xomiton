@@ -98,12 +98,17 @@ return [
             'consents' => 'Consentements',
         ],
         'step_of' => 'Étape :current sur :total',
+        // Encore lu par l'application mobile (signup_page.dart) ; le web n'affiche plus « facultative ».
+        'step_of_optional' => 'Étape :current sur :total, facultative',
         'account' => [
             'heading' => 'Qui es-tu ?',
             'pseudo' => 'Pseudonyme',
-            'pseudo_hint' => '3 à 40 : lettres, chiffres, . - _',
+            'pseudo_hint' => '3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.',
+            // Version d'une ligne du formulaire web compact (le mobile garde l'aide longue ci-dessus).
+            'pseudo_hint_short' => '3 à 40 : lettres, chiffres, . - _',
             'email' => 'Adresse e-mail',
-            'email_hint' => 'Pour ton code de vérification. Jamais partagée.',
+            'email_hint' => 'Pour confirmer ton compte et te renvoyer un code. Jamais partagée.',
+            'email_hint_short' => 'Pour ton code de vérification. Jamais partagée.',
             'password' => 'Mot de passe',
             'password_hint' => 'Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.',
             'password_confirmation' => 'Confirmation',
@@ -113,7 +118,8 @@ return [
             'privacy' => 'J’ai lu la :policy et j’accepte le traitement de mes données.',
             'age' => 'J’ai :min_age ans ou plus.',
             'privacy_policy' => 'politique de confidentialité',
-            'submit' => 'Continuer',
+            'submit' => 'Créer mon compte',
+            'continue' => 'Continuer',
             'created' => 'Ton compte est créé. Bienvenue sur Xomiton !',
         ],
         'profile' => [
@@ -157,7 +163,8 @@ return [
             'newsletter' => 'Je veux recevoir la lettre d’information par e-mail.',
             'saved' => 'Consentements enregistrés.',
         ],
-        'skip' => 'Passer cette étape',
+        'skip' => 'Passer',
+        'skip_step' => 'Passer cette étape',
         'finish' => 'Terminer',
         'done' => 'Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.',
         'closed' => [

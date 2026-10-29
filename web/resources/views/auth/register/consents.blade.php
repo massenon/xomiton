@@ -18,7 +18,7 @@
 
         <div class="xm-auth-actions">
             <a class="btn btn-light" href="{{ route('inscription.securite') }}">{{ __('common.back') }}</a>
-            <button type="submit" class="btn btn-link text-decoration-none xm-auth-actions__skip" form="skip-consents">{{ __('auth.register.skip') }}</button>
+            <button type="submit" class="btn btn-link text-decoration-none xm-auth-actions__skip" form="skip-consents">{{ __('auth.register.skip_step') }}</button>
             <x-button type="submit" class="xm-auth-actions__primary">{{ __('auth.register.finish') }}</x-button>
         </div>
     </form>

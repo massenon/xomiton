@@ -22,8 +22,8 @@
         <h2 class="h5 mb-2">{{ __('auth.register.account.heading') }}</h2>
         {{-- Identité de connexion : deux champs courts côte à côte dès md ; aides d'une ligne liées par aria-describedby. --}}
         <div class="row gx-3">
-            <div class="col-md-6"><x-field name="pseudo" :label="__('auth.register.account.pseudo')" :hint="__('auth.register.account.pseudo_hint')" autocomplete="username" maxlength="40" required autofocus /></div>
-            <div class="col-md-6"><x-field name="email" type="email" :label="__('auth.register.account.email')" :hint="__('auth.register.account.email_hint')" autocomplete="email" inputmode="email" maxlength="190" required /></div>
+            <div class="col-md-6"><x-field name="pseudo" :label="__('auth.register.account.pseudo')" :hint="__('auth.register.account.pseudo_hint_short')" autocomplete="username" maxlength="40" required autofocus /></div>
+            <div class="col-md-6"><x-field name="email" type="email" :label="__('auth.register.account.email')" :hint="__('auth.register.account.email_hint_short')" autocomplete="email" inputmode="email" maxlength="190" required /></div>
         </div>
         {{-- Mot de passe + confirmation côte à côte ; jauge compacte (niveau + règles) sur une ligne dessous. --}}
         <div class="row gx-3">
@@ -59,7 +59,7 @@
 
         <div class="xm-auth-actions">
             <a class="btn btn-light" href="{{ route('connexion') }}">{{ __('common.back') }}</a>
-            <x-button type="submit" class="xm-auth-actions__primary">{{ __('auth.register.account.submit') }}</x-button>
+            <x-button type="submit" class="xm-auth-actions__primary">{{ __('auth.register.account.continue') }}</x-button>
         </div>
     </form>
 </x-layouts.auth>
