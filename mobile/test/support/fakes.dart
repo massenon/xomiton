@@ -102,6 +102,7 @@ class FakePush implements PushService {
   bool tokenDeleted = false;
   final refresh = StreamController<String>.broadcast();
   final opened = StreamController<PushPayload>.broadcast();
+  final silent = StreamController<PushPayload>.broadcast();
 
   @override
   bool get available => true;
@@ -117,6 +118,8 @@ class FakePush implements PushService {
   Stream<String> get onTokenRefresh => refresh.stream;
   @override
   Stream<PushPayload> get onOpen => opened.stream;
+  @override
+  Stream<PushPayload> get onSilent => silent.stream;
   @override
   Future<PushPayload?> initialPayload() async => initial;
   @override

@@ -245,4 +245,17 @@ const Map<String, String> kPendingStringsFr = {
   'mobile_push_alert_title': 'Alerte',
   'mobile_push_generic_title': 'Nouvelle notification',
   'mobile_push_open_body': 'Touche pour ouvrir.',
+  // P15-19 : push d'équipe (astreinte, demandes, modération). Aperçus masqués : titre « Xomiton » et
+  // corps neutre (jamais « SOS », « VBG », « admin », le lieu, le pseudonyme ou le motif) ; sinon texte par type.
+  'mobile_push_team_title': 'Xomiton',
+  'mobile_push_alert_routed_title': 'Alerte routée vers toi',
+  'mobile_push_duty_sos_title': 'Alerte SOS',
+  'mobile_push_duty_alert_title': 'Nouvelle alerte',
+  'mobile_push_peer_pending_title': 'Demande à valider',
+  'mobile_push_content_reported_title': 'Contenu signalé',
+  'mobile_push_alert_routed_neutral': 'Alerte urgente',
+  'mobile_push_duty_sos_neutral': 'Alerte urgente',
+  'mobile_push_duty_alert_neutral': 'Nouvelle alerte',
+  'mobile_push_peer_pending_neutral': 'Nouvelle demande',
+  'mobile_push_content_reported_neutral': 'Signalement à modérer',
 };

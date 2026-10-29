@@ -15,6 +15,7 @@ import '../support/harness.dart';
 const _apiKeys = {
   'alerts_to_take',
   'peer_request',
+  'peer_pending',
   'disposable_email',
   'repeated_fingerprint',
   'cases_to_contact',

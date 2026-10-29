@@ -16,6 +16,7 @@ import 'push_service.dart';
 
 final _local = FlutterLocalNotificationsPlugin();
 final _opened = StreamController<PushPayload>.broadcast();
+final _silent = StreamController<PushPayload>.broadcast();
 bool _localReady = false;
 
 void _onLocalTap(NotificationResponse r) {
@@ -37,6 +38,12 @@ Future<void> _initLocal() async {
   final android = _local.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
   // Les réglages d'un canal Android ne changent plus après sa création : le
   // son coupé passe donc par un canal « Communauté » muet distinct.
+  await android?.createNotificationChannel(const AndroidNotificationChannel(
+    PushChannels.duty,
+    'Astreinte',
+    description: 'Alertes SOS et alertes routées vers l’équipe d’astreinte : toujours sonores.',
+    importance: Importance.max,
+  ));
   await android?.createNotificationChannel(const AndroidNotificationChannel(
     PushChannels.sos,
     'SOS et alertes',
@@ -67,7 +74,13 @@ Future<void> showLocalFor(PushPayload p) async {
   final masked = prefs.getBool(kPrefMaskPreviews) ?? true;
   final sounds = prefs.getBool(kPrefSounds) ?? true;
   final urgent = p.isUrgent;
-  final channel = urgent ? PushChannels.sos : (sounds ? PushChannels.community : PushChannels.communitySilent);
+  final channel = p.channel(sounds: sounds);
+  final channelName = switch (channel) {
+    PushChannels.duty => 'Astreinte',
+    PushChannels.sos => 'SOS et alertes',
+    PushChannels.community => 'Communauté',
+    _ => 'Communauté (sans son)',
+  };
   await _local.show(
     id: Object.hash(p.type, p.id) & 0x7fffffff,
     title: kPendingStringsFr[p.titleKey(masked: masked)],
@@ -76,8 +89,10 @@ Future<void> showLocalFor(PushPayload p) async {
     notificationDetails: NotificationDetails(
       android: AndroidNotificationDetails(
         channel,
-        urgent ? 'SOS et alertes' : (sounds ? 'Communauté' : 'Communauté (sans son)'),
-        importance: urgent ? Importance.max : (sounds ? Importance.defaultImportance : Importance.low),
+        channelName,
+        importance: urgent
+            ? Importance.max
+            : (channel == PushChannels.communitySilent ? Importance.low : Importance.defaultImportance),
         priority: urgent ? Priority.max : Priority.defaultPriority,
         visibility: NotificationVisibility.private,
       ),
@@ -89,9 +104,17 @@ Future<void> showLocalFor(PushPayload p) async {
 /// Un message portant un bloc `notification` est déjà affiché par le système.
 @pragma('vm:entry-point')
 Future<void> fcmBackgroundHandler(RemoteMessage message) async {
-  if (message.notification != null) return;
   final p = PushPayload.fromData(message.data);
-  if (p != null) await showLocalFor(p);
+  if (p == null) return;
+  // Silencieux (`sync`, `rules`) : aucun texte ; on note la demande, l'application
+  // la traitera à son prochain premier plan (le moteur n'existe pas dans cet isolat).
+  if (p.isSilent) {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(p.type == 'sync' ? kPrefPendingSync : kPrefPendingRules, true);
+    return;
+  }
+  if (message.notification != null) return;
+  await showLocalFor(p);
 }
 
 /// Implémentation FCM. Créée seulement si Firebase s'initialise (voir
@@ -120,6 +143,9 @@ class FcmPushService implements PushService {
   Stream<PushPayload> get onOpen => _opened.stream;
 
   @override
+  Stream<PushPayload> get onSilent => _silent.stream;
+
+  @override
   Future<PushPayload?> initialPayload() async {
     final m = await _fm.getInitialMessage();
     if (m != null) return PushPayload.fromData(m.data);
@@ -142,9 +168,16 @@ class FcmPushService implements PushService {
     await _initLocal();
     FirebaseMessaging.onBackgroundMessage(fcmBackgroundHandler);
     FirebaseMessaging.onMessage.listen((m) {
-      if (m.notification != null) return;
       final p = PushPayload.fromData(m.data);
-      if (p != null) showLocalFor(p);
+      if (p == null) return;
+      if (p.isSilent) {
+        _silent.add(p);
+        return;
+      }
+      // Au premier plan le système n'affiche pas la notification FCM : l'astreinte
+      // doit pourtant se voir, on l'affiche localement.
+      if (m.notification != null && !p.isDuty) return;
+      showLocalFor(p);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((m) {
       final p = PushPayload.fromData(m.data);
