@@ -3256,6 +3256,91 @@
     "@admin_registrations_intro": {
         "description": "admin.registrations.intro"
     },
+    "admin_registrations_invitations_code": "Code :",
+    "@admin_registrations_invitations_code": {
+        "description": "admin.registrations.invitations.code"
+    },
+    "admin_registrations_invitations_confirm_revoke": "Annuler cette invitation ? Le lien ne fonctionnera plus.",
+    "@admin_registrations_invitations_confirm_revoke": {
+        "description": "admin.registrations.invitations.confirm_revoke"
+    },
+    "admin_registrations_invitations_create": "Créer l’invitation",
+    "@admin_registrations_invitations_create": {
+        "description": "admin.registrations.invitations.create"
+    },
+    "admin_registrations_invitations_created": "Invitation créée.",
+    "@admin_registrations_invitations_created": {
+        "description": "admin.registrations.invitations.created"
+    },
+    "admin_registrations_invitations_email": "Adresse e-mail (facultative, lie l’invitation)",
+    "@admin_registrations_invitations_email": {
+        "description": "admin.registrations.invitations.email"
+    },
+    "admin_registrations_invitations_empty": "Aucune invitation pour le moment.",
+    "@admin_registrations_invitations_empty": {
+        "description": "admin.registrations.invitations.empty"
+    },
+    "admin_registrations_invitations_expires": "expire le {date}",
+    "@admin_registrations_invitations_expires": {
+        "description": "admin.registrations.invitations.expires",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_invitations_help": "Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (case « 15 ans » comprise) et reçoit le rôle une fois son compte validé.",
+    "@admin_registrations_invitations_help": {
+        "description": "admin.registrations.invitations.help"
+    },
+    "admin_registrations_invitations_link": "Lien :",
+    "@admin_registrations_invitations_link": {
+        "description": "admin.registrations.invitations.link"
+    },
+    "admin_registrations_invitations_note": "Note interne",
+    "@admin_registrations_invitations_note": {
+        "description": "admin.registrations.invitations.note"
+    },
+    "admin_registrations_invitations_once": "Copie-le maintenant : le code n’est plus affiché ensuite.",
+    "@admin_registrations_invitations_once": {
+        "description": "admin.registrations.invitations.once"
+    },
+    "admin_registrations_invitations_revoke": "Annuler",
+    "@admin_registrations_invitations_revoke": {
+        "description": "admin.registrations.invitations.revoke"
+    },
+    "admin_registrations_invitations_revoked": "Invitation annulée.",
+    "@admin_registrations_invitations_revoked": {
+        "description": "admin.registrations.invitations.revoked"
+    },
+    "admin_registrations_invitations_role": "Rôle",
+    "@admin_registrations_invitations_role": {
+        "description": "admin.registrations.invitations.role"
+    },
+    "admin_registrations_invitations_status_accepted": "Rôle donné",
+    "@admin_registrations_invitations_status_accepted": {
+        "description": "admin.registrations.invitations.status.accepted"
+    },
+    "admin_registrations_invitations_status_pending": "Envoyée",
+    "@admin_registrations_invitations_status_pending": {
+        "description": "admin.registrations.invitations.status.pending"
+    },
+    "admin_registrations_invitations_status_redeemed": "Inscription faite",
+    "@admin_registrations_invitations_status_redeemed": {
+        "description": "admin.registrations.invitations.status.redeemed"
+    },
+    "admin_registrations_invitations_status_refused": "Refusée",
+    "@admin_registrations_invitations_status_refused": {
+        "description": "admin.registrations.invitations.status.refused"
+    },
+    "admin_registrations_invitations_status_revoked": "Annulée",
+    "@admin_registrations_invitations_status_revoked": {
+        "description": "admin.registrations.invitations.status.revoked"
+    },
+    "admin_registrations_invitations_title": "Inviter dans l’équipe",
+    "@admin_registrations_invitations_title": {
+        "description": "admin.registrations.invitations.title"
+    },
     "admin_registrations_kpi_pending": "Demandes en attente",
     "@admin_registrations_kpi_pending": {
         "description": "admin.registrations.kpi.pending"
@@ -3320,9 +3405,13 @@
     "@admin_registrations_reject": {
         "description": "admin.registrations.reject"
     },
-    "admin_registrations_reject_help": "Rejeter une demande supprime le compte et ferme ses accès ; la personne reçoit l’e-mail de suppression.",
+    "admin_registrations_reject_help": "Rejeter une inscription supprime le compte et ferme ses accès ; la personne reçoit l’e-mail de suppression. Refuser une demande de pair garde le compte de membre et prévient la personne avec le motif.",
     "@admin_registrations_reject_help": {
         "description": "admin.registrations.reject_help"
+    },
+    "admin_registrations_reject_reason": "Motif écrit pour la personne (facultatif)",
+    "@admin_registrations_reject_reason": {
+        "description": "admin.registrations.reject_reason"
     },
     "admin_registrations_reopen_at": "Réouverture prévue",
     "@admin_registrations_reopen_at": {
@@ -4072,13 +4161,29 @@
     "@admin_users_empty_text": {
         "description": "admin.users.empty_text"
     },
+    "admin_users_errors_email_unverified": "L’adresse e-mail de ce compte n’est pas encore confirmée.",
+    "@admin_users_errors_email_unverified": {
+        "description": "admin.users.errors.email_unverified"
+    },
     "admin_users_errors_invalid_role": "Ce rôle n’existe pas ou ne peut pas être attribué avec vos droits.",
     "@admin_users_errors_invalid_role": {
         "description": "admin.users.errors.invalid_role"
     },
+    "admin_users_errors_invitation_closed": "Cette invitation est déjà utilisée, annulée ou expirée.",
+    "@admin_users_errors_invitation_closed": {
+        "description": "admin.users.errors.invitation_closed"
+    },
+    "admin_users_errors_inviter_lost_rights": "La personne qui a invité n’a plus le droit d’attribuer ce rôle.",
+    "@admin_users_errors_inviter_lost_rights": {
+        "description": "admin.users.errors.inviter_lost_rights"
+    },
     "admin_users_errors_last_superadmin": "Il doit toujours rester au moins un·e super-admin.",
     "@admin_users_errors_last_superadmin": {
         "description": "admin.users.errors.last_superadmin"
+    },
+    "admin_users_errors_not_active": "Seul un compte actif peut recevoir ce rôle : validez d’abord son inscription.",
+    "@admin_users_errors_not_active": {
+        "description": "admin.users.errors.not_active"
     },
     "admin_users_errors_not_found": "Compte introuvable.",
     "@admin_users_errors_not_found": {
@@ -4107,6 +4212,10 @@
     "admin_users_errors_reason_required": "Indiquez le motif.",
     "@admin_users_errors_reason_required": {
         "description": "admin.users.errors.reason_required"
+    },
+    "admin_users_errors_step_up_required": "Confirmez votre mot de passe pour effectuer cette action.",
+    "@admin_users_errors_step_up_required": {
+        "description": "admin.users.errors.step_up_required"
     },
     "admin_users_errors_superadmin_only_role": "Seul·e un·e super-admin peut attribuer un rôle de modération ou d’administration.",
     "@admin_users_errors_superadmin_only_role": {
@@ -4312,6 +4421,35 @@
     "@admin_users_open": {
         "description": "admin.users.open"
     },
+    "admin_users_peer_role_confirm_revoke": "Retirer le rôle de pair à {name} ? Elle restera membre et perdra l’espace pair.",
+    "@admin_users_peer_role_confirm_revoke": {
+        "description": "admin.users.peer_role.confirm_revoke",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_peer_role_grant": "Donner le rôle de pair",
+    "@admin_users_peer_role_grant": {
+        "description": "admin.users.peer_role.grant"
+    },
+    "admin_users_peer_role_is_not_peer": "Cette personne est membre. Tu peux lui donner le rôle de pair : elle restera membre.",
+    "@admin_users_peer_role_is_not_peer": {
+        "description": "admin.users.peer_role.is_not_peer"
+    },
+    "admin_users_peer_role_is_peer": "Cette personne est pair éducateur·rice et membre : elle a l’espace pair en plus du réseau social.",
+    "@admin_users_peer_role_is_peer": {
+        "description": "admin.users.peer_role.is_peer"
+    },
+    "admin_users_peer_role_revoke": "Retirer le rôle de pair",
+    "@admin_users_peer_role_revoke": {
+        "description": "admin.users.peer_role.revoke"
+    },
+    "admin_users_peer_role_title": "Rôle de pair éducateur·rice",
+    "@admin_users_peer_role_title": {
+        "description": "admin.users.peer_role.title"
+    },
     "admin_users_pending_all": "Voir les inscriptions",
     "@admin_users_pending_all": {
         "description": "admin.users.pending_all"
@@ -4357,7 +4495,7 @@
     "@admin_users_reset_password": {
         "description": "admin.users.reset_password"
     },
-    "admin_users_role_help": "Un seul rôle par compte. Seul·e un·e super-admin attribue ou retire un rôle de modération ou d’administration.",
+    "admin_users_role_help": "Les rôles se cumulent : la personne reste toujours membre, et un rôle de pair se conserve quand elle devient modératrice ou admin. Seul·e un·e super-admin attribue ou retire un rôle de modération ou d’administration.",
     "@admin_users_role_help": {
         "description": "admin.users.role_help"
     },
@@ -4453,6 +4591,24 @@
     "admin_users_toasts_password_reset": "E-mail de nouveau mot de passe envoyé à {name}.",
     "@admin_users_toasts_password_reset": {
         "description": "admin.users.toasts.password_reset",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_toasts_peer_granted": "{name} est maintenant pair éducateur·rice (et reste membre).",
+    "@admin_users_toasts_peer_granted": {
+        "description": "admin.users.toasts.peer_granted",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_toasts_peer_revoked": "Rôle de pair retiré à {name} (elle reste membre).",
+    "@admin_users_toasts_peer_revoked": {
+        "description": "admin.users.toasts.peer_revoked",
         "placeholders": {
             "name": {
                 "type": "String"
@@ -13576,6 +13732,10 @@
     "@auth_forgot_submit": {
         "description": "auth.forgot.submit"
     },
+    "auth_invitation_invalid": "Ce lien d’invitation n’est plus valable (déjà utilisé, expiré ou annulé). Demande-en un nouveau à l’équipe Xomiton.",
+    "@auth_invitation_invalid": {
+        "description": "auth.invitation_invalid"
+    },
     "auth_layout_home": "Xomiton, accueil",
     "@auth_layout_home": {
         "description": "auth.layout.home"
@@ -13998,6 +14158,14 @@
     "auth_register_intro": "Un espace safe, confidentiel et gratuit. Déjà inscrit·e ?",
     "@auth_register_intro": {
         "description": "auth.register.intro"
+    },
+    "auth_register_invitation_banner_admin": "Tu as été invité·e à rejoindre l’équipe d’administration. Crée ton compte membre : le rôle s’ajoutera à la validation de ton compte.",
+    "@auth_register_invitation_banner_admin": {
+        "description": "auth.register.invitation.banner.admin"
+    },
+    "auth_register_invitation_banner_pair": "Tu as été invité·e à rejoindre l’équipe des pair·es éducateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.",
+    "@auth_register_invitation_banner_pair": {
+        "description": "auth.register.invitation.banner.pair"
     },
     "auth_register_optional_step": "facultative",
     "@auth_register_optional_step": {
@@ -22085,6 +22253,10 @@
     "@footer_contact": {
         "description": "footer.contact"
     },
+    "footer_cookies": "Cookies",
+    "@footer_cookies": {
+        "description": "footer.cookies"
+    },
     "footer_copyright": "© {year} Xomiton — Bénin. Tous droits réservés.",
     "@footer_copyright": {
         "description": "footer.copyright",
@@ -22093,6 +22265,10 @@
                 "type": "String"
             }
         }
+    },
+    "footer_delete_account": "Supprimer mon compte",
+    "@footer_delete_account": {
+        "description": "footer.delete_account"
     },
     "footer_do_glegbe": "Do Glegbe",
     "@footer_do_glegbe": {
@@ -26425,6 +26601,55 @@
     "@notifications_reaction_title": {
         "description": "notifications.reaction.title"
     },
+    "notifications_role_admin_granted_body": "L’espace d’administration s’ajoute à ton compte. Tu restes membre de la communauté.",
+    "@notifications_role_admin_granted_body": {
+        "description": "notifications.role.admin_granted.body"
+    },
+    "notifications_role_admin_granted_title": "Tu rejoins l’équipe d’administration",
+    "@notifications_role_admin_granted_title": {
+        "description": "notifications.role.admin_granted.title"
+    },
+    "notifications_role_admin_revoked_body": "L’espace d’administration n’est plus disponible sur ton compte. Tu restes membre de la communauté.",
+    "@notifications_role_admin_revoked_body": {
+        "description": "notifications.role.admin_revoked.body"
+    },
+    "notifications_role_admin_revoked_title": "Ton accès à l’administration a été retiré",
+    "@notifications_role_admin_revoked_title": {
+        "description": "notifications.role.admin_revoked.title"
+    },
+    "notifications_role_no_reason": "non précisé",
+    "@notifications_role_no_reason": {
+        "description": "notifications.role.no_reason"
+    },
+    "notifications_role_peer_granted_body": "L’équipe Xomiton t’a donné le rôle de pair éducateur·rice. Tu restes membre : l’espace pair s’ajoute à ton compte.",
+    "@notifications_role_peer_granted_body": {
+        "description": "notifications.role.peer_granted.body"
+    },
+    "notifications_role_peer_granted_title": "Tu es pair éducateur·rice",
+    "@notifications_role_peer_granted_title": {
+        "description": "notifications.role.peer_granted.title"
+    },
+    "notifications_role_peer_refused_body": "L’équipe n’a pas retenu ta demande : {reason}. Tu restes membre de la communauté.",
+    "@notifications_role_peer_refused_body": {
+        "description": "notifications.role.peer_refused.body",
+        "placeholders": {
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_role_peer_refused_title": "Ta demande de rôle de pair n’a pas été retenue",
+    "@notifications_role_peer_refused_title": {
+        "description": "notifications.role.peer_refused.title"
+    },
+    "notifications_role_peer_revoked_body": "L’espace pair n’est plus disponible sur ton compte. Tu restes membre de la communauté.",
+    "@notifications_role_peer_revoked_body": {
+        "description": "notifications.role.peer_revoked.body"
+    },
+    "notifications_role_peer_revoked_title": "Ton rôle de pair a été retiré",
+    "@notifications_role_peer_revoked_title": {
+        "description": "notifications.role.peer_revoked.title"
+    },
     "notifications_sos_acknowledged_body": "{name} a bien reçu ton alerte et va t’appeler.",
     "@notifications_sos_acknowledged_body": {
         "description": "notifications.sos_acknowledged.body",
@@ -27717,6 +27942,18 @@
     "@pages_confidentialite_conditions_4_1": {
         "description": "pages/confidentialite.conditions.4.1"
     },
+    "pages_confidentialite_delete_account": "Supprimer mon compte et mes données",
+    "@pages_confidentialite_delete_account": {
+        "description": "pages/confidentialite.delete_account"
+    },
+    "pages_confidentialite_full_privacy": "Lire la politique de confidentialité complète",
+    "@pages_confidentialite_full_privacy": {
+        "description": "pages/confidentialite.full_privacy"
+    },
+    "pages_confidentialite_full_terms": "Lire les conditions d’utilisation complètes",
+    "@pages_confidentialite_full_terms": {
+        "description": "pages/confidentialite.full_terms"
+    },
     "pages_confidentialite_nav_label": "Sections de la page",
     "@pages_confidentialite_nav_label": {
         "description": "pages/confidentialite.nav_label"
@@ -27816,6 +28053,246 @@
                 "type": "String"
             }
         }
+    },
+    "pages_deletion_back_home": "Retour à l’accueil",
+    "@pages_deletion_back_home": {
+        "description": "pages/deletion.back_home"
+    },
+    "pages_deletion_confirm_cancel": "Annuler",
+    "@pages_deletion_confirm_cancel": {
+        "description": "pages/deletion.confirm.cancel"
+    },
+    "pages_deletion_confirm_paragraphs_0": "Vous allez supprimer votre compte Xomiton. Vous serez déconnecté·e de tous vos appareils, et vos données personnelles seront effacées sous '{'grace_days'}' jours.",
+    "@pages_deletion_confirm_paragraphs_0": {
+        "description": "pages/deletion.confirm.paragraphs.0"
+    },
+    "pages_deletion_confirm_paragraphs_1": "Cette action est définitive. Pour changer d’avis pendant le délai, écrivez à '{'contact_email'}'.",
+    "@pages_deletion_confirm_paragraphs_1": {
+        "description": "pages/deletion.confirm.paragraphs.1"
+    },
+    "pages_deletion_confirm_submit": "Oui, supprimer mon compte",
+    "@pages_deletion_confirm_submit": {
+        "description": "pages/deletion.confirm.submit"
+    },
+    "pages_deletion_confirm_title": "Confirmer la suppression",
+    "@pages_deletion_confirm_title": {
+        "description": "pages/deletion.confirm.title"
+    },
+    "pages_deletion_done_paragraphs_0": "Votre compte est fermé. Vos données personnelles seront effacées sous '{'grace_days'}' jours. Un e-mail de confirmation vous a été envoyé.",
+    "@pages_deletion_done_paragraphs_0": {
+        "description": "pages/deletion.done.paragraphs.0"
+    },
+    "pages_deletion_done_title": "Suppression lancée",
+    "@pages_deletion_done_title": {
+        "description": "pages/deletion.done.title"
+    },
+    "pages_deletion_form_confirm_label": "Je demande la suppression du compte associé à cette adresse et de mes données, sous {days} jours.",
+    "@pages_deletion_form_confirm_label": {
+        "description": "pages/deletion.form.confirm_label",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_deletion_form_confirm_required": "Cochez la case pour confirmer votre demande.",
+    "@pages_deletion_form_confirm_required": {
+        "description": "pages/deletion.form.confirm_required"
+    },
+    "pages_deletion_form_email_hint": "La même qu’à l’inscription.",
+    "@pages_deletion_form_email_hint": {
+        "description": "pages/deletion.form.email_hint"
+    },
+    "pages_deletion_form_email_invalid": "Saisissez une adresse e-mail valide.",
+    "@pages_deletion_form_email_invalid": {
+        "description": "pages/deletion.form.email_invalid"
+    },
+    "pages_deletion_form_email_label": "Adresse e-mail du compte",
+    "@pages_deletion_form_email_label": {
+        "description": "pages/deletion.form.email_label"
+    },
+    "pages_deletion_form_intro": "Indiquez l’adresse e-mail de votre compte. Si un compte existe, nous y envoyons un lien de confirmation valable {hours} heures. Rien n’est supprimé tant que vous n’avez pas cliqué sur ce lien, puis confirmé.",
+    "@pages_deletion_form_intro": {
+        "description": "pages/deletion.form.intro",
+        "placeholders": {
+            "hours": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_deletion_form_nav": "Je n’ai plus accès à mon compte",
+    "@pages_deletion_form_nav": {
+        "description": "pages/deletion.form.nav"
+    },
+    "pages_deletion_form_privacy": "Nous n’utilisons cette adresse que pour cette demande. <a href=\"{url}\">En savoir plus sur vos droits</a>.",
+    "@pages_deletion_form_privacy": {
+        "description": "pages/deletion.form.privacy",
+        "placeholders": {
+            "url": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_deletion_form_submit": "Recevoir le lien de confirmation",
+    "@pages_deletion_form_submit": {
+        "description": "pages/deletion.form.submit"
+    },
+    "pages_deletion_form_title": "Je n’ai plus accès à mon compte",
+    "@pages_deletion_form_title": {
+        "description": "pages/deletion.form.title"
+    },
+    "pages_deletion_form_too_many": "Trop de demandes pour l’instant. Réessayez dans {minutes} minute(s).",
+    "@pages_deletion_form_too_many": {
+        "description": "pages/deletion.form.too_many",
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_deletion_invalid_paragraphs_0": "Ce lien a déjà été utilisé, a expiré ou n’existe pas. Vous pouvez refaire une demande depuis la page « Supprimer mon compte et mes données », ou écrire à '{'contact_email'}'.",
+    "@pages_deletion_invalid_paragraphs_0": {
+        "description": "pages/deletion.invalid.paragraphs.0"
+    },
+    "pages_deletion_invalid_title": "Lien invalide ou expiré",
+    "@pages_deletion_invalid_title": {
+        "description": "pages/deletion.invalid.title"
+    },
+    "pages_deletion_page_lead": "Comment supprimer votre compte Xomiton, ce qui est effacé, ce qui est conservé et pourquoi, y compris si vous n’avez plus accès à votre compte.",
+    "@pages_deletion_page_lead": {
+        "description": "pages/deletion.page.lead"
+    },
+    "pages_deletion_page_sections_0_blocks_0_ol_0": "Ouvrez l’application Xomiton (ou connectez-vous sur le site).",
+    "@pages_deletion_page_sections_0_blocks_0_ol_0": {
+        "description": "pages/deletion.page.sections.0.blocks.0.ol.0"
+    },
+    "pages_deletion_page_sections_0_blocks_0_ol_1": "Allez dans Paramètres, puis Sécurité.",
+    "@pages_deletion_page_sections_0_blocks_0_ol_1": {
+        "description": "pages/deletion.page.sections.0.blocks.0.ol.1"
+    },
+    "pages_deletion_page_sections_0_blocks_0_ol_2": "Choisissez « Supprimer mon compte », tapez SUPPRIMER pour confirmer.",
+    "@pages_deletion_page_sections_0_blocks_0_ol_2": {
+        "description": "pages/deletion.page.sections.0.blocks.0.ol.2"
+    },
+    "pages_deletion_page_sections_0_blocks_1": "Avant de supprimer, vous pouvez télécharger une copie de vos données depuis Paramètres > Mes données (lien envoyé par e-mail, valable '{'export_hours'}' heures).",
+    "@pages_deletion_page_sections_0_blocks_1": {
+        "description": "pages/deletion.page.sections.0.blocks.1"
+    },
+    "pages_deletion_page_sections_0_id": "application",
+    "@pages_deletion_page_sections_0_id": {
+        "description": "pages/deletion.page.sections.0.id"
+    },
+    "pages_deletion_page_sections_0_title": "Depuis l’application ou le site (connecté·e)",
+    "@pages_deletion_page_sections_0_title": {
+        "description": "pages/deletion.page.sections.0.title"
+    },
+    "pages_deletion_page_sections_1_blocks_0_list_0": "Tout de suite : votre compte est fermé. Vous êtes déconnecté·e de tous vos appareils, les notifications s’arrêtent et la newsletter est désactivée. Un e-mail vous confirme la suppression.",
+    "@pages_deletion_page_sections_1_blocks_0_list_0": {
+        "description": "pages/deletion.page.sections.1.blocks.0.list.0"
+    },
+    "pages_deletion_page_sections_1_blocks_0_list_1": "Sous '{'grace_days'}' jours : vos données personnelles sont effacées de façon irréversible (anonymisation). Pendant ce délai, vous pouvez changer d’avis en écrivant à '{'contact_email'}'.",
+    "@pages_deletion_page_sections_1_blocks_0_list_1": {
+        "description": "pages/deletion.page.sections.1.blocks.0.list.1"
+    },
+    "pages_deletion_page_sections_1_id": "delais",
+    "@pages_deletion_page_sections_1_id": {
+        "description": "pages/deletion.page.sections.1.id"
+    },
+    "pages_deletion_page_sections_1_title": "Ce qui se passe, et quand",
+    "@pages_deletion_page_sections_1_title": {
+        "description": "pages/deletion.page.sections.1.title"
+    },
+    "pages_deletion_page_sections_2_blocks_0_list_0": "votre pseudonyme, votre nom, votre adresse e-mail, votre numéro de téléphone et votre mot de passe ;",
+    "@pages_deletion_page_sections_2_blocks_0_list_0": {
+        "description": "pages/deletion.page.sections.2.blocks.0.list.0"
+    },
+    "pages_deletion_page_sections_2_blocks_0_list_1": "votre profil : biographie, pronoms, photo, couverture, centres d’intérêt, origine, orientation et identité de genre, contacts de confiance ;",
+    "@pages_deletion_page_sections_2_blocks_0_list_1": {
+        "description": "pages/deletion.page.sections.2.blocks.0.list.1"
+    },
+    "pages_deletion_page_sections_2_blocks_0_list_2": "vos réglages, vos abonnements aux notifications, vos sessions, vos appareils connectés et vos codes de vérification ;",
+    "@pages_deletion_page_sections_2_blocks_0_list_2": {
+        "description": "pages/deletion.page.sections.2.blocks.0.list.2"
+    },
+    "pages_deletion_page_sections_2_blocks_0_list_3": "votre abonnement à la newsletter (adresse effacée) ;",
+    "@pages_deletion_page_sections_2_blocks_0_list_3": {
+        "description": "pages/deletion.page.sections.2.blocks.0.list.3"
+    },
+    "pages_deletion_page_sections_2_blocks_0_list_4": "l’adresse e-mail associée à vos preuves de consentement.",
+    "@pages_deletion_page_sections_2_blocks_0_list_4": {
+        "description": "pages/deletion.page.sections.2.blocks.0.list.4"
+    },
+    "pages_deletion_page_sections_2_id": "efface",
+    "@pages_deletion_page_sections_2_id": {
+        "description": "pages/deletion.page.sections.2.id"
+    },
+    "pages_deletion_page_sections_2_title": "Ce qui est effacé",
+    "@pages_deletion_page_sections_2_title": {
+        "description": "pages/deletion.page.sections.2.title"
+    },
+    "pages_deletion_page_sections_3_blocks_0_list_0": "Vos publications et commentaires déjà publiés restent visibles sous un pseudonyme anonyme (« membre supprimé »), sans lien avec votre identité, pour ne pas casser les échanges des autres membres. Écrivez-nous si vous voulez qu’ils soient retirés.",
+    "@pages_deletion_page_sections_3_blocks_0_list_0": {
+        "description": "pages/deletion.page.sections.3.blocks.0.list.0"
+    },
+    "pages_deletion_page_sections_3_blocks_0_list_1": "Les signalements et dossiers déjà transmis à l’équipe, qui servent à protéger des personnes, sont conservés '{'case_years'}' ans après la clôture du dossier, puis anonymisés. Un signalement anonyme n’est de toute façon pas rattaché à votre compte.",
+    "@pages_deletion_page_sections_3_blocks_0_list_1": {
+        "description": "pages/deletion.page.sections.3.blocks.0.list.1"
+    },
+    "pages_deletion_page_sections_3_blocks_0_list_2": "Le journal des actions sensibles (dont la preuve de vos consentements) est gardé '{'audit_days'}' jours pour la sécurité et nos obligations légales.",
+    "@pages_deletion_page_sections_3_blocks_0_list_2": {
+        "description": "pages/deletion.page.sections.3.blocks.0.list.2"
+    },
+    "pages_deletion_page_sections_3_blocks_0_list_3": "Les journaux d’envoi d’e-mails sont gardés '{'mail_days'}' jours, sans le contenu des messages.",
+    "@pages_deletion_page_sections_3_blocks_0_list_3": {
+        "description": "pages/deletion.page.sections.3.blocks.0.list.3"
+    },
+    "pages_deletion_page_sections_3_blocks_0_list_4": "Des sauvegardes techniques peuvent contenir vos données jusqu’à leur remplacement.",
+    "@pages_deletion_page_sections_3_blocks_0_list_4": {
+        "description": "pages/deletion.page.sections.3.blocks.0.list.4"
+    },
+    "pages_deletion_page_sections_3_id": "conserve",
+    "@pages_deletion_page_sections_3_id": {
+        "description": "pages/deletion.page.sections.3.id"
+    },
+    "pages_deletion_page_sections_3_title": "Ce qui est conservé, et pourquoi",
+    "@pages_deletion_page_sections_3_title": {
+        "description": "pages/deletion.page.sections.3.title"
+    },
+    "pages_deletion_page_sections_4_blocks_0": "Vous pouvez supprimer vos publications et modifier votre profil depuis l’application. Pour retirer un consentement (orientation, identité de genre, notifications, newsletter), utilisez vos paramètres. Pour toute autre demande, écrivez à '{'contact_email'}'.",
+    "@pages_deletion_page_sections_4_blocks_0": {
+        "description": "pages/deletion.page.sections.4.blocks.0"
+    },
+    "pages_deletion_page_sections_4_blocks_1_note": "Les comptes de l’équipe d’administration ne se suppriment pas depuis cette page : écrivez à '{'contact_email'}'.",
+    "@pages_deletion_page_sections_4_blocks_1_note": {
+        "description": "pages/deletion.page.sections.4.blocks.1.note"
+    },
+    "pages_deletion_page_sections_4_id": "partiel",
+    "@pages_deletion_page_sections_4_id": {
+        "description": "pages/deletion.page.sections.4.id"
+    },
+    "pages_deletion_page_sections_4_title": "Supprimer seulement certaines données",
+    "@pages_deletion_page_sections_4_title": {
+        "description": "pages/deletion.page.sections.4.title"
+    },
+    "pages_deletion_page_title": "Supprimer mon compte et mes données",
+    "@pages_deletion_page_title": {
+        "description": "pages/deletion.page.title"
+    },
+    "pages_deletion_sent_paragraphs_0": "Si un compte correspond à cette adresse, un e-mail avec un lien de confirmation vient de vous être envoyé. Le lien est valable '{'request_hours'}' heures.",
+    "@pages_deletion_sent_paragraphs_0": {
+        "description": "pages/deletion.sent.paragraphs.0"
+    },
+    "pages_deletion_sent_paragraphs_1": "Vous ne le voyez pas ? Regardez dans les courriers indésirables. Pour des raisons de sécurité, nous ne disons pas si un compte existe. Une question ? Écrivez à '{'contact_email'}'.",
+    "@pages_deletion_sent_paragraphs_1": {
+        "description": "pages/deletion.sent.paragraphs.1"
+    },
+    "pages_deletion_sent_title": "Demande reçue",
+    "@pages_deletion_sent_title": {
+        "description": "pages/deletion.sent.title"
+    },
+    "pages_deletion_title": "Supprimer mon compte et mes données",
+    "@pages_deletion_title": {
+        "description": "pages/deletion.title"
     },
     "pages_do_glegbe_engage_help": "Besoin d’aide ?",
     "@pages_do_glegbe_engage_help": {
@@ -28265,6 +28742,1151 @@
     "pages_evenements_title": "Événements",
     "@pages_evenements_title": {
         "description": "pages/evenements.title"
+    },
+    "pages_legal_clauses_assistant_kb": "L’assistant répond à partir de la base de connaissances de Xomiton. Vos questions ne sont envoyées à aucun service d’intelligence artificielle externe : le service Gemini de Google est branché mais désactivé.",
+    "@pages_legal_clauses_assistant_kb": {
+        "description": "pages/legal.clauses.assistant_kb"
+    },
+    "pages_legal_clauses_assistant_llm": "L’assistant peut transmettre le texte de votre question au service Gemini de Google (intelligence artificielle) pour formuler sa réponse, sans votre identité. Ce traitement a lieu hors du Bénin. Ne saisissez pas d’informations qui vous identifient.",
+    "@pages_legal_clauses_assistant_llm": {
+        "description": "pages/legal.clauses.assistant_llm"
+    },
+    "pages_legal_clauses_sms_none": "Les SMS de secours d’une alerte SOS sont envoyés par un prestataire d’envoi de SMS (Vonage ou Twilio) qui reçoit le numéro du contact de confiance et le texte du message, uniquement pour l’envoyer. Tant que ce service n’est pas activé, aucun SMS n’est envoyé.",
+    "@pages_legal_clauses_sms_none": {
+        "description": "pages/legal.clauses.sms_none"
+    },
+    "pages_legal_clauses_sms_twilio": "Pour les SMS de secours d’une alerte SOS, Xomiton fait appel au prestataire Twilio, qui reçoit le numéro de téléphone du contact de confiance et le texte du message, uniquement pour l’envoyer. Ce prestataire peut traiter ces données hors du Bénin.",
+    "@pages_legal_clauses_sms_twilio": {
+        "description": "pages/legal.clauses.sms_twilio"
+    },
+    "pages_legal_clauses_sms_vonage": "Pour les SMS de secours d’une alerte SOS, Xomiton fait appel au prestataire Vonage, qui reçoit le numéro de téléphone du contact de confiance et le texte du message, uniquement pour l’envoyer. Ce prestataire peut traiter ces données hors du Bénin.",
+    "@pages_legal_clauses_sms_vonage": {
+        "description": "pages/legal.clauses.sms_vonage"
+    },
+    "pages_legal_fields_address": "adresse postale",
+    "@pages_legal_fields_address": {
+        "description": "pages/legal.fields.address"
+    },
+    "pages_legal_fields_director": "nom de la personne directrice de la publication",
+    "@pages_legal_fields_director": {
+        "description": "pages/legal.fields.director"
+    },
+    "pages_legal_fields_dpo_email": "adresse e-mail de la personne chargée de la protection des données",
+    "@pages_legal_fields_dpo_email": {
+        "description": "pages/legal.fields.dpo_email"
+    },
+    "pages_legal_fields_dpo_name": "nom de la personne chargée de la protection des données",
+    "@pages_legal_fields_dpo_name": {
+        "description": "pages/legal.fields.dpo_name"
+    },
+    "pages_legal_fields_editor_phone": "numéro de téléphone",
+    "@pages_legal_fields_editor_phone": {
+        "description": "pages/legal.fields.editor_phone"
+    },
+    "pages_legal_fields_host_address": "adresse de l’hébergeur",
+    "@pages_legal_fields_host_address": {
+        "description": "pages/legal.fields.host_address"
+    },
+    "pages_legal_fields_host_country": "pays d’hébergement des données",
+    "@pages_legal_fields_host_country": {
+        "description": "pages/legal.fields.host_country"
+    },
+    "pages_legal_fields_host_name": "nom de l’hébergeur",
+    "@pages_legal_fields_host_name": {
+        "description": "pages/legal.fields.host_name"
+    },
+    "pages_legal_fields_jurisdiction": "juridiction compétente",
+    "@pages_legal_fields_jurisdiction": {
+        "description": "pages/legal.fields.jurisdiction"
+    },
+    "pages_legal_fields_legal_form": "forme juridique",
+    "@pages_legal_fields_legal_form": {
+        "description": "pages/legal.fields.legal_form"
+    },
+    "pages_legal_fields_publisher_name": "nom de l’association ou de l’entité qui édite Xomiton",
+    "@pages_legal_fields_publisher_name": {
+        "description": "pages/legal.fields.publisher_name"
+    },
+    "pages_legal_fields_registration": "numéro d’enregistrement ou de déclaration",
+    "@pages_legal_fields_registration": {
+        "description": "pages/legal.fields.registration"
+    },
+    "pages_legal_nav_label": "Sections de la page",
+    "@pages_legal_nav_label": {
+        "description": "pages/legal.nav_label"
+    },
+    "pages_legal_others": "Autres pages utiles",
+    "@pages_legal_others": {
+        "description": "pages/legal.others"
+    },
+    "pages_legal_pages_cookies_lead": "Xomiton n’utilise que ce qui est indispensable à son fonctionnement. Aucun cookie publicitaire, aucune mesure d’audience tierce.",
+    "@pages_legal_pages_cookies_lead": {
+        "description": "pages/legal.pages.cookies.lead"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_0": "Les cookies et le stockage local ci-dessous sont strictement nécessaires : ils ne demandent donc pas votre accord préalable et le site n’affiche pas de bandeau de consentement. Nous n’utilisons ni Google Analytics, ni pixel publicitaire, ni cookie de réseau social.",
+    "@pages_legal_pages_cookies_sections_0_blocks_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_head_0": "Nom",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_head_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.head.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_head_1": "Rôle",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_head_1": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.head.1"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_head_2": "Durée",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_head_2": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.head.2"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_0_0": "'{'session_cookie'}'",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_0_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.0.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_0_1": "Garde votre session ouverte et protège les formulaires",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_0_1": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.0.1"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_0_2": "'{'session_minutes'}' minutes d’inactivité",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_0_2": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.0.2"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_1_0": "XSRF-TOKEN",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_1_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.1.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_1_1": "Protection contre les envois de formulaires frauduleux",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_1_1": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.1.1"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_1_2": "Durée de la session",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_1_2": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.1.2"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_2_0": "remember_device",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_2_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.2.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_2_1": "Reconnaître un appareil de confiance, uniquement si vous le demandez à la connexion",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_2_1": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.2.1"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_2_2": "'{'remember_days'}' jours",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_2_2": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.2.2"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_3_0": "Préférences d’affichage (stockage local)",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_3_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.3.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_3_1": "Thème clair ou sombre",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_3_1": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.3.1"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_3_2": "Jusqu’à effacement par vous",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_3_2": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.3.2"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_4_0": "Brouillons et file d’envoi hors connexion (stockage local)",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_4_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.4.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_4_1": "Garder un signalement non envoyé ou une saisie hors connexion sur votre appareil",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_4_1": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.4.1"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_4_2": "Brouillon : '{'draft_days'}' jours ; file : jusqu’à l’envoi",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_4_2": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.4.2"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_5_0": "Ressources hors connexion (cache du navigateur)",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_5_0": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.5.0"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_5_1": "Lire les ressources que vous avez marquées sans connexion",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_5_1": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.5.1"
+    },
+    "pages_legal_pages_cookies_sections_0_blocks_1_table_rows_5_2": "Jusqu’à effacement par vous",
+    "@pages_legal_pages_cookies_sections_0_blocks_1_table_rows_5_2": {
+        "description": "pages/legal.pages.cookies.sections.0.blocks.1.table.rows.5.2"
+    },
+    "pages_legal_pages_cookies_sections_0_id": "principe",
+    "@pages_legal_pages_cookies_sections_0_id": {
+        "description": "pages/legal.pages.cookies.sections.0.id"
+    },
+    "pages_legal_pages_cookies_sections_0_title": "Ce que nous utilisons",
+    "@pages_legal_pages_cookies_sections_0_title": {
+        "description": "pages/legal.pages.cookies.sections.0.title"
+    },
+    "pages_legal_pages_cookies_sections_1_blocks_0": "Vous pouvez supprimer ces données à tout moment dans les réglages de votre navigateur. Sans le cookie de session, vous ne pouvez plus rester connecté·e.",
+    "@pages_legal_pages_cookies_sections_1_blocks_0": {
+        "description": "pages/legal.pages.cookies.sections.1.blocks.0"
+    },
+    "pages_legal_pages_cookies_sections_1_blocks_1": "Les compteurs de consultation des pages sont anonymes, sans cookie ni identifiant, et conservés '{'events_days'}' jours.",
+    "@pages_legal_pages_cookies_sections_1_blocks_1": {
+        "description": "pages/legal.pages.cookies.sections.1.blocks.1"
+    },
+    "pages_legal_pages_cookies_sections_1_blocks_2_note": "Si nous ajoutons un jour un cookie non indispensable (par exemple une mesure d’audience), nous afficherons un choix clair avant de le déposer et nous mettrons cette page à jour.",
+    "@pages_legal_pages_cookies_sections_1_blocks_2_note": {
+        "description": "pages/legal.pages.cookies.sections.1.blocks.2.note"
+    },
+    "pages_legal_pages_cookies_sections_1_id": "controle",
+    "@pages_legal_pages_cookies_sections_1_id": {
+        "description": "pages/legal.pages.cookies.sections.1.id"
+    },
+    "pages_legal_pages_cookies_sections_1_title": "Garder la main",
+    "@pages_legal_pages_cookies_sections_1_title": {
+        "description": "pages/legal.pages.cookies.sections.1.title"
+    },
+    "pages_legal_pages_cookies_title": "Cookies et stockage local",
+    "@pages_legal_pages_cookies_title": {
+        "description": "pages/legal.pages.cookies.title"
+    },
+    "pages_legal_pages_notice_lead": "Qui édite et héberge Xomiton, comment nous joindre et comment signaler un contenu.",
+    "@pages_legal_pages_notice_lead": {
+        "description": "pages/legal.pages.notice.lead"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_0_0": "Nom",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_0_0": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.0.0"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_0_1": "'{'publisher_name'}'",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_0_1": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.0.1"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_1_0": "Forme juridique",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_1_0": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.1.0"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_1_1": "'{'legal_form'}'",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_1_1": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.1.1"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_2_0": "Enregistrement",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_2_0": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.2.0"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_2_1": "'{'registration'}'",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_2_1": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.2.1"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_3_0": "Adresse",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_3_0": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.3.0"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_3_1": "'{'address'}'",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_3_1": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.3.1"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_4_0": "Directeur ou directrice de la publication",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_4_0": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.4.0"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_4_1": "'{'director'}'",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_4_1": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.4.1"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_5_0": "Téléphone",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_5_0": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.5.0"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_5_1": "'{'editor_phone'}'",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_5_1": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.5.1"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_6_0": "E-mail",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_6_0": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.6.0"
+    },
+    "pages_legal_pages_notice_sections_0_blocks_0_dl_6_1": "'{'contact_email'}'",
+    "@pages_legal_pages_notice_sections_0_blocks_0_dl_6_1": {
+        "description": "pages/legal.pages.notice.sections.0.blocks.0.dl.6.1"
+    },
+    "pages_legal_pages_notice_sections_0_id": "editeur",
+    "@pages_legal_pages_notice_sections_0_id": {
+        "description": "pages/legal.pages.notice.sections.0.id"
+    },
+    "pages_legal_pages_notice_sections_0_title": "Éditeur du site et de l’application",
+    "@pages_legal_pages_notice_sections_0_title": {
+        "description": "pages/legal.pages.notice.sections.0.title"
+    },
+    "pages_legal_pages_notice_sections_1_blocks_0_dl_0_0": "Nom",
+    "@pages_legal_pages_notice_sections_1_blocks_0_dl_0_0": {
+        "description": "pages/legal.pages.notice.sections.1.blocks.0.dl.0.0"
+    },
+    "pages_legal_pages_notice_sections_1_blocks_0_dl_0_1": "'{'host_name'}'",
+    "@pages_legal_pages_notice_sections_1_blocks_0_dl_0_1": {
+        "description": "pages/legal.pages.notice.sections.1.blocks.0.dl.0.1"
+    },
+    "pages_legal_pages_notice_sections_1_blocks_0_dl_1_0": "Adresse",
+    "@pages_legal_pages_notice_sections_1_blocks_0_dl_1_0": {
+        "description": "pages/legal.pages.notice.sections.1.blocks.0.dl.1.0"
+    },
+    "pages_legal_pages_notice_sections_1_blocks_0_dl_1_1": "'{'host_address'}'",
+    "@pages_legal_pages_notice_sections_1_blocks_0_dl_1_1": {
+        "description": "pages/legal.pages.notice.sections.1.blocks.0.dl.1.1"
+    },
+    "pages_legal_pages_notice_sections_1_blocks_0_dl_2_0": "Pays",
+    "@pages_legal_pages_notice_sections_1_blocks_0_dl_2_0": {
+        "description": "pages/legal.pages.notice.sections.1.blocks.0.dl.2.0"
+    },
+    "pages_legal_pages_notice_sections_1_blocks_0_dl_2_1": "'{'host_country'}'",
+    "@pages_legal_pages_notice_sections_1_blocks_0_dl_2_1": {
+        "description": "pages/legal.pages.notice.sections.1.blocks.0.dl.2.1"
+    },
+    "pages_legal_pages_notice_sections_1_id": "hebergeur",
+    "@pages_legal_pages_notice_sections_1_id": {
+        "description": "pages/legal.pages.notice.sections.1.id"
+    },
+    "pages_legal_pages_notice_sections_1_title": "Hébergeur",
+    "@pages_legal_pages_notice_sections_1_title": {
+        "description": "pages/legal.pages.notice.sections.1.title"
+    },
+    "pages_legal_pages_notice_sections_2_blocks_0": "Personne chargée de la protection des données : '{'dpo_name'}', joignable à '{'dpo_email'}'. Le détail des traitements est dans la politique de confidentialité.",
+    "@pages_legal_pages_notice_sections_2_blocks_0": {
+        "description": "pages/legal.pages.notice.sections.2.blocks.0"
+    },
+    "pages_legal_pages_notice_sections_2_id": "donnees",
+    "@pages_legal_pages_notice_sections_2_id": {
+        "description": "pages/legal.pages.notice.sections.2.id"
+    },
+    "pages_legal_pages_notice_sections_2_title": "Protection des données",
+    "@pages_legal_pages_notice_sections_2_title": {
+        "description": "pages/legal.pages.notice.sections.2.title"
+    },
+    "pages_legal_pages_notice_sections_3_blocks_0": "La marque, le logo, la charte graphique, les textes et les illustrations de '{'site_name'}' sont protégés. Toute reprise sans autorisation écrite est interdite, sauf courte citation avec mention de la source. Les contenus publiés par les membres restent leur propriété.",
+    "@pages_legal_pages_notice_sections_3_blocks_0": {
+        "description": "pages/legal.pages.notice.sections.3.blocks.0"
+    },
+    "pages_legal_pages_notice_sections_3_id": "propriete",
+    "@pages_legal_pages_notice_sections_3_id": {
+        "description": "pages/legal.pages.notice.sections.3.id"
+    },
+    "pages_legal_pages_notice_sections_3_title": "Propriété intellectuelle",
+    "@pages_legal_pages_notice_sections_3_title": {
+        "description": "pages/legal.pages.notice.sections.3.title"
+    },
+    "pages_legal_pages_notice_sections_4_blocks_0": "Pour signaler un contenu ou une personne, utilisez le bouton « Signaler » du site ou de l’application, ou écrivez à '{'contact_email'}'. L’équipe examine chaque signalement dans la confidentialité.",
+    "@pages_legal_pages_notice_sections_4_blocks_0": {
+        "description": "pages/legal.pages.notice.sections.4.blocks.0"
+    },
+    "pages_legal_pages_notice_sections_4_id": "signaler",
+    "@pages_legal_pages_notice_sections_4_id": {
+        "description": "pages/legal.pages.notice.sections.4.id"
+    },
+    "pages_legal_pages_notice_sections_4_title": "Signaler un contenu illicite ou dangereux",
+    "@pages_legal_pages_notice_sections_4_title": {
+        "description": "pages/legal.pages.notice.sections.4.title"
+    },
+    "pages_legal_pages_notice_sections_5_blocks_0": "Nous cherchons à rendre Xomiton utilisable par toutes et tous : contrastes suffisants, navigation au clavier, textes alternatifs pour les images, formulaires étiquetés, respect du réglage de réduction des animations. Si un contenu vous pose problème, écrivez à '{'contact_email'}' : nous vous répondrons et chercherons une solution.",
+    "@pages_legal_pages_notice_sections_5_blocks_0": {
+        "description": "pages/legal.pages.notice.sections.5.blocks.0"
+    },
+    "pages_legal_pages_notice_sections_5_id": "accessibilite",
+    "@pages_legal_pages_notice_sections_5_id": {
+        "description": "pages/legal.pages.notice.sections.5.id"
+    },
+    "pages_legal_pages_notice_sections_5_title": "Accessibilité",
+    "@pages_legal_pages_notice_sections_5_title": {
+        "description": "pages/legal.pages.notice.sections.5.title"
+    },
+    "pages_legal_pages_notice_sections_6_blocks_0": "Le site et l’application sont soumis au droit béninois. Juridiction compétente : '{'jurisdiction'}'.",
+    "@pages_legal_pages_notice_sections_6_blocks_0": {
+        "description": "pages/legal.pages.notice.sections.6.blocks.0"
+    },
+    "pages_legal_pages_notice_sections_6_id": "droit",
+    "@pages_legal_pages_notice_sections_6_id": {
+        "description": "pages/legal.pages.notice.sections.6.id"
+    },
+    "pages_legal_pages_notice_sections_6_title": "Droit applicable",
+    "@pages_legal_pages_notice_sections_6_title": {
+        "description": "pages/legal.pages.notice.sections.6.title"
+    },
+    "pages_legal_pages_notice_title": "Mentions légales",
+    "@pages_legal_pages_notice_title": {
+        "description": "pages/legal.pages.notice.title"
+    },
+    "pages_legal_pages_privacy_lead": "Quelles données Xomiton collecte, pourquoi, combien de temps, avec qui elles sont partagées et comment exercer vos droits.",
+    "@pages_legal_pages_privacy_lead": {
+        "description": "pages/legal.pages.privacy.lead"
+    },
+    "pages_legal_pages_privacy_sections_0_blocks_0": "'{'publisher_name'}' ('{'legal_form'}'), éditrice de '{'site_name'}', est responsable du traitement de vos données personnelles. Adresse : '{'address'}'.",
+    "@pages_legal_pages_privacy_sections_0_blocks_0": {
+        "description": "pages/legal.pages.privacy.sections.0.blocks.0"
+    },
+    "pages_legal_pages_privacy_sections_0_blocks_1": "La personne chargée de la protection des données est '{'dpo_name'}'. Vous pouvez la joindre à '{'dpo_email'}', ou à '{'contact_email'}' pour toute question sur vos données.",
+    "@pages_legal_pages_privacy_sections_0_blocks_1": {
+        "description": "pages/legal.pages.privacy.sections.0.blocks.1"
+    },
+    "pages_legal_pages_privacy_sections_0_blocks_2": "Xomiton est un espace sûr pour s’informer, échanger et être soutenu·e, au Bénin. Nous collectons le strict nécessaire, ne vendons aucune donnée, n’affichons aucune publicité et ne faisons aucun profilage.",
+    "@pages_legal_pages_privacy_sections_0_blocks_2": {
+        "description": "pages/legal.pages.privacy.sections.0.blocks.2"
+    },
+    "pages_legal_pages_privacy_sections_0_id": "responsable",
+    "@pages_legal_pages_privacy_sections_0_id": {
+        "description": "pages/legal.pages.privacy.sections.0.id"
+    },
+    "pages_legal_pages_privacy_sections_0_title": "Qui est responsable de vos données",
+    "@pages_legal_pages_privacy_sections_0_title": {
+        "description": "pages/legal.pages.privacy.sections.0.title"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_0": "Voici les données réellement traitées par l’application et le site, avec la raison et la base légale de chacune.",
+    "@pages_legal_pages_privacy_sections_1_blocks_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_head_0": "Donnée",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_head_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.head.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_head_1": "Pourquoi",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_head_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.head.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_head_2": "Base légale",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_head_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.head.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_head_3": "Facultative",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_head_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.head.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": "Compte : pseudonyme, adresse e-mail, mot de passe (conservé haché), zone et commune, confirmation d’avoir '{'min_age'}' ans ou plus",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": "Créer et sécuriser votre compte, vous envoyer les codes de vérification",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_2": "Exécution du service",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": "Non. Aucun nom réel ni date de naissance n’est exigé",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": "Nom, numéro de téléphone du profil",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": "Vous joindre ou vous reconnaître si vous le choisissez ; SMS de secours",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_2": "Votre consentement",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_3": "Oui",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_0": "Adresse e-mail de la newsletter",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.10.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_1": "Vous envoyer les actualités, après confirmation par e-mail",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.10.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_2": "Votre consentement (double confirmation)",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.10.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_3": "Oui",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_10_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.10.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_0": "Profil : biographie, pronoms, photo, centres d’intérêt",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.2.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_1": "Personnaliser votre espace",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.2.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_2": "Votre consentement",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.2.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_3": "Oui",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.2.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": "Origine, orientation ou identité de genre (données sensibles)",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_1": "Adapter le soutien proposé",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_2": "Votre consentement explicite et distinct, retirable à tout moment",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": "Oui",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_0": "Contacts de confiance (nom, téléphone ou e-mail)",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.4.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_1": "Les prévenir en cas d’alerte SOS",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.4.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_2": "Votre consentement",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.4.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_3": "Oui",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_4_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.4.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_0": "Position au moment d’une alerte SOS",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.5.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_1": "Indiquer où vous êtes aux personnes alertées",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.5.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_2": "Votre consentement, donné à chaque alerte",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.5.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_3": "Oui",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_5_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.5.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_0": "Signalements et besoins : récit, lieu, pièces jointes, moyen de vous recontacter",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.6.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_1": "Prendre en charge la situation et vous orienter",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.6.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_2": "Votre consentement ; intérêt vital de la personne en danger",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.6.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_3": "Oui. Un signalement peut être fait sans compte",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_6_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.6.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_0": "Publications, commentaires, sondages, messages privés, échanges avec l’assistant",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.7.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_1": "Faire fonctionner la communauté et la messagerie",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.7.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_2": "Exécution du service",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.7.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_3": "Selon les fonctions utilisées",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_7_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.7.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_0": "Données techniques : adresse IP, navigateur ou appareil, journal des connexions et des actions sensibles, preuve de vos consentements",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.8.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_1": "Sécuriser les comptes, prévenir les abus, prouver votre consentement",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.8.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_2": "Intérêt légitime de sécurité ; obligation légale pour les consentements",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.8.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_3": "Non",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_8_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.8.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_0": "Jeton de notification de l’appareil (Firebase Cloud Messaging)",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_0": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.9.0"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_1": "Vous envoyer les notifications que vous avez activées",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_1": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.9.1"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_2": "Votre consentement",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.9.2"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_3": "Oui",
+    "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_9_3": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.9.3"
+    },
+    "pages_legal_pages_privacy_sections_1_blocks_2": "Aucune bibliothèque de publicité, de mesure d’audience ou de rapport de plantage n’est intégrée à l’application. Nous ne lisons ni votre carnet d’adresses, ni votre agenda, ni votre galerie : les pièces jointes passent par le sélecteur de fichiers de votre téléphone.",
+    "@pages_legal_pages_privacy_sections_1_blocks_2": {
+        "description": "pages/legal.pages.privacy.sections.1.blocks.2"
+    },
+    "pages_legal_pages_privacy_sections_1_id": "donnees",
+    "@pages_legal_pages_privacy_sections_1_id": {
+        "description": "pages/legal.pages.privacy.sections.1.id"
+    },
+    "pages_legal_pages_privacy_sections_1_title": "Les données que nous collectons",
+    "@pages_legal_pages_privacy_sections_1_title": {
+        "description": "pages/legal.pages.privacy.sections.1.title"
+    },
+    "pages_legal_pages_privacy_sections_10_blocks_0": "Nous mettons cette politique à jour quand nos pratiques changent ; la date de dernière mise à jour figure en haut de page. En cas de changement important, nous vous en informons dans l’application.",
+    "@pages_legal_pages_privacy_sections_10_blocks_0": {
+        "description": "pages/legal.pages.privacy.sections.10.blocks.0"
+    },
+    "pages_legal_pages_privacy_sections_10_blocks_1": "Une question ? Écrivez à '{'contact_email'}'.",
+    "@pages_legal_pages_privacy_sections_10_blocks_1": {
+        "description": "pages/legal.pages.privacy.sections.10.blocks.1"
+    },
+    "pages_legal_pages_privacy_sections_10_id": "modifications",
+    "@pages_legal_pages_privacy_sections_10_id": {
+        "description": "pages/legal.pages.privacy.sections.10.id"
+    },
+    "pages_legal_pages_privacy_sections_10_title": "Modifications et contact",
+    "@pages_legal_pages_privacy_sections_10_title": {
+        "description": "pages/legal.pages.privacy.sections.10.title"
+    },
+    "pages_legal_pages_privacy_sections_2_blocks_0_list_0": "L’origine, l’orientation ou l’identité de genre ne sont enregistrées que si vous y consentez, séparément de l’inscription. Vous pouvez retirer ce consentement dans les paramètres ; le refus ne bloque aucune autre fonction.",
+    "@pages_legal_pages_privacy_sections_2_blocks_0_list_0": {
+        "description": "pages/legal.pages.privacy.sections.2.blocks.0.list.0"
+    },
+    "pages_legal_pages_privacy_sections_2_blocks_0_list_1": "Votre position n’est relevée qu’au moment où vous déclenchez une alerte SOS, application ouverte, si le partage est actif. Elle n’est jamais suivie en arrière-plan. Elle n’est visible que des personnes alertées (vos contacts de confiance et le point focal de votre zone).",
+    "@pages_legal_pages_privacy_sections_2_blocks_0_list_1": {
+        "description": "pages/legal.pages.privacy.sections.2.blocks.0.list.1"
+    },
+    "pages_legal_pages_privacy_sections_2_blocks_0_list_2": "Les récits de signalement, les notes de suivi, les coordonnées et la position d’une alerte, ainsi que le contenu des messages, sont chiffrés dans la base de données.",
+    "@pages_legal_pages_privacy_sections_2_blocks_0_list_2": {
+        "description": "pages/legal.pages.privacy.sections.2.blocks.0.list.2"
+    },
+    "pages_legal_pages_privacy_sections_2_blocks_0_list_3": "Un signalement sans compte ne demande ni identifiant ni adresse IP : seuls son contenu, son code de suivi et, si vous le choisissez, un moyen de vous recontacter sont enregistrés.",
+    "@pages_legal_pages_privacy_sections_2_blocks_0_list_3": {
+        "description": "pages/legal.pages.privacy.sections.2.blocks.0.list.3"
+    },
+    "pages_legal_pages_privacy_sections_2_id": "sensibles",
+    "@pages_legal_pages_privacy_sections_2_id": {
+        "description": "pages/legal.pages.privacy.sections.2.id"
+    },
+    "pages_legal_pages_privacy_sections_2_title": "Données sensibles, position et signalements",
+    "@pages_legal_pages_privacy_sections_2_title": {
+        "description": "pages/legal.pages.privacy.sections.2.title"
+    },
+    "pages_legal_pages_privacy_sections_3_blocks_0_list_0": "L’équipe habilitée de Xomiton (modération, pair·es éducateur·rices, administration), chacune selon son rôle et seulement pour ce qui lui est utile.",
+    "@pages_legal_pages_privacy_sections_3_blocks_0_list_0": {
+        "description": "pages/legal.pages.privacy.sections.3.blocks.0.list.0"
+    },
+    "pages_legal_pages_privacy_sections_3_blocks_0_list_1": "Les personnes que vous alertez ou ciblez vous-même : vos contacts de confiance, le point focal de votre zone, les membres de l’annuaire que vous choisissez.",
+    "@pages_legal_pages_privacy_sections_3_blocks_0_list_1": {
+        "description": "pages/legal.pages.privacy.sections.3.blocks.0.list.1"
+    },
+    "pages_legal_pages_privacy_sections_3_blocks_0_list_2": "Nos prestataires techniques, qui agissent pour notre compte (section suivante).",
+    "@pages_legal_pages_privacy_sections_3_blocks_0_list_2": {
+        "description": "pages/legal.pages.privacy.sections.3.blocks.0.list.2"
+    },
+    "pages_legal_pages_privacy_sections_3_blocks_0_list_3": "Les autorités, uniquement si la loi nous y oblige.",
+    "@pages_legal_pages_privacy_sections_3_blocks_0_list_3": {
+        "description": "pages/legal.pages.privacy.sections.3.blocks.0.list.3"
+    },
+    "pages_legal_pages_privacy_sections_3_blocks_1": "Vos données ne sont jamais vendues et ne servent à aucune publicité.",
+    "@pages_legal_pages_privacy_sections_3_blocks_1": {
+        "description": "pages/legal.pages.privacy.sections.3.blocks.1"
+    },
+    "pages_legal_pages_privacy_sections_3_id": "destinataires",
+    "@pages_legal_pages_privacy_sections_3_id": {
+        "description": "pages/legal.pages.privacy.sections.3.id"
+    },
+    "pages_legal_pages_privacy_sections_3_title": "Qui reçoit vos données",
+    "@pages_legal_pages_privacy_sections_3_title": {
+        "description": "pages/legal.pages.privacy.sections.3.title"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_head_0": "Prestataire",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_head_0": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.head.0"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_head_1": "Rôle",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_head_1": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.head.1"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_head_2": "Données concernées",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_head_2": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.head.2"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_head_3": "Lieu de traitement",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_head_3": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.head.3"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_0": "'{'host_name'}'",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_0": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.0.0"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_1": "Hébergement du site, de l’API et de la base de données",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_1": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.0.1"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_2": "Toutes les données de l’application",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_2": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.0.2"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_3": "'{'host_country'}'",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_0_3": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.0.3"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_0": "Google (Firebase Cloud Messaging)",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_0": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.1.0"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_1": "Acheminement des notifications sur Android",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_1": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.1.1"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_2": "Jeton de l’appareil, contenu minimal de la notification (aperçus masqués possibles)",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_2": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.1.2"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_3": "Hors du Bénin, y compris hors Union européenne",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_1_3": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.1.3"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_0": "Prestataire d’envoi de SMS (Vonage ou Twilio)",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_0": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.2.0"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_1": "SMS de secours d’une alerte SOS",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_1": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.2.1"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_2": "Numéro du contact de confiance, texte du SMS",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_2": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.2.2"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_3": "Hors du Bénin",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_2_3": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.2.3"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_0": "Service d’envoi d’e-mails",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_0": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.3.0"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_1": "Codes de vérification, notifications, newsletter",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_1": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.3.1"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_2": "Adresse e-mail, contenu du message",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_2": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.3.2"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_3": "'{'host_country'}'",
+    "@pages_legal_pages_privacy_sections_4_blocks_0_table_rows_3_3": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.0.table.rows.3.3"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_1": "'{'sms_clause'}'",
+    "@pages_legal_pages_privacy_sections_4_blocks_1": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.1"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_2": "'{'assistant_clause'}'",
+    "@pages_legal_pages_privacy_sections_4_blocks_2": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.2"
+    },
+    "pages_legal_pages_privacy_sections_4_blocks_3": "Quand des données quittent le Bénin, nous nous assurons que le prestataire offre des garanties adaptées (engagement contractuel de protection des données, clauses contractuelles types ou pays reconnu comme offrant une protection suffisante) et nous ne lui transmettons que ce qui est nécessaire.",
+    "@pages_legal_pages_privacy_sections_4_blocks_3": {
+        "description": "pages/legal.pages.privacy.sections.4.blocks.3"
+    },
+    "pages_legal_pages_privacy_sections_4_id": "prestataires",
+    "@pages_legal_pages_privacy_sections_4_id": {
+        "description": "pages/legal.pages.privacy.sections.4.id"
+    },
+    "pages_legal_pages_privacy_sections_4_title": "Prestataires et transferts hors du Bénin",
+    "@pages_legal_pages_privacy_sections_4_title": {
+        "description": "pages/legal.pages.privacy.sections.4.title"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_head_0": "Donnée",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_head_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.head.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_head_1": "Durée de conservation",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_head_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.head.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_0_0": "Compte actif",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_0_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.0.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_0_1": "Tant que votre compte existe",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_0_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.0.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_1_0": "Compte supprimé",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_1_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.1.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_1_1": "Accès coupé tout de suite, données personnelles effacées après '{'grace_days'}' jours (anonymisation)",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_1_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.1.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_10_0": "Export de vos données",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_10_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.10.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_10_1": "Lien valable '{'export_hours'}' heures, fichier effacé ensuite",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_10_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.10.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_11_0": "Demande de suppression faite depuis le site",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_11_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.11.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_11_1": "Seule une empreinte de l’adresse est gardée, pour limiter les abus, puis effacée",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_11_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.11.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_2_0": "Dossiers de signalement et alertes",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_2_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.2.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_2_1": "Durée du dossier, puis '{'case_years'}' ans après sa clôture, puis anonymisation",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_2_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.2.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_3_0": "Origine, orientation, identité de genre",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_3_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.3.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_3_1": "Jusqu’au retrait de votre consentement",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_3_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.3.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_4_0": "Codes de vérification",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_4_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.4.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_4_1": "'{'otp_hours'}' heures",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_4_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.4.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_5_0": "Journal des actions sensibles (adresse IP, navigateur)",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_5_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.5.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_5_1": "'{'audit_days'}' jours",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_5_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.5.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_6_0": "Journaux d’envoi d’e-mails",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_6_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.6.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_6_1": "'{'mail_days'}' jours ; le contenu d’un e-mail est vidé dès son envoi (ou après '{'failed_mail_days'}' jours en cas d’échec)",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_6_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.6.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_7_0": "Appareils connectés inactifs",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_7_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.7.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_7_1": "Révoqués après '{'device_days'}' jours sans activité",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_7_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.7.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_8_0": "Accusés de synchronisation hors connexion",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_8_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.8.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_8_1": "'{'sync_days'}' jours",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_8_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.8.1"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_9_0": "Compteurs de consultation des pages (sans donnée personnelle)",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_9_0": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.9.0"
+    },
+    "pages_legal_pages_privacy_sections_5_blocks_0_table_rows_9_1": "'{'events_days'}' jours",
+    "@pages_legal_pages_privacy_sections_5_blocks_0_table_rows_9_1": {
+        "description": "pages/legal.pages.privacy.sections.5.blocks.0.table.rows.9.1"
+    },
+    "pages_legal_pages_privacy_sections_5_id": "conservation",
+    "@pages_legal_pages_privacy_sections_5_id": {
+        "description": "pages/legal.pages.privacy.sections.5.id"
+    },
+    "pages_legal_pages_privacy_sections_5_title": "Combien de temps nous les conservons",
+    "@pages_legal_pages_privacy_sections_5_title": {
+        "description": "pages/legal.pages.privacy.sections.5.title"
+    },
+    "pages_legal_pages_privacy_sections_6_blocks_0": "Vous pouvez à tout moment :",
+    "@pages_legal_pages_privacy_sections_6_blocks_0": {
+        "description": "pages/legal.pages.privacy.sections.6.blocks.0"
+    },
+    "pages_legal_pages_privacy_sections_6_blocks_1_list_0": "accéder à vos données et en obtenir une copie : Paramètres > Mes données (export disponible dans l’application) ;",
+    "@pages_legal_pages_privacy_sections_6_blocks_1_list_0": {
+        "description": "pages/legal.pages.privacy.sections.6.blocks.1.list.0"
+    },
+    "pages_legal_pages_privacy_sections_6_blocks_1_list_1": "corriger vos informations depuis votre profil ;",
+    "@pages_legal_pages_privacy_sections_6_blocks_1_list_1": {
+        "description": "pages/legal.pages.privacy.sections.6.blocks.1.list.1"
+    },
+    "pages_legal_pages_privacy_sections_6_blocks_1_list_2": "supprimer votre compte et vos données : dans l’application (Paramètres > Sécurité > Supprimer mon compte) ou sur le site, même sans accès à votre compte, depuis la page « Supprimer mon compte et mes données » ;",
+    "@pages_legal_pages_privacy_sections_6_blocks_1_list_2": {
+        "description": "pages/legal.pages.privacy.sections.6.blocks.1.list.2"
+    },
+    "pages_legal_pages_privacy_sections_6_blocks_1_list_3": "retirer un consentement (données sensibles, notifications, newsletter) sans conséquence sur les autres fonctions ;",
+    "@pages_legal_pages_privacy_sections_6_blocks_1_list_3": {
+        "description": "pages/legal.pages.privacy.sections.6.blocks.1.list.3"
+    },
+    "pages_legal_pages_privacy_sections_6_blocks_1_list_4": "vous opposer à un traitement fondé sur notre intérêt légitime, ou en demander la limitation.",
+    "@pages_legal_pages_privacy_sections_6_blocks_1_list_4": {
+        "description": "pages/legal.pages.privacy.sections.6.blocks.1.list.4"
+    },
+    "pages_legal_pages_privacy_sections_6_blocks_2": "Pour exercer un droit que l’application ne couvre pas, écrivez à '{'dpo_email'}' ou à '{'contact_email'}'. Nous répondons dans un délai d’un mois au plus. Si vous estimez que vos droits ne sont pas respectés, vous pouvez saisir l’Autorité de protection des données personnelles du Bénin (APDP).",
+    "@pages_legal_pages_privacy_sections_6_blocks_2": {
+        "description": "pages/legal.pages.privacy.sections.6.blocks.2"
+    },
+    "pages_legal_pages_privacy_sections_6_id": "droits",
+    "@pages_legal_pages_privacy_sections_6_id": {
+        "description": "pages/legal.pages.privacy.sections.6.id"
+    },
+    "pages_legal_pages_privacy_sections_6_title": "Vos droits",
+    "@pages_legal_pages_privacy_sections_6_title": {
+        "description": "pages/legal.pages.privacy.sections.6.title"
+    },
+    "pages_legal_pages_privacy_sections_7_blocks_0_list_0": "Connexion chiffrée (HTTPS) pour tous les échanges ; aucune sauvegarde automatique Android de l’application.",
+    "@pages_legal_pages_privacy_sections_7_blocks_0_list_0": {
+        "description": "pages/legal.pages.privacy.sections.7.blocks.0.list.0"
+    },
+    "pages_legal_pages_privacy_sections_7_blocks_0_list_1": "Chiffrement des champs sensibles dans la base de données, mots de passe conservés sous forme hachée.",
+    "@pages_legal_pages_privacy_sections_7_blocks_0_list_1": {
+        "description": "pages/legal.pages.privacy.sections.7.blocks.0.list.1"
+    },
+    "pages_legal_pages_privacy_sections_7_blocks_0_list_2": "Accès réservé à l’équipe habilitée, selon des rôles précis ; journal des actions sensibles.",
+    "@pages_legal_pages_privacy_sections_7_blocks_0_list_2": {
+        "description": "pages/legal.pages.privacy.sections.7.blocks.0.list.2"
+    },
+    "pages_legal_pages_privacy_sections_7_blocks_0_list_3": "Limitation des tentatives de connexion et de demandes, protection contre l’énumération de comptes.",
+    "@pages_legal_pages_privacy_sections_7_blocks_0_list_3": {
+        "description": "pages/legal.pages.privacy.sections.7.blocks.0.list.3"
+    },
+    "pages_legal_pages_privacy_sections_7_blocks_0_list_4": "Mode discret dans l’application : icône et nom neutres, aperçus masqués, verrouillage par code.",
+    "@pages_legal_pages_privacy_sections_7_blocks_0_list_4": {
+        "description": "pages/legal.pages.privacy.sections.7.blocks.0.list.4"
+    },
+    "pages_legal_pages_privacy_sections_7_blocks_1": "Aucun système n’est infaillible : en cas de violation de données susceptible de vous exposer, nous vous en informerons et préviendrons l’autorité compétente dans les délais prévus par la loi.",
+    "@pages_legal_pages_privacy_sections_7_blocks_1": {
+        "description": "pages/legal.pages.privacy.sections.7.blocks.1"
+    },
+    "pages_legal_pages_privacy_sections_7_id": "securite",
+    "@pages_legal_pages_privacy_sections_7_id": {
+        "description": "pages/legal.pages.privacy.sections.7.id"
+    },
+    "pages_legal_pages_privacy_sections_7_title": "Comment nous protégeons vos données",
+    "@pages_legal_pages_privacy_sections_7_title": {
+        "description": "pages/legal.pages.privacy.sections.7.title"
+    },
+    "pages_legal_pages_privacy_sections_8_blocks_0": "Xomiton est réservé aux personnes de '{'min_age'}' ans ou plus. À l’inscription, vous confirmez avoir '{'min_age'}' ans ou plus ; nous ne demandons pas de date de naissance. Si nous apprenons qu’une personne plus jeune a créé un compte, nous le supprimons.",
+    "@pages_legal_pages_privacy_sections_8_blocks_0": {
+        "description": "pages/legal.pages.privacy.sections.8.blocks.0"
+    },
+    "pages_legal_pages_privacy_sections_8_blocks_1": "Si un signalement révèle qu’une personne mineure est en danger, l’équipe peut l’orienter vers les services de protection compétents, dans l’intérêt de cette personne.",
+    "@pages_legal_pages_privacy_sections_8_blocks_1": {
+        "description": "pages/legal.pages.privacy.sections.8.blocks.1"
+    },
+    "pages_legal_pages_privacy_sections_8_id": "mineurs",
+    "@pages_legal_pages_privacy_sections_8_id": {
+        "description": "pages/legal.pages.privacy.sections.8.id"
+    },
+    "pages_legal_pages_privacy_sections_8_title": "Âge minimum et mineur·es",
+    "@pages_legal_pages_privacy_sections_8_title": {
+        "description": "pages/legal.pages.privacy.sections.8.title"
+    },
+    "pages_legal_pages_privacy_sections_9_blocks_0": "Xomiton n’utilise que des cookies et un stockage local indispensables au fonctionnement. Le détail est sur la page Cookies.",
+    "@pages_legal_pages_privacy_sections_9_blocks_0": {
+        "description": "pages/legal.pages.privacy.sections.9.blocks.0"
+    },
+    "pages_legal_pages_privacy_sections_9_id": "cookies",
+    "@pages_legal_pages_privacy_sections_9_id": {
+        "description": "pages/legal.pages.privacy.sections.9.id"
+    },
+    "pages_legal_pages_privacy_sections_9_title": "Cookies et stockage local",
+    "@pages_legal_pages_privacy_sections_9_title": {
+        "description": "pages/legal.pages.privacy.sections.9.title"
+    },
+    "pages_legal_pages_privacy_title": "Politique de confidentialité",
+    "@pages_legal_pages_privacy_title": {
+        "description": "pages/legal.pages.privacy.title"
+    },
+    "pages_legal_pages_terms_lead": "Les règles qui s’appliquent quand vous utilisez le site et l’application Xomiton.",
+    "@pages_legal_pages_terms_lead": {
+        "description": "pages/legal.pages.terms.lead"
+    },
+    "pages_legal_pages_terms_sections_0_blocks_0": "'{'site_name'}' est un espace numérique sûr, édité par '{'publisher_name'}', pour s’informer, échanger et être soutenu·e, avec une attention particulière aux filles et aux femmes, et un accueil sans jugement. Le site et l’application sont gratuits.",
+    "@pages_legal_pages_terms_sections_0_blocks_0": {
+        "description": "pages/legal.pages.terms.sections.0.blocks.0"
+    },
+    "pages_legal_pages_terms_sections_0_blocks_1": "Utiliser Xomiton, c’est accepter ces conditions et la charte de bienveillance.",
+    "@pages_legal_pages_terms_sections_0_blocks_1": {
+        "description": "pages/legal.pages.terms.sections.0.blocks.1"
+    },
+    "pages_legal_pages_terms_sections_0_id": "objet",
+    "@pages_legal_pages_terms_sections_0_id": {
+        "description": "pages/legal.pages.terms.sections.0.id"
+    },
+    "pages_legal_pages_terms_sections_0_title": "À quoi sert Xomiton",
+    "@pages_legal_pages_terms_sections_0_title": {
+        "description": "pages/legal.pages.terms.sections.0.title"
+    },
+    "pages_legal_pages_terms_sections_1_blocks_0_list_0": "Il faut avoir '{'min_age'}' ans ou plus pour créer un compte.",
+    "@pages_legal_pages_terms_sections_1_blocks_0_list_0": {
+        "description": "pages/legal.pages.terms.sections.1.blocks.0.list.0"
+    },
+    "pages_legal_pages_terms_sections_1_blocks_0_list_1": "Vous choisissez un pseudonyme ; vous n’êtes pas obligé·e d’utiliser votre vrai nom.",
+    "@pages_legal_pages_terms_sections_1_blocks_0_list_1": {
+        "description": "pages/legal.pages.terms.sections.1.blocks.0.list.1"
+    },
+    "pages_legal_pages_terms_sections_1_blocks_0_list_2": "Vous êtes responsable de la confidentialité de votre mot de passe et de votre appareil. Utilisez un mot de passe fort et ne le partagez pas.",
+    "@pages_legal_pages_terms_sections_1_blocks_0_list_2": {
+        "description": "pages/legal.pages.terms.sections.1.blocks.0.list.2"
+    },
+    "pages_legal_pages_terms_sections_1_blocks_0_list_3": "Les inscriptions peuvent être ouvertes, limitées ou suspendues par l’administration.",
+    "@pages_legal_pages_terms_sections_1_blocks_0_list_3": {
+        "description": "pages/legal.pages.terms.sections.1.blocks.0.list.3"
+    },
+    "pages_legal_pages_terms_sections_1_id": "acces",
+    "@pages_legal_pages_terms_sections_1_id": {
+        "description": "pages/legal.pages.terms.sections.1.id"
+    },
+    "pages_legal_pages_terms_sections_1_title": "Accès et compte",
+    "@pages_legal_pages_terms_sections_1_title": {
+        "description": "pages/legal.pages.terms.sections.1.title"
+    },
+    "pages_legal_pages_terms_sections_2_blocks_0": "Vous vous engagez à respecter les autres, quelle que soit leur identité ou leur orientation. Sont interdits :",
+    "@pages_legal_pages_terms_sections_2_blocks_0": {
+        "description": "pages/legal.pages.terms.sections.2.blocks.0"
+    },
+    "pages_legal_pages_terms_sections_2_blocks_1_list_0": "les propos haineux, violents, discriminatoires, ou le harcèlement ;",
+    "@pages_legal_pages_terms_sections_2_blocks_1_list_0": {
+        "description": "pages/legal.pages.terms.sections.2.blocks.1.list.0"
+    },
+    "pages_legal_pages_terms_sections_2_blocks_1_list_1": "le fait de révéler l’identité, l’orientation ou les informations privées d’une autre personne ;",
+    "@pages_legal_pages_terms_sections_2_blocks_1_list_1": {
+        "description": "pages/legal.pages.terms.sections.2.blocks.1.list.1"
+    },
+    "pages_legal_pages_terms_sections_2_blocks_1_list_2": "le chantage, l’usurpation d’identité, la publicité, le démarchage et les contenus illégaux ;",
+    "@pages_legal_pages_terms_sections_2_blocks_1_list_2": {
+        "description": "pages/legal.pages.terms.sections.2.blocks.1.list.2"
+    },
+    "pages_legal_pages_terms_sections_2_blocks_1_list_3": "toute tentative de contourner la sécurité du service.",
+    "@pages_legal_pages_terms_sections_2_blocks_1_list_3": {
+        "description": "pages/legal.pages.terms.sections.2.blocks.1.list.3"
+    },
+    "pages_legal_pages_terms_sections_2_blocks_2": "Tout manquement peut entraîner un avertissement, la suppression d’un contenu, une suspension ou une exclusion décidés par l’équipe de modération. Vous pouvez signaler un contenu ou une personne à tout moment.",
+    "@pages_legal_pages_terms_sections_2_blocks_2": {
+        "description": "pages/legal.pages.terms.sections.2.blocks.2"
+    },
+    "pages_legal_pages_terms_sections_2_id": "regles",
+    "@pages_legal_pages_terms_sections_2_id": {
+        "description": "pages/legal.pages.terms.sections.2.id"
+    },
+    "pages_legal_pages_terms_sections_2_title": "Règles de la communauté",
+    "@pages_legal_pages_terms_sections_2_title": {
+        "description": "pages/legal.pages.terms.sections.2.title"
+    },
+    "pages_legal_pages_terms_sections_3_blocks_0": "Vous restez propriétaire de ce que vous publiez. Vous nous autorisez à l’afficher dans '{'site_name'}' selon vos réglages de visibilité, et à le modérer. Vous garantissez avoir le droit de le publier.",
+    "@pages_legal_pages_terms_sections_3_blocks_0": {
+        "description": "pages/legal.pages.terms.sections.3.blocks.0"
+    },
+    "pages_legal_pages_terms_sections_3_id": "contenus",
+    "@pages_legal_pages_terms_sections_3_id": {
+        "description": "pages/legal.pages.terms.sections.3.id"
+    },
+    "pages_legal_pages_terms_sections_3_title": "Vos contenus",
+    "@pages_legal_pages_terms_sections_3_title": {
+        "description": "pages/legal.pages.terms.sections.3.title"
+    },
+    "pages_legal_pages_terms_sections_4_blocks_0_list_0": "Xomiton ne remplace ni les services d’urgence, ni les soins médicaux, ni l’aide juridique. En cas de danger immédiat, contactez les services d’urgence de votre pays.",
+    "@pages_legal_pages_terms_sections_4_blocks_0_list_0": {
+        "description": "pages/legal.pages.terms.sections.4.blocks.0.list.0"
+    },
+    "pages_legal_pages_terms_sections_4_blocks_0_list_1": "Le bouton SOS prévient vos contacts de confiance et le point focal de votre zone. Il ne garantit ni une intervention, ni un délai de réponse.",
+    "@pages_legal_pages_terms_sections_4_blocks_0_list_1": {
+        "description": "pages/legal.pages.terms.sections.4.blocks.0.list.1"
+    },
+    "pages_legal_pages_terms_sections_4_blocks_0_list_2": "Les ressources et l’assistant informent et orientent. Ils ne donnent ni diagnostic, ni avis médical ou juridique.",
+    "@pages_legal_pages_terms_sections_4_blocks_0_list_2": {
+        "description": "pages/legal.pages.terms.sections.4.blocks.0.list.2"
+    },
+    "pages_legal_pages_terms_sections_4_blocks_0_list_3": "Une personne formée lit vos messages sous 24 heures, sans garantie de présence permanente.",
+    "@pages_legal_pages_terms_sections_4_blocks_0_list_3": {
+        "description": "pages/legal.pages.terms.sections.4.blocks.0.list.3"
+    },
+    "pages_legal_pages_terms_sections_4_id": "limites",
+    "@pages_legal_pages_terms_sections_4_id": {
+        "description": "pages/legal.pages.terms.sections.4.id"
+    },
+    "pages_legal_pages_terms_sections_4_title": "Ce que Xomiton ne remplace pas",
+    "@pages_legal_pages_terms_sections_4_title": {
+        "description": "pages/legal.pages.terms.sections.4.title"
+    },
+    "pages_legal_pages_terms_sections_5_blocks_0": "Le service est mis à jour régulièrement ; des interruptions peuvent survenir. Nous mettons tout en œuvre pour le rendre sûr et disponible, sans pouvoir garantir un accès continu. Dans la limite permise par la loi, '{'publisher_name'}' n’est pas responsable des contenus publiés par les membres, ni des dommages liés à une interruption ou à un usage contraire à ces conditions.",
+    "@pages_legal_pages_terms_sections_5_blocks_0": {
+        "description": "pages/legal.pages.terms.sections.5.blocks.0"
+    },
+    "pages_legal_pages_terms_sections_5_id": "disponibilite",
+    "@pages_legal_pages_terms_sections_5_id": {
+        "description": "pages/legal.pages.terms.sections.5.id"
+    },
+    "pages_legal_pages_terms_sections_5_title": "Disponibilité et responsabilité",
+    "@pages_legal_pages_terms_sections_5_title": {
+        "description": "pages/legal.pages.terms.sections.5.title"
+    },
+    "pages_legal_pages_terms_sections_6_blocks_0": "Le traitement de vos données est décrit dans la politique de confidentialité. Vous pouvez supprimer votre compte à tout moment, dans l’application ou depuis la page « Supprimer mon compte et mes données ».",
+    "@pages_legal_pages_terms_sections_6_blocks_0": {
+        "description": "pages/legal.pages.terms.sections.6.blocks.0"
+    },
+    "pages_legal_pages_terms_sections_6_id": "donnees",
+    "@pages_legal_pages_terms_sections_6_id": {
+        "description": "pages/legal.pages.terms.sections.6.id"
+    },
+    "pages_legal_pages_terms_sections_6_title": "Vos données",
+    "@pages_legal_pages_terms_sections_6_title": {
+        "description": "pages/legal.pages.terms.sections.6.title"
+    },
+    "pages_legal_pages_terms_sections_7_blocks_0": "Nous pouvons modifier ces conditions ; la date de dernière mise à jour figure en haut de page, et nous vous prévenons en cas de changement important. Continuer à utiliser Xomiton après ce changement vaut acceptation.",
+    "@pages_legal_pages_terms_sections_7_blocks_0": {
+        "description": "pages/legal.pages.terms.sections.7.blocks.0"
+    },
+    "pages_legal_pages_terms_sections_7_blocks_1": "Ces conditions sont régies par le droit béninois. En cas de litige, et à défaut d’accord amiable, la juridiction compétente est : '{'jurisdiction'}'.",
+    "@pages_legal_pages_terms_sections_7_blocks_1": {
+        "description": "pages/legal.pages.terms.sections.7.blocks.1"
+    },
+    "pages_legal_pages_terms_sections_7_blocks_2": "Contact : '{'contact_email'}'.",
+    "@pages_legal_pages_terms_sections_7_blocks_2": {
+        "description": "pages/legal.pages.terms.sections.7.blocks.2"
+    },
+    "pages_legal_pages_terms_sections_7_id": "evolution",
+    "@pages_legal_pages_terms_sections_7_id": {
+        "description": "pages/legal.pages.terms.sections.7.id"
+    },
+    "pages_legal_pages_terms_sections_7_title": "Évolution des conditions et droit applicable",
+    "@pages_legal_pages_terms_sections_7_title": {
+        "description": "pages/legal.pages.terms.sections.7.title"
+    },
+    "pages_legal_pages_terms_title": "Conditions d’utilisation",
+    "@pages_legal_pages_terms_title": {
+        "description": "pages/legal.pages.terms.title"
+    },
+    "pages_legal_updated": "Dernière mise à jour : {date}",
+    "@pages_legal_updated": {
+        "description": "pages/legal.updated",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
     },
     "pages_lois_category_all": "Toutes les catégories",
     "@pages_lois_category_all": {
@@ -32395,6 +34017,14 @@
     "@seo_organization_description": {
         "description": "seo.organization_description"
     },
+    "seo_pages_account_deletion_description": "Comment supprimer votre compte Xomiton et vos données, depuis l’application ou le site, même sans accès à votre compte. Délais, données effacées et conservées.",
+    "@seo_pages_account_deletion_description": {
+        "description": "seo.pages.account_deletion.description"
+    },
+    "seo_pages_account_deletion_title": "Supprimer mon compte et mes données – Xomiton",
+    "@seo_pages_account_deletion_title": {
+        "description": "seo.pages.account_deletion.title"
+    },
     "seo_pages_actualites_description": "Articles et nouvelles de l’équipe Xomiton au Bénin : droits, santé, sécurité et vie de la communauté, expliqués simplement pour agir en confiance.",
     "@seo_pages_actualites_description": {
         "description": "seo.pages.actualites.description"
@@ -32458,6 +34088,38 @@
     "seo_pages_inscription_title": "Créer un compte : rejoindre la communauté – Xomiton",
     "@seo_pages_inscription_title": {
         "description": "seo.pages.inscription.title"
+    },
+    "seo_pages_legal_cookies_description": "Xomiton n’utilise que des cookies indispensables : session, sécurité des formulaires et préférences. Aucun cookie publicitaire ni mesure d’audience tierce.",
+    "@seo_pages_legal_cookies_description": {
+        "description": "seo.pages.legal.cookies.description"
+    },
+    "seo_pages_legal_cookies_title": "Cookies et stockage local – Xomiton",
+    "@seo_pages_legal_cookies_title": {
+        "description": "seo.pages.legal.cookies.title"
+    },
+    "seo_pages_legal_notice_description": "Éditeur, hébergeur, contact, protection des données, propriété intellectuelle et accessibilité du site et de l’application Xomiton.",
+    "@seo_pages_legal_notice_description": {
+        "description": "seo.pages.legal.notice.description"
+    },
+    "seo_pages_legal_notice_title": "Mentions légales – Xomiton",
+    "@seo_pages_legal_notice_title": {
+        "description": "seo.pages.legal.notice.title"
+    },
+    "seo_pages_legal_privacy_description": "Quelles données Xomiton collecte, pourquoi, combien de temps, avec qui elles sont partagées, et comment exercer vos droits ou supprimer votre compte.",
+    "@seo_pages_legal_privacy_description": {
+        "description": "seo.pages.legal.privacy.description"
+    },
+    "seo_pages_legal_privacy_title": "Politique de confidentialité – Xomiton",
+    "@seo_pages_legal_privacy_title": {
+        "description": "seo.pages.legal.privacy.title"
+    },
+    "seo_pages_legal_terms_description": "Les règles d’utilisation de Xomiton : accès dès 15 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.",
+    "@seo_pages_legal_terms_description": {
+        "description": "seo.pages.legal.terms.description"
+    },
+    "seo_pages_legal_terms_title": "Conditions d’utilisation – Xomiton",
+    "@seo_pages_legal_terms_title": {
+        "description": "seo.pages.legal.terms.title"
     },
     "seo_pages_lois_description": "Loi sur les violences faites aux femmes, Code pénal, Code de la famille, santé, VIH : résumés clairs et version simple pour connaître et défendre vos droits.",
     "@seo_pages_lois_description": {
