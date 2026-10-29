@@ -1,6 +1,8 @@
-Map<String, dynamic> _map(Object? v) => v is Map ? Map<String, dynamic>.from(v) : <String, dynamic>{};
-List<Map<String, dynamic>> _list(Object? v) =>
-    v is List ? v.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList() : const [];
+Map<String, dynamic> _map(Object? v) =>
+    v is Map ? Map<String, dynamic>.from(v) : <String, dynamic>{};
+List<Map<String, dynamic>> _list(Object? v) => v is List
+    ? v.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList()
+    : const [];
 int? _int(Object? v) => v is num ? v.toInt() : int.tryParse('$v');
 DateTime? _date(Object? v) => v is String ? DateTime.tryParse(v) : null;
 String? _str(Object? v) => v == null ? null : '$v';
@@ -10,7 +12,12 @@ String? _str(Object? v) => v == null ? null : '$v';
 /// Ce que le serveur permet au compte sur une alerte (`can{…}`) : les boutons
 /// n'existent que si le serveur les autorise.
 class AlertCan {
-  const AlertCan({this.acknowledge = false, this.take = false, this.close = false, this.statuses = const []});
+  const AlertCan({
+    this.acknowledge = false,
+    this.take = false,
+    this.close = false,
+    this.statuses = const [],
+  });
   final bool acknowledge;
   final bool take;
   final bool close;
@@ -98,7 +105,10 @@ class PeerAlertsPage {
   final bool? onDuty;
 
   bool get hasMore => page < lastPage;
-  List<PeerAlertSummary> get open => [for (final a in items) if (a.status != 'clos' && a.status != 'traite') a];
+  List<PeerAlertSummary> get open => [
+    for (final a in items)
+      if (a.status != 'clos' && a.status != 'traite') a,
+  ];
 }
 
 class AlertHistoryItem {
@@ -162,10 +172,16 @@ class PeerAlertDetail {
       contact: _str(j['contact']),
       channelLabel: _str(j['preferred_channel_label']),
       needs: [for (final n in _list(j['needs'])) '${n['label'] ?? n['slug']}'],
-      position: lat == null || lng == null ? null : AlertPosition(lat, lng, (pos!['accuracy'] as num?)?.toDouble()),
+      position: lat == null || lng == null
+          ? null
+          : AlertPosition(lat, lng, (pos!['accuracy'] as num?)?.toDouble()),
       history: [
         for (final h in _list(j['history']))
-          AlertHistoryItem('${h['status']}', '${h['status_label'] ?? h['status']}', _date(h['at'])),
+          AlertHistoryItem(
+            '${h['status']}',
+            '${h['status_label'] ?? h['status']}',
+            _date(h['at']),
+          ),
       ],
       can: AlertCan.fromJson(j['can']),
       cancelled: j['cancelled'] == true,
@@ -213,14 +229,18 @@ class FollowupItem {
   bool get queued => queuedUuid != null;
   bool get pending => outcome == 'planifie';
 
-  factory FollowupItem.fromJson(Map<String, dynamic> j, {String Function(String)? outcomeLabel}) {
+  factory FollowupItem.fromJson(
+    Map<String, dynamic> j, {
+    String Function(String)? outcomeLabel,
+  }) {
     final outcome = '${j['outcome'] ?? 'planifie'}';
     return FollowupItem(
       id: _int(j['id']) ?? 0,
       date: '${j['date'] ?? ''}',
       step: '${j['step'] ?? ''}',
       outcome: outcome,
-      outcomeLabel: '${j['outcome_label'] ?? outcomeLabel?.call(outcome) ?? outcome}',
+      outcomeLabel:
+          '${j['outcome_label'] ?? outcomeLabel?.call(outcome) ?? outcome}',
       nextOn: _str(j['next_on']),
       overdue: j['overdue'] == true,
       comment: _str(j['comment']),
@@ -299,7 +319,11 @@ class PeerCase {
   bool get queued => queuedUuid != null;
   bool get locked => anonymized || status == 'archive';
 
-  PeerCase copyWith({List<FollowupItem>? followups, int? followupsCount, CaseCan? can}) => PeerCase(
+  PeerCase copyWith({
+    List<FollowupItem>? followups,
+    int? followupsCount,
+    CaseCan? can,
+  }) => PeerCase(
     id: id,
     code: code,
     kind: kind,
@@ -328,7 +352,9 @@ class PeerCase {
   );
 
   factory PeerCase.fromJson(Map<String, dynamic> j) {
-    final fu = [for (final f in _list(j['followups'])) FollowupItem.fromJson(f)];
+    final fu = [
+      for (final f in _list(j['followups'])) FollowupItem.fromJson(f),
+    ];
     final can = _map(j['can']);
     return PeerCase(
       id: _int(j['id']),
@@ -351,7 +377,10 @@ class PeerCase {
       followups: fu,
       followupsCount: _int(j['followups_count']) ?? fu.length,
       anonymized: j['anonymized'] == true,
-      can: CaseCan(update: can['update'] == true, addFollowup: can['add_followup'] == true),
+      can: CaseCan(
+        update: can['update'] == true,
+        addFollowup: can['add_followup'] == true,
+      ),
       createdAt: _date(j['created_at']),
       updatedAt: _date(j['updated_at']),
       closedAt: _date(j['closed_at']),
@@ -360,7 +389,13 @@ class PeerCase {
 }
 
 class PeerCasesPage {
-  const PeerCasesPage({required this.items, this.page = 1, this.lastPage = 1, this.total, this.stale = false});
+  const PeerCasesPage({
+    required this.items,
+    this.page = 1,
+    this.lastPage = 1,
+    this.total,
+    this.stale = false,
+  });
   final List<PeerCase> items;
   final int page;
   final int lastPage;
@@ -372,7 +407,12 @@ class PeerCasesPage {
 // --- Règles de validation et listes fermées de la collecte ---------------------------
 
 class ValidationRule {
-  const ValidationRule({required this.key, this.label, this.params = const {}, this.locked = false});
+  const ValidationRule({
+    required this.key,
+    this.label,
+    this.params = const {},
+    this.locked = false,
+  });
   final String key;
   final String? label;
   final Map<String, dynamic> params;
@@ -432,9 +472,16 @@ class ValidationRules {
             locked: r['locked'] == true,
           ),
       ],
-      ageRanges: [for (final a in _list(options['age_ranges'])) Option('${a['value']}', '${a['label'] ?? a['value']}')],
-      referrals: [for (final r in (options['referrals'] as List?) ?? const []) '$r'],
-      followupSteps: [for (final r in (options['followup_steps'] as List?) ?? const []) '$r'],
+      ageRanges: [
+        for (final a in _list(options['age_ranges']))
+          Option('${a['value']}', '${a['label'] ?? a['value']}'),
+      ],
+      referrals: [
+        for (final r in (options['referrals'] as List?) ?? const []) '$r',
+      ],
+      followupSteps: [
+        for (final r in (options['followup_steps'] as List?) ?? const []) '$r',
+      ],
       notesMinLength: _int(options['notes_min_length']) ?? 20,
     );
   }
@@ -448,7 +495,11 @@ class IdLabel {
 
 /// Listes de la collecte : départements et communes, populations, types de violence.
 class CollectLists {
-  const CollectLists({this.zones = const [], this.populations = const [], this.violenceTypes = const []});
+  const CollectLists({
+    this.zones = const [],
+    this.populations = const [],
+    this.violenceTypes = const [],
+  });
   final List<CollectZone> zones;
   final List<IdLabel> populations;
   final List<IdLabel> violenceTypes;

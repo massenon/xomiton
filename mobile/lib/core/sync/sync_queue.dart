@@ -86,7 +86,8 @@ class QueueEntry {
   Map<String, dynamic> summary;
 
   bool get isPending => status == QueueStatus.pending;
-  bool get isCase => kind == QueueKind.caseCreate || kind == QueueKind.caseUpdate;
+  bool get isCase =>
+      kind == QueueKind.caseCreate || kind == QueueKind.caseUpdate;
 
   Map<String, dynamic> toJson() => {
     'uuid': uuid,
@@ -134,7 +135,8 @@ class QueueEntry {
       failure: raw['failure'] as String?,
       errors: errs,
       conflicts: [
-        for (final c in (raw['conflicts'] as List?) ?? const []) ?ConflictRef.from(c),
+        for (final c in (raw['conflicts'] as List?) ?? const [])
+          ?ConflictRef.from(c),
       ],
       warnings: [
         for (final w in (raw['warnings'] as List?) ?? const [])
@@ -176,9 +178,11 @@ class SyncQueue {
   }
 
   /// En attente ou à corriger / trancher : ce qui n'est pas encore parti pour de bon.
-  List<QueueEntry> open() => list().where((e) => e.status != QueueStatus.sent).toList();
+  List<QueueEntry> open() =>
+      list().where((e) => e.status != QueueStatus.sent).toList();
   List<QueueEntry> pending() => list().where((e) => e.isPending).toList();
-  List<QueueEntry> sent() => list().where((e) => e.status == QueueStatus.sent).toList();
+  List<QueueEntry> sent() =>
+      list().where((e) => e.status == QueueStatus.sent).toList();
 
   QueueEntry? find(String uuid) {
     final raw = box.get('$_prefix$uuid');
@@ -202,7 +206,10 @@ class SyncQueue {
 
   /// Garde les [keepSent] derniers envois partis, supprime les plus anciens.
   Future<void> trimSent() async {
-    final sent = this.sent()..sort((a, b) => (b.sentAt ?? b.createdAt).compareTo(a.sentAt ?? a.createdAt));
+    final sent = this.sent()
+      ..sort(
+        (a, b) => (b.sentAt ?? b.createdAt).compareTo(a.sentAt ?? a.createdAt),
+      );
     for (final e in sent.skip(keepSent)) {
       await box.delete('$_prefix${e.uuid}');
     }

@@ -26,7 +26,12 @@ Map<String, dynamic> peerSection({
   int toContact = 2,
   bool onDuty = false,
 }) => {
-  'kpi': {'collected': collected, 'this_month': thisMonth, 'in_progress': inProgress, 'closed': closed},
+  'kpi': {
+    'collected': collected,
+    'this_month': thisMonth,
+    'in_progress': inProgress,
+    'closed': closed,
+  },
   'routed_alerts': {'open': 2, 'new': toTake, 'items': []},
   'tasks': [
     if (toTake > 0) {'key': 'alerts_to_take', 'count': toTake},
@@ -46,7 +51,9 @@ Map<String, dynamic> alertRow(
 }) => {
   'id': id,
   'type': type,
-  'type_label': type == 'sos' ? 'SOS' : (type == 'besoin' ? 'Besoin' : 'Signalement'),
+  'type_label': type == 'sos'
+      ? 'SOS'
+      : (type == 'besoin' ? 'Besoin' : 'Signalement'),
   'status': status,
   'status_label': status == 'nouveau' ? 'Nouveau' : 'Pris en charge',
   'priority': priority,
@@ -54,7 +61,10 @@ Map<String, dynamic> alertRow(
   'place': place,
   'category_label': category,
   'acknowledged': ack,
-  'created_at': DateTime.now().subtract(const Duration(minutes: 5)).toUtc().toIso8601String(),
+  'created_at': DateTime.now()
+      .subtract(const Duration(minutes: 5))
+      .toUtc()
+      .toIso8601String(),
 };
 
 /// Routes communes de l'espace pair ; `extra` complète ou remplace.
@@ -74,15 +84,27 @@ Map<String, FakeHandler> pairRoutes({
     },
   }),
   'GET me/security': (_) => jsonBody(200, {
-    'data': {'discreet': true, 'mask_previews': false, 'pin_enabled': true, 'neutral_tab_title': false},
+    'data': {
+      'discreet': true,
+      'mask_previews': false,
+      'pin_enabled': true,
+      'neutral_tab_title': false,
+    },
   }),
-  'POST me/devices': (_) => jsonBody(201, {'data': {'device_uuid': 'x'}}),
-  'POST heartbeat': (_) => jsonBody(200, {'data': {'open_conflicts': 0, 'rules_updated_at': null, 'wipe': null}}),
+  'POST me/devices': (_) => jsonBody(201, {
+    'data': {'device_uuid': 'x'},
+  }),
+  'POST heartbeat': (_) => jsonBody(200, {
+    'data': {'open_conflicts': 0, 'rules_updated_at': null, 'wipe': null},
+  }),
   'GET sync/pull': (_) => jsonBody(200, {
     'data': <String, dynamic>{},
     'meta': {'cursor': 'c0', 'has_more': false},
   }),
-  'GET sync/conflicts': (_) => jsonBody(200, {'data': [], 'meta': {'open': 0}}),
+  'GET sync/conflicts': (_) => jsonBody(200, {
+    'data': [],
+    'meta': {'open': 0},
+  }),
   'GET pair/validation-rules': (_) => jsonBody(
     200,
     {
@@ -144,10 +166,28 @@ Future<TestEnv> openPair(
 }
 
 String currentPath(WidgetTester tester) =>
-    GoRouter.of(tester.element(find.byType(Scaffold).first)).routerDelegate.currentConfiguration.uri.toString();
+    GoRouter.of(tester.element(find.byType(Scaffold).first))
+        .routerDelegate
+        .currentConfiguration
+        .uri
+        .toString();
 
 List<Override> pairOverrides({FakeLauncher? launcher}) => [
   if (launcher != null) linkLauncherProvider.overrideWithValue(launcher),
 ];
 
 DioException offline(RequestOptions o) => offlineError(o);
+
+/// Fait défiler jusqu'à un élément, puis le ramène bien dans la zone visible.
+Future<void> revealFinder(WidgetTester tester, Finder f) async {
+  await tester.scrollUntilVisible(
+    f,
+    250,
+    scrollable: find.byType(Scrollable).first,
+  );
+  await tester.ensureVisible(f);
+  await tester.pumpAndSettle();
+}
+
+Future<void> revealKey(WidgetTester tester, String key) =>
+    revealFinder(tester, find.byKey(ValueKey(key)));

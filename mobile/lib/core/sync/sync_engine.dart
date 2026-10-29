@@ -1,3 +1,4 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
 import 'dart:async';
 import 'dart:math';
 
@@ -12,10 +13,19 @@ import 'sync_queue.dart';
 const _uuid = Uuid();
 
 /// Collections du pair (docs/API.md §21.3) : espace pair actif + `cases.create`.
-const kPairCollections = ['cases', 'case_followups', 'alerts', 'validation_rules'];
+const kPairCollections = [
+  'cases',
+  'case_followups',
+  'alerts',
+  'validation_rules',
+];
 
 /// Collections de tous les comptes.
-const kCommonCollections = ['emergency_contacts', 'directory_contacts', 'thematiques'];
+const kCommonCollections = [
+  'emergency_contacts',
+  'directory_contacts',
+  'thematiques',
+];
 
 /// Éléments par lot (`xomiton.sync.push_batch_size`).
 const kPushBatchSize = 50;
@@ -155,7 +165,10 @@ class SyncEngine {
 
   /// Un passage complet. [force] : action de la personne ou retour du réseau
   /// (ignore l'attente après échec). Rend le nombre d'éléments partis.
-  Future<int> sync({bool force = false}) async {
+  ///
+  /// [pushOnly] : n'envoie que la file (action immédiate de la personne : un
+  /// suivi, un changement de statut), sans tirer les collections.
+  Future<int> sync({bool force = false, bool pushOnly = false}) async {
     if (_running) return 0;
     if (!force && !canAutoRun) return 0;
     _running = true;
@@ -168,14 +181,24 @@ class SyncEngine {
         sent += await _pushCases();
         sent += await _pushFollowups();
       }
-      await _pullAll();
-      if (runPair) {
-        await refreshRules();
-        await refreshConflicts();
+      if (!pushOnly) {
+        await _pullAll();
+        if (runPair) {
+          await refreshRules();
+          await refreshConflicts();
+        }
       }
       await queue.trimSent();
       _succeeded();
-      _emit(_state.copyWith(syncing: false, lastSync: _now(), offline: false, lastSent: sent, clearError: true));
+      _emit(
+        _state.copyWith(
+          syncing: false,
+          lastSync: pushOnly ? _state.lastSync : _now(),
+          offline: false,
+          lastSent: sent,
+          clearError: true,
+        ),
+      );
     } on _Offline {
       _emit(_state.copyWith(syncing: false, offline: true));
     } on _Retry {
@@ -187,7 +210,12 @@ class SyncEngine {
         _emit(_state.copyWith(syncing: false, offline: true));
       } else {
         _failed();
-        _emit(_state.copyWith(syncing: false, lastError: api.code ?? '${api.status}'));
+        _emit(
+          _state.copyWith(
+            syncing: false,
+            lastError: api.code ?? '${api.status}',
+          ),
+        );
       }
     } catch (_) {
       _failed();
@@ -255,7 +283,9 @@ class SyncEngine {
     });
     // Corps figé : même clé = même corps à chaque rejeu (le nombre d'éléments en
     // attente voyage par `heartbeat`, pas par le lot).
-    final body = {'items': [for (final e in entries) _itemJson(e)]};
+    final body = {
+      'items': [for (final e in entries) _itemJson(e)],
+    };
     Response<dynamic>? res;
     for (var attempt = 0; attempt < 3; attempt++) {
       try {
@@ -304,8 +334,13 @@ class SyncEngine {
       }
       // 202 `processing` : la requête d'origine court encore → rejouer tel quel.
       final data = res.data is Map ? (res.data as Map)['data'] : null;
-      if (res.statusCode == 202 || (data is Map && data['status'] == 'processing' && data['items'] == null)) {
-        final ra = int.tryParse(res.headers.value('retry-after') ?? '') ?? (data is Map ? (data['retry_after'] as num?)?.toInt() : null);
+      if (res.statusCode == 202 ||
+          (data is Map &&
+              data['status'] == 'processing' &&
+              data['items'] == null)) {
+        final ra =
+            int.tryParse(res.headers.value('retry-after') ?? '') ??
+            (data is Map ? (data['retry_after'] as num?)?.toInt() : null);
         await _wait(Duration(seconds: ra ?? 1));
         res = null;
         continue;
@@ -320,10 +355,13 @@ class SyncEngine {
       throw const _Retry(null);
     }
     final root = res.data is Map ? (res.data as Map)['data'] : null;
-    final items = root is Map && root['items'] is List ? (root['items'] as List) : const [];
+    final items = root is Map && root['items'] is List
+        ? (root['items'] as List)
+        : const [];
     final byUuid = <String, Map<String, dynamic>>{
       for (final it in items)
-        if (it is Map && it['uuid'] is String) it['uuid'] as String: Map<String, dynamic>.from(it),
+        if (it is Map && it['uuid'] is String)
+          it['uuid'] as String: Map<String, dynamic>.from(it),
     };
     var sent = 0;
     for (final e in entries) {
@@ -350,7 +388,9 @@ class SyncEngine {
         ..sentAt = _now()
         ..failure = null
         ..errors = {}
-        ..resultCode = '${item['reference'] ?? item['code'] ?? ''}'.isEmpty ? null : '${item['reference'] ?? item['code']}'
+        ..resultCode = '${item['reference'] ?? item['code'] ?? ''}'.isEmpty
+            ? null
+            : '${item['reference'] ?? item['code']}'
         ..warnings = [
           for (final w in (item['warnings'] as List?) ?? const [])
             if (w is Map) Map<String, dynamic>.from(w),
@@ -360,7 +400,11 @@ class SyncEngine {
       }
       final current = item['case'];
       if (current is Map && current['id'] != null) {
-        await pair.put('cases', current['id'], Map<String, dynamic>.from(current));
+        await pair.put(
+          'cases',
+          current['id'],
+          Map<String, dynamic>.from(current),
+        );
       }
       await queue.save(e);
       return true;
@@ -370,7 +414,8 @@ class SyncEngine {
         e
           ..status = QueueStatus.conflict
           ..conflicts = [
-            for (final c in (item['conflicts'] as List?) ?? const []) ?ConflictRef.from(c),
+            for (final c in (item['conflicts'] as List?) ?? const [])
+              ?ConflictRef.from(c),
           ];
         await queue.save(e);
         return false;
@@ -399,7 +444,9 @@ class SyncEngine {
   Map<String, List<String>> _errors(Object? raw) {
     final out = <String, List<String>>{};
     if (raw is Map) {
-      raw.forEach((k, v) => out['$k'] = v is List ? [for (final x in v) '$x'] : ['$v']);
+      raw.forEach(
+        (k, v) => out['$k'] = v is List ? [for (final x in v) '$x'] : ['$v'],
+      );
     }
     return out;
   }
@@ -410,7 +457,9 @@ class SyncEngine {
     var sent = 0;
     final pending = queue.pending().where((e) => !e.isCase).toList();
     for (final e in pending) {
-      final code = e.caseCode ?? (e.caseUuid == null ? null : pair.text('code:${e.caseUuid}'));
+      final code =
+          e.caseCode ??
+          (e.caseUuid == null ? null : pair.text('code:${e.caseUuid}'));
       // Dossier encore en file : le code arrive à l'envoi, on attend.
       if (code == null) continue;
       try {
@@ -427,7 +476,10 @@ class SyncEngine {
             : await dio.patch<dynamic>(
                 'pair/cases/${Uri.encodeComponent(code)}/followups/${e.payload['id']}',
                 data: {'outcome': e.payload['outcome'] ?? 'realise'},
-                options: Options(validateStatus: (s) => s != null && s >= 200 && s < 300, extra: {'no_auto_replay': true}),
+                options: Options(
+                  validateStatus: (s) => s != null && s >= 200 && s < 300,
+                  extra: {'no_auto_replay': true},
+                ),
               );
         final data = res.data is Map ? (res.data as Map)['data'] : null;
         e
@@ -437,7 +489,8 @@ class SyncEngine {
           ..failure = null
           ..errors = {}
           ..resultCode = code;
-        if (data is Map && data['id'] != null) e.summary = {...e.summary, 'server_id': data['id']};
+        if (data is Map && data['id'] != null)
+          e.summary = {...e.summary, 'server_id': data['id']};
         await queue.save(e);
         sent++;
       } on DioException catch (err) {
@@ -466,7 +519,11 @@ class SyncEngine {
     if (runCommon) await _pull('common', kCommonCollections, common);
   }
 
-  Future<void> _pull(String group, List<String> collections, CollectionStore store) async {
+  Future<void> _pull(
+    String group,
+    List<String> collections,
+    CollectionStore store,
+  ) async {
     final cursorKey = 'cursor:$group';
     String? since = store.text(cursorKey);
     var retriedFull = false;
@@ -493,19 +550,27 @@ class SyncEngine {
         rethrow;
       }
       final body = res.data is Map ? res.data as Map : const {};
-      final data = body['data'] is Map ? Map<String, dynamic>.from(body['data'] as Map) : <String, dynamic>{};
-      final meta = body['meta'] is Map ? Map<String, dynamic>.from(body['meta'] as Map) : <String, dynamic>{};
+      final data = body['data'] is Map
+          ? Map<String, dynamic>.from(body['data'] as Map)
+          : <String, dynamic>{};
+      final meta = body['meta'] is Map
+          ? Map<String, dynamic>.from(body['meta'] as Map)
+          : <String, dynamic>{};
       pages.add(data);
       lastCursor = meta['cursor'] as String? ?? lastCursor;
       if (meta['emergency_numbers'] is List) {
-        await store.putJson('emergency_numbers', {'items': meta['emergency_numbers']});
+        await store.putJson('emergency_numbers', {
+          'items': meta['emergency_numbers'],
+        });
       }
       if (meta['has_more'] != true || lastCursor == null) break;
       since = lastCursor;
     }
     // Application en bloc, curseur en dernier : un arrêt brutal pendant
     // l'écriture ne laisse jamais un curseur plus avancé que les données.
-    final hasReset = pages.any((p) => p.values.any((c) => c is Map && c['reset'] == true));
+    final hasReset = pages.any(
+      (p) => p.values.any((c) => c is Map && c['reset'] == true),
+    );
     if (hasReset) await store.delete(cursorKey);
     for (final page in pages) {
       for (final col in collections) {
@@ -513,7 +578,8 @@ class SyncEngine {
         if (c is! Map) continue;
         if (c['reset'] == true) await store.clearCollection(col);
         for (final row in (c['upserts'] as List?) ?? const []) {
-          if (row is Map && row['id'] != null) await store.put(col, row['id'], Map<String, dynamic>.from(row));
+          if (row is Map && row['id'] != null)
+            await store.put(col, row['id'], Map<String, dynamic>.from(row));
         }
         for (final d in (c['deletes'] as List?) ?? const []) {
           final id = d is Map ? d['id'] : d;
@@ -535,7 +601,8 @@ class SyncEngine {
         'pair/validation-rules',
         options: Options(
           headers: {'If-None-Match': ?(cached?['etag'] as String?)},
-          validateStatus: (s) => s != null && ((s >= 200 && s < 300) || s == 304),
+          validateStatus: (s) =>
+              s != null && ((s >= 200 && s < 300) || s == 304),
         ),
       );
       if (res.statusCode == 304 && cached != null) return cached;
@@ -554,7 +621,10 @@ class SyncEngine {
   /// Conflits ouverts de l'appareil (`GET sync/conflicts`), gardés pour l'écran.
   Future<List<Map<String, dynamic>>> refreshConflicts() async {
     try {
-      final res = await dio.get<dynamic>('sync/conflicts', queryParameters: {'status': 'open', 'per_page': 50});
+      final res = await dio.get<dynamic>(
+        'sync/conflicts',
+        queryParameters: {'status': 'open', 'per_page': 50},
+      );
       final list = [
         for (final r in ((res.data as Map)['data'] as List?) ?? const [])
           if (r is Map) Map<String, dynamic>.from(r),
@@ -592,11 +662,19 @@ class SyncEngine {
   }
 
   Future<void> _afterResolved(int id, String resolution) async {
-    final left = [for (final c in conflicts()) if (c['id'] != id) c];
+    final left = [
+      for (final c in conflicts())
+        if (c['id'] != id) c,
+    ];
     await pair.putJson('conflicts', {'items': left});
-    for (final e in queue.list().where((x) => x.status == QueueStatus.conflict)) {
+    for (final e in queue.list().where(
+      (x) => x.status == QueueStatus.conflict,
+    )) {
       if (e.conflicts.any((c) => c.id == id)) {
-        e.conflicts = [for (final c in e.conflicts) if (c.id != id) c];
+        e.conflicts = [
+          for (final c in e.conflicts)
+            if (c.id != id) c,
+        ];
         if (e.conflicts.isEmpty) {
           e
             ..status = QueueStatus.sent
@@ -633,7 +711,9 @@ class SyncEngine {
       final data = (res.data is Map && (res.data as Map)['data'] is Map)
           ? Map<String, dynamic>.from((res.data as Map)['data'] as Map)
           : <String, dynamic>{};
-      final device = data['device'] is Map ? Map<String, dynamic>.from(data['device'] as Map) : <String, dynamic>{};
+      final device = data['device'] is Map
+          ? Map<String, dynamic>.from(data['device'] as Map)
+          : <String, dynamic>{};
       // `wipe` : {requested_at, reason} tant que l'ordre attend son accusé, sinon null (API §3, §21.6).
       final wipe = data['wipe'] ?? device['wipe'];
       if (wipe != null && wipe != false) {
@@ -641,12 +721,15 @@ class SyncEngine {
         return false;
       }
       final open = (data['open_conflicts'] as num?)?.toInt();
-      if (open != null) _emit(_state.copyWith(openConflicts: open, offline: false));
+      if (open != null)
+        _emit(_state.copyWith(openConflicts: open, offline: false));
       final rulesAt = data['rules_updated_at'] as String?;
       if (rulesAt != null && runPair) {
         final known = pair.json('rules');
         final body = known?['body'];
-        final knownAt = body is Map && body['meta'] is Map ? (body['meta'] as Map)['updated_at'] : null;
+        final knownAt = body is Map && body['meta'] is Map
+            ? (body['meta'] as Map)['updated_at']
+            : null;
         if (knownAt != rulesAt) {
           try {
             await refreshRules();

@@ -25,7 +25,8 @@ class CollectionStore {
     return out;
   }
 
-  Map<String, dynamic>? row(String col, Object id) => _decode(box.get(_k(col, id)));
+  Map<String, dynamic>? row(String col, Object id) =>
+      _decode(box.get(_k(col, id)));
 
   Future<void> put(String col, Object id, Map<String, dynamic> row) =>
       box.put(_k(col, id), jsonEncode(row));
@@ -42,7 +43,8 @@ class CollectionStore {
   // --- valeurs diverses (curseurs, règles, propriétaire…) ---------------------
 
   Map<String, dynamic>? json(String key) => _decode(box.get('$ns$key'));
-  Future<void> putJson(String key, Map<String, dynamic> v) => box.put('$ns$key', jsonEncode(v));
+  Future<void> putJson(String key, Map<String, dynamic> v) =>
+      box.put('$ns$key', jsonEncode(v));
   String? text(String key) => box.get('$ns$key');
   Future<void> putText(String key, String v) => box.put('$ns$key', v);
   Future<void> delete(String key) => box.delete('$ns$key');

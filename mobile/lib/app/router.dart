@@ -26,6 +26,7 @@ import '../features/home/presentation/notifications_page.dart';
 import '../features/home/presentation/resources_page.dart';
 import '../features/home/presentation/themes_pages.dart';
 import '../features/pair/presentation/pair_alerts_pages.dart';
+import '../features/pair/presentation/pair_cases_pages.dart';
 import '../features/pair/presentation/pair_home_page.dart';
 import '../features/profile/presentation/profile_page.dart';
 import '../features/profile/presentation/progressive_page.dart';
@@ -230,7 +231,19 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/pair/dossiers',
-              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.peer, titleKey: 'mobile_peer_tab_cases'),
+              builder: (_, _) => const PairCasesPage(),
+              routes: [
+                GoRoute(
+                  path: ':code',
+                  builder: (_, state) => PairCasePage(code: state.pathParameters['code']!),
+                  routes: [
+                    GoRoute(
+                      path: 'suivi',
+                      builder: (_, state) => PairFollowupFormPage(code: state.pathParameters['code']!),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ]),
         ],

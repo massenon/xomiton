@@ -1,3 +1,4 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -25,7 +26,8 @@ class PairAlertsPage extends ConsumerStatefulWidget {
   ConsumerState<PairAlertsPage> createState() => _PairAlertsPageState();
 }
 
-class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBindingObserver {
+class _PairAlertsPageState extends ConsumerState<PairAlertsPage>
+    with WidgetsBindingObserver {
   Timer? _timer;
   int? _pollSeconds;
   String? _announce;
@@ -58,7 +60,8 @@ class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBin
     _timer?.cancel();
     _pollSeconds = secs;
     _timer = Timer.periodic(Duration(seconds: secs), (_) {
-      if (ref.read(isOnlineProvider)) ref.read(peerAlertsProvider.notifier).refresh();
+      if (ref.read(isOnlineProvider))
+        ref.read(peerAlertsProvider.notifier).refresh();
     });
   }
 
@@ -85,7 +88,12 @@ class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBin
       if (before != null) {
         final known = before.items.map((a) => a.id).toSet();
         final fresh = after.items.where((a) => !known.contains(a.id)).length;
-        if (fresh > 0) setState(() => _announce = context.t('peer_alerts_announce_new', {'count': fresh}));
+        if (fresh > 0)
+          setState(
+            () => _announce = context.t('peer_alerts_announce_new', {
+              'count': fresh,
+            }),
+          );
       }
     });
     if (state.hasValue && _timer == null) {
@@ -105,8 +113,14 @@ class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBin
             PairHeader(title: context.t('peer_alerts_title')),
             const SizedBox(height: XmSpace.s3),
             state.when(
-              loading: () => const Padding(padding: EdgeInsets.all(XmSpace.s6), child: LoadingView()),
-              error: (e, _) => ErrorView(error: e, onRetry: () => ref.invalidate(peerAlertsProvider)),
+              loading: () => const Padding(
+                padding: EdgeInsets.all(XmSpace.s6),
+                child: LoadingView(),
+              ),
+              error: (e, _) => ErrorView(
+                error: e,
+                onRetry: () => ref.invalidate(peerAlertsProvider),
+              ),
               data: (page) {
                 final open = page.open.length;
                 return Column(
@@ -122,8 +136,11 @@ class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBin
                         ),
                         OutlinedButton.icon(
                           key: const ValueKey('alerts-refresh'),
-                          style: OutlinedButton.styleFrom(minimumSize: const Size(0, XmSpace.targetMin)),
-                          onPressed: () => ref.read(peerAlertsProvider.notifier).refresh(),
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(0, XmSpace.targetMin),
+                          ),
+                          onPressed: () =>
+                              ref.read(peerAlertsProvider.notifier).refresh(),
                           icon: const Icon(Icons.sync, size: 18),
                           label: Text(context.t('peer_alerts_refresh')),
                         ),
@@ -132,17 +149,29 @@ class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBin
                     const SizedBox(height: XmSpace.s2),
                     Text(
                       (page.onDuty ?? false)
-                          ? context.t('peer_alerts_on_duty', {'seconds': peerPollSeconds(onDuty: true)})
-                          : context.t('mobile_pair_alerts_poll', {'seconds': peerPollSeconds(onDuty: false)}),
+                          ? context.t('peer_alerts_on_duty', {
+                              'seconds': peerPollSeconds(onDuty: true),
+                            })
+                          : context.t('mobile_pair_alerts_poll', {
+                              'seconds': peerPollSeconds(onDuty: false),
+                            }),
                       style: theme.textTheme.bodySmall,
                     ),
                     if (page.stale) ...[
                       const SizedBox(height: XmSpace.s2),
-                      XmAlert(context.t('peer_alerts_stale'), icon: Icons.cloud_off_outlined, tone: context.xm.warning),
+                      XmAlert(
+                        context.t('peer_alerts_stale'),
+                        icon: Icons.cloud_off_outlined,
+                        tone: context.xm.warning,
+                      ),
                     ],
                     if (_announce != null) ...[
                       const SizedBox(height: XmSpace.s2),
-                      XmAlert(_announce!, icon: Icons.notifications_active_outlined, tone: context.xm.primary),
+                      XmAlert(
+                        _announce!,
+                        icon: Icons.notifications_active_outlined,
+                        tone: context.xm.primary,
+                      ),
                     ],
                     const SizedBox(height: XmSpace.s3),
                     if (page.items.isEmpty)
@@ -151,11 +180,16 @@ class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBin
                       for (final a in page.items)
                         Padding(
                           padding: const EdgeInsets.only(bottom: XmSpace.s3),
-                          child: _AlertCard(alert: a, busy: _busy.contains(a.id), onAck: () => _ack(a)),
+                          child: _AlertCard(
+                            alert: a,
+                            busy: _busy.contains(a.id),
+                            onAck: () => _ack(a),
+                          ),
                         ),
                     if (page.hasMore)
                       OutlinedButton(
-                        onPressed: () => ref.read(peerAlertsProvider.notifier).loadMore(),
+                        onPressed: () =>
+                            ref.read(peerAlertsProvider.notifier).loadMore(),
                         child: Text(context.t('mobile_feed_load_more')),
                       ),
                   ],
@@ -170,7 +204,11 @@ class _PairAlertsPageState extends ConsumerState<PairAlertsPage> with WidgetsBin
 }
 
 class _AlertCard extends StatelessWidget {
-  const _AlertCard({required this.alert, required this.busy, required this.onAck});
+  const _AlertCard({
+    required this.alert,
+    required this.busy,
+    required this.onAck,
+  });
   final PeerAlertSummary alert;
   final bool busy;
   final VoidCallback onAck;
@@ -200,12 +238,21 @@ class _AlertCard extends StatelessWidget {
                 spacing: XmSpace.s2,
                 runSpacing: XmSpace.s2,
                 children: [
-                  PairBadge(type, tone: a.isSos ? PairTone.danger : PairTone.violet),
                   PairBadge(
-                    a.isNew ? context.alertStatusLabel('nouveau') : context.alertStatusLabel(a.status),
+                    type,
+                    tone: a.isSos ? PairTone.danger : PairTone.violet,
+                  ),
+                  PairBadge(
+                    a.isNew
+                        ? context.alertStatusLabel('nouveau')
+                        : context.alertStatusLabel(a.status),
                     tone: statusTone(a.status),
                   ),
-                  if (a.priority != 'normale') PairBadge(context.priorityLabel(a.priority), tone: priorityTone(a.priority)),
+                  if (a.priority != 'normale')
+                    PairBadge(
+                      context.priorityLabel(a.priority),
+                      tone: priorityTone(a.priority),
+                    ),
                 ],
               ),
               const SizedBox(height: XmSpace.s2),
@@ -219,10 +266,13 @@ class _AlertCard extends StatelessWidget {
                 children: [
                   if (a.createdAt != null)
                     Text(
-                      context.t('peer_alerts_ago', {'time': relativeTime(context, a.createdAt!)}),
+                      context.t('peer_alerts_ago', {
+                        'time': relativeTime(context, a.createdAt!),
+                      }),
                       style: theme.textTheme.bodySmall,
                     ),
-                  if (a.categoryLabel != null) Text(a.categoryLabel!, style: theme.textTheme.bodySmall),
+                  if (a.categoryLabel != null)
+                    Text(a.categoryLabel!, style: theme.textTheme.bodySmall),
                 ],
               ),
               const SizedBox(height: XmSpace.s3),
@@ -233,16 +283,23 @@ class _AlertCard extends StatelessWidget {
                   if (a.isNew)
                     FilledButton(
                       key: ValueKey('ack-${a.id}'),
-                      style: FilledButton.styleFrom(minimumSize: const Size(0, XmSpace.targetMin)),
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size(0, XmSpace.targetMin),
+                      ),
                       onPressed: busy ? null : onAck,
                       child: Text(context.t('peer_alerts_acknowledge')),
                     ),
                   OutlinedButton(
                     key: ValueKey('detail-${a.id}'),
-                    style: OutlinedButton.styleFrom(minimumSize: const Size(0, XmSpace.targetMin)),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(0, XmSpace.targetMin),
+                    ),
                     onPressed: () => context.push('/pair/alertes/${a.id}'),
                     child: Semantics(
-                      label: context.t('peer_alerts_detail_for', {'type': type, 'place': a.place}),
+                      label: context.t('peer_alerts_detail_for', {
+                        'type': type,
+                        'place': a.place,
+                      }),
                       excludeSemantics: true,
                       child: Text(context.t('peer_alerts_detail')),
                     ),
@@ -264,7 +321,8 @@ class PairAlertDetailPage extends ConsumerStatefulWidget {
   final String id;
 
   @override
-  ConsumerState<PairAlertDetailPage> createState() => _PairAlertDetailPageState();
+  ConsumerState<PairAlertDetailPage> createState() =>
+      _PairAlertDetailPageState();
 }
 
 class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
@@ -293,9 +351,14 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
           title: Text(ctx.t('mobile_pair_confirm_title')),
           content: Text(ctx.t(textKey)),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(ctx.t('common_cancel'))),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(ctx.t('common_cancel')),
+            ),
             FilledButton(
-              style: FilledButton.styleFrom(minimumSize: const Size(0, XmSpace.targetMin)),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size(0, XmSpace.targetMin),
+              ),
               onPressed: () => Navigator.pop(ctx, true),
               child: Text(ctx.t(yesKey)),
             ),
@@ -311,9 +374,14 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
         title: Text(ctx.t('mobile_pair_maps_title')),
         content: Text(ctx.t('mobile_pair_maps_text')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(ctx.t('common_cancel'))),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(ctx.t('common_cancel')),
+          ),
           FilledButton(
-            style: FilledButton.styleFrom(minimumSize: const Size(0, XmSpace.targetMin)),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size(0, XmSpace.targetMin),
+            ),
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(ctx.t('mobile_pair_maps_yes')),
           ),
@@ -321,16 +389,22 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
       ),
     );
     if (ok != true) return;
-    await ref.read(linkLauncherProvider).open(
-      Uri.parse('https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}'),
-    );
+    await ref
+        .read(linkLauncherProvider)
+        .open(
+          Uri.parse(
+            'https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}',
+          ),
+        );
   }
 
   String _coords(BuildContext context, AlertPosition p) {
     final f = NumberFormat('0.00', 'fr');
     final ns = p.lat >= 0 ? 'N' : 'S';
     final ew = p.lng >= 0 ? 'E' : 'O';
-    final acc = p.accuracy == null ? '' : ' · ${context.t('peer_alerts_accuracy', {'meters': p.accuracy!.round()})}';
+    final acc = p.accuracy == null
+        ? ''
+        : ' · ${context.t('peer_alerts_accuracy', {'meters': p.accuracy!.round()})}';
     return '${f.format(p.lat.abs())}° $ns, ${f.format(p.lng.abs())}° $ew$acc';
   }
 
@@ -353,10 +427,14 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(context.t('peer_alerts_offline'), textAlign: TextAlign.center),
+                    Text(
+                      context.t('peer_alerts_offline'),
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: XmSpace.s4),
                     OutlinedButton(
-                      onPressed: () => ref.invalidate(peerAlertProvider(widget.id)),
+                      onPressed: () =>
+                          ref.invalidate(peerAlertProvider(widget.id)),
                       child: Text(context.t('common_retry')),
                     ),
                   ],
@@ -364,7 +442,10 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
               ),
             );
           }
-          return ErrorView(error: e, onRetry: () => ref.invalidate(peerAlertProvider(widget.id)));
+          return ErrorView(
+            error: e,
+            onRetry: () => ref.invalidate(peerAlertProvider(widget.id)),
+          );
         },
         data: (d) => _detail(context, d),
       ),
@@ -375,23 +456,34 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
     final s = d.summary;
     final theme = Theme.of(context);
     final ctl = ref.read(peerAlertProvider(widget.id).notifier);
-    final type = s.typeLabel.isEmpty ? context.alertTypeLabel(s.type) : s.typeLabel;
+    final type = s.typeLabel.isEmpty
+        ? context.alertTypeLabel(s.type)
+        : s.typeLabel;
     final contactLine = d.contact == null || d.contact!.isEmpty
         ? context.t('mobile_pair_alert_no_contact')
-        : (s.acknowledged ? d.contact! : context.t('mobile_pair_alert_contact_masked'));
+        : (s.acknowledged
+              ? d.contact!
+              : context.t('mobile_pair_alert_contact_masked'));
     final tel = s.acknowledged ? _phone(d.contact) : null;
     final rows = <(String, String)>[
-      (context.t('peer_alerts_fields_received'), s.createdAt == null ? '' : relativeTime(context, s.createdAt!)),
+      (
+        context.t('peer_alerts_fields_received'),
+        s.createdAt == null ? '' : relativeTime(context, s.createdAt!),
+      ),
       (context.t('peer_alerts_fields_place'), s.place),
       (context.t('peer_alerts_fields_category'), s.categoryLabel ?? ''),
       (context.t('peer_alerts_fields_needs'), d.needs.join(', ')),
       (
         context.t('peer_alerts_fields_author'),
-        d.anonymous ? context.t('peer_alerts_anonymous') : (d.author ?? context.t('peer_alerts_anonymous')),
+        d.anonymous
+            ? context.t('peer_alerts_anonymous')
+            : (d.author ?? context.t('peer_alerts_anonymous')),
       ),
       (
         context.t('peer_alerts_fields_contact'),
-        d.channelLabel == null || d.contact == null ? contactLine : '$contactLine (${d.channelLabel})',
+        d.channelLabel == null || d.contact == null
+            ? contactLine
+            : '$contactLine (${d.channelLabel})',
       ),
       (context.t('peer_alerts_fields_description'), d.description ?? ''),
     ];
@@ -404,15 +496,31 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
           runSpacing: XmSpace.s2,
           children: [
             PairBadge(type, tone: s.isSos ? PairTone.danger : PairTone.violet),
-            PairBadge(context.alertStatusLabel(s.status), tone: statusTone(s.status)),
-            if (s.priority != 'normale') PairBadge(context.priorityLabel(s.priority), tone: priorityTone(s.priority)),
-            if (d.cancelled) PairBadge(context.t('peer_alerts_cancelled'), tone: PairTone.neutral),
-            if (d.safe) PairBadge(context.t('peer_alerts_safe'), tone: PairTone.success),
+            PairBadge(
+              context.alertStatusLabel(s.status),
+              tone: statusTone(s.status),
+            ),
+            if (s.priority != 'normale')
+              PairBadge(
+                context.priorityLabel(s.priority),
+                tone: priorityTone(s.priority),
+              ),
+            if (d.cancelled)
+              PairBadge(
+                context.t('peer_alerts_cancelled'),
+                tone: PairTone.neutral,
+              ),
+            if (d.safe)
+              PairBadge(context.t('peer_alerts_safe'), tone: PairTone.success),
           ],
         ),
         const SizedBox(height: XmSpace.s3),
         if (s.isNew) ...[
-          XmAlert(context.t('mobile_pair_alert_escalation'), icon: Icons.warning_amber_rounded, tone: context.xm.warning),
+          XmAlert(
+            context.t('mobile_pair_alert_escalation'),
+            icon: Icons.warning_amber_rounded,
+            tone: context.xm.warning,
+          ),
           const SizedBox(height: XmSpace.s3),
         ],
         DefinitionCard(rows),
@@ -427,7 +535,12 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
         ],
         if (d.position != null) ...[
           const SizedBox(height: XmSpace.s2),
-          DefinitionCard([(context.t('peer_alerts_fields_position'), _coords(context, d.position!))]),
+          DefinitionCard([
+            (
+              context.t('peer_alerts_fields_position'),
+              _coords(context, d.position!),
+            ),
+          ]),
           const SizedBox(height: XmSpace.s2),
           OutlinedButton.icon(
             key: const ValueKey('alert-maps'),
@@ -450,7 +563,9 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
                       dense: true,
                       leading: const Icon(Icons.check_circle_outline, size: 20),
                       title: Text(h.statusLabel),
-                      subtitle: h.at == null ? null : Text(formatDateTime(context, h.at!)),
+                      subtitle: h.at == null
+                          ? null
+                          : Text(formatDateTime(context, h.at!)),
                     ),
                 ],
               ),
@@ -458,14 +573,22 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
           ),
         ],
         const SizedBox(height: XmSpace.s4),
-        if (s.acknowledged && d.can.acknowledge == false && s.status == 'nouveau')
-          PairBadge(context.t('mobile_pair_alert_ack_done'), tone: PairTone.success, icon: Icons.check),
+        if (s.acknowledged &&
+            d.can.acknowledge == false &&
+            s.status == 'nouveau')
+          PairBadge(
+            context.t('mobile_pair_alert_ack_done'),
+            tone: PairTone.success,
+            icon: Icons.check,
+          ),
         if (d.can.acknowledge)
           Padding(
             padding: const EdgeInsets.only(bottom: XmSpace.s2),
             child: FilledButton(
               key: const ValueKey('detail-ack'),
-              onPressed: _busy ? null : () => _run(ctl.acknowledge, 'peer_alerts_acknowledged'),
+              onPressed: _busy
+                  ? null
+                  : () => _run(ctl.acknowledge, 'peer_alerts_acknowledged'),
               child: Text(context.t('peer_alerts_acknowledge')),
             ),
           ),
@@ -474,7 +597,9 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
             padding: const EdgeInsets.only(bottom: XmSpace.s2),
             child: (d.can.acknowledge ? OutlinedButton.new : FilledButton.new)(
               key: const ValueKey('detail-take'),
-              onPressed: _busy ? null : () => _run(ctl.take, 'peer_alerts_taken'),
+              onPressed: _busy
+                  ? null
+                  : () => _run(ctl.take, 'peer_alerts_taken'),
               child: Text(context.t('peer_alerts_take')),
             ),
           ),
@@ -483,18 +608,26 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
             padding: const EdgeInsets.only(bottom: XmSpace.s2),
             child: OutlinedButton(
               key: const ValueKey('detail-treated'),
-              onPressed: _busy ? null : () => _run(ctl.markTreated, 'mobile_pair_alert_treated_done'),
+              onPressed: _busy
+                  ? null
+                  : () =>
+                        _run(ctl.markTreated, 'mobile_pair_alert_treated_done'),
               child: Text(context.t('mobile_pair_alert_mark_treated')),
             ),
           ),
         if (d.can.close)
           FilledButton(
             key: const ValueKey('detail-close'),
-            style: FilledButton.styleFrom(backgroundColor: theme.colorScheme.error),
+            style: FilledButton.styleFrom(
+              backgroundColor: theme.colorScheme.error,
+            ),
             onPressed: _busy
                 ? null
                 : () async {
-                    if (await _confirm('peer_alerts_close_confirm', 'peer_alerts_close_yes')) {
+                    if (await _confirm(
+                      'peer_alerts_close_confirm',
+                      'peer_alerts_close_yes',
+                    )) {
                       await _run(ctl.close, 'peer_alerts_closed');
                     }
                   },
@@ -502,7 +635,10 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
           ),
         if (!ref.watch(isOnlineProvider)) ...[
           const SizedBox(height: XmSpace.s3),
-          Text(context.t('peer_alerts_offline'), style: theme.textTheme.bodySmall),
+          Text(
+            context.t('peer_alerts_offline'),
+            style: theme.textTheme.bodySmall,
+          ),
         ],
       ],
     );
@@ -512,6 +648,9 @@ class _PairAlertDetailPageState extends ConsumerState<PairAlertDetailPage> {
   String? _phone(String? contact) {
     if (contact == null) return null;
     final digits = contact.replaceAll(RegExp(r'[^\d+]'), '');
-    return RegExp(r'\d').allMatches(digits).length >= 8 && !contact.contains('@') ? digits : null;
+    return RegExp(r'\d').allMatches(digits).length >= 8 &&
+            !contact.contains('@')
+        ? digits
+        : null;
   }
 }

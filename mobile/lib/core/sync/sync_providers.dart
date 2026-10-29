@@ -37,7 +37,9 @@ final syncQueueEntriesProvider = StreamProvider<List<QueueEntry>>((ref) async* {
 
 /// Le compte a-t-il l'espace Pair ? (le serveur décide : `GET me`)
 final hasPeerSpaceProvider = Provider<bool>(
-  (ref) => ref.watch(sessionProvider.select((s) => s.spaces.contains(AppSpace.peer))),
+  (ref) => ref.watch(
+    sessionProvider.select((s) => s.spaces.contains(AppSpace.peer)),
+  ),
 );
 
 final syncEngineProvider = Provider<SyncEngine>((ref) {
@@ -79,7 +81,9 @@ final syncStateProvider = StreamProvider<SyncState>((ref) async* {
 
 /// Intervalle du signal de vie et de la synchronisation périodique au premier
 /// plan (5 minutes ; nul dans les tests).
-final syncIntervalProvider = Provider<Duration?>((_) => const Duration(minutes: 5));
+final syncIntervalProvider = Provider<Duration?>(
+  (_) => const Duration(minutes: 5),
+);
 
 /// Lance la synchronisation de l'espace Pair : à l'ouverture, au retour du
 /// réseau, au retour au premier plan et toutes les 5 minutes. Rien ne tourne
@@ -116,7 +120,11 @@ final syncRunnerProvider = Provider<void>((ref) {
     }
   }
 
-  ref.listen<bool>(isOnlineProvider, (_, now) => onNet(now), fireImmediately: true);
+  ref.listen<bool>(
+    isOnlineProvider,
+    (_, now) => onNet(now),
+    fireImmediately: true,
+  );
   Timer? timer;
   if (every != null) {
     timer = Timer.periodic(every, (_) {

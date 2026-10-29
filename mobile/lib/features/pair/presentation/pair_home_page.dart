@@ -1,3 +1,4 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +26,8 @@ class PairHomePage extends ConsumerWidget {
       child: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(peerHomeProvider);
-          if (ref.read(isOnlineProvider)) await ref.read(syncEngineProvider).sync(force: true);
+          if (ref.read(isOnlineProvider))
+            await ref.read(syncEngineProvider).sync(force: true);
         },
         child: ListView(
           key: const ValueKey('pair-home'),
@@ -40,17 +42,33 @@ class PairHomePage extends ConsumerWidget {
               children: [
                 PairBadge(context.t('peer_home_badge'), tone: PairTone.violet),
                 if (home.valueOrNull?.onDuty ?? false)
-                  PairBadge(context.t('mobile_pair_duty'), tone: PairTone.success, icon: Icons.verified_user_outlined),
+                  PairBadge(
+                    context.t('mobile_pair_duty'),
+                    tone: PairTone.success,
+                    icon: Icons.verified_user_outlined,
+                  ),
               ],
             ),
             const SizedBox(height: XmSpace.s3),
-            Text(context.t('peer_home_greeting', {'name': name}), style: theme.textTheme.titleLarge),
+            Text(
+              context.t('peer_home_greeting', {'name': name}),
+              style: theme.textTheme.titleLarge,
+            ),
             const SizedBox(height: XmSpace.s1),
-            Text(context.t('peer_home_intro'), style: theme.textTheme.bodySmall),
+            Text(
+              context.t('peer_home_intro'),
+              style: theme.textTheme.bodySmall,
+            ),
             const SizedBox(height: XmSpace.s4),
             home.when(
-              loading: () => const Padding(padding: EdgeInsets.all(XmSpace.s6), child: LoadingView()),
-              error: (e, _) => ErrorView(error: e, onRetry: () => ref.invalidate(peerHomeProvider)),
+              loading: () => const Padding(
+                padding: EdgeInsets.all(XmSpace.s6),
+                child: LoadingView(),
+              ),
+              error: (e, _) => ErrorView(
+                error: e,
+                onRetry: () => ref.invalidate(peerHomeProvider),
+              ),
               data: (h) => _Content(home: h),
             ),
             const SizedBox(height: XmSpace.s4),
@@ -86,11 +104,18 @@ class _Content extends StatelessWidget {
         excludeSemantics: true,
         child: Card(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: XmSpace.s3, horizontal: XmSpace.s2),
+            padding: const EdgeInsets.symmetric(
+              vertical: XmSpace.s3,
+              horizontal: XmSpace.s2,
+            ),
             child: Column(
               children: [
                 Text('$v', style: theme.textTheme.headlineSmall),
-                Text(context.t(labelKey), style: theme.textTheme.labelSmall, textAlign: TextAlign.center),
+                Text(
+                  context.t(labelKey),
+                  style: theme.textTheme.labelSmall,
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           ),
@@ -101,7 +126,11 @@ class _Content extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (home.stale) ...[
-          XmAlert(context.t('mobile_pair_home_stale'), icon: Icons.cloud_off_outlined, tone: context.xm.warning),
+          XmAlert(
+            context.t('mobile_pair_home_stale'),
+            icon: Icons.cloud_off_outlined,
+            tone: context.xm.warning,
+          ),
           const SizedBox(height: XmSpace.s3),
         ],
         SectionHeading(context.t('peer_home_kpi_label')),
@@ -131,7 +160,11 @@ class _Content extends StatelessWidget {
           leading: Icons.notifications_active_outlined,
           onTap: () => context.go('/pair/alertes'),
           child: Text(
-            toTake == 0 ? context.t('mobile_pair_tasks_alerts_none') : context.t('peer_home_tasks_alerts_to_take', {'count': toTake}),
+            toTake == 0
+                ? context.t('mobile_pair_tasks_alerts_none')
+                : context.t('peer_home_tasks_alerts_to_take', {
+                    'count': toTake,
+                  }),
             style: theme.textTheme.titleSmall,
           ),
         ),
@@ -141,7 +174,11 @@ class _Content extends StatelessWidget {
           leading: Icons.folder_outlined,
           onTap: () => context.go('/pair/dossiers'),
           child: Text(
-            toContact == 0 ? context.t('mobile_pair_tasks_cases_none') : context.t('peer_home_tasks_cases_to_contact', {'count': toContact}),
+            toContact == 0
+                ? context.t('mobile_pair_tasks_cases_none')
+                : context.t('peer_home_tasks_cases_to_contact', {
+                    'count': toContact,
+                  }),
             style: theme.textTheme.titleSmall,
           ),
         ),
@@ -149,7 +186,10 @@ class _Content extends StatelessWidget {
         LinkRow(
           leading: Icons.groups_outlined,
           onTap: () => context.push('/ressources'),
-          child: Text(context.t('peer_home_tasks_session'), style: theme.textTheme.titleSmall),
+          child: Text(
+            context.t('peer_home_tasks_session'),
+            style: theme.textTheme.titleSmall,
+          ),
         ),
       ],
     );
@@ -162,12 +202,20 @@ class _Shortcuts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <(String, IconData, String)>[
-      ('peer_home_shortcuts_collecte', Icons.note_add_outlined, '/pair/dossiers/collecte'),
+      (
+        'peer_home_shortcuts_collecte',
+        Icons.note_add_outlined,
+        '/pair/dossiers/collecte',
+      ),
       ('peer_home_shortcuts_cases', Icons.folder_outlined, '/pair/dossiers'),
       ('peer_home_shortcuts_report', Icons.campaign_outlined, '/signaler'),
       ('peer_home_shortcuts_directory', Icons.menu_book_outlined, '/urgences'),
       ('peer_home_shortcuts_ccc', Icons.groups_2_outlined, '/soon/ccc'),
-      ('peer_home_shortcuts_resources', Icons.library_books_outlined, '/ressources'),
+      (
+        'peer_home_shortcuts_resources',
+        Icons.library_books_outlined,
+        '/ressources',
+      ),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,15 +237,22 @@ class _Shortcuts extends StatelessWidget {
                   child: InkWell(
                     key: ValueKey('shortcut-$key'),
                     borderRadius: BorderRadius.circular(XmSpace.radiusLg),
-                    onTap: () => route.startsWith('/pair/') ? context.go(route) : context.push(route),
+                    onTap: () => route.startsWith('/pair/')
+                        ? context.go(route)
+                        : context.push(route),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: XmSpace.s3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: XmSpace.s3,
+                      ),
                       child: Row(
                         children: [
                           Icon(icon, color: context.xm.primary),
                           const SizedBox(width: XmSpace.s2),
                           Expanded(
-                            child: Text(context.t(key), style: Theme.of(context).textTheme.labelLarge),
+                            child: Text(
+                              context.t(key),
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
                           ),
                         ],
                       ),
@@ -211,4 +266,3 @@ class _Shortcuts extends StatelessWidget {
     );
   }
 }
-

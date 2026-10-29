@@ -113,6 +113,17 @@ const Map<String, String> kPendingStringsFr = {
   'mobile_pair_alert_treated_done': 'Alerte marquée comme traitée.',
   'mobile_pair_alert_ack_done': 'Réception accusée',
   'mobile_pair_confirm_title': 'Confirmer',
+  // P15-14 : mes dossiers, fiche, suivi.
+  'mobile_pair_case_steps': '{count, plural, =0{aucune étape} =1{1 étape} other{{count} étapes}}',
+  'mobile_pair_case_queued_title': 'Nouveau dossier',
+  'mobile_pair_in_queue': 'En file',
+  'mobile_pair_overdue': 'En retard',
+  'mobile_pair_next_followup': 'Prochain suivi',
+  'mobile_pair_case_gone': 'Ce dossier est introuvable.',
+  'mobile_pair_followup_queued': 'Gardé sur cet appareil. Cela partira dès que le réseau revient, une seule fois.',
+  'mobile_pair_optional': 'facultatif',
+  'mobile_pair_comment_count': '{count} / {max} caractères',
+  'mobile_pair_form_errors': '{count, plural, =1{Vérifie 1 champ avant d’enregistrer.} other{Vérifie {count} champs avant d’enregistrer.}}',
   // P15-04 : SOS, signalement, suivi (textes propres au mobile).
   'mobile_sos_queued_saved': 'Ton alerte est enregistrée sur ce téléphone et partira dès que le réseau revient, même si tu fermes l’application.',
   'mobile_report_waiting_title': 'En attente d’envoi',
