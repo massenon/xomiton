@@ -284,6 +284,13 @@ class AppServiceProvider extends ServiceProvider
                 ->response($tooMany),
         ]);
 
+        // Demande publique de suppression de compte (/supprimer-mon-compte) : chaque demande valide peut déposer un e-mail dans la
+        // boîte d'envoi ; 3 par heure et par session (ou IP), 10 par heure et par IP. Consommé après validation (NamedRateLimit).
+        RateLimiter::for('account_deletion', static fn (Request $request): array => [
+            Limit::perHour(3)->by('account_deletion|'.KeyedHash::make(self::sessionOrIp($request)))->response($tooMany),
+            Limit::perHour(10)->by('account_deletion_ip|'.KeyedHash::make((string) $request->ip()))->response($tooMany),
+        ]);
+
         // API : par utilisateur·rice authentifié·e (session Sanctum ou jeton), sinon par IP.
         RateLimiter::for('api', static fn (Request $request): Limit => Limit::perMinute(self::limit('api_per_minute'))
             ->by('api|'.($request->user('sanctum')?->getAuthIdentifier() ?? $request->ip()))

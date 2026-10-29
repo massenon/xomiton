@@ -170,7 +170,7 @@ it('rend chaque modèle système avec le layout, le texte, sans variable résidu
         'unsubscribe_link' => 'https://xomiton.test/newsletter/desinscription/abc', 'alert_reference' => 'ALT-2026-0042',
         'alert_zone' => 'Cotonou', 'event_title' => 'Atelier confidentiel', 'event_date' => 'demain à 15 h',
         'deletion_date' => '15 novembre 2026', 'deletion_days' => '30', 'export_link' => 'https://xomiton.test/e/1',
-        'export_expiry' => '48 heures', 'report_title' => 'Rapport mensuel', 'report_period' => 'octobre 2026', 'report_format' => 'PDF',
+        'export_expiry' => '48 heures', 'confirm_link' => 'https://xomiton.test/supprimer-mon-compte/confirmer/abc', 'link_hours' => '24', 'report_title' => 'Rapport mensuel', 'report_period' => 'octobre 2026', 'report_format' => 'PDF',
     ];
     $secrets = ['482913', 'ALT-2026-0042', 'Cotonou', 'Atelier confidentiel', 'Rapport mensuel', 'demain à 15 h'];
     $slugs = EmailTemplate::query()->pluck('slug');

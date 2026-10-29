@@ -36,8 +36,11 @@
             <span>{{ __('footer.copyright', ['year' => now()->year]) }}</span>
             <span class="d-flex flex-wrap gap-3 xm-flinks">
                 <a href="{{ route('confidentialite') }}#charte">{{ __('footer.charter') }}</a>
-                <a href="{{ route('confidentialite') }}#confidentialite">{{ __('footer.privacy') }}</a>
-                <a href="{{ route('confidentialite') }}#conditions">{{ __('footer.terms') }}</a>
+                <a href="{{ route('legal.privacy') }}">{{ __('footer.privacy') }}</a>
+                <a href="{{ route('legal.terms') }}">{{ __('footer.terms') }}</a>
+                <a href="{{ route('legal.notice') }}">{{ __('footer.legal') }}</a>
+                <a href="{{ route('legal.cookies') }}">{{ __('footer.cookies') }}</a>
+                <a href="{{ route('account-deletion.show') }}">{{ __('footer.delete_account') }}</a>
             </span>
         </div>
     </div>

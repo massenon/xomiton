@@ -248,7 +248,7 @@
           "puces": {
             "ecoute": "Écoute sans jugement"
           },
-          "alt": "Conversation écrite avec une pair éducatrice : messages reçus et envoyés, champ de saisie en bas de l'écran."
+          "alt": "Conversation écrite avec une intervenante formée : messages reçus et envoyés, champ de saisie en bas de l'écran."
         },
         "en": {
           "titre": "",
@@ -358,7 +358,7 @@
           "puces": {
             "bienveillante": "Échanges modérés"
           },
-          "alt": "Fil de la communauté : zone pour partager une pensée, filtres par thème et publication d'une pair éducatrice sur un atelier."
+          "alt": "Fil de la communauté : zone pour partager une pensée, filtres par thème et publication d'une intervenante formée sur un atelier."
         },
         "en": {
           "titre": "",

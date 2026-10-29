@@ -611,13 +611,13 @@
    "visuel": "04-messages/alt",
    "controle": "alt <= 140 caractères",
    "ok": true,
-   "detail": "108"
+   "detail": "112"
   },
   {
    "visuel": "04-messages/alt",
    "controle": "alt sans « image de »",
    "ok": true,
-   "detail": "Conversation écrite avec une pair éducat"
+   "detail": "Conversation écrite avec une intervenant"
   },
   {
    "visuel": "04-messages/puce:ecoute",
@@ -701,7 +701,7 @@
    "visuel": "07-communaute/alt",
    "controle": "alt <= 140 caractères",
    "ok": true,
-   "detail": "124"
+   "detail": "128"
   },
   {
    "visuel": "07-communaute/alt",
@@ -773,7 +773,7 @@
    "visuel": "fiche/long",
    "controle": "longueur <= 4000",
    "ok": true,
-   "detail": "2188"
+   "detail": "2238"
   },
   {
    "visuel": "fiche/long",

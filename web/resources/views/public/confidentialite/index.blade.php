@@ -62,6 +62,10 @@
                                 </div>
                             @endforeach
                         </div>
+                        <p class="small mt-3 mb-0">
+                            <a href="{{ route('legal.privacy') }}">{{ __('pages/confidentialite.full_privacy') }}</a> ·
+                            <a href="{{ route('account-deletion.show') }}">{{ __('pages/confidentialite.delete_account') }}</a>
+                        </p>
                     </div>
                 </section>
 
@@ -73,6 +77,7 @@
                                 <li><strong>{{ $term }}</strong> {{ $text }}</li>
                             @endforeach
                         </ol>
+                        <p class="small mt-3 mb-0"><a href="{{ route('legal.terms') }}">{{ __('pages/confidentialite.full_terms') }}</a> · <a href="{{ route('legal.notice') }}">{{ __('footer.legal') }}</a></p>
                     </div>
                 </section>
 

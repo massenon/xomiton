@@ -25,6 +25,8 @@ final class RobotsController extends Controller
         '/media/',
         '/newsletter/confirmer',
         '/newsletter/desinscription',
+        '/supprimer-mon-compte/confirmer',
+        '/supprimer-mon-compte/demande-envoyee',
         '/otp',
         '/code-de-verification',
         '/recherche',

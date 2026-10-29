@@ -115,6 +115,17 @@ return [
         'active' => true,
     ],
     [
+        // Page publique /supprimer-mon-compte (Google Play) : vérification par e-mail avant la suppression, vouvoiement (page publique).
+        'name' => 'Confirmer la suppression de mon compte',
+        'slug' => 'suppression-compte-verification',
+        'category' => 'Authentification',
+        'system' => true,
+        'subject' => '{{site_name}} : confirmez la suppression de votre compte',
+        'preheader' => 'Le lien est valable {{link_hours}} heures.',
+        'body' => '<p>Bonjour {{user_first_name}},</p><p>Une demande de suppression du compte {{site_name}} associé à cette adresse a été faite depuis le site. Pour la confirmer, utilisez ce lien (valable {{link_hours}} heures) :</p><p><a href="{{confirm_link}}">Confirmer la suppression de mon compte</a></p><p>Après confirmation, vous êtes déconnecté·e de tous vos appareils et vos données personnelles sont effacées sous {{deletion_days}} jours.</p><p>Vous n’êtes pas à l’origine de cette demande ? Ne faites rien : sans confirmation, votre compte reste intact. Une question ? Écrivez-nous à <a href="mailto:{{support_email}}">{{support_email}}</a>.</p>',
+        'active' => true,
+    ],
+    [
         // Lot api-me (P6-06) : lien de téléchargement de l'export RGPD (POST me/export), valable {{export_expiry}}.
         'name' => 'Export de mes données',
         'slug' => 'export-donnees',

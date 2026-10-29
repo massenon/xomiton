@@ -13,7 +13,7 @@ use Illuminate\Database\Seeder;
  * Modèles d'e-mails du lot 10 (DATABASE_DICTIONARY.md §9 `email_templates`), repris du prototype
  * (database/seeders/data/communication/email_templates.php ← prototype_social/data/email_templates.json) : 8 templates
  * du prototype + les templates système `mot-de-passe-modifie` (P2-05), `compte-supprime` et `export-donnees` (P6-06),
- * soit 11 (8 système).
+ * soit 11 (8 système), plus `suppression-compte-verification` (page publique de suppression).
  * Idempotent : un template absent est créé avec ses textes ; un template déjà présent n'est réaligné que sur
  * `name`, `category`, `is_system` et ses `variables` recalculées, car sujet, pré-en-tête, corps et `is_active`
  * sont éditables en administration et ne doivent pas être écrasés au rejeu.

@@ -75,9 +75,12 @@ it('produit titre, description, BreadcrumbList, canonical et figure au sitemap',
 it('sert les ancres annoncées par le pied de page', function (): void {
     $html = legHtml();
 
+    // Le pied de page garde l'ancre de la charte ; confidentialité et conditions ont leurs pages complètes (LegalPagesTest).
+    expect($html)->toContain('href="'.route('confidentialite').'#charte"')
+        ->toContain('href="'.route('legal.privacy').'"')->toContain('href="'.route('legal.terms').'"');
+
     foreach (['charte', 'confidentialite', 'conditions'] as $anchor) {
-        expect($html)->toContain('href="'.route('confidentialite').'#'.$anchor.'"')
-            ->toContain('id="'.$anchor.'"');
+        expect($html)->toContain('id="'.$anchor.'"');
     }
 });
 

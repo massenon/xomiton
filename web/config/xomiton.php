@@ -223,10 +223,34 @@ return [
         'pseudo_reservation_days' => 30,
         // Effacement différé d'un compte supprimé, avant anonymisation (jours).
         'deletion_grace_days' => 30,
+        // Demande publique de suppression (/supprimer-mon-compte) : validité du lien reçu par e-mail (heures) et durée de
+        // conservation de la trace (empreinte de l'adresse, jamais l'adresse), purgée par accounts:anonymize (jours).
+        'deletion_request_hours' => 24,
+        'deletion_request_retention_days' => 90,
         // Export RGPD (POST me/export, P6-06) : validité du lien de téléchargement envoyé par e-mail, puis fichier effacé.
         'export_link_hours' => 48,
         'age_min' => 10,
         'age_max' => 99,
+    ],
+
+    /*
+     * Identité de l'éditeur et du responsable des données (mentions légales, politique de confidentialité). Valeurs à
+     * fournir par le client dans `.env` (XOMITON_LEGAL_*) ; vide, la page affiche le marqueur « [À COMPLÉTER PAR LE
+     * CLIENT : …] » à la place (App\Application\Legal\LegalTexts). Liste des champs : docs/playstore/PUBLICATION_PLAY_STORE.md §7.
+     */
+    'legal' => [
+        'publisher_name' => env('XOMITON_LEGAL_PUBLISHER_NAME'),
+        'legal_form' => env('XOMITON_LEGAL_FORM'),
+        'registration' => env('XOMITON_LEGAL_REGISTRATION'),
+        'address' => env('XOMITON_LEGAL_ADDRESS'),
+        'director' => env('XOMITON_LEGAL_DIRECTOR'),
+        'editor_phone' => env('XOMITON_LEGAL_PHONE'),
+        'host_name' => env('XOMITON_LEGAL_HOST_NAME'),
+        'host_address' => env('XOMITON_LEGAL_HOST_ADDRESS'),
+        'host_country' => env('XOMITON_LEGAL_HOST_COUNTRY'),
+        'dpo_name' => env('XOMITON_LEGAL_DPO_NAME'),
+        'dpo_email' => env('XOMITON_LEGAL_DPO_EMAIL'),
+        'jurisdiction' => env('XOMITON_LEGAL_JURISDICTION'),
     ],
 
     /*
@@ -678,7 +702,7 @@ return [
         'do_glegbe_sheets' => 4,
         // P4-08 : « Dernière mise à jour » de /confidentialite (Y-m-d), à changer avec les textes de
         // lang/fr/pages/confidentialite.php (et la version des consentements, ConsentVersion, si l'engagement change).
-        'legal_updated_at' => '2026-10-18',
+        'legal_updated_at' => '2026-10-29',
     ],
 
     /*

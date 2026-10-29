@@ -36,14 +36,14 @@ final class SitemapBuilder
     /** @var list<string> Noms des routes publiques statiques candidates. */
     public const STATIC_ROUTES = [
         'home', 'thematiques.index', 'ressources.index', 'do-glegbe', 'violences', 'lois', 'aide.index', 'urgences',
-        'actualites.index', 'confidentialite', 'newsletter.show', 'evenements.index', 'signaler', 'sos',
+        'actualites.index', 'confidentialite', 'legal.privacy', 'legal.terms', 'legal.notice', 'legal.cookies', 'account-deletion.show', 'newsletter.show', 'evenements.index', 'signaler', 'sos',
     ];
 
     /** @var list<string> Premiers segments d'URL jamais exposés. */
     public const EXCLUDED_PREFIXES = ['admin', 'api', 'membres', 'code-de-verification', 'recherche', 'storage', 'design-system'];
 
     /** @var list<string> Noms de routes de newsletter exclus (confirmation, désinscription, remerciement). */
-    private const EXCLUDED_ROUTES = ['newsletter.confirm', 'newsletter.unsubscribe', 'newsletter.thanks'];
+    private const EXCLUDED_ROUTES = ['newsletter.confirm', 'newsletter.unsubscribe', 'newsletter.thanks', 'account-deletion.sent', 'account-deletion.confirm'];
 
     /**
      * XML complet, depuis le cache.

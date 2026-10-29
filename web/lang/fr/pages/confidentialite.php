@@ -15,6 +15,9 @@ return [
     'title' => 'Charte, confidentialité et conditions',
     'updated' => 'Dernière mise à jour : :date · version :version',
     'nav_label' => 'Sections de la page',
+    'full_privacy' => 'Lire la politique de confidentialité complète',
+    'full_terms' => 'Lire les conditions d’utilisation complètes',
+    'delete_account' => 'Supprimer mon compte et mes données',
 
     'sections' => [
         'charte' => 'Charte de bienveillance',

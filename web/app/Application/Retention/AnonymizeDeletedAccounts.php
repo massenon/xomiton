@@ -74,6 +74,9 @@ final class AnonymizeDeletedAccounts
             }
         });
 
+        // Traces des demandes web de suppression (empreintes seulement) : durée de conservation limitée.
+        \App\Application\Account\PublicAccountDeletion::purge();
+
         Log::info('Rétention : comptes supprimés anonymisés.', ['count' => $count, 'grace_days' => $this->graceDays()]);
 
         return $count;

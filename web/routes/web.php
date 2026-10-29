@@ -30,6 +30,8 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LegacyAideRedirectController;
 use App\Http\Controllers\Web\LegacyRessourceRedirectController;
 use App\Http\Controllers\Web\LegacyThematiqueRedirectController;
+use App\Http\Controllers\Web\Legal\AccountDeletionController;
+use App\Http\Controllers\Web\Legal\LegalPageController;
 use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\AssistantPageController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
@@ -132,6 +134,18 @@ Route::get('/actualites/{slug}', ActualitesShowController::class)->where('slug',
 Route::get('/urgences', UrgencesController::class)->name('urgences');
 // P4-08 : charte, confidentialité, conditions et signalement sur une page (ancres), publique et indexable (vous).
 Route::get('/confidentialite', ConfidentialiteController::class)->name('confidentialite');
+// Pages légales publiques et indexables (vous), SANS connexion (Google Play : URL de la politique de confidentialité et
+// URL web de suppression de compte). Textes : lang/fr/pages/legal.php et deletion.php. Demande de suppression par e-mail :
+// limiteur `account_deletion`, réponse identique que le compte existe ou non ; pages de jeton et de remerciement en noindex.
+Route::get('/politique-de-confidentialite', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');
+Route::get('/conditions-utilisation', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');
+Route::get('/mentions-legales', LegalPageController::class)->defaults('page', 'notice')->name('legal.notice');
+Route::get('/cookies', LegalPageController::class)->defaults('page', 'cookies')->name('legal.cookies');
+Route::get('/supprimer-mon-compte', [AccountDeletionController::class, 'show'])->name('account-deletion.show');
+Route::post('/supprimer-mon-compte', [AccountDeletionController::class, 'store'])->name('account-deletion.request');
+Route::get('/supprimer-mon-compte/demande-envoyee', [AccountDeletionController::class, 'sent'])->name('account-deletion.sent');
+Route::get('/supprimer-mon-compte/confirmer/{token}', [AccountDeletionController::class, 'confirmShow'])->where('token', '[A-Za-z0-9]{1,64}')->name('account-deletion.confirm');
+Route::post('/supprimer-mon-compte/confirmer/{token}', [AccountDeletionController::class, 'confirmStore'])->where('token', '[A-Za-z0-9]{1,64}')->name('account-deletion.confirm.store');
 // P4-07 : newsletter publique (vous). `/newsletter` indexable ; remerciement, confirmation et désinscription en noindex,
 // hors sitemap ; seules les pages à jeton (confirmation, désinscription) sont en plus exclues par robots.txt. Inscription :
 // limiteurs `newsletter` (session 1 / 20 s, IP 10 / h) consommés après validation par le contrôleur (pas de middleware

@@ -61,8 +61,8 @@ it('seed les 8 templates du prototype et mot-de-passe-modifie sans doublon et sa
     $welcome = EmailTemplate::query()->whereSlug('bienvenue')->firstOrFail();
 
     // 8 du prototype + `mot-de-passe-modifie` (P2-05) + `compte-supprime` et `export-donnees` (P6-06) + `rapport-genere` (P10-07).
-    expect(EmailTemplate::query()->count())->toBe(12)
-        ->and(EmailTemplate::query()->system()->count())->toBe(9)
+    expect(EmailTemplate::query()->count())->toBe(13)
+        ->and(EmailTemplate::query()->system()->count())->toBe(10)
         ->and($otp->category)->toBe(TemplateCategory::Authentication)
         ->and($otp->variables)->toBe(['site_name', 'user_first_name', 'otp_code', 'otp_expiry'])
         ->and($welcome->subject)->toBe('Sujet modifié')

@@ -26,6 +26,8 @@ return [
     'charter' => 'Charte',
     'privacy' => 'Confidentialité',
     'terms' => 'Conditions d’utilisation',
+    'cookies' => 'Cookies',
+    'delete_account' => 'Supprimer mon compte',
 
     // --- Compléments P3-05 (vous) --------------------------------------------------------------------------------
     'legal' => 'Mentions légales',

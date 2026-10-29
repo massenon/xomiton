@@ -81,6 +81,28 @@ return [
             'title' => 'Confidentialité, charte et conditions d’usage – Xomiton',
             'description' => 'Comment Xomiton protège vos données : anonymat, chiffrement, droit à l’effacement, charte de la communauté et conditions d’utilisation, en langage clair.',
         ],
+        'legal' => [
+            'privacy' => [
+                'title' => 'Politique de confidentialité – Xomiton',
+                'description' => 'Quelles données Xomiton collecte, pourquoi, combien de temps, avec qui elles sont partagées, et comment exercer vos droits ou supprimer votre compte.',
+            ],
+            'terms' => [
+                'title' => 'Conditions d’utilisation – Xomiton',
+                'description' => 'Les règles d’utilisation de Xomiton : accès dès 15 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.',
+            ],
+            'notice' => [
+                'title' => 'Mentions légales – Xomiton',
+                'description' => 'Éditeur, hébergeur, contact, protection des données, propriété intellectuelle et accessibilité du site et de l’application Xomiton.',
+            ],
+            'cookies' => [
+                'title' => 'Cookies et stockage local – Xomiton',
+                'description' => 'Xomiton n’utilise que des cookies indispensables : session, sécurité des formulaires et préférences. Aucun cookie publicitaire ni mesure d’audience tierce.',
+            ],
+        ],
+        'account_deletion' => [
+            'title' => 'Supprimer mon compte et mes données – Xomiton',
+            'description' => 'Comment supprimer votre compte Xomiton et vos données, depuis l’application ou le site, même sans accès à votre compte. Délais, données effacées et conservées.',
+        ],
         'newsletter' => [
             'title' => 'Newsletter : actualités et ressources par e-mail – Xomiton',
             'description' => 'Recevez une à deux fois par mois les actualités, ressources et événements de la communauté Xomiton. Inscription confirmée par e-mail, désinscription en un clic.',
