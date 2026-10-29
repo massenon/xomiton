@@ -17,6 +17,7 @@ Méthode d'écriture : gabarit *PRD skill* (problème, objectifs, utilisateur·r
 | Cadre | [MASTER_PROMPT.md](MASTER_PROMPT.md) | Rôle, méthode, qualité, contraintes globales, définition de « terminé » |
 | Cadre | [FINAL_DESIGN_DIRECTION.md](FINAL_DESIGN_DIRECTION.md) | Ce qui doit rester identique au prototype |
 | Cadre | [ETAT_DES_LIEUX.md](ETAT_DES_LIEUX.md) | **État des lieux** : statut par phase, livré et vérifié, reste à faire (code, humain, serveur, comptes), chiffres, risques |
+| Cadre | [PLAN_MOBILE_APP_UNIQUE.md](PLAN_MOBILE_APP_UNIQUE.md) | **Application mobile unique** (membre + pair + admin d'astreinte) : exigences, architecture, rôles, sécurité, arbitrages, lots P15-10 à P15-23, recette, risques |
 | Cadre | [DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md) | **Décisions à valider** : questions Q ouvertes du plan, décision par défaut, qui tranche, urgence |
 | Cadre | [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | **Plan d'implémentation** : phases P0 à P17, tâches, dépendances, décisions techniques, suivi d'avancement |
 | Produit | [BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md](BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md) | BRS, PRD, SRS, FRS, NFRS, règles métier |
