@@ -9,6 +9,7 @@ use App\Application\Admin\Registrations\RegistrationSettings;
 use App\Application\Admin\Roles\TeamInvitations;
 use App\Application\Admin\Users\ReviewRegistration;
 use App\Application\Auth\Support\RegistrationGate;
+use App\Application\Shared\Referentials;
 use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Domain\Account\Exceptions\RoleRequestRefused;
 use App\Enums\UserStatus;
@@ -62,11 +63,18 @@ final class Index extends Component
 
     public string $inviteNote = '';
 
+    /** Département de rattachement de la personne invitée (vide : aucun). */
+    public string $inviteZone = '';
+
+    /** Durée de validité du lien (jours). */
+    public int $inviteDays = 7;
+
     /** Dernier lien créé : montré une fois (le code n'est jamais conservé en clair). @var array{code: string, link: string, role: string}|null */
     public ?array $createdInvite = null;
 
     public function mount(): void
     {
+        $this->inviteDays = TeamInvitations::defaultDays();
         abort_unless(auth()->user()?->can('registrations.manage'), 403);
 
         $current = RegistrationSettings::current();
@@ -188,7 +196,11 @@ final class Index extends Component
             'inviteRole' => ['required', Rule::in(TeamInvitations::ROLES)],
             'inviteEmail' => ['nullable', 'email:rfc', 'max:190'],
             'inviteNote' => ['nullable', 'string', 'max:190'],
+            'inviteZone' => ['nullable', 'integer', Rule::exists('zones', 'id')->where('is_active', true)],
+            'inviteDays' => ['required', 'integer', 'min:'.TeamInvitations::minDays(), 'max:'.TeamInvitations::maxDays()],
         ], [], [
+            'inviteZone' => (string) __('admin.registrations.invitations.zone'),
+            'inviteDays' => (string) __('admin.registrations.invitations.days'),
             'inviteEmail' => (string) __('admin.registrations.invitations.email'),
             'inviteNote' => (string) __('admin.registrations.invitations.note'),
         ]);
@@ -196,10 +208,10 @@ final class Index extends Component
         $created = null;
 
         if ($this->attempt(function () use ($invitations, $actor, &$created): void {
-            $created = $invitations->create($actor, $this->inviteRole, $this->inviteEmail, $this->inviteNote);
+            $created = $invitations->create($actor, $this->inviteRole, $this->inviteEmail, $this->inviteNote, $this->inviteZone === '' ? null : (int) $this->inviteZone, $this->inviteDays);
         }) && is_array($created)) {
             $this->createdInvite = ['code' => $created['code'], 'link' => $created['link'], 'role' => $this->inviteRole];
-            $this->reset('inviteEmail', 'inviteNote');
+            $this->reset('inviteEmail', 'inviteNote', 'inviteZone');
             unset($this->invitationList);
             $this->toast((string) __('admin.registrations.invitations.created'));
         }
@@ -228,7 +240,7 @@ final class Index extends Component
 
         return RoleInvitation::query()
             ->when(! $actor->can('roles.assign_admin'), fn ($query) => $query->where('role', 'pair'))
-            ->with(['inviter:id,pseudo', 'user:id,pseudo'])
+            ->with(['inviter:id,pseudo', 'user:id,pseudo', 'zone:id,name'])
             ->orderByDesc('id')
             ->limit(20)
             ->get();
@@ -318,6 +330,9 @@ final class Index extends Component
             'format' => $this->formatter(),
             'canValidate' => (bool) auth()->user()?->can('users.validate_peers'),
             'canAssignPeer' => (bool) auth()->user()?->can('peers.assign'),
+            'inviteZones' => array_map(static fn (array $zone): array => ['id' => $zone['id'], 'name' => $zone['name']], app(Referentials::class)->zones()),
+            'inviteMinDays' => TeamInvitations::minDays(),
+            'inviteMaxDays' => TeamInvitations::maxDays(),
             'canInvite' => (bool) (auth()->user()?->can('peers.invite') || auth()->user()?->can('roles.assign_admin')),
             'canInviteAdmin' => (bool) auth()->user()?->can('roles.assign_admin'),
             'messageMax' => RegistrationSettings::MESSAGE_MAX,

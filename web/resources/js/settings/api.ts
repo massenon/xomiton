@@ -2,7 +2,7 @@
 // un seul endroit pour les adresses (/api/v1, hors Ziggy). Chaque fonction reçoit le client useApi() (XSRF, 419, 429,
 // toasts) et rend l'objet utile, sans enveloppe. Les erreurs 422 remontent en ApiError (fieldErrors) sans toast.
 import type { Api } from '@/app/useApi';
-import type { ChannelPrefs, Identity, Newsletter, Privacy, Security, SessionRow } from './types';
+import type { ChannelPrefs, DeviceRow, Identity, Newsletter, Privacy, Security, SessionRow } from './types';
 
 export const ME = '/api/v1/me';
 
@@ -46,6 +46,11 @@ export function settingsApi(api: Api) {
         async revokeOtherSessions(): Promise<number> {
             const { data } = await api.delete<Envelope<{ revoked: number }>>(`${ME}/sessions`);
             return Number(data.data?.revoked) || 0;
+        },
+        /** POST me/devices/{uuid}/wipe : 202 (ordre créé) ou 200 (déjà demandé) ; mot de passe actuel exigé (422 `password`). */
+        async wipeDevice(uuid: string, password: string): Promise<DeviceRow> {
+            const { data } = await api.post<Envelope<DeviceRow>>(`${ME}/devices/${encodeURIComponent(uuid)}/wipe`, { password }, { silent: true });
+            return data.data;
         },
         /** DELETE me/devices/{uuid} : 204, l'appareil reste listé comme retiré. */
         async revokeDevice(uuid: string): Promise<void> {

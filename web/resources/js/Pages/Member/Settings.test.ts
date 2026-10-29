@@ -180,6 +180,70 @@ describe('Page /parametres — apparence, langue, appareils, suppression', () =>
         expect(calls[1]).toMatchObject({ url: '/api/v1/me/devices/7d9f0c1e-2b3a-4c5d-8e9f-0a1b2c3d4e5f', method: 'DELETE' });
     });
 
+    it('efface un appareil à distance après confirmation forte : mot de passe ressaisi, erreur près du champ, puis « Effacement demandé »', async () => {
+        const uuid = '7d9f0c1e-2b3a-4c5d-8e9f-0a1b2c3d4e5f';
+        let attempt = 0;
+        const { calls } = fakeFetch(() => {
+            attempt += 1;
+            return attempt === 1
+                ? json({ message: 'Données invalides.', errors: { password: ['Le mot de passe actuel est incorrect.'] } }, 422)
+                : json({ data: { device_uuid: uuid, label: 'Pixel 7', revoked: true, wipe: { requested_at: '2026-10-29T10:00:00Z', reason: 'owner' } } }, 202);
+        });
+        await mount();
+
+        const open = screen.getByRole('button', { name: 'Effacer à distance l’appareil Pixel 7' });
+        expect(open.getAttribute('aria-expanded')).toBe('false');
+        await fireEvent.click(open);
+        expect(open.getAttribute('aria-expanded')).toBe('true');
+        expect(screen.getByRole('group', { name: /Effacer à distance/ })).toBeTruthy();
+
+        // Sans mot de passe : aucun appel.
+        await fireEvent.click(screen.getByRole('button', { name: 'Effacer l’appareil' }));
+        expect(calls).toHaveLength(0);
+        expect(document.querySelector(`#wipe-password-${uuid}-error`)?.textContent).toContain('Saisis ton mot de passe');
+
+        await fireEvent.update(document.getElementById(`wipe-password-${uuid}`) as HTMLInputElement, 'faux');
+        await fireEvent.click(screen.getByRole('button', { name: 'Effacer l’appareil' }));
+        await waitFor(() => expect(calls[0]).toMatchObject({ url: `/api/v1/me/devices/${uuid}/wipe`, method: 'POST', body: { password: 'faux' } }));
+        await waitFor(() => expect(document.querySelector(`#wipe-password-${uuid}-error`)?.textContent).toContain('incorrect'));
+        expect(screen.getByRole('group', { name: /Effacer à distance/ })).toBeTruthy();
+
+        await fireEvent.update(document.getElementById(`wipe-password-${uuid}`) as HTMLInputElement, 'Xomiton2026!');
+        await fireEvent.click(screen.getByRole('button', { name: 'Effacer l’appareil' }));
+        await waitFor(() => expect(screen.getByText('Effacement demandé')).toBeTruthy());
+        expect(calls[1]).toMatchObject({ body: { password: 'Xomiton2026!' } });
+        await waitFor(() => expect(screen.queryByRole('group', { name: /Effacer à distance/ })).toBeNull());
+        expect(screen.queryByRole('button', { name: /Effacer à distance l’appareil/ })).toBeNull();
+    });
+
+    it('referme la confirmation d’effacement avec Échap ou Annuler, sans appel', async () => {
+        const { calls } = fakeFetch(() => json({ data: {} }));
+        await mount();
+
+        const open = screen.getByRole('button', { name: 'Effacer à distance l’appareil Pixel 7' });
+        await fireEvent.click(open);
+        await fireEvent.keyDown(document.getElementById('wipe-password-7d9f0c1e-2b3a-4c5d-8e9f-0a1b2c3d4e5f') as HTMLElement, { key: 'Escape' });
+        expect(screen.queryByRole('group', { name: /Effacer à distance/ })).toBeNull();
+
+        await fireEvent.click(open);
+        await fireEvent.click(screen.getByRole('button', { name: 'Annuler' }));
+        expect(screen.queryByRole('group', { name: /Effacer à distance/ })).toBeNull();
+        expect(calls).toHaveLength(0);
+    });
+
+    it('montre « Effacé » ou « Effacement demandé » sans bouton pour un appareil déjà traité', async () => {
+        fakeFetch(() => json({ data: {} }));
+        const base = (settingsProps().devices as Record<string, unknown>[])[0];
+        await mount({ devices: [
+            { ...base, device_uuid: 'a1', label: 'Tecno', revoked: true, wiped_at: '2026-10-28T10:00:00Z' },
+            { ...base, device_uuid: 'b2', label: 'Itel', revoked: true, wipe: { requested_at: '2026-10-29T10:00:00Z', reason: 'admin' } },
+        ] });
+
+        expect(screen.getByText('Effacé')).toBeTruthy();
+        expect(screen.getByText('Effacement demandé')).toBeTruthy();
+        expect(screen.queryByRole('button', { name: /Effacer à distance l’appareil/ })).toBeNull();
+    });
+
     it('exige le mot SUPPRIMER avant tout appel, puis le mot de passe', async () => {
         const { calls } = fakeFetch(() => json({ message: 'Données invalides.', errors: { password: ['Le mot de passe actuel est incorrect.'] } }, 422));
         await mount();

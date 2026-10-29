@@ -264,3 +264,13 @@ it('lit les réglages par défaut sans erreur', function (): void {
 
     expect($current['open'])->toBeTrue()->and($current['manual'])->toBe('peers')->and($current['window_on'])->toBeFalse();
 });
+
+it('crée une invitation pair avec département et durée depuis /admin/inscriptions', function (): void {
+    $zone = App\Models\Zone::factory()->create();
+    regScreen('admin')->set('inviteRole', 'pair')->set('inviteZone', (string) $zone->id)->set('inviteDays', 12)->call('invite')->assertHasNoErrors();
+
+    $invitation = App\Models\RoleInvitation::query()->latest('id')->firstOrFail();
+    expect($invitation->zone_id)->toBe($zone->id)->and((int) round(now()->diffInDays($invitation->expires_at, true)))->toBe(12);
+
+    regScreen('admin')->set('inviteDays', 99)->call('invite')->assertHasErrors(['inviteDays']);
+});

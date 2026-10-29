@@ -9,6 +9,7 @@ use App\Application\Alerts\AcknowledgeAlert;
 use App\Application\Alerts\AddInternalNote;
 use App\Application\Alerts\ChangeAlertStatus;
 use App\Application\Alerts\ReassignAlert;
+use App\Domain\Alerts\TrackingCode;
 use App\Enums\AlertPriority;
 use App\Enums\AlertStatus;
 use App\Enums\AlertType;
@@ -17,6 +18,9 @@ use App\Http\Resources\Alerts\AlertResource;
 use App\Models\Alert;
 use App\Models\DirectoryContact;
 use App\Policies\Scopes\AlertScope;
+use App\Support\LikePattern;
+use App\Support\SearchText;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -43,6 +47,7 @@ final class AlertController extends AdminApiController
             'zone_id' => ['sometimes', 'integer', 'min:1'],
             'state' => ['sometimes', 'string', 'in:open,all'],
             'unacknowledged' => ['sometimes', 'boolean'],
+            'q' => ['sometimes', 'nullable', 'string', 'max:100'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:'.(int) config('xomiton.api.max_per_page', 50)],
         ]);
 
@@ -62,6 +67,12 @@ final class AlertController extends AdminApiController
 
         if (isset($filters['zone_id'])) {
             $query->where('zone_id', (int) $filters['zone_id']);
+        }
+
+        $term = trim((string) ($filters['q'] ?? ''));
+
+        if ($term !== '') {
+            $this->search($query, $term);
         }
 
         if (($filters['state'] ?? 'open') === 'open') {
@@ -151,6 +162,41 @@ final class AlertController extends AdminApiController
         $note($alert, $this->admin($request), (string) $validated['body']);
 
         return $this->detail($request, $alert, status: 201);
+    }
+
+    /**
+     * Recherche `?q=` (ADR-33 : jamais de colonne chiffrée) : code d'alerte (`#12`, code de suivi), nom du département
+     * ou de la commune, statut (valeur ou libellé). Insensible à la casse et aux accents (LikePattern / SearchText).
+     *
+     * @param  Builder<Alert>  $query
+     */
+    private function search(Builder $query, string $term): void
+    {
+        $pattern = LikePattern::contains($term);
+        $folded = SearchText::normalize($term);
+        $number = preg_match('/^#?(\d{1,10})$/', $term, $matches) === 1 ? (int) $matches[1] : null;
+        $code = TrackingCode::normalize($term);
+        $statuses = array_values(array_filter(
+            AlertStatus::cases(),
+            static fn (AlertStatus $status): bool => $folded !== '' && (str_contains($status->value, $folded) || str_contains(SearchText::normalize($status->label()), $folded)),
+        ));
+
+        $query->where(function (Builder $where) use ($pattern, $number, $code, $statuses): void {
+            if ($number !== null) {
+                $where->orWhere('alerts.id', $number);
+            }
+
+            if ($code !== null) {
+                $where->orWhere('alerts.tracking_code', $code);
+            }
+
+            if ($statuses !== []) {
+                $where->orWhereIn('alerts.status', $statuses);
+            }
+
+            $where->orWhereHas('zone', fn (Builder $q) => $q->whereRaw(LikePattern::clause('zones.name'), [$pattern]));
+            $where->orWhereHas('commune', fn (Builder $q) => $q->whereRaw(LikePattern::clause('communes.name'), [$pattern]));
+        });
     }
 
     /**

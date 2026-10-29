@@ -6,6 +6,7 @@ namespace App\Application\Admin\Roles;
 
 use App\Application\Admin\Users\ChangeUserRole;
 use App\Enums\UserStatus;
+use App\Models\Commune;
 use App\Models\RoleInvitation;
 use App\Models\User;
 use App\Notifications\RoleNotice;
@@ -46,6 +47,7 @@ final class GrantInvitedRole
             }
 
             $this->peers->apply($user, $inviter, 'invitation');
+            $this->attachToZone($user, $invitation);
         } else {
             if ($inviter === null || ! $inviter->can('roles.assign_admin')) {
                 return $this->refuse($invitation, 'inviter_lost_rights');
@@ -71,6 +73,23 @@ final class GrantInvitedRole
         Audit::log('invitations.accepted', $invitation, sprintf('role=%s ; code=…%s', $invitation->role, $invitation->code_hint), $user);
 
         return $invitation->role;
+    }
+
+    /** Rattache la personne invitée à la zone de l'invitation (la commune est retirée si elle est d'un autre département). */
+    private function attachToZone(User $user, RoleInvitation $invitation): void
+    {
+        if ($invitation->zone_id === null || $user->zone_id === $invitation->zone_id) {
+            return;
+        }
+
+        $user->forceFill(['zone_id' => $invitation->zone_id]);
+
+        if ($user->commune_id !== null && ! Commune::query()->whereKey($user->commune_id)->where('zone_id', $invitation->zone_id)->exists()) {
+            $user->commune_id = null;
+        }
+
+        $user->save();
+        Audit::log('invitations.zone_attached', $invitation, sprintf('zone=%d ; pseudo=%s', $invitation->zone_id, $user->pseudo), $user);
     }
 
     private function refuse(RoleInvitation $invitation, string $reason): null

@@ -483,3 +483,44 @@ it('liste les notifications d’astreinte par catégorie et les marque lues', fu
     admCall($this->admin, 'POST', 'notifications/read-all')->assertOk()->assertJsonPath('data.marked', 2);
     expect($this->admin->notifications()->where('category', 'communaute')->whereNull('read_at')->count())->toBe(1);
 });
+
+it('applique le département et la durée choisis à l’invitation pair, dans les bornes configurées', function (): void {
+    $zone = App\Models\Zone::factory()->create(['name' => 'Zonetest Nord']);
+
+    $created = admCall($this->admin, 'POST', 'invitations', ['role' => 'pair', 'zone_id' => $zone->id, 'valid_days' => 14], stepUp: true)->assertCreated()
+        ->assertJsonPath('data.zone.id', $zone->id)->assertJsonPath('data.zone.name', 'Zonetest Nord');
+    $invitation = RoleInvitation::query()->findOrFail($created->json('data.id'));
+    expect($invitation->zone_id)->toBe($zone->id)->and((int) round(now()->diffInDays($invitation->expires_at, true)))->toBe(14);
+    expect(array_column(admCall($this->admin, 'GET', 'invitations')->json('data'), 'zone'))->toContain(['id' => $zone->id, 'name' => 'Zonetest Nord']);
+
+    // Défaut : 7 jours, sans département.
+    $default = RoleInvitation::query()->findOrFail(admCall($this->admin, 'POST', 'invitations', ['role' => 'pair'], stepUp: true)->assertCreated()->assertJsonPath('data.zone', null)->json('data.id'));
+    expect((int) round(now()->diffInDays($default->expires_at, true)))->toBe(7);
+
+    // Bornes et département inconnu ou inactif.
+    admCall($this->admin, 'POST', 'invitations', ['role' => 'pair', 'valid_days' => 0], stepUp: true)->assertStatus(422);
+    admCall($this->admin, 'POST', 'invitations', ['role' => 'pair', 'valid_days' => 31], stepUp: true)->assertStatus(422);
+    admCall($this->admin, 'POST', 'invitations', ['role' => 'pair', 'zone_id' => 999999], stepUp: true)->assertStatus(422);
+
+    config(['xomiton.accounts.team_invitation_max_days' => 60]);
+    admCall($this->admin, 'POST', 'invitations', ['role' => 'pair', 'valid_days' => 45], stepUp: true)->assertCreated();
+});
+
+it('cherche les alertes par code, département, commune ou statut, sans accent ni casse, jamais dans le contenu chiffré', function (): void {
+    $zone = App\Models\Zone::factory()->create(['name' => 'Zoné Alpha']);
+    $other = App\Models\Zone::factory()->create(['name' => 'Zoné Béta']);
+    $a = Alert::factory()->create(['zone_id' => $zone->id, 'description' => 'Récit secret zébré']);
+    $b = Alert::factory()->create(['zone_id' => $other->id]);
+    $c = Alert::factory()->withStatus(AlertStatus::InProgress)->create(['zone_id' => $zone->id]);
+    $ids = static fn (string $q): array => array_column(admCall(test()->admin, 'GET', 'alerts?state=all&q='.urlencode($q))->assertOk()->json('data'), 'id');
+
+    expect($ids('zone alpha'))->toEqualCanonicalizing([$a->ulid, $c->ulid])
+        ->and($ids('ZONE BETA'))->toBe([$b->ulid])
+        ->and($ids('#'.$b->id))->toBe([$b->ulid])
+        ->and($ids(strtolower($a->tracking_code)))->toBe([$a->ulid])
+        ->and($ids('en cours'))->toContain($c->ulid)->not->toContain($b->ulid)
+        ->and($ids('zébré'))->toBe([])
+        ->and($ids('Récit secret'))->toBe([])
+        ->and($ids('100%'))->toBe([]);
+    admCall($this->admin, 'GET', 'alerts?q='.str_repeat('a', 101))->assertStatus(422);
+});

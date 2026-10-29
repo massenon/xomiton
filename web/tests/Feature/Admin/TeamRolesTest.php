@@ -371,3 +371,28 @@ it('donne le rôle d’une invitation à l’approbation quand la validation man
 
     expect($user->refresh()->getRoleNames()->sort()->values()->all())->toBe(['membre', 'pair']);
 });
+
+it('rattache la personne pair invitée à la zone de l’invitation à la validation de son compte', function (): void {
+    Notification::fake();
+    $zone = App\Models\Zone::factory()->create();
+    $admin = rlUser(['membre', 'admin']);
+    $created = app(TeamInvitations::class)->create($admin, 'pair', zoneId: $zone->id, days: 10);
+
+    expect($created['invitation']->zone_id)->toBe($zone->id)
+        ->and((int) round(now()->diffInDays($created['invitation']->expires_at, true)))->toBe(10);
+
+    $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
+    expect($user->refresh()->zone_id)->not->toBe($zone->id);
+    rlVerify($user);
+
+    expect($user->refresh()->zone_id)->toBe($zone->id)->and($user->hasRole('pair'))->toBeTrue();
+});
+
+it('refuse une durée hors bornes ou un département inconnu à la création d’une invitation', function (): void {
+    $admin = rlUser(['membre', 'admin']);
+    $invitations = app(TeamInvitations::class);
+
+    expect(fn () => $invitations->create($admin, 'pair', days: 0))->toThrow(AccountActionRefused::class)
+        ->and(fn () => $invitations->create($admin, 'pair', days: 31))->toThrow(AccountActionRefused::class)
+        ->and(fn () => $invitations->create($admin, 'pair', zoneId: 999999))->toThrow(AccountActionRefused::class);
+});

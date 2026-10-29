@@ -29,7 +29,7 @@ final class InvitationController extends AdminApiController
         $page = RoleInvitation::query()
             ->when(! $user->can('roles.assign_admin'), fn ($query) => $query->where('role', 'pair'))
             ->when($request->query('status') !== null, fn ($query) => $query->where('status', (string) $request->query('status')))
-            ->with(['inviter:id,pseudo', 'user:id,pseudo'])
+            ->with(['inviter:id,pseudo', 'user:id,pseudo', 'zone:id,name'])
             ->orderByDesc('id')
             ->paginate($this->perPage($request));
 
@@ -42,6 +42,8 @@ final class InvitationController extends AdminApiController
             'role' => ['required', 'string', Rule::in(TeamInvitations::ROLES)],
             'email' => ['sometimes', 'nullable', 'email:rfc', 'max:190'],
             'note' => ['sometimes', 'nullable', 'string', 'max:190'],
+            'zone_id' => ['sometimes', 'nullable', 'integer', Rule::exists('zones', 'id')->where('is_active', true)],
+            'valid_days' => ['sometimes', 'nullable', 'integer', 'min:'.TeamInvitations::minDays(), 'max:'.TeamInvitations::maxDays()],
         ]);
         $admin = $this->admin($request);
         // D-MOB-16 : une invitation à un rôle d'administration ne se crée QUE depuis le web (super-admin).
@@ -49,8 +51,8 @@ final class InvitationController extends AdminApiController
         Gate::forUser($admin)->authorize('invite', [RoleInvitation::class, (string) $validated['role']]);
         $this->confirm($request);
 
-        $created = $invitations->create($admin, (string) $validated['role'], $validated['email'] ?? null, $validated['note'] ?? null);
-        $created['invitation']->load(['inviter:id,pseudo']);
+        $created = $invitations->create($admin, (string) $validated['role'], $validated['email'] ?? null, $validated['note'] ?? null, isset($validated['zone_id']) ? (int) $validated['zone_id'] : null, isset($validated['valid_days']) ? (int) $validated['valid_days'] : null);
+        $created['invitation']->load(['inviter:id,pseudo', 'zone:id,name']);
 
         return $this->respond(new AdminInvitationResource($created['invitation'], ['code' => $created['code'], 'link' => $created['link']]), 201);
     }

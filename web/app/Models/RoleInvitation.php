@@ -27,7 +27,7 @@ class RoleInvitation extends Model
 
     /** @var list<string> */
     protected $fillable = [
-        'role', 'code_hash', 'code_hint', 'email', 'note', 'status', 'invited_by', 'user_id', 'expires_at',
+        'role', 'zone_id', 'code_hash', 'code_hint', 'email', 'note', 'status', 'invited_by', 'user_id', 'expires_at',
         'redeemed_at', 'decided_at', 'decided_by', 'decision_reason',
     ];
 
@@ -41,6 +41,12 @@ class RoleInvitation extends Model
             'redeemed_at' => 'datetime',
             'decided_at' => 'datetime',
         ];
+    }
+
+    /** @return BelongsTo<Zone, $this> */
+    public function zone(): BelongsTo
+    {
+        return $this->belongsTo(Zone::class);
     }
 
     /** @return BelongsTo<User, $this> */

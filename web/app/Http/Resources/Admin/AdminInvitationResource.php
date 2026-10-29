@@ -38,6 +38,7 @@ final class AdminInvitationResource extends JsonResource
             'code_hint' => $invitation->code_hint,
             'email' => $invitation->email,
             'note' => $invitation->note,
+            'zone' => $invitation->relationLoaded('zone') && $invitation->zone !== null ? ['id' => (int) $invitation->zone->getKey(), 'name' => $invitation->zone->name] : null,
             'invited_by' => $invitation->relationLoaded('inviter') ? $invitation->inviter?->pseudo : null,
             'user' => $invitation->relationLoaded('user') && $invitation->user !== null ? ['id' => (int) $invitation->user->getKey(), 'pseudo' => $invitation->user->pseudo] : null,
             'expires_at' => $invitation->expires_at->toIso8601String(),

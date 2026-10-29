@@ -200,7 +200,7 @@
             <div class="card-body">
                 <p class="small text-secondary">{{ __('admin.registrations.invitations.help') }}</p>
                 <form class="row g-2 align-items-end" wire:submit="invite" novalidate>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label small fw-semibold" for="xmInviteRole">{{ __('admin.registrations.invitations.role') }}</label>
                         <select class="form-select form-select-sm" id="xmInviteRole" wire:model="inviteRole">
                             <option value="pair">{{ __('admin.users.roles.pair') }}</option>
@@ -211,7 +211,7 @@
                             @endif
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label small fw-semibold" for="xmInviteEmail">{{ __('admin.registrations.invitations.email') }}</label>
                         <input type="email" class="form-control form-control-sm @error('inviteEmail') is-invalid @enderror" id="xmInviteEmail" wire:model="inviteEmail" maxlength="190" autocomplete="off">
                         @error('inviteEmail')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -219,6 +219,21 @@
                     <div class="col-md-3">
                         <label class="form-label small fw-semibold" for="xmInviteNote">{{ __('admin.registrations.invitations.note') }}</label>
                         <input type="text" class="form-control form-control-sm" id="xmInviteNote" wire:model="inviteNote" maxlength="190" autocomplete="off">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold" for="xmInviteZone">{{ __('admin.registrations.invitations.zone') }}</label>
+                        <select class="form-select form-select-sm @error('inviteZone') is-invalid @enderror" id="xmInviteZone" wire:model="inviteZone">
+                            <option value="">{{ __('admin.registrations.invitations.zone_none') }}</option>
+                            @foreach ($inviteZones as $zone)
+                                <option value="{{ $zone['id'] }}">{{ $zone['name'] }}</option>
+                            @endforeach
+                        </select>
+                        @error('inviteZone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-semibold" for="xmInviteDays">{{ __('admin.registrations.invitations.days') }}</label>
+                        <input type="number" class="form-control form-control-sm @error('inviteDays') is-invalid @enderror" id="xmInviteDays" wire:model="inviteDays" min="{{ $inviteMinDays }}" max="{{ $inviteMaxDays }}" inputmode="numeric">
+                        @error('inviteDays')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-2 d-grid">
                         <button type="submit" class="btn btn-sm btn-primary" wire:loading.attr="disabled" wire:target="invite">{{ __('admin.registrations.invitations.create') }}</button>
@@ -239,7 +254,7 @@
                         <span class="fw-semibold">{{ __('admin.users.roles.'.$invitation->role) }}</span>
                         <code class="small">…{{ $invitation->code_hint }}</code>
                         <x-badge :color="match ($invitation->status) { 'accepted' => 'success', 'redeemed' => 'info', 'pending' => 'primary', default => 'secondary' }" soft>{{ __('admin.registrations.invitations.status.'.$invitation->status) }}</x-badge>
-                        <span class="small text-secondary">{{ $invitation->email }}@if ($invitation->user) · {{ $invitation->user->pseudo }}@endif · {{ __('admin.registrations.invitations.expires', ['date' => $format->shortDate($invitation->expires_at)]) }}</span>
+                        <span class="small text-secondary">{{ $invitation->email }}@if ($invitation->zone) · {{ $invitation->zone->name }}@endif @if ($invitation->user) · {{ $invitation->user->pseudo }}@endif · {{ __('admin.registrations.invitations.expires', ['date' => $format->shortDate($invitation->expires_at)]) }}</span>
                         @if (in_array($invitation->status, ['pending', 'redeemed'], true))
                             <button type="button" class="btn btn-sm btn-outline-danger ms-auto" wire:click="revokeInvitation({{ $invitation->id }})" wire:confirm="{{ __('admin.registrations.invitations.confirm_revoke') }}" wire:loading.attr="disabled" wire:target="revokeInvitation({{ $invitation->id }})">{{ __('admin.registrations.invitations.revoke') }}</button>
                         @endif

@@ -9,6 +9,7 @@ use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Domain\Auth\Exceptions\InvitationInvalid;
 use App\Models\RoleInvitation;
 use App\Models\User;
+use App\Models\Zone;
 use App\Support\Audit;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -39,10 +40,20 @@ final class TeamInvitations
      *
      * @throws AccountActionRefused
      */
-    public function create(User $by, string $role, ?string $email = null, ?string $note = null): array
+    public function create(User $by, string $role, ?string $email = null, ?string $note = null, ?int $zoneId = null, ?int $days = null): array
     {
         if (! in_array($role, self::ROLES, true)) {
             throw new AccountActionRefused('invalid_role');
+        }
+
+        if ($zoneId !== null && ! Zone::query()->active()->whereKey($zoneId)->exists()) {
+            throw new AccountActionRefused('invalid_zone');
+        }
+
+        $days ??= self::defaultDays();
+
+        if ($days < self::minDays() || $days > self::maxDays()) {
+            throw new AccountActionRefused('invalid_invitation_days', ['min' => self::minDays(), 'max' => self::maxDays()]);
         }
 
         Gate::forUser($by)->authorize('invite', [RoleInvitation::class, $role]);
@@ -50,10 +61,11 @@ final class TeamInvitations
         $email = $email === null || trim($email) === '' ? null : OtpService::normalizeEmail($email);
         $note = $note === null || trim($note) === '' ? null : Str::limit(trim($note), 190, '');
         $code = self::makeCode();
-        $expires = now()->addDays((int) config('xomiton.accounts.team_invitation_days', 7));
+        $expires = now()->addDays($days);
 
         $invitation = RoleInvitation::query()->create([
             'role' => $role,
+            'zone_id' => $zoneId,
             'code_hash' => RoleInvitation::hash($code),
             'code_hint' => substr(RoleInvitation::normalize($code), -4),
             'email' => $email,
@@ -63,7 +75,7 @@ final class TeamInvitations
             'expires_at' => $expires,
         ]);
 
-        Audit::log('invitations.created', $invitation, sprintf('role=%s ; code=…%s ; expire=%s', $role, $invitation->code_hint, $expires->toDateString()), $by);
+        Audit::log('invitations.created', $invitation, sprintf('role=%s ; code=…%s ; expire=%s%s', $role, $invitation->code_hint, $expires->toDateString(), $zoneId === null ? '' : ' ; zone='.$zoneId), $by);
 
         return ['invitation' => $invitation, 'code' => $code, 'link' => self::link($code, $expires)];
     }
@@ -128,6 +140,22 @@ final class TeamInvitations
 
             return $invitation;
         });
+    }
+
+    /** Durée de validité par défaut (jours), ramenée dans les bornes. */
+    public static function defaultDays(): int
+    {
+        return max(self::minDays(), min(self::maxDays(), (int) config('xomiton.accounts.team_invitation_days', 7)));
+    }
+
+    public static function minDays(): int
+    {
+        return max(1, (int) config('xomiton.accounts.team_invitation_min_days', 1));
+    }
+
+    public static function maxDays(): int
+    {
+        return max(self::minDays(), (int) config('xomiton.accounts.team_invitation_max_days', 30));
     }
 
     public static function makeCode(): string

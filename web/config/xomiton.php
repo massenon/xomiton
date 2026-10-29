@@ -274,6 +274,9 @@ return [
         // Invitations à rejoindre l'équipe (pair, admin ; décisions client du 2026-10-29) : validité du lien / code à usage
         // unique (jours) et durée de l'étape de confirmation (`step-up`) exigée par l'API admin mobile (minutes).
         'team_invitation_days' => 7,
+        // Bornes de la durée de validité choisie à la création (jours) ; le défaut ci-dessus doit s'y trouver.
+        'team_invitation_min_days' => 1,
+        'team_invitation_max_days' => 30,
         'step_up_minutes' => 5,
     ],
 

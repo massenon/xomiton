@@ -75,6 +75,10 @@ export interface DeviceRow {
     platform: string | null;
     app_version: string | null;
     revoked: boolean;
+    /** Ordre d'effacement en attente d'accusé de l'appareil (me/devices), sinon null/absent. */
+    wipe?: { requested_at: string | null; reason: string | null } | null;
+    wipe_requested_at?: string | null;
+    wiped_at?: string | null;
     last_seen_at: string | null;
     last_sync_at: string | null;
     created_at: string | null;

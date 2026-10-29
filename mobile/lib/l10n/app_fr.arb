@@ -3342,6 +3342,10 @@
     "@admin_registrations_invitations_created": {
         "description": "admin.registrations.invitations.created"
     },
+    "admin_registrations_invitations_days": "Validité (jours)",
+    "@admin_registrations_invitations_days": {
+        "description": "admin.registrations.invitations.days"
+    },
     "admin_registrations_invitations_email": "Adresse e-mail (facultative, lie l’invitation)",
     "@admin_registrations_invitations_email": {
         "description": "admin.registrations.invitations.email"
@@ -3410,6 +3414,14 @@
     "admin_registrations_invitations_title": "Inviter dans l’équipe",
     "@admin_registrations_invitations_title": {
         "description": "admin.registrations.invitations.title"
+    },
+    "admin_registrations_invitations_zone": "Département de rattachement (facultatif)",
+    "@admin_registrations_invitations_zone": {
+        "description": "admin.registrations.invitations.zone"
+    },
+    "admin_registrations_invitations_zone_none": "Aucun",
+    "@admin_registrations_invitations_zone_none": {
+        "description": "admin.registrations.invitations.zone_none"
     },
     "admin_registrations_kpi_pending": "Demandes en attente",
     "@admin_registrations_kpi_pending": {
@@ -4295,9 +4307,25 @@
     "@admin_users_errors_email_unverified": {
         "description": "admin.users.errors.email_unverified"
     },
+    "admin_users_errors_invalid_invitation_days": "La validité doit être comprise entre {min} et {max} jours.",
+    "@admin_users_errors_invalid_invitation_days": {
+        "description": "admin.users.errors.invalid_invitation_days",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
     "admin_users_errors_invalid_role": "Ce rôle n’existe pas ou ne peut pas être attribué avec vos droits.",
     "@admin_users_errors_invalid_role": {
         "description": "admin.users.errors.invalid_role"
+    },
+    "admin_users_errors_invalid_zone": "Ce département n’existe pas ou n’est plus actif.",
+    "@admin_users_errors_invalid_zone": {
+        "description": "admin.users.errors.invalid_zone"
     },
     "admin_users_errors_invitation_closed": "Cette invitation est déjà utilisée, annulée ou expirée.",
     "@admin_users_errors_invitation_closed": {
@@ -33398,6 +33426,52 @@
     "@profile_settings_devices_title": {
         "description": "profile.settings.devices.title"
     },
+    "profile_settings_devices_wipe": "Effacer à distance",
+    "@profile_settings_devices_wipe": {
+        "description": "profile.settings.devices.wipe"
+    },
+    "profile_settings_devices_wipe_confirm": "Effacer l’appareil",
+    "@profile_settings_devices_wipe_confirm": {
+        "description": "profile.settings.devices.wipe_confirm"
+    },
+    "profile_settings_devices_wipe_label": "Effacer à distance l’appareil {name}",
+    "@profile_settings_devices_wipe_label": {
+        "description": "profile.settings.devices.wipe_label",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_settings_devices_wipe_password_help": "Ressaisis ton mot de passe pour confirmer que c’est bien toi.",
+    "@profile_settings_devices_wipe_password_help": {
+        "description": "profile.settings.devices.wipe_password_help"
+    },
+    "profile_settings_devices_wipe_password_required": "Saisis ton mot de passe pour confirmer.",
+    "@profile_settings_devices_wipe_password_required": {
+        "description": "profile.settings.devices.wipe_password_required"
+    },
+    "profile_settings_devices_wipe_pending": "Effacement demandé",
+    "@profile_settings_devices_wipe_pending": {
+        "description": "profile.settings.devices.wipe_pending"
+    },
+    "profile_settings_devices_wipe_title": "Effacer à distance « {name} » ?",
+    "@profile_settings_devices_wipe_title": {
+        "description": "profile.settings.devices.wipe_title",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "profile_settings_devices_wipe_warning": "Pour un téléphone perdu ou volé. L’appareil est déconnecté tout de suite et efface les données de Xomiton qu’il garde dès qu’il se reconnecte. Cette action ne peut pas être annulée.",
+    "@profile_settings_devices_wipe_warning": {
+        "description": "profile.settings.devices.wipe_warning"
+    },
+    "profile_settings_devices_wiped": "Effacé",
+    "@profile_settings_devices_wiped": {
+        "description": "profile.settings.devices.wiped"
+    },
     "profile_settings_errors_current_password": "Le mot de passe actuel est incorrect.",
     "@profile_settings_errors_current_password": {
         "description": "profile.settings.errors.current_password"
@@ -33839,6 +33913,10 @@
     "profile_settings_toasts_device_revoked": "Appareil retiré.",
     "@profile_settings_toasts_device_revoked": {
         "description": "profile.settings.toasts.device_revoked"
+    },
+    "profile_settings_toasts_device_wipe_requested": "Effacement demandé : l’appareil sera effacé dès qu’il se reconnecte.",
+    "@profile_settings_toasts_device_wipe_requested": {
+        "description": "profile.settings.toasts.device_wipe_requested"
     },
     "profile_settings_toasts_language_saved": "Langue enregistrée.",
     "@profile_settings_toasts_language_saved": {
