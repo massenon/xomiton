@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/auth_spaces/app_space.dart';
+import '../core/auth_spaces/presentation/space_widgets.dart';
+import '../core/auth_spaces/space_providers.dart';
 import '../features/alerts/presentation/alerts_pages.dart';
 import '../features/alerts/presentation/report_page.dart';
 import '../features/alerts/presentation/sos_page.dart';
@@ -25,6 +28,8 @@ import '../features/profile/presentation/progressive_page.dart';
 import '../features/profile/presentation/security_page.dart';
 import '../features/profile/presentation/settings_page.dart';
 import '../features/shell/presentation/shell_pages.dart';
+import '../features/alerts/presentation/sos_page.dart' show SosPage;
+import 'shells/space_shells.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -39,7 +44,11 @@ const Set<String> kPublicPrefixes = {
 /// Écrans réservés aux personnes sans session.
 const _guestOnly = {'/splash', '/login', '/forgot', '/reset'};
 
-/// Redirection : onboarding vu ? session ouverte ?
+/// Redirection (plan §5.3). Ordre : (1) onboarding, (2) session, (2 bis) juste
+/// après la connexion, `/spaces` si le compte a plus d'un espace, (4) garde
+/// d'espace : `/pair/**` n'est ouvert que si le SERVEUR a déclaré l'espace
+/// pair au compte (`spaces` de `GET me`), `/admin/**` idem, sinon retour à
+/// l'accueil Membre. Le verrou PIN (3) est posé par `PinGate`, au-dessus du routeur.
 ///
 /// - session ouverte : jamais sur les écrans invités ; l'inscription (phases
 ///   2 à 4) et l'OTP d'inscription restent ouverts, la session existant déjà
@@ -48,24 +57,39 @@ const _guestOnly = {'/splash', '/login', '/forgot', '/reset'};
 ///   Les écrans SOS / signalement / suivi / urgences restent accessibles sans
 ///   compte (RG-01) : voir [kPublicPrefixes]. Le SOS d'un·e membre est l'onglet
 ///   `/sos` ; sans session, `/sos` mène à l'écran plein `/alerte-sos`.
+///
+/// Garde de confort seulement : chaque route serveur `pair/*` et `admin/*`
+/// revérifie (403), le client n'est jamais une frontière de sécurité.
 String? appRedirect({
   required bool authenticated,
   required bool onboardingSeen,
   required Uri uri,
   Set<String> publicPrefixes = kPublicPrefixes,
+  Set<AppSpace> spaces = const {AppSpace.member},
+  AppSpace activeSpace = AppSpace.member,
+  bool spaceChoicePending = false,
 }) {
   final loc = uri.path;
   if (!authenticated && loc == '/sos') return '/alerte-sos';
   if (authenticated) {
+    final several = spaces.length > 1;
+    // Arrivée après connexion : sélecteur d'espace (compte à plusieurs espaces),
+    // sinon dernier espace actif s'il est toujours déclaré, sinon Membre.
+    final arrival = several && spaceChoicePending
+        ? '/spaces'
+        : (spaces.contains(activeSpace) ? activeSpace : AppSpace.member).homeRoute;
     if (loc == '/alerte-sos') return '/sos';
-    if (_guestOnly.contains(loc)) return '/home';
+    if (_guestOnly.contains(loc)) return arrival;
     if (loc == '/otp' && uri.queryParameters['purpose'] != 'signup') {
-      return '/home';
+      return arrival;
     }
+    if (loc == '/spaces') return several ? null : AppSpace.member.homeRoute;
+    final owner = AppSpace.forPath(loc);
+    if (owner != null && !spaces.contains(owner)) return AppSpace.member.homeRoute;
     return null;
   }
   if (loc == '/splash') return onboardingSeen ? '/login' : null;
-  if (_guestOnly.contains(loc) || loc == '/signup' || loc == '/otp') {
+  if (_guestOnly.contains(loc) || loc == '/signup' || loc.startsWith('/signup/') || loc == '/otp') {
     return null;
   }
   if (publicPrefixes.any(loc.startsWith)) return null;
@@ -77,20 +101,33 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.onDispose(refresh.dispose);
   ref.listen(sessionProvider, (_, _) => refresh.value++);
   ref.listen(onboardingProvider, (_, _) => refresh.value++);
+  ref.listen(activeSpaceProvider, (_, _) => refresh.value++);
 
   final router = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/splash',
     refreshListenable: refresh,
-    redirect: (context, state) => appRedirect(
-      authenticated: ref.read(sessionProvider).authenticated,
-      onboardingSeen: ref.read(onboardingProvider).seen,
-      uri: state.uri,
-    ),
+    redirect: (context, state) {
+      final session = ref.read(sessionProvider);
+      return appRedirect(
+        authenticated: session.authenticated,
+        onboardingSeen: ref.read(onboardingProvider).seen,
+        uri: state.uri,
+        spaces: ref.read(spacesProvider).toSet(),
+        activeSpace: ref.read(activeSpaceProvider),
+        spaceChoicePending: session.spaceChoicePending,
+      );
+    },
     routes: [
       GoRoute(path: '/splash', builder: (_, _) => const SplashCarouselPage()),
       GoRoute(path: '/login', builder: (_, _) => const LoginPage()),
       GoRoute(path: '/signup', builder: (_, _) => const SignupPage()),
+      // Lien d'invitation à l'équipe : mêmes écrans que l'inscription publique (membre).
+      GoRoute(
+        path: '/signup/:invitation',
+        builder: (_, state) => SignupPage(invitation: state.pathParameters['invitation']),
+      ),
+      GoRoute(path: '/spaces', builder: (_, _) => const SpaceSelectorPage()),
       GoRoute(
         path: '/otp',
         builder: (_, state) => OtpPage(
@@ -145,6 +182,70 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
+        ],
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) => SpaceNavShell(
+          space: AppSpace.peer,
+          tabs: kPeerTabs,
+          navLabelKey: 'mobile_peer_nav_label',
+          navigationShell: shell,
+        ),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/pair/accueil',
+              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.peer, titleKey: 'menus_mobile_home'),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/pair/alertes',
+              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.peer, titleKey: 'mobile_peer_tab_alerts'),
+            ),
+          ]),
+          StatefulShellBranch(routes: [GoRoute(path: '/pair/sos', builder: (_, _) => const SosPage())]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/pair/dossiers',
+              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.peer, titleKey: 'mobile_peer_tab_cases'),
+            ),
+          ]),
+        ],
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) => SpaceNavShell(
+          space: AppSpace.admin,
+          tabs: kAdminTabs,
+          navLabelKey: 'mobile_admin_nav_label',
+          navigationShell: shell,
+        ),
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/admin/astreinte',
+              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_duty'),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/admin/alertes',
+              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_alerts'),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/admin/gerer',
+              builder: (_, _) => const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_manage'),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/admin/notifications',
+              builder: (_, _) =>
+                  const SpacePlaceholderPage(space: AppSpace.admin, titleKey: 'mobile_admin_tab_notifications'),
+            ),
+          ]),
         ],
       ),
       GoRoute(

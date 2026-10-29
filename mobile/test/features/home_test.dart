@@ -345,6 +345,7 @@ void main() {
     await pumpHome(tester, env);
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text(S.t('menus_mobile_profile'))));
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.byKey(const Key('profile-logout')), 300);
     await tester.tap(find.byKey(const Key('profile-logout')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('logout-confirm')));

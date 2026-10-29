@@ -17,6 +17,11 @@ class SessionClosedToast extends AppToast {
   const SessionClosedToast();
 }
 
+/// Le serveur a retiré un espace (pair, admin) : « Cet espace n'est plus disponible pour ce compte ».
+class SpaceUnavailableToast extends AppToast {
+  const SpaceUnavailableToast();
+}
+
 class ToastBus {
   final StreamController<AppToast> _c = StreamController<AppToast>.broadcast();
   Stream<AppToast> get stream => _c.stream;

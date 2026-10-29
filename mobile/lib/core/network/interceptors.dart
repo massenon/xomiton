@@ -123,12 +123,22 @@ class IdempotentReplayInterceptor extends Interceptor {
   }
 }
 
-/// Normalise les erreurs en [ApiException] ; 401 → déconnexion ; 429 → toast.
+/// Route d'un espace réservé (`pair/*`, `admin/*`) : un 403 `forbidden` y
+/// signifie que le droit a disparu côté serveur.
+bool isSpaceApiPath(String path) {
+  final p = path.replaceAll(RegExp(r'^/+'), '').replaceFirst(RegExp(r'^(api/)?v1/'), '');
+  return p.startsWith('pair/') || p.startsWith('admin/');
+}
+
+/// Normalise les erreurs en [ApiException] ; 401 → déconnexion ; 429 → toast ;
+/// 403 `forbidden` sur `pair/*` ou `admin/*` → relecture de `GET me` (le
+/// serveur seul décide des espaces : plan §6.1).
 class ApiErrorInterceptor extends Interceptor {
-  ApiErrorInterceptor({required this.onUnauthorized, required this.toasts});
+  ApiErrorInterceptor({required this.onUnauthorized, required this.toasts, this.onSpaceForbidden});
 
   final Future<void> Function() onUnauthorized;
   final ToastBus toasts;
+  final Future<void> Function()? onSpaceForbidden;
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -140,6 +150,11 @@ class ApiErrorInterceptor extends Interceptor {
       unawaited(onUnauthorized());
     } else if (api.status == 429 && api.code != 'idempotency_in_progress') {
       toasts.emit(RateLimitedToast(api.retryAfter ?? 60));
+    } else if (api.status == 403 &&
+        api.code == 'forbidden' &&
+        isSpaceApiPath(err.requestOptions.path) &&
+        onSpaceForbidden != null) {
+      unawaited(onSpaceForbidden!());
     }
     handler.next(
       DioException(

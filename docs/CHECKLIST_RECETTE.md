@@ -171,8 +171,8 @@ En mode journal, rien n'est envoyé vraiment.
 
 | Réf. | Action | Résultat attendu | Statut | Commentaire |
 |---|---|---|---|---|
-| MOB-01 | `flutter pub get`, `flutter analyze`, `flutter test`. | « No issues found! » et « All tests passed! » (152 tests). | ☐ | |
-| MOB-02 | `flutter run` : parcourir le carrousel plein écran (photos, Suivant, balayage, points, Passer) ; sur la 4e diapositive, « Créer un compte » et « Se connecter ». | 4 photos plein écran, titres en tu lisibles sur la photo ; « Passer » et « Se connecter » mènent à la connexion, « Créer un compte » à l'inscription. | ☐ | |
+| MOB-01 | `flutter pub get`, `flutter analyze`, `flutter test`. | « No issues found! » et « All tests passed! » (217 tests au 2026-10-29). | ☐ | |
+| MOB-02 | `flutter run` : parcourir le carrousel plein écran (photos, Suivant, balayage, points, Passer) ; sur la 6e diapositive, « Créer un compte » et « Se connecter ». | 6 diapositives aux textes validés le 29/10/2026 (Un espace à toi · Ta parole compte · En sécurité · Une communauté qui te comprend · Des réponses fiables · Ta vie privée d'abord), une photo chacune, titres en tu lisibles sur la photo (les deux visuels basse résolution en bandeau fondu, sans pixels visibles) ; « Passer » et « Se connecter » mènent à la connexion, « Créer un compte » à l'inscription. | ☐ | |
 | MOB-03 | Créer un compte (avec la case d'âge minimal), saisir le code du journal. | Arrivée sur l'accueil (tuiles Apprendre, Signaler, Urgences, Assistant). | ☐ | |
 | MOB-04 | Se connecter, se déconnecter, se reconnecter ; tester le mot de passe oublié. | Connexion avec code si nouvel appareil. | ☐ | |
 | MOB-05 | Onglet SOS : maintenir, annuler, puis envoyer ; refuser la position. | Même comportement que le web ; l'alerte part sans position ; ligne visible dans `/admin/alertes`. | ☐ | |
@@ -184,6 +184,9 @@ En mode journal, rien n'est envoyé vraiment.
 | MOB-11 | Ouvrir `prototype_mobile/index.html` : bouton ☰ (replier, rouvrir, recharger), replier un module, ouvrir un écran en moins de 10 s ; chercher une bascule de thème. | Menu mémorisé après rechargement ; 30 écrans numérotés 01 à 30 + Espace pair et Admin mobile ; thème clair, aucune bascule de thème. | ☐ | |
 | MOB-12 | Prototype, écran Inscription (`#/signup`) : bouton avant et après la case « J'ai 15 ans ou plus », puis « J'ai moins de 15 ans ». | « Continuer » désactivé tant que la case n'est pas cochée ; refus bienveillant sans création de compte. | ☐ | |
 | MOB-13 | Prototype, `#/postpublication` : saisir un long texte. | Le champ occupe la largeur à côté de l'avatar, hauteur minimale 120 px, croît sans déborder du châssis. | ☐ | |
+| MOB-14 | Connexion avec `membre@`, `pair@`, `admin@xomiton.bj` (appareil neuf), **même écran de connexion pour tous**. Code livré le 2026-10-29 (P15-10) : recette sur appareil à faire. | `membre@` arrive au tableau de bord ; `pair@` et `admin@` voient le **sélecteur d'espace** (Membre + Pair, Membre + Admin) puis changent d'espace par la pastille d'en-tête, Profil › Mes espaces ou l'onglet « Espace pair » / « Admin » ; `pair.attente@` voit le bandeau, pas d'espace Pair. | ☐ | Pages Pair et Admin = pages d'attente jusqu'à P15-13 et P15-17. |
+| MOB-24 | Retirer `admin_mobile.access` (ou le rôle pair) au compte pendant qu'il est connecté, puis ouvrir un écran de son espace. Partie client livrée le 2026-10-29. | Prochaine requête 403 : `GET me` relu, espace retiré, message « Cet espace n'est plus disponible pour ce compte », retour à l'accueil Membre, aucune donnée résiduelle. | ☐ | Test automatique : `test/features/spaces_test.dart`. |
+| MOB-26 | Inscription publique, puis inscription par lien d'invitation de pair (`/signup/XM-…`) et par code collé. Code livré le 2026-10-29 (P15-10). | L'inscription publique ne propose que « membre » (case 15 ans obligatoire) ; l'invitation suit les mêmes écrans, avec bandeau et code prérempli ; un code invalide ou déjà utilisé affiche le message du serveur sous le champ ; le compte arrive ensuite dans « Inscriptions à valider ». | ☐ | La demande du rôle pair depuis Profil › Mes espaces (D-MOB-15) est à tester ici aussi. |
 
 ## 11. Accessibilité
 

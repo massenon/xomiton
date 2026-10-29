@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/xm_tokens.dart';
+import '../../../core/auth_spaces/presentation/space_widgets.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/dates.dart';
@@ -61,6 +62,8 @@ class _Body extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(XmSpace.gutter),
       children: [
+        // Pastille « Membre ▾ » : seulement pour un compte à plusieurs espaces.
+        const Align(alignment: Alignment.centerRight, child: SpaceSwitcherPill()),
         Row(
           children: [
             Expanded(

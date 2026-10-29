@@ -70,6 +70,9 @@ Map<String, dynamic> userJson({
   bool emailVerified = true,
   int completion = 43,
   bool pending = false,
+  List<String>? roles,
+  List<String>? spaces,
+  List<String>? permissions,
 }) => {
   'id': 12,
   'pseudo': 'Awa_S',
@@ -79,6 +82,9 @@ Map<String, dynamic> userJson({
   'email_verified': emailVerified,
   'pending_validation': pending,
   'profile': {'completion': completion},
+  'roles': ?roles,
+  'spaces': ?spaces,
+  'permissions': ?permissions,
 };
 
 AppStrings loadStrings() =>
@@ -93,6 +99,7 @@ class TestEnv {
     this.online = true,
     this.unread = 0,
     this.extra = const [],
+    this.initialPrefs = const {},
   });
 
   final FakeApi api;
@@ -102,6 +109,9 @@ class TestEnv {
   final bool online;
   final int unread;
   final List<Override> extra;
+
+  /// Préférences supplémentaires (ex. espace actif mémorisé).
+  final Map<String, Object> initialPrefs;
 
   final secrets = MemorySecretStore();
   final db = LocalDb.memory();
@@ -120,7 +130,7 @@ class TestEnv {
   ];
 
   Future<Widget> app() async {
-    SharedPreferences.setMockInitialValues({'onboarding_seen': seen});
+    SharedPreferences.setMockInitialValues({'onboarding_seen': seen, ...initialPrefs});
     final prefs = await SharedPreferences.getInstance();
     if (cachedUser != null) {
       await db.session.put('user', jsonEncode(cachedUser));

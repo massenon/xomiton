@@ -139,6 +139,7 @@ class AuthApi {
     required bool cgu,
     required bool privacy,
     required bool ageConfirmed,
+    String? invitation,
   }) async {
     final res = await _dio.post<dynamic>('auth/register', data: {
       'pseudo': pseudo.trim(),
@@ -147,6 +148,7 @@ class AuthApi {
       'cgu': cgu,
       'privacy': privacy,
       'age_confirmed': ageConfirmed,
+      if (invitation != null && invitation.trim().isNotEmpty) 'invitation': invitation.trim(),
       'device_name': _deviceName(),
     });
     final d = _data(res);

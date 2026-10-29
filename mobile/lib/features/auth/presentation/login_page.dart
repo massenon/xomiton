@@ -56,7 +56,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           );
         case LoginSuccess(:final token, :final user):
           await ref.read(sessionProvider.notifier).signIn(token, user);
-          if (mounted) context.go('/home');
+          // Connexion unique : le routeur choisit l'écran d'arrivée selon les espaces du compte.
+          if (mounted) context.go('/spaces');
       }
     } catch (e) {
       if (!mounted) return;

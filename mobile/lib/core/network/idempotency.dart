@@ -1,5 +1,5 @@
 /// Routes qui exigent un `Idempotency-Key` (docs/API.md §1.3, ADR-32) :
-/// `POST signalements`, `POST sos`, `POST sync/push`.
+/// `POST signalements`, `POST sos`, `POST sync/push`, `POST me/role-requests` (D-MOB-15).
 bool needsIdempotencyKey(String method, String path) {
   if (method.toUpperCase() != 'POST') return false;
   var p = path;
@@ -7,7 +7,7 @@ bool needsIdempotencyKey(String method, String path) {
   if (q >= 0) p = p.substring(0, q);
   p = p.replaceAll(RegExp(r'^/+|/+$'), '');
   p = p.replaceFirst(RegExp(r'^(api/)?v1/'), '');
-  return p == 'signalements' || p == 'sos' || p == 'sync/push';
+  return p == 'signalements' || p == 'sos' || p == 'sync/push' || p == 'me/role-requests';
 }
 
 /// Résultat d'un élément de `POST sync/push` : 2xx, 409 et 4xx sortent de la

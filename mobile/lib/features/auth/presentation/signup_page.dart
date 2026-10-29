@@ -20,8 +20,20 @@ import '../data/auth_api.dart';
 /// case en dépend ; le serveur reste l'autorité (422 `age_confirmation_required`). Aucune date de naissance n'est saisie.
 const int kMinRegistrationAge = 15;
 
+/// Extrait le code d'un lien d'invitation collé (`…/inscription?invitation=XM-…`) ;
+/// un code seul est rendu tel quel (≤ 40 caractères côté serveur, jamais journalisé).
+String normalizeInvitation(String? raw) {
+  final text = (raw ?? '').trim();
+  if (text.isEmpty) return '';
+  final uri = Uri.tryParse(text);
+  final fromQuery = uri?.queryParameters['invitation'];
+  return (fromQuery != null && fromQuery.isNotEmpty ? fromQuery : text).trim();
+}
+
 class SignupPage extends ConsumerStatefulWidget {
-  const SignupPage({super.key});
+  /// [invitation] : code porté par le lien `/signup/:invitation` (même inscription que le public).
+  const SignupPage({super.key, this.invitation});
+  final String? invitation;
 
   @override
   ConsumerState<SignupPage> createState() => _SignupPageState();
@@ -37,6 +49,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   final _pseudo = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
+  late final _invitation = TextEditingController(text: normalizeInvitation(widget.invitation));
   bool _cgu = false;
   bool _privacy = false;
   bool _age = false;
@@ -46,7 +59,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   String? _pronouns;
   int? _zoneId;
   int? _communeId;
-  String? _memberType;
 
   // Phase 3
   final _trustedName = TextEditingController();
@@ -59,7 +71,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   @override
   void dispose() {
-    for (final c in [_pseudo, _email, _password, _trustedName, _trustedPhone]) {
+    for (final c in [_pseudo, _email, _password, _invitation, _trustedName, _trustedPhone]) {
       c.dispose();
     }
     _scroll.dispose();
@@ -153,6 +165,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           cgu: _cgu,
           privacy: _privacy,
           ageConfirmed: _age,
+          invitation: normalizeInvitation(_invitation.text),
         ));
     if (result == null || !mounted) return;
     // Le compte est créé et connecté : le routeur ne doit pas nous sortir de
@@ -166,7 +179,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       if (_pronouns != null) 'pronouns': _pronouns,
       if (_zoneId != null) 'zone_id': _zoneId,
       if (_communeId != null) 'commune_id': _communeId,
-      if (_memberType != null) 'member_type': _memberType,
     };
     if (body.isNotEmpty) {
       final r = await _run(() => ref.read(authApiProvider).patchProfile(body));
@@ -309,6 +321,28 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         const SizedBox(height: XmSpace.s3),
         PasswordStrengthMeter(_password.text),
         const SizedBox(height: XmSpace.s4),
+        if (_invitation.text.trim().isNotEmpty) ...[
+          XmAlert(context.t('mobile_signup_invitation_banner'), icon: Icons.mark_email_read_outlined, tone: context.xm.info),
+          const SizedBox(height: XmSpace.s3),
+        ],
+        TextField(
+          key: const ValueKey('signup-invitation'),
+          controller: _invitation,
+          textInputAction: TextInputAction.next,
+          autocorrect: false,
+          enableSuggestions: false,
+          maxLength: 200,
+          onChanged: (_) => setState(() => _fieldErrors.remove('invitation')),
+          decoration: InputDecoration(
+            labelText: context.t('mobile_signup_invitation_label'),
+            helperText: context.t('mobile_signup_invitation_hint'),
+            helperMaxLines: 3,
+            counterText: '',
+            errorText: _fieldErrors['invitation'],
+            errorMaxLines: 3,
+          ),
+        ),
+        const SizedBox(height: XmSpace.s4),
         CheckboxListTile(
           key: const ValueKey('consent-cgu'),
           contentPadding: EdgeInsets.zero,
@@ -402,23 +436,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           ]);
         },
       ),
-      const SizedBox(height: XmSpace.s4),
-      Text(context.t('auth_register_profile_member_type'), style: Theme.of(context).textTheme.labelMedium),
-      const SizedBox(height: XmSpace.s2),
-      Wrap(spacing: XmSpace.s2, runSpacing: XmSpace.s2, children: [
-        ChoiceChip(
-          label: Text(context.t('auth_register_profile_member_types_membre')),
-          selected: _memberType == 'membre',
-          onSelected: (v) => setState(() => _memberType = v ? 'membre' : null),
-        ),
-        ChoiceChip(
-          label: Text(context.t('auth_register_profile_member_types_pair')),
-          selected: _memberType == 'pair',
-          onSelected: (v) => setState(() => _memberType = v ? 'pair' : null),
-        ),
-      ]),
-      const SizedBox(height: XmSpace.s2),
-      Text(context.t('auth_register_profile_member_type_hint'), style: Theme.of(context).textTheme.labelSmall),
       const SizedBox(height: XmSpace.s5),
       FilledButton(onPressed: _busy ? null : _submitProfile, child: _busyChild('common_next')),
     ]);

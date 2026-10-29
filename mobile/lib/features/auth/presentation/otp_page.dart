@@ -77,7 +77,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
       switch (widget.purpose) {
         case OtpPurpose.login:
           await ref.read(sessionProvider.notifier).signIn(r.token!, r.user);
-          if (mounted) context.go('/home');
+          if (mounted) context.go('/spaces'); // le routeur : sélecteur d'espace ou accueil Membre
         case OtpPurpose.signup:
           await ref.read(sessionProvider.notifier).refresh();
           if (!mounted) return;

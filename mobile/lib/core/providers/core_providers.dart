@@ -49,6 +49,7 @@ final dioProvider = Provider<Dio>((ref) {
     adapter: ref.watch(httpAdapterProvider),
     deviceId: () => prefs.getString(kDeviceUuidPref),
     onUnauthorized: () => ref.read(sessionProvider.notifier).expire(),
+    onSpaceForbidden: () => ref.read(sessionProvider.notifier).refresh(),
   );
 });
 

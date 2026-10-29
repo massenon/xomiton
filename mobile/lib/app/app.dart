@@ -68,6 +68,7 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
         {'seconds': seconds},
       ),
       SessionClosedToast() => widget.strings.t('auth_api_unauthenticated'),
+      SpaceUnavailableToast() => widget.strings.t('mobile_space_unavailable'),
     };
     scaffoldMessengerKey.currentState
       ?..hideCurrentSnackBar()

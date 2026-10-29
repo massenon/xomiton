@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/auth_spaces/app_space.dart';
+import '../../../core/network/app_toast.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/push/push_registrar.dart';
 import '../../../core/push/push_service.dart';
@@ -10,12 +12,29 @@ import '../data/app_user.dart';
 
 /// Session : jeton dans le stockage sécurisé, utilisateur en copie Hive chiffrée.
 class SessionState {
-  const SessionState({required this.authenticated, this.user});
+  const SessionState({required this.authenticated, this.user, this.spaceChoicePending = false});
   const SessionState.signedOut() : this(authenticated: false);
 
   final bool authenticated;
   final AppUser? user;
+
+  /// Vrai juste après une connexion : un compte à plusieurs espaces passe
+  /// d'abord par l'écran « Choix de l'espace » (jamais après un simple relancement).
+  final bool spaceChoicePending;
+
+  /// Espaces proposés par le serveur ; sans session, aucun.
+  List<AppSpace> get spaces => !authenticated ? const [] : (user?.spaces ?? const [AppSpace.member]);
+
+  SessionState copyWith({AppUser? user, bool? spaceChoicePending}) => SessionState(
+        authenticated: authenticated,
+        user: user ?? this.user,
+        spaceChoicePending: spaceChoicePending ?? this.spaceChoicePending,
+      );
 }
+
+/// Préférence : dernier espace actif (jamais une autorisation : relue puis
+/// validée contre les `spaces` du serveur).
+const kPrefActiveSpace = 'active_space';
 
 const _userKey = 'user';
 
@@ -44,13 +63,23 @@ class SessionController extends Notifier<SessionState> {
       user = AppUser.fromJson(userJson);
       await ref.read(localDbProvider).session.put(_userKey, jsonEncode(user.toJson()));
     }
-    state = SessionState(authenticated: true, user: user);
+    state = SessionState(authenticated: true, user: user, spaceChoicePending: true);
   }
 
   Future<void> setUser(Map<String, dynamic> userJson) async {
     final user = AppUser.fromJson(userJson);
     await ref.read(localDbProvider).session.put(_userKey, jsonEncode(user.toJson()));
-    if (state.authenticated) state = SessionState(authenticated: true, user: user);
+    if (!state.authenticated) return;
+    final before = state.spaces;
+    state = state.copyWith(user: user);
+    // Un espace retiré par le serveur se ferme tout de suite, avec un message.
+    final lost = before.any((e) => !user.spaces.contains(e));
+    if (lost) ref.read(toastBusProvider).emit(const SpaceUnavailableToast());
+  }
+
+  /// La personne a choisi son espace : le sélecteur ne revient pas avant la prochaine connexion.
+  void markSpaceChosen() {
+    if (state.authenticated && state.spaceChoicePending) state = state.copyWith(spaceChoicePending: false);
   }
 
   /// `GET me` ; les erreurs réseau sont ignorées, un 401 ferme la session
@@ -93,6 +122,7 @@ class SessionController extends Notifier<SessionState> {
     final prefs = ref.read(sharedPreferencesProvider);
     await prefs.remove(kPrefMaskPreviews);
     await prefs.remove(kPrefSounds);
+    await prefs.remove(kPrefActiveSpace);
     state = const SessionState.signedOut();
   }
 }

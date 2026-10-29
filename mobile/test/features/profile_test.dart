@@ -255,6 +255,7 @@ void main() {
       await prefs.setBool('pref_mask_previews', true);
       await PinService(env.secrets, iterations: 2).set('4821');
 
+      await tester.scrollUntilVisible(find.byKey(const Key('profile-logout')), 300);
       await tester.tap(find.byKey(const Key('profile-logout')));
       await settle(tester);
       await tester.tap(find.byKey(const Key('logout-confirm')));

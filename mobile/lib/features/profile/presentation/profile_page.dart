@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/xm_tokens.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../auth/application/session_controller.dart';
+import 'my_spaces_card.dart';
 import 'settings_page.dart';
 
 /// Onglet Profil : accès à mon profil, aux paramètres, à la sécurité et aux
@@ -35,6 +36,10 @@ class ProfileTabPage extends ConsumerWidget {
             LinearProgressIndicator(value: user.completion / 100),
           ],
           const SizedBox(height: XmSpace.s3),
+          if (user != null) ...[
+            const MySpacesCard(),
+            const SizedBox(height: XmSpace.s3),
+          ],
           tile(Icons.person_outline, '/mon-profil', 'profile_about_title', k: const Key('tile-my-profile')),
           tile(Icons.settings_outlined, '/parametres', 'profile_settings_title', k: const Key('tile-settings')),
           tile(Icons.shield_outlined, '/securite', 'mobile_security_title', k: const Key('tile-security')),
