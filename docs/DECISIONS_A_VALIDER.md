@@ -10,8 +10,8 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 
 | Q | Sujet | Décision par défaut appliquée | Qui | Urgence |
 |---|---|---|---|---|
-| Q7 | Fournisseurs : **tranchée le 28/10/2026** — push FCM (gratuit), SMS Vonage ou Twilio (`SMS_DRIVER`), assistant Gemini **désactivé** (`ASSISTANT_LLM_ENABLED=false`) | Pilotes codés et testés (HTTP simulé) ; défaut `log` / `kb`. **À fournir par le client** : projet Firebase + JSON du compte de service + `google-services.json` / `GoogleService-Info.plist` ; compte Vonage ou Twilio (clés, expéditeur autorisé au Bénin, devis local à confirmer) ; clé Gemini. **Conditions d'activation du LLM en production : avis juridique préalable** (questions pouvant contenir des données de santé ou de violences envoyées à un tiers hors UE ; accord de traitement (DPA) Google, région de traitement, durée de conservation, information des membres, base légale/consentement), puis recette des garde-fous | Client (comptes, avis juridique), Technique (activation) | Bloquant recette (push, SMS) ; LLM : jamais activé sans l'avis |
-| Q38 | Périmètre v1 de l'app mobile, onglets, espace pair (P15-09) | 5 onglets dont SOS ; espace pair après maquettes | Client | Bloquant recette |
+| Q7 | Fournisseurs : **tranchée le 28/10/2026** ; **précisée le 29/10/2026 : le push SOS et alertes part aux admins ET aux pairs éducateurs** — push FCM (gratuit), SMS Vonage ou Twilio (`SMS_DRIVER`), assistant Gemini **désactivé** (`ASSISTANT_LLM_ENABLED=false`) | Pilotes codés et testés (HTTP simulé) ; défaut `log` / `kb`. **À fournir par le client** : projet Firebase + JSON du compte de service + `google-services.json` / `GoogleService-Info.plist` ; compte Vonage ou Twilio (clés, expéditeur autorisé au Bénin, devis local à confirmer) ; clé Gemini. **Conditions d'activation du LLM en production : avis juridique préalable** (questions pouvant contenir des données de santé ou de violences envoyées à un tiers hors UE ; accord de traitement (DPA) Google, région de traitement, durée de conservation, information des membres, base légale/consentement), puis recette des garde-fous | Client (comptes, avis juridique), Technique (activation) | Bloquant recette (push, SMS) ; LLM : jamais activé sans l'avis |
+| Q38 | Périmètre v1 de l'app mobile, onglets, espace pair (P15-09) — **Tranché 2026-10-29** : une seule application et un seul login ; **espace pair dans la v1** (corrige la recommandation « pas d'espace pair en v1 ») ; admin mobile élargi ; une seule version Play ; maquettes à valider avant tout code mobile (voir §4) | 5 onglets dont SOS + onglet « Espace pair » ou « Admin » selon les rôles ; sélecteur d'espace après connexion | Client | Bloquant recette (maquettes à valider) |
 | Q53 | Accueil : sections « chiffres », « témoignages », texte membre connecté | Défaut du lot P4-01 | Client | Bloquant recette |
 | Q54 | Accueil : bande rouge pleine largeur et promesses — **Tranché 2026-10-28** : bande b) fond rouge très clair (`--xm-alert-surface`) + bordure rouge, texte foncé AA clair et sombre, rouge plein réservé au SOS ; section #alerte (`alerte.blade.php`), captures `docs/captures/accueil/` | b) / a) | Client | Bloquant recette |
 | Q16 | Accueil : CTA du hero (« Rejoignez-nous » ou « Créer un compte ») — **Tranché 2026-10-28** : « Créer un compte » (hero de l'accueil) | Ordre de la vitrine, CTA à trancher | Client | Bloquant recette |
@@ -65,8 +65,26 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | Q79 | « Suivre » réservé aux profils ouverts au réseau | Appliqué | Client | Confort |
 | Q60 | Ressources : `external_url` en lien seulement en `http(s)` | `url:https` à valider en P12-03 | Technique | Confort |
 
-## 4. Lecture
+## 4. Application mobile unique : décisions du 29 octobre 2026
 
-- 14 questions bloquent la recette (surtout contenu et périmètre) ; 20 sont à trancher avant la mise en production, dont deux d'ordre juridique (Q67, Q68).
+**Tranché 2026-10-29** (détail, effets sur les lots et l'estimation : `PLAN_MOBILE_APP_UNIQUE.md` §10). Référence Q : Q38 (périmètre mobile), Q7 (push), Q68 (âge).
+
+| Réf. | Décision | Statut |
+|---|---|---|
+| D-MOB-1 | **Une seule application**, un seul login ; inscription publique = membres seulement ; rôle pair ajouté (invitation ou attribution) ; l'admin est aussi membre | **Tranché 2026-10-29** |
+| D-MOB-2 | Espace pair **dans la v1** (contredit l'ancienne recommandation de Q38, corrigée) | **Tranché 2026-10-29** |
+| D-MOB-3 | Périmètre admin mobile **élargi** : alertes, inscriptions, rôles et invitations, maintenance, notifications, modération essentielle, recherche de membre, astreinte | **Tranché 2026-10-29** |
+| D-MOB-4 | Position du SOS **arrondie** pour les admins | **Tranché 2026-10-29** |
+| D-MOB-5 | Conflit 409 **tranché par le pair** (serveur ou mon appareil) | **Tranché 2026-10-29** |
+| D-MOB-10 | Push SOS et alertes vers les **admins ET les pairs** (de garde seulement ou tous : à préciser) | **Tranché 2026-10-29** (destinataires) ; précision ouverte |
+| D-MOB-11 | **Une seule version** Play | **Tranché 2026-10-29** |
+| D-MOB-12 | Maquettes **validées par le client avant tout code mobile** | **Tranché 2026-10-29** |
+| D-MOB-14 | Fiche Play : âge 15 ans, pas de tarif, tous les pays, tranches « 16-17 » et « 18+ » seulement, français uniquement | **Tranché 2026-10-29** |
+| D-MOB-6, 7, 8, 9, 13 | PIN obligatoire pair et admin, expiration 14 jours, mode discret par défaut, jeton admin court et confirmation renforcée, nom « Notes » | Recommandation du plan retenue par défaut ; **non contestée** le 29/10/2026, à confirmer au passage des maquettes |
+| D-MOB-15 à 18 | Proposés par les maquettes : demande du rôle pair par un membre ; rôle admin attribuable seulement depuis le site web ; validation de toutes les inscriptions membres ou seulement des cas signalés ; cohérence âge 15 ans / tranche Play « 16-17 » | **À valider** (maquettes) |
+
+## 5. Lecture
+
+- 14 questions bloquent la recette (surtout contenu et périmètre ; Q38 est tranchée, ses maquettes restent à valider) ; 20 sont à trancher avant la mise en production, dont deux d'ordre juridique (Q67, Q68).
 - Beaucoup de lignes « Appliqué, à valider » (Q70 à Q94) sont des choix techniques déjà livrés : sans réponse, ils restent en vigueur ; seule une contre-décision demande du travail.
 - Pour chaque Q : le détail des options est dans le §7 du plan, à la ligne du même numéro.

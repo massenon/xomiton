@@ -55,3 +55,13 @@ Le simulateur mobile (`prototype_mobile/index.html`) liste les écrans dans une 
 
 ## 8. Calendrier
 Une itération : prototype (R1, R3, R4) puis splash prototype + Flutter (R2). Recette humaine via `docs/CHECKLIST_RECETTE.md`.
+
+## 9. Note de suivi du 29/10/2026 : décisions du client sur l'application unique
+
+Le client a tranché le 29/10/2026 (`docs/PLAN_MOBILE_APP_UNIQUE.md` §10, `docs/FEUILLE_DE_DECISION.md` §E). Effets sur le prototype, **réalisés le même jour** (`prototype_mobile/README.md`) :
+- **Une seule application, un seul login** : l'écran de connexion (02) est unique ; comptes de démonstration Membre, Pair éducateur·rice (aussi membre), Administrateur·rice (aussi membre) ; l'inscription (03) ne propose que « membre » (lien d'invitation de pair : `#/signup/PAIR-7K4M-Q2`). Le simulateur compte désormais **31 écrans** : le 31 est le « Choix de l'espace » affiché après connexion pour un compte à plusieurs rôles. Les écrans 01 à 30 et leurs numéros sont conservés.
+- **Sélecteur d'espace** : écran de choix après connexion, pastille d'en-tête (« Membre ▾ »), carte « Mes espaces » du profil, onglet « Espace pair » ou « Admin » dans la barre du bas du mode membre ; la barre du pair et celle de l'admin portent l'onglet « Réseau » (fil, messages).
+- **Espace pair** (`espace-pair.html`, P1 à P12) : conflit 409 **tranché par le pair** (valeur du serveur ou mon appareil, P11), push SOS reçu (P12).
+- **Admin mobile élargi** (`admin-mobile.html`, A1 à A12) : inscriptions à valider, rôles et invitations (inviter un·e pair par lien ou code, rôle pair, recherche de membre), modération des contenus signalés, menu « Gérer », push SOS reçu ; position SOS arrondie.
+- **Conservés** : correctif du menu ☰ complet, thème clair par défaut, aucune bascule de thème, ruban arc-en-ciel (R1 à R4 inchangés). La bascule « Réseau » (connectivité) des maquettes pair et admin est renommée « Connexion » pour la distinguer de l'onglet « Réseau » (réseau social).
+- **Validation** : les maquettes sont validées par le client **avant tout code mobile** (décision 9). Points proposés par les maquettes et à confirmer : demande du rôle pair par le membre, rôle admin attribuable seulement depuis le web, validation de toutes les inscriptions ou des seuls cas signalés (D-MOB-15 à D-MOB-17).
