@@ -98,6 +98,8 @@ npm run build
 
 macOS et Linux : remplacez la deuxième ligne par `touch database/recette.sqlite`.
 
+> En local, `migrate:fresh --seed` sème aussi les comptes de démonstration (§5). **Ne l'utilisez jamais en production** : le serveur en ligne s'initialise avec `php artisan xomiton:install` (données de base et premier super-administrateur, sans compte de démonstration), voir [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md) §7.
+
 - `key:generate` crée la clé de chiffrement locale. Faites-le **une seule fois** (le refaire rend illisibles les données déjà chiffrées de cette base ; en local il suffit alors de refaire `migrate:fresh --seed`).
 - `migrate:fresh --seed` crée toutes les tables et les données de démonstration (environ 5 secondes). **Il efface la base de recette** à chaque fois : c'est voulu en local.
 - `storage:link` rend les images téléversées visibles. Sous Windows, si la commande échoue avec une erreur de lien symbolique, activez le « Mode développeur » (Paramètres › Confidentialité et sécurité › Pour les développeurs) ou lancez PowerShell « en tant qu'administrateur », puis recommencez **(non vérifié)**.

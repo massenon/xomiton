@@ -224,32 +224,27 @@ cd ~/xomiton/web
 PHP=/opt/cpanel/ea-php83/root/usr/bin/php
 $PHP artisan key:generate          # UNE SEULE FOIS, sur un site neuf (jamais sur un site en service : données illisibles)
 scripts/deploy.sh --first
-$PHP artisan db:seed --force       # PREMIER déploiement seulement : référentiels, rôles, réglages, modèles d'e-mails
+$PHP artisan xomiton:install       # PREMIER déploiement : données de base (rôles, réglages, référentiels, modèles d'e-mails), diagnostic, premier super-admin (§7.1)
 ```
 
 Ce que fait `scripts/deploy.sh --first` : vérifie PHP 8.3, les extensions, `APP_ENV=production`, `APP_DEBUG=false`, `APP_KEY`, la présence de `public/build` et `vendor/` ; applique les migrations (`migrate --force`) ; crée le lien `storage:link` ; construit les caches de configuration, de routes, de vues et d'événements ; lance `xomiton:preflight`. À la main, cela donne : `$PHP artisan migrate --force && $PHP artisan storage:link && $PHP artisan config:cache && $PHP artisan route:cache && $PHP artisan view:cache`.
 
-**Pourquoi `db:seed --force` ?** `migrate` crée les tables mais pas les données de base (cinq rôles et leurs permissions, zones et communes du Bénin, 38 réglages, modèles d'e-mails, thématiques…). Vérifié sur une base vierge en environnement `production` : `migrate --force` puis `db:seed --force` créent les rôles et les réglages et **ne créent aucun compte de démonstration**. Les réglages déjà modifiés dans l'administration ne sont pas écrasés par un second passage, mais ne relancez `db:seed` après une mise à jour que si une note de version le demande.
+**Pourquoi `xomiton:install` ?** `migrate` crée les tables mais pas les données de base (cinq rôles et leurs permissions, zones et communes du Bénin, 38 réglages, modèles d'e-mails, thématiques…). `php artisan xomiton:install` exécute **uniquement** les seeders de base, tous idempotents : rejouable sans risque, il ne duplique rien et n'écrase pas les réglages déjà modifiés dans l'administration. Il ne crée **jamais** de compte de démonstration, quel que soit `APP_ENV` (contrairement à `db:seed`, qui en sème hors production). Il affiche ensuite un diagnostic : `APP_ENV`, `APP_URL`, base, file d'attente, cache, variables `XOMITON_LEGAL_*` manquantes, FCM / SMS / Gemini désactivés, cron. `php artisan xomiton:install --check` vérifie sans rien écrire.
 
 ### 7.1 Créer le premier compte super-administrateur
 
-**Point faible connu.** Aucune commande dédiée n'existe encore pour créer le premier compte administrateur (inscription publique = membres seulement ; le rôle admin ne se donne que depuis le web, par un·e super-administrateur·rice). Voir [PLAN_FINALISATION.md](PLAN_FINALISATION.md), chantier « premier compte ». En attendant, procédure de dépannage à faire **une fois**, par la personne technique, avec un vrai e-mail et un mot de passe long choisi sur place :
+Aucun compte administrateur n'existe après `xomiton:install` seul (l'inscription publique ne crée que des membres ; le rôle admin ne se donne que depuis le web, par un·e super-administrateur·rice). Créez le premier **une fois**, par la personne technique, avec un vrai e-mail :
 
 ```bash
-$PHP artisan tinker
+$PHP artisan xomiton:install --admin-email=prenom@exemple.org
 ```
 
-puis, dans l'invite qui s'ouvre (collez en une fois, après avoir remplacé les trois valeurs entre `< >`) :
-
-```php
-$u = App\Models\User::create(['pseudo' => '<pseudo>', 'name' => '<Prénom Nom>', 'email' => '<e-mail réel>', 'password' => '<mot de passe long>', 'status' => App\Enums\UserStatus::Active, 'email_verified_at' => now()]);
-$u->syncRoles(['membre', 'superadmin']);
-App\Models\Profile::firstOrCreate(['user_id' => $u->id], ['member_type' => App\Enums\MemberType::Member]);
-App\Models\UserSetting::firstOrCreate(['user_id' => $u->id], ['theme' => 'auto', 'language' => 'fr', 'notification_prefs' => App\Models\UserSetting::defaultNotificationPrefs(), 'notification_digest' => App\Models\UserSetting::DIGEST_WEEKLY]);
-exit
-```
-
-Vérifié sur une base vierge : le compte est créé avec les rôles `membre` et `superadmin`. **La connexion complète n'a pas été rejouée** avec ce compte. Les comptes administrateurs exigent un code de vérification à chaque connexion : **le SMTP doit donc fonctionner avant la première connexion** (le code arrive par e-mail ; en production il n'est jamais écrit dans le journal). Une fois connecté·e, changez le mot de passe, puis créez les autres comptes depuis Administration › Utilisateurs. Ne laissez aucun mot de passe dans l'historique du terminal partagé (`history -c` en fin de séance).
+- Sans `--admin-email`, la commande propose la création en interactif (e-mail, puis mot de passe saisi **masqué** et confirmé, ou généré). Hors saisie interactive (script), le mot de passe est généré.
+- `--generate-password` force un mot de passe aléatoire de 24 caractères : il est **affiché une seule fois** dans le terminal. Notez-le dans un coffre de mots de passe, puis changez-le à la première connexion. Le mot de passe n'est **jamais** accepté en argument, ni écrit dans le journal d'audit (`install.first_admin` ne consigne que l'e-mail et les rôles) ni dans `laravel.log`.
+- Options : `--admin-name=`, `--admin-pseudo=`, `--no-admin` (données de base seulement).
+- Le compte est actif, son e-mail est marqué vérifié, il a les rôles `membre` et `superadmin`.
+- **Refus s'il existe déjà un super-administrateur** (code de sortie 1) ; `--force` explicite pour en créer un de plus.
+- Les comptes administrateurs exigent un code de vérification par e-mail **à chaque connexion** : **le SMTP doit donc fonctionner avant la première connexion** (en production le code n'est jamais écrit dans le journal). Une fois connecté·e, changez le mot de passe, puis créez les autres comptes depuis Administration › Utilisateurs. Ne laissez aucun mot de passe dans l'historique du terminal partagé.
 
 ## 8. Droits des dossiers
 
