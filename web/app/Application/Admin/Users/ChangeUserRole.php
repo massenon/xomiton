@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Admin\Users;
 
+use App\Application\Sync\Admin\RequestDeviceWipe;
 use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Enums\MemberType;
 use App\Models\User;
@@ -77,6 +78,12 @@ final class ChangeUserRole
         });
 
         Audit::log('users.role_changed', $target, sprintf('pseudo=%s ; ancien=%s ; nouveau=%s', $target->pseudo, $current, $role), $by);
+
+        // P15-11 : plus de rôle pair → les appareils de la personne vident les données de l'espace pair.
+        if (in_array('pair', $before, true) && ! $target->hasRole('pair')) {
+            app(RequestDeviceWipe::class)->forAccount($target, RequestDeviceWipe::REASON_PEER_ROLE_REMOVED, $by);
+        }
+
         $this->notify($target, $before, $target->fresh()?->getRoleNames()->all() ?? []);
     }
 

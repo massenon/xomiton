@@ -51,7 +51,7 @@ final class PermissionMatrix
         'users' => ['users.view', 'users.suspend', 'users.manage', 'users.validate_peers', 'peers.assign', 'peers.invite'],
         'registrations' => ['registrations.manage'],
         'admin_roles' => ['roles.assign_admin'],
-        'sync' => ['sync.view_own', 'sync.resolve_own', 'sync.manage'],
+        'sync' => ['sync.view_own', 'sync.resolve_own', 'sync.manage', 'device.wipe'],
         'platform' => ['updates.view', 'updates.manage', 'platform.maintenance', 'backups.create', 'backups.download', 'backups.restore', 'backups.delete'],
         'settings' => ['settings.view', 'settings.manage', 'audit_logs.view', 'audit_logs.purge'],
         'admin_access' => ['admin.access', 'admin_mobile.access'],

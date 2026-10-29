@@ -56,7 +56,7 @@
                         <tr wire:key="device-{{ $device->id }}">
                             <td data-label="{{ __('admin_system.sync.devices.columns.device') }}">
                                 <div class="min-w-0">
-                                    <span class="d-block fw-semibold text-break">{{ $device->label }}@if ($device->is_revoked) <x-badge color="neutral" soft icon="slash-circle">{{ __('admin_system.sync.devices.revoked') }}</x-badge>@endif</span>
+                                    <span class="d-block fw-semibold text-break">{{ $device->label }}@if ($device->is_revoked) <x-badge color="neutral" soft icon="slash-circle">{{ __('admin_system.sync.devices.revoked') }}</x-badge>@endif @if ($device->wiped_at) <x-badge color="success" soft icon="eraser">{{ __('admin_system.sync.devices.wiped') }}</x-badge>@elseif ($device->wipe_requested_at) <x-badge color="warning" soft icon="hourglass-split">{{ __('admin_system.sync.devices.wipe_pending') }}</x-badge>@endif</span>
                                     <span class="d-block small text-secondary">{{ $device->user?->pseudo ?? '—' }} · {{ $device->platform ?? '—' }}@if ($device->app_version) · v{{ $device->app_version }}@endif</span>
                                 </div>
                             </td>
@@ -75,6 +75,12 @@
                                     <button type="button" class="btn btn-sm btn-light text-danger" wire:click="revoke({{ $device->id }})" wire:confirm="{{ __('admin_system.sync.devices.confirm_revoke', ['label' => $device->label]) }}"
                                             aria-label="{{ __('admin_system.sync.devices.revoke_of', ['label' => $device->label]) }}"><i class="bi bi-slash-circle me-1" aria-hidden="true"></i>{{ __('admin_system.sync.devices.revoke') }}</button>
                                 @endif
+                                @can('wipe', $device)
+                                    @if ($device->wipe_requested_at === null)
+                                        <button type="button" class="btn btn-sm btn-light text-danger" wire:click="wipe({{ $device->id }})" wire:confirm="{{ __('admin_system.sync.devices.confirm_wipe', ['label' => $device->label]) }}"
+                                                aria-label="{{ __('admin_system.sync.devices.wipe_of', ['label' => $device->label]) }}"><i class="bi bi-eraser me-1" aria-hidden="true"></i>{{ __('admin_system.sync.devices.wipe') }}</button>
+                                    @endif
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

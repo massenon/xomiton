@@ -34,6 +34,9 @@ class SyncDevice extends Model
         'pending_count',
         'conflicts_count',
         'is_revoked',
+        'wipe_requested_at',
+        'wipe_reason',
+        'wiped_at',
     ];
 
     /**
@@ -47,6 +50,8 @@ class SyncDevice extends Model
             'pending_count' => 'integer',
             'conflicts_count' => 'integer',
             'is_revoked' => 'boolean',
+            'wipe_requested_at' => 'datetime',
+            'wiped_at' => 'datetime',
         ];
     }
 
@@ -157,6 +162,22 @@ class SyncDevice extends Model
     public function scopeWhereDeviceUuid(Builder $query, string $uuid): void
     {
         $query->where('device_uuid', $uuid);
+    }
+
+    /**
+     * Appareils marqués « à effacer » dont l'accusé n'est pas encore arrivé.
+     *
+     * @param  Builder<SyncDevice>  $query
+     */
+    public function scopeWipePending(Builder $query): void
+    {
+        $query->whereNotNull('wipe_requested_at')->whereNull('wiped_at');
+    }
+
+    /** Effacement demandé et pas encore accusé par l'appareil (P15-11). */
+    public function wipePending(): bool
+    {
+        return $this->wipe_requested_at !== null && $this->wiped_at === null;
     }
 
     public function isRevoked(): bool

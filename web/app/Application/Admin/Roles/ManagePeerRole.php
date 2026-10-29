@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Admin\Roles;
 
+use App\Application\Sync\Admin\RequestDeviceWipe;
 use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Enums\MemberType;
 use App\Enums\UserStatus;
@@ -91,6 +92,8 @@ final class ManagePeerRole
 
         Audit::log('roles.peer_revoked', $target, sprintf('pseudo=%s%s', $target->pseudo, $reason === '' ? '' : ' ; motif='.$reason), $by);
         $target->notify(new RoleNotice(RoleNotice::PEER_REVOKED, $reason === '' ? null : $reason));
+        // P15-11 : les appareils de la personne gardent des données de l'espace pair (dossiers, alertes) : ils sont effacés.
+        app(RequestDeviceWipe::class)->forAccount($target, RequestDeviceWipe::REASON_PEER_ROLE_REMOVED, $by);
 
         return true;
     }

@@ -396,6 +396,19 @@ Appareils de l'application (`sync_devices`, utilisés par `alerts.device_id`, `s
 
 `data` : `{ device_uuid, label, platform, app_version, revoked, last_seen_at, last_sync_at, created_at }`. DELETE → **204** (révoqué, jamais supprimé ; idempotent ; ses abonnements push `push_subscriptions.sync_device_id` sont supprimés) ; 404 si l'appareil n'est pas à moi. Ensuite, chaque requête authentifiée de l'application porte `X-Device-Id: <device_uuid>` : un SOS ou un signalement non anonyme reçoit `device_id` (appareil actif du même compte seulement ; un signalement anonyme ne consulte même pas l'appareil, RG-01 ; résolution en lecture seule sur ces routes : `last_seen_at` est tenu par POST me/devices et par `sync/push`, `sync/pull` et `heartbeat`, §21, `SyncDeviceResolver::touch`). Journal `device.registered`, `device.revoked` (libellé, jamais l'UUID).
 
+#### Effacement à distance `POST me/devices/{device_uuid}/wiped` (P15-11)
+
+Une personne de l'équipe (`device.wipe`, §23.9) ou le **retrait du rôle pair** (`DELETE admin/members/{id}/roles/peer`, `PUT admin/members/{id}/role` vers `membre`, écran Utilisateurs & rôles : tous les appareils **actifs** de la personne) marque l'appareil « à effacer » : `sync_devices.wipe_requested_at` + `wipe_reason` (`admin` ou `peer_role_removed`), et **révoque l'appareil dans le même geste** (`is_revoked`, abonnements push supprimés). Dès lors :
+
+- **toute requête authentifiée portant son `X-Device-Id`** (middleware `EnsureDeviceNotRevoked`, groupes `auth:sanctum`, `admin/*` et `search/*`) répond **403 `device_revoked`** : l'application purge ses données locales et génère un nouvel UUID. Un en-tête absent, invalide, inconnu ou d'un autre compte ne déclenche rien. **SOS, signalements, urgences et référentiels (routes publiques) ne sont jamais bloqués** (RG-01) ;
+- exceptions, pour qu'il puisse se mettre en règle : `POST me/devices/{uuid}/wiped`, `DELETE me/devices/{uuid}`, `POST me/devices` (rend le même 403), `POST auth/logout`, `DELETE me/push-subscriptions` ; et, **tant que l'accusé n'est pas arrivé**, `GET me` et `POST heartbeat`, qui portent l'ordre :
+  - `GET me` → `data.device` = `{device_uuid, revoked, wipe}` (null sans `X-Device-Id` valable) ; `wipe` = `{requested_at, reason}` tant que l'ordre attend son accusé, sinon `null` ;
+  - `POST heartbeat` (§21.6) → `{server_time, wipe}` seulement (aucune donnée, dernier contact non mis à jour) ;
+- **accusé** `POST me/devices/{device_uuid}/wiped` (jeton de la personne propriétaire, sans corps, `Cache-Control: no-store`) : l'appareil a vidé ses données. **200** `data` = l'appareil (`wipe: null`, `wiped_at`) ; **idempotent** (le premier accusé fixe `wiped_at`, les suivants rendent l'appareil tel quel, un seul journal `device.wiped`) ; **404** si l'appareil n'est pas à la personne ; **422 `wipe_not_requested`** si personne n'a demandé d'effacement. Après l'accusé l'ordre n'est plus lisible (l'appareil, révoqué, reçoit 403 `device_revoked` partout) ;
+- `GET me/devices` expose aussi `wipe` (ordre en attente ou null), `wipe_requested_at` et `wiped_at`.
+
+Limites assumées : un téléphone **éteint ou sans réseau** ne reçoit l'ordre qu'à son retour en ligne (l'expiration locale des données, 14 jours, et la révocation du jeton restent le filet) ; un appareil qui n'envoie pas `X-Device-Id` n'est pas reconnu — pour couper aussi l'accès du jeton, révoquer la session (`DELETE me/sessions/{id}`). Journal : `device.wipe_requested` (libellé et motif, jamais l'UUID) et `device.wiped`.
+
 ### `GET · POST · DELETE me/push-subscriptions` (P6-09, ADR-25)
 
 | Type | Corps POST |
@@ -941,7 +954,7 @@ Corps `{resolution: serveur | appareil}` (`fusion` + `merged` : administration s
 
 ### 21.6 `POST heartbeat`
 
-Signal de vie (prototype `api.php ping`) : `last_seen_at`, `pending_count` et `app_version` de l'appareil ; jamais de donnée de compte en retour hormis l'appareil et le nombre de conflits ouverts.
+Signal de vie (prototype `api.php ping`) : `last_seen_at`, `pending_count` et `app_version` de l'appareil ; jamais de donnée de compte en retour hormis l'appareil et le nombre de conflits ouverts. Réponse : `server_time`, `device{…}`, `open_conflicts`, **`rules_updated_at`** (version des règles de validation, la même que `meta.updated_at` de `GET pair/validation-rules` : plus récente que celle du cache de l'application → relire les règles, P15-12) et **`wipe`** (ordre d'effacement à distance, toujours `null` pour un appareil actif, §3 « Effacement à distance »). Pour un appareil révoqué par un ordre d'effacement qui attend son accusé, la réponse se limite à `{server_time, wipe}`.
 
 ### 21.7 Boîte d'envoi web (P9-07)
 
@@ -1079,4 +1092,13 @@ Avertir et suspendre un compte restent sur le web (`/admin/moderation`).
 | `POST admin/maintenance/enable` | `{reason (3–255, motif interne), duration_minutes? (5–1440), message? (≤ 280), confirm: true}` + **`step-up`** → état ; déjà active → **422** ; compte qui perdrait l'accès → **403** `maintenance_lockout` (admin et super-admin gardent l'accès : l'API `admin/*` reste servie pendant la maintenance) |
 | `POST admin/maintenance/disable` | `{confirm: true, reason?}` + **`step-up`** → état |
 
-**Journal d'audit** : toute action écrite ici l'est comme sur le web, avec `source=mobile` en fin de détail (`alerts.acknowledged`, `alerts.status_changed`, `alerts.reassigned`, `alerts.note_added`, `users.registration_approved`, `users.peer_refused`, `roles.peer_granted`, `roles.peer_revoked`, `users.role_changed`, `invitations.created`, `invitations.revoked`, `maintenance.enabled`, `maintenance.disabled`, `moderation.*`, `admin.step_up_failed`) ; jamais le corps d'une note, le récit, le contact ni la position.
+### 23.9 Appareils et effacement à distance — `admin/members/{id}/devices`, `admin/devices/{id}/wipe` (`device.wipe`, P15-11)
+
+| Route | Effet |
+|---|---|
+| `GET admin/members/{id}/devices` | les 20 derniers appareils du compte : `{id, label, platform, app_version, revoked, last_seen_at, last_sync_at, wipe_pending, wipe_requested_at, wipe_reason (admin\|peer_role_removed), wiped_at, can{wipe}}` — **jamais l'UUID** de l'appareil ; `device.wipe` requis (sinon 403) |
+| `POST admin/devices/{id}/wipe` | **marque l'appareil à effacer** et le révoque (§3 « Effacement à distance ») ; `step-up` obligatoire, `Idempotency-Key` obligatoire → **202** l'appareil (**200** `meta.already_requested = true` si l'ordre existait : date et motif d'origine conservés, un seul journal) ; sans `device.wipe` → 403 ; identifiant inconnu → 403 pour un compte non habilité, 404 sinon |
+
+Même cas d'usage que l'écran web *Hors connexion & synchro* (bouton « Effacer à distance », `RequestDeviceWipe`). Le **retrait du rôle pair** (`DELETE admin/members/{id}/roles/peer`, `PUT admin/members/{id}/role` vers `membre`, écran web Utilisateurs & rôles) marque aussi tous les appareils actifs de la personne (`wipe_reason = peer_role_removed`, un journal `device.wipe_requested` par appareil) ; accorder le rôle, ou passer pair → admin (le rôle pair est conservé), ne marque rien.
+
+**Journal d'audit** : toute action écrite ici l'est comme sur le web, avec `source=mobile` en fin de détail (`alerts.acknowledged`, `alerts.status_changed`, `alerts.reassigned`, `alerts.note_added`, `users.registration_approved`, `users.peer_refused`, `roles.peer_granted`, `roles.peer_revoked`, `users.role_changed`, `invitations.created`, `invitations.revoked`, `maintenance.enabled`, `maintenance.disabled`, `moderation.*`, `device.wipe_requested`, `admin.step_up_failed`) ; jamais le corps d'une note, le récit, le contact ni la position.

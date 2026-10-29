@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Application\Account\DeviceRegistry;
 use App\Application\Account\Profile\UpdateMemberProfile;
 use App\Application\Account\UserSettings;
 use App\Application\Auth\ConnectedDevices;
 use App\Application\Auth\UpdateUserSettings;
 use App\Http\Requests\Api\Auth\UpdateProfileRequest;
 use App\Http\Requests\Api\Auth\UpdateSettingsRequest;
+use App\Http\Resources\Me\DeviceResource;
 use App\Http\Resources\SessionResource;
 use App\Http\Resources\UserResource;
+use App\Models\SyncDevice;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -39,7 +43,27 @@ final class MeController extends ApiController
         /** @var User $user */
         $user = $request->user();
 
-        return $this->data($this->selfPayload($user, $request))->withHeaders(self::NO_STORE);
+        return $this->data($this->selfPayload($user, $request) + ['device' => $this->devicePayload($user, $request)])->withHeaders(self::NO_STORE);
+    }
+
+    /**
+     * Appareil de la requête (`X-Device-Id`, P15-11) : `{device_uuid, revoked, wipe}` — `wipe` = ordre d'effacement à
+     * distance en attente d'accusé (`{requested_at, reason}`), null sinon. Null sans en-tête valable ou pour un appareil
+     * qui n'est pas au compte.
+     *
+     * @return array{device_uuid: string, revoked: bool, wipe: array{requested_at: string|null, reason: string|null}|null}|null
+     */
+    private function devicePayload(User $user, Request $request): ?array
+    {
+        $uuid = trim((string) $request->header(DeviceRegistry::HEADER, ''));
+
+        if (! Str::isUuid($uuid)) {
+            return null;
+        }
+
+        $device = SyncDevice::query()->whereDeviceUuid(Str::lower($uuid))->where('user_id', $user->getKey())->first();
+
+        return $device === null ? null : ['device_uuid' => $device->device_uuid, 'revoked' => $device->isRevoked(), 'wipe' => DeviceResource::wipe($device)];
     }
 
     /**

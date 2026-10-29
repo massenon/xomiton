@@ -6,6 +6,7 @@ namespace App\Application\Account;
 
 use App\Domain\Account\Exceptions\DeviceRevoked;
 use App\Domain\Account\Exceptions\DeviceTaken;
+use App\Domain\Account\Exceptions\WipeNotRequested;
 use App\Models\PushSubscription;
 use App\Models\SyncDevice;
 use App\Models\User;
@@ -79,6 +80,33 @@ final class DeviceRegistry
 
         // P6-09 : un appareil révoqué (perdu, partagé) n'est plus notifié, même si son jeton FCM n'a pas été retiré.
         PushSubscription::query()->where('sync_device_id', $device->getKey())->delete();
+
+        return $device;
+    }
+
+    /**
+     * Accusé d'effacement à distance (P15-11, `POST me/devices/{uuid}/wiped`) : l'appareil a vidé ses données. Idempotent
+     * (le premier accusé fixe `wiped_at`, les suivants rendent l'appareil tel quel). Appareil inconnu ou d'un autre
+     * compte : null (404 neutre) ; aucun effacement demandé : 422 `wipe_not_requested`.
+     *
+     * @throws WipeNotRequested
+     */
+    public function acknowledgeWipe(User $user, string $uuid): ?SyncDevice
+    {
+        $device = $this->owned($user, $uuid);
+
+        if ($device === null) {
+            return null;
+        }
+
+        if ($device->wipe_requested_at === null) {
+            throw new WipeNotRequested;
+        }
+
+        if ($device->wiped_at === null) {
+            $device->forceFill(['wiped_at' => now()])->save();
+            Audit::log('device.wiped', $device, 'appareil='.$device->label.' ; motif='.$device->wipe_reason, $user);
+        }
 
         return $device;
     }

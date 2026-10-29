@@ -29,9 +29,26 @@ final class DeviceResource extends JsonResource
             'platform' => $device->platform,
             'app_version' => $device->app_version,
             'revoked' => $device->isRevoked(),
+            'wipe' => self::wipe($device),
+            'wipe_requested_at' => $device->wipe_requested_at?->toIso8601String(),
+            'wiped_at' => $device->wiped_at?->toIso8601String(),
             'last_seen_at' => $device->last_seen_at?->toIso8601String(),
             'last_sync_at' => $device->last_sync_at?->toIso8601String(),
             'created_at' => $device->created_at?->toIso8601String(),
         ];
+    }
+
+    /**
+     * Ordre d'effacement en attente d'accusé (P15-11) : `{requested_at, reason}`, sinon null (aucun ordre, ou déjà accusé).
+     *
+     * @return array{requested_at: string|null, reason: string|null}|null
+     */
+    public static function wipe(SyncDevice $device): ?array
+    {
+        if (! $device->wipePending()) {
+            return null;
+        }
+
+        return ['requested_at' => $device->wipe_requested_at?->toIso8601String(), 'reason' => $device->wipe_reason];
     }
 }

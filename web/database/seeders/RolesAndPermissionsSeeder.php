@@ -129,6 +129,8 @@ class RolesAndPermissionsSeeder extends Seeder
             // Le pair tranche lui-même ses conflits 409 (valeur serveur ou valeur de l'appareil) sur ses dossiers.
             'sync.resolve_own' => $peerAndAdmin,
             'sync.manage' => $admins,
+            // Effacement à distance d'un appareil de l'application (P15-11) : l'appareil vide ses données au prochain contact.
+            'device.wipe' => $admins,
 
             // Mises à jour, maintenance, sauvegardes. `platform.maintenance` (écran /admin/maintenance, P13-06 : admin et
             // superadmin, les deux rôles qui gardent l'accès pendant la maintenance, RG-14) remplace `maintenance.manage`.

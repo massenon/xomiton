@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Application\Sync\Admin\RequestDeviceWipe;
 use App\Application\Sync\Admin\ResolveSyncConflict;
 use App\Domain\Cases\Exceptions\CaseLocked;
 use App\Domain\Sync\Exceptions\ConflictResolutionRefused;
@@ -211,6 +212,26 @@ it('révoque un appareil, supprime ses abonnements push et journalise', function
     expect($device->fresh()->is_revoked)->toBeTrue()
         ->and(PushSubscription::query()->where('sync_device_id', $device->id)->count())->toBe(0)
         ->and(AuditLog::query()->where('action', 'sync.device_revoked')->where('detail', 'appareil=Itel perdu')->exists())->toBeTrue();
+});
+
+it('efface un appareil à distance (device.wipe) : révoqué, ordre posé, journal ; refusé au pair', function (): void {
+    $this->actingAs(syncUser('admin'));
+    $device = SyncDevice::factory()->create(['label' => 'Itel perdu']);
+    PushSubscription::factory()->create(['sync_device_id' => $device->id]);
+
+    Livewire::test(Sync::class)->assertSee('Effacer à distance')->call('wipe', $device->id)->assertDispatched('toast');
+
+    expect($device->fresh()->is_revoked)->toBeTrue()
+        ->and($device->fresh()->wipePending())->toBeTrue()
+        ->and($device->fresh()->wipe_reason)->toBe('admin')
+        ->and(PushSubscription::query()->where('sync_device_id', $device->id)->count())->toBe(0)
+        ->and(AuditLog::query()->where('action', 'device.wipe_requested')->where('detail', 'like', 'appareil=Itel perdu%')->exists())->toBeTrue();
+
+    Livewire::test(Sync::class)->assertSee('Effacement demandé');
+
+    $this->actingAs(syncUser('pair'));
+    Livewire::test(Sync::class)->assertForbidden();
+    expect(fn () => app(RequestDeviceWipe::class)(syncUser('moderateur'), SyncDevice::factory()->create()))->toThrow(AuthorizationException::class);
 });
 
 it('enregistre les paramètres typés de synchronisation et refuse les valeurs hors bornes', function (): void {

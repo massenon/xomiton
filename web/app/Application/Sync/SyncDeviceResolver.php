@@ -47,6 +47,27 @@ final class SyncDeviceResolver
     }
 
     /**
+     * Comme resolve(), mais un appareil révoqué par un ordre d'effacement qui attend son accusé est rendu tel quel : il
+     * doit pouvoir lire l'ordre (`heartbeat`, P15-11). Tout autre appareil révoqué : 403 `device_revoked`.
+     *
+     * @throws DeviceRequired
+     * @throws DeviceRevoked
+     */
+    public function resolveWithWipe(User $user, Request $request): SyncDevice
+    {
+        $uuid = trim((string) $request->header(DeviceRegistry::HEADER, ''));
+        $device = Str::isUuid($uuid)
+            ? SyncDevice::query()->whereDeviceUuid(Str::lower($uuid))->where('user_id', $user->getKey())->first()
+            : null;
+
+        if ($device instanceof SyncDevice && $device->isRevoked() && $device->wipePending()) {
+            return $device;
+        }
+
+        return $this->resolve($user, $request);
+    }
+
+    /**
      * Dernier contact ; `synced` : l'appareil a aussi poussé ou tiré des données. `pending` : éléments encore dans sa
      * boîte d'envoi (annoncé par l'appareil, borné).
      */

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Sync;
 
+use App\Application\Cases\ValidationCatalog;
 use App\Application\Sync\SyncDeviceResolver;
 use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Requests\Api\Sync\HeartbeatRequest;
+use App\Http\Resources\Me\DeviceResource;
 use App\Models\SyncConflict;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -19,12 +21,20 @@ use Illuminate\Support\Str;
  */
 final class HeartbeatController extends ApiController
 {
-    public function __invoke(HeartbeatRequest $request, SyncDeviceResolver $devices): JsonResponse
+    public function __invoke(HeartbeatRequest $request, SyncDeviceResolver $devices, ValidationCatalog $rules): JsonResponse
     {
         $user = $request->user();
         abort_unless($user instanceof User, 401);
 
-        $device = $devices->resolve($user, $request);
+        $device = $devices->resolveWithWipe($user, $request);
+
+        // Appareil révoqué par un ordre d'effacement (P15-11) : il lit l'ordre et rien d'autre, ni dernier contact ni données.
+        if ($device->isRevoked()) {
+            return $this->respond([
+                'server_time' => now()->toIso8601String(),
+                'wipe' => DeviceResource::wipe($device),
+            ], headers: ['Cache-Control' => 'no-store, private']);
+        }
 
         if ($request->appVersion() !== null) {
             $device->forceFill(['app_version' => Str::limit($request->appVersion(), 20, '')]);
@@ -41,6 +51,10 @@ final class HeartbeatController extends ApiController
                 'pending_count' => (int) $device->pending_count,
             ],
             'open_conflicts' => SyncConflict::query()->forDevice((int) $device->getKey())->open()->count(),
+            // Version des règles de validation (P15-12) : plus récente que celle en cache → relire `pair/validation-rules`.
+            'rules_updated_at' => $rules->lastUpdatedAt(),
+            // Ordre d'effacement à distance en attente d'accusé (P15-11) : null sinon. Un appareil actif n'en porte jamais.
+            'wipe' => null,
         ], headers: ['Cache-Control' => 'no-store, private']);
     }
 }

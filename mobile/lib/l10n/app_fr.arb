@@ -59,6 +59,10 @@
     "@account_devices_taken": {
         "description": "account.devices.taken"
     },
+    "account_devices_wipe_not_requested": "Aucun effacement n’est demandé pour cet appareil.",
+    "@account_devices_wipe_not_requested": {
+        "description": "account.devices.wipe_not_requested"
+    },
     "account_export_expiry": "{count, plural, =1{{hours} heure} other{{hours} heures}}",
     "@account_export_expiry": {
         "description": "account.export.expiry",
@@ -10981,6 +10985,15 @@
             }
         }
     },
+    "admin_system_sync_devices_confirm_wipe": "Effacer à distance l’appareil « {label} » ? Il est révoqué tout de suite et vide ses données (dossiers, alertes) à son prochain contact avec le serveur. Un téléphone éteint ou hors réseau ne reçoit l’ordre qu’à son retour en ligne.",
+    "@admin_system_sync_devices_confirm_wipe": {
+        "description": "admin_system.sync.devices.confirm_wipe",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
     "admin_system_sync_devices_empty": "Aucun appareil",
     "@admin_system_sync_devices_empty": {
         "description": "admin_system.sync.devices.empty"
@@ -11045,6 +11058,27 @@
     "admin_system_sync_devices_views_stale": "Sans synchro récente",
     "@admin_system_sync_devices_views_stale": {
         "description": "admin_system.sync.devices.views.stale"
+    },
+    "admin_system_sync_devices_wipe": "Effacer à distance",
+    "@admin_system_sync_devices_wipe": {
+        "description": "admin_system.sync.devices.wipe"
+    },
+    "admin_system_sync_devices_wipe_of": "Effacer à distance l’appareil {label}",
+    "@admin_system_sync_devices_wipe_of": {
+        "description": "admin_system.sync.devices.wipe_of",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_system_sync_devices_wipe_pending": "Effacement demandé",
+    "@admin_system_sync_devices_wipe_pending": {
+        "description": "admin_system.sync.devices.wipe_pending"
+    },
+    "admin_system_sync_devices_wiped": "Effacé",
+    "@admin_system_sync_devices_wiped": {
+        "description": "admin_system.sync.devices.wiped"
     },
     "admin_system_sync_errors_already_resolved": "Ce conflit a déjà été résolu par une autre personne.",
     "@admin_system_sync_errors_already_resolved": {
@@ -11274,6 +11308,15 @@
     "admin_system_sync_toasts_settings_unchanged": "Aucune modification à enregistrer.",
     "@admin_system_sync_toasts_settings_unchanged": {
         "description": "admin_system.sync.toasts.settings_unchanged"
+    },
+    "admin_system_sync_toasts_wipe_requested": "Effacement demandé pour l’appareil « {label} ». Il vide ses données à son prochain contact.",
+    "@admin_system_sync_toasts_wipe_requested": {
+        "description": "admin_system.sync.toasts.wipe_requested",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
     },
     "admin_system_sync_value_empty": "(vide)",
     "@admin_system_sync_value_empty": {

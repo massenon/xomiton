@@ -45,6 +45,23 @@ final class DeviceController extends ApiController
         return $created ? $this->created($resource, route('api.me.devices.index')) : $this->respond($resource);
     }
 
+    /**
+     * `POST me/devices/{uuid}/wiped` (P15-11) : l'appareil accuse l'effacement de ses données locales. Idempotent ;
+     * accepté pour un appareil révoqué par l'ordre d'effacement (c'est son seul rôle) ; 404 si l'appareil n'est pas à moi.
+     */
+    public function wiped(Request $request, string $uuid): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $device = $this->devices->acknowledgeWipe($user, $uuid);
+
+        if (! $device instanceof SyncDevice) {
+            throw new NotFoundHttpException;
+        }
+
+        return $this->respond(new DeviceResource($device), headers: ['Cache-Control' => 'no-store, private']);
+    }
+
     public function destroy(Request $request, string $uuid): Response
     {
         /** @var User $user */

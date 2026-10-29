@@ -26,6 +26,12 @@ final class SyncDevicePolicy
         return $user->can('sync.manage');
     }
 
+    /** Effacement à distance (P15-11) : `device.wipe` (admin et superadmin). */
+    public function wipe(User $user, SyncDevice $device): bool
+    {
+        return $user->can('device.wipe');
+    }
+
     public function view(User $user, SyncDevice $device): bool
     {
         return $this->owns($user, $device);

@@ -7,6 +7,7 @@ namespace App\Livewire\Admin\Sync;
 use App\Application\Platform\Settings\SettingsCatalog;
 use App\Application\Platform\Settings\UpdateSettings;
 use App\Application\Sync\Admin\ConflictValue;
+use App\Application\Sync\Admin\RequestDeviceWipe;
 use App\Application\Sync\Admin\ResolveSyncConflict;
 use App\Application\Sync\Admin\RevokeDevice;
 use App\Domain\Shared\Exceptions\DomainException;
@@ -28,7 +29,7 @@ use Livewire\Component;
 /**
  * Hors connexion & synchro `/admin/synchronisation` (P13-01, prototype admin/synchronisation.php ; permission
  * `sync.manage`, admin et superadmin) : KPI (appareils suivis, éléments en attente, conflits à résoudre, sans synchro depuis
- * plus de 24 h), appareils et pair·es (filtre, tri, recherche sur le libellé et la plateforme, révocation), résolution des
+ * plus de 24 h), appareils et pair·es (filtre, tri, recherche sur le libellé et la plateforme, révocation, effacement à distance `device.wipe`), résolution des
  * conflits — valeur du serveur, de l'appareil ou fusion saisie à la main (ResolveSyncConflict, choix journalisé, valeurs
  * chiffrées en base et jamais écrites dans le journal, ADR-33) —, paramètres de synchronisation (catalogue typé),
  * journal de synchronisation et cache local de ce navigateur (script d'écran `sync`). Heures dans le fuseau d'affichage.
@@ -142,6 +143,16 @@ final class Index extends Component
         $revoke(auth()->user(), $device);
         unset($this->stats);
         $this->toast((string) __('admin_system.sync.toasts.revoked', ['label' => $device->label]), 'warning');
+    }
+
+    /** Effacement à distance (P15-11, `device.wipe`) : l'appareil est révoqué et vide ses données à son prochain contact. */
+    public function wipe(int $id, RequestDeviceWipe $wipe): void
+    {
+        $device = SyncDevice::query()->findOrFail($id);
+        $this->authorize('wipe', $device);
+        $wipe(auth()->user(), $device);
+        unset($this->stats);
+        $this->toast((string) __('admin_system.sync.toasts.wipe_requested', ['label' => $device->label]), 'warning');
     }
 
     public function saveSettings(UpdateSettings $update): void

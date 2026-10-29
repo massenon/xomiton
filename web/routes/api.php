@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\Admin\AlertController as AdminAlertController;
 use App\Http\Controllers\Api\V1\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Api\V1\Admin\DeviceController as AdminDeviceController;
 use App\Http\Controllers\Api\V1\Admin\InvitationController as AdminInvitationController;
 use App\Http\Controllers\Api\V1\Admin\MaintenanceController as AdminMaintenanceController;
 use App\Http\Controllers\Api\V1\Admin\MemberController as AdminMemberController;
@@ -77,6 +78,7 @@ use App\Http\Controllers\Api\V1\Sync\SyncController;
 use App\Http\Middleware\BindOutboxAccount;
 use App\Http\Middleware\EnsureAdminMobile;
 use App\Http\Middleware\EnsureAlertRoutedToViewer;
+use App\Http\Middleware\EnsureDeviceNotRevoked;
 use App\Http\Middleware\EnsurePeerSpaceAccess;
 use App\Http\Middleware\ForgetSearchTerms;
 use Illuminate\Support\Facades\Route;
@@ -181,7 +183,7 @@ Route::group([], function (): void {
 
 // === 2. Groupe authentifié (auth:sanctum) =========================================================================
 // `conditional` (P6-01) : ETag + If-None-Match → 304 sur toute lecture 200 du groupe (Cache-Control: private, no-cache).
-Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
+Route::middleware(['auth:sanctum', EnsureDeviceNotRevoked::class, 'conditional'])->group(function (): void {
     Route::prefix('auth')->as('api.auth.')->group(function (): void {
         Route::post('logout', LogoutController::class)->name('logout');
     });
@@ -242,6 +244,8 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
         Route::get('devices', [DeviceController::class, 'index'])->name('devices.index');
         Route::post('devices', [DeviceController::class, 'store'])->name('devices.store');
         Route::delete('devices/{uuid}', [DeviceController::class, 'destroy'])->whereUuid('uuid')->name('devices.destroy');
+        // P15-11 : accusé d'effacement à distance (naturellement idempotent), seul appel permis à un appareil révoqué par l'ordre.
+        Route::post('devices/{uuid}/wiped', [DeviceController::class, 'wiped'])->whereUuid('uuid')->name('devices.wiped');
         // D-MOB-15 : demander le rôle pair depuis le profil (jamais d'auto-attribution : la décision est celle d'un·e admin).
         Route::get('role-requests', [MeRoleRequestController::class, 'index'])->name('role_requests.index');
         Route::post('role-requests', [MeRoleRequestController::class, 'store'])->middleware('idempotent:required,limit=role_request')->name('role_requests.store');
@@ -453,7 +457,7 @@ Route::middleware(['auth:sanctum', 'conditional'])->group(function (): void {
 // obligatoire (`idempotent:required,limit=admin_write` : un rejeu rend la réponse d'origine et ne consomme pas le quota) ;
 // actions à fort impact (maintenance, rôles, invitations, refus d'une demande, réattribution) : confirmation `step-up`
 // (`POST admin/step-up` → en-tête `X-Step-Up-Token`, usage unique).
-Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', 'conditional', EnsureAdminMobile::class, 'throttle:admin_api'])->group(function (): void {
+Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', EnsureDeviceNotRevoked::class, 'conditional', EnsureAdminMobile::class, 'throttle:admin_api'])->group(function (): void {
     $write = 'idempotent:required,limit=admin_write';
 
     Route::get('dashboard', [AdminDashboardController::class, 'show'])->name('dashboard');
@@ -486,6 +490,10 @@ Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', 'condition
     Route::delete('members/{user}/roles/peer', [AdminMemberController::class, 'revokePeer'])->whereNumber('user')->middleware($write)->name('members.peer.revoke');
     Route::put('members/{user}/role', [AdminMemberController::class, 'changeRole'])->whereNumber('user')->middleware($write)->name('members.role');
 
+    // P15-11 : appareils d'un compte et effacement à distance (`device.wipe`, step-up).
+    Route::get('members/{user}/devices', [AdminDeviceController::class, 'index'])->whereNumber('user')->name('members.devices');
+    Route::post('devices/{device}/wipe', [AdminDeviceController::class, 'wipe'])->whereNumber('device')->middleware($write)->name('devices.wipe');
+
     Route::get('invitations', [AdminInvitationController::class, 'index'])->name('invitations.index');
     Route::post('invitations', [AdminInvitationController::class, 'store'])->middleware($write)->name('invitations.store');
     Route::delete('invitations/{invitation}', [AdminInvitationController::class, 'destroy'])->whereNumber('invitation')->middleware($write)->name('invitations.destroy');
@@ -509,7 +517,7 @@ Route::prefix('admin')->as('api.admin.')->middleware(['auth:sanctum', 'condition
 // la session, même pour une requête refusée) ; hors `throttle:api` : les suggestions instantanées de l'en-tête
 // (anti-rebond) ont leur propre quota `search` par compte et n'épuisent pas celui du reste de l'espace (cloche, messages).
 // `conditional` comme tout le groupe authentifié : sans effet ici (réponses no-store, jamais d'ETag).
-Route::middleware([ForgetSearchTerms::class.':sanctum', 'auth:sanctum', 'conditional', 'throttle:search'])
+Route::middleware([ForgetSearchTerms::class.':sanctum', 'auth:sanctum', EnsureDeviceNotRevoked::class, 'conditional', 'throttle:search'])
     ->withoutMiddleware('throttle:api')
     ->prefix('search')->as('api.search.')->group(function (): void {
         Route::get('/', [SearchController::class, 'index'])->name('index');
