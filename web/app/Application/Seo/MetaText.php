@@ -44,7 +44,7 @@ final class MetaText
                 break;
             }
 
-            if (! str_contains(mb_strtolower($text), mb_strtolower(rtrim($sentence, '.!?… ')))) {
+            if (! str_contains(mb_strtolower($text), mb_strtolower((string) preg_replace('/[.!?…\s]+$/u', '', $sentence)))) {
                 $text = trim($text.' '.$sentence);
             }
         }
@@ -83,6 +83,7 @@ final class MetaText
             $slice = mb_substr($slice, 0, $space);
         }
 
-        return rtrim($slice, " \u{00A0},;:.!?-–(").'…';
+        // Pas de rtrim() : son masque agit octet par octet et amputait « à » (C3 A0) de son second octet (UTF-8 invalide).
+        return preg_replace('/[\s\x{00A0},;:.!?\-–(]+$/u', '', $slice).'…';
     }
 }
