@@ -81,7 +81,7 @@ SFTP (FileZilla, WinSCP) ou Gestionnaire de fichiers cPanel (archive ZIP à extr
 
 ## 6. Le fichier `.env` de production
 
-Créez le fichier `/home/COMPTE/xomiton/web/.env` (copie de `.env.example` puis modifications), puis restreignez-le : `chmod 600 .env`. **Il contient des secrets : ne l'envoyez jamais par e-mail ni sur Git.**
+**Modèle prêt à l'emploi : [`web/.env.production.example`](../web/.env.production.example)** (production complète et commentée en français, sans aucun secret ; sa procédure en tête : copie en `.env`, `key:generate --force`, `xomiton:install`, `config:cache`). Créez le fichier `/home/COMPTE/xomiton/web/.env` (copie de `web/.env.production.example`, ou de `.env.example` puis modifications), puis restreignez-le : `chmod 600 .env`. **Il contient des secrets : ne l'envoyez jamais par e-mail ni sur Git.**
 
 Ne remplissez pas `APP_KEY` à la main : voir §7. Ci-dessous, la liste complète des variables utiles. Les valeurs entre `<...>` sont à remplacer ; tout ce qui n'est pas précisé garde la valeur de `.env.example`.
 

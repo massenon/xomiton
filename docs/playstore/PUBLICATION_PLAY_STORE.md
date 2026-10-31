@@ -347,4 +347,6 @@ Délais : la revue d'une nouvelle application peut prendre plusieurs jours, voir
 
 [`Fiche-publication-Play-Store-Xomiton.docx`](Fiche-publication-Play-Store-Xomiton.docx) (dans ce dossier) reprend ce document dans une mise en page remise au client : page de titre, sommaire, tableaux, image de présentation et miniatures des 8 captures avec leur texte alternatif. Elle est **générée** à partir de ce Markdown par `python3 docs/playstore/build_fiche_docx.py` (python-docx) : modifier le Markdown, puis relancer le script ; ne pas corriger le Word à la main.
 
+**Les trois fichiers (ce PDF, la fiche Word et son PDF) sont produits d'un seul geste** par `python3 docs/playstore/build_pdf.py` : environnement UTF-8 forcé, titre passé par un fichier de métadonnées (jamais en argument de commande), police Montserrat embarquée, paragraphes justifiés avec césure française, et **échec si un caractère corrompu (losange U+FFFD ou lettres accentuées lues deux fois en UTF-8 puis Latin-1) est détecté** dans les sources, le DOCX ou les PDF. `--verifier` ne fait que les contrôles.
+
 *Ce dossier ne constitue pas un avis juridique. Les exigences de Google évoluent : relire les pages officielles de la Play Console avant le dépôt (exigences d'API cible, règles de test, classification et sécurité des données).*

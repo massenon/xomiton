@@ -147,6 +147,11 @@ def police(run, nom: str, taille: float | None = None, couleur: str | None = Non
         run.font.bold = gras
     if italique is not None:
         run.font.italic = italique
+    lang = run._r.get_or_add_rPr().find(qn("w:lang"))
+    if lang is None:
+        lang = OxmlElement("w:lang")
+        run._r.get_or_add_rPr().append(lang)
+    lang.set(qn("w:val"), "fr-FR")
 
 
 def champ(paragraphe, instruction: str, taille: float = 8.5, couleur: str = TEXTE_ATTENUE) -> None:
@@ -220,9 +225,51 @@ def nettoyer(texte: str) -> str:
     return texte.strip()
 
 
+LONG_JETON = re.compile(r"\S{20,}")
+
+
+def couper(texte: str) -> str:
+    """Autorise une coupe propre (espace de largeur nulle) après / . _ - dans les URL et codes longs."""
+    def _coupe(m: re.Match) -> str:
+        return re.sub(r"([/._\-?&=#])(?=[^/._\-?&=#])", "\\1\u200b", m.group(0))
+    return LONG_JETON.sub(_coupe, texte)
+
+
+def justifier(paragraphe, minimum: int = 110) -> None:
+    """Justifie un paragraphe de corps assez long (jamais les titres, légendes ni cellules étroites)."""
+    if len(paragraphe.text) >= minimum:
+        paragraphe.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+
+
+def langue_francaise(doc) -> None:
+    """Langue fr-FR par défaut (styles) et césure automatique activée (réglages du document)."""
+    styles = doc.styles.element
+    defauts = styles.find(qn("w:docDefaults"))
+    if defauts is not None:
+        r_pr = defauts.find(qn("w:rPrDefault")).find(qn("w:rPr"))
+        for lang in r_pr.findall(qn("w:lang")):
+            r_pr.remove(lang)
+        lang = OxmlElement("w:lang")
+        for attr in ("w:val", "w:eastAsia", "w:bidi"):
+            lang.set(qn(attr), "fr-FR" if attr != "w:bidi" else "ar-SA")
+        r_pr.append(lang)
+    for style in doc.styles:
+        r_pr = getattr(style.element, "rPr", None)
+        if r_pr is not None and r_pr.find(qn("w:lang")) is None and style.type == 1:
+            lang = OxmlElement("w:lang")
+            lang.set(qn("w:val"), "fr-FR")
+            r_pr.append(lang)
+    reglages = doc.settings.element
+    for nom in ("w:autoHyphenation", "w:doNotHyphenateCaps"):
+        if reglages.find(qn(nom)) is None:
+            el = OxmlElement(nom)
+            reglages.append(el)
+
+
 def ajouter_texte(paragraphe, texte: str, taille: float, couleur: str = TEXTE, gras: bool = False,
                   nom: str = POLICE_TEXTE) -> None:
     """Ajoute du texte avec **gras**, *italique* et `code` en ligne."""
+    texte = couper(texte)
     for morceau in JETONS.split(texte):
         if not morceau:
             continue
@@ -392,6 +439,7 @@ class Fiche:
             if i:
                 p.add_run().add_break()
             ajouter_texte(p, ligne, 10.5)
+        justifier(p)
 
     def citation(self, texte: str) -> None:
         tableau = self.doc.add_table(rows=1, cols=1)
@@ -411,6 +459,7 @@ class Fiche:
         p = cellule.paragraphs[0]
         espacement(p, 0, 0)
         ajouter_texte(p, nettoyer(texte), 10, TEXTE)
+        justifier(p)
         espace = self.doc.add_paragraph()
         espacement(espace, 0, 2)
 
@@ -437,6 +486,10 @@ class Fiche:
         total = sum(poids)
         minimum = 2.4 if colonnes >= 6 else 2.3 if colonnes >= 4 else 1.7
         largeurs = [max(minimum, largeur_totale * p / total) for p in poids]
+        # Jamais plus étroit que le plus long mot de l'en-tête (évite « Dimension / s »).
+        for i in range(colonnes):
+            mot = max((len(w) for w in nettoyer(entete[i]).split()), default=4)
+            largeurs[i] = max(largeurs[i], mot * 0.2 * (taille / 8.5) + 0.5)
         facteur = largeur_totale / sum(largeurs)
         largeurs = [l * facteur for l in largeurs]
 
@@ -642,6 +695,7 @@ def main() -> int:
     fiche.doc.core_properties.author = "Xomiton"
     fiche.doc.core_properties.subject = f"Version {version} du {date}"
     fiche.doc.core_properties.language = "fr-FR"
+    langue_francaise(fiche.doc)
     fiche.doc.save(SORTIE)
     print(f"OK : {SORTIE.relative_to(RACINE)} (version {version}, {date}, {len(fiche.titres_h2)} sections, {len(assets['captures'])} captures)")
     return 0
