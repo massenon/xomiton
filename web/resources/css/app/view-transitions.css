@@ -1,0 +1,11 @@
+/*
+ * Transitions de vue inter-documents (performance perçue, docs/PERFORMANCE.md §11) : la navigation classique entre deux
+ * pages du site (même origine) se fait par un fondu bref au lieu d'un flash blanc ; le navigateur garde l'ancienne page
+ * affichée jusqu'à ce que la nouvelle soit prête à peindre. Chrome / Edge / Safari récents ; ailleurs, navigation normale.
+ * Aucune animation si la personne a demandé moins de mouvement (WCAG 2.3.3). Copie dans critical.css (inline) : la règle
+ * doit être connue avant le premier rendu de la page d'arrivée.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-group(root) { animation-duration: 0.15s; }
+}

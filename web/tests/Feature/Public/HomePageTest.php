@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Faq;
 use App\Models\Thematique;
 use App\Models\User;
+use App\Support\PublicContentCache;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -192,6 +193,7 @@ it('se contente de trois requêtes de contenu, sans toucher à l’assistant ni 
     Faq::factory()->onHome()->count(2)->create();
 
     accueilHtml(); // premier rendu : les paramètres (lus par le middleware de maintenance) passent en cache
+    PublicContentCache::invalidate(); // les données de l'accueil sont gardées en cache : on mesure le rendu à froid
     DB::enableQueryLog();
     accueilHtml();
     $queries = collect(DB::getQueryLog())->pluck('query');
@@ -211,8 +213,9 @@ it('précharge l’image LCP, diffère les autres et dimensionne chaque image', 
     $lcp = asset('assets/images/xomiton/05.jpg');
     $main = accueilBetween($html, '<main id="contenu"', '</main>');
 
+    // La variante WebP (9 Ko au lieu de 34 Ko) est celle qui est préchargée ; le JPEG reste le repli de <picture>.
     expect(substr_count($html, '<link rel="preload" as="image"'))->toBe(1)
-        ->and($html)->toContain('<link rel="preload" as="image" href="'.$lcp.'" fetchpriority="high">')
+        ->and($html)->toContain('<link rel="preload" as="image" type="image/webp" href="'.asset('assets/images/xomiton/05.webp').'" fetchpriority="high">')
         ->and($main)->toMatch('~<img[^>]*src="'.preg_quote($lcp, '~').'"[^>]*loading="eager"[^>]*fetchpriority="high"~');
 
     foreach (['04.jpg', 'mockup-B.gif', 'doglegbexo.png'] as $file) {

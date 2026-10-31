@@ -99,48 +99,48 @@ $memberPlaceholder = static function (string $uri, string $name, string $title, 
 };
 
 // --- Site public (P4) -------------------------------------------------------
-Route::get('/', HomeController::class)->name('home'); // P4-01
+Route::get('/', HomeController::class)->middleware('guest.page')->name('home'); // P4-01
 // P4-02 : publiques et indexables (Q19 a) ; fiche résolue par ShowThematique (publiées seulement), pas de liaison implicite.
-Route::get('/thematiques', ThematiquesIndexController::class)->name('thematiques.index');
+Route::get('/thematiques', ThematiquesIndexController::class)->middleware('guest.page')->name('thematiques.index');
 Route::get('/thematiques/{slug}', ThematiquesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
-    ->middleware(RedirectRenamedSlug::class.':thematique')->name('thematiques.show'); // P12-03 : ancien slug → 301
+    ->middleware([RedirectRenamedSlug::class.':thematique', 'guest.page'])->name('thematiques.show'); // P12-03 : ancien slug → 301
 // P4-03 : publiques et indexables (Q19 a) ; fiche résolue par ShowResource (publiées seulement, `article` → /actualites).
 // Téléchargement : compte puis 302 vers un lien signé `media.signed` ; lecture vidéo / audio : fichier servi avec `Range`
 // (206), sans redirection. Adresses stables pour le cache hors connexion (P5-10) ; limiteur nommé `resource_download`.
-Route::get('/ressources', RessourcesIndexController::class)->name('ressources.index');
+Route::get('/ressources', RessourcesIndexController::class)->middleware('guest.page')->name('ressources.index');
 Route::get('/ressources/{slug}', RessourcesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
-    ->middleware(RedirectRenamedSlug::class.':resource')->name('ressources.show'); // P12-03 : ancien slug → 301
+    ->middleware([RedirectRenamedSlug::class.':resource', 'guest.page'])->name('ressources.show'); // P12-03 : ancien slug → 301
 Route::get('/ressources/{slug}/telecharger', RessourceDownloadController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->middleware('throttle:resource_download')->name('ressources.download');
 Route::get('/ressources/{slug}/lire', RessourceStreamController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->middleware('throttle:resource_download')->name('ressources.stream');
 // P4-04 : publiques et indexables (Q19 a), vous ; auto-évaluation (/violences), recherche et version simple (/lois), quiz
 // (/do-glegbe) entièrement dans le navigateur, sans requête réseau.
-Route::get('/violences', ViolencesController::class)->name('violences');
-Route::get('/lois', LoisController::class)->name('lois');
-Route::get('/do-glegbe', DoGlegbeController::class)->name('do-glegbe');
+Route::get('/violences', ViolencesController::class)->middleware('guest.page')->name('violences');
+Route::get('/lois', LoisController::class)->middleware('guest.page')->name('lois');
+Route::get('/do-glegbe', DoGlegbeController::class)->middleware('guest.page')->name('do-glegbe');
 // P4-05 : centre d'aide public et indexable (vous) ; questions du périmètre HelpCenter (catégories `faq`), adressées par
 // slug ; vote « Cet article vous a-t-il aidé·e ? » persisté dans `faq_feedback` (POST + @csrf, limiteur `faq_feedback`).
-Route::get('/aide', AideIndexController::class)->name('aide.index');
+Route::get('/aide', AideIndexController::class)->middleware('guest.page')->name('aide.index');
 Route::get('/aide/{slug}', AideShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('aide.show');
 Route::post('/aide/{slug}/avis', AideFeedbackController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
     ->middleware('throttle:faq_feedback')->name('aide.feedback');
 // P4-10 : actualités = ressources `article` publiées (Q1 a) ; une ressource d'un autre type → 301 /ressources/{slug}.
-Route::get('/actualites', ActualitesIndexController::class)->name('actualites.index');
+Route::get('/actualites', ActualitesIndexController::class)->middleware('guest.page')->name('actualites.index');
 Route::get('/actualites/{slug}', ActualitesShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
-    ->middleware(RedirectRenamedSlug::class.':resource')->name('actualites.show'); // P12-03 : ancien slug → 301
+    ->middleware([RedirectRenamedSlug::class.':resource', 'guest.page'])->name('actualites.show'); // P12-03 : ancien slug → 301
 // P4-06 : gabarit sobre, tu (Q47) ; même source que GET /api/v1/urgences (ListEmergencyContacts) ; nom `urgences`
 // servi pendant la maintenance (EnsureNotInMaintenance, RG-01).
 Route::get('/urgences', UrgencesController::class)->name('urgences');
 // P4-08 : charte, confidentialité, conditions et signalement sur une page (ancres), publique et indexable (vous).
-Route::get('/confidentialite', ConfidentialiteController::class)->name('confidentialite');
+Route::get('/confidentialite', ConfidentialiteController::class)->middleware('guest.page')->name('confidentialite');
 // Pages légales publiques et indexables (vous), SANS connexion (Google Play : URL de la politique de confidentialité et
 // URL web de suppression de compte). Textes : lang/fr/pages/legal.php et deletion.php. Demande de suppression par e-mail :
 // limiteur `account_deletion`, réponse identique que le compte existe ou non ; pages de jeton et de remerciement en noindex.
-Route::get('/politique-de-confidentialite', LegalPageController::class)->defaults('page', 'privacy')->name('legal.privacy');
-Route::get('/conditions-utilisation', LegalPageController::class)->defaults('page', 'terms')->name('legal.terms');
-Route::get('/mentions-legales', LegalPageController::class)->defaults('page', 'notice')->name('legal.notice');
-Route::get('/cookies', LegalPageController::class)->defaults('page', 'cookies')->name('legal.cookies');
+Route::get('/politique-de-confidentialite', LegalPageController::class)->defaults('page', 'privacy')->middleware('guest.page')->name('legal.privacy');
+Route::get('/conditions-utilisation', LegalPageController::class)->defaults('page', 'terms')->middleware('guest.page')->name('legal.terms');
+Route::get('/mentions-legales', LegalPageController::class)->defaults('page', 'notice')->middleware('guest.page')->name('legal.notice');
+Route::get('/cookies', LegalPageController::class)->defaults('page', 'cookies')->middleware('guest.page')->name('legal.cookies');
 Route::get('/supprimer-mon-compte', [AccountDeletionController::class, 'show'])->name('account-deletion.show');
 Route::post('/supprimer-mon-compte', [AccountDeletionController::class, 'store'])->name('account-deletion.request');
 Route::get('/supprimer-mon-compte/demande-envoyee', [AccountDeletionController::class, 'sent'])->name('account-deletion.sent');

@@ -143,3 +143,9 @@ body.xm-is-offline .xm-offline-bar { display:block; }
 .xm-hero-bg .xm-hero-sub { color: rgba(255,255,255,.92); }
 .xm-hero-page { position: relative; overflow: hidden; }
 .xm-hero-page::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: linear-gradient(90deg,var(--xm-red-500),var(--xm-amber-500),var(--xm-green-700),var(--xm-blue-500),var(--xm-violet-700)); }
+
+/* ---------- Transitions de vue inter-documents (app/view-transitions.css) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-group(root) { animation-duration: 0.15s; }
+}

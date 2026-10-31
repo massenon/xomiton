@@ -10,6 +10,7 @@
 @import './theme/social-xomiton.css';
 @import './theme/components.css';
 @import './theme/xomiton.css';
+@import './app/view-transitions.css';
 @import './app/layouts.css';
 @import './app/components.css';
 @import './app/auth.css';

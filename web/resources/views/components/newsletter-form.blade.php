@@ -68,6 +68,13 @@
             @endforeach
         </div>
     @endif
+    @if (request()->attributes->get(\App\Http\Middleware\CacheableGuestPage::ATTRIBUTE, false))
+        {{--
+            Page servie sans session (CacheableGuestPage, PERFORMANCE.md §11) : pas de jeton CSRF à joindre, donc pas de
+            formulaire POST ici (aucune exemption du jeton). Le bouton mène à /newsletter, page à session et à formulaire protégé.
+        --}}
+        <a class="btn btn-primary" href="{{ route('newsletter.show') }}#inscription"><i class="bi bi-send me-1" aria-hidden="true"></i>{{ __('footer.newsletter_subscribe') }}</a>
+    @else
     <form {{ $attributes->class('xm-nl-form') }} method="post" action="{{ route('newsletter.subscribe') }}" novalidate>
         @csrf
         <input type="hidden" name="back" value="{{ request()->getRequestUri() }}">
@@ -83,4 +90,5 @@
             <label class="form-check-label opacity-75" for="{{ $p }}Consent">{!! __('footer.newsletter_consent', ['url' => e($privacyUrl)]) !!}</label>
         </div>
     </form>
+    @endif
 @endif

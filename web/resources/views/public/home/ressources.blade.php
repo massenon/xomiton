@@ -18,7 +18,7 @@
                     @php($category = $thematique->category)
                     <li class="col-md-6 col-lg-4">
                         <a class="lp-card lp-th d-block bg-body text-reset overflow-hidden h-100" href="{{ route('thematiques.show', $thematique) }}">
-                            <x-img class="w-100" :src="$thematique->cover_url" :alt="__('pages/accueil.ressources.cover_alt', ['title' => $thematique->title])" :title="$thematique->title" width="640" height="427" />
+                            <x-img class="w-100" :src="$thematique->cover_url" :alt="__('pages/accueil.ressources.cover_alt', ['title' => $thematique->title])" :title="$thematique->title" width="640" height="427" sizes="(min-width: 992px) 380px, (min-width: 768px) 50vw, 100vw" />
                             <div class="p-3">
                                 <x-badge :color="$category?->color ?: 'primary'" soft :icon="$category?->icon ? \Illuminate\Support\Str::after($category->icon, 'bi-') : 'grid'" class="mb-2">{{ $category?->label ?? __('pages/accueil.ressources.default_category') }}</x-badge>
                                 <h3 class="h6 mb-1">{{ $thematique->title }}</h3>

@@ -558,7 +558,8 @@ describe('fiche /ressources/{slug}', function (): void {
             ->toContain('(nouvelle fenêtre)')
             ->toContain('<meta property="og:type" content="website">')
             ->not->toContain('<iframe')
-            ->not->toContain('/telecharger')
+            // Les règles de préchargement (Speculation Rules) citent le motif d'exclusion « /ressources/*/telecharger » : hors script.
+            ->and(preg_replace('#<script type="speculationrules".*?</script>#s', '', $html))->not->toContain('/telecharger')
             ->and(collect(resGraph($html))->pluck('@type')->all())->toBe(['Organization', 'WebSite', 'WebPage', 'BreadcrumbList']);
     });
 

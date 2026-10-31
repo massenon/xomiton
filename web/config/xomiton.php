@@ -212,6 +212,35 @@ return [
     ],
 
     /*
+     * Cache HTTP des pages publiques sans session (CacheableGuestPage, docs/PERFORMANCE.md §11) et cache de données de la
+     * page d'accueil (App\Support\PublicContentCache, fichier : compatible cPanel, sans Redis).
+     */
+    'http_cache' => [
+        // Cache-Control: public, max-age=<guest_max_age>, stale-while-revalidate=<guest_swr> (secondes). Une publication de contenu
+        // apparaît au plus après max-age + swr (6 minutes) dans un navigateur qui a déjà la page ; le serveur, lui, est à jour tout de suite.
+        'guest_max_age' => (int) env('XOMITON_HTTP_CACHE_MAX_AGE', 60),
+        'guest_swr' => (int) env('XOMITON_HTTP_CACHE_SWR', 300),
+        // Durée de vie des données de la page d'accueil gardées en cache (thématiques, FAQ), vidées à chaque modification de contenu ; borne aussi l'apparition d'une publication programmée.
+        'home_ttl_minutes' => (int) env('XOMITON_HOME_CACHE_MINUTES', 10),
+    ],
+
+    /*
+     * Navigation sans rechargement perceptible (partials/speculation-rules.blade.php, resources/js/shared/prefetch.js).
+     * Liste BLANCHE de chemins publics en lecture seule (motifs URLPattern : `*` = un segment ou plus) ; `exclude` retranche
+     * les téléchargements et flux. Aucune route SOS, signalement, urgences, authentification, compte, API, administration ni POST ; /violences
+     * (auto-évaluation) est exclue aussi : une requête lancée par un simple survol laisserait une trace côté serveur
+     * d'une page que la personne n'a pas ouverte.
+     */
+    'speculation' => [
+        'enabled' => (bool) env('XOMITON_SPECULATION', true),
+        'allow' => [
+            '/', '/thematiques', '/thematiques/*', '/ressources', '/ressources/*', '/actualites', '/actualites/*', '/aide', '/lois',
+            '/do-glegbe', '/politique-de-confidentialite', '/conditions-utilisation', '/mentions-legales', '/cookies',
+        ],
+        'exclude' => ['/ressources/*/telecharger', '/ressources/*/lire'],
+    ],
+
+    /*
      * En-têtes de sécurité HTTP (P2-08, P2-13, DEVELOPMENT_STANDARDS.md §7).
      */
     'security' => [

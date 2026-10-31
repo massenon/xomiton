@@ -29,6 +29,35 @@ final class ImageSources
     private const FORMAT_ORDER = ['image/avif', 'image/webp'];
 
     /**
+     * Variante WebP d'une image livrée avec l'application (`public/assets/…`, jpg / jpeg / png) : le fichier frère de même
+     * nom en `.webp` s'il existe, et `-320.webp` (320 px) s'il existe aussi (couvertures de 640 px de large). Rien
+     * pour une URL externe ou un téléversement (ceux-ci passent par `<x-img :media>`). Une seule vérification de fichier
+     * par image et par processus.
+     *
+     * @return string|null valeur de `srcset` du `<source type="image/webp">`
+     */
+    public static function bundledWebp(string $url): ?string
+    {
+        static $memo = [];
+
+        return $memo[$url] ??= (static function () use ($url): ?string {
+            $base = rtrim((string) asset(''), '/').'/';
+
+            if (! str_starts_with($url, $base.'assets/') || ! preg_match('#^(assets/.+)\.(?:jpe?g|png)$#i', substr($url, strlen($base)), $m)) {
+                return null;
+            }
+
+            if (! is_file(public_path($m[1].'.webp'))) {
+                return '';
+            }
+
+            $main = asset($m[1].'.webp');
+
+            return is_file(public_path($m[1].'-320.webp')) ? asset($m[1].'-320.webp').' 320w, '.$main.' 640w' : $main;
+        })() ?: null;
+    }
+
+    /**
      * @param  StoredMedia|array<string, mixed>  $media  StoredMedia ou sa forme `toArray()` (colonne JSON d'un modèle)
      * @return array{src: string, srcset: string|null, width: int|null, height: int|null, sources: array<string, string>}
      */

@@ -44,8 +44,10 @@ use App\Models\AuditLog;
 use App\Models\Category;
 use App\Models\Commune;
 use App\Models\DirectoryContact;
+use App\Models\Faq;
 use App\Models\Need;
 use App\Models\Population;
+use App\Models\Thematique;
 use App\Models\User;
 use App\Models\ViolenceType;
 use App\Models\Zone;
@@ -55,6 +57,7 @@ use App\Notifications\Channels\TemplateMailChannel;
 use App\Notifications\Channels\WebPushChannel;
 use App\Notifications\Channels\XomitonDatabaseChannel;
 use App\Observers\DirectoryContactObserver;
+use App\Observers\PublicContentObserver;
 use App\Observers\ReferentialObserver;
 use App\Support\KeyedHash;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -115,6 +118,22 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->registerNotificationDrivers();
         $this->registerAssistantProvider();
+        $this->registerDebugbar();
+    }
+
+    /**
+     * Laravel Debugbar (dépendance de développement) n'est PAS découvert automatiquement (composer.json,
+     * extra.laravel.dont-discover) : il n'est enregistré que dans l'environnement `local` avec APP_DEBUG=true. Avec
+     * APP_DEBUG=false, ou en production, ni son fournisseur de services, ni ses collecteurs, ni ses ~70 Ko de HTML et de
+     * JS injectés ne sont chargés (docs/PERFORMANCE.md §11, INSTALLATION_LOCALE.md « Lenteur de php artisan serve »).
+     */
+    private function registerDebugbar(): void
+    {
+        $provider = '\\Barryvdh\\Debugbar\\ServiceProvider';
+
+        if ($this->app->environment('local') && config('app.debug') === true && class_exists($provider)) {
+            $this->app->register($provider);
+        }
     }
 
     /**
@@ -202,6 +221,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Contacts d'urgence en cache (P5-06 `GET urgences`, ListEmergencyContacts) : toute écriture sur l'annuaire l'invalide.
         DirectoryContact::observe(DirectoryContactObserver::class);
+
+        // Données de la page d'accueil en cache (App\Support\PublicContentCache) : thématiques, FAQ et catégories affichées.
+        foreach ([Thematique::class, Faq::class, Category::class] as $model) {
+            $model::observe(PublicContentObserver::class);
+        }
     }
 
     /**

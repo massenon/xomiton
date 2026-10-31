@@ -123,6 +123,23 @@ Après toute modification de `.env`, arrêtez puis relancez `php artisan serve` 
 
 Sans planificateur ni file, le site s'ouvre mais l'escalade d'un SOS après 5 minutes et certains envois ne se produisent pas : pour tester ces points, laissez les fenêtres 2 et 3 ouvertes.
 
+### 3.4 Le site est lent en local (Windows) : causes et remèdes
+
+`php artisan serve` démarre le serveur intégré de PHP : **un seul processus**, qui traite une requête à la fois. Une page de Xomiton déclenche une quinzaine de requêtes (HTML, images, polices) ; avec un seul processus, elles s'attendent les unes les autres. S'y ajoutent, **sous Windows**, des causes propres à la machine. Les chiffres du dépôt viennent d'un poste Linux (voir [PERFORMANCE.md](PERFORMANCE.md) §11) : **aucune mesure n'a été faite sous Windows**, les remèdes ci-dessous sont les causes connues, à vérifier chez vous (« non vérifié »).
+
+| Cause | Remède |
+|---|---|
+| `APP_DEBUG=true` + Debugbar : chaque page embarque environ **70 Ko** de HTML et de JS de débogage et enregistre ses mesures (HTML de l'accueil : 141 Ko avec, 72 Ko sans, mesuré). | Pour juger la vitesse réelle, mettez `APP_DEBUG=false` dans `.env`, puis relancez `php artisan serve`. Debugbar n'est de toute façon chargé que si `APP_ENV=local` **et** `APP_DEBUG=true` (`AppServiceProvider::registerDebugbar`) ; en production il n'est même pas installé (`composer install --no-dev`). |
+| Pas de cache de configuration, de routes ni de vues : Laravel relit et recompile ses fichiers à chaque requête. | `php artisan optimize` (puis `php artisan optimize:clear` quand vous modifiez `.env`, une route ou une vue pour repartir à neuf). |
+| **OPcache désactivé en ligne de commande** : `php artisan serve` est un processus CLI, où OPcache est éteint par défaut (`opcache.enable_cli=0`) ; PHP recompile tout le code à chaque requête. | Dans `php.ini` (`php --ini` indique le fichier) : `zend_extension=opcache` (sous Windows, `zend_extension=php_opcache.dll`), `opcache.enable=1`, `opcache.enable_cli=1`, puis relancez. Contrôle : `php -i | findstr opcache.enable_cli` doit afficher `On`. |
+| **Windows Defender** analyse chaque fichier PHP lu (plus de mille par requête sans OPcache) et le dossier `node_modules`. | Sécurité Windows › Protection contre les virus et menaces › Gérer les paramètres › **Exclusions** › Ajouter un dossier : le dossier du projet (`web`, dont `vendor` et `node_modules`) et le dossier de PHP. À faire avec l'accord du service informatique : une exclusion réduit la protection de ces dossiers. |
+| `npm run dev` (serveur Vite) : des centaines de petits modules JS et un CSS non compilé sont servis à chaque page, plus le rechargement à chaud. | Pour naviguer ou juger la vitesse : `npm run build` une fois (et à chaque changement de code front), **sans** `npm run dev` ; supprimez `public/hot` s'il reste. `npm run dev` ne sert qu'à développer le front. |
+| Projet dans un dossier synchronisé (OneDrive, Dropbox) ou sur un disque réseau : lectures lentes et verrous. | Placez le projet sur un disque local hors synchronisation (par exemple `C:\dev\xomiton`). |
+| Un seul processus PHP. `PHP_CLI_SERVER_WORKERS=4 php -S …` (plusieurs processus) **n'est pas pris en charge sous Windows** (fonction expérimentale de PHP, Linux et macOS seulement). | Sous Linux, macOS ou **WSL2** (projet dans le système de fichiers Linux, pas dans `/mnt/c`) : `cd public && PHP_CLI_SERVER_WORKERS=4 php -d opcache.enable_cli=1 -S localhost:8000 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php` (mesuré sous Linux, 60 pages demandées 8 à la fois : 2,2 s avec 1 processus, 0,65 s avec 4). Sous Windows natif : passez à Laragon ou XAMPP. |
+| Le serveur intégré reste un outil de développement. | **Laragon** (le plus simple) ou **XAMPP** avec Apache : pointez le serveur sur `web\public`, activez OPcache (`opcache.enable=1`), PHP 8.3 ; Apache lit le `.htaccess` du projet (compression, cache des fichiers versionnés), comme sur cPanel. Mettez alors l'adresse choisie dans `APP_URL` et `SANCTUM_STATEFUL_DOMAINS`. |
+
+Ordre conseillé pour un poste Windows lent : 1) `APP_DEBUG=false` ; 2) `npm run build` sans `npm run dev` ; 3) `php artisan optimize` ; 4) OPcache CLI activé ; 5) exclusion Defender ; 6) Laragon / XAMPP si c'est encore lent.
+
 ## 4. Choisir la base de données
 
 ### 4.1 SQLite (par défaut, recommandé pour la recette)
@@ -275,6 +292,7 @@ Particularités : Pest a besoin que `npm run build` ait été exécuté une fois
 | « **could not find driver** » ou « Call to undefined function … » | Une extension PHP manque (`pdo_sqlite`, `pdo_mysql`, `intl`, `gd`, `zip`, `mbstring`…). Contrôlez avec `php -m`. Windows : retirez le `;` devant la ligne `extension=…` dans `php.ini` (`php --ini` indique son emplacement), relancez PowerShell. Linux : installez le paquet `php8.3-…` correspondant. |
 | « Your PHP version … does not satisfy that requirement » | PHP trop ancien. Installez PHP 8.3 et vérifiez `php -v` dans un **nouveau** terminal (un autre PHP plus ancien peut passer avant dans le `Path`). |
 | Images et avatars absents, erreurs « Content Security Policy » dans la console, ou connexion qui « oublie » le cookie | Vous avez ouvert <http://127.0.0.1:8000> au lieu de <http://localhost:8000>. Le cookie de session et la politique de sécurité sont liés à `APP_URL` : ouvrez **exactement** `APP_URL` (`localhost`). Autre port : mettez-le dans `APP_URL` et dans `SANCTUM_STATEFUL_DOMAINS`, puis relancez `php artisan serve`. |
+| Le site est **lent** en local | §3.4 (une seule requête à la fois, `APP_DEBUG`, OPcache CLI, Windows Defender, `npm run dev`, Laragon). |
 | Page blanche ou non stylée | Compilation oubliée (`npm run build`) ou fichier `public/hot` présent : supprimez-le. |
 | **Avertissements Composer « does not comply with psr-4 autoloading standard … Skipping »** | **Sans gravité** : ce sont de petites classes déclarées dans des fichiers de test (`tests/…`). Composer les ignore ; le site et les tests fonctionnent. Aucune action. |
 | `composer install` ou `npm ci` échoue | Vérifiez Internet, le proxy de l'entreprise et la version de Node. Pour `npm ci`, supprimez `node_modules` et recommencez. |

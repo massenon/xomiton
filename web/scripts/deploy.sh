@@ -78,7 +78,7 @@ if [ "$ROLLBACK" = 1 ]; then
   if [ "${steps:-0}" -gt 0 ]; then artisan migrate:rollback --step="$steps" --force; fi
   rm -f "$STATE_FILE"
   artisan config:clear; artisan route:clear; artisan view:clear
-  artisan config:cache; artisan route:cache; artisan view:cache
+  artisan optimize
   maintenance_off
   echo "Migrations annulées. Remettre maintenant le code de la version précédente (archive de l'envoi précédent), puis relancer scripts/deploy.sh."
   exit 0
@@ -103,7 +103,8 @@ echo "${pending:-0}" > "$STATE_FILE"
 say "Stockage et caches"
 [ -e public/storage ] || artisan storage:link || echo "storage:link impossible (symlink() désactivé ?) : voir DEPLOIEMENT_CPANEL.md §2."
 artisan config:clear; artisan route:clear; artisan view:clear; artisan event:clear
-artisan config:cache; artisan route:cache; artisan view:cache; artisan event:cache
+# `optimize` = config:cache + event:cache + route:cache + view:cache (Laravel 12) : un seul appel, rien d'oublié.
+artisan optimize
 
 say "Fin de maintenance"
 maintenance_off

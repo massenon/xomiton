@@ -7,14 +7,15 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use App\Models\Thematique;
+use App\Support\PublicContentCache;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
 /**
  * Page d'accueil `/` (P4-01) : les 11 sections de prototype_social/index.php, dont deux lues en base — les six premières
  * thématiques publiées (section « Ressources ») et les 5–6 FAQ marquées « accueil » (Q16), publiées aussi en JSON-LD
- * `FAQPage`. Lectures Eloquent directes (ADR-29) : trois requêtes indexées, sans cache tant que l'administration des
- * contenus (P12-03) ne sait pas l'invalider.
+ * `FAQPage`. Lectures Eloquent directes (ADR-29) : trois requêtes indexées (fiches, catégories, FAQ), gardées dans le cache de
+ * données App\Support\PublicContentCache et vidées à chaque modification de contenu (PublicContentObserver).
  */
 final class HomeController extends Controller
 {
@@ -36,25 +37,31 @@ final class HomeController extends Controller
         ]);
     }
 
-    /** @return Collection<int, Thematique> */
+    /**
+     * Une requête pour les fiches, une pour leurs catégories (eager loading, aucun N+1), gardées dans le cache de données
+     * des pages publiques jusqu'à la prochaine modification de contenu (PublicContentObserver) ou au plus 10 minutes (une publication
+     * programmée apparaît donc au plus 10 minutes après son heure).
+     *
+     * @return Collection<int, Thematique>
+     */
     private function thematiques(): Collection
     {
-        return Thematique::query()
+        return PublicContentCache::remember('home.thematiques', fn (): Collection => Thematique::query()
             ->published()
             ->with('category:id,label,icon,color')
             ->oldest('id')
             ->limit(self::THEMATIQUES_LIMIT)
-            ->get(['id', 'slug', 'title', 'summary', 'cover_path', 'image_path', 'category_id']);
+            ->get(['id', 'slug', 'title', 'summary', 'cover_path', 'image_path', 'category_id']));
     }
 
     /** @return Collection<int, Faq> */
     private function faqs(): Collection
     {
-        return Faq::query()
+        return PublicContentCache::remember('home.faqs', fn (): Collection => Faq::query()
             ->onHome()
             ->ordered()
             ->limit(self::FAQ_LIMIT)
-            ->get(['id', 'question', 'answer']);
+            ->get(['id', 'question', 'answer']));
     }
 
     /**

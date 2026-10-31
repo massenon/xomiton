@@ -9,6 +9,7 @@
 <head>
     @include('partials.head', ['seo' => $seo, 'critical' => true])
     @include('partials.offline', ['sw' => true])
+    @include('partials.speculation-rules')
     {{ $head ?? '' }}
 </head>
 <body @class([$bodyClass => $bodyClass !== ''])>
@@ -33,6 +34,12 @@
         {{-- P5-08 : bouton SOS flottant (maintien 2 s + décompte 5 s, z-index 1060 au-dessus des modales et des toasts). --}}
         <x-sos-fab />
     @endauth
+    {{--
+        Pas de <link rel="modulepreload"> pour public.js et ses dépendances : ces préchargements sont à priorité « haute » et
+        se disputent la bande passante avec la feuille de style, qui bloque le premier rendu (mesure, 4G lente : FCP
+        −150 ms, chargement −170 ms, docs/PERFORMANCE.md §11). Le module reste différé et démarre juste après le CSS.
+    --}}
+    @php(\Illuminate\Support\Facades\Vite::usePreloadTagAttributes(static fn (string $src, string $url): array|false => str_ends_with($url, '.js') ? false : []))
     @vite('resources/js/public.js')
     {{ $scripts ?? '' }}
 </body>

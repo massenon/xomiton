@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Exceptions\ApiExceptionRenderer;
 use App\Http\Middleware\ApplyPlatformSettings;
+use App\Http\Middleware\CacheableGuestPage;
 use App\Http\Middleware\EnforceIdleTimeout;
 use App\Http\Middleware\EnsureAdminMobile;
 use App\Http\Middleware\EnsureEmailIsVerified;
@@ -19,6 +20,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -78,7 +80,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'idempotent' => HandleIdempotencyKey::class,
             // Lot api-me (P6-01) : ETag + If-None-Match → 304 sur les lectures du groupe auth:sanctum de routes/api.php.
             'conditional' => HandleConditionalGet::class,
+            // Performance (docs/PERFORMANCE.md §11) : pages publiques en lecture seule sans session pour une personne sans cookie.
+            'guest.page' => CacheableGuestPage::class,
         ]);
+        // Doit précéder StartSession : il choisit le pilote de session `array` avant que la session ne soit lue.
+        $middleware->prependToPriorityList(StartSession::class, CacheableGuestPage::class);
 
         // API admin mobile (P15-16) : la permission est vérifiée AVANT la liaison des modèles de route — un compte sans
         // `admin_mobile.access` reçoit 403 (jamais 404) pour un identifiant inexistant, aucune énumération des alertes ni des comptes.

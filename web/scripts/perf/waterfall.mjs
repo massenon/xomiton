@@ -1,0 +1,15 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM });
+const ctx = await b.newContext({ serviceWorkers: 'block' }); const page = await ctx.newPage();
+const cdp = await ctx.newCDPSession(page);
+await cdp.send('Network.enable');
+await cdp.send('Network.emulateNetworkConditions', { offline:false, latency:150, downloadThroughput:(1.6*1024*1024)/8, uploadThroughput:(750*1024)/8 });
+await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+const rows = new Map();
+cdp.on('Network.requestWillBeSent', e => rows.set(e.requestId, { url: e.request.url.replace(/^http:\/\/127.0.0.1:\d+/, ''), t0: e.timestamp, prio: e.request.initialPriority }));
+cdp.on('Network.loadingFinished', e => { const r = rows.get(e.requestId); if (r) { r.kb = (e.encodedDataLength/1024).toFixed(1); r.dt = Math.round((e.timestamp - r.t0)*1000); } });
+const start = Date.now();
+await page.goto('http://127.0.0.1:8099' + process.argv[2], { waitUntil: 'load' });
+await page.waitForTimeout(500);
+for (const r of rows.values()) console.log(String(r.dt).padStart(5), 'ms', String(r.kb).padStart(7), 'Ko', r.prio.padEnd(9), r.url.slice(0, 90));
+await b.close();

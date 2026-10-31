@@ -15,7 +15,10 @@ import './shared/theme.js';
 // Hors connexion (P5-10, ADR-26) : amorce de la boîte d'envoi (outbox.js chargé à la demande) et service worker.
 import './shared/outbox-boot.js';
 import './shared/sw-register.js';
+// Repli de préchargement au survol / toucher pour les navigateurs sans Speculation Rules (< 1 Ko).
+import { initPrefetch } from './shared/prefetch.js';
 
+initPrefetch();
 Alpine.plugin(focus);
 window.Alpine = Alpine;
 

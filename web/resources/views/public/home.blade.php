@@ -15,7 +15,7 @@
     pub-nav="accueil"
 >
     <x-slot:head>
-        <link rel="preload" as="image" href="{{ asset('assets/images/xomiton/05.jpg') }}" fetchpriority="high">
+        <link rel="preload" as="image" type="image/webp" href="{{ asset('assets/images/xomiton/05.webp') }}" fetchpriority="high">
     </x-slot:head>
 
     @include('public.home.hero')

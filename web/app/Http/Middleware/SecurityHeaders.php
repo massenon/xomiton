@@ -41,7 +41,11 @@ class SecurityHeaders
 
         $headers = $response->headers;
 
-        $this->setIfAbsent($response, 'Content-Security-Policy', $this->contentSecurityPolicy($nonce));
+        // 304 (CacheableGuestPage) : pas de CSP. Un 304 remplace les en-têtes de la copie gardée par le navigateur ; un nonce
+        // neuf n'y correspondrait plus aux balises du corps déjà en cache. La copie garde son CSP d'origine.
+        if ($response->getStatusCode() !== Response::HTTP_NOT_MODIFIED) {
+            $this->setIfAbsent($response, 'Content-Security-Policy', $this->contentSecurityPolicy($nonce));
+        }
         $this->setIfAbsent($response, 'X-Content-Type-Options', 'nosniff');
         $this->setIfAbsent($response, 'X-Frame-Options', 'DENY');
         $this->setIfAbsent($response, 'Referrer-Policy', 'strict-origin-when-cross-origin');

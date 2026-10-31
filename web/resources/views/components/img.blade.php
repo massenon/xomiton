@@ -28,6 +28,10 @@
     if ($src === null) {
         throw new \InvalidArgumentException(__('components.img.missing_src'));
     }
+    // Image livrée avec l'application : sa version WebP voisine (public/assets/…/x.webp) est proposée d'abord.
+    if ($media === null && $srcset === null && $sources === [] && ($bundled = \App\Support\ImageSources::bundledWebp((string) $src)) !== null) {
+        $sources = ['image/webp' => $bundled];
+    }
     // AVIF d'abord, WebP ensuite, autres types déclarés après (ordre de <picture> : du plus compact au repli).
     $order = ['image/avif' => 0, 'image/webp' => 1];
     uksort($sources, fn (string $a, string $b): int => ($order[$a] ?? 2) <=> ($order[$b] ?? 2));

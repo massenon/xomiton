@@ -272,18 +272,24 @@ La première lance le planificateur : chaque minute `alerts:escalate`, `notifica
 
 Contrôles : `$PHP artisan schedule:run -v` liste les tâches ; `$PHP artisan xomiton:preflight` (sans `--skip-cron`, après dix minutes) ne doit plus avertir sur `alerts:escalate` et `notifications:retry`. Surveillez « Entry Processes » (cPanel › Resource Usage) : atteindre la limite du forfait impose de passer à un VPS (décision D7).
 
-## 10. Caches de production
+## 10. Caches de production et performance
 
 À refaire **après chaque modification du `.env` ou mise à jour du code** (le script `deploy.sh` le fait pour vous) :
 
 ```bash
-$PHP artisan config:cache
-$PHP artisan route:cache
-$PHP artisan view:cache
-$PHP artisan event:cache
+$PHP artisan optimize        # = config:cache + event:cache + route:cache + view:cache
 ```
 
-En cas de comportement étrange après un changement : `config:clear`, `route:clear`, `view:clear`, `event:clear`, puis les quatre commandes ci-dessus.
+En cas de comportement étrange après un changement : `config:clear`, `route:clear`, `view:clear`, `event:clear`, puis `optimize`. (Ne lancez pas `optimize:clear` en ligne : il vide aussi le cache de l'application, donc les compteurs de limitation de débit.)
+
+**OPcache (recommandé, gain le plus important sur un mutualisé).** Sans OPcache, PHP relit et recompile les ~1 000 fichiers de Laravel à chaque requête. Dans cPanel › « Sélectionner la version de PHP » › Options (ou MultiPHP INI Editor) : `opcache.enable=1`, `opcache.memory_consumption=128`, `opcache.max_accelerated_files=20000`, `opcache.validate_timestamps=1` avec `opcache.revalidate_freq=60` (ou `0` si vous videz OPcache à chaque déploiement : bouton « Redémarrer PHP » de cPanel). Contrôle : `php -i | grep opcache.enable` ou `php -r 'var_dump(opcache_get_status(false)["opcache_enabled"]);'` côté web.
+
+**Cache HTTP et compression.**
+- `public/.htaccess` pose le cache d'un an (`immutable`) pour `/build/*` (noms hachés par Vite), de 30 jours pour `/assets/*` (images livrées) et la compression Brotli ou gzip (modules `mod_brotli` / `mod_deflate`, ou LiteSpeed). Contrôle : `curl -sI -H 'Accept-Encoding: br,gzip' https://<domaine>/build/assets/<fichier>.css` doit montrer `Cache-Control: public, max-age=31536000, immutable` et `Content-Encoding: br` ou `gzip` ; `https://<domaine>/assets/images/xomiton/05.webp` : `max-age=2592000`.
+- Les pages publiques en lecture seule (accueil, pages légales, thématiques, ressources, actualités, aide, lois…) répondent `Cache-Control: public, max-age=60, stale-while-revalidate=300` avec `ETag` et `Vary: Cookie`, **sans cookie ni session** pour une personne qui n'en a pas : `curl -sI https://<domaine>/cookies` ne doit afficher aucun `Set-Cookie`. Valeurs réglables : `XOMITON_HTTP_CACHE_MAX_AGE`, `XOMITON_HTTP_CACHE_SWR`, `XOMITON_HOME_CACHE_MINUTES` (voir `config/xomiton.php`, `http_cache`). Une publication de contenu apparaît donc au plus 6 minutes plus tard chez une personne qui a déjà la page en cache ; le cache de données de l'accueil (fichier : `CACHE_STORE=file`, rien d'autre à installer) est vidé à chaque modification dans l'administration.
+- Si un CDN ou un cache mandataire est placé devant le site, laissez-lui respecter `Vary: Cookie` et `Cache-Control` : ne forcez jamais de cache sur les pages avec cookie (connexion, compte, SOS, signalement).
+
+Vérification complète après une mise en ligne : [PERFORMANCE.md](PERFORMANCE.md) §11 (mesures, commandes `scripts/perf/*`).
 
 ## 11. Courrier, SMS, push, assistant : services externes
 
