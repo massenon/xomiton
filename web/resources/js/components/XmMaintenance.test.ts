@@ -30,6 +30,8 @@ afterEach(() => {
 
 describe('XmMaintenance', () => {
     it('affiche les accès prioritaires, le message de la réponse 503, la fin prévue à l’heure du Bénin et les numéros d’urgence', async () => {
+        // Horloge figée avant la fin annoncée : sans cela le test dépendait de la date du jour (« Bientôt » une fois la date passée).
+        vi.useFakeTimers({ now: new Date('2026-11-02T14:00:00+00:00') });
         const fetcher = vi.fn(async () => status(true));
         const { container } = renderXm(XmMaintenance, { props: { payload: { code: 'maintenance', maintenance_message: 'Nous installons une mise à jour.', ends_at: '2026-11-02T15:30:00+00:00', timezone: 'Africa/Porto-Novo' }, fetcher, reload: vi.fn() } });
         await flush();
