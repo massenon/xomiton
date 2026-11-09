@@ -8,7 +8,7 @@
     $states = __('design_system.states');
     $sections = __('design_system.sections');
     $hero = asset('assets/images/xomiton/hero-03.jpg');
-    $avatar = asset('assets/images/avatar/02.jpg');
+    $avatar = asset('assets/images/xomiton/icon.png');
     $notifs = [
         ['id' => 'al1', 'icon' => 'bell-fill', 'color' => 'danger', 'text' => 'Alerte SOS · Cotonou, Akpakpa', 'time' => 'il y a 5 min', 'href' => '#', 'read' => false],
         ['id' => 'us2', 'icon' => 'person-plus-fill', 'color' => 'primary', 'text' => 'Inscription à valider · Pair éducatrice, Parakou', 'time' => 'il y a 1 h', 'href' => '#', 'read' => false],

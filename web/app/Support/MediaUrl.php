@@ -55,6 +55,12 @@ final class MediaUrl
         return Storage::disk('public')->exists($path);
     }
 
+    /** Adresse absolue (http, https) : jamais suivie pour un avatar. */
+    public static function isExternal(?string $path): bool
+    {
+        return self::isAbsolute(trim((string) $path));
+    }
+
     private static function normalize(?string $path): string
     {
         $path = trim((string) $path);

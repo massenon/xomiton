@@ -41,7 +41,7 @@
     @endauth
     <div class="dropdown">
         <button type="button" class="btn btn-link p-0 d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ auth()->user()?->avatar_url ?? asset('assets/images/avatar/placeholder.jpg') }}" class="rounded-circle xm-admin-topbar__avatar" width="36" height="36" alt="" aria-hidden="true">
+            <x-avatar :name="(string) auth()->user()?->pseudo" :src="auth()->user()?->avatar_url" size="sm" class="xm-admin-topbar__avatar" aria-hidden="true" />
             <span class="visually-hidden">{{ __('admin.topbar.account') }}</span>
             <span class="ms-2 small d-none d-md-inline text-body">{{ auth()->user()?->pseudo }}</span>
         </button>

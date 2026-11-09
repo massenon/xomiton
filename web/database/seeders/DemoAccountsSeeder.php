@@ -13,7 +13,6 @@ use App\Models\UserSetting;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -43,7 +42,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 97 00 00 01',
                 'zone' => 'Littoral',
                 'commune' => 'Cotonou',
-                'avatar' => 'avatars/avatar1.png',
                 'member_type' => MemberType::Member,
                 'bio' => 'Compte de coordination de la plateforme Xomiton.',
             ],
@@ -57,7 +55,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 97 00 00 02',
                 'zone' => 'Atlantique',
                 'commune' => 'Abomey-Calavi',
-                'avatar' => 'avatars/avatar2.png',
                 'member_type' => MemberType::Member,
                 'bio' => 'Gestion des contenus et de la modération.',
             ],
@@ -70,7 +67,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 55 12 34 56',
                 'zone' => 'Littoral',
                 'commune' => 'Cotonou',
-                'avatar' => 'avatars/avatar3.png',
                 'member_type' => MemberType::Member,
                 'bio' => 'Ici, on apprend, on s’entraide et on avance ensemble.',
             ],
@@ -84,7 +80,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 66 22 33 44',
                 'zone' => 'Ouémé',
                 'commune' => 'Porto-Novo',
-                'avatar' => 'avatars/avatar4.png',
                 'member_type' => MemberType::Peer,
                 'bio' => 'Pair éducatrice à Porto-Novo : écoute, orientation et animation d’ateliers.',
             ],
@@ -98,7 +93,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 97 00 00 03',
                 'zone' => 'Littoral',
                 'commune' => 'Cotonou',
-                'avatar' => 'avatars/avatar2.png',
                 'member_type' => MemberType::Member,
                 'bio' => 'Modération du fil, des forums et des signalements de contenu.',
             ],
@@ -111,7 +105,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 55 98 76 54',
                 'zone' => 'Atlantique',
                 'commune' => 'Abomey-Calavi',
-                'avatar' => 'avatars/avatar1.png',
                 'member_type' => MemberType::Member,
                 'bio' => 'Deuxième compte membre : conversations, groupes et événements à deux.',
             ],
@@ -125,7 +118,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 66 22 33 55',
                 'zone' => 'Borgou',
                 'commune' => 'Parakou',
-                'avatar' => 'avatars/avatar4.png',
                 'member_type' => MemberType::Peer,
                 'bio' => 'Demande de validation à traiter dans Administration › Utilisateurs (RG-03).',
                 'status' => UserStatus::Pending,
@@ -140,7 +132,6 @@ class DemoAccountsSeeder extends Seeder
                 'phone' => '+229 01 97 00 00 04',
                 'zone' => 'Littoral',
                 'commune' => 'Cotonou',
-                'avatar' => 'avatars/avatar3.png',
                 'member_type' => MemberType::Peer,
                 'bio' => 'Compte qui cumule membre, pair éducateur·rice et admin : sélecteur d’espace du mobile.',
             ],
@@ -181,14 +172,13 @@ class DemoAccountsSeeder extends Seeder
             ],
         );
 
-        $this->ensureDemoAvatar($account['avatar']);
-
         Profile::updateOrCreate(
             ['user_id' => $user->id],
             [
                 'member_type' => $account['member_type'],
                 'bio' => $account['bio'],
-                'avatar_path' => $account['avatar'],
+                // Aucune photo de démonstration : l'interface affiche les initiales (XmAvatar, <x-avatar>).
+                'avatar_path' => null,
                 'completion' => 80,
                 'pronouns' => 'elle',
                 'age_range' => '25-34',
@@ -215,25 +205,6 @@ class DemoAccountsSeeder extends Seeder
 
         if ($existing !== []) {
             $user->syncRoles($existing);
-        }
-    }
-
-    /**
-     * Copie l'avatar de démonstration (public/assets/images/xomiton) sur le disque public, comme le fera
-     * l'import du prototype (dictionnaire : `storage/app/public/avatars`), pour que `avatar_url` serve un fichier.
-     */
-    private function ensureDemoAvatar(string $path): void
-    {
-        $disk = Storage::disk('public');
-
-        if ($disk->exists($path)) {
-            return;
-        }
-
-        $source = public_path('assets/images/xomiton/'.basename($path));
-
-        if (is_file($source)) {
-            $disk->put($path, (string) file_get_contents($source));
         }
     }
 

@@ -6,7 +6,7 @@
       id, title   : obligatoires (aria-labelledby = {id}Title)
       type        : confirm | form | delete | fullscreen
                     delete → en-tête rouge avec icône, bouton « Supprimer définitivement » (btn-danger), mot de confirmation facultatif
-                    fullscreen → modal-fullscreen-sm-down (plein écran sur mobile)
+                    toute modale sauf delete → modal-fullscreen-sm-down (feuille plein écran sur mobile)
       size        : sm | md | lg | xl (lg : CRUD ; xl : éditeurs riches, + modal-fullscreen-lg-down)
       scrollable  : corps défilant et pied fixe (défaut true) ; centered : modal-dialog-centered (défaut true)
       form        : URL d'envoi → le contenu est un <form method="post"> avec @csrf ; method : POST | PUT | PATCH | DELETE
@@ -31,7 +31,7 @@
      @if ($static || $dirtyGuard) data-bs-backdrop="static" @endif
      @if ($dirtyGuard) data-xm-dirty-guard="{{ __('components.modal.dirty_guard') }}" @endif
      @if ($confirmWord) data-xm-confirm-word="{{ $confirmWord }}" @endif>
-    <div @class(['modal-dialog', 'modal-dialog-centered' => $centered, 'modal-dialog-scrollable' => $scrollable, 'modal-sm' => $size === 'sm', 'modal-lg' => $size === 'lg', 'modal-xl modal-fullscreen-lg-down' => $size === 'xl', 'modal-fullscreen-sm-down' => $type === 'fullscreen'])>
+    <div @class(['modal-dialog', 'modal-dialog-centered' => $centered, 'modal-dialog-scrollable' => $scrollable, 'modal-sm' => $size === 'sm', 'modal-lg' => $size === 'lg', 'modal-xl modal-fullscreen-lg-down' => $size === 'xl', 'modal-fullscreen-sm-down' => $type !== 'delete'])>
         <{{ $contentTag }} class="modal-content"{!! $contentAttrs !!}>
             @if ($form && $method !== 'GET')
                 @csrf

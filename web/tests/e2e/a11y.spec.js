@@ -7,7 +7,7 @@ import { expect, test } from '@playwright/test';
 import { passerEtapes, remplirCompte } from './inscription.js';
 
 const PUBLIC_PAGES = ['/', '/thematiques', '/ressources', '/violences', '/lois', '/aide', '/urgences', '/signaler', '/sos', '/connexion', '/inscription', '/confidentialite'];
-const MEMBER_PAGES = ['/fil', '/groupes', '/parametres'];
+const MEMBER_PAGES = ['/fil', '/assistant', '/messages', '/groupes', '/parametres'];
 const SIZES = [{ width: 360, height: 800 }, { width: 1280, height: 900 }];
 const THEMES = ['light', 'dark'];
 

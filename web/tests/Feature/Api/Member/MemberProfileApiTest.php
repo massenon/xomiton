@@ -129,7 +129,7 @@ it('sert les images des publications visibles, jamais celles d’une publication
     $visible = Post::factory()->create(['user_id' => $this->bea->id]);
     PostMedia::factory()->create(['post_id' => $visible->id, 'path' => 'assets/images/xomiton/profile-cover.jpg']);
     $anonymous = Post::factory()->anonymous()->create(['user_id' => $this->bea->id]);
-    PostMedia::factory()->create(['post_id' => $anonymous->id, 'path' => 'assets/images/xomiton/avatar1.png']);
+    PostMedia::factory()->create(['post_id' => $anonymous->id, 'path' => 'assets/images/xomiton/icon.png']);
 
     $media = F::as($this->awa)->getJson('/api/v1/members/'.$this->bea->pseudo.'/media')->assertOk()->json('data');
 

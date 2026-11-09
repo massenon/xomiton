@@ -27,11 +27,6 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
 
     /**
-     * Image affichée quand le profil n'a pas d'avatar téléversé (fichier de public/).
-     */
-    public const DEFAULT_AVATAR = 'assets/images/xomiton/avatar1.png';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -545,13 +540,18 @@ class User extends Authenticatable
     }
 
     /**
-     * URL de l'avatar : fichier du profil (disque public ou image de démonstration de public/),
-     * ou image par défaut si le fichier manque — jamais de 404.
+     * URL de l'avatar : fichier téléversé du profil (disque public ou public/), sinon null — les interfaces affichent alors
+     * les initiales (XmAvatar, <x-avatar>) : aucune photo par défaut, jamais de 404, jamais d'URL externe (une adresse
+     * absolue stockée est ignorée : aucune requête vers un service tiers).
      *
-     * @return Attribute<string, never>
+     * @return Attribute<string|null, never>
      */
     protected function avatarUrl(): Attribute
     {
-        return Attribute::get(fn (): string => MediaUrl::resolve($this->profile?->avatar_path, self::DEFAULT_AVATAR));
+        return Attribute::get(function (): ?string {
+            $path = trim((string) $this->profile?->avatar_path);
+
+            return $path === '' || MediaUrl::isExternal($path) || ! MediaUrl::exists($path) ? null : MediaUrl::resolve($path, $path);
+        });
     }
 }

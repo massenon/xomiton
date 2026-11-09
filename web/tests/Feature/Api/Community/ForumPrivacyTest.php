@@ -51,7 +51,7 @@ describe('Sujet anonyme', function (): void {
             $author = $uri === '/api/v1/forums/topics' ? $response->json('data.0.author') : $response->json('data.author');
 
             expect($author)->toMatchArray(['id' => null, 'pseudo' => 'Membre anonyme', 'role' => null, 'anonymous' => true, 'badge' => null])
-                ->and($author['avatar_url'])->toContain('personnage-1.png')
+                ->and($author['avatar_url'])->toBeNull()
                 ->and($response->getContent())->not->toContain($this->author->pseudo)
                 ->and($response->getContent())->not->toContain('"user_id"');
         }

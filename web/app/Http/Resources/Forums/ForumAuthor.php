@@ -24,7 +24,7 @@ final class ForumAuthor
     private function __construct() {}
 
     /**
-     * @return array{id: int|null, pseudo: string, avatar_url: string, role: string|null, anonymous: bool, badge: string|null}
+     * @return array{id: int|null, pseudo: string, avatar_url: string|null, role: string|null, anonymous: bool, badge: string|null}
      */
     public static function for(?User $user, bool $anonymous): array
     {

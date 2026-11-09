@@ -186,7 +186,7 @@ defineExpose({ show, hide, close });
 <template>
     <Teleport to="body" :disabled="!teleport">
         <div ref="root" :class="['modal fade', { 'xm-modal--delete': isDelete }]" :id="id" tabindex="-1" :aria-labelledby="`${id}Title`" aria-hidden="true" :data-bs-backdrop="staticBackdrop">
-            <div :class="['modal-dialog', { 'modal-dialog-centered': centered, 'modal-dialog-scrollable': scrollable, 'modal-sm': size === 'sm', 'modal-lg': size === 'lg', 'modal-xl modal-fullscreen-lg-down': size === 'xl', 'modal-fullscreen-sm-down': type === 'fullscreen' }]">
+            <div :class="['modal-dialog', { 'modal-dialog-centered': centered, 'modal-dialog-scrollable': scrollable, 'modal-sm': size === 'sm', 'modal-lg': size === 'lg', 'modal-xl modal-fullscreen-lg-down': size === 'xl', 'modal-fullscreen-sm-down': !isDelete }]">
                 <component :is="form ? 'form' : 'div'" class="modal-content" :novalidate="form ? true : undefined" @submit="submit">
                     <div :class="['modal-header', { 'border-0': isDelete }]">
                         <h5 :class="['modal-title', { 'text-danger': isDelete }]" :id="`${id}Title`"><i v-if="isDelete" class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>{{ title }}</h5>

@@ -45,6 +45,14 @@ const mount = (id: string) => {
 };
 
 describe('XmModal (Bootstrap à la demande)', () => {
+    it('devient une feuille plein écran sur mobile, sauf la confirmation de suppression', () => {
+        const normal = mount('mSheet');
+        expect(normal.modal().querySelector('.modal-dialog')?.classList.contains('modal-fullscreen-sm-down')).toBe(true);
+        cleanup();
+        renderXm({ render: () => h(XmModal, { id: 'mDel', title: 'Supprimer', type: 'delete' }, () => 'Corps') });
+        expect(document.getElementById('mDel')?.querySelector('.modal-dialog')?.classList.contains('modal-fullscreen-sm-down')).toBe(false);
+    });
+
     it('échec du chargement : la modale reste fermée, v-model:open repasse à false', async () => {
         lazy.load.mockRejectedValueOnce(new Error('réseau'));
         const view = mount('mFail');

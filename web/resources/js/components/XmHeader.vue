@@ -264,7 +264,7 @@ defineExpose({ poll, closeMenus });
                             <span v-if="notifications.messages > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" aria-hidden="true" data-xm-messages-count>{{ notifications.messages }}</span>
                         </Link>
                     </li>
-                    <li class="nav-item ms-2">
+                    <li class="nav-item ms-2 d-none d-sm-block">
                         <Link class="nav-link bg-light icon-md btn btn-light p-0" :href="hrefOf(LINKS.parametres)" :title="t('menus.member.settings')" :aria-label="t('menus.member.settings')" :aria-current="active(LINKS.parametres) ? 'page' : undefined"><i class="bi bi-gear-fill fs-6" aria-hidden="true"></i></Link>
                     </li>
                     <li ref="bellItem" class="nav-item ms-2" @click.capture="onBellClick">
@@ -272,8 +272,7 @@ defineExpose({ poll, closeMenus });
                     </li>
                     <li class="nav-item ms-2 dropdown">
                         <button id="profileDropdown" class="nav-link btn icon-md p-0" type="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false" :aria-label="t('microcopy.a11y.user_menu')">
-                            <img v-if="user?.avatar_url" class="avatar-img rounded-2" :src="user.avatar_url" :alt="t('components.avatar.alt', { name: user.pseudo })" :title="user.pseudo" width="40" height="40">
-                            <XmAvatar v-else :name="user?.pseudo ?? ''" size="sm" rounded="2" />
+                            <XmAvatar :name="user?.pseudo ?? ''" :src="user?.avatar_url" size="sm" rounded="2" />
                         </button>
                         <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
                             <li class="px-3">

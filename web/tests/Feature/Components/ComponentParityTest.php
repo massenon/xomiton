@@ -47,7 +47,7 @@ function parityCases(): array
         'card-header' => '<x-card header title="Mes groupes"><x-slot:actions><button type="button" class="btn btn-sm btn-light">Exporter</button></x-slot:actions>'."\n".'Corps</x-card>',
         'card-image' => '<x-card variant="event" title="Atelier" image="/assets/images/xomiton/covers/og-default.jpg" image-alt="Atelier au centre">Samedi.</x-card>',
         'avatar-initials' => '<x-avatar name="Awa Dossou" size="lg" />',
-        'avatar-image' => '<x-avatar name="Awa" src="/assets/images/xomiton/avatar1.png" size="sm" rounded="2" />',
+        'avatar-image' => '<x-avatar name="Awa" src="/assets/images/xomiton/icon.png" size="sm" rounded="2" />',
         'empty-state' => '<x-empty-state title="Rien pour l’instant" icon="people">Les publications apparaîtront ici.<x-slot:action><a href="/groupes" class="btn btn-primary">Voir les groupes</a></x-slot:action></x-empty-state>',
         'empty-state-compact' => '<x-empty-state title="Aucun résultat" compact />',
         'skeleton-lines' => '<x-skeleton :lines="4" />',

@@ -26,7 +26,7 @@ final class NetworkPersonPayload
     private function __construct() {}
 
     /**
-     * @return array{id: int, pseudo: string, avatar_url: string, role: string, role_label: string, zone: array{id: int, name: string}|null, profile_url: string|null}
+     * @return array{id: int, pseudo: string, avatar_url: string|null, role: string, role_label: string, zone: array{id: int, name: string}|null, profile_url: string|null}
      */
     public static function for(User $user): array
     {
@@ -48,7 +48,7 @@ final class NetworkPersonPayload
      * Ligne de la carte « Qui suivre » du fil (XmRightColumn, inc/render.php l.70-81) : pseudonyme, avatar, lien du
      * profil (sinon /qui-suivre), « Rôle · Zone » et adresse de l'invitation préparée (`/qui-suivre?invite=<id>`).
      *
-     * @return array{id: int, pseudo: string, avatar_url: string, href: string, meta: string, invite_url: string}
+     * @return array{id: int, pseudo: string, avatar_url: string|null, href: string, meta: string, invite_url: string}
      */
     public static function card(User $user): array
     {

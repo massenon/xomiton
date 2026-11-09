@@ -20,7 +20,7 @@ export interface Forum {
 export interface ForumAuthor {
     id: number | null;
     pseudo: string;
-    avatar_url: string;
+    avatar_url: string | null;
     role: string | null;
     anonymous: boolean;
     badge: string | null;

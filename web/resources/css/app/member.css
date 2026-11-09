@@ -17,3 +17,67 @@
   #memberSidenav .xm-side-link { min-height: var(--xm-target-min, 44px); display: flex; align-items: center; }
   #memberSidenav .offcanvas-header .btn-close { min-width: var(--xm-target-min, 44px); min-height: var(--xm-target-min, 44px); }
 }
+
+/*
+ * En-tête mobile (< 992 px). Le thème Social fixe `header { height: 56px }` : quand logo, boutons ronds et menu replié ne
+ * tenaient pas sur une ligne, les boutons passaient dessous et débordaient sur le contenu (correction à la source, voir
+ * design-system/DECISIONS.md « Rendu mobile de l'espace membre »). Hauteur libre, une seule ligne logo + boutons
+ * (le logo cède la place), menu replié pleine largeur sous la ligne, défilable si l'écran est plus bas que le menu.
+ */
+#memberHeader { height: auto; min-height: 56px; }
+#memberHeader .navbar-brand { min-width: 0; }
+#memberHeader .navbar-brand img { max-width: 100%; height: auto; }
+@media (max-width: 991.98px) {
+  #memberHeader > .navbar > .container { --bs-gutter-x: var(--xm-gutter-mobile, 1.5rem); flex-wrap: wrap; }
+  #memberHeader .navbar-brand { flex: 1 1 0; margin-right: .5rem; }
+  #memberHeader .container > ul.nav { order: 2; }
+  #memberHeader .navbar-toggler { order: 3; margin-left: .5rem; flex: none; }
+  #memberHeader .navbar-collapse { order: 4; flex-basis: 100%; max-height: calc(100vh - 56px); max-height: calc(100dvh - 56px); overflow-y: auto; overscroll-behavior: contain; padding-bottom: var(--xm-space-3, .75rem); }
+  #memberHeader .navbar-collapse .nav { padding-inline: 0 !important; }
+  #memberHeader .navbar-nav .nav-link { line-height: 1.5; padding-block: .5rem; }
+}
+@media (max-width: 575.98px) {
+  #memberHeader .container > ul.nav .nav-item { margin-left: .25rem !important; }
+  #memberHeader .container > ul.nav .nav-item:first-child { margin-left: 0 !important; }
+}
+
+/*
+ * Rendu mobile commun de l'espace membre (< 576 px), à la source : composants et feuilles partagés, jamais page par page.
+ * - Fond de page : le bouton SOS flottant (64 px) ne masque plus le bas du contenu (puces de l'assistant, pied de formulaire).
+ * - Flex et grilles : `min-width: 0` sur les enfants de la rangée, mots longs coupés, images et médias bornés à leur conteneur.
+ * - Modales : feuille plein écran (classe Bootstrap `modal-fullscreen-sm-down` posée par XmModal), pied et corps respectent
+ *   les zones sûres (encoche, barre gestuelle) ; les confirmations de suppression gardent leur boîte compacte.
+ * - Cibles tactiles (pointeur grossier) : 44 px minimum pour boutons, onglets, liens de liste, sélecteurs ; cases à cocher
+ *   et boutons radio à 24 px (WCAG 2.5.8) avec une zone de libellé de 44 px.
+ */
+main { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important; }
+main :is(.row > *, .d-flex > *, .hstack > *, .vstack > *, .card, .card-body, .list-group-item) { min-width: 0; }
+main :is(p, h1, h2, h3, h4, h5, h6, li, td, th, dd, .card-body, .bubble, .list-group-item) { overflow-wrap: anywhere; }
+main img, main video, main svg:not(.bi), main canvas { max-width: 100%; }
+main img { height: auto; }
+main :is(.xm-img-cover, .avatar-img, .xm-cover, .card-img, .card-img-top) { height: 100%; }
+main .avatar-img { height: 100%; }
+main .table-responsive, main .xm-table-wrap { max-width: 100%; }
+
+@media (max-width: 575.98px) {
+  .modal-dialog:not(.modal-fullscreen-sm-down) { margin-inline: var(--xm-space-3, .75rem); }
+  .modal-fullscreen-sm-down .modal-content { padding-top: env(safe-area-inset-top); }
+  .modal-fullscreen-sm-down .modal-footer { padding-bottom: calc(.75rem + env(safe-area-inset-bottom)); position: sticky; bottom: 0; background: var(--bs-modal-bg, var(--xm-surface)); flex-wrap: wrap; }
+  .modal-fullscreen-sm-down .modal-footer > .btn { flex: 1 1 auto; }
+  .modal-header .btn-close { margin: 0; }
+  .modal-title { overflow-wrap: anywhere; }
+}
+
+@media (pointer: coarse) {
+  main :is(.btn, .nav-link, .page-link, .list-group-item-action, .form-select, .form-control) { min-height: var(--xm-target-min, 44px); }
+  main .btn, #memberHeader .btn { min-width: var(--xm-target-min, 44px); min-height: var(--xm-target-min, 44px); }
+  main .xm-btn-icon.btn-sm { width: var(--xm-target-min, 44px); }
+  main :is(.btn, .nav-link, .page-link) { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; }
+  main .nav-link { padding-block: .5rem; }
+  main .list-group-item-action { display: flex; align-items: center; }
+  main .form-check-input { width: 1.5rem; height: 1.5rem; margin-top: 0; }
+  main .form-check { display: flex; align-items: center; gap: .5rem; min-height: var(--xm-target-min, 44px); padding-left: 0; }
+  main .form-check .form-check-input { float: none; margin-left: 0; flex: none; }
+  main .form-check.form-switch .form-check-input { width: 2.75rem; height: 1.5rem; }
+  .modal .btn-close { min-width: var(--xm-target-min, 44px); min-height: var(--xm-target-min, 44px); }
+}

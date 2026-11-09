@@ -13,23 +13,17 @@ use App\Models\UserSetting;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 /**
  * users.json → users (hash → password, joined → created_at, zone / commune → FK, role → rôle spatie,
- * status), profiles (avatar index → fichier copié sur le disque public, gender → gender_identity chiffré,
+ * status), profiles (avatar du prototype : photo de démonstration non importée (initiales), gender → gender_identity chiffré,
  * orientation chiffré, profile → member_type) et user_settings. Clé naturelle : l'e-mail.
  * Un compte sans empreinte de mot de passe reçoit un mot de passe aléatoire, hors production seulement.
  */
 final class ImportUsers extends AbstractImporter
 {
-    /** Fichiers d'avatar du prototype par index (`x_avatar()` : 0–15 → 6 fichiers). */
-    private const AVATARS = ['avatar1.png', 'avatar2.png', 'avatar3.png', 'avatar4.png', 'personnage-1.png', 'personnage-2.png'];
-
-    private const AVATAR_DIR = 'avatars';
-
     public static function collection(): string
     {
         return 'users';
@@ -119,11 +113,10 @@ final class ImportUsers extends AbstractImporter
     private function syncProfile(User $user, array $row, string $role): void
     {
         $profile = Profile::query()->firstOrNew(['user_id' => $user->getKey()]);
-        $avatar = $this->copyAvatar($row['avatar'] ?? null);
 
         $profile->fill([
             'member_type' => $this->memberType($row['profile'] ?? null, $role),
-            'avatar_path' => $avatar ?? $profile->avatar_path,
+            'avatar_path' => $profile->avatar_path,
         ]);
 
         if (($gender = $this->text($row['gender'] ?? null, 120)) !== null) {
@@ -179,38 +172,5 @@ final class ImportUsers extends AbstractImporter
         }
 
         return MemberType::tryFrom($value) ?? ($role === 'pair' ? MemberType::Peer : MemberType::Member);
-    }
-
-    /**
-     * Copie l'avatar de démonstration désigné par son index sur le disque public (`avatars/<fichier>`), comme
-     * le prévoit le dictionnaire ; renvoie le chemin stocké, ou null si le fichier source manque.
-     */
-    private function copyAvatar(mixed $index): ?string
-    {
-        if (! is_numeric($index)) {
-            return null;
-        }
-
-        $file = self::AVATARS[((int) $index) % count(self::AVATARS)];
-        $target = self::AVATAR_DIR.'/'.$file;
-        $disk = Storage::disk('public');
-
-        if ($disk->exists($target)) {
-            return $target;
-        }
-
-        $source = $this->ctx->data->assetPath('images/xomiton/'.$file);
-
-        if ($source === null) {
-            $this->ctx->note(sprintf('avatar %s introuvable : profil importé sans avatar', $file));
-
-            return null;
-        }
-
-        if (! $this->ctx->dryRun) {
-            $disk->put($target, (string) file_get_contents($source));
-        }
-
-        return $target;
     }
 }

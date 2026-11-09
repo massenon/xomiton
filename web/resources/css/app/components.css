@@ -73,3 +73,7 @@ a.xm-sos { text-decoration: none; } /* lien de repli sans JavaScript du bouton f
 
 /* Panneau de notifications : largeur du prototype, liste défilante (theme/xomiton.css) ; curseur sur les onglets. */
 .xm-bell [data-xm-bell-tab] { cursor: pointer; }
+
+/* Pilules douces (onglets « Toutes / Non lues », filtres) : l'onglet actif a un fond bleu à 10 % ; Bootstrap y laisse un
+   texte blanc (contraste 1,2:1, axe color-contrast). Texte en bleu foncé du jeton, lisible en clair comme en sombre. */
+.nav-pills-soft .nav-link.active, .nav-pills-soft .show > .nav-link { color: var(--xm-primary-subtle-text); }

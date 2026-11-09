@@ -63,7 +63,7 @@ const CASES: Record<string, ParityCase> = {
     'card-header': { component: XmCard, props: { header: true, title: 'Mes groupes' }, slots: { default: text('Corps'), actions: () => h('button', { type: 'button', class: 'btn btn-sm btn-light' }, 'Exporter') } },
     'card-image': { component: XmCard, props: { variant: 'event', title: 'Atelier', image: '/assets/images/xomiton/covers/og-default.jpg', imageAlt: 'Atelier au centre' }, slots: { default: text('Samedi.') } },
     'avatar-initials': { component: XmAvatar, props: { name: 'Awa Dossou', size: 'lg' } },
-    'avatar-image': { component: XmAvatar, props: { name: 'Awa', src: '/assets/images/xomiton/avatar1.png', size: 'sm', rounded: '2' } },
+    'avatar-image': { component: XmAvatar, props: { name: 'Awa', src: '/assets/images/xomiton/icon.png', size: 'sm', rounded: '2' } },
     'empty-state': { component: XmEmptyState, props: { title: 'Rien pour l’instant', icon: 'people' }, slots: { default: text('Les publications apparaîtront ici.'), action: () => h('a', { href: '/groupes', class: 'btn btn-primary' }, 'Voir les groupes') } },
     'empty-state-compact': { component: XmEmptyState, props: { title: 'Aucun résultat', compact: true } },
     'skeleton-lines': { component: XmSkeleton, props: { lines: 4 } },

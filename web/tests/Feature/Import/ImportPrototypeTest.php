@@ -138,11 +138,10 @@ it('importe le dossier réel du prototype avec la démonstration et respecte les
         ->and(AuditLog::ofAction(ImportContext::AUDIT_REJECTED)->count())->toBe(array_sum(array_column($report, 'rejected')))
         ->and(AuditLog::ofAction(ImportContext::AUDIT_REJECTED)->where('detail', 'like', 'sync_devices #3 : %Rodrigue S.%')->exists())->toBeTrue()
         ->and(file_exists(storage_path(PrototypeImporter::LOG_FILE)))->toBeTrue()
-        // Avatars copiés sur le disque public (index 0 → avatar1.png).
-        ->and(Storage::disk('public')->exists('avatars/avatar1.png'))->toBeTrue()
-        ->and(Storage::disk('public')->exists('avatars/personnage-1.png'))->toBeTrue()
-        ->and(Profile::whereHas('user', fn ($q) => $q->where('email', 'membre@xomiton.app'))->value('avatar_path'))->toBe('avatars/avatar3.png')
-        ->and(Profile::whereHas('user', fn ($q) => $q->where('email', 'rosine@exemple.bj'))->value('avatar_path'))->toBe('avatars/personnage-1.png');
+        // Aucune photo de démonstration importée : pas de fichier copié, avatar_path nul (initiales à l'affichage).
+        ->and(Storage::disk('public')->exists('avatars/avatar1.png'))->toBeFalse()
+        ->and(Profile::whereHas('user', fn ($q) => $q->where('email', 'membre@xomiton.app'))->value('avatar_path'))->toBeNull()
+        ->and(Profile::whereHas('user', fn ($q) => $q->where('email', 'rosine@exemple.bj'))->value('avatar_path'))->toBeNull();
 });
 
 it('reprend les empreintes bcrypt du prototype et donne un mot de passe aléatoire aux comptes sans empreinte', function (): void {
@@ -201,7 +200,7 @@ it('ne modifie rien en simulation (--dry-run) mais journalise les rejets dans le
         ->and(NewsletterSubscriber::count())->toBe(0)
         ->and(AuditLog::ofAction(ImportContext::AUDIT_REJECTED)->count())->toBe(0)
         ->and(filesize(storage_path(PrototypeImporter::LOG_FILE)))->toBeGreaterThan($logBefore)
-        // avatar1..4 sont posés par DemoAccountsSeeder ; personnage-1.png ne viendrait que de l'import (index 4).
+        // Aucun avatar de démonstration n'est copié (ni par DemoAccountsSeeder, ni par l'import).
         ->and(Storage::disk('public')->exists('avatars/personnage-1.png'))->toBeFalse();
 });
 

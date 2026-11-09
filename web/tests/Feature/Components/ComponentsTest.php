@@ -122,7 +122,7 @@ it('rend les badges, statuts de cas et niveaux d’urgence avec un libellé en t
 it('rend une modale Bootstrap avec pied fixe : Annuler à gauche, action à droite', function (): void {
     render('<x-modal id="mContact" title="Nouveau contact" type="form" size="lg" form="/admin/annuaire" action="Enregistrer"><p>Corps</p></x-modal>')
         ->assertSee('class="modal fade" id="mContact" tabindex="-1" aria-labelledby="mContactTitle" aria-hidden="true"', false)
-        ->assertSee('class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"', false)
+        ->assertSee('class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg modal-fullscreen-sm-down"', false)
         ->assertSee('<form class="modal-content" method="post" action="/admin/annuaire">', false)
         ->assertSee('<h5 class="modal-title" id="mContactTitle">Nouveau contact</h5>', false)
         ->assertSee('class="btn-close" data-bs-dismiss="modal" aria-label="'.__('common.close').'"', false)

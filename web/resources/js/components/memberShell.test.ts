@@ -63,6 +63,22 @@ describe('XmHeader', () => {
         expect($('label[for="memberSearch"]')).not.toBeNull();
     });
 
+    it('affiche l’avatar de l’en-tête en initiales quand le profil n’a pas d’image, sans <img> de personne', async () => {
+        await mountInertia(page(XmHeader));
+        const button = $('#profileDropdown') as HTMLElement;
+        expect(button.querySelector('img')).toBeNull();
+        expect(text(button.querySelector('.xm-avatar'))).toBe('A');
+    });
+
+    it('garde les boutons ronds sur la ligne du logo (ordre : logo, boutons, menu replié) et masque les paramètres sous 576 px', async () => {
+        await mountInertia(page(XmHeader));
+        const container = $('#memberHeader nav > .container') as HTMLElement;
+        const children = [...container.children].map((el) => el.id || el.className.split(' ')[0]);
+        expect(children).toEqual(['navbar-brand', 'navbar-toggler', 'memberNavbar', 'nav']);
+        const settings = $('#memberHeader ul.nav a[href="/parametres"]') as HTMLElement;
+        expect(settings.parentElement?.className).toContain('d-none d-sm-block');
+    });
+
     it('montre « Espace pair » avec la permission et marque l’entrée de menu active', async () => {
         await mountInertia(page(XmHeader), { url: '/groupes', props: memberProps({ can: { 'peer_space.access': true } }) });
         expect(text($('#memberNavbar a[href="/espace-pair"]'))).toBe('Espace pair');

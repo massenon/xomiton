@@ -16,7 +16,7 @@ final class ParticipantPayload
     private function __construct() {}
 
     /**
-     * @return array{id: int, pseudo: string, avatar_url: string, role: string|null, is_me: bool}
+     * @return array{id: int, pseudo: string, avatar_url: string|null, role: string|null, is_me: bool}
      */
     public static function for(User $user, ?ConversationParticipant $participant = null, ?User $viewer = null): array
     {

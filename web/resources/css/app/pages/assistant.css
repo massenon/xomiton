@@ -12,4 +12,5 @@
 .xm-assistant-msg.me .bubble { background: var(--xm-primary); color: var(--xm-on-primary); }
 .xm-assistant-msg.bot .bubble { background: var(--bs-tertiary-bg); }
 .xm-assistant-chips .btn, .xm-assistant-msg .btn { min-height: var(--xm-target-min); }
+.xm-assistant-chips .btn { flex: none; }
 @media (prefers-reduced-motion: reduce) { .xm-assistant-log { scroll-behavior: auto; } }

@@ -54,7 +54,7 @@
 /* ---------- Barre supérieure ---------- */
 .xm-admin-topbar { min-height: 64px; }
 .xm-admin-topbar .min-w-0 { min-width: 0; }
-.xm-admin-topbar__avatar { width: 36px; height: 36px; object-fit: cover; }
+.xm-admin-topbar__avatar { width: 36px; height: 36px; }
 @media (max-width: 575.98px) {
   .xm-admin-topbar .breadcrumb { display: none; }
   .xm-admin-content { padding: 1rem var(--xm-space-4) 2.5rem; }

@@ -51,26 +51,30 @@ describe('users', function (): void {
         expect($array)->not->toHaveKeys(['name', 'phone', 'password', 'suspension_reason']);
     });
 
-    it('supprime logiquement et fournit un avatar par défaut', function (): void {
+    it('supprime logiquement ; sans image téléversée, pas d’avatar (initiales côté interface)', function (): void {
         $user = User::factory()->create();
 
-        expect($user->avatar_url)->toEndWith('assets/images/xomiton/avatar1.png')
-            ->and(is_file(public_path(User::DEFAULT_AVATAR)))->toBeTrue();
+        // Aucune photo par défaut : null, l'interface (XmAvatar, <x-avatar>) affiche les initiales.
+        expect($user->avatar_url)->toBeNull();
 
-        // Fichier absent du disque public ou de public/ : repli sur l'avatar par défaut, jamais de 404.
+        // Fichier absent du disque public ou de public/ : null, jamais de 404 ; adresse externe ignorée (aucune requête tierce).
         Storage::fake('public');
         $profile = Profile::factory()->for($user)->create(['avatar_path' => 'avatars/inexistant.png']);
 
-        expect($user->fresh()->avatar_url)->toEndWith(User::DEFAULT_AVATAR);
+        expect($user->fresh()->avatar_url)->toBeNull();
+
+        $profile->update(['avatar_path' => 'https://exemple.test/photo.jpg']);
+
+        expect($user->fresh()->avatar_url)->toBeNull();
 
         Storage::disk('public')->put('avatars/perso.png', 'png');
         $profile->update(['avatar_path' => 'avatars/perso.png']);
 
         expect($user->fresh()->avatar_url)->toEndWith('/storage/avatars/perso.png');
 
-        $profile->update(['avatar_path' => 'assets/images/xomiton/avatar2.png']);
+        $profile->update(['avatar_path' => 'assets/images/xomiton/icon.png']);
 
-        expect($user->fresh()->avatar_url)->toEndWith('assets/images/xomiton/avatar2.png');
+        expect($user->fresh()->avatar_url)->toEndWith('assets/images/xomiton/icon.png');
 
         $user->delete();
 
@@ -115,7 +119,7 @@ describe('profiles', function (): void {
 
         expect(Profile::peers()->count())->toBe(1)
             ->and($user->profile->isPeer())->toBeTrue()
-            ->and($user->avatar_url)->toEndWith('avatar1.png');
+            ->and($user->avatar_url)->toBeNull();
 
         expect(fn () => Profile::factory()->create(['user_id' => $user->id]))->toThrow(QueryException::class);
     });
@@ -231,8 +235,8 @@ describe('seeders', function (): void {
             ->and($member->settings->sos_share_gps)->toBeTrue()
             ->and($member->profile->visibility)->toBe(ProfileVisibility::Community)
             ->and($member->profile->searchable)->toBeTrue()
-            ->and(Storage::disk('public')->exists('avatars/avatar3.png'))->toBeTrue()
-            ->and($member->avatar_url)->toEndWith('/storage/avatars/avatar3.png')
+            ->and($member->profile->avatar_path)->toBeNull()
+            ->and($member->avatar_url)->toBeNull()
             ->and(Hash::check('Membre123!', $member->password))->toBeTrue();
     });
 });
