@@ -235,7 +235,7 @@ final class EmailTemplateService
     {
         return [
             'site_name' => Settings::string('site_name', (string) config('app.name', 'Xomiton')),
-            'support_email' => Settings::string('contact_email', (string) config('mail.from.address', 'contact@xomiton.bj')),
+            'support_email' => Settings::string('contact_email', (string) config('mail.from.address', 'contact@xomiton.app')),
             'current_year' => now()->format('Y'),
             'site_url' => (string) config('app.url'),
             'login_link' => Route::has('connexion') ? route('connexion') : url('/connexion'),

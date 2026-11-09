@@ -145,7 +145,7 @@ it('signale un compte suspendu seulement après vérification du mot de passe', 
     $this->user->forceFill(['status' => UserStatus::Suspended, 'suspended_at' => now()])->save();
 
     expect(fn () => ($this->authenticate)(login('awa@exemple.bj', 'mauvais')))->toThrow(AuthFailed::class)
-        ->and(fn () => ($this->authenticate)(login('awa@exemple.bj', 'Xomiton2026!')))->toThrow(AccountSuspended::class, 'contact@xomiton.bj');
+        ->and(fn () => ($this->authenticate)(login('awa@exemple.bj', 'Xomiton2026!')))->toThrow(AccountSuspended::class, 'contact@xomiton.app');
 });
 
 it('laisse se connecter un·e pair en attente avec le bandeau, et refuse les membres en maintenance mais pas l’administration', function (): void {

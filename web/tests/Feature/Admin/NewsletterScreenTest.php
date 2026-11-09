@@ -53,7 +53,7 @@ function campaignForm(array $override = []): array
     return $override + [
         'subject' => 'Les nouvelles du mois',
         'from_name' => 'Xomiton',
-        'reply_to' => 'contact@xomiton.bj',
+        'reply_to' => 'contact@xomiton.app',
         'preheader' => 'Au sommaire',
         'body' => '<p>Bonjour {{user_first_name}}, voici les nouvelles de la communauté.</p><script>x()</script>',
         'seg_tags' => [],

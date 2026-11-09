@@ -50,7 +50,7 @@ Guide : [BUILD_ANDROID_WINDOWS.md](BUILD_ANDROID_WINDOWS.md).
 Guides : [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md), [DEPLOIEMENT_CPANEL.md](DEPLOIEMENT_CPANEL.md), [RUNBOOK.md](RUNBOOK.md). Modèle de configuration : `web/.env.production.example` (120 variables, tous les secrets vides).
 
 ### 2.1 Avant de toucher au serveur
-- [ ] **C** Fournir les **12 variables légales** `XOMITON_LEGAL_*` (éditeur, forme juridique, enregistrement, adresse, directeur·rice de la publication, téléphone, hébergeur, adresse et pays de l'hébergeur, personne chargée des données et son e-mail, juridiction), le **domaine de production** et l'**e-mail de contact public** (réglage admin `contact_email`, `contact@xomiton.bj` par défaut). Tant qu'elles sont vides, les pages légales affichent « À COMPLÉTER PAR LE CLIENT ». Aucune valeur n'est inventée.
+- [ ] **C** Fournir les **12 variables légales** `XOMITON_LEGAL_*` (éditeur, forme juridique, enregistrement, adresse, directeur·rice de la publication, téléphone, hébergeur, adresse et pays de l'hébergeur, personne chargée des données et son e-mail, juridiction), le **domaine de production** et l'**e-mail de contact public** (réglage admin `contact_email`, `contact@xomiton.app` par défaut). Tant qu'elles sont vides, les pages légales affichent « À COMPLÉTER PAR LE CLIENT ». Aucune valeur n'est inventée.
 - [ ] **C/J** **Avis juridique** : confidentialité et conditions (Q67), âge de 15 ans, transferts hors Bénin, hébergement, conservation, distribution dans tous les pays (vigilance pour les pays hostiles aux personnes LGBTQ+), conditions d'un éventuel assistant à base de LLM.
 - [ ] **C/H/D** **Hébergement sain** : compte cPanel neuf ou assainissement de l'existant, rapport d'incident signé, PHP 8.3 et extensions requises (`php -m` joint au rapport).
 - [ ] **C** Comptes à ouvrir : SMTP réel, supervision (Healthchecks.io ou UptimeRobot), stockage externe des sauvegardes.
@@ -110,7 +110,7 @@ Une seule application avec espaces par rôle (membre, pair, admin d'astreinte) ;
 
 ## 4. Ce qui bloque le plus, dans l'ordre
 
-1. Les **12 informations légales**, le **domaine** et l'**avis juridique** (c'est sur le chemin critique de tout le reste).
+1. Les **12 informations légales**, le **domaine** (`xomiton.app` retenu : enregistrement, DNS, HTTPS avant ouverture, boîtes `contact@` et `noreply@xomiton.app`, voir [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md) §20) et l'**avis juridique** (c'est sur le chemin critique de tout le reste).
 2. Un **hébergement cPanel sain** et les **comptes externes** (Firebase, SMS, SMTP, Play Console).
 3. Le **premier build Android** : c'est lui qui dira ce que la compilation et un vrai téléphone révèlent.
 4. La **recette humaine** (site puis mobile) : elle est la seule preuve que tout fonctionne ensemble.

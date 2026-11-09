@@ -83,7 +83,7 @@ return [
         'signature_line' => 'Avec toute notre bienveillance,',
         'unsubscribe' => 'Tu reçois cet e-mail parce que tu t’es inscrit·e à la newsletter Xomiton. Se désinscrire en un clic : :url',
         'view_online' => 'Voir cet e-mail en ligne',
-        'safety' => 'En danger ? Appelle le 117 ou utilise le SOS sur xomiton.org.',
+        'safety' => 'En danger ? Appelle le 117 ou utilise le SOS sur xomiton.app.',
     ],
 
     // Administration /admin/newsletter (vous).

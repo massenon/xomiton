@@ -28,7 +28,7 @@ class MailLogFactory extends Factory
             'transport' => MailTransport::Smtp,
             'ok' => true,
             'error' => null,
-            'message_id' => '<'.fake()->uuid().'@xomiton.bj>',
+            'message_id' => '<'.fake()->uuid().'@xomiton.app>',
             'created_at' => fake()->dateTimeBetween('-30 days', 'now'),
         ];
     }

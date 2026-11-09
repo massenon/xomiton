@@ -26,7 +26,7 @@ return [
 
     // data/settings.json (11 clés)
     'site_name' => [Setting::GROUP_GENERAL, Setting::TYPE_STRING, 'Xomiton', true],
-    'contact_email' => [Setting::GROUP_GENERAL, Setting::TYPE_STRING, 'contact@xomiton.bj', true],
+    'contact_email' => [Setting::GROUP_GENERAL, Setting::TYPE_STRING, 'contact@xomiton.app', true],
     'platform_version' => [Setting::GROUP_GENERAL, Setting::TYPE_STRING, '1.4.2', true],
     'last_update' => [Setting::GROUP_GENERAL, Setting::TYPE_STRING, '2026-09-28', false],
     'anonymous_reports' => [Setting::GROUP_GENERAL, Setting::TYPE_BOOL, true, true],
@@ -53,7 +53,7 @@ return [
     'smtp_encryption' => [Setting::GROUP_SMTP, Setting::TYPE_STRING, 'tls', false],
     'smtp_username' => [Setting::GROUP_SMTP, Setting::TYPE_STRING, '', false],
     'smtp_password' => [Setting::GROUP_SMTP, Setting::TYPE_SECRET, null, false],
-    'smtp_from_email' => [Setting::GROUP_SMTP, Setting::TYPE_STRING, 'contact@xomiton.bj', false],
+    'smtp_from_email' => [Setting::GROUP_SMTP, Setting::TYPE_STRING, 'contact@xomiton.app', false],
     'smtp_from_name' => [Setting::GROUP_SMTP, Setting::TYPE_STRING, 'Xomiton', false],
     'smtp_reply_to' => [Setting::GROUP_SMTP, Setting::TYPE_STRING, '', false],
 

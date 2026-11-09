@@ -11,15 +11,15 @@ use App\Domain\Newsletter\LinkSignature;
 
 it('signe en 32 caractères hexadécimaux minuscules, de façon déterministe, selon l’usage et les parties', function (): void {
     $signer = new LinkSignature('cle-de-test');
-    $signature = $signer->sign(LinkSignature::CLICK, 42, 'https://xomiton.org/ressources');
+    $signature = $signer->sign(LinkSignature::CLICK, 42, 'https://xomiton.app/ressources');
 
     expect($signature)->toMatch('/^[a-f0-9]{32}$/')
         ->and(strlen($signature))->toBe(LinkSignature::LENGTH)
-        ->and($signer->sign(LinkSignature::CLICK, 42, 'https://xomiton.org/ressources'))->toBe($signature)
-        ->and($signer->sign(LinkSignature::OPEN, 42, 'https://xomiton.org/ressources'))->not->toBe($signature)
-        ->and($signer->sign(LinkSignature::CLICK, 43, 'https://xomiton.org/ressources'))->not->toBe($signature)
-        ->and($signer->sign(LinkSignature::CLICK, '42', 'https://xomiton.org/ressources'))->toBe($signature)
-        ->and((new LinkSignature('autre-cle'))->sign(LinkSignature::CLICK, 42, 'https://xomiton.org/ressources'))->not->toBe($signature);
+        ->and($signer->sign(LinkSignature::CLICK, 42, 'https://xomiton.app/ressources'))->toBe($signature)
+        ->and($signer->sign(LinkSignature::OPEN, 42, 'https://xomiton.app/ressources'))->not->toBe($signature)
+        ->and($signer->sign(LinkSignature::CLICK, 43, 'https://xomiton.app/ressources'))->not->toBe($signature)
+        ->and($signer->sign(LinkSignature::CLICK, '42', 'https://xomiton.app/ressources'))->toBe($signature)
+        ->and((new LinkSignature('autre-cle'))->sign(LinkSignature::CLICK, 42, 'https://xomiton.app/ressources'))->not->toBe($signature);
 });
 
 it('vérifie une signature quelle que soit sa casse, et refuse une longueur, un alphabet ou un contenu différents', function (): void {

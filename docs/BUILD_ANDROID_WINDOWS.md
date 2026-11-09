@@ -88,7 +88,7 @@ L'application parle à l'API Laravel (`/api/v1`). En développement, lancer le s
   flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api/v1
   ```
 
-- Une autre adresse : `--dart-define=API_BASE_URL=https://…/api/v1`.
+- Une autre adresse : `--dart-define=API_BASE_URL=https://…/api/v1`. Production : `https://xomiton.app/api/v1` (même domaine que le site ; `api.xomiton.app` seulement si l'API est séparée, voir GUIDE_DEPLOIEMENT §20.4).
 - **Le trafic non chiffré (`http`) n'est autorisé que dans les builds de debug**, et seulement vers `10.0.2.2`, `localhost` et `127.0.0.1` (`android/app/src/debug/res/xml/network_security_config.xml`). Une version **release** n'accepte que **HTTPS** et refuse de démarrer avec une adresse `http`.
 
 ## 5. Lancer l'application (`flutter run`)
@@ -157,7 +157,7 @@ Remplir les quatre lignes (`storePassword`, `keyPassword`, `keyAlias=upload`, `s
 
 ```powershell
 cd xomiton\mobile
-flutter build appbundle --release --obfuscate --split-debug-info=build\symbols --dart-define=API_BASE_URL=https://api.xomiton.example/api/v1
+flutter build appbundle --release --obfuscate --split-debug-info=build\symbols --dart-define=API_BASE_URL=https://xomiton.app/api/v1
 ```
 
 (remplacer l'adresse par celle de l'API de production, **en https**).

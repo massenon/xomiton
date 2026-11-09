@@ -156,9 +156,9 @@ return [
         ],
         // Rubriques du gabarit (tutoiement : ces textes partent aux abonné·es).
         'sections' => [
-            'featured' => ['label' => 'À la une', 'html' => '<h2>À la une</h2><p>Le sujet du mois en deux phrases.</p><p><a href="https://xomiton.org/">Lire la suite</a></p>'],
-            'resource' => ['label' => 'Nouvelle fiche', 'html' => '<h2>Nouvelle fiche</h2><p>Une ressource utile vient d’être publiée.</p><p><a href="https://xomiton.org/ressources">Découvrir la fiche</a></p>'],
-            'event' => ['label' => 'Événement', 'html' => '<h2>À venir</h2><p>Date, lieu et façon de participer.</p><p><a href="https://xomiton.org/evenements">S’inscrire</a></p>'],
+            'featured' => ['label' => 'À la une', 'html' => '<h2>À la une</h2><p>Le sujet du mois en deux phrases.</p><p><a href="https://xomiton.app/">Lire la suite</a></p>'],
+            'resource' => ['label' => 'Nouvelle fiche', 'html' => '<h2>Nouvelle fiche</h2><p>Une ressource utile vient d’être publiée.</p><p><a href="https://xomiton.app/ressources">Découvrir la fiche</a></p>'],
+            'event' => ['label' => 'Événement', 'html' => '<h2>À venir</h2><p>Date, lieu et façon de participer.</p><p><a href="https://xomiton.app/evenements">S’inscrire</a></p>'],
             'testimonial' => ['label' => 'Témoignage', 'html' => '<h2>Témoignage</h2><blockquote>Texte anonymisé, relu et autorisé par la personne.</blockquote>'],
             'emergency' => ['label' => 'Contacts d’urgence', 'html' => '<p><strong>En danger ? Appelle le 117</strong> ou utilise le bouton SOS de la plateforme.</p>'],
         ],

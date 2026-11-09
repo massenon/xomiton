@@ -236,24 +236,24 @@ it('refuse deux fois le même destinataire et calcule les livrés et ouvertures'
 });
 
 it('compte les clics uniques par URL et cumule les clics répétés', function (): void {
-    $click = NewsletterClick::factory()->create(['url' => 'https://xomiton.org/events.php', 'url_hash' => null]);
+    $click = NewsletterClick::factory()->create(['url' => 'https://xomiton.app/events.php', 'url_hash' => null]);
     $recipient = $click->recipient;
 
-    expect($click->url_hash)->toBe(hash('sha256', 'https://xomiton.org/events.php'))
+    expect($click->url_hash)->toBe(hash('sha256', 'https://xomiton.app/events.php'))
         ->and($click->updated_at)->toBeNull()
         ->and($click->clicks_count)->toBe(1);
 
-    $again = $recipient->recordClick('https://xomiton.org/events.php');
-    $other = $recipient->recordClick('https://xomiton.org/thematiques.php');
+    $again = $recipient->recordClick('https://xomiton.app/events.php');
+    $other = $recipient->recordClick('https://xomiton.app/thematiques.php');
 
     expect($again->id)->toBe($click->id)
         ->and($again->clicks_count)->toBe(2)
         ->and($other->id)->not->toBe($click->id)
         ->and($recipient->clicks()->count())->toBe(2)
         ->and(NewsletterClick::query()->forCampaign($recipient->campaign)->count())->toBe(2)
-        ->and(NewsletterClick::query()->forUrl('https://xomiton.org/thematiques.php')->count())->toBe(1);
+        ->and(NewsletterClick::query()->forUrl('https://xomiton.app/thematiques.php')->count())->toBe(1);
 
-    expect(fn () => NewsletterClick::factory()->forRecipient($recipient)->onUrl('https://xomiton.org/events.php')->create())
+    expect(fn () => NewsletterClick::factory()->forRecipient($recipient)->onUrl('https://xomiton.app/events.php')->create())
         ->toThrow(QueryException::class);
 });
 

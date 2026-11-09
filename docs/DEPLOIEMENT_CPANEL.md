@@ -17,7 +17,8 @@ Cases à cocher et à joindre au rapport de recette. Procédures détaillées : 
 
 ## 1. Serveur (recette)
 
-- [ ] **Sous-domaine** (ex. `recette.xomiton.org`) pointé sur `~/xomiton/web/public` (cPanel › Domaines › racine du document). Jamais sur `web/` ni `public_html` contenant le code. Vérifier : `https://…/.env` et `/composer.json` répondent 403/404.
+- [ ] **Domaine de production `xomiton.app`** : HTTPS (AutoSSL) actif **avant** toute ouverture (`.app` est en HSTS preload), DNS et e-mail : [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md) §20.
+- [ ] **Sous-domaine** (ex. `recette.xomiton.app`) pointé sur `~/xomiton/web/public` (cPanel › Domaines › racine du document). Jamais sur `web/` ni `public_html` contenant le code. Vérifier : `https://…/.env` et `/composer.json` répondent 403/404.
 - [ ] **PHP 8.3** : cPanel › MultiPHP Manager, version `ea-php83` pour le domaine. Chemin du cron : `/opt/cpanel/ea-php83/root/usr/bin/php` (le `php` du terminal peut rester 8.2). `composer.json` exige `^8.3`.
 - [ ] **Extensions** (MultiPHP Manager › Extensions, vérifier avec `php -m` de ce binaire). Requises : `ctype`, `curl`, `fileinfo`, `intl`, `json`, `mbstring`, `openssl`, `pdo_mysql`, `sodium`, `tokenizer`, `xml` (+ `dom`, `xmlwriter`, `zip` pour PhpWord / OpenSpout). `zip` avec chiffrement AES (libzip ≥ 1.2) : archives ADR-22 (`ZipArchive::EM_AES_256`). `gd` avec WebP (`imagewebp`, utilisé par `MediaUploader`) ou `imagick`. `gmp` ou `bcmath` : `minishlink/web-push` (VAPID). `intl` avec les locales `fr-BJ` / `fr-FR` (repli documenté). Contrôle automatique : `xomiton:preflight` et `scripts/deploy.sh`.
 - [ ] **Directives PHP** (MultiPHP INI Editor) : `display_errors = Off`, `log_errors = On`, `memory_limit ≥ 256M`, `max_execution_time` 30 s accepté (le code est budgété pour 30 s / 128 Mo), `upload_max_filesize` et `post_max_size` ≥ 12M, `max_input_vars ≥ 3000` (tableaux d'administration), `opcache.enable=1`.
@@ -62,7 +63,7 @@ Si `storage:link` échoue : déposer les médias publics dans un disque servi pa
 - [ ] `.env` de production (`APP_ENV=production`, `APP_DEBUG=false`, `SEO_ALLOW_INDEXING=true`), nouvelle `APP_KEY` propre à la production.
 - [ ] Domaine principal pointé sur `web/public`, AutoSSL émis **avant** la bascule du DNS final si possible.
 - [ ] **DNS** : TTL abaissé à 300 s 48 h avant ; enregistrements `A` (apex) / `CNAME www` vers l'IP de l'hébergement ; `MX` inchangés ; SPF / DKIM / DMARC ; `CAA` optionnel. Plan de repli : ancien enregistrement conservé, TTL remonté après 48 h de stabilité.
-- [ ] `SANCTUM_STATEFUL_DOMAINS=xomiton.org,www.xomiton.org`, redirection `www` ↔ apex unique.
+- [ ] `SANCTUM_STATEFUL_DOMAINS=xomiton.app,www.xomiton.app`, redirection `www` ↔ apex unique.
 - [ ] `scripts/deploy.sh --first`, `xomiton:preflight` (sans `--skip-cron` une fois le cron en place), crons, signal de vie, sondes, planification de `scripts/backup.sh` et copie externe.
 - [ ] `php artisan xomiton:import-prototype <dossier data/> --dry-run` puis réel, si des données réelles existent.
 - [ ] Fournisseurs réels : `WEBPUSH_DRIVER=vapid`, `FCM_DRIVER=fcm`, `SMS_DRIVER=vonage|twilio` (§7) ; plus aucun WARN « pilote log » inattendu.

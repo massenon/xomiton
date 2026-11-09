@@ -37,9 +37,9 @@ description: Grille d'audit SEO page par page de Xomiton — meta title, meta de
 **Fiche thématique (`Article`)**
 ```json
 { "@type": "Article", "headline": "Tes droits au Bénin", "description": "…", "inLanguage": "fr-BJ",
-  "author": { "@id": "https://xomiton.org/#org" }, "publisher": { "@id": "https://xomiton.org/#org" },
+  "author": { "@id": "https://xomiton.app/#org" }, "publisher": { "@id": "https://xomiton.app/#org" },
   "datePublished": "2026-01-15", "dateModified": "2026-10-15", "image": ["…/og/droits.jpg"],
-  "mainEntityOfPage": { "@id": "https://xomiton.org/thematiques/droits-des-femmes-benin#page" } }
+  "mainEntityOfPage": { "@id": "https://xomiton.app/thematiques/droits-des-femmes-benin#page" } }
 ```
 
 **FAQ (`FAQPage`)**
@@ -52,7 +52,7 @@ description: Grille d'audit SEO page par page de Xomiton — meta title, meta de
 ```json
 { "@type": "Event", "name": "Atelier « Dire non sans culpabiliser »", "startDate": "2026-10-17T15:00+01:00",
   "eventAttendanceMode": "https://schema.org/MixedEventAttendanceMode", "location": [{ "@type": "Place", "name": "Porto-Novo" }, { "@type": "VirtualLocation", "url": "…" }],
-  "organizer": { "@id": "https://xomiton.org/#org" } }
+  "organizer": { "@id": "https://xomiton.app/#org" } }
 ```
 L'adresse exacte d'un lieu sensible n'est jamais publiée.
 

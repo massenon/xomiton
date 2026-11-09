@@ -10,7 +10,7 @@
 <a class="xm-skip-link" href="#contenu">Aller au contenu</a>
 <header class="sticky-top border-bottom" style="background:var(--xm-surface)">
     <div class="container d-flex align-items-center gap-3 py-2">
-        <a href="https://xomiton.org"  aria-label="Xomiton, accueil"><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-couleur.svg" alt="Xomiton" title="Xomiton" width="120" height="31"></a>        <span class="xm-hint">Catalogue du design system · v1.0</span>
+        <a href="https://xomiton.app"  aria-label="Xomiton, accueil"><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-couleur.svg" alt="Xomiton" title="Xomiton" width="120" height="31"></a>        <span class="xm-hint">Catalogue du design system · v1.0</span>
         <button
     type="button" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-2 ms-auto" x-data="" @click="document.documentElement.dataset.bsTheme = document.documentElement.dataset.bsTheme === 'dark' ? 'light' : 'dark'"
         >
@@ -181,7 +181,7 @@
                                                 <li class="breadcrumb-item active" aria-current="page">Comprendre ses droits</li>
                         </ol>
 </nav>
-<script type="application/ld+json">{"\u003C?php $__contextArgs = [];\nif (context()-\u003Ehas($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()-\u003Eget($__contextArgs[0]); ?\u003E":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://xomiton.org"},{"@type":"ListItem","position":2,"name":"Ressources","item":"https://xomiton.org/ressources"},{"@type":"ListItem","position":3,"name":"Comprendre ses droits"}]}</script>
+<script type="application/ld+json">{"\u003C?php $__contextArgs = [];\nif (context()-\u003Ehas($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()-\u003Eget($__contextArgs[0]); ?\u003E":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://xomiton.app"},{"@type":"ListItem","position":2,"name":"Ressources","item":"https://xomiton.app/ressources"},{"@type":"ListItem","position":3,"name":"Comprendre ses droits"}]}</script>
         <div x-data="{ tab: new URLSearchParams(location.search).get('tab') || 'infos',
                set(t) { this.tab = t; const u = new URL(location); u.searchParams.set('tab', t); history.replaceState(null, '', u); },
                move(e) { const k = Object.keys(JSON.parse('{\u0022infos\u0022:\u0022Informations\u0022,\u0022notes\u0022:\u0022Notes\u0022}')); let i = k.indexOf(this.tab); i = e.key === 'ArrowRight' ? (i + 1) % k.length : (i - 1 + k.length) % k.length; this.set(k[i]); this.$nextTick(() => document.getElementById('tab-' + this.tab).focus()); } }">

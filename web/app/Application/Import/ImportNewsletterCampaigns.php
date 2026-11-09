@@ -46,7 +46,7 @@ final class ImportNewsletterCampaigns extends AbstractImporter
         $campaign->fill([
             'subject' => $subject,
             'from_name' => $this->text($row['from_name'] ?? null, 60) ?? 'Xomiton',
-            'reply_to' => $this->text($row['reply_to'] ?? null, 190) ?? (string) config('mail.from.address', 'contact@xomiton.bj'),
+            'reply_to' => $this->text($row['reply_to'] ?? null, 190) ?? (string) config('mail.from.address', 'contact@xomiton.app'),
             'preheader' => $this->text($row['preheader'] ?? null, 150),
             'body' => $this->required($row['body'] ?? null, 'body'),
             'segment' => $this->segment(is_array($row['segment'] ?? null) ? $row['segment'] : []),

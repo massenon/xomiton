@@ -126,7 +126,7 @@ it('enregistre les paramètres généraux, avec le français obligatoire et la v
     Livewire::test(SettingsScreen::class)
         ->set('form.site_name', 'X')->set('form.contact_email', 'faux')
         ->call('save', 'general')->assertHasErrors(['form.site_name', 'form.contact_email'])
-        ->set('form.site_name', 'Xomiton Bénin')->set('form.contact_email', 'contact@xomiton.bj')->set('form.languages', ['en'])
+        ->set('form.site_name', 'Xomiton Bénin')->set('form.contact_email', 'contact@xomiton.app')->set('form.languages', ['en'])
         ->call('save', 'general')->assertHasErrors(['form.languages'])
         ->set('form.languages', ['fr', 'fon'])->set('form.timezone', 'Africa/Lagos')->set('form.gps_sos', false)
         ->call('save', 'general')->assertHasNoErrors()->assertDispatched('toast');

@@ -96,7 +96,7 @@ L'adresse de l'API se règle avec `--dart-define=API_BASE_URL=<racine>/api/v1` (
 
 - **Émulateur Android** : `flutter run` suffit (`10.0.2.2` désigne votre ordinateur). Le trafic http en clair n'est accepté qu'en debug.
 - **Téléphone réel** (même Wi-Fi, pare-feu ouvert) : `scripts/recette-lancer.sh --host 0.0.0.0`, puis `flutter run --dart-define=API_BASE_URL=http://192.168.X.Y:8000/api/v1` (192.168.X.Y = adresse de votre ordinateur).
-- **Release** : `flutter build apk --release --dart-define=API_BASE_URL=https://votre-domaine/api/v1` ; en release, une URL non https empêche le démarrage.
+- **Release** : `flutter build apk --release --dart-define=API_BASE_URL=https://xomiton.app/api/v1` ; en release, une URL non https empêche le démarrage.
 - **`flutter run -d chrome` n'est pas prévu** : le projet n'a pas de dossier `web/` Flutter et le serveur n'autorise pas les appels d'un autre site (CORS). Utilisez un émulateur Android ou un téléphone.
 - Les codes de vérification de l'application arrivent dans le même fichier journal que ceux du site (§6).
 

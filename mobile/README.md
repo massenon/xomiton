@@ -215,7 +215,7 @@ Configuration prête, **jamais construite à ce jour** (aucun SDK Android dans l
   (**jamais commité**, modèle `android/key.properties.example`, repli sur la clé de debug avec avertissement),
   R8 (`isMinifyEnabled`, `isShrinkResources`, `proguard-rules.pro`).
 - Commande de publication : `flutter build appbundle --release --obfuscate --split-debug-info=build/symbols
-  --dart-define=API_BASE_URL=https://…/api/v1` (garder `build/symbols` et `mapping.txt` hors dépôt).
+  --dart-define=API_BASE_URL=https://xomiton.app/api/v1` (garder `build/symbols` et `mapping.txt` hors dépôt).
 - Icônes (classique, adaptative, monochrome, Play 512) et rosace de démarrage : `python3 tool/android_icons.py`
   (Pillow seul) depuis `design-system/logo/icone-appli-bleu.svg`. Écran de démarrage natif clair, sombre et
   Android 12.

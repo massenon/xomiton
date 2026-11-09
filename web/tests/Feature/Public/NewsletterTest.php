@@ -431,7 +431,7 @@ it('exige le jeton CSRF pour l’inscription et la confirmation, jamais pour la 
 
 it('suit un clic signé puis redirige ; un lien altéré ou mal signé répond 403 sans redirection', function (): void {
     $recipient = NewsletterCampaignRecipient::factory()->sent()->create();
-    $target = 'https://xomiton.org/ressources/sante-sexuelle?utm_source=newsletter';
+    $target = 'https://xomiton.app/ressources/sante-sexuelle?utm_source=newsletter';
     $url = app(NewsletterLinks::class)->clickUrl($recipient, $target);
 
     $this->get($url)->assertStatus(302)->assertRedirect($target)->assertHeader('Cache-Control', 'no-store, private')->assertCookieMissing(config('session.cookie'));

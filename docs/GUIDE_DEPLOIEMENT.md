@@ -22,7 +22,7 @@ Pour ne pas tout répéter, ce guide s'appuie sur les documents existants :
 | À réunir | Qui |
 |---|---|
 | Accès cPanel (si possible un **compte d'hébergement neuf**, voir §1), accès SSH ou terminal cPanel | Client / hébergeur |
-| Nom de domaine de production (l'exemple du dépôt est `xomiton.org`, **à confirmer**) et accès à sa zone DNS | Client |
+| Nom de domaine de production : **`xomiton.app`** (décision du client, voir §20) et accès à sa zone DNS | Client |
 | Les **12 informations légales** (éditeur, hébergeur, protection des données, juridiction), voir §14 | Client |
 | Une **boîte e-mail** de contact et un compte SMTP (cPanel ou Brevo, Mailjet…) | Client |
 | Comptes optionnels : Firebase (push), Vonage ou Twilio (SMS), Healthchecks.io ou UptimeRobot (supervision), stockage externe de sauvegardes | Client |
@@ -55,7 +55,7 @@ Le code n'est **jamais** déposé dans `public_html`. Seul le dossier `public/` 
 
 ## 3. Sous-domaine, PHP 8.3, base de données
 
-1. **Sous-domaine ou domaine** : cPanel › Domaines › Créer un domaine (ou sous-domaine, par exemple `recette.xomiton.org` pour la recette puis le domaine principal pour la production). Dans « Racine du document », saisissez **`xomiton/web/public`**. Jamais `xomiton/web` ni `public_html`.
+1. **Sous-domaine ou domaine** : cPanel › Domaines › Créer un domaine (ou sous-domaine, par exemple `recette.xomiton.app` pour la recette puis le domaine principal pour la production). Dans « Racine du document », saisissez **`xomiton/web/public`**. Jamais `xomiton/web` ni `public_html`.
 2. **PHP 8.3** : cPanel › MultiPHP Manager, choisissez `ea-php83` pour ce domaine. Le chemin à utiliser dans le terminal et le cron est `/opt/cpanel/ea-php83/root/usr/bin/php` (le `php` du terminal peut rester en 8.2). Vérification : `/opt/cpanel/ea-php83/root/usr/bin/php -v`.
 3. **Extensions et réglages PHP** : cPanel › MultiPHP Manager (extensions) et MultiPHP INI Editor. Liste exacte (`ctype`, `curl`, `fileinfo`, `intl`, `json`, `mbstring`, `openssl`, `pdo_mysql`, `sodium`, `tokenizer`, `xml`, `zip`, `gd` avec WebP…) et directives (`display_errors = Off`, `memory_limit ≥ 256M`, `upload_max_filesize` et `post_max_size ≥ 12M`, `max_input_vars ≥ 3000`) : [DEPLOIEMENT_CPANEL.md](DEPLOIEMENT_CPANEL.md) §1. Contrôle : `/opt/cpanel/ea-php83/root/usr/bin/php -m`.
 4. **Base MySQL** : cPanel › Bases de données MySQL. Créez une base, **un utilisateur dédié** avec un mot de passe long, et attribuez-lui **tous les privilèges sur cette base seulement**. Notez le nom exact (cPanel ajoute le préfixe du compte, par exemple `compte_xomiton`). Jeu de caractères : `utf8mb4` (le `.env` le précise). Version attendue : MySQL 8 ou MariaDB 10.6+. Aucun accès distant.
@@ -91,7 +91,7 @@ APP_NAME=Xomiton
 APP_ENV=production                       # les comptes de démonstration ne sont JAMAIS créés en production
 APP_KEY=                                 # générée une fois sur le serveur (§7)
 APP_DEBUG=false
-APP_URL=https://<domaine-de-production>  # exemple du dépôt : https://xomiton.org (à confirmer), sans "/" final
+APP_URL=https://<domaine-de-production>  # production : https://xomiton.app, sans "/" final
 APP_LOCALE=fr
 APP_FALLBACK_LOCALE=fr
 APP_TIMEZONE=Africa/Porto-Novo
@@ -210,7 +210,7 @@ Notes importantes :
 
 - **Les commentaires `#` en fin de ligne** ci-dessus servent d'explication ; dans le vrai `.env`, mettez-les sur une ligne à part ou supprimez-les, et mettez entre guillemets les valeurs qui contiennent des espaces ou un `#`.
 - **`APP_DEBUG=false` est obligatoire** : en mode débogage le site afficherait ses secrets en cas d'erreur.
-- **Pas de variable pour l'e-mail de contact public** : il se règle dans l'application, Administration › Paramètres › Général (`contact_email`, valeur d'origine `contact@xomiton.bj`, **à remplacer**). Il apparaît dans la politique de confidentialité et les e-mails.
+- **Pas de variable pour l'e-mail de contact public** : il se règle dans l'application, Administration › Paramètres › Général (`contact_email`, valeur semée `contact@xomiton.app` : **la boîte doit exister**, à créer dans cPanel › Comptes de messagerie). Il apparaît dans la politique de confidentialité et les e-mails.
 - **Informations légales** : laissez vide ce qui n'est pas fourni (la page affiche alors un repère visible « À COMPLÉTER PAR LE CLIENT »). N'écrivez pas de texte provisoire. Détail au §14 ; format et pages concernées en commentaire dans `web/.env.example`.
 - **Réglages secondaires** (rarement utiles, valeurs par défaut sûres) : `XOMITON_DISPOSABLE_DOMAINS` (domaines d'e-mail jetables à signaler en plus de la liste intégrée), `XOMITON_REPORTS_DISK`, `XOMITON_EXPORT_MAX_ROWS`, `XOMITON_MYSQLDUMP` et `XOMITON_MYSQLDUMP_BINARY` (sauvegarde), `SMS_PROVIDER` (ancien nom de `SMS_DRIVER`), `APP_PREVIOUS_KEYS` (uniquement pendant une rotation de clé, [RUNBOOK.md](RUNBOOK.md) §8).
 - Après toute modification du `.env` : `php artisan config:cache` (voir §10). Sans cela, le changement n'est pas pris en compte.
@@ -431,3 +431,59 @@ La publication dépend du site en ligne : l'application a besoin de l'adresse `h
 | `deploy.sh` s'arrête sur une extension PHP manquante | cPanel › MultiPHP Manager › Extensions, activez-la pour `ea-php83`, ou définissez `PHP_BIN`. |
 | Le site est resté en maintenance après un échec | Corrigez puis relancez `scripts/deploy.sh`, ou `xomiton:maintenance off` après décision de retour arrière. |
 | Incident de sécurité | [RUNBOOK.md](RUNBOOK.md) §13. |
+
+## 20. Domaine xomiton.app
+
+Le domaine de production est **`xomiton.app`** (décision du client). Valeurs d'exemple du dépôt : `APP_URL=https://xomiton.app`, `SANCTUM_STATEFUL_DOMAINS=xomiton.app,www.xomiton.app`, `MAIL_FROM_ADDRESS="noreply@xomiton.app"`, `SESSION_DOMAIN=null` (cookie limité à l'hôte exact), réglage `contact_email` semé à `contact@xomiton.app`. Le sitemap, `robots.txt` et les liens canoniques lisent `APP_URL` (`config('app.url')`) : aucun changement de code nécessaire. Le projet n'a pas de variable d'hôtes de confiance ni de CORS dédiée : l'API est servie par le même domaine que le site.
+
+### 20.1 HTTPS obligatoire avant la première ouverture
+`.app` figure dans la liste **HSTS preload** des navigateurs : ils refusent toute connexion HTTP, même pour un test. Le certificat HTTPS (cPanel › SSL/TLS Status › AutoSSL, Let's Encrypt) doit donc être **émis et actif avant** d'ouvrir `https://xomiton.app` à quiconque ; sinon la page est inaccessible, sans possibilité de « continuer quand même ». Ordre : DNS (§20.3) puis AutoSSL pour `xomiton.app` et `www.xomiton.app`, contrôle `curl -sI https://xomiton.app/`.
+
+### 20.2 Enregistrement du nom de domaine
+- Bureau d'enregistrement **hors du Bénin**, compte ouvert **au nom de l'organisation** (pas d'une personne), avec au moins deux administrateur·rices.
+- **Masquage de l'identité du titulaire** (WHOIS privacy / redaction) activé : le site protège des personnes à risque.
+- **Verrouillage du transfert** (registrar lock) activé, **double authentification** sur le compte, **DNSSEC** activé (DS publié chez le registre), renouvellement automatique sur plusieurs années.
+
+### 20.3 Enregistrements DNS
+| Type | Nom | Valeur (exemple) |
+|---|---|---|
+| A | `@` | IPv4 de l'hébergement |
+| AAAA | `@` | IPv6 de l'hébergement (si fournie) |
+| CNAME | `www` | `xomiton.app.` |
+| CNAME ou A | `recette` (facultatif) | hébergement de recette |
+| CNAME ou A | `api` (facultatif) | seulement si l'API est séparée (voir §20.4) |
+| MX | `@` | serveur de messagerie de l'hébergeur (priorité 0 ou 10) |
+| TXT | `@` | `v=spf1 +a +mx include:<fournisseur SMTP> ~all` |
+| TXT | `default._domainkey` | `v=DKIM1; k=rsa; p=<clé publique fournie par cPanel ou le fournisseur>` |
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:dmarc@xomiton.app; adkim=s; aspf=s` puis `p=quarantine` après quelques semaines d'observation |
+Abaisser le TTL à 300 s 48 h avant la bascule. Aucune valeur secrète ici : la clé DKIM est **publique**. Tests de délivrabilité : cPanel › Email Deliverability (tous les voyants au vert), envoi d'un message vers une boîte de test (Gmail : « Afficher l'original », SPF, DKIM et DMARC = PASS), outil de test type mail-tester.com (note ≥ 9/10), `dig TXT _dmarc.xomiton.app`.
+
+### 20.4 Sous-domaines et redirection
+- `www` : redirigé vers le domaine nu (ou l'inverse) par **une seule** redirection 301, jamais de double contenu. Choix : **`https://xomiton.app` canonique** (`APP_URL`), `www` redirige vers lui.
+- `recette` : recette sur un serveur distinct, avec `APP_ENV=production`, un `.env` propre et `noindex`.
+- `api` : **non utilisé par défaut**. L'application mobile appelle `https://xomiton.app/api/v1` (même domaine, une seule zone TLS/CORS/cookies). Si l'API devait être séparée, créer `api.xomiton.app`, régler `SANCTUM_STATEFUL_DOMAINS` et publier une nouvelle version mobile avec `--dart-define=API_BASE_URL=https://api.xomiton.app/api/v1`.
+- Application mobile : `API_BASE_URL` par défaut dans le code = émulateur local (`http://10.0.2.2:8000/api/v1`, `mobile/lib/core/network/api_client.dart`) ; les builds de **release** doivent passer `--dart-define=API_BASE_URL=https://xomiton.app/api/v1` (une URL non https empêche le démarrage).
+
+### 20.5 Liens universels (état actuel)
+- **Android** `https://xomiton.app/.well-known/assetlinks.json` : **absent**, et `AndroidManifest.xml` n'a pas de `intent-filter` `autoVerify`. À créer avec l'empreinte SHA-256 du certificat de signature Play (App Signing) pour `bj.xomiton.xomiton`.
+- **iOS** `https://xomiton.app/.well-known/apple-app-site-association` : **absent**, pas d'entitlement *Associated Domains* (voir [PLAN_IOS.md](PLAN_IOS.md) §« Liens universels », `applinks:xomiton.app`). Servir en HTTPS, sans redirection, `Content-Type: application/json`.
+- `.htaccess` laisse déjà passer `/.well-known/`. Les identifiants d'application (`bj.xomiton.xomiton`) ne changent pas.
+
+### 20.6 Réservations défensives
+Réserver (ou rediriger vers `xomiton.app`) : `xomiton.org`, `xomiton.com`, `xomiton.net`, et si possible `.care` / `.help`. Le **`.bj`** n'est utile qu'en **redirection** : un domaine national peut être suspendu ou exiger l'identification du titulaire par un registre local, ce qui exposerait l'organisation ; ne jamais y héberger le service ni les e-mails.
+
+### 20.7 Checklist « Domaine xomiton.app »
+- [ ] Domaine enregistré hors du Bénin, au nom de l'organisation, identité masquée, transfert verrouillé, 2FA, DNSSEC, renouvellement automatique
+- [ ] Enregistrements A/AAAA, CNAME `www` créés ; TTL abaissé avant bascule
+- [ ] **AutoSSL actif pour `xomiton.app` et `www`, avant toute ouverture** (HSTS preload)
+- [ ] `APP_URL=https://xomiton.app`, `SANCTUM_STATEFUL_DOMAINS=xomiton.app,www.xomiton.app`, `SESSION_DOMAIN=null`, `config:cache`
+- [ ] Boîtes `contact@xomiton.app` (réglage `contact_email`) et `noreply@xomiton.app` (`MAIL_FROM_ADDRESS`) **créées** dans cPanel ; boîte de la protection des données et `dmarc@xomiton.app` si utilisées
+- [ ] SPF, DKIM, DMARC en place, tests de délivrabilité = PASS
+- [ ] Redirection `www` vers le domaine nu, HTTP vers HTTPS ; `robots.txt` et `sitemap.xml` citent `https://xomiton.app`
+- [ ] Mobile : build release avec `API_BASE_URL=https://xomiton.app/api/v1`
+- [ ] `assetlinks.json` et AASA publiés (quand les liens universels sont activés)
+- [ ] Réservations défensives (`.org`, `.com`, `.net`, `.care`/`.help`) en redirection
+- [ ] Dossier Google Play et pages légales citent `xomiton.app`
+
+### 20.8 Où changer si le domaine change
+`web/.env` du serveur (`APP_URL`, `SANCTUM_STATEFUL_DOMAINS`, `MAIL_FROM_ADDRESS`, `VAPID_SUBJECT`, `MAIL_EHLO_DOMAIN`) ; `web/.env.example` et `web/.env.production.example` ; Administration › Paramètres (`contact_email`, `smtp_from_email`) ; valeurs semées : `web/config/xomiton.php` (`settings` : `contact_email`, `smtp_from_email`, `VAPID_SUBJECT`), `web/database/seeders/data/platform/settings.php`, replis `config('mail.from.address', …)` dans `LegalTexts`, `SmtpSettings`, `EmailTemplateService`, `ImportNewsletterCampaigns` ; textes `web/lang/fr/newsletter.php` et `admin_newsletter.php` (puis `php artisan lang:export`) ; build mobile (`API_BASE_URL`) ; `assetlinks.json` / AASA / entitlement iOS ; DNS, SPF, DKIM, DMARC ; dossier Play Store (`docs/playstore/`) ; `design-system/` (charte, jetons) ; tests qui citent `contact@xomiton.app`.

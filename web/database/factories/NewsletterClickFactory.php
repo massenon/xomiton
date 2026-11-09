@@ -21,9 +21,9 @@ class NewsletterClickFactory extends Factory
     public function definition(): array
     {
         $url = fake()->randomElement([
-            'https://xomiton.org/thematiques.php',
-            'https://xomiton.org/events.php',
-            'https://xomiton.org/ressources.php',
+            'https://xomiton.app/thematiques.php',
+            'https://xomiton.app/events.php',
+            'https://xomiton.app/ressources.php',
         ]);
 
         return [

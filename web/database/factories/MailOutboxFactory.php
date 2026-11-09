@@ -23,9 +23,9 @@ class MailOutboxFactory extends Factory
 
         return [
             'to' => fake()->safeEmail(),
-            'from_address' => 'no-reply@xomiton.bj',
+            'from_address' => 'no-reply@xomiton.app',
             'from_name' => 'Xomiton',
-            'reply_to' => 'contact@xomiton.bj',
+            'reply_to' => 'contact@xomiton.app',
             'subject' => fake()->sentence(5),
             'html' => '<p>'.$text.'</p>',
             'text' => $text,

@@ -27,7 +27,7 @@ class NewsletterCampaignFactory extends Factory
         return [
             'subject' => 'Xomiton · '.fake()->sentence(4),
             'from_name' => 'Xomiton',
-            'reply_to' => 'contact@xomiton.bj',
+            'reply_to' => 'contact@xomiton.app',
             'preheader' => 'Les nouvelles de la communauté',
             'body' => '<h2>Bonjour {{user_first_name}} 💜</h2><p>'.fake()->paragraph().'</p>',
             'segment' => [],

@@ -67,7 +67,7 @@ final class SmtpSettings
             $address = Settings::string('smtp_from_email');
         }
 
-        return $address !== '' ? $address : (string) config('mail.from.address', 'contact@xomiton.bj');
+        return $address !== '' ? $address : (string) config('mail.from.address', 'contact@xomiton.app');
     }
 
     public static function fromName(): string

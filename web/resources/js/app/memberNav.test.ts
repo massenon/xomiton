@@ -10,7 +10,7 @@ afterEach(() => {
 describe('memberNav', () => {
     it('normalise le chemin courant (requête, fragment, barre finale)', () => {
         expect(pathOf('/fil/12?vue=1#post')).toBe('/fil/12');
-        expect(pathOf('https://xomiton.bj/groupes/')).toBe('/groupes');
+        expect(pathOf('https://xomiton.app/groupes/')).toBe('/groupes');
         expect(pathOf('/')).toBe('/');
     });
 

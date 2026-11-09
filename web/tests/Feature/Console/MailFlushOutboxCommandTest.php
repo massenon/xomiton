@@ -59,9 +59,9 @@ it('envoie les e-mails en attente dans l’ordre de dépôt, les marque envoyés
     expect($messages)->toHaveCount(2)
         ->and($firstMessage->getTo()[0]->getAddress())->toBe('awa@example.test')
         ->and($firstMessage->getSubject())->toBe('Bienvenue')
-        ->and($firstMessage->getFrom()[0]->getAddress())->toBe('no-reply@xomiton.bj')
+        ->and($firstMessage->getFrom()[0]->getAddress())->toBe('no-reply@xomiton.app')
         ->and($firstMessage->getFrom()[0]->getName())->toBe('Xomiton')
-        ->and($firstMessage->getReplyTo()[0]->getAddress())->toBe('contact@xomiton.bj')
+        ->and($firstMessage->getReplyTo()[0]->getAddress())->toBe('contact@xomiton.app')
         ->and($firstMessage->getHtmlBody())->toBe($first->html)
         ->and($firstMessage->getTextBody())->toBe('Bonjour Awa')
         ->and($messages->last()->getOriginalMessage()->getTo()[0]->getAddress())->toBe('chantal@example.test');

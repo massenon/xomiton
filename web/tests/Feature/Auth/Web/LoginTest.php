@@ -183,7 +183,7 @@ it('signale un compte suspendu et la maintenance seulement après vérification 
         ->assertSessionHasErrors(['identifier' => 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.']);
 
     $this->from('/connexion')->post('/connexion', ['identifier' => 'awa@exemple.bj', 'password' => 'Xomiton2026!'])
-        ->assertSessionHasErrors(['identifier' => 'Ce compte est suspendu. Contacte-nous : contact@xomiton.bj']);
+        ->assertSessionHasErrors(['identifier' => 'Ce compte est suspendu. Contacte-nous : contact@xomiton.app']);
 
     $this->user->forceFill(['status' => 'actif', 'suspended_at' => null])->save();
     Settings::set('maintenance', true);

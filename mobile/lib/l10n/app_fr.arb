@@ -9308,7 +9308,7 @@
     "@admin_newsletter_campaigns_sections_emergency_label": {
         "description": "admin_newsletter.campaigns.sections.emergency.label"
     },
-    "admin_newsletter_campaigns_sections_event_html": "<h2>À venir</h2><p>Date, lieu et façon de participer.</p><p><a href=\"https://xomiton.org/evenements\">S’inscrire</a></p>",
+    "admin_newsletter_campaigns_sections_event_html": "<h2>À venir</h2><p>Date, lieu et façon de participer.</p><p><a href=\"https://xomiton.app/evenements\">S’inscrire</a></p>",
     "@admin_newsletter_campaigns_sections_event_html": {
         "description": "admin_newsletter.campaigns.sections.event.html"
     },
@@ -9316,7 +9316,7 @@
     "@admin_newsletter_campaigns_sections_event_label": {
         "description": "admin_newsletter.campaigns.sections.event.label"
     },
-    "admin_newsletter_campaigns_sections_featured_html": "<h2>À la une</h2><p>Le sujet du mois en deux phrases.</p><p><a href=\"https://xomiton.org/\">Lire la suite</a></p>",
+    "admin_newsletter_campaigns_sections_featured_html": "<h2>À la une</h2><p>Le sujet du mois en deux phrases.</p><p><a href=\"https://xomiton.app/\">Lire la suite</a></p>",
     "@admin_newsletter_campaigns_sections_featured_html": {
         "description": "admin_newsletter.campaigns.sections.featured.html"
     },
@@ -9324,7 +9324,7 @@
     "@admin_newsletter_campaigns_sections_featured_label": {
         "description": "admin_newsletter.campaigns.sections.featured.label"
     },
-    "admin_newsletter_campaigns_sections_resource_html": "<h2>Nouvelle fiche</h2><p>Une ressource utile vient d’être publiée.</p><p><a href=\"https://xomiton.org/ressources\">Découvrir la fiche</a></p>",
+    "admin_newsletter_campaigns_sections_resource_html": "<h2>Nouvelle fiche</h2><p>Une ressource utile vient d’être publiée.</p><p><a href=\"https://xomiton.app/ressources\">Découvrir la fiche</a></p>",
     "@admin_newsletter_campaigns_sections_resource_html": {
         "description": "admin_newsletter.campaigns.sections.resource.html"
     },
@@ -25620,7 +25620,7 @@
     "@newsletter_campaign_defaults_intro": {
         "description": "newsletter.campaign_defaults.intro"
     },
-    "newsletter_campaign_defaults_safety": "En danger ? Appelle le 117 ou utilise le SOS sur xomiton.org.",
+    "newsletter_campaign_defaults_safety": "En danger ? Appelle le 117 ou utilise le SOS sur xomiton.app.",
     "@newsletter_campaign_defaults_safety": {
         "description": "newsletter.campaign_defaults.safety"
     },

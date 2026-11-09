@@ -603,7 +603,7 @@ return [
                 // Safari). Un endpoint d'un autre hôte est refusé (422) : le pilote VAPID ne poste jamais ailleurs (SSRF).
                 'allowed_hosts' => ['fcm.googleapis.com', 'updates.push.services.mozilla.com', '*.notify.windows.com', 'web.push.apple.com'],
                 'vapid' => [
-                    'subject' => env('VAPID_SUBJECT', 'mailto:bonjour@xomiton.org'),
+                    'subject' => env('VAPID_SUBJECT', 'mailto:bonjour@xomiton.app'),
                     'public_key' => env('VAPID_PUBLIC_KEY'),
                     'private_key' => env('VAPID_PRIVATE_KEY'),
                 ],
@@ -940,7 +940,7 @@ return [
      */
     'platform_settings' => [
         'site_name' => ['group' => 'general', 'type' => 'string', 'default' => 'Xomiton', 'public' => true, 'rules' => ['required', 'string', 'min:2', 'max:40']],
-        'contact_email' => ['group' => 'general', 'type' => 'string', 'default' => 'contact@xomiton.bj', 'public' => true, 'rules' => ['required', 'email:rfc', 'max:190']],
+        'contact_email' => ['group' => 'general', 'type' => 'string', 'default' => 'contact@xomiton.app', 'public' => true, 'rules' => ['required', 'email:rfc', 'max:190']],
         'timezone' => ['group' => 'general', 'type' => 'string', 'default' => 'Africa/Porto-Novo', 'public' => true, 'rules' => ['required', 'string', 'in:Africa/Porto-Novo,Africa/Lagos,Africa/Abidjan,UTC']],
         'languages' => ['group' => 'general', 'type' => 'json', 'default' => ['fr'], 'public' => true, 'rules' => ['required', 'array', 'min:1'], 'item_rules' => ['string', 'in:fr,en,fon,yo']],
         'anonymous_reports' => ['group' => 'general', 'type' => 'bool', 'default' => true, 'public' => true, 'rules' => ['boolean']],
@@ -963,7 +963,7 @@ return [
         'smtp_encryption' => ['group' => 'smtp', 'type' => 'string', 'default' => 'tls', 'public' => false, 'rules' => ['required', 'in:tls,ssl,none']],
         'smtp_username' => ['group' => 'smtp', 'type' => 'string', 'default' => '', 'public' => false, 'rules' => ['nullable', 'string', 'max:190']],
         'smtp_password' => ['group' => 'smtp', 'type' => 'secret', 'default' => null, 'public' => false, 'rules' => ['nullable', 'string', 'max:190']],
-        'smtp_from_email' => ['group' => 'smtp', 'type' => 'string', 'default' => 'contact@xomiton.bj', 'public' => false, 'rules' => ['required', 'email:rfc', 'max:190']],
+        'smtp_from_email' => ['group' => 'smtp', 'type' => 'string', 'default' => 'contact@xomiton.app', 'public' => false, 'rules' => ['required', 'email:rfc', 'max:190']],
         'smtp_from_name' => ['group' => 'smtp', 'type' => 'string', 'default' => 'Xomiton', 'public' => false, 'rules' => ['required', 'string', 'max:80']],
         'smtp_reply_to' => ['group' => 'smtp', 'type' => 'string', 'default' => '', 'public' => false, 'rules' => ['nullable', 'email:rfc', 'max:190']],
     ],

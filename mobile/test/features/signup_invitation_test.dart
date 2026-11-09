@@ -61,7 +61,7 @@ void main() {
   group('normalizeInvitation', () {
     test('code seul, lien collé, vide', () {
       expect(normalizeInvitation('  XM-ABCD-EFGH-JKMN '), 'XM-ABCD-EFGH-JKMN');
-      expect(normalizeInvitation('https://xomiton.bj/inscription?invitation=XM-ABCD-EFGH-JKMN&signature=abc'), 'XM-ABCD-EFGH-JKMN');
+      expect(normalizeInvitation('https://xomiton.app/inscription?invitation=XM-ABCD-EFGH-JKMN&signature=abc'), 'XM-ABCD-EFGH-JKMN');
       expect(normalizeInvitation(''), '');
       expect(normalizeInvitation(null), '');
     });
@@ -114,7 +114,7 @@ void main() {
       await pump(tester, api);
       await tester.tap(find.text(S.t('auth_login_create_account')).last);
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(const ValueKey('signup-invitation')), 'https://xomiton.bj/inscription?invitation=XM-WXYZ-1234-ABCD');
+      await tester.enterText(find.byKey(const ValueKey('signup-invitation')), 'https://xomiton.app/inscription?invitation=XM-WXYZ-1234-ABCD');
       await tester.pump();
       await fillAccount(tester);
       await submit(tester);

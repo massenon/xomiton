@@ -500,7 +500,7 @@ Français seulement (décision Play, reprise). Pour que les éléments **systèm
 | **Blocage** des utilisateurs abusifs | Messages privés : oui. Fil, groupes : **à vérifier** | Blocage accessible depuis profil, fil, groupe |
 | **Réponse dans un délai** | Modération « essentielle » dans l'espace admin ; engagement de lecture sous 24 h cité dans la fiche Play | Procédure et délai **écrits** (notes de revue : « modération humaine, signalements traités sous 24 h ») et tenus |
 | **Sanction** | Masquer, avertir ; suspension de compte sur le web | Documenté ; l'admin mobile n'a pas la suspension (volontaire) |
-| **Coordonnées publiées** | `contact@xomiton.bj` (à confirmer), page de contact | Lien « Aide et contact » **dans l'application** |
+| **Coordonnées publiées** | `contact@xomiton.app` (boîte à créer chez l'hébergeur), page de contact | Lien « Aide et contact » **dans l'application** |
 | **Conditions d'utilisation** acceptées, tolérance zéro | CGU et consentement à l'inscription | Texte explicite sur le refus des contenus choquants et la possibilité d'exclusion |
 
 ### 5.2 Suppression de compte depuis l'application (5.1.1(v))

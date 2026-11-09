@@ -242,6 +242,8 @@ Sur l'émulateur, l'adresse `10.0.2.2` désigne **votre ordinateur** : l'applica
 flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000/api/v1
 ```
 
+(En production, l'API est `https://xomiton.app/api/v1` : voir [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md) §20.)
+
 Le suffixe `/api/v1` est obligatoire. Le trafic non chiffré (`http`) n'est accepté qu'en mode debug. Connectez-vous avec un compte du §5 ; le code OTP se lit dans le journal du site (§5).
 
 ### 7.2 Installer l'application sur un téléphone

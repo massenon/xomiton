@@ -101,7 +101,7 @@ it('signale un compte suspendu (403, account_suspended) seulement après le mot 
     $this->postJson('/api/v1/auth/login', loginPayload())
         ->assertForbidden()
         ->assertJsonPath('code', 'account_suspended')
-        ->assertJsonPath('message', fn (string $m): bool => str_contains($m, 'contact@xomiton.bj'));
+        ->assertJsonPath('message', fn (string $m): bool => str_contains($m, 'contact@xomiton.app'));
 });
 
 it('refuse les membres en maintenance (503, maintenance) mais laisse passer l’administration, toujours avec OTP', function (): void {

@@ -6,6 +6,8 @@ Convention : `PHP=/opt/cpanel/ea-php83/root/usr/bin/php` (le `php` du terminal p
 
 ## 1. Déploiement pas à pas
 
+Domaine de production : `xomiton.app` (HTTPS actif avant toute ouverture, `.app` est en HSTS preload ; DNS et e-mail : [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md) §20).
+
 Poste local :
 1. `composer install --no-dev --optimize-autoloader --no-interaction` (dans une copie propre ou après `composer install` classique si on revient en dev ; ne jamais envoyer `vendor/` de dev).
 2. `npm ci && npm run build` ; contrôler `public/build/manifest.json` (le serveur n'a pas Node).

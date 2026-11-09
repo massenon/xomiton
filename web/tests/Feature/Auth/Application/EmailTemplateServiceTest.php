@@ -34,7 +34,7 @@ it('rend un template avec la mise en page Xomiton, les variables échappées et 
     ]);
 
     expect($rendered['subject'])->toBe('Ton code de vérification Xomiton')
-        ->and($rendered['html'])->toContain('>482913</h1>', 'Awa &lt;script&gt;', 'logo-mono-blanc-email.png', 'contact@xomiton.bj', '<!DOCTYPE html>')
+        ->and($rendered['html'])->toContain('>482913</h1>', 'Awa &lt;script&gt;', 'logo-mono-blanc-email.png', 'contact@xomiton.app', '<!DOCTYPE html>')
         ->and($rendered['html'])->toContain('Ouvre ce message pour le voir.')
         ->and($rendered['text'])->toContain('482913', 'Il est valable 10 minutes.')
         ->and($rendered['text'])->not->toContain('<p>')
@@ -66,7 +66,7 @@ it('envoie par le mailer de .env et journalise l’envoi', function (): void {
             && $mail->subjectLine === 'Ton code de vérification Xomiton'
             && str_contains($mail->htmlBody, '>123456</h1>')
             && $mail->templateSlug === 'code-verification'
-            && $mail->hasFrom('contact@xomiton.bj', 'Xomiton');
+            && $mail->hasFrom('contact@xomiton.app', 'Xomiton');
     });
 
     expect($log)->toBeInstanceOf(MailLog::class)
@@ -111,7 +111,7 @@ it('dépose l’e-mail complet dans la boîte d’envoi quand aucun transport n�
         ->and($queued->html)->toContain('<!DOCTYPE html>', 'Bienvenue Awa')
         ->and($queued->text)->toContain('Bienvenue Awa')
         ->and($queued->template_slug)->toBe('bienvenue')
-        ->and($queued->from_address)->toBe('contact@xomiton.bj')
+        ->and($queued->from_address)->toBe('contact@xomiton.app')
         ->and($queued->attempts)->toBe(0);
 });
 
@@ -178,7 +178,7 @@ it('rend chaque modèle système avec le layout, le texte, sans variable résidu
 
     foreach ($slugs as $slug) {
         $r = EmailTemplateService::render($slug, $sample);
-        expect($r['html'])->toContain('width="600"', 'prefers-color-scheme:dark', 'logo-mono-blanc-email.png', 'contact@xomiton.bj')
+        expect($r['html'])->toContain('width="600"', 'prefers-color-scheme:dark', 'logo-mono-blanc-email.png', 'contact@xomiton.app')
             ->not->toContain('.svg')->not->toMatch('/\{\{[^}]*\}\}/')->not->toContain('http://')
             ->and($r['text'])->not->toBe('')->not->toMatch('/\{\{[^}]*\}\}/')->not->toContain('http://')->not->toContain('<p')
             ->and(strlen($r['html']))->toBeLessThan(100 * 1024)
