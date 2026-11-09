@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" width="420" height="120">
+  <g transform="translate(10 8)">
+    <circle cx="52" cy="52" r="52" fill="#FFFFFF"/>
+    <path d="M52 86V50" stroke="#0E3B2F" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M52 56C30 54 24 36 26 24c22 0 28 14 26 32Z" fill="#17A673"/>
+    <path d="M52 50C70 46 78 30 78 18c-20 0-28 14-26 32Z" fill="#1F7A5C"/>
+  </g>
+  <text x="136" y="78" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-weight="800" font-size="62" letter-spacing="-1.5" fill="#FFFFFF">Grainette</text>
+</svg>

@@ -43,6 +43,8 @@ Le code de sortie est 1 si un contrôle échoue.
 
 ## 4. Reprendre la méthode dans un autre projet
 
+> **Kit générique prêt à copier** : le dossier [`tools/playstore-kit/`](../../tools/playstore-kit/README.md) reprend cette méthode sans aucune référence à Xomiton (configuration JSON unique, source HTML ou captures d'émulateur, mêmes contrôles automatiques, projet exemple, tests). Pour un autre projet, **copier ce dossier** plutôt que `build_playstore.py` : voir [tools/playstore-kit/README.md](../../tools/playstore-kit/README.md). Les étapes ci-dessous restent valables pour reprendre le script de Xomiton tel quel.
+
 1. **Copier** `build_playstore.py` et `visuels.json` dans le nouveau projet (par exemple `docs/playstore/`).
 2. **Adapter le début de `visuels.json`** :
 
@@ -79,6 +81,8 @@ Le code de sortie est 1 si un contrôle échoue.
 Ces skills n'automatisent pas la conformité : elle reste vérifiée par le script.
 
 ## 6. Cahier des charges à confier à un agent pour un autre projet
+
+Point de départ conseillé : copier le kit [`tools/playstore-kit/`](../../tools/playstore-kit/README.md) dans le nouveau projet et le citer dans la demande (`--init` crée un projet exemple prêt à lancer).
 
 > Produis le dossier de visuels Google Play : une image de présentation 1024 × 500 et 8 captures 1080 × 1920, en PNG 24 bits sans alpha, à partir de la charte du projet. Capture les écrans de l'application avec Playwright, compose-les sur fond de marque (titre court en haut, capture, éléments flottants légers), génère tout par un script reproductible configuré par un fichier JSON, et vérifie automatiquement les règles Google : dimensions, absence d'alpha, texte limité à 20 % de l'image, mots interdits, textes alternatifs de 140 caractères au plus, contraste AA. Regarde chaque image et corrige avant de livrer.
 

@@ -1,0 +1,298 @@
+{
+  "application": "Grainette",
+  "langue_defaut": "fr",
+  "sortie": "sortie",
+  "cache": ".cache",
+  "theme": {
+    "palette": {
+      "vert": "#1F7A5C",
+      "vert-fonce": "#0F4A3A",
+      "vert-vif": "#0F7A57",
+      "ambre": "#F2B544",
+      "encre": "#14201C"
+    },
+    "police": {
+      "famille": "Inter",
+      "fichier": null,
+      "repli": "'Segoe UI', Roboto, Arial, sans-serif"
+    },
+    "logo": "logo.svg",
+    "fond": {
+      "de": "vert-vif",
+      "vers": "vert-fonce",
+      "angle": 160
+    },
+    "couleurs": {
+      "texte": "#FFFFFF",
+      "puce_fond": "#FFFFFF",
+      "puce_texte": "encre",
+      "puce_icone_fond": "vert",
+      "puce_icone": "#FFFFFF",
+      "cadre_appareil": "encre"
+    }
+  },
+  "source": {
+    "type": "html",
+    "url": "app/index.html",
+    "viewport": [
+      390,
+      844
+    ],
+    "echelle": 3,
+    "locale": "fr-FR",
+    "attente_ms": 500,
+    "selecteur_heure": "#clock",
+    "masquer": [
+      ".toast"
+    ],
+    "remplacements": {
+      "Testeur": "Camille"
+    }
+  },
+  "barre_etat": {
+    "mode": "auto",
+    "heure": "9:41"
+  },
+  "contraintes": {
+    "captures": {
+      "nombre": 8
+    }
+  },
+  "feature_graphic": {
+    "fichier": "feature-graphic-1024x500.png",
+    "fond": {
+      "de": "vert-vif",
+      "vers": "vert-fonce",
+      "angle": 125
+    },
+    "ecrans": {
+      "gauche": "01-accueil",
+      "droite": "05-fiche-monstera"
+    },
+    "textes": {
+      "fr": {
+        "slogan": "Vos plantes, toujours à l'heure",
+        "alt": "Logo Grainette et slogan « vos plantes, toujours à l'heure » sur fond vert, entre deux écrans de l'application."
+      }
+    }
+  },
+  "captures": [
+    {
+      "id": "01-accueil",
+      "fichier": "01-accueil.png",
+      "source": {
+        "route": "#/accueil"
+      },
+      "puces": [
+        {
+          "icone": "drop",
+          "cote": "droite",
+          "y": 950,
+          "texte_ref": "arrosage"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Un coup d'œil, et tout est dit",
+          "puces": {
+            "arrosage": "3 plantes ont soif"
+          },
+          "alt": "Accueil : message du jour, tâches à venir et aperçu des plantes avec leur pièce."
+        }
+      }
+    },
+    {
+      "id": "02-plantes",
+      "fichier": "02-plantes.png",
+      "source": {
+        "route": "#/plantes"
+      },
+      "fond": {
+        "de": "#11805C",
+        "vers": "#0F4A3A",
+        "angle": 150
+      },
+      "puces": [
+        {
+          "icone": "leaf",
+          "cote": "droite",
+          "y": 590,
+          "texte_ref": "pieces"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Toute votre jungle, rangée",
+          "puces": {
+            "pieces": "6 plantes, 4 pièces"
+          },
+          "alt": "Liste des six plantes en grille avec leur pièce et l'état d'arrosage de chacune."
+        }
+      }
+    },
+    {
+      "id": "03-a-arroser",
+      "fichier": "03-a-arroser.png",
+      "source": {
+        "route": "#/plantes/arroser"
+      },
+      "fond": {
+        "de": "#0E7A5A",
+        "vers": "#0D4A3A",
+        "angle": 170
+      },
+      "puces": [
+        {
+          "icone": "bell",
+          "cote": "droite",
+          "y": 1330,
+          "texte_ref": "filtre"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Filtrez ce qui a soif",
+          "puces": {
+            "filtre": "Seulement les urgentes"
+          },
+          "alt": "Liste filtrée sur les plantes à arroser : Monstera, Ficus lyrata et Pothos."
+        }
+      }
+    },
+    {
+      "id": "04-rappels",
+      "fichier": "04-rappels.png",
+      "source": {
+        "route": "#/rappels"
+      },
+      "puces": [
+        {
+          "icone": "check",
+          "cote": "gauche",
+          "y": 1500,
+          "texte_ref": "fait"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Des rappels qui se font oublier",
+          "puces": {
+            "fait": "Un geste, c'est fait"
+          },
+          "alt": "Rappels du jour regroupés par moment de la journée, avec l'heure de chaque tâche."
+        }
+      }
+    },
+    {
+      "id": "05-fiche-monstera",
+      "fichier": "05-fiche-monstera.png",
+      "source": {
+        "route": "#/plante/monstera"
+      },
+      "fond": {
+        "de": "#12805C",
+        "vers": "#0F4A3A",
+        "angle": 155
+      },
+      "puces": [
+        {
+          "icone": "drop",
+          "cote": "droite",
+          "y": 960,
+          "texte_ref": "eau"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Chaque plante a sa fiche",
+          "puces": {
+            "eau": "Arrosage : 2 jours"
+          },
+          "alt": "Fiche de la Monstera : arrosage, lumière, humidité, barre de progression du prochain arrosage."
+        }
+      }
+    },
+    {
+      "id": "06-fiche-ficus",
+      "fichier": "06-fiche-ficus.png",
+      "source": {
+        "route": "#/plante/ficus"
+      },
+      "puces": [
+        {
+          "icone": "sun",
+          "cote": "gauche",
+          "y": 1650,
+          "texte_ref": "lumiere"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "La bonne lumière, au bon endroit",
+          "puces": {
+            "lumiere": "Lumière vive"
+          },
+          "alt": "Fiche du Ficus lyrata avec ses besoins en eau, en lumière et en humidité."
+        }
+      }
+    },
+    {
+      "id": "07-fiche-cactus",
+      "fichier": "07-fiche-cactus.png",
+      "source": {
+        "route": "#/plante/cactus"
+      },
+      "fond": {
+        "de": "#0F7E5E",
+        "vers": "#0E4A3E",
+        "angle": 165
+      },
+      "puces": [
+        {
+          "icone": "heart",
+          "cote": "droite",
+          "y": 1650,
+          "texte_ref": "calme"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Même les cactus sont gérés",
+          "puces": {
+            "calme": "Rien à faire ici"
+          },
+          "alt": "Fiche du cactus étoilé : arrosage espacé, plein soleil et état « tout va bien »."
+        }
+      }
+    },
+    {
+      "id": "08-semaine",
+      "fichier": "08-semaine.png",
+      "source": {
+        "route": "#/rappels/semaine"
+      },
+      "fond": {
+        "de": "#117A58",
+        "vers": "#0F4C3C",
+        "angle": 145
+      },
+      "puces": [
+        {
+          "icone": "calendar",
+          "cote": "gauche",
+          "y": 1500,
+          "texte_ref": "semaine"
+        }
+      ],
+      "textes": {
+        "fr": {
+          "titre": "Et la semaine en un regard",
+          "puces": {
+            "semaine": "7 tâches prévues"
+          },
+          "alt": "Vue de la semaine : tâches du jour, de demain et de jeudi, classées par jour."
+        }
+      }
+    }
+  ]
+}

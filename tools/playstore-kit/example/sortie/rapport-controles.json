@@ -1,0 +1,752 @@
+{
+ "kit": "playstore-kit",
+ "version_kit": "1.0.0",
+ "application": "Grainette",
+ "langue": "fr",
+ "resultats": [
+  {
+   "visuel": "ensemble",
+   "controle": "nombre de captures",
+   "ok": true,
+   "detail": "8 (attendu 8)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1024x500 (attendu 1024x500)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.22 Mo (< 15 Mo)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.3 %"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 6.20:1"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "couleurs vives (blanc < 25 %, noir < 3 %, saturation moyenne > 0.45)",
+   "ok": true,
+   "detail": "blanc 10 %, noir 0.3 %, saturation 0.62"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.46 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.6 %"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.47 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.5 %"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.31:1"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#11805C s=0.87 v=0.50 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.40 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "5.8 %"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.53:1"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0E7A5A s=0.89 v=0.48 ; #0D4A3A s=0.82 v=0.29"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.38 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.1 %"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.45 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.3 %"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.12:1"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#12805C s=0.86 v=0.50 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.40 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.0 %"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.54:1"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.44 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.4 %"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.24:1"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7E5E s=0.88 v=0.49 ; #0E4A3E s=0.81 v=0.29"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.44 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.3 %"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.68:1"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#117A58 s=0.86 v=0.48 ; #0F4C3C s=0.80 v=0.30"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "barre d'état : heure figée à 9:41 (le reste de la barre vient de la source)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"source\"}"
+  },
+  {
+   "visuel": "feature-graphic/slogan",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "111"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Logo Grainette et slogan « vos plantes, "
+  },
+  {
+   "visuel": "01-accueil/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "80"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Accueil : message du jour, tâches à veni"
+  },
+  {
+   "visuel": "01-accueil/puce:arrosage",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-plantes/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-plantes/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-plantes/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "80"
+  },
+  {
+   "visuel": "02-plantes/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Liste des six plantes en grille avec leu"
+  },
+  {
+   "visuel": "02-plantes/puce:pieces",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-a-arroser/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-a-arroser/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-a-arroser/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "75"
+  },
+  {
+   "visuel": "03-a-arroser/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Liste filtrée sur les plantes à arroser "
+  },
+  {
+   "visuel": "03-a-arroser/puce:filtre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-rappels/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-rappels/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-rappels/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "81"
+  },
+  {
+   "visuel": "04-rappels/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Rappels du jour regroupés par moment de "
+  },
+  {
+   "visuel": "04-rappels/puce:fait",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-fiche-monstera/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-fiche-monstera/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-fiche-monstera/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "94"
+  },
+  {
+   "visuel": "05-fiche-monstera/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Fiche de la Monstera : arrosage, lumière"
+  },
+  {
+   "visuel": "05-fiche-monstera/puce:eau",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-fiche-ficus/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-fiche-ficus/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-fiche-ficus/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "73"
+  },
+  {
+   "visuel": "06-fiche-ficus/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Fiche du Ficus lyrata avec ses besoins e"
+  },
+  {
+   "visuel": "06-fiche-ficus/puce:lumiere",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-fiche-cactus/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-fiche-cactus/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-fiche-cactus/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "80"
+  },
+  {
+   "visuel": "07-fiche-cactus/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Fiche du cactus étoilé : arrosage espacé"
+  },
+  {
+   "visuel": "07-fiche-cactus/puce:calme",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-semaine/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-semaine/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-semaine/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "77"
+  },
+  {
+   "visuel": "08-semaine/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Vue de la semaine : tâches du jour, de d"
+  },
+  {
+   "visuel": "08-semaine/puce:semaine",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  }
+ ]
+}
