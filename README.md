@@ -1,10 +1,14 @@
 <div align="center">
 
-<img src="docs/readme/presentation.webp" alt="Xomiton : logo blanc sur fond bleu et la promesse « Écoute, sécurité, communauté », encadré par deux écrans de l'application" width="720">
+<img src="design-system/logo/png/logo-couleur-1200w.png" alt="Logo Xomiton en couleurs : lettres bleues, rosace rouge et symbole rouge" width="360">
 
 # Xomiton
 
-**Une plateforme sûre d'écoute, d'information et d'entraide pour les filles, les femmes et les personnes LBTQ+ au Bénin.**
+**Espace safe d’apprentissage et d’appui holistique**
+
+*Espace sûr · confidentiel · bienveillant*
+
+Une plateforme pour les filles, les femmes et les personnes LBTQ+ au Bénin.
 
 Site web · Application mobile · Alerte et SOS · Outils pour les pair·es éducateur·rices
 
@@ -46,53 +50,62 @@ Au Bénin, les violences basées sur le genre et les atteintes aux droits humain
 
 ## Aperçu
 
+Captures réelles du site en cours d'exécution, en thème clair, avec des données de démonstration.
+
 <table>
   <tr>
-    <td align="center" width="25%">
-      <img src="docs/readme/accueil.webp" alt="Écran d'accueil de l'application : raccourcis Signaler, Urgences, Assistant et Apprendre, progression du profil et contenus à la une" width="220"><br>
-      <sub><b>Accueil</b><br>L'essentiel à portée de pouce</sub>
+    <td align="center" width="50%">
+      <img src="docs/captures/reelles/accueil-1440.webp" alt="Page d'accueil du site Xomiton : « votre espace safe d'apprentissage et d'appui holistique »" width="420"><br>
+      <sub><b>Accueil</b> (bureau)</sub>
     </td>
-    <td align="center" width="25%">
-      <img src="docs/readme/sos.webp" alt="Écran SOS : un grand bouton rouge à maintenir deux secondes, avec partage de position facultatif" width="220"><br>
-      <sub><b>SOS</b><br>Alerter les personnes de confiance</sub>
-    </td>
-    <td align="center" width="25%">
-      <img src="docs/readme/messages.webp" alt="Conversation de messagerie entre une membre et une pair éducatrice, avec des messages fictifs" width="220"><br>
-      <sub><b>Messagerie</b><br>Des échanges à son rythme</sub>
-    </td>
-    <td align="center" width="25%">
-      <img src="docs/readme/ressources.webp" alt="Liste de ressources filtrables : fiches, bandes dessinées, vidéos et textes de loi, lisibles hors ligne" width="220"><br>
-      <sub><b>Ressources</b><br>Fiches, lois, BD, vidéos, hors ligne</sub>
+    <td align="center" width="50%">
+      <img src="docs/captures/reelles/ressources-1440.webp" alt="Page Ressources du site : recherche, filtres par thème et fiches à lire ou à télécharger" width="420"><br>
+      <sub><b>Ressources</b> (bureau)</sub>
     </td>
   </tr>
   <tr>
-    <td align="center">
-      <img src="docs/readme/vie-privee.webp" alt="Écran Sécurité : mode discret, masquage des aperçus, verrouillage par code, appareils connectés, téléchargement des données et suppression du compte" width="220"><br>
-      <sub><b>Vie privée</b><br>Mode discret, code, effacement</sub>
+    <td align="center" width="50%">
+      <img src="docs/captures/reelles/assistant-membre-1440.webp" alt="Assistant Xomiton dans l'espace membre, avec le bouton SOS et l'accès à une personne formée" width="420"><br>
+      <sub><b>Assistant</b>, espace membre (bureau)</sub>
     </td>
-    <td align="center">
-      <img src="docs/readme/espace-pair.webp" alt="Espace pair éducateur·rice : dernière étape de la collecte d'un dossier, avec avertissements de plausibilité avant enregistrement" width="220"><br>
-      <sub><b>Espace pair</b><br>Collecte de dossiers hors ligne</sub>
-    </td>
-    <td align="center">
-      <img src="docs/readme/astreinte-admin.webp" alt="Espace d'astreinte de l'administration : alertes SOS actives avec décompte avant escalade, boutons d'accusé de réception et indicateurs clés" width="220"><br>
-      <sub><b>Astreinte</b><br>Accuser réception, suivre l'escalade</sub>
-    </td>
-    <td align="center">
-      <img src="docs/readme/site-alerte.webp" alt="Bloc d'alerte du site public : signalement anonyme possible, localisation partagée uniquement avec accord, boutons Faire un signalement et Contacts d'urgence" width="220"><br>
-      <sub><b>Site public</b><br>Signaler ou alerter sans compte</sub>
+    <td align="center" width="50%">
+      <img src="docs/captures/reelles/signaler-1440.webp" alt="Page Signaler : parcours anonyme en six étapes, sans compte" width="420"><br>
+      <sub><b>Signalement</b> sans compte (bureau)</sub>
     </td>
   </tr>
 </table>
 
-<sub>Toutes les captures montrent des données de démonstration : pseudonymes fictifs, aucune information réelle.</sub>
+Le même site sur un téléphone (390 × 844 px) :
+
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <img src="docs/captures/reelles/accueil-390.webp" alt="Accueil du site sur téléphone" width="170"><br>
+      <sub><b>Accueil</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="docs/captures/reelles/sos-390.webp" alt="Page SOS du site sur téléphone : bouton à maintenir deux secondes" width="170"><br>
+      <sub><b>SOS</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="docs/captures/reelles/signaler-390.webp" alt="Page Signaler du site sur téléphone" width="170"><br>
+      <sub><b>Signaler</b></sub>
+    </td>
+    <td align="center" width="25%">
+      <img src="docs/captures/reelles/ressources-390.webp" alt="Page Ressources du site sur téléphone" width="170"><br>
+      <sub><b>Ressources</b></sub>
+    </td>
+  </tr>
+</table>
+
+<sub>Pseudonymes et contenus fictifs : aucune information réelle n'apparaît sur ces captures.</sub>
 
 ## Fonctionnalités principales
 
 | Domaine | Ce que propose Xomiton |
 |---|---|
 | **Site public** | Accueil, ressources, thématiques, FAQ, actualités, événements, pages légales, newsletter avec double confirmation ; **signalement et SOS accessibles sans compte** |
-| **Espace membre** | Fil d'actualités, messagerie, groupes, pages, événements, forums, assistant, profil progressif, notifications |
+| **Espace membre** | Fil d'actualités, messagerie, groupes, pages, événements, forums, assistant à base de connaissances, profil progressif, notifications |
 | **SOS et signalement** | Alerte avec position (partagée uniquement avec accord), routage vers les bonnes personnes, escalade automatique sans accusé de réception, accusé de réception, contacts d'urgence, signalement anonyme possible, fonctionnement hors ligne |
 | **Espace pair éducateur·rice** | Collecte de dossiers hors ligne, synchronisation avec gestion des conflits, alertes routées, outils d'animation |
 | **Administration** | Tableau de bord, validation des inscriptions et des rôles, modération, rapports et indicateurs, e-mails, maintenance, sauvegardes, journal d'audit |
