@@ -112,6 +112,8 @@ Une seule application avec espaces par rôle (membre, pair, admin d'astreinte) ;
 
 ## 4. Ce qui bloque le plus, dans l'ordre
 
+Guides pas à pas pour les quatre démarches que seul le client peut mener : [DEMARCHES_CLIENT.md](DEMARCHES_CLIENT.md) (tableau de bord) ; **C2** informations légales : [FORMULAIRE_INFORMATIONS_LEGALES.md](FORMULAIRE_INFORMATIONS_LEGALES.md) ; **C3** avis juridique : [DOSSIER_AVIS_JURIDIQUE.md](DOSSIER_AVIS_JURIDIQUE.md) ; **C4** domaine (avant l'hébergement en ligne) : [DEMARCHE_DOMAINE_XOMITON_APP.md](DEMARCHE_DOMAINE_XOMITON_APP.md) ; **C5** comptes externes, dont le compte Apple : [DOSSIER_APPLE_DEVELOPER_ORGANISATION.md](DOSSIER_APPLE_DEVELOPER_ORGANISATION.md).
+
 1. Les **12 informations légales**, le **domaine** (`xomiton.app` retenu : enregistrement, DNS, HTTPS avant ouverture, boîtes `contact@` et `noreply@xomiton.app`, voir [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md) §20) et l'**avis juridique** (c'est sur le chemin critique de tout le reste).
 2. Un **hébergement cPanel sain** et les **comptes externes** (Firebase, SMS, SMTP, Play Console).
 3. Le **premier build Android** : c'est lui qui dira ce que la compilation et un vrai téléphone révèlent.
