@@ -103,7 +103,7 @@ Une seule application avec espaces par rôle (membre, pair, admin d'astreinte) ;
 - [ ] **D** Après publication : surveiller les rapports de plantage et la revue de politique sur les fonctions sensibles (localisation, services d'urgence), et prévoir un plan de retrait rapide d'une version défectueuse.
 
 ### 3.3 Plus tard
-- [ ] **D/C** iOS : projet Apple, `GoogleService-Info.plist`, APNs, icône alternative du mode discret, TestFlight (non commencé ; compte Apple requis).
+- [ ] **D/C** iOS : projet Apple, `GoogleService-Info.plist`, APNs, icône alternative du mode discret, TestFlight (non commencé ; compte Apple requis ; plan : [docs/PLAN_IOS.md](PLAN_IOS.md), lots IOS-00 à IOS-14, ≈ 68 j.p hors marge ; rien d'iOS n'a jamais été compilé, pas de Mac).
 - [ ] **D** Tablettes 7 et 10 pouces (captures non obligatoires, à produire plus tard).
 
 ---

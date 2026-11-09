@@ -95,7 +95,7 @@ Légende : **C** = client, **D** = développeur·se, **J** = conseil juridique, 
 | Id | Chantier | Propriétaire | Dépend de | Critère de sortie |
 |---|---|---|---|---|
 | **C21** | **Connecteurs réseaux sociaux réels** (Facebook Graph API, Telegram Bot API ; TikTok sans connecteur) : écrire le transport HTTP, publier en recette | **D** (jetons : **C**) | Q7 et comptes de l'organisation | Une publication réelle en recette sur chaque réseau retenu ; sinon « publication manuelle » assumée |
-| **C22** | **iOS** : projet Apple, `GoogleService-Info.plist`, APNs, icône alternative du mode discret, TestFlight | **D** + **C** (compte Apple) | C5 | Build iOS installé, push reçu ; non commencé |
+| **C22** | **iOS** : projet Apple, `GoogleService-Info.plist`, APNs, icône alternative du mode discret, TestFlight | **D** + **C** (compte Apple) | C5 | Build iOS installé, push reçu ; non commencé ; plan : [docs/PLAN_IOS.md](PLAN_IOS.md) |
 | **C23** | **Fonctions partielles du web** : PWA pair (précache `/collecte`), indicateurs de l'espace pair, appareils synchronisés, filtres enregistrés, balise de statistiques « Contenu », médiathèque et outils CCC, « Mes signalements », PIN web, filtre de mots (Q74) | **D** | décisions Q | Lot par lot, cf. [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) |
 | **C24** | **Comparaison « à l'identique » au prototype** aux 4 largeurs (P16-05) et contrôle visuel des écrans d'administration en navigateur | **C** + **D** | C8 | Captures comparées, écarts consignés |
 | **C25** | **Dépendances** : `npm audit` (4 alertes de la chaîne de développement), mise à jour de Vitest ; budget JavaScript serré (≈ 119 Ko gzip pour 120 Ko) | **D** | — | Alertes levées ou justifiées ; marge de budget |
