@@ -12,6 +12,7 @@
 // `?c=<ulid>` ouvre une conversation ; `?with=<id>` : le serveur sélectionne la conversation privée déjà ouverte, sinon
 // la page **demande confirmation** (« Écrire à … ? ») avant de la créer : un lien seul ne contacte personne.
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useViewportFit } from '@/app/useViewportFit';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { ApiError, useApi } from '@/app/useApi';
@@ -261,6 +262,10 @@ watch(() => store.activeId, (id) => {
     if (!id) threadPoller?.stop();
 });
 
+// Bouton SOS flottant : la carte s'arrête au-dessus de sa zone (useViewportFit, messages.css).
+const chat = ref<HTMLElement | null>(null);
+useViewportFit(chat);
+
 onMounted(async () => {
     const seconds = (value: number | undefined, fallback: number) => Math.max(2, Number(value) || fallback) * 1000;
     threadPoller = createPoller({ interval: seconds(props.config?.poll_seconds, 4), run: pollThread });
@@ -313,7 +318,7 @@ onBeforeUnmount(() => {
 <template>
     <Head :title="title" />
     <div class="col-lg-9" data-xm-messages-page>
-        <div :class="['card xm-chat d-flex flex-row overflow-hidden', { 'show-pane': paneOpen }]">
+        <div ref="chat" :class="['card xm-chat d-flex flex-row overflow-hidden', { 'show-pane': paneOpen }]">
             <ConversationList
                 v-model:search="store.search"
                 v-model:filter="store.filter"

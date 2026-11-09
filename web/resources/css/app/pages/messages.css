@@ -5,6 +5,10 @@
  * opacité sur du texte (contraste du thème gardé sur fond primaire).
  */
 .xm-chat { height: calc(100vh - 170px); min-height: 540px; }
+/* Bouton SOS flottant : la carte s'arrête au-dessus de sa zone (--xm-sos-clear) quand la page est en haut ; --xm-chat-top
+   (position réelle de la carte, mesurée par Messages.vue) suit les bandeaux au-dessus. La barre de saisie, en bas de la
+   carte, n'est donc jamais sous le bouton. */
+@supports (height: 1dvh) { .xm-chat { height: max(22rem, calc(100dvh - var(--xm-chat-top, 11rem) - var(--xm-sos-clear, 6.5rem))); min-height: 0; } }
 .xm-chat-list .xm-conv { cursor: pointer; border: 0; text-align: start; min-height: var(--xm-target-min); }
 .xm-chat-list .xm-conv.active { background: rgba(var(--xm-primary-rgb), .1); }
 .xm-chat-list .xm-conv:focus-visible { outline: 2px solid var(--xm-focus-ring); outline-offset: -2px; }
@@ -29,7 +33,6 @@
 .xm-chat-group-avatar { width: 40px; height: 40px; }
 
 @media (max-width: 767.98px) {
-  .xm-chat { height: calc(100vh - 130px); }
   .xm-chat.show-pane .xm-chat-list { display: none !important; }
   .xm-chat:not(.show-pane) .xm-chat-pane { display: none !important; }
 }

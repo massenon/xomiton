@@ -16,6 +16,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { ApiError, useApi } from '@/app/useApi';
+import { useViewportFit } from '@/app/useViewportFit';
 import { useToast } from '@/app/useToast';
 import { useSessionStore } from '@/stores/session';
 import { useUiStore } from '@/stores/ui';
@@ -56,6 +57,9 @@ const persist = ref(false);
 const conversationId = ref<number | null>(null);
 const escalating = ref(false);
 const box = ref<HTMLElement | null>(null);
+const card = ref<HTMLElement | null>(null);
+// Bouton SOS flottant : la carte s'arrête au-dessus de sa zone (assistant.css) ; la saisie n'est jamais recouverte.
+useViewportFit(card);
 const field = ref<HTMLInputElement | null>(null);
 let seq = 0;
 
@@ -301,8 +305,8 @@ const variantClass = (link: ChatLink) => (link.variant === 'danger' ? 'btn-dange
 
 <template>
     <Head :title="title" />
-    <div class="col-md-8 col-lg-6 vstack gap-3">
-        <div class="card xm-assistant-chat">
+    <div class="col-md-8 col-lg-6 vstack gap-3 xm-assistant-col">
+        <div ref="card" class="card xm-assistant-chat">
             <div class="card-header d-flex align-items-center gap-3">
                 <span class="icon-lg rounded-circle xm-assistant-avatar flex-shrink-0" aria-hidden="true"><i class="bi bi-robot"></i></span>
                 <div class="flex-grow-1 min-w-0">
@@ -335,6 +339,7 @@ const variantClass = (link: ChatLink) => (link.variant === 'danger' ? 'btn-dange
                 <div v-if="busy" class="xm-typing px-3 py-2 rounded-3 bg-body-tertiary align-self-start" data-xm-typing><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span class="visually-hidden">{{ t('assistant.page.typing') }}</span></div>
             </div>
 
+            <div class="xm-assistant-compose">
             <div class="px-3 pb-2 d-flex gap-2 overflow-auto xm-assistant-chips" role="group" :aria-label="t('assistant.page.chips_label')">
                 <button v-for="chip in chips" :key="chip" type="button" class="btn btn-sm btn-primary-soft text-nowrap" :disabled="busy" @click="onChip($event, chip)">{{ chip }}</button>
             </div>
@@ -345,6 +350,9 @@ const variantClass = (link: ChatLink) => (link.variant === 'danger' ? 'btn-dange
                     <input id="assistant-input" ref="field" v-model="input" class="form-control" name="question" :placeholder="t('assistant.page.placeholder')" :maxlength="max_length" enterkeyhint="send">
                     <XmButton type="submit" variant="primary" icon="send-fill" :label="t('assistant.page.send')" :disabled="busy && !inputIsCrisis" />
                 </form>
+            </div>
+            </div>
+            <div class="card-footer border-top-0 pt-0">
                 <div class="mt-2">
                     <XmField v-model="persist" name="persist" type="switch" :label="t('assistant.page.persist')" :hint="t('assistant.page.persist_help')" />
                 </div>

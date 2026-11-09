@@ -14,3 +14,24 @@
 .xm-assistant-chips .btn, .xm-assistant-msg .btn { min-height: var(--xm-target-min); }
 .xm-assistant-chips .btn { flex: none; }
 @media (prefers-reduced-motion: reduce) { .xm-assistant-log { scroll-behavior: auto; } }
+
+/*
+ * Gouttière et barre de saisie (correction du bouton SOS flottant). La carte respecte la gouttière du gabarit
+ * (--xm-gutter : demi-gouttière de chaque côté, comme les autres pages), `min-width: 0` et `box-sizing` l'empêchent de
+ * s'élargir au contenu (en-tête, puces) ; la carte s'arrête au-dessus de la zone du bouton SOS : la rangée puces + saisie,
+ * en bas de la carte, n'est jamais recouverte.
+ */
+.xm-assistant-col { min-width: 0; padding-inline: calc(var(--xm-gutter, 1.5rem) / 2); }
+.xm-assistant-chat { min-width: 0; max-width: 100%; box-sizing: border-box; }
+.xm-assistant-chat .card-header { min-width: 0; }
+.xm-assistant-chat .card-header > .dropdown { flex: none; }
+.xm-assistant-compose { background: var(--bs-card-bg, var(--bs-body-bg)); }
+.xm-assistant-compose .card-footer { border-top: 0; background: transparent; }
+/* Bouton SOS flottant : la carte (en-tête, fil, puces, saisie) s'arrête au-dessus de la zone du bouton quand la page est
+   en haut ; --xm-chat-top (position réelle, useViewportFit) suit les bandeaux au-dessus. Le fil prend la place restante ; la carte déborde du pied
+   (réglage « Garder cette conversation » + mention, --xm-assistant-foot) sous la ligne, la saisie reste au-dessus. */
+@supports (height: 1dvh) {
+  .xm-assistant-chat { display: flex; flex-direction: column; height: max(34rem, calc(100dvh - var(--xm-chat-top, 11rem) - var(--xm-sos-clear, 6.5rem) + var(--xm-assistant-foot, 9rem))); }
+  .xm-assistant-chat > .xm-assistant-log { flex: 1 1 0; height: auto; min-height: 12rem; }
+  .xm-assistant-chat > :not(.xm-assistant-log) { flex: none; }
+}

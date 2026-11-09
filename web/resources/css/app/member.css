@@ -43,14 +43,19 @@
 
 /*
  * Rendu mobile commun de l'espace membre (< 576 px), à la source : composants et feuilles partagés, jamais page par page.
- * - Fond de page : le bouton SOS flottant (64 px) ne masque plus le bas du contenu (puces de l'assistant, pied de formulaire).
+ * - Fond de page : espace de défilement final sous le contenu (bouton SOS flottant 64 px + marge + zone sûre) : plus rien de lisible ni de cliquable n'y reste coincé dessous.
  * - Flex et grilles : `min-width: 0` sur les enfants de la rangée, mots longs coupés, images et médias bornés à leur conteneur.
  * - Modales : feuille plein écran (classe Bootstrap `modal-fullscreen-sm-down` posée par XmModal), pied et corps respectent
  *   les zones sûres (encoche, barre gestuelle) ; les confirmations de suppression gardent leur boîte compacte.
  * - Cibles tactiles (pointeur grossier) : 44 px minimum pour boutons, onglets, liens de liste, sélecteurs ; cases à cocher
  *   et boutons radio à 24 px (WCAG 2.5.8) avec une zone de libellé de 44 px.
  */
-main { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important; }
+/* Espace de défilement final : bouton SOS (64 px) + sa marge basse + zone sûre + respiration (--xm-sos-clear, theme/xomiton.css).
+   `scroll-padding-bottom` : un champ ou un lien mis au point n'est jamais amené sous le bouton. */
+html { scroll-padding-bottom: var(--xm-sos-clear, 6.5rem); scroll-padding-top: 5rem; /* en-tête collant */ }
+/* `:not(#xm-main)` monte la spécificité au-dessus des utilitaires `py-*` (padding !important) du gabarit, qui écrasaient la règle. */
+main:not(#xm-main) { padding-bottom: var(--xm-sos-clear, 6.5rem) !important; }
+main .min-w-0 { min-width: 0; }
 main :is(.row > *, .d-flex > *, .hstack > *, .vstack > *, .card, .card-body, .list-group-item) { min-width: 0; }
 main :is(p, h1, h2, h3, h4, h5, h6, li, td, th, dd, .card-body, .bubble, .list-group-item) { overflow-wrap: anywhere; }
 main img, main video, main svg:not(.bi), main canvas { max-width: 100%; }
