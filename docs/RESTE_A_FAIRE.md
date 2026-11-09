@@ -104,6 +104,8 @@ Une seule application avec espaces par rôle (membre, pair, admin d'astreinte) ;
 
 ### 3.3 Plus tard
 - [ ] **D/C** iOS : projet Apple, `GoogleService-Info.plist`, APNs, icône alternative du mode discret, TestFlight (non commencé ; compte Apple requis ; plan : [docs/PLAN_IOS.md](PLAN_IOS.md), lots IOS-00 à IOS-14, ≈ 68 j.p hors marge ; rien d'iOS n'a jamais été compilé, pas de Mac).
+  - Décisions D-IOS-1 à D-IOS-12 : **Tranché 2026-11-10 (recommandation retenue par le client)**. IOS-00 fait côté client ; D-IOS-5 (âge) et D-IOS-8 (chiffrement) restent conditionnées à l'avis écrit du conseil.
+- [ ] **D** **Chantier serveur « filtre minimal de contenus » (≈ 2 j)** : motifs interdits (insultes, incitations, coordonnées) sur publications, commentaires et messages de groupe, avec journalisation et message clair ; décidé par D-IOS-9 (2026-11-10, révise Q74) ; exigé par la Guideline 1.2 d'Apple (lot IOS-10). Non commencé.
 - [ ] **D** Tablettes 7 et 10 pouces (captures non obligatoires, à produire plus tard).
 
 ---

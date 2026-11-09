@@ -37,7 +37,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | Q66 | Newsletter : confirmation par bouton (un clic de plus) | POST de confirmation | Client | Avant production |
 | Q37 | Code PIN local et mode discret (iOS : icône seulement) | PIN haché local, seul `pin_enabled` synchronisé | Client | Avant production |
 | Q85 | Maintenance : permission dédiée, écart à `ROLE_ET_PERMISSIONS.md` §3 | Permission dédiée, admin en lecture | Technique | Avant production |
-| Q74 | Messagerie : lecture du message signalé par la modération, filtre de mots | Lecture du seul message signalé ; pas de filtre | Client | Avant production |
+| Q74 | Messagerie : lecture du message signalé par la modération, filtre de mots | Lecture du seul message signalé ; **filtre minimal serveur depuis le 2026-11-10 (D-IOS-9 révise « pas de filtre »)** | Client | Avant production |
 | Q94 | Admin système : droits admin / superadmin, résolution des conflits | Admin lit, superadmin écrit ; conflit écrit selon les règles | Technique | Avant production |
 | Q91 | Inscriptions : validation manuelle « tous » sans restriction d'accès | `reg_manual_validation` (`peers` par défaut) ; restrictions à définir (Q26) | Client | Avant production |
 | Q92 | Registres : archivage logique, dossier créé au nom de l'admin | Appliqué | Client | Avant production |
@@ -86,7 +86,28 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | D-MOB-17 | Valider manuellement **seulement les inscriptions signalées** (e-mail jetable, inscriptions répétées) ; `reg_manual_validation = all` reste l'interrupteur « tout valider » | **Tranché 2026-10-29 (recommandation retenue)** |
 | D-MOB-18 | Âge : **conservé**, application 15 ans, tranches Play 16-17 et 18+, **à valider par le conseil juridique avant publication** ; l'application affiche la règle des 15 ans à l'inscription | **Tranché 2026-10-29 (recommandation retenue)** |
 
-## 5. Lecture
+## 5. Application iOS : décisions du 10 novembre 2026
+
+**Tranché 2026-11-10 (recommandation retenue par le client)** pour D-IOS-1 à D-IOS-12 (détail et options : `PLAN_IOS.md` §10). **Réserve** : D-IOS-5 (âge, classification) et D-IOS-8 (chiffrement) restent conditionnées à l'avis écrit du conseil juridique. IOS-00 est fait côté client.
+
+| Réf. | Décision | Statut |
+|---|---|---|
+| D-IOS-1 | iPhone seul à la v1 ; universel plus tard | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-2 | Mac mini + CI macOS | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-3 | Critical Alerts : demander en parallèle sans en dépendre ; v1 en Time Sensitive | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-4 | Mode discret : icône neutre, nom « Xomiton » inchangé | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-5 | Classification d'âge calculée honnêtement ; 15 ans maintenu si le conseil l'accepte, sinon 16 — **application conditionnée à l'avis du conseil** | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-6 | Portrait seul sur iPhone à la v1 | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-7 | Aucune synchro d'arrière-plan à la v1 ; `BGAppRefreshTask` en v1.1 si besoin | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-8 | Chiffrement : avis écrit du conseil avant de répondre à Apple — **application conditionnée à cet avis** | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-9 | **Filtre minimal de contenus côté serveur** (≈ 2 j) ; **révise Q74** (« pas de filtre ») ; chantier ouvert dans RESTE_A_FAIRE.md | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-10 | Android d'abord, iOS 6 à 8 semaines après | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-11 | Compte Apple organisation | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-12 | Liste restreinte de boutiques (Bénin et voisins francophones), UE à décider | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+
+D-IOS-9 révise Q74 : la ligne Q74 ci-dessus (« pas de filtre ») est remplacée par un filtre minimal serveur sur publications, commentaires et messages de groupe.
+
+## 6. Lecture
 
 - 14 questions bloquent la recette (surtout contenu et périmètre ; Q38 est tranchée, ses maquettes restent à valider) ; 20 sont à trancher avant la mise en production, dont deux d'ordre juridique (Q67, Q68).
 - Beaucoup de lignes « Appliqué, à valider » (Q70 à Q94) sont des choix techniques déjà livrés : sans réponse, ils restent en vigueur ; seule une contre-décision demande du travail.

@@ -5,7 +5,7 @@ description: Plan pour construire et publier l'application iOS de Xomiton (la m�
 
 # Plan iOS : construire et publier l'application Xomiton sur l'App Store
 
-Document du 9 novembre 2026. Il complète [PLAN_MOBILE_APP_UNIQUE.md](PLAN_MOBILE_APP_UNIQUE.md) (architecture et lots P15), [PLAN_FINALISATION.md](PLAN_FINALISATION.md) (chantier C22) et [RESTE_A_FAIRE.md](RESTE_A_FAIRE.md) (§3.3), et suit la même logique que [BUILD_ANDROID_WINDOWS.md](BUILD_ANDROID_WINDOWS.md) et [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md). Légende des responsables : **C** = client, **D** = développeur·se, **M** = tâche qui exige un Mac (ou une machine macOS de CI), **J** = conseil juridique.
+Document du 9 novembre 2026 ; décisions D-IOS-1 à D-IOS-12 tranchées le 10 novembre 2026 (§10). Il complète [PLAN_MOBILE_APP_UNIQUE.md](PLAN_MOBILE_APP_UNIQUE.md) (architecture et lots P15), [PLAN_FINALISATION.md](PLAN_FINALISATION.md) (chantier C22) et [RESTE_A_FAIRE.md](RESTE_A_FAIRE.md) (§3.3), et suit la même logique que [BUILD_ANDROID_WINDOWS.md](BUILD_ANDROID_WINDOWS.md) et [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md). Légende des responsables : **C** = client, **D** = développeur·se, **M** = tâche qui exige un Mac (ou une machine macOS de CI), **J** = conseil juridique.
 
 ## 0. Avertissements et état réel
 
@@ -92,7 +92,7 @@ Thème `useMaterial3: true`, polices Montserrat (titres) et Arial (corps), jeton
 | Compiler et envoyer vers TestFlight depuis une **machine macOS de CI** (GitHub Actions, Codemagic) | Écrire et valider le **Swift natif** (recouvrement, icône alternative, détection de capture) : sans compilation, on écrit à l'aveugle |
 | Produire les captures de la fiche avec le générateur à partir du prototype (mais **elles ne seront pas acceptables comme captures de l'app**, voir §6.3) | Capturer de **vraies** captures au format Apple, activer des capacités dans Xcode (contournable par le portail web et édition manuelle des fichiers) |
 
-**Recommandation (D-IOS-2)** : un **Mac mini** (Apple silicon, 16 Go, 256 Go minimum ; Xcode récent exige un macOS récent, **à vérifier**) affecté au développeur Flutter + une CI macOS pour les livraisons reproductibles. Sans Mac, le cycle d'essai passe par la CI (10 à 20 minutes par essai) : tenable pour livrer, **pas pour concevoir l'interface ni le Swift natif**.
+**Recommandation (D-IOS-2), tranchée le 2026-11-10** : un **Mac mini** (Apple silicon, 16 Go, 256 Go minimum ; Xcode récent exige un macOS récent, **à vérifier**) affecté au développeur Flutter + une CI macOS pour les livraisons reproductibles. Sans Mac, le cycle d'essai passe par la CI (10 à 20 minutes par essai) : tenable pour livrer, **pas pour concevoir l'interface ni le Swift natif**.
 
 ### 1.2 Alternatives et coûts (ordres de grandeur, à vérifier)
 
@@ -232,7 +232,7 @@ Depuis iOS 26 (Xcode 26), les barres et contrôles **natifs** adoptent le style 
 ### 3.8 Zones sûres, île dynamique, orientation
 
 - `SafeArea` est déjà utilisé 49 fois : bon point de départ. À vérifier sur iPhone avec île dynamique (en haut) et indicateur d'accueil (en bas) : barre de navigation, barre d'onglets, bouton SOS, bandeaux d'alerte de l'espace admin.
-- **Orientation** : le projet autorise le paysage sur iPhone. L'interface est conçue en portrait. **Décision (D-IOS-6)** : **portrait seulement** sur iPhone à la v1 (le SOS et la saisie hors ligne sont pensés à une main ; une surface de test et de captures de moins). **Réserve HIG** : verrouiller le portrait est accepté mais prive les personnes qui utilisent l'appareil en support fixe ; à réexaminer après la recette. Si iPad universel : toutes les orientations sont attendues (§3.13).
+- **Orientation** : le projet autorise le paysage sur iPhone. L'interface est conçue en portrait. **Décision (D-IOS-6, tranchée le 2026-11-10)** : **portrait seulement** sur iPhone à la v1 (le SOS et la saisie hors ligne sont pensés à une main ; une surface de test et de captures de moins). **Réserve HIG** : verrouiller le portrait est accepté mais prive les personnes qui utilisent l'appareil en support fixe ; à réexaminer après la recette. Si iPad universel : toutes les orientations sont attendues (§3.13).
 
 ### 3.9 Tactile, haptiques, animations
 
@@ -270,7 +270,7 @@ Français seulement (décision Play, reprise). Pour que les éléments **systèm
 | Captures | iPhone 6,9″ suffit | **Captures iPad obligatoires** (13″) ; générateur à étendre |
 | SOS et sécurité | Écrans connus | Comportement du recouvrement, de la capture d'écran, des fenêtres multiples à traiter (`UIApplicationSupportsMultipleScenes` actuellement `false`) |
 
-**Recommandation (D-IOS-1) : iPhone seulement à la v1.** Le projet est aujourd'hui réglé en universel : le **changer** (`TARGETED_DEVICE_FAMILY`, `Info.plist` iPad) est un prérequis de IOS-03. Un universel pourra suivre dans une version ultérieure sans casser l'identifiant de l'app.
+**Recommandation (D-IOS-1), tranchée le 2026-11-10 : iPhone seulement à la v1.** Le projet est aujourd'hui réglé en universel : le **changer** (`TARGETED_DEVICE_FAMILY`, `Info.plist` iPad) est un prérequis de IOS-03. Un universel pourra suivre dans une version ultérieure sans casser l'identifiant de l'app.
 
 ### 3.14 Écran par écran : ce qui change sur iOS
 
@@ -361,7 +361,7 @@ Français seulement (décision Play, reprise). Pour que les éléments **systèm
 | **Time Sensitive** | Capacité `Time Sensitive Notifications` (entitlement `com.apple.developer.usernotifications.time-sensitive`), **sans demande à Apple** ; perce les modes de concentration **si** la personne n'a pas désactivé cette option pour l'app ; ne force pas le son quand le mode silencieux est actif |
 | **Critical Alerts** | Entitlement `com.apple.developer.usernotifications.critical-alerts`, **soumis à une demande à Apple** (formulaire dédié, justification santé, sécurité ou sécurité publique). Perce le mode silencieux et « Ne pas déranger », son à volume choisi ; en plus, **l'utilisateur doit l'autoriser séparément** (option `criticalAlert` à la demande de permission) |
 
-**Critical Alerts : à demander ou non (D-IOS-3).**
+**Critical Alerts : à demander ou non (D-IOS-3, tranché le 2026-11-10 : demander en parallèle, sans en dépendre).**
 
 | Arguments pour | Arguments contre |
 |---|---|
@@ -428,7 +428,7 @@ Français seulement (décision Play, reprise). Pour que les éléments **systèm
 | **Nom neutre fixe** (alternative) | `CFBundleDisplayName` neutre dès l'installation | Discret dès le premier jour, mais **écart avec le nom de la fiche** (risque de remarque de la revue sur un nom trompeur, à vérifier avec Apple) et perte de repère pour les personnes ; **non retenu pour la v1** (D-IOS-4) |
 | **Imitation d'une app Apple** | L'icône ou le nom « Notes » rappellerait l'app d'Apple | **Risque de rejet** (copie d'un produit Apple, icône trompeuse) : **ne pas imiter** l'icône Notes ni son nom. Dessiner **notre** icône utilitaire neutre (forme et couleurs distinctes) |
 
-**Recommandation (D-IOS-4)** : v1 = icône alternative neutre + nom « Xomiton » inchangé, **clairement expliqué** ; ne **pas** nommer l'icône « Notes » (≠ Android, où l'alias s'appelle « Notes » : un écart à documenter, la question D-MOB-13 se pose à nouveau côté Apple). Si le client veut un nom neutre, **demander l'avis d'Apple** avant (formulaire de contact de la revue) plutôt que de le découvrir au rejet.
+**Recommandation (D-IOS-4), tranchée le 2026-11-10** : v1 = icône alternative neutre + nom « Xomiton » inchangé, **clairement expliqué** ; ne **pas** nommer l'icône « Notes » (≠ Android, où l'alias s'appelle « Notes » : un écart à documenter, la question D-MOB-13 se pose à nouveau côté Apple). Si le client veut un nom neutre, **demander l'avis d'Apple** avant (formulaire de contact de la revue) plutôt que de le découvrir au rejet.
 
 ### 4.8 PIN et Face ID
 
@@ -456,7 +456,7 @@ Français seulement (décision Play, reprise). Pour que les éléments **systèm
 | Connexion permanente (WebSocket, long polling) | Non (cPanel) | **Impossible** en arrière-plan |
 | SOS envoyé puis app quittée | Reprise possible | **`beginBackgroundTask`** à l'envoi : environ 30 s pour terminer la requête en cours ; au-delà, reprise à la prochaine ouverture ; **ne jamais promettre** « l'alerte repartira toute seule » sans réseau |
 
-**Décision (D-IOS-7)** : v1 = **pas de tâche d'arrière-plan planifiée** (aucune promesse, aucun risque de rejet pour un mode d'arrière-plan injustifié) ; synchronisation à l'ouverture, au retour au premier plan, au retour du réseau, plus `beginBackgroundTask` pour terminer un envoi en cours ; **`BGAppRefreshTask` en option de v1.1** pour l'espace pair, si la recette en montre le besoin. Le message à la personne reste honnête : « La synchronisation se fait à l'ouverture de l'application ».
+**Décision (D-IOS-7, tranchée le 2026-11-10)** : v1 = **pas de tâche d'arrière-plan planifiée** (aucune promesse, aucun risque de rejet pour un mode d'arrière-plan injustifié) ; synchronisation à l'ouverture, au retour au premier plan, au retour du réseau, plus `beginBackgroundTask` pour terminer un envoi en cours ; **`BGAppRefreshTask` en option de v1.1** pour l'espace pair, si la recette en montre le besoin. Le message à la personne reste honnête : « La synchronisation se fait à l'ouverture de l'application ».
 
 ### 4.11 Liens universels
 
@@ -495,7 +495,7 @@ Français seulement (décision Play, reprise). Pour que les éléments **systèm
 
 | Exigence | État constaté | Action |
 |---|---|---|
-| **Filtre** des contenus répréhensibles | **Absent** : Q74 (« filtre de mots ») est à la décision par défaut « **pas de filtre** » ; C23 le liste comme non fait | **À revoir pour iOS** : au minimum un filtre serveur de motifs interdits (insultes, incitations, coordonnées) sur publications, commentaires et messages de groupe, **ou** une justification écrite (pré-modération, messages privés lus seulement s'ils sont signalés). Charge : ≈ 2 j serveur (lot IOS-10). **À trancher par le client (D-IOS-9)** |
+| **Filtre** des contenus répréhensibles | **Absent** : Q74 (« filtre de mots ») est à la décision par défaut « **pas de filtre** » ; C23 le liste comme non fait | **À revoir pour iOS** : au minimum un filtre serveur de motifs interdits (insultes, incitations, coordonnées) sur publications, commentaires et messages de groupe, **ou** une justification écrite (pré-modération, messages privés lus seulement s'ils sont signalés). Charge : ≈ 2 j serveur (lot IOS-10). **Tranché 2026-11-10 (D-IOS-9) : filtre minimal serveur retenu, révise Q74** |
 | **Signalement** des contenus et utilisateurs | Publications et commentaires : oui. Messages privés et groupes : **à vérifier** écran par écran | Un « Signaler » partout où un contenu d'autrui s'affiche |
 | **Blocage** des utilisateurs abusifs | Messages privés : oui. Fil, groupes : **à vérifier** | Blocage accessible depuis profil, fil, groupe |
 | **Réponse dans un délai** | Modération « essentielle » dans l'espace admin ; engagement de lecture sous 24 h cité dans la fiche Play | Procédure et délai **écrits** (notes de revue : « modération humaine, signalements traités sous 24 h ») et tenus |
@@ -543,13 +543,13 @@ L'application **ne remplace pas** les services d'urgence et **n'appelle pas** d'
 
 - À l'envoi, Apple demande si l'app utilise du chiffrement : clé `ITSAppUsesNonExemptEncryption` dans `Info.plist` pour répondre une fois pour toutes.
 - Xomiton utilise **HTTPS** (chiffrement du système, exempté) **et** son propre chiffrement local (AES de Hive, PBKDF2 du PIN, SHA, paquet `crypto`). Ce second usage est **au-delà du chiffrement fourni par le système** : il n'est pas certain qu'il soit « exempté » au sens de la réglementation américaine d'exportation.
-- **Ne pas** mettre `false` par réflexe. **Décision (D-IOS-8)** : demander l'**avis écrit** du conseil sur la qualification ; en l'attente, répondre à Apple par l'option « utilise le chiffrement… exempté » **si** le conseil le confirme (en pratique : produit grand public, algorithmes standards, avec **auto-classification** déclarée annuellement à l'administration américaine) ; une **pièce justificative** peut être demandée pour certains pays, **dont la France** (à vérifier si la diffusion y est retenue). Clé `ITSAppUsesNonExemptEncryption` posée selon la réponse validée.
+- **Ne pas** mettre `false` par réflexe. **Décision (D-IOS-8, tranchée le 2026-11-10 ; application conditionnée à l'avis du conseil)** : demander l'**avis écrit** du conseil sur la qualification ; en l'attente, répondre à Apple par l'option « utilise le chiffrement… exempté » **si** le conseil le confirme (en pratique : produit grand public, algorithmes standards, avec **auto-classification** déclarée annuellement à l'administration américaine) ; une **pièce justificative** peut être demandée pour certains pays, **dont la France** (à vérifier si la diffusion y est retenue). Clé `ITSAppUsesNonExemptEncryption` posée selon la réponse validée.
 
 ### 5.7 Âge, classification et âge minimal de 15 ans
 
 - **Attention à la grille** : Apple a **remplacé en 2025** les anciens niveaux (4+, 9+, 12+, 17+) par **4+, 9+, 13+, 16+, 18+**, avec un questionnaire plus détaillé (contrôles intégrés à l'app, capacités : messagerie, contenu généré par les utilisateurs, accès web non restreint ; sujets médicaux ou de bien-être ; contenus sexuels ou nus ; violence ; sujets matures). Le texte de cadrage de ce projet parlait de « 17+ probable » : **dans la grille actuelle, le résultat probable est 16+ ou 18+**, **à lire dans App Store Connect** après réponse honnête (à vérifier).
 - **Réponses honnêtes** : contenu généré par les utilisateurs **oui**, messagerie **oui**, accès web non restreint **non**, publicité **non**, thèmes de violences et de sexualité **abordés à titre d'information et de prévention** (violence réelle, sujets de santé sexuelle) : à déclarer comme tels, **sans minorer**.
-- **Articulation avec l'âge minimal de 15 ans** : la classification d'Apple porte sur le **contenu**, elle n'impose pas un âge d'inscription ; l'âge de **15 ans** reste une règle du produit (case « j'ai 15 ans ou plus », RG). Mais une classification **16+ ou 18+** peut **empêcher une personne de 15 ans** d'installer l'app si un contrôle parental s'applique. La décision Play (tranches 16-17 et 18+, point D-MOB-18) est de même nature. **À arbitrer (D-IOS-5) avec le conseil** :
+- **Articulation avec l'âge minimal de 15 ans** : la classification d'Apple porte sur le **contenu**, elle n'impose pas un âge d'inscription ; l'âge de **15 ans** reste une règle du produit (case « j'ai 15 ans ou plus », RG). Mais une classification **16+ ou 18+** peut **empêcher une personne de 15 ans** d'installer l'app si un contrôle parental s'applique. La décision Play (tranches 16-17 et 18+, point D-MOB-18) est de même nature. **D-IOS-5 tranché 2026-11-10 (recommandation retenue), application conditionnée à l'avis du conseil** :
   | Option | Conséquence |
   |---|---|
   | **a. Rester à la classification calculée par Apple (16+ ou 18+) et maintenir 15 ans** | Honnête ; le cas des 15 ans installant malgré la classification relève du contrôle parental ; cohérent avec Play (D-MOB-18) |
@@ -752,7 +752,7 @@ Propriétaires : **C** client, **D** développeur·se Flutter, **M** exige un Ma
 
 | Lot | Contenu | Dépend de | Qui | j.p | Critères d'acceptation |
 |---|---|---|---|---|---|
-| **IOS-00** | Décisions du client : D-IOS-1 à D-IOS-10 (§10) ; choix du porteur du compte Apple | — | C | 1 | Tableau de §10 rempli et daté ; avis du conseil sollicité sur âge (D-IOS-5) et chiffrement (D-IOS-8) |
+| **IOS-00** | Décisions du client : D-IOS-1 à D-IOS-12 (§10) ; choix du porteur du compte Apple | — | C | 1 | **Fait côté client (2026-11-10)** : tableau de §10 tranché et daté (recommandations retenues). **Reste** : avis écrit du conseil sur âge (D-IOS-5) et chiffrement (D-IOS-8) ; les lots qui en dépendent (IOS-10 pour l'âge et le chiffrement) restent conditionnés à cet avis ; choix du porteur du compte Apple |
 | **IOS-01** | **Compte Apple Developer organisation** : demande du D-U-N-S, inscription, vérification, contacts, rôles, statut de professionnel (DSA), clés (APNs `.p8`, API App Store Connect) ; éventuelle demande d'exonération ; demande de **Critical Alerts** (si D-IOS-3) | IOS-00 | C | 3 (+ délais) | Compte actif ; fiche d'app créée avec l'identifiant `bj.xomiton.xomiton` ; clés dans le coffre ; Apple ID dédié à 2FA |
 | **IOS-02** | **Poste et CI macOS** : Mac mini (ou location), Xcode accepté par Apple, Flutter de la CI (3.47.8), CocoaPods, iPhone d'essai ; job `ios` de CI (déclenché à la main) | IOS-00 | D/M | 2 | `flutter doctor` sans rouge côté iOS ; job CI `flutter build ios --no-codesign` vert |
 | **IOS-03** | **Premier build iOS** : passer l'appareil en iPhone seul ; `flutter build ios` ; `pod install` ; corriger ce que le build révèle (Pods, versions, Swift) ; lancer sur simulateur ; **versionner `Podfile`** ; icône Xomiton et écran de lancement ; `CFBundleLocalizations` | IOS-02 | D/M | 3 | L'app s'ouvre sur simulateur, connexion, onboarding, SOS jusqu'au compte à rebours (API de recette ou locale) ; cible iPhone seul ; icône Xomiton sans alpha |
@@ -803,7 +803,7 @@ Durées en semaines calendaires **à partir de la décision (S0)**, pour **une**
 
 | Option | Conséquences |
 |---|---|
-| **A. Android d'abord, iOS 6 à 8 semaines plus tard** (**recommandée**, D-IOS-10) | Les défauts du code partagé sont trouvés **une seule fois** (premier build Android, recette, test fermé Play de 14 jours) ; le compte Apple a le temps d'arriver ; l'équipe n'est pas dispersée ; message client : « Android en premier » |
+| **A. Android d'abord, iOS 6 à 8 semaines plus tard** (**recommandée et retenue le 2026-11-10**, D-IOS-10) | Les défauts du code partagé sont trouvés **une seule fois** (premier build Android, recette, test fermé Play de 14 jours) ; le compte Apple a le temps d'arriver ; l'équipe n'est pas dispersée ; message client : « Android en premier » |
 | B. **Simultané** | Possible **seulement** si l'organisation obtient le compte Apple en ≤ 4 semaines et si deux personnes Flutter sont disponibles ; double surface de recette au pire moment ; **un rejet Apple retarde le lancement commun** |
 | C. iOS d'abord | Non justifié : pas d'avantage de public connu |
 
@@ -827,7 +827,7 @@ Durées en semaines calendaires **à partir de la décision (S0)**, pour **une**
 ## 9. Checklist de publication
 
 ### 9.1 Comptes et préparation
-- [ ] Décisions D-IOS-1 à D-IOS-10 consignées et datées
+- [x] Décisions D-IOS-1 à D-IOS-12 consignées et datées (2026-11-10, recommandations retenues par le client) ; D-IOS-5 et D-IOS-8 : application conditionnée à l'avis du conseil
 - [ ] D-U-N-S obtenu ; compte **Apple Developer organisation** actif ; Apple ID dédié ; 2FA sur numéro de l'organisation
 - [ ] Exonération demandée (si éligible) ; cotisation payée ou exonérée
 - [ ] Identifiant `bj.xomiton.xomiton` créé ; capacités : Push, Time Sensitive, Associated Domains, Data Protection ; (option) Critical Alerts demandé
@@ -882,22 +882,24 @@ Durées en semaines calendaires **à partir de la décision (S0)**, pour **une**
 - [ ] Surveillance des plantages (Organizer et rapports) et des retours ; plan de retrait ou de correctif rapide (une correction demande une nouvelle revue)
 - [ ] Mise à jour de [RESTE_A_FAIRE.md](RESTE_A_FAIRE.md) et [PLAN_FINALISATION.md](PLAN_FINALISATION.md) (C22)
 
-## 10. Décisions à valider par le client
+## 10. Décisions du client
 
-| Id | Décision | Options | Recommandation |
-|---|---|---|---|
-| **D-IOS-1** | iPhone seulement ou universel | iPhone seul / iPhone + iPad | **iPhone seul** à la v1 ; universel plus tard (+ 8 à 10 j, captures et revue iPad) |
-| **D-IOS-2** | Mac | Achat / location / CI seule | **Mac mini + CI macOS** ; jamais la CI seule pour concevoir |
-| **D-IOS-3** | **Critical Alerts** : demander ou non | Oui / non | **Demander en parallèle, ne pas en dépendre** ; v1 en Time Sensitive ; réservé à l'option « Astreinte » de l'admin, **jamais par défaut pour le pair** |
-| **D-IOS-4** | Mode discret iOS : nom neutre ou nom « Xomiton » | Icône neutre + nom inchangé / nom neutre fixe | **Icône neutre, nom inchangé**, limite expliquée ; **ne pas imiter « Notes »** |
-| **D-IOS-5** | Classification d'âge et âge minimal de 15 ans | Classification calculée (16+/18+) et 15 ans / relever à 16 ans | **Classification calculée honnêtement ; 15 ans maintenu** si le conseil l'accepte, sinon 16 ; décision avec le conseil (liée à D-MOB-18) |
-| **D-IOS-6** | Orientation | Portrait seul / toutes | **Portrait seul** sur iPhone à la v1 |
-| **D-IOS-7** | Synchro d'arrière-plan | Aucune / `BGAppRefreshTask` | **Aucune à la v1** ; v1.1 pour l'espace pair si besoin |
-| **D-IOS-8** | Chiffrement à l'exportation | « Exempté » / non exempté | **Avis écrit du conseil** avant de répondre ; ne pas poser `false` par défaut |
-| **D-IOS-9** | **Filtre de contenus (Guideline 1.2)** : révise Q74 (« pas de filtre ») | Filtre minimal serveur / justification par pré-modération / réduire l'UGC | **Filtre minimal serveur** (≈ 2 j) |
-| **D-IOS-10** | Lancement simultané Android et iOS | Android d'abord / simultané | **Android d'abord, iOS 6 à 8 semaines après** |
-| D-IOS-11 | Compte Apple : organisation ou individuel | Organisation / individuel | **Organisation** (nom du vendeur public, continuité) |
-| D-IOS-12 | Boutiques (pays) de la première version | Tous / liste restreinte | **Liste restreinte** (Bénin et voisins francophones), UE à décider (affichage public de l'adresse) |
+**Tranché 2026-11-10 (recommandation retenue par le client)** pour les 12 décisions D-IOS-1 à D-IOS-12 : la recommandation de chaque ligne est celle qui s'applique. **Réserve** : les lots qui dépendent de D-IOS-5 (âge et classification) et de D-IOS-8 (chiffrement) restent **conditionnés à l'avis écrit du conseil juridique** ; la décision est prise, son application ne l'est pas avant cet avis.
+
+| Id | Décision | Options | Recommandation retenue | Statut |
+|---|---|---|---|---|
+| **D-IOS-1** | iPhone seulement ou universel | iPhone seul / iPhone + iPad | **iPhone seul** à la v1 ; universel plus tard (+ 8 à 10 j, captures et revue iPad) | Tranché 2026-11-10 (recommandation retenue par le client) |
+| **D-IOS-2** | Mac | Achat / location / CI seule | **Mac mini + CI macOS** ; jamais la CI seule pour concevoir | Tranché 2026-11-10 (recommandation retenue par le client) |
+| **D-IOS-3** | **Critical Alerts** : demander ou non | Oui / non | **Demander en parallèle, ne pas en dépendre** ; v1 en Time Sensitive ; réservé à l'option « Astreinte » de l'admin, **jamais par défaut pour le pair** | Tranché 2026-11-10 (recommandation retenue par le client) |
+| **D-IOS-4** | Mode discret iOS : nom neutre ou nom « Xomiton » | Icône neutre + nom inchangé / nom neutre fixe | **Icône neutre, nom inchangé**, limite expliquée ; **ne pas imiter « Notes »** | Tranché 2026-11-10 (recommandation retenue par le client) |
+| **D-IOS-5** | Classification d'âge et âge minimal de 15 ans | Classification calculée (16+/18+) et 15 ans / relever à 16 ans | **Classification calculée honnêtement ; 15 ans maintenu** si le conseil l'accepte, sinon 16 ; décision avec le conseil (liée à D-MOB-18) | Tranché 2026-11-10 (recommandation retenue par le client) ; **application conditionnée à l'avis du conseil** |
+| **D-IOS-6** | Orientation | Portrait seul / toutes | **Portrait seul** sur iPhone à la v1 | Tranché 2026-11-10 (recommandation retenue par le client) |
+| **D-IOS-7** | Synchro d'arrière-plan | Aucune / `BGAppRefreshTask` | **Aucune à la v1** ; v1.1 pour l'espace pair si besoin | Tranché 2026-11-10 (recommandation retenue par le client) |
+| **D-IOS-8** | Chiffrement à l'exportation | « Exempté » / non exempté | **Avis écrit du conseil** avant de répondre ; ne pas poser `false` par défaut | Tranché 2026-11-10 (recommandation retenue par le client) ; **application conditionnée à l'avis écrit du conseil** |
+| **D-IOS-9** | **Filtre de contenus (Guideline 1.2)** : révise Q74 (« pas de filtre ») | Filtre minimal serveur / justification par pré-modération / réduire l'UGC | **Filtre minimal serveur** (≈ 2 j) | Tranché 2026-11-10 (recommandation retenue par le client) ; **révise Q74** ; chantier serveur « filtre minimal de contenus » ouvert dans RESTE_A_FAIRE.md |
+| **D-IOS-10** | Lancement simultané Android et iOS | Android d'abord / simultané | **Android d'abord, iOS 6 à 8 semaines après** | Tranché 2026-11-10 (recommandation retenue par le client) |
+| D-IOS-11 | Compte Apple : organisation ou individuel | Organisation / individuel | **Organisation** (nom du vendeur public, continuité) | Tranché 2026-11-10 (recommandation retenue par le client) |
+| D-IOS-12 | Boutiques (pays) de la première version | Tous / liste restreinte | **Liste restreinte** (Bénin et voisins francophones), UE à décider (affichage public de l'adresse) | Tranché 2026-11-10 (recommandation retenue par le client) |
 
 ---
 
