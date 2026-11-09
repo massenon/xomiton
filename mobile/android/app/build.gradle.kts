@@ -19,7 +19,7 @@ if (hasReleaseKey) {
 }
 
 android {
-    namespace = "bj.xomiton.xomiton"
+    namespace = "app.xomiton.xomiton"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         // Identifiant définitif de l'application (Play, Firebase) : ne plus le changer.
-        applicationId = "bj.xomiton.xomiton"
+        applicationId = "app.xomiton.xomiton"
         minSdk = 26
         targetSdk = flutter.targetSdkVersion
         // `version: 1.0.0+1` de pubspec.yaml : versionName = 1.0.0, versionCode = 1

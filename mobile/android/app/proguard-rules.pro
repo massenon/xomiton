@@ -3,7 +3,7 @@
 # on ne garde ici que ce qui est propre à l'application.
 
 # Points d'entrée du code natif appelé par canal Flutter (MainActivity : FLAG_SECURE, mode discret).
--keep class bj.xomiton.xomiton.MainActivity { *; }
+-keep class app.xomiton.xomiton.MainActivity { *; }
 
 # Flutter : le moteur peut citer des classes Play Core absentes (composants différés non utilisés).
 -dontwarn com.google.android.play.core.**

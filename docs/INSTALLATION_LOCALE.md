@@ -265,7 +265,7 @@ Le suffixe `/api/v1` est obligatoire. Le trafic non chiffré (`http`) n'est acce
 
 ### 7.3 Notifications push et `google-services.json`
 
-Sans Firebase, l'application fonctionne mais **sans notification push** : c'est normal en local. Pour les activer, il faut un projet Firebase (compte du client), puis déposer le fichier `google-services.json` dans `mobile\android\app\`. Nom de paquet à déclarer dans Firebase : `bj.xomiton.xomiton`. Ce fichier est personnel et **n'est jamais envoyé sur Git**. Pas à pas : [BUILD_ANDROID_WINDOWS.md](BUILD_ANDROID_WINDOWS.md) §10 ; côté serveur : [DEPLOIEMENT_CPANEL.md](DEPLOIEMENT_CPANEL.md) §7. Plan de l'application unique (membre, pair, admin) : [PLAN_MOBILE_APP_UNIQUE.md](PLAN_MOBILE_APP_UNIQUE.md).
+Sans Firebase, l'application fonctionne mais **sans notification push** : c'est normal en local. Pour les activer, il faut un projet Firebase (compte du client), puis déposer le fichier `google-services.json` dans `mobile\android\app\`. Nom de paquet à déclarer dans Firebase : `app.xomiton.xomiton`. Ce fichier est personnel et **n'est jamais envoyé sur Git**. Pas à pas : [BUILD_ANDROID_WINDOWS.md](BUILD_ANDROID_WINDOWS.md) §10 ; côté serveur : [DEPLOIEMENT_CPANEL.md](DEPLOIEMENT_CPANEL.md) §7. Plan de l'application unique (membre, pair, admin) : [PLAN_MOBILE_APP_UNIQUE.md](PLAN_MOBILE_APP_UNIQUE.md).
 
 ## 8. Lancer les tests (facultatif, pour l'équipe technique)
 

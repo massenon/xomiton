@@ -23,7 +23,7 @@ Document du 9 novembre 2026 ; décisions D-IOS-1 à D-IOS-12 tranchées le 10 no
 
 | Élément | État réel | Conséquence |
 |---|---|---|
-| `Runner.xcodeproj` | Identifiant `bj.xomiton.xomiton` (cible `Runner`) et `bj.xomiton.xomiton.RunnerTests`, signature « Automatic », **aucune équipe (`DEVELOPMENT_TEAM`) renseignée**, cible de déploiement **iOS 15.0**, `TARGETED_DEVICE_FAMILY = "1,2"` (**universel : iPhone et iPad**) | Décider iPhone seul ou universel (D-IOS-1) ; sinon l'App Store exigera des captures iPad |
+| `Runner.xcodeproj` | Identifiant `app.xomiton.xomiton` (cible `Runner`) et `app.xomiton.xomiton.RunnerTests`, signature « Automatic », **aucune équipe (`DEVELOPMENT_TEAM`) renseignée**, cible de déploiement **iOS 15.0**, `TARGETED_DEVICE_FAMILY = "1,2"` (**universel : iPhone et iPad**) | Décider iPhone seul ou universel (D-IOS-1) ; sinon l'App Store exigera des captures iPad |
 | `Info.plist` | Existe. Présents : `NSLocationWhenInUseUsageDescription` (en français), `NSCalendarsUsageDescription` et `NSCalendarsFullAccessUsageDescription`, `CFBundleDisplayName = Xomiton`, manifeste de scène, orientations (3 pour iPhone dont paysage, 4 pour iPad). **Absents** : `NSFaceIDUsageDescription`, `UIBackgroundModes`, `ITSAppUsesNonExemptEncryption`, `CFBundleLocalizations`, liste des icônes alternatives, `BGTaskSchedulerPermittedIdentifiers` | §4 et annexe A |
 | `AppDelegate.swift` | Gabarit Flutter récent (moteur implicite) ; **aucun code push**, rien pour le délégué de notifications | Vérifier sur Mac ce que `firebase_messaging` et `flutter_local_notifications` exigent encore (§4.1) |
 | `SceneDelegate.swift` | **Recouvrement blanc** posé à `sceneWillResignActive`, retiré à `sceneDidBecomeActive` (masque l'aperçu du sélecteur d'applications) | Existant et utile, mais : blanc sans marque, indifférent au mode sombre, déclenché aussi par l'invite Face ID et le centre de contrôle ; aucune détection de capture ni d'enregistrement |
@@ -129,7 +129,7 @@ Cotisation **99 USD par an** (à vérifier ; renouvellement obligatoire sous pei
 
 | Élément | Décision | Argument |
 |---|---|---|
-| **Bundle ID** | `bj.xomiton.xomiton` (déjà dans le projet, identique à l'`applicationId` Android) ; identifiant **explicite** (jamais générique) | **Définitif** après publication ; garder le même sur les deux plateformes simplifie Firebase et la gestion |
+| **Bundle ID** | `app.xomiton.xomiton` (déjà dans le projet, identique à l'`applicationId` Android) ; identifiant **explicite** (jamais générique) | **Définitif** après publication ; garder le même sur les deux plateformes simplifie Firebase et la gestion |
 | Nom sur l'App Store | « Xomiton : écoute et sécurité » (28 caractères sur 30) | Même nom que Google Play (décision Play, aucun mot d'identité) |
 | Nom sous l'icône | `CFBundleDisplayName = Xomiton` | Court, évite la troncature ; voir §4.7 sur le nom neutre |
 | Sous-titre | « Écoute, entraide et sécurité » (28/30) | §6.5 |
@@ -421,7 +421,7 @@ Français seulement (décision Play, reprise). Pour que les éléments **systèm
 
 | Sujet | Réalité iOS | Décision |
 |---|---|---|
-| **Icône alternative** | Possible : `UIApplication.setAlternateIconName` (iOS 10.3+), jeu d'icônes **livré dans l'app** (clé `CFBundleAlternateIcons` ou réglage de catalogue d'actifs) | Une icône « neutre » (v1) ; pont sur le canal `bj.xomiton/discreet` (même nom que sur Android) |
+| **Icône alternative** | Possible : `UIApplication.setAlternateIconName` (iOS 10.3+), jeu d'icônes **livré dans l'app** (clé `CFBundleAlternateIcons` ou réglage de catalogue d'actifs) | Une icône « neutre » (v1) ; pont sur le canal `app.xomiton/discreet` (même nom que sur Android) |
 | **Boîte de dialogue système** | À chaque changement, iOS affiche « Vous avez changé l'icône de “Xomiton” » ; **impossible à supprimer sans API privée** (rejet assuré) | Le dire dans l'écran de réglage : la bascule est visible **au moment** où on la fait |
 | **Nom sous l'icône** | **Ne change pas à l'exécution** : `CFBundleDisplayName` est fixe | **Limite documentée** (déjà dans `mobile/README.md`) |
 | **Aperçu des notifications et Bibliothèque d'apps** | Affichent le **nom** de l'app | Le mode discret iOS est donc **partiel** : l'icône change, pas le nom |
@@ -753,7 +753,7 @@ Propriétaires : **C** client, **D** développeur·se Flutter, **M** exige un Ma
 | Lot | Contenu | Dépend de | Qui | j.p | Critères d'acceptation |
 |---|---|---|---|---|---|
 | **IOS-00** | Décisions du client : D-IOS-1 à D-IOS-12 (§10) ; choix du porteur du compte Apple | — | C | 1 | **Fait côté client (2026-11-10)** : tableau de §10 tranché et daté (recommandations retenues). **Reste** : avis écrit du conseil sur âge (D-IOS-5) et chiffrement (D-IOS-8) ; les lots qui en dépendent (IOS-10 pour l'âge et le chiffrement) restent conditionnés à cet avis ; choix du porteur du compte Apple |
-| **IOS-01** | **Compte Apple Developer organisation** : demande du D-U-N-S, inscription, vérification, contacts, rôles, statut de professionnel (DSA), clés (APNs `.p8`, API App Store Connect) ; éventuelle demande d'exonération ; demande de **Critical Alerts** (si D-IOS-3) | IOS-00 | C | 3 (+ délais) | Compte actif ; fiche d'app créée avec l'identifiant `bj.xomiton.xomiton` ; clés dans le coffre ; Apple ID dédié à 2FA |
+| **IOS-01** | **Compte Apple Developer organisation** : demande du D-U-N-S, inscription, vérification, contacts, rôles, statut de professionnel (DSA), clés (APNs `.p8`, API App Store Connect) ; éventuelle demande d'exonération ; demande de **Critical Alerts** (si D-IOS-3) | IOS-00 | C | 3 (+ délais) | Compte actif ; fiche d'app créée avec l'identifiant `app.xomiton.xomiton` ; clés dans le coffre ; Apple ID dédié à 2FA |
 | **IOS-02** | **Poste et CI macOS** : Mac mini (ou location), Xcode accepté par Apple, Flutter de la CI (3.47.8), CocoaPods, iPhone d'essai ; job `ios` de CI (déclenché à la main) | IOS-00 | D/M | 2 | `flutter doctor` sans rouge côté iOS ; job CI `flutter build ios --no-codesign` vert |
 | **IOS-03** | **Premier build iOS** : passer l'appareil en iPhone seul ; `flutter build ios` ; `pod install` ; corriger ce que le build révèle (Pods, versions, Swift) ; lancer sur simulateur ; **versionner `Podfile`** ; icône Xomiton et écran de lancement ; `CFBundleLocalizations` | IOS-02 | D/M | 3 | L'app s'ouvre sur simulateur, connexion, onboarding, SOS jusqu'au compte à rebours (API de recette ou locale) ; cible iPhone seul ; icône Xomiton sans alpha |
 | **IOS-04** | **Identité et signature** : `DEVELOPMENT_TEAM`, signature automatique locale, signature par clé d'API en CI, capacités sur l'identifiant, `Runner.entitlements`, Fastlane ou Codemagic jusqu'à TestFlight | IOS-01, IOS-03 | D/M | 2 | Un build signé installé sur l'iPhone d'essai ; un build **traité dans TestFlight interne** |
@@ -830,7 +830,7 @@ Durées en semaines calendaires **à partir de la décision (S0)**, pour **une**
 - [x] Décisions D-IOS-1 à D-IOS-12 consignées et datées (2026-11-10, recommandations retenues par le client) ; D-IOS-5 et D-IOS-8 : application conditionnée à l'avis du conseil
 - [ ] D-U-N-S obtenu ; compte **Apple Developer organisation** actif ; Apple ID dédié ; 2FA sur numéro de l'organisation
 - [ ] Exonération demandée (si éligible) ; cotisation payée ou exonérée
-- [ ] Identifiant `bj.xomiton.xomiton` créé ; capacités : Push, Time Sensitive, Associated Domains, Data Protection ; (option) Critical Alerts demandé
+- [ ] Identifiant `app.xomiton.xomiton` créé ; capacités : Push, Time Sensitive, Associated Domains, Data Protection ; (option) Critical Alerts demandé
 - [ ] Clé APNs `.p8` créée, **sauvegardée** hors dépôt, importée dans Firebase ; clé d'API App Store Connect créée
 - [ ] Fiche d'app créée dans App Store Connect (nom, SKU, langue, catégories)
 - [ ] Statut de professionnel (DSA) renseigné ; choix de la **liste des boutiques** fait

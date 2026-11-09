@@ -4,7 +4,7 @@ Guide pas à pas pour une personne qui n'a jamais compilé l'application. Il cou
 
 > **Limite de ce guide.** Il a été écrit et la configuration Android relue sans pouvoir lancer un build Android (l'environnement de rédaction n'a pas de SDK Android). Les étapes de compilation n'y ont donc pas été exécutées de bout en bout : si une commande ou un chemin diffère chez vous, notez-le et corrigez ce document. L'analyse du code et les 454 tests Flutter, eux, sont exécutés (CI : `.github/workflows/mobile.yml`).
 
-Application : identifiant `bj.xomiton.xomiton`, nom affiché « Xomiton », Android 8.0 minimum (`minSdk 26`). Le code est dans `mobile/`. Les versions (`1.0.0+1` dans `mobile/pubspec.yaml`) fixent le `versionName` (1.0.0) et le `versionCode` (1) ; **augmentez le nombre après le `+` à chaque envoi sur Play** (`1.0.0+2`, `+3`…), et mettez `kAppVersion` (`mobile/lib/core/push/push_registrar.dart`) au même numéro de version.
+Application : identifiant `app.xomiton.xomiton`, nom affiché « Xomiton », Android 8.0 minimum (`minSdk 26`). Le code est dans `mobile/`. Les versions (`1.0.0+1` dans `mobile/pubspec.yaml`) fixent le `versionName` (1.0.0) et le `versionCode` (1) ; **augmentez le nombre après le `+` à chaque envoi sur Play** (`1.0.0+2`, `+3`…), et mettez `kAppVersion` (`mobile/lib/core/push/push_registrar.dart`) au même numéro de version.
 
 ## 1. Ce qu'il faut avoir
 
@@ -189,7 +189,7 @@ Ce qui est configuré dans le projet Android (`mobile/android/`) :
 Sans Firebase, l'application fonctionne mais **sans notifications push** (`NoopPushService`). Le fichier de configuration est personnel au projet Firebase : **il n'est pas dans le dépôt** (`.gitignore` : `**/google-services.json`).
 
 1. <https://console.firebase.google.com> › *Ajouter un projet* (désactiver Google Analytics si inutile).
-2. Dans le projet › *Ajouter une application* › Android : nom du paquet **`bj.xomiton.xomiton`** (exactement), surnom « Xomiton ».
+2. Dans le projet › *Ajouter une application* › Android : nom du paquet **`app.xomiton.xomiton`** (exactement), surnom « Xomiton ». **Consigne : créer l'application Firebase et la fiche Play Console avec cet identifiant exact** (il est définitif après la première publication).
 3. Empreinte SHA-1 (recommandée) : `cd mobile\android` puis `.\gradlew signingReport` ; copier le SHA-1 de la variante `debug`, et, une fois la clé de téléversement créée, celui de `release` ; ajouter aussi le SHA-1 de **la clé de signature d'application de Play** (Play Console › *Intégrité de l'application*).
 4. Télécharger `google-services.json` et le placer dans **`mobile\android\app\google-services.json`**. Le plugin Gradle `google-services` ne s'applique que si ce fichier existe.
 5. iOS (hors Windows, non livré) : voir `mobile/README.md`.
@@ -228,7 +228,7 @@ Photos, caméra, micro, stockage, agenda, démarrage au boot et localisation en 
 | « Keystore was tampered with, or password was incorrect » | mot de passe faux dans `key.properties`, ou `storeFile` pointe vers un autre fichier ; en chemin absolu, barres obliques `/` |
 | Play : « Vous avez importé un APK ou un App Bundle signé en mode debug » | build sans `key.properties` ; refaire après §7 |
 | Play : « Le code de version 1 a déjà été utilisé » | augmenter le nombre après `+` dans `pubspec.yaml` |
-| Pas de notifications | pas de `google-services.json` (push désactivé), nom de paquet différent de `bj.xomiton.xomiton`, autorisation refusée sur le téléphone, ou compte de service FCM non configuré côté serveur |
+| Pas de notifications | pas de `google-services.json` (push désactivé), nom de paquet différent de `app.xomiton.xomiton`, autorisation refusée sur le téléphone, ou compte de service FCM non configuré côté serveur |
 | Erreur de ressources après changement d'icône | relancer `python tool\android_icons.py`, puis `flutter clean` et `flutter pub get` |
 | Comportement étrange après une mise à jour de Flutter | `flutter clean`, `flutter pub get`, supprimer `mobile\android\.gradle` |
 

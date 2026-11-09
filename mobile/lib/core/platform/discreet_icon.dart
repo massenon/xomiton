@@ -15,7 +15,7 @@ abstract interface class DiscreetIconService {
 }
 
 class ChannelDiscreetIcon implements DiscreetIconService {
-  static const _channel = MethodChannel('bj.xomiton/discreet');
+  static const _channel = MethodChannel('app.xomiton/discreet');
 
   @override
   bool get supported => Platform.isAndroid;

@@ -298,7 +298,7 @@ Tout démarre éteint (pilote `log`) ; on active un canal seulement quand son co
 | Service | À faire | Essai |
 |---|---|---|
 | **E-mail (SMTP)** | `MAIL_*` du §6, ou Administration › Templates e-mails. **Indispensable avant la première connexion admin** (code de vérification) | Administration › Templates e-mails › essai d'envoi |
-| **Push mobile (Firebase)** | Projet Firebase, application Android `bj.xomiton.xomiton`, clé de compte de service (JSON) déposée dans `/home/COMPTE/secrets/` en `chmod 600`, `FCM_DRIVER=fcm`, `FIREBASE_CREDENTIALS`, puis `config:cache`. Le fichier `google-services.json` va dans l'application, pas sur le serveur | `$PHP artisan notifications:test-push <jeton FCM> --urgent --yes` |
+| **Push mobile (Firebase)** | Projet Firebase, application Android `app.xomiton.xomiton` (identifiant **exact**, impossible à changer après publication : créer l'application Firebase et la fiche Play avec lui), clé de compte de service (JSON) déposée dans `/home/COMPTE/secrets/` en `chmod 600`, `FCM_DRIVER=fcm`, `FIREBASE_CREDENTIALS`, puis `config:cache`. Le fichier `google-services.json` va dans l'application, pas sur le serveur | `$PHP artisan notifications:test-push <jeton FCM> --urgent --yes` |
 | **SMS de secours** | Compte Vonage **ou** Twilio, `SMS_DRIVER`, clés, `SMS_SENDER` (selon ce que l'opérateur béninois accepte), solde. Facturé par le fournisseur | `$PHP artisan notifications:test-sms +229… --yes` |
 | **Assistant Gemini** | **DESACTIVÉ et à laisser tel quel** : `ASSISTANT_PROVIDER=kb`, `ASSISTANT_LLM_ENABLED=false`. Il enverrait des données sensibles (santé, violences) à un tiers hors de l'Union européenne ; l'activer exige d'abord l'avis juridique ([DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md), Q7). Les messages de crise et de SOS ne lui sont de toute façon jamais envoyés | `$PHP artisan assistant:test-llm --yes` refuse tant que le drapeau est faux |
 | **Web Push navigateur** | Optionnel, non livré (paquet Composer et clés VAPID à ajouter) | |
@@ -465,9 +465,9 @@ Abaisser le TTL à 300 s 48 h avant la bascule. Aucune valeur secrète ici : la 
 - Application mobile : `API_BASE_URL` par défaut dans le code = émulateur local (`http://10.0.2.2:8000/api/v1`, `mobile/lib/core/network/api_client.dart`) ; les builds de **release** doivent passer `--dart-define=API_BASE_URL=https://xomiton.app/api/v1` (une URL non https empêche le démarrage).
 
 ### 20.5 Liens universels (état actuel)
-- **Android** `https://xomiton.app/.well-known/assetlinks.json` : **absent**, et `AndroidManifest.xml` n'a pas de `intent-filter` `autoVerify`. À créer avec l'empreinte SHA-256 du certificat de signature Play (App Signing) pour `bj.xomiton.xomiton`.
+- **Android** `https://xomiton.app/.well-known/assetlinks.json` : **absent**, et `AndroidManifest.xml` n'a pas de `intent-filter` `autoVerify`. À créer avec l'empreinte SHA-256 du certificat de signature Play (App Signing) pour `app.xomiton.xomiton`.
 - **iOS** `https://xomiton.app/.well-known/apple-app-site-association` : **absent**, pas d'entitlement *Associated Domains* (voir [PLAN_IOS.md](PLAN_IOS.md) §« Liens universels », `applinks:xomiton.app`). Servir en HTTPS, sans redirection, `Content-Type: application/json`.
-- `.htaccess` laisse déjà passer `/.well-known/`. Les identifiants d'application (`bj.xomiton.xomiton`) ne changent pas.
+- `.htaccess` laisse déjà passer `/.well-known/`. L'identifiant d'application est `app.xomiton.xomiton` (changé avant toute publication ; les empreintes et `assetlinks.json` doivent le porter).
 
 ### 20.6 Réservations défensives
 Réserver (ou rediriger vers `xomiton.app`) : `xomiton.org`, `xomiton.com`, `xomiton.net`, et si possible `.care` / `.help`. Le **`.bj`** n'est utile qu'en **redirection** : un domaine national peut être suspendu ou exiger l'identification du titulaire par un registre local, ce qui exposerait l'organisation ; ne jamais y héberger le service ni les e-mails.

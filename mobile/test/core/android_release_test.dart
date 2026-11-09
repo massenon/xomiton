@@ -23,7 +23,7 @@ void main() {
 
   group('identité et versions', () {
     test('applicationId, nom affiché et versions lues de pubspec.yaml', () {
-      expect(gradle, contains('applicationId = "bj.xomiton.xomiton"'));
+      expect(gradle, contains('applicationId = "app.xomiton.xomiton"'));
       expect(gradle, contains('versionCode = flutter.versionCode'));
       expect(gradle, contains('versionName = flutter.versionName'));
       expect(read('$main/res/values/strings.xml'), contains('<string name="app_name">Xomiton</string>'));
@@ -90,7 +90,7 @@ void main() {
     });
 
     test('captures d’écran : FLAG_SECURE par écran et dans le sélecteur d’applications', () {
-      final kt = read('$main/kotlin/bj/xomiton/xomiton/MainActivity.kt');
+      final kt = read('$main/kotlin/app/xomiton/xomiton/MainActivity.kt');
       expect(kt, contains('FLAG_SECURE'));
       expect(kt, contains('override fun onPause'));
       expect(kt, contains('"xomiton/secure"'));

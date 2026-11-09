@@ -53,7 +53,7 @@
               />
         </activity>
         <!-- Mode discret (P15-07, Q37) : deux points d'entrée, un seul activé à la fois.
-             Le code natif (MainActivity, canal bj.xomiton/discreet) bascule de l'un à l'autre. -->
+             Le code natif (MainActivity, canal app.xomiton/discreet) bascule de l'un à l'autre. -->
         <activity-alias
             android:name=".LauncherDefault"
             android:targetActivity=".MainActivity"

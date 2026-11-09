@@ -18,7 +18,7 @@ retombe sur Noop.
 ### Étapes
 
 1. Console Firebase : créer le projet, ajouter une application Android
-   `bj.xomiton.xomiton` (et iOS si besoin).
+   `app.xomiton.xomiton` (et iOS si besoin).
 2. Télécharger `google-services.json` et le placer dans
    `mobile/android/app/google-services.json`. Il est ignoré par git
    (`.gitignore`) : ne jamais le committer. Le plugin Gradle `google-services`
@@ -51,7 +51,7 @@ retombe sur Noop.
 
 Android : deux `activity-alias` (`.LauncherDefault` « Xomiton » et
 `.LauncherDiscreet` « Notes » avec l'icône `ic_notes`), basculés par
-`MainActivity` (canal `bj.xomiton/discreet`). Le lanceur peut mettre quelques
+`MainActivity` (canal `app.xomiton/discreet`). Le lanceur peut mettre quelques
 secondes à se mettre à jour. iOS : le nom ne peut pas changer à l'exécution et
 l'icône alternative n'est pas livrée (reste) ; l'écran le dit honnêtement.
 
@@ -210,7 +210,7 @@ après le code PIN ; effacement à distance ; expiration de 14 jours ; maintenan
 
 Configuration prête, **jamais construite à ce jour** (aucun SDK Android dans l'environnement de rédaction).
 
-- `android/app/build.gradle.kts` : `applicationId` `bj.xomiton.xomiton`, `versionName` / `versionCode` lus de
+- `android/app/build.gradle.kts` : `applicationId` `app.xomiton.xomiton`, `versionName` / `versionCode` lus de
   `pubspec.yaml` (`version: 1.0.0+1` ; garder `kAppVersion` identique), signature par `android/key.properties`
   (**jamais commité**, modèle `android/key.properties.example`, repli sur la clé de debug avec avertissement),
   R8 (`isMinifyEnabled`, `isShrinkResources`, `proguard-rules.pro`).

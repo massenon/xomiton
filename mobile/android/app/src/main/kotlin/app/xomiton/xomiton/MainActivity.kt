@@ -1,4 +1,4 @@
-package bj.xomiton.xomiton
+package app.xomiton.xomiton
 
 import android.content.ComponentName
 import android.content.pm.PackageManager
@@ -26,7 +26,7 @@ class MainActivity : FlutterActivity() {
                     result.notImplemented()
                 }
             }
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "bj.xomiton/discreet")
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "app.xomiton/discreet")
             .setMethodCallHandler { call, result ->
                 if (call.method == "setDiscreet") {
                     setDiscreet(call.argument<Boolean>("discreet") == true)
@@ -51,7 +51,7 @@ class MainActivity : FlutterActivity() {
 
     private fun setAlias(name: String, enabled: Boolean) {
         packageManager.setComponentEnabledSetting(
-            ComponentName(this, "bj.xomiton.xomiton.$name"),
+            ComponentName(this, "app.xomiton.xomiton.$name"),
             if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
             else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP,
