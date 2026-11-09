@@ -20,7 +20,7 @@ it('réduit les URL à leur hôte et masque adresses e-mail et numéros', functi
 ]);
 
 it('préfixe la classe de l’exception et borne à 255 caractères', function (): void {
-    $message = DeliveryError::fromThrowable(new RuntimeException('panne vers ops@xomiton.bj '.str_repeat('x', 300)));
+    $message = DeliveryError::fromThrowable(new RuntimeException('panne vers ops@xomiton.app '.str_repeat('x', 300)));
 
     expect($message)->toStartWith('RuntimeException : panne vers [masqué]')
         ->and(mb_strlen($message))->toBe(255);

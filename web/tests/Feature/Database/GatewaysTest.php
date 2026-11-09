@@ -58,7 +58,7 @@ it('seed les 6 réseaux déconnectés et les 3 modèles du prototype sans doublo
     $this->seed(SocialChannelsSeeder::class);
 
     $facebook = SocialChannel::query()->ofNetwork(SocialNetwork::Facebook)->firstOrFail();
-    $facebook->update(['is_connected' => true, 'account_handle' => '@xomiton.bj', 'connected_at' => now()]);
+    $facebook->update(['is_connected' => true, 'account_handle' => '@xomiton.app', 'connected_at' => now()]);
     GatewayTemplate::query()->where('title', 'Aide – SOS')->update(['is_active' => false]);
 
     $this->seed(SocialChannelsSeeder::class);
@@ -67,7 +67,7 @@ it('seed les 6 réseaux déconnectés et les 3 modèles du prototype sans doublo
         ->and(SocialChannel::query()->withApi()->pluck('network')->map->value->sort()->values()->all())
         ->toBe(['facebook', 'telegram', 'tiktok'])
         ->and(SocialChannel::query()->connected()->count())->toBe(1)
-        ->and($facebook->fresh()->account_handle)->toBe('@xomiton.bj')
+        ->and($facebook->fresh()->account_handle)->toBe('@xomiton.app')
         ->and(SocialChannel::query()->ofNetwork(SocialNetwork::Romeo)->value('label'))->toBe('Roméo')
         ->and(GatewayTemplate::query()->count())->toBe(3)
         ->and(GatewayTemplate::query()->active()->count())->toBe(2)

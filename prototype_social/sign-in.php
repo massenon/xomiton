@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($found['status'] === 'en_attente') {
             $error = 'Votre compte est en attente de validation par l’équipe Xomiton.';
         } elseif ($found['status'] === 'suspendu') {
-            $error = 'Ce compte est suspendu. Contactez-nous : ' . setting('contact_email', 'contact@xomiton.bj');
+            $error = 'Ce compte est suspendu. Contactez-nous : ' . setting('contact_email', 'contact@xomiton.app');
         } elseif (setting('maintenance') && !in_array($found['role'], ['admin', 'superadmin'], true)) {
             $error = 'La plateforme est en maintenance. Réessayez dans quelques instants.';
         } else {
@@ -87,9 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 						<div class="card-body py-3 small">
 							<div class="fw-bold mb-1"><i class="bi bi-info-circle me-1"></i>Comptes de démonstration</div>
 							<div class="d-flex flex-wrap gap-2">
-								<button type="button" class="btn btn-sm btn-primary-soft" data-demo="membre@xomiton.bj|Membre123!">Membre</button>
-								<button type="button" class="btn btn-sm btn-primary-soft" data-demo="pair@xomiton.bj|Pair123!">Pair animateur·rice</button>
-								<button type="button" class="btn btn-sm btn-primary-soft" data-demo="admin@xomiton.bj|Admin123!">Administrateur</button>
+								<button type="button" class="btn btn-sm btn-primary-soft" data-demo="membre@xomiton.app|Membre123!">Membre</button>
+								<button type="button" class="btn btn-sm btn-primary-soft" data-demo="pair@xomiton.app|Pair123!">Pair animateur·rice</button>
+								<button type="button" class="btn btn-sm btn-primary-soft" data-demo="admin@xomiton.app|Admin123!">Administrateur</button>
 							</div>
 						</div>
 					</div>

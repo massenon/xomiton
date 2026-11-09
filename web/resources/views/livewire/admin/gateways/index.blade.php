@@ -194,7 +194,7 @@
     <x-admin.modal id="xmGatewayConnect" size="md" heading="h2" :title="__('admin_gateways.connect.title', ['network' => $this->connecting?->label ?? ''])" x-data x-on:hidden-bs-modal.dot="$wire.resetConnect()">
         <form id="xmGatewayConnectForm" wire:submit="connect" novalidate autocomplete="off">
             <p class="small text-secondary">{{ __('admin_gateways.connect.help') }}</p>
-            <x-field name="account" :label="__('admin_gateways.connect.account')" wire:model="account" maxlength="41" :placeholder="'@xomiton.bj'" :hint="__('admin_gateways.connect.account_help')" />
+            <x-field name="account" :label="__('admin_gateways.connect.account')" wire:model="account" maxlength="41" :placeholder="'@xomiton.app'" :hint="__('admin_gateways.connect.account_help')" />
             @if ($this->connecting?->supports_api)
                 <x-field name="token" type="password" optional :label="__('admin_gateways.connect.token')" wire:model="token" autocomplete="off" :hint="__('admin_gateways.connect.token_help')" />
             @endif

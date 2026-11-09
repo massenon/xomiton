@@ -397,7 +397,7 @@ Détails : [RUNBOOK.md](RUNBOOK.md) §2 et §3.
 - [ ] `APP_ENV=production`, `APP_DEBUG=false`, `APP_KEY` propre à la production, sauvegardée dans un coffre de mots de passe (pas dans le dépôt).
 - [ ] `.env` en `chmod 600` ; `https://domaine/.env` et `/composer.json` répondent 403 ou 404.
 - [ ] Le site répond en HTTPS avec un certificat valide ; HTTP redirige vers HTTPS ; en-têtes de sécurité présents (§12).
-- [ ] Aucun compte de démonstration : `php artisan tinker --execute="echo App\Models\User::where('email','like','%@xomiton.bj')->count();"` ne doit compter que les comptes réels voulus ; aucun mot de passe de démonstration (`Admin123!`…) n'est valide.
+- [ ] Aucun compte de démonstration : `php artisan tinker --execute="echo App\Models\User::where('email','like','%@xomiton.app')->count();"` ne doit compter que les comptes réels voulus ; aucun mot de passe de démonstration (`Admin123!`…) n'est valide.
 - [ ] Mots de passe changés : cPanel (avec double authentification), FTP, SSH, MySQL, SMTP ; clés d'API cPanel révoquées.
 - [ ] Assistant Gemini désactivé (`ASSISTANT_LLM_ENABLED=false`).
 - [ ] Cron en place, signal de vie reçu, alerte de signal de vie testée, personne de garde et planning renseignés ([RUNBOOK.md](RUNBOOK.md) §12).

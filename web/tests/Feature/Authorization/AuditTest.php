@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 describe('Audit::log', function (): void {
     it('journalise avec le compte connecté, l’IP et le navigateur de la requête', function (): void {
-        $actor = User::factory()->create(['email' => 'actrice@xomiton.bj']);
+        $actor = User::factory()->create(['email' => 'actrice@xomiton.app']);
         $subject = User::factory()->create();
 
         $this->actingAs($actor);
@@ -33,7 +33,7 @@ describe('Audit::log', function (): void {
 
         expect($log)->toBeInstanceOf(AuditLog::class)
             ->and($log->user_id)->toBe($actor->id)
-            ->and($log->actor)->toBe('actrice@xomiton.bj')
+            ->and($log->actor)->toBe('actrice@xomiton.app')
             ->and($log->action)->toBe('user.suspend')
             ->and($log->subject_type)->toBe($subject->getMorphClass())
             ->and($log->subject_id)->toBe($subject->id)
@@ -46,13 +46,13 @@ describe('Audit::log', function (): void {
     });
 
     it('accepte un acteur explicite et note « anonyme » sans compte', function (): void {
-        $actor = User::factory()->create(['email' => 'explicite@xomiton.bj']);
+        $actor = User::factory()->create(['email' => 'explicite@xomiton.app']);
 
         $explicit = Audit::log('auth.logout', null, null, $actor);
         $anonymous = Audit::log('auth.failed', null, 'identifiant=inconnue');
 
         expect($explicit->user_id)->toBe($actor->id)
-            ->and($explicit->actor)->toBe('explicite@xomiton.bj')
+            ->and($explicit->actor)->toBe('explicite@xomiton.app')
             ->and($anonymous->user_id)->toBeNull()
             ->and($anonymous->actor)->toBe(AuditLog::ACTOR_ANONYMOUS)
             ->and($anonymous->actorLabel())->toBe(AuditLog::ACTOR_ANONYMOUS);
@@ -114,18 +114,18 @@ describe('écouteurs d’authentification', function (): void {
     });
 
     it('journalise la déconnexion avec le compte quitté', function (): void {
-        $user = User::factory()->create(['email' => 'sortie@xomiton.bj']);
+        $user = User::factory()->create(['email' => 'sortie@xomiton.app']);
 
         event(new Logout('web', $user));
 
-        expect(AuditLog::query()->ofAction('auth.logout')->first()?->actor)->toBe('sortie@xomiton.bj');
+        expect(AuditLog::query()->ofAction('auth.logout')->first()?->actor)->toBe('sortie@xomiton.app');
     });
 
     it('journalise un échec sans jamais écrire le mot de passe', function (): void {
-        $user = User::factory()->create(['email' => 'cible@xomiton.bj']);
+        $user = User::factory()->create(['email' => 'cible@xomiton.app']);
 
-        event(new Failed('web', $user, ['login' => 'Cible@xomiton.bj', 'password' => 'TopSecret!2026']));
-        event(new Failed('web', null, ['email' => 'inconnue@xomiton.bj', 'password' => 'Autre$ecret']));
+        event(new Failed('web', $user, ['login' => 'Cible@xomiton.app', 'password' => 'TopSecret!2026']));
+        event(new Failed('web', null, ['email' => 'inconnue@xomiton.app', 'password' => 'Autre$ecret']));
 
         $logs = AuditLog::query()->ofAction('auth.failed')->orderBy('id')->get();
 
@@ -133,9 +133,9 @@ describe('écouteurs d’authentification', function (): void {
             ->and($logs[0]->user_id)->toBeNull()
             ->and($logs[0]->actor)->toBe(AuditLog::ACTOR_ANONYMOUS)
             ->and($logs[0]->subject_id)->toBe($user->id)
-            ->and($logs[0]->detail)->toContain('identifiant=cible@xomiton.bj')
+            ->and($logs[0]->detail)->toContain('identifiant=cible@xomiton.app')
             ->and($logs[1]->subject_id)->toBeNull()
-            ->and($logs[1]->detail)->toContain('identifiant=inconnue@xomiton.bj');
+            ->and($logs[1]->detail)->toContain('identifiant=inconnue@xomiton.app');
 
         foreach ($logs as $log) {
             expect($log->detail)->not->toContain('TopSecret', 'Autre$ecret');
@@ -146,13 +146,13 @@ describe('écouteurs d’authentification', function (): void {
         $user = User::factory()->create();
 
         event(new PasswordReset($user));
-        event(new Lockout(Request::create('/connexion', 'POST', ['login' => 'Awa@xomiton.bj', 'password' => 'x'], server: ['REMOTE_ADDR' => '10.0.0.9'])));
+        event(new Lockout(Request::create('/connexion', 'POST', ['login' => 'Awa@xomiton.app', 'password' => 'x'], server: ['REMOTE_ADDR' => '10.0.0.9'])));
 
         expect(AuditLog::query()->ofAction('auth.password_reset')->first()?->user_id)->toBe($user->id);
 
         $lockout = AuditLog::query()->ofAction('auth.lockout')->first();
 
-        expect($lockout?->detail)->toContain('identifiant=awa@xomiton.bj', 'ip=10.0.0.9')
+        expect($lockout?->detail)->toContain('identifiant=awa@xomiton.app', 'ip=10.0.0.9')
             ->and($lockout?->detail)->not->toContain('password');
 
         // Le formulaire de connexion peut nommer le champ `identifier` (e-mail ou pseudo) : même journal.

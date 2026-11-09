@@ -106,7 +106,7 @@ it('dépose l’e-mail dans la boîte d’envoi sans jamais appeler le mailer', 
 });
 
 it('ne tronque jamais le lien final d’un SMS', function (): void {
-    $url = 'https://xomiton.bj/alertes/01J9ZQ8V7W4K2M3N5P6R7S8T9V/accuser?contact=12&expires=1792345678&signature='.str_repeat('a', 64);
+    $url = 'https://xomiton.app/alertes/01J9ZQ8V7W4K2M3N5P6R7S8T9V/accuser?contact=12&expires=1792345678&signature='.str_repeat('a', 64);
     $sms = (new SosTriggered(1, 'SIG-A7K2M9P4QX', 'Abomey-Calavi', 'Atlantique', null, $url))->toSms(Alert::factory()->make());
 
     expect($sms)->toEndWith($url)

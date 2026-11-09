@@ -101,12 +101,12 @@ config/xomiton.php         réglages métier (délais, limites, lots)
 
 | Rôle | E-mail | Mot de passe |
 |---|---|---|
-| Super-admin | admin@xomiton.bj | Admin123! |
-| Admin | moderation@xomiton.bj | Admin123! |
-| Modérateur·rice | moderateur@xomiton.bj | Modo123! |
-| Membre | membre@xomiton.bj, membre2@xomiton.bj | Membre123! |
-| Pair | pair@xomiton.bj | Pair123! |
-| Pair en attente de validation | pair.attente@xomiton.bj | Pair123! |
+| Super-admin | admin@xomiton.app | Admin123! |
+| Admin | moderation@xomiton.app | Admin123! |
+| Modérateur·rice | moderateur@xomiton.app | Modo123! |
+| Membre | membre@xomiton.app, membre2@xomiton.app | Membre123! |
+| Pair | pair@xomiton.app | Pair123! |
+| Pair en attente de validation | pair.attente@xomiton.app | Pair123! |
 
 ## Références
 

@@ -39,7 +39,7 @@ function x_mail_variables() {
         'event_title'       => ['Titre de l’événement', 'Atelier « Dire non sans culpabiliser »'],
         'event_date'        => ['Date de l’événement', 'samedi 24 octobre à 15 h'],
         'site_name'         => ['Nom de la plateforme', 'Xomiton'],
-        'support_email'     => ['E-mail du support', 'contact@xomiton.bj'],
+        'support_email'     => ['E-mail du support', 'contact@xomiton.app'],
         'current_year'      => ['Année en cours', date('Y')],
         'unsubscribe_link'  => ['Lien de désinscription (newsletter)', 'https://xomiton.org/newsletter.php?u=…'],
     ];
@@ -48,7 +48,7 @@ function x_mail_variables() {
 /** Valeurs fictives pour l'aperçu et l'envoi de test. */
 function x_mail_sample_vars() {
     $v = array_map(fn($x) => $x[1], x_mail_variables());
-    $v['site_name'] = setting('site_name', 'Xomiton'); $v['support_email'] = setting('contact_email', 'contact@xomiton.bj');
+    $v['site_name'] = setting('site_name', 'Xomiton'); $v['support_email'] = setting('contact_email', 'contact@xomiton.app');
     return $v;
 }
 
@@ -60,7 +60,7 @@ function x_mail_used_vars($text) {
 
 /** Remplace {{variable}}. $escape = true pour du HTML (valeurs échappées) ; les variables inconnues restent visibles. */
 function x_mail_render($text, array $vars, $escape = true) {
-    $vars += ['site_name' => setting('site_name', 'Xomiton'), 'support_email' => setting('contact_email', 'contact@xomiton.bj'), 'current_year' => date('Y')];
+    $vars += ['site_name' => setting('site_name', 'Xomiton'), 'support_email' => setting('contact_email', 'contact@xomiton.app'), 'current_year' => date('Y')];
     return preg_replace_callback('/\{\{\s*([a-z0-9_]+)\s*\}\}/i', function ($m) use ($vars, $escape) {
         if (!array_key_exists($m[1], $vars)) return $m[0];
         return $escape ? htmlspecialchars((string)$vars[$m[1]], ENT_QUOTES, 'UTF-8') : (string)$vars[$m[1]];
@@ -81,14 +81,14 @@ function x_mail_layout($bodyHtml, array $o = []) {
         . '<tr><td style="background:#0433C3;padding:20px 28px"><img src="' . e($logo) . '" alt="' . $site . '" height="32" style="display:block;height:32px;border:0"></td></tr>'
         . '<tr><td style="padding:28px;font-size:15px;line-height:1.6">' . $bodyHtml . '</td></tr>'
         . '<tr><td style="padding:18px 28px;background:#FAF9FC;border-top:1px solid #ECEAF2;font-size:12px;line-height:1.5;color:#6B6880">'
-        . $site . ' — espace safe d’apprentissage et d’appui holistique, Bénin.<br>Besoin d’aide ? <a href="mailto:' . e(setting('contact_email', 'contact@xomiton.bj')) . '" style="color:#0433C3">' . e(setting('contact_email', 'contact@xomiton.bj')) . '</a>'
+        . $site . ' — espace safe d’apprentissage et d’appui holistique, Bénin.<br>Besoin d’aide ? <a href="mailto:' . e(setting('contact_email', 'contact@xomiton.app')) . '" style="color:#0433C3">' . e(setting('contact_email', 'contact@xomiton.app')) . '</a>'
         . $unsub . '</td></tr></table>' . $pixel . '</td></tr></table></body></html>';
 }
 
 /** Configuration SMTP (paramètres plateforme). */
 function x_smtp_config() {
     $c = setting('smtp', []);
-    return (is_array($c) ? $c : []) + ['host' => '', 'port' => 587, 'secure' => 'tls', 'user' => '', 'pass' => '', 'from_email' => setting('contact_email', 'contact@xomiton.bj'), 'from_name' => setting('site_name', 'Xomiton'), 'reply_to' => ''];
+    return (is_array($c) ? $c : []) + ['host' => '', 'port' => 587, 'secure' => 'tls', 'user' => '', 'pass' => '', 'from_email' => setting('contact_email', 'contact@xomiton.app'), 'from_name' => setting('site_name', 'Xomiton'), 'reply_to' => ''];
 }
 
 /**

@@ -326,7 +326,7 @@ endif; ?>
 				<div class="row g-3">
 					<div class="col-12"><label class="form-label" for="cSubject">Objet du mail *</label><input class="form-control" id="cSubject" name="subject" required minlength="3" maxlength="150" data-var-target></div>
 					<div class="col-md-6"><label class="form-label" for="cFrom">Nom de l’expéditeur *</label><input class="form-control" id="cFrom" name="from_name" required minlength="2" maxlength="60" value="Xomiton"></div>
-					<div class="col-md-6"><label class="form-label" for="cReply">E-mail de réponse *</label><input type="email" class="form-control" id="cReply" name="reply_to" required value="<?= e(setting('contact_email', 'contact@xomiton.bj')) ?>"></div>
+					<div class="col-md-6"><label class="form-label" for="cReply">E-mail de réponse *</label><input type="email" class="form-control" id="cReply" name="reply_to" required value="<?= e(setting('contact_email', 'contact@xomiton.app')) ?>"></div>
 					<div class="col-12"><label class="form-label" for="cPre">Texte d’aperçu</label><input class="form-control" id="cPre" name="preheader" maxlength="150" data-var-target></div>
 					<div class="col-12">
 						<label class="form-label" id="cBodyLabel">Corps du message *</label>

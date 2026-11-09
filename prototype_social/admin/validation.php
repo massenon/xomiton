@@ -6,7 +6,7 @@ $pageTitle = 'Règles de validation'; $adminPage = 'validation';
 $catalog = [
     'required'        => ['Champ obligatoire', 'Le champ ne peut pas être vide (espaces ignorés).', ['Tous les formulaires'], 'Cotonou', '', 'Oui'],
     'phone_bj'        => ['Téléphone béninois', 'Format +229 01 XX XX XX XX (8 à 10 chiffres, indicatif facultatif).', ['Inscription', 'Annuaire', 'Collecte', 'Profil'], '+229 01 97 38 88 47', '12-AB', 'Oui'],
-    'email'           => ['Adresse e-mail valide', 'Structure nom@domaine.tld.', ['Inscription', 'Annuaire', 'Paramètres'], 'awa@xomiton.bj', 'awa@', 'Oui'],
+    'email'           => ['Adresse e-mail valide', 'Structure nom@domaine.tld.', ['Inscription', 'Annuaire', 'Paramètres'], 'awa@xomiton.app', 'awa@', 'Oui'],
     'date_not_future' => ['Date non postérieure à aujourd’hui', 'Empêche la saisie d’un événement ou d’une collecte datée du futur.', ['Collecte de données', 'Registres', 'Suivi'], '2026-01-15', '2099-01-01', 'Oui'],
     'age_range'       => ['Âge entre 10 et 99 ans', 'Valeur plausible pour les populations accompagnées.', ['Collecte de données', 'Fiches VBG/VDH'], '24', '150', 'Oui'],
     'min_len_20'      => ['Description d’au moins 20 caractères', 'Évite les signalements vides ou inexploitables.', ['Signalement', 'SOS', 'Besoins'], 'Menaces répétées par un voisin depuis une semaine.', 'Menaces', 'Oui'],

@@ -52,7 +52,7 @@ class SocialChannelFactory extends Factory
     {
         return $this->state(fn (array $attributes): array => [
             'is_connected' => true,
-            'account_handle' => '@xomiton.bj',
+            'account_handle' => '@xomiton.app',
             'access_token' => 'tok_'.fake()->sha256(),
             'refresh_token' => 'rtk_'.fake()->sha256(),
             'token_expires_at' => now()->addDays(60),

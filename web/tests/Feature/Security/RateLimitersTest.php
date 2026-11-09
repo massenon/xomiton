@@ -38,7 +38,7 @@ function hasPostRouteNamed(string $name): bool
 
 it('limite la connexion à 5 tentatives par minute puis répond 429 à la 6e, par identifiant et IP', function (): void {
     $uri = throttledRoute('login');
-    $payload = ['identifier' => 'Membre@xomiton.bj', 'password' => 'mauvais'];
+    $payload = ['identifier' => 'Membre@xomiton.app', 'password' => 'mauvais'];
 
     foreach (range(1, 5) as $i) {
         $this->postJson($uri, $payload)->assertOk()->assertHeader('X-RateLimit-Remaining', (string) (5 - $i));
@@ -48,10 +48,10 @@ it('limite la connexion à 5 tentatives par minute puis répond 429 à la 6e, pa
     $blocked->assertHeader('Retry-After')->assertJsonPath('message', fn (string $m): bool => str_starts_with($m, 'Trop de tentatives'));
 
     // La casse de l'identifiant ne contourne pas le compteur…
-    $this->postJson($uri, ['identifier' => 'membre@xomiton.bj', 'password' => 'x'])->assertStatus(429);
+    $this->postJson($uri, ['identifier' => 'membre@xomiton.app', 'password' => 'x'])->assertStatus(429);
 
     // … mais un autre identifiant ou une autre IP ont leur propre compteur.
-    $this->postJson($uri, ['identifier' => 'autre@xomiton.bj', 'password' => 'x'])->assertOk();
+    $this->postJson($uri, ['identifier' => 'autre@xomiton.app', 'password' => 'x'])->assertOk();
     $this->postJson($uri, $payload, ['REMOTE_ADDR' => '203.0.113.9'])->assertOk();
 });
 
@@ -59,13 +59,13 @@ it('limite les envois de code OTP à 5 par heure et par adresse e-mail', functio
     $uri = throttledRoute('otp');
 
     foreach (range(1, 5) as $i) {
-        $this->postJson($uri, ['email' => 'membre@xomiton.bj'])->assertOk();
+        $this->postJson($uri, ['email' => 'membre@xomiton.app'])->assertOk();
     }
 
-    $this->postJson($uri, ['email' => 'MEMBRE@xomiton.bj'])->assertStatus(429)
+    $this->postJson($uri, ['email' => 'MEMBRE@xomiton.app'])->assertStatus(429)
         ->assertJsonPath('message', fn (string $m): bool => str_starts_with($m, 'Trop de codes demandés'));
 
-    $this->postJson($uri, ['email' => 'pair@xomiton.bj'])->assertOk();
+    $this->postJson($uri, ['email' => 'pair@xomiton.app'])->assertOk();
 });
 
 it('limite le signalement anonyme à 10 par heure et par IP', function (): void {
@@ -144,7 +144,7 @@ it('applique le limiteur api à tout le groupe /api/v1 via bootstrap/app.php', f
 it('lit les seuils dans la configuration au moment de la requête', function (): void {
     config()->set('xomiton.rate_limits.login_per_minute', 2);
     $uri = throttledRoute('login');
-    $payload = ['identifier' => 'membre@xomiton.bj', 'password' => 'x'];
+    $payload = ['identifier' => 'membre@xomiton.app', 'password' => 'x'];
 
     $this->postJson($uri, $payload)->assertOk();
     $this->postJson($uri, $payload)->assertOk();
@@ -161,7 +161,7 @@ it('ne plante pas quand le champ e-mail du limiteur otp n’est pas une chaîne'
 });
 
 it('répond 429 à la 6e tentative sur POST /connexion', function (): void {
-    $payload = ['identifier' => 'membre@xomiton.bj', 'email' => 'membre@xomiton.bj', 'password' => 'MauvaisMotDePasse1'];
+    $payload = ['identifier' => 'membre@xomiton.app', 'email' => 'membre@xomiton.app', 'password' => 'MauvaisMotDePasse1'];
 
     foreach (range(1, 5) as $i) {
         $this->post(route('connexion.store'), $payload)->assertStatus(302);

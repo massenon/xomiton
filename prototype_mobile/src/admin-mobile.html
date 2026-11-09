@@ -291,7 +291,7 @@ const T = {
       <section class="card stack-s" aria-labelledby="ivh"><div class="sec-h"><h2 id="ivh">${esc(t('roles.invite_h'))}</h2></div><p class="small muted" style="margin:0">${esc(t('roles.invite_help'))}</p>
         ${iv ? `<div class="note ok" style="display:grid;gap:8px" role="status"><b>${ic('check', 'sm')} ${esc(t('roles.created'))} · ${esc(iv.zone)} · ${esc(t('roles.expires', { days: iv.days }))}</b>
             <div><span class="small muted">${esc(t('roles.code'))}</span><div class="invite-code">${esc(iv.code)}</div></div>
-            <div><span class="small muted">${esc(t('roles.link'))}</span><div class="mono small" style="word-break:break-all">https://xomiton.bj/inviter/${esc(iv.code)}</div></div>
+            <div><span class="small muted">${esc(t('roles.link'))}</span><div class="mono small" style="word-break:break-all">https://xomiton.app/inviter/${esc(iv.code)}</div></div>
             <div class="seg-line"><button class="btn btn-outline btn-sm" style="min-height:44px" data-act="copy" data-w="link">${ic('link', 'sm')} ${esc(t('roles.copy_link'))}</button><button class="btn btn-outline btn-sm" style="min-height:44px" data-act="copy" data-w="code">${ic('copy', 'sm')} ${esc(t('roles.copy_code'))}</button></div></div>` : ''}
         <form id="ivf" class="stack-s" novalidate>
           <div class="fld"><label for="iz">${esc(t('roles.zone'))}</label><select class="input" id="iz">${ZONES.map(z => `<option ${z === 'Atlantique' ? 'selected' : ''}>${z}</option>`).join('')}</select></div>

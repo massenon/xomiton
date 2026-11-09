@@ -37,7 +37,7 @@ class ValidationRulesSeeder extends Seeder
             'label' => 'Adresse e-mail valide',
             'description' => 'Structure nom@domaine.tld.',
             'forms' => ['Inscription', 'Annuaire', 'Paramètres'],
-            'valid' => 'awa@xomiton.bj',
+            'valid' => 'awa@xomiton.app',
             'invalid' => 'awa@',
             'params' => null,
         ],

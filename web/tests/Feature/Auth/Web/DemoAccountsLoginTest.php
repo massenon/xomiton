@@ -23,15 +23,15 @@ beforeEach(function (): void {
 
 dataset('demo-accounts', [
     // Un seul compte, rôles cumulables : toute personne membre (admin et modération comprises) arrive sur le fil.
-    'super-administrateur·rice' => ['admin@xomiton.bj', 'Admin123!', '/fil'],
-    'administrateur·rice' => ['moderation@xomiton.bj', 'Admin123!', '/fil'],
-    'modérateur·rice' => ['moderateur@xomiton.bj', 'Modo123!', '/fil'],
-    'admin + pair + membre' => ['equipe@xomiton.bj', 'Equipe123!', '/fil'],
-    'membre' => ['membre@xomiton.bj', 'Membre123!', '/fil'],
+    'super-administrateur·rice' => ['admin@xomiton.app', 'Admin123!', '/fil'],
+    'administrateur·rice' => ['moderation@xomiton.app', 'Admin123!', '/fil'],
+    'modérateur·rice' => ['moderateur@xomiton.app', 'Modo123!', '/fil'],
+    'admin + pair + membre' => ['equipe@xomiton.app', 'Equipe123!', '/fil'],
+    'membre' => ['membre@xomiton.app', 'Membre123!', '/fil'],
     'membre (pseudo)' => ['awa_s', 'Membre123!', '/fil'],
-    'second membre' => ['membre2@xomiton.bj', 'Membre123!', '/fil'],
-    'pair éducateur·rice' => ['pair@xomiton.bj', 'Pair123!', '/fil'],
-    'pair en attente' => ['pair.attente@xomiton.bj', 'Pair123!', '/fil'],
+    'second membre' => ['membre2@xomiton.app', 'Membre123!', '/fil'],
+    'pair éducateur·rice' => ['pair@xomiton.app', 'Pair123!', '/fil'],
+    'pair en attente' => ['pair.attente@xomiton.app', 'Pair123!', '/fil'],
 ]);
 
 it('connecte chaque compte de démonstration jusqu’à sa page d’arrivée', function (string $identifier, string $password, string $landing): void {
@@ -55,7 +55,7 @@ it('connecte chaque compte de démonstration jusqu’à sa page d’arrivée', f
 })->with('demo-accounts');
 
 it('refuse un mot de passe de démonstration erroné sans ouvrir de session', function (): void {
-    $this->post('/connexion', ['identifier' => 'membre@xomiton.bj', 'password' => 'Admin123!'])
+    $this->post('/connexion', ['identifier' => 'membre@xomiton.app', 'password' => 'Admin123!'])
         ->assertSessionHasErrors('identifier');
     $this->assertGuest();
 });

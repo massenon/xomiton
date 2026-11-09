@@ -36,13 +36,13 @@ Parcours commun à tous les rôles.
 | AUT-02 | Recommencer en cochant la case d'âge minimal. | Arrivée sur `/inscription/profil` ; étapes profil, sécurité et consentements facultatives (« Passer ») ; e-mail « Bienvenue » dans le journal. | ☐ | |
 | AUT-03 | Lire le code dans le journal, le saisir sur `/code-de-verification` ; essayer d'abord un code faux. | Code faux : message d'erreur et compteur d'essais. Bon code : compte vérifié, arrivée sur `/fil`. « Renvoyer » respecte un délai. | ☐ | |
 | AUT-04 | Se déconnecter, se reconnecter ; tester « Mot de passe oublié » (`/mot-de-passe-oublie`, code du journal, `/nouveau-mot-de-passe`). | Connexion et réinitialisation réussies ; mot de passe faible refusé. | ☐ | |
-| AUT-05 | Se connecter avec `pair.attente@xomiton.bj` / `Pair123!`. | Connexion avec un bandeau « en attente de validation » ; compte membre seulement, pas d'accès à `/espace-pair`. | ☐ | |
+| AUT-05 | Se connecter avec `pair.attente@xomiton.app` / `Pair123!`. | Connexion avec un bandeau « en attente de validation » ; compte membre seulement, pas d'accès à `/espace-pair`. | ☐ | |
 | AUT-08 | `/inscription/profil` : chercher un choix « Type de membre / pair éducateur·rice ». | Aucun : l'inscription publique ne crée que des membres (le rôle pair vient d'une invitation ou de l'administration). | ☐ | |
-| AUT-09 | Se connecter avec `equipe@xomiton.bj` / `Equipe123!` (code du journal). | Un seul login ; arrivée sur `/fil` ; les menus mènent à `/espace-pair` et `/admin` ; le réseau social reste utilisable. | ☐ | |
+| AUT-09 | Se connecter avec `equipe@xomiton.app` / `Equipe123!` (code du journal). | Un seul login ; arrivée sur `/fil` ; les menus mènent à `/espace-pair` et `/admin` ; le réseau social reste utilisable. | ☐ | |
 | AUT-06 | Enchaîner 6 connexions fausses en moins d'une minute. | Page « Trop de tentatives… Nouvelle tentative possible dans N secondes » (429). | ☐ | |
 | AUT-07 | Ouvrir `/connexion`, supprimer les cookies du site (F12 › Application), envoyer le formulaire. | Page « Erreur 419 — Votre session a expiré… » sans perte de contrôle. | ☐ | |
 
-## 3. Membre (`membre@xomiton.bj`, `membre2@xomiton.bj`)
+## 3. Membre (`membre@xomiton.app`, `membre2@xomiton.app`)
 
 Utiliser deux fenêtres privées pour les tests à deux.
 
@@ -62,12 +62,12 @@ Utiliser deux fenêtres privées pour les tests à deux.
 | MEM-12 | Paramètres › Sécurité : activer le **mode discret**, voir les appareils connectés, « Déconnecter tous les appareils ». | Titre d'onglet neutre, aperçus masqués ; appareils déconnectés. | ☐ | |
 | MEM-13 | Paramètres › Mes données › Télécharger mes données ; lancer `queue:work --stop-when-empty` puis `mail:flush-outbox`. | Message « Ton export est en préparation… » ; lien `mes-donnees/export/` dans le journal, fichier JSON téléchargé (valable 48 h). | ☐ | |
 | MEM-14 | Supprimer un compte jetable (`recette1`) : saisir `SUPPRIMER` et le mot de passe. | Déconnexion, connexion impossible ; anonymisation réelle après 30 jours (`php artisan accounts:anonymize --dry-run`). | ☐ | |
-| MEM-15 | Avec `membre@xomiton.bj`, ouvrir `/admin`, `/espace-pair`, `/collecte`. | Page « Erreur 403 » dans les trois cas. | ☐ | |
+| MEM-15 | Avec `membre@xomiton.app`, ouvrir `/admin`, `/espace-pair`, `/collecte`. | Page « Erreur 403 » dans les trois cas. | ☐ | |
 | MEM-16 | `/recherche?q=santé` puis `sante` ; onglets Tout, Ressources, Thématiques, Contacts, Membres. | Mêmes résultats avec et sans accent. | ☐ | |
 | MEM-17 | `/assistant` : cliquer « Comment porter plainte ? ». | Réponse de la base de connaissances (aucun appel externe). | ☐ | |
 | MEM-18 | `/assistant` : écrire « je veux mourir, je ne vois plus d'issue ». | Réponse de crise avec boutons SOS (position GPS), Appeler le 117 / 118, ligne d'écoute, Faire un signalement, Parler à un humain. « Garder cette conversation » est désactivé par défaut. | ☐ | |
 
-## 4. Pair éducateur·rice (`pair@xomiton.bj`)
+## 4. Pair éducateur·rice (`pair@xomiton.app`)
 
 | Réf. | Action | Résultat attendu | Statut | Commentaire |
 |---|---|---|---|---|
@@ -78,7 +78,7 @@ Utiliser deux fenêtres privées pour les tests à deux.
 | PAI-05 | Ouvrir `/admin`. | Page « Erreur 403 ». | ☐ | |
 | PAI-06 | Dans l'espace pair, consulter une alerte routée vers ce compte (créer d'abord un signalement, VIS-09). | L'alerte est visible, on peut l'accuser réception ; les autres alertes restent invisibles. | ☐ | |
 
-## 5. Modérateur·rice (`moderateur@xomiton.bj`)
+## 5. Modérateur·rice (`moderateur@xomiton.app`)
 
 | Réf. | Action | Résultat attendu | Statut | Commentaire |
 |---|---|---|---|---|
@@ -87,7 +87,7 @@ Utiliser deux fenêtres privées pour les tests à deux.
 | MOD-03 | Consulter la liste des mots surveillés. | 7 mots listés. | ☐ | |
 | MOD-04 | Ouvrir `/admin/registres` ou `/admin/parametres`. | Accès refusé (403). | ☐ | |
 
-## 6. Administrateur·rice et super-administrateur·rice (`moderation@xomiton.bj`, `admin@xomiton.bj`)
+## 6. Administrateur·rice et super-administrateur·rice (`moderation@xomiton.app`, `admin@xomiton.app`)
 
 Un code de vérification est demandé à chaque connexion.
 
@@ -98,11 +98,11 @@ Un code de vérification est demandé à chaque connexion.
 | ADM-03 | `/admin/alertes` : filtres, actualisation automatique (10 s), accuser réception, notes, **Exporter CSV**. | Les actions fonctionnent ; le statut changé s'affiche dans `/suivi` côté visiteur. | ☐ | |
 | ADM-04 | `/admin/registres` : **Nouveau dossier** ; `/admin/fiches`. | Le récit n'apparaît jamais dans la liste. L'édition d'une fiche déjà créée n'est pas disponible (voir la section 14). | ☐ | |
 | ADM-05 | `/admin/utilisateurs` : filtrer par rôle, **Créer un compte**, suspendre puis réactiver, **valider** le pair en attente (`pair_en_attente`). | Le compte validé se connecte sans bandeau et garde le rôle membre en plus du rôle pair ; la matrice des permissions est en lecture seule. | ☐ | |
-| ADM-14 | `/admin/utilisateurs` › ouvrir `membre@xomiton.bj` › **Donner le rôle de pair** puis **Retirer le rôle de pair**. | Le compte reste membre dans les deux cas ; il reçoit une notification ; les deux actions sont dans `/admin/journal` (`roles.peer_granted`, `roles.peer_revoked`). | ☐ | |
+| ADM-14 | `/admin/utilisateurs` › ouvrir `membre@xomiton.app` › **Donner le rôle de pair** puis **Retirer le rôle de pair**. | Le compte reste membre dans les deux cas ; il reçoit une notification ; les deux actions sont dans `/admin/journal` (`roles.peer_granted`, `roles.peer_revoked`). | ☐ | |
 | ADM-15 | `/admin/inscriptions` › **Inviter dans l'équipe** (rôle pair), copier le lien, l'ouvrir en navigation privée, s'inscrire (case « 15 ans » cochée), confirmer le code. | Compte membre créé, puis rôle pair ajouté à la confirmation ; le lien ne marche plus une seconde fois ; l'admin ne voit pas les rôles d'administration (super-admin seulement). | ☐ | |
-| ADM-16 | Avec `membre@xomiton.bj`, appeler `POST /api/v1/me/role-requests` (`Idempotency-Key`, motif court) ; répéter avec une autre clé ; puis `/admin/inscriptions` › « Demandes du rôle de pair·e » › **Approuver** (ou **Refuser** avec motif). | Première demande 201, seconde 422 `request_open` ; le rôle n'est pas donné avant la décision ; après approbation le compte est membre ET pair, notifié, `roles.request_approved` au journal ; un refus garde le compte membre et envoie le motif. | ☐ | |
+| ADM-16 | Avec `membre@xomiton.app`, appeler `POST /api/v1/me/role-requests` (`Idempotency-Key`, motif court) ; répéter avec une autre clé ; puis `/admin/inscriptions` › « Demandes du rôle de pair·e » › **Approuver** (ou **Refuser** avec motif). | Première demande 201, seconde 422 `request_open` ; le rôle n'est pas donné avant la décision ; après approbation le compte est membre ET pair, notifié, `roles.request_approved` au journal ; un refus garde le compte membre et envoie le motif. | ☐ | |
 | ADM-17 | S'inscrire avec `test@mailinator.com`, puis avec une adresse ordinaire ; ouvrir `/admin/inscriptions`. | Seul le premier compte est « en attente » avec le motif « Adresse e-mail jetable » ; le second est actif après confirmation de l'e-mail ; avec « Tous les nouveaux comptes » les deux attendent. | ☐ | |
-| ADM-18 | Avec `equipe@xomiton.bj` sur l'appli mobile (ou `PUT /api/v1/admin/members/{id}/role` avec `role: admin`). | Refusé (403) : le rôle admin ne se donne que depuis le site web par un·e super-admin. | ☐ | |
+| ADM-18 | Avec `equipe@xomiton.app` sur l'appli mobile (ou `PUT /api/v1/admin/members/{id}/role` avec `role: admin`). | Refusé (403) : le rôle admin ne se donne que depuis le site web par un·e super-admin. | ☐ | |
 | ADM-06 | `/admin/contenu` : onglets Ressources, Thématiques, FAQ, Catégories ; **Nouvelle ressource** ; « Passer en brouillon ». | La ressource en brouillon disparaît de `/ressources`. | ☐ | |
 | ADM-07 | `/admin/newsletter` › Campagnes › Nouvelle campagne : objet, corps, segment, e-mail dans « Envoyer le test ». | Toast « Test mis en file d'envoi » ; après `mail:flush-outbox`, sujet `[TEST] …` dans le journal. | ☐ | |
 | ADM-08 | `/admin/sauvegardes` : **Sauvegarder maintenant**. | Archive chiffrée listée et téléchargeable ; avertissement normal « mot de passe d'archive non défini ». | ☐ | |
@@ -110,7 +110,7 @@ Un code de vérification est demandé à chaque connexion.
 | ADM-10 | `/admin/emails` : ouvrir plusieurs modèles, voir l'aperçu, essai d'envoi. | Aperçu dans le gabarit premium, essai visible dans le journal. | ☐ | |
 | ADM-11 | `/admin/passerelles`. | Passerelles sans clés : « publication manuelle » (aucune publication réelle). | ☐ | |
 | ADM-12 | `/admin/maintenance` : activer (motif, durée, case « Je confirme »), vérifier en navigation privée, puis **désactiver**. | Voir la section « Mode maintenance » ci-dessous. | ☐ | |
-| ADM-13 | Comparer avec `moderation@xomiton.bj` (admin) : essayer ce qui est réservé au super-admin (restaurer ou supprimer une sauvegarde, rôles d'administration). | Actions réservées refusées ou masquées pour l'admin. | ☐ | |
+| ADM-13 | Comparer avec `moderation@xomiton.app` (admin) : essayer ce qui est réservé au super-admin (restaurer ou supprimer une sauvegarde, rôles d'administration). | Actions réservées refusées ou masquées pour l'admin. | ☐ | |
 
 ### Mode maintenance : détail de ADM-12
 
@@ -165,7 +165,7 @@ En mode journal, rien n'est envoyé vraiment.
 | NOT-06 | (Facultatif, avec vos clés) activer FCM, Vonage ou Twilio (guide §8) et relancer NOT-03 et NOT-04. | SMS et notification reçus sur votre appareil dans la minute. | ☐ | |
 | NOT-07 | Paramètres › Notifications : décocher un canal pour un thème. | Le réglage est conservé. Le résumé quotidien ou hebdomadaire n'a pas d'effet (voir la section 14). | ☐ | |
 
-## 10. Mobile (Flutter, compte `membre@xomiton.bj`)
+## 10. Mobile (Flutter, compte `membre@xomiton.app`)
 
 Émulateur Android ou téléphone ; API `http://10.0.2.2:8000/api/v1` par défaut. Non vérifié sur appareil à ce jour.
 
@@ -184,7 +184,7 @@ En mode journal, rien n'est envoyé vraiment.
 | MOB-11 | Ouvrir `prototype_mobile/index.html` : bouton ☰ (replier, rouvrir, recharger), replier un module, ouvrir un écran en moins de 10 s ; chercher une bascule de thème. | Menu mémorisé après rechargement ; 30 écrans numérotés 01 à 30 + Espace pair et Admin mobile ; thème clair, aucune bascule de thème. | ☐ | |
 | MOB-12 | Prototype, écran Inscription (`#/signup`) : bouton avant et après la case « J'ai 15 ans ou plus », puis « J'ai moins de 15 ans ». | « Continuer » désactivé tant que la case n'est pas cochée ; refus bienveillant sans création de compte. | ☐ | |
 | MOB-13 | Prototype, `#/postpublication` : saisir un long texte. | Le champ occupe la largeur à côté de l'avatar, hauteur minimale 120 px, croît sans déborder du châssis. | ☐ | |
-| MOB-14 | Connexion avec `membre@`, `pair@`, `admin@xomiton.bj` (appareil neuf), **même écran de connexion pour tous**. Code livré le 2026-10-29 (P15-10) : recette sur appareil à faire. | `membre@` arrive au tableau de bord ; `pair@` et `admin@` voient le **sélecteur d'espace** (Membre + Pair, Membre + Admin) puis changent d'espace par la pastille d'en-tête, Profil › Mes espaces ou l'onglet « Espace pair » / « Admin » ; `pair.attente@` voit le bandeau, pas d'espace Pair. | ☐ | Pages Pair (P15-13 à P15-15) et Admin (P15-17, P15-18, P15-24) livrées. |
+| MOB-14 | Connexion avec `membre@`, `pair@`, `admin@xomiton.app` (appareil neuf), **même écran de connexion pour tous**. Code livré le 2026-10-29 (P15-10) : recette sur appareil à faire. | `membre@` arrive au tableau de bord ; `pair@` et `admin@` voient le **sélecteur d'espace** (Membre + Pair, Membre + Admin) puis changent d'espace par la pastille d'en-tête, Profil › Mes espaces ou l'onglet « Espace pair » / « Admin » ; `pair.attente@` voit le bandeau, pas d'espace Pair. | ☐ | Pages Pair (P15-13 à P15-15) et Admin (P15-17, P15-18, P15-24) livrées. |
 | MOB-24 | Retirer `admin_mobile.access` (ou le rôle pair) au compte pendant qu'il est connecté, puis ouvrir un écran de son espace. Partie client livrée le 2026-10-29. | Prochaine requête 403 : `GET me` relu, espace retiré, message « Cet espace n'est plus disponible pour ce compte », retour à l'accueil Membre, aucune donnée résiduelle. | ☐ | Test automatique : `test/features/spaces_test.dart`. |
 | MOB-15 | Espace pair : tenter une capture d'écran sur `/pair/dossiers`, sur un écran admin, sur le fil, sur Messages. Code livré le 2026-10-29 (P15-11) : recette sur appareil à faire. | Impossible sur Pair, Admin, Messages, signalement, SOS et Sécurité (Android : `FLAG_SECURE`) ; possible sur le fil et l'accueil ; aperçu masqué dans le sélecteur d'applications ; iPhone : recouvrement opaque en arrière-plan (limite documentée, pas de blocage de capture). | ☐ | Build de recette : `ALLOW_SCREENSHOTS=true` (ignoré en release). |
 | MOB-16 | Premier accès à l'espace Pair ou Admin : choix du code obligatoire ; quitter l'application 45 s puis 61 s (Pair), 31 s (Admin) ; saisir 5 codes faux. Code livré le 2026-10-29 (P15-11). | Écran « Un code pour protéger cet espace » avant toute donnée ; code redemandé après 60 s (Pair) et 30 s (Admin) ; au 5e échec, session fermée et données Pair absentes à la reconnexion ; le code ne peut pas être désactivé dans Sécurité ; SOS, urgences et signalement accessibles sans code. | ☐ | |

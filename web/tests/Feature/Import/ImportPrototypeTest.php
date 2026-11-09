@@ -110,7 +110,7 @@ it('importe le dossier réel du prototype avec la démonstration et respecte les
         ->and(Page::count())->toBe(4)
         ->and(Event::count())->toBe(6)
         ->and(Event::where('slug', 'webinaire-connaitre-ses-droits')->value('is_online'))->toBeTrue()
-        ->and(Event::where('slug', 'atelier-dire-non-sans-culpabiliser')->value('organizer_id'))->toBe(User::where('email', 'pair@xomiton.bj')->value('id'))
+        ->and(Event::where('slug', 'atelier-dire-non-sans-culpabiliser')->value('organizer_id'))->toBe(User::where('email', 'pair@xomiton.app')->value('id'))
         ->and(Invitation::count())->toBe(2)
         // Communication : 42 abonné·es avec liaisons, 5 campagnes avec destinataires et clics, 8 templates, 6 réseaux.
         ->and(NewsletterSubscriber::count())->toBe(42)
@@ -123,7 +123,7 @@ it('importe le dossier réel du prototype avec la démonstration et respecte les
         ->and(NewsletterClick::count())->toBe(21)
         ->and($report['email_templates']['created'] + $report['email_templates']['updated'])->toBe(8)
         ->and(EmailTemplate::whereIn('slug', ['reinitialisation-mot-de-passe', 'activation-compte', 'code-verification', 'bienvenue', 'compte-valide', 'alerte-routee', 'rappel-evenement', 'newsletter-confirmation'])->count())->toBe(8)
-        ->and(EmailTemplate::where('slug', 'bienvenue')->value('updated_by'))->toBe(User::where('email', 'admin@xomiton.bj')->value('id'))
+        ->and(EmailTemplate::where('slug', 'bienvenue')->value('updated_by'))->toBe(User::where('email', 'admin@xomiton.app')->value('id'))
         ->and(SocialChannel::count())->toBe(6)
         ->and(SocialChannel::connected()->pluck('network')->map(fn ($n) => $n->value)->sort()->values()->all())->toBe(['facebook', 'telegram'])
         // Plateforme : rapports, signalements, paramètres, appareils (3 libellés sans compte rejetés), conflits.
@@ -141,14 +141,14 @@ it('importe le dossier réel du prototype avec la démonstration et respecte les
         // Avatars copiés sur le disque public (index 0 → avatar1.png).
         ->and(Storage::disk('public')->exists('avatars/avatar1.png'))->toBeTrue()
         ->and(Storage::disk('public')->exists('avatars/personnage-1.png'))->toBeTrue()
-        ->and(Profile::whereHas('user', fn ($q) => $q->where('email', 'membre@xomiton.bj'))->value('avatar_path'))->toBe('avatars/avatar3.png')
+        ->and(Profile::whereHas('user', fn ($q) => $q->where('email', 'membre@xomiton.app'))->value('avatar_path'))->toBe('avatars/avatar3.png')
         ->and(Profile::whereHas('user', fn ($q) => $q->where('email', 'rosine@exemple.bj'))->value('avatar_path'))->toBe('avatars/personnage-1.png');
 });
 
 it('reprend les empreintes bcrypt du prototype et donne un mot de passe aléatoire aux comptes sans empreinte', function (): void {
     importPrototype();
 
-    $admin = User::where('email', 'admin@xomiton.bj')->firstOrFail();
+    $admin = User::where('email', 'admin@xomiton.app')->firstOrFail();
     $mariam = User::where('email', 'mariam@exemple.bj')->firstOrFail();
 
     expect($admin->getRawOriginal('password'))->toBe('$2y$10$oDA.w.ACIk.59uP3jybaq.5v9rbKgsOw9HjZ68exRcZMqZacO88Jq')

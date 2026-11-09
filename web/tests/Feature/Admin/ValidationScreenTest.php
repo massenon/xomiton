@@ -167,7 +167,7 @@ it('essaie une valeur dans le bac à sable avec le code des formulaires et l’�
     expect($sandbox->check('phone_bj', '+229 01 97 38 88 47')['status'])->toBe('valid')
         ->and($sandbox->check('phone_bj', '12-AB')['status'])->toBe('invalid')
         ->and($sandbox->check('email', 'awa@')['status'])->toBe('invalid')
-        ->and($sandbox->check('email', 'awa@xomiton.bj')['status'])->toBe('valid')
+        ->and($sandbox->check('email', 'awa@xomiton.app')['status'])->toBe('valid')
         ->and($sandbox->check('positive_int', '-3')['status'])->toBe('invalid')
         ->and($sandbox->check('positive_int', '12')['status'])->toBe('valid')
         ->and($sandbox->check('date_not_future', '2099-01-01')['status'])->toBe('invalid')
@@ -244,7 +244,7 @@ it('branche `email` sur le catalogue (inscription) et garde la structure par dé
     $rules = ['email' => ['required', 'string', new EmailAddress]];
 
     expect(Validator::make(['email' => 'awa@'], $rules)->fails())->toBeTrue()
-        ->and(Validator::make(['email' => 'awa@xomiton.bj'], $rules)->passes())->toBeTrue()
+        ->and(Validator::make(['email' => 'awa@xomiton.app'], $rules)->passes())->toBeTrue()
         ->and(Validator::make(['email' => ['x']], $rules)->fails())->toBeTrue();
 
     CaseFixtures::disable('email');

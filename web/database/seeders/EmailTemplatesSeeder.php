@@ -20,8 +20,8 @@ use Illuminate\Database\Seeder;
  */
 class EmailTemplatesSeeder extends Seeder
 {
-    /** Compte de l'administrateur·rice du prototype (`updated_by` : admin@xomiton.bj), s'il existe. */
-    private const ADMIN_EMAIL = 'admin@xomiton.bj';
+    /** Compte de l'administrateur·rice du prototype (`updated_by` : admin@xomiton.app), s'il existe. */
+    private const ADMIN_EMAIL = 'admin@xomiton.app';
 
     public function run(): void
     {

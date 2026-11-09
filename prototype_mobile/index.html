@@ -768,9 +768,9 @@ let loginErr = '';
 /* Comptes de démonstration (mêmes identifiants que le site : docs/GUIDE_RECETTE.md §5). Écran de connexion UNIQUE pour tous les rôles (décision du 29/10/2026) :
    après le code, un sélecteur d'espace s'affiche si le compte cumule plusieurs rôles. */
 const DEMO_ACCOUNTS = [
-  { label: 'Membre', email: 'membre@xomiton.bj', pseudo: 'awa_s', password: 'Membre123!', acct: 'membre', where: 'Membre' },
-  { label: 'Pair éducateur·rice', email: 'pair@xomiton.bj', pseudo: 'pair_chantal', password: 'Pair123!', acct: 'pair', where: 'Membre + Pair' },
-  { label: 'Administrateur·rice', email: 'admin@xomiton.bj', pseudo: 'admin', password: 'Admin123!', acct: 'admin', where: 'Membre + Admin' }
+  { label: 'Membre', email: 'membre@xomiton.app', pseudo: 'awa_s', password: 'Membre123!', acct: 'membre', where: 'Membre' },
+  { label: 'Pair éducateur·rice', email: 'pair@xomiton.app', pseudo: 'pair_chantal', password: 'Pair123!', acct: 'pair', where: 'Membre + Pair' },
+  { label: 'Administrateur·rice', email: 'admin@xomiton.app', pseudo: 'admin', password: 'Admin123!', acct: 'admin', where: 'Membre + Admin' }
 ];
 const demoFor = l => DEMO_ACCOUNTS.find(a => a.email === l.toLowerCase() || a.pseudo === l.toLowerCase());
 def({ id: 'login', module: 'auth', title: 'Connexion', route: '/login', page: 'LoginPage', provider: 'authControllerProvider (AsyncNotifier<Session?>)', chrome: 'bare',

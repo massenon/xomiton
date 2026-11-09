@@ -13,7 +13,7 @@ const DB = process.env.E2E_DB || `${ROOT}database/e2e.sqlite`;
 const env = { ...process.env, DB_CONNECTION: 'sqlite', DB_DATABASE: DB };
 const tinker = (code) => execFileSync('php', ['artisan', 'tinker', '--execute', code], { cwd: ROOT, env }).toString().trim().split('\n').pop();
 
-const ADMIN = { identifier: 'admin@xomiton.bj', password: 'Admin123!' };
+const ADMIN = { identifier: 'admin@xomiton.app', password: 'Admin123!' };
 const OTP = '246810';
 
 /** Écrans de la boucle : clé du menu (data-xm-nav), adresse, titre attendu dans <title>. */

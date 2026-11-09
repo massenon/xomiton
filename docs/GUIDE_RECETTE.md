@@ -104,18 +104,18 @@ Seuls `pub get`, `analyze` et `test` ont été exécutés ; le lancement sur app
 
 ## 5. Comptes de démonstration
 
-Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en production : garde-fou dans `DatabaseSeeder` et test automatisé). Le champ « identifiant » de `/connexion` accepte l'e-mail ou le pseudo. La page de connexion ne propose aucun bouton de remplissage automatique (ni sur le site ni dans l'application) : saisissez ces identifiants à la main, tels que listés ci-dessous.
+Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en production : garde-fou dans `DatabaseSeeder` et test automatisé). Les adresses en `@xomiton.app` ci-dessous sont des **identités fictives locales** : aucune boîte réelle n'existe derrière elles et ces comptes ne sont jamais créés en production. Le champ « identifiant » de `/connexion` accepte l'e-mail ou le pseudo. La page de connexion ne propose aucun bouton de remplissage automatique (ni sur le site ni dans l'application) : saisissez ces identifiants à la main, tels que listés ci-dessous.
 
 | Rôle | Identifiant | Pseudo | Mot de passe | Accès attendu |
 |---|---|---|---|---|
-| Super-administrateur·rice (+ membre) | `admin@xomiton.bj` | `admin` | `Admin123!` | arrive sur le fil ; `/admin` complet par le menu ; espace membre |
-| Administrateur·rice (+ membre) | `moderation@xomiton.bj` | `moderatrice` | `Admin123!` | arrive sur le fil ; `/admin` par le menu (sans les droits réservés au super-admin) |
-| Modérateur·rice (+ membre) | `moderateur@xomiton.bj` | `modo_rose` | `Modo123!` | arrive sur le fil ; `/admin` par le menu : modération, utilisateurs (suspension) ; `/espace-pair` refusé (403) |
-| Membre | `membre@xomiton.bj` | `awa_s` | `Membre123!` | espace membre ; `/admin`, `/espace-pair`, `/collecte` refusés (403) |
-| Membre (second compte) | `membre2@xomiton.bj` | `fatou_k` | `Membre123!` | pour les tests à deux : messages, groupes, événements |
-| Pair éducateur·rice (+ membre) | `pair@xomiton.bj` | `pair_chantal` | `Pair123!` | espace membre (réseau social), `/espace-pair`, `/collecte` ; `/admin` refusé |
-| Pair en attente de validation (membre) | `pair.attente@xomiton.bj` | `pair_en_attente` | `Pair123!` | se connecte avec un bandeau « en attente » ; n'a que le rôle membre ; à valider dans Administration › Utilisateurs (règle RG-03) |
-| Admin + pair + membre (tous les espaces) | `equipe@xomiton.bj` | `equipe_xom` | `Equipe123!` | arrive sur le fil ; menus vers `/espace-pair` et `/admin` ; `GET /api/v1/me` renvoie `spaces: [member, peer, admin]` (sélecteur d'espace du mobile) |
+| Super-administrateur·rice (+ membre) | `admin@xomiton.app` | `admin` | `Admin123!` | arrive sur le fil ; `/admin` complet par le menu ; espace membre |
+| Administrateur·rice (+ membre) | `moderation@xomiton.app` | `moderatrice` | `Admin123!` | arrive sur le fil ; `/admin` par le menu (sans les droits réservés au super-admin) |
+| Modérateur·rice (+ membre) | `moderateur@xomiton.app` | `modo_rose` | `Modo123!` | arrive sur le fil ; `/admin` par le menu : modération, utilisateurs (suspension) ; `/espace-pair` refusé (403) |
+| Membre | `membre@xomiton.app` | `awa_s` | `Membre123!` | espace membre ; `/admin`, `/espace-pair`, `/collecte` refusés (403) |
+| Membre (second compte) | `membre2@xomiton.app` | `fatou_k` | `Membre123!` | pour les tests à deux : messages, groupes, événements |
+| Pair éducateur·rice (+ membre) | `pair@xomiton.app` | `pair_chantal` | `Pair123!` | espace membre (réseau social), `/espace-pair`, `/collecte` ; `/admin` refusé |
+| Pair en attente de validation (membre) | `pair.attente@xomiton.app` | `pair_en_attente` | `Pair123!` | se connecte avec un bandeau « en attente » ; n'a que le rôle membre ; à valider dans Administration › Utilisateurs (règle RG-03) |
+| Admin + pair + membre (tous les espaces) | `equipe@xomiton.app` | `equipe_xom` | `Equipe123!` | arrive sur le fil ; menus vers `/espace-pair` et `/admin` ; `GET /api/v1/me` renvoie `spaces: [member, peer, admin]` (sélecteur d'espace du mobile) |
 
 Les permissions détaillées de chaque rôle sont dans [ROLE_ET_PERMISSIONS.md](ROLE_ET_PERMISSIONS.md) §3.
 
@@ -127,7 +127,7 @@ Les permissions détaillées de chaque rôle sont dans [ROLE_ET_PERMISSIONS.md](
 
 ```bash
 grep -a "\[otp:log\]" web/storage/logs/laravel.log | tail -1
-# [otp:log] Code 386776 pour admin@xomiton.bj (login), valable 10 min.
+# [otp:log] Code 386776 pour admin@xomiton.app (login), valable 10 min.
 ```
 
 Sous Windows (PowerShell) : `Select-String "\[otp:log\]" web\storage\logs\laravel.log | Select-Object -Last 1`. Le code figure aussi dans le corps HTML de l'e-mail consigné (bloc en gros chiffres espacés).

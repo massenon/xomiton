@@ -101,7 +101,7 @@ $zones = x_zones();
 						<div class="text-center py-5">
 							<div class="display-3 text-warning"><i class="bi bi-door-closed"></i></div>
 							<h1 class="h3 fw-bold mt-3">Les inscriptions sont momentanément fermées</h1>
-							<p class="text-secondary">L’équipe Xomiton a suspendu les nouvelles inscriptions. Revenez bientôt ou contactez-nous : <a href="mailto:<?= e(setting('contact_email', 'contact@xomiton.bj')) ?>"><?= e(setting('contact_email', 'contact@xomiton.bj')) ?></a>.</p>
+							<p class="text-secondary">L’équipe Xomiton a suspendu les nouvelles inscriptions. Revenez bientôt ou contactez-nous : <a href="mailto:<?= e(setting('contact_email', 'contact@xomiton.app')) ?>"><?= e(setting('contact_email', 'contact@xomiton.app')) ?></a>.</p>
 							<a href="sign-in.php" class="btn btn-primary">Se connecter</a>
 						</div>
 					<?php elseif ($done): ?>

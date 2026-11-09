@@ -624,7 +624,7 @@ Règles communes : réponses `Cache-Control: no-store, private` ; enveloppe `{da
 
 | Id | Parcours | Résultat attendu |
 |---|---|---|
-| MOB-14 | Connexion avec `membre@`, `pair@`, `admin@xomiton.bj` (appareil neuf), **même écran de connexion pour tous** | `membre@` arrive au tableau de bord ; `pair@` et `admin@` voient le **sélecteur d'espace** (Membre + Pair, Membre + Admin) puis peuvent changer d'espace par l'en-tête, le profil ou l'onglet « Espace pair » / « Admin » ; `pair.attente@` voit le bandeau, pas d'espace Pair |
+| MOB-14 | Connexion avec `membre@`, `pair@`, `admin@xomiton.app` (appareil neuf), **même écran de connexion pour tous** | `membre@` arrive au tableau de bord ; `pair@` et `admin@` voient le **sélecteur d'espace** (Membre + Pair, Membre + Admin) puis peuvent changer d'espace par l'en-tête, le profil ou l'onglet « Espace pair » / « Admin » ; `pair.attente@` voit le bandeau, pas d'espace Pair |
 | MOB-15 | Espace pair : tenter une capture d'écran sur `/pair/dossiers`, sur le fil, sur un écran admin | impossible sur pair et admin, possible sur le fil ; aperçu masqué dans le sélecteur d'applications |
 | MOB-16 | Activer le PIN, quitter l'application 2 min, revenir ; saisir 5 PIN faux dans l'espace pair | PIN demandé ; au 5e échec, session fermée, données pair absentes à la reconnexion ; SOS accessible sans PIN |
 | MOB-17 | SOS déclenché depuis un compte membre : les **admins ET les pairs** destinataires reçoivent le push (app fermée) | notification < 30 s ; ouverture après PIN sur l'alerte ; charge sans contenu sensible |

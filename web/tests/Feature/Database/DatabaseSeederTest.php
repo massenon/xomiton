@@ -47,7 +47,7 @@ it('crée les comptes de démonstration en testing et jamais en production', fun
     $this->seed(DatabaseSeeder::class);
 
     expect(User::count())->toBe(count(DemoAccountsSeeder::accounts()))
-        ->and(User::where('email', 'admin@xomiton.bj')->first()?->hasRole('superadmin'))->toBeTrue();
+        ->and(User::where('email', 'admin@xomiton.app')->first()?->hasRole('superadmin'))->toBeTrue();
 
     User::query()->forceDelete();
     $this->app->detectEnvironment(fn (): string => 'production');
@@ -67,9 +67,9 @@ it('sème un compte de démonstration par rôle, dont modérateur·rice et pair 
 
     expect($roles)->toBe(['admin', 'membre', 'moderateur', 'pair', 'superadmin'])
         ->and(User::count())->toBe(count(DemoAccountsSeeder::accounts()))
-        ->and(User::where('email', 'moderateur@xomiton.bj')->first()?->hasRole('moderateur'))->toBeTrue()
-        ->and(User::where('email', 'pair.attente@xomiton.bj')->first()?->status)->toBe(App\Enums\UserStatus::Pending)
-        ->and(User::where('email', 'membre@xomiton.bj')->first()?->status)->toBe(App\Enums\UserStatus::Active);
+        ->and(User::where('email', 'moderateur@xomiton.app')->first()?->hasRole('moderateur'))->toBeTrue()
+        ->and(User::where('email', 'pair.attente@xomiton.app')->first()?->status)->toBe(App\Enums\UserStatus::Pending)
+        ->and(User::where('email', 'membre@xomiton.app')->first()?->status)->toBe(App\Enums\UserStatus::Active);
 });
 
 it('sème des comptes aux rôles cumulés : pair + membre, admin + membre, admin + pair + membre ; le pair en attente reste membre', function (): void {
@@ -78,11 +78,11 @@ it('sème des comptes aux rôles cumulés : pair + membre, admin + membre, admin
 
     $roles = fn (string $email): array => User::where('email', $email)->firstOrFail()->getRoleNames()->sort()->values()->all();
 
-    expect($roles('pair@xomiton.bj'))->toBe(['membre', 'pair'])
-        ->and($roles('moderation@xomiton.bj'))->toBe(['admin', 'membre'])
-        ->and($roles('admin@xomiton.bj'))->toBe(['membre', 'superadmin'])
-        ->and($roles('equipe@xomiton.bj'))->toBe(['admin', 'membre', 'pair'])
-        ->and($roles('pair.attente@xomiton.bj'))->toBe(['membre']);
+    expect($roles('pair@xomiton.app'))->toBe(['membre', 'pair'])
+        ->and($roles('moderation@xomiton.app'))->toBe(['admin', 'membre'])
+        ->and($roles('admin@xomiton.app'))->toBe(['membre', 'superadmin'])
+        ->and($roles('equipe@xomiton.app'))->toBe(['admin', 'membre', 'pair'])
+        ->and($roles('pair.attente@xomiton.app'))->toBe(['membre']);
 });
 
 it('déclare les seeders de référence dans l’ordre des dépendances', function (): void {

@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 	if ($act === 'delete') {
 		if (trim($_POST['confirm_text'] ?? '') !== 'SUPPRIMER') x_redirect('settings.php#supprimer', 'danger', 'Tapez SUPPRIMER pour confirmer.');
-		if (str_ends_with($me['email'] ?? '', '@xomiton.bj')) x_redirect('settings.php#supprimer', 'warning', 'Compte de démonstration : la suppression est simulée et le compte est conservé.');
+		if (str_ends_with($me['email'] ?? '', '@xomiton.app')) x_redirect('settings.php#supprimer', 'warning', 'Compte de démonstration : la suppression est simulée et le compte est conservé.');
 		x_save_user($rec, ['status' => 'supprime']);
 		x_log('Compte', 'Suppression du compte');
 		session_destroy();

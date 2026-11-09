@@ -149,16 +149,16 @@ describe('user_settings', function (): void {
 
 describe('otp_codes', function (): void {
     it('hache le code, ne garde que created_at et filtre les codes valides', function (): void {
-        $otp = OtpCode::factory()->withCode('123456')->create(['email' => 'test@xomiton.bj']);
-        OtpCode::factory()->expired()->create(['email' => 'test@xomiton.bj']);
-        OtpCode::factory()->consumed()->create(['email' => 'test@xomiton.bj']);
+        $otp = OtpCode::factory()->withCode('123456')->create(['email' => 'test@xomiton.app']);
+        OtpCode::factory()->expired()->create(['email' => 'test@xomiton.app']);
+        OtpCode::factory()->consumed()->create(['email' => 'test@xomiton.app']);
 
         expect($otp->matches('123456'))->toBeTrue()
             ->and($otp->matches('654321'))->toBeFalse()
             ->and($otp->code_hash)->toHaveLength(64)
             ->and($otp->purpose)->toBe(OtpPurpose::Login)
             ->and($otp->created_at)->not->toBeNull()
-            ->and(OtpCode::valid()->forEmail('test@xomiton.bj', OtpPurpose::Login)->count())->toBe(1);
+            ->and(OtpCode::valid()->forEmail('test@xomiton.app', OtpPurpose::Login)->count())->toBe(1);
     });
 });
 
@@ -213,9 +213,9 @@ describe('seeders', function (): void {
         $this->seed(DemoAccountsSeeder::class);
         $this->seed(DemoAccountsSeeder::class);
 
-        $admin = User::where('email', 'admin@xomiton.bj')->firstOrFail();
-        $peer = User::where('email', 'pair@xomiton.bj')->firstOrFail();
-        $member = User::where('email', 'membre@xomiton.bj')->firstOrFail();
+        $admin = User::where('email', 'admin@xomiton.app')->firstOrFail();
+        $peer = User::where('email', 'pair@xomiton.app')->firstOrFail();
+        $member = User::where('email', 'membre@xomiton.app')->firstOrFail();
 
         expect(User::count())->toBe(count(DemoAccountsSeeder::accounts()))
             ->and($admin->hasRole('superadmin'))->toBeTrue()

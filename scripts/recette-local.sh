@@ -179,13 +179,13 @@ cat <<RECAP
   Comptes de démonstration
   ------------------------------------------------------------------------------
   Rôle                        Identifiant                 Mot de passe
-  Super-administrateur·rice   admin@xomiton.bj            Admin123!
-  Administrateur·rice         moderation@xomiton.bj       Admin123!
-  Modérateur·rice             moderateur@xomiton.bj       Modo123!
-  Membre                      membre@xomiton.bj           Membre123!
-  Membre (second compte)      membre2@xomiton.bj          Membre123!
-  Pair éducateur·rice         pair@xomiton.bj             Pair123!
-  Pair en attente (RG-03)     pair.attente@xomiton.bj     Pair123!  (connecté avec un bandeau « en attente »)
+  Super-administrateur·rice   admin@xomiton.app            Admin123!
+  Administrateur·rice         moderation@xomiton.app       Admin123!
+  Modérateur·rice             moderateur@xomiton.app       Modo123!
+  Membre                      membre@xomiton.app           Membre123!
+  Membre (second compte)      membre2@xomiton.app          Membre123!
+  Pair éducateur·rice         pair@xomiton.app             Pair123!
+  Pair en attente (RG-03)     pair.attente@xomiton.app     Pair123!  (connecté avec un bandeau « en attente »)
 
   Code de vérification (OTP) à chaque nouvel appareil, et à chaque connexion admin :
     grep -a "\[otp:log\]" "$WEB/storage/logs/laravel.log" | tail -1

@@ -43,7 +43,7 @@ it('ne crée jamais de compte de démonstration, même hors production', functio
         $this->artisan('xomiton:install --no-admin')->assertSuccessful();
     }
 
-    expect(User::query()->where('email', 'like', '%@xomiton.bj')->count())->toBe(0)
+    expect(User::query()->where('email', 'like', '%@xomiton.app')->count())->toBe(0)
         ->and(User::query()->count())->toBe(0);
 });
 

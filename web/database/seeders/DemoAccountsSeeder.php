@@ -34,7 +34,7 @@ class DemoAccountsSeeder extends Seeder
     {
         return [
             [
-                'email' => 'admin@xomiton.bj',
+                'email' => 'admin@xomiton.app',
                 'password' => 'Admin123!',
                 'role' => 'superadmin',
                 'roles' => ['membre', 'superadmin'],
@@ -48,7 +48,7 @@ class DemoAccountsSeeder extends Seeder
                 'bio' => 'Compte de coordination de la plateforme Xomiton.',
             ],
             [
-                'email' => 'moderation@xomiton.bj',
+                'email' => 'moderation@xomiton.app',
                 'password' => 'Admin123!',
                 'role' => 'admin',
                 'roles' => ['membre', 'admin'],
@@ -62,7 +62,7 @@ class DemoAccountsSeeder extends Seeder
                 'bio' => 'Gestion des contenus et de la modération.',
             ],
             [
-                'email' => 'membre@xomiton.bj',
+                'email' => 'membre@xomiton.app',
                 'password' => 'Membre123!',
                 'role' => 'membre',
                 'pseudo' => 'awa_s',
@@ -75,7 +75,7 @@ class DemoAccountsSeeder extends Seeder
                 'bio' => 'Ici, on apprend, on s’entraide et on avance ensemble.',
             ],
             [
-                'email' => 'pair@xomiton.bj',
+                'email' => 'pair@xomiton.app',
                 'password' => 'Pair123!',
                 'role' => 'pair',
                 'roles' => ['membre', 'pair'],
@@ -89,7 +89,7 @@ class DemoAccountsSeeder extends Seeder
                 'bio' => 'Pair éducatrice à Porto-Novo : écoute, orientation et animation d’ateliers.',
             ],
             [
-                'email' => 'moderateur@xomiton.bj',
+                'email' => 'moderateur@xomiton.app',
                 'password' => 'Modo123!',
                 'role' => 'moderateur',
                 'roles' => ['membre', 'moderateur'],
@@ -103,7 +103,7 @@ class DemoAccountsSeeder extends Seeder
                 'bio' => 'Modération du fil, des forums et des signalements de contenu.',
             ],
             [
-                'email' => 'membre2@xomiton.bj',
+                'email' => 'membre2@xomiton.app',
                 'password' => 'Membre123!',
                 'role' => 'membre',
                 'pseudo' => 'fatou_k',
@@ -116,7 +116,7 @@ class DemoAccountsSeeder extends Seeder
                 'bio' => 'Deuxième compte membre : conversations, groupes et événements à deux.',
             ],
             [
-                'email' => 'pair.attente@xomiton.bj',
+                'email' => 'pair.attente@xomiton.app',
                 'password' => 'Pair123!',
                 'role' => 'membre',
                 'roles' => ['membre'],
@@ -131,7 +131,7 @@ class DemoAccountsSeeder extends Seeder
                 'status' => UserStatus::Pending,
             ],
             [
-                'email' => 'equipe@xomiton.bj',
+                'email' => 'equipe@xomiton.app',
                 'password' => 'Equipe123!',
                 'role' => 'admin',
                 'roles' => ['membre', 'pair', 'admin'],

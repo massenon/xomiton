@@ -3,7 +3,7 @@ require __DIR__ . '/../inc/bootstrap.php'; require_admin(); require_once __DIR__
 $pageTitle = 'Passerelles réseaux sociaux'; $adminPage = 'passerelles';
 $gw = x_social_gateways(); $bds = x_ccc_bd();
 
-if (!file_exists(store_path('gateways'))) store_save('gateways', array_map(fn($g, $i) => ['id' => $i + 1, 'name' => $g[0], 'connected' => in_array($g[0], ['Facebook', 'Telegram'], true), 'since' => in_array($g[0], ['Facebook', 'Telegram'], true) ? '2026-08-12' : '', 'account' => in_array($g[0], ['Facebook', 'Telegram'], true) ? '@xomiton.bj' : ''], $gw, array_keys($gw)));
+if (!file_exists(store_path('gateways'))) store_save('gateways', array_map(fn($g, $i) => ['id' => $i + 1, 'name' => $g[0], 'connected' => in_array($g[0], ['Facebook', 'Telegram'], true), 'since' => in_array($g[0], ['Facebook', 'Telegram'], true) ? '2026-08-12' : '', 'account' => in_array($g[0], ['Facebook', 'Telegram'], true) ? '@xomiton.app' : ''], $gw, array_keys($gw)));
 if (!file_exists(store_path('gateway_templates'))) store_save('gateway_templates', array_map(fn($t, $i) => ['id' => $i + 1, 'title' => $t[0], 'text' => $t[1]], [
     ['Prévention – consentement', 'Le consentement est libre, enthousiaste et réversible. Besoin d’en parler ? Xomiton est là, sans jugement.'],
     ['Prévention – dépistage', 'Se faire dépister, c’est prendre soin de soi. Gratuit et confidentiel dans nos centres partenaires.'],
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($do === 'connect') {
         $g = store_find('gateways', xa_post('id')); if (!$g) xa_back('danger', 'Passerelle inconnue.');
         if ($g['connected']) { store_update('gateways', $g['id'], ['connected' => false, 'since' => '', 'account' => '']); x_log('Passerelles', 'Déconnexion : ' . $g['name']); xa_back('warning', $g['name'] . ' déconnecté (simulation).'); }
-        $acc = xa_post('account', '@xomiton.bj');
+        $acc = xa_post('account', '@xomiton.app');
         if (!preg_match('/^@?[\w.\-]{3,40}$/u', $acc)) xa_back('danger', 'Identifiant de compte invalide.');
         store_update('gateways', $g['id'], ['connected' => true, 'since' => date('Y-m-d'), 'account' => '@' . ltrim($acc, '@')]); x_log('Passerelles', 'Connexion : ' . $g['name']); xa_back('success', $g['name'] . ' connecté (simulation).');
     }

@@ -85,7 +85,7 @@ include __DIR__ . '/../partials/admin-top.php';
 					<div class="col-6"><label class="form-label d-block">Formats</label><?php foreach ($fmts as $k => $l): ?><div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="formats[]" value="<?= $k ?>" id="pf_<?= $k ?>" <?= $k === 'pdf' ? 'checked' : '' ?>><label class="form-check-label small" for="pf_<?= $k ?>"><?= e($l) ?></label></div><?php endforeach; ?></div>
 				</div>
 				<div class="mb-2"><label class="form-label small mb-1">Désagrégation</label><div><?php foreach (['departement' => 'Département', 'commune' => 'Commune', 'population' => 'Population', 'sexe' => 'Sexe', 'age' => 'Âge'] as $k => $l): ?><div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="pdims[]" value="<?= $k ?>" id="pd_<?= $k ?>" <?= $k !== 'commune' ? 'checked' : '' ?>><label class="form-check-label small" for="pd_<?= $k ?>"><?= $l ?></label></div><?php endforeach; ?></div></div>
-				<div class="mb-2"><label class="form-label" for="pRec">Destinataires (e-mails séparés par une virgule)</label><textarea class="form-control form-control-sm" id="pRec" name="recipients" rows="2" required placeholder="direction@xomiton.bj, bailleur@exemple.org"></textarea></div>
+				<div class="mb-2"><label class="form-label" for="pRec">Destinataires (e-mails séparés par une virgule)</label><textarea class="form-control form-control-sm" id="pRec" name="recipients" rows="2" required placeholder="direction@xomiton.app, bailleur@exemple.org"></textarea></div>
 				<button class="btn btn-outline-primary btn-sm w-100"><i class="bi bi-plus-lg me-1"></i>Planifier</button>
 			</form>
 			<hr>

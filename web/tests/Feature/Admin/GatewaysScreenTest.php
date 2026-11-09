@@ -55,7 +55,7 @@ function channel(SocialNetwork $network): SocialChannel
 function connectedChannel(SocialNetwork $network): SocialChannel
 {
     $channel = channel($network);
-    $channel->forceFill(['is_connected' => true, 'account_handle' => '@xomiton.bj'])->save();
+    $channel->forceFill(['is_connected' => true, 'account_handle' => '@xomiton.app'])->save();
 
     return $channel;
 }
@@ -66,11 +66,11 @@ it('réserve /admin/passerelles à l’administration : 403 pour le modérateur,
 
 it('affiche les six réseaux, le bandeau d’information et aucun jeton', function (): void {
     $telegram = channel(SocialNetwork::Telegram);
-    $telegram->forceFill(['is_connected' => true, 'account_handle' => '@xomiton.bj', 'access_token' => 'jeton-secret-123'])->save();
+    $telegram->forceFill(['is_connected' => true, 'account_handle' => '@xomiton.app', 'access_token' => 'jeton-secret-123'])->save();
 
     $this->actingAs(gatewayUser())->get('/admin/passerelles')->assertOk()
         ->assertSee('Facebook')->assertSee('Roméo')->assertSee('GanXo')->assertSee('Tinder')->assertSee('TikTok')->assertSee('Telegram')
-        ->assertSee('@xomiton.bj')->assertSee('Aucun connecteur automatique')->assertDontSee('jeton-secret-123');
+        ->assertSee('@xomiton.app')->assertSee('Aucun connecteur automatique')->assertDontSee('jeton-secret-123');
 });
 
 it('connecte un réseau avec un jeton chiffré en base, valide l’identifiant et journalise sans le jeton', function (): void {
@@ -78,10 +78,10 @@ it('connecte un réseau avec un jeton chiffré en base, valide l’identifiant e
     $screen = gatewayScreen();
 
     $screen->call('openConnect', $facebook->id)->set('account', 'x')->call('connect')->assertHasErrors(['account']);
-    $screen->set('account', 'xomiton.bj')->set('token', 'jeton-secret-123')->call('connect')->assertHasNoErrors();
+    $screen->set('account', 'xomiton.app')->set('token', 'jeton-secret-123')->call('connect')->assertHasNoErrors();
 
     $facebook->refresh();
-    expect($facebook->is_connected)->toBeTrue()->and($facebook->account_handle)->toBe('@xomiton.bj')->and($facebook->access_token)->toBe('jeton-secret-123')
+    expect($facebook->is_connected)->toBeTrue()->and($facebook->account_handle)->toBe('@xomiton.app')->and($facebook->access_token)->toBe('jeton-secret-123')
         ->and($facebook->connected_by)->not->toBeNull();
     // Chiffré au repos : la valeur brute ne contient jamais le jeton en clair.
     expect((string) DB::table('social_channels')->where('id', $facebook->id)->value('access_token'))->not->toContain('jeton-secret-123');
@@ -96,7 +96,7 @@ it('connecte un réseau avec un jeton chiffré en base, valide l’identifiant e
 
 it('déconnecte un réseau et efface son jeton, sauf si une publication planifiée le vise encore', function (): void {
     $telegram = channel(SocialNetwork::Telegram);
-    $telegram->forceFill(['is_connected' => true, 'account_handle' => '@xomiton.bj', 'access_token' => 'jeton-secret-123'])->save();
+    $telegram->forceFill(['is_connected' => true, 'account_handle' => '@xomiton.app', 'access_token' => 'jeton-secret-123'])->save();
     $post = OutboundPost::factory()->targeting([$telegram])->create();
     $screen = gatewayScreen();
 

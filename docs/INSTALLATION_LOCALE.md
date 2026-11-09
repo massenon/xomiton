@@ -185,18 +185,18 @@ Vérifié : MariaDB 10.11. **MySQL 8 : jamais exécuté** (voir [PLAN_FINALISATI
 
 ## 5. Comptes de démonstration
 
-Ils n'existent qu'en environnement local, de test ou de préproduction : **jamais en production** (garde-fou dans le code). Le champ « Identifiant » de la page de connexion (`/connexion`) accepte l'e-mail ou le pseudo. Les écrans de connexion (site et application) ne préremplissent rien : saisissez à la main les identifiants ci-dessous. Source : `web/database/seeders/DemoAccountsSeeder.php`.
+Ils n'existent qu'en environnement local, de test ou de préproduction : **jamais en production** (garde-fou dans le code). Les adresses en `@xomiton.app` sont des **identités fictives locales** (aucune boîte réelle derrière). Le champ « Identifiant » de la page de connexion (`/connexion`) accepte l'e-mail ou le pseudo. Les écrans de connexion (site et application) ne préremplissent rien : saisissez à la main les identifiants ci-dessous. Source : `web/database/seeders/DemoAccountsSeeder.php`.
 
 | Rôle | E-mail | Pseudo | Mot de passe |
 |---|---|---|---|
-| Super-administrateur·rice (et membre) | `admin@xomiton.bj` | `admin` | `Admin123!` |
-| Administrateur·rice (et membre) | `moderation@xomiton.bj` | `moderatrice` | `Admin123!` |
-| Modérateur·rice (et membre) | `moderateur@xomiton.bj` | `modo_rose` | `Modo123!` |
-| Membre | `membre@xomiton.bj` | `awa_s` | `Membre123!` |
-| Membre (second compte, pour les tests à deux) | `membre2@xomiton.bj` | `fatou_k` | `Membre123!` |
-| Pair éducateur·rice (et membre) | `pair@xomiton.bj` | `pair_chantal` | `Pair123!` |
-| Pair en attente de validation (membre) | `pair.attente@xomiton.bj` | `pair_en_attente` | `Pair123!` |
-| Admin + pair + membre (les trois espaces) | `equipe@xomiton.bj` | `equipe_xom` | `Equipe123!` |
+| Super-administrateur·rice (et membre) | `admin@xomiton.app` | `admin` | `Admin123!` |
+| Administrateur·rice (et membre) | `moderation@xomiton.app` | `moderatrice` | `Admin123!` |
+| Modérateur·rice (et membre) | `moderateur@xomiton.app` | `modo_rose` | `Modo123!` |
+| Membre | `membre@xomiton.app` | `awa_s` | `Membre123!` |
+| Membre (second compte, pour les tests à deux) | `membre2@xomiton.app` | `fatou_k` | `Membre123!` |
+| Pair éducateur·rice (et membre) | `pair@xomiton.app` | `pair_chantal` | `Pair123!` |
+| Pair en attente de validation (membre) | `pair.attente@xomiton.app` | `pair_en_attente` | `Pair123!` |
+| Admin + pair + membre (les trois espaces) | `equipe@xomiton.app` | `equipe_xom` | `Equipe123!` |
 
 Ces mots de passe sont publics et ne servent qu'en local. Ce que chaque compte a le droit de voir : [ROLE_ET_PERMISSIONS.md](ROLE_ET_PERMISSIONS.md) §3 et [GUIDE_RECETTE.md](GUIDE_RECETTE.md) §5.
 
@@ -210,7 +210,7 @@ Select-String -Path storage\logs\laravel.log -Pattern "\[otp:log\]" | Select-Obj
 
 macOS et Linux : `grep -a "\[otp:log\]" storage/logs/laravel.log | tail -1`.
 
-Résultat attendu (le code change à chaque fois) : `[otp:log] Code 386776 pour admin@xomiton.bj (login), valable 10 min.` Saisissez le code sur la page : il est valable 10 minutes. Le sujet de l'e-mail ne contient volontairement **jamais** le code : ne le cherchez pas là. Pour suivre le journal en direct : `Get-Content storage\logs\laravel.log -Wait -Tail 20` (macOS et Linux : `tail -f storage/logs/laravel.log`).
+Résultat attendu (le code change à chaque fois) : `[otp:log] Code 386776 pour admin@xomiton.app (login), valable 10 min.` Saisissez le code sur la page : il est valable 10 minutes. Le sujet de l'e-mail ne contient volontairement **jamais** le code : ne le cherchez pas là. Pour suivre le journal en direct : `Get-Content storage\logs\laravel.log -Wait -Tail 20` (macOS et Linux : `tail -f storage/logs/laravel.log`).
 
 ## 6. Lire les e-mails, SMS et notifications simulés
 
@@ -280,7 +280,7 @@ Particularités : Pest a besoin que `npm run build` ait été exécuté une fois
 ## 9. Où vérifier que tout va bien
 
 - Le site répond sur <http://localhost:8000> et `/up` renvoie `200`.
-- La connexion avec `membre@xomiton.bj` arrive sur le fil, après saisie du code lu dans le journal.
+- La connexion avec `membre@xomiton.app` arrive sur le fil, après saisie du code lu dans le journal.
 - `php artisan xomiton:preflight --skip-cron` affiche un bilan : en local il signale **normalement** des avertissements (pilotes « log ») et deux échecs (`APP_URL` non https, cookie non sécurisé). Ce n'est pas une anomalie en local ; en production il doit y avoir zéro échec.
 - Ensuite, suivez la [checklist de recette](CHECKLIST_RECETTE.md).
 

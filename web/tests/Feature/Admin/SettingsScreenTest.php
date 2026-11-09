@@ -41,7 +41,7 @@ function settingsCases(): array
 {
     return [
         'site_name' => ['x', 'Xomiton Bénin'],
-        'contact_email' => ['pas-un-email', 'equipe@xomiton.bj'],
+        'contact_email' => ['pas-un-email', 'equipe@xomiton.app'],
         'timezone' => ['Mars/Olympus', 'Africa/Lagos'],
         'languages' => [['en'], ['fr', 'fon']],
         'anonymous_reports' => ['peut-être', false],
@@ -63,9 +63,9 @@ function settingsCases(): array
         'smtp_encryption' => ['rot13', 'ssl'],
         'smtp_username' => [str_repeat('a', 200), 'xomiton'],
         'smtp_password' => [str_repeat('a', 200), 'secret-smtp-2'],
-        'smtp_from_email' => ['pas-un-email', 'envoi@xomiton.bj'],
+        'smtp_from_email' => ['pas-un-email', 'envoi@xomiton.app'],
         'smtp_from_name' => ['', 'Équipe Xomiton'],
-        'smtp_reply_to' => ['pas-un-email', 'reponse@xomiton.bj'],
+        'smtp_reply_to' => ['pas-un-email', 'reponse@xomiton.app'],
     ];
 }
 

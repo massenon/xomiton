@@ -120,7 +120,7 @@ it('utilise le serveur SMTP des paramètres et se replie sur la boîte d’envoi
     Settings::set('smtp_port', 9);
     Settings::set('smtp_encryption', 'none');
     Settings::set('smtp_from_name', 'Équipe Xomiton');
-    Settings::set('smtp_reply_to', 'aide@xomiton.bj');
+    Settings::set('smtp_reply_to', 'aide@xomiton.app');
 
     $log = EmailTemplateService::send('code-verification', 'awa@exemple.bj', ['otp_code' => '111111', 'otp_expiry' => '10 minutes']);
 
@@ -132,7 +132,7 @@ it('utilise le serveur SMTP des paramètres et se replie sur la boîte d’envoi
         ->and($queued->attempts)->toBe(1)
         ->and($queued->last_error)->toStartWith('SMTP : ')
         ->and($queued->from_name)->toBe('Équipe Xomiton')
-        ->and($queued->reply_to)->toBe('aide@xomiton.bj');
+        ->and($queued->reply_to)->toBe('aide@xomiton.app');
 });
 
 it('journalise sans envoyer un template désactivé, inconnu ou une adresse invalide', function (): void {
