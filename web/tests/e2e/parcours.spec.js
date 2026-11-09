@@ -1,43 +1,31 @@
 // P16-04 : trois parcours de bout en bout sur le serveur e2e (tests/e2e/serve.sh, base SQLite dédiée).
-//  1. inscription → code (OTP) → écrans de fin d'inscription → fil. Le code n'est lisible nulle part (SHA-256 en base) :
-//     comme les tests Pest, le parcours le remplace dans la base e2e par un code connu avant de le saisir.
+//  1. inscription (étape « Compte » compacte → « Continuer ») → écrans facultatifs passés → code (OTP lu dans les journaux) → fil.
 //  2. signalement anonyme : six étapes, envoi, code de suivi affiché, un signalement de plus en base.
 //  3. SOS annulable : maintien 2 s, décompte local, « Annuler l'alerte » ; aucune alerte n'est créée.
 import { execFileSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { expect, test } from '@playwright/test';
+import { lastOtp, passerEtapes, remplirCompte } from './inscription.js';
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url));
-const env = { ...process.env, DB_CONNECTION: 'sqlite', DB_DATABASE: `${ROOT}database/e2e.sqlite` };
+const env = { ...process.env, DB_CONNECTION: 'sqlite', DB_DATABASE: process.env.E2E_DB || `${ROOT}database/e2e.sqlite` };
 
 const tinker = (code) => execFileSync('php', ['artisan', 'tinker', '--execute', code], { cwd: ROOT, env }).toString().trim().split('\n').pop();
 const alertCount = () => Number(tinker('echo App\\Models\\Alert::count();'));
 
 test('inscription → code de vérification → fil', async ({ page }) => {
   const email = `parcours${Date.now()}@exemple.bj`;
-  const code = '135790';
 
-  await page.goto('/inscription');
-  await page.locator('#f-pseudo').fill(`parcours${Date.now() % 100000}`);
-  await page.locator('#f-email').fill(email);
-  await page.locator('#f-password').fill('Mot-de-passe-solide-2026!');
-  await page.locator('#f-password_confirmation').fill('Mot-de-passe-solide-2026!');
-  await page.locator('#f-cgu').check();
-  await page.locator('#f-privacy').check();
-  await page.getByRole('button', { name: 'Créer mon compte' }).click();
+  await remplirCompte(page, { pseudo: `parcours${Date.now() % 100000}`, email });
 
   // Vérification différée (Q12 c) : le compte arrive d'abord sur les étapes facultatives de fin d'inscription.
   await expect(page).toHaveURL(/\/inscription\/profil/);
-  for (const step of ['profil', 'securite', 'consentements']) {
-    await expect(page).toHaveURL(new RegExp(`/inscription/${step}`));
-    await page.getByRole('button', { name: /^Passer/ }).first().click();
-  }
+  await passerEtapes(page);
   await page.waitForLoadState('networkidle');
 
-  // Code connu : seul son SHA-256 est stocké (OtpCode::hash).
-  const hash = createHash('sha256').update(code).digest('hex');
-  tinker(`App\\Models\\OtpCode::query()->latest('id')->first()->forceFill(['code_hash' => '${hash}'])->save(); echo 'ok';`);
+  // Le code part par le canal « log » : on le lit dans storage/logs/laravel.log (seul son SHA-256 est en base).
+  await expect.poll(() => lastOtp(email), { timeout: 10_000 }).not.toBeNull();
+  const code = lastOtp(email);
   await page.goto('/code-de-verification');
   await page.locator('#f-code').fill(code);
   // La saisie du dernier chiffre envoie le formulaire d'elle-même (data-xm-otp-form) ; sinon bouton « Vérifier ».

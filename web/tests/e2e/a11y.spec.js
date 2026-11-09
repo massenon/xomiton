@@ -4,6 +4,7 @@
 import { appendFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { passerEtapes, remplirCompte } from './inscription.js';
 
 const PUBLIC_PAGES = ['/', '/thematiques', '/ressources', '/violences', '/lois', '/aide', '/urgences', '/signaler', '/sos', '/connexion', '/inscription', '/confidentialite'];
 const MEMBER_PAGES = ['/fil', '/groupes', '/parametres'];
@@ -36,17 +37,8 @@ for (const theme of THEMES) {
     });
 
     test(`axe · pages membre · ${theme} · ${size.width} px`, async ({ page }) => {
-      await page.goto('/inscription');
-      await page.locator('#f-pseudo').fill(`axe${Date.now() % 1000000}`);
-      await page.locator('#f-email').fill(`axe${Date.now()}@exemple.bj`);
-      await page.locator('#f-password').fill('Mot-de-passe-solide-2026!');
-      await page.locator('#f-cgu').check();
-      await page.locator('#f-privacy').check();
-      await page.getByRole('button', { name: 'Créer mon compte' }).click();
-      for (const step of ['profil', 'securite', 'consentements']) {
-        await expect(page).toHaveURL(new RegExp(`/inscription/${step}`));
-        await page.getByRole('button', { name: /^Passer/ }).first().click();
-      }
+      await remplirCompte(page, { pseudo: `axe${Date.now() % 1000000}`, email: `axe${Date.now()}@exemple.bj` });
+      await passerEtapes(page);
       await expect(page).toHaveURL(/\/fil/);
 
       const failures = [];
