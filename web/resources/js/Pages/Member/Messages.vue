@@ -318,7 +318,7 @@ onBeforeUnmount(() => {
 <template>
     <Head :title="title" />
     <div class="col-lg-9" data-xm-messages-page>
-        <div ref="chat" :class="['card xm-chat d-flex flex-row overflow-hidden', { 'show-pane': paneOpen }]">
+        <div ref="chat" :class="['card xm-chat xm-kbd-card d-flex flex-row overflow-hidden', { 'show-pane': paneOpen }]">
             <ConversationList
                 v-model:search="store.search"
                 v-model:filter="store.filter"

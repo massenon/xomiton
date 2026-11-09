@@ -72,6 +72,24 @@ html.xm-dock #app { display: contents; }
 html.xm-dock #memberHeader { flex: none; }
 html.xm-dock .xm-sos-fab { bottom: calc(var(--xm-sos-bottom) + var(--xm-kbd, 0px)); }
 html.xm-dock main:not(#xm-main) { flex: 1 1 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin-bottom: var(--xm-dock-h); padding-bottom: var(--xm-space-4, 1rem) !important; scroll-padding-block: 1rem; }
+/*
+ * Clavier virtuel ouvert (`html.xm-kbd-open`, posé par useViewportFit : saisie au focus + hauteur réduite, ou clavier qui
+ * recouvre la fenêtre) : toute la hauteur revient à la saisie et au fil. L'en-tête du site et la barre « Menu » se replient
+ * (retrouvés à la fermeture du clavier), <main> perd son retrait haut, et la bande SOS passe de 80 à 56 px : le bouton reste
+ * UNIQUE, rouge, jamais masqué, à 48 px (≥ 44 px) ; --xm-dock-h suit la taille, <main> s'arrête toujours au-dessus de lui.
+ * Le détail propre à chaque page (carte de l'assistant, fil de messages) est dans assistant.css et messages.css.
+ * Transition courte (.15 s) du contenu qui se réinstalle ; aucune animation avec prefers-reduced-motion.
+ */
+html.xm-dock.xm-kbd-open { --xm-sos-size: 48px; --xm-sos-bottom: max(4px, env(safe-area-inset-bottom)); --xm-dock-h: calc(var(--xm-sos-size) + var(--xm-sos-bottom) + 4px); }
+html.xm-dock.xm-kbd-open #memberHeader,
+html.xm-dock.xm-kbd-open #memberSidenav > .d-lg-none { display: none !important; }
+html.xm-dock.xm-kbd-open main:not(#xm-main) { padding-top: .25rem !important; }
+html.xm-dock.xm-kbd-open main > .container > .row { --bs-gutter-y: .5rem; }
+html.xm-dock.xm-kbd-open #memberSidenav { margin: 0; }
+@keyframes xm-kbd-settle { from { opacity: .55; } to { opacity: 1; } }
+html.xm-dock main .xm-kbd-card { animation: xm-kbd-settle .15s ease-out; }
+html.xm-dock.xm-kbd-open main .xm-kbd-card { animation: xm-kbd-settle .15s ease-out .001s; }
+@media (prefers-reduced-motion: reduce) { html.xm-dock main .xm-kbd-card, html.xm-dock.xm-kbd-open main .xm-kbd-card { animation: none; } }
 main :is(.row > *, .d-flex > *, .hstack > *, .vstack > *, .card, .card-body, .list-group-item) { min-width: 0; }
 main :is(p, h1, h2, h3, h4, h5, h6, li, td, th, dd, .card-body, .bubble, .list-group-item) { overflow-wrap: anywhere; }
 main img, main video, main svg:not(.bi), main canvas { max-width: 100%; }

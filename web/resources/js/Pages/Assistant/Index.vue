@@ -306,7 +306,7 @@ const variantClass = (link: ChatLink) => (link.variant === 'danger' ? 'btn-dange
 <template>
     <Head :title="title" />
     <div class="col-md-8 col-lg-6 vstack gap-3 xm-assistant-col">
-        <div ref="card" class="card xm-assistant-chat">
+        <div ref="card" class="card xm-assistant-chat xm-kbd-card">
             <div class="card-header d-flex align-items-center gap-3">
                 <span class="icon-lg rounded-circle xm-assistant-avatar flex-shrink-0" aria-hidden="true"><i class="bi bi-robot"></i></span>
                 <div class="flex-grow-1 min-w-0">

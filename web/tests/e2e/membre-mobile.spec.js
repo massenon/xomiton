@@ -270,3 +270,77 @@ test('espace membre · espace de défilement final sous le contenu et carte de l
   }
   expect(problemes).toEqual([]);
 });
+
+// Clavier virtuel ouvert (visualViewport réduit à 480, 400 ou 320 px de haut, champ au focus) : toute la hauteur revient à la
+// saisie et au fil (D-SOS-2). En-tête du site et barre « Menu » repliés, bande SOS à 56 px avec un bouton de 48 px (≥ 44),
+// unique, rouge, jamais masqué ni recouvert ; la saisie est visible, au moins 120 px de messages restent visibles, sans
+// défilement de la page ; à la fermeture du clavier (hauteur rendue) tout revient à l'état normal (en-tête, SOS 64 px).
+const MESURES_CLAVIER = (sel) => {
+  const vh = window.visualViewport?.height ?? innerHeight;
+  const main = document.getElementById('contenu');
+  const mr = main.getBoundingClientRect();
+  const fab = document.querySelector('.xm-sos-fab').getBoundingClientRect();
+  const champ = document.querySelector(sel.champ);
+  const cr = champ.getBoundingClientRect();
+  const liste = document.querySelector(sel.liste).getBoundingClientRect();
+  const visible = Math.max(0, Math.min(liste.bottom, mr.bottom, vh) - Math.max(liste.top, mr.top, 0));
+  const enTete = document.getElementById('memberHeader');
+  const barreMenu = document.querySelector('#memberSidenav > .d-lg-none');
+  const bouton = document.querySelector('.xm-sos-fab').querySelector('button, a') ?? document.querySelector('.xm-sos-fab');
+  const dessus = document.elementFromPoint(cr.left + cr.width / 2, cr.top + cr.height / 2);
+  return {
+    champVisible: cr.top >= mr.top - 1 && cr.bottom <= Math.min(mr.bottom, vh) + 1 && dessus === champ,
+    messages: Math.round(visible),
+    defilement: Math.round(main.scrollTop) + Math.round(scrollY),
+    taille: Math.min(fab.width, fab.height),
+    couleur: getComputedStyle(bouton).backgroundColor,
+    boutons: document.querySelectorAll('#xmSosFab').length,
+    sosVisible: fab.top >= 0 && fab.bottom <= vh + 0.5 && fab.right <= innerWidth + 0.5,
+    mainSousSos: mr.bottom > fab.top + 0.5,
+    champSousSos: cr.left < fab.right && cr.right > fab.left && cr.top < fab.bottom && cr.bottom > fab.top,
+    enTeteVisible: getComputedStyle(enTete).display !== 'none' && enTete.getBoundingClientRect().height > 0,
+    barreMenuVisible: barreMenu ? getComputedStyle(barreMenu).display !== 'none' : false,
+    classe: document.documentElement.classList.contains('xm-kbd-open'),
+  };
+};
+
+test('espace membre · clavier ouvert : saisie visible, ≥ 120 px de messages, SOS ≥ 44 px sans chevauchement, retour à la normale · 360 et 390 px, 320 à 480 px de haut, clair et sombre', async ({ page }) => {
+  test.setTimeout(300_000);
+  await seConnecter(page);
+  const problemes = [];
+  for (const theme of ['light', 'dark']) {
+    for (const largeur of [360, 390]) {
+      for (const hauteur of [320, 400, 480]) {
+        for (const uri of PAGES_SAISIE) {
+          const cle = `${theme} ${largeur}x${hauteur} ${uri}`;
+          await page.setViewportSize({ width: largeur, height: 844 });
+          if (uri === '/messages') await ouvrirConversation(page); else await page.goto(uri, { waitUntil: 'networkidle' });
+          await page.evaluate((t) => document.documentElement.setAttribute('data-bs-theme', t), theme);
+          const sel = uri === '/assistant' ? { champ: '#assistant-input', liste: '.xm-assistant-log' } : { champ: '#chatInput', liste: '.xm-chat-msgs' };
+          const normal = await page.evaluate(MESURES_CLAVIER, sel);
+          if (normal.classe || !normal.enTeteVisible || normal.taille < 63) problemes.push(`${cle} : état normal altéré avant le clavier (${JSON.stringify(normal)})`);
+          await page.setViewportSize({ width: largeur, height: hauteur }); // le clavier s'ouvre : visualViewport réduit
+          await page.locator(sel.champ).focus();
+          await page.waitForTimeout(700);
+          const m = await page.evaluate(MESURES_CLAVIER, sel);
+          if (!m.classe) problemes.push(`${cle} : mode clavier non activé`);
+          if (!m.champVisible) problemes.push(`${cle} : saisie non visible`);
+          if (m.messages < 120) problemes.push(`${cle} : ${m.messages} px de messages visibles < 120`);
+          if (m.defilement > 0) problemes.push(`${cle} : défilement ${m.defilement} px nécessaire`);
+          if (m.taille < 44) problemes.push(`${cle} : bouton SOS ${m.taille} px < 44`);
+          if (m.boutons !== 1) problemes.push(`${cle} : ${m.boutons} boutons SOS`);
+          if (m.couleur === 'rgba(0, 0, 0, 0)') problemes.push(`${cle} : bouton SOS sans couleur`);
+          if (!m.sosVisible) problemes.push(`${cle} : bouton SOS hors de l'écran`);
+          if (m.mainSousSos || m.champSousSos) problemes.push(`${cle} : SOS recouvre la zone de page ou la saisie`);
+          if (m.enTeteVisible || m.barreMenuVisible) problemes.push(`${cle} : en-tête ou barre « Menu » encore affichés`);
+          // Fermeture du clavier : la hauteur est rendue, le champ garde le focus (cas courant sur Android).
+          await page.setViewportSize({ width: largeur, height: 844 });
+          await page.waitForTimeout(400);
+          const fin = await page.evaluate(MESURES_CLAVIER, sel);
+          if (fin.classe || !fin.enTeteVisible || fin.taille < 63) problemes.push(`${cle} : pas de retour à la normale (${JSON.stringify(fin)})`);
+        }
+      }
+    }
+  }
+  expect(problemes).toEqual([]);
+});

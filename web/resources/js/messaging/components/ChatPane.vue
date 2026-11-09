@@ -124,7 +124,7 @@ const bubbleClass = (m: ChatMessage) => ['xm-bubble', m.mine ? 'me' : 'them', { 
 <template>
     <div class="xm-chat-pane d-flex flex-column flex-grow-1 overflow-hidden">
         <template v-if="conversation">
-            <div class="d-flex align-items-center gap-2 p-3 border-bottom">
+            <div class="d-flex align-items-center gap-2 p-3 border-bottom xm-chat-head">
                 <button class="btn btn-light btn-sm d-md-none xm-btn-icon" type="button" :aria-label="t('community.messages.back')" @click="emit('back')">
                     <i class="bi bi-arrow-left" aria-hidden="true"></i>
                 </button>
