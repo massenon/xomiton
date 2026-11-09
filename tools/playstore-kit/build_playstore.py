@@ -530,6 +530,10 @@ def valider_config(brut: dict, base: Path, partiel: bool = False) -> dict:
     valider_fond("feature_graphic", fg.get("fond"))
     fg["fond"] = fusion(th["fond"], fg.get("fond") or {})
     valider_textes("feature_graphic", fg.get("textes"), ("slogan", "alt"))
+    if fg.get("ecran_web") is not None and not (isinstance(fg["ecran_web"], str) and (base / fg["ecran_web"]).resolve().is_file()):
+        err.append(f"« feature_graphic.ecran_web » : image introuvable : {(base / str(fg['ecran_web'])).resolve()}")
+    if fg.get("disposition") not in (None, "centre", "logo-gauche"):
+        err.append("« feature_graphic.disposition » : « centre » (défaut) ou « logo-gauche ».")
     ordre = [e["id"] for e in cfg["captures"] if isinstance(e, dict) and isinstance(e.get("id"), str)]
     fg.setdefault("ecrans", {})
     if isinstance(fg["ecrans"], dict) and ordre:
@@ -984,10 +988,13 @@ JS_BARRE_COMPOSEE = """() => {
 
 
 def halos_capture(e: dict, C: Couleurs, W: int, H: int) -> str:
-    clair = melange(C(e["fond"]["de"]), "#FFFFFF", 0.45)
-    sombre = melange(C(e["fond"]["vers"]), "#000000", 0.35)
-    return (f'<div class="halo" style="left:-260px;top:{round(H*0.583)}px;width:700px;height:700px;background:radial-gradient(circle,{clair}55,transparent 68%)"></div>'
-            f'<div class="halo" style="right:-300px;top:-120px;width:760px;height:760px;background:radial-gradient(circle,{sombre}88,transparent 68%)"></div>')
+    de, vers = C(e["fond"]["de"]), C(e["fond"]["vers"])
+    if lum_rel(hex_rgb(de)) > 0.6:      # fond clair : halos clairs teintés (jamais de gris sale)
+        clair, sombre, a1, a2 = melange(de, "#FFFFFF", 0.7), melange(vers, "#8299E1", 0.35), "99", "55"
+    else:
+        clair, sombre, a1, a2 = melange(de, "#FFFFFF", 0.45), melange(vers, "#000000", 0.35), "55", "88"
+    return (f'<div class="halo" style="left:-260px;top:{round(H*0.583)}px;width:700px;height:700px;background:radial-gradient(circle,{clair}{a1},transparent 68%)"></div>'
+            f'<div class="halo" style="right:-300px;top:-120px;width:760px;height:760px;background:radial-gradient(circle,{sombre}{a2},transparent 68%)"></div>')
 
 
 def html_capture(cfg: dict, C: Couleurs, base: Path, e: dict, texte: dict, brut: Path, zone: dict | None = None) -> str:
@@ -1073,6 +1080,40 @@ def html_feature(cfg: dict, C: Couleurs, base: Path, caps: dict[str, Path], text
         f'<div class="halo" style="left:calc({h["x"]}% - {h["rayon"]}px);top:calc({h["y"]}% - {h["rayon"]}px);width:{2*h["rayon"]}px;height:{2*h["rayon"]}px;'
         f'background:radial-gradient(circle,{C(h["couleur"])}{int(h["opacite"]*255):02X},transparent 68%)"></div>' for h in halos_cfg)
     lw = ml["feature_telephone_largeur"]
+    accroche = texte.get("accroche")
+    accroche_html = f'<p class="accroche" data-txt>{html.escape(accroche)}</p>' if accroche else ""
+    if fg.get("disposition") == "logo-gauche":
+        # Logo et slogan à gauche (centre de gravité proche du milieu de l'image), une capture web et une capture mobile
+        # réelles à droite, en bordure. Les bords peuvent être rognés par Google : rien d'essentiel à moins de 30 px.
+        web = fg.get("ecran_web")
+        web_html = ""
+        if web:
+            wp = (base / web).resolve()
+            ww = 440
+            iw, ih = Image.open(wp).size
+            wh = round(ww * ih / iw)
+            web_html = (f'<div class="cadre" style="left:{W - ww - 8 + 40}px;top:44px;width:{ww + 16}px;height:{wh + 16}px;border-radius:22px;'
+                        f'box-shadow:0 22px 50px rgba(2,19,74,.28)"><div class="ecran" style="left:8px;top:8px;width:{ww}px;height:{wh}px;border-radius:15px">'
+                        f'<img class="ecran-img" src="{uri(wp)}" alt=""></div></div>')
+        brut = caps[fg["ecrans"]["droite"]]
+        pw, b = 168, 7
+        iw, ih = Image.open(brut).size
+        sh = round(pw * ih / iw)
+        mob = (f'<div class="cadre" style="left:{W - pw - 2*b - 60}px;top:{H - 270}px;width:{pw + 2*b}px;height:{sh + 2*b}px;border-radius:34px;'
+               f'box-shadow:0 22px 50px rgba(2,19,74,.34)"><div class="ecran" style="left:{b}px;top:{b}px;width:{pw}px;height:{sh}px;border-radius:27px">'
+               f'<img class="ecran-img" src="{uri(brut)}" alt=""></div></div>')
+        return f"""<!doctype html><html lang="{html.escape(cfg['_langue'])}"><head><meta charset="utf-8"><style>{css_base(cfg, C, base)}
+body{{width:{W}px;height:{H}px;background:{fond_css(fg['fond'], C)}}}
+.centre{{position:absolute;left:56px;top:0;height:100%;width:430px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:22px}}
+.centre img{{width:400px;display:block}}
+.slogan{{font-weight:700;font-size:27px;line-height:1.25;color:{C(fg.get('couleur_slogan', cfg['theme']['couleurs']['texte']))}}}
+.accroche{{font-weight:600;font-size:17px;letter-spacing:.01em;color:{C(fg.get('couleur_accroche', cfg['theme']['couleurs']['texte']))}}}
+</style></head><body>
+{halos}
+{web_html}
+{mob}
+<div class="centre">{en_logo}<p class="slogan" data-txt>{html.escape(texte['slogan'])}</p>{accroche_html}</div>
+</body></html>"""
     return f"""<!doctype html><html lang="{html.escape(cfg['_langue'])}"><head><meta charset="utf-8"><style>{css_base(cfg, C, base)}
 body{{width:{W}px;height:{H}px;background:{fond_css(fg['fond'], C)}}}
 .centre{{position:absolute;left:50%;top:0;height:100%;width:520px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px}}
@@ -1083,7 +1124,7 @@ body{{width:{W}px;height:{H}px;background:{fond_css(fg['fond'], C)}}}
 {halos}
 {tel('gauche', -62, 118, -8)}
 {tel('droite', W - lw - 16 + 62 - 8, 118, 8)}
-<div class="centre">{en_logo}<p class="slogan" data-txt>{html.escape(texte['slogan'])}</p></div>
+<div class="centre">{en_logo}<p class="slogan" data-txt>{html.escape(texte['slogan'])}</p>{accroche_html}</div>
 </body></html>"""
 
 
@@ -1209,6 +1250,8 @@ def textes_visibles(cfg: dict, langue: str) -> list[tuple[str, str]]:
     """(étiquette, texte) de tous les textes publics des visuels : slogan, titres, puces, alt."""
     fg = cfg["feature_graphic"]["textes"][langue]
     out = [("feature-graphic/slogan", fg["slogan"]), ("feature-graphic/alt", fg["alt"])]
+    if fg.get("accroche") is not None:
+        out.append(("feature-graphic/accroche", fg["accroche"]))
     for e in cfg["captures"]:
         t = e["textes"][langue]
         out.append((f"{e['id']}/titre", t["titre"]))
