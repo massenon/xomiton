@@ -50,8 +50,9 @@
     }
   },
   "barre_etat": {
-    "mode": "auto",
-    "heure": "9:41"
+    "mode": "recouvrir",
+    "heure": "9:41",
+    "selecteur": ".statusbar"
   },
   "contraintes": {
     "captures": {
@@ -294,5 +295,85 @@
         }
       }
     }
-  ]
+  ],
+  "tablettes": {
+    "appareils": [
+      "7",
+      "10"
+    ],
+    "orientations": [
+      "portrait",
+      "paysage"
+    ],
+    "source": {
+      "type": "html",
+      "url": "app/tablette.html",
+      "selecteur_heure": "#clock",
+      "attente_ms": 500
+    },
+    "barre_etat": {
+      "mode": "recouvrir",
+      "heure": "9:41",
+      "selecteur": ".statusbar"
+    },
+    "captures": [
+      {
+        "id": "accueil",
+        "fichier": "accueil.png",
+        "source": {
+          "route": "#/accueil"
+        },
+        "textes": {
+          "fr": {
+            "titre": "Un coup d'œil, et tout est dit",
+            "alt": "Accueil sur tablette : message du jour, tâches à venir et aperçu des plantes."
+          }
+        }
+      },
+      {
+        "id": "plantes",
+        "fichier": "plantes.png",
+        "source": {
+          "route": "#/plantes"
+        },
+        "textes": {
+          "fr": {
+            "titre": "Toutes vos plantes, par pièce",
+            "alt": "Liste des plantes sur tablette, avec leur pièce et leur état d'arrosage."
+          }
+        }
+      },
+      {
+        "id": "semaine",
+        "fichier": "semaine.png",
+        "source": {
+          "route": "#/rappels/semaine"
+        },
+        "textes": {
+          "fr": {
+            "titre": "La semaine en un regard",
+            "alt": "Vue de la semaine sur tablette : tâches classées par jour."
+          }
+        }
+      },
+      {
+        "id": "rappels",
+        "fichier": "rappels.png",
+        "source": {
+          "route": "#/rappels"
+        },
+        "textes": {
+          "fr": {
+            "titre": "Des rappels qui s'adaptent",
+            "alt": "Rappels d'arrosage sur tablette avec leur fréquence."
+          }
+        }
+      }
+    ]
+  },
+  "icone": {
+    "source": "icone.svg",
+    "fichier": "icon-512.png",
+    "fond": "#0F7A57"
+  }
 }

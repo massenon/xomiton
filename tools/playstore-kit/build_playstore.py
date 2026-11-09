@@ -4,9 +4,13 @@
 Produit, à partir d'un fichier de configuration JSON :
   - une image de présentation 1024 x 500 ;
   - N captures d'écran 1080 x 1920 (9:16) ;
-tous en PNG 24 bits SANS canal alpha, puis vérifie les règles Google Play connues
-(dimensions, alpha, poids, ratio, aire du texte, contraste AA, mots interdits, textes
-alternatifs, couleurs vives, barre d'état) et écrit rapport-controles.json.
+  - (facultatif) des captures de tablettes 7 et 10 pouces, portrait 9:16 et/ou paysage 16:9 ;
+tous en PNG 24 bits SANS canal alpha ;
+  - (facultatif) l'icône 512 x 512 (PNG 32 bits, carré plein sans coins arrondis ni ombre) ;
+puis vérifie les règles Google Play connues (dimensions, alpha, poids, ratio, aire du texte,
+contraste AA, mots interdits, textes alternatifs, couleurs vives, barre d'état, icône) et écrit
+rapport-controles.json. Les règles codées sont lues dans google_rules.json (version et date de
+vérification) ; le kit n'interroge jamais Google : aucun accès réseau.
 Code de sortie : 0 tout est conforme, 1 un contrôle échoue, 2 configuration ou usage invalide.
 
 Sources d'écrans (au choix, voir README.md) :
@@ -21,6 +25,8 @@ Usage :
     python3 build_playstore.py --verifier                  # vérifier seulement
     python3 build_playstore.py --seulement 02-liste        # ne régénérer que certains visuels
     python3 build_playstore.py --langue en --sortie dist   # autre langue, autre dossier de sortie
+    python3 build_playstore.py --icone                     # seulement l'icône 512 x 512 (bloc « icone »)
+    python3 build_playstore.py --regles                    # liste les règles Google codées et leur date de vérification
 
 Dépendances : pip install playwright pillow. Chromium : variable PW_CHROMIUM ou XM_CHROMIUM,
 sinon recherche automatique, sinon Chromium de Playwright (playwright install chromium).
@@ -30,6 +36,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import datetime
 import glob
 import html
 import json
@@ -44,9 +51,13 @@ from pathlib import Path
 from PIL import Image
 
 KIT = Path(__file__).resolve().parent
-VERSION_KIT = "1.0.0"
+VERSION_KIT = "1.1.0"
+REGLES_FICHIER = KIT / "google_rules.json"   # règles Google codées, version et date de vérification
 RE_HEX = re.compile(r"^#(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$")
 RE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
+
+
+MODES_BARRE = ("recouvrir", "source", "aucune", "auto")   # « auto » = recouvrir (compatibilité)
 
 
 class ErreurConfig(Exception):
@@ -62,8 +73,10 @@ DEFAUT = {
         "palette": {},
         "tokens_css": None,
         "prefixe_jetons": "",
-        "police": {"famille": "Segoe UI", "fichier": None, "graisses": "100 900",
-                   "repli": "Roboto, 'Helvetica Neue', Arial, sans-serif"},
+        # Inter (licence OFL) est embarquée dans fonts/ : utilisée par défaut, sans dépendre des polices système.
+        # « fichier » (une police) ou « fichiers » ([{fichier, graisse}]) pointent vers une autre police embarquée.
+        "police": {"famille": "Inter", "fichier": None, "fichiers": None, "graisses": "100 900",
+                   "repli": "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"},
         "logo": None,
         "fond": {"de": "#2563EB", "vers": "#1E3A8A", "angle": 160},
         "couleurs": {"texte": "#FFFFFF", "puce_fond": "#FFFFFF", "puce_texte": "#111827",
@@ -74,9 +87,10 @@ DEFAUT = {
         "type": "html", "url": None, "viewport": [390, 844], "echelle": 3, "locale": "fr-FR",
         "attente_ms": 700, "selecteur_ecran": None, "attendre_selecteur": None, "stockage_local": {},
         "masquer": [], "css": "", "js": "", "selecteur_heure": None, "remplacements": {},
-        "police_dans_page": False,
+        "police_dans_page": True,
     },
-    "barre_etat": {"mode": "auto", "heure": "9:41", "hauteur_pct": 3.4, "couleur": "auto", "icones": "auto"},
+    "barre_etat": {"mode": "recouvrir", "heure": "9:41", "hauteur_pct": 3.4, "couleur": "auto", "icones": "auto",
+                   "selecteur": None},
     "mise_en_page": {"ecran_largeur": 730, "cadre_y": 365, "biseau": 16, "rayon_cadre": 92, "rayon_ecran": 76,
                      "titre_haut": 100, "titre_taille": 76, "trou_camera": False, "feature_telephone_largeur": 215},
     "contraintes": {
@@ -90,6 +104,97 @@ DEFAUT = {
     },
     "fiche": {"fichier": None, "textes": {}, "limites": {"nom": 30, "court": 80, "long": 4000}},
 }
+
+
+# --------------------------------------------------------------------------- règles Google (google_rules.json)
+def charger_regles() -> dict:
+    """Lit google_rules.json (règles codées, version, date de vérification). Aucun accès réseau."""
+    try:
+        r = json.loads(REGLES_FICHIER.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        raise ErreurConfig(f"Fichier de règles introuvable : {REGLES_FICHIER} (copier le kit complet, google_rules.json compris).")
+    except (json.JSONDecodeError, OSError) as exc:
+        raise ErreurConfig(f"google_rules.json illisible : {exc}")
+    try:
+        datetime.date.fromisoformat(r["date_verification"])
+        assert isinstance(r["regles"], list) and r["version"]
+    except (KeyError, ValueError, AssertionError, TypeError):
+        raise ErreurConfig("google_rules.json invalide : « version », « date_verification » (AAAA-MM-JJ) et « regles » sont obligatoires.")
+    return r
+
+
+def valeurs_regle(regles: dict, ident: str) -> dict:
+    for r in regles["regles"]:
+        if r.get("id") == ident:
+            return r.get("valeurs", {})
+    raise ErreurConfig(f"google_rules.json : règle « {ident} » absente.")
+
+
+def aujourdhui() -> datetime.date:
+    return datetime.date.today()
+
+
+def etat_regles(regles: dict, jour: datetime.date | None = None) -> dict:
+    """Âge de la dernière vérification des règles et avertissement éventuel (jamais un échec)."""
+    jour = jour or aujourdhui()
+    date = datetime.date.fromisoformat(regles["date_verification"])
+    age = (jour - date).days
+    limite = int(regles.get("validite_jours", 180))
+    avert = None
+    if age > limite:
+        avert = (f"Les règles Google codées ont été vérifiées le {date.isoformat()} ({age} jours, limite {limite}) : "
+                 "relire l'aide de la Play Console avant publication, puis mettre à jour google_rules.json (date incluse). "
+                 "Le kit n'interroge pas Google.")
+    elif age < 0:
+        avert = f"La date de vérification des règles ({date.isoformat()}) est dans le futur : à corriger dans google_rules.json."
+    return {"version": regles["version"], "date_verification": date.isoformat(), "age_jours": age, "validite_jours": limite,
+            "perimee": age > limite, "avertissement": avert}
+
+
+def texte_regles(regles: dict, etat: dict) -> str:
+    """Liste lisible des règles codées (option --regles)."""
+    lignes = [f"Règles Google Play codées dans le kit : version {regles['version']}, vérifiées le {etat['date_verification']} "
+              f"({etat['age_jours']} jours ; avertissement au-delà de {etat['validite_jours']}).",
+              regles.get("statut", ""), ""]
+    for r in regles["regles"]:
+        lignes.append(f"- {r['id']} : {r['libelle']}")
+        lignes.append(f"    valeurs : {json.dumps(r.get('valeurs', {}), ensure_ascii=False)}")
+        lignes.append(f"    source  : {r.get('source', '')}")
+        if r.get("a_confirmer"):
+            lignes.append(f"    À CONFIRMER : {r['a_confirmer']}")
+    lignes.append("")
+    lignes.append("Sources : " + " ; ".join(f"{k} = {v}" for k, v in regles.get("sources", {}).items()))
+    if etat["avertissement"]:
+        lignes += ["", "AVERTISSEMENT : " + etat["avertissement"]]
+    return "\n".join(lignes)
+
+
+def defauts_depuis_regles(defaut: dict, regles: dict) -> dict:
+    """Défauts de configuration dont les valeurs numériques viennent de google_rules.json."""
+    d = copy.deepcopy(defaut)
+    fg, ph = valeurs_regle(regles, "feature_graphic"), valeurs_regle(regles, "captures_telephone")
+    tx, md, alt = valeurs_regle(regles, "texte_dans_les_visuels"), valeurs_regle(regles, "metadonnees"), valeurs_regle(regles, "texte_alternatif")
+    c = d["contraintes"]
+    c["feature_graphic"] = {"largeur": fg["largeur"], "hauteur": fg["hauteur"], "poids_max_mo": fg["poids_max_mo"]}
+    c["captures"]["poids_max_mo"] = ph["poids_max_mo"]
+    c["captures"]["texte_max_pct"] = tx["texte_max_pct"]
+    c["contraste_min"] = tx["contraste_min"]
+    c["alt_max"] = alt["alt_max"]
+    d["fiche"]["limites"] = {"nom": md["nom_max"], "court": md["court_max"], "long": md["long_max"]}
+    return d
+
+DEFAUT_TABLETTES = {
+    "appareils": ["7", "10"],
+    "orientations": ["portrait"],
+    "formats": {"7": {"portrait": [600, 960], "paysage": [960, 600]},
+                "10": {"portrait": [800, 1280], "paysage": [1280, 800]}},
+    "echelle": 2,
+    "canvas": {"portrait": [1080, 1920], "paysage": [1920, 1080]},
+    "source": {},
+    "barre_etat": {},
+}
+DEFAUT_ICONE = {"source": None, "fichier": "icon-512.png", "fond": "#FFFFFF", "zone_securite_pct": 80,
+                "contraste_min": 3.0, "ecart_motif": 48, "transparence_partielle_max_pct": 0.5}
 
 # Liste par défaut : classements, promotions, appels à l'action et mentions Google (règles de
 # métadonnées et de visuels Google Play connues à l'écriture). Remplaçable par contraintes.mots_interdits.
@@ -217,14 +322,24 @@ def _est_nombre(v) -> bool:
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
-def valider_config(brut: dict, base: Path) -> dict:
-    """Valide et normalise la configuration ; lève ErreurConfig avec TOUS les problèmes trouvés."""
+def valider_config(brut: dict, base: Path, partiel: bool = False) -> dict:
+    """Valide et normalise la configuration ; lève ErreurConfig avec TOUS les problèmes trouvés.
+    `partiel` : production de l'icône seule (--icone) ; captures et image de présentation ne sont pas exigées."""
     err: list[str] = []
     if not isinstance(brut, dict):
         raise ErreurConfig("La configuration doit être un objet JSON.")
-    cfg = fusion(DEFAUT, {k: v for k, v in brut.items() if k not in ("captures", "feature_graphic")})
+    regles = charger_regles()
+    if partiel:   # gabarit minimal valide : l'icône seule n'exige ni captures ni image de présentation
+        lg = brut.get("langue_defaut", "fr")
+        brut = {**brut, "captures": [{"id": f"x{i}", "source": {"type": "images", "image": "x.png"},
+                                      "textes": {lg: {"titre": "x", "alt": "x", "puces": {}}}} for i in (1, 2)],
+                "feature_graphic": {"textes": {lg: {"slogan": "x", "alt": "x"}}}, "contraintes": {"captures": {"nombre": 2}},
+                "tablettes": None}
+    cfg = fusion(defauts_depuis_regles(DEFAUT, regles),
+                 {k: v for k, v in brut.items() if k not in ("captures", "feature_graphic", "tablettes", "icone")})
     cfg["captures"] = copy.deepcopy(brut.get("captures"))
     cfg["feature_graphic"] = copy.deepcopy(brut.get("feature_graphic"))
+    cfg["_regles"] = regles
 
     if not isinstance(cfg.get("application"), str) or not cfg["application"].strip():
         err.append("« application » : nom de l'application obligatoire (texte).")
@@ -278,8 +393,10 @@ def valider_config(brut: dict, base: Path) -> dict:
 
     # barre d'état
     be = cfg["barre_etat"]
-    if be["mode"] not in ("auto", "source", "recouvrir", "aucune"):
-        err.append("« barre_etat.mode » : auto, source, recouvrir ou aucune.")
+    if be["mode"] not in MODES_BARRE:
+        err.append("« barre_etat.mode » : recouvrir (défaut), source, aucune (ou auto = recouvrir).")
+    if be.get("selecteur") is not None and not isinstance(be["selecteur"], str):
+        err.append("« barre_etat.selecteur » : sélecteur CSS de la barre d'état de la page (texte) ou null.")
     if not (_est_nombre(be["hauteur_pct"]) and 0 < be["hauteur_pct"] <= 15):
         err.append("« barre_etat.hauteur_pct » : nombre entre 0 et 15 (pourcentage de la hauteur de l'écran).")
     if be["couleur"] != "auto":
@@ -336,6 +453,32 @@ def valider_config(brut: dict, base: Path) -> dict:
         if "angle" in fond and not _est_nombre(fond["angle"]):
             err.append(f"« {etiq}.fond.angle » : nombre attendu.")
 
+    def resoudre_source_barre(e: dict, etiq: str, src_base: dict, be_base: dict) -> None:
+        """Source de l'écran (défauts + surcharges de la capture) et barre d'état de la capture."""
+        s = e.get("source") or {}
+        if not isinstance(s, dict):
+            err.append(f"« {etiq}.source » : objet attendu.")
+            s = {}
+        fus = fusion(src_base, {k: v for k, v in s.items() if k not in ("masquer",)})
+        fus["masquer"] = list(src_base.get("masquer", [])) + list(s.get("masquer", []) if isinstance(s.get("masquer", []), list) else [])
+        e["source"] = fus
+        if fus.get("type") == "images":
+            if not isinstance(fus.get("image"), str):
+                err.append(f"« {etiq}.source.image » : chemin de l'image (PNG de l'émulateur) obligatoire.")
+        elif fus.get("type") == "html":
+            if not isinstance(fus.get("url"), str):
+                err.append(f"« {etiq}.source.url » (ou « source.url » global) : URL ou fichier HTML obligatoire.")
+        b = fusion(be_base, e.get("barre_etat") or {})
+        if b["mode"] not in MODES_BARRE:
+            err.append(f"« {etiq}.barre_etat.mode » : recouvrir, source, aucune (ou auto).")
+        if b["mode"] == "auto":
+            b["mode"] = "recouvrir"
+        if b["mode"] == "source" and fus.get("type") == "images":
+            err.append(f"« {etiq}.barre_etat.mode » : « source » impossible avec des images ; utiliser « recouvrir » ou « aucune ».")
+        if b["mode"] == "source" and fus.get("type") == "html" and not fus.get("selecteur_heure"):
+            err.append(f"« {etiq}.barre_etat.mode » : « source » demande source.selecteur_heure (élément qui affiche l'heure).")
+        e["barre_etat"] = b
+
     # captures
     ids: set[str] = set()
     for i, e in enumerate(cfg["captures"]):
@@ -377,29 +520,8 @@ def valider_config(brut: dict, base: Path) -> dict:
             else:
                 refs.add(pz["texte_ref"])
         valider_textes(etiq, e.get("textes"), ("titre", "alt"), refs)
-        # source de l'écran : défauts globaux + surcharges de la capture
-        s = e.get("source") or {}
-        if not isinstance(s, dict):
-            err.append(f"« {etiq}.source » : objet attendu.")
-            s = {}
-        fus = fusion(src0, {k: v for k, v in s.items() if k not in ("masquer",)})
-        fus["masquer"] = list(src0.get("masquer", [])) + list(s.get("masquer", []) if isinstance(s.get("masquer", []), list) else [])
-        e["source"] = fus
-        if fus.get("type") == "images":
-            if not isinstance(fus.get("image"), str):
-                err.append(f"« {etiq}.source.image » : chemin de l'image (PNG de l'émulateur) obligatoire.")
-        elif fus.get("type") == "html":
-            if not isinstance(fus.get("url"), str):
-                err.append(f"« {etiq}.source.url » (ou « source.url » global) : URL ou fichier HTML obligatoire.")
-        # barre d'état de la capture
-        b = fusion(be, e.get("barre_etat") or {})
-        if b["mode"] == "auto":
-            b["mode"] = "recouvrir" if fus.get("type") == "images" else ("source" if fus.get("selecteur_heure") else "aucune")
-        if b["mode"] == "source" and fus.get("type") == "images":
-            err.append(f"« {etiq}.barre_etat.mode » : « source » impossible avec des images ; utiliser « recouvrir » ou « aucune ».")
-        if b["mode"] == "source" and fus.get("type") == "html" and not fus.get("selecteur_heure"):
-            err.append(f"« {etiq}.barre_etat.mode » : « source » demande source.selecteur_heure (élément qui affiche l'heure).")
-        e["barre_etat"] = b
+        e["genre"], e["cle"], e["canvas"], e["dossier"] = "telephone", ident, [1080, 1920], "screenshots"
+        resoudre_source_barre(e, etiq, src0, be)
 
     # image de présentation
     fg.setdefault("fichier", "feature-graphic-1024x500.png")
@@ -427,11 +549,123 @@ def valider_config(brut: dict, base: Path) -> dict:
                     err.append(f"« feature_graphic.halos[{j}] » : couleur, x, y (en %), rayon (px), opacite (0 à 1) obligatoires.")
                 else:
                     couleur_ok(f"feature_graphic.halos[{j}].couleur", h["couleur"])
+    # tablettes 7 et 10 pouces (facultatif)
+    cfg["_tablettes"] = []
+    cfg["tablettes"] = None
+    tb_brut = brut.get("tablettes")
+    if tb_brut is not None:
+        rt = valeurs_regle(regles, "captures_tablette")
+        if not isinstance(tb_brut, dict):
+            err.append("« tablettes » : objet attendu.")
+        else:
+            tb = fusion(DEFAUT_TABLETTES, {k: v for k, v in tb_brut.items() if k != "captures"})
+            tb["captures"] = copy.deepcopy(tb_brut.get("captures"))
+            cfg["tablettes"] = tb
+            valides_ap, valides_or = ("7", "10"), ("portrait", "paysage")
+            if not (isinstance(tb["appareils"], list) and tb["appareils"] and all(a in valides_ap for a in tb["appareils"])):
+                err.append("« tablettes.appareils » : liste non vide parmi « 7 » et « 10 ».")
+                tb["appareils"] = []
+            if not (isinstance(tb["orientations"], list) and tb["orientations"] and all(o in valides_or for o in tb["orientations"])):
+                err.append("« tablettes.orientations » : liste non vide parmi « portrait » et « paysage ».")
+                tb["orientations"] = []
+            if not _est_nombre(tb["echelle"]) or tb["echelle"] <= 0:
+                err.append("« tablettes.echelle » : nombre > 0 attendu.")
+            for ori in tb["orientations"]:
+                cv = tb["canvas"].get(ori)
+                if not (isinstance(cv, list) and len(cv) == 2 and all(isinstance(x, int) for x in cv)):
+                    err.append(f"« tablettes.canvas.{ori} » : [largeur, hauteur] en pixels entiers attendu.")
+                else:
+                    w, h = cv
+                    exact = (w * 16 == h * 9) if ori == "portrait" else (w * 9 == h * 16)
+                    if not exact:
+                        err.append(f"« tablettes.canvas.{ori} » : {w}x{h} n'est pas du {'9:16' if ori == 'portrait' else '16:9'}.")
+                    if not all(rt["cote_min"] <= x <= rt["cote_max"] for x in cv):
+                        err.append(f"« tablettes.canvas.{ori} » : côtés de {rt['cote_min']} à {rt['cote_max']} px attendus ({w}x{h}).")
+                for ap in tb["appareils"]:
+                    vp = tb["formats"].get(ap, {}).get(ori)
+                    if not (isinstance(vp, list) and len(vp) == 2 and all(isinstance(x, int) and x > 0 for x in vp)):
+                        err.append(f"« tablettes.formats.{ap}.{ori} » : viewport [largeur, hauteur] en pixels CSS entiers attendu.")
+            caps_t = tb["captures"]
+            if not isinstance(caps_t, list):
+                err.append("« tablettes.captures » : liste obligatoire.")
+                caps_t = []
+            elif not (rt["nombre_min"] <= len(caps_t) <= rt["nombre_max"]):
+                err.append(f"« tablettes.captures » : {rt['nombre_min']} à {rt['nombre_max']} captures par jeu quand les tablettes "
+                           f"sont demandées ({len(caps_t)} fournies).")
+            if not isinstance(tb["source"], dict) or not isinstance(tb["barre_etat"], dict):
+                err.append("« tablettes.source » et « tablettes.barre_etat » : objets attendus.")
+                tb["source"], tb["barre_etat"] = {}, {}
+            src_t = fusion(src0, {k: v for k, v in tb["source"].items() if k != "masquer"})
+            src_t["masquer"] = list(src0.get("masquer", [])) + [m for m in tb["source"].get("masquer", []) if isinstance(m, str)]
+            be_t = fusion(be, tb["barre_etat"])
+            ids_t: set[str] = set()
+            for i, cap in enumerate(caps_t):
+                etiq = f"tablettes.captures[{i}]"
+                if not isinstance(cap, dict) or not isinstance(cap.get("id"), str) or not RE_ID.match(cap["id"]):
+                    err.append(f"« {etiq}.id » : identifiant (lettres, chiffres, tiret) obligatoire.")
+                    continue
+                etiq = f"tablettes.captures[{cap['id']}]"
+                if cap["id"] in ids_t:
+                    err.append(f"« {etiq} » : identifiant en double.")
+                ids_t.add(cap["id"])
+                cap.setdefault("fichier", f"{cap['id']}.png")
+                if not (isinstance(cap["fichier"], str) and cap["fichier"].lower().endswith(".png") and "/" not in cap["fichier"] and "\\" not in cap["fichier"]):
+                    err.append(f"« {etiq}.fichier » : nom de fichier .png sans dossier.")
+                valider_fond(etiq, cap.get("fond"))
+                valider_textes(etiq, cap.get("textes"), ("titre", "alt"))
+                for ap in tb["appareils"]:
+                    for ori in tb["orientations"]:
+                        e = {"id": f"tablette-{ap}-{ori}/{cap['id']}", "genre": "tablette", "appareil": ap, "orientation": ori,
+                             "capture": cap["id"], "fichier": cap["fichier"], "dossier": f"tablettes/{ap}-pouces-{ori}",
+                             "cle": f"tablette-{ap}-{ori}__{cap['id']}", "puces": [],
+                             "canvas": tb["canvas"].get(ori), "textes": cap.get("textes"),
+                             "fond": fusion(th["fond"], cap.get("fond") or {}),
+                             "source": copy.deepcopy(cap.get("source") or {}), "barre_etat": copy.deepcopy(cap.get("barre_etat") or {})}
+                        resoudre_source_barre(e, etiq, src_t, be_t)
+                        vp = tb["formats"].get(ap, {}).get(ori)
+                        if isinstance(vp, list):
+                            e["source"]["viewport"] = list(vp)
+                        e["source"]["echelle"] = tb["echelle"]
+                        cfg["_tablettes"].append(e)
+
+    # icône 512 x 512 (facultatif ; obligatoire pour --icone)
+    ic_brut = brut.get("icone")
+    cfg["icone"] = None
+    if ic_brut is not None:
+        if not isinstance(ic_brut, dict):
+            err.append("« icone » : objet attendu.")
+        else:
+            ic = fusion(DEFAUT_ICONE, ic_brut)
+            cfg["icone"] = ic
+            if not isinstance(ic["source"], str):
+                err.append("« icone.source » : chemin du SVG ou du PNG carré obligatoire.")
+            elif not (base / ic["source"]).resolve().is_file():
+                err.append(f"« icone.source » : fichier introuvable : {(base / ic['source']).resolve()}")
+            elif (base / ic["source"]).suffix.lower() not in (".svg", ".png"):
+                err.append("« icone.source » : SVG ou PNG attendu.")
+            if not (isinstance(ic["fichier"], str) and ic["fichier"].lower().endswith(".png") and "/" not in ic["fichier"] and "\\" not in ic["fichier"]):
+                err.append("« icone.fichier » : nom de fichier .png sans dossier.")
+            couleur_ok("icone.fond", ic["fond"])
+            for k in ("zone_securite_pct", "contraste_min", "ecart_motif", "transparence_partielle_max_pct"):
+                if not _est_nombre(ic[k]) or ic[k] <= 0:
+                    err.append(f"« icone.{k} » : nombre > 0 attendu.")
+
     # logo et police
     if th.get("logo") and not (base / th["logo"]).resolve().is_file():
         err.append(f"« theme.logo » : fichier introuvable : {(base / th['logo']).resolve()}")
     if th["police"].get("fichier") and not (base / th["police"]["fichier"]).resolve().is_file():
         err.append(f"« theme.police.fichier » : fichier introuvable : {(base / th['police']['fichier']).resolve()}")
+    if th["police"].get("fichiers") is not None:
+        pf = th["police"]["fichiers"]
+        if not (isinstance(pf, list) and pf and all(isinstance(x, dict) and isinstance(x.get("fichier"), str) for x in pf)):
+            err.append("« theme.police.fichiers » : liste de {fichier, graisse} attendue.")
+        else:
+            for x in pf:
+                if not (base / x["fichier"]).resolve().is_file():
+                    err.append(f"« theme.police.fichiers » : fichier introuvable : {(base / x['fichier']).resolve()}")
+    for f, _ in (polices_declarees(cfg, base) if not err else []):
+        if not f.is_file():
+            err.append(f"« theme.police » : fichier de police introuvable : {f} (copier le dossier fonts/ du kit)")
     if not th["police"].get("famille"):
         err.append("« theme.police.famille » : nom de police obligatoire.")
     if err:
@@ -529,21 +763,87 @@ JS_REMPLACER = """([a, b]) => { const w = document.createTreeWalker(document.bod
   while (w.nextNode()) { if (w.currentNode.nodeValue.includes(a)) w.currentNode.nodeValue = w.currentNode.nodeValue.split(a).join(b); } }"""
 
 
-def css_police(cfg: dict, base: Path) -> tuple[str, str]:
-    """(règle @font-face éventuelle, pile de polices CSS)."""
+FONTS_KIT = KIT / "fonts"
+INTER_EMBARQUEE = [("Inter-Regular.woff2", "400"), ("Inter-SemiBold.woff2", "600"),
+                   ("Inter-Bold.woff2", "700"), ("Inter-ExtraBold.woff2", "800")]
+FORMATS_POLICE = {".woff2": "woff2", ".woff": "woff", ".ttf": "truetype", ".otf": "opentype"}
+
+
+def polices_declarees(cfg: dict, base: Path) -> list[tuple[Path, str]]:
+    """Fichiers de police chargés dans les visuels, avec leur graisse : ceux de la configuration
+    (fichiers, fichier), sinon Inter embarquée dans fonts/ quand la famille est « Inter », sinon aucun
+    (police système : le rendu dépend alors de la machine)."""
+    p = cfg["theme"]["police"]
+    if p.get("fichiers"):
+        return [((base / x["fichier"]).resolve(), str(x.get("graisse", "400"))) for x in p["fichiers"]]
+    if p.get("fichier"):
+        return [((base / p["fichier"]).resolve(), str(p["graisses"]))]
+    if str(p.get("famille", "")).strip().lower() == "inter":
+        return [(FONTS_KIT / nom, g) for nom, g in INTER_EMBARQUEE]
+    return []
+
+
+def css_police(cfg: dict, base: Path, depuis: Path | None = None) -> tuple[str, str]:
+    """(règles @font-face, pile de polices CSS). `depuis` : dossier de la page qui les utilise, pour des
+    URL relatives (kit copiable) ; sans lui, URL absolues (page distante ou injectée)."""
     p = cfg["theme"]["police"]
     face = ""
-    if p.get("fichier"):
-        f = (base / p["fichier"]).resolve()
-        fmt = {".woff2": "woff2", ".woff": "woff", ".ttf": "truetype", ".otf": "opentype"}.get(f.suffix.lower(), "woff2")
-        face = (f"@font-face{{font-family:'{p['famille']}';font-weight:{p['graisses']};font-style:normal;"
-                f"src:url('{uri(f)}') format('{fmt}');}}")
+    for f, graisse in polices_declarees(cfg, base):
+        url = Path(os.path.relpath(f, depuis)).as_posix() if depuis is not None and _meme_lecteur(f, depuis) else uri(f)
+        face += (f"@font-face{{font-family:'{p['famille']}';font-weight:{graisse};font-style:normal;font-display:block;"
+                 f"src:url('{url}') format('{FORMATS_POLICE.get(f.suffix.lower(), 'woff2')}');}}")
     return face, f"'{p['famille']}',{p['repli']}"
 
 
+def _meme_lecteur(a: Path, b: Path) -> bool:
+    return os.path.splitdrive(str(a))[0].lower() == os.path.splitdrive(str(b.resolve()))[0].lower()
+
+
+JS_POLICES = """() => [...document.fonts].map(f => [f.family.replace(/["']/g, ''), f.weight, f.status])"""
+
+JS_ZONE = """([selBarre, pct, selHeure, selEcran]) => {
+  const vh = window.innerHeight, vw = window.innerWidth;
+  let top = 0, haut = vh;
+  if (selEcran) { const el = document.querySelector(selEcran); if (el) { const r = el.getBoundingClientRect(); top = r.top; haut = r.height; } }
+  let zone = haut * pct / 100, erreur = null;
+  if (selBarre) {
+    const el = document.querySelector(selBarre);
+    if (el) zone = Math.max(zone, el.getBoundingClientRect().bottom - top); else erreur = 'sélecteur de barre introuvable : ' + selBarre;
+  }
+  const heureEl = selHeure ? document.querySelector(selHeure) : null;
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const textes = [];
+  while (w.nextNode()) {
+    const n = w.currentNode, t = n.nodeValue.trim(), p = n.parentElement;
+    if (!t || !p || ['SCRIPT', 'STYLE', 'NOSCRIPT', 'TITLE'].includes(p.tagName)) continue;
+    const cs = getComputedStyle(p);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) continue;
+    const rg = document.createRange(); rg.selectNodeContents(n);
+    for (const r of rg.getClientRects()) {
+      if (r.width < 1 || r.height < 1 || r.right <= 0 || r.left >= vw) continue;
+      const h0 = r.top - top, h1 = r.bottom - top;
+      if (h1 <= 0 || h0 >= zone) continue;
+      textes.push({texte: t, coupe: h0 < zone && h1 > zone + 0.5, heure: !!(heureEl && heureEl.contains(p))});
+      break;
+    }
+  }
+  return {zone_css: zone, hauteur_css: haut, pct_effectif: 100 * zone / haut, textes, erreur};
+}"""
+
+
+def captures_a_traiter(cfg: dict, ids: list[str] | None = None, tablettes: bool = True) -> list[dict]:
+    """Captures téléphone (filtrées par identifiant) puis captures tablettes (toutes, si `tablettes` est
+    demandé ou si aucun filtre ; identifiant de filtre : « tablettes »)."""
+    sortie = [e for e in cfg["captures"] if not ids or e["id"] in ids]
+    if tablettes and (not ids or "tablettes" in ids):
+        sortie += cfg.get("_tablettes", [])
+    return sortie
+
+
 def capturer_ecrans(cfg: dict, base: Path, cache: Path, ids: list[str] | None) -> dict[str, dict]:
-    """Capture les écrans de source « html ». Retourne les infos de barre d'état par identifiant."""
-    cibles = [e for e in cfg["captures"] if e["source"]["type"] == "html" and (not ids or e["id"] in ids)]
+    """Capture les écrans de source « html » (téléphone et tablettes). Retourne, par identifiant, l'heure lue
+    et l'analyse de la zone de la barre d'état de la page (textes présents sous la barre d'état)."""
+    cibles = [e for e in captures_a_traiter(cfg, ids) if e["source"]["type"] == "html"]
     infos: dict[str, dict] = {}
     if not cibles:
         return infos
@@ -577,8 +877,10 @@ def capturer_ecrans(cfg: dict, base: Path, cache: Path, ids: list[str] | None) -
                 pg.evaluate(JS_REMPLACER, [a, b])
             info = pg.evaluate(JS_HEURE, [s.get("selecteur_heure"), e["barre_etat"]["heure"]])
             info["mode"] = e["barre_etat"]["mode"]
+            bar = e["barre_etat"]
+            info["zone"] = pg.evaluate(JS_ZONE, [bar.get("selecteur"), bar["hauteur_pct"], s.get("selecteur_heure"), s.get("selecteur_ecran")])
             infos[e["id"]] = info
-            dest = cache / "brut" / f"{e['id']}.png"
+            dest = cache / "brut" / f"{e['cle']}.png"
             if s.get("selecteur_ecran"):
                 pg.locator(s["selecteur_ecran"]).screenshot(path=str(dest))
             else:
@@ -592,7 +894,7 @@ def source_image(e: dict, base: Path, cache: Path) -> Path:
     """Chemin de l'image brute d'une capture (capturée, ou fournie telle quelle)."""
     if e["source"]["type"] == "images":
         return (base / e["source"]["image"]).resolve()
-    return cache / "brut" / f"{e['id']}.png"
+    return cache / "brut" / f"{e['cle']}.png"
 
 
 # --------------------------------------------------------------------------- composition HTML/CSS
@@ -606,7 +908,7 @@ def svg_icone(cfg: dict, nom: str, taille: int) -> str:
 
 
 def css_base(cfg: dict, C: Couleurs, base: Path) -> str:
-    face, pile = css_police(cfg, base)
+    face, pile = css_police(cfg, base, cfg.get("_compo_dir"))
     co = cfg["theme"]["couleurs"]
     return f"""
 {face}
@@ -642,13 +944,16 @@ def couleur_barre(chemin: Path, pct: float) -> str:
     return rgb_hex(med)
 
 
-def html_barre(cfg: dict, e: dict, brut: Path, ecran_h: int) -> str:
-    """Barre d'état propre superposée à l'image : heure figée, signal, Wi-Fi, batterie pleine, rien d'autre."""
+def html_barre(cfg: dict, e: dict, brut: Path, ecran_h: int, zone: dict | None = None) -> str:
+    """Barre d'état propre superposée à l'image (par-dessus toute barre existante) : heure figée, signal,
+    Wi-Fi, batterie pleine, rien d'autre. Hauteur : celle de la barre de la page quand elle a été mesurée
+    (`zone`, source HTML), sinon `hauteur_pct`. Couleurs d'après le fond de l'écran sous la barre."""
     b = e["barre_etat"]
     if b["mode"] != "recouvrir":
         return ""
-    h = ecran_h * b["hauteur_pct"] / 100
-    fond = b["couleur"] if b["couleur"] != "auto" else couleur_barre(brut, b["hauteur_pct"])
+    pct = zone["pct_effectif"] if zone and zone.get("pct_effectif") else b["hauteur_pct"]
+    h = ecran_h * pct / 100
+    fond = b["couleur"] if b["couleur"] != "auto" else couleur_barre(brut, pct)
     fond = Couleurs()(fond) if RE_HEX.match(fond) else fond
     if b["icones"] == "auto":
         encre = "#111111" if lum_rel(hex_rgb(fond)) > 0.4 else "#FFFFFF"
@@ -670,8 +975,11 @@ def html_barre(cfg: dict, e: dict, brut: Path, ecran_h: int) -> str:
 JS_BARRE_COMPOSEE = """() => {
   const b = document.querySelector('.barre-propre'); if (!b) return null;
   const plein = b.querySelector('.bat .plein');
+  const rc = el => { const r = el.getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom]; };
   return {heure: b.querySelector('.h').textContent.trim(), svgs: b.querySelectorAll('svg').length,
-          remplissage: plein ? plein.getAttribute('width') : null};
+          remplissage: plein ? plein.getAttribute('width') : null,
+          texte_barre: b.textContent.trim(), fond: getComputedStyle(b).backgroundColor,
+          bande: {rect: rc(b), libres: [rc(b.querySelector('.h')), rc(b.querySelector('.ic'))]}};
 }"""
 
 
@@ -682,7 +990,7 @@ def halos_capture(e: dict, C: Couleurs, W: int, H: int) -> str:
             f'<div class="halo" style="right:-300px;top:-120px;width:760px;height:760px;background:radial-gradient(circle,{sombre}88,transparent 68%)"></div>')
 
 
-def html_capture(cfg: dict, C: Couleurs, base: Path, e: dict, texte: dict, brut: Path) -> str:
+def html_capture(cfg: dict, C: Couleurs, base: Path, e: dict, texte: dict, brut: Path, zone: dict | None = None) -> str:
     ml = cfg["mise_en_page"]
     W, H = 1080, 1920
     iw, ih = Image.open(brut).size
@@ -706,10 +1014,38 @@ body{{width:{W}px;height:{H}px;background:{fond_css(e['fond'], C)}}}
 <h1 class="titre" data-txt>{html.escape(texte['titre'])}</h1>
 <div class="cadre" style="left:{cadre_x}px;top:{ml['cadre_y']}px;width:{cadre_w}px;height:{cadre_h}px;border-radius:{ml['rayon_cadre']}px">
   <div class="ecran" style="left:{biseau}px;top:{biseau}px;width:{ecran_w}px;height:{ecran_h}px;border-radius:{ml['rayon_ecran']}px">
-    <img class="ecran-img" src="{uri(brut)}" alt="">{html_barre(cfg, e, brut, ecran_h)}</div>
+    <img class="ecran-img" src="{uri(brut)}" alt="">{html_barre(cfg, e, brut, ecran_h, zone)}</div>
   {trou}
 </div>
 {puces}
+</body></html>"""
+
+
+def html_tablette(cfg: dict, C: Couleurs, base: Path, e: dict, texte: dict, brut: Path, zone: dict | None = None) -> str:
+    """Capture de tablette : titre court, écran dans un cadre neutre, portrait 9:16 ou paysage 16:9."""
+    W, H = e["canvas"]
+    iw, ih = Image.open(brut).size
+    a = iw / ih
+    taille = round(min(W, H) * (0.07 if W < H else 0.062))
+    haut = round(H * 0.05)
+    lignes = 2 if W < H else 1
+    zone_titre = haut + round(taille * 1.14 * lignes) + round(H * 0.02)
+    bis, rayon_cadre, rayon_ecran = 14, 44, 30
+    dispo_h = H - zone_titre - round(H * 0.03) - 2 * bis
+    dispo_w = W - 2 * round(W * 0.07) - 2 * bis
+    ecran_w = int(min(dispo_w, dispo_h * a))
+    ecran_h = round(ecran_w / a)
+    cadre_w, cadre_h = ecran_w + 2 * bis, ecran_h + 2 * bis
+    return f"""<!doctype html><html lang="{html.escape(cfg['_langue'])}"><head><meta charset="utf-8"><style>{css_base(cfg, C, base)}
+body{{width:{W}px;height:{H}px;background:{fond_css(e['fond'], C)}}}
+.titre{{position:absolute;left:{round(W*0.06)}px;right:{round(W*0.06)}px;top:{haut}px;text-align:center;font-weight:800;font-size:{taille}px;line-height:1.14;letter-spacing:-.01em;text-wrap:balance}}
+</style></head><body>
+{halos_capture(e, C, W, H)}
+<h1 class="titre" data-txt>{html.escape(texte['titre'])}</h1>
+<div class="cadre" style="left:{(W - cadre_w) // 2}px;top:{zone_titre}px;width:{cadre_w}px;height:{cadre_h}px;border-radius:{rayon_cadre}px">
+  <div class="ecran" style="left:{bis}px;top:{bis}px;width:{ecran_w}px;height:{ecran_h}px;border-radius:{rayon_ecran}px">
+    <img class="ecran-img" src="{uri(brut)}" alt="">{html_barre(cfg, e, brut, ecran_h, zone)}</div>
+</div>
 </body></html>"""
 
 
@@ -765,15 +1101,19 @@ MESURES_JS = """() => {
 }"""
 
 
-def composer(cfg: dict, C: Couleurs, base: Path, cache: Path, sortie: Path, ids) -> tuple[dict, dict]:
+def composer(cfg: dict, C: Couleurs, base: Path, cache: Path, sortie: Path, ids, infos_pages: dict | None = None) -> tuple[dict, dict]:
     """Compose et exporte les visuels. Retourne (mesures de texte, infos de barre d'état composées)."""
     from playwright.sync_api import sync_playwright
 
     langue = cfg["_langue"]
     tmp = cache / "compo"
     tmp.mkdir(parents=True, exist_ok=True)
-    (sortie / "screenshots").mkdir(parents=True, exist_ok=True)
+    cfg["_compo_dir"] = tmp.resolve()       # URL de police relatives à ce dossier (kit copiable)
+    infos_pages = infos_pages or {}
+    traitees = captures_a_traiter(cfg, ids)
     caps = {e["id"]: source_image(e, base, cache) for e in cfg["captures"]}
+    for e in traitees:
+        caps[e["id"]] = source_image(e, base, cache)
     for ident, chemin in caps.items():
         if not chemin.is_file():
             raise SystemExit(f"Image source introuvable pour « {ident} » : {chemin}")
@@ -788,29 +1128,31 @@ def composer(cfg: dict, C: Couleurs, base: Path, cache: Path, sortie: Path, ids)
         taches = []
         if not ids or "feature-graphic" in ids:
             fg = cfg["feature_graphic"]
+            sortie.mkdir(parents=True, exist_ok=True)
             taches.append(("feature-graphic", (1024, 500), html_feature(cfg, C, base, caps, fg["textes"][langue]), sortie / fg["fichier"], None))
-        for e in cfg["captures"]:
-            if ids and e["id"] not in ids:
-                continue
-            taches.append((e["id"], (1080, 1920), html_capture(cfg, C, base, e, e["textes"][langue], caps[e["id"]]),
-                           sortie / "screenshots" / e["fichier"], e))
+        for e in traitees:
+            zone = (infos_pages.get(e["id"]) or {}).get("zone")
+            fabrique = html_tablette if e["genre"] == "tablette" else html_capture
+            taches.append((e["id"], tuple(e["canvas"]), fabrique(cfg, C, base, e, e["textes"][langue], caps[e["id"]], zone),
+                           sortie / e["dossier"] / e["fichier"], e))
         for ident, (w, h), code, dest, e in taches:
             pg = nav.new_page(viewport={"width": w, "height": h}, device_scale_factor=1)
-            f = tmp / f"{ident}.html"
+            f = tmp / (ident.replace("/", "__") + ".html")
             f.write_text(code, encoding="utf-8")
             pg.goto(uri(f))
             pg.evaluate("document.fonts.ready")
             pg.wait_for_timeout(250)
-            mesures[ident] = {"textes": pg.evaluate(MESURES_JS)}
+            mesures[ident] = {"textes": pg.evaluate(MESURES_JS), "polices": pg.evaluate(JS_POLICES)}
             if e is not None and e["barre_etat"]["mode"] == "recouvrir":
                 info = pg.evaluate(JS_BARRE_COMPOSEE) or {}
                 info["mode"] = "recouvrir"
+                info["rayon"] = cfg["mise_en_page"]["rayon_ecran"] if e["genre"] == "telephone" else 30
                 barres[ident] = info
-            brut_png = tmp / f"{ident}.rgba.png"
+            brut_png = tmp / (ident.replace("/", "__") + ".rgba.png")
             pg.screenshot(path=str(brut_png))
             pg.evaluate("document.body.classList.add('notext')")
             pg.wait_for_timeout(100)
-            sans_txt = tmp / f"{ident}.notext.png"
+            sans_txt = tmp / (ident.replace("/", "__") + ".notext.png")
             pg.screenshot(path=str(sans_txt))
             pg.close()
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -872,6 +1214,14 @@ def textes_visibles(cfg: dict, langue: str) -> list[tuple[str, str]]:
         out.append((f"{e['id']}/titre", t["titre"]))
         out.append((f"{e['id']}/alt", t["alt"]))
         out += [(f"{e['id']}/puce:{k}", v) for k, v in t.get("puces", {}).items()]
+    vus: set[str] = set()
+    for e in cfg.get("_tablettes", []):         # un jeu de textes par capture de tablette (partagé par les formats)
+        if e["capture"] in vus:
+            continue
+        vus.add(e["capture"])
+        t = e["textes"][langue]
+        out.append((f"tablettes/{e['capture']}/titre", t["titre"]))
+        out.append((f"tablettes/{e['capture']}/alt", t["alt"]))
     return out
 
 
@@ -880,6 +1230,7 @@ def langues_manquantes(cfg: dict, langue: str) -> list[str]:
     if langue not in cfg["feature_graphic"]["textes"]:
         manq.append("feature_graphic")
     manq += [e["id"] for e in cfg["captures"] if langue not in e["textes"]]
+    manq += sorted({f"tablettes/{e['capture']}" for e in cfg.get("_tablettes", []) if langue not in e["textes"]})
     return manq
 
 
@@ -894,7 +1245,75 @@ def fond_vif(fond: dict, C: Couleurs, v: dict) -> tuple[bool, str]:
     return bon, " ; ".join(det)
 
 
-def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mesures: dict, infos_barre: dict, ids=None) -> list[dict]:
+def textes_zone(zone: dict, sans_heure: bool) -> list[str]:
+    """Textes de la page présents dans la zone de la barre d'état (hors élément d'heure si `sans_heure`)."""
+    return [t["texte"] for t in (zone or {}).get("textes", []) if not (sans_heure and t.get("heure"))]
+
+
+def bande_propre(im: Image.Image, info: dict, tolerance: int = 8) -> tuple[bool, str]:
+    """Détection de la bande : dans la zone de la barre d'état de la capture finale, hors heure et icônes
+    (et hors coins arrondis de l'écran), tous les pixels ont la couleur de la barre propre."""
+    b = info["bande"]
+    x0, y0, x1, y1 = (int(round(v)) for v in b["rect"])
+    r = int(info.get("rayon", 0))
+    fond = parse_rgb(info["fond"])
+    rgb = im.convert("RGB")
+    libres = [(l - 6, t - 6, rr + 6, bb + 6) for l, t, rr, bb in b["libres"]]
+    px = rgb.load()
+    pire, n = 0, 0
+    for y in range(max(0, y0), min(rgb.size[1], y1)):
+        for x in range(max(0, x0 + r), min(rgb.size[0], x1 - r)):
+            if any(l <= x < rr and t <= y < bb for l, t, rr, bb in libres):
+                continue
+            n += 1
+            d = max(abs(px[x, y][i] - fond[i]) for i in range(3))
+            pire = max(pire, d)
+    return pire <= tolerance, f"{n} pixels contrôlés, écart maximal à la couleur de la barre {pire} (tolérance {tolerance})"
+
+
+def controler_barre(res_ok, ident: str, e: dict, i: dict | None, im: Image.Image) -> None:
+    """Contrôles de la barre d'état d'une capture (téléphone ou tablette), selon son mode."""
+    b = e["barre_etat"]
+    mode = b["mode"]
+    zone = (i or {}).get("zone")
+    if mode == "aucune":
+        if zone is None:
+            res_ok(ident, "barre d'état propre", True, "sans barre d'état dans la source (mode « aucune »)")
+        else:
+            extra = textes_zone(zone, False)
+            res_ok(ident, "bande supérieure de l'écran : aucun texte (mode « aucune »)", not extra,
+                   "aucun texte" if not extra else "texte dans la zone : " + " | ".join(extra)[:80])
+        return
+    if i is None:
+        return
+    if mode == "recouvrir":
+        bon = (i.get("heure") == b["heure"] and i.get("svgs") == 3 and i.get("remplissage") == "19"
+               and i.get("texte_barre", b["heure"]) == b["heure"])
+        res_ok(ident, f"barre d'état propre ({b['heure']}, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)", bon,
+               json.dumps({k: v for k, v in i.items() if k not in ("zone", "bande")}, ensure_ascii=False))
+        if zone is not None:
+            coupes = [t["texte"] for t in zone.get("textes", []) if t.get("coupe")]
+            couverts = textes_zone(zone, False)
+            if coupes or zone.get("erreur"):
+                det = zone.get("erreur") or ("texte coupé par le bord de la barre : " + " | ".join(coupes)[:70])
+            else:
+                det = f"{len(couverts)} texte(s) recouvert(s) : " + (" | ".join(couverts)[:70] or "aucun")
+            res_ok(ident, "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+                   not coupes and not zone.get("erreur"), det)
+        if "bande" in i:
+            bon2, det = bande_propre(im, i)
+            res_ok(ident, "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)", bon2, det)
+    else:
+        res_ok(ident, f"barre d'état : heure figée à {b['heure']} (le reste de la barre vient de la source)", i.get("heure") == b["heure"],
+               json.dumps({k: v for k, v in i.items() if k != "zone"}, ensure_ascii=False))
+        if zone is not None:
+            extra = textes_zone(zone, True)
+            res_ok(ident, f"bande supérieure de l'écran : aucun texte autre que l'heure ({b['heure']})", not extra and not zone.get("erreur"),
+                   zone.get("erreur") or ("aucun autre texte" if not extra else "texte en trop : " + " | ".join(extra)[:80]))
+
+
+def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mesures: dict, infos_barre: dict, ids=None,
+              info_icone: dict | None = None) -> list[dict]:
     """Tous les contrôles de conformité. Retourne la liste {visuel, controle, ok, detail}."""
     c = cfg["contraintes"]
     vifs = c["couleurs_vives"]
@@ -903,13 +1322,34 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
     def ok(visuel, controle, passe, detail):
         res.append({"visuel": visuel, "controle": controle, "ok": bool(passe), "detail": detail})
 
-    cibles = [("feature-graphic", sortie / cfg["feature_graphic"]["fichier"], c["feature_graphic"])]
-    cibles += [(e["id"], sortie / "screenshots" / e["fichier"], c["captures"]) for e in cfg["captures"]]
+    rt = valeurs_regle(cfg["_regles"], "captures_tablette") if cfg.get("_regles") else {}
+    cibles = [("feature-graphic", sortie / cfg["feature_graphic"]["fichier"], c["feature_graphic"], None)]
+    cibles += [(e["id"], sortie / e["dossier"] / e["fichier"], c["captures"], e) for e in cfg["captures"]]
+    cibles += [(e["id"], sortie / e["dossier"] / e["fichier"],
+                {"largeur": e["canvas"][0], "hauteur": e["canvas"][1], "poids_max_mo": rt["poids_max_mo"]}, e)
+               for e in cfg.get("_tablettes", []) if not ids or "tablettes" in ids]
 
     ok("ensemble", "nombre de captures", len(cfg["captures"]) == c["captures"]["nombre"],
        f"{len(cfg['captures'])} (attendu {c['captures']['nombre']})")
-    for ident, chemin, regle in cibles:
-        if ids and ident not in ids:
+    if cfg.get("_tablettes") and (not ids or "tablettes" in ids):
+        jeux: dict[str, int] = {}
+        for e in cfg["_tablettes"]:
+            jeux.setdefault(e["id"].split("/")[0], 0)
+            jeux[e["id"].split("/")[0]] += int((sortie / e["dossier"] / e["fichier"]).exists())
+        for jeu, n in jeux.items():
+            ok(jeu, f"nombre de captures de tablette ({rt['nombre_min']} à {rt['nombre_max']})", rt["nombre_min"] <= n <= rt["nombre_max"], f"{n}")
+    polices = [(ident, m.get("polices")) for ident, m in mesures.items() if isinstance(m, dict) and "polices" in m
+               and (not ids or ident in ids or ident.startswith("tablette-") and "tablettes" in ids)]
+    if polices:
+        # une graisse déclarée mais non utilisée reste « unloaded » : seul « error », ou aucune face chargée, est un échec
+        manquantes = [ident for ident, p in polices if p and (any(f[2] == "error" for f in p) or not any(f[2] == "loaded" for f in p))]
+        sans_face = [ident for ident, p in polices if not p]
+        ok("ensemble", "police chargée depuis un fichier embarqué (rendu indépendant des polices système)", not manquantes and not sans_face,
+           f"{len(polices) - len(manquantes) - len(sans_face)}/{len(polices)} visuels ; "
+           + ("police système utilisée dans : " + ", ".join(sans_face[:3]) if sans_face else "")
+           + ("police non chargée dans : " + ", ".join(manquantes[:3]) if manquantes else ""))
+    for ident, chemin, regle, e_cap in cibles:
+        if ids and ident not in ids and not (ident.startswith("tablette-") and "tablettes" in ids):
             continue
         if not chemin.exists():
             ok(ident, "fichier présent", False, str(chemin))
@@ -924,7 +1364,13 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
            f"profondeur {prof}, type de couleur {typ} (2 = RVB), blocs {sorted(morc - {'IHDR', 'IDAT', 'IEND'})}")
         mo = chemin.stat().st_size / 1048576
         ok(ident, "poids", mo < regle["poids_max_mo"], f"{mo:.2f} Mo (< {regle['poids_max_mo']} Mo)")
-        if ident != "feature-graphic":
+        tablette = e_cap is not None and e_cap["genre"] == "tablette"
+        if tablette:
+            paysage = e_cap["orientation"] == "paysage"
+            ok(ident, "ratio 16:9 (paysage)" if paysage else "ratio 9:16 (portrait)",
+               (w * 9 == h * 16) if paysage else (w * 16 == h * 9), f"{w}/{h}")
+            ok(ident, f"côtés de {rt['cote_min']} à {rt['cote_max']} px", all(rt["cote_min"] <= x <= rt["cote_max"] for x in (w, h)), f"{w}x{h}")
+        elif ident != "feature-graphic":
             ok(ident, "ratio 9:16", abs(w / h - 9 / 16) < 1e-9, f"{w}/{h}")
         im = Image.open(chemin)
         ok(ident, "mode Pillow RGB", im.mode == "RGB", im.mode)
@@ -961,24 +1407,15 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
                blanc < vifs["fg_blanc_max"] and noir < vifs["fg_noir_max"] and sat > vifs["fg_saturation_min"],
                f"blanc {blanc*100:.0f} %, noir {noir*100:.1f} %, saturation {sat:.2f}")
         else:
-            e = next(x for x in cfg["captures"] if x["id"] == ident)
-            vif, det = fond_vif(e["fond"], C, vifs)
+            vif, det = fond_vif(e_cap["fond"], C, vifs)
             ok(ident, "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)", vif, det)
-            b = e["barre_etat"]
-            i = infos_barre.get(ident) if infos_barre else None
-            if b["mode"] == "aucune":
-                ok(ident, "barre d'état propre", True, "sans barre d'état dans la source (mode « aucune »)")
-            elif i is not None:
-                if b["mode"] == "recouvrir":
-                    bon = i.get("heure") == b["heure"] and i.get("svgs") == 3 and i.get("remplissage") == "19"
-                else:
-                    bon = i.get("heure") == b["heure"]
-                lib = (f"barre d'état propre ({b['heure']}, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)" if b["mode"] == "recouvrir"
-                       else f"barre d'état : heure figée à {b['heure']} (le reste de la barre vient de la source)")
-                ok(ident, lib, bon, json.dumps(i, ensure_ascii=False))
+            controler_barre(ok, ident, e_cap, infos_barre.get(ident) if infos_barre else None, im)
+
+    if cfg.get("icone") and (not ids or "icone" in ids):
+        res += controler_icone(sortie / cfg["icone"]["fichier"], cfg["icone"], cfg["_regles"], info_icone)
 
     for etiq, t in textes_visibles(cfg, langue):
-        if ids and etiq.split("/")[0] not in ids:
+        if ids and not ((etiq.startswith("tablettes/") and "tablettes" in ids) or etiq.split("/")[0] in ids):
             continue
         if not t:
             ok(etiq, "texte renseigné", False, "vide (gabarit non rempli)")
@@ -1013,20 +1450,187 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
     return res
 
 
-def verifier(cfg, C, base, langue, sortie: Path, cache: Path, infos_barre, ids=None, quiet=False) -> bool:
+def ecrire_rapport(cfg, langue, sortie: Path, res: list, etat_regles_: dict, fichier="rapport-controles.json", liste_regles=None) -> None:
+    sortie.mkdir(parents=True, exist_ok=True)
+    rapport = {"kit": "playstore-kit", "version_kit": VERSION_KIT, "application": cfg["application"], "langue": langue,
+               "regles_google": {k: etat_regles_[k] for k in ("version", "date_verification", "age_jours", "validite_jours", "perimee")},
+               "avertissements": [etat_regles_["avertissement"]] if etat_regles_["avertissement"] else [],
+               "resultats": res}
+    if liste_regles is not None:
+        rapport["regles_google"]["liste"] = liste_regles
+    (sortie / fichier).write_text(json.dumps(rapport, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def afficher(res: list) -> bool:
+    echecs = [r for r in res if not r["ok"]]
+    for r in res:
+        print(("OK   " if r["ok"] else "ECHEC"), f"{r['visuel']:<34} {r['controle'][:70]:<70} {r['detail'][:90]}")
+    print(f"\n{len(res) - len(echecs)}/{len(res)} contrôles passés" + ("" if not echecs else f", {len(echecs)} échec(s)"))
+    return not echecs
+
+
+def verifier(cfg, C, base, langue, sortie: Path, cache: Path, infos_barre, ids=None, quiet=False,
+             etat_regles_: dict | None = None, info_icone: dict | None = None, liste_regles=None) -> bool:
     mf = cache / f"mesures-{langue}.json"
     mesures = json.loads(mf.read_text(encoding="utf-8")) if mf.exists() else {}
-    res = controler(cfg, C, base, langue, sortie, mesures, infos_barre or {}, ids)
+    res = controler(cfg, C, base, langue, sortie, mesures, infos_barre or {}, ids, info_icone)
+    ecrire_rapport(cfg, langue, sortie, res, etat_regles_ or etat_regles(cfg["_regles"]), liste_regles=liste_regles)
+    if quiet:
+        return all(r["ok"] for r in res)
+    return afficher(res)
+
+
+# --------------------------------------------------------------------------- icône 512 x 512
+ID_ICONE = "icon-512"
+
+
+def rendre_svg(svg: Path, taille: int, cache: Path) -> Image.Image:
+    """Rend un SVG carré en RGBA (fond transparent conservé) avec Chromium."""
+    from playwright.sync_api import sync_playwright
+
+    page = cache / "icone"
+    page.mkdir(parents=True, exist_ok=True)
+    f = page / "icone.html"
+    f.write_text(f'<!doctype html><meta charset="utf-8"><style>html,body{{margin:0;background:transparent}}'
+                 f'img{{display:block;width:{taille}px;height:{taille}px}}</style><img id="i" src="{uri(svg)}" alt="">', encoding="utf-8")
+    sortie = page / "rendu.png"
+    with sync_playwright() as p:
+        nav = lancer_navigateur(p)
+        pg = nav.new_page(viewport={"width": taille, "height": taille}, device_scale_factor=1)
+        pg.goto(uri(f))
+        pg.wait_for_function("document.getElementById('i').complete")
+        nat = pg.evaluate("[document.getElementById('i').naturalWidth, document.getElementById('i').naturalHeight]")
+        if not nat[0] or not nat[1] or abs(nat[0] / nat[1] - 1) > 0.01:
+            nav.close()
+            raise SystemExit(f"La source de l'icône doit être un SVG carré ({nat[0]}x{nat[1]} lu) : {svg}")
+        pg.screenshot(path=str(sortie), omit_background=True)
+        nav.close()
+    return Image.open(sortie).convert("RGBA")
+
+
+def produire_icone(cfg: dict, C: Couleurs, base: Path, cache: Path, sortie: Path) -> dict:
+    """Produit icon-512.png : 512 x 512, PNG 32 bits, carré plein. Fond plein (couleur configurable) si la
+    source est transparente. Retourne les mesures de la source pour les contrôles."""
+    ic = cfg["icone"]
+    taille = valeurs_regle(cfg["_regles"], "icone")["taille"]
+    src = (base / ic["source"]).resolve()
+    if src.suffix.lower() == ".svg":
+        im = rendre_svg(src, taille, cache)
+    else:
+        im = Image.open(src).convert("RGBA")
+        if im.size[0] != im.size[1]:
+            raise SystemExit(f"La source de l'icône doit être carrée ({im.size[0]}x{im.size[1]} lu) : {src}")
+        if im.size[0] != taille:
+            im = im.resize((taille, taille), Image.LANCZOS)
+    alpha = pixels(im.getchannel("A"))
+    n = len(alpha)
+    transparents = sum(1 for a in alpha if a < 255)
+    partiels = sum(1 for a in alpha if 0 < a < 255)
+    info = {"source": str(ic["source"]), "taille_source": [im.size[0], im.size[1]], "transparente": transparents > 0,
+            "transparence_partielle_pct": round(100 * partiels / n, 3), "fond_applique": None}
+    if transparents:
+        fond = C(ic["fond"])
+        plein = Image.new("RGBA", im.size, hex_rgb(fond) + (255,))
+        plein.alpha_composite(im)
+        im = plein
+        info["fond_applique"] = fond
     sortie.mkdir(parents=True, exist_ok=True)
-    (sortie / "rapport-controles.json").write_text(
-        json.dumps({"kit": "playstore-kit", "version_kit": VERSION_KIT, "application": cfg["application"], "langue": langue, "resultats": res},
-                   ensure_ascii=False, indent=1), encoding="utf-8")
-    echecs = [r for r in res if not r["ok"]]
-    if not quiet:
-        for r in res:
-            print(("OK   " if r["ok"] else "ECHEC"), f"{r['visuel']:<34} {r['controle'][:70]:<70} {r['detail'][:90]}")
-        print(f"\n{len(res) - len(echecs)}/{len(res)} contrôles passés" + ("" if not echecs else f", {len(echecs)} échec(s)"))
-    return not echecs
+    im.save(sortie / ic["fichier"], format="PNG", optimize=True)   # RGBA 8 bits : PNG 32 bits
+    return info
+
+
+def _fond_interpole(im: Image.Image):
+    """Fonction (x, y) -> couleur du fond estimée par interpolation des quatre coins (dégradés linéaires compris)."""
+    w, h = im.size
+    px = im.convert("RGB").load()
+
+    def coin(x0, y0):
+        pts = [px[x0 + dx, y0 + dy] for dx in range(3, 8) for dy in range(3, 8)]
+        return [sum(p[i] for p in pts) / len(pts) for i in range(3)]
+    hg, hd, bg, bd = coin(0, 0), coin(w - 8, 0), coin(0, h - 8), coin(w - 8, h - 8)
+
+    def f(x, y):
+        u, v = x / (w - 1), y / (h - 1)
+        return [(hg[i] * (1 - u) + hd[i] * u) * (1 - v) + (bg[i] * (1 - u) + bd[i] * u) * v for i in range(3)]
+    return f
+
+
+def analyser_motif(im: Image.Image, ic: dict) -> dict:
+    """Motif = pixels qui s'écartent du fond estimé. Mesures : zone de sécurité, contraste, présence."""
+    w, h = im.size
+    rgb = im.convert("RGB")
+    px = rgb.load()
+    fond = _fond_interpole(rgb)
+    cx, cy = (w - 1) / 2, (h - 1) / 2
+    rayon_max = ic["zone_securite_pct"] / 100 * w / 2
+    motif, dehors, dmax = [], 0, 0.0
+    for y in range(h):
+        for x in range(w):
+            f = fond(x, y)
+            p = px[x, y]
+            if max(abs(p[0] - f[0]), abs(p[1] - f[1]), abs(p[2] - f[2])) > ic["ecart_motif"]:
+                motif.append(p)
+                d = ((x - cx) ** 2 + (y - cy) ** 2) ** 0.5
+                dmax = max(dmax, d)
+                if d > rayon_max:
+                    dehors += 1
+    out = {"motif_pixels": len(motif), "hors_zone": dehors, "distance_max": round(dmax, 1), "rayon_zone": round(rayon_max, 1)}
+    if motif:
+        moy = [sum(p[i] for p in motif) / len(motif) for i in range(3)]
+        coins = [fond(0, 0), fond(w - 1, 0), fond(0, h - 1), fond(w - 1, h - 1)]
+        fond_moy = [sum(c[i] for c in coins) / 4 for i in range(3)]
+        out["contraste"] = round(contraste(lum_rel(moy), lum_rel(fond_moy)), 2)
+    return out
+
+
+def controler_icone(chemin: Path, ic: dict, regles: dict, info: dict | None) -> list[dict]:
+    """Contrôles automatiques de l'icône : dimensions, PNG 32 bits, poids, carré plein, coins, ombre, marge, contraste."""
+    res: list[dict] = []
+    v = valeurs_regle(regles, "icone")
+
+    def ok(controle, passe, detail):
+        res.append({"visuel": ID_ICONE, "controle": controle, "ok": bool(passe), "detail": detail})
+
+    if not chemin.exists():
+        ok("fichier présent", False, str(chemin))
+        return res
+    try:
+        w, h, prof, typ, _ = lire_ihdr(chemin)
+    except (ValueError, struct.error) as exc:
+        ok("fichier PNG lisible", False, str(exc))
+        return res
+    t = v["taille"]
+    ok(f"dimensions {t}x{t}", (w, h) == (t, t), f"{w}x{h}")
+    ok("PNG 32 bits (RVB + alpha, 8 bits par canal)", prof == v["profondeur"] and typ == v["type_couleur_png"],
+       f"profondeur {prof}, type de couleur {typ} (6 = RVBA)")
+    ko = chemin.stat().st_size / 1024
+    ok(f"poids <= {v['poids_max_ko']} Ko", ko <= v["poids_max_ko"], f"{ko:.0f} Ko")
+    im = Image.open(chemin)
+    if im.mode != "RGBA" or (w, h) != (t, t):
+        ok("lecture RGBA", False, f"mode {im.mode}")
+        return res
+    alpha = pixels(im.getchannel("A"))
+    mini = min(alpha)
+    ok("carré plein : aucun pixel transparent", mini == 255, f"alpha minimal {mini}")
+    rgb = im.convert("RGB")
+    px = rgb.load()
+    ecarts = []
+    for (x, y), (x2, y2) in (((2, 2), (60, 60)), ((t - 3, 2), (t - 61, 60)), ((2, t - 3), (60, t - 61)), ((t - 3, t - 3), (t - 61, t - 61))):
+        a, b = px[x, y], px[x2, y2]
+        ecarts.append(sum((a[i] - b[i]) ** 2 for i in range(3)) ** 0.5)
+    ok("pas de coins arrondis (les coins ont la couleur du fond voisin)", max(ecarts) <= 30, f"écart maximal des coins {max(ecarts):.0f} (limite 30)")
+    if info is not None:
+        lim = ic["transparence_partielle_max_pct"]
+        ok(f"pas d'ombre ni de transparence douce dans la source (<= {lim} % de pixels)", info.get("transparence_partielle_pct", 0) <= lim,
+           f"{info.get('transparence_partielle_pct')} % de pixels semi-transparents"
+           + (f" ; fond plein {info['fond_applique']} appliqué sous la source transparente" if info.get("fond_applique") else ""))
+    mo = analyser_motif(im, ic)
+    ok("motif visible", mo["motif_pixels"] > 0, f"{mo['motif_pixels']} pixels de motif")
+    if mo["motif_pixels"]:
+        ok(f"marge de sécurité : motif dans un cercle de {ic['zone_securite_pct']:.0f} % du côté", mo["hors_zone"] == 0,
+           f"distance maximale {mo['distance_max']} px (limite {mo['rayon_zone']} px), {mo['hors_zone']} pixel(s) dehors")
+        ok(f"contraste motif / fond >= {ic['contraste_min']}:1", mo["contraste"] >= ic["contraste_min"], f"{mo['contraste']}:1")
+    return res
 
 
 # --------------------------------------------------------------------------- projet exemple
@@ -1048,25 +1652,39 @@ def initialiser(dest: Path) -> int:
 # --------------------------------------------------------------------------- principal
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--config", default="visuels.json", help="fichier de configuration JSON (défaut : ./visuels.json)")
+    ap.add_argument("--config", default=None, help="fichier de configuration JSON (défaut : ./visuels.json)")
     ap.add_argument("--langue", default=None, help="langue des textes (défaut : langue_defaut de la configuration)")
     ap.add_argument("--verifier", action="store_true", help="vérifier sans régénérer")
-    ap.add_argument("--seulement", nargs="+", metavar="ID", help="identifiants à régénérer (ex. 02-liste feature-graphic)")
+    ap.add_argument("--seulement", nargs="+", metavar="ID", help="identifiants à régénérer (ex. 02-liste feature-graphic tablettes icone)")
     ap.add_argument("--sortie", metavar="DIR", help="dossier de sortie (remplace « sortie » de la configuration)")
     ap.add_argument("--init", metavar="DIR", help="crée un projet exemple prêt à lancer dans DIR puis s'arrête")
+    ap.add_argument("--icone", action="store_true", help="produit et vérifie seulement l'icône 512 x 512 (bloc « icone » de la configuration)")
+    ap.add_argument("--regles", action="store_true", help="affiche les règles Google codées (google_rules.json) et leur date de vérification")
     a = ap.parse_args(argv)
 
+    try:
+        regles = charger_regles()
+    except ErreurConfig as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+    etat = etat_regles(regles)
+    if etat["avertissement"]:
+        print("AVERTISSEMENT : " + etat["avertissement"], file=sys.stderr)
+    if a.regles:
+        print(texte_regles(regles, etat))
+        if not (a.verifier or a.icone or a.config or a.seulement):
+            return 0
     if a.init:
         return initialiser(Path(a.init).resolve())
 
-    chemin = Path(a.config).resolve()
+    chemin = Path(a.config or "visuels.json").resolve()
     if not chemin.is_file():
         print(f"Configuration introuvable : {chemin}\nCréer un projet exemple avec : --init DIR", file=sys.stderr)
         return 2
     base = chemin.parent
     try:
         brut = json.loads(chemin.read_text(encoding="utf-8"))
-        cfg = valider_config(brut, base)
+        cfg = valider_config(brut, base, partiel=a.icone)
     except json.JSONDecodeError as exc:
         print(f"Configuration invalide : JSON illisible ({exc}).", file=sys.stderr)
         return 2
@@ -1076,20 +1694,45 @@ def main(argv: list[str] | None = None) -> int:
 
     langue = a.langue or cfg["langue_defaut"]
     cfg["_langue"] = langue
+    C = Couleurs(cfg["theme"].get("palette"), cfg["_jetons"], cfg["theme"].get("prefixe_jetons", ""))
+    cache = (base / cfg["cache"]).resolve()
+    sortie = (Path(a.sortie).resolve() if a.sortie else (base / cfg["sortie"]).resolve())
+    cache.mkdir(parents=True, exist_ok=True)
+    liste = regles["regles"] if a.regles else None
+
+    def lire(nom):
+        f = cache / nom
+        return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+
+    # ---- icône seule
+    if a.icone:
+        if not cfg["icone"]:
+            print("Configuration invalide : le bloc « icone » (source, fond…) est absent.", file=sys.stderr)
+            return 2
+        if not a.verifier:
+            info = produire_icone(cfg, C, base, cache, sortie)
+            (cache / "icone-info.json").write_text(json.dumps(info, ensure_ascii=False), encoding="utf-8")
+        res = controler_icone(sortie / cfg["icone"]["fichier"], cfg["icone"], regles, lire("icone-info.json") or None)
+        ecrire_rapport(cfg, langue, sortie, res, etat, "rapport-icone.json", liste)
+        return 0 if afficher(res) else 1
+
     manq = langues_manquantes(cfg, langue)
     if manq:
         print(f"Langue « {langue} » absente des textes de : {', '.join(manq)}.", file=sys.stderr)
         return 2
-    inconnus = [i for i in (a.seulement or []) if i != "feature-graphic" and i not in {e["id"] for e in cfg["captures"]}]
+    valides = {"feature-graphic", "tablettes", "icone"} | {e["id"] for e in cfg["captures"]}
+    inconnus = [i for i in (a.seulement or []) if i not in valides]
     if inconnus:
         print(f"Identifiants inconnus pour --seulement : {', '.join(inconnus)}", file=sys.stderr)
         return 2
-    C = Couleurs(cfg["theme"].get("palette"), cfg["_jetons"], cfg["theme"].get("prefixe_jetons", ""))
-    cache = (base / cfg["cache"]).resolve()
-    sortie = (Path(a.sortie).resolve() if a.sortie else (base / cfg["sortie"]).resolve())
+    if "tablettes" in (a.seulement or []) and not cfg["_tablettes"]:
+        print("--seulement tablettes : le bloc « tablettes » est absent de la configuration.", file=sys.stderr)
+        return 2
+    if "icone" in (a.seulement or []) and not cfg["icone"]:
+        print("--seulement icone : le bloc « icone » est absent de la configuration.", file=sys.stderr)
+        return 2
     if langue != cfg["langue_defaut"]:
         sortie = sortie / langue
-    cache.mkdir(parents=True, exist_ok=True)
 
     vides = [e for e, t in textes_visibles(cfg, langue) if not t]
     if vides:
@@ -1097,18 +1740,25 @@ def main(argv: list[str] | None = None) -> int:
               file=sys.stderr)
         return 2
 
-    def lire(nom):
-        f = cache / nom
-        return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
-
+    seul = a.seulement
     if not a.verifier:
-        infos = capturer_ecrans(cfg, base, cache, a.seulement)
-        mesures, barres = composer(cfg, C, base, cache, sortie, a.seulement)
-        infos.update(barres)
-        # fusion avec le cache : un --seulement ne doit pas effacer les mesures des autres visuels
-        (cache / f"mesures-{langue}.json").write_text(json.dumps({**lire(f"mesures-{langue}.json"), **mesures}, ensure_ascii=False), encoding="utf-8")
-        (cache / f"barre-etat-{langue}.json").write_text(json.dumps({**lire(f"barre-etat-{langue}.json"), **infos}, ensure_ascii=False), encoding="utf-8")
-    ok = verifier(cfg, C, base, langue, sortie, cache, lire(f"barre-etat-{langue}.json"), a.seulement)
+        if not seul or set(seul) - {"icone"}:
+            ids_img = [i for i in seul if i != "icone"] if seul else None
+            infos_nouv = capturer_ecrans(cfg, base, cache, ids_img)
+            infos = {k: {**v} for k, v in lire(f"barre-etat-{langue}.json").items()}
+            for k, v in infos_nouv.items():
+                infos[k] = v
+            mesures, barres = composer(cfg, C, base, cache, sortie, ids_img, infos)
+            for k, v in barres.items():
+                infos[k] = {**infos.get(k, {}), **v}
+            # fusion avec le cache : un --seulement ne doit pas effacer les mesures des autres visuels
+            (cache / f"mesures-{langue}.json").write_text(json.dumps({**lire(f"mesures-{langue}.json"), **mesures}, ensure_ascii=False), encoding="utf-8")
+            (cache / f"barre-etat-{langue}.json").write_text(json.dumps(infos, ensure_ascii=False), encoding="utf-8")
+        if cfg["icone"] and (not seul or "icone" in seul):
+            info = produire_icone(cfg, C, base, cache, sortie)
+            (cache / "icone-info.json").write_text(json.dumps(info, ensure_ascii=False), encoding="utf-8")
+    ok = verifier(cfg, C, base, langue, sortie, cache, lire(f"barre-etat-{langue}.json"), a.seulement, etat_regles_=etat,
+                  info_icone=lire("icone-info.json") or None, liste_regles=liste)
     return 0 if ok else 1
 
 

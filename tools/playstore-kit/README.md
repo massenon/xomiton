@@ -216,15 +216,21 @@ et, par capture, `"source": { "route": "#/accueil" }` (ajoutée à l'URL : `#/ec
 | Texte coupé ou police différente | Fournir `theme.police.fichier` ; vérifier le nom de la famille. |
 | Rapport périmé après `--seulement` | Le rapport reprend les mesures du cache pour les autres visuels ; relancer sans option pour tout régénérer. |
 
+## Icône, tablettes, règles et police
+
+- **Barre d'état** : en mode `recouvrir`, la barre propre recouvre celle de la page ; `barre_etat.selecteur` (ex. `.statusbar`) indique l'élément de barre de la page pour que la hauteur couverte soit mesurée. Le contrôle échoue si un texte de la page est coupé par le bord de la barre propre (au lieu d'être entièrement recouvert) ou si un pixel de la bande diffère de la barre propre.
+- **Icône 512** : bloc `icone` (`source` : SVG ou PNG carré, `fichier`, `fond` appliqué si la source est transparente). `--icone` la produit seule ; `--seulement icone` la régénère. Contrôlée : 512 × 512, PNG 32 bits, 1 024 Ko au plus, carré plein (aucun pixel transparent, pas de coins arrondis, pas d'ombre), motif dans la zone de sécurité, contraste motif/fond. Fournir un carré plein : Google applique son propre masque.
+- **Captures de tablette** : bloc `tablettes` (`appareils` 7 et/ou 10, `orientations` portrait et/ou paysage, `source`, `barre_etat`, `captures` : 4 à 8 par jeu). Sorties dans `sortie/tablettes/<7|10>-pouces-<portrait|paysage>/`. `--seulement tablettes` les régénère seules.
+- **Règles Google** : valeurs numériques dans `google_rules.json`, avec la date de dernière relecture humaine ; le kit ne contacte jamais Google. Au-delà de `validite_jours` (180), un avertissement est affiché (jamais un échec). `--regles` liste les règles codées et leurs sources ; elles sont aussi inscrites dans le rapport.
+- **Police** : Inter (licence SIL OFL, `fonts/OFL.txt`) est embarquée dans `fonts/` en `.woff2` ; `theme.police.fichiers` (liste `{fichier, graisse}`) déclare plusieurs graisses statiques. Les visuels ne dépendent donc plus d'une police installée.
+
 ## Limites honnêtes
 
 - Les contrôles couvrent **les règles connues au moment de l'écriture** de ce kit. Google modifie ses règles : **relire les règles Google Play (aide de la Play Console, « Ajouter des aperçus et des ressources pour présenter votre appli ») avant chaque publication.** Un rapport entièrement vert ne garantit pas l'acceptation de la fiche.
 - Le kit **ne juge pas** le contenu : rien ne dit qu'un titre est juste, qu'une image est de bon goût ni que des données sont bien fictives. Il ne détecte pas un visage, une marque tierce ou un texte qui ressemble à une promesse sans employer un mot de la liste.
 - Le contraste est mesuré sur le texte du titre, du slogan et des puces, pas sur le contenu de l'écran capturé.
-- Le kit ne produit **ni l'icône 512**, **ni les captures de tablette**, ni les vidéos.
-  - **Icône 512** : à produire à la main, PNG 32 bits de 512 × 512 px (1 024 Ko au plus), carré plein sans coins arrondis ni ombre (Google applique son masque) ; vérifier ces valeurs dans l'aide Google.
-  - **Captures tablette (7 et 10 pouces)** : à capturer avec un viewport adapté (par exemple 1280 × 800 en paysage ou 800 × 1280 en portrait, 16:9 ou 9:16 au plus), puis à composer à la main ou en reprenant `html_capture` du script avec d'autres dimensions ; côtés de 320 à 3 840 px, 2 à 8 images, PNG ou JPEG 24 bits sans alpha ; exigées seulement pour une mise en avant sur grands écrans.
-- Les captures sont toutes en portrait 1080 × 1920 : d'autres formats demandent de changer `contraintes.captures` **et** le gabarit.
+- Le kit ne produit **pas de vidéo**. Il produit en revanche, en option, l'**icône 512** et les **captures de tablette** (voir « Icône, tablettes, règles et police » ci-dessus).
+- Les captures téléphone sont toutes en portrait 1080 × 1920 : d'autres formats demandent de changer `contraintes.captures` **et** le gabarit (les tablettes, elles, acceptent portrait 9:16 et paysage 16:9).
 - Les icônes de puces sont des traits simples ; ajouter les siennes par `theme.icones`.
 
 ## Skills utiles pour la partie créative

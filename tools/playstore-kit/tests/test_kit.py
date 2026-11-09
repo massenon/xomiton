@@ -298,3 +298,66 @@ def test_images_deja_capturees_barre_recouverte(tmp_path):
     # la barre d'origine est bien recouverte : plus de texte sombre dans la bande supérieure de l'écran composé
     comp = Image.open(tmp_path / "dist" / "screenshots" / "01-ecran.png").convert("RGB")
     assert comp.size == (1080, 1920)
+
+
+# --------------------------------------------------------------------------- règles, icône, tablettes, polices
+def test_regles_google_datees_et_avertissement_de_peremption():
+    regles = kit.charger_regles()
+    etat = kit.etat_regles(regles, kit.datetime.date.fromisoformat(regles["date_verification"]))
+    assert etat["age_jours"] == 0 and not etat["perimee"] and etat["avertissement"] is None
+    vieux = kit.etat_regles(regles, kit.datetime.date.fromisoformat(regles["date_verification"]) + kit.datetime.timedelta(days=regles["validite_jours"] + 1))
+    assert vieux["perimee"] and "relire" in vieux["avertissement"]
+    assert "icone" in kit.texte_regles(regles, etat)
+
+
+def test_icone_conforme_et_icone_arrondie_refusee(tmp_path):
+    ic = dict(kit.DEFAUT_ICONE, source="x.svg")
+    regles = kit.charger_regles()
+    bon = Image.new("RGBA", (512, 512), (15, 122, 87, 255))
+    from PIL import ImageDraw
+    ImageDraw.Draw(bon).ellipse((156, 156, 356, 356), fill=(255, 255, 255, 255))
+    f = tmp_path / "icon.png"
+    bon.save(f)
+    assert not echecs(kit.controler_icone(f, ic, regles, None))
+    # coins transparents (icône arrondie) : refusée
+    arrondie = bon.copy()
+    ImageDraw.Draw(arrondie).rectangle((0, 0, 40, 40), fill=(0, 0, 0, 0))
+    arrondie.save(f)
+    assert any("carré plein" in r["controle"] for r in echecs(kit.controler_icone(f, ic, regles, None)))
+    # mauvaise taille ou PNG sans alpha : refusée
+    Image.new("RGB", (512, 512), (15, 122, 87)).save(f)
+    assert echecs(kit.controler_icone(f, ic, regles, None))
+
+
+def test_tablettes_exigent_au_moins_quatre_captures_et_un_ratio_exact(tmp_path):
+    brut = config_minimale()
+    cap = lambda i: {"id": f"t{i}", "textes": {"fr": {"titre": f"T{i}", "alt": f"Tablette {i}."}}}
+    brut["tablettes"] = {"source": {"type": "images", "image": "x.png"}, "captures": [cap(i) for i in range(3)]}
+    with pytest.raises(kit.ErreurConfig) as exc:
+        kit.valider_config(brut, tmp_path)
+    assert "tablettes.captures" in str(exc.value)
+    brut["tablettes"]["captures"] = [cap(i) for i in range(4)]
+    brut["tablettes"]["canvas"] = {"portrait": [1000, 1920]}
+    with pytest.raises(kit.ErreurConfig) as exc:
+        kit.valider_config(brut, tmp_path)
+    assert "9:16" in str(exc.value)
+
+
+def test_police_embarquee_presente_et_licence():
+    for nom in ("Inter-Regular", "Inter-SemiBold", "Inter-Bold", "Inter-ExtraBold"):
+        assert (KIT / "fonts" / f"{nom}.woff2").stat().st_size > 10_000
+    assert "SIL OPEN FONT LICENSE" in (KIT / "fonts" / "OFL.txt").read_text(encoding="utf-8").upper()
+
+
+@pytestmark_e2e
+def test_exemple_icone_et_tablettes_produites(tmp_path):
+    shutil.copytree(KIT / "example", tmp_path / "ex", ignore=shutil.ignore_patterns("sortie", ".cache"))
+    cfgf = str(tmp_path / "ex" / "visuels.json")
+    assert kit.main(["--config", cfgf]) == 0
+    sortie = tmp_path / "ex" / "sortie"
+    ic = Image.open(sortie / "icon-512.png")
+    assert ic.size == (512, 512) and ic.mode == "RGBA" and min(ic.getchannel("A").getdata()) == 255
+    tabs = sorted((sortie / "tablettes").rglob("*.png"))
+    assert len(tabs) == 4 * 4 and all(Image.open(t).mode == "RGB" for t in tabs)
+    assert Image.open(sortie / "tablettes" / "10-pouces-paysage" / "accueil.png").size == (1920, 1080)
+    assert kit.main(["--config", cfgf, "--icone"]) == 0
