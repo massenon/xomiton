@@ -3,6 +3,7 @@
 
 /* ---------- Généralités ---------- */
 /* Bouton SOS flottant (P5-08) : conteneur fixe de <x-sos-button> (64 px, design system, Q21 b), au-dessus des modales (D8). */
+/* Pages à saisie (assistant, messages) : bande réservée --xm-dock-h sous la zone défilante (html.xm-dock, member.css), le bouton y est posé : rien ne défile sous lui. */
 :root { --xm-sos-size:64px; --xm-sos-bottom:max(18px, env(safe-area-inset-bottom)); --xm-sos-clear:calc(var(--xm-sos-size) + var(--xm-sos-bottom) + var(--xm-space-4, 16px)); }
 .xm-sos-fab { position:fixed; right:max(18px, env(safe-area-inset-right)); bottom:var(--xm-sos-bottom); z-index:1060; }
 .xm-offline-bar { display:none; position:sticky; top:0; z-index:1100; background:var(--xm-amber-500); color:var(--xm-neutral-900); text-align:center; padding:.4rem 1rem; font-size:.85rem; font-weight:600; }

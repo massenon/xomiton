@@ -94,9 +94,11 @@ test('espace membre · aucun débordement horizontal, en-tête propre, cibles de
   expect(externes).toEqual([]);
 });
 
-// Bouton SOS flottant (fonction de sécurité, jamais masqué ni retiré) : il ne recouvre jamais la barre de saisie de
-// /assistant ni celle de /messages (conversation ouverte), à tous les défilements et clavier virtuel ouvert (viewport
-// de 400 px de haut) ; la carte de l'assistant respecte la gouttière du gabarit. Espace de défilement final sous le contenu.
+// Bouton SOS (fonction de sécurité, jamais masqué, retiré ni dupliqué) : sur /assistant et /messages (pages à zone de saisie)
+// il est DOCKÉ dans une bande réservée sous <main> (html.xm-dock, member.css) et ne recouvre JAMAIS un élément interactif,
+// un texte ni la carte, à aucune position de défilement (balayage par pas de 40 px de haut en bas), avec ou sans clavier
+// virtuel (viewport réduit à 400 px de haut), à 360, 390, 430 et 768 px, thèmes clair et sombre. La carte de l'assistant
+// respecte la gouttière du gabarit.
 const chevauche = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 
 /** Ouvre (ou crée) une conversation avec le second compte de démonstration, puis la sélectionne. */
@@ -117,57 +119,120 @@ async function ouvrirConversation(page) {
   await page.locator('#chatInput').waitFor();
 }
 
-/** Rectangles de la barre de saisie (champ + boutons) et du bouton SOS, au défilement courant. */
-const rectangles = (selecteur) => {
-  const r = (el) => { const b = el.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom }; };
-  const sos = document.querySelector('.xm-sos-fab');
-  const barre = [...document.querySelectorAll(selecteur)].filter((el) => el.getBoundingClientRect().width > 0).map(r);
-  return { sos: r(sos), taille: Math.min(sos.getBoundingClientRect().width, sos.getBoundingClientRect().height), couleur: getComputedStyle(sos.querySelector('button, a') ?? sos).backgroundColor, barre, hauteur: innerHeight };
+/**
+ * Dans la page, au défilement courant : tout ce que le bouton SOS recouvre réellement (élément interactif ou nœud de texte
+ * visible sous le bouton, via elementsFromPoint : ce qui est rogné par une zone défilante n'est pas « recouvert »), et la
+ * carte (assistant, messagerie) rognée à sa zone visible. Rectangles : getBoundingClientRect.
+ */
+const recouvrements = () => {
+  const fab = document.querySelector('.xm-sos-fab');
+  const fr = fab.getBoundingClientRect();
+  const sos = { left: fr.left, right: fr.right, top: fr.top, bottom: fr.bottom };
+  const dansFab = (n) => fab.contains(n);
+  const inter = (b) => {
+    const l = Math.max(b.left, sos.left), r = Math.min(b.right, sos.right), h = Math.max(b.top, sos.top), bas = Math.min(b.bottom, sos.bottom);
+    return r - l > 1 && bas - h > 1 ? { x: (l + r) / 2, y: (h + bas) / 2 } : null;
+  };
+  const visibleEn = (pt, el) => document.elementsFromPoint(pt.x, pt.y).filter((n) => !dansFab(n)).some((n) => n === el || el.contains(n));
+  const trouves = [];
+  document.querySelectorAll('a[href], button, input:not([type=hidden]), select, textarea, summary, [tabindex]:not([tabindex="-1"]), [role=button], [role=switch]').forEach((el) => {
+    if (dansFab(el)) return;
+    const b = el.getBoundingClientRect();
+    const cs = getComputedStyle(el);
+    if (b.width <= 0 || b.height <= 0 || cs.visibility === 'hidden' || cs.display === 'none') return;
+    const pt = inter(b);
+    if (pt && visibleEn(pt, el)) trouves.push(`interactif « ${(el.getAttribute('aria-label') || el.textContent || el.id || el.tagName).trim().slice(0, 30)} »`);
+  });
+  const marche = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n = marche.nextNode(); n; n = marche.nextNode()) {
+    const p = n.parentElement;
+    if (!n.nodeValue.trim() || !p || dansFab(p) || p.closest('script, style, noscript, [hidden], .visually-hidden')) continue;
+    const cs = getComputedStyle(p);
+    if (cs.visibility === 'hidden' || cs.display === 'none') continue;
+    const plage = document.createRange();
+    plage.selectNodeContents(n);
+    for (const r of plage.getClientRects()) {
+      const pt = r.width > 0 && r.height > 0 ? inter(r) : null;
+      if (pt && visibleEn(pt, p)) { trouves.push(`texte « ${n.nodeValue.trim().slice(0, 30)} »`); break; }
+    }
+  }
+  for (const carte of document.querySelectorAll('.xm-assistant-chat, .xm-chat')) {
+    const r = carte.getBoundingClientRect();
+    let b = { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+    for (let a = carte.parentElement; a && a !== document.documentElement; a = a.parentElement) {
+      if (getComputedStyle(a).overflowY === 'visible') continue;
+      const z = a.getBoundingClientRect();
+      b = { left: Math.max(b.left, z.left), right: Math.min(b.right, z.right), top: Math.max(b.top, z.top), bottom: Math.min(b.bottom, z.bottom) };
+    }
+    if (b.right > b.left && b.bottom > b.top && inter(b)) trouves.push('carte');
+  }
+  const bouton = fab.querySelector('button, a') ?? fab;
+  return {
+    trouves: [...new Set(trouves)],
+    taille: Math.min(fr.width, fr.height),
+    couleur: getComputedStyle(bouton).backgroundColor,
+    boutons: document.querySelectorAll('#xmSosFab').length,
+    dansEcran: fr.bottom <= (window.visualViewport?.height ?? innerHeight) + 0.5 && fr.right <= innerWidth + 0.5 && fr.top >= 0,
+  };
 };
 
-const BARRES = [
-  { uri: '/assistant', selecteur: '#assistant-input, form[autocomplete=off] button[type=submit], .xm-assistant-chips .btn' },
-  { uri: '/messages', selecteur: '#chatInput, .xm-chat-compose .btn' },
-];
+/** Zone qui défile (en dock, <main> ; sinon la fenêtre) : hauteur à parcourir. */
+const defilable = () => {
+  const main = document.getElementById('contenu');
+  const dock = getComputedStyle(main).overflowY === 'auto';
+  return { dock, total: dock ? main.scrollHeight - main.clientHeight : document.documentElement.scrollHeight - innerHeight };
+};
+const defiler = ([y, dock]) => (dock ? document.getElementById('contenu') : window).scrollTo({ top: y, behavior: 'instant' });
 
-test('espace membre · le bouton SOS ne recouvre jamais la barre de saisie (assistant, messages) · 360 et 390 px, clavier ouvert compris', async ({ page }) => {
+const PAGES_SAISIE = ['/assistant', '/messages'];
+const TAILLES = [{ width: 360, height: 800 }, { width: 390, height: 844 }, { width: 430, height: 932 }, { width: 768, height: 1024 }];
+
+test('espace membre · le bouton SOS ne recouvre jamais rien sur /assistant et /messages · 360, 390, 430, 768 px, clair et sombre, clavier ouvert compris, balayage complet du défilement', async ({ page }) => {
+  test.setTimeout(600_000);
   await seConnecter(page);
   const problemes = [];
-  for (const size of WIDTHS) {
-    for (const hauteur of [size.height, 400]) {
-      await page.setViewportSize({ width: size.width, height: hauteur });
-      for (const { uri, selecteur } of BARRES) {
-        if (uri === '/messages') await ouvrirConversation(page); else await page.goto(uri, { waitUntil: 'networkidle' });
-        if (!page.url().includes(uri)) problemes.push(`${size.width}x${hauteur} ${uri} : redirigé vers ${page.url()}`);
-        await page.locator('.xm-sos-fab').waitFor({ timeout: 5000 }).catch(() => problemes.push(`${size.width}x${hauteur} ${uri} : pas de bouton SOS (${page.url()})`));
-        const total = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight);
-        // Clavier ouvert (400 px) : la page tient en un écran ou deux, seuls le haut et le bas comptent (un défilement manuel peut
-        // toujours faire passer la carte dans la zone du bouton, le champ mis au point est ramené au-dessus par scroll-padding).
-        for (const fraction of (hauteur === 400 ? [0, 1] : [0, 0.25, 0.5, 0.75, 1])) {
-          await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), Math.round(total * fraction));
-          const m = await page.evaluate(rectangles, selecteur);
-          // Bouton conservé : taille tactile, couleur, présent dans l'écran.
-          if (m.taille < 44) problemes.push(`${size.width}x${hauteur} ${uri} : bouton SOS ${m.taille} px < 44`);
-          if (m.couleur === 'rgba(0, 0, 0, 0)') problemes.push(`${size.width}x${hauteur} ${uri} : bouton SOS sans couleur`);
-          if (m.sos.bottom > m.hauteur || m.sos.right > size.width) problemes.push(`${size.width}x${hauteur} ${uri} : bouton SOS hors de l'écran`);
-          const visibles = m.barre.filter((b) => b.bottom > 0 && b.top < m.hauteur);
-          for (const b of visibles) if (chevauche(b, m.sos)) problemes.push(`${size.width}x${hauteur} ${uri} @${fraction} : barre de saisie recouverte par le SOS`);
-        }
-        // Clavier virtuel (viewport réduit) : le champ mis au point reste visible, hors de la zone du bouton SOS.
-        if (hauteur === 400) {
-          const champ = page.locator(uri === '/assistant' ? '#assistant-input' : '#chatInput');
-          await page.evaluate(() => document.activeElement?.blur());
-          await champ.focus();
-          await page.waitForTimeout(900); // défilement doux de la page (scroll-behavior: smooth)
-          const c = await champ.boundingBox();
-          const sos = await page.locator('.xm-sos-fab').boundingBox();
-          const enTete = await page.locator('#memberHeader').boundingBox();
-          if (!c || c.y < (enTete?.y ?? 0) + (enTete?.height ?? 0) || c.y + c.height > hauteur) problemes.push(`${size.width}x${hauteur} ${uri} : champ de saisie hors du viewport après focus`);
-          else if (chevauche({ left: c.x, right: c.x + c.width, top: c.y, bottom: c.y + c.height }, { left: sos.x, right: sos.x + sos.width, top: sos.y, bottom: sos.y + sos.height })) problemes.push(`${size.width}x${hauteur} ${uri} : champ de saisie recouvert par le SOS après focus`);
+  let positions = 0;
+  for (const theme of ['light', 'dark']) {
+    for (const taille of TAILLES) {
+      for (const hauteur of [taille.height, 400]) { // 400 px : clavier virtuel ouvert (visualViewport réduit)
+        await page.setViewportSize({ width: taille.width, height: hauteur });
+        for (const uri of PAGES_SAISIE) {
+          const cle = `${theme} ${taille.width}x${hauteur} ${uri}`;
+          if (uri === '/messages') await ouvrirConversation(page); else await page.goto(uri, { waitUntil: 'networkidle' });
+          if (!page.url().includes(uri)) { problemes.push(`${cle} : redirigé vers ${page.url()}`); continue; }
+          await page.evaluate((t) => document.documentElement.setAttribute('data-bs-theme', t), theme);
+          await page.locator('.xm-sos-fab').waitFor({ timeout: 5000 }).catch(() => problemes.push(`${cle} : pas de bouton SOS`));
+          const { dock, total } = await page.evaluate(defilable);
+          const ys = []; for (let y = 0; y < total; y += 40) ys.push(y); ys.push(Math.max(total, 0));
+          for (const y of ys) { // balayage par pas de 40 px, de haut en bas, jusqu'à la fin
+            await page.evaluate(defiler, [y, dock]);
+            await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+            const m = await page.evaluate(recouvrements);
+            positions += 1;
+            if (m.trouves.length) problemes.push(`${cle} @${y}/${total} : SOS recouvre ${m.trouves.join(', ')}`);
+            // Bouton conservé : un seul, taille tactile, couleur rouge d'origine, dans l'écran.
+            if (m.boutons !== 1) problemes.push(`${cle} : ${m.boutons} boutons SOS`);
+            if (m.taille < 44) problemes.push(`${cle} : bouton SOS ${m.taille} px < 44`);
+            if (m.couleur === 'rgba(0, 0, 0, 0)') problemes.push(`${cle} : bouton SOS sans couleur`);
+            if (!m.dansEcran) problemes.push(`${cle} @${y} : bouton SOS hors de l'écran`);
+          }
+          // Clavier virtuel : le champ mis au point reste visible (zone défilante bornée), hors de la zone du bouton.
+          if (hauteur === 400) {
+            const champ = page.locator(uri === '/assistant' ? '#assistant-input' : '#chatInput');
+            await page.evaluate(() => document.activeElement?.blur());
+            await champ.focus();
+            await page.waitForTimeout(900); // défilement doux
+            const c = await champ.boundingBox();
+            const sos = await page.locator('.xm-sos-fab').boundingBox();
+            const enTete = await page.locator('#memberHeader').boundingBox();
+            if (!c || c.y < (enTete?.y ?? 0) + (enTete?.height ?? 0) - 1 || c.y + c.height > hauteur) problemes.push(`${cle} : champ de saisie hors du viewport après focus`);
+            else if (chevauche({ left: c.x, right: c.x + c.width, top: c.y, bottom: c.y + c.height }, { left: sos.x, right: sos.x + sos.width, top: sos.y, bottom: sos.y + sos.height })) problemes.push(`${cle} : champ de saisie recouvert par le SOS après focus`);
+          }
         }
       }
     }
   }
+  expect(positions).toBeGreaterThan(300); // le balayage a bien eu lieu
   expect(problemes).toEqual([]);
 });
 
@@ -176,7 +241,8 @@ test('espace membre · espace de défilement final sous le contenu et carte de l
   const problemes = [];
   for (const size of WIDTHS) {
     await page.setViewportSize(size);
-    for (const uri of ['/fil', '/groupes', '/forums', '/profil', '/parametres', '/notifications', '/assistant']) {
+    // Pages à zone de saisie (/assistant, /messages) : bande réservée, couvertes par le balayage complet ci-dessus.
+    for (const uri of ['/fil', '/groupes', '/forums', '/profil', '/parametres', '/notifications']) {
       await page.goto(uri, { waitUntil: 'networkidle' });
       await page.evaluate(() => window.scrollTo({ top: 1e6, behavior: 'instant' }));
       const m = await page.evaluate(() => {

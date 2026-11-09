@@ -56,6 +56,22 @@ html { scroll-padding-bottom: var(--xm-sos-clear, 6.5rem); scroll-padding-top: 5
 /* `:not(#xm-main)` monte la spécificité au-dessus des utilitaires `py-*` (padding !important) du gabarit, qui écrasaient la règle. */
 main:not(#xm-main) { padding-bottom: var(--xm-sos-clear, 6.5rem) !important; }
 main .min-w-0 { min-width: 0; }
+/*
+ * Pages à zone de saisie (/assistant, /messages) : `html.xm-dock` (posé par useViewportFit tant que la page est affichée)
+ * remplace le cercle flottant par-dessus le contenu par une BANDE RÉSERVÉE. La fenêtre ne défile plus : en-tête, puis
+ * <main> (seule zone qui défile, bornée), puis la bande (--xm-dock-h = bouton + marges) où le bouton SOS reste posé, en
+ * bas à droite, toujours au même endroit et à portée d'un geste. <main> se termine au-dessus de la bande : ni la carte,
+ * ni le fil, ni un champ, ni un texte ne peut passer dessous, à aucune position de défilement. Clavier virtuel :
+ * --xm-vvh (hauteur de `visualViewport`) borne la page au-dessus du clavier et --xm-kbd relève le bouton quand le clavier
+ * recouvre la fenêtre sans la redimensionner (iOS, Android « resizes-visual »).
+ */
+html.xm-dock { --xm-sos-bottom: max(8px, env(safe-area-inset-bottom)); --xm-dock-h: calc(var(--xm-sos-size) + var(--xm-sos-bottom) + 8px); }
+html.xm-dock, html.xm-dock body { overflow: hidden; }
+html.xm-dock body { display: flex; flex-direction: column; height: var(--xm-vvh, 100dvh); }
+html.xm-dock #app { display: contents; }
+html.xm-dock #memberHeader { flex: none; }
+html.xm-dock .xm-sos-fab { bottom: calc(var(--xm-sos-bottom) + var(--xm-kbd, 0px)); }
+html.xm-dock main:not(#xm-main) { flex: 1 1 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin-bottom: var(--xm-dock-h); padding-bottom: var(--xm-space-4, 1rem) !important; scroll-padding-block: 1rem; }
 main :is(.row > *, .d-flex > *, .hstack > *, .vstack > *, .card, .card-body, .list-group-item) { min-width: 0; }
 main :is(p, h1, h2, h3, h4, h5, h6, li, td, th, dd, .card-body, .bubble, .list-group-item) { overflow-wrap: anywhere; }
 main img, main video, main svg:not(.bi), main canvas { max-width: 100%; }
