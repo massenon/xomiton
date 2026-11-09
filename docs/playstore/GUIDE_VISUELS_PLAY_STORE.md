@@ -1,6 +1,8 @@
 # Produire les visuels Google Play (image de présentation et captures) : méthode réutilisable
 
-Ce guide explique comment les visuels de Xomiton ont été produits et comment refaire la même chose pour **un autre projet**. Le générateur et sa configuration sont dans ce dossier : [build_playstore.py](build_playstore.py) et [visuels.json](visuels.json). Les visuels produits sont dans `assets/` ; la fiche complète est dans [PUBLICATION_PLAY_STORE.md](PUBLICATION_PLAY_STORE.md).
+Ce guide explique comment les visuels de Xomiton ont été produits et comment refaire la même chose pour **un autre projet**. Le générateur (qui délègue au kit [`tools/playstore-kit/`](../../tools/playstore-kit/README.md)) et sa configuration sont dans ce dossier : [build_playstore.py](build_playstore.py) et [visuels.json](visuels.json). Les visuels produits sont dans `assets/` ; la fiche complète est dans [PUBLICATION_PLAY_STORE.md](PUBLICATION_PLAY_STORE.md).
+
+> **Captures provisoires : à remplacer par de vraies captures de l'application avant soumission à Google, qui exige des captures de l'application elle-même.** Les captures actuelles montrent le **site web** Xomiton (Laravel, thème clair) à largeur mobile 390 px, pas l'application Flutter (non compilable ici). Le vrai logo couleur et le vrai slogan du site (« Espace safe d'apprentissage et d'appui holistique ») sont utilisés ; fond clair teinté ; aucun thème sombre.
 
 > Aucun « skill » spécifique à Google Play n'existe ici : les visuels viennent d'un **script versionné**, qui rend la production reproductible et contrôlable. Les skills listés au §5 aident au graphisme et au texte, pas à la conformité, qui se vérifie par code.
 
@@ -10,11 +12,12 @@ Ce guide explique comment les visuels de Xomiton ont été produits et comment r
 |---|---|---|
 | Image de présentation (feature graphic) | 1024 × 500 px, JPEG ou PNG 24 bits **sans canal alpha** | `assets/feature-graphic-1024x500.png` |
 | Captures d'écran téléphone (8) | 1080 × 1920 px (9:16), PNG 24 bits sans alpha | `assets/screenshots/01-….png` à `08-….png` |
+| Icône 512 × 512 | PNG 32 bits, carré plein | `assets/icon-512.png` |
 | Rapport de contrôles | JSON | `assets/rapport-controles.json` |
 
 ## 2. Règles Google Play que le script vérifie
 
-- **Image de présentation** : exactement 1024 × 500, sans alpha ; logo, nom et slogan **au centre** (les bords peuvent être rognés selon les formats) ; couleurs vives, pas de blanc pur, de noir ni de gris foncé dominants ; différente de l'icône ; pas de cadre d'un appareil précis.
+- **Image de présentation** : exactement 1024 × 500, sans alpha ; logo, nom et slogan **au centre** (les bords peuvent être rognés selon les formats) ; pas de blanc pur, de noir ni de gris foncé dominants (un fond clair teinté de bleu convient) ; différente de l'icône ; pas de cadre d'un appareil précis.
 - **Captures** : au moins 4 pour être éligible aux recommandations (jusqu'à 8 par type d'appareil), 9:16, 1080 × 1920 au minimum pour ce cas ; les trois premières centrées sur l'interface ; barre d'état propre (batterie pleine, réseau plein, pas d'opérateur ni de notification).
 - **Texte** : slogans seulement s'ils sont utiles ; **20 % de l'image au plus** ; police lisible ; contraste AA.
 - **Mots interdits** : « meilleur », « n° 1 », « le plus populaire », « nouveau », « gratuit », « remise », « millions de téléchargements » ; aucun appel à l'action (« Télécharger », « Installer », « Jouer », « Essayer »). Aucun badge Google Play ni logo tiers.
@@ -23,12 +26,12 @@ Ce guide explique comment les visuels de Xomiton ont été produits et comment r
 
 ## 3. Comment les visuels sont produits
 
-1. **Capturer l'interface réelle** avec Playwright (Chromium), à 390 × 844 en échelle 3 (soit 1170 × 2532), avec une barre d'état figée à 9:41, batterie pleine, sans opérateur, et des données fictives pseudonymisées (la table `remplacements` de `visuels.json` masque les noms propres).
-2. **Composer** chaque visuel en HTML/CSS : fond en dégradé tiré des couleurs de la marque (jetons du design system), titre court en haut, capture au centre, pastilles flottantes légères ; pour l'image de présentation, logo et slogan au centre, deux écrans en bordure.
-3. **Exporter** par capture d'écran de la page de composition, puis conversion par Pillow en RVB 24 bits sans alpha.
+1. **Capturer le site réel** (`capturer_site.py`) avec Playwright (Chromium) en `colorScheme: 'light'`, à 390 × 844 en échelle 3 (soit 1170 × 2532), site Laravel lancé en local sur une base temporaire (variables d'environnement, rien dans le dépôt), sans bandeau de débogage ni identifiant de démonstration, puis arrêt du serveur. Les images sont dans `sources/`. Pour l'application, remplacer ces images par des captures d'émulateur (la barre d'état propre se règle par `barre_etat.mode: recouvrir`).
+2. **Composer** chaque visuel en HTML/CSS : fond clair en très léger dégradé bleu tiré des jetons du design system (`blue-50`, `blue-100`), titre court en bleu de la charte en haut, capture au centre ; pour l'image de présentation, vrai logo couleur grand à gauche, vrai slogan, une page web et un écran mobile en bordure.
+3. **Exporter** par capture d'écran de la page de composition, puis conversion par Pillow en RVB 24 bits sans alpha ; l'icône 512 reste en PNG 32 bits.
 4. **Configurer tout dans `visuels.json`** (titres, textes alternatifs, source des écrans, couleurs, contraintes) pour régénérer en une commande quand l'interface change.
-5. **Vérifier par code** : dimensions, absence d'alpha, poids (moins de 8 Mo, ici moins de 0,6 Mo par fichier), ratio 9:16, part du texte, contraste AA mesuré sur le fond réel, mots interdits, longueur des textes alternatifs, couleurs vives, barre d'état. 130 contrôles passent pour Xomiton.
-6. **Regarder chaque image** avant de livrer : c'est ainsi que le placement des pastilles et des titres a été ajusté.
+5. **Vérifier par code** : dimensions, absence d'alpha, poids (moins de 8 Mo, ici moins de 0,6 Mo par fichier), ratio 9:16, part du texte, contraste AA mesuré sur le fond réel, mots interdits, longueur des textes alternatifs, couleurs vives, barre d'état. 133 contrôles passent pour Xomiton (fiche et icône comprises). Le seuil de « couleurs vives » a été ajusté pour un fond clair teinté : il garde l'interdiction du blanc pur, du noir et du gris foncé (saturation ≥ 0,05, valeur de 0,25 à 0,99), voir PUBLICATION_PLAY_STORE.md §10.
+6. **Regarder chaque image** avant de livrer : c'est ainsi que le choix des écrans et leur recadrage ont été ajustés.
 
 ### Commandes
 
@@ -36,7 +39,8 @@ Ce guide explique comment les visuels de Xomiton ont été produits et comment r
 pip install playwright pillow            # Chromium : variable XM_CHROMIUM si besoin
 python3 docs/playstore/build_playstore.py                 # tout produire et vérifier
 python3 docs/playstore/build_playstore.py --verifier      # vérifier seulement
-python3 docs/playstore/build_playstore.py --seulement 02-sos   # une seule capture
+python3 docs/playstore/build_playstore.py --seulement 03-sos   # une seule capture
+python3 docs/playstore/capturer_site.py                   # refaire les captures du site lancé en local
 ```
 
 Le code de sortie est 1 si un contrôle échoue.
@@ -66,7 +70,7 @@ Le code de sortie est 1 si un contrôle échoue.
 - soit prendre de vraies captures de l'émulateur Android (`adb exec-out screencap -p`, après avoir figé l'heure à 9:41 et la batterie pleine) et les utiliser comme source des écrans ;
 - soit construire une page HTML qui reproduit l'interface, puis la capturer avec Playwright à 390 × 844 en échelle 3.
 
-**Pour Xomiton**, les captures actuelles viennent du **prototype mobile**, faute d'application compilée : il faudra les refaire avec de **vraies captures** de l'application dès qu'elle tourne (`build_playstore.py` les recompose en une commande).
+**Pour Xomiton**, les captures actuelles viennent du **site web** à largeur mobile, faute d'application compilée : elles sont **provisoires** et à refaire avec de **vraies captures de l'application** (émulateur Android) avant soumission à Google (`build_playstore.py` les recompose en une commande).
 
 ## 5. Skills utiles
 
@@ -88,7 +92,7 @@ Point de départ conseillé : copier le kit [`tools/playstore-kit/`](../../tools
 
 ## 7. Points de vigilance propres au public de Xomiton
 
-- **Discrétion** : aucune photo de personne, aucun drapeau envahissant, aucun mot stigmatisant dans le nom visible ni dans la description courte de la fiche ; valeur proposée décrite par l'écoute, la sécurité, la communauté et les ressources.
-- **Données** : captures avec données fictives et noms de famille réduits à l'initiale.
-- **Espaces par rôle** : l'espace admin n'est pas promu sur la fiche publique ; le pair n'apparaît que comme interlocuteur dans la capture Messages.
+- **Discrétion** : aucune photo de personne, aucun drapeau envahissant, aucun mot stigmatisant dans le nom visible ni dans la description courte de la fiche ; valeur proposée par le slogan officiel du site, « Espace safe d'apprentissage et d'appui holistique ».
+- **Données** : captures d'un site lancé sur une base de démonstration locale, sans donnée réelle ni identifiant affiché ; pas d'avatar photo (les pages d'espace membre ne sont pas utilisées).
+- **Espaces par rôle** : l'espace admin n'est pas promu sur la fiche publique ; aucune capture de l'espace membre ni de l'espace pair n'est utilisée tant que l'application réelle n'est pas capturée.
 - **Droits d'image** : conserver hors dépôt la preuve de licence des images utilisées ailleurs (onboarding, illustrations).

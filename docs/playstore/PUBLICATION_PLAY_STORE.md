@@ -1,8 +1,8 @@
 # Xomiton : dossier de publication Google Play
 
-Version du dossier 1.1 · 29 octobre 2026 · application `bj.xomiton.xomiton`, version 1.0.0 (code 1) · langue de la fiche : français (France), avec gabarit anglais prévu.
+Version du dossier 1.2 · 9 novembre 2026 · application `app.xomiton.xomiton`, version 1.0.0 (code 1) · langue de la fiche : français (France), avec gabarit anglais prévu.
 
-Ce dossier réunit tout ce qu'il faut pour remplir la Play Console : textes de la fiche, visuels, formulaire « Sécurité des données », déclarations, checklist de publication et liste de ce qui reste à fournir. Les visuels sont **produits par script** (`build_playstore.py`) à partir de `visuels.json`, du design system et du prototype mobile, puis **vérifiés automatiquement** (§10). Sources de vérité : `design-system/DECISIONS.md` > `design-system/xomiton/MASTER.md` > prototype > `docs/`.
+Ce dossier réunit tout ce qu'il faut pour remplir la Play Console : textes de la fiche, visuels, formulaire « Sécurité des données », déclarations, checklist de publication et liste de ce qui reste à fournir. Les visuels sont **produits par script** (`build_playstore.py`) à partir de `visuels.json`, du design system et de captures du site réel (thème clair), puis **vérifiés automatiquement** (§10). Sources de vérité : `design-system/DECISIONS.md` > `design-system/xomiton/MASTER.md` > prototype > `docs/`.
 
 > **Avertissement interne (ne figure pas sur les pages publiques).** Les pages légales du site (politique de confidentialité, conditions d'utilisation, mentions légales, cookies, suppression de compte) et ce dossier **ne remplacent pas un avis juridique**. Elles décrivent le fonctionnement réel du code ; elles doivent être relues et validées par le conseil juridique du client (droit béninois, RGPD pour les personnes concernées, règles Google Play) avant le dépôt.
 
@@ -12,12 +12,12 @@ Ce dossier réunit tout ce qu'il faut pour remplir la Play Console : textes de l
 
 | Élément | État |
 |---|---|
-| Image de présentation 1024 × 500, 8 captures 1080 × 1920 (français) | **Produits et vérifiés** (`assets/`, copie dans `design-system/assets/playstore/`) |
+| Image de présentation 1024 × 500, 8 captures 1080 × 1920 (français) | **Produits et vérifiés** (`assets/`, copie dans `design-system/assets/playstore/`). **Captures provisoires : à remplacer par de vraies captures de l'application avant soumission à Google, qui exige des captures de l'application elle-même** (voir §10) |
 | Textes de la fiche (nom, descriptions) | Rédigés ci-dessous, longueurs contrôlées par le script |
 | Formulaire « Sécurité des données » | Rempli d'après le code réel (§6) ; trois points à confirmer par l'équipe technique |
-| Icône 512 × 512 | **À exporter** depuis `design-system/logo/icone-appli-bleu.svg` (carré plein, sans coins arrondis : Google applique son masque) |
-| Captures tablette 7 et 10 pouces | Non requises ; à produire plus tard (§12) |
-| Politique de confidentialité et URL web de suppression de compte | **Créées dans le site** (§7) : `/politique-de-confidentialite` et `/supprimer-mon-compte`, accessibles sans connexion ; domaine de production et champs « À COMPLÉTER PAR LE CLIENT » à fournir |
+| Icône 512 × 512 | **Produite** (`assets/icon-512.png`) depuis `design-system/logo/icone-appli-bleu.svg` (carré plein, sans coins arrondis : Google applique son masque) ; **à faire valider** par le client |
+| Captures tablette 7 et 10 pouces | Non requises ; le kit sait les produire (§12), à faire avec l'application réelle |
+| Politique de confidentialité et URL web de suppression de compte | **Créées dans le site** (§7) : `/politique-de-confidentialite` et `/supprimer-mon-compte`, accessibles sans connexion ; domaine `xomiton.app` (choix du client, HTTPS obligatoire) à déployer, champs « À COMPLÉTER PAR LE CLIENT » à fournir |
 | Décisions du client du 29 octobre 2026 (âge, tarif, pays, langue, version unique) | **Reportées** dans ce dossier (§3, §5) |
 | Fiche de publication au format Word | `Fiche-publication-Play-Store-Xomiton.docx` (§15) |
 | Fichier AAB signé, compte développeur | **À fournir** (§14) |
@@ -26,13 +26,13 @@ Ce dossier réunit tout ce qu'il faut pour remplir la Play Console : textes de l
 
 Le public est vulnérable : une fiche Play reste dans l'historique du compte Google et s'affiche à côté de l'icône sur l'écran d'accueil. Choix retenus :
 
-1. **Nom visible neutre** : « Xomiton : écoute et sécurité ». Aucun mot stigmatisant, aucun sigle d'identité dans le nom, la description courte ou le premier paragraphe. La description longue accueille « quelle que soit votre identité ou votre orientation », sans désigner de groupe.
-2. **Aucun drapeau arc-en-ciel envahissant** : fonds de marque en dégradés bleu, violet et ciel (jetons du design system) ; aucune photographie de personnes dans la fiche (les photographies du dossier `assets/` sont réservées à l'onboarding dans l'application). Les illustrations à drapeau de l'accueil et du fil sont **masquées dans les captures** (`visuels.json`, clé `css`), les autres écrans n'en contiennent pas.
-3. **Valeur annoncée = écoute, sécurité, communauté, ressources** ; jamais de formulation du type « application pour… » une catégorie de personnes.
-4. **Mode discret mis en avant** (capture 08) : icône et nom neutres, aperçus masqués, verrouillage par code. La fiche dit que cela existe ; elle ne dit pas ce que devient le nom de l'icône.
-5. **Image de présentation sans personne**, logo blanc sur fond bleu (fond autorisé par la charte), slogan « Écoute, sécurité, communauté ». Le logo reste en blanc monochrome : la variante « sombre » a une rosace claire dont le contraste sur ce bleu n'a pas été calculé.
+1. **Nom visible neutre** : « Xomiton : espace safe », tiré du slogan officiel du site. Aucun mot stigmatisant, aucun sigle d'identité dans le nom, la description courte ou le premier paragraphe. La description longue accueille « quelle que soit votre identité ou votre orientation », sans désigner de groupe.
+2. **Aucun drapeau arc-en-ciel envahissant** : fonds clairs légèrement teintés de bleu (jetons du design system `blue-50` et `blue-100`, Google déconseille le blanc pur et le noir dominant) ; aucune photographie de personnes dans l'image de présentation ni dans les captures (la page d'accueil n'y apparaît que par son haut, sans visage). Les pages d'espace membre, qui affichent des avatars photo, ne sont pas utilisées.
+3. **Valeur annoncée = le slogan officiel du site, « Espace safe d'apprentissage et d'appui holistique »**, avec l'accroche « Espace sûr · confidentiel · bienveillant » (page d'accueil du site) ; jamais de formulation du type « application pour… » une catégorie de personnes.
+4. **Mode discret** : la fiche écrite dit qu'il existe (icône et nom neutres, aperçus masqués, verrouillage par code) ; elle ne dit pas ce que devient le nom de l'icône. Aucune capture ne le montre tant que les captures de l'application réelle n'existent pas.
+5. **Image de présentation sans personne**, **vrai logo en couleur** (`design-system/logo/logo-couleur.svg` : lettres bleues, rosace et symbole rouges) sur fond clair teinté, vrai slogan « Espace safe d'apprentissage et d'appui holistique » et accroche « Espace sûr · confidentiel · bienveillant », avec une page web et un écran mobile réels du site. Aucun thème sombre.
 6. **Ni l'admin ni l'espace pair ne sont promus.** L'admin d'astreinte est un outil interne, sans intérêt pour le public et dont la présence dans la fiche expose des fonctions de modération. L'espace pair est réservé à des comptes à rôle : le montrer ferait croire qu'il est accessible à tous. Le pair éducateur apparaît quand même, comme **interlocuteur**, dans la capture « Messages » (c'est ce que voit une personne membre). Aucune capture dédiée n'a donc été produite ; à rediscuter seulement si le client veut recruter des pair·es via le Store (mieux vaut le faire hors Store).
-7. **Données de démonstration** : pseudonymes fictifs (Awa, Chantal, Membre anonyme). Les noms de famille du prototype sont raccourcis à l'initiale par le script (`remplacements`). Aucune donnée réelle.
+7. **Données de démonstration** : le site est lancé en local sur une base temporaire (jeu de données de démonstration), sans identifiant affiché ni donnée réelle ; le numéro fictif de l'annuaire de démonstration est masqué sur la capture des urgences.
 8. **Écran d'ouverture (splash) non montré** : il contient une photographie avec drapeau ; la capture d'accueil est préférée.
 9. **Tutoiement ou vouvoiement** : les captures montrent l'interface réelle (tutoiement, règle de l'espace connecté) ; les titres ajoutés sont écrits à la forme impersonnelle pour ne mélanger aucun registre ; la description publique vouvoie (site public, règle Q36).
 
@@ -42,21 +42,21 @@ Images du client : les deux contre-exemples de `design-system/assets/splash/refe
 
 | Champ | Valeur |
 |---|---|
-| Nom de l'application (30 caractères max) | <!--DEBUT:nom-->Xomiton : écoute et sécurité<!--FIN:nom--> |
-| Identifiant | `bj.xomiton.xomiton` |
+| Nom de l'application (30 caractères max) | <!--DEBUT:nom-->Xomiton : espace safe<!--FIN:nom--> |
+| Identifiant | `app.xomiton.xomiton` |
 | Catégorie | **Réseaux sociaux** (repli : Style de vie). Éviter « Santé et remise en forme » : elle impose une déclaration de santé plus lourde alors que l'application oriente sans soigner |
 | Étiquettes (tags) | Communauté, Sécurité, Entraide (3 à 5 selon la console) |
-| E-mail de contact (public) | contact@xomiton.bj (valeur par défaut des réglages ; à confirmer) |
-| Site web | `https://<domaine>/` (domaine de production à fournir) |
+| E-mail de contact (public) | contact@xomiton.app (domaine choisi par le client ; à créer et à confirmer) |
+| Site web | `https://xomiton.app/` (domaine choisi par le client ; le suffixe `.app` impose HTTPS) |
 | Téléphone | facultatif ; laisser vide |
-| Politique de confidentialité (URL) | `https://<domaine>/politique-de-confidentialite` (route `legal.privacy`) ; **à remplacer par le domaine de production et à publier avant le dépôt** (§7) |
-| URL web de suppression de compte | `https://<domaine>/supprimer-mon-compte` (route `account-deletion.show`) ; accessible sans connexion ; **domaine à remplacer** (§7) |
+| Politique de confidentialité (URL) | `https://xomiton.app/politique-de-confidentialite` (route `legal.privacy`) ; **à publier avant le dépôt** (§7) |
+| URL web de suppression de compte | `https://xomiton.app/supprimer-mon-compte` (route `account-deletion.show`) ; accessible sans connexion ; **à publier avant le dépôt** (§7) |
 | Pays de distribution | **Tous les pays** (décision du client, 29 octobre 2026) ; points de vigilance ci-dessous |
 | Tarif | **Pas de tarif : application gratuite** (décision du client). Console : « Gratuite » ; la fiche ne mentionne aucun prix ni le mot « gratuit » |
 | Publicités | Aucune |
 | Achats intégrés | Aucun |
 | Langue de la fiche | **Français uniquement** (décision du client) ; le gabarit anglais du §11 est conservé mais **non utilisé** |
-| Versions publiées | **Une seule version Play** : un seul AAB (`bj.xomiton.xomiton`) avec des espaces selon le rôle du compte (membre, pair éducateur·rice, admin d'astreinte), voir ci-dessous |
+| Versions publiées | **Une seule version Play** : un seul AAB (`app.xomiton.xomiton`) avec des espaces selon le rôle du compte (membre, pair éducateur·rice, admin d'astreinte), voir ci-dessous |
 
 ### Décisions du client (29 octobre 2026)
 
@@ -83,12 +83,12 @@ La décision du client est prise et ne bloque rien ; voici ce qu'il faut savoir 
 
 ### Description courte (80 caractères max)
 
-<!--DEBUT:court-->Un espace sûr pour s'informer, échanger et être soutenu·e, en toute discrétion.<!--FIN:court-->
+<!--DEBUT:court-->Espace safe d'apprentissage et d'appui holistique, sûr et confidentiel.<!--FIN:court-->
 
 ### Description longue (4 000 caractères max)
 
 <!--DEBUT:long-->
-Xomiton est un espace sûr pour s'informer, échanger et être soutenu·e, avec une attention particulière aux filles et aux femmes, et un accueil sans jugement quelle que soit votre identité ou votre orientation.
+Xomiton est un espace safe d'apprentissage et d'appui holistique : un espace sûr, confidentiel et bienveillant pour s'informer, échanger et être soutenu·e, avec une attention particulière aux filles et aux femmes, et un accueil sans jugement quelle que soit votre identité ou votre orientation.
 
 CE QUE VOUS POUVEZ FAIRE
 
@@ -111,7 +111,7 @@ PENSÉE POUR LA DISCRÉTION
 
 Xomiton ne remplace ni les services d'urgence, ni les soins médicaux, ni l'aide juridique. En cas de danger immédiat, contactez les services d'urgence de votre pays. L'application affiche des contacts utiles, qui peuvent varier selon votre zone. Le partage de votre position est facultatif et ne concerne que les personnes alertées.
 
-Une question ? Écrivez-nous : contact@xomiton.bj
+Une question ? Écrivez-nous : contact@xomiton.app
 <!--FIN:long-->
 
 Rédaction (mise à jour du 29 octobre 2026) : la description présente uniquement l'espace membre ; elle ne parle ni d'espace pair, ni d'administration, ni de rôles, ni de tarif. Voix Xomiton (chaleureuse, claire, rassurante), phrases courtes, écriture inclusive au point médian, aucune promesse de disponibilité permanente (formule de référence « Une personne formée lit votre message sous 24 h »), aucun mot de la liste interdite (meilleur, n° 1, nouveau, gratuit, remise, millions de téléchargements, télécharger, installer, essayer). Le script le contrôle (§10).
@@ -170,16 +170,16 @@ Points à confirmer par l'équipe technique avant de soumettre : (1) liste exact
 
 ### URL à déclarer dans la Play Console
 
-Les pages sont dans le site public (Blade), **accessibles sans connexion**, indexables et liées dans le pied de page de l'accueil. Remplacer `<domaine>` par le domaine de production (la variable `APP_URL` du site doit être la même).
+Les pages sont dans le site public (Blade), **accessibles sans connexion**, indexables et liées dans le pied de page de l'accueil. Le domaine de production est `https://xomiton.app` (choix du client ; le suffixe `.app` impose HTTPS) : la variable `APP_URL` du site doit être la même.
 
 | Page | Chemin | Route | Où la déclarer |
 |---|---|---|---|
-| Politique de confidentialité | `https://<domaine>/politique-de-confidentialite` | `legal.privacy` | Fiche > Contenu de l'application > Politique de confidentialité |
-| Suppression de compte et de données | `https://<domaine>/supprimer-mon-compte` | `account-deletion.show` | Contenu de l'application > Sécurité des données > « Supprimer le compte » (URL web) |
-| Conditions d'utilisation | `https://<domaine>/conditions-utilisation` | `legal.terms` | Lien dans l'application, sur la fiche si souhaité |
-| Mentions légales | `https://<domaine>/mentions-legales` | `legal.notice` | Site |
-| Cookies et stockage local | `https://<domaine>/cookies` | `legal.cookies` | Site |
-| Charte, confidentialité et conditions résumées (page historique) | `https://<domaine>/confidentialite` | `confidentialite` | Liens de l'inscription et de la newsletter ; renvoie vers les pages complètes |
+| Politique de confidentialité | `https://xomiton.app/politique-de-confidentialite` | `legal.privacy` | Fiche > Contenu de l'application > Politique de confidentialité |
+| Suppression de compte et de données | `https://xomiton.app/supprimer-mon-compte` | `account-deletion.show` | Contenu de l'application > Sécurité des données > « Supprimer le compte » (URL web) |
+| Conditions d'utilisation | `https://xomiton.app/conditions-utilisation` | `legal.terms` | Lien dans l'application, sur la fiche si souhaité |
+| Mentions légales | `https://xomiton.app/mentions-legales` | `legal.notice` | Site |
+| Cookies et stockage local | `https://xomiton.app/cookies` | `legal.cookies` | Site |
+| Charte, confidentialité et conditions résumées (page historique) | `https://xomiton.app/confidentialite` | `confidentialite` | Liens de l'inscription et de la newsletter ; renvoie vers les pages complètes |
 
 La page de suppression explique la procédure dans l'application (Paramètres > Sécurité > Supprimer mon compte) et sur le web, les délais (accès coupé tout de suite, données effacées sous 30 jours puis anonymisation), ce qui est effacé, ce qui est conservé et pourquoi. Elle propose un **formulaire pour les personnes qui n'ont plus accès à leur compte** : saisie de l'adresse e-mail, envoi d'un lien de confirmation valable 24 h, puis bouton de confirmation qui lance la **même suppression que l'application** (`RequestAccountDeletion`). La réponse est identique que le compte existe ou non (aucune donnée exposée). La demande est tracée par une empreinte de l'adresse, jamais l'adresse (table `account_deletion_requests`, purgée après 90 jours). Un compte de l'équipe d'administration n'est pas supprimable par ce formulaire.
 
@@ -210,7 +210,7 @@ Tant qu'un champ est vide, la page affiche en surbrillance « [À COMPLÉTER PAR
 | `XOMITON_LEGAL_DPO_NAME` | Personne chargée de la protection des données | Confidentialité, mentions |
 | `XOMITON_LEGAL_DPO_EMAIL` | Adresse e-mail de cette personne | Confidentialité, mentions |
 | `XOMITON_LEGAL_JURISDICTION` | Juridiction compétente | Conditions, mentions |
-| Réglage « E-mail de contact » (administration) | Adresse publique de contact (par défaut `contact@xomiton.bj`, à confirmer) | Toutes les pages |
+| Réglage « E-mail de contact » (administration) | Adresse publique de contact (par défaut `contact@xomiton.app`, à confirmer) | Toutes les pages |
 | `APP_URL` | Domaine de production | Plan du site, liens |
 
 Dernière mise à jour affichée sur les pages : `xomiton.content.legal_updated_at` (à changer avec chaque modification de texte). Textes : `web/lang/fr/pages/legal.php` et `deletion.php`.
@@ -260,40 +260,44 @@ Formulations prudentes à reprendre dans la fiche et dans les réponses aux revu
 
 ## 10. Visuels : spécifications, contrôles et texte alternatif
 
-Générateur : `python3 docs/playstore/build_playstore.py` (Playwright et Pillow, Chromium `/opt/pw-browsers/chromium-1194/chrome-linux/chrome` ou variable `XM_CHROMIUM`). Il capture les écrans du prototype à **390 × 844 avec un facteur d'échelle 3** (1170 × 2532 réels), fige la barre d'état (9:41, signal et Wi-Fi pleins, batterie pleine, aucun opérateur, aucune notification), compose sur dégradés issus des jetons, exporte en PNG RVB 24 bits sans canal alpha et écrit `assets/rapport-controles.json`. Options : `--verifier`, `--seulement 02-sos`, `--langue en`.
+> **Captures provisoires : à remplacer par de vraies captures de l'application avant soumission à Google, qui exige des captures de l'application elle-même.** Les huit captures ci-dessous montrent le **site web** Xomiton (Laravel, thème clair) à largeur mobile 390 px, et non l'application Flutter, qui n'est pas compilable dans l'environnement de production de ces visuels. Elles servent à valider la composition, les textes et les contrôles ; l'image de présentation montre aussi une page du site. Pour la soumission : lancer l'application sur émulateur Android, capturer les mêmes écrans, les placer à la place des fichiers de `docs/playstore/sources/` (mêmes noms) et relancer le générateur ; la barre d'état propre se règle dans `visuels.json` (`barre_etat.mode` : `recouvrir`).
 
-Contrôles automatiques (130 passés à la livraison, fiche comprise) : dimensions exactes, PNG 24 bits (profondeur 8, type RVB, aucun bloc de transparence), poids (< 8 Mo ; mesuré 0,3 à 0,6 Mo), ratio 9:16, aire du texte ajouté (titre et pastille) ≤ 20 % (mesurée de 6 à 10 %), contraste du texte ajouté ≥ 4,5:1 mesuré sur le fond réel au pixel le plus défavorable (5,65:1 au pire), couleurs vives de l'image de présentation, fonds de captures en jetons saturés, barre d'état propre, mots interdits, longueur du texte alternatif, absence de « image de », longueur du nom (30), de la description courte (80) et de la longue (4 000).
+Générateur : `python3 docs/playstore/build_playstore.py`, qui délègue au **kit** `tools/playstore-kit/` (Playwright et Pillow, Chromium via `PW_CHROMIUM` ou recherche automatique). La configuration est `visuels.json` : sources = images réelles `sources/*-390x844.png` (1170 × 2532, échelle ×3), vrai logo couleur, jetons de `design-system/tokens/tokens.css`, police Montserrat du design system. Les captures sont refaites par `python3 docs/playstore/capturer_site.py` sur le site Laravel lancé en local, **sans toucher au dépôt ni au `.env`** : variables d'environnement `APP_ENV=local`, `APP_DEBUG=false`, `APP_URL=http://127.0.0.1:8000`, base SQLite temporaire hors dépôt (`DB_DATABASE`), `php artisan migrate:fresh --seed`, `php artisan serve`, navigateur en `colorScheme: 'light'` ; aucun bandeau de débogage ni identifiant de démonstration n'apparaît ; le serveur est arrêté ensuite. Options du générateur : `--verifier`, `--seulement 03-sos feature-graphic icone`, `--regles`.
 
-Typographie : Montserrat 800 (titres) et 700 (pastilles), auto-hébergée depuis `design-system/fonts/`. Titres de 76 px sur 1080 px de large, bien au-delà du minimum lisible. Aucun appel à l'action, aucun badge de magasin, aucun logo tiers, cadre d'appareil générique (ni encoche ni marque).
+Contrôles automatiques (133 passés à la livraison, fiche et icône comprises) : dimensions exactes, PNG 24 bits (profondeur 8, type RVB, aucun bloc de transparence), poids (< 8 Mo), ratio 9:16, aire du texte ajouté ≤ 20 %, contraste du texte ajouté ≥ 4,5:1 mesuré sur le fond réel au pixel le plus défavorable, couleurs, mots interdits, longueur du texte alternatif, absence de « image de », longueur du nom (30), de la description courte (80) et de la longue (4 000), et pour l'icône : 512 × 512, PNG 32 bits, 1 024 Ko au plus, carré plein sans coin arrondi, motif dans la zone de sécurité. Les règles numériques de Google sont dans `tools/playstore-kit/google_rules.json`, datées du 9 novembre 2026 (relecture humaine, le kit n'interroge jamais Google) : à relire avant dépôt.
+
+**Seuil de couleurs ajusté, et pourquoi.** Le contrôle d'origine exigeait des fonds saturés (saturation > 0,5, valeur ≤ 0,95) ; il contredisait le fond clair de marque voulu par le client. La règle Google est d'éviter le **blanc pur, le noir et le gris foncé** dominants. Le seuil devient : saturation ≥ 0,05 (exclut le blanc et tous les gris, y compris le gris foncé), valeur de 0,25 à 0,99 (exclut le noir et le blanc pur), saturation moyenne de l'image de présentation ≥ 0,12 au lieu de 0,45 ; limites de blanc (< 25 %) et de noir (< 3 %) inchangées. Les fonds employés sont `blue-50` (#EBEFFA) et `blue-100` (#D7DEF5).
+
+Typographie : Montserrat (titres 72 px sur 1080 px de large), auto-hébergée depuis `design-system/fonts/`. Aucun appel à l'action, aucun badge de magasin, aucun logo tiers, cadre générique clair (ni encoche ni marque), aucune pastille.
 
 ### Tableau des assets
 
 | Fichier | Dimensions | Format | Rôle | Texte alternatif (≤ 140 caractères) |
 |---|---|---|---|---|
-| `assets/feature-graphic-1024x500.png` | 1024 × 500 | PNG 24 bits, sans alpha | Image de présentation | Logo Xomiton et mots « écoute, sécurité, communauté » sur fond bleu, entre deux écrans de l'application. |
-| `assets/screenshots/01-accueil.png` | 1080 × 1920 | PNG 24 bits, sans alpha | Capture 1, interface | Accueil de l'application : accès rapide au signalement, aux urgences, à l'assistant et aux thématiques, avec la touche SOS en bas. |
-| `assets/screenshots/02-sos.png` | 1080 × 1920 | idem | Capture 2, interface | Écran SOS : grand bouton rouge à maintenir deux secondes, option pour partager sa position, lien vers les numéros d'urgence. |
-| `assets/screenshots/03-signaler.png` | 1080 × 1920 | idem | Capture 3, interface | Écran Signaler et suivre : alerte SOS, faire un signalement en quatre étapes, exprimer un besoin et suivre un dossier avec un code. |
-| `assets/screenshots/04-messages.png` | 1080 × 1920 | idem | Capture 4 | Conversation écrite avec une intervenante formée : messages reçus et envoyés, champ de saisie en bas de l'écran. |
-| `assets/screenshots/05-assistant.png` | 1080 × 1920 | idem | Capture 5 | Écran Assistant : message d'accueil, rappel qu'il ne remplace pas un professionnel et suggestions de questions. |
-| `assets/screenshots/06-ressources.png` | 1080 × 1920 | idem | Capture 6 | Écran Ressources : recherche et filtres, fiches pratiques, textes de loi, bande dessinée et vidéo, avec la taille de chaque fichier. |
-| `assets/screenshots/07-communaute.png` | 1080 × 1920 | idem | Capture 7 | Fil de la communauté : zone pour partager une pensée, filtres par thème et publication d'une intervenante formée sur un atelier. |
-| `assets/screenshots/08-confidentialite.png` | 1080 × 1920 | idem | Capture 8 | Écran Sécurité : mode discret, masquage des aperçus, verrouillage par code, appareils connectés, téléchargement et suppression des données. |
-| Icône 512 × 512 | 512 × 512 | PNG 32 bits (alpha autorisé pour l'icône) | Icône, **à exporter** | Logo Xomiton : rosace rouge à quatre formes sur fond bleu. |
+| `assets/feature-graphic-1024x500.png` | 1024 × 500 | PNG 24 bits, sans alpha | Image de présentation | Logo Xomiton en couleur, slogan « Espace safe d'apprentissage et d'appui holistique », une page du site et un écran mobile. |
+| `assets/screenshots/01-accueil.png` | 1080 × 1920 | PNG 24 bits, sans alpha | Capture 1, interface (provisoire : site web) | Accueil du site Xomiton : titre de l'espace, boutons Créer un compte, Se connecter et Signaler, mot d'une membre. |
+| `assets/screenshots/02-signaler.png` | 1080 × 1920 | idem | Capture 2, interface (provisoire) | Page Signaler : signalement sans compte et anonyme, explication de la confidentialité et première étape du formulaire. |
+| `assets/screenshots/03-sos.png` | 1080 × 1920 | idem | Capture 3, interface (provisoire) | Page SOS : grand bouton rouge à maintenir deux secondes, choix de partager sa position, consignes d'utilisation. |
+| `assets/screenshots/04-ressources.png` | 1080 × 1920 | idem | Capture 4 (provisoire) | Liste des ressources : filtres par type et par thème, fiches et textes avec leur format et leur taille. |
+| `assets/screenshots/05-thematiques.png` | 1080 × 1920 | idem | Capture 5 (provisoire) | Page Thématiques : recherche, filtres par sujet et fiches pédagogiques avec leur temps de lecture. |
+| `assets/screenshots/06-urgences.png` | 1080 × 1920 | idem | Capture 6 (provisoire) | Page Contacts d'urgence : bandeau SOS rouge et boutons d'appel direct vers les numéros d'urgence. |
+| `assets/screenshots/07-actualites.png` | 1080 × 1920 | idem | Capture 7 (provisoire) | Page Actualités : filtres par catégorie et article avec son thème, son résumé, sa date et son temps de lecture. |
+| `assets/screenshots/08-aide.png` | 1080 × 1920 | idem | Capture 8 (provisoire) | Centre d'aide : questions fréquentes sur le compte, le signalement et le soutien, avec réponses dépliables. |
+| `assets/icon-512.png` | 512 × 512 | PNG 32 bits (alpha autorisé pour l'icône) | Icône, **à faire valider** | Logo Xomiton : rosace à quatre formes blanches sur fond bleu. |
 
-Titres incrustés (français) : 01 « Un espace sûr, tout près » · 02 « Alerter les personnes de confiance » · 03 « Signaler, même anonymement » · 04 « Des échanges à son rythme » · 05 « Un assistant pour s'orienter » · 06 « Des ressources fiables à portée de main » · 07 « Une communauté bienveillante » · 08 « Vie privée et mode discret ». Chaque capture porte une pastille courte (Confidentiel, Position partagée avec accord, Anonyme si besoin, Écoute sans jugement, Oriente, ne remplace pas, Lisibles hors ligne, Échanges modérés, Icône et nom neutres), dont le texte reste fidèle au produit.
+Titres incrustés (français) : 01 « Espace sûr, confidentiel, bienveillant » · 02 « Signaler en toute sécurité » · 03 « Alerte d'urgence SOS » · 04 « Ressources à lire et à partager » · 05 « Thématiques pour comprendre et agir » · 06 « Contacts d'urgence à appeler » · 07 « Actualités et guides » · 08 « Centre d'aide et questions ».
 
-Ordre : les **trois premières captures sont centrées sur l'interface** (accueil, SOS, signalement), comme demandé. Adaptations du prototype faites pour la fiche et assumées : barre d'état figée, notch retiré (cadre générique), illustrations à drapeau masquées (accueil et fil), noms de famille raccourcis.
+Ordre : les **trois premières captures sont centrées sur l'interface** (accueil, signalement, SOS). **Assistant non montré** : l'assistant est dans l'espace membre, dont le gabarit mobile web montre des avatars photo et n'est pas fait pour cette largeur ; il sera à capturer dans l'application réelle. Adaptations assumées : captures du site tel qu'il est (aucun montage de l'interface), numéro fictif de l'annuaire de démonstration masqué.
 
 ## 11. Version anglaise (gabarit, non utilisé)
 
 Décision du client (29 octobre 2026) : **français uniquement**. Ce gabarit est conservé pour plus tard ; ne pas le produire maintenant.
 
-`visuels.json` contient, pour chaque visuel, un bloc `textes.en` **vide** (`titre`, `puces`, `alt`, `slogan`). Pour produire la version anglaise : (1) remplir ces blocs, (2) fournir une version anglaise du prototype (les captures montrent aujourd'hui l'interface française ; changer seulement les titres donnerait des captures incohérentes), (3) lancer `python3 docs/playstore/build_playstore.py --langue en` : le script refuse de produire tant qu'un texte est vide et écrit dans `assets/en/`. Traduire le nom, les descriptions et le §4 dans la console (« Gérer les traductions »).
+`visuels.json` ne contient aujourd'hui que le français. Pour produire la version anglaise : (1) ajouter à chaque visuel un bloc `textes.en` (`titre`, `alt`, et `slogan` / `accroche` pour l'image de présentation) ; une chaîne vide est refusée, (2) fournir une version anglaise du prototype (les captures montrent aujourd'hui l'interface française ; changer seulement les titres donnerait des captures incohérentes), (3) lancer `python3 docs/playstore/build_playstore.py --langue en` : le script refuse de produire tant qu'un texte est vide et écrit dans `assets/en/`. Traduire le nom, les descriptions et le §4 dans la console (« Gérer les traductions »).
 
 ## 12. Captures tablette 7 et 10 pouces (plus tard)
 
-Non requises pour publier. Elles améliorent la mise en avant sur grands écrans (recommandées si l'application est installable sur tablette). Spécifications Google : 2 à 8 captures par format, PNG ou JPEG 24 bits sans alpha, côtés de 320 à 3 840 px, rapport 16:9 ou 9:16 au plus. Pour les produire : ajouter dans `visuels.json` un bloc `tablette_7` et `tablette_10`, un viewport du prototype adapté (`1280 × 800` en paysage, la mise en page est responsive) et un nouveau gabarit de composition. Hors périmètre de cette livraison.
+Non requises pour publier. Elles améliorent la mise en avant sur grands écrans (recommandées si l'application est installable sur tablette). Spécifications Google (relues le 9 novembre 2026, voir `tools/playstore-kit/google_rules.json`) : 4 à 8 captures par jeu quand elles sont fournies, PNG ou JPEG 24 bits sans alpha, côtés de 1 080 à 7 680 px, portrait 9:16 ou paysage 16:9. Le kit sait les produire : ajouter à `visuels.json` un bloc `tablettes` (voir `tools/playstore-kit/README.md` et `example/visuels.json`), à faire avec l'application réelle sur émulateur de tablette. Hors périmètre de cette livraison.
 
 ## 13. Version et publication
 
@@ -313,7 +317,7 @@ Non requises pour publier. Elles améliorent la mise en avant sur grands écrans
 - [ ] Vérifier `applicationId`, version, icônes adaptatives, nom Android « Xomiton », alias du mode discret
 - [ ] Politique de confidentialité en ligne (`/politique-de-confidentialite`), lien de suppression de compte en ligne (`/supprimer-mon-compte`), champs `XOMITON_LEGAL_*` renseignés, relecture juridique faite
 - [ ] Formulaires de la console : contenu de l'application, sécurité des données, classification, public cible, application de santé, permissions (localisation), accès à l'application (compte de test)
-- [ ] Fiche : nom, descriptions, icône 512, image de présentation, 8 captures, catégorie, contact
+- [ ] Fiche : nom, descriptions, icône 512, image de présentation, 8 captures **de l'application** (remplacer les captures provisoires du site web), catégorie, contact
 - [ ] Piste de **test interne** (un seul AAB pour les trois espaces ; tester aussi un compte pair et un compte admin) (jusqu'à 100 testeurs, immédiat) : valider installation, SOS, notifications, mode discret, localisation sur des appareils Android 8 à 15
 - [ ] Piste de **test fermé** : **comptes personnels créés après novembre 2023 : au moins 12 testeurs inscrits en continu pendant 14 jours avant de pouvoir demander l'accès à la production** (compter large, 20 recommandé, pour absorber les départs) ; ne s'applique pas aux comptes d'organisation
 - [ ] Demande d'accès à la production avec les réponses aux questions de test (retours reçus, corrections faites)
@@ -329,11 +333,13 @@ Délais : la revue d'une nouvelle application peut prendre plusieurs jours, voir
 |---|---|
 | Compte développeur Google Play (type personnel ou organisation) et frais d'inscription | Condition de tout dépôt ; le type de compte décide de l'obligation des 12 testeurs |
 | 12 à 20 testeur·ses volontaires (adresses Google) pour 14 jours, si compte personnel | Condition d'accès à la production |
-| **Domaine de production** et **champs `XOMITON_LEGAL_*`** (§7), puis validation juridique des pages | Les pages existent (`/politique-de-confidentialite`, `/supprimer-mon-compte`) ; elles doivent être publiées et complétées |
+| **Déploiement sur `xomiton.app`** (HTTPS obligatoire pour `.app`) et **champs `XOMITON_LEGAL_*`** (§7), puis validation juridique des pages | Les pages existent (`/politique-de-confidentialite`, `/supprimer-mon-compte`) ; elles doivent être publiées et complétées |
 | Déclaration des deux URL dans la console | Exigées par Google, en plus de la suppression dans l'application (§7) |
 | Preuve de licence des images (archivée hors dépôt) | Licence d'usage commercial des dix visuels du dossier `assets/` confirmée le 28 octobre 2026 : la preuve n'est pas dans le dépôt ; indispensable si une photographie est un jour ajoutée à la fiche ou à l'onboarding. Les captures de la fiche **n'en contiennent pas** |
 | Validation du **logo vectoriel** | Reconstitution à partir du seul fichier de 240 × 66 px, à faire valider ou remplacer par le fichier source de la personne qui l'a dessiné |
-| Adresse de contact publique, site web | Champs de la fiche |
+| Création de la boîte `contact@xomiton.app` | Adresse de contact publique de la fiche |
+| **Vraies captures de l'application** (émulateur Android, 4 à 8) | Les captures actuelles montrent le site web : provisoires, Google exige des captures de l'application |
+| Validation de l'icône 512 (`assets/icon-512.png`) | Produite depuis `icone-appli-bleu.svg`, à faire valider |
 | Validation juridique de l'âge (Q67, Q68) | Décision prise (16-17 et 18+, âge produit 15 ans) ; confirmer avec le conseil |
 | Compte de test pour l'examen et vidéo de démonstration de la localisation | Revue Google |
 | Réponses de l'équipe technique aux trois points du §6 | Exactitude de la déclaration |

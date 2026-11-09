@@ -366,11 +366,11 @@ class Fiche:
         police(run, POLICE_TITRES, 28, "FFFFFF", True)
         espacement(p, 0, 8, 1.1)
         p = cellule.add_paragraph()
-        run = p.add_run("Xomiton : écoute et sécurité")
+        run = p.add_run("Xomiton : espace safe d’apprentissage et d’appui holistique")
         police(run, POLICE_TEXTE, 15, "FFFFFF")
         espacement(p, 0, 70)
 
-        for etiquette, valeur in (("Version", version), ("Date", date), ("Application", "bj.xomiton.xomiton · 1.0.0 (code 1)"),
+        for etiquette, valeur in (("Version", version), ("Date", date), ("Application", "app.xomiton.xomiton · 1.0.0 (code 1)"),
                                   ("Langue de la fiche", "Français uniquement")):
             p = cellule.add_paragraph()
             run = p.add_run(f"{etiquette}  ")
