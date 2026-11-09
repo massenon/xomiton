@@ -534,6 +534,39 @@ def valider_config(brut: dict, base: Path, partiel: bool = False) -> dict:
         err.append(f"« feature_graphic.ecran_web » : image introuvable : {(base / str(fg['ecran_web'])).resolve()}")
     if fg.get("disposition") not in (None, "centre", "logo-gauche"):
         err.append("« feature_graphic.disposition » : « centre » (défaut) ou « logo-gauche ».")
+    vit = fg.get("vitrine")
+    if vit is not None:
+        # composition « vitrine » : description, 5 puces de fonctionnalités, capture mobile, domaine, ruban ; sortie sociale facultative
+        if not isinstance(vit, dict):
+            err.append("« feature_graphic.vitrine » : objet attendu.")
+        else:
+            if not fg.get("ecran_web"):
+                err.append("« feature_graphic.ecran_web » : obligatoire avec « vitrine ».")
+            for ch in ("ecran_mobile",):
+                if not (isinstance(vit.get(ch), str) and (base / vit[ch]).resolve().is_file()):
+                    err.append(f"« feature_graphic.vitrine.{ch} » : image introuvable.")
+            if not isinstance(vit.get("domaine"), str):
+                err.append("« feature_graphic.vitrine.domaine » : texte attendu.")
+            pu = vit.get("puces")
+            if not (isinstance(pu, list) and pu and all(isinstance(d, dict) and isinstance(d.get("icone"), str)
+                                                          and (base / d["icone"]).resolve().is_file() for d in pu)):
+                err.append("« feature_graphic.vitrine.puces » : liste de {icone: fichier .svg, ton?: « alerte »} attendue.")
+            rg = vit.get("rangees", [2, 3])
+            if isinstance(pu, list) and not (isinstance(rg, list) and sum(rg) == len(pu)):
+                err.append("« feature_graphic.vitrine.rangees » : nombres de puces par rangée dont la somme égale le nombre de puces.")
+            if not (isinstance(vit.get("ruban"), list) and len(vit["ruban"]) >= 2):
+                err.append("« feature_graphic.vitrine.ruban » : liste d'au moins 2 couleurs attendue.")
+            ss = vit.get("sortie_sociale")
+            if ss is not None and not (isinstance(ss, dict) and isinstance(ss.get("fichier"), str) and str(ss["fichier"]).lower().endswith(".png")
+                                        and isinstance(ss.get("largeur"), int) and isinstance(ss.get("hauteur"), int)):
+                err.append("« feature_graphic.vitrine.sortie_sociale » : {fichier: .png, largeur, hauteur} attendu.")
+            for lg, t in (fg.get("textes") or {}).items():
+                if isinstance(t, dict):
+                    if not isinstance(t.get("description"), str):
+                        err.append(f"« feature_graphic.textes.{lg}.description » : texte attendu avec « vitrine ».")
+                    f_ = t.get("fonctions")
+                    if not (isinstance(f_, list) and isinstance(pu, list) and len(f_) == len(pu) and all(isinstance(x, str) for x in f_)):
+                        err.append(f"« feature_graphic.textes.{lg}.fonctions » : un libellé par puce attendu.")
     ordre = [e["id"] for e in cfg["captures"] if isinstance(e, dict) and isinstance(e.get("id"), str)]
     fg.setdefault("ecrans", {})
     if isinstance(fg["ecrans"], dict) and ordre:
@@ -1060,6 +1093,8 @@ def html_feature(cfg: dict, C: Couleurs, base: Path, caps: dict[str, Path], text
     fg = cfg["feature_graphic"]
     ml = cfg["mise_en_page"]
     W, H = 1024, 500
+    if fg.get("vitrine"):
+        return html_vitrine(cfg, C, base, texte, W, H)
     logo = cfg["theme"].get("logo")
     en_logo = f'<img src="{uri((base / logo))}" alt="">' if logo else f'<p class="nom" data-txt>{html.escape(cfg["application"])}</p>'
 
@@ -1128,6 +1163,89 @@ body{{width:{W}px;height:{H}px;background:{fond_css(fg['fond'], C)}}}
 </body></html>"""
 
 
+def html_vitrine(cfg: dict, C: Couleurs, base: Path, texte: dict, W: int, H: int) -> str:
+    """Composition « vitrine » (disposition logo-gauche avec bloc `vitrine`) : fond blanc, logo, slogan, description, puces de
+    fonctionnalités, domaine, fenêtre de navigateur (capture web réelle) et téléphone (capture mobile réelle), ruban arc-en-ciel.
+    Dessinée sur une grille de 1280 x 640 puis mise à l'échelle largeur (s = W / 1280) : l'image de présentation Google Play
+    (1024 x 500) et l'aperçu social (1280 x 640) ont la même composition. Toutes les tailles sont des pixels réels (mesurables)."""
+    fg = cfg["feature_graphic"]
+    v = fg["vitrine"]
+    s = W / 1280
+    k = (H / s) / 640            # facteur vertical pour les positions (le contenu n'est pas déformé)
+
+    def u(x: float) -> str:
+        return f"{x * s:.2f}px"
+
+    def uy(y: float) -> str:
+        return f"{y * s * k:.2f}px"
+
+    logo = cfg["theme"].get("logo")
+    en_logo = f'<img class="logo" src="{uri(base / logo)}" alt="">' if logo else ""
+    co = cfg["theme"]["couleurs"]
+    web = (base / fg["ecran_web"]).resolve()
+    mob = (base / v["ecran_mobile"]).resolve()
+    ww = 524
+    iw, ih = Image.open(web).size
+    wh = round(ww * ih / iw)
+    bar = 30
+    pw, b = 174, 7
+    miw, mih = Image.open(mob).size
+    sh = round(pw * mih / miw)
+    ph = sh + 2 * b
+    ruban = ", ".join(C(c) for c in v["ruban"])
+    ink, encre2 = C(v.get("couleur_slogan", "blue-900")), C(v.get("couleur_texte", "neutral-600"))
+    puces_html = []
+    for i, label in enumerate(texte["fonctions"]):
+        d = v["puces"][i]
+        svg = (base / d["icone"]).read_text(encoding="utf-8")
+        svg = re.sub(r'\s(width|height)="[^"]*"', "", svg, count=2).replace("<svg", '<svg aria-hidden="true"', 1)
+        ton = "alerte" if d.get("ton") == "alerte" else "normal"
+        puces_html.append(f'<span class="puce-f {ton}">{svg}<span data-txt data-chip>{html.escape(label)}</span></span>')
+    rangees = v.get("rangees", [2, 3])
+    lignes, i = [], 0
+    for n in rangees:
+        lignes.append('<div class="rang">' + "".join(puces_html[i:i + n]) + "</div>")
+        i += n
+    top_nav = 83
+    return f"""<!doctype html><html lang="{html.escape(cfg['_langue'])}"><head><meta charset="utf-8"><style>{css_base(cfg, C, base)}
+body{{width:{W}px;height:{H}px;background:#FFFFFF}}
+.lueur{{position:absolute;left:{u(560)};top:{uy(40)};width:{u(760)};height:{u(560)};border-radius:50%;
+  background:radial-gradient(closest-side,{C(v.get('lueur', 'blue-100'))}AA,transparent)}}
+.gauche{{position:absolute;left:{u(64)};top:{uy(88)};width:{u(560)};display:flex;flex-direction:column;align-items:flex-start}}
+.logo{{width:{u(386)};display:block;margin-left:{u(8)}}}
+.slogan{{margin-top:{u(34)};font-weight:800;font-size:{u(38)};line-height:1.2;color:{ink};letter-spacing:-.005em}}
+.desc{{margin-top:{u(20)};font-weight:500;font-size:{u(21)};line-height:1.45;color:{encre2};max-width:{u(500)}}}
+.chips{{margin-top:{u(18)};display:flex;flex-direction:column;gap:{u(10)}}}
+.rang{{display:flex;gap:{u(10)}}}
+.puce-f{{display:flex;align-items:center;gap:{u(8)};height:{u(38)};padding:0 {u(16)} 0 {u(13)};border-radius:999px;white-space:nowrap;
+  font-weight:600;font-size:{u(17)};border:{max(1, round(s))}px solid {C(v.get('puce_bordure', 'blue-200'))};background:{C(v.get('puce_fond', 'blue-50'))};
+  color:{C(v.get('puce_texte', 'blue-800'))}}}
+.puce-f svg{{width:{u(19)};height:{u(19)};flex:none;fill:currentColor;color:{C(v.get('puce_icone', 'blue-500'))}}}
+.puce-f.alerte{{border-color:{C(v.get('alerte_bordure', 'red-200'))};background:{C(v.get('alerte_fond', 'red-50'))};color:{C(v.get('alerte_texte', 'red-700'))}}}
+.puce-f.alerte svg{{color:{C(v.get('alerte_icone', 'red-500'))}}}
+.domaine{{position:absolute;left:{u(64)};bottom:{u(46)};font-weight:700;font-size:{u(20)};color:{C(v.get('couleur_domaine', 'blue-500'))}}}
+.fenetre{{position:absolute;left:{u(640)};top:{uy(top_nav)};width:{u(ww + 2)};height:{u(wh + bar + 2)};border-radius:{u(14)};overflow:hidden;
+  background:#fff;border:{u(1)} solid {C('blue-100')};box-shadow:0 {u(18)} {u(46)} rgba(2,19,74,.16)}}
+.fenetre .tete{{height:{u(bar)};background:{C('blue-50')};display:flex;align-items:center;gap:{u(7)};padding:0 {u(12)}}}
+.fenetre .pt{{width:{u(10)};height:{u(10)};border-radius:50%;background:{C('blue-200')}}}
+.fenetre .url{{margin-left:{u(12)};flex:1;height:{u(16)};border-radius:999px;background:#fff;border:{u(1)} solid {C('blue-100')}}}
+.fenetre img{{display:block;width:{u(ww)};height:{u(wh)}}}
+.tel{{position:absolute;left:{u(1000)};top:{uy(182)};width:{u(pw + 2 * b)};height:{u(ph)};border-radius:{u(30)};background:{C('blue-900')};
+  box-shadow:0 {u(20)} {u(46)} rgba(2,19,74,.30)}}
+.tel .ec{{position:absolute;left:{u(b)};top:{u(b)};width:{u(pw)};height:{u(sh)};border-radius:{u(23)};overflow:hidden;background:#fff}}
+.tel img{{display:block;width:100%;height:100%;object-fit:cover;object-position:top}}
+.ruban{{position:absolute;left:0;right:0;bottom:0;height:{u(8)};background:linear-gradient(90deg,{ruban})}}
+</style></head><body>
+<div class="lueur"></div>
+<div class="fenetre"><div class="tete"><i class="pt"></i><i class="pt"></i><i class="pt"></i><i class="url"></i></div><img src="{uri(web)}" alt=""></div>
+<div class="tel"><div class="ec"><img src="{uri(mob)}" alt=""></div></div>
+<div class="gauche">{en_logo}<p class="slogan" data-txt>{html.escape(texte['slogan']).replace("&#x27;", "’")}</p>
+<p class="desc" data-txt>{html.escape(texte['description'])}</p><div class="chips">{''.join(lignes)}</div></div>
+<p class="domaine" data-txt>{html.escape(v['domaine'])}</p>
+<div class="ruban"></div>
+</body></html>"""
+
+
 MESURES_JS = """() => {
   const out = [];
   document.querySelectorAll('[data-txt]').forEach(el => {
@@ -1171,6 +1289,10 @@ def composer(cfg: dict, C: Couleurs, base: Path, cache: Path, sortie: Path, ids,
             fg = cfg["feature_graphic"]
             sortie.mkdir(parents=True, exist_ok=True)
             taches.append(("feature-graphic", (1024, 500), html_feature(cfg, C, base, caps, fg["textes"][langue]), sortie / fg["fichier"], None))
+            ss = (fg.get("vitrine") or {}).get("sortie_sociale")
+            if ss:   # même composition, autre taille (aperçu social GitHub) : une seule configuration
+                taches.append(("apercu-social", (ss["largeur"], ss["hauteur"]),
+                               html_vitrine(cfg, C, base, fg["textes"][langue], ss["largeur"], ss["hauteur"]), (base / ss["fichier"]).resolve(), None))
         for e in traitees:
             zone = (infos_pages.get(e["id"]) or {}).get("zone")
             fabrique = html_tablette if e["genre"] == "tablette" else html_capture
@@ -1252,6 +1374,9 @@ def textes_visibles(cfg: dict, langue: str) -> list[tuple[str, str]]:
     out = [("feature-graphic/slogan", fg["slogan"]), ("feature-graphic/alt", fg["alt"])]
     if fg.get("accroche") is not None:
         out.append(("feature-graphic/accroche", fg["accroche"]))
+    if fg.get("description") is not None:
+        out.append(("feature-graphic/description", fg["description"]))
+    out += [(f"feature-graphic/fonction:{i + 1}", x) for i, x in enumerate(fg.get("fonctions") or [])]
     for e in cfg["captures"]:
         t = e["textes"][langue]
         out.append((f"{e['id']}/titre", t["titre"]))
@@ -1367,6 +1492,10 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
 
     rt = valeurs_regle(cfg["_regles"], "captures_tablette") if cfg.get("_regles") else {}
     cibles = [("feature-graphic", sortie / cfg["feature_graphic"]["fichier"], c["feature_graphic"], None)]
+    ss = (cfg["feature_graphic"].get("vitrine") or {}).get("sortie_sociale")
+    if ss:
+        cibles.append(("apercu-social", (base / ss["fichier"]).resolve(),
+                       {"largeur": ss["largeur"], "hauteur": ss["hauteur"], "poids_max_mo": ss.get("poids_max_mo", 1)}, None))
     cibles += [(e["id"], sortie / e["dossier"] / e["fichier"], c["captures"], e) for e in cfg["captures"]]
     cibles += [(e["id"], sortie / e["dossier"] / e["fichier"],
                 {"largeur": e["canvas"][0], "hauteur": e["canvas"][1], "poids_max_mo": rt["poids_max_mo"]}, e)
@@ -1392,7 +1521,8 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
            + ("police système utilisée dans : " + ", ".join(sans_face[:3]) if sans_face else "")
            + ("police non chargée dans : " + ", ".join(manquantes[:3]) if manquantes else ""))
     for ident, chemin, regle, e_cap in cibles:
-        if ids and ident not in ids and not (ident.startswith("tablette-") and "tablettes" in ids):
+        if ids and ident not in ids and not (ident.startswith("tablette-") and "tablettes" in ids) \
+                and not (ident == "apercu-social" and "feature-graphic" in ids):
             continue
         if not chemin.exists():
             ok(ident, "fichier présent", False, str(chemin))
@@ -1413,7 +1543,7 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
             ok(ident, "ratio 16:9 (paysage)" if paysage else "ratio 9:16 (portrait)",
                (w * 9 == h * 16) if paysage else (w * 16 == h * 9), f"{w}/{h}")
             ok(ident, f"côtés de {rt['cote_min']} à {rt['cote_max']} px", all(rt["cote_min"] <= x <= rt["cote_max"] for x in (w, h)), f"{w}x{h}")
-        elif ident != "feature-graphic":
+        elif ident not in ("feature-graphic", "apercu-social"):
             ok(ident, "ratio 9:16", abs(w / h - 9 / 16) < 1e-9, f"{w}/{h}")
         im = Image.open(chemin)
         ok(ident, "mode Pillow RGB", im.mode == "RGB", im.mode)
@@ -1445,7 +1575,7 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
         blanc = sum(1 for r, g, b in px if min(r, g, b) > 240) / n
         noir = sum(1 for r, g, b in px if max(r, g, b) < 40) / n
         sat = sum(rgb_to_hsv(r / 255, g / 255, b / 255)[1] for r, g, b in px) / n
-        if ident == "feature-graphic":
+        if ident in ("feature-graphic", "apercu-social"):
             ok(ident, f"couleurs vives (blanc < {vifs['fg_blanc_max']*100:.0f} %, noir < {vifs['fg_noir_max']*100:.0f} %, saturation moyenne > {vifs['fg_saturation_min']})",
                blanc < vifs["fg_blanc_max"] and noir < vifs["fg_noir_max"] and sat > vifs["fg_saturation_min"],
                f"blanc {blanc*100:.0f} %, noir {noir*100:.1f} %, saturation {sat:.2f}")
@@ -1456,6 +1586,24 @@ def controler(cfg: dict, C: Couleurs, base: Path, langue: str, sortie: Path, mes
 
     if cfg.get("icone") and (not ids or "icone" in ids):
         res += controler_icone(sortie / cfg["icone"]["fichier"], cfg["icone"], cfg["_regles"], info_icone)
+
+    vit = cfg["feature_graphic"].get("vitrine")
+    if vit and (not ids or "feature-graphic" in ids):
+        tf = cfg["feature_graphic"]["textes"][langue]
+        fonctions = tf.get("fonctions", [])
+        ok("feature-graphic", "puces de fonctionnalités (5)", len(fonctions) == 5 and all(x.strip() for x in fonctions), f"{len(fonctions)}")
+        norm = lambda x: x.lower().replace("’", "'")  # noqa: E731
+        manq = [x for x in fonctions if norm(x) not in norm(tf["alt"])]
+        ok("feature-graphic", "texte alternatif citant les fonctionnalités des puces", not manq, ", ".join(manq) or "toutes citées")
+        for ident in ("feature-graphic", "apercu-social"):
+            m = mesures.get(ident)
+            if not m or (ident == "apercu-social" and not vit.get("sortie_sociale")):
+                continue
+            tailles = [t["taille"] for t in m["textes"] if t["texte"] in fonctions]
+            mini = min(tailles) if tailles else 0
+            ok(ident, "puces : police effective >= 13 px", len(tailles) == len(fonctions) and mini >= 13, f"{mini:.1f} px")
+            petits = [t["taille"] for t in m["textes"] if 0 < t["taille"] < 13]
+            ok(ident, "aucun texte sous 13 px effectifs", not petits, f"min {min([t['taille'] for t in m['textes'] if t['taille'] > 0] or [0]):.1f} px")
 
     for etiq, t in textes_visibles(cfg, langue):
         if ids and not ((etiq.startswith("tablettes/") and "tablettes" in ids) or etiq.split("/")[0] in ids):

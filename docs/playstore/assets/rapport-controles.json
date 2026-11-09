@@ -22,7 +22,7 @@
    "visuel": "ensemble",
    "controle": "police chargée depuis un fichier embarqué (rendu indépendant des polices système)",
    "ok": true,
-   "detail": "9/9 visuels ; "
+   "detail": "10/10 visuels ; "
   },
   {
    "visuel": "feature-graphic",
@@ -40,7 +40,7 @@
    "visuel": "feature-graphic",
    "controle": "poids",
    "ok": true,
-   "detail": "0.31 Mo (< 15 Mo)"
+   "detail": "0.18 Mo (< 15 Mo)"
   },
   {
    "visuel": "feature-graphic",
@@ -52,19 +52,61 @@
    "visuel": "feature-graphic",
    "controle": "aire du texte <= 20 %",
    "ok": true,
-   "detail": "5.8 %"
+   "detail": "10.3 %"
   },
   {
    "visuel": "feature-graphic",
    "controle": "contraste texte >= 4.5:1",
    "ok": true,
-   "detail": "pire cas 5.49:1"
+   "detail": "pire cas 6.98:1"
   },
   {
    "visuel": "feature-graphic",
-   "controle": "couleurs vives (blanc < 25 %, noir < 3 %, saturation moyenne > 0.12)",
+   "controle": "couleurs vives (blanc < 80 %, noir < 3 %, saturation moyenne > 0.03)",
    "ok": true,
-   "detail": "blanc 8 %, noir 0.0 %, saturation 0.21"
+   "detail": "blanc 60 %, noir 0.0 %, saturation 0.13"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1280x640 (attendu 1280x640)"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.25 Mo (< 1 Mo)"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "10.1 %"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 6.98:1"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "couleurs vives (blanc < 80 %, noir < 3 %, saturation moyenne > 0.03)",
+   "ok": true,
+   "detail": "blanc 63 %, noir 0.0 %, saturation 0.13"
   },
   {
    "visuel": "01-accueil",
@@ -82,7 +124,7 @@
    "visuel": "01-accueil",
    "controle": "poids",
    "ok": true,
-   "detail": "0.72 Mo (< 8 Mo)"
+   "detail": "0.73 Mo (< 8 Mo)"
   },
   {
    "visuel": "01-accueil",
@@ -553,6 +595,42 @@
    "detail": "8.98:1"
   },
   {
+   "visuel": "feature-graphic",
+   "controle": "puces de fonctionnalités (5)",
+   "ok": true,
+   "detail": "5"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "texte alternatif citant les fonctionnalités des puces",
+   "ok": true,
+   "detail": "toutes citées"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "puces : police effective >= 13 px",
+   "ok": true,
+   "detail": "13.6 px"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "aucun texte sous 13 px effectifs",
+   "ok": true,
+   "detail": "min 13.6 px"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "puces : police effective >= 13 px",
+   "ok": true,
+   "detail": "17.0 px"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "aucun texte sous 13 px effectifs",
+   "ok": true,
+   "detail": "min 17.0 px"
+  },
+  {
    "visuel": "feature-graphic/slogan",
    "controle": "mots interdits",
    "ok": true,
@@ -568,16 +646,46 @@
    "visuel": "feature-graphic/alt",
    "controle": "alt <= 140 caractères",
    "ok": true,
-   "detail": "123"
+   "detail": "113"
   },
   {
    "visuel": "feature-graphic/alt",
    "controle": "alt sans « image de »",
    "ok": true,
-   "detail": "Logo Xomiton en couleur, slogan « Espace"
+   "detail": "Logo Xomiton, Alerte VBG, SOS d'urgence,"
   },
   {
-   "visuel": "feature-graphic/accroche",
+   "visuel": "feature-graphic/description",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:1",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:2",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:3",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:4",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:5",
    "controle": "mots interdits",
    "ok": true,
    "detail": "aucun"

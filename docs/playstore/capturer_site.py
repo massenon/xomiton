@@ -19,8 +19,8 @@ PUBLIQUES = {"accueil": "/", "signaler": "/signaler", "sos": "/sos", "ressources
 # Pages publiques seulement : l'espace membre (assistant, fil, messages) n'est pas capturé, son gabarit mobile web étant
 # conçu pour l'application et montrant des avatars photo.
 
-# Défilement (px) avant la capture : pour montrer le contenu plutôt que l'espace d'en-tête de certaines pages.
-DEFILEMENT = {"ressources": 520, "actualites": 230, "aide": 835, "thematiques": 0}
+# Défilement (px) avant la capture (en-tête collant conservé ; accueil : on saute l'espace bleu au-dessus du badge) : pour montrer le contenu plutôt que l'espace d'en-tête de certaines pages.
+DEFILEMENT = {"accueil": 90, "ressources": 520, "actualites": 230, "aide": 835, "thematiques": 0}
 # Numéro de démonstration de l'annuaire (jeu de données local) : masqué, un numéro fictif n'a pas à figurer sur une capture.
 JS_MASQUE = "document.querySelectorAll('a[href^=\"tel:+229\"]').forEach(a => { (a.closest('.card, li, article') || a).style.visibility = 'hidden'; })"
 CSS = "*{caret-color:transparent!important}"
@@ -55,4 +55,15 @@ with sync_playwright() as p:
         preparer(pg, DEFILEMENT.get(nom, 0))
         pg.screenshot(path=str(SORTIE / f"{nom}-390x844.png"))
         print("capturé", nom)
+    # Capture bureau (1440 x 900, thème clair, échelle x1) de l'accueil : fenêtre de navigateur de l'image de présentation.
+    ctx.close()
+    ctx = nav.new_context(viewport={"width": 1440, "height": 900}, device_scale_factor=1, locale="fr-FR",
+                          color_scheme="light", reduced_motion="reduce")
+    pg = ctx.new_page()
+    rep = pg.goto(BASE + "/", wait_until="networkidle")
+    assert rep and rep.status == 200, f"/ : HTTP {rep and rep.status}"
+    pg.add_style_tag(content=CSS)
+    preparer(pg, 0)
+    pg.screenshot(path=str(SORTIE / "accueil-1440x900.png"))
+    print("capturé accueil (bureau)")
     nav.close()

@@ -52,36 +52,20 @@
       "saturation_min": 0.05,
       "valeur_min": 0.25,
       "valeur_max": 0.99,
-      "fg_blanc_max": 0.25,
+      "fg_blanc_max": 0.8,
       "fg_noir_max": 0.03,
-      "fg_saturation_min": 0.12
+      "fg_saturation_min": 0.03
     }
   },
   "feature_graphic": {
     "fichier": "feature-graphic-1024x500.png",
     "disposition": "logo-gauche",
     "fond": {
-      "de": "blue-50",
-      "vers": "blue-100",
-      "angle": 120
+      "de": "neutral-0",
+      "vers": "neutral-0",
+      "angle": 180
     },
-    "halos": [
-      {
-        "couleur": "blue-200",
-        "x": 12,
-        "y": 20,
-        "rayon": 380,
-        "opacite": 0.35
-      },
-      {
-        "couleur": "blue-300",
-        "x": 95,
-        "y": 110,
-        "rayon": 380,
-        "opacite": 0.3
-      }
-    ],
-    "ecran_web": "sources/thematiques-1440x900.png",
+    "ecran_web": "sources/accueil-1440x900.png",
     "ecrans": {
       "gauche": "01-accueil",
       "droite": "01-accueil"
@@ -91,8 +75,55 @@
     "textes": {
       "fr": {
         "slogan": "Espace safe d'apprentissage et d'appui holistique",
-        "accroche": "Espace sûr · confidentiel · bienveillant",
-        "alt": "Logo Xomiton en couleur, slogan « Espace safe d'apprentissage et d'appui holistique », une page du site et un écran mobile."
+        "alt": "Logo Xomiton, Alerte VBG, SOS d'urgence, Actualités, Communauté, Réseau social, page du site et écran mobile SOS.",
+        "description": "Filles et femmes LBTQ+ au Bénin : ressources, soutien et signalement en toute sécurité.",
+        "fonctions": [
+          "Alerte VBG",
+          "SOS d’urgence",
+          "Actualités",
+          "Communauté",
+          "Réseau social"
+        ]
+      }
+    },
+    "vitrine": {
+      "ecran_mobile": "sources/sos-390x844.png",
+      "domaine": "xomiton.app",
+      "puces": [
+        {
+          "icone": "sources/icones/megaphone.svg"
+        },
+        {
+          "icone": "sources/icones/exclamation-triangle.svg",
+          "ton": "alerte"
+        },
+        {
+          "icone": "sources/icones/newspaper.svg"
+        },
+        {
+          "icone": "sources/icones/people.svg"
+        },
+        {
+          "icone": "sources/icones/chat-heart.svg"
+        }
+      ],
+      "rangees": [
+        2,
+        3
+      ],
+      "ruban": [
+        "red-500",
+        "orange-700",
+        "amber-500",
+        "green-700",
+        "blue-500",
+        "violet-700"
+      ],
+      "sortie_sociale": {
+        "fichier": "../../.github/social-preview.png",
+        "largeur": 1280,
+        "hauteur": 640,
+        "poids_max_mo": 1
       }
     }
   },
