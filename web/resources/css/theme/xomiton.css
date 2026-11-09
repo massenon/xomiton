@@ -93,10 +93,13 @@ body.xm-is-offline .xm-offline-bar { display:block; }
 [data-bs-theme=dark] .badge.bg-opacity-10.text-danger { color: var(--xm-badge-danger-text-dark) !important; }
 
 /* ---------- Mise en page uniforme (pages membres & publiques) ---------- */
-:root { --xm-container-max: 1400px; }
-body:not(.xm-admin) main > .container,
-body:not(.xm-admin) header .container,
-body:not(.xm-admin) > footer .container { max-width: var(--xm-container-max); }
+/* Un seul gabarit horizontal : en-tête, corps et pied de page lisent les mêmes jetons (D-ALIGN-1). Le conteneur Social
+   (style.css : 96 % / 100 % / 1140 / 1200 px) est volontairement neutralisé ici, sans toucher à style.css ; `.container` imbriqué
+   dans une section (accueil, bandeaux) suit la même largeur que `main > .container`. Pas d'unité vw : aucun décalage dû à la barre de défilement. */
+:root { --xm-container-max: 1400px; --xm-gutter: 1.5rem; }
+body:not(.xm-admin) :is(header, main, footer) .container { --bs-gutter-x: var(--xm-gutter); max-width: var(--xm-container-max); }
+/* Les .row à gouttière large (g-5 = -1,5rem) dépassent le padding du conteneur de 0,75rem : on coupe ce débordement sans créer de défilement. */
+body:not(.xm-admin) main { overflow-x: clip; }
 /* Colonnes empilées : les cartes gardent leur hauteur naturelle (plus de blanc en bas des cartes) */
 .vstack > * { flex-grow: 0 !important; }
 .vstack > .card, .vstack > article { align-self: stretch; }

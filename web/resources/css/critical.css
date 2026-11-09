@@ -26,6 +26,7 @@
   --xm-space-4:16px; --xm-space-5:24px; --xm-radius-md:8px; --xm-radius-lg:16px; --xm-target-min: 44px;
   --xm-button-radius: var(--xm-radius-md); --xm-button-min-h: var(--xm-target-min); --xm-button-px: var(--xm-space-5);
   --xm-container-max: 1400px;
+  --xm-gutter: 1.5rem;
   --xm-blue: var(--xm-blue-500); --xm-red: var(--xm-red-500);
 }
 :root[data-bs-theme="dark"] {
@@ -71,7 +72,7 @@ button { border-radius: 0; margin: 0; font-family: inherit; font-size: inherit; 
 @media (min-width: 992px) { .container { max-width: 960px; } }
 @media (min-width: 1200px) { .container { max-width: 1140px; } }
 @media (min-width: 1400px) { .container { max-width: 1320px; } }
-body:not(.xm-admin) main > .container, body:not(.xm-admin) header .container { max-width: var(--xm-container-max); }
+body:not(.xm-admin) :is(header, main, footer) .container { --bs-gutter-x: var(--xm-gutter); max-width: var(--xm-container-max); }
 
 /* ---------- Accessibilité : lien d'évitement, bandeau hors connexion (xomiton.css) ---------- */
 .xm-skip-link { position: absolute; left: .75rem; top: -4rem; z-index: 2000; background: var(--xm-blue); color: var(--xm-neutral-0); padding: .6rem 1rem; border-radius: .5rem; font-weight: 700; text-decoration: none; transition: top .15s; }

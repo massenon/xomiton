@@ -234,3 +234,9 @@ Le client a tranché ; consigné dans `docs/PLAN_MOBILE_APP_UNIQUE.md` §10, `do
 ## Identifiant d'application (9 novembre 2026)
 - **Identifiant d'application : `app.xomiton.xomiton`** (changé avant toute publication ; impossible ensuite). Remplace `bj.xomiton.xomiton` (reverse-DNS aligné sur le domaine xomiton.app). Android (`applicationId`, `namespace`, package Kotlin `app/xomiton/xomiton`), iOS (bundle ID), canal natif `app.xomiton/discreet` (Dart et Kotlin), documentation et tests mis à jour.
 - Firebase et la fiche Play Console doivent être créés avec cet identifiant exact.
+
+## Alignement horizontal en-tête, corps, pied de page (9 novembre 2026)
+- **Décision D-ALIGN-1** : un seul gabarit horizontal. `--xm-container-max` (1400 px) et `--xm-gutter` (1,5rem, soit 12 px de chaque côté) sont lus par `.container` dans `header`, `main` et `footer` (`body:not(.xm-admin) :is(header, main, footer) .container`), dans `critical.css` et `theme/xomiton.css`. Les fonds restent pleine largeur ; seul le contenu est aligné. Aucune unité `vw` : la barre de défilement ne décale rien.
+- **Cause** : la règle ne visait que `main > .container` ; les `.container` imbriqués dans une `section` (accueil, bandeaux) retombaient sur le conteneur Social (1200 px à ≥ 1400 px), d'où 100 px de retrait par côté à 1440 px (accueil, politique de confidentialité). `style.css` n'est pas modifié.
+- **Effet de bord corrigé** : les `.row.g-5` dépassaient de 12 px (défilement horizontal à ≤ 1280 px sur l'accueil) ; `main { overflow-x: clip }` coupe ce débordement sans créer de défilement.
+- **Hors périmètre, volontairement différent** : `/connexion` et `/inscription` (gabarit d'authentification plein écran, sans en-tête ni pied), espace membre Inertia (en-tête déjà aligné, pas de pied), admin Livewire (`body.xm-admin`, exclu). Tests : `tests/e2e/alignement.spec.js` (tolérance 1 px, 5 largeurs) et `tests/Feature/Layouts/ContainerAlignmentTest.php`.
