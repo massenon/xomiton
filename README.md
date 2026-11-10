@@ -14,6 +14,10 @@ Site web · Application mobile · Alerte et SOS · Outils pour les pair·es édu
 
 </div>
 
+<p align="center">
+  <img src=".github/social-preview.png" alt="Aperçu de Xomiton : le logo en couleurs, le slogan « Espace safe d'apprentissage et d'appui holistique », les fonctions Alerte VBG, SOS d'urgence, Actualités, Communauté et Réseau social, et deux captures du site sur ordinateur et sur téléphone" width="100%">
+</p>
+
 ---
 
 ## En bref
@@ -56,21 +60,21 @@ Captures réelles du site en cours d'exécution, en thème clair, avec des donn�
   <tr>
     <td align="center" width="50%">
       <img src="docs/captures/reelles/accueil-1440.webp" alt="Page d'accueil du site Xomiton : « votre espace safe d'apprentissage et d'appui holistique »" width="420"><br>
-      <sub><b>Accueil</b> (bureau)</sub>
+      <sub><b>Accueil</b> (bureau)<br>Présentation de l'espace, accès direct à « Créer un compte », « Se connecter » et « Signaler », et la promesse d'une lecture sous 24 h par une personne formée.</sub>
     </td>
     <td align="center" width="50%">
       <img src="docs/captures/reelles/ressources-1440.webp" alt="Page Ressources du site : recherche, filtres par thème et fiches à lire ou à télécharger" width="420"><br>
-      <sub><b>Ressources</b> (bureau)</sub>
+      <sub><b>Ressources</b> (bureau)<br>Fiches d'information sur les droits, la santé et les violences, avec recherche et filtres par thème, à lire en ligne.</sub>
     </td>
   </tr>
   <tr>
     <td align="center" width="50%">
       <img src="docs/captures/reelles/assistant-membre-1440.webp" alt="Assistant Xomiton dans l'espace membre, avec le bouton SOS et l'accès à une personne formée" width="420"><br>
-      <sub><b>Assistant</b>, espace membre (bureau)</sub>
+      <sub><b>Assistant</b>, espace membre (bureau)<br>Un assistant à base de connaissances pour s'informer, avec le bouton SOS et l'accès à une personne formée à tout moment.</sub>
     </td>
     <td align="center" width="50%">
       <img src="docs/captures/reelles/signaler-1440.webp" alt="Page Signaler : parcours anonyme en six étapes, sans compte" width="420"><br>
-      <sub><b>Signalement</b> sans compte (bureau)</sub>
+      <sub><b>Signalement</b> sans compte (bureau)<br>Un parcours anonyme, étape par étape, pour signaler une situation sans avoir à créer de compte.</sub>
     </td>
   </tr>
 </table>
@@ -81,19 +85,19 @@ Le même site sur un téléphone (390 × 844 px) :
   <tr>
     <td align="center" width="25%">
       <img src="docs/captures/reelles/accueil-390.webp" alt="Accueil du site sur téléphone" width="170"><br>
-      <sub><b>Accueil</b></sub>
+      <sub><b>Accueil</b><br>Le site sur téléphone : mêmes accès rapides.</sub>
     </td>
     <td align="center" width="25%">
       <img src="docs/captures/reelles/sos-390.webp" alt="Page SOS du site sur téléphone : bouton à maintenir deux secondes" width="170"><br>
-      <sub><b>SOS</b></sub>
+      <sub><b>SOS</b><br>Un bouton à maintenir deux secondes pour envoyer une alerte, avec partage de position au choix.</sub>
     </td>
     <td align="center" width="25%">
       <img src="docs/captures/reelles/signaler-390.webp" alt="Page Signaler du site sur téléphone" width="170"><br>
-      <sub><b>Signaler</b></sub>
+      <sub><b>Signaler</b><br>Le parcours de signalement anonyme, adapté au téléphone.</sub>
     </td>
     <td align="center" width="25%">
       <img src="docs/captures/reelles/ressources-390.webp" alt="Page Ressources du site sur téléphone" width="170"><br>
-      <sub><b>Ressources</b></sub>
+      <sub><b>Ressources</b><br>Les fiches et leurs filtres sur petit écran.</sub>
     </td>
   </tr>
 </table>
