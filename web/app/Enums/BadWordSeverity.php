@@ -6,12 +6,14 @@ namespace App\Enums;
 
 /**
  * Gravité d'un terme filtré par la modération automatique (DATABASE_DICTIONARY.md §3 `bad_words`) :
- * « bloquer » refuse la publication, « signaler » la laisse passer en la marquant pour relecture.
+ * « bloquer » refuse la publication, « masquer » la publie puis la masque et la met en file de modération (D-IOS-9),
+ * « signaler » la laisse passer en la marquant pour relecture.
  */
 enum BadWordSeverity: string
 {
     case Block = 'bloquer';
     case Flag = 'signaler';
+    case Hide = 'masquer';
 
     public function label(): string
     {
@@ -23,6 +25,7 @@ enum BadWordSeverity: string
         return match ($this) {
             self::Block => 'danger',
             self::Flag => 'warning',
+            self::Hide => 'secondary',
         };
     }
 

@@ -95,12 +95,12 @@ it('refuse la publication sans permission posts.create (403 forbidden)', functio
         ->assertForbidden()->assertJsonPath('code', 'forbidden');
 });
 
-it('bloque un terme interdit avec un message neutre, sans rien créer (422 content_blocked)', function (): void {
+it('bloque un terme interdit avec un message neutre, sans rien créer (422 content_rejected)', function (): void {
     FeedFixtures::badWord('tarée');
 
     $response = FeedFixtures::as($this->author)->postJson('/api/v1/posts', ['body' => 'Tu es TAREE'])
         ->assertUnprocessable()
-        ->assertJsonPath('code', 'content_blocked')
+        ->assertJsonPath('code', 'content_rejected')
         ->assertJsonPath('errors.body.0', __('feed.api.content_blocked'));
 
     expect(Post::query()->count())->toBe(0)->and(json_encode($response->json()))->not->toContain('tar');

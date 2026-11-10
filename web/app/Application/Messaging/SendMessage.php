@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\Messaging;
 
+use App\Application\Feed\BadWordFilter;
+use App\Application\Moderation\ReportContent;
 use App\Application\Shared\MediaUploader;
 use App\Application\Shared\StoredMedia;
 use App\Domain\Messaging\ConversationRules;
@@ -25,6 +27,7 @@ use Illuminate\Support\Facades\DB;
  *
  *  - corps chiffré au repos (cast `encrypted`, `encrypted_columns.messages`) ; pièce jointe facultative (image ou PDF,
  *    disque privé via MediaUploader, servie en lien signé) ;
+ *  - conversation de groupe : filtre de contenus (BadWordFilter, 422 `content_rejected`) ; conversation privée : jamais filtrée ;
  *  - conversation privée : refus neutre (403 `conversation_unavailable`) si l'autre personne est injoignable ou s'il y a
  *    un blocage ; l'autre personne qui l'avait quittée (« masquée ») la retrouve ;
  *  - dernière activité de la conversation mise à jour sans recopier le corps en clair (ADR-33) ; le message envoyé est
@@ -36,6 +39,8 @@ final class SendMessage
         private readonly MessagingContacts $contacts,
         private readonly MediaUploader $uploader,
         private readonly MessageNotifier $notifier,
+        private readonly BadWordFilter $filter,
+        private readonly ReportContent $reports,
     ) {}
 
     public function __invoke(User $author, Conversation $conversation, ?string $body, string $clientUuid, ?UploadedFile $attachment = null): SendOutcome
@@ -47,6 +52,10 @@ final class SendMessage
         }
 
         $this->ensureSendable($author, $conversation);
+
+        // Filtre minimal de contenus (D-IOS-9) : conversations de GROUPE seulement. Un message privé 1-à-1 n'est jamais lu
+        // par le serveur (confidentialité) ; il n'est examiné que s'il est signalé par sa destinataire.
+        $verdict = $conversation->isGroup() ? $this->filter->assertAllowed(['body' => $body], 'group_message') : null;
 
         $stored = $attachment === null ? null : $this->store($attachment);
 
@@ -85,6 +94,10 @@ final class SendMessage
             }
 
             return new SendOutcome($existing, created: false);
+        }
+
+        if ($verdict !== null && $verdict->needsReview()) {
+            $this->reports->automatic($message, $verdict);
         }
 
         $this->notifier->messageSent($message, $author, $conversation);

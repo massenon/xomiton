@@ -144,6 +144,10 @@
     "@account_push_fields_p256dh": {
         "description": "account.push.fields.p256dh"
     },
+    "account_push_fields_platform": "Plateforme de l’appareil",
+    "@account_push_fields_platform": {
+        "description": "account.push.fields.platform"
+    },
     "account_push_fields_token": "Jeton de l’appareil",
     "@account_push_fields_token": {
         "description": "account.push.fields.token"
@@ -2699,6 +2703,26 @@
     "@admin_moderation_all_kinds": {
         "description": "admin.moderation.all_kinds"
     },
+    "admin_moderation_allow_confirm_remove": "Retirer cette expression de la liste blanche ?",
+    "@admin_moderation_allow_confirm_remove": {
+        "description": "admin.moderation.allow.confirm_remove"
+    },
+    "admin_moderation_allow_empty": "Aucune expression autorisée.",
+    "@admin_moderation_allow_empty": {
+        "description": "admin.moderation.allow.empty"
+    },
+    "admin_moderation_allow_help": "Une expression légitime (nom de lieu, mot de métier) retirée du texte avant la recherche des mots filtrés.",
+    "@admin_moderation_allow_help": {
+        "description": "admin.moderation.allow.help"
+    },
+    "admin_moderation_allow_phrase": "Expression autorisée",
+    "@admin_moderation_allow_phrase": {
+        "description": "admin.moderation.allow.phrase"
+    },
+    "admin_moderation_allow_title": "Liste blanche (faux positifs)",
+    "@admin_moderation_allow_title": {
+        "description": "admin.moderation.allow.title"
+    },
     "admin_moderation_author": "Auteur·e :",
     "@admin_moderation_author": {
         "description": "admin.moderation.author"
@@ -2947,6 +2971,10 @@
     "@admin_moderation_intro": {
         "description": "admin.moderation.intro"
     },
+    "admin_moderation_kpi_blocked": "Refus du filtre (30 j)",
+    "@admin_moderation_kpi_blocked": {
+        "description": "admin.moderation.kpi.blocked"
+    },
     "admin_moderation_kpi_handled": "Traités",
     "@admin_moderation_kpi_handled": {
         "description": "admin.moderation.kpi.handled"
@@ -3070,9 +3098,53 @@
     "@admin_moderation_table_caption": {
         "description": "admin.moderation.table_caption"
     },
+    "admin_moderation_test_help": "Applique les règles en vigueur sans rien enregistrer ni journaliser.",
+    "@admin_moderation_test_help": {
+        "description": "admin.moderation.test.help"
+    },
+    "admin_moderation_test_outcome_blocked": "Refusé : le texte serait bloqué.",
+    "@admin_moderation_test_outcome_blocked": {
+        "description": "admin.moderation.test.outcome_blocked"
+    },
+    "admin_moderation_test_outcome_clean": "Aucun problème : le texte serait publié.",
+    "@admin_moderation_test_outcome_clean": {
+        "description": "admin.moderation.test.outcome_clean"
+    },
+    "admin_moderation_test_outcome_flagged": "Publié, avec un signalement automatique.",
+    "@admin_moderation_test_outcome_flagged": {
+        "description": "admin.moderation.test.outcome_flagged"
+    },
+    "admin_moderation_test_outcome_hidden": "Publié puis masqué, en file de modération.",
+    "@admin_moderation_test_outcome_hidden": {
+        "description": "admin.moderation.test.outcome_hidden"
+    },
+    "admin_moderation_test_run": "Tester",
+    "@admin_moderation_test_run": {
+        "description": "admin.moderation.test.run"
+    },
+    "admin_moderation_test_text": "Texte à tester",
+    "@admin_moderation_test_text": {
+        "description": "admin.moderation.test.text"
+    },
+    "admin_moderation_test_title": "Tester un texte",
+    "@admin_moderation_test_title": {
+        "description": "admin.moderation.test.title"
+    },
     "admin_moderation_title": "Modération",
     "@admin_moderation_title": {
         "description": "admin.moderation.title"
+    },
+    "admin_moderation_toasts_allow_added": "Expression ajoutée à la liste blanche.",
+    "@admin_moderation_toasts_allow_added": {
+        "description": "admin.moderation.toasts.allow_added"
+    },
+    "admin_moderation_toasts_allow_exists": "Cette expression est déjà dans la liste blanche.",
+    "@admin_moderation_toasts_allow_exists": {
+        "description": "admin.moderation.toasts.allow_exists"
+    },
+    "admin_moderation_toasts_allow_removed": "Expression retirée de la liste blanche.",
+    "@admin_moderation_toasts_allow_removed": {
+        "description": "admin.moderation.toasts.allow_removed"
     },
     "admin_moderation_toasts_dismiss": "{count, plural, =1{Signalement ignoré.} other{{count} signalements ignorés.}}",
     "@admin_moderation_toasts_dismiss": {
@@ -20459,9 +20531,37 @@
     "@enums_community_rsvp_status_interested": {
         "description": "enums/community.rsvp_status.interested"
     },
+    "enums_content_bad_word_category_autre": "Autre",
+    "@enums_content_bad_word_category_autre": {
+        "description": "enums/content.bad_word_category.autre"
+    },
+    "enums_content_bad_word_category_coordonnees": "Coordonnées personnelles",
+    "@enums_content_bad_word_category_coordonnees": {
+        "description": "enums/content.bad_word_category.coordonnees"
+    },
+    "enums_content_bad_word_category_haine": "Incitation à la haine",
+    "@enums_content_bad_word_category_haine": {
+        "description": "enums/content.bad_word_category.haine"
+    },
+    "enums_content_bad_word_category_insulte": "Insulte",
+    "@enums_content_bad_word_category_insulte": {
+        "description": "enums/content.bad_word_category.insulte"
+    },
+    "enums_content_bad_word_category_lien": "Lien suspect",
+    "@enums_content_bad_word_category_lien": {
+        "description": "enums/content.bad_word_category.lien"
+    },
+    "enums_content_bad_word_category_violence": "Incitation à la violence",
+    "@enums_content_bad_word_category_violence": {
+        "description": "enums/content.bad_word_category.violence"
+    },
     "enums_content_bad_word_severity_bloquer": "Bloquer la publication",
     "@enums_content_bad_word_severity_bloquer": {
         "description": "enums/content.bad_word_severity.bloquer"
+    },
+    "enums_content_bad_word_severity_masquer": "Masquer et mettre en file de modération",
+    "@enums_content_bad_word_severity_masquer": {
+        "description": "enums/content.bad_word_severity.masquer"
     },
     "enums_content_bad_word_severity_signaler": "Signaler pour relecture",
     "@enums_content_bad_word_severity_signaler": {
@@ -21320,7 +21420,7 @@
     "@feed_api_choice_unknown": {
         "description": "feed.api.choice_unknown"
     },
-    "feed_api_content_blocked": "Ce texte contient des mots non autorisés par la charte. Reformule-le, puis réessaie.",
+    "feed_api_content_blocked": "Ce texte ne respecte pas la charte de Xomiton (mots blessants, coordonnées personnelles ou lien à risque). Reformule-le avec bienveillance, puis réessaie. Si tu penses que c’est une erreur, écris-nous.",
     "@feed_api_content_blocked": {
         "description": "feed.api.content_blocked"
     },
@@ -21700,6 +21800,10 @@
     "feed_moderation_auto_reporter": "Filtre automatique",
     "@feed_moderation_auto_reporter": {
         "description": "feed.moderation.auto_reporter"
+    },
+    "feed_moderation_filter_hidden_reason": "Masqué par le filtre de contenus, en attente de relecture.",
+    "@feed_moderation_filter_hidden_reason": {
+        "description": "feed.moderation.filter_hidden_reason"
     },
     "feed_offline_failed": "Ta publication mise en attente n’a pas pu partir. Vérifie son contenu, puis publie-la à nouveau.",
     "@feed_offline_failed": {
@@ -26330,6 +26434,34 @@
     "notifications_invitation_received_title": "Nouvelle invitation",
     "@notifications_invitation_received_title": {
         "description": "notifications.invitation_received.title"
+    },
+    "notifications_ios_body_alert_routed": "Alerte à traiter",
+    "@notifications_ios_body_alert_routed": {
+        "description": "notifications.ios_body.alert_routed"
+    },
+    "notifications_ios_body_content_reported": "Un contenu attend un examen",
+    "@notifications_ios_body_content_reported": {
+        "description": "notifications.ios_body.content_reported"
+    },
+    "notifications_ios_body_default": "Nouvelle notification",
+    "@notifications_ios_body_default": {
+        "description": "notifications.ios_body.default"
+    },
+    "notifications_ios_body_duty_alert": "Alerte à traiter",
+    "@notifications_ios_body_duty_alert": {
+        "description": "notifications.ios_body.duty_alert"
+    },
+    "notifications_ios_body_duty_sos": "Alerte à traiter",
+    "@notifications_ios_body_duty_sos": {
+        "description": "notifications.ios_body.duty_sos"
+    },
+    "notifications_ios_body_message": "Nouveau message",
+    "@notifications_ios_body_message": {
+        "description": "notifications.ios_body.message"
+    },
+    "notifications_ios_body_peer_pending": "Une demande attend ton avis",
+    "@notifications_ios_body_peer_pending": {
+        "description": "notifications.ios_body.peer_pending"
     },
     "notifications_moderation_approved_body": "L’équipe Xomiton a validé ton inscription : bienvenue dans la communauté.",
     "@notifications_moderation_approved_body": {
@@ -37491,6 +37623,10 @@
                 "type": "String"
             }
         }
+    },
+    "validation_pseudo_rejected": "Ce pseudonyme ne respecte pas la charte de Xomiton (mot blessant ou coordonnées personnelles). Choisis-en un autre.",
+    "@validation_pseudo_rejected": {
+        "description": "validation.pseudo.rejected"
     },
     "validation_pseudo_taken": "Ce pseudonyme est déjà pris. Choisis-en un autre.",
     "@validation_pseudo_taken": {

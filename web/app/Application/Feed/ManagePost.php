@@ -36,7 +36,7 @@ final class ManagePost
      */
     public function update(Post $post, array $changes): Post
     {
-        $verdict = $this->filter->assertAllowed(['body' => $changes['body'] ?? null]);
+        $verdict = $this->filter->assertAllowed(['body' => $changes['body'] ?? null], 'post');
 
         if (array_key_exists('body', $changes)) {
             $post->body = trim((string) $changes['body']);
@@ -57,7 +57,7 @@ final class ManagePost
 
         $post->save();
 
-        if ($verdict->isFlagged()) {
+        if ($verdict->needsReview()) {
             $this->reports->automatic($post, $verdict);
         }
 

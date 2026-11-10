@@ -355,7 +355,7 @@ it('ne laisse lire un message signalé qu’à la modération', function (): voi
 });
 
 it('gère les mots interdits : ajout normalisé, doublon, gravité, retrait et journal', function (): void {
-    modScreen()
+    modScreen('admin')
         ->set('wordText', 'x')
         ->call('addWord')
         ->assertHasErrors(['wordText'])
@@ -375,7 +375,7 @@ it('gère les mots interdits : ajout normalisé, doublon, gravité, retrait et j
     $word = BadWord::query()->where('word', 'argent facile')->firstOrFail();
     expect($word->severity->value)->toBe('bloquer')->and(AuditLog::query()->where('action', 'moderation.word_added')->exists())->toBeTrue();
 
-    modScreen()->call('removeWord', $word->id);
+    modScreen('admin')->call('removeWord', $word->id);
     expect(BadWord::query()->count())->toBe(0)->and(AuditLog::query()->where('action', 'moderation.word_removed')->exists())->toBeTrue();
 });
 

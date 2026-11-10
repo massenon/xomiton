@@ -126,7 +126,7 @@ describe('ouvrir un sujet', function (): void {
         F::badWord('surveillex', BadWordSeverity::Flag);
 
         openTopic($this->awa, ['title' => 'Un insultex ici'])->assertUnprocessable()
-            ->assertJsonPath('code', 'content_blocked')->assertJsonValidationErrors('title');
+            ->assertJsonPath('code', 'content_rejected')->assertJsonValidationErrors('title');
         expect(ForumTopic::query()->count())->toBe(0);
 
         openTopic($this->awa, ['body' => 'Un message avec surveillex dedans.'])->assertCreated();

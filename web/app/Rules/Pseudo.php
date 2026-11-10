@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Rules;
 
 use App\Application\Account\Settings\PseudonymChanges;
+use App\Application\Feed\BadWordFilter;
+use App\Domain\Feed\Exceptions\ContentBlocked;
+use App\Exceptions\ApiExceptionRenderer;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -39,6 +42,20 @@ final class Pseudo implements ValidationRule
 
         if (preg_match(self::PATTERN, $value) !== 1) {
             $fail('validation.pseudo.format')->translate();
+
+            return;
+        }
+
+        // Filtre minimal de contenus (D-IOS-9) : pseudonyme injurieux ou portant des coordonnées. API : 422 `content_rejected` ;
+        // formulaire web : erreur de champ.
+        try {
+            app(BadWordFilter::class)->assertAllowed(['pseudo' => $value], 'pseudo');
+        } catch (ContentBlocked $e) {
+            if (ApiExceptionRenderer::wants(request())) {
+                throw $e;
+            }
+
+            $fail('validation.pseudo.rejected')->translate();
 
             return;
         }

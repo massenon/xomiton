@@ -31,7 +31,7 @@ final class CreateGroup
      */
     public function __invoke(User $owner, GroupDraft $draft): Group
     {
-        $verdict = $this->filter->assertAllowed(['name' => $draft->name, 'description' => $draft->description]);
+        $verdict = $this->filter->assertAllowed(['name' => $draft->name, 'description' => $draft->description], 'group');
 
         /** @var Group $group */
         $group = DB::transaction(static function () use ($owner, $draft): Group {
@@ -62,8 +62,8 @@ final class CreateGroup
 
         // Terme « à surveiller » : le groupe reste créé ; l'entrée `group.words_flagged` sera relue par l'écran Réseau
         // social (P12-05), `moderation_reports` ne visant encore que publications, commentaires, messages et comptes.
-        if ($verdict->isFlagged()) {
-            Audit::log('group.words_flagged', $group, (string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->flaggingTerms)]), $owner);
+        if ($verdict->needsReview()) {
+            Audit::log('group.words_flagged', $group, (string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->reviewTerms())]), $owner);
         }
 
         return $group;

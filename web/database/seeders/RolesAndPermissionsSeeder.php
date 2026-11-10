@@ -91,6 +91,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // Modération et contenu
             'moderation.manage' => $moderators,
+            'moderation.filter' => $admins,
 
             // Contenu : thématiques, ressources, FAQ, lois
             'thematiques.manage' => $admins,

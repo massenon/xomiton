@@ -27,6 +27,7 @@ class BadWord extends Model
     /** @var list<string> */
     protected $fillable = [
         'word',
+        'category',
         'severity',
         'is_active',
     ];

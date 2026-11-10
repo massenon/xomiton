@@ -32,7 +32,7 @@ final class StartTopic
      */
     public function __invoke(User $author, TopicDraft $draft): ForumTopic
     {
-        $verdict = $this->filter->assertAllowed(['title' => $draft->title, 'body' => $draft->body]);
+        $verdict = $this->filter->assertAllowed(['title' => $draft->title, 'body' => $draft->body], 'forum_topic');
 
         /** @var ForumTopic $topic */
         $topic = DB::transaction(function () use ($author, $draft): ForumTopic {
@@ -52,7 +52,7 @@ final class StartTopic
             return $topic;
         });
 
-        if ($verdict->isFlagged()) {
+        if ($verdict->needsReview()) {
             $this->reports->automatic($topic, $verdict);
         }
 

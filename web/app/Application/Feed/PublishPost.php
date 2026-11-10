@@ -49,7 +49,7 @@ final class PublishPost
             }
         }
 
-        $verdict = $this->filter->assertAllowed($texts);
+        $verdict = $this->filter->assertAllowed($texts, 'post');
         $stored = $draft->image !== null ? $this->uploader->upload($draft->image, 'images') : null;
 
         try {
@@ -63,7 +63,7 @@ final class PublishPost
             throw $exception;
         }
 
-        if ($verdict->isFlagged()) {
+        if ($verdict->needsReview()) {
             $this->reports->automatic($post, $verdict);
         }
 

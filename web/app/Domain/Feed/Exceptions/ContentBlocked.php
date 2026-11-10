@@ -7,8 +7,9 @@ namespace App\Domain\Feed\Exceptions;
 use App\Domain\Shared\Exceptions\DomainException;
 
 /**
- * Texte refusé par le filtre de mots (`bad_words` « bloquer », FR-SOC-06) : message neutre, sans jamais citer le terme
- * ni exposer la liste (simulateur `post` : « un commentaire bloqué renvoie un message neutre »).
+ * Texte refusé par le filtre de contenus (`bad_words` « bloquer », motifs de coordonnées, FR-SOC-06, D-IOS-9) : 422 de
+ * code stable `content_rejected`, message neutre et bienveillant, sans jamais citer le terme ni exposer la liste. Le
+ * code était `content_blocked` avant le lot IOS-10 (aucun client ne le lisait).
  */
 final class ContentBlocked extends DomainException
 {
@@ -19,7 +20,7 @@ final class ContentBlocked extends DomainException
 
     public function errorCode(): string
     {
-        return 'content_blocked';
+        return 'content_rejected';
     }
 
     public function errors(): array

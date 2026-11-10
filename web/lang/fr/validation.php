@@ -169,6 +169,7 @@ return [
         'length' => 'Ton pseudonyme doit contenir entre :min et :max caractères.',
         'format' => 'Ton pseudonyme ne peut contenir que des lettres, des chiffres, des points, des tirets et des tirets bas.',
         'taken' => 'Ce pseudonyme est déjà pris. Choisis-en un autre.',
+        'rejected' => 'Ce pseudonyme ne respecte pas la charte de Xomiton (mot blessant ou coordonnées personnelles). Choisis-en un autre.',
     ],
     'strong_password' => [
         'too_short' => 'Ton mot de passe doit contenir au moins :min caractères.',

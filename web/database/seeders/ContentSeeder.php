@@ -328,10 +328,10 @@ class ContentSeeder extends Seeder
 
     private function seedBadWords(): void
     {
-        foreach ($this->data('bad_words') as [$word, $severity]) {
+        foreach ($this->data('bad_words') as [$word, $severity, $category]) {
             BadWord::query()->updateOrCreate(
                 ['word' => $word],
-                ['severity' => BadWordSeverity::from($severity), 'is_active' => true],
+                ['severity' => BadWordSeverity::from($severity), 'category' => $category ?? 'autre', 'is_active' => true],
             );
         }
     }

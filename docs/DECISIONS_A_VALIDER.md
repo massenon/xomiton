@@ -37,7 +37,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | Q66 | Newsletter : confirmation par bouton (un clic de plus) | POST de confirmation | Client | Avant production |
 | Q37 | Code PIN local et mode discret (iOS : icône seulement) | PIN haché local, seul `pin_enabled` synchronisé | Client | Avant production |
 | Q85 | Maintenance : permission dédiée, écart à `ROLE_ET_PERMISSIONS.md` §3 | Permission dédiée, admin en lecture | Technique | Avant production |
-| Q74 | Messagerie : lecture du message signalé par la modération, filtre de mots | Lecture du seul message signalé ; **filtre minimal serveur depuis le 2026-11-10 (D-IOS-9 révise « pas de filtre »)** | Client | Avant production |
+| Q74 | Messagerie : lecture du message signalé par la modération, filtre de mots | Lecture du seul message signalé ; **filtre minimal serveur implémenté (IOS-10, D-IOS-9 révise « pas de filtre ») ; liste de départ à valider par la modération et le conseil** | Client | Avant production |
 | Q94 | Admin système : droits admin / superadmin, résolution des conflits | Admin lit, superadmin écrit ; conflit écrit selon les règles | Technique | Avant production |
 | Q91 | Inscriptions : validation manuelle « tous » sans restriction d'accès | `reg_manual_validation` (`peers` par défaut) ; restrictions à définir (Q26) | Client | Avant production |
 | Q92 | Registres : archivage logique, dossier créé au nom de l'admin | Appliqué | Client | Avant production |
@@ -105,7 +105,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | D-IOS-11 | Compte Apple organisation | **Tranché 2026-11-10 (recommandation retenue par le client)** |
 | D-IOS-12 | Liste restreinte de boutiques (Bénin et voisins francophones), UE à décider | **Tranché 2026-11-10 (recommandation retenue par le client)** |
 
-D-IOS-9 révise Q74 : la ligne Q74 ci-dessus (« pas de filtre ») est remplacée par un filtre minimal serveur sur publications, commentaires et messages de groupe.
+D-IOS-9 révise Q74 : la ligne Q74 ci-dessus (« pas de filtre ») est remplacée par un filtre minimal serveur sur publications, commentaires et messages de groupe. **Implémenté** (lot IOS-10) : la liste de départ est volontairement courte et neutre ; **à valider par la modération et le conseil** (liste réelle, catégories, action par catégorie, liste blanche).
 
 ## 6. Lecture
 

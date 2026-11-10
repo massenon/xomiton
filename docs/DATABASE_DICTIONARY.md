@@ -124,7 +124,10 @@ Migrations Laravel / Sanctum publiées, inchangées (sessions en base, D7).
 `assistant_messages` : `id` · `conversation_id FK cascade` · `role string(10)` (`user`, `assistant`, `system`) · `body text [chiffré]` · `matched_kb_id FK null` · `created_at`.
 
 ### `bad_words`
-`id` · `word string(80) unique` · `severity string(10)` (`BadWordSeverity` : `bloquer`, `signaler`) · `is_active boolean default true`.
+`id` · `word string(80) unique` · `category string(20) default autre` (`BadWordCategory` : `insulte`, `haine`, `violence`, `autre`) · `severity string(10)` (`BadWordSeverity` : `bloquer`, `masquer`, `signaler`) · `is_active boolean default true`.
+
+### `content_filter_allowlist`
+Liste blanche du filtre de contenus (IOS-10) : `id` · `phrase string(80) unique` (`cf_allowlist_phrase_unique`) · `created_at`, `updated_at`. Expression légitime retirée du texte avant la recherche des mots filtrés.
 
 ## 4. Réseau social
 

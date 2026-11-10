@@ -70,7 +70,7 @@ describe('création', function (): void {
             ->assertUnprocessable()->assertJsonValidationErrors('privacy');
         F::badWord('injure');
         F::as($this->awa)->postJson('/api/v1/groups', ['name' => 'Cercle', 'description' => 'une injure', 'privacy' => 'public'])
-            ->assertUnprocessable()->assertJsonPath('code', 'content_blocked')->assertJsonValidationErrors('description');
+            ->assertUnprocessable()->assertJsonPath('code', 'content_rejected')->assertJsonValidationErrors('description');
 
         F::as(F::member(verified: false))->postJson('/api/v1/groups', ['name' => 'Cercle', 'privacy' => 'public'])->assertForbidden();
         expect(Group::query()->count())->toBe(0);

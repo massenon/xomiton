@@ -29,7 +29,7 @@ final class CreatePage
      */
     public function __invoke(User $owner, PageDraft $draft): Page
     {
-        $verdict = $this->filter->assertAllowed(['name' => $draft->name, 'description' => $draft->description]);
+        $verdict = $this->filter->assertAllowed(['name' => $draft->name, 'description' => $draft->description], 'page');
 
         /** @var Page $page */
         $page = DB::transaction(static function () use ($owner, $draft): Page {
@@ -55,8 +55,8 @@ final class CreatePage
         Audit::log('page.created', $page, null, $owner);
 
         // Terme « à surveiller » : la page attend déjà l'approbation (P12-05), qui relira `page.words_flagged`.
-        if ($verdict->isFlagged()) {
-            Audit::log('page.words_flagged', $page, (string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->flaggingTerms)]), $owner);
+        if ($verdict->needsReview()) {
+            Audit::log('page.words_flagged', $page, (string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->reviewTerms())]), $owner);
         }
 
         return $page;

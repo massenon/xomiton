@@ -44,7 +44,7 @@ final class CreateEvent
             'description' => $draft->description,
             'place' => $draft->place,
             'address' => $draft->address,
-        ]);
+        ], 'event');
 
         $event = Event::query()->create([
             'title' => trim($draft->title),
@@ -66,8 +66,8 @@ final class CreateEvent
 
         Audit::log('event.created', $event, null, $organizer);
 
-        if ($verdict->isFlagged()) {
-            Audit::log('event.words_flagged', $event, (string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->flaggingTerms)]), $organizer);
+        if ($verdict->needsReview()) {
+            Audit::log('event.words_flagged', $event, (string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->reviewTerms())]), $organizer);
         }
 
         if ($event->is_public) {

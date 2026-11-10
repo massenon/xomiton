@@ -3,14 +3,17 @@
 declare(strict_types=1);
 
 /*
- * Termes filtrés par la modération automatique (prototype_social/data/bad_words.json) : [mot, gravité].
+ * Liste de DÉPART du filtre de contenus (D-IOS-9) : [mot, gravité, catégorie]. NEUTRE et courte : une structure et
+ * quelques exemples génériques, la liste réelle sera complétée par l'équipe de modération (Administration › Modération ›
+ * Mots filtrés) et validée par le conseil. Les coordonnées personnelles et les liens suspects sont des motifs de structure
+ * (config/xomiton.php, `moderation.content_filter`), pas des mots.
  */
 return [
-    ['sale pédé', 'bloquer'],
-    ['gouine', 'bloquer'],
-    ['va mourir', 'bloquer'],
-    ['tarée', 'signaler'],
-    ['casse-toi', 'signaler'],
-    ['argent facile', 'signaler'],
-    ['clique ici', 'signaler'],
+    ['sale pédé', 'bloquer', 'haine'],
+    ['gouine', 'bloquer', 'haine'],
+    ['va mourir', 'bloquer', 'violence'],
+    ['tarée', 'signaler', 'insulte'],
+    ['casse-toi', 'signaler', 'insulte'],
+    ['argent facile', 'signaler', 'autre'],
+    ['clique ici', 'signaler', 'autre'],
 ];

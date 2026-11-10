@@ -34,6 +34,16 @@ return [
     'bad_word_severity' => [
         'bloquer' => 'Bloquer la publication',
         'signaler' => 'Signaler pour relecture',
+        'masquer' => 'Masquer et mettre en file de modération',
+    ],
+
+    'bad_word_category' => [
+        'insulte' => 'Insulte',
+        'haine' => 'Incitation à la haine',
+        'violence' => 'Incitation à la violence',
+        'coordonnees' => 'Coordonnées personnelles',
+        'lien' => 'Lien suspect',
+        'autre' => 'Autre',
     ],
 
 ];

@@ -159,7 +159,7 @@ it('crée un événement : 201 + Location, organisatrice, adresse chiffrée, jou
 
     F::badWord('interdit');
     F::as($this->awa)->postJson('/api/v1/events', ['title' => 'Atelier interdit', 'starts_at' => now()->addDay()->toIso8601String()])
-        ->assertUnprocessable()->assertJsonPath('code', 'content_blocked');
+        ->assertUnprocessable()->assertJsonPath('code', 'content_rejected');
 
     F::as(F::member(verified: false))->postJson('/api/v1/events', ['title' => 'Atelier', 'starts_at' => now()->addDay()->toIso8601String()])->assertForbidden();
     expect(Event::query()->count())->toBe(1);

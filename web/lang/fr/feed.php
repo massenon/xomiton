@@ -275,7 +275,7 @@ return [
 
     // API du fil (P7-02, docs/API.md §8) : erreurs métier et noms de champs des Form Requests App\Http\Requests\Api\Feed.
     'api' => [
-        'content_blocked' => 'Ce texte contient des mots non autorisés par la charte. Reformule-le, puis réessaie.',
+        'content_blocked' => 'Ce texte ne respecte pas la charte de Xomiton (mots blessants, coordonnées personnelles ou lien à risque). Reformule-le avec bienveillance, puis réessaie. Si tu penses que c’est une erreur, écris-nous.',
         'tag_poll' => 'Un sondage se publie avec sa question et ses réponses (type « sondage »).',
         'tag_change_poll' => 'Le type d’un sondage ne peut pas être modifié.',
         'anonymous_followers' => 'Une publication anonyme ne peut pas être réservée à tes abonné·es : choisis « Public » ou « Moi uniquement ».',
@@ -313,6 +313,7 @@ return [
     // Textes lus par l'équipe de modération (registre neutre) : motif de masquage et signalement automatique.
     'moderation' => [
         'auto_hidden_reason' => 'Masqué automatiquement après :count signalements (RG-16), en attente de relecture.',
+        'filter_hidden_reason' => 'Masqué par le filtre de contenus, en attente de relecture.',
         'auto_reporter' => 'Filtre automatique',
         'auto_details' => 'Termes surveillés : :terms',
     ],

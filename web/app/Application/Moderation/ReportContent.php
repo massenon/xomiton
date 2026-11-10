@@ -127,17 +127,22 @@ final class ReportContent
     }
 
     /**
-     * Signalement ouvert par le filtre de mots (`bad_words` « signaler ») : le contenu reste publié, l'équipe le relit.
+     * Signalement ouvert par le filtre de contenus (`bad_words` « signaler » ou « masquer », motifs) : « signaler » laisse le
+     * contenu publié, « masquer » le masque aussitôt (D-IOS-9) ; dans les deux cas l'équipe le relit.
      * Les termes trouvés ne sont lisibles que dans le détail du signalement (jamais renvoyés à l'auteur·rice).
      */
-    public function automatic(Post|Comment|ForumTopic|ForumReply $subject, ContentVerdict $verdict): ModerationReport
+    public function automatic(Post|Comment|ForumTopic|ForumReply|Message $subject, ContentVerdict $verdict): ModerationReport
     {
         $report = $this->createReport($subject, [
             'reporter_user_id' => null,
             'reporter_label' => (string) __('feed.moderation.auto_reporter'),
             'reason' => ContentReportReason::Automatic->label(),
-            'details' => Str::limit((string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->flaggingTerms)]), 500, ''),
+            'details' => Str::limit((string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->reviewTerms())]), 500, ''),
         ]);
+
+        if ($verdict->isHidden()) {
+            $this->visibility->hide($subject, (string) __('feed.moderation.filter_hidden_reason'));
+        }
 
         $this->dispatch($report, null);
 

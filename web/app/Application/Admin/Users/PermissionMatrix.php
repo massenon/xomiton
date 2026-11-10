@@ -42,7 +42,7 @@ final class PermissionMatrix
         'directory' => ['directory.view', 'directory.manage'],
         'validation' => ['validation_rules.manage'],
         'indicators' => ['indicators.view_zone', 'indicators.view', 'indicators.manage', 'reports.generate'],
-        'moderation' => ['moderation.manage', 'posts.moderate'],
+        'moderation' => ['moderation.manage', 'moderation.filter', 'posts.moderate'],
         'content' => ['thematiques.manage', 'resources.manage', 'faqs.manage', 'laws.manage', 'ccc_tools.manage'],
         'assistant' => ['assistant_kb.manage'],
         'newsletter' => ['newsletter.manage_subscribers', 'newsletter.manage_campaigns', 'newsletter.send'],

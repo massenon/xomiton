@@ -76,7 +76,7 @@ Taille de page : `?per_page=` borné à `xomiton.api.max_per_page` (50) par `Api
 | `device_required` | 403 | `sync/*`, `heartbeat` sans `X-Device-Id` d'un appareil enregistré du compte (§21, P9-06) | `sync.device.required` |
 | `cursor_invalid` | 422 | `GET sync/pull?since=` illisible : relancer un tirage complet (`errors.since`, §21.3) | `sync.cursor_invalid` |
 | `newsletter_bounced` · `newsletter_email_missing` · `newsletter_not_subscribed` | 422 | `PATCH me/newsletter` : adresse en rebond, compte sans e-mail, centres d'intérêt sans abonnement (§3, P6-06) | `account.newsletter.*` |
-| `content_blocked` | 422 | texte refusé par le filtre de mots (`bad_words` « bloquer », §8.3) : `errors.<champ>`, message neutre sans le terme | `feed.api.content_blocked` |
+| `content_rejected` | 422 | texte refusé par le **filtre minimal de contenus** (IOS-10, D-IOS-9, règle Apple 1.2 ; ancien code `content_blocked`) : mot filtré « bloquer », coordonnées personnelles dans l'espace public, ou pseudonyme refusé ; `errors.<champ>` (`body`, `title`, `description`, `pseudo`…), message bienveillant sans le terme, §8.3 | `feed.api.content_blocked` |
 | `poll_closed` | 422 | vote ou retrait sur un sondage terminé (§8.2) | `feed.poll.already_closed` |
 | `group_last_admin` | 422 | `POST groups/{ulid}/leave` par la dernière admin du groupe (§13) | `community.groups.errors.last_admin` |
 | `group_member_not_manageable` | 403 | geste sur la propriétaire ou sur un rôle égal ou supérieur (§13) | `community.groups.errors.not_manageable` |
@@ -619,7 +619,17 @@ Motifs `reason` (`App\Enums\ContentReportReason`, libellé gardé dans `moderati
 | `poll.options` | 2 à 6 réponses ≤ 80 car., distinctes (casse et accents ignorés) ; réponses vides retirées (comme le prototype) |
 | `poll.duration_days` | 1, 3, 7, 14, 30 ; 0 ou absent = sans fin |
 
-**Filtre de mots** (`bad_words`, FR-SOC-06) sur le corps, le texte alternatif, la question et chaque réponse, avant tout téléversement : terme « bloquer » → 422 `content_blocked` (`errors.<champ>`, message neutre, jamais le terme) ; terme « signaler » → publication en ligne **et** signalement automatique (`reporter_user_id` nul, motif « Mots surveillés (filtre automatique) », termes dans `details` lu par la seule modération), sans incrémenter `reports_count`.
+**Filtre minimal de contenus** (`App\Application\Feed\BadWordFilter`, FR-SOC-06, IOS-10 / D-IOS-9) sur le corps, le texte alternatif, la question et chaque réponse, avant tout téléversement : terme « bloquer » → 422 **`content_rejected`** (`errors.<champ>`, message neutre et bienveillant, jamais le terme ni la liste) ; terme « masquer » → publication créée **puis masquée** et mise en file de modération (signalement automatique) ; terme « signaler » → publication en ligne **et** signalement automatique (`reporter_user_id` nul, motif « Mots surveillés (filtre automatique) », termes dans `details` lu par la seule modération), sans incrémenter `reports_count`.
+
+**Périmètre du filtre** (mêmes règles partout, comparaison **sans accents, sans casse, sans ponctuation de contournement** : « i.n.s.u.l.t.e », « i n s u l t e », lettres répétées, chiffres de substitution ; **liste blanche** `content_filter_allowlist` pour les faux positifs) :
+
+| Appliqué à (surface) | Mots filtrés | Coordonnées personnelles (numéro, e-mail, adresse, lien de messagerie) | Liens suspects |
+|---|---|---|---|
+| publications (création, modification), commentaires, sujets et réponses de forum, descriptions et noms de pages, de groupes, événements, pseudonymes (inscription, changement) | oui | oui : **refus** (`content_rejected`) | oui : signalement automatique |
+| messages d'une **conversation de groupe** (`POST conversations/{ulid}/messages`, `sync/push` type `message`) | oui | non (on s'y échange des numéros) | oui : signalement automatique |
+| messages **privés 1-à-1**, signalements, SOS, besoins, alertes, formulaires de collecte | **jamais** : aucune lecture (confidentialité, RG-01 : une victime écrit librement) | jamais | jamais |
+
+Règles réglées dans `xomiton.moderation.content_filter` (`enabled`, action par catégorie `patterns` : `block`, `hide`, `flag`, `off` ; surfaces des coordonnées ; hôtes de liens autorisés ou suspects ; fenêtre du compteur). Mots : table `bad_words` (`word`, `category` : insulte, haine, violence, autre ; `severity` : bloquer, masquer, signaler), gérés dans Administration › Modération (permission dédiée **`moderation.filter`**, admin et superadmin) avec ajout, retrait, liste blanche, **test d'un texte** (sans écriture) et compteur de refus des 30 derniers jours. Journal d'audit **sans contenu** : `content_filter.rejected` (refus) et `content_filter.reviewed` (signalé ou masqué) portent la surface, le champ et les catégories seulement. Pseudonyme : sur l'API, 422 `content_rejected` (`errors.pseudo`) ; sur le formulaire web, erreur de champ. Liste de départ volontairement courte et neutre : la liste réelle est à compléter par la modération et à valider par le conseil.
 
 ### 8.4 Objets
 

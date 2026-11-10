@@ -171,7 +171,7 @@ describe('Commentaires', function (): void {
 
         FeedFixtures::as($this->reader)->postJson('/api/v1/posts/'.$post->ulid.'/comments', ['body' => ''])->assertUnprocessable()->assertJsonValidationErrors('body');
         FeedFixtures::as($this->reader)->postJson('/api/v1/posts/'.$post->ulid.'/comments', ['body' => 'Quelle tarée'])
-            ->assertUnprocessable()->assertJsonPath('code', 'content_blocked');
+            ->assertUnprocessable()->assertJsonPath('code', 'content_rejected');
         FeedFixtures::as($this->reader)->postJson('/api/v1/posts/'.$post->ulid.'/comments', ['body' => 'Réponse', 'parent_id' => $foreign->id])
             ->assertUnprocessable()->assertJsonPath('errors.parent_id.0', __('feed.api.parent_invalid'));
         expect($post->refresh()->comments_count)->toBe(0);

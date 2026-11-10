@@ -41,7 +41,7 @@ final class ReplyToTopic
             throw new TopicLocked;
         }
 
-        $verdict = $this->filter->assertAllowed(['body' => $body]);
+        $verdict = $this->filter->assertAllowed(['body' => $body], 'forum_reply');
 
         /** @var ForumReply $reply */
         $reply = DB::transaction(function () use ($topic, $author, $body, $anonymous): ForumReply {
@@ -64,7 +64,7 @@ final class ReplyToTopic
             return $reply;
         });
 
-        if ($verdict->isFlagged()) {
+        if ($verdict->needsReview()) {
             $this->reports->automatic($reply, $verdict);
         }
 

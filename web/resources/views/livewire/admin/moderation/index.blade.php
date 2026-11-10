@@ -16,6 +16,7 @@
         ['label' => __('admin.moderation.kpi.handled'), 'value' => $format->number($this->stats['handled']), 'icon' => 'check2-all', 'variant' => 'success'],
         ['label' => __('admin.moderation.kpi.suspensions'), 'value' => $format->number($this->stats['suspensions']), 'icon' => 'person-slash', 'variant' => 'warning'],
         ['label' => __('admin.moderation.kpi.words'), 'value' => $format->number($this->stats['words']), 'icon' => 'funnel', 'variant' => 'violet'],
+        ['label' => __('admin.moderation.kpi.blocked'), 'value' => $format->number($this->stats['blocked']), 'icon' => 'shield-exclamation', 'variant' => 'info'],
     ]" />
 
     <div class="row g-4">
@@ -130,6 +131,7 @@
         </div>
 
         <div class="col-xl-4">
+            @can('moderation.filter')
             <section class="card xm-admin-card mb-4" aria-labelledby="xmModWordsTitle">
                 <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmModWordsTitle">{{ __('admin.moderation.words.title') }}</h2></div>
                 <form class="card-body border-bottom row g-2" wire:submit="addWord" novalidate>
@@ -137,6 +139,14 @@
                         <label class="form-label small mb-1" for="xmModWord">{{ __('admin.moderation.words.word') }}</label>
                         <input class="form-control form-control-sm @error('wordText') is-invalid @enderror" id="xmModWord" wire:model="wordText" maxlength="40" autocomplete="off" @error('wordText') aria-invalid="true" aria-describedby="xmModWordError" @enderror>
                         @error('wordText')<div class="invalid-feedback d-block" id="xmModWordError">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small mb-1" for="xmModCategory">{{ __('admin.moderation.words.category') }}</label>
+                        <select class="form-select form-select-sm" id="xmModCategory" wire:model="wordCategory">
+                            @foreach (\App\Enums\BadWordCategory::forWords() as $case)
+                                <option value="{{ $case->value }}">{{ $case->label() }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-7">
                         <label class="visually-hidden" for="xmModSeverity">{{ __('admin.moderation.words.severity') }}</label>
@@ -152,7 +162,7 @@
                 <ul class="list-group list-group-flush xm-mod-words">
                     @forelse ($this->words as $word)
                         <li class="list-group-item d-flex align-items-center gap-2" wire:key="word-{{ $word->id }}">
-                            <span class="flex-grow-1 text-break">{{ $word->word }}</span>
+                            <span class="flex-grow-1 text-break">{{ $word->word }} <span class="small text-secondary">· {{ \App\Enums\BadWordCategory::tryFrom((string) $word->category)?->label() ?? $word->category }}</span></span>
                             <x-badge :color="$word->severity->badge()" soft>{{ $word->severity->label() }}</x-badge>
                             <button type="button" class="btn btn-sm btn-light text-danger" wire:click="removeWord({{ $word->id }})" wire:confirm="{{ __('admin.moderation.words.confirm_remove') }}" aria-label="{{ __('admin.moderation.words.remove', ['word' => $word->word]) }}"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
                         </li>
@@ -161,6 +171,49 @@
                     @endforelse
                 </ul>
             </section>
+
+            <section class="card xm-admin-card mb-4" aria-labelledby="xmModAllowTitle">
+                <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmModAllowTitle">{{ __('admin.moderation.allow.title') }}</h2></div>
+                <form class="card-body border-bottom row g-2" wire:submit="addAllowed" novalidate>
+                    <div class="col-8">
+                        <label class="visually-hidden" for="xmModAllow">{{ __('admin.moderation.allow.phrase') }}</label>
+                        <input class="form-control form-control-sm @error('allowText') is-invalid @enderror" id="xmModAllow" wire:model="allowText" maxlength="80" autocomplete="off" @error('allowText') aria-invalid="true" @enderror>
+                        @error('allowText')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-4 d-grid"><button type="submit" class="btn btn-sm btn-outline-primary" wire:loading.attr="disabled" wire:target="addAllowed">{{ __('admin.moderation.words.add') }}</button></div>
+                    <div class="col-12 form-text">{{ __('admin.moderation.allow.help') }}</div>
+                </form>
+                <ul class="list-group list-group-flush">
+                    @forelse ($this->allowed as $phrase)
+                        <li class="list-group-item d-flex align-items-center gap-2" wire:key="allow-{{ $phrase->id }}">
+                            <span class="flex-grow-1 text-break">{{ $phrase->phrase }}</span>
+                            <button type="button" class="btn btn-sm btn-light text-danger" wire:click="removeAllowed({{ $phrase->id }})" wire:confirm="{{ __('admin.moderation.allow.confirm_remove') }}" aria-label="{{ __('admin.moderation.words.remove', ['word' => $phrase->phrase]) }}"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                        </li>
+                    @empty
+                        <li class="list-group-item text-secondary small">{{ __('admin.moderation.allow.empty') }}</li>
+                    @endforelse
+                </ul>
+            </section>
+
+            <section class="card xm-admin-card mb-4" aria-labelledby="xmModTestTitle">
+                <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmModTestTitle">{{ __('admin.moderation.test.title') }}</h2></div>
+                <form class="card-body" wire:submit="testFilter" novalidate>
+                    <label class="form-label small mb-1" for="xmModTest">{{ __('admin.moderation.test.text') }}</label>
+                    <textarea class="form-control form-control-sm mb-2 @error('testText') is-invalid @enderror" id="xmModTest" rows="3" maxlength="2000" wire:model="testText" @error('testText') aria-invalid="true" @enderror></textarea>
+                    @error('testText')<div class="invalid-feedback d-block mb-2">{{ $message }}</div>@enderror
+                    <button type="submit" class="btn btn-sm btn-outline-primary" wire:loading.attr="disabled" wire:target="testFilter">{{ __('admin.moderation.test.run') }}</button>
+                    <div class="form-text">{{ __('admin.moderation.test.help') }}</div>
+                    @if ($testResult !== null)
+                        <p class="mt-3 mb-0 small" role="status" aria-live="polite">
+                            <strong>{{ __('admin.moderation.test.outcome_'.$testResult['outcome']) }}</strong>
+                            @if ($testResult['categories'] !== [])
+                                · {{ collect($testResult['categories'])->map(fn ($c) => \App\Enums\BadWordCategory::tryFrom($c)?->label() ?? $c)->implode(', ') }}
+                            @endif
+                        </p>
+                    @endif
+                </form>
+            </section>
+            @endcan
 
             <section class="card xm-admin-card mb-4" aria-labelledby="xmModSuspTitle">
                 <div class="card-header d-flex justify-content-between align-items-center gap-2">

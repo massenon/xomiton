@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Moderation;
 
+use App\Application\Feed\BadWordFilter;
 use App\Application\Moderation\DecideReport;
 use App\Application\Moderation\ReadReportedMessage;
 use App\Application\Moderation\ReportQueue;
 use App\Domain\Moderation\Exceptions\ModerationRefused;
+use App\Enums\BadWordCategory;
 use App\Enums\BadWordSeverity;
 use App\Enums\ModerationKind;
 use App\Enums\ModerationStatus;
 use App\Livewire\Attributes\SafeUrl;
 use App\Livewire\Concerns\InteractsWithUi;
 use App\Livewire\Concerns\WithDataTable;
+use App\Models\AuditLog;
 use App\Models\BadWord;
+use App\Models\ContentFilterAllowedPhrase;
 use App\Models\ModerationReport;
 use App\Models\User;
 use App\Models\UserWarning;
@@ -67,6 +71,15 @@ final class Index extends Component
 
     public string $wordSeverity = 'signaler';
 
+    public string $wordCategory = 'insulte';
+
+    public string $allowText = '';
+
+    public string $testText = '';
+
+    /** @var array{outcome: string, categories: list<string>}|null */
+    public ?array $testResult = null;
+
     public function mount(): void
     {
         $this->authorize('viewAny', ModerationReport::class);
@@ -97,7 +110,7 @@ final class Index extends Component
     // --- Données -----------------------------------------------------------------------------------------------------
 
     /**
-     * @return array{pending: int, handled: int, suspensions: int, words: int}
+     * @return array{pending: int, handled: int, suspensions: int, words: int, blocked: int}
      */
     #[Computed]
     public function stats(): array
@@ -107,6 +120,9 @@ final class Index extends Component
             'handled' => ModerationReport::query()->closed()->count(),
             'suspensions' => ModerationReport::query()->where('action', ModerationReport::ACTION_SUSPEND)->count(),
             'words' => BadWord::query()->active()->count(),
+            // Compteur de refus du filtre de contenus (journal d'audit, sans contenu) sur la fenêtre configurée.
+            'blocked' => AuditLog::query()->where('action', 'content_filter.rejected')
+                ->where('created_at', '>=', now()->subDays(max(1, (int) config('xomiton.moderation.content_filter.stats_days', 30))))->count(),
         ];
     }
 
@@ -115,6 +131,13 @@ final class Index extends Component
     public function words(): Collection
     {
         return BadWord::query()->orderBy('word')->get();
+    }
+
+    /** @return Collection<int, ContentFilterAllowedPhrase> */
+    #[Computed]
+    public function allowed(): Collection
+    {
+        return ContentFilterAllowedPhrase::query()->orderBy('phrase')->get();
     }
 
     /** @return Collection<int, User> */
@@ -261,15 +284,17 @@ final class Index extends Component
 
     public function addWord(): void
     {
-        Gate::authorize('moderation.manage');
+        Gate::authorize('moderation.filter');
 
         $this->wordText = (string) preg_replace('/\s+/u', ' ', trim($this->wordText));
         $this->validate([
             'wordText' => ['required', 'string', 'min:3', 'max:40'],
             'wordSeverity' => ['required', Rule::in(array_map(static fn (BadWordSeverity $s): string => $s->value, BadWordSeverity::cases()))],
+            'wordCategory' => ['required', Rule::in(array_map(static fn (BadWordCategory $c): string => $c->value, BadWordCategory::forWords()))],
         ], [], [
             'wordText' => (string) __('admin.moderation.words.word'),
             'wordSeverity' => (string) __('admin.moderation.words.severity'),
+            'wordCategory' => (string) __('admin.moderation.words.category'),
         ]);
 
         $word = mb_strtolower($this->wordText);
@@ -280,8 +305,8 @@ final class Index extends Component
             return;
         }
 
-        BadWord::query()->create(['word' => $word, 'severity' => $this->wordSeverity, 'is_active' => true]);
-        Audit::log('moderation.word_added', null, 'severite='.$this->wordSeverity, $this->actor());
+        BadWord::query()->create(['word' => $word, 'severity' => $this->wordSeverity, 'category' => $this->wordCategory, 'is_active' => true]);
+        Audit::log('moderation.word_added', null, 'severite='.$this->wordSeverity.' ; categorie='.$this->wordCategory, $this->actor());
 
         $this->reset('wordText');
         unset($this->words, $this->stats);
@@ -290,7 +315,7 @@ final class Index extends Component
 
     public function removeWord(int $id): void
     {
-        Gate::authorize('moderation.manage');
+        Gate::authorize('moderation.filter');
 
         $word = BadWord::query()->findOrFail($id);
         $word->delete();
@@ -298,6 +323,50 @@ final class Index extends Component
 
         unset($this->words, $this->stats);
         $this->toast((string) __('admin.moderation.toasts.word_removed'), 'info');
+    }
+
+    /** Liste blanche : expression légitime ignorée par le filtre (faux positif). */
+    public function addAllowed(): void
+    {
+        Gate::authorize('moderation.filter');
+
+        $this->allowText = (string) preg_replace('/\s+/u', ' ', trim($this->allowText));
+        $this->validate(['allowText' => ['required', 'string', 'min:2', 'max:80']], [], ['allowText' => (string) __('admin.moderation.allow.phrase')]);
+
+        $phrase = mb_strtolower($this->allowText);
+
+        if (ContentFilterAllowedPhrase::query()->where('phrase', $phrase)->exists()) {
+            $this->toast((string) __('admin.moderation.toasts.allow_exists'), 'warning');
+
+            return;
+        }
+
+        ContentFilterAllowedPhrase::query()->create(['phrase' => $phrase]);
+        Audit::log('moderation.allow_added', null, null, $this->actor());
+
+        $this->reset('allowText');
+        unset($this->allowed);
+        $this->toast((string) __('admin.moderation.toasts.allow_added'));
+    }
+
+    public function removeAllowed(int $id): void
+    {
+        Gate::authorize('moderation.filter');
+
+        ContentFilterAllowedPhrase::query()->findOrFail($id)->delete();
+        Audit::log('moderation.allow_removed', null, null, $this->actor());
+
+        unset($this->allowed);
+        $this->toast((string) __('admin.moderation.toasts.allow_removed'), 'info');
+    }
+
+    /** Teste un texte avec les règles en vigueur : aucune écriture, le texte n'est ni gardé ni journalisé. */
+    public function testFilter(BadWordFilter $filter): void
+    {
+        Gate::authorize('moderation.filter');
+
+        $this->validate(['testText' => ['required', 'string', 'max:2000']], [], ['testText' => (string) __('admin.moderation.test.text')]);
+        $this->testResult = $filter->test($this->testText);
     }
 
     // --- Intérieur ---------------------------------------------------------------------------------------------------

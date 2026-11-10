@@ -20,6 +20,7 @@ class BadWordFactory extends Factory
     {
         return [
             'word' => fake('fr_FR')->unique()->word().fake()->numberBetween(1, 999),
+            'category' => 'autre',
             'severity' => BadWordSeverity::Flag,
             'is_active' => true,
         ];

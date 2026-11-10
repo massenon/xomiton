@@ -380,6 +380,36 @@ return [
      * calculé à la lecture (ADR-33 : `conversations.last_message_preview` reste nul), sondage court sans WebSocket (D7) :
      * conversation ouverte `feed.messages_poll_seconds` (4 s, DECISIONS.md), liste `list_poll_seconds`.
      */
+    /*
+     * Modération automatique (lot IOS-10, D-IOS-9, règle Apple 1.2) : filtre minimal des contenus générés par les
+     * utilisatrices, App\Application\Feed\BadWordFilter. Les MOTS sont administrés dans la table `bad_words` (écran
+     * Administration › Modération › Mots filtrés, permission `moderation.filter`) ; les MOTIFS ci-dessous (coordonnées
+     * personnelles, liens suspects) sont des règles de structure, réglées ici. Jamais appliqué aux messages privés 1-à-1 ni
+     * aux signalements, SOS et besoins (une victime écrit librement, RG-01). Actions : `block` (422 `content_rejected`),
+     * `hide` (publié puis masqué et mis en file de modération), `flag` (publié, signalement automatique), `off`.
+     */
+    'moderation' => [
+        'content_filter' => [
+            'enabled' => (bool) env('XOMITON_CONTENT_FILTER', true),
+            // Actions par catégorie des motifs de structure.
+            'patterns' => [
+                'coordonnees' => 'block',
+                'lien' => 'flag',
+            ],
+            // Où les coordonnées personnelles (numéro, e-mail, adresse) sont refusées : l'espace public. Les messages d'un
+            // groupe fermé en sont exclus (on s'y échange des numéros) ; ils restent soumis aux mots filtrés.
+            'personal_data_surfaces' => ['post', 'comment', 'forum_topic', 'forum_reply', 'page', 'group', 'event', 'pseudo'],
+            // Liens : hôtes jamais suspects (le site lui-même) ; raccourcisseurs et suffixes à risque (liste de départ, à compléter).
+            'link_allowed_hosts' => ['xomiton.app'],
+            'link_suspicious_hosts' => ['bit.ly', 'tinyurl.com', 'cutt.ly', 't.co', 'goo.gl', 'is.gd', 'rb.gy', 'shorturl.at'],
+            'link_suspicious_tlds' => ['zip', 'mov', 'top', 'xyz', 'click', 'icu', 'tk', 'gq'],
+            // Dégradé : jusqu'à N caractères séparés par . - _ * ou espace sont recollés (« i.n.s.u.l.t.e »).
+            'min_spaced_letters' => 3,
+            // Fenêtre (jours) du compteur de blocages affiché dans l'administration.
+            'stats_days' => 30,
+        ],
+    ],
+
     'messaging' => [
         'body_max_length' => 1000,
         'preview_length' => 80,

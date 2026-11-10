@@ -33,7 +33,7 @@ final class ManageComments
      */
     public function add(Post $post, User $author, string $body, ?Comment $parent = null, bool $anonymous = false): Comment
     {
-        $verdict = $this->filter->assertAllowed(['body' => $body]);
+        $verdict = $this->filter->assertAllowed(['body' => $body], 'comment');
 
         /** @var Comment $comment */
         $comment = DB::transaction(function () use ($post, $author, $body, $parent, $anonymous): Comment {
@@ -51,7 +51,7 @@ final class ManageComments
             return $comment;
         });
 
-        if ($verdict->isFlagged()) {
+        if ($verdict->needsReview()) {
             $this->reports->automatic($comment, $verdict);
         }
 
