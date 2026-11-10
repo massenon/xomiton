@@ -3219,6 +3219,10 @@
     "@admin_moderation_words_add": {
         "description": "admin.moderation.words.add"
     },
+    "admin_moderation_words_category": "Catégorie",
+    "@admin_moderation_words_category": {
+        "description": "admin.moderation.words.category"
+    },
     "admin_moderation_words_confirm_remove": "Retirer ce mot de la liste ?",
     "@admin_moderation_words_confirm_remove": {
         "description": "admin.moderation.words.confirm_remove"
@@ -3227,7 +3231,7 @@
     "@admin_moderation_words_empty": {
         "description": "admin.moderation.words.empty"
     },
-    "admin_moderation_words_help": "3 à 40 caractères. « Bloquer » refuse la publication ; « signaler » la laisse passer et ouvre un signalement.",
+    "admin_moderation_words_help": "3 à 40 caractères, sans tenir compte des accents ni des majuscules. « Bloquer » refuse le texte avec un message bienveillant ; « masquer » le publie puis le masque et le met en file de modération ; « signaler » le laisse passer et ouvre un signalement. Les messages privés entre deux personnes ne sont jamais lus par le filtre.",
     "@admin_moderation_words_help": {
         "description": "admin.moderation.words.help"
     },
@@ -3247,6 +3251,10 @@
     "admin_moderation_words_severity_bloquer": "Bloquer la publication",
     "@admin_moderation_words_severity_bloquer": {
         "description": "admin.moderation.words.severity_bloquer"
+    },
+    "admin_moderation_words_severity_masquer": "Masquer et mettre en file de modération",
+    "@admin_moderation_words_severity_masquer": {
+        "description": "admin.moderation.words.severity_masquer"
     },
     "admin_moderation_words_severity_signaler": "Signaler pour relecture",
     "@admin_moderation_words_severity_signaler": {
@@ -4614,6 +4622,10 @@
     "admin_users_modules_moderation": "Modération et réseau social (masquer)",
     "@admin_users_modules_moderation": {
         "description": "admin.users.modules.moderation"
+    },
+    "admin_users_modules_moderation_filter": "Filtre de contenus (mots, liste blanche)",
+    "@admin_users_modules_moderation_filter": {
+        "description": "admin.users.modules.moderation_filter"
     },
     "admin_users_modules_newsletter": "Newsletter",
     "@admin_users_modules_newsletter": {

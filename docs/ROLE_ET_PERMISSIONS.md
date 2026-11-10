@@ -85,6 +85,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 |---|---|---|---|---|---|
 | `posts.create`, `polls.create`, `comments.create` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `posts.moderate` | | | ✅ | ✅ | ✅ |
+| `moderation.filter` (filtre de contenus : mots, liste blanche, test d'un texte, IOS-10) | | | | ✅ | ✅ |
 | `cases.create`, `cases.update_own` | | ✅ | | ✅ | ✅ |
 | `cases.view_all`, `cases.export` | | | | ✅ | ✅ |
 | `alerts.take`, `alerts.close` | | routées ou notifiées | | ✅ | ✅ |
