@@ -29,6 +29,7 @@ final class PushSubscriptionResource extends JsonResource
             'id' => (int) $subscription->getKey(),
             'kind' => $subscription->kind,
             'fingerprint' => PushSubscriptions::fingerprint($subscription),
+            'platform' => $subscription->platform,
             'device_label' => $subscription->device_label,
             'last_used_at' => $subscription->last_used_at?->toIso8601String(),
             'created_at' => $subscription->created_at?->toIso8601String(),

@@ -16,6 +16,18 @@ return [
         'body' => 'Nouvelle notification',
     ],
 
+    // Corps génériques des notifications visibles sur iOS (lot IOS-05) : jamais de récit, de nom, de lieu, ni de mot
+    // qui trahisse le sujet (pas de « SOS », « VBG », « admin »). Clé = type push ; `default` sinon.
+    'ios_body' => [
+        'default' => 'Nouvelle notification',
+        'duty_sos' => 'Alerte à traiter',
+        'duty_alert' => 'Alerte à traiter',
+        'alert_routed' => 'Alerte à traiter',
+        'peer_pending' => 'Une demande attend ton avis',
+        'content_reported' => 'Un contenu attend un examen',
+        'message' => 'Nouveau message',
+    ],
+
     'account_created' => [
         'title' => 'Bienvenue sur Xomiton',
         'body' => 'Ton compte est créé. Confirme ton e-mail pour profiter de tout ton espace.',

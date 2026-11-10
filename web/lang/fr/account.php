@@ -50,6 +50,7 @@ return [
             'auth' => 'Clé d’authentification',
             'token' => 'Jeton de l’appareil',
             'device_label' => 'Nom de l’appareil',
+            'platform' => 'Plateforme de l’appareil',
         ],
         'endpoint_host' => 'Cette adresse d’abonnement ne vient pas d’un service de notifications reconnu par ton navigateur.',
     ],

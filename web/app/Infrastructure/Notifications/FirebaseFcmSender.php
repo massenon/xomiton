@@ -21,7 +21,7 @@ use Throwable;
  * aperçus, NOTIFICATIONS §4.1) ; les données se limitent à `type`, `id`, `category` (+ `url` relatif) : le détail est
  * relu dans l'application après authentification. Priorité haute et canal Android `sos_alerts` pour les catégories
  * urgentes (`sos`, `alertes`), canal `duty` (Astreinte) pour les types d'astreinte (`duty_sos`, `duty_alert`, `alert_routed`) ;
- * aucun bloc `notification` pour les types silencieux (`sync`, `rules`, P15-19). Jeton invalide ou désinscrit (UNREGISTERED, INVALID_ARGUMENT sur le jeton, 404) →
+ * aucun bloc `notification` pour les types silencieux (`sync`, `rules`, P15-19) ; appareils iOS : voir iosPayload (IOS-05). Jeton invalide ou désinscrit (UNREGISTERED, INVALID_ARGUMENT sur le jeton, 404) →
  * `DeliveryResult::gone()` : le canal supprime l'abonnement. Le jeton d'appareil n'est jamais journalisé.
  */
 final class FirebaseFcmSender implements FcmSender, PoolablePushSender
@@ -64,7 +64,7 @@ final class FirebaseFcmSender implements FcmSender, PoolablePushSender
             method: 'POST',
             url: sprintf('https://fcm.googleapis.com/v1/projects/%s/messages:send', rawurlencode($project)),
             headers: ['Authorization' => 'Bearer '.$this->auth->get(), 'Content-Type' => 'application/json'],
-            json: ['message' => $this->payload((string) $subscription->endpoint, $message)],
+            json: ['message' => $this->payload((string) $subscription->endpoint, $message, $subscription->isIos())],
         );
     }
 
@@ -107,7 +107,7 @@ final class FirebaseFcmSender implements FcmSender, PoolablePushSender
     /**
      * @return array<string, mixed>
      */
-    private function payload(string $token, PushMessage $message): array
+    private function payload(string $token, PushMessage $message, bool $ios = false): array
     {
         $urgent = $message->isUrgent();
         $data = [
@@ -136,6 +136,10 @@ final class FirebaseFcmSender implements FcmSender, PoolablePushSender
             ];
         }
 
+        if ($ios) {
+            return $this->iosPayload($token, $message, $data);
+        }
+
         return [
             'token' => $token,
             'notification' => ['title' => $message->title, 'body' => $message->body],
@@ -145,6 +149,40 @@ final class FirebaseFcmSender implements FcmSender, PoolablePushSender
                 'notification' => ['channel_id' => $message->channel()],
             ],
             'apns' => ['headers' => ['apns-priority' => $urgent ? '10' : '5']],
+        ];
+    }
+
+    /**
+     * Charge iOS (APNs via FCM, lot IOS-05) : le « données seules » n'est pas fiable sur iOS, donc un bloc `notification`
+     * NEUTRE (titre « Xomiton », corps générique, jamais de mot qui trahisse le sujet ; mode discret : texte le plus nu)
+     * et `apns` : push-type alert, priorité 10, niveau d'interruption `time-sensitive` pour SOS et astreinte, `active`
+     * sinon, `mutable-content`, `thread-id` neutre (canal). Le détail est relu dans l'application après le PIN.
+     *
+     * @param  array<string, string>  $data
+     * @return array<string, mixed>
+     */
+    private function iosPayload(string $token, PushMessage $message, array $data): array
+    {
+        $type = (string) $data['type'];
+        $body = $message->masked
+            ? (string) __('notifications.discreet.body')
+            : (string) __(\Illuminate\Support\Facades\Lang::has('notifications.ios_body.'.$type) ? 'notifications.ios_body.'.$type : 'notifications.ios_body.default');
+        $title = (string) __('notifications.discreet.title');
+
+        return [
+            'token' => $token,
+            'notification' => ['title' => $title, 'body' => $body],
+            'data' => $data,
+            'apns' => [
+                'headers' => ['apns-priority' => '10', 'apns-push-type' => 'alert'],
+                'payload' => ['aps' => [
+                    'alert' => ['title' => $title, 'body' => $body],
+                    'sound' => 'default',
+                    'interruption-level' => $message->isTimeSensitive() ? 'time-sensitive' : 'active',
+                    'mutable-content' => 1,
+                    'thread-id' => $message->channel() === 'community' ? 'xomiton-community' : 'xomiton-priority', // neutre : jamais « sos »
+                ]],
+            ],
         ];
     }
 }

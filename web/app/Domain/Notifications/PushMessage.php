@@ -25,6 +25,9 @@ final readonly class PushMessage
         // Message « données seules » (P15-19) : rien à afficher (ni titre ni corps), l'application agit (cycle de synchro,
         // relecture des règles). Le pilote FCM n'envoie alors aucun bloc `notification`.
         public bool $silent = false,
+        // Vrai si le texte a déjà été neutralisé (mode discret, « masquer le contenu sensible ») : le pilote iOS
+        // n'affiche alors que le texte générique le plus nu.
+        public bool $masked = false,
     ) {}
 
     /** Types d'astreinte (admin de garde, pair·e routé·e) : canal Android « Astreinte » (`duty`), priorité haute. */
@@ -38,6 +41,12 @@ final readonly class PushMessage
         }
 
         return $this->isUrgent() ? 'sos_alerts' : 'community';
+    }
+
+    /** iOS « time-sensitive » : astreinte (admin de garde, pair·e routé·e) et SOS ; le reste reste au niveau « active ». */
+    public function isTimeSensitive(): bool
+    {
+        return in_array($this->data['type'], self::DUTY_TYPES, true) || $this->data['category'] === 'sos';
     }
 
     public function isUrgent(): bool
@@ -57,6 +66,7 @@ final readonly class PushMessage
             'icon' => $this->icon,
             'data' => $this->data,
             'silent' => $this->silent,
+            'masked' => $this->masked,
         ];
     }
 

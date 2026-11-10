@@ -41,8 +41,18 @@ class PushSubscription extends Model
         'public_key',
         'auth_token',
         'device_label',
+        'platform',
         'last_used_at',
     ];
+
+    public const PLATFORM_IOS = 'ios';
+
+    public const PLATFORM_ANDROID = 'android';
+
+    public const PLATFORM_WEB = 'web';
+
+    /** @var list<string> */
+    public const PLATFORMS = [self::PLATFORM_IOS, self::PLATFORM_ANDROID, self::PLATFORM_WEB];
 
     /**
      * @var list<string>
@@ -121,6 +131,26 @@ class PushSubscription extends Model
     public function isFcm(): bool
     {
         return $this->kind === self::KIND_FCM;
+    }
+
+    /** Appareil iOS (APNs via FCM) : charge avec bloc `notification` neutre (lot IOS-05). */
+    public function isIos(): bool
+    {
+        return $this->platform === self::PLATFORM_IOS;
+    }
+
+    /** Plateforme normalisée depuis un libellé libre (`iOS`, `iPhone 15`, `android 14`…) ; null si inconnue. */
+    public static function normalizePlatform(?string $value): ?string
+    {
+        $value = mb_strtolower(trim((string) $value));
+
+        return match (true) {
+            $value === '' => null,
+            (bool) preg_match('/\b(ios|iphone|ipad|ipados)\b/u', $value) => self::PLATFORM_IOS,
+            str_contains($value, 'android') => self::PLATFORM_ANDROID,
+            $value === 'web' => self::PLATFORM_WEB,
+            default => null,
+        };
     }
 
     public function touchLastUsed(): void

@@ -27,7 +27,7 @@ final class PushSubscriptions
     /**
      * @return array{0: PushSubscription, 1: bool} l'abonnement et vrai s'il vient d'être créé pour ce compte
      */
-    public function save(User $user, string $kind, string $endpoint, ?string $publicKey = null, ?string $authToken = null, ?string $label = null, ?int $tokenId = null, ?int $deviceId = null): array
+    public function save(User $user, string $kind, string $endpoint, ?string $publicKey = null, ?string $authToken = null, ?string $label = null, ?int $tokenId = null, ?int $deviceId = null, ?string $platform = null): array
     {
         $endpoint = trim($endpoint);
         $hash = PushSubscription::hashEndpoint($endpoint);
@@ -41,6 +41,8 @@ final class PushSubscriptions
             'auth_token' => $kind === PushSubscription::KIND_WEBPUSH ? $authToken : null,
             'device_label' => $label === null || trim($label) === '' ? null : Str::limit(trim($label), 80, ''),
         ];
+
+        $attributes['platform'] = $this->resolvePlatform($kind, $platform, $deviceId);
 
         $subscription = PushSubscription::query()->where('endpoint_hash', $hash)->first();
 
@@ -67,6 +69,25 @@ final class PushSubscriptions
         }
 
         return [$subscription, $transferred];
+    }
+
+    /**
+     * Plateforme de l'appareil (lot IOS-05) : déclarée par l'application, sinon déduite du libellé de l'appareil
+     * (`sync_devices.platform`), sinon `web` pour Web Push ; null si inconnue (traitée comme Android : données + canal).
+     */
+    private function resolvePlatform(string $kind, ?string $declared, ?int $deviceId): ?string
+    {
+        $platform = PushSubscription::normalizePlatform($declared);
+
+        if ($platform === null && $deviceId !== null) {
+            $platform = PushSubscription::normalizePlatform(\App\Models\SyncDevice::query()->whereKey($deviceId)->value('platform'));
+        }
+
+        if ($platform === null && $kind === PushSubscription::KIND_WEBPUSH) {
+            return PushSubscription::PLATFORM_WEB;
+        }
+
+        return $platform;
     }
 
     /**

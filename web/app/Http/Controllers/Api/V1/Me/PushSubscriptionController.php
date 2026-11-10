@@ -57,6 +57,7 @@ final class PushSubscriptionController extends ApiController
             $request->deviceLabel(),
             $token instanceof PersonalAccessToken ? (int) $token->getKey() : null,
             $this->devices->resolve($user, $request),
+            $request->platform(),
         );
 
         $resource = new PushSubscriptionResource($subscription);

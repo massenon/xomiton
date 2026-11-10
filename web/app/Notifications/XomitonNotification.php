@@ -286,6 +286,7 @@ abstract class XomitonNotification extends Notification
             ],
             icon: is_string($data['icon'] ?? null) ? $data['icon'] : null,
             silent: $this->isSilent(),
+            masked: $this->shouldMask($notifiable),
         );
     }
 

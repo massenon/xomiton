@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
  * POST / DELETE /api/v1/me/push-subscriptions (P6-09, ADR-25).
  *  - Web Push : `{kind: "webpush", endpoint, keys: {p256dh, auth}, device_label?}` — forme de
  *    `PushSubscription.toJSON()` du navigateur (`public_key` / `auth_token` à plat acceptés) ;
- *  - FCM : `{kind: "fcm", token, device_label?}`.
+ *  - FCM : `{kind: "fcm", token, platform?: "ios"|"android", device_label?}` (`platform` absent : déduite de l'appareil X-Device-Id).
  * DELETE : `endpoint` ou `token` seulement (`kind` facultatif).
  * L'endpoint Web Push doit appartenir à un service push connu (`xomiton.notifications.push.webpush.allowed_hosts`) :
  * le futur pilote VAPID ne postera jamais vers une adresse choisie par le client (SSRF).
@@ -50,6 +50,7 @@ final class PushSubscriptionRequest extends FormRequest
             'keys.auth' => ["required_if:kind,{$webpush}", 'nullable', 'string', 'max:255'],
             'token' => ["required_if:kind,{$fcm}", 'nullable', 'string', 'max:4096'],
             'device_label' => ['sometimes', 'nullable', 'string', 'max:80'],
+            'platform' => ['sometimes', 'nullable', 'string', Rule::in(PushSubscription::PLATFORMS)],
         ];
     }
 
@@ -106,6 +107,7 @@ final class PushSubscriptionRequest extends FormRequest
             'keys.auth' => __('account.push.fields.auth'),
             'token' => __('account.push.fields.token'),
             'device_label' => __('account.push.fields.device_label'),
+            'platform' => __('account.push.fields.platform'),
         ];
     }
 
@@ -144,6 +146,13 @@ final class PushSubscriptionRequest extends FormRequest
     public function authToken(): ?string
     {
         $value = $this->validated('keys.auth');
+
+        return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    public function platform(): ?string
+    {
+        $value = $this->validated('platform');
 
         return is_string($value) && $value !== '' ? $value : null;
     }
