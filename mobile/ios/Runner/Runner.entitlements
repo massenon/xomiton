@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- NON COMPILE, NON VERIFIE (ecrit sans Mac). Les capacites doivent aussi etre activees
+	     sur l'identifiant app.xomiton.xomiton (Apple Developer) : voir docs/IOS_PREMIER_BUILD_SUR_MAC.md. -->
+
+	<!-- Notifications push. "development" pour les builds de developpement ; Xcode le remplace par
+	     "production" a l'archive avec le profil de distribution (a verifier dans l'archive). -->
+	<key>aps-environment</key>
+	<string>development</string>
+
+	<!-- Notifications "Time Sensitive" (SOS, astreinte) : D-IOS-3. -->
+	<key>com.apple.developer.usernotifications.time-sensitive</key>
+	<true/>
+
+	<!-- Liens universels : le fichier apple-app-site-association est servi par le site (lot IOS-09). -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:xomiton.app</string>
+	</array>
+
+	<!-- Critical Alerts : NE PAS activer tant qu'Apple n'a pas accorde le droit (demande en parallele, D-IOS-3).
+	     Un profil sans ce droit refuse la signature si la ligne est active.
+	<key>com.apple.developer.usernotifications.critical-alerts</key>
+	<true/>
+	-->
+</dict>
+</plist>
