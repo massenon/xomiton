@@ -133,9 +133,50 @@ function filterScreen(string $role = 'admin')
     return Livewire::test(ModerationScreen::class);
 }
 
-it('réserve la gestion des mots à la permission moderation.filter (pas aux modérateur·rices)', function (): void {
-    filterScreen('moderateur')->call('addWord')->assertForbidden();
-    filterScreen('moderateur')->call('testFilter')->assertForbidden();
+it('laisse la gestion de la liste aux modérateur·rices (décision client du 2026-11-10) et la refuse sans la permission', function (): void {
+    filterScreen('moderateur')
+        ->set('wordText', 'Vilaine')->set('wordSeverity', 'masquer')->set('wordCategory', 'insulte')->call('addWord')->assertHasNoErrors()
+        ->set('allowText', 'Vilaine Rue')->call('addAllowed')->assertHasNoErrors()
+        ->set('testText', 'Tu es vilaine')->call('testFilter')->assertSet('testResult.outcome', 'hidden');
+
+    expect(BadWord::query()->count())->toBe(1)->and(ContentFilterAllowedPhrase::query()->count())->toBe(1);
+    expect(filterScreen('moderateur')->instance()->stats['blocked'])->toBe(0);
+
+    $word = BadWord::query()->value('id');
+    filterScreen('moderateur')->call('removeWord', $word)->call('removeAllowed', ContentFilterAllowedPhrase::query()->value('id'));
+    expect(BadWord::query()->count())->toBe(0)->and(ContentFilterAllowedPhrase::query()->count())->toBe(0);
+});
+
+it('refuse (403) la gestion du filtre à un compte sans moderation.filter', function (): void {
+    $user = User::factory()->create();
+    $user->syncRoles(['moderateur']);
+    $user->roles->first()->revokePermissionTo('moderation.filter');
+    app(Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    test()->actingAs($user->fresh());
+
+    Livewire::test(ModerationScreen::class)->call('addWord')->assertForbidden();
+    Livewire::test(ModerationScreen::class)->call('testFilter')->assertForbidden();
+});
+
+it('refuse l\'écran de modération (donc le filtre) à une pair et à un·e membre', function (): void {
+    foreach (['pair', 'membre'] as $role) {
+        $user = User::factory()->create();
+        $user->syncRoles([$role]);
+        test()->actingAs($user)->get(route('admin.moderation'))->assertForbidden();
+    }
+});
+
+it('donne moderation.filter à la modération par la migration de données, idempotente', function (): void {
+    $role = Spatie\Permission\Models\Role::findByName('moderateur', 'web');
+    $role->revokePermissionTo('moderation.filter');
+    $migration = require database_path('migrations/2026_11_30_090000_grant_moderation_filter_to_moderators.php');
+
+    $migration->up();
+    $migration->up();
+    app(Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+    expect(Spatie\Permission\Models\Role::findByName('moderateur', 'web')->hasPermissionTo('moderation.filter'))->toBeTrue()
+        ->and(Spatie\Permission\Models\Role::findByName('admin', 'web')->hasPermissionTo('moderation.filter'))->toBeTrue();
 });
 
 it('ajoute un mot avec sa catégorie, gère la liste blanche, teste un texte et compte les refus', function (): void {

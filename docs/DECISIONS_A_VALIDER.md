@@ -107,6 +107,8 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 
 D-IOS-9 révise Q74 : la ligne Q74 ci-dessus (« pas de filtre ») est remplacée par un filtre minimal serveur sur publications, commentaires et messages de groupe. **Implémenté** (lot IOS-10) : la liste de départ est volontairement courte et neutre ; **à valider par la modération et le conseil** (liste réelle, catégories, action par catégorie, liste blanche).
 
+**Modérateur·rices et filtre de contenus : décision client du 2026-11-10.** Les modérateur·rices conservent la gestion de la liste du filtre (mots, catégories, liste blanche, test d'un texte, compteur) : la permission dédiée `moderation.filter` leur est rendue (seeder et migration de données `grant_moderation_filter_to_moderators`), en plus de l'admin et du superadmin. Un compte sans cette permission reçoit 403.
+
 ## 6. Lecture
 
 - 14 questions bloquent la recette (surtout contenu et périmètre ; Q38 est tranchée, ses maquettes restent à valider) ; 20 sont à trancher avant la mise en production, dont deux d'ordre juridique (Q67, Q68).
