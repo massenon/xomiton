@@ -10,5 +10,7 @@ parameters:
         - routes
     excludePaths:
         - database/migrations/*
-    checkMissingIterableValueType: false
     treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics

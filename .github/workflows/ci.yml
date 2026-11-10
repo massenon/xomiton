@@ -86,9 +86,13 @@ jobs:
 
       - name: Vérification des types
         run: npm run typecheck
+        env:
+          LARAVEL_BYPASS_ENV_CHECK: '1'
 
       - name: Tests unitaires Vue
         run: npm test
+        env:
+          LARAVEL_BYPASS_ENV_CHECK: '1'
 
       - name: Compiler les paquets Vite
         run: npm run build
