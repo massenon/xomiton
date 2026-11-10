@@ -170,6 +170,9 @@
 .xm-assistant .bub.bot { align-self: flex-start; background: var(--bs-tertiary-bg); border-bottom-left-radius: .25rem; }
 .xm-assistant .lp-chip { min-height: var(--xm-target-min); }
 
+/* ---------- Application mobile : badges « bientôt disponible » (non cliquables) ---------- */
+.lp-store { display: block; width: 160px; height: auto; border-radius: .5rem; opacity: .85; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 991.98px) {
   .lp-photos { min-height: 380px; }

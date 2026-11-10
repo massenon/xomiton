@@ -123,6 +123,14 @@ return [
         'title' => 'Vous vous demandez…',
     ],
 
+    'application' => [
+        'badge' => 'Bientôt disponible',
+        'title' => 'Xomiton arrive sur votre téléphone',
+        'text' => 'L’application Xomiton sera bientôt disponible sur toutes les plateformes, sur iPhone comme sur Android : alerte et SOS en un geste, fil d’actualité, communauté et ressources, avec les mêmes protections de votre vie privée que sur le site.',
+        'app_store_alt' => 'App Store : application bientôt disponible',
+        'google_play_alt' => 'Google Play : application bientôt disponible',
+    ],
+
     'cta' => [
         'title' => 'Prête à nous rejoindre ?',
         'text' => 'Créez votre compte Xomiton et accédez instantanément à un réseau d’entraide et d’information conçu pour vous.',

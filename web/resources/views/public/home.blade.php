@@ -29,6 +29,7 @@
     @if ($faqs->isNotEmpty())
         @include('public.home.faq')
     @endif
+    @include('public.home.application')
     @include('public.home.cta')
 
     <x-assistant-offcanvas />

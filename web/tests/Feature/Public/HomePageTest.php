@@ -57,7 +57,7 @@ it('garde l’ordre des sections du prototype, chaque section reliée à son tit
     Faq::factory()->onHome()->create();
     $html = accueilHtml();
 
-    $positions = collect(['class="lp-hero"', 'id="valeurs"', 'id="questions"', 'id="reseau"', 'id="ressources"', 'id="alerte"', 'id="assistant"', 'id="fonctionnalites"', 'id="faq"', 'id="ctaTitre"', 'id="newsletter"'])
+    $positions = collect(['class="lp-hero"', 'id="valeurs"', 'id="questions"', 'id="reseau"', 'id="ressources"', 'id="alerte"', 'id="assistant"', 'id="fonctionnalites"', 'id="faq"', 'id="applicationTitre"', 'id="ctaTitre"', 'id="newsletter"'])
         ->map(fn (string $marker): int|false => strpos($html, $marker));
 
     expect($positions->contains(false))->toBeFalse()
@@ -66,7 +66,7 @@ it('garde l’ordre des sections du prototype, chaque section reliée à son tit
     $main = accueilBetween($html, '<main id="contenu"', '</main>');
     preg_match_all('/<section\b[^>]*>/', $main, $sections);
 
-    expect($sections[0])->toHaveCount(10);
+    expect($sections[0])->toHaveCount(11);
     foreach ($sections[0] as $tag) {
         expect($tag)->toMatch('/aria-labelledby="[A-Za-z]+"/');
     }
@@ -292,4 +292,18 @@ it('Q54 : la section #alerte est un fond rouge très clair avec bordure, plus un
 
     expect($html)->toContain('lp-band-alert')->not->toContain('lp-band-red')
         ->and(file_get_contents(resource_path('css/app/pages/accueil.css')))->toContain('background: var(--xm-alert-surface)');
+});
+
+it('annonce l’application « bientôt disponible » avec les badges App Store et Google Play, sans lien', function (): void {
+    $section = accueilBetween(accueilHtml(), 'aria-labelledby="applicationTitre"', '</section>');
+
+    expect($section)->toContain(__('pages/accueil.application.badge'))
+        ->toContain(__('pages/accueil.application.title'))
+        ->toContain('assets/images/stores/app-store.svg')
+        ->toContain('assets/images/stores/google-play.svg')
+        ->toContain(e(__('pages/accueil.application.app_store_alt')))
+        ->toContain(e(__('pages/accueil.application.google_play_alt')))
+        ->not->toContain('<a ');
+    expect(file_exists(public_path('assets/images/stores/app-store.svg')))->toBeTrue()
+        ->and(file_exists(public_path('assets/images/stores/google-play.svg')))->toBeTrue();
 });
