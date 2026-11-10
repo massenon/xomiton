@@ -137,7 +137,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ? const SizedBox(
                           width: 22,
                           height: 22,
-                          child: CircularProgressIndicator(strokeWidth: 2.5),
+                          child: CircularProgressIndicator.adaptive(strokeWidth: 2.5),
                         )
                       : Text(context.t('auth_login_submit')),
                 ),

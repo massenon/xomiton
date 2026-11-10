@@ -315,7 +315,7 @@ class LoadingView extends StatelessWidget {
   Widget build(BuildContext context) => Center(
         child: Semantics(
           label: context.t('microcopy_loading_a11y'),
-          child: const CircularProgressIndicator(),
+          child: const CircularProgressIndicator.adaptive(),
         ),
       );
 }

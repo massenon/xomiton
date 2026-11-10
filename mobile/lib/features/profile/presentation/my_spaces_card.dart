@@ -192,7 +192,7 @@ class _RoleRequestSheetState extends ConsumerState<RoleRequestSheet> {
             style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
             onPressed: _busy ? null : _send,
             child: _busy
-                ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5))
+                ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator.adaptive(strokeWidth: 2.5))
                 : Text(context.t('mobile_role_request_send')),
           ),
           TextButton(

@@ -300,7 +300,7 @@ class _PinGateState extends ConsumerState<PinGate> with WidgetsBindingObserver {
         if (unknown && !locked)
           Positioned.fill(
             key: const ValueKey('pin-gate-pending'),
-            child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: const Center(child: CircularProgressIndicator())),
+            child: ColoredBox(color: Theme.of(context).colorScheme.surface, child: const Center(child: CircularProgressIndicator.adaptive())),
           )
         else if (show)
           const Positioned.fill(child: PinLockScreen()),

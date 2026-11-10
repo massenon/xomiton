@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/router.dart';
+import '../network/app_toast.dart';
+import '../providers/core_providers.dart';
 import '../ui/xm_widgets.dart';
 
 /// Build de recette seulement (`--dart-define=ALLOW_SCREENSHOTS=true`) : les
@@ -36,8 +39,11 @@ const List<String> kSecureLocationPrefixes = [
 
 bool isSecureLocation(String path) => kSecureLocationPrefixes.any((p) => path == p || path.startsWith('$p/'));
 
-/// Pose ou retire `FLAG_SECURE` (Android). iOS n'a pas d'équivalent : voir le
-/// recouvrement du [ScreenSecurityGate] et la limite documentée (README).
+/// Pose ou retire `FLAG_SECURE` (Android). iOS n'a pas d'équivalent : le plugin
+/// natif `XomitonSecurityPlugin.swift` (NON COMPILÉ) recouvre l'écran dès la
+/// sortie du premier plan et pendant un enregistrement d'écran sur un écran
+/// sensible ; une capture d'écran ne peut qu'être détectée (voir
+/// [ScreenCaptureSource]). Limite documentée (README, plan iOS §4.6).
 abstract interface class ScreenSecurityService {
   Future<void> setSecure(bool secure);
 }
@@ -48,7 +54,7 @@ class ChannelScreenSecurity implements ScreenSecurityService {
   @override
   Future<void> setSecure(bool secure) async {
     try {
-      if (!Platform.isAndroid) return;
+      if (!(Platform.isAndroid || Platform.isIOS)) return;
       await _channel.invokeMethod<void>('setSecure', {'secure': secure});
     } catch (_) {
       // Plateforme sans canal (tests, bureau) : sans effet.
@@ -57,6 +63,68 @@ class ChannelScreenSecurity implements ScreenSecurityService {
 }
 
 final screenSecurityProvider = Provider<ScreenSecurityService>((_) => ChannelScreenSecurity());
+
+/// Événement natif de capture (iOS seulement).
+sealed class ScreenCaptureEvent {
+  const ScreenCaptureEvent();
+}
+
+/// L'utilisateur·rice vient de faire une capture d'écran (détection après coup).
+class ScreenshotTaken extends ScreenCaptureEvent {
+  const ScreenshotTaken();
+}
+
+/// Début ou fin d'un enregistrement ou d'une recopie d'écran (`UIScreen.isCaptured`).
+class CaptureChanged extends ScreenCaptureEvent {
+  const CaptureChanged(this.captured);
+  final bool captured;
+}
+
+abstract interface class ScreenCaptureSource {
+  Stream<ScreenCaptureEvent> get events;
+  Future<bool> isCaptured();
+}
+
+/// Canal `app.xomiton/capture` : le natif appelle `screenshot` et `captureChanged`
+/// {captured: bool} ; Dart peut interroger `isCaptured`. Inactif hors iOS (aucun
+/// gestionnaire installé, flux muet).
+class ChannelScreenCapture implements ScreenCaptureSource {
+  ChannelScreenCapture({bool? enabled, MethodChannel? channel})
+      : _channel = channel ?? const MethodChannel('app.xomiton/capture'),
+        _enabled = enabled ?? (!kIsWeb && Platform.isIOS) {
+    if (_enabled) _channel.setMethodCallHandler(_onCall);
+  }
+
+  final MethodChannel _channel;
+  final bool _enabled;
+  final StreamController<ScreenCaptureEvent> _controller = StreamController<ScreenCaptureEvent>.broadcast();
+
+  Future<dynamic> _onCall(MethodCall call) async {
+    switch (call.method) {
+      case 'screenshot':
+        _controller.add(const ScreenshotTaken());
+      case 'captureChanged':
+        final args = call.arguments;
+        _controller.add(CaptureChanged(args is Map && args['captured'] == true));
+    }
+    return null;
+  }
+
+  @override
+  Stream<ScreenCaptureEvent> get events => _controller.stream;
+
+  @override
+  Future<bool> isCaptured() async {
+    if (!_enabled) return false;
+    try {
+      return await _channel.invokeMethod<bool>('isCaptured') ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
+final screenCaptureProvider = Provider<ScreenCaptureSource>((_) => ChannelScreenCapture());
 
 /// Autorise-t-on les captures ? Surchargeable dans les tests de recette.
 final screenshotsAllowedProvider = Provider<bool>((_) => screenshotsAllowed());
@@ -141,6 +209,8 @@ class _ScreenSecurityGateState extends ConsumerState<ScreenSecurityGate> with Wi
   late final _delegate = ref.read(routerProvider).routerDelegate;
   late final SecureScreenCoordinator _coordinator = ref.read(secureScreenProvider);
   AppLifecycleState _lifecycle = AppLifecycleState.resumed;
+  bool _captured = false;
+  StreamSubscription<ScreenCaptureEvent>? _captureSub;
 
   String get _path => _delegate.currentConfiguration.isEmpty ? '' : _delegate.state.matchedLocation;
 
@@ -150,6 +220,24 @@ class _ScreenSecurityGateState extends ConsumerState<ScreenSecurityGate> with Wi
     WidgetsBinding.instance.addObserver(this);
     _delegate.addListener(_onRoute);
     WidgetsBinding.instance.addPostFrameCallback((_) => _sync());
+    final capture = ref.read(screenCaptureProvider);
+    _captureSub = capture.events.listen(_onCapture);
+    capture.isCaptured().then((v) {
+      if (mounted && v != _captured) setState(() => _captured = v);
+    });
+  }
+
+  void _onCapture(ScreenCaptureEvent e) {
+    if (!mounted) return;
+    switch (e) {
+      case ScreenshotTaken():
+        // Détection après coup : on prévient, seulement sur un écran sensible.
+        if (isSecureLocation(_path) && !ref.read(screenshotsAllowedProvider)) {
+          ref.read(toastBusProvider).emit(const ScreenshotToast());
+        }
+      case CaptureChanged(:final captured):
+        setState(() => _captured = captured);
+    }
   }
 
   void _sync() {
@@ -179,6 +267,7 @@ class _ScreenSecurityGateState extends ConsumerState<ScreenSecurityGate> with Wi
 
   @override
   void dispose() {
+    _captureSub?.cancel();
     _delegate.removeListener(_onRoute);
     WidgetsBinding.instance.removeObserver(this);
     _coordinator.release(this);
@@ -187,7 +276,8 @@ class _ScreenSecurityGateState extends ConsumerState<ScreenSecurityGate> with Wi
 
   @override
   Widget build(BuildContext context) {
-    final cover = _lifecycle != AppLifecycleState.resumed &&
+    // Hors premier plan, ou enregistrement d'écran en cours (iOS) : écran sensible recouvert.
+    final cover = (_lifecycle != AppLifecycleState.resumed || _captured) &&
         isSecureLocation(_path) &&
         !ref.watch(screenshotsAllowedProvider);
     return Stack(children: [

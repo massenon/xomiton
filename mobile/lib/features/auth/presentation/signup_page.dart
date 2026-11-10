@@ -271,7 +271,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   }
 
   Widget _busyChild(String key) => _busy
-      ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5))
+      ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator.adaptive(strokeWidth: 2.5))
       : Text(context.t(key));
 
   Widget _accountStep(BuildContext context) {
@@ -466,7 +466,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         ),
       ),
       const SizedBox(height: XmSpace.s3),
-      SwitchListTile(
+      SwitchListTile.adaptive(
         contentPadding: EdgeInsets.zero,
         value: _discreet,
         onChanged: (v) => setState(() => _discreet = v),

@@ -7,13 +7,15 @@ import '../../../core/auth_spaces/app_space.dart';
 import '../../../core/auth_spaces/presentation/space_widgets.dart';
 import '../../../core/auth_spaces/space_providers.dart';
 import '../../../core/l10n/app_strings.dart';
+import '../../../core/platform/platform_ui.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/ui/xm_widgets.dart';
 
 /// Barre d'onglets Membre : Accueil · Fil · SOS · Messages · Profil (Q38,
 /// libellé « SOS », inchangée), plus un onglet « Espace pair » / « Admin » /
-/// « Espaces » pour un compte qui a un autre espace (plan §5.3). Le SOS garde
-/// l'accent rouge du design system.
+/// « Espaces » pour un compte qui a un autre espace (plan §5.3), sauf sur iOS
+/// (5 onglets au plus : voir [showOtherSpaceTab]). Le SOS garde l'accent rouge
+/// du design system.
 class AppShell extends ConsumerWidget {
   const AppShell({super.key, required this.navigationShell});
   final StatefulNavigationShell navigationShell;
@@ -23,7 +25,10 @@ class AppShell extends ConsumerWidget {
     final online = ref.watch(isOnlineProvider);
     final others = ref.watch(otherSpacesProvider);
     final xm = context.xm;
-    final tabKey = others.length > 1
+    // iOS : 5 onglets au plus (HIG) ; l'autre espace passe par la carte « Mes espaces » du profil.
+    final tabKey = !showOtherSpaceTab()
+        ? null
+        : others.length > 1
         ? 'mobile_space_tab_both'
         : others.isEmpty
         ? null

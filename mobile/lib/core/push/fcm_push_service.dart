@@ -96,6 +96,14 @@ Future<void> showLocalFor(PushPayload p) async {
         priority: urgent ? Priority.max : Priority.defaultPriority,
         visibility: NotificationVisibility.private,
       ),
+      // iOS (NON COMPILÉ) : « Time Sensitive » pour le SOS et l'astreinte (D-IOS-3, nécessite
+      // l'entitlement), « active » sinon ; son selon le réglage de la personne.
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: false,
+        presentSound: urgent || sounds,
+        interruptionLevel: urgent ? InterruptionLevel.timeSensitive : InterruptionLevel.active,
+      ),
     ),
   );
 }

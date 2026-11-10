@@ -55,7 +55,7 @@ class _NewsletterPageState extends ConsumerState<NewsletterPage> {
         data: (p) => ListView(
           padding: const EdgeInsets.all(XmSpace.gutter),
           children: [
-            SwitchListTile(
+            SwitchListTile.adaptive(
               key: const Key('newsletter-switch'),
               contentPadding: EdgeInsets.zero,
               title: Text(context.t('account_newsletter_subscribed')),

@@ -77,7 +77,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
             FilledButton(
               onPressed: _busy ? null : _submit,
               child: _busy
-                  ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5))
+                  ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator.adaptive(strokeWidth: 2.5))
                   : Text(context.t('auth_forgot_submit')),
             ),
             const SizedBox(height: XmSpace.s3),
@@ -181,7 +181,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
             FilledButton(
               onPressed: _busy ? null : _submit,
               child: _busy
-                  ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5))
+                  ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator.adaptive(strokeWidth: 2.5))
                   : Text(context.t('auth_reset_submit')),
             ),
           ]),

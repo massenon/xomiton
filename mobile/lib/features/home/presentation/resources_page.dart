@@ -227,7 +227,7 @@ class _ResourceTileState extends ConsumerState<ResourceTile> {
                       ? const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator.adaptive(strokeWidth: 2),
                         )
                       : Icon(
                           r.downloadable

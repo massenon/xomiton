@@ -615,7 +615,7 @@ class _ContactPickerState extends ConsumerState<_ContactPicker> {
           Semantics(header: true, child: Text(context.t('mobile_admin_reassign_title'), style: Theme.of(context).textTheme.titleLarge)),
           const SizedBox(height: XmSpace.s1),
           Text(context.t('mobile_admin_reassign_help'), style: Theme.of(context).textTheme.bodySmall),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             key: const ValueKey('admin-contacts-all'),
             contentPadding: EdgeInsets.zero,
             title: Text(context.t('mobile_admin_reassign_all_zones')),

@@ -78,6 +78,7 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
       DeviceWipedToast() => widget.strings.t('mobile_device_wiped'),
       OfflineExpiredToast(:final days) => widget.strings.t('mobile_offline_expired', {'days': days}),
       DiscreetDefaultToast() => widget.strings.t('mobile_discreet_default_applied'),
+      ScreenshotToast() => widget.strings.t('mobile_screenshot_notice'),
     };
     scaffoldMessengerKey.currentState
       ?..hideCurrentSnackBar()

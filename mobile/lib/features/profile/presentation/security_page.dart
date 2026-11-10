@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/xm_tokens.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/platform/discreet_icon.dart';
+import '../../../core/platform/platform_ui.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/dates.dart';
 import '../../auth/application/session_controller.dart';
@@ -69,15 +70,15 @@ class SecurityPage extends ConsumerWidget {
         data: (s) => ListView(
           padding: const EdgeInsets.all(XmSpace.gutter),
           children: [
-            SwitchListTile(
+            SwitchListTile.adaptive(
               key: const Key('switch-discreet'),
               contentPadding: EdgeInsets.zero,
               title: Text(context.t('profile_settings_security_discreet_mode')),
-              subtitle: Text(context.t(icon.supported ? 'mobile_security_discreet_help' : 'mobile_security_discreet_ios_help')),
+              subtitle: Text(context.t(discreetHelpKey(supported: icon.supported, ios: isIosPlatform()))),
               value: s.discreet,
               onChanged: (v) => guard(() => ref.read(securityProvider.notifier).setDiscreet(v)),
             ),
-            SwitchListTile(
+            SwitchListTile.adaptive(
               key: const Key('switch-mask'),
               contentPadding: EdgeInsets.zero,
               title: Text(context.t('profile_settings_security_mask_notifications')),
@@ -85,7 +86,7 @@ class SecurityPage extends ConsumerWidget {
               value: s.maskPreviews,
               onChanged: (v) => guard(() => ref.read(securityProvider.notifier).setMaskPreviews(v)),
             ),
-            SwitchListTile(
+            SwitchListTile.adaptive(
               key: const Key('switch-pin'),
               contentPadding: EdgeInsets.zero,
               title: Text(context.t('profile_settings_security_pin_enable')),

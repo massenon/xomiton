@@ -151,7 +151,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
             FilledButton(
               onPressed: _busy ? null : _verify,
               child: _busy
-                  ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5))
+                  ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator.adaptive(strokeWidth: 2.5))
                   : Text(context.t('auth_otp_screen_submit')),
             ),
             const SizedBox(height: XmSpace.s3),

@@ -513,7 +513,7 @@ class _EventDetailPageState extends ConsumerState<EventDetailPage> {
               const SizedBox(height: XmSpace.s4),
               if (!e.isPast || e.going) ...[
                 if (!e.going)
-                  SwitchListTile(
+                  SwitchListTile.adaptive(
                     contentPadding: EdgeInsets.zero,
                     value: _reminder,
                     title: Text(

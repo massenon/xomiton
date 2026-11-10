@@ -90,7 +90,7 @@ class MaintenancePage extends ConsumerWidget {
                     style: OutlinedButton.styleFrom(minimumSize: const Size(200, 48)),
                     onPressed: m.checking ? null : () => ref.read(maintenanceProvider.notifier).check(),
                     icon: m.checking
-                        ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                        ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator.adaptive(strokeWidth: 2))
                         : const Icon(Icons.refresh),
                     label: Text(context.t('mobile_maintenance_check')),
                   ),

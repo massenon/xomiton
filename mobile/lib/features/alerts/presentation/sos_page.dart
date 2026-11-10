@@ -128,7 +128,7 @@ class _SosPageState extends ConsumerState<SosPage> {
           style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: XmSpace.s4),
-        SwitchListTile(
+        SwitchListTile.adaptive(
           value: _share,
           onChanged: (v) {
             setState(() => _share = v);
@@ -228,7 +228,7 @@ class _SosPageState extends ConsumerState<SosPage> {
     padding: const EdgeInsets.only(top: XmSpace.s7),
     child: Column(
       children: [
-        const CircularProgressIndicator(),
+        const CircularProgressIndicator.adaptive(),
         const SizedBox(height: XmSpace.s4),
         Semantics(liveRegion: true, child: Text(context.t(key))),
       ],

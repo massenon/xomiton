@@ -457,7 +457,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
           ),
         ],
         const SizedBox(height: XmSpace.s3),
-        SwitchListTile(
+        SwitchListTile.adaptive(
           contentPadding: EdgeInsets.zero,
           value: f.position != null,
           title: Text(context.t('alerts_report_fields_position')),
@@ -561,7 +561,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (member)
-          SwitchListTile(
+          SwitchListTile.adaptive(
             contentPadding: EdgeInsets.zero,
             value: f.anonymous,
             title: Text(context.t('alerts_report_fields_anonymous')),

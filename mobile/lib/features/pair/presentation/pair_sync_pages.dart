@@ -165,7 +165,7 @@ class _PairSyncPageState extends ConsumerState<PairSyncPage> {
                     key: const ValueKey('sync-now'),
                     onPressed: (!online || state.syncing) ? null : _syncNow,
                     icon: state.syncing
-                        ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                        ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator.adaptive(strokeWidth: 2))
                         : const Icon(Icons.sync, size: 20),
                     label: Text(state.syncing ? context.t('mobile_sync_syncing') : context.t('mobile_sync_now')),
                   ),

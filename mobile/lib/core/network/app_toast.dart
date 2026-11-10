@@ -43,6 +43,12 @@ class DiscreetDefaultToast extends AppToast {
   const DiscreetDefaultToast();
 }
 
+/// iOS : une capture d'écran vient d'être faite sur un écran sensible (détectée après coup,
+/// iOS ne permet pas de l'interdire).
+class ScreenshotToast extends AppToast {
+  const ScreenshotToast();
+}
+
 class ToastBus {
   final StreamController<AppToast> _c = StreamController<AppToast>.broadcast();
   Stream<AppToast> get stream => _c.stream;

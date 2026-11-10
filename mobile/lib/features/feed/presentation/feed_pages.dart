@@ -651,7 +651,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
                   onPressed: () =>
                       setState(() => _options.add(TextEditingController())),
                 ),
-              SwitchListTile(
+              SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
                 value: _multiple,
                 title: Text(context.t('feed_poll_multiple')),
@@ -705,7 +705,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
               ],
               onChanged: (v) => setState(() => _visibility = v ?? 'public'),
             ),
-            SwitchListTile(
+            SwitchListTile.adaptive(
               contentPadding: EdgeInsets.zero,
               value: _anonymous,
               title: Text(context.t('feed_create_anonymous')),

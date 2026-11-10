@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/xm_tokens.dart';
 import '../../../core/l10n/app_strings.dart';
+import '../../../core/platform/legal_links.dart';
+import '../../../core/platform/platform_services.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../auth/application/session_controller.dart';
 import '../application/settings_providers.dart';
@@ -73,7 +75,7 @@ class SettingsPage extends ConsumerWidget {
             loading: () => const Padding(padding: EdgeInsets.all(XmSpace.s5), child: LoadingView()),
             error: (e, _) => ErrorView(error: e, onRetry: () => ref.invalidate(settingsProvider)),
             data: (s) => Column(children: [
-              SwitchListTile(
+              SwitchListTile.adaptive(
                 key: const Key('switch-notifications'),
                 contentPadding: EdgeInsets.zero,
                 title: Text(context.t('mobile_settings_notifications')),
@@ -81,7 +83,7 @@ class SettingsPage extends ConsumerWidget {
                 value: s.notifications,
                 onChanged: (v) => guard(() => ref.read(settingsProvider.notifier).setNotifications(v)),
               ),
-              SwitchListTile(
+              SwitchListTile.adaptive(
                 key: const Key('switch-sounds'),
                 contentPadding: EdgeInsets.zero,
                 title: Text(context.t('profile_settings_security_sounds')),
@@ -127,6 +129,20 @@ class SettingsPage extends ConsumerWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.push('/newsletter'),
           ),
+          const Divider(),
+          Text(context.t('mobile_legal_title'), style: Theme.of(context).textTheme.titleMedium),
+          for (final link in kLegalLinks)
+            ListTile(
+              key: Key('legal-${link.key}'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.description_outlined),
+              title: Text(context.t(link.labelKey)),
+              trailing: const Icon(Icons.open_in_new, size: 18),
+              onTap: () async {
+                final ok = await ref.read(linkLauncherProvider).open(link.uri);
+                if (!ok && context.mounted) _toast(context, context.t('mobile_legal_open_failed'));
+              },
+            ),
           const SizedBox(height: XmSpace.s4),
           OutlinedButton.icon(
             key: const Key('logout'),
