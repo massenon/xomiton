@@ -61,7 +61,7 @@ abstract interface class EvidencePicker {
 class FilePickerEvidence implements EvidencePicker {
   @override
   Future<List<PickedEvidence>> pick() async {
-    final r = await FilePicker.pickFiles(
+    final r = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       type: FileType.custom,
       allowedExtensions: const [

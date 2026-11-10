@@ -724,7 +724,7 @@ Versions lues dans `mobile/pubspec.yaml` ; **aucune n'a été résolue ni compil
 | `shared_preferences` | Préférences | `UserDefaults` : déclaré au manifeste de confidentialité |
 | `connectivity_plus` | Réseau | Le simulateur rapporte mal l'état du réseau : tester sur appareil |
 | `url_launcher` | `tel:`, plans, liens | `LSApplicationQueriesSchemes` si `canLaunchUrl` est utilisé |
-| `file_picker ^11` | Pièces jointes | Sélecteur de photos système, **HEIC**, aucune autorisation |
+| `file_picker ^10` | Pièces jointes | Sélecteur de photos système, **HEIC**, aucune autorisation |
 | `add_2_calendar` | Ajout d'événement | Écriture seule ; maintenance du paquet |
 | `flutter_svg`, `uuid`, `crypto`, `intl`, `go_router`, `dio`, `flutter_riverpod` | Utilitaires | Rien de propre à iOS (Dio : `NSAppTransportSecurity` par défaut = HTTPS ; en développement local, autoriser le réseau local sans désactiver ATS) |
 | **À ajouter** : `local_auth` | Face ID | `NSFaceIDUsageDescription` ; `biometricOnly: true` |

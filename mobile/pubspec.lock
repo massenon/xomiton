@@ -157,10 +157,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: "29cc1fdb20613876cc7afc529738c1c0f11a9ca159b010edad0c566ac330847e"
+      sha256: "67f7e688aac01c965ca95f4ed59c51bff304049c7611bb15cf90ca21212027a8"
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.3"
+    version: "10.3.11"
   firebase_core:
     dependency: "direct main"
     description:
