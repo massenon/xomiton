@@ -212,6 +212,21 @@ return [
     ],
 
     /*
+     * Liens universels (lot IOS-09) : /.well-known/apple-app-site-association (iOS) et /.well-known/assetlinks.json
+     * (Android), routes/well-known.php. Identifiants lus de l'environnement ; vides = fichier valide à liste vide (les liens
+     * s'ouvrent alors dans le navigateur). GUIDE_DEPLOIEMENT.md §20.5.
+     */
+    'universal_links' => [
+        'bundle_id' => 'app.xomiton.xomiton',
+        'apple_team_id' => trim((string) env('APPLE_TEAM_ID', '')),
+        // Empreintes SHA-256 du certificat de signature (Play App Signing + clé de téléversement), séparées par des virgules.
+        'android_sha256_fingerprints' => array_values(array_filter(array_map('trim', explode(',', (string) env('ANDROID_SHA256_FINGERPRINTS', ''))))),
+        // Chemins ouverts dans l'application (jamais /sos, /admin, /api, l'authentification ni les pages de compte).
+        'paths' => ['/invitation/*', '/signup/*', '/alerte/*'],
+        'max_age' => 3600,
+    ],
+
+    /*
      * Cache HTTP des pages publiques sans session (CacheableGuestPage, docs/PERFORMANCE.md §11) et cache de données de la
      * page d'accueil (App\Support\PublicContentCache, fichier : compatible cPanel, sans Redis).
      */

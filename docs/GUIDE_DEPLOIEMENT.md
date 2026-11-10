@@ -464,10 +464,19 @@ Abaisser le TTL à 300 s 48 h avant la bascule. Aucune valeur secrète ici : la 
 - `api` : **non utilisé par défaut**. L'application mobile appelle `https://xomiton.app/api/v1` (même domaine, une seule zone TLS/CORS/cookies). Si l'API devait être séparée, créer `api.xomiton.app`, régler `SANCTUM_STATEFUL_DOMAINS` et publier une nouvelle version mobile avec `--dart-define=API_BASE_URL=https://api.xomiton.app/api/v1`.
 - Application mobile : `API_BASE_URL` par défaut dans le code = émulateur local (`http://10.0.2.2:8000/api/v1`, `mobile/lib/core/network/api_client.dart`) ; les builds de **release** doivent passer `--dart-define=API_BASE_URL=https://xomiton.app/api/v1` (une URL non https empêche le démarrage).
 
-### 20.5 Liens universels (état actuel)
-- **Android** `https://xomiton.app/.well-known/assetlinks.json` : **absent**, et `AndroidManifest.xml` n'a pas de `intent-filter` `autoVerify`. À créer avec l'empreinte SHA-256 du certificat de signature Play (App Signing) pour `app.xomiton.xomiton`.
-- **iOS** `https://xomiton.app/.well-known/apple-app-site-association` : **absent**, pas d'entitlement *Associated Domains* (voir [PLAN_IOS.md](PLAN_IOS.md) §« Liens universels », `applinks:xomiton.app`). Servir en HTTPS, sans redirection, `Content-Type: application/json`.
-- `.htaccess` laisse déjà passer `/.well-known/`. L'identifiant d'application est `app.xomiton.xomiton` (changé avant toute publication ; les empreintes et `assetlinks.json` doivent le porter).
+### 20.5 Liens universels (lot IOS-09)
+Le serveur sert les deux fichiers (`web/routes/well-known.php`, `UniversalLinksController`), **sans groupe `web`** : pas de session, pas de cookie, pas de mode maintenance, pas de `CacheableGuestPage`, aucune redirection, `Content-Type: application/json`, `Cache-Control: public, max-age=3600`. `.htaccess` laisse passer `/.well-known/` (HTTPS non forcé pour la validation TLS, fichiers cachés interdits sauf ce dossier) ; aucun fichier statique n'est nécessaire dans `public/`.
+
+| Variable (`.env`) | Valeur | Où la trouver |
+|---|---|---|
+| `APPLE_TEAM_ID` | identifiant d'équipe Apple (10 caractères) | developer.apple.com › Compte › Membership |
+| `ANDROID_SHA256_FINGERPRINTS` | empreintes SHA-256 du certificat de signature, séparées par des virgules | Play Console › Intégrité de l'application (signature d'application Play **et** clé de téléversement si on teste un build local) |
+
+- **iOS** `https://xomiton.app/.well-known/apple-app-site-association` : `applinks.details[].appIDs = ["<APPLE_TEAM_ID>.app.xomiton.xomiton"]`, `components` : `/invitation/*`, `/signup/*`, `/alerte/*`. Pas de redirection ni d'extension. Côté application : entitlement *Associated Domains* `applinks:xomiton.app` (voir [PLAN_IOS.md](PLAN_IOS.md)).
+- **Android** `https://xomiton.app/.well-known/assetlinks.json` : relation `delegate_permission/common.handle_all_urls`, paquet `app.xomiton.xomiton`, empreintes de `ANDROID_SHA256_FINGERPRINTS` ; il faut aussi un `intent-filter` `autoVerify` dans `AndroidManifest.xml` (agent mobile).
+- **Variables vides (défaut)** : les deux fichiers restent valides mais sans identifiant (AASA : `appIDs: []` ; assetlinks : `[]`) : les liens s'ouvrent dans le navigateur, sans erreur. Renseigner les variables, puis `php artisan config:cache`.
+- Contrôle : `curl -sI https://xomiton.app/.well-known/apple-app-site-association` (200, `application/json`, pas de `Location`, pas de `Set-Cookie`) ; `curl -s https://xomiton.app/.well-known/assetlinks.json` ; validateurs Apple (`swcutil` / Réglages développeur) et Google (Digital Asset Links API).
+- Les chemins `/invitation/*`, `/signup/*`, `/alerte/*` n'ont pas de page web équivalente aujourd'hui : sans l'application, le navigateur affiche la page 404 du site (comportement de repli à décider avec le client). L'identifiant d'application est `app.xomiton.xomiton`.
 
 ### 20.6 Réservations défensives
 Réserver (ou rediriger vers `xomiton.app`) : `xomiton.org`, `xomiton.com`, `xomiton.net`, et si possible `.care` / `.help`. Le **`.bj`** n'est utile qu'en **redirection** : un domaine national peut être suspendu ou exiger l'identification du titulaire par un registre local, ce qui exposerait l'organisation ; ne jamais y héberger le service ni les e-mails.

@@ -31,6 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function (): void {
+            // Liens universels (IOS-09) : volontairement SANS groupe `web` (ni session, ni cookie, ni CSRF, ni mode maintenance,
+            // ni CacheableGuestPage) : réponse JSON statique, sans redirection, comme l'exigent Apple et Google.
+            Route::group([], base_path('routes/well-known.php'));
             // Administration : Livewire, préfixe /admin, réservée aux rôles disposant de admin.access.
             Route::middleware(['web', 'auth', 'can:admin.access'])
                 ->prefix('admin')
