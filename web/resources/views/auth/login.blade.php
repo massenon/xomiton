@@ -3,6 +3,14 @@
     <h1 class="h2 fw-bold">{{ __('auth.login.heading') }}</h1>
     <p class="text-body-secondary">{{ __('auth.login.intro') }}</p>
 
+    @if (in_array(session('universal_link'), ['invitation', 'alert'], true))
+        <x-alert type="info" class="mb-4" role="status" aria-live="polite">
+            <p class="mb-0">{{ __('auth.universal_link.'.session('universal_link')) }}</p>
+            @if (session('universal_link') === 'invitation' && is_string(session('universal_link_code')))
+                <p class="mb-0 mt-2"><a class="fw-bold" href="{{ route('inscription', ['invitation' => session('universal_link_code')]) }}" rel="noreferrer">{{ __('auth.universal_link.create_with_invitation') }}</a></p>
+            @endif
+        </x-alert>
+    @endif
     @include('auth.partials.status')
     <x-error-summary />
 

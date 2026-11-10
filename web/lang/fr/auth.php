@@ -17,6 +17,11 @@ return [
     'side_title' => 'Ton espace safe d’apprentissage et d’appui holistique.',
     'side_text' => 'Filles et femmes LBTQ+ : retrouve ta communauté bienveillante, des ressources fiables et un soutien confidentiel.',
 
+    'universal_link' => [
+        'invitation' => 'Ouvrez ce lien dans l’application Xomiton, ou connectez-vous / créez votre compte ici.',
+        'alert' => 'Ouvrez ce lien dans l’application Xomiton, ou connectez-vous ici pour accéder à votre espace.',
+        'create_with_invitation' => 'Créer un compte avec cette invitation',
+    ],
     'login' => [
         'heading' => 'Bon retour 👋',
         'intro' => 'Connecte-toi pour accéder à ton espace.',

@@ -14678,6 +14678,18 @@
             }
         }
     },
+    "auth_universal_link_alert": "Ouvrez ce lien dans l’application Xomiton, ou connectez-vous ici pour accéder à votre espace.",
+    "@auth_universal_link_alert": {
+        "description": "auth.universal_link.alert"
+    },
+    "auth_universal_link_create_with_invitation": "Créer un compte avec cette invitation",
+    "@auth_universal_link_create_with_invitation": {
+        "description": "auth.universal_link.create_with_invitation"
+    },
+    "auth_universal_link_invitation": "Ouvrez ce lien dans l’application Xomiton, ou connectez-vous / créez votre compte ici.",
+    "@auth_universal_link_invitation": {
+        "description": "auth.universal_link.invitation"
+    },
     "auth_verify_banner_enter_code": "Saisir le code",
     "@auth_verify_banner_enter_code": {
         "description": "auth.verify_banner.enter_code"

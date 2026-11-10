@@ -66,6 +66,7 @@ use App\Http\Controllers\Web\SitemapController;
 use App\Http\Controllers\Web\SosPageController;
 use App\Http\Controllers\Web\ThematiquesIndexController;
 use App\Http\Controllers\Web\ThematiquesShowController;
+use App\Http\Controllers\Web\UniversalLinkFallbackController;
 use App\Http\Controllers\Web\UrgencesController;
 use App\Http\Controllers\Web\ViolencesController;
 use App\Http\Middleware\EnsureNotInMaintenance;
@@ -187,6 +188,12 @@ Route::middleware('throttle:acknowledge')->group(function (): void {
     Route::get('/alertes/{alert:ulid}/accuser', [AlertAcknowledgementController::class, 'show'])->name('alertes.accuser');
     Route::post('/alertes/{alert:ulid}/accuser', [AlertAcknowledgementController::class, 'store'])->name('alertes.accuser.store');
 });
+
+// Repli des liens universels (AASA / assetlinks : /invitation/*, /signup/*, /alerte/*) sans l'application : 302 vers
+// /connexion, réponse identique que la ressource existe ou non, aucune URL externe suivie, sans cache invité.
+Route::get('/invitation/{code}', [UniversalLinkFallbackController::class, 'invitation'])->where('code', '.+')->name('lien-universel.invitation');
+Route::get('/signup/{code}', [UniversalLinkFallbackController::class, 'invitation'])->where('code', '.+')->name('lien-universel.signup');
+Route::get('/alerte/{id}', [UniversalLinkFallbackController::class, 'alert'])->where('id', '.+')->name('lien-universel.alerte');
 
 // --- Authentification (P2-02 à P2-05, P4-09 — lot ecrans-web) ----------------------
 // Limiteurs nommés de AppServiceProvider : 'login' (identifiant + IP), 'otp' (adresse e-mail).
