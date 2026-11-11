@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\V1\Auth\OtpSendController;
 use App\Http\Controllers\Api\V1\Auth\OtpVerifyController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\V1\Ccc\CccController;
 use App\Http\Controllers\Api\V1\Community\GroupController;
 use App\Http\Controllers\Api\V1\Community\GroupDiscussionController;
 use App\Http\Controllers\Api\V1\Community\GroupMembershipController;
@@ -426,6 +427,14 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
         Route::get('/', [DirectoryController::class, 'index'])->name('index');
         Route::post('{contact}/callback', [DirectoryController::class, 'callback'])->whereNumber('contact')
             ->middleware('idempotent:required,limit=directory_callback')->name('callback');
+    });
+
+    // --- Outils CCC en lecture (P8-12, lot outils-ccc, docs/API.md §19 bis) : outils **publiés** seulement par famille
+    // (manuel, boîtes à images, BD SSR) et nombre de textes de loi publiés ; un outil masqué ou inconnu → 404 neutre.
+    // Permission `ccc_tools.view` (sinon 403), réponses `no-store, private`.
+    Route::prefix('ccc')->as('api.ccc.')->group(function (): void {
+        Route::get('/', [CccController::class, 'index'])->name('index');
+        Route::get('{key}', [CccController::class, 'show'])->where('key', '[a-z0-9]{1,20}')->name('show');
     });
 
     // --- Espace pair (P9-02, lot dossiers-api-pair, docs/API.md §22) : compte actif `peer_space.access` (RG-03,
