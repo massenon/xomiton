@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Auth\Support;
 
 use App\Application\Shared\Countries;
+use App\Application\Shared\Referentials;
 use App\Domain\Account\SensitiveProfile;
 use App\Enums\AllyRole;
 use App\Enums\MemberType;
@@ -88,7 +89,7 @@ final class RegistrationOptions
     /**
      * Charge utile de `GET /api/v1/referentials/registration`.
      *
-     * @return array{min_age: int, pronouns: list<array{value: string, label: string}>, member_types: list<array{value: string, label: string}>, countries: list<array{value: string, label: string}>, ally_roles: list<array{value: string, label: string}>, gender_identities: list<array{value: string, label: string}>, orientations: list<array{value: string, label: string}>}
+     * @return array{min_age: int, pronouns: list<array{value: string, label: string}>, member_types: list<array{value: string, label: string}>, countries: list<array{value: string, label: string}>, zone_countries: list<string>, ally_roles: list<array{value: string, label: string}>, gender_identities: list<array{value: string, label: string}>, orientations: list<array{value: string, label: string}>}
      */
     public static function payload(): array
     {
@@ -97,6 +98,7 @@ final class RegistrationOptions
             'pronouns' => self::pronouns(),
             'member_types' => self::memberTypes(),
             'countries' => Countries::all(),
+            'zone_countries' => app(Referentials::class)->zoneCountries(),
             'ally_roles' => AllyRole::options(),
             'gender_identities' => self::genderIdentities(),
             'orientations' => self::orientations(),

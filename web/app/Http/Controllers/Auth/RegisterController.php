@@ -96,7 +96,7 @@ final class RegisterController extends Controller
     }
 
     /**
-     * Listes du formulaire (pays, pronoms, « Vous êtes ? », statuts, identités, orientations, départements → communes) et étape à
+     * Listes du formulaire (pays, pronoms, « Vous êtes ? », statuts, identités, orientations, zones → communes de tout pays) et étape à
      * ouvrir (la première en erreur après un envoi refusé, sinon la première).
      *
      * @return array<string, mixed>
@@ -112,7 +112,8 @@ final class RegisterController extends Controller
             'step' => RegistrationSteps::firstInvalid(array_map('strval', $keys)),
             'steps' => RegistrationSteps::labels(),
             'options' => RegistrationOptions::payload(),
-            'zones' => array_map(static fn (array $zone): array => ['id' => $zone['id'], 'name' => $zone['name']], $zones),
+            'zones' => array_map(static fn (array $zone): array => ['id' => $zone['id'], 'name' => $zone['name'], 'country_code' => $zone['country_code']], $zones),
+            'zonesByCountry' => collect($zones)->groupBy('country_code')->map(static fn ($list): array => $list->map(static fn (array $zone): array => ['id' => $zone['id'], 'name' => $zone['name']])->values()->all())->all(),
             'communesByZone' => collect($zones)->mapWithKeys(static fn (array $zone): array => [
                 (string) $zone['id'] => array_map(static fn (array $commune): array => ['id' => $commune['id'], 'name' => $commune['name']], $zone['communes']),
             ])->all(),

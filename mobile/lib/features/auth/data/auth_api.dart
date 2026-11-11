@@ -195,10 +195,13 @@ class Commune {
 }
 
 class Zone {
-  const Zone(this.id, this.name, this.communes);
+  const Zone(this.id, this.name, this.communes, [this.countryCode = 'BJ']);
   final int id;
   final String name;
   final List<Commune> communes;
+
+  /// Pays de la zone (ISO 3166-1 alpha-2) ; `BJ` quand le serveur ne l'envoie pas (ancien contrat).
+  final String countryCode;
 
   factory Zone.fromJson(Map<String, dynamic> j) => Zone(
         (j['id'] as num).toInt(),
@@ -206,6 +209,7 @@ class Zone {
         ((j['communes'] as List?) ?? const [])
             .map((c) => Commune((c['id'] as num).toInt(), c['name'] as String))
             .toList(),
+        (j['country_code'] as String?) ?? 'BJ',
       );
 }
 

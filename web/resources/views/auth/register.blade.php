@@ -5,7 +5,7 @@
     (xmRegister, resources/js/public/inscription.js) une étape à la fois, étape validée avant « Suivant » (mêmes règles que le
     serveur), « Précédent » toujours présent, focus sur le titre de l'étape, résumé d'erreurs focalisable + message sous chaque
     champ, données conservées ; à l'erreur serveur l'étape fautive est rouverte. Variables : $step (étape à ouvrir), $steps,
-    $options (RegistrationOptions::payload), $zones, $communesByZone, $minAge, $invitationCode, $invitationRole.
+    $options (RegistrationOptions::payload), $zones (avec country_code), $zonesByCountry, $communesByZone, $minAge, $invitationCode, $invitationRole.
 --}}
 @php
     $total = count($steps);
@@ -18,9 +18,12 @@
         'minAge' => $minAge,
         'benin' => \App\Application\Shared\Countries::BENIN,
         'communes' => $communesByZone,
+        'zones' => $zonesByCountry,
+        'zoneCountries' => $options['zone_countries'] ?? [],
         'texts' => [
             'stepper' => ['done' => __('components.stepper.done'), 'current' => __('components.stepper.current'), 'todo' => __('components.stepper.todo')],
             'step_of' => __('auth.register.step_of', ['current' => ':current', 'total' => ':total']),
+            'zone_placeholder' => __('auth.register.profile.choose'),
             'commune_placeholder' => __('auth.register.profile.choose'),
             'commune_first' => __('auth.register.profile.choose_zone_first'),
             'errors' => __('auth.register.errors'),
@@ -98,10 +101,27 @@
                     <div class="col-md-6"><x-field name="city" :label="__('auth.register.profile.city')" optional autocomplete="address-level2" maxlength="120" /></div>
                     <div class="col-md-6"><x-field name="phone" type="tel" :label="__('auth.register.profile.phone')" optional autocomplete="tel" inputmode="tel" maxlength="30" :hint="__('auth.register.profile.phone_hint')" /></div>
                 </div>
-                {{-- Département → commune : Bénin seulement (routage du SOS par zone). Sans JavaScript : toutes les communes, par département. --}}
-                <div class="row gx-3" x-show="isBenin">
-                    <div class="col-md-6"><x-field type="select" name="zone_id" :label="__('auth.register.profile.zone')" optional
-                        :options="['' => __('auth.register.profile.choose')] + collect($zones)->mapWithKeys(fn (array $zone): array => [$zone['id'] => $zone['name']])->all()" /></div>
+                {{-- Zone → commune : facultatives, proposées si le pays choisi a des zones actives (routage du SOS par zone). Sans
+                     JavaScript : toutes les zones, groupées par pays, et toutes les communes, groupées par zone ; le serveur refuse une
+                     zone qui n'est pas du pays choisi. --}}
+                <div class="row gx-3" x-show="hasZones">
+                    <div class="col-md-6">
+                        @php($zoneError = $errors->first('zone_id'))
+                        <div class="mb-3 xm-field">
+                            <label class="form-label" for="f-zone_id">{{ __('auth.register.profile.zone') }} <span class="small text-secondary fw-normal">{{ __('components.field.optional') }}</span></label>
+                            <select @class(['form-select', 'is-invalid' => $zoneError]) id="f-zone_id" name="zone_id" x-ref="zone" @if ($zoneError) aria-invalid="true" aria-describedby="f-zone_id-error" @endif>
+                                <option value="">{{ __('auth.register.profile.choose') }}</option>
+                                @foreach (collect($zones)->groupBy('country_code') as $countryCode => $countryZones)
+                                    <optgroup label="{{ \App\Application\Shared\Countries::name((string) $countryCode) ?? $countryCode }}" data-country="{{ $countryCode }}">
+                                        @foreach ($countryZones as $zone)
+                                            <option value="{{ $zone['id'] }}" @selected((string) old('zone_id') === (string) $zone['id'])>{{ $zone['name'] }}</option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
+                            </select>
+                            @if ($zoneError)<div id="f-zone_id-error" class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ $zoneError }}</div>@endif
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         @php($communeError = $errors->first('commune_id'))
                         <div class="mb-3 xm-field">

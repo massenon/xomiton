@@ -8,7 +8,6 @@ use App\Application\Admin\Roles\TeamInvitations;
 use App\Application\Auth\Support\RegistrationFlags;
 use App\Application\Auth\Support\RegistrationGate;
 use App\Application\Auth\Support\RegistrationOptions;
-use App\Application\Shared\Countries;
 use App\Domain\Account\SensitiveProfile;
 use App\Domain\Auth\ConsentVersion;
 use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
@@ -21,10 +20,12 @@ use App\Enums\ConsentKind;
 use App\Enums\MemberType;
 use App\Enums\UserStatus;
 use App\Events\Auth\UserRegistered;
+use App\Models\Commune;
 use App\Models\Consent;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\UserSetting;
+use App\Models\Zone;
 use App\Rules\RegistrationPhone;
 use App\Support\Audit;
 use Database\Seeders\RolesAndPermissionsSeeder;
@@ -105,6 +106,29 @@ final class RegisterUser
         );
     }
 
+    /**
+     * Zone et commune retenues : la zone doit exister, être active et appartenir au pays choisi, la commune à cette zone ;
+     * sinon elles sont ignorées (la validation de la requête les aurait refusées).
+     *
+     * @return array{0: int|null, 1: int|null}
+     */
+    private function location(RegisterData $data): array
+    {
+        if ($data->zoneId === null) {
+            return [null, null];
+        }
+
+        $zone = Zone::query()->active()->inCountry($data->countryCode)->find($data->zoneId);
+
+        if ($zone === null) {
+            return [null, null];
+        }
+
+        $commune = $data->communeId === null ? null : Commune::query()->active()->inZone($zone)->find($data->communeId);
+
+        return [(int) $zone->getKey(), $commune === null ? null : (int) $commune->getKey()];
+    }
+
     private function createAccount(RegisterData $data): User
     {
         $email = OtpService::normalizeEmail($data->email);
@@ -113,7 +137,7 @@ final class RegisterUser
         $flags = RegistrationFlags::evaluate($email, $data->ip, $data->userAgent);
         $firstName = trim($data->firstName);
         $lastName = trim($data->lastName);
-        $isBenin = $data->countryCode === Countries::BENIN;
+        [$zoneId, $communeId] = $this->location($data);
 
         $user = User::query()->create([
             'pseudo' => trim($data->pseudo),
@@ -128,9 +152,9 @@ final class RegisterUser
             'registration_flags' => $flags === [] ? null : implode(',', $flags),
             // La vérification de l'adresse est faite par l'administration à la validation du compte.
             'email_verified_at' => null,
-            // Zone de routage SOS : Bénin seulement.
-            'zone_id' => $isBenin ? $data->zoneId : null,
-            'commune_id' => $isBenin ? $data->communeId : null,
+            // Zone de routage SOS (tout pays) ; ceinture et bretelles : la requête l'a validée contre le pays choisi.
+            'zone_id' => $zoneId,
+            'commune_id' => $communeId,
         ]);
 
         // Le rôle vient du seeder (idempotent) ; findOrCreate évite un échec si la base n'a pas encore été seedée.

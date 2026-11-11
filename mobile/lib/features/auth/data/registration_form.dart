@@ -17,6 +17,7 @@ class RegistrationReferentials {
     this.pronouns = const [],
     this.memberTypes = const [],
     this.countries = const [],
+    this.zoneCountries = const [],
     this.allyRoles = const [],
     this.genderIdentities = const [],
     this.orientations = const [],
@@ -26,6 +27,9 @@ class RegistrationReferentials {
   final List<RegOption> pronouns;
   final List<RegOption> memberTypes;
   final List<RegOption> countries;
+
+  /// Codes ISO des pays qui ont des zones actives : zone puis commune ne sont proposées que pour eux.
+  final List<String> zoneCountries;
   final List<RegOption> allyRoles;
   final List<RegOption> genderIdentities;
   final List<RegOption> orientations;
@@ -39,6 +43,7 @@ class RegistrationReferentials {
       pronouns: list(j['pronouns']),
       memberTypes: list(j['member_types']),
       countries: list(j['countries']),
+      zoneCountries: j['zone_countries'] is List ? [for (final c in j['zone_countries'] as List) '$c'] : const [],
       allyRoles: list(j['ally_roles']),
       genderIdentities: list(j['gender_identities']),
       orientations: list(j['orientations']),
@@ -53,7 +58,7 @@ const String kMemberTypeAlly = 'allie';
 /// Valeur « autre » des listes : impose un champ de précision.
 const String kOtherValue = 'autre';
 
-/// Pays dont les départements et communes du Bénin ont un sens.
+/// Pays proposé en premier dans la liste (les zones, elles, existent pour tout pays qui en a d'actives).
 const String kBeninCode = 'BJ';
 
 /// Nombre d'étapes de l'ancien formulaire.
@@ -146,7 +151,6 @@ class RegistrationForm {
 
   bool get isMember => memberType == kMemberTypeMember;
   bool get isAlly => memberType == kMemberTypeAlly;
-  bool get inBenin => countryCode == kBeninCode;
 
   static final RegExp _pseudoPattern = RegExp(r'^[A-Za-z0-9_.\-]{1,40}$');
   static final RegExp _emailPattern = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
@@ -241,8 +245,8 @@ class RegistrationForm {
       'country_code': countryCode,
       'city': ?text(city),
       'phone': ?text(phone),
-      if (inBenin && zoneId != null) 'zone_id': zoneId,
-      if (inBenin && zoneId != null && communeId != null) 'commune_id': communeId,
+      if (zoneId != null) 'zone_id': zoneId,
+      if (zoneId != null && communeId != null) 'commune_id': communeId,
       'member_type': memberType,
       if (member) ...{
         'gender_identity': genderIdentity,

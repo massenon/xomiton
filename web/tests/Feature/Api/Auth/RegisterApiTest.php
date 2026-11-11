@@ -91,7 +91,7 @@ it('inscrit une allié·e avec son statut, sans identité de genre ni orientatio
         ->and(DB::table('profiles')->where('user_id', $user->id)->value('ally_role'))->not->toContain('autre');
 });
 
-it('garde zone et commune au Bénin seulement, et le téléphone selon le pays', function (): void {
+it('garde zone et commune du pays choisi (Bénin comme tout autre pays), et le téléphone selon le pays', function (): void {
     $zone = Zone::factory()->create(['is_active' => true]);
     $commune = Commune::factory()->create(['zone_id' => $zone->id, 'is_active' => true]);
 
@@ -101,10 +101,42 @@ it('garde zone et commune au Bénin seulement, et le téléphone selon le pays',
     $benin = User::query()->where('email', 'awa@exemple.bj')->firstOrFail();
     expect($benin->phone)->toBe('+229 01 97 38 88 47')->and($benin->commune_id)->toBe($commune->id);
 
-    $this->postJson('/api/v1/auth/register', registerPayload(['pseudo' => 'Awa_FR', 'email' => 'fr@exemple.fr', 'country_code' => 'FR', 'zone_id' => $zone->id, 'phone' => '+33 6 12 34 56 78']))
+    $paris = Zone::factory()->inCountry('FR')->create(['is_active' => true]);
+    $arrondissement = Commune::factory()->create(['zone_id' => $paris->id, 'is_active' => true]);
+    $this->postJson('/api/v1/auth/register', registerPayload(['pseudo' => 'Awa_FR', 'email' => 'fr@exemple.fr', 'country_code' => 'FR', 'zone_id' => $paris->id, 'commune_id' => $arrondissement->id, 'phone' => '+33 6 12 34 56 78']))
         ->assertCreated();
     $france = User::query()->where('email', 'fr@exemple.fr')->firstOrFail();
-    expect($france->zone_id)->toBeNull()->and($france->phone)->toBe('+33612345678');
+    expect($france->zone_id)->toBe($paris->id)->and($france->commune_id)->toBe($arrondissement->id)->and($france->phone)->toBe('+33612345678');
+});
+
+it('refuse une zone d’un autre pays que le pays choisi, et une commune qui n’est pas de la zone', function (): void {
+    $benin = Zone::factory()->create(['is_active' => true]);
+    $beninCommune = Commune::factory()->create(['zone_id' => $benin->id, 'is_active' => true]);
+    $togo = Zone::factory()->inCountry('TG')->create(['is_active' => true]);
+
+    // Zone du Bénin avec le pays France, ou zone du Togo avec le Bénin : refusées.
+    $this->postJson('/api/v1/auth/register', registerPayload(['pseudo' => 'Awa_FR', 'email' => 'fr@exemple.fr', 'country_code' => 'FR', 'zone_id' => $benin->id, 'phone' => '+33 6 12 34 56 78']))
+        ->assertStatus(422)->assertJsonValidationErrors(['zone_id']);
+    $this->postJson('/api/v1/auth/register', registerPayload(['zone_id' => $togo->id]))->assertStatus(422)->assertJsonValidationErrors(['zone_id']);
+    $this->postJson('/api/v1/auth/register', registerPayload(['zone_id' => $togo->id, 'country_code' => 'TG', 'commune_id' => $beninCommune->id, 'phone' => '+228 90 12 34 56']))
+        ->assertStatus(422)->assertJsonValidationErrors(['commune_id']);
+
+    // Une zone désactivée n'est plus acceptée ; le pays sans zone n'a pas de cascade : sans zone, l'inscription passe.
+    $togo->update(['is_active' => false]);
+    $this->postJson('/api/v1/auth/register', registerPayload(['zone_id' => $togo->id, 'country_code' => 'TG', 'phone' => '+228 90 12 34 56']))->assertStatus(422)->assertJsonValidationErrors(['zone_id']);
+    $this->postJson('/api/v1/auth/register', registerPayload(['country_code' => 'TG', 'phone' => '+228 90 12 34 56']))->assertCreated();
+    expect(User::query()->where('email', 'awa@exemple.bj')->firstOrFail()->zone_id)->toBeNull();
+});
+
+it('annonce dans le référentiel d’inscription les pays qui ont des zones actives, Bénin d’abord', function (): void {
+    $this->getJson('/api/v1/referentials/registration')->assertOk()->assertJsonPath('data.zone_countries', []);
+
+    Zone::factory()->inCountry('CM')->create(['is_active' => true]);
+    Zone::factory()->inCountry('BJ')->create(['is_active' => true]);
+    Zone::factory()->inCountry('TG')->create(['is_active' => false]);
+
+    $this->getJson('/api/v1/referentials/registration')->assertOk()->assertJsonPath('data.zone_countries', ['BJ', 'CM']);
+    $this->getJson('/api/v1/zones')->assertOk()->assertJsonPath('data.0.country_code', 'BJ')->assertJsonPath('data.1.country_code', 'CM');
 });
 
 it('renvoie 422 champ par champ : pseudonyme, e-mail déjà pris (casse ignorée), mot de passe faible, cases non cochées', function (): void {

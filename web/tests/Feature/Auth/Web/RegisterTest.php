@@ -197,7 +197,7 @@ it('refuse un âge sous le minimum, un âge non numérique, un pays inconnu, des
     postRegister($this, webRegisterPayload(['country_code' => 'FR', 'phone' => '+33 6 12 34 56 78']))->assertRedirect(route('fil'));
 });
 
-it('garde département et commune au Bénin seulement, avec la commune dans son département', function (): void {
+it('garde zone puis commune du pays choisi, avec la commune dans sa zone', function (): void {
     $zone = Zone::factory()->create(['is_active' => true]);
     $commune = Commune::factory()->create(['zone_id' => $zone->getKey(), 'is_active' => true]);
     $other = Commune::factory()->create(['is_active' => true]);
@@ -207,6 +207,29 @@ it('garde département et commune au Bénin seulement, avec la commune dans son 
     postRegister($this, webRegisterPayload(['zone_id' => $zone->getKey(), 'commune_id' => $commune->getKey(), 'city' => 'Cotonou']))->assertRedirect(route('fil'));
     $user = User::query()->where('email', 'awa@exemple.bj')->firstOrFail();
     expect($user->zone_id)->toBe($zone->getKey())->and($user->commune_id)->toBe($commune->getKey())->and($user->profile?->city)->toBe('Cotonou');
+});
+
+it('accepte une zone et une commune hors Bénin pour le pays choisi, et refuse celles d’un autre pays', function (): void {
+    $douala = Zone::factory()->inCountry('CM')->create(['is_active' => true]);
+    $commune = Commune::factory()->create(['zone_id' => $douala->getKey(), 'is_active' => true]);
+    $benin = Zone::factory()->create(['is_active' => true]);
+
+    postRegister($this, webRegisterPayload(['country_code' => 'CM', 'phone' => '+237 6 71 23 45 67', 'zone_id' => $benin->getKey()]))->assertSessionHasErrors(['zone_id']);
+    $this->assertGuest();
+
+    postRegister($this, webRegisterPayload(['country_code' => 'CM', 'phone' => '+237 6 71 23 45 67', 'zone_id' => $douala->getKey(), 'commune_id' => $commune->getKey()]))->assertRedirect(route('fil'));
+    $user = User::query()->where('email', 'awa@exemple.bj')->firstOrFail();
+    expect($user->zone_id)->toBe($douala->getKey())->and($user->commune_id)->toBe($commune->getKey());
+});
+
+it('propose zone et commune dans le formulaire pour tout pays qui a des zones actives', function (): void {
+    $douala = Zone::factory()->inCountry('CM')->create(['name' => 'Littoral camerounais', 'slug' => 'littoral-cm', 'is_active' => true]);
+    Commune::factory()->create(['zone_id' => $douala->getKey(), 'name' => 'Douala', 'slug' => 'douala', 'is_active' => true]);
+
+    $this->get('/inscription')->assertOk()
+        ->assertSee('Littoral camerounais')->assertSee('Douala')->assertSee('Cameroun')
+        ->assertSee('x-show="hasZones"', false)
+        ->assertSee('zoneCountries', false);
 });
 
 it('refuse chaque règle de base : pseudo pris (casse ignorée), e-mail pris, mot de passe faible, consentements manquants', function (): void {

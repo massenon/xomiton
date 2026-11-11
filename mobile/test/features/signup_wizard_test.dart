@@ -71,7 +71,7 @@ void main() {
       expect(find.text(S.t('mobile_register_err_required')), findsNWidgets(3));
     });
 
-    testWidgets('zone et commune en cascade seulement pour le Bénin', (tester) async {
+    testWidgets('zone et commune en cascade pour le pays choisi s’il a des zones actives (ici le Bénin seul)', (tester) async {
       final api = FakeApi(signupRoutes());
       await toStep2(tester, api);
       expect(find.text(S.t('mobile_register_zone')), findsNothing);
@@ -91,6 +91,29 @@ void main() {
       // Repasser à un autre pays efface la cascade.
       await choose(tester, 'country_code', 'Sénégal');
       expect(find.text(S.t('mobile_register_zone')), findsNothing);
+    });
+
+    testWidgets('un pays hors Bénin avec des zones actives propose SES zones puis communes', (tester) async {
+      final api = FakeApi(signupRoutes(referentials: referentialsJson(zoneCountries: const ['BJ', 'SN'])));
+      await toStep2(tester, api);
+      await choose(tester, 'country_code', 'Sénégal');
+      expect(find.text(S.t('mobile_register_zone')), findsOneWidget);
+      await tester.tap(find.byType(DropdownButtonFormField<int>).first);
+      await tester.pumpAndSettle();
+      // Seules les zones du pays choisi sont listées : pas « Littoral », qui est béninoise.
+      expect(find.text('Littoral'), findsNothing);
+      await tester.tap(find.text('Dakar').last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(DropdownButtonFormField<int>).last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Plateau').last);
+      await tester.pumpAndSettle();
+      // Changer de pays oublie la zone et la commune déjà choisies.
+      await choose(tester, 'country_code', 'Bénin');
+      await tester.tap(find.byType(DropdownButtonFormField<int>).first);
+      await tester.pumpAndSettle();
+      expect(find.text('Dakar'), findsNothing);
+      expect(find.text('Littoral'), findsWidgets);
     });
 
     testWidgets('le Bénin est en premier dans la liste des pays, même si le serveur l’envoie plus loin', (tester) async {

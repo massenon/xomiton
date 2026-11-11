@@ -426,7 +426,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   // Étape 2 : profil et identité.
   Widget _identityStep(BuildContext context, RegistrationReferentials r) {
-    final zones = _form.inBenin ? ref.watch(zonesProvider) : null;
+    // Zone puis commune : facultatives, proposées si le pays choisi a des zones actives (routage du SOS par zone).
+    final country = _form.countryCode;
+    final zones = country != null && r.zoneCountries.contains(country) ? ref.watch(zonesProvider) : null;
     // Le serveur met le Bénin en premier ; on le garantit sans toucher à l'ordre du reste.
     final countries = [
       ...r.countries.where((c) => c.value == kBeninCode),
@@ -438,11 +440,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       _gap(),
       _dropdown('country_code', _req('mobile_register_country'), countries, _form.countryCode, (v) {
         setState(() {
-          _form.countryCode = v;
-          if (v != kBeninCode) {
+          if (v != _form.countryCode) {
             _form.zoneId = null;
             _form.communeId = null;
           }
+          _form.countryCode = v;
         });
       }),
       _gap(),
@@ -455,7 +457,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         zones.when(
           loading: () => const Padding(padding: EdgeInsets.all(XmSpace.s4), child: LoadingView()),
           error: (e, _) => ErrorView(error: e, onRetry: () => ref.invalidate(zonesProvider)),
-          data: (list) {
+          data: (all) {
+            final list = all.where((z) => z.countryCode == country).toList();
+            if (list.isEmpty) return const SizedBox.shrink();
             final zone = list.where((z) => z.id == _form.zoneId).firstOrNull;
             return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               DropdownButtonFormField<int>(

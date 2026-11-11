@@ -5,7 +5,7 @@ import 'harness.dart';
 
 final S = loadStrings();
 
-Map<String, dynamic> referentialsJson({int minAge = 18, bool beninFirst = true}) => {
+Map<String, dynamic> referentialsJson({int minAge = 18, bool beninFirst = true, List<String> zoneCountries = const ['BJ']}) => {
       'data': {
         'min_age': minAge,
         'pronouns': [
@@ -27,6 +27,7 @@ Map<String, dynamic> referentialsJson({int minAge = 18, bool beninFirst = true})
                 {'value': 'SN', 'label': 'Sénégal'},
                 {'value': 'BJ', 'label': 'Bénin'},
               ],
+        'zone_countries': zoneCountries,
         'ally_roles': [
           {'value': 'enseignant', 'label': 'Enseignant·e'},
           {'value': 'autre', 'label': 'Autre statut'},
@@ -59,13 +60,24 @@ Map<String, FakeHandler> signupRoutes({
                 'id': 1,
                 'name': 'Littoral',
                 'slug': 'littoral',
+                'country_code': 'BJ',
                 'position': 1,
                 'communes': [
                   {'id': 3, 'name': 'Cotonou', 'slug': 'cotonou', 'position': 1}
                 ]
               },
+              {
+                'id': 2,
+                'name': 'Dakar',
+                'slug': 'dakar',
+                'country_code': 'SN',
+                'position': 1,
+                'communes': [
+                  {'id': 7, 'name': 'Plateau', 'slug': 'plateau', 'position': 1}
+                ]
+              },
             ],
-            'meta': {'count': 1}
+            'meta': {'count': 2}
           }),
       'POST auth/register': (_) => jsonBody(
             registerStatus,

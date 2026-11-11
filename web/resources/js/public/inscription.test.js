@@ -99,7 +99,7 @@ function formHtml() {
         </section>
         <section class="xm-register__step" id="etape-2"><h2 id="etape-2-titre" tabindex="-1">2</h2>
           <div class="xm-field"><fieldset id="f-member_type"><input type="radio" name="member_type" value="membre"><input type="radio" name="member_type" value="allie" checked></fieldset></div>
-          <div class="xm-field"><select id="f-country_code" name="country_code"><option value="BJ" selected>Bénin</option><option value="FR">France</option></select></div>
+          <div class="xm-field"><select id="f-country_code" name="country_code"><option value="BJ" selected>Bénin</option><option value="CM">Cameroun</option><option value="FR">France</option></select></div>
           <select id="f-zone_id" name="zone_id"><option value="">—</option><option value="1">Littoral</option></select>
           <select id="f-commune_id" name="commune_id"><option value="">—</option></select>
         </section>
@@ -154,8 +154,8 @@ describe('xmRegister', () => {
   function component(values = {}) {
     const form = formHtml();
     Object.entries(values).forEach(([name, value]) => { form.elements[name].value = value; });
-    const data = xmRegister({ ...CFG, initial: 1, steps: STEPS, communes: { 1: [{ id: 5, name: 'Cotonou' }] }, texts: CFG.texts });
-    data.$refs = { form, progress: document.querySelector('.xm-auth-progress'), clientErrors: document.getElementById('clientErrors'), commune: document.getElementById('f-commune_id') };
+    const data = xmRegister({ ...CFG, initial: 1, steps: STEPS, communes: { 1: [{ id: 5, name: 'Cotonou' }], 2: [{ id: 9, name: 'Douala' }] }, zones: { BJ: [{ id: 1, name: 'Littoral' }], CM: [{ id: 2, name: 'Littoral' }] }, zoneCountries: ['BJ', 'CM'], texts: CFG.texts });
+    data.$refs = { form, progress: document.querySelector('.xm-auth-progress'), clientErrors: document.getElementById('clientErrors'), commune: document.getElementById('f-commune_id'), zone: document.getElementById('f-zone_id') };
     data.$nextTick = (fn) => fn();
     data.init();
     return data;
@@ -193,18 +193,36 @@ describe('xmRegister', () => {
     expect(c.step).toBe(2);
   });
 
-  it('conditions : bloc membre ou allié·e, pays → département et commune au Bénin seulement, communes du département', () => {
+  it('conditions : bloc membre ou allié·e, zone puis commune pour tout pays qui a des zones, listes recalculées par pays et par zone', () => {
     const c = component();
     expect(c.memberType).toBe('allie');
     expect(c.isBenin).toBe(true);
-    document.getElementById('f-country_code').value = 'FR';
-    c.onChange({ target: { name: 'country_code' } });
-    expect(c.isBenin).toBe(false);
+    expect(c.hasZones).toBe(true);
 
     const zone = document.getElementById('f-zone_id');
+    const labels = (el) => [...el.options].map((o) => o.textContent);
+    expect(labels(zone)).toEqual(['', 'Littoral']);
     zone.value = '1';
     c.onChange({ target: { name: 'zone_id' } });
-    expect([...document.getElementById('f-commune_id').options].map((o) => o.textContent)).toEqual(['', 'Cotonou']);
+    expect(labels(document.getElementById('f-commune_id'))).toEqual(['', 'Cotonou']);
+
+    // Autre pays avec des zones : ses zones remplacent celles du Bénin, la zone et la commune choisies sont oubliées.
+    document.getElementById('f-country_code').value = 'CM';
+    c.onChange({ target: { name: 'country_code' } });
+    expect(c.isBenin).toBe(false);
+    expect(c.hasZones).toBe(true);
+    expect(zone.value).toBe('');
+    expect(zone.options[1].value).toBe('2');
+    zone.value = '2';
+    c.onChange({ target: { name: 'zone_id' } });
+    expect(labels(document.getElementById('f-commune_id'))).toEqual(['', 'Douala']);
+
+    // Pays sans zone active : le bloc est masqué (pas de cascade).
+    document.getElementById('f-country_code').value = 'FR';
+    c.onChange({ target: { name: 'country_code' } });
+    expect(c.hasZones).toBe(false);
+    expect(labels(zone)).toEqual(['']);
+    expect(document.getElementById('f-commune_id').disabled).toBe(true);
   });
 
   it('un lien du résumé d’erreurs rouvre l’étape du champ visé puis le focalise', () => {

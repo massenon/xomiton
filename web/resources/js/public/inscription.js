@@ -6,7 +6,7 @@
 //    RegistrationSteps) ; « Précédent » toujours présent (à l'étape 1 il ramène à la connexion) ;
 //  - un résumé d'erreurs focalisable (liens vers les champs) et un message sous chaque champ en erreur (aria-invalid,
 //    aria-describedby) ; les liens d'un résumé (serveur ou client) rouvrent l'étape du champ visé ;
-//  - les blocs conditionnels (membre ou allié·e, précision « autre », département → commune au Bénin seulement).
+//  - les blocs conditionnels (membre ou allié·e, précision « autre », zone → commune du pays choisi).
 // Les données restent dans le formulaire d'une étape à l'autre. Aucun texte ici : tout vient de Blade (lang/fr) par `opts.texts`.
 
 const NAME = /^[\p{L}\p{M}][\p{L}\p{M} '’.-]*$/u;
@@ -195,6 +195,8 @@ export function xmRegister(opts = {}) {
   const steps = Array.isArray(opts.steps) ? opts.steps : [];
   const texts = opts.texts || {};
   const communes = opts.communes || {};
+  const zones = opts.zones || {};
+  const zoneCountries = Array.isArray(opts.zoneCountries) ? opts.zoneCountries : [];
 
   return {
     step: clamp(opts.initial, steps.length),
@@ -204,6 +206,7 @@ export function xmRegister(opts = {}) {
     sending: false,
     memberType: '',
     isBenin: true,
+    hasZones: true,
     genderIdentity: '',
     orientation: '',
     allyRole: '',
@@ -212,6 +215,7 @@ export function xmRegister(opts = {}) {
       const form = this.$refs.form;
       form.noValidate = true;
       this.refresh();
+      this.refreshZones();
       this.refreshCommunes();
       this.syncProgress();
       // Retour par l'historique (cache de page) : le bouton d'envoi redevient actif.
@@ -235,6 +239,7 @@ export function xmRegister(opts = {}) {
       const values = readValues(this.$refs.form);
       this.memberType = values.member_type || '';
       this.isBenin = values.country_code === opts.benin;
+      this.hasZones = zoneCountries.includes(values.country_code);
       this.genderIdentity = values.gender_identity || '';
       this.orientation = values.orientation || '';
       this.allyRole = values.ally_role || '';
@@ -244,10 +249,37 @@ export function xmRegister(opts = {}) {
     onChange(event) {
       const name = event && event.target ? event.target.name : '';
       this.refresh();
+      if (name === 'country_code') {
+        this.refreshZones();
+        this.refreshCommunes();
+      }
       if (name === 'zone_id') this.refreshCommunes();
     },
 
-    /** Communes du département choisi (le balisage serveur les liste toutes, par département, pour le cas sans JavaScript). */
+    /** Zones du pays choisi (le balisage serveur les liste toutes, par pays, pour le cas sans JavaScript). */
+    refreshZones() {
+      const select = this.$refs.zone;
+      const country = this.$refs.form.querySelector('[name="country_code"]');
+      if (!select || !country) return;
+      const doc = select.ownerDocument;
+      const previous = select.value;
+      const list = zones[country.value] || [];
+      const options = [];
+      const placeholder = doc.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = texts.zone_placeholder || '';
+      options.push(placeholder);
+      list.forEach((zone) => {
+        const option = doc.createElement('option');
+        option.value = String(zone.id);
+        option.textContent = zone.name;
+        option.selected = String(zone.id) === previous;
+        options.push(option);
+      });
+      select.replaceChildren(...options);
+    },
+
+    /** Communes de la zone choisie (le balisage serveur les liste toutes, par département, pour le cas sans JavaScript). */
     refreshCommunes() {
       const select = this.$refs.commune;
       const zone = this.$refs.form.querySelector('[name="zone_id"]');

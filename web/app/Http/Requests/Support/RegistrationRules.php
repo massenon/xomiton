@@ -16,6 +16,7 @@ use App\Rules\EmailAddress;
 use App\Rules\Pseudo;
 use App\Rules\RegistrationPhone;
 use App\Rules\StrongPassword;
+use App\Rules\ZoneInCountry;
 use Illuminate\Validation\Rule;
 
 /**
@@ -24,12 +25,12 @@ use Illuminate\Validation\Rule;
  * mêmes règles conditionnelles, mêmes messages, mêmes clés d'erreur.
  *
  *  - étape 1 : first_name, last_name, pseudo, email, age ;
- *  - étape 2 : pronouns, country_code, city?, phone?, zone_id? et commune_id? (Bénin seulement), member_type ;
+ *  - étape 2 : pronouns, country_code, city?, phone?, zone_id? puis commune_id? (facultatives, d'une zone du pays choisi), member_type ;
  *  - étape 3 : membre → gender_identity, orientation (+ `*_other` si « autre »), sensitive_data accepté ; allié·e →
  *    ally_role (+ ally_role_other si « autre ») ; puis password + confirmation, cgu, privacy, invitation?.
  *
  * `normalize()` (avant validation) vide les champs qui ne concernent pas le choix fait (une allié·e n'a ni identité de
- * genre ni orientation ; hors Bénin, ni département ni commune ; « autre » seul garde sa précision) : ils sont ignorés et
+ * genre ni orientation ; « autre » seul garde sa précision) : ils sont ignorés et
  * jamais enregistrés.
  */
 final class RegistrationRules
@@ -66,7 +67,7 @@ final class RegistrationRules
             'country_code' => ['required', 'string', 'size:2', Rule::in(Countries::CODES)],
             'city' => ['nullable', 'string', 'max:120'],
             'phone' => ['nullable', 'string', 'max:30', new RegistrationPhone],
-            'zone_id' => ['nullable', 'integer', 'required_with:commune_id', Rule::exists('zones', 'id')->where('is_active', true)],
+            'zone_id' => ['nullable', 'integer', 'required_with:commune_id', new ZoneInCountry('country_code')],
             'commune_id' => ['nullable', 'integer', new CommuneInZone('zone_id')],
             'member_type' => ['required', 'string', Rule::in(RegistrationOptions::MEMBER_TYPES)],
 
@@ -204,12 +205,6 @@ final class RegistrationRules
             if (($out[$key] ?? $merged[$key] ?? null) !== RegistrationOptions::OTHER) {
                 $out[$key.'_other'] = null;
             }
-        }
-
-        // Département et commune : Bénin seulement (routage SOS par zone).
-        if (($merged['country_code'] ?? null) !== Countries::BENIN) {
-            $out['zone_id'] = null;
-            $out['commune_id'] = null;
         }
 
         return $out;

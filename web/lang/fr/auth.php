@@ -137,11 +137,11 @@ return [
             'city' => 'Ville',
             'phone' => 'Téléphone',
             'phone_hint' => 'Au Bénin : +229 01 97 38 88 47. Ailleurs : avec l’indicatif, par exemple +33 6 12 34 56 78.',
-            'zone' => 'Département',
+            'zone' => 'Département ou région',
             'commune' => 'Commune',
             'location_hint' => 'Pour te mettre en lien avec l’aide la plus proche en cas d’urgence.',
             'choose' => 'Choisir…',
-            'choose_zone_first' => 'Choisis d’abord un département',
+            'choose_zone_first' => 'Choisis d’abord un département ou une région',
             'member_type' => 'Tu es ?',
             'member_types' => [
                 'membre' => 'Membre de la communauté',

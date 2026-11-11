@@ -145,11 +145,20 @@ void main() {
       expect(p.containsKey('gender_identity'), isFalse);
     });
 
-    test('zone et commune ne partent que pour le Bénin', () {
+    test('zone et commune partent pour tout pays (le serveur les valide contre le pays choisi)', () {
       final p = (member()
             ..countryCode = 'SN'
-            ..zoneId = 1
-            ..communeId = 3)
+            ..zoneId = 2
+            ..communeId = 7)
+          .toPayload();
+      expect(p['zone_id'], 2);
+      expect(p['commune_id'], 7);
+    });
+
+    test('pas de commune sans zone', () {
+      final p = (member()
+            ..zoneId = null
+            ..communeId = 7)
           .toPayload();
       expect(p.containsKey('zone_id'), isFalse);
       expect(p.containsKey('commune_id'), isFalse);
@@ -190,7 +199,9 @@ void main() {
       'countries': [
         {'value': 'BJ', 'label': 'Bénin'}
       ],
+      'zone_countries': ['BJ', 'CM'],
     });
+    expect(r.zoneCountries, ['BJ', 'CM']);
     expect(r.minAge, 16);
     expect(r.pronouns.single.value, 'elle');
     expect(r.countries.single.label, 'Bénin');

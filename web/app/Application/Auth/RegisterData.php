@@ -12,7 +12,7 @@ use App\Enums\MemberType;
  * formulaire arrivent ensemble, déjà validées par App\Http\Requests\Support\RegistrationRules (web et API).
  *
  * Étape 1 : prénom, nom, pseudonyme, e-mail, âge (≥ `xomiton.accounts.min_age`, tient lieu de confirmation d'âge).
- * Étape 2 : pronoms, pays, ville, téléphone, département → commune (Bénin seulement), « Vous êtes ? » (membre / allié·e).
+ * Étape 2 : pronoms, pays, ville, téléphone, zone → commune (facultatives, du pays choisi), « Vous êtes ? » (membre / allié·e).
  * Étape 3 : membre → identité de genre et orientation (clés de SensitiveProfile, ou `prefer_not`, `autre` + précision)
  * avec le consentement `sensitive_data` ; allié·e → statut (+ précision) ; mot de passe ; CGU et confidentialité, jamais
  * pré-cochées, horodatées dans `consents` avec IP et navigateur.

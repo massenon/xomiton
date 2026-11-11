@@ -136,7 +136,7 @@ it('ne garde rien de « je préfère ne pas le dire » et traite les groupes du 
         ->and($state['next'])->toBe('interests');
 });
 
-it('garde le département et la commune au Bénin seulement, le téléphone au format du pays', function (): void {
+it('garde la zone et la commune du pays choisi (ignorées si elles sont d’un autre pays), le téléphone au format du pays', function (): void {
     $zone = Zone::factory()->create(['is_active' => true]);
     $commune = Commune::factory()->create(['zone_id' => $zone->id, 'is_active' => true]);
 

@@ -183,6 +183,7 @@ return [
     'phone_international' => 'Saisis un numéro avec l’indicatif du pays, par exemple +33 6 12 34 56 78 (8 à 15 chiffres).',
     'positive_int' => 'Le champ :attribute doit être un entier positif ou nul, par exemple 12.',
     'commune_in_zone' => 'Cette commune n’appartient pas au département choisi.',
+    'zone_in_country' => 'Cette zone n’appartient pas au pays choisi.',
     'date_not_future' => 'Le champ :attribute ne peut pas être dans le futur.',
     'phone_or_email' => 'Saisis un numéro béninois (+229 01 97 38 88 47) ou une adresse e-mail valide.',
     'case_code' => 'Le code doit respecter le format VBG-0000 ou VDH-0000.',
