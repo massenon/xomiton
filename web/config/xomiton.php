@@ -912,7 +912,8 @@ return [
         // juridique (données de santé / violences vers un tiers hors UE, DPA Google, région) : DECISIONS_A_VALIDER.md.
         'llm_enabled' => (bool) env('ASSISTANT_LLM_ENABLED', false),
         'gemini' => [
-            'api_key' => env('GEMINI_API_KEY'),
+            // Clé vide dans .env (GEMINI_API_KEY=) = aucune clé : null, jamais une chaîne vide.
+            'api_key' => env('GEMINI_API_KEY') ?: null,
             'model' => env('GEMINI_MODEL', 'gemini-2.5-flash'),
             'endpoint' => 'https://generativelanguage.googleapis.com/v1beta',
             'timeout_seconds' => (float) env('GEMINI_TIMEOUT', 4),

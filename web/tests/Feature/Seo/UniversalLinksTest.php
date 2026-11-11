@@ -48,10 +48,10 @@ it('sert assetlinks.json avec le paquet et les empreintes configurées', functio
 
 it('lit les identifiants de l’environnement (liste d’empreintes séparée par des virgules)', function (): void {
     putenv('ANDROID_SHA256_FINGERPRINTS=AA:BB, CC:DD');
-    $_ENV['ANDROID_SHA256_FINGERPRINTS'] = 'AA:BB, CC:DD';
+    $_ENV['ANDROID_SHA256_FINGERPRINTS'] = $_SERVER['ANDROID_SHA256_FINGERPRINTS'] = 'AA:BB, CC:DD';
     $config = require config_path('xomiton.php');
     putenv('ANDROID_SHA256_FINGERPRINTS');
-    unset($_ENV['ANDROID_SHA256_FINGERPRINTS']);
+    unset($_ENV['ANDROID_SHA256_FINGERPRINTS'], $_SERVER['ANDROID_SHA256_FINGERPRINTS']);
 
     expect($config['universal_links']['android_sha256_fingerprints'])->toBe(['AA:BB', 'CC:DD']);
 });
