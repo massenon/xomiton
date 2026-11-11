@@ -180,7 +180,7 @@ return [
                     'id' => 'mineurs',
                     'title' => 'Âge minimum et mineur·es',
                     'blocks' => [
-                        'Xomiton est réservé aux personnes de {min_age} ans ou plus. À l’inscription, vous confirmez avoir {min_age} ans ou plus ; nous ne demandons pas de date de naissance. Si nous apprenons qu’une personne plus jeune a créé un compte, nous le supprimons.',
+                        'Xomiton est réservé aux personnes de {min_age} ans ou plus. À l’inscription, vous indiquez votre âge ; l’accès est refusé en dessous de {min_age} ans. Nous ne demandons pas de date de naissance. Si nous apprenons qu’une personne plus jeune a créé un compte, nous le supprimons.',
                         'Si un signalement révèle qu’une personne mineure est en danger, l’équipe peut l’orienter vers les services de protection compétents, dans l’intérêt de cette personne.',
                     ],
                 ],
