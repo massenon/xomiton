@@ -261,7 +261,7 @@ Liste établie d'après [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) §8 et 
 | Mesures de performance sur l'hébergement cible | Non réalisées (p95, Lighthouse, extensions PHP, `mysqldump`) ; rien n'a tourné sur le serveur cPanel | P16-02, P17 |
 | Déploiement, DNS, HTTPS, cron, supervision, test de restauration | À faire sur le serveur (assainissement de l'hébergement compromis d'abord) | P17-01 à P17-06 |
 | Navigateurs et appareils | Tests automatisés sous Chromium seulement ; Firefox, Safari, 320 px et lecteurs d'écran réels non couverts ; comparaison « à l'identique » au prototype aux 4 largeurs non faite | P16-05, P16-07 |
-| Autres fonctions partielles | PWA pair, indicateurs de l'espace pair, médiathèque / outils CCC / « Mes signalements », PIN sur le web, filtres enregistrés de l'administration, balise de statistiques « Contenu » des pages publiques | ETAT_DES_LIEUX §4.1 |
+| Autres fonctions partielles | PWA pair, indicateurs de l'espace pair, médiathèque / « Mes signalements » (outils CCC en lecture livrés le 11/11/2026 : à recetter, sans quiz), PIN sur le web, filtres enregistrés de l'administration, balise de statistiques « Contenu » des pages publiques | ETAT_DES_LIEUX §4.1 |
 | Textes et décisions juridiques | Textes d'accueil, de confidentialité, d'aide, âge minimal, quiz santé : à valider par le client ; conformité légale dépendante d'avis extérieurs | DECISIONS_A_VALIDER |
 
 ## Synthèse de la recette

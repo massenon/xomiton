@@ -16,7 +16,7 @@ Légende : **fait** = codé, testé, rien à ajouter côté code · **partiel** 
 | P5 Alertes, SOS, signalement | fait (recette) | fournisseurs SMS / push, clés VAPID / FCM, recette terrain du SOS |
 | P6 API et coquille Vue | partiel | P6-03, P6-04 : comparaison aux 4 largeurs, réalignement du DS Blade (Q22) |
 | P7 Fil et sondages | partiel | P7-03 à P7-05 : comparaison aux 4 largeurs, Playwright du fil |
-| P8 Communauté et profil | partiel | P8-01 (filtre de mots), P8-09 (PIN web), P8-12 (médiathèque, `/ccc`, « Mes signalements ») |
+| P8 Communauté et profil | partiel | P8-01 (filtre de mots), P8-09 (PIN web), P8-12 (médiathèque, « Mes signalements » ; `/ccc` livré le 11/11/2026, sans quiz) |
 | P9 Espace pair et synchro | partiel | P9-04 précache SW de `/collecte` (lot `pwa-pair`), P9-08 indicateurs pair et appareils synchronisés |
 | P10 Admin socle et pilotage | partiel | P10-01 filtres globaux `saved_filters` ; P10-06 balise de contenu non câblée dans les pages publiques |
 | P11 Admin données | fait | édition d'une fiche livrée le 11/11/2026 |
@@ -58,7 +58,7 @@ Pest 2663 était le dernier chiffre noté dans le plan (26/10) ; 2755 vient du d
 3. P0-06 : jobs CI `e2e` (Playwright + axe) et `lighthouse` (`lighthouserc.json`) ; `grep fa-` en CI.
 4. P14-04 : transport HTTP réel Graph API / Bot API (sous réserve de Q7 et de jetons).
 5. P10-06 : émettre la balise `POST /evenements-contenu/{type}` depuis les pages publiques (5 lignes du tableau « Contenu » à 0).
-6. P9-04 `pwa-pair`, P9-08 `espace-pair-indicateurs` et `parametres-appareils-sync`, P10-01 `saved_filters`, P8-12 médiathèque / `/ccc` / « Mes signalements », P8-09 PIN web.
+6. P9-04 `pwa-pair`, P9-08 `espace-pair-indicateurs` et `parametres-appareils-sync`, P10-01 `saved_filters`, P8-12 médiathèque / « Mes signalements » (`/ccc` livré), P8-09 PIN web.
 7. P15 : tests d'intégration (SOS hors ligne, rejeu, PIN), `sync/pull` mobile, iOS (APNs, icône alternative), tests Playwright manquants (P16-04).
 8. P0-05 : documenter `APP_PREVIOUS_KEYS` dans `.env.example`.
 
