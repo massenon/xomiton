@@ -198,7 +198,7 @@ return [
             'accepted' => 'Tu dois accepter les conditions d’utilisation et la charte pour continuer.',
         ],
         'age_confirmed' => [
-            'accepted' => 'Pour créer ton compte, confirme que tu as :min_age ans ou plus.',
+            'accepted' => 'Pour créer ton compte, tu dois avoir au moins :min_age ans.',
         ],
         'privacy' => [
             'accepted' => 'Tu dois accepter la politique de confidentialité pour continuer.',

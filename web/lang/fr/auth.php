@@ -66,7 +66,7 @@ return [
         'expiry' => ':minutes minutes',
     ],
     'invitation_invalid' => 'Ce lien d’invitation n’est plus valable (déjà utilisé, expiré ou annulé). Demande-en un nouveau à l’équipe Xomiton.',
-    'age_confirmation_required' => 'Pour créer ton compte, confirme que tu as :min_age ans ou plus.',
+    'age_confirmation_required' => 'Pour créer ton compte, tu dois avoir au moins :min_age ans.',
     'consent_required' => 'Pour créer ton compte, accepte les conditions d’utilisation et la charte, puis la politique de confidentialité.',
     'registrations_closed' => 'Les inscriptions sont momentanément fermées. Reviens bientôt ou inscris-toi à la newsletter.',
     'email_not_verified' => 'Confirme ton e-mail pour continuer.',
