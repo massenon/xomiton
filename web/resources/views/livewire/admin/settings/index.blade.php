@@ -215,7 +215,7 @@
                             <ul class="mb-0">@foreach ($this->onCall as $pseudo)<li>{{ $pseudo }}</li>@endforeach</ul>
                         @endif
                         @can('on_call.manage')
-                            <p class="mt-3 mb-0"><a href="{{ route('admin.garde') }}">{{ __('admin_system.settings.on_call.manage') }}<i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a></p>
+                            <p class="mt-3 mb-0"><a href="{{ route('admin.garde') }}" wire:navigate>{{ __('admin_system.settings.on_call.manage') }}<i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a></p>
                         @endcan
                     </div>
                 </section>
