@@ -60,8 +60,8 @@
             <div class="d-flex flex-wrap gap-2">
                 <button type="button" class="btn btn-dark btn-lg flex-fill" x-show="confirming || counting" x-on:click="abort()">{{ __('components.sos.cancel') }}</button>
                 <button type="button" class="btn btn-secondary btn-lg flex-fill" x-show="confirming" x-on:click="begin()"><i class="bi bi-broadcast me-1" aria-hidden="true"></i>{{ __('components.sos.send') }}</button>
-                <a class="btn btn-primary flex-fill" x-show="done && result && result.call" x-bind:href="result && result.call ? result.call.href : null"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i><span x-text="result && result.call ? result.call.label : ''"></span></a>
-                <a class="btn btn-light flex-fill" x-show="done && result && result.link" x-bind:href="result && result.link ? result.link.href : null" x-text="result && result.link ? result.link.label : ''"></a>
+                <a class="btn btn-primary flex-fill" href="{{ route('sos') }}" x-show="done && result && result.call" x-bind:href="result && result.call ? result.call.href : '{{ route('sos') }}'"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i><span x-text="result && result.call ? result.call.label : ''"></span></a>
+                <a class="btn btn-light flex-fill" href="{{ route('sos') }}" x-show="done && result && result.link" x-bind:href="result && result.link ? result.link.href : '{{ route('sos') }}'" x-text="result && result.link ? result.link.label : ''"></a>
                 <button type="button" class="btn btn-primary flex-fill" x-show="done && ! managed" x-on:click="reset()">{{ __('components.sos.safe') }}</button>
                 <button type="button" class="btn btn-light flex-fill" x-show="done && managed" x-on:click="reset()">{{ __('common.close') }}</button>
             </div>
