@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Community\Events;
 
+use App\Domain\Auth\Exceptions\AccountPending;
 use App\Domain\Auth\Exceptions\EmailNotVerified;
 use App\Domain\Community\EventDisclosure;
 use App\Domain\Community\Exceptions\EventFinished;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\DB;
  * l.1162) : une seule réponse par personne et par événement (unique `(event_id, user_id)`), rappel de la veille choisi
  * avec la réponse (oui par défaut). Annuler supprime la réponse. Idempotent : répondre deux fois la même chose ne change
  * rien. `going_count` recompté dans la même transaction (verrou sur l'événement : deux réponses simultanées ne se
- * perdent pas). Participer exige un e-mail confirmé (403 `email_unverified`, comme créer : un compte jetable n'obtient
+ * perdent pas). Participer exige un compte validé (403 `account_pending`) et un e-mail confirmé (403 `email_unverified`, comme créer : un compte jetable n'obtient
  * pas l'adresse exacte ni le lien) ; participer à un événement terminé → 422 `event_finished` ; annuler reste toujours
  * possible. Aucun journal d'audit : la participation à un événement de la communauté est une donnée sensible qu'on ne
  * duplique pas.
@@ -27,6 +28,11 @@ final class RespondToEvent
 {
     public function __invoke(User $user, Event $event, bool $going, bool $reminder = true): ?EventRsvp
     {
+        // Compte en attente de validation (11/11/2026) ou e-mail non confirmé : participer est refusé, annuler reste possible.
+        if ($going && $user->isPending()) {
+            throw new AccountPending;
+        }
+
         if ($going && ! $user->hasVerifiedEmail()) {
             throw new EmailNotVerified;
         }

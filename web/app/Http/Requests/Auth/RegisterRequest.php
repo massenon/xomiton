@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Auth;
 
-use App\Application\Auth\OtpService;
 use App\Application\Auth\RegisterData;
-use App\Models\User;
-use App\Rules\EmailAddress;
-use App\Rules\Pseudo;
-use App\Rules\StrongPassword;
+use App\Http\Requests\Support\RegistrationRules;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 /**
- * Phase 1 de l'inscription (D4, Q12 c, Q30) : pseudonyme, e-mail, mot de passe « Fort » et les deux consentements
- * obligatoires, cases distinctes jamais pré-cochées.
+ * POST /inscription : l'unique envoi du formulaire en 3 étapes (décision client du 11/11/2026). Règles, messages et
+ * normalisation : App\Http\Requests\Support\RegistrationRules, les mêmes que pour POST /api/v1/auth/register.
  */
 final class RegisterRequest extends FormRequest
 {
@@ -26,12 +21,7 @@ final class RegisterRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $email = $this->input('email');
-
-        $this->merge([
-            'pseudo' => is_string($this->input('pseudo')) ? trim($this->input('pseudo')) : $this->input('pseudo'),
-            'email' => is_string($email) ? OtpService::normalizeEmail($email) : $email,
-        ]);
+        $this->merge(RegistrationRules::normalize($this->all()));
     }
 
     /**
@@ -39,43 +29,30 @@ final class RegisterRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'pseudo' => ['required', 'string', new Pseudo],
-            'email' => ['required', 'string', 'max:190', new EmailAddress, Rule::unique(User::class, 'email')],
-            'password' => ['required', 'string', 'max:255', 'confirmed', new StrongPassword],
-            'cgu' => ['accepted'],
-            'privacy' => ['accepted'],
-            'age_confirmed' => ['accepted'],
-            // Lien / code d'invitation à l'équipe (champ caché rempli par le lien) : l'inscription reste celle d'un membre.
-            'invitation' => ['nullable', 'string', 'max:40'],
-        ];
+        return RegistrationRules::rules();
     }
 
     /**
-     * Même texte que l'API (`auth.api.email_taken`) : il dit quoi faire (se connecter ou « Mot de passe oublié »).
-     *
      * @return array<string, string>
      */
     public function messages(): array
     {
-        return [
-            'email.unique' => (string) __('auth.api.email_taken'),
-            'age_confirmed.accepted' => (string) __('auth.age_confirmation_required', ['min_age' => (int) config('xomiton.accounts.min_age')]),
-        ];
+        return RegistrationRules::messages();
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return RegistrationRules::attributes();
     }
 
     public function toRegisterData(): RegisterData
     {
-        return new RegisterData(
-            pseudo: (string) $this->string('pseudo'),
-            email: (string) $this->string('email'),
-            password: (string) $this->string('password'),
-            acceptsTerms: $this->boolean('cgu'),
-            acceptsPrivacy: $this->boolean('privacy'),
-            confirmsAge: $this->boolean('age_confirmed'),
-            invitationCode: $this->filled('invitation') ? (string) $this->string('invitation') : null,
-            ip: $this->ip(),
-            userAgent: $this->userAgent(),
-        );
+        /** @var array<string, mixed> $validated */
+        $validated = $this->validated();
+
+        return RegistrationRules::toData($validated, $this->ip(), $this->userAgent());
     }
 }
