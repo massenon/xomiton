@@ -28,6 +28,7 @@ use App\Livewire\Admin\Moderation\Index as ModerationIndex;
 use App\Livewire\Admin\Network\Index as NetworkIndex;
 use App\Livewire\Admin\Newsletter\Index as NewsletterIndex;
 use App\Livewire\Admin\OnCall\Index as OnCallIndex;
+use App\Livewire\Admin\Referentials\Index as ReferentialsIndex;
 use App\Livewire\Admin\Registers\Index as RegistersIndex;
 use App\Livewire\Admin\Registrations\Index as RegistrationsIndex;
 use App\Livewire\Admin\Reports\Index as ReportsIndex;
@@ -90,6 +91,9 @@ Route::get('/suivi', FollowupsIndex::class)->middleware('can:case_followups.mana
 Route::get('/annuaire', DirectoryIndex::class)->middleware('can:directory.manage')->name('annuaire');
 // Règles de validation : `validation_rules.manage` (catalogue, bac à sable, plausibilité, doublons, rapport de qualité).
 Route::get('/validation', ValidationIndex::class)->middleware('can:validation_rules.manage')->name('validation');
+// Référentiels administrables (décision du 11/11/2026) : `referentials.manage` (zones de tout pays et communes, types de violence,
+// besoins, populations) ; chaque action Livewire revérifie la permission.
+Route::get('/referentiels', ReferentialsIndex::class)->middleware('can:referentials.manage')->name('referentiels');
 Route::get('/fiches', FormsIndex::class)->middleware('can:case_forms.manage')->name('fiches');
 Route::get('/fiches/{form}/pdf', CaseFormPdfController::class)->middleware('can:case_forms.manage')->whereNumber('form')->name('fiches.pdf');
 

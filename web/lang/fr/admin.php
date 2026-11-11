@@ -609,6 +609,7 @@ return [
             'alerts' => 'Alertes et signalements',
             'directory' => 'Annuaire dynamique',
             'validation' => 'Règles de validation',
+            'referentials' => 'Référentiels (zones, types de violence, besoins, populations)',
             'indicators' => 'Indicateurs et rapports',
             'moderation' => 'Modération et réseau social (masquer)',
             'content' => 'Contenus et outils CCC (édition)',

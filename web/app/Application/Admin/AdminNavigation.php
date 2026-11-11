@@ -61,6 +61,7 @@ final class AdminNavigation
         ],
         'data' => [
             ['validation', 'patch-check', 'validation', 'validation_rules.manage'],
+            ['referentiels', 'list-check', 'referentials', 'referentials.manage'],
             ['synchronisation', 'cloud-arrow-up', 'sync', 'sync.manage'],
         ],
         'reports' => [

@@ -80,6 +80,7 @@ return [
         'followup' => 'Suivi des victimes',
         'directory' => 'Annuaire dynamique',
         'validation' => 'Règles de validation',
+        'referentials' => 'Référentiels',
         'users' => 'Utilisateurs & rôles',
         'registrations' => 'Inscriptions (on/off)',
         'content' => 'Contenu : thématiques & ressources',
