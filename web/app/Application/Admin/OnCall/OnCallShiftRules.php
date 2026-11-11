@@ -105,7 +105,7 @@ final class OnCallShiftRules
 
         if ($problems === [] && ($clash = $this->overlapping($kind, $userId, $zoneId, $start, $end, $current)) !== null) {
             $problems['starts_at'] = (string) __($kind === OnCallShift::KIND_FOCAL ? 'admin_oncall.errors.overlap_focal' : 'admin_oncall.errors.overlap_admin', [
-                'name' => (string) ($clash->user?->pseudo ?? ''),
+                'name' => (string) $clash->user->pseudo,
                 'from' => $clash->starts_at->copy()->timezone((string) config('xomiton.display_timezone', 'UTC'))->format('d/m/Y H:i'),
                 'to' => $clash->ends_at->copy()->timezone((string) config('xomiton.display_timezone', 'UTC'))->format('d/m/Y H:i'),
             ]);

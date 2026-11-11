@@ -25,7 +25,11 @@ final class MemberAgeRanges
 
         return array_values(array_filter(
             AgeRange::cases(),
-            static fn (AgeRange $range): bool => $range->upperBound() === null || $range->upperBound() >= $minAge,
+            static function (AgeRange $range) use ($minAge): bool {
+                $upper = $range->upperBound();
+
+                return $upper === null || $upper >= $minAge;
+            },
         ));
     }
 
