@@ -1,4 +1,5 @@
 import 'admin_strings.dart';
+import 'ccc_strings.dart';
 import 'registration_strings.dart';
 
 /// Textes mobiles qui n'existent pas encore dans `web/lang/fr` (donc pas dans
@@ -7,6 +8,7 @@ import 'registration_strings.dart';
 /// d'elle-même (l'ARB prime toujours sur cette table).
 const Map<String, String> kPendingStringsFr = {
   ...kAdminStringsFr,
+  ...kCccStringsFr,
   ...kRegistrationStringsFr,
   // Onboarding : six textes validés par le client le 2026-10-29 (tutoiement), une photo chacun.
   'mobile_onboarding_slide_1_title': 'Un espace à toi.',
