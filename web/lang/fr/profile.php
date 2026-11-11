@@ -256,7 +256,7 @@ return [
             ],
             'age' => [
                 'title' => 'Ton âge',
-                'why' => 'Pour te montrer les contenus de ta tranche d’âge et respecter les règles de protection des mineur·es. Jamais affiché.',
+                'why' => 'Pour te montrer les contenus de ta tranche d’âge. Jamais affiché.',
                 'field' => 'Âge',
                 'range' => 'Tranche d’âge',
             ],

@@ -180,12 +180,12 @@ it('refuse un âge inférieur au minimum de la configuration, un âge non numér
     };
     $post(registerPayload(['age' => 14]))
         ->assertUnprocessable()->assertJsonValidationErrors(['age'])
-        ->assertJsonPath('errors.age.0', __('auth.register.errors.age_min', ['min_age' => 15]));
+        ->assertJsonPath('errors.age.0', __('auth.register.errors.age_min', ['min_age' => 18]));
 
-    config(['xomiton.accounts.min_age' => 18]);
     $post(registerPayload(['age' => 17]))
         ->assertUnprocessable()
         ->assertJsonPath('errors.age.0', 'Tu dois avoir au moins 18 ans pour créer un compte.');
+    expect(User::query()->count())->toBe(0);
 
     $post(registerPayload(['age' => 'vingt']))->assertUnprocessable()->assertJsonValidationErrors(['age']);
     $post(registerPayload(['country_code' => 'ZZ']))->assertUnprocessable()->assertJsonValidationErrors(['country_code']);
@@ -222,18 +222,18 @@ it('limite les tentatives d’inscription à 5 par minute et par adresse (429)',
 });
 
 it('enregistre la confirmation d’âge (horodatée) quand l’âge saisi atteint le minimum', function (): void {
-    $this->postJson('/api/v1/auth/register', registerPayload(['age' => 15]))->assertCreated();
+    $this->postJson('/api/v1/auth/register', registerPayload(['age' => 18]))->assertCreated();
     $user = User::query()->firstOrFail();
 
     expect($user->consents()->where('kind', 'age_confirmed')->where('granted', true)->exists())->toBeTrue()
-        ->and($user->profile?->age)->toBe(15);
+        ->and($user->profile?->age)->toBe(18);
 });
 
 it('sert GET /referentials/registration : public, au contrat exact, avec ETag et cache', function (): void {
     $response = $this->getJson('/api/v1/referentials/registration')->assertOk();
 
     $response->assertJsonStructure(['data' => ['min_age', 'pronouns' => [['value', 'label']], 'member_types' => [['value', 'label']], 'countries' => [['value', 'label']], 'ally_roles' => [['value', 'label']], 'gender_identities' => [['value', 'label']], 'orientations' => [['value', 'label']]]])
-        ->assertJsonPath('data.min_age', 15)
+        ->assertJsonPath('data.min_age', 18)
         ->assertJsonPath('data.member_types', [['value' => 'membre', 'label' => 'Membre de la communauté'], ['value' => 'allie', 'label' => 'Personne ressource / Allié·e']])
         ->assertJsonPath('data.countries.0', ['value' => 'BJ', 'label' => 'Bénin'])
         ->assertJsonPath('data.pronouns.0.value', 'elle');
@@ -262,7 +262,7 @@ it('sert GET /referentials/registration : public, au contrat exact, avec ETag et
 });
 
 it('lit l’âge minimal du référentiel dans la configuration, pas dans le code', function (): void {
-    config(['xomiton.accounts.min_age' => 18]);
+    config(['xomiton.accounts.min_age' => 21]);
 
-    $this->getJson('/api/v1/referentials/registration')->assertOk()->assertJsonPath('data.min_age', 18);
+    $this->getJson('/api/v1/referentials/registration')->assertOk()->assertJsonPath('data.min_age', 21);
 });

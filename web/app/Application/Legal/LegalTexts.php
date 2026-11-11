@@ -52,7 +52,7 @@ final class LegalTexts
         $tokens = [
             'site_name' => (string) __('seo.site_name'),
             'contact_email' => Settings::string('contact_email', (string) config('mail.from.address', 'contact@xomiton.app')),
-            'min_age' => (string) (int) config('xomiton.accounts.min_age', 15),
+            'min_age' => (string) (int) config('xomiton.accounts.min_age', 18),
             'grace_days' => (string) (int) config('xomiton.accounts.deletion_grace_days', 30),
             'export_hours' => (string) (int) config('xomiton.accounts.export_link_hours', 48),
             'request_hours' => (string) (int) config('xomiton.accounts.deletion_request_hours', 24),

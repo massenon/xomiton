@@ -25,7 +25,7 @@
                             @if ($this->state['open'] && ! $this->state['effective'])
                                 {{ __('admin.registrations.state.outside_window', ['start' => $windowStart, 'end' => $windowEnd]) }}
                             @elseif ($this->state['effective'])
-                                {{ $manual === 'all' ? __('admin.registrations.state.open_all') : __('admin.registrations.state.open_peers') }}
+                                {{ __('admin.registrations.state.open_all') }}
                             @else
                                 {{ __('admin.registrations.state.closed') }}
                             @endif
@@ -46,19 +46,6 @@
             <form class="card xm-admin-card mb-4" wire:submit="save" novalidate aria-labelledby="xmRegOptionsTitle">
                 <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmRegOptionsTitle">{{ __('admin.registrations.options_title') }}</h2></div>
                 <div class="card-body row g-3">
-                    <fieldset class="col-12" aria-describedby="xmRegManualHelp">
-                        <legend class="form-label fw-semibold fs-6">{{ __('admin.registrations.manual.label') }}</legend>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="xmRegManualPeers" value="peers" wire:model="manual">
-                            <label class="form-check-label" for="xmRegManualPeers">{{ __('admin.registrations.manual.peers') }}</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="xmRegManualAll" value="all" wire:model="manual">
-                            <label class="form-check-label" for="xmRegManualAll">{{ __('admin.registrations.manual.all') }}</label>
-                        </div>
-                        <div class="form-text" id="xmRegManualHelp">{{ __('admin.registrations.manual.help') }}</div>
-                        @error('manual')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
-                    </fieldset>
                     <div class="col-12">
                         <label class="form-label fw-semibold" for="xmRegMessage">{{ __('admin.registrations.closed_message') }}</label>
                         <textarea class="form-control @error('message') is-invalid @enderror" id="xmRegMessage" rows="3" maxlength="{{ $messageMax }}" wire:model.blur="message"

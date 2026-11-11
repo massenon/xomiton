@@ -25,13 +25,13 @@ void main() {
     });
 
     testWidgets('âge sous le minimum DU SERVEUR : message avec ce minimum', (tester) async {
-      final api = FakeApi(signupRoutes(referentials: referentialsJson(minAge: 16)));
+      final api = FakeApi(signupRoutes(referentials: referentialsJson(minAge: 18)));
       await pumpSignup(tester, api);
-      expect(find.textContaining(S.t('mobile_register_age_hint', {'min_age': 16})), findsOneWidget);
-      await fillStep1(tester, age: '15');
+      expect(find.textContaining(S.t('mobile_register_age_hint', {'min_age': 18})), findsOneWidget);
+      await fillStep1(tester, age: '17');
       await next(tester);
       expect(stepOf(1), findsOneWidget);
-      expect(find.text(S.t('mobile_register_err_age_low', {'min_age': 16})), findsOneWidget);
+      expect(find.text(S.t('mobile_register_err_age_low', {'min_age': 18})), findsOneWidget);
     });
 
     testWidgets('pseudo, e-mail et âge non numérique', (tester) async {

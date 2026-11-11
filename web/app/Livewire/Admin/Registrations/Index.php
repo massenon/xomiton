@@ -38,8 +38,6 @@ final class Index extends Component
 {
     use InteractsWithUi;
 
-    public string $manual = RegistrationSettings::MANUAL_ALL;
-
     public string $message = '';
 
     public string $reopenAt = '';
@@ -78,7 +76,6 @@ final class Index extends Component
         abort_unless(auth()->user()?->can('registrations.manage'), 403);
 
         $current = RegistrationSettings::current();
-        $this->manual = $current['manual'];
         $this->message = $current['message'];
         $this->reopenAt = $current['reopen_at'];
         $this->windowOn = $current['window_on'];
@@ -98,7 +95,6 @@ final class Index extends Component
         abort_unless($this->actor()->can('registrations.manage'), 403);
 
         $this->validate([
-            'manual' => ['required', Rule::in([RegistrationSettings::MANUAL_PEERS, RegistrationSettings::MANUAL_ALL])],
             'message' => ['nullable', 'string', 'max:'.RegistrationSettings::MESSAGE_MAX],
             'reopenAt' => ['nullable', 'date_format:Y-m-d\TH:i'],
             'windowOn' => ['boolean'],
@@ -108,7 +104,6 @@ final class Index extends Component
             'message.max' => (string) __('admin.registrations.errors.message_max', ['max' => RegistrationSettings::MESSAGE_MAX]),
             'reopenAt.date_format' => (string) __('admin.registrations.errors.reopen_invalid'),
         ], [
-            'manual' => (string) __('admin.registrations.manual.label'),
             'message' => (string) __('admin.registrations.closed_message'),
             'reopenAt' => (string) __('admin.registrations.reopen_at'),
             'windowStart' => (string) __('admin.registrations.window_start'),
@@ -122,7 +117,6 @@ final class Index extends Component
         }
 
         $settings->saveOptions([
-            'manual' => $this->manual,
             'message' => $this->message,
             'reopen_at' => $this->reopenAt,
             'window_on' => $this->windowOn,

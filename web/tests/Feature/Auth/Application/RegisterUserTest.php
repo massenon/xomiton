@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Account\Profile\ProgressiveProfileState;
 use App\Application\Admin\Users\ReviewRegistration;
+use App\Application\Auth\OtpService;
 use App\Application\Auth\RegisterUser;
 use App\Application\Auth\VerifyEmail;
 use App\Domain\Auth\ConsentVersion;
@@ -19,7 +20,6 @@ use App\Enums\OtpPurpose;
 use App\Enums\UserStatus;
 use App\Events\Auth\EmailVerified;
 use App\Events\Auth\UserRegistered;
-use App\Mail\TemplateMail;
 use App\Models\AuditLog;
 use App\Models\Commune;
 use App\Models\OtpCode;
@@ -155,14 +155,27 @@ it('refuse une inscription sans les deux consentements obligatoires, cases disti
         ->and(User::query()->count())->toBe(0);
 });
 
-it('lit l’âge minimal dans la configuration : sous l’âge, aucun compte ; au seuil, le compte est créé', function (): void {
-    expect(fn () => app(RegisterUser::class)(R::data(['age' => 14])))->toThrow(AgeConfirmationRequired::class)
-        ->and(User::query()->count())->toBe(0);
+it('lit l’âge minimal (18 ans) dans la configuration : 17 refusé, 18 accepté, tranche de la fiche cohérente avec AgeRange', function (): void {
+    expect(config('xomiton.accounts.min_age'))->toBe(18);
 
-    expect(app(RegisterUser::class)(R::data(['age' => 15]))->profile?->age_range)->toBe(AgeRange::From15To17);
+    foreach ([14, 15, 17] as $age) {
+        expect(fn () => app(RegisterUser::class)(R::data(['age' => $age])))->toThrow(AgeConfirmationRequired::class);
+    }
+    expect(User::query()->count())->toBe(0);
 
-    config(['xomiton.accounts.min_age' => 18]);
-    expect(fn () => app(RegisterUser::class)(R::data(['pseudo' => 'Jeune_A', 'email' => 'jeune@exemple.bj', 'age' => 17])))->toThrow(AgeConfirmationRequired::class);
+    $adult = app(RegisterUser::class)(R::data(['age' => 18]));
+    expect($adult->profile?->age)->toBe(18)
+        ->and($adult->profile?->age_range)->toBe(AgeRange::fromAge(18))->toBe(AgeRange::From18To24);
+
+    $older = app(RegisterUser::class)(R::data(['pseudo' => 'Aînée_B', 'email' => 'ainee@exemple.bj', 'age' => 52]));
+    expect($older->profile?->age_range)->toBe(AgeRange::FiftyPlus);
+});
+
+it('suit la configuration si elle change (source unique xomiton.accounts.min_age)', function (): void {
+    config(['xomiton.accounts.min_age' => 21]);
+
+    expect(fn () => app(RegisterUser::class)(R::data(['age' => 20])))->toThrow(AgeConfirmationRequired::class)
+        ->and(app(RegisterUser::class)(R::data(['age' => 21]))->profile?->age)->toBe(21);
 });
 
 it('refuse l’inscription quand l’administration l’a fermée, avec le message configuré', function (): void {
@@ -187,27 +200,20 @@ it('refuse l’inscription quand l’administration l’a fermée, avec le messa
     }
 });
 
-it('garde l’ancien parcours en mode « peers » : compte actif d’emblée, code signup puis bienvenue', function (): void {
-    Settings::set('reg_manual_validation', 'peers');
+it('ne prévient pas par e-mail à l’inscription : ni code signup, ni bienvenue, quel que soit le profil (compte toujours en attente)', function (): void {
+    foreach ([['pseudo' => 'Awa_S', 'email' => 'awa@exemple.bj'], ['pseudo' => 'Jetable', 'email' => 'j@mailinator.com']] as $overrides) {
+        $user = app(RegisterUser::class)(R::data($overrides));
 
-    $user = app(RegisterUser::class)(R::data());
-
-    expect($user->status)->toBe(UserStatus::Active)
-        ->and(OtpCode::query()->forEmail('awa@exemple.bj', OtpPurpose::Signup)->valid()->count())->toBe(1);
-
-    $slugs = [];
-    Mail::assertSent(TemplateMail::class, function (TemplateMail $mail) use (&$slugs): bool {
-        $slugs[] = $mail->templateSlug;
-
-        return $mail->hasTo('awa@exemple.bj');
-    });
-    expect($slugs)->toBe(['code-verification', 'bienvenue']);
+        expect($user->status)->toBe(UserStatus::Pending)
+            ->and(OtpCode::query()->forEmail($user->email, OtpPurpose::Signup)->count())->toBe(0);
+    }
+    Mail::assertNothingSent();
 });
 
-it('confirme l’e-mail avec le code signup (compte actif, mode peers) et refuse un mauvais code', function (): void {
-    Settings::set('reg_manual_validation', 'peers');
+it('confirme l’e-mail avec un code signup (VerifyEmail) et refuse un mauvais code', function (): void {
     Event::fake([EmailVerified::class]);
     $user = app(RegisterUser::class)(R::data());
+    app(OtpService::class)->issue($user->email, OtpPurpose::Signup, '10.0.0.1');
     OtpCode::query()->forEmail($user->email, OtpPurpose::Signup)->update(['code_hash' => OtpCode::hash('654321')]);
 
     expect(fn () => app(VerifyEmail::class)($user, '000000'))->toThrow(OtpInvalid::class)

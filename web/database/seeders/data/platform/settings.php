@@ -35,7 +35,6 @@ return [
     'assistant_enabled' => [Setting::GROUP_ASSISTANT, Setting::TYPE_BOOL, true, true],
     'maintenance' => [Setting::GROUP_MAINTENANCE, Setting::TYPE_BOOL, false, true],
     'registrations_open' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_BOOL, true, true],
-    'manual_validation' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_BOOL, false, false],
 
     // admin/parametres.php — généraux
     'timezone' => [Setting::GROUP_GENERAL, Setting::TYPE_STRING, 'Africa/Porto-Novo', true],
@@ -61,9 +60,6 @@ return [
     'sync_settings' => [Setting::GROUP_SYNC, Setting::TYPE_JSON, ['interval' => 15, 'encrypt' => true, 'max_mb' => 5, 'wifi_only' => false], false],
 
     // admin/inscriptions.php
-    // Décision client du 11/11/2026 : tout nouveau compte attend la validation de l'équipe (`all`, défaut) ; `peers` : seuls les
-    // comptes signalés (D-MOB-17) et les demandes du rôle pair attendent. Valeur posée à la création seulement.
-    'reg_manual_validation' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_STRING, 'all', false],
     'reg_closed_msg' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_STRING, 'Les inscriptions sont momentanément fermées. Revenez bientôt ou contactez-nous.', true],
     'reg_reopen_at' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_STRING, null, true],
     'reg_window_on' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_BOOL, false, true],

@@ -5,7 +5,7 @@ import 'harness.dart';
 
 final S = loadStrings();
 
-Map<String, dynamic> referentialsJson({int minAge = 15, bool beninFirst = true}) => {
+Map<String, dynamic> referentialsJson({int minAge = 18, bool beninFirst = true}) => {
       'data': {
         'min_age': minAge,
         'pronouns': [

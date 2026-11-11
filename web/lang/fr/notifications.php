@@ -245,7 +245,7 @@ return [
         'discreet' => 'Nouvelle demande',
     ],
 
-    // Compte qui attend la validation de l'équipe (inscription signalée, pair·e invité·e) : vous.
+    // Compte qui attend la validation de l'équipe (tout nouveau compte) : vous.
     'peer_pending' => [
         'title' => 'Inscription à valider',
         'body' => ':name attend votre validation. Ouvrez la file des inscriptions pour répondre.',

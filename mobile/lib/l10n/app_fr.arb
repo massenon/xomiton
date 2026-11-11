@@ -3554,22 +3554,6 @@
     "@admin_registrations_kpi_week": {
         "description": "admin.registrations.kpi.week"
     },
-    "admin_registrations_manual_all": "Tous les nouveaux comptes (par défaut)",
-    "@admin_registrations_manual_all": {
-        "description": "admin.registrations.manual.all"
-    },
-    "admin_registrations_manual_help": "Par défaut, chaque nouveau compte reste en attente jusqu’à votre validation : vous confirmez alors son adresse e-mail (aucun code n’est envoyé à l’inscription). Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte.",
-    "@admin_registrations_manual_help": {
-        "description": "admin.registrations.manual.help"
-    },
-    "admin_registrations_manual_label": "Validation par l’équipe",
-    "@admin_registrations_manual_label": {
-        "description": "admin.registrations.manual.label"
-    },
-    "admin_registrations_manual_peers": "Inscriptions signalées et pair·es éducateur·rices seulement",
-    "@admin_registrations_manual_peers": {
-        "description": "admin.registrations.manual.peers"
-    },
     "admin_registrations_open": "Ouvertes",
     "@admin_registrations_open": {
         "description": "admin.registrations.open"
@@ -3693,10 +3677,6 @@
     "admin_registrations_state_open_all": "Toute personne peut créer un compte, mais chaque nouveau compte doit être validé par l’équipe.",
     "@admin_registrations_state_open_all": {
         "description": "admin.registrations.state.open_all"
-    },
-    "admin_registrations_state_open_peers": "Toute personne peut créer un compte. Seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent la validation de l’équipe ; le rôle de pair·e éducateur·rice est toujours validé.",
-    "@admin_registrations_state_open_peers": {
-        "description": "admin.registrations.state.open_peers"
     },
     "admin_registrations_state_outside_window": "L’interrupteur est sur « ouvertes », mais nous sommes hors de la plage horaire ({start} à {end}, heure du Bénin) : la page affiche le message de fermeture.",
     "@admin_registrations_state_outside_window": {
@@ -33600,7 +33580,7 @@
     "@profile_progressive_groups_age_title": {
         "description": "profile.progressive.groups.age.title"
     },
-    "profile_progressive_groups_age_why": "Pour te montrer les contenus de ta tranche d’âge et respecter les règles de protection des mineur·es. Jamais affiché.",
+    "profile_progressive_groups_age_why": "Pour te montrer les contenus de ta tranche d’âge. Jamais affiché.",
     "@profile_progressive_groups_age_why": {
         "description": "profile.progressive.groups.age.why"
     },
@@ -35075,7 +35055,7 @@
     "@seo_pages_legal_privacy_title": {
         "description": "seo.pages.legal.privacy.title"
     },
-    "seo_pages_legal_terms_description": "Les règles d’utilisation de Xomiton : accès dès 15 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.",
+    "seo_pages_legal_terms_description": "Les règles d’utilisation de Xomiton : accès dès 18 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.",
     "@seo_pages_legal_terms_description": {
         "description": "seo.pages.legal.terms.description"
     },

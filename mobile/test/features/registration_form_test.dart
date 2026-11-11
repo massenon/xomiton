@@ -27,68 +27,69 @@ RegistrationForm ally() => base()
 void main() {
   group('étape 1', () {
     test('tout est obligatoire', () {
-      final e = RegistrationForm().validateStep(1, minAge: 15);
+      final e = RegistrationForm().validateStep(1, minAge: 18);
       expect(e.keys, containsAll(['first_name', 'last_name', 'pseudo', 'email', 'age']));
       expect(e.values.every((i) => i.kind == RegIssue.required), isTrue);
     });
 
     test('pseudo : 3 caractères et format', () {
       final f = base()..pseudo = 'ab';
-      expect(f.validateStep(1, minAge: 15)['pseudo'], const FormIssue(RegIssue.minLength, 3));
+      expect(f.validateStep(1, minAge: 18)['pseudo'], const FormIssue(RegIssue.minLength, 3));
       f.pseudo = 'a b!';
-      expect(f.validateStep(1, minAge: 15)['pseudo']!.kind, RegIssue.format);
+      expect(f.validateStep(1, minAge: 18)['pseudo']!.kind, RegIssue.format);
       f.pseudo = 'Awa.S-1_x';
-      expect(f.validateStep(1, minAge: 15).containsKey('pseudo'), isFalse);
+      expect(f.validateStep(1, minAge: 18).containsKey('pseudo'), isFalse);
     });
 
     test('e-mail invalide', () {
-      expect((base()..email = 'awa@').validateStep(1, minAge: 15)['email']!.kind, RegIssue.email);
+      expect((base()..email = 'awa@').validateStep(1, minAge: 18)['email']!.kind, RegIssue.email);
     });
 
-    test('âge : entier, au moins min_age du serveur (jamais 15 ou 18 en dur)', () {
-      expect((base()..age = 'vingt').validateStep(1, minAge: 15)['age']!.kind, RegIssue.ageNotNumber);
-      expect((base()..age = '24.5').validateStep(1, minAge: 15)['age']!.kind, RegIssue.ageNotNumber);
-      expect((base()..age = '15').validateStep(1, minAge: 15).containsKey('age'), isFalse);
-      expect((base()..age = '15').validateStep(1, minAge: 18)['age'], const FormIssue(RegIssue.ageTooLow, 18));
+    test('âge : entier, au moins min_age du serveur (valeur du serveur, 18 aujourd’hui, jamais en dur)', () {
+      expect((base()..age = 'vingt').validateStep(1, minAge: 18)['age']!.kind, RegIssue.ageNotNumber);
+      expect((base()..age = '24.5').validateStep(1, minAge: 18)['age']!.kind, RegIssue.ageNotNumber);
+      expect((base()..age = '18').validateStep(1, minAge: 18).containsKey('age'), isFalse);
+      expect((base()..age = '17').validateStep(1, minAge: 18)['age'], const FormIssue(RegIssue.ageTooLow, 18));
+      expect((base()..age = '20').validateStep(1, minAge: 21)['age'], const FormIssue(RegIssue.ageTooLow, 21));
       expect((base()..age = '17').validateStep(1, minAge: 18)['age']!.param, 18);
-      expect(base().validateStep(1, minAge: 15), isEmpty);
+      expect(base().validateStep(1, minAge: 18), isEmpty);
     });
   });
 
   group('étape 2', () {
     test('pronoms, pays et « vous êtes » obligatoires ; ville, téléphone, zone facultatifs', () {
-      final e = RegistrationForm().validateStep(2, minAge: 15);
+      final e = RegistrationForm().validateStep(2, minAge: 18);
       expect(e.keys.toSet(), {'pronouns', 'country_code', 'member_type'});
-      expect(member().validateStep(2, minAge: 15), isEmpty);
+      expect(member().validateStep(2, minAge: 18), isEmpty);
     });
   });
 
   group('étape 3', () {
     test('membre : orientation, identité de genre et consentement sensibles obligatoires', () {
       final f = base()..memberType = kMemberTypeMember;
-      expect(f.validateStep(3, minAge: 15).keys, containsAll(['orientation', 'gender_identity', 'sensitive_data']));
-      expect(f.validateStep(3, minAge: 15).containsKey('ally_role'), isFalse);
-      expect(member().validateStep(3, minAge: 15), isEmpty);
+      expect(f.validateStep(3, minAge: 18).keys, containsAll(['orientation', 'gender_identity', 'sensitive_data']));
+      expect(f.validateStep(3, minAge: 18).containsKey('ally_role'), isFalse);
+      expect(member().validateStep(3, minAge: 18), isEmpty);
     });
 
     test('membre : « autre » impose la précision', () {
       final f = member()
         ..orientation = kOtherValue
         ..genderIdentity = kOtherValue;
-      expect(f.validateStep(3, minAge: 15).keys.toSet(), {'orientation_other', 'gender_identity_other'});
+      expect(f.validateStep(3, minAge: 18).keys.toSet(), {'orientation_other', 'gender_identity_other'});
       f
         ..orientationOther = 'Pansexuelle'
         ..genderIdentityOther = '  ';
-      expect(f.validateStep(3, minAge: 15).keys.toSet(), {'gender_identity_other'});
+      expect(f.validateStep(3, minAge: 18).keys.toSet(), {'gender_identity_other'});
     });
 
     test('allié·e : statut obligatoire, « autre » impose la précision, aucune donnée sensible demandée', () {
       final f = base()..memberType = kMemberTypeAlly;
-      expect(f.validateStep(3, minAge: 15).keys, contains('ally_role'));
-      expect(f.validateStep(3, minAge: 15).containsKey('sensitive_data'), isFalse);
+      expect(f.validateStep(3, minAge: 18).keys, contains('ally_role'));
+      expect(f.validateStep(3, minAge: 18).containsKey('sensitive_data'), isFalse);
       f.allyRole = kOtherValue;
-      expect(f.validateStep(3, minAge: 15).keys, contains('ally_role_other'));
-      expect(ally().validateStep(3, minAge: 15), isEmpty);
+      expect(f.validateStep(3, minAge: 18).keys, contains('ally_role_other'));
+      expect(ally().validateStep(3, minAge: 18), isEmpty);
     });
 
     test('mot de passe : politique, confirmation identique, deux cases obligatoires', () {
@@ -97,7 +98,7 @@ void main() {
         ..passwordConfirmation = 'autre'
         ..cgu = false
         ..privacy = false;
-      final e = f.validateStep(3, minAge: 15);
+      final e = f.validateStep(3, minAge: 18);
       expect(e['password']!.kind, RegIssue.password);
       expect(e['password_confirmation']!.kind, RegIssue.mismatch);
       expect(e['cgu']!.kind, RegIssue.consent);

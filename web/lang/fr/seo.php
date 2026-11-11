@@ -88,7 +88,7 @@ return [
             ],
             'terms' => [
                 'title' => 'Conditions d’utilisation – Xomiton',
-                'description' => 'Les règles d’utilisation de Xomiton : accès dès 15 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.',
+                'description' => 'Les règles d’utilisation de Xomiton : accès dès 18 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.',
             ],
             'notice' => [
                 'title' => 'Mentions légales – Xomiton',

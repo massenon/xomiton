@@ -683,7 +683,6 @@ return [
             'reject' => 'Rejeter la demande de :name ? Le compte sera supprimé.',
         ],
         'state' => [
-            'open_peers' => 'Toute personne peut créer un compte. Seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent la validation de l’équipe ; le rôle de pair·e éducateur·rice est toujours validé.',
             'open_all' => 'Toute personne peut créer un compte, mais chaque nouveau compte doit être validé par l’équipe.',
             'closed' => 'La page d’inscription affiche le message de fermeture.',
             'outside_window' => 'L’interrupteur est sur « ouvertes », mais nous sommes hors de la plage horaire (:start à :end, heure du Bénin) : la page affiche le message de fermeture.',
@@ -691,12 +690,6 @@ return [
         'immediate' => 'Effet immédiat sur la page d’inscription.',
         'preview' => 'Voir la page',
         'options_title' => 'Options d’inscription',
-        'manual' => [
-            'label' => 'Validation par l’équipe',
-            'peers' => 'Inscriptions signalées et pair·es éducateur·rices seulement',
-            'all' => 'Tous les nouveaux comptes (par défaut)',
-            'help' => 'Par défaut, chaque nouveau compte reste en attente jusqu’à votre validation : vous confirmez alors son adresse e-mail (aucun code n’est envoyé à l’inscription). Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte.',
-        ],
         'closed_message' => 'Message affiché quand les inscriptions sont fermées',
         'closed_message_help' => 'Vide : le message par défaut est affiché.',
         'counter' => ':count / :max caractères',

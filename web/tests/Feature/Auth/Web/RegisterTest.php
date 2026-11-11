@@ -63,7 +63,7 @@ it('affiche le formulaire complet côté serveur : trois étapes, stepper « Ét
         ->assertSee('Suivant')
         ->assertSee('Créer mon compte')
         ->assertSee('x-data="xmRegister(', false)
-        ->assertSee('Au moins 15 ans, en chiffres.')
+        ->assertSee('Au moins 18 ans, en chiffres.')
         ->assertSee('Rejoins une communauté bienveillante.')
         ->assertSee('(nouvelle fenêtre)')
         ->assertDontSee('écran de verrouillage');
@@ -93,13 +93,24 @@ it('affiche le formulaire complet côté serveur : trois étapes, stepper « Ét
     expect($html)->not->toContain('<option value="nr"');
 });
 
-it('lit l’âge minimal dans la configuration, y compris dans le texte', function (): void {
-    config(['xomiton.accounts.min_age' => 18]);
-
+it('affiche l’âge minimal de 18 ans et refuse 17 ans', function (): void {
     $this->get('/inscription')->assertOk()->assertSee('Au moins 18 ans, en chiffres.')->assertSee('min="18"', false);
 
     $this->post('/inscription', webRegisterPayload(['age' => 17]))
         ->assertSessionHasErrors(['age' => 'Tu dois avoir au moins 18 ans pour créer un compte.']);
+    expect(User::query()->count())->toBe(0);
+
+    $this->post('/inscription', webRegisterPayload(['age' => 18]))->assertSessionHasNoErrors();
+    expect(User::query()->count())->toBe(1);
+});
+
+it('lit l’âge minimal dans la configuration, y compris dans le texte', function (): void {
+    config(['xomiton.accounts.min_age' => 21]);
+
+    $this->get('/inscription')->assertOk()->assertSee('Au moins 21 ans, en chiffres.')->assertSee('min="21"', false);
+
+    $this->post('/inscription', webRegisterPayload(['age' => 20]))
+        ->assertSessionHasErrors(['age' => 'Tu dois avoir au moins 21 ans pour créer un compte.']);
 });
 
 it('ne crée le compte qu’à la fin : un seul envoi, en attente de validation, session ouverte, ni code ni e-mail', function (): void {
@@ -175,7 +186,7 @@ it('applique les règles conditionnelles : membre → identité, orientation, co
 });
 
 it('refuse un âge sous le minimum, un âge non numérique, un pays inconnu, des pronoms hors liste et un téléphone mal formé', function (): void {
-    postRegister($this, webRegisterPayload(['age' => 14]))->assertSessionHasErrors(['age' => 'Tu dois avoir au moins 15 ans pour créer un compte.']);
+    postRegister($this, webRegisterPayload(['age' => 17]))->assertSessionHasErrors(['age' => 'Tu dois avoir au moins 18 ans pour créer un compte.']);
     postRegister($this, webRegisterPayload(['age' => 'abc']))->assertSessionHasErrors(['age']);
     postRegister($this, webRegisterPayload(['country_code' => 'XX']))->assertSessionHasErrors(['country_code']);
     postRegister($this, webRegisterPayload(['pronouns' => 'nr']))->assertSessionHasErrors(['pronouns']);
@@ -253,16 +264,12 @@ it('remplace le formulaire par le message configuré, la newsletter et la connex
     expect(User::query()->count())->toBe(0);
 });
 
-it('garde l’ancien parcours en mode « peers » : compte actif, toast de bienvenue, code de vérification', function (): void {
-    Settings::set('reg_manual_validation', 'peers');
+it('met le compte en attente quel que soit le profil : pas de code de vérification, pas de bienvenue', function (): void {
+    $this->post('/inscription', webRegisterPayload(['email' => 'ordinaire@exemple.bj']))->assertRedirect(route('fil'));
 
-    $this->post('/inscription', webRegisterPayload())
-        ->assertRedirect(route('fil'))
-        ->assertSessionHas('toast', __('auth.register.created'));
-
-    $user = User::query()->where('email', 'awa@exemple.bj')->firstOrFail();
-    expect($user->status)->toBe(UserStatus::Active)
-        ->and(OtpCode::query()->forEmail('awa@exemple.bj', OtpPurpose::Signup)->valid()->count())->toBe(1);
+    $user = User::query()->where('email', 'ordinaire@exemple.bj')->firstOrFail();
+    expect($user->status)->toBe(UserStatus::Pending)
+        ->and(OtpCode::query()->forEmail('ordinaire@exemple.bj', OtpPurpose::Signup)->count())->toBe(0);
 });
 
 it('redirige les anciennes adresses du tunnel en 4 phases vers le fil, sans casser les comptes déjà créés', function (): void {

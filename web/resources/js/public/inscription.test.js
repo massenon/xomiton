@@ -14,7 +14,7 @@ const STEPS = [
 ];
 
 const CFG = {
-  minAge: 15,
+  minAge: 18,
   benin: 'BJ',
   texts: {
     errors: {
@@ -44,8 +44,8 @@ describe('validateStep', () => {
     expect(validateStep('basic', { ...MEMBER, last_name: '123' }, CFG)).toEqual({ last_name: 'nom invalide' });
     expect(validateStep('basic', { ...MEMBER, email: 'pasunemail' }, CFG)).toEqual({ email: 'e-mail invalide' });
     expect(validateStep('basic', { ...MEMBER, age: 'vingt' }, CFG)).toEqual({ age: 'âge en chiffres' });
-    expect(validateStep('basic', { ...MEMBER, age: '14' }, CFG)).toEqual({ age: 'Tu dois avoir au moins 15 ans' });
-    expect(validateStep('basic', { ...MEMBER, age: '17' }, { ...CFG, minAge: 18 })).toEqual({ age: 'Tu dois avoir au moins 18 ans' });
+    expect(validateStep('basic', { ...MEMBER, age: '17' }, CFG)).toEqual({ age: 'Tu dois avoir au moins 18 ans' });
+    expect(validateStep('basic', { ...MEMBER, age: '17' }, { ...CFG, minAge: 21 })).toEqual({ age: 'Tu dois avoir au moins 21 ans' });
   });
 
   it('étape 2 : pronoms, pays, type requis ; téléphone selon le pays', () => {
@@ -122,12 +122,12 @@ describe('formulaire', () => {
 
   it('markFields puis clearField : message sous le champ, aria-invalid et aria-describedby tenus à jour', () => {
     const form = formHtml();
-    markFields(form, { age: 'Tu dois avoir au moins 15 ans' });
+    markFields(form, { age: 'Tu dois avoir au moins 18 ans' });
     const input = document.getElementById('f-age');
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(input.classList.contains('is-invalid')).toBe(true);
     expect(input.getAttribute('aria-describedby')).toBe('f-age-hint f-age-error');
-    expect(document.getElementById('f-age-error').textContent).toContain('au moins 15 ans');
+    expect(document.getElementById('f-age-error').textContent).toContain('au moins 18 ans');
 
     markFields(form, { member_type: 'type requis' });
     expect(document.getElementById('f-member_type').getAttribute('aria-invalid')).toBe('true');

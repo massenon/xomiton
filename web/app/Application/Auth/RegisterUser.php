@@ -14,36 +14,31 @@ use App\Domain\Auth\ConsentVersion;
 use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
 use App\Domain\Auth\Exceptions\ConsentRequired;
 use App\Domain\Auth\Exceptions\InvitationInvalid;
-use App\Domain\Auth\Exceptions\OtpException;
 use App\Domain\Auth\Exceptions\RegistrationsClosed;
 use App\Enums\AgeRange;
 use App\Enums\AllyRole;
 use App\Enums\ConsentKind;
 use App\Enums\MemberType;
-use App\Enums\OtpPurpose;
 use App\Enums\UserStatus;
 use App\Events\Auth\UserRegistered;
 use App\Models\Consent;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\UserSetting;
-use App\Notifications\UserRegistered as UserRegisteredNotification;
 use App\Rules\RegistrationPhone;
 use App\Support\Audit;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 /**
  * Inscription en 3 étapes obligatoires, un seul envoi à la fin (décision client du 11/11/2026) : le compte n'existe
  * qu'à la fin. Il est créé et la session ouverte aussitôt, mais reste `en attente` (UserStatus::Pending) jusqu'à la
- * validation de l'administration (réglage `reg_manual_validation = all` par défaut ; en mode `peers`, seul un compte
- * SIGNALÉ, D-MOB-17, attend). La « vérification de l'e-mail » est faite par l'administration à la validation
- * (ReviewRegistration) : aucun code OTP ni e-mail de bienvenue n'est envoyé à un compte en attente (l'OTP reste en place
- * pour la connexion et la réinitialisation). Un compte actif d'emblée (mode `peers`, non signalé) garde l'ancien
- * parcours : code `signup` puis e-mail de bienvenue.
+ * validation de l'administration : TOUS les nouveaux comptes attendent, sans exception ni réglage (décision client du
+ * 11/11/2026). La « vérification de l'e-mail » est faite par l'administration à la validation (ReviewRegistration) :
+ * aucun code OTP ni e-mail de bienvenue n'est envoyé à l'inscription (l'OTP reste en place pour la connexion et la
+ * réinitialisation). Les signaux d'inscription suspecte (D-MOB-17) restent enregistrés pour éclairer la validation.
  *
  * Rôle `membre` (jamais un autre : pair et admin ne s'obtiennent que par invitation ou attribution de l'administration) ;
  * `profiles.member_type` = membre ou allié·e selon le choix. Profil et réglages par défaut ; consentements CGU, charte et
@@ -56,7 +51,6 @@ final class RegisterUser
     public const ROLE = 'membre';
 
     public function __construct(
-        private readonly OtpService $otp,
         private readonly TeamInvitations $invitations,
     ) {}
 
@@ -79,7 +73,7 @@ final class RegisterUser
         }
 
         // L'âge saisi tient lieu de confirmation : sous l'âge minimal (config), pas de compte.
-        if ($data->age < (int) config('xomiton.accounts.min_age', 15)) {
+        if ($data->age < (int) config('xomiton.accounts.min_age', 18)) {
             throw new AgeConfirmationRequired;
         }
 
@@ -93,23 +87,7 @@ final class RegisterUser
             return $user;
         });
 
-        if ($user->status === UserStatus::Pending) {
-            // L'équipe confirme l'adresse en validant le compte : pas de code, pas de bienvenue prématurée.
-            Audit::log('auth.registered', $user, $this->auditDetails($user, $data), $user);
-            UserRegistered::dispatch($user);
-
-            return $user;
-        }
-
-        try {
-            $this->otp->issue($user->email, OtpPurpose::Signup, $data->ip);
-        } catch (OtpException $e) {
-            // Le compte existe : la personne pourra redemander un code depuis le bandeau « Confirme ton e-mail ».
-            Log::warning('Code d’inscription non envoyé : '.$e->getMessage(), ['user_id' => $user->getKey()]);
-        }
-
-        $user->notify(new UserRegisteredNotification);
-
+        // L'équipe confirme l'adresse en validant le compte : pas de code, pas de bienvenue prématurée.
         Audit::log('auth.registered', $user, $this->auditDetails($user, $data), $user);
         UserRegistered::dispatch($user);
 
@@ -130,10 +108,9 @@ final class RegisterUser
     private function createAccount(RegisterData $data): User
     {
         $email = OtpService::normalizeEmail($data->email);
-        // D-MOB-17 : seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent l'équipe en mode
-        // `peers` ; Q26 / décision du 11/11/2026 : `reg_manual_validation = all` (défaut) fait attendre tous les nouveaux comptes.
+        // Décision du 11/11/2026 : tous les nouveaux comptes attendent la validation de l'équipe. Les signaux D-MOB-17
+        // (e-mail jetable, inscriptions répétées) restent notés dans `registration_flags` pour éclairer cette validation.
         $flags = RegistrationFlags::evaluate($email, $data->ip, $data->userAgent);
-        $manual = RegistrationGate::manualValidation() === 'all' || $flags !== [];
         $firstName = trim($data->firstName);
         $lastName = trim($data->lastName);
         $isBenin = $data->countryCode === Countries::BENIN;
@@ -147,7 +124,7 @@ final class RegisterUser
             'email' => $email,
             'phone' => $data->phone === null ? null : RegistrationPhone::format($data->phone, $data->countryCode),
             'password' => $data->password,
-            'status' => $manual ? UserStatus::Pending : UserStatus::Active,
+            'status' => UserStatus::Pending,
             'registration_flags' => $flags === [] ? null : implode(',', $flags),
             // La vérification de l'adresse est faite par l'administration à la validation du compte.
             'email_verified_at' => null,

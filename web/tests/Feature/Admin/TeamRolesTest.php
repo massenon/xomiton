@@ -8,16 +8,13 @@ use App\Application\Admin\Users\ChangeUserRole;
 use App\Application\Admin\Users\ReviewRegistration;
 use App\Application\Auth\RegisterData;
 use App\Application\Auth\RegisterUser;
-use App\Application\Auth\VerifyEmail;
 use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Domain\Auth\Exceptions\InvitationInvalid;
 use App\Enums\MemberType;
-use App\Enums\OtpPurpose;
 use App\Enums\UserStatus;
 use App\Livewire\Admin\Registrations\Index as RegistrationsScreen;
 use App\Livewire\Admin\Users\Index as UsersScreen;
 use App\Models\AuditLog;
-use App\Models\OtpCode;
 use App\Models\Profile;
 use App\Models\RoleInvitation;
 use App\Models\User;
@@ -42,9 +39,6 @@ beforeEach(function (): void {
     $this->seed([RolesAndPermissionsSeeder::class, EmailTemplatesSeeder::class, SettingsSeeder::class]);
     Mail::fake();
     config(['mail.default' => 'app']);
-    // Ces scénarios passent par le code `signup` (compte actif, e-mail confirmé par OTP) : mode `peers`. Le défaut de
-    // l'inscription en 3 étapes (`all`, e-mail confirmé par l'admin à la validation) est testé plus bas et dans RegisterUserTest.
-    Settings::set('reg_manual_validation', 'peers');
 });
 
 function rlUser(array|string $roles, array $attributes = []): User
@@ -66,10 +60,10 @@ function rlRegister(array $overrides = []): RegisterData
     return RegistrationFixtures::data(array_merge(['pseudo' => 'Nouvelle_Pair', 'email' => 'nouvelle@exemple.bj'], $overrides));
 }
 
-function rlVerify(User $user): void
+function rlApprove(User $user): void
 {
-    OtpCode::query()->forEmail($user->email, OtpPurpose::Signup)->update(['code_hash' => OtpCode::hash('654321')]);
-    app(VerifyEmail::class)($user->fresh(), '654321');
+    // Tout nouveau compte attend l'équipe (décision du 11/11/2026) : le rôle d'une invitation suit la validation.
+    app(ReviewRegistration::class)->approve($user->fresh(), rlUser(['membre', 'admin']));
 }
 
 // --- Rôle pair attribué à un membre existant ------------------------------------------------------------------------
@@ -192,7 +186,7 @@ it('réserve l’invitation d’un·e admin au super-admin et celle d’un·e pa
     expect(app(TeamInvitations::class)->create($super, 'admin')['invitation']->role)->toBe('admin');
 });
 
-it('inscrit la personne invitée comme membre, puis lui donne le rôle pair quand son e-mail est confirmé', function (): void {
+it('inscrit la personne invitée comme membre, puis lui donne le rôle pair quand l’équipe valide son compte', function (): void {
     Notification::fake();
     $admin = rlUser(['membre', 'admin']);
     $created = app(TeamInvitations::class)->create($admin, 'pair');
@@ -205,7 +199,7 @@ it('inscrit la personne invitée comme membre, puis lui donne le rôle pair quan
         ->and($created['invitation']->refresh()->status)->toBe(RoleInvitation::STATUS_REDEEMED)
         ->and($created['invitation']->user_id)->toBe($user->id);
 
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->getRoleNames()->sort()->values()->all())->toBe(['membre', 'pair'])
         ->and($created['invitation']->refresh()->status)->toBe(RoleInvitation::STATUS_ACCEPTED)
@@ -246,7 +240,7 @@ it('ne donne pas le rôle si la personne qui a invité a perdu son droit entre-t
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
 
     $super->syncRoles(['membre']);
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->hasRole('admin'))->toBeFalse()
         ->and($created['invitation']->refresh()->status)->toBe(RoleInvitation::STATUS_REFUSED);
@@ -256,7 +250,7 @@ it('donne le rôle admin par invitation du super-admin, en gardant le rôle memb
     $super = rlUser(['membre', 'superadmin']);
     $created = app(TeamInvitations::class)->create($super, 'admin');
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->getRoleNames()->sort()->values()->all())->toBe(['admin', 'membre'])
         ->and(AuditLog::query()->where('action', 'roles.admin_granted')->exists())->toBeTrue();
@@ -353,8 +347,7 @@ it('valide un compte pair en attente : rôle pair ajouté au rôle membre', func
         ->and($applicant->getRoleNames()->sort()->values()->all())->toBe(['membre', 'pair']);
 });
 
-it('donne le rôle d’une invitation à l’approbation quand la validation manuelle de tous est active', function (): void {
-    Settings::set('reg_manual_validation', 'all');
+it('donne le rôle d’une invitation à l’approbation par l’équipe (tous les nouveaux comptes attendent)', function (): void {
     $admin = rlUser(['membre', 'admin']);
     $created = app(TeamInvitations::class)->create($admin, 'pair');
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
@@ -378,7 +371,7 @@ it('rattache la personne pair invitée à la zone de l’invitation à la valida
 
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
     expect($user->refresh()->zone_id)->not->toBe($zone->id);
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->zone_id)->toBe($zone->id)->and($user->hasRole('pair'))->toBeTrue();
 });

@@ -29,7 +29,7 @@ final class RegistrationOptions
 
     public static function minAge(): int
     {
-        return (int) config('xomiton.accounts.min_age', 15);
+        return (int) config('xomiton.accounts.min_age', 18);
     }
 
     /**

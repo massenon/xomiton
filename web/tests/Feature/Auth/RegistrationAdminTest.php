@@ -12,7 +12,6 @@ use App\Livewire\Admin\Registrations\Index as RegistrationsScreen;
 use App\Models\DatabaseNotification;
 use App\Models\User;
 use App\Notifications\PeerPending;
-use App\Support\Settings;
 use Database\Seeders\EmailTemplatesSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Database\Seeders\SettingsSeeder;
@@ -70,16 +69,12 @@ it('prévient aussi les validateurs pour une inscription par l’API, par cloche
     });
 });
 
-it('ne prévient personne pour un compte actif d’emblée (mode peers) et masque le texte en mode discret', function (): void {
-    Notification::fake();
+it('masque le texte de la notification en mode discret', function (): void {
     $admin = AlertFixtures::admin();
-    Settings::set('reg_manual_validation', 'peers');
-
-    $this->postJson('/api/v1/auth/register', R::payload())->assertCreated();
-    Notification::assertNothingSentTo($admin);
-
     $admin->profile->forceFill(['discreet_mode' => true])->save();
+
     $masked = (new PeerPending(7, 'Awa_S', 'allié·e, avocat·e'))->toArray($admin->fresh());
+
     expect($masked['body'])->not->toContain('Awa_S')->and($masked['url'])->toBe(route('admin.inscriptions'));
 });
 
