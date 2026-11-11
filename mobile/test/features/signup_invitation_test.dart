@@ -86,7 +86,7 @@ void main() {
       await pumpSignup(tester, api);
       await fillStep1(tester);
       await next(tester);
-      expect(find.text(S.t('auth_register_profile_member_types_pair')), findsNothing);
+      expect(find.text(S.t('mobile_register_member_type_pair')), findsNothing);
       expect(find.text('Membre de la communauté'), findsOneWidget);
       expect(find.text('Personne ressource / Allié·e'), findsOneWidget);
     });

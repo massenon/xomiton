@@ -116,7 +116,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
     setState(() {
       _passwordError = pw.isEmpty
           ? vRequired(context, 'password')
-          : (PasswordStrength(pw).meetsPolicy ? null : context.t('auth_register_account_password_hint'));
+          : (PasswordStrength(pw).meetsPolicy ? null : context.t('mobile_register_password_hint'));
       _confirmError = pw == _confirm.text ? null : vConfirmed(context, 'password');
       _formError = null;
     });

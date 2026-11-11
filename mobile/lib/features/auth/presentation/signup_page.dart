@@ -134,7 +134,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         RegIssue.email => context.t('mobile_register_err_email'),
         RegIssue.ageNotNumber => context.t('mobile_register_err_age_number'),
         RegIssue.ageTooLow => context.t('mobile_register_err_age_low', {'min_age': i.param ?? minAge}),
-        RegIssue.password => context.t('auth_register_account_password_hint'),
+        RegIssue.password => context.t('mobile_register_password_hint'),
         RegIssue.mismatch => context.t('mobile_register_err_mismatch'),
         RegIssue.consent => context.t('mobile_register_err_consent'),
       };
@@ -370,7 +370,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           key: ValueKey(last ? 'reg-submit' : 'reg-next'),
           style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
           onPressed: _busy ? null : () => last ? _submit(minAge) : _next(minAge),
-          child: last ? _busyChild('auth_register_account_submit') : Text(context.t('common_next')),
+          child: last ? _busyChild('mobile_register_submit') : Text(context.t('common_next')),
         ),
         const SizedBox(height: XmSpace.s3),
         if (_step > 1)
@@ -396,11 +396,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         _gap(),
         _text('last_name', _lastName, _req('mobile_register_last_name'), autofill: const [AutofillHints.familyName]),
         _gap(),
-        _text('pseudo', _pseudo, _req('auth_register_account_pseudo'),
-            helper: context.t('auth_register_account_pseudo_hint'), autofill: const [AutofillHints.newUsername]),
+        _text('pseudo', _pseudo, _req('mobile_register_pseudo'),
+            helper: context.t('mobile_register_pseudo_hint'), autofill: const [AutofillHints.newUsername]),
         _gap(),
-        _text('email', _email, _req('auth_register_account_email'),
-            helper: context.t('auth_register_account_email_hint'),
+        _text('email', _email, _req('mobile_register_email'),
+            helper: context.t('mobile_register_email_hint'),
             keyboard: TextInputType.emailAddress,
             autofill: const [AutofillHints.email]),
         _gap(),
@@ -537,9 +537,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   // Étape 3 : détails (membre ou allié·e) et sécurité.
   Widget _detailsStep(BuildContext context, RegistrationReferentials r) {
-    final terms = context.t('auth_register_account_cgu_terms');
-    final charter = context.t('auth_register_account_cgu_charter');
-    final policy = context.t('auth_register_account_privacy_policy');
+    final terms = context.t('mobile_register_cgu_terms');
+    final charter = context.t('mobile_register_cgu_charter');
+    final policy = context.t('mobile_register_privacy_policy');
     final legal = {for (final l in kLegalLinks) l.key: l};
     Widget readLink(String key, String textKey) => Align(
           alignment: Alignment.centerLeft,
@@ -579,7 +579,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           ],
           _gap(),
           _consent('sensitive_data', const ValueKey('consent-sensitive'), _form.sensitiveData,
-              (v) => setState(() => _form.sensitiveData = v), Text(context.t('auth_register_consents_sensitive_data'))),
+              (v) => setState(() => _form.sensitiveData = v), Text(context.t('mobile_register_sensitive_data'))),
         ] else if (_form.isAlly) ...[
           _dropdown('ally_role', _req('mobile_register_ally_role'), r.allyRoles, _form.allyRole,
               (v) => setState(() => _form.allyRole = v)),
@@ -592,8 +592,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         PasswordField(
           key: const ValueKey('reg-password'),
           controller: _password,
-          label: _req('auth_register_account_password'),
-          hint: context.t('auth_register_account_password_hint'),
+          label: _req('mobile_register_password'),
+          hint: context.t('mobile_register_password_hint'),
           autofill: AutofillHints.newPassword,
           errorText: _errors['password'],
           textInputAction: TextInputAction.next,
@@ -613,10 +613,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
         ),
         _gap(),
         _consent('cgu', const ValueKey('consent-cgu'), _form.cgu, (v) => setState(() => _form.cgu = v),
-            Text('${context.t('auth_register_account_cgu', {'terms': terms, 'charter': charter})} *')),
+            Text('${context.t('mobile_register_cgu', {'terms': terms, 'charter': charter})} *')),
         readLink('terms', 'mobile_register_read_terms'),
         _consent('privacy', const ValueKey('consent-privacy'), _form.privacy, (v) => setState(() => _form.privacy = v),
-            Text('${context.t('auth_register_account_privacy', {'policy': policy})} *')),
+            Text('${context.t('mobile_register_privacy', {'policy': policy})} *')),
         readLink('privacy', 'mobile_register_read_privacy'),
         const SizedBox(height: XmSpace.s3),
         Text(context.t('mobile_register_intro_final'), style: Theme.of(context).textTheme.bodySmall),

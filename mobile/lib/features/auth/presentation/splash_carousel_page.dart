@@ -104,7 +104,7 @@ class _SplashCarouselPageState extends ConsumerState<SplashCarouselPage> {
                   minimumSize: const Size(48, 48),
                   padding: const EdgeInsets.symmetric(horizontal: XmSpace.s4),
                 ),
-                child: Text(context.t('auth_register_skip')),
+                child: Text(context.t('mobile_register_skip')),
               ),
             ]),
           ),

@@ -201,7 +201,7 @@ void main() {
       await typeIn(tester, 'password_confirmation', 'autre');
       await submit(tester);
       expect(api.calls('POST auth/register'), isEmpty);
-      expect(find.text(S.t('auth_register_account_password_hint')), findsWidgets);
+      expect(find.text(S.t('mobile_register_password_hint')), findsWidgets);
       expect(find.text(S.t('mobile_register_err_mismatch')), findsOneWidget);
       expect(find.text(S.t('mobile_register_err_consent')), findsWidgets);
     });

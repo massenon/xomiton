@@ -101,7 +101,7 @@ void main() {
     testWidgets('« Passer » mène à la connexion et mémorise onboarding.seen', (tester) async {
       final env = TestEnv(api: FakeApi(), seen: false);
       await pumpApp(tester, env);
-      await tester.tap(tr(S.t('auth_register_skip')));
+      await tester.tap(tr(S.t('mobile_register_skip')));
       await tester.pumpAndSettle();
       expect(tr(S.t('auth_login_heading')), findsOneWidget);
     });

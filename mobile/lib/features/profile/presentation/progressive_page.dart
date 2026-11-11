@@ -28,7 +28,7 @@ const Map<String, List<(String, String)>> _singleChoice = {
   ],
   'member_type': [
     ('membre', 'auth_register_profile_member_types_membre'),
-    ('pair', 'auth_register_profile_member_types_pair'),
+    ('pair', 'mobile_register_member_type_pair'),
   ],
   'ally_status': [
     ('allie', 'profile_progressive_groups_ally_status_options_ally'),
