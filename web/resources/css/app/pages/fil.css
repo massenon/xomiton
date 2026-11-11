@@ -1,0 +1,24 @@
+/*
+ * Fil d'actualité `/fil`, `/fil/{ulid}`, `/fil/enregistres` (lot fil-ecrans, P7-03 à P7-06 ; prototype fil.php,
+ * post-details.php, inc/render.php, partials/modals.php) : styles en ligne du prototype sortis dans la feuille (cartes
+ * « À la une » de 190 px, titre sur deux lignes, couleur de l'assistant, aperçu d'image 160 px, pourcentage du
+ * sondage sur 3 caractères), corps de publication avec retours à la ligne (nl2br du prototype), boutons d'action en
+ * <button> (sans fond), cibles tactiles de 44 px. Barres et options du sondage : theme/xomiton.css (.xm-poll-*).
+ * Jetons uniquement.
+ */
+.xm-feed-featured-card { width: 190px; }
+.xm-feed-featured-title { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.xm-feed-assistant-icon { color: var(--xm-accent-violet); }
+.xm-feed-quick .card { min-height: 44px; }
+.xm-post-body { white-space: pre-line; overflow-wrap: anywhere; }
+.xm-post-actions .nav-link { background: none; border: 0; }
+.xm-post-actions .nav-link.active { color: var(--bs-primary); }
+.xm-poll-pc { min-width: 3ch; text-align: right; }
+.xm-poll-preview { max-height: 160px; }
+.xm-comment-body { white-space: pre-line; overflow-wrap: anywhere; }
+
+@media (pointer: coarse) {
+  .xm-post-actions .nav-link,
+  .xm-feed-filters .nav-link,
+  .xm-post-menu-toggle { min-height: 44px; display: inline-flex; align-items: center; }
+}

@@ -1,0 +1,9 @@
+/*
+ * Éditeur riche Quill de l'administration, chargé avec la bibliothèque (resources/js/admin/lazy.js, ADR-18) : feuille
+ * « snow » puis réglages Xomiton (bordures et police ramenées aux jetons --xm-*), dans cet ordre pour l'emporter.
+ */
+@import 'quill/dist/quill.snow.css';
+
+.ql-toolbar.ql-snow, .ql-container.ql-snow { border-color: var(--xm-border); }
+.ql-toolbar.ql-snow { border-radius: 8px 8px 0 0; }
+.ql-container.ql-snow { border-radius: 0 0 8px 8px; min-height: 240px; font-family: var(--xm-font-body); }

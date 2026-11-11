@@ -1,0 +1,14 @@
+/*
+ * Actualités `/actualites` et `/actualites/{slug}` (P4-10 ; prototype blog.php, blog-details.php) : styles en ligne
+ * du prototype sortis dans la feuille (couverture de fiche plafonnée à 420 px, vignettes 64 px, illustration 90 px),
+ * cibles tactiles de 44 px pour les btn-sm gardés par fidélité. Jetons uniquement.
+ */
+.xm-news-cover { max-height: 420px; }
+.xm-news-thumb { width: 64px; height: 64px; }
+.xm-news-thumb img { width: 100%; height: 100%; }
+.xm-news-character { height: 90px; width: auto; }
+
+@media (pointer: coarse) {
+  .xm-news-filters .btn,
+  .xm-news-actions .btn { min-height: var(--xm-button-min-h, 44px); display: inline-flex; align-items: center; }
+}

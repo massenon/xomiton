@@ -1,0 +1,208 @@
+/* Xomiton – compléments au thème Social (style.css reste la base). Charte : bleu #0433C3, rouge #E30E0E, Montserrat. */
+:root { --xm-blue:var(--xm-blue-500); --xm-blue-dark:var(--xm-blue-700); --xm-red:var(--xm-red-500); --xm-violet:var(--xm-violet-700); --xm-rose:var(--xm-rose-600); }
+
+/* ---------- Généralités ---------- */
+/* Bouton SOS flottant (P5-08) : conteneur fixe de <x-sos-button> (64 px, design system, Q21 b), au-dessus des modales (D8). */
+/* Pages à saisie (assistant, messages) : bande réservée --xm-dock-h sous la zone défilante (html.xm-dock, member.css), le bouton y est posé : rien ne défile sous lui. */
+:root { --xm-sos-size:64px; --xm-sos-bottom:max(18px, env(safe-area-inset-bottom)); --xm-sos-clear:calc(var(--xm-sos-size) + var(--xm-sos-bottom) + var(--xm-space-4, 16px)); }
+.xm-sos-fab { position:fixed; right:max(18px, env(safe-area-inset-right)); bottom:var(--xm-sos-bottom); z-index:1060; }
+.xm-offline-bar { display:none; position:sticky; top:0; z-index:1100; background:var(--xm-amber-500); color:var(--xm-neutral-900); text-align:center; padding:.4rem 1rem; font-size:.85rem; font-weight:600; }
+body.xm-is-offline .xm-offline-bar { display:block; }
+.xm-sync-badge { display:inline-flex; align-items:center; gap:.35rem; font-size:.75rem; }
+.xm-hero-bg { background:linear-gradient(135deg, var(--xm-blue-500) 0%, var(--xm-violet-700) 60%, var(--xm-rose-600) 100%); color:var(--xm-neutral-0); }
+.xm-rainbow-line { height:5px; background:linear-gradient(90deg,var(--xm-red-500),var(--xm-amber-500),var(--xm-green-700),var(--xm-blue-500),var(--xm-violet-700)); border:0; opacity:1; }
+.xm-card-hover { transition:transform .2s, box-shadow .2s; } .xm-card-hover:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(4,51,195,.12); }
+.xm-img-cover { width:100%; height:100%; object-fit:cover; }
+.xm-ratio-16x9 { aspect-ratio:16/9; overflow:hidden; } .xm-ratio-4x3 { aspect-ratio:4/3; overflow:hidden; } .xm-ratio-1x1 { aspect-ratio:1/1; overflow:hidden; } .xm-ratio-3x2 { aspect-ratio:3/2; overflow:hidden; }
+.xm-chip { display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .65rem; border-radius:999px; font-size:.75rem; font-weight:600; background:rgba(4,51,195,.1); color:var(--xm-blue); }
+.xm-stat { border-left:4px solid var(--xm-blue); }
+.xm-stat.danger { border-color:var(--xm-red); } .xm-stat.success { border-color:var(--xm-green-700); } .xm-stat.warning { border-color:var(--xm-amber-500); } .xm-stat.violet { border-color:var(--xm-violet); }
+.xm-assistant-msg { max-width:85%; }
+.xm-typing span { display:inline-block; width:6px; height:6px; margin:0 1px; border-radius:50%; background:var(--xm-neutral-400); animation:xmtyping 1s infinite; } .xm-typing span:nth-child(2){animation-delay:.15s} .xm-typing span:nth-child(3){animation-delay:.3s}
+@keyframes xmtyping { 0%,80%,100%{transform:scale(.6);opacity:.5} 40%{transform:scale(1);opacity:1} }
+.xm-step { display:flex; gap:.75rem; } .xm-step .num { flex:0 0 32px; height:32px; border-radius:50%; background:var(--xm-blue); color:var(--xm-neutral-0); display:flex; align-items:center; justify-content:center; font-weight:700; }
+.xm-comic-panel { border:3px solid var(--xm-neutral-900); border-radius:12px; background:var(--xm-neutral-0); overflow:hidden; } .xm-comic-panel .cap { background:var(--xm-comic-caption-bg); border-top:3px solid var(--xm-neutral-900); padding:.6rem .8rem; font-size:.85rem; font-weight:600; color:var(--xm-neutral-900); }
+.xm-flip { perspective:900px; cursor:pointer; } .xm-flip-inner { position:relative; transition:transform .6s; transform-style:preserve-3d; min-height:260px; } .xm-flip.flipped .xm-flip-inner { transform:rotateY(180deg); }
+.xm-flip-front, .xm-flip-back { position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--bs-card-border-radius,.5rem); overflow:hidden; } .xm-flip-back { transform:rotateY(180deg); display:flex; align-items:center; padding:1.25rem; background:var(--bs-body-bg); border:1px solid var(--bs-border-color); }
+.xm-validation-msg { font-size:.8rem; color:var(--xm-red); display:none; } .is-invalid ~ .xm-validation-msg, .xm-validation-msg.show { display:block; }
+.xm-map { height:320px; border-radius:.5rem; background:linear-gradient(135deg,var(--xm-blue-50),var(--xm-red-50)); position:relative; overflow:hidden; }
+.xm-map .pin { position:absolute; width:14px; height:14px; border-radius:50%; background:var(--xm-red); border:2px solid var(--xm-neutral-0); transform:translate(-50%,-50%); box-shadow:0 0 0 4px rgba(227,14,14,.25); }
+
+/* ---------- Landing ---------- */
+.xm-landing-hero { position:relative; overflow:hidden; }
+.xm-landing-hero .hero-photo { border-radius:2rem; box-shadow:0 20px 60px rgba(4,51,195,.25); }
+.xm-feature-icon { width:56px; height:56px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+
+/* ---------- Auth ---------- */
+.xm-auth-side { background-size:cover; background-position:center; min-height:100vh; position:relative; }
+.xm-auth-side::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(4,51,195,.55), rgba(111,44,145,.75)); }
+.xm-auth-side > * { position:relative; z-index:1; }
+
+/* ---------- Admin ---------- */
+.xm-admin { --xm-sidebar-w:264px; background:var(--bs-tertiary-bg); min-height:100vh; }
+.xm-admin-sidebar { position:fixed; inset:0 auto 0 0; width:var(--xm-sidebar-w); background:var(--xm-neutral-d-0); color:var(--xm-admin-sidebar-text); overflow-y:auto; z-index:1045; transition:transform .25s; padding-bottom:2rem; }
+.xm-admin-sidebar .brand { padding:1rem 1.25rem; border-bottom:1px solid rgba(255,255,255,.08); }
+.xm-admin-sidebar .group { font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--xm-neutral-400); padding:1rem 1.25rem .35rem; }
+.xm-admin-sidebar a.item { display:flex; align-items:center; gap:.7rem; padding:.5rem 1.25rem; color:var(--xm-admin-sidebar-text); text-decoration:none; font-size:.88rem; border-left:3px solid transparent; }
+.xm-admin-sidebar a.item:hover { background:rgba(255,255,255,.05); color:var(--xm-neutral-0); }
+.xm-admin-sidebar a.item.active { background:rgba(124,151,255,.15); color:var(--xm-neutral-0); border-left-color:var(--xm-blue-dark-accent); }
+.xm-admin-sidebar a.item i { font-size:1.05rem; width:1.2rem; text-align:center; }
+.xm-admin-sidebar .badge { margin-left:auto; }
+.xm-admin-main { margin-left:var(--xm-sidebar-w); min-height:100vh; }
+.xm-admin-topbar { position:sticky; top:0; z-index:1030; background:var(--bs-body-bg); border-bottom:1px solid var(--bs-border-color); padding:.65rem 1.25rem; }
+.xm-admin-content { padding:1.5rem 1.25rem 3rem; }
+.xm-admin .table > :not(caption) > * > * { padding:.7rem .75rem; }
+.xm-admin .card { border-radius:.75rem; }
+.xm-admin .kpi-value { font-size:1.75rem; font-weight:700; line-height:1.1; }
+@media (max-width: 991.98px) {
+  .xm-admin-sidebar { transform:translateX(-100%); } .xm-admin-sidebar.open { transform:none; }
+  .xm-admin-main { margin-left:0; }
+}
+.xm-table-wrap { overflow-x:auto; }
+.xm-print-only { display:none; }
+@media print { .xm-admin-sidebar, .xm-admin-topbar, .no-print, .xm-sos-fab { display:none !important; } .xm-admin-main { margin:0 !important; } .xm-print-only { display:block; } .card { break-inside:avoid; } }
+
+/* ---------- Réseau : compléments ---------- */
+.xm-nav-section { font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--bs-secondary-color); padding:.75rem .5rem .25rem; font-weight:700; }
+.xm-side-link { display:flex; align-items:center; gap:.65rem; padding:.45rem .6rem; border-radius:.5rem; color:var(--bs-body-color); text-decoration:none; font-weight:600; font-size:.9rem; }
+.xm-side-link:hover, .xm-side-link.active { background:rgba(4,51,195,.08); color:var(--xm-blue); }
+.xm-side-link i { width:1.25rem; text-align:center; font-size:1.05rem; }
+.xm-side-link.danger { color:var(--xm-red); } .xm-side-link.danger:hover { background:rgba(227,14,14,.08); }
+
+/* Couche design system Xomiton : secondary = rouge de marque ; le texte secondaire du prototype reste gris neutre */
+.text-secondary { color: var(--bs-secondary-color) !important; }
+.small.text-secondary, small.text-secondary { color: var(--bs-secondary-color) !important; }
+
+/* Badges « soft » : le design system forçait un fond plein (texte invisible) — on rétablit la transparence */
+.bg-primary.bg-opacity-10, .badge.bg-primary.bg-opacity-10 { background-color: rgba(var(--bs-primary-rgb), .1) !important; }
+.bg-primary.bg-opacity-25, .badge.bg-primary.bg-opacity-25 { background-color: rgba(var(--bs-primary-rgb), .25) !important; }
+.bg-secondary.bg-opacity-10, .badge.bg-secondary.bg-opacity-10 { background-color: rgba(var(--bs-secondary-rgb), .1) !important; }
+.bg-secondary.bg-opacity-25, .badge.bg-secondary.bg-opacity-25 { background-color: rgba(var(--bs-secondary-rgb), .25) !important; }
+.bg-danger.bg-opacity-10, .badge.bg-danger.bg-opacity-10 { background-color: rgba(var(--bs-danger-rgb), .1) !important; }
+.bg-danger.bg-opacity-25, .badge.bg-danger.bg-opacity-25 { background-color: rgba(var(--bs-danger-rgb), .25) !important; }
+.bg-success.bg-opacity-10, .badge.bg-success.bg-opacity-10 { background-color: rgba(var(--bs-success-rgb), .1) !important; }
+.bg-success.bg-opacity-25, .badge.bg-success.bg-opacity-25 { background-color: rgba(var(--bs-success-rgb), .25) !important; }
+.bg-warning.bg-opacity-10, .badge.bg-warning.bg-opacity-10 { background-color: rgba(var(--bs-warning-rgb), .1) !important; }
+.bg-warning.bg-opacity-25, .badge.bg-warning.bg-opacity-25 { background-color: rgba(var(--bs-warning-rgb), .25) !important; }
+.bg-info.bg-opacity-10, .badge.bg-info.bg-opacity-10 { background-color: rgba(var(--bs-info-rgb), .1) !important; }
+.bg-info.bg-opacity-25, .badge.bg-info.bg-opacity-25 { background-color: rgba(var(--bs-info-rgb), .25) !important; }
+.bg-dark.bg-opacity-10, .badge.bg-dark.bg-opacity-10 { background-color: rgba(var(--bs-dark-rgb), .1) !important; }
+.bg-dark.bg-opacity-25, .badge.bg-dark.bg-opacity-25 { background-color: rgba(var(--bs-dark-rgb), .25) !important; }
+.bg-light.bg-opacity-10, .badge.bg-light.bg-opacity-10 { background-color: rgba(var(--bs-light-rgb), .1) !important; }
+.bg-light.bg-opacity-25, .badge.bg-light.bg-opacity-25 { background-color: rgba(var(--bs-light-rgb), .25) !important; }
+.badge.bg-opacity-10.text-warning, .badge.bg-opacity-25.text-warning { color: var(--xm-warning-text) !important; }
+[data-bs-theme=dark] .badge.bg-opacity-10.text-primary { color: var(--xm-badge-primary-text-dark) !important; }
+[data-bs-theme=dark] .badge.bg-opacity-10.text-danger { color: var(--xm-badge-danger-text-dark) !important; }
+
+/* ---------- Mise en page uniforme (pages membres & publiques) ---------- */
+/* Un seul gabarit horizontal : en-tête, corps et pied de page lisent les mêmes jetons (D-ALIGN-1). Le conteneur Social
+   (style.css : 96 % / 100 % / 1140 / 1200 px) est volontairement neutralisé ici, sans toucher à style.css ; `.container` imbriqué
+   dans une section (accueil, bandeaux) suit la même largeur que `main > .container`. Pas d'unité vw : aucun décalage dû à la barre de défilement. */
+:root { --xm-container-max: 1400px; --xm-gutter: 1.5rem; }
+body:not(.xm-admin) :is(header, main, footer) .container { --bs-gutter-x: var(--xm-gutter); max-width: var(--xm-container-max); }
+/* Les .row à gouttière large (g-5 = -1,5rem) dépassent le padding du conteneur de 0,75rem : on coupe ce débordement sans créer de défilement. */
+body:not(.xm-admin) main { overflow-x: clip; }
+/* Colonnes empilées : les cartes gardent leur hauteur naturelle (plus de blanc en bas des cartes) */
+.vstack > * { flex-grow: 0 !important; }
+.vstack > .card, .vstack > article { align-self: stretch; }
+/* Accessibilité (WCAG 2.2 AA) */
+.xm-skip-link { position: absolute; left: .75rem; top: -4rem; z-index: 2000; background: var(--xm-blue); color: var(--xm-neutral-0); padding: .6rem 1rem; border-radius: .5rem; font-weight: 700; text-decoration: none; transition: top .15s; }
+.xm-skip-link:focus { top: .75rem; color: var(--xm-neutral-0); outline: 3px solid var(--xm-focus-ring); outline-offset: 2px; }
+main:focus { outline: none; }
+.btn-sm, .nav-link, .page-link { min-height: 24px; }
+@media (prefers-reduced-motion: reduce) { .xm-card-hover, .xm-card-hover:hover { transition: none; transform: none; } html { scroll-behavior: auto !important; } }
+/* Couvertures de marque */
+.xm-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
+.xm-load-more { display: flex; justify-content: center; }
+
+/* ---------- Do Glegbe : gestion de l'hygiène menstruelle (Soft UI, rose pâle) ---------- */
+:root { --dg-red: var(--xm-dg-red); --dg-red-soft: var(--xm-red-50); --dg-blush: var(--xm-dg-blush); --dg-ink: var(--xm-neutral-900); }
+.dg-section { background: linear-gradient(180deg, var(--dg-blush) 0%, var(--xm-neutral-0) 100%); position: relative; overflow: hidden; }
+.dg-section::before { content: ""; position: absolute; width: 520px; height: 520px; right: -200px; top: -220px; border-radius: 50%; background: radial-gradient(circle, rgba(227,14,14,.10), transparent 70%); pointer-events: none; }
+.dg-logo-card { background: var(--xm-neutral-0); border: 1px solid var(--xm-dg-border); border-radius: 1.75rem; box-shadow: 0 18px 44px rgba(179,38,30,.12); padding: 2rem; display: flex; align-items: center; justify-content: center; position: relative; }
+.dg-logo-card img { width: min(100%, 314px); height: auto; }
+.dg-logo-card .dg-badge { position: absolute; left: 1rem; bottom: 1rem; background: var(--dg-red-soft); color: var(--dg-red); font-weight: 700; font-size: .78rem; padding: .35rem .8rem; border-radius: 999px; }
+.dg-eyebrow { color: var(--dg-red); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; }
+.dg-lead { font-size: clamp(1.15rem, 1.1rem + .6vw, 1.5rem); font-weight: 700; line-height: 1.35; color: var(--dg-ink); }
+.dg-benefit { display: flex; gap: .75rem; align-items: flex-start; background: var(--xm-neutral-0); border: 1px solid var(--xm-dg-border); border-radius: 1rem; padding: .9rem 1rem; height: 100%; transition: box-shadow .2s, transform .2s; }
+.dg-benefit:hover { box-shadow: 0 10px 26px rgba(179,38,30,.12); transform: translateY(-2px); }
+.dg-benefit .dg-ico { flex: 0 0 42px; height: 42px; border-radius: 12px; background: var(--dg-red-soft); color: var(--dg-red); display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+.dg-benefit b { display: block; color: var(--dg-ink); }
+.dg-quote { border-left: 5px solid var(--dg-red); background: var(--xm-neutral-0); border-radius: 0 1rem 1rem 0; padding: 1rem 1.25rem; font-weight: 600; color: var(--dg-ink); box-shadow: 0 6px 18px rgba(27,22,48,.06); }
+.btn-dg { background: var(--dg-red); border-color: var(--dg-red); color: var(--xm-neutral-0); font-weight: 700; }
+.btn-dg:hover, .btn-dg:focus { background: var(--xm-dg-red-hover); border-color: var(--xm-dg-red-hover); color: var(--xm-neutral-0); }
+.dg-hero { background: linear-gradient(135deg, var(--xm-dg-red-hover) 0%, var(--xm-dg-red) 45%, var(--xm-rose-600) 100%); color: var(--xm-neutral-0); position: relative; overflow: hidden; }
+.dg-hero::after { content: ""; position: absolute; width: 460px; height: 460px; right: -140px; bottom: -200px; border-radius: 50%; background: rgba(255,255,255,.08); }
+.dg-hero h1, .dg-hero .lead { color: var(--xm-neutral-0); }
+.dg-hero .dg-logo-card { padding: 1.25rem; }
+.dg-step { background: var(--xm-neutral-0); border: 1px solid var(--xm-dg-border); border-radius: 1.25rem; padding: 1.4rem; height: 100%; }
+.dg-step .dg-num { width: 36px; height: 36px; border-radius: 50%; background: var(--dg-red); color: var(--xm-neutral-0); font-weight: 800; display: inline-flex; align-items: center; justify-content: center; margin-bottom: .75rem; }
+[data-bs-theme=dark] .dg-section { background: var(--xm-dg-bg-dark); }
+[data-bs-theme=dark] .dg-benefit, [data-bs-theme=dark] .dg-step, [data-bs-theme=dark] .dg-quote { background: var(--xm-dg-surface-dark); border-color: var(--xm-dg-border-dark); color: var(--xm-dg-text-dark); }
+[data-bs-theme=dark] .dg-benefit b, [data-bs-theme=dark] .dg-lead, [data-bs-theme=dark] .dg-quote { color: var(--xm-dg-heading-dark); }
+@media (prefers-reduced-motion: reduce) { .dg-benefit, .dg-benefit:hover { transition: none; transform: none; } }
+.dg-hero .btn-outline-light { color: var(--xm-neutral-0); border-color: var(--xm-neutral-0); }
+.dg-hero .btn-outline-light:hover, .dg-hero .btn-outline-light:focus { background: var(--xm-neutral-0); color: var(--dg-red); }
+
+/* Bandeau de page de la charte graphique (dégradé bleu → violet → rose, titres blancs, filet arc-en-ciel) */
+.xm-hero-bg :is(h1, h2, h3, .h1, .h2, .h3) { color: var(--xm-neutral-0); }
+.xm-hero-bg .xm-hero-sub { color: rgba(255,255,255,.92); }
+.xm-hero-page { position: relative; overflow: hidden; }
+.xm-hero-page::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: linear-gradient(90deg,var(--xm-red-500),var(--xm-amber-500),var(--xm-green-700),var(--xm-blue-500),var(--xm-violet-700)); }
+
+/* ---------- Administration : recherche globale, notifications, tableaux paginés ---------- */
+.xm-gsearch { width: min(300px, 22vw); }
+.xm-gsearch .form-control, .xm-gsearch .input-group-text { background: var(--bs-tertiary-bg); }
+.xm-notif-menu { width: min(380px, 94vw); }
+.xm-notif-list { max-height: 360px; overflow-y: auto; }
+.xm-notif-list .icon-md { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; }
+.xm-notif-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--xm-blue); margin-top: .35rem; visibility: hidden; flex-shrink: 0; }
+.xm-notif-unread { background: rgba(4,51,195,.05); }
+.xm-notif-unread .xm-notif-dot { visibility: visible; }
+.xm-dt-bar .form-select { min-width: 4.5rem; }
+.xm-dt-pager .page-link { min-width: 2rem; text-align: center; }
+@media print { .xm-dt-bar { display: none !important; } .xm-admin tr[hidden] { display: table-row !important; } }
+
+/* ---------- Sondages (fil d'actualité) ---------- */
+.xm-poll { background: var(--bs-body-bg); }
+.xm-poll-opt { cursor: pointer; min-height: 44px; transition: border-color .15s; }
+.xm-poll-opt:hover, .xm-poll-opt:focus-within { border-color: var(--bs-primary) !important; }
+li.xm-poll-opt { cursor: default; }
+.xm-poll-bar { position: absolute; inset: 0 auto 0 0; background: rgba(4, 51, 195, .10); border-radius: inherit; transition: width .5s ease; }
+.xm-poll-opt.is-lead .xm-poll-bar { background: rgba(4, 51, 195, .20); }
+.xm-poll-opt.is-lead { font-weight: 600; }
+[data-bs-theme=dark] .xm-poll-bar { background: rgba(124, 151, 255, .18); }
+[data-bs-theme=dark] .xm-poll-opt.is-lead .xm-poll-bar { background: rgba(124, 151, 255, .30); }
+.xm-poll-option-row .btn { min-width: 44px; }
+@media (prefers-reduced-motion: reduce) { .xm-poll-bar { transition: none; } }
+
+/* ---------- Contraste et liens (P16-01, axe-core, WCAG 1.4.1 / 1.4.3) : tout passe par les jetons des deux thèmes ---------- */
+/* Bootstrap compose la couleur des liens depuis --bs-link-color-rgb, resté bleu de marque en thème sombre dans style.css. */
+:root, [data-bs-theme="light"], [data-bs-theme="dark"] {
+  --bs-link-color-rgb: var(--xm-primary-rgb);
+  --bs-link-hover-color-rgb: var(--xm-primary-hover-rgb);
+}
+/* Un lien au milieu d'un texte se distingue par autre chose que la couleur. */
+:is(p, li, dd, td, label, .alert, .card-footer, .small) a:not(.btn, .nav-link, .dropdown-item, .page-link, .list-group-item, .xm-chip, .stretched-link, .badge, .xm-side-link, [class*="text-decoration"]) {
+  text-decoration: underline; text-underline-offset: .15em;
+}
+/* Boutons et pastilles « soft » du thème Social : couleurs en dur remplacées par les jetons (clair et sombre). */
+.btn-primary-soft { color: var(--xm-primary); background-color: rgba(var(--xm-primary-rgb), .1); }
+.btn-danger-soft { color: var(--xm-danger-text); background-color: rgba(var(--xm-secondary-rgb), .1); }
+.btn-success-soft { color: var(--xm-success-text); }
+.btn-info-soft { color: var(--xm-info); }
+.btn-warning-soft { color: var(--xm-warning-text); }
+[data-bs-theme="dark"] .btn-warning-soft { color: var(--xm-warning); }
+.badge.bg-opacity-10.text-danger, .badge.bg-opacity-25.text-danger { color: var(--xm-danger-text) !important; }
+.text-success-emphasis { color: var(--xm-success-text) !important; }
+/* Cartes teintées : le texte reste le texte courant (et non le « blanc sur plein » de .bg-primary). */
+.bg-primary.bg-opacity-10, .bg-primary.bg-opacity-25, .bg-secondary.bg-opacity-10, .bg-secondary.bg-opacity-25,
+.bg-danger.bg-opacity-10, .bg-danger.bg-opacity-25, .bg-success.bg-opacity-10, .bg-success.bg-opacity-25,
+.bg-info.bg-opacity-10, .bg-info.bg-opacity-25 { color: var(--bs-body-color); }
+.bg-primary.text-white { color: var(--xm-on-primary) !important; }
+/* Fil d'Ariane et textes d'appoint : gris du jeton « texte atténué », jamais le gris 500 du thème Social. */
+.breadcrumb { --bs-breadcrumb-item-active-color: var(--xm-text-muted); }
+.breadcrumb-item a { color: var(--xm-text-muted); }
+.xm-chip { color: var(--xm-primary); }
+.xm-side-link:hover, .xm-side-link.active { color: var(--xm-primary); }
+.xm-side-link.danger { color: var(--xm-danger-text); }

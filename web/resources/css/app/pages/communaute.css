@@ -1,0 +1,17 @@
+/*
+ * Groupes et pages d'organisations `/groupes`, `/groupes/{ulid}`, `/pages`, `/pages/creer`, `/pages/{ulid}` (lot
+ * groupes-pages, P8-02, P8-03 ; prototype groups.php, group-details.php, pages.php, create-page.php) : style en ligne du
+ * prototype sorti dans la feuille (couverture de la fiche : 240 px de haut, group-details.php l.38), description des
+ * cartes sur trois lignes, description complète avec retours à la ligne, cibles tactiles de 44 px. Jetons uniquement.
+ */
+.xm-group-cover { height: 240px; overflow: hidden; }
+.xm-group-description { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.xm-group-description-full { white-space: pre-line; overflow-wrap: anywhere; }
+
+@media (max-width: 575.98px) {
+  .xm-group-cover { height: 160px; }
+}
+
+@media (pointer: coarse) {
+  .xm-community-tabs .nav-link { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+}

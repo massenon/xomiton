@@ -1,0 +1,138 @@
+{
+  "version": "1.0",
+  "application": "Nom de l'application",
+  "langue_defaut": "fr",
+  "sortie": "sortie",
+  "cache": ".cache",
+  "theme": {
+    "palette": {
+      "marque": "#0F7A57",
+      "marque-fonce": "#0F4A3A",
+      "encre": "#14201C"
+    },
+    "tokens_css": null,
+    "prefixe_jetons": "",
+    "police": {
+      "famille": "Inter",
+      "fichier": null,
+      "graisses": "100 900",
+      "repli": "'Segoe UI', Roboto, Arial, sans-serif"
+    },
+    "logo": "logo.svg",
+    "fond": { "de": "marque", "vers": "marque-fonce", "angle": 160 },
+    "couleurs": {
+      "texte": "#FFFFFF",
+      "puce_fond": "#FFFFFF",
+      "puce_texte": "encre",
+      "puce_icone_fond": "marque",
+      "puce_icone": "#FFFFFF",
+      "cadre_appareil": "encre"
+    },
+    "icones": {}
+  },
+  "source": {
+    "type": "html",
+    "url": "mon-appli/index.html",
+    "viewport": [390, 844],
+    "echelle": 3,
+    "locale": "fr-FR",
+    "attente_ms": 700,
+    "attendre_selecteur": null,
+    "selecteur_ecran": null,
+    "stockage_local": { "cle-de-l-appli": { "connecte": true } },
+    "selecteur_heure": "#horloge",
+    "masquer": [".toast", ".bandeau-cookies"],
+    "css": "",
+    "js": "",
+    "remplacements": { "Jean Dupont": "Camille" },
+    "police_dans_page": false
+  },
+  "barre_etat": {
+    "mode": "auto",
+    "heure": "9:41",
+    "hauteur_pct": 3.4,
+    "couleur": "auto",
+    "icones": "auto"
+  },
+  "mise_en_page": {
+    "ecran_largeur": 730,
+    "cadre_y": 365,
+    "biseau": 16,
+    "rayon_cadre": 92,
+    "rayon_ecran": 76,
+    "titre_haut": 100,
+    "titre_taille": 76,
+    "trou_camera": false,
+    "feature_telephone_largeur": 215
+  },
+  "contraintes": {
+    "feature_graphic": { "largeur": 1024, "hauteur": 500, "poids_max_mo": 15 },
+    "captures": { "largeur": 1080, "hauteur": 1920, "nombre": 2, "poids_max_mo": 8, "texte_max_pct": 20 },
+    "alt_max": 140,
+    "contraste_min": 4.5,
+    "couleurs_vives": {
+      "saturation_min": 0.5,
+      "valeur_min": 0.25,
+      "valeur_max": 0.95,
+      "fg_blanc_max": 0.25,
+      "fg_noir_max": 0.03,
+      "fg_saturation_min": 0.45
+    },
+    "mots_interdits_ajout": ["exclusif"]
+  },
+  "feature_graphic": {
+    "fichier": "feature-graphic-1024x500.png",
+    "fond": { "de": "marque", "vers": "marque-fonce", "angle": 125 },
+    "halos": [
+      { "couleur": "#5FD0A5", "x": 14, "y": 10, "rayon": 380, "opacite": 0.35 }
+    ],
+    "ecrans": { "gauche": "01-accueil", "droite": "02-detail" },
+    "textes": {
+      "fr": {
+        "slogan": "Un slogan court et sobre",
+        "alt": "Logo de l'application et slogan sur fond vert, entre deux écrans de l'application."
+      },
+      "en": { "slogan": "", "alt": "" }
+    }
+  },
+  "captures": [
+    {
+      "id": "01-accueil",
+      "fichier": "01-accueil.png",
+      "source": { "route": "#/accueil" },
+      "barre_etat": { "mode": "auto" },
+      "fond": { "de": "marque", "vers": "marque-fonce", "angle": 160 },
+      "puces": [{ "icone": "check", "cote": "droite", "y": 1570, "texte_ref": "fait" }],
+      "textes": {
+        "fr": {
+          "titre": "Titre court de la capture",
+          "puces": { "fait": "Texte de la puce" },
+          "alt": "Accueil de l'application : ce qu'on y voit, sans commencer par « image de »."
+        },
+        "en": { "titre": "", "puces": { "fait": "" }, "alt": "" }
+      }
+    },
+    {
+      "id": "02-detail",
+      "fichier": "02-detail.png",
+      "source": { "route": "#/detail" },
+      "puces": [],
+      "textes": {
+        "fr": {
+          "titre": "Deuxième capture",
+          "puces": {},
+          "alt": "Écran de détail avec ses informations principales."
+        },
+        "en": { "titre": "", "puces": {}, "alt": "" }
+      }
+    }
+  ],
+  "fiche": {
+    "fichier": null,
+    "textes": {
+      "nom": "Nom de l'application",
+      "court": "Description courte de quatre-vingts caractères au plus."
+    },
+    "limites": { "nom": 30, "court": 80, "long": 4000 }
+  }
+}

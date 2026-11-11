@@ -23,17 +23,14 @@ $alerts = store_all('alertes');
 if ($myAnn) $alerts = array_filter($alerts, fn($a) => (int)($a['routed_to'] ?? 0) === (int)$myAnn['id']);
 usort($alerts, fn($a, $b) => ($b['created'] ?? 0) <=> ($a['created'] ?? 0));
 $alerts = array_slice($alerts, 0, 5);
-$stock = store_all('stock');
 $tasks = [];
 $open = array_filter($base, fn($c) => $c['status'] === 'ouvert');
 if ($open) $tasks[] = [count($open) . ' dossier(s) ouvert(s) à contacter', 'collecte.php', 'bi-person-check'];
 $newAl = array_filter(store_all('alertes'), fn($a) => ($a['status'] ?? '') === 'nouveau');
 if ($newAl) $tasks[] = [count($newAl) . ' alerte(s) nouvelle(s) à traiter', '#alertes', 'bi-bell'];
-$low = array_filter($stock, fn($s) => $s['qty'] <= $s['min']);
-if ($low) $tasks[] = [count($low) . ' article(s) de stock sous le seuil', '#stock', 'bi-box-seam'];
 $tasks[] = ['Préparer la prochaine séance : boîtes à images', 'boites-a-images.php', 'bi-images'];
 $sh = [['Nouvelle collecte', 'collecte.php', 'bi-pencil-square', 'primary'], ['Signalement', 'signalement.php', 'bi-megaphone', 'warning'], ['Annuaire', 'annuaire.php', 'bi-person-lines-fill', 'info'],
-    ['Outils CCC', 'ccc.php', 'bi-collection-play', 'success'], ['Stock', '#stock', 'bi-box-seam', 'secondary']];
+    ['Outils CCC', 'ccc.php', 'bi-collection-play', 'success'], ['Ressources', 'ressources.php', 'bi-book', 'secondary']];
 $prCls = ['critique' => 'danger', 'haute' => 'warning', 'normale' => 'secondary'];
 ?>
 <!DOCTYPE html>
@@ -101,38 +98,10 @@ $prCls = ['critique' => 'danger', 'haute' => 'warning', 'normale' => 'secondary'
 						</div>
 					</div>
 
-					<div class="card" id="stock">
-						<div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
-							<h2 class="h5 mb-0"><i class="bi bi-box-seam me-2 text-primary"></i>Consulter le stock</h2>
-							<input class="form-control form-control-sm w-auto" type="search" id="stockQ" placeholder="Rechercher un article…" aria-label="Rechercher dans le stock">
-						</div>
-						<div class="xm-table-wrap">
-							<table class="table align-middle mb-0">
-								<thead><tr><th>Article</th><th>Catégorie</th><th class="text-end">Quantité</th><th>Lieu</th><th>État</th></tr></thead>
-								<tbody id="stockBody">
-									<?php foreach ($stock as $s): $lowS = $s['qty'] <= $s['min']; ?>
-									<tr data-t="<?= e(mb_strtolower($s['item'] . ' ' . $s['category'])) ?>">
-										<td><?= e($s['item']) ?> <small class="text-secondary d-block"><?= e($s['unit']) ?></small></td>
-										<td><?= e($s['category']) ?></td>
-										<td class="text-end fw-bold"><?= (int)$s['qty'] ?></td>
-										<td><?= e($s['location']) ?></td>
-										<td><span class="badge bg-<?= $lowS ? 'danger' : 'success' ?>"><?= $lowS ? 'À réapprovisionner' : 'Disponible' ?></span></td>
-									</tr>
-									<?php endforeach; ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 	</main>
 	<?php include("partials/modals.php"); include("partials/footer-scripts.php"); ?>
-	<script>
-	document.getElementById('stockQ').addEventListener('input', function () {
-		var v = this.value.trim().toLowerCase();
-		document.querySelectorAll('#stockBody tr').forEach(function (r) { r.hidden = v && r.dataset.t.indexOf(v) < 0; });
-	});
-	</script>
 </body>
 </html>

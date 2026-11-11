@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+// Pied de page public (HOME_PAGE_COPY.md §11, D8 : newsletter à la place de « Rester en sécurité »).
+return [
+    'brand_text' => 'Votre espace safe d’apprentissage et d’appui holistique. Un espace numérique sécurisé pour les filles et femmes LBTQ+ au Bénin.',
+    'sos_gps' => 'SOS avec position GPS',
+    'platform' => 'Plateforme',
+    'about' => 'À propos de Xomiton',
+    'support' => 'Support',
+    'do_glegbe' => 'Do Glegbe',
+    'resources' => 'Ressources',
+    'help_protection' => 'Aide & protection',
+    'report' => 'Signaler',
+    'emergency' => 'Contacts d’urgence',
+    'help_center' => 'Centre d’aide',
+    'privacy_terms' => 'Confidentialité & conditions',
+    'newsletter' => 'Newsletter',
+    'newsletter_text' => 'Actualités, ressources et événements de la communauté, une à deux fois par mois. Désinscription en un clic.',
+    'newsletter_email' => 'Votre adresse e-mail',
+    'newsletter_subscribe' => 'S’inscrire',
+    'newsletter_consent' => 'J’accepte de recevoir la newsletter Xomiton et j’ai lu la <a class="text-white text-decoration-underline" href=":url">politique de confidentialité</a>.',
+    'newsletter_honeypot' => 'Ne pas remplir',
+    'copyright' => '© :year Xomiton — Bénin. Tous droits réservés.',
+    'charter' => 'Charte',
+    'privacy' => 'Confidentialité',
+    'terms' => 'Conditions d’utilisation',
+    'cookies' => 'Cookies',
+    'delete_account' => 'Supprimer mon compte',
+
+    // --- Compléments P3-05 (vous) --------------------------------------------------------------------------------
+    'legal' => 'Mentions légales',
+    'accessibility' => 'Accessibilité',
+    'contact' => 'Contact',
+    'sitemap' => 'Plan du site',
+    'follow_us' => 'Suivez-nous',
+    'social_label' => 'Xomiton sur :network',
+    'thematiques' => 'Thématiques',
+    'news' => 'Actualités',
+    'emergency_hint' => 'En danger immédiat, appelez le 117.',
+    'newsletter_frequency' => 'Une à deux fois par mois',
+    'newsletter_privacy' => 'Votre adresse n’est jamais partagée. Désinscription en un clic depuis chaque e-mail.',
+    'newsletter_sending' => 'Inscription en cours…',
+    'newsletter_done' => 'Merci ! Un e-mail de confirmation vient de vous être envoyé.',
+    'newsletter_error' => 'Inscription impossible pour l’instant. Veuillez réessayer dans quelques instants.',
+    'made_with' => 'Conçu avec et pour la communauté LBTQ+ du Bénin.',
+    'partners' => 'Partenaires',
+    'language' => 'Langue',
+    'back_to_top' => 'Haut de page',
+];

@@ -16,7 +16,7 @@ function xa_ind_defaults() {
         $d('IND-06', '% de cas clos', 'Part des dossiers clôturés.', 'cas clos / cas × 100', 'Registres', 'Trimestrielle', 60, '%', 'pct_clos'),
         $d('IND-07', 'Pairs animateur·rices actifs', 'Pairs ayant enregistré au moins un dossier sur la période.', 'Σ pairs distincts', 'Registres', 'Trimestrielle', 6, 'nb', 'pairs'),
         $d('IND-08', 'Séances CCC / événements', 'Causeries, ateliers et événements organisés (module événements).', 'Σ événements', 'Réseau social', 'Mensuelle', 12, 'nb', 'seances'),
-        $d('IND-09', 'Articles en rupture ou sous le seuil', 'Articles de stock sous leur seuil minimal.', 'Σ articles avec quantité < seuil', 'Gestion de stock', 'Mensuelle', 0, 'nb', 'stockout', 'down'),
+        $d('IND-09', 'Taux d’ouverture de la newsletter', 'Part des e-mails de campagne ouverts par les abonné·es.', 'ouvertures uniques / e-mails envoyés × 100', 'Newsletter', 'Mensuelle', 35, '%', 'nl_open'),
         $d('IND-10', '% d’alertes traitées dans les 24 h', 'Part des alertes reçues traitées dans les 24 h (simulation).', 'alertes traitées ≤ 24 h / alertes × 100', 'Alertes', 'Hebdomadaire', 80, '%', 'pct_alertes24'),
         $d('IND-11', 'Alertes reçues', 'Dénonciations, besoins et SOS reçus.', 'Σ alertes', 'Alertes', 'Hebdomadaire', 30, 'nb', 'alertes'),
         $d('IND-12', 'SOS reçus', 'Alertes de type SOS avec localisation GPS.', 'Σ alertes type = sos', 'Alertes', 'Hebdomadaire', 0, 'nb', 'sos', 'down'),
@@ -38,7 +38,7 @@ function xa_ind_compute($calc, $x) {
         case 'pct_clos': return $pct(count(array_filter($cases, fn($c) => $c['status'] === 'clos')), $n);
         case 'pairs': return count(array_unique(array_column($cases, 'pair')));
         case 'seances': return count($x['events']);
-        case 'stockout': return count(array_filter($x['stock'], fn($s) => $s['qty'] < $s['min']));
+        case 'nl_open': $sent = 0; $op = 0; foreach ($x['newsletter'] as $c) { $sent += count($c['recipients'] ?? []); $op += count($c['opens'] ?? []); } return $pct($op, $sent);
         case 'pct_alertes24': return $pct(count(array_filter($x['alertes'], fn($a) => $a['status'] === 'traite' && $a['id'] % 4 !== 0)), count($x['alertes']));
         case 'alertes': return count($x['alertes']);
         case 'sos': return count(array_filter($x['alertes'], fn($a) => $a['type'] === 'sos'));
@@ -81,7 +81,7 @@ $cases = array_filter(store_all('cases'), fn($c) => $c['status'] !== 'archive' &
 $codes = array_column($cases, 'code');
 $alertes = array_filter(store_all('alertes'), fn($a) => !$zone || $a['zone'] === $zone);
 $suivi = array_filter(store_all('suivi'), fn($s) => !$zone || in_array($s['case_code'], $codes, true));
-$base = ['stock' => store_all('stock'), 'users' => store_all('users'), 'events' => store_all('events')];
+$base = ['newsletter' => store_all('newsletter_campaigns'), 'users' => store_all('users'), 'events' => store_all('events')];
 $mk = function ($f, $t) use ($cases, $alertes, $suivi, $base) {
     $in = fn($d) => (!$f || $d >= $f) && (!$t || $d <= $t);
     return $base + [

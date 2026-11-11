@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grainette, version tablette (application fictive de démonstration)</title>
+<style>
+/* Page responsive : barre latérale en paysage (largeur >= 900 px), barre d'onglets en portrait.
+   Elle contient VOLONTAIREMENT une fausse barre d'état « bruyante » (opérateur, notification, batterie à 23 %)
+   pour vérifier que le kit la recouvre par une barre propre. */
+:root{--vert:#1F7A5C;--vert-fonce:#0E3B2F;--menthe:#DDF3E8;--ambre:#F2B544;--creme:#FBF8F1;--encre:#14201C;--gris:#5B6B65;--ligne:#E7E2D6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100vw;height:100vh;overflow:hidden;background:var(--creme);color:var(--encre);font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif}
+#app{width:100vw;height:100vh;display:flex;flex-direction:column}
+.statusbar{height:30px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-weight:600;font-size:13px;background:var(--creme)}
+.statusbar .g,.statusbar .d{display:flex;align-items:center;gap:10px}
+.statusbar .notif{background:var(--corail,#E8715A);color:#fff;border-radius:999px;padding:1px 9px;font-size:11px}
+.corps{flex:1;display:flex;min-height:0}
+nav{flex:none;display:flex;background:#fff}
+nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--gris);font-weight:700;font-size:14px}
+nav a.on{color:var(--vert)}
+nav svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+main{flex:1;overflow:hidden;padding:22px 28px 0;min-width:0}
+h1{font-size:34px;line-height:1.1;letter-spacing:-.02em;font-weight:800}
+.sub{color:var(--gris);font-size:16px;margin-top:6px}
+h2{font-size:19px;margin:24px 0 12px;font-weight:700}
+.hero{margin-top:20px;border-radius:28px;padding:28px;color:#fff;background:linear-gradient(140deg,var(--vert) 0%,var(--vert-fonce) 100%);position:relative;overflow:hidden}
+.hero b{display:block;font-size:30px;line-height:1.2;max-width:60%}
+.hero span{display:block;margin-top:8px;font-size:15px;opacity:.85}
+.hero svg.deco{position:absolute;right:-10px;bottom:-24px;width:220px;height:220px}
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-top:20px}
+.carte{background:#fff;border:1px solid var(--ligne);border-radius:24px;padding:12px;text-decoration:none;color:inherit;display:block}
+.carte .vis{background:var(--menthe);border-radius:18px;height:150px;display:grid;place-items:center}
+.carte .vis svg{width:128px;height:128px}
+.carte b{display:block;margin-top:12px;font-size:17px}.carte i{font-style:normal;font-size:14px;color:var(--gris)}
+.etat{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:700;padding:4px 11px;border-radius:999px}
+.bleu{background:#DCEBFA;color:#1D5FA6}.jaune{background:#FCEFCB;color:#8A6200}.vert{background:var(--menthe);color:var(--vert)}.rose{background:#FADCD5;color:#B2432C}
+.taches{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.tache{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--ligne);border-radius:20px;padding:14px 16px}
+.tache .rond{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none}
+.tache .rond svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tache .t{flex:1}.tache .t b{display:block;font-size:16px}.tache .t i{font-style:normal;font-size:14px;color:var(--gris)}
+.tache .h{font-size:14px;font-weight:700;color:var(--vert)}
+.fiche{display:grid;grid-template-columns:1fr;gap:18px;margin-top:16px}
+.grand{height:300px;border-radius:32px;background:radial-gradient(circle at 50% 38%,#fff 0%,var(--menthe) 62%);display:grid;place-items:center}
+.grand svg{width:270px;height:270px}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tuile{border-radius:20px;padding:16px 12px;text-align:center}
+.tuile svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tuile b{display:block;font-size:20px;margin-top:4px}.tuile i{font-style:normal;font-size:13px;opacity:.8}
+.barre{background:#fff;border:1px solid var(--ligne);border-radius:20px;padding:16px 18px}
+.barre .l{display:flex;justify-content:space-between;font-size:15px;font-weight:600}
+.barre .p{margin-top:12px;height:12px;border-radius:99px;background:var(--menthe);overflow:hidden}
+.barre .p span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--vert),#3FB68B)}
+/* portrait ou fenêtre étroite : barre d'onglets en bas */
+@media (max-width:899px){
+  .corps{flex-direction:column}
+  nav{order:2;height:86px;justify-content:space-around;align-items:center;border-top:1px solid var(--ligne)}
+  nav a{flex-direction:column;gap:4px;font-size:12px}
+}
+/* paysage : barre latérale */
+@media (min-width:900px){
+  nav{width:210px;flex-direction:column;padding:22px 12px;gap:6px;border-right:1px solid var(--ligne)}
+  nav a{padding:12px 14px;border-radius:16px}
+  nav a.on{background:var(--menthe)}
+  .fiche{grid-template-columns:1fr 1fr}
+  .grand{height:420px}
+  .grille{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="statusbar"><span class="g"><span>Orange BJ</span><span id="clock">14:07</span><span class="notif">2 messages</span></span>
+    <span class="d"><span>23 %</span><svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".55"/><rect x="2" y="2" width="5" height="8" rx="1.8" fill="currentColor"/></svg></span></div>
+  <div class="corps"><nav id="tabs"></nav><main id="vue"></main></div>
+</div>
+<script>
+const ICONES={
+ home:'<path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/>',
+ leaf:'<path d="M11 20A7 7 0 0 1 4 13c0-6 7-10 16-10 0 9-4 16-10 16"/><path d="M4 21c3-6 6-9 11-12"/>',
+ bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+ drop:'<path d="M12 2.7s7 6.4 7 11.3a7 7 0 0 1-14 0c0-4.9 7-11.3 7-11.3Z"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+ cloud:'<path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.5 12 3.5 3.5 0 0 0 6 19Z"/>'};
+const ico=n=>`<svg viewBox="0 0 24 24">${ICONES[n]}</svg>`;
+const PLANTES={
+ monstera:{nom:'Monstera',latin:'Monstera deliciosa',piece:'Salon',type:'monstera',soif:true,eau:'2 j',lum:'Vive',hum:'60 %',prog:78,rest:"Aujourd'hui"},
+ ficus:{nom:'Ficus lyrata',latin:'Ficus lyrata',piece:'Chambre',type:'ficus',soif:true,eau:'4 j',lum:'Vive',hum:'55 %',prog:55,rest:'Dans 3 jours'},
+ cactus:{nom:'Cactus étoilé',latin:'Astrophytum',piece:'Bureau',type:'cactus',soif:false,eau:'14 j',lum:'Plein soleil',hum:'30 %',prog:22,rest:'Dans 9 jours'},
+ pothos:{nom:'Pothos',latin:'Epipremnum aureum',piece:'Cuisine',type:'ficus',soif:true,eau:'6 j',lum:'Douce',hum:'50 %',prog:70,rest:'Demain'},
+ calathea:{nom:'Calathea',latin:'Goeppertia',piece:'Salon',type:'monstera',soif:false,eau:'5 j',lum:'Douce',hum:'70 %',prog:35,rest:'Dans 5 jours'},
+ aloe:{nom:'Aloé vera',latin:'Aloe vera',piece:'Balcon',type:'cactus',soif:false,eau:'12 j',lum:'Vive',hum:'35 %',prog:18,rest:'Dans 10 jours'},
+ yucca:{nom:'Yucca',latin:'Yucca elephantipes',piece:'Entrée',type:'cactus',soif:false,eau:'10 j',lum:'Vive',hum:'40 %',prog:30,rest:'Dans 7 jours'},
+ palmier:{nom:'Palmier',latin:'Chamaedorea',piece:'Salon',type:'monstera',soif:true,eau:'5 j',lum:'Douce',hum:'65 %',prog:62,rest:'Demain'}};
+function feuille(a,s,c,t){const p=t==='rond'?'M0 0C-30-10-30-52 0-64C30-52 30-10 0 0Z':'M0 0C-26-26-26-70 0-92C26-70 26-26 0 0Z';
+ return `<g transform="translate(100 150) rotate(${a}) scale(${s})"><path d="${p}" fill="${c}"/><path d="M0 0V-60" stroke="rgba(255,255,255,.35)" stroke-width="2.5" fill="none"/></g>`}
+function dessin(type){
+ const pot='<path d="M64 148h72l-7 40a9 9 0 0 1-9 7H80a9 9 0 0 1-9-7z" fill="#E8715A"/><rect x="58" y="140" width="84" height="14" rx="6" fill="#F08A74"/>';
+ let corps='';
+ if(type==='monstera')corps=feuille(-62,.62,'#2E9E73')+feuille(62,.62,'#2E9E73')+feuille(-30,.86,'#1F7A5C')+feuille(30,.86,'#1F7A5C')+feuille(0,.98,'#27906A');
+ else if(type==='ficus')corps=feuille(-58,.9,'#3FB68B','rond')+feuille(58,.9,'#3FB68B','rond')+feuille(-26,1.2,'#1F7A5C','rond')+feuille(26,1.2,'#27906A','rond')+feuille(0,1.45,'#2E9E73','rond');
+ else corps='<rect x="84" y="52" width="32" height="92" rx="16" fill="#2E9E73"/><rect x="58" y="86" width="22" height="48" rx="11" fill="#27906A"/><rect x="120" y="76" width="22" height="58" rx="11" fill="#27906A"/><path d="M100 58v82M91 62v76M109 62v76" stroke="rgba(255,255,255,.28)" stroke-width="2"/><circle cx="100" cy="52" r="7" fill="#F2B544"/>';
+ return `<svg viewBox="0 0 200 200">${corps}${pot}</svg>`}
+function etat(p){return p.soif?'<span class="etat rose">À arroser</span>':'<span class="etat vert">Tout va bien</span>'}
+function tab(href,icone,nom,actif){return `<a class="${actif?'on':''}" href="${href}">${ico(icone)}${nom}</a>`}
+const t=(c,i,b,s,h)=>`<div class="tache"><div class="rond ${c}">${ico(i)}</div><div class="t"><b>${b}</b><i>${s}</i></div><span class="h">${h}</span></div>`;
+const VUES={
+ accueil(){return `<h1>Bonjour Camille</h1><p class="sub">Lundi 9 novembre</p>
+  <div class="hero"><b>4 plantes ont soif aujourd'hui</b><span>Le reste se repose jusqu'à demain.</span>${dessin('monstera').replace('<svg ','<svg class="deco" ')}</div>
+  <h2>Aujourd'hui</h2><div class="taches">${t('bleu','drop','Arroser la Monstera','Salon · 250 ml','14:30')}${t('jaune','sun','Tourner le Ficus','Chambre · vers la fenêtre','18:00')}</div>`},
+ plantes(f){const liste=Object.entries(PLANTES).filter(([k,p])=>f!=='arroser'||p.soif);
+  return `<h1>Mes plantes</h1><p class="sub">${Object.keys(PLANTES).length} plantes dans 6 pièces</p>
+  <div class="grille">${liste.map(([k,p])=>`<a class="carte" href="#/plante/${k}"><div class="vis">${dessin(p.type)}</div><b>${p.nom}</b><i>${p.piece}</i><br>${etat(p)}</a>`).join('')}</div>`},
+ plante(k){const p=PLANTES[k];
+  return `<h1>${p.nom}</h1><p class="sub">${p.latin} · ${p.piece}</p>
+  <div class="fiche"><div class="grand">${dessin(p.type)}</div>
+  <div><div class="tuiles"><div class="tuile bleu">${ico('drop')}<b>${p.eau}</b><i>Arrosage</i></div><div class="tuile jaune">${ico('sun')}<b>${p.lum}</b><i>Lumière</i></div><div class="tuile vert">${ico('cloud')}<b>${p.hum}</b><i>Humidité</i></div></div>
+  <div class="barre" style="margin-top:16px"><div class="l"><span>Prochain arrosage</span><span style="color:var(--vert)">${p.rest}</span></div><div class="p"><span style="width:${p.prog}%"></span></div></div></div></div>`},
+ rappels(v){const sem=v==='semaine';
+  const corps=sem?`<h2>Aujourd'hui</h2><div class="taches">${t('bleu','drop','Arroser la Monstera','Salon','14:30')}${t('jaune','sun','Tourner le Ficus','Chambre','18:00')}</div>
+   <h2>Demain</h2><div class="taches">${t('bleu','drop','Arroser le Pothos','Cuisine','09:00')}${t('bleu','drop','Arroser le Palmier','Salon','09:30')}</div>
+   <h2>Jeudi</h2><div class="taches">${t('vert','leaf','Engrais pour la Calathea','Salon','10:30')}</div>`
+   :`<h2>Ce matin</h2><div class="taches">${t('bleu','drop','Arroser le Pothos','Cuisine','09:00')}${t('vert','leaf','Brumiser la Calathea','Salon','10:30')}</div>
+   <h2>Cet après-midi</h2><div class="taches">${t('bleu','drop','Arroser la Monstera','Salon','14:30')}${t('jaune','sun','Tourner le Ficus','Chambre','18:00')}</div>`;
+  return `<h1>Rappels</h1><p class="sub">${sem?'7 tâches cette semaine':"4 tâches aujourd'hui"}</p>${corps}`}};
+function rendre(){
+ const [,vue='accueil',arg]=location.hash.split('/');
+ document.getElementById('vue').innerHTML=(VUES[vue]||VUES.accueil)(arg);
+ const actif=vue==='plante'?'plantes':vue;
+ document.getElementById('tabs').innerHTML=tab('#/accueil','home','Accueil',actif==='accueil')+tab('#/plantes','leaf','Plantes',actif==='plantes')+tab('#/rappels','bell','Rappels',actif==='rappels');
+}
+window.addEventListener('hashchange',rendre);rendre();
+</script>
+</body>
+</html>

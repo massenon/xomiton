@@ -1,0 +1,292 @@
+{
+  "application": "Xomiton",
+  "version": "2.0.0",
+  "langue_defaut": "fr",
+  "sortie": "assets",
+  "cache": ".cache",
+  "theme": {
+    "tokens_css": "../../design-system/tokens/tokens.css",
+    "prefixe_jetons": "xm-",
+    "palette": {},
+    "police": {
+      "famille": "Montserrat",
+      "fichier": "../../design-system/fonts/Montserrat-latin-normal.woff2",
+      "graisses": "100 900",
+      "repli": "'Segoe UI', Roboto, Arial, sans-serif"
+    },
+    "logo": "../../design-system/logo/logo-couleur.svg",
+    "fond": {
+      "de": "blue-50",
+      "vers": "blue-100",
+      "angle": 200
+    },
+    "couleurs": {
+      "texte": "blue-800",
+      "puce_fond": "neutral-0",
+      "puce_texte": "neutral-900",
+      "puce_icone_fond": "blue-500",
+      "puce_icone": "neutral-0",
+      "cadre_appareil": "blue-200"
+    }
+  },
+  "source": {
+    "type": "images"
+  },
+  "barre_etat": {
+    "mode": "aucune"
+  },
+  "mise_en_page": {
+    "ecran_largeur": 730,
+    "cadre_y": 330,
+    "biseau": 12,
+    "rayon_cadre": 80,
+    "rayon_ecran": 68,
+    "titre_haut": 96,
+    "titre_taille": 72
+  },
+  "contraintes": {
+    "captures": {
+      "nombre": 8
+    },
+    "couleurs_vives": {
+      "saturation_min": 0.05,
+      "valeur_min": 0.25,
+      "valeur_max": 0.99,
+      "fg_blanc_max": 0.8,
+      "fg_noir_max": 0.03,
+      "fg_saturation_min": 0.03
+    }
+  },
+  "feature_graphic": {
+    "fichier": "feature-graphic-1024x500.png",
+    "disposition": "logo-gauche",
+    "fond": {
+      "de": "neutral-0",
+      "vers": "neutral-0",
+      "angle": 180
+    },
+    "ecran_web": "sources/accueil-1440x900.png",
+    "ecrans": {
+      "gauche": "01-accueil",
+      "droite": "01-accueil"
+    },
+    "couleur_slogan": "blue-800",
+    "couleur_accroche": "neutral-600",
+    "textes": {
+      "fr": {
+        "slogan": "Espace safe d'apprentissage et d'appui holistique",
+        "alt": "Logo Xomiton, Alerte VBG, SOS d'urgence, Actualités, Communauté, Réseau social, page du site et écran mobile SOS.",
+        "description": "Filles et femmes LBTQ+ au Bénin : ressources, soutien et signalement en toute sécurité.",
+        "fonctions": [
+          "Alerte VBG",
+          "SOS d’urgence",
+          "Actualités",
+          "Communauté",
+          "Réseau social"
+        ]
+      }
+    },
+    "vitrine": {
+      "ecran_mobile": "sources/sos-390x844.png",
+      "domaine": "xomiton.app",
+      "puces": [
+        {
+          "icone": "sources/icones/megaphone.svg"
+        },
+        {
+          "icone": "sources/icones/exclamation-triangle.svg",
+          "ton": "alerte"
+        },
+        {
+          "icone": "sources/icones/newspaper.svg"
+        },
+        {
+          "icone": "sources/icones/people.svg"
+        },
+        {
+          "icone": "sources/icones/chat-heart.svg"
+        }
+      ],
+      "rangees": [
+        2,
+        3
+      ],
+      "ruban": [
+        "red-500",
+        "orange-700",
+        "amber-500",
+        "green-700",
+        "blue-500",
+        "violet-700"
+      ],
+      "sortie_sociale": {
+        "fichier": "../../.github/social-preview.png",
+        "largeur": 1280,
+        "hauteur": 640,
+        "poids_max_mo": 1
+      }
+    }
+  },
+  "captures": [
+    {
+      "id": "01-accueil",
+      "fichier": "01-accueil.png",
+      "source": {
+        "image": "sources/accueil-390x844.png"
+      },
+      "fond": {
+        "de": "blue-50",
+        "vers": "blue-100",
+        "angle": 210
+      },
+      "textes": {
+        "fr": {
+          "titre": "Espace sûr, confidentiel, bienveillant",
+          "alt": "Accueil du site Xomiton : titre de l'espace, boutons Créer un compte, Se connecter et Signaler, mot d'une membre.",
+          "puces": {}
+        }
+      }
+    },
+    {
+      "id": "02-signaler",
+      "fichier": "02-signaler.png",
+      "source": {
+        "image": "sources/signaler-390x844.png"
+      },
+      "fond": {
+        "de": "blue-100",
+        "vers": "blue-50",
+        "angle": 160
+      },
+      "textes": {
+        "fr": {
+          "titre": "Signaler en toute sécurité",
+          "alt": "Page Signaler : signalement sans compte et anonyme, explication de la confidentialité et première étape du formulaire.",
+          "puces": {}
+        }
+      }
+    },
+    {
+      "id": "03-sos",
+      "fichier": "03-sos.png",
+      "source": {
+        "image": "sources/sos-390x844.png"
+      },
+      "fond": {
+        "de": "blue-50",
+        "vers": "blue-100",
+        "angle": 200
+      },
+      "textes": {
+        "fr": {
+          "titre": "Alerte d'urgence SOS",
+          "alt": "Page SOS : grand bouton rouge à maintenir deux secondes, choix de partager sa position, consignes d'utilisation.",
+          "puces": {}
+        }
+      }
+    },
+    {
+      "id": "04-ressources",
+      "fichier": "04-ressources.png",
+      "source": {
+        "image": "sources/ressources-390x844.png"
+      },
+      "fond": {
+        "de": "blue-100",
+        "vers": "blue-50",
+        "angle": 150
+      },
+      "textes": {
+        "fr": {
+          "titre": "Ressources à lire et à partager",
+          "alt": "Liste des ressources : filtres par type et par thème, fiches et textes avec leur format et leur taille.",
+          "puces": {}
+        }
+      }
+    },
+    {
+      "id": "05-thematiques",
+      "fichier": "05-thematiques.png",
+      "source": {
+        "image": "sources/thematiques-390x844.png"
+      },
+      "fond": {
+        "de": "blue-50",
+        "vers": "blue-100",
+        "angle": 210
+      },
+      "textes": {
+        "fr": {
+          "titre": "Thématiques pour comprendre et agir",
+          "alt": "Page Thématiques : recherche, filtres par sujet et fiches pédagogiques avec leur temps de lecture.",
+          "puces": {}
+        }
+      }
+    },
+    {
+      "id": "06-urgences",
+      "fichier": "06-urgences.png",
+      "source": {
+        "image": "sources/urgences-390x844.png"
+      },
+      "fond": {
+        "de": "blue-100",
+        "vers": "blue-50",
+        "angle": 160
+      },
+      "textes": {
+        "fr": {
+          "titre": "Contacts d'urgence à appeler",
+          "alt": "Page Contacts d'urgence : bandeau SOS rouge et boutons d'appel direct vers les numéros d'urgence.",
+          "puces": {}
+        }
+      }
+    },
+    {
+      "id": "07-actualites",
+      "fichier": "07-actualites.png",
+      "source": {
+        "image": "sources/actualites-390x844.png"
+      },
+      "fond": {
+        "de": "blue-50",
+        "vers": "blue-100",
+        "angle": 200
+      },
+      "textes": {
+        "fr": {
+          "titre": "Actualités et guides",
+          "alt": "Page Actualités : filtres par catégorie et article avec son thème, son résumé, sa date et son temps de lecture.",
+          "puces": {}
+        }
+      }
+    },
+    {
+      "id": "08-aide",
+      "fichier": "08-aide.png",
+      "source": {
+        "image": "sources/aide-390x844.png"
+      },
+      "fond": {
+        "de": "blue-100",
+        "vers": "blue-50",
+        "angle": 150
+      },
+      "textes": {
+        "fr": {
+          "titre": "Centre d'aide et questions",
+          "alt": "Centre d'aide : questions fréquentes sur le compte, le signalement et le soutien, avec réponses dépliables.",
+          "puces": {}
+        }
+      }
+    }
+  ],
+  "fiche": {
+    "fichier": "PUBLICATION_PLAY_STORE.md"
+  },
+  "icone": {
+    "source": "../../design-system/logo/icone-appli-bleu.svg",
+    "fichier": "icon-512.png",
+    "fond": "blue-500"
+  }
+}

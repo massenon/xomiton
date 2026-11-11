@@ -2,21 +2,21 @@
  {
   "id": 1,
   "at": "2026-10-10 09:12:04",
-  "user": "admin@xomiton.bj",
+  "user": "admin@xomiton.app",
   "action": "Connexion",
   "detail": "Succès"
  },
  {
   "id": 2,
   "at": "2026-10-10 09:20:41",
-  "user": "admin@xomiton.bj",
+  "user": "admin@xomiton.app",
   "action": "Paramètres",
   "detail": "Inscriptions : activées"
  },
  {
   "id": 3,
   "at": "2026-10-11 14:03:10",
-  "user": "pair@xomiton.bj",
+  "user": "pair@xomiton.app",
   "action": "Collecte",
   "detail": "Registre VBG-0072"
  }

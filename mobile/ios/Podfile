@@ -1,0 +1,60 @@
+# NON COMPILE, NON VERIFIE : écrit sans Mac, d'après le gabarit Flutter. À relire au premier `pod install`
+# (voir docs/IOS_PREMIER_BUILD_SUR_MAC.md). Si Flutter régénère ce fichier, garder ses lignes et
+# reporter seulement les ajustements marqués « Xomiton » ci-dessous.
+
+# Xomiton : iOS 15 minimum (D-IOS : notifications « Time Sensitive » apparues avec iOS 15 ; cible
+# déjà posée dans Runner.xcodeproj). Les deux valeurs doivent rester identiques.
+platform :ios, '15.0'
+
+# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+def flutter_root
+  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
+  unless File.exist?(generated_xcode_build_settings_path)
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+  end
+
+  File.foreach(generated_xcode_build_settings_path) do |line|
+    matches = line.match(/FLUTTER_ROOT\=(.*)/)
+    return matches[1].strip if matches
+  end
+  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
+end
+
+require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
+
+flutter_ios_podfile_setup
+
+target 'Runner' do
+  # Xomiton : frameworks dynamiques (réglage par défaut de Flutter), requis par Firebase
+  # (firebase_core, firebase_messaging) et pratique pour flutter_secure_storage, geolocator,
+  # flutter_local_notifications. Si `pod install` ou le lien échoue sur un en-tête « non modulaire »
+  # d'un Pod, essayer d'abord `use_frameworks! :linkage => :static`, puis (en dernier recours)
+  # `use_modular_headers!` au lieu de `use_frameworks!`. Ne pas cumuler les deux sans raison.
+  use_frameworks!
+
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+
+    target.build_configurations.each do |config|
+      # Xomiton : aucun Pod ne doit viser plus bas que l'application (avertissements sinon).
+      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 15.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      end
+    end
+  end
+end

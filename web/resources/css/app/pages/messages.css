@@ -1,0 +1,47 @@
+/*
+ * Messagerie `/messages` (P8-01 ; prototype messaging.php l.14-22) : styles en ligne du prototype sortis dans la feuille
+ * (carte pleine hauteur, liste et fil défilants, bulles arrondies avec coin « queue », bascule liste / fil sous 768 px),
+ * plus l'état « en attente d'envoi » (horloge grisée, contour pointillé) et « non envoyé ». Jetons uniquement, aucune
+ * opacité sur du texte (contraste du thème gardé sur fond primaire).
+ */
+.xm-chat { height: calc(100vh - 170px); min-height: 540px; }
+/* Bande du bouton SOS (html.xm-dock, member.css) : la carte occupe la place restante de <main> (--xm-chat-top : position
+   réelle, useViewportFit ; --xm-vvh : hauteur visible, clavier compris) ; liste et fil défilent dans leur propre zone. */
+@supports (height: 1dvh) { .xm-chat { height: max(22rem, calc(var(--xm-vvh, 100dvh) - var(--xm-chat-top, 11rem) - var(--xm-dock-h, var(--xm-sos-clear, 6.5rem)) - var(--xm-space-4, 1rem))); min-height: 0; } }
+.xm-chat-list .xm-conv { cursor: pointer; border: 0; text-align: start; min-height: var(--xm-target-min); }
+.xm-chat-list .xm-conv.active { background: rgba(var(--xm-primary-rgb), .1); }
+.xm-chat-list .xm-conv:focus-visible { outline: 2px solid var(--xm-focus-ring); outline-offset: -2px; }
+.xm-chat-msgs { overflow-y: auto; overscroll-behavior: contain; }
+.xm-chat-msgs:focus-visible { outline: 2px solid var(--xm-focus-ring); outline-offset: -2px; }
+.xm-bubble { max-width: 78%; border-radius: 1rem; padding: .5rem .85rem; overflow-wrap: anywhere; }
+.xm-bubble.them { background: var(--bs-tertiary-bg); border-bottom-left-radius: .25rem; }
+.xm-bubble.me { background: var(--xm-primary); color: var(--xm-on-primary); border-bottom-right-radius: .25rem; }
+.xm-bubble small { font-size: var(--xm-fs-caption); }
+.xm-bubble .xm-bubble-action { font-size: var(--xm-fs-caption); }
+.xm-bubble .xm-bubble-text { white-space: pre-wrap; }
+/* En attente : contour pointillé plutôt qu'une opacité (texte gardé au contraste du thème, ≥ 4,5:1). */
+.xm-bubble.is-pending { outline: 1px dashed currentColor; outline-offset: -4px; }
+.xm-bubble.is-failed { background: var(--xm-secondary-subtle); color: var(--xm-secondary-subtle-text); }
+.xm-bubble .xm-bubble-clock { opacity: .6; }
+.xm-bubble img.xm-bubble-image { max-width: 100%; max-height: 260px; border-radius: .75rem; }
+.xm-bubble.me a { color: inherit; }
+.xm-chat-day { font-size: var(--xm-fs-caption); }
+.xm-chat-compose .form-control { min-height: var(--xm-target-min); }
+.xm-chat-compose .btn { min-width: var(--xm-target-min); min-height: var(--xm-target-min); }
+.xm-chat-preview { display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.xm-chat-group-avatar { width: 40px; height: 40px; }
+
+@media (max-width: 767.98px) {
+  .xm-chat.show-pane .xm-chat-list { display: none !important; }
+  .xm-chat:not(.show-pane) .xm-chat-pane { display: none !important; }
+}
+
+/*
+ * Clavier ouvert (html.xm-kbd-open, member.css) : en-tête de la conversation compacté (sous-titre masqué, marges réduites), carte
+ * à la hauteur restante sans plancher ; le fil prend la place libérée, la saisie reste visible.
+ */
+html.xm-kbd-open .xm-chat { height: calc(var(--xm-vvh, 100dvh) - var(--xm-chat-top, 0px) - var(--xm-dock-h, 3.5rem) - .5rem); min-height: 0; }
+html.xm-kbd-open .xm-chat-head { padding: .25rem .5rem !important; }
+html.xm-kbd-open .xm-chat-head .small { display: none; }
+html.xm-kbd-open .xm-chat-msgs { padding: .5rem !important; }
+html.xm-kbd-open .xm-chat-compose { padding: .5rem !important; }

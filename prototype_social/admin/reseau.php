@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../inc/bootstrap.php'; require_admin(); require_once __DIR__ . '/../inc/x_admin_sys.php';
 $pageTitle = 'Réseau social'; $adminPage = 'reseau';
-$tabs = ['groups' => ['Groupes', 'bi-people', 'group-details.php'], 'pages' => ['Pages', 'bi-flag', ''], 'events' => ['Événements', 'bi-calendar-event', 'events.php'], 'forum_topics' => ['Forums', 'bi-chat-square-text', ''], 'posts' => ['Publications', 'bi-card-text', 'index.php']];
+$tabs = ['groups' => ['Groupes', 'bi-people', 'group-details.php'], 'pages' => ['Pages', 'bi-flag', ''], 'events' => ['Événements', 'bi-calendar-event', 'events.php'], 'forum_topics' => ['Forums', 'bi-chat-square-text', ''], 'posts' => ['Publications', 'bi-card-text', 'fil.php']];
 $tab = isset($tabs[$_GET['t'] ?? '']) ? $_GET['t'] : 'groups';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

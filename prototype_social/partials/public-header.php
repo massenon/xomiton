@@ -11,7 +11,7 @@ $__l = function ($href, $label, $key) use ($pubNav) {
 <header class="navbar-light bg-mode sticky-top shadow-sm no-print" id="pubHeader">
 	<nav class="navbar navbar-expand-lg">
 		<div class="container">
-			<a class="navbar-brand" href="<?= BASE ?>landing.php">
+			<a class="navbar-brand" href="<?= BASE ?>index.php">
 				<img class="light-mode-item navbar-brand-item" src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton, logo (mode clair)" title="Xomiton">
 				<img class="dark-mode-item navbar-brand-item" src="<?= BASE ?>assets/images/logo-dark.svg" alt="Xomiton, logo (mode sombre)" title="Xomiton">
 			</a>
@@ -20,8 +20,8 @@ $__l = function ($href, $label, $key) use ($pubNav) {
 			</button>
 			<div class="collapse navbar-collapse" id="pubNavbar">
 				<ul class="navbar-nav mx-auto">
-					<?php $__l('landing.php', 'Accueil', 'accueil');
-					$__l('landing.php#valeurs', 'Notre espace', 'valeurs');
+					<?php $__l('index.php', 'Accueil', 'accueil');
+					$__l('index.php#valeurs', 'Notre espace', 'valeurs');
 					$__l('do-glegbe.php', 'Do Glegbe', 'doglegbe');
 					$__l('blog.php', 'Actualités', 'blog');
 					$__l('help.php', 'Aide', 'aide'); ?>
@@ -29,7 +29,7 @@ $__l = function ($href, $label, $key) use ($pubNav) {
 				<div class="d-flex flex-wrap gap-2 py-3 py-lg-0 align-items-center">
 					<a class="btn btn-sm btn-danger-soft fw-bold" href="<?= BASE ?>signalement.php"><i class="bi bi-megaphone me-1"></i>Signaler</a>
 					<?php if ($__u): ?>
-						<a class="btn btn-sm btn-primary" href="<?= BASE ?>index.php"><i class="bi bi-house-heart me-1"></i>Mon espace</a>
+						<a class="btn btn-sm btn-primary" href="<?= BASE ?>fil.php"><i class="bi bi-house-heart me-1"></i>Mon espace</a>
 					<?php else: ?>
 						<a class="btn btn-sm btn-outline-primary" href="<?= BASE ?>sign-in.php">Se connecter</a>
 						<a class="btn btn-sm btn-primary" href="<?= BASE ?>sign-up.php">Créer un compte</a>

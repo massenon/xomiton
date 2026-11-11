@@ -1,0 +1,1041 @@
+{
+    "keywords": [
+        "suicide",
+        "suicider",
+        "me suicider",
+        "me tuer",
+        "se tuer",
+        "en finir",
+        "mourir",
+        "envie de mourir",
+        "me faire du mal",
+        "en danger",
+        "danger immediat",
+        "il va me tuer",
+        "elle va me tuer",
+        "menace de mort",
+        "menacee de mort",
+        "au secours",
+        "viol",
+        "viole",
+        "violee",
+        "violer",
+        "frappe",
+        "frappee",
+        "frapper",
+        "me bat",
+        "battue",
+        "etrangle",
+        "etranglee",
+        "enferme",
+        "enfermee",
+        "sequestre",
+        "sequestree"
+    ],
+    "samples": [
+        {
+            "text": "Comment porter plainte ?",
+            "match": null
+        },
+        {
+            "text": "les violences conjugales",
+            "match": null
+        },
+        {
+            "text": "Dépistage VIH / IST",
+            "match": null
+        },
+        {
+            "text": "un virage dangereux",
+            "match": null
+        },
+        {
+            "text": "Ma sœur est SÉQUESTRÉE chez lui",
+            "match": "sequestree"
+        },
+        {
+            "text": "il m’a frappée hier",
+            "match": "frappee"
+        },
+        {
+            "text": "J’ai été violée",
+            "match": "violee"
+        },
+        {
+            "text": "je veux en finir",
+            "match": "en finir"
+        },
+        {
+            "text": "",
+            "match": null
+        },
+        {
+            "text": "suicide",
+            "match": "suicide"
+        },
+        {
+            "text": "SUICIDE",
+            "match": "suicide"
+        },
+        {
+            "text": "Aide-moi, suicides !",
+            "match": "suicide"
+        },
+        {
+            "text": "« suicide »… vite",
+            "match": "suicide"
+        },
+        {
+            "text": "J’ai peur : suicide.",
+            "match": "suicide"
+        },
+        {
+            "text": "suicidezz",
+            "match": null
+        },
+        {
+            "text": "xsuicide",
+            "match": null
+        },
+        {
+            "text": "suicider",
+            "match": "suicider"
+        },
+        {
+            "text": "SUICIDER",
+            "match": "suicider"
+        },
+        {
+            "text": "Aide-moi, suiciders !",
+            "match": "suicider"
+        },
+        {
+            "text": "« suicider »… vite",
+            "match": "suicider"
+        },
+        {
+            "text": "J’ai peur : suicider.",
+            "match": "suicider"
+        },
+        {
+            "text": "suiciderzz",
+            "match": null
+        },
+        {
+            "text": "xsuicider",
+            "match": null
+        },
+        {
+            "text": "me suicider",
+            "match": "suicider"
+        },
+        {
+            "text": "ME SUICIDER",
+            "match": "suicider"
+        },
+        {
+            "text": "Aide-moi, me suiciders !",
+            "match": "suicider"
+        },
+        {
+            "text": "« me suicider »… vite",
+            "match": "suicider"
+        },
+        {
+            "text": "J’ai peur : me suicider.",
+            "match": "suicider"
+        },
+        {
+            "text": "me suiciderzz",
+            "match": null
+        },
+        {
+            "text": "xme suicider",
+            "match": "suicider"
+        },
+        {
+            "text": "me tuer",
+            "match": "me tuer"
+        },
+        {
+            "text": "ME TUER",
+            "match": "me tuer"
+        },
+        {
+            "text": "Aide-moi, me tuers !",
+            "match": "me tuer"
+        },
+        {
+            "text": "« me tuer »… vite",
+            "match": "me tuer"
+        },
+        {
+            "text": "J’ai peur : me tuer.",
+            "match": "me tuer"
+        },
+        {
+            "text": "me tuerzz",
+            "match": null
+        },
+        {
+            "text": "xme tuer",
+            "match": null
+        },
+        {
+            "text": "se tuer",
+            "match": "se tuer"
+        },
+        {
+            "text": "SE TUER",
+            "match": "se tuer"
+        },
+        {
+            "text": "Aide-moi, se tuers !",
+            "match": "se tuer"
+        },
+        {
+            "text": "« se tuer »… vite",
+            "match": "se tuer"
+        },
+        {
+            "text": "J’ai peur : se tuer.",
+            "match": "se tuer"
+        },
+        {
+            "text": "se tuerzz",
+            "match": null
+        },
+        {
+            "text": "xse tuer",
+            "match": null
+        },
+        {
+            "text": "en finir",
+            "match": "en finir"
+        },
+        {
+            "text": "EN FINIR",
+            "match": "en finir"
+        },
+        {
+            "text": "Aide-moi, en finirs !",
+            "match": "en finir"
+        },
+        {
+            "text": "« en finir »… vite",
+            "match": "en finir"
+        },
+        {
+            "text": "J’ai peur : en finir.",
+            "match": "en finir"
+        },
+        {
+            "text": "en finirzz",
+            "match": null
+        },
+        {
+            "text": "xen finir",
+            "match": null
+        },
+        {
+            "text": "mourir",
+            "match": "mourir"
+        },
+        {
+            "text": "MOURIR",
+            "match": "mourir"
+        },
+        {
+            "text": "Aide-moi, mourirs !",
+            "match": "mourir"
+        },
+        {
+            "text": "« mourir »… vite",
+            "match": "mourir"
+        },
+        {
+            "text": "J’ai peur : mourir.",
+            "match": "mourir"
+        },
+        {
+            "text": "mourirzz",
+            "match": null
+        },
+        {
+            "text": "xmourir",
+            "match": null
+        },
+        {
+            "text": "envie de mourir",
+            "match": "mourir"
+        },
+        {
+            "text": "ENVIE DE MOURIR",
+            "match": "mourir"
+        },
+        {
+            "text": "Aide-moi, envie de mourirs !",
+            "match": "mourir"
+        },
+        {
+            "text": "« envie de mourir »… vite",
+            "match": "mourir"
+        },
+        {
+            "text": "J’ai peur : envie de mourir.",
+            "match": "mourir"
+        },
+        {
+            "text": "envie de mourirzz",
+            "match": null
+        },
+        {
+            "text": "xenvie de mourir",
+            "match": "mourir"
+        },
+        {
+            "text": "me faire du mal",
+            "match": "me faire du mal"
+        },
+        {
+            "text": "ME FAIRE DU MAL",
+            "match": "me faire du mal"
+        },
+        {
+            "text": "Aide-moi, me faire du mals !",
+            "match": "me faire du mal"
+        },
+        {
+            "text": "« me faire du mal »… vite",
+            "match": "me faire du mal"
+        },
+        {
+            "text": "J’ai peur : me faire du mal.",
+            "match": "me faire du mal"
+        },
+        {
+            "text": "me faire du malzz",
+            "match": null
+        },
+        {
+            "text": "xme faire du mal",
+            "match": null
+        },
+        {
+            "text": "en danger",
+            "match": "en danger"
+        },
+        {
+            "text": "EN DANGER",
+            "match": "en danger"
+        },
+        {
+            "text": "Aide-moi, en dangers !",
+            "match": "en danger"
+        },
+        {
+            "text": "« en danger »… vite",
+            "match": "en danger"
+        },
+        {
+            "text": "J’ai peur : en danger.",
+            "match": "en danger"
+        },
+        {
+            "text": "en dangerzz",
+            "match": null
+        },
+        {
+            "text": "xen danger",
+            "match": null
+        },
+        {
+            "text": "danger immédiat",
+            "match": "danger immediat"
+        },
+        {
+            "text": "DANGER IMMÉDIAT",
+            "match": "danger immediat"
+        },
+        {
+            "text": "danger immediat",
+            "match": "danger immediat"
+        },
+        {
+            "text": "Aide-moi, danger immédiats !",
+            "match": "danger immediat"
+        },
+        {
+            "text": "« danger immédiat »… vite",
+            "match": "danger immediat"
+        },
+        {
+            "text": "J’ai peur : danger immédiat.",
+            "match": "danger immediat"
+        },
+        {
+            "text": "danger immédiatzz",
+            "match": null
+        },
+        {
+            "text": "xdanger immédiat",
+            "match": null
+        },
+        {
+            "text": "il va me tuer",
+            "match": "me tuer"
+        },
+        {
+            "text": "IL VA ME TUER",
+            "match": "me tuer"
+        },
+        {
+            "text": "Aide-moi, il va me tuers !",
+            "match": "me tuer"
+        },
+        {
+            "text": "« il va me tuer »… vite",
+            "match": "me tuer"
+        },
+        {
+            "text": "J’ai peur : il va me tuer.",
+            "match": "me tuer"
+        },
+        {
+            "text": "il va me tuerzz",
+            "match": null
+        },
+        {
+            "text": "xil va me tuer",
+            "match": "me tuer"
+        },
+        {
+            "text": "elle va me tuer",
+            "match": "me tuer"
+        },
+        {
+            "text": "ELLE VA ME TUER",
+            "match": "me tuer"
+        },
+        {
+            "text": "Aide-moi, elle va me tuers !",
+            "match": "me tuer"
+        },
+        {
+            "text": "« elle va me tuer »… vite",
+            "match": "me tuer"
+        },
+        {
+            "text": "J’ai peur : elle va me tuer.",
+            "match": "me tuer"
+        },
+        {
+            "text": "elle va me tuerzz",
+            "match": null
+        },
+        {
+            "text": "xelle va me tuer",
+            "match": "me tuer"
+        },
+        {
+            "text": "menace de mort",
+            "match": "menace de mort"
+        },
+        {
+            "text": "MENACE DE MORT",
+            "match": "menace de mort"
+        },
+        {
+            "text": "Aide-moi, menace de morts !",
+            "match": "menace de mort"
+        },
+        {
+            "text": "« menace de mort »… vite",
+            "match": "menace de mort"
+        },
+        {
+            "text": "J’ai peur : menace de mort.",
+            "match": "menace de mort"
+        },
+        {
+            "text": "menace de mortzz",
+            "match": null
+        },
+        {
+            "text": "xmenace de mort",
+            "match": null
+        },
+        {
+            "text": "menacé de mort",
+            "match": "menace de mort"
+        },
+        {
+            "text": "MENACÉ DE MORT",
+            "match": "menace de mort"
+        },
+        {
+            "text": "Aide-moi, menacé de morts !",
+            "match": "menace de mort"
+        },
+        {
+            "text": "« menacé de mort »… vite",
+            "match": "menace de mort"
+        },
+        {
+            "text": "J’ai peur : menacé de mort.",
+            "match": "menace de mort"
+        },
+        {
+            "text": "menacé de mortzz",
+            "match": null
+        },
+        {
+            "text": "xmenacé de mort",
+            "match": null
+        },
+        {
+            "text": "menacée de mort",
+            "match": "menacee de mort"
+        },
+        {
+            "text": "MENACÉE DE MORT",
+            "match": "menacee de mort"
+        },
+        {
+            "text": "menacee de mort",
+            "match": "menacee de mort"
+        },
+        {
+            "text": "Aide-moi, menacée de morts !",
+            "match": "menacee de mort"
+        },
+        {
+            "text": "« menacée de mort »… vite",
+            "match": "menacee de mort"
+        },
+        {
+            "text": "J’ai peur : menacée de mort.",
+            "match": "menacee de mort"
+        },
+        {
+            "text": "menacée de mortzz",
+            "match": null
+        },
+        {
+            "text": "xmenacée de mort",
+            "match": null
+        },
+        {
+            "text": "au secours",
+            "match": "au secours"
+        },
+        {
+            "text": "AU SECOURS",
+            "match": "au secours"
+        },
+        {
+            "text": "Aide-moi, au secourss !",
+            "match": "au secours"
+        },
+        {
+            "text": "« au secours »… vite",
+            "match": "au secours"
+        },
+        {
+            "text": "J’ai peur : au secours.",
+            "match": "au secours"
+        },
+        {
+            "text": "au secourszz",
+            "match": null
+        },
+        {
+            "text": "xau secours",
+            "match": null
+        },
+        {
+            "text": "viol",
+            "match": "viol"
+        },
+        {
+            "text": "VIOL",
+            "match": "viol"
+        },
+        {
+            "text": "Aide-moi, viols !",
+            "match": "viol"
+        },
+        {
+            "text": "« viol »… vite",
+            "match": "viol"
+        },
+        {
+            "text": "J’ai peur : viol.",
+            "match": "viol"
+        },
+        {
+            "text": "violzz",
+            "match": null
+        },
+        {
+            "text": "xviol",
+            "match": null
+        },
+        {
+            "text": "violé",
+            "match": "viole"
+        },
+        {
+            "text": "VIOLÉ",
+            "match": "viole"
+        },
+        {
+            "text": "viole",
+            "match": "viole"
+        },
+        {
+            "text": "Aide-moi, violés !",
+            "match": "viole"
+        },
+        {
+            "text": "« violé »… vite",
+            "match": "viole"
+        },
+        {
+            "text": "J’ai peur : violé.",
+            "match": "viole"
+        },
+        {
+            "text": "violézz",
+            "match": null
+        },
+        {
+            "text": "xviolé",
+            "match": null
+        },
+        {
+            "text": "violée",
+            "match": "violee"
+        },
+        {
+            "text": "VIOLÉE",
+            "match": "violee"
+        },
+        {
+            "text": "violee",
+            "match": "violee"
+        },
+        {
+            "text": "Aide-moi, violées !",
+            "match": "violee"
+        },
+        {
+            "text": "« violée »… vite",
+            "match": "violee"
+        },
+        {
+            "text": "J’ai peur : violée.",
+            "match": "violee"
+        },
+        {
+            "text": "violéezz",
+            "match": null
+        },
+        {
+            "text": "xviolée",
+            "match": null
+        },
+        {
+            "text": "violer",
+            "match": "violer"
+        },
+        {
+            "text": "VIOLER",
+            "match": "violer"
+        },
+        {
+            "text": "Aide-moi, violers !",
+            "match": "violer"
+        },
+        {
+            "text": "« violer »… vite",
+            "match": "violer"
+        },
+        {
+            "text": "J’ai peur : violer.",
+            "match": "violer"
+        },
+        {
+            "text": "violerzz",
+            "match": null
+        },
+        {
+            "text": "xvioler",
+            "match": null
+        },
+        {
+            "text": "frappe",
+            "match": "frappe"
+        },
+        {
+            "text": "FRAPPE",
+            "match": "frappe"
+        },
+        {
+            "text": "Aide-moi, frappes !",
+            "match": "frappe"
+        },
+        {
+            "text": "« frappe »… vite",
+            "match": "frappe"
+        },
+        {
+            "text": "J’ai peur : frappe.",
+            "match": "frappe"
+        },
+        {
+            "text": "frappezz",
+            "match": null
+        },
+        {
+            "text": "xfrappe",
+            "match": null
+        },
+        {
+            "text": "frappé",
+            "match": "frappe"
+        },
+        {
+            "text": "FRAPPÉ",
+            "match": "frappe"
+        },
+        {
+            "text": "Aide-moi, frappés !",
+            "match": "frappe"
+        },
+        {
+            "text": "« frappé »… vite",
+            "match": "frappe"
+        },
+        {
+            "text": "J’ai peur : frappé.",
+            "match": "frappe"
+        },
+        {
+            "text": "frappézz",
+            "match": null
+        },
+        {
+            "text": "xfrappé",
+            "match": null
+        },
+        {
+            "text": "frappée",
+            "match": "frappee"
+        },
+        {
+            "text": "FRAPPÉE",
+            "match": "frappee"
+        },
+        {
+            "text": "frappee",
+            "match": "frappee"
+        },
+        {
+            "text": "Aide-moi, frappées !",
+            "match": "frappee"
+        },
+        {
+            "text": "« frappée »… vite",
+            "match": "frappee"
+        },
+        {
+            "text": "J’ai peur : frappée.",
+            "match": "frappee"
+        },
+        {
+            "text": "frappéezz",
+            "match": null
+        },
+        {
+            "text": "xfrappée",
+            "match": null
+        },
+        {
+            "text": "frapper",
+            "match": "frapper"
+        },
+        {
+            "text": "FRAPPER",
+            "match": "frapper"
+        },
+        {
+            "text": "Aide-moi, frappers !",
+            "match": "frapper"
+        },
+        {
+            "text": "« frapper »… vite",
+            "match": "frapper"
+        },
+        {
+            "text": "J’ai peur : frapper.",
+            "match": "frapper"
+        },
+        {
+            "text": "frapperzz",
+            "match": null
+        },
+        {
+            "text": "xfrapper",
+            "match": null
+        },
+        {
+            "text": "me bat",
+            "match": "me bat"
+        },
+        {
+            "text": "ME BAT",
+            "match": "me bat"
+        },
+        {
+            "text": "Aide-moi, me bats !",
+            "match": "me bat"
+        },
+        {
+            "text": "« me bat »… vite",
+            "match": "me bat"
+        },
+        {
+            "text": "J’ai peur : me bat.",
+            "match": "me bat"
+        },
+        {
+            "text": "me batzz",
+            "match": null
+        },
+        {
+            "text": "xme bat",
+            "match": null
+        },
+        {
+            "text": "battue",
+            "match": "battue"
+        },
+        {
+            "text": "BATTUE",
+            "match": "battue"
+        },
+        {
+            "text": "Aide-moi, battues !",
+            "match": "battue"
+        },
+        {
+            "text": "« battue »… vite",
+            "match": "battue"
+        },
+        {
+            "text": "J’ai peur : battue.",
+            "match": "battue"
+        },
+        {
+            "text": "battuezz",
+            "match": null
+        },
+        {
+            "text": "xbattue",
+            "match": null
+        },
+        {
+            "text": "étranglé",
+            "match": "etrangle"
+        },
+        {
+            "text": "ÉTRANGLÉ",
+            "match": "etrangle"
+        },
+        {
+            "text": "etrangle",
+            "match": "etrangle"
+        },
+        {
+            "text": "Aide-moi, étranglés !",
+            "match": "etrangle"
+        },
+        {
+            "text": "« étranglé »… vite",
+            "match": "etrangle"
+        },
+        {
+            "text": "J’ai peur : étranglé.",
+            "match": "etrangle"
+        },
+        {
+            "text": "étranglézz",
+            "match": null
+        },
+        {
+            "text": "xétranglé",
+            "match": null
+        },
+        {
+            "text": "étranglée",
+            "match": "etranglee"
+        },
+        {
+            "text": "ÉTRANGLÉE",
+            "match": "etranglee"
+        },
+        {
+            "text": "etranglee",
+            "match": "etranglee"
+        },
+        {
+            "text": "Aide-moi, étranglées !",
+            "match": "etranglee"
+        },
+        {
+            "text": "« étranglée »… vite",
+            "match": "etranglee"
+        },
+        {
+            "text": "J’ai peur : étranglée.",
+            "match": "etranglee"
+        },
+        {
+            "text": "étrangléezz",
+            "match": null
+        },
+        {
+            "text": "xétranglée",
+            "match": null
+        },
+        {
+            "text": "enfermé",
+            "match": "enferme"
+        },
+        {
+            "text": "ENFERMÉ",
+            "match": "enferme"
+        },
+        {
+            "text": "enferme",
+            "match": "enferme"
+        },
+        {
+            "text": "Aide-moi, enfermés !",
+            "match": "enferme"
+        },
+        {
+            "text": "« enfermé »… vite",
+            "match": "enferme"
+        },
+        {
+            "text": "J’ai peur : enfermé.",
+            "match": "enferme"
+        },
+        {
+            "text": "enfermézz",
+            "match": null
+        },
+        {
+            "text": "xenfermé",
+            "match": null
+        },
+        {
+            "text": "enfermée",
+            "match": "enfermee"
+        },
+        {
+            "text": "ENFERMÉE",
+            "match": "enfermee"
+        },
+        {
+            "text": "enfermee",
+            "match": "enfermee"
+        },
+        {
+            "text": "Aide-moi, enfermées !",
+            "match": "enfermee"
+        },
+        {
+            "text": "« enfermée »… vite",
+            "match": "enfermee"
+        },
+        {
+            "text": "J’ai peur : enfermée.",
+            "match": "enfermee"
+        },
+        {
+            "text": "enferméezz",
+            "match": null
+        },
+        {
+            "text": "xenfermée",
+            "match": null
+        },
+        {
+            "text": "séquestré",
+            "match": "sequestre"
+        },
+        {
+            "text": "SÉQUESTRÉ",
+            "match": "sequestre"
+        },
+        {
+            "text": "sequestre",
+            "match": "sequestre"
+        },
+        {
+            "text": "Aide-moi, séquestrés !",
+            "match": "sequestre"
+        },
+        {
+            "text": "« séquestré »… vite",
+            "match": "sequestre"
+        },
+        {
+            "text": "J’ai peur : séquestré.",
+            "match": "sequestre"
+        },
+        {
+            "text": "séquestrézz",
+            "match": null
+        },
+        {
+            "text": "xséquestré",
+            "match": null
+        },
+        {
+            "text": "séquestrée",
+            "match": "sequestree"
+        },
+        {
+            "text": "SÉQUESTRÉE",
+            "match": "sequestree"
+        },
+        {
+            "text": "sequestree",
+            "match": "sequestree"
+        },
+        {
+            "text": "Aide-moi, séquestrées !",
+            "match": "sequestree"
+        },
+        {
+            "text": "« séquestrée »… vite",
+            "match": "sequestree"
+        },
+        {
+            "text": "J’ai peur : séquestrée.",
+            "match": "sequestree"
+        },
+        {
+            "text": "séquestréezz",
+            "match": null
+        },
+        {
+            "text": "xséquestrée",
+            "match": null
+        }
+    ]
+}

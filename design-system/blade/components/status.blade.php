@@ -3,7 +3,7 @@
 @php
     $map = [
         'new' => ['Nouveau', 'text-bg-primary', 'stars'],
-        'assigned' => ['Assigné', 'xm-status--violet', 'person-check'],
+        'assigned' => ['Assigné', 'xm-badge-violet', 'person-check'],
         'in_progress' => ['En cours', 'text-bg-info', 'arrow-repeat'],
         'pending_victim_response' => ['En attente de réponse', 'text-bg-warning', 'hourglass-split'],
         'resolved' => ['Résolu', 'text-bg-success', 'check-circle'],

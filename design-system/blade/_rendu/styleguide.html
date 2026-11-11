@@ -10,16 +10,12 @@
 <a class="xm-skip-link" href="#contenu">Aller au contenu</a>
 <header class="sticky-top border-bottom" style="background:var(--xm-surface)">
     <div class="container d-flex align-items-center gap-3 py-2">
-        <a href="https://xomiton.org"  aria-label="Xomiton, accueil"><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-couleur.svg" alt="Xomiton" title="Xomiton" width="120" height="31"></a>        <span class="xm-hint">Catalogue du design system · v1.0</span>
+        <a href="https://xomiton.app"  aria-label="Xomiton, accueil"><img src="file:///C:/Projects/xomiton_laravel/design-system/blade/_rendu/assets/images/brand/logo-couleur.svg" alt="Xomiton" title="Xomiton" width="120" height="31"></a>        <span class="xm-hint">Catalogue du design system · v1.0</span>
         <button
     type="button" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center justify-content-center gap-2 ms-auto" x-data="" @click="document.documentElement.dataset.bsTheme = document.documentElement.dataset.bsTheme === 'dark' ? 'light' : 'dark'"
         >
             <i class="bi bi-moon-stars" aria-hidden="true"></i>
         <span>Thème</span></button>
-        <button type="button" class="xm-quick-exit d-inline-flex align-items-center gap-2" onclick="window.xmQuickExit('https:\/\/www.wikipedia.org')">
-    <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Quitter ce site
-    <span class="visually-hidden">(ou appuie deux fois sur Échap)</span>
-</button>
     </div>
 </header>
 
@@ -94,7 +90,7 @@
         </div>
         <div class="d-flex flex-wrap gap-2">
             <span class="badge d-inline-flex align-items-center gap-1 text-bg-primary"><i class="bi bi-stars" aria-hidden="true"></i>Nouveau</span>
-<span class="badge d-inline-flex align-items-center gap-1 xm-status--violet"><i class="bi bi-person-check" aria-hidden="true"></i>Assigné</span>
+<span class="badge d-inline-flex align-items-center gap-1 xm-badge-violet"><i class="bi bi-person-check" aria-hidden="true"></i>Assigné</span>
 <span class="badge d-inline-flex align-items-center gap-1 text-bg-info"><i class="bi bi-arrow-repeat" aria-hidden="true"></i>En cours</span>
 <span class="badge d-inline-flex align-items-center gap-1 text-bg-warning"><i class="bi bi-hourglass-split" aria-hidden="true"></i>En attente de réponse</span>
 <span class="badge d-inline-flex align-items-center gap-1 text-bg-success"><i class="bi bi-check-circle" aria-hidden="true"></i>Résolu</span>
@@ -185,7 +181,7 @@
                                                 <li class="breadcrumb-item active" aria-current="page">Comprendre ses droits</li>
                         </ol>
 </nav>
-<script type="application/ld+json">{"\u003C?php $__contextArgs = [];\nif (context()-\u003Ehas($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()-\u003Eget($__contextArgs[0]); ?\u003E":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://xomiton.org"},{"@type":"ListItem","position":2,"name":"Ressources","item":"https://xomiton.org/ressources"},{"@type":"ListItem","position":3,"name":"Comprendre ses droits"}]}</script>
+<script type="application/ld+json">{"\u003C?php $__contextArgs = [];\nif (context()-\u003Ehas($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()-\u003Eget($__contextArgs[0]); ?\u003E":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://xomiton.app"},{"@type":"ListItem","position":2,"name":"Ressources","item":"https://xomiton.app/ressources"},{"@type":"ListItem","position":3,"name":"Comprendre ses droits"}]}</script>
         <div x-data="{ tab: new URLSearchParams(location.search).get('tab') || 'infos',
                set(t) { this.tab = t; const u = new URL(location); u.searchParams.set('tab', t); history.replaceState(null, '', u); },
                move(e) { const k = Object.keys(JSON.parse('{\u0022infos\u0022:\u0022Informations\u0022,\u0022notes\u0022:\u0022Notes\u0022}')); let i = k.indexOf(this.tab); i = e.key === 'ArrowRight' ? (i + 1) % k.length : (i - 1 + k.length) % k.length; this.set(k[i]); this.$nextTick(() => document.getElementById('tab-' + this.tab).focus()); } }">
@@ -284,7 +280,7 @@
         </div>
     </template>
 </div>
-<div x-data="xmSos(null)" class="position-fixed" style="right:16px;bottom:16px;z-index:1040">
+<div x-data="xmSos(null)" class="position-fixed" style="right:16px;bottom:16px;z-index:1060">
     <button type="button" class="xm-sos" x-bind:data-holding="holding" aria-describedby="sos-help"
             @pointerdown.prevent="start()" @pointerup="cancelHold()" @pointerleave="cancelHold()"
             @keydown.enter.prevent="confirming = true">SOS</button>

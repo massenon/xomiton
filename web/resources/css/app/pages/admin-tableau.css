@@ -1,0 +1,14 @@
+/*
+ * Tableau de bord /admin (P10-04, dashboard-admin.md) : bandeau « Alertes SOS actives » (fond --xm-secondary-subtle,
+ * icône cloche, fixe en mouvement réduit) et carte schématique des SOS actifs. Jetons --xm-* uniquement.
+ */
+.xm-sos-banner { padding: var(--xm-space-4) var(--xm-space-5); border: 1px solid var(--xm-secondary); border-left-width: 6px; border-radius: .75rem; background: var(--xm-secondary-subtle); color: var(--xm-secondary-subtle-text); }
+.xm-sos-banner__icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--xm-secondary); color: var(--xm-neutral-0); font-size: 1.25rem; }
+.xm-sos-banner__list > li + li { border-top: 1px solid color-mix(in srgb, var(--xm-secondary) 25%, transparent); }
+.xm-sos-banner .text-secondary { color: inherit !important; opacity: .8; }
+@media (prefers-reduced-motion: no-preference) {
+  .xm-sos-banner__icon { animation: xm-sos-ring 1.8s ease-in-out infinite; transform-origin: 50% 20%; }
+}
+@keyframes xm-sos-ring { 0%, 55%, 100% { transform: rotate(0); } 62% { transform: rotate(14deg); } 70% { transform: rotate(-12deg); } 78% { transform: rotate(8deg); } 86% { transform: rotate(-4deg); } }
+.xm-sos-map { height: 200px; }
+.xm-dashboard .xm-chart { position: relative; }

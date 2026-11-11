@@ -110,7 +110,6 @@ $nav = 'sos';
 		</div>
 	</main>
 	<?php if (!$pub) include("partials/modals.php"); include("partials/footer-scripts.php"); x_zones_script(); ?>
-	<?php if ($pub) x_public_quick_exit(); ?>
 	<script>
 	(function () {
 		var $ = function (s) { return document.querySelector(s); };

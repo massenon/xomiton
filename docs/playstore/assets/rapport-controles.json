@@ -1,0 +1,922 @@
+{
+ "kit": "playstore-kit",
+ "version_kit": "1.1.0",
+ "application": "Xomiton",
+ "langue": "fr",
+ "regles_google": {
+  "version": "2026.11.1",
+  "date_verification": "2026-11-09",
+  "age_jours": 0,
+  "validite_jours": 180,
+  "perimee": false
+ },
+ "avertissements": [],
+ "resultats": [
+  {
+   "visuel": "ensemble",
+   "controle": "nombre de captures",
+   "ok": true,
+   "detail": "8 (attendu 8)"
+  },
+  {
+   "visuel": "ensemble",
+   "controle": "police chargée depuis un fichier embarqué (rendu indépendant des polices système)",
+   "ok": true,
+   "detail": "10/10 visuels ; "
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1024x500 (attendu 1024x500)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.18 Mo (< 15 Mo)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "10.3 %"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 6.98:1"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "couleurs vives (blanc < 80 %, noir < 3 %, saturation moyenne > 0.03)",
+   "ok": true,
+   "detail": "blanc 60 %, noir 0.0 %, saturation 0.13"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1280x640 (attendu 1280x640)"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.25 Mo (< 1 Mo)"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "10.1 %"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 6.98:1"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "couleurs vives (blanc < 80 %, noir < 3 %, saturation moyenne > 0.03)",
+   "ok": true,
+   "detail": "blanc 63 %, noir 0.0 %, saturation 0.13"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.73 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "5.7 %"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.74:1"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#EBEFFA s=0.06 v=0.98 ; #D7DEF5 s=0.12 v=0.96"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.60 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.9 %"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.32:1"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#D7DEF5 s=0.12 v=0.96 ; #EBEFFA s=0.06 v=0.98"
+  },
+  {
+   "visuel": "02-signaler",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.53 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.4 %"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.85:1"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#EBEFFA s=0.06 v=0.98 ; #D7DEF5 s=0.12 v=0.96"
+  },
+  {
+   "visuel": "03-sos",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.73 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.6 %"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.25:1"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#D7DEF5 s=0.12 v=0.96 ; #EBEFFA s=0.06 v=0.98"
+  },
+  {
+   "visuel": "04-ressources",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.61 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "5.8 %"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.74:1"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#EBEFFA s=0.06 v=0.98 ; #D7DEF5 s=0.12 v=0.96"
+  },
+  {
+   "visuel": "05-thematiques",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.44 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.5 %"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.20:1"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#D7DEF5 s=0.12 v=0.96 ; #EBEFFA s=0.06 v=0.98"
+  },
+  {
+   "visuel": "06-urgences",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.72 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.2 %"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.89:1"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#EBEFFA s=0.06 v=0.98 ; #D7DEF5 s=0.12 v=0.96"
+  },
+  {
+   "visuel": "07-actualites",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.52 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.0 %"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 11.35:1"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#D7DEF5 s=0.12 v=0.96 ; #EBEFFA s=0.06 v=0.98"
+  },
+  {
+   "visuel": "08-aide",
+   "controle": "barre d'état propre",
+   "ok": true,
+   "detail": "sans barre d'état dans la source (mode « aucune »)"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "dimensions 512x512",
+   "ok": true,
+   "detail": "512x512"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "PNG 32 bits (RVB + alpha, 8 bits par canal)",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 6 (6 = RVBA)"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "poids <= 1024 Ko",
+   "ok": true,
+   "detail": "16 Ko"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "carré plein : aucun pixel transparent",
+   "ok": true,
+   "detail": "alpha minimal 255"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "pas de coins arrondis (les coins ont la couleur du fond voisin)",
+   "ok": true,
+   "detail": "écart maximal des coins 0 (limite 30)"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "pas d'ombre ni de transparence douce dans la source (<= 0.5 % de pixels)",
+   "ok": true,
+   "detail": "0.424 % de pixels semi-transparents ; fond plein #0433C3 appliqué sous la source transparente"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "motif visible",
+   "ok": true,
+   "detail": "33212 pixels de motif"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "marge de sécurité : motif dans un cercle de 80 % du côté",
+   "ok": true,
+   "detail": "distance maximale 155.2 px (limite 204.8 px), 0 pixel(s) dehors"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "contraste motif / fond >= 3.0:1",
+   "ok": true,
+   "detail": "8.98:1"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "puces de fonctionnalités (5)",
+   "ok": true,
+   "detail": "5"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "texte alternatif citant les fonctionnalités des puces",
+   "ok": true,
+   "detail": "toutes citées"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "puces : police effective >= 13 px",
+   "ok": true,
+   "detail": "13.6 px"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "aucun texte sous 13 px effectifs",
+   "ok": true,
+   "detail": "min 13.6 px"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "puces : police effective >= 13 px",
+   "ok": true,
+   "detail": "17.0 px"
+  },
+  {
+   "visuel": "apercu-social",
+   "controle": "aucun texte sous 13 px effectifs",
+   "ok": true,
+   "detail": "min 17.0 px"
+  },
+  {
+   "visuel": "feature-graphic/slogan",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "113"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Logo Xomiton, Alerte VBG, SOS d'urgence,"
+  },
+  {
+   "visuel": "feature-graphic/description",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:1",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:2",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:3",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:4",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/fonction:5",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "113"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Accueil du site Xomiton : titre de l'esp"
+  },
+  {
+   "visuel": "02-signaler/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-signaler/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-signaler/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "118"
+  },
+  {
+   "visuel": "02-signaler/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Page Signaler : signalement sans compte "
+  },
+  {
+   "visuel": "03-sos/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-sos/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-sos/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "112"
+  },
+  {
+   "visuel": "03-sos/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Page SOS : grand bouton rouge à mainteni"
+  },
+  {
+   "visuel": "04-ressources/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-ressources/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-ressources/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "103"
+  },
+  {
+   "visuel": "04-ressources/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Liste des ressources : filtres par type "
+  },
+  {
+   "visuel": "05-thematiques/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-thematiques/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-thematiques/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "98"
+  },
+  {
+   "visuel": "05-thematiques/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Page Thématiques : recherche, filtres pa"
+  },
+  {
+   "visuel": "06-urgences/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-urgences/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-urgences/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "97"
+  },
+  {
+   "visuel": "06-urgences/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Page Contacts d'urgence : bandeau SOS ro"
+  },
+  {
+   "visuel": "07-actualites/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-actualites/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-actualites/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "111"
+  },
+  {
+   "visuel": "07-actualites/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Page Actualités : filtres par catégorie "
+  },
+  {
+   "visuel": "08-aide/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-aide/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-aide/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "107"
+  },
+  {
+   "visuel": "08-aide/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Centre d'aide : questions fréquentes sur"
+  },
+  {
+   "visuel": "fiche/nom",
+   "controle": "longueur <= 30",
+   "ok": true,
+   "detail": "21"
+  },
+  {
+   "visuel": "fiche/nom",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "fiche/court",
+   "controle": "longueur <= 80",
+   "ok": true,
+   "detail": "71"
+  },
+  {
+   "visuel": "fiche/court",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "fiche/long",
+   "controle": "longueur <= 4000",
+   "ok": true,
+   "detail": "2324"
+  },
+  {
+   "visuel": "fiche/long",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  }
+ ]
+}

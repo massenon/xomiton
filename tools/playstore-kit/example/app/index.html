@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grainette (application fictive de démonstration)</title>
+<style>
+:root{--vert:#1F7A5C;--vert-fonce:#0E3B2F;--menthe:#DDF3E8;--ambre:#F2B544;--corail:#E8715A;--creme:#FBF8F1;--encre:#14201C;--gris:#5B6B65;--ligne:#E7E2D6}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--creme);color:var(--encre);font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+#screen{position:relative;width:390px;height:844px;display:flex;flex-direction:column;background:var(--creme)}
+.statusbar{height:46px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 8px;font-weight:600;font-size:15px}
+.statusbar .ic{display:flex;gap:6px;align-items:center}
+main{flex:1;overflow:hidden;padding:6px 20px 0;position:relative}
+h1{font-size:28px;line-height:1.15;letter-spacing:-.02em;font-weight:800}
+.sub{color:var(--gris);font-size:14px;margin-top:4px}
+.tabbar{height:84px;flex:none;display:flex;justify-content:space-around;padding-top:10px;border-top:1px solid var(--ligne);background:#fff}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--gris);width:90px;text-decoration:none}
+.tab svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--vert)}
+.hero{margin-top:18px;border-radius:24px;padding:22px;color:#fff;background:linear-gradient(140deg,var(--vert) 0%,var(--vert-fonce) 100%);position:relative;overflow:hidden}
+.hero b{display:block;font-size:24px;line-height:1.2;letter-spacing:-.01em;max-width:230px}
+.hero span{display:block;margin-top:6px;font-size:13px;opacity:.85}
+.hero .btn{display:inline-block;margin-top:16px;background:var(--ambre);color:var(--vert-fonce);font-weight:700;font-size:14px;border-radius:999px;padding:10px 18px;text-decoration:none}
+.hero svg.deco{position:absolute;right:-18px;bottom:-12px;width:170px;height:170px;opacity:.95}
+h2{font-size:17px;margin:22px 0 10px;font-weight:700}
+.tache{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--ligne);border-radius:18px;padding:12px 14px;margin-bottom:10px}
+.tache .rond{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none}
+.tache .rond svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tache .t{flex:1}.tache .t b{display:block;font-size:15px}.tache .t i{font-style:normal;font-size:13px;color:var(--gris)}
+.tache .h{font-size:13px;font-weight:700;color:var(--vert)}
+.bleu{background:#DCEBFA;color:#1D5FA6}.jaune{background:#FCEFCB;color:#8A6200}.vert{background:var(--menthe);color:var(--vert)}.rose{background:#FADCD5;color:#B2432C}
+.rang{display:flex;gap:12px;overflow:hidden;margin:0 -20px;padding:0 20px}
+.mini{flex:none;width:132px;background:#fff;border:1px solid var(--ligne);border-radius:20px;padding:10px;text-align:center}
+.mini .vis{background:var(--menthe);border-radius:14px;height:96px;display:grid;place-items:center}
+.mini .vis svg{width:84px;height:84px}
+.mini b{display:block;margin-top:8px;font-size:14px}.mini i{font-style:normal;font-size:12px;color:var(--gris)}
+.recherche{margin-top:16px;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--ligne);border-radius:16px;padding:12px 14px;color:var(--gris);font-size:14px}
+.recherche svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.puces{display:flex;gap:8px;margin-top:14px}
+.puces a{padding:8px 15px;border-radius:999px;border:1px solid var(--ligne);background:#fff;font-size:13px;font-weight:600;color:var(--gris);text-decoration:none}
+.puces a.on{background:var(--vert);border-color:var(--vert);color:#fff}
+.grille{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.carte{background:#fff;border:1px solid var(--ligne);border-radius:22px;padding:10px;text-decoration:none;color:inherit;display:block}
+.carte .vis{background:var(--menthe);border-radius:16px;height:122px;display:grid;place-items:center}
+.carte .vis svg{width:104px;height:104px}
+.carte b{display:block;margin-top:10px;font-size:15px}.carte i{font-style:normal;font-size:12.5px;color:var(--gris)}
+.etat{display:inline-block;margin-top:8px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.retour{display:flex;align-items:center;gap:6px;color:var(--vert);font-weight:700;font-size:14px;text-decoration:none;margin-top:6px}
+.retour svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.grand{margin-top:12px;height:238px;border-radius:30px;background:radial-gradient(circle at 50% 38%,#fff 0%,var(--menthe) 62%);display:grid;place-items:center}
+.grand svg{width:216px;height:216px}
+.fiche-t{display:flex;justify-content:space-between;align-items:flex-end;margin-top:16px}
+.fiche-t em{font-style:italic;color:var(--gris);font-size:13px}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.tuile{border-radius:18px;padding:12px 10px;text-align:center}
+.tuile svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tuile b{display:block;font-size:17px;margin-top:4px}.tuile i{font-style:normal;font-size:11.5px;opacity:.8}
+.barre{margin-top:18px;background:#fff;border:1px solid var(--ligne);border-radius:18px;padding:14px 16px}
+.barre .l{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600}
+.barre .p{margin-top:10px;height:10px;border-radius:99px;background:var(--menthe);overflow:hidden}
+.barre .p span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--vert),#3FB68B)}
+.btn-plein{display:block;text-decoration:none;margin-top:16px;text-align:center;background:var(--vert);color:#fff;font-weight:700;font-size:15px;border-radius:16px;padding:14px}
+.seg{margin-top:16px;display:flex;background:#EFEADD;border-radius:14px;padding:4px}
+.seg a{flex:1;text-align:center;padding:9px;border-radius:11px;font-size:13.5px;font-weight:700;color:var(--gris);text-decoration:none}
+.seg a.on{background:#fff;color:var(--vert);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.jour{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);margin:18px 0 8px}
+.toast{position:absolute;left:20px;right:20px;bottom:100px;background:var(--encre);color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;z-index:20}
+</style>
+</head>
+<body>
+<div id="screen">
+  <div class="statusbar"><span id="clock">14:07</span>
+    <span class="ic"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect y="8" width="3" height="4" rx=".6"/><rect x="5" y="5.5" width="3" height="6.5" rx=".6"/><rect x="10" y="3" width="3" height="9" rx=".6"/><rect x="15" y="0" width="3" height="12" rx=".6"/></svg>
+    <svg width="18" height="13" viewBox="0 0 18 13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1.5 4.6a10.5 10.5 0 0 1 15 0"/><path d="M4.2 7.6a6.6 6.6 0 0 1 9.6 0"/></svg>
+    <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".55"/><rect x="2" y="2" width="19" height="8" rx="1.8" fill="currentColor"/><rect x="24" y="4" width="1.8" height="4" rx=".8" fill="currentColor" opacity=".55"/></svg></span></div>
+  <main id="vue"></main>
+  <nav class="tabbar" id="tabs"></nav>
+  <div class="toast">Rappel envoyé à Testeur à 14:05</div>
+</div>
+<script>
+const ICONES={
+ home:'<path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/>',
+ leaf:'<path d="M11 20A7 7 0 0 1 4 13c0-6 7-10 16-10 0 9-4 16-10 16"/><path d="M4 21c3-6 6-9 11-12"/>',
+ bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+ drop:'<path d="M12 2.7s7 6.4 7 11.3a7 7 0 0 1-14 0c0-4.9 7-11.3 7-11.3Z"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+ cloud:'<path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.5 12 3.5 3.5 0 0 0 6 19Z"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+ back:'<path d="m15 18-6-6 6-6"/>'};
+const ico=n=>`<svg viewBox="0 0 24 24">${ICONES[n]}</svg>`;
+const PLANTES={
+ monstera:{nom:'Monstera',latin:'Monstera deliciosa',piece:'Salon',type:'monstera',soif:true,eau:'2 j',lum:'Vive',hum:'60 %',prog:78,rest:"Aujourd'hui"},
+ ficus:{nom:'Ficus lyrata',latin:'Ficus lyrata',piece:'Chambre',type:'ficus',soif:true,eau:'4 j',lum:'Vive',hum:'55 %',prog:55,rest:'Dans 3 jours'},
+ cactus:{nom:'Cactus étoilé',latin:'Astrophytum',piece:'Bureau',type:'cactus',soif:false,eau:'14 j',lum:'Plein soleil',hum:'30 %',prog:22,rest:'Dans 9 jours'},
+ pothos:{nom:'Pothos',latin:'Epipremnum aureum',piece:'Cuisine',type:'ficus',soif:true,eau:'6 j',lum:'Douce',hum:'50 %',prog:70,rest:'Demain'},
+ calathea:{nom:'Calathea',latin:'Goeppertia',piece:'Salon',type:'monstera',soif:false,eau:'5 j',lum:'Douce',hum:'70 %',prog:35,rest:'Dans 5 jours'},
+ aloe:{nom:'Aloé vera',latin:'Aloe vera',piece:'Balcon',type:'cactus',soif:false,eau:'12 j',lum:'Vive',hum:'35 %',prog:18,rest:'Dans 10 jours'}};
+function feuille(a,s,c,t){const p=t==='rond'?'M0 0C-30-10-30-52 0-64C30-52 30-10 0 0Z':'M0 0C-26-26-26-70 0-92C26-70 26-26 0 0Z';
+ return `<g transform="translate(100 150) rotate(${a}) scale(${s})"><path d="${p}" fill="${c}"/><path d="M0 0V-60" stroke="rgba(255,255,255,.35)" stroke-width="2.5" fill="none"/></g>`}
+function dessin(type){
+ const pot='<path d="M64 148h72l-7 40a9 9 0 0 1-9 7H80a9 9 0 0 1-9-7z" fill="#E8715A"/><rect x="58" y="140" width="84" height="14" rx="6" fill="#F08A74"/>';
+ let corps='';
+ if(type==='monstera')corps=feuille(-62,.62,'#2E9E73')+feuille(62,.62,'#2E9E73')+feuille(-30,.86,'#1F7A5C')+feuille(30,.86,'#1F7A5C')+feuille(0,.98,'#27906A');
+ else if(type==='ficus')corps=feuille(-58,.9,'#3FB68B','rond')+feuille(58,.9,'#3FB68B','rond')+feuille(-26,1.2,'#1F7A5C','rond')+feuille(26,1.2,'#27906A','rond')+feuille(0,1.45,'#2E9E73','rond');
+ else corps='<rect x="84" y="52" width="32" height="92" rx="16" fill="#2E9E73"/><rect x="58" y="86" width="22" height="48" rx="11" fill="#27906A"/><rect x="120" y="76" width="22" height="58" rx="11" fill="#27906A"/><path d="M100 58v82M91 62v76M109 62v76" stroke="rgba(255,255,255,.28)" stroke-width="2"/><circle cx="100" cy="52" r="7" fill="#F2B544"/>';
+ return `<svg viewBox="0 0 200 200">${corps}${pot}</svg>`}
+function etat(p){return p.soif?'<span class="etat rose">À arroser</span>':'<span class="etat vert">Tout va bien</span>'}
+function tab(href,icone,nom,actif){return `<a class="tab ${actif?'on':''}" href="${href}">${ico(icone)}${nom}</a>`}
+const VUES={
+ accueil(){return `<h1>Bonjour Testeur</h1><p class="sub">Lundi 9 novembre</p>
+  <div class="hero"><b>3 plantes ont soif aujourd'hui</b><span>Le reste se repose jusqu'à demain.</span><a class="btn" href="#/rappels">Voir les rappels</a>${dessin('monstera').replace('<svg ','<svg class="deco" ')}</div>
+  <h2>Aujourd'hui</h2>
+  <div class="tache"><div class="rond bleu">${ico('drop')}</div><div class="t"><b>Arroser la Monstera</b><i>Salon · 250 ml</i></div><span class="h">14:30</span></div>
+  <div class="tache"><div class="rond jaune">${ico('sun')}</div><div class="t"><b>Tourner le Ficus</b><i>Chambre · vers la fenêtre</i></div><span class="h">18:00</span></div>
+  <h2>Vos plantes</h2>
+  <div class="rang">${['monstera','ficus','cactus'].map(k=>`<div class="mini"><div class="vis">${dessin(PLANTES[k].type)}</div><b>${PLANTES[k].nom}</b><i>${PLANTES[k].piece}</i></div>`).join('')}</div>`},
+ plantes(f){const liste=Object.entries(PLANTES).filter(([k,p])=>f!=='arroser'||p.soif);
+  return `<h1>Mes plantes</h1><p class="sub">${Object.keys(PLANTES).length} plantes dans 4 pièces</p>
+  <div class="recherche">${ico('search')}Rechercher une plante</div>
+  <div class="puces"><a class="${f?'':'on'}" href="#/plantes">Toutes</a><a class="${f==='arroser'?'on':''}" href="#/plantes/arroser">À arroser</a><a href="#/plantes">Lumineuses</a></div>
+  <div class="grille">${liste.map(([k,p])=>`<a class="carte" href="#/plante/${k}"><div class="vis">${dessin(p.type)}</div><b>${p.nom}</b><i>${p.piece}</i><br>${etat(p)}</a>`).join('')}</div>`},
+ plante(k){const p=PLANTES[k];
+  return `<a class="retour" href="#/plantes">${ico('back')}Mes plantes</a>
+  <div class="grand">${dessin(p.type)}</div>
+  <div class="fiche-t"><div><h1>${p.nom}</h1><em>${p.latin}</em></div>${etat(p)}</div>
+  <div class="tuiles"><div class="tuile bleu">${ico('drop')}<b>${p.eau}</b><i>Arrosage</i></div><div class="tuile jaune">${ico('sun')}<b>${p.lum}</b><i>Lumière</i></div><div class="tuile vert">${ico('cloud')}<b>${p.hum}</b><i>Humidité</i></div></div>
+  <div class="barre"><div class="l"><span>Prochain arrosage</span><span style="color:var(--vert)">${p.rest}</span></div><div class="p"><span style="width:${p.prog}%"></span></div></div>
+  <a class="btn-plein" href="#/plante/${k}">Marquer comme arrosée</a>`},
+ rappels(v){const sem=v==='semaine';
+  const t=(c,i,b,s,h)=>`<div class="tache"><div class="rond ${c}">${ico(i)}</div><div class="t"><b>${b}</b><i>${s}</i></div><span class="h">${h}</span></div>`;
+  const corps=sem?`<div class="jour">Aujourd'hui</div>${t('bleu','drop','Arroser la Monstera','Salon','14:30')}${t('jaune','sun','Tourner le Ficus','Chambre','18:00')}
+   <div class="jour">Demain</div>${t('bleu','drop','Arroser le Pothos','Cuisine','09:00')}
+   <div class="jour">Jeudi</div>${t('vert','leaf','Engrais pour la Calathea','Salon','10:30')}`
+   :`<div class="jour">Ce matin</div>${t('bleu','drop','Arroser le Pothos','Cuisine','09:00')}${t('vert','leaf','Brumiser la Calathea','Salon','10:30')}
+   <div class="jour">Cet après-midi</div>${t('bleu','drop','Arroser la Monstera','Salon','14:30')}${t('jaune','sun','Tourner le Ficus','Chambre','18:00')}`;
+  return `<h1>Rappels</h1><p class="sub">${sem?'7 tâches cette semaine':"4 tâches aujourd'hui"}</p>
+  <div class="seg"><a class="${sem?'':'on'}" href="#/rappels">Aujourd'hui</a><a class="${sem?'on':''}" href="#/rappels/semaine">Semaine</a></div>${corps}`}};
+function rendre(){
+ const [,vue='accueil',arg]=location.hash.split('/');
+ const f=VUES[vue]||VUES.accueil;
+ document.getElementById('vue').innerHTML=f(arg);
+ const actif=vue==='plante'?'plantes':vue;
+ document.getElementById('tabs').innerHTML=tab('#/accueil','home','Accueil',actif==='accueil')+tab('#/plantes','leaf','Plantes',actif==='plantes')+tab('#/rappels','bell','Rappels',actif==='rappels');
+}
+function horloge(){const d=new Date();document.getElementById('clock').textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')}
+window.addEventListener('hashchange',rendre);rendre();horloge();setInterval(horloge,15000);
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HTTPS seul : aucun trafic en clair, certificats du système uniquement (pas de
+     certificat utilisateur). Les builds debug la remplacent par
+     src/debug/res/xml/network_security_config.xml (API locale en http). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

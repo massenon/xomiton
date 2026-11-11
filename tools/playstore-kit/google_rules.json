@@ -1,0 +1,72 @@
+{
+  "version": "2026.11.1",
+  "date_verification": "2026-11-09",
+  "validite_jours": 180,
+  "statut": "Valeurs relevées À LA MAIN dans l'aide de la Play Console. Le kit n'interroge jamais Google (aucun accès réseau) : cette date est celle de la dernière relecture humaine, pas d'une vérification automatique. Relire les pages sources avant chaque publication, puis mettre à jour ce fichier (date incluse).",
+  "sources": {
+    "apercus": "https://support.google.com/googleplay/android-developer/answer/9866151",
+    "metadonnees": "https://support.google.com/googleplay/android-developer/answer/9898842",
+    "fiche": "https://support.google.com/googleplay/android-developer/answer/9859152",
+    "contraste": "https://www.w3.org/TR/WCAG21/#contrast-minimum"
+  },
+  "regles": [
+    {
+      "id": "feature_graphic",
+      "libelle": "Image de présentation : 1024 x 500 px, JPEG ou PNG 24 bits sans alpha, 15 Mo au plus ; logo, nom et slogan au centre (les bords peuvent être rognés) ; couleurs vives, pas de blanc, de noir ni de gris foncé dominants ; différente de l'icône.",
+      "valeurs": {"largeur": 1024, "hauteur": 500, "poids_max_mo": 15},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9866151",
+      "utilisee_par": "contraintes.feature_graphic"
+    },
+    {
+      "id": "captures_telephone",
+      "libelle": "Captures téléphone : 2 à 8 par appareil (au moins 4 pour être éligible aux recommandations), format 9:16 ou 16:9 au plus, côtés de 320 à 3 840 px, PNG ou JPEG 24 bits sans alpha, 8 Mo au plus ; barre d'état propre (batterie pleine, réseau plein, pas d'opérateur ni de notification).",
+      "valeurs": {"nombre_min": 2, "nombre_max": 8, "nombre_recommande": 4, "cote_min": 320, "cote_max": 3840, "poids_max_mo": 8},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9866151",
+      "utilisee_par": "contraintes.captures"
+    },
+    {
+      "id": "captures_tablette",
+      "libelle": "Captures tablettes 7 et 10 pouces : portrait 9:16 ou paysage 16:9, côtés de 1 080 à 7 680 px, au moins 4 par jeu quand elles sont fournies, 8 au plus, PNG ou JPEG 24 bits sans alpha, 8 Mo au plus.",
+      "valeurs": {"nombre_min": 4, "nombre_max": 8, "cote_min": 1080, "cote_max": 7680, "poids_max_mo": 8, "ratios": ["9:16", "16:9"]},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9866151",
+      "utilisee_par": "tablettes"
+    },
+    {
+      "id": "icone",
+      "libelle": "Icône : PNG 32 bits de 512 x 512 px, 1 024 Ko au plus ; carré plein SANS coins arrondis ni ombre (Google applique son masque et son ombre) ; motif central dans la zone de sécurité.",
+      "valeurs": {"taille": 512, "poids_max_ko": 1024, "profondeur": 8, "type_couleur_png": 6, "zone_securite_pct": 80},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9866151",
+      "utilisee_par": "icone"
+    },
+    {
+      "id": "texte_dans_les_visuels",
+      "libelle": "Texte dans les visuels : seulement s'il est utile, lisible, 20 % de l'image au plus ; contraste AA (4,5:1) retenu par le kit d'après WCAG.",
+      "valeurs": {"texte_max_pct": 20, "contraste_min": 4.5},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9866151",
+      "utilisee_par": "contraintes.captures.texte_max_pct, contraintes.contraste_min",
+      "a_confirmer": "Le plafond de 20 % et le seuil de contraste sont des choix prudents du kit ; Google ne publie pas toujours de chiffre."
+    },
+    {
+      "id": "metadonnees",
+      "libelle": "Fiche : nom de l'appli 30 caractères au plus, description courte 80, description complète 4 000 ; ni classement, ni promotion, ni appel à l'action, ni mention de Google dans le nom, l'icône ou les visuels.",
+      "valeurs": {"nom_max": 30, "court_max": 80, "long_max": 4000},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9898842",
+      "utilisee_par": "fiche.limites"
+    },
+    {
+      "id": "texte_alternatif",
+      "libelle": "Texte alternatif : un par visuel, 140 caractères au plus, sans « image de » ni « photo de ».",
+      "valeurs": {"alt_max": 140},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9866151",
+      "utilisee_par": "contraintes.alt_max",
+      "a_confirmer": "La limite de 140 caractères est reprise de la Play Console au moment de l'écriture ; à reconfirmer."
+    },
+    {
+      "id": "barre_etat",
+      "libelle": "Barre d'état des captures : heure figée, signal et Wi-Fi pleins, batterie pleine, sans opérateur ni notification.",
+      "valeurs": {"heure": "9:41", "batterie": "pleine", "operateur": false, "notification": false},
+      "source": "https://support.google.com/googleplay/android-developer/answer/9866151",
+      "utilisee_par": "barre_etat"
+    }
+  ]
+}

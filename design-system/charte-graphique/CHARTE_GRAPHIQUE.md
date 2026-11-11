@@ -1,6 +1,6 @@
-# Charte graphique Xomiton — v1.0
+# Charte graphique Xomiton — v1.1
 
-Version 1.0 · 8 octobre 2026 · Référentiel de l'identité visuelle de Xomiton, *espace safe d'apprentissage et d'appui holistique* pour filles, femmes et personnes LBTQ+.
+Version 1.1 · 28 octobre 2026 (1.0 : 8 octobre 2026 ; 1.1 : ajout du §7.1 Photographie et illustrations, écrans d'ouverture) · Référentiel de l'identité visuelle de Xomiton, *espace safe d'apprentissage et d'appui holistique* pour filles, femmes et personnes LBTQ+.
 Modèle de structure : la charte *Human First* (règle prioritaire, valeurs chiffrées opposables, interdits, gouvernance). Voir `../research/ANALYSE_CHARTES_EXEMPLES.md`.
 
 ## Préambule
@@ -21,7 +21,7 @@ Les valeurs chiffrées (rapports de contraste, tailles minimales, durées) sont 
 | **Sûr** | peu d'éléments par écran, hiérarchie nette, bleu stable pour agir, rouge réservé à l'attention |
 | **Clair** | titres Montserrat marqués, texte Arial lisible, phrases courtes (voir `xomiton_implementation/11`) |
 | **Inclusif** | personnages divers, aucun stéréotype, écriture inclusive homogène, accessibilité WCAG 2.2 AA |
-| **Discret** | « Quitter ce site », titre d'onglet neutre possible, aucune donnée sensible à l'écran de verrouillage |
+| **Discret** | Titre d'onglet neutre possible, aucune donnée sensible à l'écran de verrouillage |
 
 ## 2. Logo
 
@@ -114,11 +114,29 @@ Breakpoints : Mobile < 768, Tablet 768-991, Laptop 992-1199, Desktop ≥ 1200 (`
 - **Photographie** : seulement avec consentement écrit et libre de droits ; **jamais** de photographie identifiable de personnes ayant subi des violences ni de mise en scène de violence ; cadrage chaleureux, lumière naturelle ; voile garantissant 4,5:1 sous tout texte.
 - **Cartes et données** : voir `xomiton_implementation/06 §10` (palette catégorielle daltonien-safe, étiquettes directes, cellules < 5 masquées).
 
+### 7.1 Photographie et illustrations, écrans d'ouverture
+Visuels fournis par le client et rangés dans `assets/` (voir `assets/MANIFEST.json`) : 4 illustrations (`assets/illustrations/`), 4 photographies de splash portrait (`assets/splash/`) et 2 références à ne pas publier (`assets/splash/references-a-eviter/`). **Droits d'image : licence d'usage commercial confirmée par le client le 2026-10-28, preuve archivée hors dépôt.**
+
+| Règle | Valeur |
+|---|---|
+| **Cadrage** | Portrait **9:16** pour le splash, regard dans le tiers supérieur et texte dans le tiers inférieur ; paysage 3:2 ou 16:9 pour bandeaux et cartes, sujet gardé d'un côté pour laisser une zone calme. Ne jamais couper un visage ni une main. Largeur minimale 675 px (écran), 2400 px à produire pour l'impression. |
+| **Traitement** | Couleurs naturelles chaudes, retouche limitée à ±10 % (exposition, contraste), pas de filtre ni de recoloration, pas de lissage de peau. WebP qualité 78-82, sans EXIF, 100 Ko au plus par image (splash : 900 px de large au plus). |
+| **Dégradé de lisibilité** | Sous tout texte sur photographie : dégradé encre (`rgb(8 10 30)`) de 88 % en bas, **au moins 62 % d'opacité jusqu'à 45 % de la hauteur** (sous tout le texte), puis 0 % à 72 % : même sur une photographie blanche, le texte blanc garde plus de **4,5:1** (5,6:1 calculé) ; le logo et « Passer » se posent sur une pastille ou une zone calme. |
+| **Ton** | Joie calme, solidarité, dignité, regard vers l'avant ; personnes actrices, jamais en position de victime. Un seul visuel dominant par écran. |
+| **À éviter** | Texte incrusté (surtout en anglais : non traduisible, non lu par les lecteurs d'écran) ; nudité ; bâillons, scotch, mains sur la bouche, mise en scène de violence ou de détresse ; arc-en-ciel décoratif sur les écrans de signalement, de SOS et de dossier ; logos ou pastilles de plateformes de banque d'images ; image générée par IA présentée comme une vraie personne. |
+| **Accessibilité** | `alt` obligatoire et descriptif (sujet, geste, lieu), `alt=""` seulement si l'image est purement décorative ; contraste du texte par-dessus mesuré, pas estimé ; aucun défilement automatique ; `prefers-reduced-motion` respecté ; aucune information portée par l'image seule. |
+| **Mode discret** | L'écran d'ouverture devient neutre : logo sur fond uni, sans photographie ni drapeau. Le mode discret se propose dès la première ouverture ; il remplace aussi les visuels des notifications et de l'aperçu de partage. |
+| **Consentement** | Aucune photographie de personne identifiable pour un contenu sensible (violence, santé, signalement, SOS) sans consentement écrit, libre et retirable ; ces visuels illustrent l'esprit de la communauté, jamais une membre ou une victime réelle. |
+
+Statut des visuels : `splash-paillettes-drapeau`, `splash-couple-etreinte-drapeau`, `splash-regard-lumiere-chaude`, `splash-lumiere-doree-drapeau` sont des **alternatives** au carrousel actuel (quatre diapositives, 247 Ko ; plafond 700 Ko) ; `design-system-3` et `splash-3` sont signalées « Ai » (générées par IA) ; `splash-4` (texte incrusté et nudité) et `splash-5` (bouches scotchées) sont écartées de l'onboarding. Les pastilles de la plateforme source ont été retirées par recadrage du bas, sans retouche.
+
+### 7.2 Visuels de la fiche Google Play
+Image de présentation (1024 × 500) et 8 captures (1080 × 1920) rangées dans `assets/playstore/`, produites par `docs/playstore/build_playstore.py` à partir des jetons et de l'interface réelle du prototype mobile. Règles : fond en dégradé de jetons (bleu, violet, ciel ; rouge réservé à l'interface), un titre court en Montserrat 800 en blanc (contraste mesuré ≥ 4,5:1, texte ajouté ≤ 20 % de l'image), logo blanc monochrome, cadre d'appareil générique, aucune photographie, aucun drapeau arc-en-ciel, aucun appel à l'action ni mot promotionnel. **Discrétion** : nom visible neutre (« Xomiton : écoute et sécurité »), valeur annoncée = écoute, sécurité, communauté, ressources, jamais une catégorie de personnes. Détail, texte alternatif et contrôles : `docs/playstore/PUBLICATION_PLAY_STORE.md`. Le PDF de la charte n'est pas régénéré.
+
 ## 8. Mouvement et son
 Durées : 120 ms (retours), 200 ms (transitions), 300 ms (panneaux). `prefers-reduced-motion` : toute animation supprimée. Aucun clignotement. Le son n'existe que pour l'**alerte sonore par cloche** (SOS et cas critiques destinés aux agent·e·s concerné·e·s), jamais en lecture automatique pour le public, toujours doublé d'un signal visuel et d'une vibration.
 
 ## 9. Sécurité visuelle
-- Bouton **« Quitter ce site »** toujours visible sur mobile (haut de page) et accessible au clavier (`Échap` deux fois).
 - **SOS** : cercle rouge de 64 px, libellé « SOS », maintien 2 s avec anneau de progression, annulation possible pendant 5 s ; alternative sans maintien : double appui puis confirmation.
 - Option **mode discret** : nom et icône neutres de l'application installée, titre d'onglet générique, pas de notification explicite sur écran verrouillé.
 - Aucune couleur seule ne porte l'information (urgence = couleur + icône + mot).

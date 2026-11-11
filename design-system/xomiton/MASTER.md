@@ -4,7 +4,7 @@
 > Généré avec la méthode du skill *ui-ux-pro-max* (recherche `--design-system` : motif « Feature-Rich Showcase », style « Vibrant & Block-based »), **puis adapté** : la palette rose/bleu et les polices proposées par l'outil sont remplacées par la marque Xomiton (bleu `#0433C3`, rouge `#E30E0E`, Montserrat + Arial). Les règles retenues de l'outil : contrastes 4,5:1, focus visible, `prefers-reduced-motion`, cibles 44 px, 4 gabarits de test, pas d'émoji comme icône, `cursor: pointer` sur le cliquable.
 
 ## 1. Pile et règle de dépendance
-Laravel 12 · Livewire 3 · Alpine 3 · **Bootstrap 5.3.3 (thème Social) comme unique framework CSS** · Bootstrap Icons. Pas de Tailwind (ADR-03). Composants = **composants Blade anonymes `x-*`** (`resources/views/components/`), jamais d'`@include` pour du réutilisable ; état visuel local en Alpine, état serveur en Livewire.
+Laravel 12 · Livewire 3 · Alpine 3 · **Bootstrap 5.3.3 (thème Social) comme unique framework CSS** · Bootstrap Icons. Pas de Tailwind (ADR-03). Espace membre et pair éducateur·rice : **Vue 3 + Inertia.js** (D9), composants `Xm*` au HTML identique aux `x-*`. Composants = **composants Blade anonymes `x-*`** (`resources/views/components/`), jamais d'`@include` pour du réutilisable ; état visuel local en Alpine, état serveur en Livewire.
 Ordre de chargement CSS : `style.css` (Social) → `tokens.css` → `social-xomiton.css` → CSS de page éventuel.
 
 ## 2. Couleurs (variables)
@@ -28,7 +28,7 @@ Base 4 px (`--xm-space-1..9`) · rayons 8/16/pastille · cible ≥ 44 px · dur�
 Boutons `btn-primary` (bleu), `btn-secondary` (rouge, **réservé** attention) · `x-card` (`.xm-card`, survol −2 px) · champs 44 px, libellé visible, erreur sous le champ **et** résumé focalisable · badge urgence `.xm-urgency--*` (couleur + icône + mot) · SOS 64 px maintien 2 s · modales à focus piégé, pied fixe, plein écran sur mobile · tableaux → cartes empilées < 768 px.
 
 ## 6. Layouts
-Public : header sticky « verre » + burger/offcanvas < 992 px, hero fluide `min-height: clamp(520px, 78vh, 780px)`, footer 4 colonnes, « Quitter ce site » et SOS en permanence. Connecté : 3 colonnes (nav · contenu · suggestions) ; mobile : barre d'onglets inférieure à 5 entrées max, SOS au centre. Admin : barre latérale repliable, fil d'Ariane, titre + actions de page.
+Public : header sticky « verre » + burger/offcanvas < 992 px, hero fluide `min-height: clamp(520px, 78vh, 780px)`, footer 4 colonnes avec inscription à la newsletter, SOS en permanence. Connecté : 3 colonnes (nav · contenu · suggestions) ; mobile : barre d'onglets inférieure à 5 entrées max, SOS au centre. Admin : barre latérale repliable, fil d'Ariane, titre + actions de page.
 
 ## 7. Accessibilité (obligatoire)
 Contraste AA · focus 3 px décalé 2 px · `scroll-padding-top` 96 px · lien d'évitement · ARIA des modales/onglets/accordéons · pas de test cognitif à la connexion · `aria-live` pour toasts et cloche · alternative visuelle et vibration au son.

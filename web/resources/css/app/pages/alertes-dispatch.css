@@ -1,0 +1,19 @@
+/*
+ * Bloc « Personnes prévenues » (<x-alerts.notified>, P5-03) : cibles tactiles ≥ 44 px (NFR-06), pastille d'initiales.
+ * Jetons et classes du thème seulement ; aucune couleur en dur, aucune animation (signaler-et-sos.md l.3).
+ */
+.xm-notified li {
+  min-height: 44px;
+}
+
+.xm-notified .avatar-img {
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 0.8rem;
+}
+
+.xm-notified .btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}

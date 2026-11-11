@@ -1,0 +1,16 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "declare_strict_types": true,
+        "blank_line_after_opening_tag": true,
+        "ordered_imports": {
+            "sort_algorithm": "alpha"
+        },
+        "fully_qualified_strict_types": true
+    },
+    "exclude": [
+        "bootstrap/cache",
+        "storage",
+        "public/build"
+    ]
+}

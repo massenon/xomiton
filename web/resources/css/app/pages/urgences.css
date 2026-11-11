@@ -1,0 +1,22 @@
+/*
+ * Page /urgences (P4-06 ; prototype urgences.php) : gabarit sobre, aucun mouvement (signaler-et-sos.md), style en
+ * ligne du prototype sorti dans la feuille (barre de progression 6 px, `.vstack > *` non étirés), cibles tactiles de
+ * 44 px pour les btn-sm gardés par fidélité, impression du plan de sécurité. Jetons uniquement.
+ */
+.xm-urgences-page .vstack > * { flex-grow: 0; }
+.xm-urg-call { min-height: var(--xm-target-min, 44px); }
+.xm-urg-call:focus-visible { outline: var(--xm-focus-width) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
+.xm-urg-number { overflow-wrap: anywhere; }
+/* Colonne de texte d'une carte en flex : autorise le rétrécissement (numéros longs, noms tronqués). */
+.xm-urg-shrink { min-width: 0; }
+.xm-urg-plan-progress { height: 6px; }
+
+@media (pointer: coarse) {
+  .xm-urg-contact-actions .btn,
+  #plan [data-plan-tools] .btn { min-height: var(--xm-button-min-h, 44px); display: inline-flex; align-items: center; justify-content: center; }
+}
+
+@media print {
+  .xm-urg-banner, #urgences-contacts form { display: none !important; }
+  .xm-urgences-page .card { break-inside: avoid; }
+}

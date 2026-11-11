@@ -40,14 +40,14 @@ KPI : valeur Montserrat 800, libellé, tendance (flèche + texte « +12 % »), l
 ## `<x-sos-button>`
 64 px, rouge, libellé « SOS » (Montserrat 800). Interaction : maintien 2 s (anneau de progression, `data-holding`) → compte à rebours 5 s **annulable** → envoi. Alternatives accessibles : double appui + confirmation, ou activation clavier (`Espace` maintenu ou `Entrée` puis confirmation). Retour : vibration courte, message « Ton alerte est partie » `aria-live="assertive"`. Position fixe en bas à droite (public) ou au centre de la barre d'onglets (mobile). Jamais masqué par un autre élément flottant.
 
-## `<x-quick-exit>` « Quitter ce site »
-Bouton en haut de page (mobile) et dans le header (desktop), `Échap` ×2 déclenche aussi. Action : remplace la page par un site neutre (`location.replace`) et vide les données de session locales non nécessaires.
-
 ## `<x-bell>` cloche
 Icône `bi-bell` + badge numérique, panneau *Alertes · Cas · Messages · Système*. Son : uniquement SOS/cas critiques pour les destinataires concernés, boucle jusqu'à accusé de réception (SOS), volume réglable, autorisation audio demandée à la première utilisation, **alternative visuelle** (bandeau clignotant désactivé en mouvement réduit → bandeau fixe) et **vibration**. Mise à jour par polling Livewire (voir `DECISIONS.md` D7).
 
 ## `<x-toast>`, `<x-empty-state>`, `<x-skeleton>`, `<x-stepper>`, `<x-timeline>`, `<x-avatar>`, `<x-gallery>`, `<x-comic-viewer>`, `<x-player>`
 Toast : `aria-live="polite"` (succès/info) ou `assertive` (erreur), 6 s, fermable, pas d'information unique. État vide : illustration + une phrase + une action. Squelettes pour listes et cartes (évite le décalage de mise en page). Stepper : étapes numérotées avec étape courante `aria-current="step"`, sauvegarde à chaque étape. Timeline : chronologie d'un cas (note interne/partagée, changements de statut). Visionneuse de BD : planche par planche, swipe, zoom, plein écran, `alt` par planche. Lecteur : Plyr avec sous-titres.
+
+## Newsletter `<x-newsletter-form>`
+Deux variantes (P4-07) : `footer` (pied de page sombre, champ + bouton en ligne, libellé masqué) et `page` (`/newsletter`, `<x-field>` à libellés visibles, centres d'intérêt facultatifs, `<x-error-summary>`). Consentement explicite jamais pré-coché avec lien vers la confidentialité, pot de miel `website` masqué, retour à la page d'origine. Erreurs et saisie affichées par le seul formulaire envoyé ; alerte d'erreur ou « trop rapide » focalisée au chargement. Vous.
 
 ## Images `<x-img>`
 Refuse le rendu sans `alt` ; accepte `title`, `width`, `height` ; `loading="lazy"` sauf image LCP (`fetchpriority="high"`) ; `srcset` AVIF/WebP + repli ; décorative : `alt=""` + `aria-hidden`.

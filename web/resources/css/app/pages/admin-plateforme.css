@@ -1,0 +1,14 @@
+/*
+ * Administration de la plateforme, partie 1 (P12-01, P12-02, P12-06) : Utilisateurs & rôles, Inscriptions, Modération.
+ * Presque tout vient de Bootstrap et des composants x-admin.* ; ici seulement ce qui leur manque, en jetons --xm-*.
+ */
+.xm-users .min-w-0,
+.xm-registrations .min-w-0,
+.xm-moderation .min-w-0 { min-width: 0; }
+
+/* Liste des mots interdits : défile au lieu d'allonger la colonne latérale. */
+.xm-mod-words { max-height: 20rem; overflow-y: auto; }
+
+/* Matrice des permissions : première colonne lisible, icônes centrées. */
+#xmUsersMatrix th[scope="row"] { min-width: 14rem; }
+#xmUsersMatrix td { width: 7rem; }

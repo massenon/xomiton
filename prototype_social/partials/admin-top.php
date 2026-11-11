@@ -10,7 +10,6 @@ $notifUnread = count(array_filter($notifs, fn($nt) => !$nt['read']));
 $adminPage = $adminPage ?? '';
 $alertNew = count(array_filter(store_all('alertes'), fn($a) => $a['status'] === 'nouveau'));
 $pendingUsers = count(array_filter(store_all('users'), fn($a) => $a['status'] === 'en_attente'));
-$lowStock = count(array_filter(store_all('stock'), fn($s) => $s['qty'] < $s['min']));
 $menu = [
     'Pilotage' => [
         ['index', 'bi-speedometer2', 'Tableau de bord'],
@@ -22,7 +21,6 @@ $menu = [
         ['registres', 'bi-journal-bookmark', 'Registres numériques'],
         ['fiches', 'bi-file-earmark-medical', 'Fiches VBG / VDH'],
         ['suivi', 'bi-person-heart', 'Suivi des victimes'],
-        ['stock', 'bi-box-seam', 'Gestion de stock', $lowStock, 'warning'],
         ['annuaire', 'bi-person-lines-fill', 'Annuaire dynamique'],
         ['validation', 'bi-patch-check', 'Règles de validation'],
     ],
@@ -30,6 +28,7 @@ $menu = [
         ['utilisateurs', 'bi-people', 'Utilisateurs & rôles', $pendingUsers, 'primary'],
         ['inscriptions', 'bi-person-plus', 'Inscriptions (on/off)'],
         ['contenu', 'bi-journal-text', 'Contenu : thématiques & ressources'],
+        ['newsletter', 'bi-envelope-paper', 'Newsletter'],
         ['ccc', 'bi-collection-play', 'Outils CCC'],
         ['reseau', 'bi-diagram-3', 'Réseau social'],
         ['moderation', 'bi-shield-check', 'Modération'],
@@ -39,6 +38,7 @@ $menu = [
     'Système' => [
         ['synchronisation', 'bi-cloud-arrow-up', 'Hors connexion & synchro'],
         ['mises-a-jour', 'bi-arrow-repeat', 'Mises à jour & optimisation'],
+        ['emails', 'bi-envelope-at', 'Templates e-mails'],
         ['parametres', 'bi-gear', 'Paramètres'],
         ['journal', 'bi-clock-history', 'Journal d’audit'],
     ],
@@ -50,6 +50,7 @@ $menu = [
 	<?php include __DIR__ . '/title-meta.php'; ?>
 	<?php include __DIR__ . '/head-css.php'; ?>
 	<script src="<?= BASE ?>assets/vendor/chartjs/chart.umd.min.js"></script>
+	<?= $adminHead ?? '' ?>
 </head>
 <body class="xm-admin">
 <div class="xm-offline-bar" id="xmOfflineBar"><i class="bi bi-wifi-off me-1"></i> Hors connexion — les modifications seront synchronisées au retour du réseau.</div>
@@ -69,8 +70,8 @@ $menu = [
 		<?php endforeach; ?>
 	<?php endforeach; ?>
 	<div class="group">Raccourcis</div>
-	<a class="item" href="<?= BASE ?>index.php"><i class="bi bi-box-arrow-up-right"></i><span>Voir le site membre</span></a>
-	<a class="item" href="<?= BASE ?>landing.php" target="_blank"><i class="bi bi-globe2"></i><span>Page d’accueil publique</span></a>
+	<a class="item" href="<?= BASE ?>fil.php"><i class="bi bi-box-arrow-up-right"></i><span>Voir le site membre</span></a>
+	<a class="item" href="<?= BASE ?>index.php" target="_blank"><i class="bi bi-globe2"></i><span>Page d’accueil publique</span></a>
 	<a class="item" href="<?= BASE ?>logout.php"><i class="bi bi-power"></i><span>Se déconnecter</span></a>
 </aside>
 

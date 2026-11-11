@@ -13,7 +13,7 @@ Header START -->
 
 	<nav class="navbar navbar-expand-lg <?= isset($navClass) ? $navClass : '' ?>">
 		<div class="container<?= isset($divClass) ? $divClass : '' ?>">
-			<a class="navbar-brand" href="<?= BASE ?>index.php">
+			<a class="navbar-brand" href="<?= BASE ?>fil.php">
 				<img class="light-mode-item navbar-brand-item" src="<?= BASE ?>assets/images/logo.svg" alt="Xomiton, logo (mode clair)" title="Xomiton">
 				<img class="dark-mode-item navbar-brand-item" src="<?= BASE ?>assets/images/logo-dark.svg" alt="Xomiton, logo (mode sombre)" title="Xomiton">
 			</a>
@@ -37,7 +37,7 @@ Header START -->
 				<?php endif; ?>
 
 				<ul class="navbar-nav navbar-nav-scroll <?= isset($navCenter) ? 'mx-auto' : 'ms-auto' ?>">
-					<li class="nav-item"><a class="nav-link <?= $nav === 'fil' ? 'active' : '' ?>" href="<?= BASE ?>index.php">Fil</a></li>
+					<li class="nav-item"><a class="nav-link <?= $nav === 'fil' ? 'active' : '' ?>" href="<?= BASE ?>fil.php">Fil</a></li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="menuApprendre" data-bs-toggle="dropdown" aria-expanded="false">Apprendre</a>
 						<ul class="dropdown-menu" aria-labelledby="menuApprendre">

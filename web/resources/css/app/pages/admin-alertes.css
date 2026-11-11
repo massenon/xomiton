@@ -1,0 +1,19 @@
+/*
+ * Alertes & signalements /admin/alertes (P10-05) : filet de priorité à gauche de chaque ligne (prototype
+ * `border-left:4px solid`, rouge critique, ambre haute) et historique de la modale « Détail ».
+ */
+.xm-alert-row > td:first-child { border-left: 4px solid transparent; }
+.xm-alert-row--critique > td:first-child { border-left-color: var(--xm-danger); }
+.xm-alert-row--haute > td:first-child { border-left-color: var(--xm-warning); }
+.xm-alert-row--normale > td:first-child { border-left-color: var(--xm-border); }
+@media (max-width: 767.98px) {
+  /* Cartes empilées : le filet porte sur la carte entière, non sur sa première cellule. */
+  .xm-admin-table .xm-table--stack .xm-alert-row { border-left: 4px solid transparent; }
+  .xm-admin-table .xm-table--stack .xm-alert-row--critique { border-left-color: var(--xm-danger); }
+  .xm-admin-table .xm-table--stack .xm-alert-row--haute { border-left-color: var(--xm-warning); }
+  .xm-alert-row > td:first-child { border-left: 0; }
+}
+.xm-alert-timeline__item { overflow-wrap: anywhere; }
+/* Colonne de contenu : jamais plus large que l'écran (le tableau défile dans sa carte, pas la page). */
+.xm-admin-main { min-width: 0; }
+.xm-alerts .xm-table-wrap, .xm-dashboard .xm-table-wrap { overflow-x: auto; }

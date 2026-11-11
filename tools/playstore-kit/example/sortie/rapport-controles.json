@@ -1,0 +1,2188 @@
+{
+ "kit": "playstore-kit",
+ "version_kit": "1.1.0",
+ "application": "Grainette",
+ "langue": "fr",
+ "regles_google": {
+  "version": "2026.11.1",
+  "date_verification": "2026-11-09",
+  "age_jours": 0,
+  "validite_jours": 180,
+  "perimee": false
+ },
+ "avertissements": [],
+ "resultats": [
+  {
+   "visuel": "ensemble",
+   "controle": "nombre de captures",
+   "ok": true,
+   "detail": "8 (attendu 8)"
+  },
+  {
+   "visuel": "tablette-7-portrait",
+   "controle": "nombre de captures de tablette (4 à 8)",
+   "ok": true,
+   "detail": "4"
+  },
+  {
+   "visuel": "tablette-7-paysage",
+   "controle": "nombre de captures de tablette (4 à 8)",
+   "ok": true,
+   "detail": "4"
+  },
+  {
+   "visuel": "tablette-10-portrait",
+   "controle": "nombre de captures de tablette (4 à 8)",
+   "ok": true,
+   "detail": "4"
+  },
+  {
+   "visuel": "tablette-10-paysage",
+   "controle": "nombre de captures de tablette (4 à 8)",
+   "ok": true,
+   "detail": "4"
+  },
+  {
+   "visuel": "ensemble",
+   "controle": "police chargée depuis un fichier embarqué (rendu indépendant des polices système)",
+   "ok": true,
+   "detail": "29/29 visuels ; "
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1024x500 (attendu 1024x500)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.22 Mo (< 15 Mo)"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.3 %"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 6.20:1"
+  },
+  {
+   "visuel": "feature-graphic",
+   "controle": "couleurs vives (blanc < 25 %, noir < 3 %, saturation moyenne > 0.45)",
+   "ok": true,
+   "detail": "blanc 10 %, noir 0.3 %, saturation 0.62"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.46 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.6 %"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "01-accueil",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.47 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.5 %"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.31:1"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#11805C s=0.87 v=0.50 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "02-plantes",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.40 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "5.8 %"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.53:1"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0E7A5A s=0.89 v=0.48 ; #0D4A3A s=0.82 v=0.29"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "03-a-arroser",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.38 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.1 %"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "04-rappels",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.45 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.3 %"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.12:1"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#12805C s=0.86 v=0.50 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "05-fiche-monstera",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.40 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "7.0 %"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.54:1"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "06-fiche-ficus",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.45 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.4 %"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.24:1"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7E5E s=0.88 v=0.49 ; #0E4A3E s=0.81 v=0.29"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "07-fiche-cactus",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.44 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "ratio 9:16",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "6.3 %"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.68:1"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#117A58 s=0.86 v=0.48 ; #0F4C3C s=0.80 v=0.30"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 76}"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "1 texte(s) recouvert(s) : 9:41"
+  },
+  {
+   "visuel": "08-semaine",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33164 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.34 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.4 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/accueil",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.39 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.5 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.76:1"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/accueil",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "51232 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.32 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.4 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/accueil",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.35 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.5 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.76:1"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/accueil",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "39082 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.32 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.6 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/plantes",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.38 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.7 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.76:1"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/plantes",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "51232 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.32 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.6 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/plantes",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.35 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.7 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.76:1"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/plantes",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "39082 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.32 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.0 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.47:1"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/semaine",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.36 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.1 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.84:1"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/semaine",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "51232 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.28 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.0 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.47:1"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/semaine",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.32 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.1 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.84:1"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/semaine",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "39082 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.31 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.2 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-portrait/rappels",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.34 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.4 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.76:1"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-7-paysage/rappels",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "51232 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1080x1920 (attendu 1080x1920)"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.28 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "ratio 9:16 (portrait)",
+   "ok": true,
+   "detail": "1080/1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1080x1920"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "4.2 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.61:1"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-portrait/rappels",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "33726 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "dimensions",
+   "ok": true,
+   "detail": "1920x1080 (attendu 1920x1080)"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "PNG 24 bits sans alpha",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 2 (2 = RVB), blocs []"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "poids",
+   "ok": true,
+   "detail": "0.31 Mo (< 8 Mo)"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "ratio 16:9 (paysage)",
+   "ok": true,
+   "detail": "1920/1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "côtés de 1080 à 7680 px",
+   "ok": true,
+   "detail": "1920x1080"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "mode Pillow RGB",
+   "ok": true,
+   "detail": "RGB"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "aire du texte <= 20 %",
+   "ok": true,
+   "detail": "3.4 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "contraste texte >= 4.5:1",
+   "ok": true,
+   "detail": "pire cas 5.76:1"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "fond de marque vif (dégradé de couleurs saturées, ni noir ni blanc)",
+   "ok": true,
+   "detail": "#0F7A57 s=0.88 v=0.48 ; #0F4A3A s=0.80 v=0.29"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "barre d'état propre (9:41, signal, Wi-Fi, batterie pleine, aucun opérateur ni notification)",
+   "ok": true,
+   "detail": "{\"heure\": \"9:41\", \"mode\": \"recouvrir\", \"svgs\": 3, \"remplissage\": \"19\", \"texte_barre\": \"9:41\", \"fond\": \"rgb(251, 248, 241)\", \"rayon\": 30}"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "bande supérieure de l'écran : texte de la page entièrement recouvert par la barre propre",
+   "ok": true,
+   "detail": "4 texte(s) recouvert(s) : Orange BJ | 9:41 | 2 messages | 23 %"
+  },
+  {
+   "visuel": "tablette-10-paysage/rappels",
+   "controle": "bande supérieure de l'écran : seule la barre propre est visible (détection de la bande)",
+   "ok": true,
+   "detail": "39082 pixels contrôlés, écart maximal à la couleur de la barre 0 (tolérance 8)"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "dimensions 512x512",
+   "ok": true,
+   "detail": "512x512"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "PNG 32 bits (RVB + alpha, 8 bits par canal)",
+   "ok": true,
+   "detail": "profondeur 8, type de couleur 6 (6 = RVBA)"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "poids <= 1024 Ko",
+   "ok": true,
+   "detail": "7 Ko"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "carré plein : aucun pixel transparent",
+   "ok": true,
+   "detail": "alpha minimal 255"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "pas de coins arrondis (les coins ont la couleur du fond voisin)",
+   "ok": true,
+   "detail": "écart maximal des coins 0 (limite 30)"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "pas d'ombre ni de transparence douce dans la source (<= 0.5 % de pixels)",
+   "ok": true,
+   "detail": "0.0 % de pixels semi-transparents"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "motif visible",
+   "ok": true,
+   "detail": "22146 pixels de motif"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "marge de sécurité : motif dans un cercle de 80 % du côté",
+   "ok": true,
+   "detail": "distance maximale 190.5 px (limite 204.8 px), 0 pixel(s) dehors"
+  },
+  {
+   "visuel": "icon-512",
+   "controle": "contraste motif / fond >= 3.0:1",
+   "ok": true,
+   "detail": "4.96:1"
+  },
+  {
+   "visuel": "feature-graphic/slogan",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "111"
+  },
+  {
+   "visuel": "feature-graphic/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Logo Grainette et slogan « vos plantes, "
+  },
+  {
+   "visuel": "01-accueil/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "80"
+  },
+  {
+   "visuel": "01-accueil/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Accueil : message du jour, tâches à veni"
+  },
+  {
+   "visuel": "01-accueil/puce:arrosage",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-plantes/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-plantes/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "02-plantes/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "80"
+  },
+  {
+   "visuel": "02-plantes/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Liste des six plantes en grille avec leu"
+  },
+  {
+   "visuel": "02-plantes/puce:pieces",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-a-arroser/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-a-arroser/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "03-a-arroser/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "75"
+  },
+  {
+   "visuel": "03-a-arroser/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Liste filtrée sur les plantes à arroser "
+  },
+  {
+   "visuel": "03-a-arroser/puce:filtre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-rappels/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-rappels/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "04-rappels/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "81"
+  },
+  {
+   "visuel": "04-rappels/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Rappels du jour regroupés par moment de "
+  },
+  {
+   "visuel": "04-rappels/puce:fait",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-fiche-monstera/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-fiche-monstera/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "05-fiche-monstera/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "94"
+  },
+  {
+   "visuel": "05-fiche-monstera/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Fiche de la Monstera : arrosage, lumière"
+  },
+  {
+   "visuel": "05-fiche-monstera/puce:eau",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-fiche-ficus/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-fiche-ficus/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "06-fiche-ficus/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "73"
+  },
+  {
+   "visuel": "06-fiche-ficus/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Fiche du Ficus lyrata avec ses besoins e"
+  },
+  {
+   "visuel": "06-fiche-ficus/puce:lumiere",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-fiche-cactus/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-fiche-cactus/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "07-fiche-cactus/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "80"
+  },
+  {
+   "visuel": "07-fiche-cactus/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Fiche du cactus étoilé : arrosage espacé"
+  },
+  {
+   "visuel": "07-fiche-cactus/puce:calme",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-semaine/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-semaine/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "08-semaine/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "77"
+  },
+  {
+   "visuel": "08-semaine/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Vue de la semaine : tâches du jour, de d"
+  },
+  {
+   "visuel": "08-semaine/puce:semaine",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/accueil/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/accueil/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/accueil/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "77"
+  },
+  {
+   "visuel": "tablettes/accueil/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Accueil sur tablette : message du jour, "
+  },
+  {
+   "visuel": "tablettes/plantes/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/plantes/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/plantes/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "72"
+  },
+  {
+   "visuel": "tablettes/plantes/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Liste des plantes sur tablette, avec leu"
+  },
+  {
+   "visuel": "tablettes/semaine/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/semaine/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/semaine/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "58"
+  },
+  {
+   "visuel": "tablettes/semaine/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Vue de la semaine sur tablette : tâches "
+  },
+  {
+   "visuel": "tablettes/rappels/titre",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/rappels/alt",
+   "controle": "mots interdits",
+   "ok": true,
+   "detail": "aucun"
+  },
+  {
+   "visuel": "tablettes/rappels/alt",
+   "controle": "alt <= 140 caractères",
+   "ok": true,
+   "detail": "52"
+  },
+  {
+   "visuel": "tablettes/rappels/alt",
+   "controle": "alt sans « image de »",
+   "ok": true,
+   "detail": "Rappels d'arrosage sur tablette avec leu"
+  }
+ ]
+}

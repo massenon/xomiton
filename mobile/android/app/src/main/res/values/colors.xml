@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bleu de l'icône d'application (design-system/logo/icone-appli-bleu.svg). -->
+    <color name="ic_launcher_background">#0433C3</color>
+    <!-- Fond de l'écran de démarrage = fond de l'application en thème clair (xm_tokens.dart). -->
+    <color name="splash_background">#FBF7FA</color>
+</resources>

@@ -1,0 +1,15 @@
+/*
+ * Annuaire membre `/annuaire` (lot annuaire-membre, P8-12 ; prototype annuaire.php l.73-78) : carte schématique du
+ * Bénin — fond dégradé du prototype (`.xm-map`), contour SVG (resources/js/directory/map.ts) aux proportions de la
+ * vue 160 × 300, pastilles par département posées en pourcentage, cible de 24 px au moins (WCAG 2.5.8) et anneau de
+ * focus des jetons. Jetons uniquement.
+ */
+.xm-dir-map { display: flex; flex-direction: column; justify-content: center; height: 100%; padding: .5rem; border-radius: .5rem; background: linear-gradient(135deg, var(--xm-primary-subtle), var(--xm-secondary-subtle)); }
+.xm-dir-map__canvas { position: relative; height: 300px; max-width: 100%; margin-inline: auto; }
+.xm-dir-map__shape { position: absolute; inset: 0; width: 100%; height: 100%; }
+.xm-dir-map__shape path { fill: var(--xm-surface); stroke: var(--xm-primary); stroke-width: 1.5; stroke-linejoin: round; }
+.xm-dir-map__pin { position: absolute; transform: translate(-50%, -50%); }
+.xm-dir-map__pin .badge { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; }
+.xm-dir-map__pin .badge:focus-visible { outline: 3px solid var(--xm-focus-ring); outline-offset: 2px; }
+/* Texte de la carte de contact : se coupe au lieu de déborder (nom ou organisation longs). */
+.xm-dir-shrink { min-width: 0; }

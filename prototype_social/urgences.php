@@ -52,7 +52,6 @@ $plan = [
 
 					<div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
 						<div><h1 class="h3 mb-0">Contacts d’urgence</h1><p class="text-secondary mb-0">Appelez directement depuis votre téléphone. Appels gratuits ou à tarif réduit selon l’opérateur.</p></div>
-						<button class="btn btn-dark" type="button" id="quickExit"><i class="bi bi-box-arrow-up-right me-1"></i>Quitter rapidement</button>
 					</div>
 
 					<!-- Boutons d'appel -->
@@ -131,10 +130,8 @@ $plan = [
 		</div>
 	</main>
 	<?php if (!$pub) include("partials/modals.php"); include("partials/footer-scripts.php"); ?>
-	<?php if ($pub) x_public_quick_exit(); ?>
 	<script>
 	(function () {
-		document.getElementById('quickExit').addEventListener('click', function () { window.location.replace('https://www.google.com'); });
 		var K = 'xm_plan_v1', st = {};
 		try { st = JSON.parse(localStorage.getItem(K) || '{}'); } catch (e) {}
 		var boxes = document.querySelectorAll('#planList input');

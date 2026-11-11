@@ -72,7 +72,7 @@ $sections = [
 				<div class="d-flex flex-wrap gap-2">
 					<a class="btn btn-danger" href="signalement.php"><i class="bi bi-megaphone me-1"></i>Signaler</a>
 					<a class="btn btn-primary-soft" href="help.php">Centre d’aide</a>
-					<a class="btn btn-light" href="landing.php">Retour à l’accueil</a>
+					<a class="btn btn-light" href="index.php">Retour à l’accueil</a>
 				</div>
 			</div></div>
 		</div>

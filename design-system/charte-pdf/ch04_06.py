@@ -82,7 +82,7 @@ def build(doc):
     rows = ''.join(f'<tr><td class="mt" style="font:800 8pt Montserrat;width:30mm">{a}</td><td>{b}</td><td style="color:#5B5670;width:55mm">{c}</td></tr>' for a, b, c in desig)
     doc.section(C, 'designations', 'Désignations et mentions', 'Designations and labels',
         ['<p>La <b>signature</b> de marque est « Soutenir, informer, protéger. » (titre de la page À propos du site). Elle suit le logo, en Montserrat Bold, sans guillemets, point final inclus.</p>',
-         '<p><b>Mention légale courante</b> : « © 2026 Xomiton. Tous droits réservés. » (déjà présente en pied de page du site). <b>Adresse</b> : xomiton.org pour le site, app.xomiton.org pour l\'application actuelle.</p>'],
+         '<p><b>Mention légale courante</b> : « © 2026 Xomiton. Tous droits réservés. » (déjà présente en pied de page du site). <b>Adresse</b> : xomiton.app pour le site, app.xomiton.app pour l\'application actuelle.</p>'],
         f'<div style="padding:5mm 7mm"><table class="t" style="font-size:8.6pt"><tr><th>Désignation</th><th>Règle d\'emploi</th><th>Exemple</th></tr>{rows}</table>'
         f'<div style="margin-top:6mm;display:flex;gap:8mm;align-items:center;border-top:.25mm solid #e4dce6;padding-top:5mm">{logo_w("couleur", 50)}<div class="mt" style="font:700 10pt Montserrat;color:#1B1630">Soutenir, informer, protéger.</div></div></div>')
 

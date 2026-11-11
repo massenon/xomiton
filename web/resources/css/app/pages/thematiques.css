@@ -1,0 +1,15 @@
+/*
+ * Thématiques `/thematiques` et `/thematiques/{slug}` (P4-02) : style en ligne du prototype sorti dans la feuille
+ * (thematique.php l.102, vignette 88 px des fiches liées), chapeau ouvrant le corps à la taille du `lead fs-6` du
+ * prototype, et cibles tactiles de 44 px (MASTER.md, D-12) pour les btn-sm gardés par fidélité visuelle (filtres,
+ * contacts, liens de « Besoin d’aide ? ») — au pointeur tactile seulement. Jetons uniquement.
+ */
+.xm-th-thumb { width: 88px; }
+
+.xm-th-body > .lead:first-child { font-size: var(--xm-fs-body); }
+
+@media (pointer: coarse) {
+  .xm-th-filters .btn,
+  .xm-th-contacts .btn,
+  .xm-th-links .btn { min-height: var(--xm-button-min-h, 44px); display: inline-flex; align-items: center; }
+}

@@ -1,0 +1,116 @@
+# Décisions à valider — questions Q ouvertes du plan
+
+Source : `IMPLEMENTATION_PLAN.md` §7 (texte complet de chaque question, options et recommandation). Ce tableau ne recopie pas les textes longs. Le plan ne porte pas de colonne « décision par défaut appliquée » : la décision par défaut est celle de la colonne « Recommandation », marquée « Appliqué (par défaut) » dans le code. Une fois tranchée, une question se consigne dans `design-system/DECISIONS.md` (le plan en est l'index, pas la source).
+
+Qui tranche : **Client** (produit, éditorial, juridique, terrain) ou **Technique** (équipe de développement). Urgence : **Bloquant recette** (empêche de tester ou de faire valider), **Avant production**, **Confort** (peut suivre la mise en production).
+
+Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à Q63, Q65, Q69, Q71 sont consignées avec une recommandation appliquée sans marque « à valider » dans le plan ; elles ne figurent pas ici, sauf Q7, Q9, Q37, Q38, Q61 qui dépendent d'un tiers ou du terrain.
+
+## 1. Bloquant recette
+
+| Q | Sujet | Décision par défaut appliquée | Qui | Urgence |
+|---|---|---|---|---|
+| Q7 | Fournisseurs : **tranchée le 28/10/2026** ; **précisée le 29/10/2026 : le push SOS et alertes part aux admins ET aux pairs éducateurs** — push FCM (gratuit), SMS Vonage ou Twilio (`SMS_DRIVER`), assistant Gemini **désactivé** (`ASSISTANT_LLM_ENABLED=false`) | Pilotes codés et testés (HTTP simulé) ; défaut `log` / `kb`. **À fournir par le client** : projet Firebase + JSON du compte de service + `google-services.json` / `GoogleService-Info.plist` ; compte Vonage ou Twilio (clés, expéditeur autorisé au Bénin, devis local à confirmer) ; clé Gemini. **Conditions d'activation du LLM en production : avis juridique préalable** (questions pouvant contenir des données de santé ou de violences envoyées à un tiers hors UE ; accord de traitement (DPA) Google, région de traitement, durée de conservation, information des membres, base légale/consentement), puis recette des garde-fous | Client (comptes, avis juridique), Technique (activation) | Bloquant recette (push, SMS) ; LLM : jamais activé sans l'avis |
+| Q38 | Périmètre v1 de l'app mobile, onglets, espace pair (P15-09) — **Tranché 2026-10-29** : une seule application et un seul login ; **espace pair dans la v1** (corrige la recommandation « pas d'espace pair en v1 ») ; admin mobile élargi ; une seule version Play ; maquettes à valider avant tout code mobile (voir §4) | 5 onglets dont SOS + onglet « Espace pair » ou « Admin » selon les rôles ; sélecteur d'espace après connexion | Client | Bloquant recette (maquettes à valider) |
+| Q53 | Accueil : sections « chiffres », « témoignages », texte membre connecté | Défaut du lot P4-01 | Client | Bloquant recette |
+| Q54 | Accueil : bande rouge pleine largeur et promesses — **Tranché 2026-10-28** : bande b) fond rouge très clair (`--xm-alert-surface`) + bordure rouge, texte foncé AA clair et sombre, rouge plein réservé au SOS ; section #alerte (`alerte.blade.php`), captures `docs/captures/accueil/` | b) / a) | Client | Bloquant recette |
+| Q16 | Accueil : CTA du hero (« Rejoignez-nous » ou « Créer un compte ») — **Tranché 2026-10-28** : « Créer un compte » (hero de l'accueil) | Ordre de la vitrine, CTA à trancher | Client | Bloquant recette |
+| Q18 | Pages publiques et gabarit sobre vues par un·e membre connecté·e | Défaut du lot P4 | Client | Bloquant recette |
+| Q14 / Q87 | Barre latérale admin : correspondance des 24 écrans vers 8 groupes | `AdminNavigation::GROUPS` | Client | Bloquant recette |
+| Q59 | Contacts d'urgence hors connexion : drapeau `is_emergency` | a) appliqué (migration + admin + import) | Client | Bloquant recette |
+| Q58 | 18 questions FAQ semées par `ThematiqueFaqSeeder` — **Tranché 2026-10-28** : FAQ maintenue (déjà validée) | Brouillon en production | Client (éditorial) | Bloquant recette |
+| Q64 | Quiz vrai / faux sur `/violences` (contenu santé) — **Tranché 2026-10-28** : quiz maintenu (déjà validé) | Quiz de 5 affirmations écrit pour le lot | Client (santé) | Bloquant recette |
+| Q56 | Registre (tu / vous) de l'offcanvas de l'assistant — **Tranché 2026-10-28** : tu dans l'assistant et le SOS, vous sur le site public | Vous (`VOICE_AND_TONE.md` §3) | Client (éditorial) | Bloquant recette |
+| Q10 | Types de membre : allié·e / personne ressource | c) membre / pair, `ally_status` facultatif | Client | Bloquant recette |
+| Q89 | Lien Google Maps dans le détail d'une alerte (position du SOS) — **Tranché 2026-10-28** : lien Google Maps gardé avec avertissement | Lien explicite au clic, signalé | Client | Bloquant recette |
+| Q61 | Délai d'envoi d'un SOS sans GPS (case « Partager ma position ») — **Tranché 2026-10-28** : 8 s au total, puis envoi sans position, sans second délai | Délais du lot `sos` | Client (terrain) | Bloquant recette |
+
+## 2. Avant production
+
+| Q | Sujet | Décision par défaut appliquée | Qui | Urgence |
+|---|---|---|---|---|
+| Q68 | Âge minimal d'inscription (15 ans du prototype) — **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` | **Appliqué** : case obligatoire « J'ai 15 ans ou plus » (web + API `age_confirmed` + Flutter), aucune date de naissance, horodatage seul (consentement `age_confirmed`) | Client + conseil juridique | Avant production |
+| Q67 | Textes légaux (confidentialité) et vote « utile » du centre d'aide | Textes du lot P4-05 / P4-08 | Client + conseil juridique | Avant production |
+| Q9 | Stockage externe des sauvegardes | Disque configurable `BACKUP_DISK`, mysqldump, JSON en repli | Client (hébergeur), Technique | Avant production |
+| Q57 | Notifications d'alerte : destinataires, SMS, `mail_outbox` en clair — **Tranché 2026-10-28** : purge du corps dès l'envoi ; échecs conservés 7 jours au plus | Appliqué par défaut (références relues à chaque tentative) | Technique | Avant production |
+| Q50 | Accusé de réception par lien signé (POST, limiteur dédié, lien dans un SMS) | b) appliqué ; variable `{{acknowledge_link}}` à trancher | Technique | Avant production |
+| Q66 | Newsletter : confirmation par bouton (un clic de plus) | POST de confirmation | Client | Avant production |
+| Q37 | Code PIN local et mode discret (iOS : icône seulement) | PIN haché local, seul `pin_enabled` synchronisé | Client | Avant production |
+| Q85 | Maintenance : permission dédiée, écart à `ROLE_ET_PERMISSIONS.md` §3 | Permission dédiée, admin en lecture | Technique | Avant production |
+| Q74 | Messagerie : lecture du message signalé par la modération, filtre de mots | Lecture du seul message signalé ; **filtre minimal serveur implémenté (IOS-10, D-IOS-9 révise « pas de filtre ») ; liste de départ à valider par la modération et le conseil** | Client | Avant production |
+| Q94 | Admin système : droits admin / superadmin, résolution des conflits | Admin lit, superadmin écrit ; conflit écrit selon les règles | Technique | Avant production |
+| Q91 | Inscriptions : validation manuelle « tous » sans restriction d'accès | `reg_manual_validation` (`peers` par défaut) ; restrictions à définir (Q26) | Client | Avant production |
+| Q92 | Registres : archivage logique, dossier créé au nom de l'admin | Appliqué | Client | Avant production |
+| Q93 | Contenu : méta SEO 40 à 50 caractères, modérateur et réseau | Appliqué | Technique | Avant production |
+| Q88 | Espace pair : « de garde », brouillon de collecte | Plage `focal` en cours ; brouillon 1 jour | Client | Avant production |
+| Q86 | Synchro : clés d'idempotence, délai affiché à l'astreinte | uuid du lot rejoué | Technique | Avant production |
+| Q90 | Indicateurs : IND-12 = SOS avec position | Appliqué | Client | Avant production |
+| Q82 | Annuaire membre : préchargement hors ligne de `/annuaire` | Réservé aux membres | Technique | Avant production |
+| Q84 | Recherche membre : périmètre, terme hors de l'adresse en mode discret | Ressources et contacts seulement | Client | Avant production |
+| Q83 | Assistant : réponse de crise calculée dans la page | Aucun appel réseau pour la crise | Client | Avant production |
+| Q81 | Mot de passe changé : déconnexion des autres appareils | Toujours | Client | Avant production |
+| Q80 | Profil : visibilité, champ sensible jamais public sans choix | Appliqué | Client | Avant production |
+
+## 3. Confort
+
+| Q | Sujet | Décision par défaut appliquée | Qui | Urgence |
+|---|---|---|---|---|
+| Q70 | API `me/*` : thème `system`, newsletter sans fréquence, intérêts séparés | `system` enregistré `auto` ; fréquence absente | Client | Confort |
+| Q72 | Fil : un nouveau vote remplace le précédent | Remplacement | Client | Confort |
+| Q73 | Lecture mobile : `thematiques` et `ressources` en `conditional` | ETag, `private, no-cache` | Technique | Confort |
+| Q75 | Groupes privés : invisibles mais demande possible | Conciliation FR-SOC-05 | Client | Confort |
+| Q76 | « Signaler cette publication » ouvre la modale (pas `/signaler?post=`) | Modale de modération | Client | Confort |
+| Q77 | Événements : une adresse, deux publics (Vue membre, Blade visiteur) | `InertiaForMembers` | Technique | Confort |
+| Q78 | Forums : permissions | Aucune permission `forums.*` dédiée | Technique | Confort |
+| Q79 | « Suivre » réservé aux profils ouverts au réseau | Appliqué | Client | Confort |
+| Q60 | Ressources : `external_url` en lien seulement en `http(s)` | `url:https` à valider en P12-03 | Technique | Confort |
+
+## 4. Application mobile unique : décisions du 29 octobre 2026
+
+**Tranché 2026-10-29** (détail, effets sur les lots et l'estimation : `PLAN_MOBILE_APP_UNIQUE.md` §10). Référence Q : Q38 (périmètre mobile), Q7 (push), Q68 (âge).
+
+| Réf. | Décision | Statut |
+|---|---|---|
+| D-MOB-1 | **Une seule application**, un seul login ; inscription publique = membres seulement ; rôle pair ajouté (invitation ou attribution) ; l'admin est aussi membre | **Tranché 2026-10-29** |
+| D-MOB-2 | Espace pair **dans la v1** (contredit l'ancienne recommandation de Q38, corrigée) | **Tranché 2026-10-29** |
+| D-MOB-3 | Périmètre admin mobile **élargi** : alertes, inscriptions, rôles et invitations, maintenance, notifications, modération essentielle, recherche de membre, astreinte | **Tranché 2026-10-29** |
+| D-MOB-4 | Position du SOS **arrondie** pour les admins, jamais exacte même en intervention | **Tranché 2026-10-29** ; **Tranché 2026-10-29 (recommandation retenue)** : aucune position exacte pour l'admin (vérifié par test) |
+| D-MOB-5 | Conflit 409 **tranché par le pair** (serveur ou mon appareil) | **Tranché 2026-10-29** |
+| D-MOB-10 | Push SOS et alertes vers les **admins ET les pairs** : admins de garde + pairs de la zone, puis **escalade nationale à 5 min** sans accusé (tous les admins et tous les pairs) | **Tranché 2026-10-29** ; **Tranché 2026-10-29 (recommandation retenue)** pour la précision (`peer_recipients = zone`, escalade configurable) |
+| D-MOB-11 | **Une seule version** Play | **Tranché 2026-10-29** |
+| D-MOB-12 | Maquettes **validées par le client avant tout code mobile** | **Tranché 2026-10-29** |
+| D-MOB-14 | Fiche Play : âge 15 ans, pas de tarif, tous les pays, tranches « 16-17 » et « 18+ » seulement, français uniquement | **Tranché 2026-10-29** |
+| D-MOB-6, 7, 8, 9, 13 | PIN obligatoire pair et admin, expiration 14 jours, mode discret par défaut, jeton admin court et confirmation renforcée, nom « Notes » | Recommandation du plan retenue par défaut ; **non contestée** le 29/10/2026, à confirmer au passage des maquettes |
+| D-MOB-15 | Un membre peut **demander** le rôle pair depuis son profil (motif court facultatif, une demande à la fois, décision de l'admin avec motif) | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-16 | Le rôle **admin** ne s'attribue que depuis le **site web** (super-admin) ; jamais depuis l'API mobile | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-17 | Valider manuellement **seulement les inscriptions signalées** (e-mail jetable, inscriptions répétées) ; `reg_manual_validation = all` reste l'interrupteur « tout valider » | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-18 | Âge : **conservé**, application 15 ans, tranches Play 16-17 et 18+, **à valider par le conseil juridique avant publication** ; l'application affiche la règle des 15 ans à l'inscription | **Tranché 2026-10-29 (recommandation retenue)** |
+
+## 5. Application iOS : décisions du 10 novembre 2026
+
+**Tranché 2026-11-10 (recommandation retenue par le client)** pour D-IOS-1 à D-IOS-12 (détail et options : `PLAN_IOS.md` §10). **Réserve** : D-IOS-5 (âge, classification) et D-IOS-8 (chiffrement) restent conditionnées à l'avis écrit du conseil juridique. IOS-00 est fait côté client.
+
+| Réf. | Décision | Statut |
+|---|---|---|
+| D-IOS-1 | iPhone seul à la v1 ; universel plus tard | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-2 | Mac mini + CI macOS | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-3 | Critical Alerts : demander en parallèle sans en dépendre ; v1 en Time Sensitive | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-4 | Mode discret : icône neutre, nom « Xomiton » inchangé | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-5 | Classification d'âge calculée honnêtement ; 15 ans maintenu si le conseil l'accepte, sinon 16 — **application conditionnée à l'avis du conseil** | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-6 | Portrait seul sur iPhone à la v1 | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-7 | Aucune synchro d'arrière-plan à la v1 ; `BGAppRefreshTask` en v1.1 si besoin | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-8 | Chiffrement : avis écrit du conseil avant de répondre à Apple — **application conditionnée à cet avis** | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-9 | **Filtre minimal de contenus côté serveur** (≈ 2 j) ; **révise Q74** (« pas de filtre ») ; chantier ouvert dans RESTE_A_FAIRE.md | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-10 | Android d'abord, iOS 6 à 8 semaines après | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-11 | Compte Apple organisation | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-12 | Liste restreinte de boutiques (Bénin et voisins francophones), UE à décider | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+
+D-IOS-9 révise Q74 : la ligne Q74 ci-dessus (« pas de filtre ») est remplacée par un filtre minimal serveur sur publications, commentaires et messages de groupe. **Implémenté** (lot IOS-10) : la liste de départ est volontairement courte et neutre ; **à valider par la modération et le conseil** (liste réelle, catégories, action par catégorie, liste blanche).
+
+**Modérateur·rices et filtre de contenus : décision client du 2026-11-10.** Les modérateur·rices conservent la gestion de la liste du filtre (mots, catégories, liste blanche, test d'un texte, compteur) : la permission dédiée `moderation.filter` leur est rendue (seeder et migration de données `grant_moderation_filter_to_moderators`), en plus de l'admin et du superadmin. Un compte sans cette permission reçoit 403.
+
+## 6. Lecture
+
+- 14 questions bloquent la recette (surtout contenu et périmètre ; Q38 est tranchée, ses maquettes restent à valider) ; 20 sont à trancher avant la mise en production, dont deux d'ordre juridique (Q67, Q68).
+- Beaucoup de lignes « Appliqué, à valider » (Q70 à Q94) sont des choix techniques déjà livrés : sans réponse, ils restent en vigueur ; seule une contre-décision demande du travail.
+- Pour chaque Q : le détail des options est dans le §7 du plan, à la ligne du même numéro.

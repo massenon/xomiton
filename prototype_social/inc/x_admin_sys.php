@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/x_admin_ui.php';
-/** Aides communes pour les pages d'administration "plateforme & système" (stock, annuaire, utilisateurs, ...). */
+/** Aides communes pour les pages d'administration "plateforme & système" (annuaire, utilisateurs, ...). */
 
 function xa_is_super() { $u = x_user(); return $u && ($u['role'] ?? '') === 'superadmin'; }
 

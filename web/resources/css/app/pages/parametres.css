@@ -1,0 +1,6 @@
+/*
+ * Paramètres /parametres (P8-09, prototype settings.php : menu des sections collant sous l'en-tête, `top:80px`).
+ */
+@media (min-width: 992px) {
+  .xm-settings-nav { position: sticky; top: 80px; }
+}

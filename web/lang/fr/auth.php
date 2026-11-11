@@ -1,0 +1,244 @@
+<?php
+
+declare(strict_types=1);
+
+// Authentification (LOGIN_INSCRPTION_MULTISTEP_USER_INSTRUCTION.md, prototype sign-in.php).
+return [
+    'failed' => 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.',
+    'password' => 'Identifiants incorrects. Vérifie ton e-mail et ton mot de passe.',
+    'throttle' => 'Trop de tentatives. Réessaie dans :seconds secondes.',
+    'pending' => 'Ton compte est en attente de validation par l’équipe Xomiton.',
+    'suspended' => 'Ce compte est suspendu. Contacte-nous : :email',
+    'maintenance' => 'La plateforme est en maintenance. Réessaie dans quelques instants.',
+    // Lot admin-socle (Q30, P13-04) : session fermée après la durée d'inactivité (EnforceIdleTimeout).
+    'session_idle' => 'Ta session a été fermée après une période d’inactivité. Reconnecte-toi.',
+
+    // Tutoiement sur tout le tunnel d'authentification (Q36), y compris la promesse de l'illustration.
+    'side_title' => 'Ton espace safe d’apprentissage et d’appui holistique.',
+    'side_text' => 'Filles et femmes LBTQ+ : retrouve ta communauté bienveillante, des ressources fiables et un soutien confidentiel.',
+
+    'universal_link' => [
+        'invitation' => 'Ouvrez ce lien dans l’application Xomiton, ou connectez-vous / créez votre compte ici.',
+        'alert' => 'Ouvrez ce lien dans l’application Xomiton, ou connectez-vous ici pour accéder à votre espace.',
+        'create_with_invitation' => 'Créer un compte avec cette invitation',
+    ],
+    'login' => [
+        'heading' => 'Bon retour 👋',
+        'intro' => 'Connecte-toi pour accéder à ton espace.',
+        'identifier' => 'E-mail ou pseudonyme',
+        'password' => 'Mot de passe',
+        'show_password' => 'Afficher le mot de passe',
+        'hide_password' => 'Masquer le mot de passe',
+        'remember' => 'Rester connecté·e',
+        'forgot' => 'Mot de passe oublié ?',
+        'submit' => 'Se connecter',
+        'no_account' => 'Pas encore de compte ?',
+        'create_account' => 'Créer un compte',
+        'report_without_account' => 'Signaler (sans compte)',
+        'emergencies' => 'Urgences',
+        // Lot ecrans-web (P4-09, P2-02)
+        'otp_expired' => 'Ta demande de connexion a expiré. Reconnecte-toi.',
+        'welcome_back' => 'Content·e de te revoir !',
+    ],
+
+    // --- Lot templates-otp-auth (P2-02 à P2-05, Q8, Q12, Q13, Q30) : textes des cas d'usage et de la jauge ---
+    'password_strength' => [
+        'empty' => 'Saisis un mot de passe',
+        'too_short' => 'Trop court',
+        'weak' => 'Faible',
+        'medium' => 'Moyen',
+        'strong' => 'Fort',
+        'excellent' => 'Excellent',
+    ],
+    // Préfixe lu par les lecteurs d'écran devant le niveau de la jauge (lot auth-ecrans, P4-09).
+    'password_meter_label' => 'Solidité du mot de passe :',
+    'password_rules' => [
+        'length' => 'Au moins 10 caractères',
+        'uppercase' => 'Une majuscule',
+        'lowercase' => 'Une minuscule',
+        'digit' => 'Un chiffre',
+        'symbol' => 'Un symbole, pour un mot de passe « Excellent »',
+    ],
+    'otp' => [
+        'invalid' => 'Ce code est incorrect ou a expiré. Vérifie le dernier e-mail reçu ou demande un nouveau code.',
+        'too_soon' => 'Un code vient de t’être envoyé. Tu pourras en demander un nouveau dans :seconds secondes.',
+        'rate_limited' => 'Trop de codes demandés pour cette adresse. Réessaie dans :minutes minutes.',
+        'expiry' => ':minutes minutes',
+    ],
+    'invitation_invalid' => 'Ce lien d’invitation n’est plus valable (déjà utilisé, expiré ou annulé). Demande-en un nouveau à l’équipe Xomiton.',
+    'age_confirmation_required' => 'Pour créer ton compte, confirme que tu as :min_age ans ou plus.',
+    'consent_required' => 'Pour créer ton compte, accepte les conditions d’utilisation et la charte, puis la politique de confidentialité.',
+    'registrations_closed' => 'Les inscriptions sont momentanément fermées. Reviens bientôt ou inscris-toi à la newsletter.',
+    'email_not_verified' => 'Confirme ton e-mail pour continuer.',
+    'reset_requested' => 'Si un compte correspond à cette adresse, un code vient d’être envoyé.',
+    'peer_validated' => [
+        'title' => 'Ton compte pair est validé',
+        'body' => 'L’équipe Xomiton a validé ton inscription : l’espace pair et la collecte te sont ouverts.',
+    ],
+
+    // --- Lot ecrans-web (P4-09) : écrans Blade /connexion, /inscription, /code-de-verification, mot de passe ---
+    'layout' => [
+        'home' => 'Xomiton, accueil',
+    ],
+    'register' => [
+        'invitation' => [
+            'banner' => [
+                'pair' => 'Tu as été invité·e à rejoindre l’équipe des pair·es éducateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.',
+                'admin' => 'Tu as été invité·e à rejoindre l’équipe d’administration. Crée ton compte membre : le rôle s’ajoutera à la validation de ton compte.',
+            ],
+        ],
+        'heading' => 'Créer mon compte',
+        'intro' => 'Un espace safe, confidentiel et gratuit. Déjà inscrit·e ?',
+        'sign_in' => 'Se connecter',
+        'side_title' => 'Rejoins une communauté bienveillante.',
+        'side_points' => [
+            'Pseudonyme : ton identité reste protégée',
+            'Ressources et outils disponibles hors connexion',
+            'Soutien psychologique, juridique et médical',
+        ],
+        'steps' => [
+            'account' => 'Compte',
+            'profile' => 'Profil',
+            'security' => 'Sécurité',
+            'consents' => 'Consentements',
+        ],
+        'step_of' => 'Étape :current sur :total',
+        'account' => [
+            'heading' => 'Qui es-tu ?',
+            'pseudo' => 'Pseudonyme',
+            'pseudo_hint' => '3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.',
+            // Version d'une ligne du formulaire web compact (le mobile garde l'aide longue ci-dessus).
+            'pseudo_hint_short' => '3 à 40 : lettres, chiffres, . - _',
+            'email' => 'Adresse e-mail',
+            'email_hint' => 'Pour confirmer ton compte et te renvoyer un code. Jamais partagée.',
+            'email_hint_short' => 'Pour ton code de vérification. Jamais partagée.',
+            'password' => 'Mot de passe',
+            'password_hint' => 'Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.',
+            'password_confirmation' => 'Confirmation',
+            'cgu' => 'J’accepte les :terms et la :charter.',
+            'cgu_terms' => 'conditions d’utilisation',
+            'cgu_charter' => 'charte de la communauté',
+            'privacy' => 'J’ai lu la :policy et j’accepte le traitement de mes données.',
+            'age' => 'J’ai :min_age ans ou plus.',
+            'privacy_policy' => 'politique de confidentialité',
+            'submit' => 'Créer mon compte',
+            'continue' => 'Continuer',
+            'created' => 'Ton compte est créé. Bienvenue sur Xomiton !',
+        ],
+        'profile' => [
+            'heading' => 'Ton profil',
+            'intro' => 'Ces choix servent à te proposer des contenus adaptés. Tu peux tout modifier plus tard.',
+            'pronouns' => 'Pronoms',
+            'pronouns_placeholder' => 'Choisir…',
+            'pronouns_options' => [
+                'elle' => 'Elle',
+                'il' => 'Il',
+                'iel' => 'Iel',
+                'autre' => 'Autre',
+                'nr' => 'Je préfère ne pas le dire',
+            ],
+            'zone' => 'Département',
+            'commune' => 'Commune',
+            'choose' => 'Choisir…',
+            'choose_zone_first' => 'Choisis d’abord un département',
+            'member_type' => 'Type de membre',
+            'member_type_hint' => 'Un compte pair éducateur·rice est validé par l’équipe Xomiton avant l’accès à la collecte ; tu gardes l’accès au reste en attendant.',
+            'member_types' => [
+                'membre' => 'Membre de la communauté',
+                'pair' => 'Pair éducateur·rice',
+            ],
+            'saved' => 'Profil enregistré.',
+        ],
+        'security' => [
+            'heading' => 'Sécurise ton compte',
+            'intro' => 'Un contact de confiance peut être prévenu lors d’un SOS. Le mode discret neutralise les titres et les aperçus.',
+            'trusted_contact_name' => 'Nom du contact de confiance',
+            'trusted_contact_phone' => 'Téléphone du contact de confiance',
+            'trusted_contact_phone_hint' => 'Numéro béninois, par exemple +229 01 97 38 88 47. Chiffré, jamais affiché.',
+            'discreet_mode' => 'Activer le mode discret',
+            'discreet_mode_hint' => 'Titre d’onglet neutre et aperçus masqués sur écran verrouillé.',
+            'saved' => 'Réglages de sécurité enregistrés.',
+        ],
+        'consents' => [
+            'heading' => 'Tes consentements',
+            'intro' => 'Ces deux accords sont facultatifs. Tu peux les retirer à tout moment depuis tes paramètres.',
+            'sensitive_data' => 'J’accepte que Xomiton traite mes données sensibles (identité de genre, orientation) pour adapter les contenus. Elles sont chiffrées et jamais publiques.',
+            'newsletter' => 'Je veux recevoir la lettre d’information par e-mail.',
+            'saved' => 'Consentements enregistrés.',
+        ],
+        'skip' => 'Passer',
+        'skip_step' => 'Passer cette étape',
+        'finish' => 'Terminer',
+        'done' => 'Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.',
+        'closed' => [
+            'title' => 'Les inscriptions sont momentanément fermées',
+            'reopen' => 'Réouverture prévue le :date.',
+            // Neutre : le formulaire partagé x-newsletter-form qui suit vouvoie (newsletter publique, VOICE_AND_TONE §3, Q66).
+            'newsletter_title' => 'Être prévenu·e de la réouverture',
+            'newsletter_text' => 'La newsletter annonce la réouverture des inscriptions, avec les nouvelles ressources et les événements de la communauté.',
+            'sign_in' => 'J’ai déjà un compte : me connecter',
+        ],
+    ],
+    'otp_screen' => [
+        'heading' => 'Saisis ton code',
+        'intro' => 'Un code à :length chiffres vient d’être envoyé à :email. Il est valable :minutes minutes.',
+        'purpose' => [
+            'login' => 'Nous ne reconnaissons pas cet appareil : confirme que c’est bien toi.',
+            'signup' => 'Confirme ton adresse e-mail pour débloquer toutes les fonctionnalités.',
+            'reset' => 'Saisis le code reçu pour choisir un nouveau mot de passe.',
+        ],
+        'code_label' => 'Code à :length chiffres',
+        'digit' => 'Chiffre :n sur :length',
+        'submit' => 'Vérifier',
+        'resend' => 'Renvoyer le code',
+        'resend_in' => 'Renvoyer le code dans :seconds s',
+        'resent' => 'Un nouveau code vient de t’être envoyé.',
+        'not_received' => 'Rien reçu ? Vérifie tes courriers indésirables.',
+        'later' => 'Plus tard',
+        'back_to_login' => 'Retour à la connexion',
+        'verified' => 'Ton e-mail est confirmé. Merci !',
+        'already_verified' => 'Ton e-mail est déjà confirmé.',
+        'nothing_pending' => 'Aucun code n’est attendu pour le moment.',
+    ],
+    'verify_banner' => [
+        'title' => 'Confirme ton e-mail',
+        'text' => 'Tant que ton adresse n’est pas confirmée, tu peux lire, signaler et utiliser le SOS, mais pas publier, commenter ni envoyer de message.',
+        'enter_code' => 'Saisir le code',
+        'resend' => 'Renvoyer le code',
+    ],
+    'forgot' => [
+        'heading' => 'Mot de passe oublié ?',
+        'intro' => 'Indique ton adresse e-mail : tu recevras un code et un lien pour choisir un nouveau mot de passe.',
+        'email' => 'Adresse e-mail',
+        'submit' => 'Envoyer le code',
+        'sent' => 'Si un compte correspond à cette adresse, un code vient d’être envoyé. Pense à vérifier tes courriers indésirables.',
+        'back' => 'Retour à la connexion',
+    ],
+    'reset' => [
+        'heading' => 'Choisis un nouveau mot de passe',
+        'intro' => 'Toutes tes sessions seront fermées : tu te reconnecteras avec ce nouveau mot de passe.',
+        'password' => 'Nouveau mot de passe',
+        'password_confirmation' => 'Confirme le mot de passe',
+        'submit' => 'Enregistrer le mot de passe',
+        'done' => 'Ton mot de passe est modifié. Connecte-toi avec le nouveau.',
+        'link_invalid' => 'Ce lien est invalide ou a expiré. Demande un nouveau code.',
+        'expired' => 'Ta demande a expiré. Recommence depuis « Mot de passe oublié ».',
+    ],
+    'logout' => [
+        'done' => 'Tu es déconnecté·e. À bientôt.',
+    ],
+
+    // --- Lot api-auth (P2-06, P2-12) : réponses JSON de /api/v1 (docs/API.md) ---
+    'api' => [
+        'unauthenticated' => 'Connecte-toi pour continuer.',
+        'forbidden' => 'Tu n’as pas accès à cette action.',
+        'not_found' => 'Cette ressource n’existe pas ou n’est plus disponible.',
+        'method_not_allowed' => 'Cette méthode n’est pas permise ici.',
+        'password_reset_done' => 'Ton mot de passe est modifié. Connecte-toi avec le nouveau.',
+        'email_taken' => 'Un compte existe déjà avec cette adresse e-mail. Connecte-toi ou utilise « Mot de passe oublié ».',
+        'web_session' => 'Navigateur',
+        'attributes' => [
+            'reset_token' => 'code ou lien de réinitialisation',
+        ],
+    ],
+];

@@ -1,0 +1,31 @@
+/*
+ * Profil `/profil`, `/membres/{pseudo}` (lot profil, P8-07, P8-08 ; prototype partials/profile-head.php,
+ * my-profile*.php) : style en ligne du prototype sorti dans la feuille (couverture de 200 px, `h-200px` +
+ * background-image), boutons « Changer la couverture / l'avatar » posés sur l'image, journal d'activité, bandeau du
+ * profil progressif. Jetons uniquement ; cibles tactiles de 44 px.
+ */
+.xm-profile-cover { position: relative; height: 200px; overflow: hidden; border-top-left-radius: inherit; border-top-right-radius: inherit; background: var(--xm-surface-muted); }
+.xm-profile-cover-action { position: absolute; inset-block-end: .75rem; inset-inline-end: .75rem; }
+.xm-profile-avatar { position: relative; display: inline-block; }
+.xm-profile-avatar-action { position: absolute; inset-block-end: .75rem; inset-inline-end: -.25rem; }
+/* Boutons posés sur une image : anneau de focus des jetons, lisible quelle que soit la photo (WCAG 2.4.7). */
+.xm-profile-cover-action .btn:focus-visible,
+.xm-profile-avatar-action .btn:focus-visible { outline: var(--xm-focus-width) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
+.xm-profile-tabs { scrollbar-width: thin; }
+/* « À propos » : icône dans le <dt> (seuls <dt> et <dd> sous le <div> du <dl>), posée en marge comme au prototype. */
+.xm-profile-about-item { position: relative; padding-inline-start: calc(var(--bs-gutter-x, 1.5rem) * .5 + 2.25rem); }
+.xm-profile-about-item > dt > .bi { position: absolute; inset-inline-start: calc(var(--bs-gutter-x, 1.5rem) * .5); inset-block-start: 0; }
+.xm-profile-activity-icon { inline-size: 2.5rem; block-size: 2.5rem; flex-shrink: 0; }
+.xm-profile-progress { block-size: .5rem; }
+.xm-profile-banner { border-inline-start: 4px solid var(--xm-primary); }
+.xm-profile-why { max-inline-size: var(--xm-measure); }
+
+@media (max-width: 575.98px) {
+  .xm-profile-cover { height: 140px; }
+}
+
+@media (pointer: coarse) {
+  .xm-profile-tabs .nav-link,
+  .xm-profile-cover-action .btn,
+  .xm-profile-avatar-action .btn { min-block-size: var(--xm-target-min); min-inline-size: var(--xm-target-min); display: inline-flex; align-items: center; justify-content: center; }
+}

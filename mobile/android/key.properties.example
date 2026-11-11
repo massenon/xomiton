@@ -1,0 +1,9 @@
+# Modèle de android/key.properties : copier en `key.properties` et remplir.
+# Le vrai fichier et le keystore sont ignorés par git : ne JAMAIS les commiter ni les envoyer
+# par e-mail ou messagerie. Les sauvegarder dans un coffre de mots de passe (perdre la clé
+# de téléversement oblige à passer par le support Play).
+storePassword=changez-moi
+keyPassword=changez-moi
+keyAlias=upload
+# Chemin du keystore, relatif au dossier android/ (ou absolu). Exemple Windows : C:/Users/vous/xomiton-upload.jks
+storeFile=../../xomiton-upload.jks

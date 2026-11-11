@@ -1,0 +1,742 @@
+[
+ {
+  "id": 1,
+  "email": "awa.kpadonou@exemple.bj",
+  "name": "Awa Kpadonou",
+  "status": "actif",
+  "tags": [
+   "membre"
+  ],
+  "interests": [
+   "Sécurité numérique",
+   "Ressources",
+   "Santé"
+  ],
+  "source": "admin",
+  "created": "2026-09-28 19:00:00",
+  "confirmed_at": "2026-09-28 22:38:00",
+  "token": "ad5f5255ad972b1b84e3c8c9687e32b0",
+  "consent": "2026-09-28 19:00:00 · formulaire"
+ },
+ {
+  "id": 2,
+  "email": "estelle.dossou@exemple.org",
+  "name": "Estelle Dossou",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Droits",
+   "Ressources",
+   "Événements"
+  ],
+  "source": "footer",
+  "created": "2026-09-26 16:00:00",
+  "confirmed_at": "2026-09-26 19:51:00",
+  "token": "fa6a662ff31870535417e697343c5936",
+  "consent": "2026-09-26 16:00:00 · formulaire"
+ },
+ {
+  "id": 3,
+  "email": "nadege.zinsou@mail.bj",
+  "name": "Nadège Zinsou",
+  "status": "actif",
+  "tags": [
+   "pair"
+  ],
+  "interests": [
+   "Bien-être"
+  ],
+  "source": "footer",
+  "created": "2026-10-08 13:00:00",
+  "confirmed_at": "2026-10-08 13:49:00",
+  "token": "0e96e360fc108de437deab265afb2c52",
+  "consent": "2026-10-08 13:00:00 · formulaire"
+ },
+ {
+  "id": 4,
+  "email": "flora.amoussou@exemple.org",
+  "name": "Flora Amoussou",
+  "status": "en_attente",
+  "tags": [
+   "membre"
+  ],
+  "interests": [
+   "Événements",
+   "Ressources",
+   "Santé"
+  ],
+  "source": "import",
+  "created": "2026-08-23 07:00:00",
+  "confirmed_at": null,
+  "token": "5c249e6faec6add3e1922d4b33a8dc97",
+  "consent": "2026-08-23 07:00:00 · formulaire"
+ },
+ {
+  "id": 5,
+  "email": "chantal.agbo@exemple.org",
+  "name": "Chantal Agbo",
+  "status": "en_attente",
+  "tags": [
+   "bailleur"
+  ],
+  "interests": [
+   "Sécurité numérique"
+  ],
+  "source": "footer",
+  "created": "2026-01-02 09:00:00",
+  "confirmed_at": null,
+  "token": "bc9cf0b73ca8631b6dafb52d4a0dafe2",
+  "consent": "2026-01-02 09:00:00 · formulaire"
+ },
+ {
+  "id": 6,
+  "email": "rosine.dossou@exemple.bj",
+  "name": "Rosine Dossou",
+  "status": "actif",
+  "tags": [
+   "membre"
+  ],
+  "interests": [
+   "Bien-être",
+   "Événements"
+  ],
+  "source": "footer",
+  "created": "2025-11-07 11:00:00",
+  "confirmed_at": "2025-11-07 12:25:00",
+  "token": "a1fd00555b229181c2285d28e6dca386",
+  "consent": "2025-11-07 11:00:00 · formulaire"
+ },
+ {
+  "id": 7,
+  "email": "mariam.ahouansou@exemple.org",
+  "name": "Mariam Ahouansou",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Sécurité numérique",
+   "Droits",
+   "Ressources"
+  ],
+  "source": "footer",
+  "created": "2026-04-13 12:00:00",
+  "confirmed_at": "2026-04-13 15:58:00",
+  "token": "3cd2dbe9a5f0047bbda4f09287a28eb0",
+  "consent": "2026-04-13 12:00:00 · formulaire"
+ },
+ {
+  "id": 8,
+  "email": "prisca.amoussou@exemple.bj",
+  "name": "Prisca Amoussou",
+  "status": "actif",
+  "tags": [
+   "membre"
+  ],
+  "interests": [
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2026-05-25 22:00:00",
+  "confirmed_at": "2026-05-26 01:27:00",
+  "token": "8b3ff3cd86f774d027cbb9c6cd190931",
+  "consent": "2026-05-25 22:00:00 · formulaire"
+ },
+ {
+  "id": 9,
+  "email": "gloria.zinsou@exemple.org",
+  "name": "Gloria Zinsou",
+  "status": "desabonne",
+  "tags": [
+   "pair"
+  ],
+  "interests": [
+   "Événements",
+   "Sécurité numérique",
+   "Ressources"
+  ],
+  "source": "footer",
+  "created": "2026-09-08 12:00:00",
+  "confirmed_at": "2026-09-08 14:17:00",
+  "token": "f0479e71f85cb26d0204a9d83151fde5",
+  "consent": "2026-09-08 12:00:00 · formulaire",
+  "unsub_at": "2026-09-21 12:00:00",
+  "unsub_reason": "Trop d’e-mails"
+ },
+ {
+  "id": 10,
+  "email": "benedicte.zinsou@mail.bj",
+  "name": "Bénédicte Zinsou",
+  "status": "desabonne",
+  "tags": [
+   "pair"
+  ],
+  "interests": [
+   "Ressources"
+  ],
+  "source": "import",
+  "created": "2025-12-16 05:00:00",
+  "confirmed_at": "2025-12-16 05:48:00",
+  "token": "c32a637e988a2f503a3b5a3b19caff08",
+  "consent": "2025-12-16 05:00:00 · formulaire",
+  "unsub_at": "2026-02-07 05:00:00",
+  "unsub_reason": "Trop d’e-mails"
+ },
+ {
+  "id": 11,
+  "email": "sylvie.kpadonou@exemple.org",
+  "name": "Sylvie Kpadonou",
+  "status": "actif",
+  "tags": [
+   "bailleur",
+   "membre"
+  ],
+  "interests": [
+   "Événements",
+   "Ressources"
+  ],
+  "source": "import",
+  "created": "2026-07-24 22:00:00",
+  "confirmed_at": "2026-07-25 02:32:00",
+  "token": "2ba178ed21b1fd5bbd330d44337be7a8",
+  "consent": "2026-07-24 22:00:00 · formulaire"
+ },
+ {
+  "id": 12,
+  "email": "fatou.zinsou@exemple.bj",
+  "name": "Fatou Zinsou",
+  "status": "actif",
+  "tags": [
+   "partenaire"
+  ],
+  "interests": [
+   "Bien-être"
+  ],
+  "source": "import",
+  "created": "2026-01-01 18:00:00",
+  "confirmed_at": "2026-01-01 19:22:00",
+  "token": "d5d6ed7fdf0720e9e8656cbcf78e7d7d",
+  "consent": "2026-01-01 18:00:00 · formulaire"
+ },
+ {
+  "id": 13,
+  "email": "aicha.fanou@mail.bj",
+  "name": "Aïcha Fanou",
+  "status": "desabonne",
+  "tags": [
+   "bailleur"
+  ],
+  "interests": [
+   "Sécurité numérique"
+  ],
+  "source": "footer",
+  "created": "2026-10-09 19:00:00",
+  "confirmed_at": "2026-10-09 23:21:00",
+  "token": "7cb217513a01cd8d33d0aafa508aa1ac",
+  "consent": "2026-10-09 19:00:00 · formulaire",
+  "unsub_at": "2026-11-21 19:00:00",
+  "unsub_reason": "Trop d’e-mails"
+ },
+ {
+  "id": 14,
+  "email": "laure.hounkpatin@exemple.org",
+  "name": "Laure Hounkpatin",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Bien-être",
+   "Événements",
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2026-04-03 13:00:00",
+  "confirmed_at": "2026-04-03 16:07:00",
+  "token": "1ccc5ff36503f05a2ecb1faf0adf7388",
+  "consent": "2026-04-03 13:00:00 · formulaire"
+ },
+ {
+  "id": 15,
+  "email": "ines.gbaguidi@exemple.org",
+  "name": "Inès Gbaguidi",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Sécurité numérique"
+  ],
+  "source": "import",
+  "created": "2026-06-11 17:00:00",
+  "confirmed_at": "2026-06-11 17:37:00",
+  "token": "b86591e40137b5567fe1f735578fc067",
+  "consent": "2026-06-11 17:00:00 · formulaire"
+ },
+ {
+  "id": 16,
+  "email": "carine.hounkpatin@exemple.org",
+  "name": "Carine Hounkpatin",
+  "status": "actif",
+  "tags": [
+   "partenaire"
+  ],
+  "interests": [
+   "Ressources",
+   "Événements",
+   "Droits"
+  ],
+  "source": "admin",
+  "created": "2026-08-06 21:00:00",
+  "confirmed_at": "2026-08-06 22:44:00",
+  "token": "08394cc67467b7ee9c288802dade3482",
+  "consent": "2026-08-06 21:00:00 · formulaire"
+ },
+ {
+  "id": 17,
+  "email": "yasmine.gbaguidi@mail.bj",
+  "name": "Yasmine Gbaguidi",
+  "status": "actif",
+  "tags": [
+   "membre",
+   "pair"
+  ],
+  "interests": [
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2026-03-20 21:00:00",
+  "confirmed_at": "2026-03-20 21:12:00",
+  "token": "5c258b996fba318b73a7d1e64ae39cee",
+  "consent": "2026-03-20 21:00:00 · formulaire"
+ },
+ {
+  "id": 18,
+  "email": "ruth.akpovi@exemple.org",
+  "name": "Ruth Akpovi",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2025-12-14 11:00:00",
+  "confirmed_at": "2025-12-14 13:51:00",
+  "token": "cd4ed0732c34e48e842780a3c2478f7a",
+  "consent": "2025-12-14 11:00:00 · formulaire"
+ },
+ {
+  "id": 19,
+  "email": "edwige.agbo@mail.bj",
+  "name": "Edwige Agbo",
+  "status": "actif",
+  "tags": [
+   "bailleur"
+  ],
+  "interests": [
+   "Sécurité numérique"
+  ],
+  "source": "admin",
+  "created": "2026-01-21 11:00:00",
+  "confirmed_at": "2026-01-21 15:57:00",
+  "token": "a52ce772f2795acd25270d10e2ac3ef7",
+  "consent": "2026-01-21 11:00:00 · formulaire"
+ },
+ {
+  "id": 20,
+  "email": "josiane.kiki@exemple.bj",
+  "name": "Josiane Kiki",
+  "status": "en_attente",
+  "tags": [],
+  "interests": [
+   "Sécurité numérique"
+  ],
+  "source": "import",
+  "created": "2026-06-09 03:00:00",
+  "confirmed_at": null,
+  "token": "001828c41a66ac36eb853c89ec6c6d81",
+  "consent": "2026-06-09 03:00:00 · formulaire"
+ },
+ {
+  "id": 21,
+  "email": "murielle.ahouansou@exemple.org",
+  "name": "Murielle Ahouansou",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Sécurité numérique",
+   "Santé",
+   "Ressources"
+  ],
+  "source": "import",
+  "created": "2026-03-09 05:00:00",
+  "confirmed_at": "2026-03-09 07:55:00",
+  "token": "3d84b80b75ac402c3d58848716a24147",
+  "consent": "2026-03-09 05:00:00 · formulaire"
+ },
+ {
+  "id": 22,
+  "email": "oceane.kpadonou@mail.bj",
+  "name": "Océane Kpadonou",
+  "status": "actif",
+  "tags": [
+   "presse"
+  ],
+  "interests": [
+   "Bien-être"
+  ],
+  "source": "import",
+  "created": "2026-06-06 12:00:00",
+  "confirmed_at": "2026-06-06 14:09:00",
+  "token": "50a9094e3d7a0743438f8bf6963e4145",
+  "consent": "2026-06-06 12:00:00 · formulaire"
+ },
+ {
+  "id": 23,
+  "email": "grace.agbo@exemple.org",
+  "name": "Grâce Agbo",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Droits"
+  ],
+  "source": "footer",
+  "created": "2026-02-27 01:00:00",
+  "confirmed_at": "2026-02-27 04:30:00",
+  "token": "ce78ff3adef1385775b00f38446bf276",
+  "consent": "2026-02-27 01:00:00 · formulaire"
+ },
+ {
+  "id": 24,
+  "email": "patricia.kiki@exemple.bj",
+  "name": "Patricia Kiki",
+  "status": "desabonne",
+  "tags": [
+   "presse"
+  ],
+  "interests": [
+   "Événements"
+  ],
+  "source": "footer",
+  "created": "2026-02-07 12:00:00",
+  "confirmed_at": "2026-02-07 15:54:00",
+  "token": "cc74ae178a84ff37c76e5b89e5b16277",
+  "consent": "2026-02-07 12:00:00 · formulaire",
+  "unsub_at": "2026-03-02 12:00:00",
+  "unsub_reason": "Contenu non pertinent"
+ },
+ {
+  "id": 25,
+  "email": "hortense.kiki@exemple.bj",
+  "name": "Hortense Kiki",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Bien-être",
+   "Santé",
+   "Ressources"
+  ],
+  "source": "admin",
+  "created": "2026-07-24 12:00:00",
+  "confirmed_at": "2026-07-24 16:06:00",
+  "token": "9698916b7967763bfaf8ad6a1e818879",
+  "consent": "2026-07-24 12:00:00 · formulaire"
+ },
+ {
+  "id": 26,
+  "email": "nafissatou.adjovi@exemple.bj",
+  "name": "Nafissatou Adjovi",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Santé",
+   "Droits",
+   "Événements"
+  ],
+  "source": "footer",
+  "created": "2026-09-12 02:00:00",
+  "confirmed_at": "2026-09-12 06:53:00",
+  "token": "1a1a688e39e7f9c5a266c734af52e313",
+  "consent": "2026-09-12 02:00:00 · formulaire"
+ },
+ {
+  "id": 27,
+  "email": "romaine.akpovi@exemple.bj",
+  "name": "Romaine Akpovi",
+  "status": "actif",
+  "tags": [
+   "bailleur",
+   "partenaire"
+  ],
+  "interests": [
+   "Droits",
+   "Bien-être"
+  ],
+  "source": "footer",
+  "created": "2025-12-18 23:00:00",
+  "confirmed_at": "2025-12-19 01:17:00",
+  "token": "70a04b7fe5fa9474bc2572912195c04c",
+  "consent": "2025-12-18 23:00:00 · formulaire"
+ },
+ {
+  "id": 28,
+  "email": "clarisse.amoussou@mail.bj",
+  "name": "Clarisse Amoussou",
+  "status": "actif",
+  "tags": [
+   "membre"
+  ],
+  "interests": [
+   "Événements"
+  ],
+  "source": "admin",
+  "created": "2026-08-04 21:00:00",
+  "confirmed_at": "2026-08-05 01:50:00",
+  "token": "7adb15684bb681f9cbfddc33ee5307a3",
+  "consent": "2026-08-04 21:00:00 · formulaire"
+ },
+ {
+  "id": 29,
+  "email": "victoire.kpadonou@mail.bj",
+  "name": "Victoire Kpadonou",
+  "status": "actif",
+  "tags": [
+   "partenaire"
+  ],
+  "interests": [
+   "Droits"
+  ],
+  "source": "footer",
+  "created": "2026-09-04 01:00:00",
+  "confirmed_at": "2026-09-04 03:27:00",
+  "token": "a4d290baa4edecaecabcad9dc7b2a5ba",
+  "consent": "2026-09-04 01:00:00 · formulaire"
+ },
+ {
+  "id": 30,
+  "email": "ulrich.adjovi@exemple.org",
+  "name": "Ulrich Adjovi",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Ressources",
+   "Bien-être",
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2026-03-01 01:00:00",
+  "confirmed_at": "2026-03-01 03:17:00",
+  "token": "31540c6ae6a132dfb58c68ec573ef980",
+  "consent": "2026-03-01 01:00:00 · formulaire"
+ },
+ {
+  "id": 31,
+  "email": "semevo.kpadonou@mail.bj",
+  "name": "Sêmèvo Kpadonou",
+  "status": "actif",
+  "tags": [
+   "bailleur"
+  ],
+  "interests": [
+   "Sécurité numérique"
+  ],
+  "source": "footer",
+  "created": "2026-08-17 19:00:00",
+  "confirmed_at": "2026-08-17 20:46:00",
+  "token": "8241827aa9d0f4018a3e09a0a7c66a93",
+  "consent": "2026-08-17 19:00:00 · formulaire"
+ },
+ {
+  "id": 32,
+  "email": "kadidja.zinsou@exemple.bj",
+  "name": "Kadidja Zinsou",
+  "status": "actif",
+  "tags": [],
+  "interests": [
+   "Événements",
+   "Bien-être",
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2026-01-26 03:00:00",
+  "confirmed_at": "2026-01-26 05:52:00",
+  "token": "9585903b606cd3737fd38ec1b91f5ace",
+  "consent": "2026-01-26 03:00:00 · formulaire"
+ },
+ {
+  "id": 33,
+  "email": "armelle.hounkpatin@mail.bj",
+  "name": "Armelle Hounkpatin",
+  "status": "actif",
+  "tags": [
+   "bailleur",
+   "membre"
+  ],
+  "interests": [
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2025-11-19 10:00:00",
+  "confirmed_at": "2025-11-19 14:41:00",
+  "token": "21ca628a9264c9a3ab5249c0afcbca2b",
+  "consent": "2025-11-19 10:00:00 · formulaire"
+ },
+ {
+  "id": 34,
+  "email": "elodie.dossou@mail.bj",
+  "name": "Élodie Dossou",
+  "status": "actif",
+  "tags": [
+   "membre"
+  ],
+  "interests": [
+   "Bien-être",
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2026-04-05 00:00:00",
+  "confirmed_at": "2026-04-05 01:49:00",
+  "token": "28ee7756559c67843382e85d421badf0",
+  "consent": "2026-04-05 00:00:00 · formulaire"
+ },
+ {
+  "id": 35,
+  "email": "joelle.akpovi@exemple.org",
+  "name": "Joëlle Akpovi",
+  "status": "actif",
+  "tags": [
+   "bailleur",
+   "pair"
+  ],
+  "interests": [
+   "Droits"
+  ],
+  "source": "footer",
+  "created": "2025-11-04 15:00:00",
+  "confirmed_at": "2025-11-04 18:33:00",
+  "token": "be8fa1632e44af5c26334bf9cdf1eff7",
+  "consent": "2025-11-04 15:00:00 · formulaire"
+ },
+ {
+  "id": 36,
+  "email": "felicite.houngbedji@mail.bj",
+  "name": "Félicité Houngbédji",
+  "status": "desabonne",
+  "tags": [
+   "partenaire"
+  ],
+  "interests": [
+   "Sécurité numérique"
+  ],
+  "source": "footer",
+  "created": "2026-07-11 19:00:00",
+  "confirmed_at": "2026-07-11 22:17:00",
+  "token": "ea28cb454d184c9e4e2b05aef201399a",
+  "consent": "2026-07-11 19:00:00 · formulaire",
+  "unsub_at": "2026-09-09 19:00:00",
+  "unsub_reason": "Trop d’e-mails"
+ },
+ {
+  "id": 37,
+  "email": "bernadette.kiki@mail.bj",
+  "name": "Bernadette Kiki",
+  "status": "en_attente",
+  "tags": [
+   "partenaire"
+  ],
+  "interests": [
+   "Droits"
+  ],
+  "source": "footer",
+  "created": "2026-06-20 12:00:00",
+  "confirmed_at": null,
+  "token": "c474ab61c2e4f210f1e23c6d59b60c25",
+  "consent": "2026-06-20 12:00:00 · formulaire"
+ },
+ {
+  "id": 38,
+  "email": "rachida.sossou@exemple.bj",
+  "name": "Rachida Sossou",
+  "status": "actif",
+  "tags": [
+   "partenaire"
+  ],
+  "interests": [
+   "Ressources",
+   "Événements",
+   "Bien-être"
+  ],
+  "source": "footer",
+  "created": "2026-03-21 08:00:00",
+  "confirmed_at": "2026-03-21 09:01:00",
+  "token": "5ed8003c18fc783c62c1054779e147b3",
+  "consent": "2026-03-21 08:00:00 · formulaire"
+ },
+ {
+  "id": 39,
+  "email": "delphine.zinsou@bounce.invalid",
+  "name": "Delphine Zinsou",
+  "status": "rebond",
+  "tags": [],
+  "interests": [
+   "Ressources"
+  ],
+  "source": "import",
+  "created": "2026-07-12 00:00:00",
+  "confirmed_at": "2026-07-12 02:58:00",
+  "token": "5913dd506f3844bdac881e9636324604",
+  "consent": "2026-07-12 00:00:00 · formulaire",
+  "bounced_at": "2026-07-17 00:00:00",
+  "bounce_reason": "550 5.1.1 Adresse inexistante"
+ },
+ {
+  "id": 40,
+  "email": "ornella.tossou@bounce.invalid",
+  "name": "Ornella Tossou",
+  "status": "rebond",
+  "tags": [
+   "bailleur",
+   "pair"
+  ],
+  "interests": [
+   "Santé",
+   "Événements"
+  ],
+  "source": "footer",
+  "created": "2026-03-01 23:00:00",
+  "confirmed_at": "2026-03-02 03:28:00",
+  "token": "36f1792a28f560a53ce4f8561c39a98f",
+  "consent": "2026-03-01 23:00:00 · formulaire",
+  "bounced_at": "2026-03-06 23:00:00",
+  "bounce_reason": "550 5.1.1 Adresse inexistante"
+ },
+ {
+  "id": 41,
+  "email": "ange.sossou@exemple.org",
+  "name": "Ange Sossou",
+  "status": "actif",
+  "tags": [
+   "bailleur"
+  ],
+  "interests": [
+   "Sécurité numérique",
+   "Santé"
+  ],
+  "source": "footer",
+  "created": "2026-04-08 05:00:00",
+  "confirmed_at": "2026-04-08 09:21:00",
+  "token": "4315eb8d5a68cdde70af105a47ac0ba4",
+  "consent": "2026-04-08 05:00:00 · formulaire"
+ },
+ {
+  "id": 42,
+  "email": "sonia.gbaguidi@exemple.org",
+  "name": "Sonia Gbaguidi",
+  "status": "actif",
+  "tags": [
+   "bailleur"
+  ],
+  "interests": [
+   "Droits"
+  ],
+  "source": "import",
+  "created": "2025-11-04 05:00:00",
+  "confirmed_at": "2025-11-04 08:16:00",
+  "token": "c3cdd42172ce957c7db89ac713d2e8e9",
+  "consent": "2025-11-04 05:00:00 · formulaire"
+ }
+]

@@ -5,11 +5,15 @@ import re, colorsys
 from structure import CHAPTERS, CH_COLORS
 
 FONTS = '../fonts/'
-IMG = '../../images/'
-HOME = '../../xomiton/public/assets/images/homepage/'
-ELT = '../../xomiton/public/assets/images/elements/'
+IMG = '../../prototype_social/assets/images/xomiton/'  # visuels de travail (le dossier xomiton/public d'origine n'existe plus)
+HOME = IMG
+ELT = '../../web/public/assets/images/elements/'
 LOGO = '../logo/'
-ICONCSS = '../../xomiton/public/assets/vendor/bootstrap-icons/bootstrap-icons.css'
+ASSETS = '_img/'  # JPEG générés par build.py à partir de ../assets/*.webp
+ORIG = '../../images/'  # originaux déposés par le client (jamais modifiés)
+VERSION = '1.1'
+DATE_FR = 'octobre 2026'
+ICONCSS = '../../prototype_social/assets/vendor/bootstrap-icons/font/bootstrap-icons.min.css'
 
 BRAND = {
     'blue': '#0433C3', 'red': '#E30E0E', 'ink': '#1B1630', 'bg': '#FBF7FA', 'white': '#FFFFFF',
@@ -158,7 +162,7 @@ class Doc:
             html = p['html']
             ch = p['ch']
             chname = chapter_titles.get(ch, '')
-            foot = '<div class="ft"><b>%d</b><span>Charte graphique Xomiton</span><span class="sp"></span><span>%s</span><span>Version 1.0 · octobre 2026</span></div>' % (i, chname)
+            foot = '<div class="ft"><b>%d</b><span>Charte graphique Xomiton</span><span class="sp"></span><span>%s</span><span>Version %s · %s</span></div>' % (i, chname, VERSION, DATE_FR)
             if p['cls'] == 'cover':
                 foot = ''
             html = html.replace('{{FOOT}}', foot)
@@ -198,5 +202,5 @@ def img(path, w=None, h=None, fit='cover', pos='center', extra=''):
     return '<img src="%s" style="%s%s" alt="">' % (path, st, extra)
 
 def document(body):
-    return ('<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Charte graphique Xomiton v1.0</title>'
-            '<link rel="stylesheet" href="%s"><style>%s</style></head><body>%s</body></html>' % (ICONCSS, CSS, body))
+    return ('<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Charte graphique Xomiton v%s</title>'
+            '<link rel="stylesheet" href="%s"><style>%s</style></head><body>%s</body></html>' % (VERSION, ICONCSS, CSS, body))

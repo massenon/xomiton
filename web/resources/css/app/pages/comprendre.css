@@ -1,0 +1,52 @@
+/*
+ * Pages Apprendre (P4-04) : /violences (prototype violences.php), /lois (lois-benin.php), /do-glegbe (do-glegbe.php).
+ * Styles en ligne des prototypes sortis dans la feuille (image du héro en fond → <img> en cover, flèches du cycle,
+ * z-index et largeur de lecture de Do Glegbe) ; cibles tactiles de 44 px pour les choix Oui / Non et Vrai / Faux.
+ * Jetons uniquement ; classes dg-* de theme/xomiton.css réutilisées telles quelles.
+ */
+
+/* /violences — héro : image décorative en cover (prototype : background center/cover, min-height 220 px). */
+.xm-vio-hero { position: relative; min-height: 220px; }
+.xm-vio-hero img { position: absolute; inset: 0; }
+
+/* /violences — cycle : flèche entre deux étapes (≥ 992 px), au-dessus de la gouttière. */
+.xm-cycle__arrow { position: absolute; right: -14px; top: 50%; transform: translateY(-50%); z-index: 2; color: var(--xm-text-muted); font-size: 1.4rem; line-height: 1; }
+
+/* /violences, /do-glegbe — choix Oui / Non, Vrai / Faux : cible tactile minimale. */
+[data-check-question] .btn-group .btn,
+[data-quiz-choices] .btn-group .btn { min-width: 4.5rem; }
+@media (pointer: coarse) {
+  [data-check-question] .btn-group .btn,
+  [data-quiz-choices] .btn-group .btn,
+  [data-check-tools] .btn { min-height: var(--xm-target-min, 44px); display: inline-flex; align-items: center; justify-content: center; }
+}
+/*
+ * /violences, /do-glegbe — énoncé en <legend> de son <fieldset> (ACCESSIBILITE.md §4), à la taille du texte courant.
+ * Flottante (comme dans le reboot Bootstrap) : elle n'est pas « rendered legend » et se place dans la grille de
+ * l'auto-évaluation (énoncé à gauche, Oui / Non à droite dès 576 px, comme l'ancien d-sm-flex).
+ */
+.xm-choice-legend { float: left; width: 100%; padding: 0; margin: 0 0 .5rem; font-size: inherit; line-height: inherit; }
+.xm-check-q { display: grid; row-gap: .5rem; min-width: 0; }
+.xm-check-q > .xm-choice-legend { width: auto; margin: 0; }
+.xm-check-q > .btn-group { justify-self: start; }
+@media (min-width: 576px) {
+  .xm-check-q { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 1rem; }
+}
+[data-check-result]:focus { outline: none; }
+[data-check-result]:focus-visible { outline: var(--xm-focus-width) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
+
+/* /lois — le titre et le sous-titre d'un texte passent à la ligne avant le badge de catégorie. */
+#lois-liste .accordion-button { gap: .25rem; }
+#lois-liste .accordion-button .badge { white-space: normal; }
+
+/* /do-glegbe — contenu de la bannière au-dessus du disque décoratif (::after), largeur de lecture de « Engagez-vous ». */
+.xm-dg-inner { position: relative; z-index: 1; }
+.xm-dg-narrow { max-width: 640px; }
+
+/* /do-glegbe — quiz. */
+.xm-dg-quiz-item { border-bottom: 1px solid var(--xm-dg-border); padding-bottom: 1rem; }
+.xm-dg-quiz-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.xm-dg-quiz-num { display: inline-flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; margin-right: .5rem; border-radius: 50%; background: var(--dg-red-soft); color: var(--dg-red); font-weight: 800; font-size: .875rem; }
+.xm-dg-quiz-wrong { color: var(--dg-red); }
+[data-quiz-details] summary { cursor: pointer; font-weight: 600; }
+[data-bs-theme=dark] .xm-dg-quiz-item { border-color: var(--xm-dg-border-dark); }

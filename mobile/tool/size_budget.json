@@ -1,0 +1,7 @@
+{
+  "_commentaire": "Budget de taille suivi par la CI (.github/workflows/mobile.yml). Les plafonds sont des garde-fous larges posés avant la première mesure : relever la taille réelle du job « Taille » sur main, la reporter dans baseline_release_apk_mb, puis resserrer. Au-delà de baseline + tolerance_pct, la CI échoue (plan §2.2 NFR-P1 : +15 %).",
+  "debug_apk_max_mb": 250,
+  "release_apk_max_mb": 45,
+  "baseline_release_apk_mb": null,
+  "tolerance_pct": 15
+}
