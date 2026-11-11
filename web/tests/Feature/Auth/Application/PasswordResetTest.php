@@ -99,7 +99,7 @@ it('réinitialise avec le lien magique signé, valable le temps du code et une s
     expect(SignedResetToken::looksLikeToken($token))->toBeTrue()
         ->and(SignedResetToken::looksLikeToken('135790'))->toBeFalse()
         ->and(SignedResetToken::verify($token, 'autre@exemple.bj'))->toBeNull()
-        ->and(SignedResetToken::verify(substr($token, 0, -1).'0', 'awa@exemple.bj'))->toBeNull()
+        ->and(SignedResetToken::verify(substr($token, 0, -1).(str_ends_with($token, '0') ? '1' : '0'), 'awa@exemple.bj'))->toBeNull()
         ->and(SignedResetToken::url($token, 'awa@exemple.bj'))->toContain('nouveau-mot-de-passe', 'token=', 'email=awa%40exemple.bj');
 
     app(ResetPassword::class)('awa@exemple.bj', $token, 'Nouveau2026!!');
