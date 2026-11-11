@@ -60,6 +60,8 @@ final class Index extends Component
 
     public const TAB_CAMPAIGNS = 'campagnes';
 
+    public const TAB_TAXONOMY = 'taxonomie';
+
     #[SafeUrl(as: 'onglet', except: 'stats')]
     public string $tab = self::TAB_STATS;
 
@@ -149,6 +151,10 @@ final class Index extends Component
 
         if ($this->canCampaigns()) {
             $tabs[self::TAB_CAMPAIGNS] = ['label' => (string) __('newsletter.admin.tabs.campaigns'), 'icon' => 'envelope-paper', 'count' => NewsletterCampaign::query()->count()];
+        }
+
+        if ($this->canSubscribers()) {
+            $tabs[self::TAB_TAXONOMY] = ['label' => (string) __('newsletter.admin.tabs.taxonomy'), 'icon' => 'tags', 'count' => NewsletterTag::query()->count() + NewsletterInterest::query()->count()];
         }
 
         return $tabs;

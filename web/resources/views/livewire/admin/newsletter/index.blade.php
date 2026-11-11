@@ -237,6 +237,11 @@
         </section>
     @endif
 
+    {{-- ============================== Tags et centres d'intérêt (composant enfant) ============================== --}}
+    @if ($tab === 'taxonomie' && isset($tabs['taxonomie']))
+        <livewire:admin.newsletter.taxonomy />
+    @endif
+
     {{-- ============================== Modales ============================== --}}
     @if (isset($tabs['abonnes']))
         <x-admin.modal id="xmNlSubscriber" size="lg" dirty-guard :title="$subscriberId === null ? __('newsletter.admin.subscribers.add') : __('newsletter.admin.subscribers.edit')">
