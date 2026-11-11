@@ -91,7 +91,10 @@ export function makeProgressive(next: ProgressiveProps['state']['next'] = 'gende
         },
         options: {
             member_types: [{ value: 'membre', label: 'Membre' }, { value: 'pair', label: 'Pair éducateur·rice' }],
-            age_ranges: [{ value: '18-24', label: '18-24 ans' }],
+            age_ranges: [
+                { value: '18-24', label: '18-24 ans' }, { value: '25-34', label: '25-34 ans' },
+                { value: '35-49', label: '35-49 ans' }, { value: '50+', label: '50 ans et plus' },
+            ],
             zones: [{ id: 4, name: 'Littoral', communes: [{ id: 12, name: 'Cotonou' }] }],
             interests: [{ slug: 'sante', label: 'Santé' }, { slug: 'droits', label: 'Droits' }],
         },

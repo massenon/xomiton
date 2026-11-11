@@ -294,7 +294,7 @@ Tous les champs sont facultatifs ; un champ absent **ou `null`** est laissé tel
 | `trusted_contact_phone` | numéro béninois (stocké chiffré) |
 | `trusted_contact_name` | ≤ 80 |
 | `discreet_mode` | bool |
-| `age_range` | `10-14` \| `15-17` \| `18-24` \| `25-34` \| `35-49` \| `50+` (`AgeRange`, P6-06) |
+| `age_range` | `18-24` \| `25-34` \| `35-49` \| `50+` (`AgeRange`, P6-06, restreint aux tranches de 18 ans et plus par `MemberAgeRanges` depuis la décision client du 11/11/2026 ; `10-14` et `15-17` restent valables pour les dossiers de personnes accompagnées saisis par les pair·es et sont refusées ici, **422**) |
 | `interests` | tableau (≤ 20) de slugs **distincts** de `newsletter_interests` (`sante`, `droits`, `bien-etre`, `evenements`, `ressources`, `securite-numerique`) ; `[]` vide la liste (P6-06) |
 | `ally_status` | `allie` \| `ressource` \| `aucun` (efface) — Q10 c : stocké **chiffré** (`profiles.ally_status`), aucun droit associé, montré à un autre compte **seulement** s'il figure dans `shared_fields` (P6-06, P8-08) |
 | `sensitive_consent` | bool (P8-08) — nouvelle ligne `consents` `sensitive_data` (jamais mise à jour, sans IP) ; `false` **efface** `gender_identity` et `orientation` et les retire de `shared_fields` |

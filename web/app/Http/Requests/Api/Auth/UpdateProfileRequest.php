@@ -7,6 +7,7 @@ namespace App\Http\Requests\Api\Auth;
 use App\Application\Account\Profile\SensitiveDataConsent;
 use App\Application\Account\Profile\SensitiveProfileData;
 use App\Application\Auth\ProfileData;
+use App\Domain\Account\MemberAgeRanges;
 use App\Domain\Account\ProgressiveProfile;
 use App\Domain\Account\SensitiveProfile;
 use App\Enums\AgeRange;
@@ -49,9 +50,9 @@ final class UpdateProfileRequest extends FormRequest
             'trusted_contact_phone' => ['sometimes', 'nullable', 'string', new PhoneBj],
             'trusted_contact_name' => ['sometimes', 'nullable', 'string', 'max:80'],
             'discreet_mode' => ['sometimes', 'nullable', 'boolean'],
-            // Profil progressif (P6-06) : tranche d'âge, centres d'intérêt (slugs de newsletter_interests, [] = aucun),
+            // Profil progressif (P6-06) : tranche d'âge (≥ 18 ans seulement : `MemberAgeRanges`, décision du 11/11/2026), centres d'intérêt (slugs de newsletter_interests, [] = aucun),
             // statut allié·e / personne ressource (Q10 c ; « aucun » l'efface).
-            'age_range' => ['sometimes', 'nullable', Rule::in([...array_column(AgeRange::cases(), 'value'), SensitiveProfile::PREFER_NOT])],
+            'age_range' => ['sometimes', 'nullable', Rule::in([...MemberAgeRanges::values(), SensitiveProfile::PREFER_NOT])],
             'interests' => ['sometimes', 'nullable', 'array', 'max:20'],
             'interests.*' => ['string', 'distinct', Rule::exists('newsletter_interests', 'slug')],
             'ally_status' => ['sometimes', 'nullable', Rule::in([...AllyStatus::values(), self::ALLY_STATUS_NONE])],

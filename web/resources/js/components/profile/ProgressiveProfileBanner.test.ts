@@ -81,6 +81,21 @@ describe('ProgressiveProfileBanner', () => {
         expect(calls[0]?.body).toEqual({ age_range: 'prefer_not' });
     });
 
+    it('ne propose pour l’âge que les tranches de 18 ans et plus fournies par le serveur, et envoie celle choisie', async () => {
+        const { calls } = fakeFetch(() => json(serverProfile(makeProgressive('location').state, { age_range: '25-34' })));
+        renderXm(ProgressiveProfileBanner, { props: { progressive: makeProgressive('age') } });
+
+        const labels = screen.getAllByRole('radio').map((radio) => radio.parentElement?.textContent?.trim());
+        expect(labels.some((label) => label?.includes('10-14') || label?.includes('15-17'))).toBe(false);
+        expect(screen.getByLabelText('18-24 ans')).toBeTruthy();
+        expect(screen.getByLabelText('50 ans et plus')).toBeTruthy();
+
+        await fireEvent.click(screen.getByLabelText('25-34 ans'));
+        await fireEvent.click(screen.getByRole('button', { name: 'Enregistrer et continuer' }));
+        await waitFor(() => expect(calls).toHaveLength(1));
+        expect(calls[0]?.body).toEqual({ age_range: '25-34' });
+    });
+
     it('annonce la fin quand tous les groupes sont traités', async () => {
         fakeFetch(() => json(serverProfile(makeProgressive(null).state)));
         renderXm(ProgressiveProfileBanner, { props: { progressive: makeProgressive('interests') } });

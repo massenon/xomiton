@@ -55,9 +55,10 @@ const Map<String, List<(String, String)>> _singleChoice = {
     ('questionnement', 'profile_progressive_groups_orientation_options_questionnement'),
     ('autre', 'profile_progressive_groups_orientation_options_autre'),
   ],
+  // Âge minimal d'inscription : 18 ans (décision client du 11/11/2026). Les tranches 10-14 et 15-17 ne décrivent
+  // que les personnes accompagnées dans les dossiers des pair·es : jamais proposées sur le profil d'une inscrite
+  // (le serveur les refuse aussi, `MemberAgeRanges`).
   'age': [
-    ('10-14', 'enums_reference_age_range_10_14'),
-    ('15-17', 'enums_reference_age_range_15_17'),
     ('18-24', 'enums_reference_age_range_18_24'),
     ('25-34', 'enums_reference_age_range_25_34'),
     ('35-49', 'enums_reference_age_range_35_49'),

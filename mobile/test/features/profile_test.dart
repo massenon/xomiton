@@ -326,6 +326,27 @@ void main() {
       await disposeApp(tester);
     });
 
+    testWidgets('âge : seules les tranches de 18 ans et plus sont proposées, la tranche choisie part telle quelle', (tester) async {
+      final api = baseApi({
+        'GET me/profile': (_) => jsonBody(200, progressive('age')),
+        'PATCH me/profile': (_) => jsonBody(200, progressive('age')),
+      });
+      await pump(tester, signedIn(api), '/profil-progressif');
+
+      for (final range in ['18-24', '25-34', '35-49', '50+']) {
+        expect(find.byKey(Key('progressive-option-$range'), skipOffstage: false), findsOneWidget, reason: range);
+      }
+      expect(find.byKey(const Key('progressive-option-10-14'), skipOffstage: false), findsNothing);
+      expect(find.byKey(const Key('progressive-option-15-17'), skipOffstage: false), findsNothing);
+
+      await tapVisible(tester, find.byKey(const Key('progressive-option-25-34')));
+      await tester.pump();
+      await tapVisible(tester, find.byKey(const Key('progressive-save')));
+      await settle(tester, 10);
+      expect(api.calls('PATCH me/profile').single.data, {'age_range': '25-34'});
+      await disposeApp(tester);
+    });
+
     testWidgets('« Je préfère ne pas le dire » marque le groupe traité sans valeur', (tester) async {
       final api = baseApi({
         'GET me/profile': (_) => jsonBody(200, progressive('orientation')),
