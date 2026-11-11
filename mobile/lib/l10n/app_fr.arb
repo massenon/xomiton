@@ -5767,6 +5767,265 @@
             }
         }
     },
+    "admin_ccc_module_chapter_add": "Ajouter le chapitre",
+    "@admin_ccc_module_chapter_add": {
+        "description": "admin_ccc.module.chapter_add"
+    },
+    "admin_ccc_module_chapter_add_title": "Ajouter un chapitre",
+    "@admin_ccc_module_chapter_add_title": {
+        "description": "admin_ccc.module.chapter_add_title"
+    },
+    "admin_ccc_module_chapter_down": "Descendre",
+    "@admin_ccc_module_chapter_down": {
+        "description": "admin_ccc.module.chapter_down"
+    },
+    "admin_ccc_module_chapter_help": "Texte simple, {max} caractères au plus.",
+    "@admin_ccc_module_chapter_help": {
+        "description": "admin_ccc.module.chapter_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_chapter_label": "Texte du chapitre",
+    "@admin_ccc_module_chapter_label": {
+        "description": "admin_ccc.module.chapter_label"
+    },
+    "admin_ccc_module_chapter_legend": "Chapitre {number} sur {total}",
+    "@admin_ccc_module_chapter_legend": {
+        "description": "admin_ccc.module.chapter_legend",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_chapter_moved": "Chapitre déplacé en position {position} sur {total}.",
+    "@admin_ccc_module_chapter_moved": {
+        "description": "admin_ccc.module.chapter_moved",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_chapter_new_label": "Texte du nouveau chapitre",
+    "@admin_ccc_module_chapter_new_label": {
+        "description": "admin_ccc.module.chapter_new_label"
+    },
+    "admin_ccc_module_chapter_remove": "Retirer",
+    "@admin_ccc_module_chapter_remove": {
+        "description": "admin_ccc.module.chapter_remove"
+    },
+    "admin_ccc_module_chapter_remove_confirm": "Retirer le chapitre {number} ?",
+    "@admin_ccc_module_chapter_remove_confirm": {
+        "description": "admin_ccc.module.chapter_remove_confirm",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_chapter_remove_no": "Garder",
+    "@admin_ccc_module_chapter_remove_no": {
+        "description": "admin_ccc.module.chapter_remove_no"
+    },
+    "admin_ccc_module_chapter_remove_yes": "Oui, retirer",
+    "@admin_ccc_module_chapter_remove_yes": {
+        "description": "admin_ccc.module.chapter_remove_yes"
+    },
+    "admin_ccc_module_chapter_up": "Monter",
+    "@admin_ccc_module_chapter_up": {
+        "description": "admin_ccc.module.chapter_up"
+    },
+    "admin_ccc_module_chapters_empty": "Aucun chapitre pour le moment.",
+    "@admin_ccc_module_chapters_empty": {
+        "description": "admin_ccc.module.chapters_empty"
+    },
+    "admin_ccc_module_chapters_intro": "Les chapitres s’affichent dans l’ordre de cette liste, en texte simple ({max} caractères au plus, 1 à {count} chapitres). Un module publié garde au moins un chapitre.",
+    "@admin_ccc_module_chapters_intro": {
+        "description": "admin_ccc.module.chapters_intro",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_chapters_list_label": "Chapitres du module",
+    "@admin_ccc_module_chapters_list_label": {
+        "description": "admin_ccc.module.chapters_list_label"
+    },
+    "admin_ccc_module_chapters_open": "Chapitres",
+    "@admin_ccc_module_chapters_open": {
+        "description": "admin_ccc.module.chapters_open"
+    },
+    "admin_ccc_module_chapters_save": "Enregistrer les chapitres",
+    "@admin_ccc_module_chapters_save": {
+        "description": "admin_ccc.module.chapters_save"
+    },
+    "admin_ccc_module_chapters_title": "Chapitres : {title}",
+    "@admin_ccc_module_chapters_title": {
+        "description": "admin_ccc.module.chapters_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_create": "Créer le module",
+    "@admin_ccc_module_create": {
+        "description": "admin_ccc.module.create"
+    },
+    "admin_ccc_module_create_title": "Nouveau module",
+    "@admin_ccc_module_create_title": {
+        "description": "admin_ccc.module.create_title"
+    },
+    "admin_ccc_module_delete_open": "Supprimer",
+    "@admin_ccc_module_delete_open": {
+        "description": "admin_ccc.module.delete_open"
+    },
+    "admin_ccc_module_delete_text": "Le module et ses chapitres seront supprimés définitivement. Cette action est irréversible.",
+    "@admin_ccc_module_delete_text": {
+        "description": "admin_ccc.module.delete_text"
+    },
+    "admin_ccc_module_delete_title": "Supprimer le module « {title} » ?",
+    "@admin_ccc_module_delete_title": {
+        "description": "admin_ccc.module.delete_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_description_help": "Une ou deux phrases qui présentent le module ({max} caractères au plus). Facultatif.",
+    "@admin_ccc_module_description_help": {
+        "description": "admin_ccc.module.description_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_down": "Descendre",
+    "@admin_ccc_module_down": {
+        "description": "admin_ccc.module.down"
+    },
+    "admin_ccc_module_duration_help": "Entre {min} et {max} minutes. Laissez vide si la durée n’est pas fixée.",
+    "@admin_ccc_module_duration_help": {
+        "description": "admin_ccc.module.duration_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_edit_open": "Modifier",
+    "@admin_ccc_module_edit_open": {
+        "description": "admin_ccc.module.edit_open"
+    },
+    "admin_ccc_module_edit_title": "Modifier le module : {title}",
+    "@admin_ccc_module_edit_title": {
+        "description": "admin_ccc.module.edit_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_fields_description": "Description",
+    "@admin_ccc_module_fields_description": {
+        "description": "admin_ccc.module.fields.description"
+    },
+    "admin_ccc_module_fields_duration": "Durée en minutes",
+    "@admin_ccc_module_fields_duration": {
+        "description": "admin_ccc.module.fields.duration"
+    },
+    "admin_ccc_module_fields_title": "Titre",
+    "@admin_ccc_module_fields_title": {
+        "description": "admin_ccc.module.fields.title"
+    },
+    "admin_ccc_module_intro": "Les modules s’affichent dans l’ordre de cette liste. Écrivez en texte simple, sans balises. Un module sans chapitre reste masqué.",
+    "@admin_ccc_module_intro": {
+        "description": "admin_ccc.module.intro"
+    },
+    "admin_ccc_module_key": "Clé publique : {key}. Elle est générée automatiquement et ne change plus.",
+    "@admin_ccc_module_key": {
+        "description": "admin_ccc.module.key",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_list_label": "Modules du manuel",
+    "@admin_ccc_module_list_label": {
+        "description": "admin_ccc.module.list_label"
+    },
+    "admin_ccc_module_moved": "« {title} » est en position {position} sur {total}.",
+    "@admin_ccc_module_moved": {
+        "description": "admin_ccc.module.moved",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_new": "Nouveau module",
+    "@admin_ccc_module_new": {
+        "description": "admin_ccc.module.new"
+    },
+    "admin_ccc_module_no_markup": "Ce champ est du texte simple : retirez les balises.",
+    "@admin_ccc_module_no_markup": {
+        "description": "admin_ccc.module.no_markup"
+    },
+    "admin_ccc_module_order": "Position {position} sur {total}",
+    "@admin_ccc_module_order": {
+        "description": "admin_ccc.module.order",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_save": "Enregistrer",
+    "@admin_ccc_module_save": {
+        "description": "admin_ccc.module.save"
+    },
+    "admin_ccc_module_title_help": "{max} caractères au plus.",
+    "@admin_ccc_module_title_help": {
+        "description": "admin_ccc.module.title_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_module_up": "Monter",
+    "@admin_ccc_module_up": {
+        "description": "admin_ccc.module.up"
+    },
     "admin_ccc_noun_bd": "BD",
     "@admin_ccc_noun_bd": {
         "description": "admin_ccc.noun.bd"
@@ -5932,6 +6191,33 @@
     "@admin_ccc_title": {
         "description": "admin_ccc.title"
     },
+    "admin_ccc_toasts_chapter_added": "Chapitre ajouté à « {title} ».",
+    "@admin_ccc_toasts_chapter_added": {
+        "description": "admin_ccc.toasts.chapter_added",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_chapter_removed": "Chapitre retiré de « {title} ».",
+    "@admin_ccc_toasts_chapter_removed": {
+        "description": "admin_ccc.toasts.chapter_removed",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_chapters_saved": "Chapitres de « {title} » enregistrés.",
+    "@admin_ccc_toasts_chapters_saved": {
+        "description": "admin_ccc.toasts.chapters_saved",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "admin_ccc_toasts_created": "{kind} « {title} » créée.",
     "@admin_ccc_toasts_created": {
         "description": "admin_ccc.toasts.created",
@@ -5986,6 +6272,33 @@
     "admin_ccc_toasts_law_updated": "Texte « {title} » enregistré.",
     "@admin_ccc_toasts_law_updated": {
         "description": "admin_ccc.toasts.law_updated",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_module_created": "Module « {title} » créé.",
+    "@admin_ccc_toasts_module_created": {
+        "description": "admin_ccc.toasts.module_created",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_module_deleted": "Module « {title} » supprimé.",
+    "@admin_ccc_toasts_module_deleted": {
+        "description": "admin_ccc.toasts.module_deleted",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_module_updated": "Module « {title} » enregistré.",
+    "@admin_ccc_toasts_module_updated": {
+        "description": "admin_ccc.toasts.module_updated",
         "placeholders": {
             "title": {
                 "type": "String"
@@ -6324,6 +6637,32 @@
             }
         }
     },
+    "admin_content_errors_chapter_invalid": "Le texte d’un chapitre est obligatoire (texte simple, {max} caractères au plus).",
+    "@admin_content_errors_chapter_invalid": {
+        "description": "admin_content.errors.chapter_invalid",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_chapter_missing": "Ce chapitre n’existe plus : fermez la fenêtre et rouvrez-la pour voir la liste à jour.",
+    "@admin_content_errors_chapter_missing": {
+        "description": "admin_content.errors.chapter_missing"
+    },
+    "admin_content_errors_chapters_changed": "Les chapitres ont changé entre-temps : fermez la fenêtre et rouvrez-la pour voir la liste à jour.",
+    "@admin_content_errors_chapters_changed": {
+        "description": "admin_content.errors.chapters_changed"
+    },
+    "admin_content_errors_chapters_max": "Un module ne peut pas dépasser {max} chapitres.",
+    "@admin_content_errors_chapters_max": {
+        "description": "admin_content.errors.chapters_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
     "admin_content_errors_date_past": "La date de publication doit être dans le futur.",
     "@admin_content_errors_date_past": {
         "description": "admin_content.errors.date_past"
@@ -6347,6 +6686,10 @@
     "admin_content_errors_kind_without_file": "Ce type de ressource n’a pas de fichier à téléverser.",
     "@admin_content_errors_kind_without_file": {
         "description": "admin_content.errors.kind_without_file"
+    },
+    "admin_content_errors_last_chapter_published": "Un module publié garde au moins un chapitre : masquez-le d’abord.",
+    "@admin_content_errors_last_chapter_published": {
+        "description": "admin_content.errors.last_chapter_published"
     },
     "admin_content_errors_last_page_published": "Une {tool} publiée garde au moins une planche : masquez-la d’abord.",
     "@admin_content_errors_last_page_published": {
@@ -6408,6 +6751,53 @@
             }
         }
     },
+    "admin_content_errors_module_description": "La description est limitée à {max} caractères.",
+    "@admin_content_errors_module_description": {
+        "description": "admin_content.errors.module_description",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_module_duration": "La durée doit être comprise entre {min} et {max} minutes, ou rester vide.",
+    "@admin_content_errors_module_duration": {
+        "description": "admin_content.errors.module_duration",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_module_empty": "Un module sans chapitre ne peut pas être publié : ajoutez d’abord un chapitre.",
+    "@admin_content_errors_module_empty": {
+        "description": "admin_content.errors.module_empty"
+    },
+    "admin_content_errors_module_move": "Ce module ne peut pas être déplacé plus loin : rechargez la liste pour la voir à jour.",
+    "@admin_content_errors_module_move": {
+        "description": "admin_content.errors.module_move"
+    },
+    "admin_content_errors_module_scheduled": "Des publications planifiées ({count}) reprennent encore ce module : annulez-les ou retirez-les d’abord dans les passerelles.",
+    "@admin_content_errors_module_scheduled": {
+        "description": "admin_content.errors.module_scheduled",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_modules_max": "Vous ne pouvez pas dépasser {max} modules.",
+    "@admin_content_errors_modules_max": {
+        "description": "admin_content.errors.modules_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
     "admin_content_errors_network_unsupported": "Cette action n’existe pas pour ce type d’élément.",
     "@admin_content_errors_network_unsupported": {
         "description": "admin_content.errors.network_unsupported"
@@ -6415,6 +6805,10 @@
     "admin_content_errors_no_network": "Choisissez au moins un réseau connecté.",
     "@admin_content_errors_no_network": {
         "description": "admin_content.errors.no_network"
+    },
+    "admin_content_errors_not_module": "Cette action ne concerne que les modules du manuel.",
+    "@admin_content_errors_not_module": {
+        "description": "admin_content.errors.not_module"
     },
     "admin_content_errors_not_paged": "Cette action ne concerne que les bandes dessinées et les boîtes à images.",
     "@admin_content_errors_not_paged": {
@@ -17290,6 +17684,519 @@
                 "type": "int"
             }
         }
+    },
+    "ccc_comic_back": "Toutes les histoires",
+    "@ccc_comic_back": {
+        "description": "ccc.comic.back"
+    },
+    "ccc_comic_discuss": "Discutons de l’histoire",
+    "@ccc_comic_discuss": {
+        "description": "ccc.comic.discuss"
+    },
+    "ccc_comic_discuss_items_0": "Qu’a ressenti le personnage ?",
+    "@ccc_comic_discuss_items_0": {
+        "description": "ccc.comic.discuss_items.0"
+    },
+    "ccc_comic_discuss_items_1": "Qu’aurions-nous fait à sa place ?",
+    "@ccc_comic_discuss_items_1": {
+        "description": "ccc.comic.discuss_items.1"
+    },
+    "ccc_comic_discuss_items_2": "Quelles ressources de l’annuaire pouvaient l’aider ?",
+    "@ccc_comic_discuss_items_2": {
+        "description": "ccc.comic.discuss_items.2"
+    },
+    "ccc_comic_done": "Place à la discussion !",
+    "@ccc_comic_done": {
+        "description": "ccc.comic.done"
+    },
+    "ccc_comic_done_title": "Histoire terminée",
+    "@ccc_comic_done_title": {
+        "description": "ccc.comic.done_title"
+    },
+    "ccc_comic_finish": "Terminer",
+    "@ccc_comic_finish": {
+        "description": "ccc.comic.finish"
+    },
+    "ccc_comic_heading": "Bandes dessinées SSR",
+    "@ccc_comic_heading": {
+        "description": "ccc.comic.heading"
+    },
+    "ccc_comic_intro": "Des histoires courtes sur la santé sexuelle et reproductive, à lire seul·e ou en groupe.",
+    "@ccc_comic_intro": {
+        "description": "ccc.comic.intro"
+    },
+    "ccc_comic_keys": "Utilise les flèches ← → du clavier pour changer de planche.",
+    "@ccc_comic_keys": {
+        "description": "ccc.comic.keys"
+    },
+    "ccc_comic_next": "Planche suivante",
+    "@ccc_comic_next": {
+        "description": "ccc.comic.next"
+    },
+    "ccc_comic_page_announce": "Planche {current} sur {total} : {caption}",
+    "@ccc_comic_page_announce": {
+        "description": "ccc.comic.page_announce",
+        "placeholders": {
+            "caption": {
+                "type": "String"
+            },
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_comic_page_counter": "Planche {current} sur {total}",
+    "@ccc_comic_page_counter": {
+        "description": "ccc.comic.page_counter",
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_comic_pages_count": "{count, plural, =1{1 planche} other{{count} planches}}",
+    "@ccc_comic_pages_count": {
+        "description": "ccc.comic.pages_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ccc_comic_previous": "Planche précédente",
+    "@ccc_comic_previous": {
+        "description": "ccc.comic.previous"
+    },
+    "ccc_comic_progress": "Progression de la lecture",
+    "@ccc_comic_progress": {
+        "description": "ccc.comic.progress"
+    },
+    "ccc_comic_read": "Lire la BD",
+    "@ccc_comic_read": {
+        "description": "ccc.comic.read"
+    },
+    "ccc_comic_reader_label": "Lecteur de bande dessinée : {title}",
+    "@ccc_comic_reader_label": {
+        "description": "ccc.comic.reader_label",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_comic_restart": "Relire depuis le début",
+    "@ccc_comic_restart": {
+        "description": "ccc.comic.restart"
+    },
+    "ccc_empty_bd": "Aucune bande dessinée n’est publiée pour le moment.",
+    "@ccc_empty_bd": {
+        "description": "ccc.empty.bd"
+    },
+    "ccc_empty_boites_images": "Aucune boîte à images n’est publiée pour le moment.",
+    "@ccc_empty_boites_images": {
+        "description": "ccc.empty.boites_images"
+    },
+    "ccc_empty_hint": "Reviens bientôt, de nouveaux outils sont ajoutés régulièrement.",
+    "@ccc_empty_hint": {
+        "description": "ccc.empty.hint"
+    },
+    "ccc_empty_lois": "Aucun texte de loi n’est publié pour le moment.",
+    "@ccc_empty_lois": {
+        "description": "ccc.empty.lois"
+    },
+    "ccc_empty_manuel": "Aucun module du manuel n’est publié pour le moment.",
+    "@ccc_empty_manuel": {
+        "description": "ccc.empty.manuel"
+    },
+    "ccc_heading": "Outils CCC interactifs",
+    "@ccc_heading": {
+        "description": "ccc.heading"
+    },
+    "ccc_image_failed": "Image indisponible pour le moment.",
+    "@ccc_image_failed": {
+        "description": "ccc.image.failed"
+    },
+    "ccc_image_loading": "Image en cours de chargement",
+    "@ccc_image_loading": {
+        "description": "ccc.image.loading"
+    },
+    "ccc_images_badge": "Image {number}",
+    "@ccc_images_badge": {
+        "description": "ccc.images.badge",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_images_count": "{count, plural, =1{1 image} other{{count} images}}",
+    "@ccc_images_count": {
+        "description": "ccc.images.count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ccc_images_directory": "Ouvrir l’annuaire",
+    "@ccc_images_directory": {
+        "description": "ccc.images.directory"
+    },
+    "ccc_images_guide": "Guide de l’animateur·rice",
+    "@ccc_images_guide": {
+        "description": "ccc.images.guide"
+    },
+    "ccc_images_heading": "Boîtes à images",
+    "@ccc_images_heading": {
+        "description": "ccc.images.heading"
+    },
+    "ccc_images_intro": "Ouvre le mode animation pour projeter les images au groupe, une par une, avec le guide pour lancer la discussion.",
+    "@ccc_images_intro": {
+        "description": "ccc.images.intro"
+    },
+    "ccc_images_start": "Mode animation",
+    "@ccc_images_start": {
+        "description": "ccc.images.start"
+    },
+    "ccc_images_start_one": "Mode animation : {title}",
+    "@ccc_images_start_one": {
+        "description": "ccc.images.start_one",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_images_tips_0": "Que vois-tu sur cette image ?",
+    "@ccc_images_tips_0": {
+        "description": "ccc.images.tips.0"
+    },
+    "ccc_images_tips_1": "Que ressent chaque personne ?",
+    "@ccc_images_tips_1": {
+        "description": "ccc.images.tips.1"
+    },
+    "ccc_images_tips_2": "Qu’est-ce qui pourrait se passer ensuite ?",
+    "@ccc_images_tips_2": {
+        "description": "ccc.images.tips.2"
+    },
+    "ccc_images_tips_3": "Que ferais-tu à sa place ?",
+    "@ccc_images_tips_3": {
+        "description": "ccc.images.tips.3"
+    },
+    "ccc_images_tips_4": "Qui pourrait aider, et comment ?",
+    "@ccc_images_tips_4": {
+        "description": "ccc.images.tips.4"
+    },
+    "ccc_images_tips_heading": "Questions types pour animer",
+    "@ccc_images_tips_heading": {
+        "description": "ccc.images.tips_heading"
+    },
+    "ccc_images_tips_reminder": "Rappel : crée un cadre sûr (confidentialité, respect, droit de ne pas répondre) et oriente vers l’annuaire si une personne se confie.",
+    "@ccc_images_tips_reminder": {
+        "description": "ccc.images.tips_reminder"
+    },
+    "ccc_intro": "Les outils papier du terrain, rendus numériques : à utiliser en séance de groupe, en entretien individuel ou pour te former.",
+    "@ccc_intro": {
+        "description": "ccc.intro"
+    },
+    "ccc_laws_count": "{count, plural, =1{1 texte publié} other{{count} textes publiés}}",
+    "@ccc_laws_count": {
+        "description": "ccc.laws.count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ccc_laws_heading": "Lois et codes du Bénin",
+    "@ccc_laws_heading": {
+        "description": "ccc.laws.heading"
+    },
+    "ccc_laws_intro": "Une bibliothèque juridique consultable, avec des résumés en langage simple.",
+    "@ccc_laws_intro": {
+        "description": "ccc.laws.intro"
+    },
+    "ccc_laws_open": "Ouvrir les lois et codes",
+    "@ccc_laws_open": {
+        "description": "ccc.laws.open"
+    },
+    "ccc_manual_back": "Tous les modules",
+    "@ccc_manual_back": {
+        "description": "ccc.manual.back"
+    },
+    "ccc_manual_chapter_seen": "Point vu : {chapter}",
+    "@ccc_manual_chapter_seen": {
+        "description": "ccc.manual.chapter_seen",
+        "placeholders": {
+            "chapter": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_chapters_count": "{count, plural, =0{Aucun point} =1{1 point} other{{count} points}}",
+    "@ccc_manual_chapters_count": {
+        "description": "ccc.manual.chapters_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ccc_manual_chapters_heading": "Contenu du module",
+    "@ccc_manual_chapters_heading": {
+        "description": "ccc.manual.chapters_heading"
+    },
+    "ccc_manual_detail_label": "Module : {title}",
+    "@ccc_manual_detail_label": {
+        "description": "ccc.manual.detail_label",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_duration": "{minutes} min",
+    "@ccc_manual_duration": {
+        "description": "ccc.manual.duration",
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_duration_label": "Durée : {minutes} minutes",
+    "@ccc_manual_duration_label": {
+        "description": "ccc.manual.duration_label",
+        "placeholders": {
+            "minutes": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_global_announce": "Progression globale : {percent} %.",
+    "@ccc_manual_global_announce": {
+        "description": "ccc.manual.global_announce",
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_heading": "Manuel du pair éducateur·rice",
+    "@ccc_manual_heading": {
+        "description": "ccc.manual.heading"
+    },
+    "ccc_manual_intro": "Coche les points que tu as vus et imprime ton récapitulatif. Ta progression reste sur cet appareil : elle n’est jamais envoyée au serveur.",
+    "@ccc_manual_intro": {
+        "description": "ccc.manual.intro"
+    },
+    "ccc_manual_module_done": "Module terminé",
+    "@ccc_manual_module_done": {
+        "description": "ccc.manual.module_done"
+    },
+    "ccc_manual_modules_count": "{count, plural, =1{1 module} other{{count} modules}}",
+    "@ccc_manual_modules_count": {
+        "description": "ccc.manual.modules_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ccc_manual_open": "Ouvrir le module",
+    "@ccc_manual_open": {
+        "description": "ccc.manual.open"
+    },
+    "ccc_manual_print": "Imprimer le récapitulatif",
+    "@ccc_manual_print": {
+        "description": "ccc.manual.print"
+    },
+    "ccc_manual_progress_announce": "{done} sur {total} points vus dans ce module.",
+    "@ccc_manual_progress_announce": {
+        "description": "ccc.manual.progress_announce",
+        "placeholders": {
+            "done": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_progress_count": "{done} sur {total} points vus",
+    "@ccc_manual_progress_count": {
+        "description": "ccc.manual.progress_count",
+        "placeholders": {
+            "done": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_progress_global": "Progression globale",
+    "@ccc_manual_progress_global": {
+        "description": "ccc.manual.progress_global"
+    },
+    "ccc_manual_progress_module": "Progression du module « {title} »",
+    "@ccc_manual_progress_module": {
+        "description": "ccc.manual.progress_module",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_progress_percent": "{percent} %",
+    "@ccc_manual_progress_percent": {
+        "description": "ccc.manual.progress_percent",
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_reset": "Effacer ma progression",
+    "@ccc_manual_reset": {
+        "description": "ccc.manual.reset"
+    },
+    "ccc_manual_reset_done": "Ta progression a été effacée de cet appareil.",
+    "@ccc_manual_reset_done": {
+        "description": "ccc.manual.reset_done"
+    },
+    "ccc_manual_storage_unavailable": "Ton navigateur ne permet pas de garder ta progression : elle sera perdue en quittant la page.",
+    "@ccc_manual_storage_unavailable": {
+        "description": "ccc.manual.storage_unavailable"
+    },
+    "ccc_manual_summary_date": "Édité le {date}",
+    "@ccc_manual_summary_date": {
+        "description": "ccc.manual.summary_date",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_manual_summary_empty": "Aucun module publié.",
+    "@ccc_manual_summary_empty": {
+        "description": "ccc.manual.summary_empty"
+    },
+    "ccc_manual_summary_heading": "Mon récapitulatif",
+    "@ccc_manual_summary_heading": {
+        "description": "ccc.manual.summary_heading"
+    },
+    "ccc_manual_summary_line": "{title} : {done} sur {total} points vus",
+    "@ccc_manual_summary_line": {
+        "description": "ccc.manual.summary_line",
+        "placeholders": {
+            "done": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_presentation_badge": "Mode présentation",
+    "@ccc_presentation_badge": {
+        "description": "ccc.presentation.badge"
+    },
+    "ccc_presentation_notice": "Tu es en mode présentation : le guide de l’animateur·rice s’affiche avec chaque image du mode animation.",
+    "@ccc_presentation_notice": {
+        "description": "ccc.presentation.notice"
+    },
+    "ccc_show_announce": "Image {current} sur {total} : {title}",
+    "@ccc_show_announce": {
+        "description": "ccc.show.announce",
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_show_close": "Fermer",
+    "@ccc_show_close": {
+        "description": "ccc.show.close"
+    },
+    "ccc_show_close_hint": "Fermer (Échap)",
+    "@ccc_show_close_hint": {
+        "description": "ccc.show.close_hint"
+    },
+    "ccc_show_counter": "Image {current} sur {total}",
+    "@ccc_show_counter": {
+        "description": "ccc.show.counter",
+        "placeholders": {
+            "current": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_show_guide": "Guide de l’animateur·rice",
+    "@ccc_show_guide": {
+        "description": "ccc.show.guide"
+    },
+    "ccc_show_keys": "Utilise les flèches ← → du clavier pour changer d’image, Échap pour fermer.",
+    "@ccc_show_keys": {
+        "description": "ccc.show.keys"
+    },
+    "ccc_show_label": "Mode animation",
+    "@ccc_show_label": {
+        "description": "ccc.show.label"
+    },
+    "ccc_show_next": "Image suivante",
+    "@ccc_show_next": {
+        "description": "ccc.show.next"
+    },
+    "ccc_show_previous": "Image précédente",
+    "@ccc_show_previous": {
+        "description": "ccc.show.previous"
+    },
+    "ccc_tabs_bd": "BD SSR",
+    "@ccc_tabs_bd": {
+        "description": "ccc.tabs.bd"
+    },
+    "ccc_tabs_boites_images": "Boîtes à images",
+    "@ccc_tabs_boites_images": {
+        "description": "ccc.tabs.boites_images"
+    },
+    "ccc_tabs_label": "Choisir un outil",
+    "@ccc_tabs_label": {
+        "description": "ccc.tabs.label"
+    },
+    "ccc_tabs_lois": "Lois",
+    "@ccc_tabs_lois": {
+        "description": "ccc.tabs.lois"
+    },
+    "ccc_tabs_manuel": "Manuel",
+    "@ccc_tabs_manuel": {
+        "description": "ccc.tabs.manuel"
+    },
+    "ccc_tagline": "Communication pour le changement de comportement",
+    "@ccc_tagline": {
+        "description": "ccc.tagline"
+    },
+    "ccc_title": "Outils CCC",
+    "@ccc_title": {
+        "description": "ccc.title"
     },
     "common_acronym": "LBTQ+",
     "@common_acronym": {

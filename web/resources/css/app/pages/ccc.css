@@ -1,0 +1,47 @@
+/*
+ * Outils CCC `/ccc` (lot outils-ccc, P8-12 ; prototype boites-a-images.php, manuel-pair-animateur.php) : fenêtre « Mode
+ * animation » plein cadre (fond sombre du prototype, au-dessus du gabarit membre et du bouton SOS), image contenue dans
+ * la scène, barres de progression de 8 px, cases à cocher et boutons de 44 px au toucher, et impression du récapitulatif
+ * du manuel seul (le gabarit membre disparaît). Jetons uniquement.
+ */
+.xm-ccc-page .vstack > * { flex-grow: 0; }
+.xm-ccc-bar { height: 8px; }
+.xm-ccc-image.is-loading { background: var(--xm-neutral-100, var(--bs-tertiary-bg)); }
+.xm-ccc-image__contain { display: block; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 1rem; }
+.xm-ccc-image__failed { min-height: 8rem; height: 100%; background: var(--bs-tertiary-bg); }
+.xm-ccc-check .form-check-input { margin-top: .3rem; }
+.xm-ccc-check .form-check-input:focus-visible,
+.xm-ccc-page .btn:focus-visible { outline: var(--xm-focus-width, 3px) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset, 2px); }
+
+.xm-ccc-show { position: fixed; inset: 0; z-index: 2100; display: flex; flex-direction: column; background: var(--xm-neutral-900, #0e1020); color: var(--xm-neutral-0, #fff); }
+.xm-ccc-show:focus { outline: none; }
+.xm-ccc-show .btn:focus-visible { outline: var(--xm-focus-width, 3px) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset, 2px); }
+.xm-ccc-show__stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.xm-ccc-show__stage .xm-ccc-image { display: flex; align-items: center; justify-content: center; max-width: 100%; max-height: 100%; width: 100%; height: 100%; }
+.xm-ccc-show__guide { background: rgba(255, 255, 255, .08); }
+.xm-ccc-show--presentation .xm-ccc-show__guide .h5 { font-size: 1.5rem; }
+.xm-ccc-show--presentation .xm-ccc-show__guide p:not(.h5) { font-size: 1.15rem; }
+.xm-ccc-show--presentation .xm-ccc-show__guide .small { font-size: 1rem; }
+
+@media (pointer: coarse) {
+  .xm-ccc-page .btn,
+  .xm-ccc-show .btn { min-height: var(--xm-button-min-h, 44px); display: inline-flex; align-items: center; justify-content: center; }
+  .xm-ccc-check .form-check-input { width: 1.5rem; height: 1.5rem; margin-top: 0; }
+}
+
+/* Récapitulatif imprimé : caché à l'écran. */
+.xm-ccc-print { display: none; }
+
+@media print {
+  body:has(.xm-ccc-page) #memberHeader,
+  body:has(.xm-ccc-page) #memberSidenav,
+  body:has(.xm-ccc-page) .xm-sos-fab,
+  body:has(.xm-ccc-page) footer,
+  .xm-ccc-page .xm-ccc-screen,
+  .xm-ccc-page .xm-ccc-hero,
+  .xm-ccc-page .nav-pills { display: none !important; }
+  .xm-ccc-page .xm-ccc-print { display: block !important; color: #000; }
+  .xm-ccc-page .tab-pane { display: none !important; }
+  .xm-ccc-page .tab-pane:has(.xm-ccc-print) { display: block !important; opacity: 1 !important; }
+  .xm-ccc-print section { break-inside: avoid; }
+}

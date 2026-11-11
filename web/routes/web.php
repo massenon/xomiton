@@ -31,6 +31,7 @@ use App\Http\Controllers\Web\Legal\AccountDeletionController;
 use App\Http\Controllers\Web\Legal\LegalPageController;
 use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\AssistantPageController;
+use App\Http\Controllers\Web\Member\CccPageController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
 use App\Http\Controllers\Web\Member\DirectoryPageController;
 use App\Http\Controllers\Web\Member\FeedPageController;
@@ -279,7 +280,9 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     // Sans `directory.view` : 403, comme l'API.
     Route::get('/annuaire', DirectoryPageController::class)->middleware('can:directory.view')->name('annuaire');
     $memberPlaceholder('/medias', 'medias', 'medias', 'albums.php');
-    $memberPlaceholder('/ccc', 'ccc', 'ccc', 'ccc.php');
+    // P8-12 (lot outils-ccc) : outils CCC en lecture, une seule implémentation Vue pour le membre et le pair (P9-05 : drapeau
+    // `presentation`). Outils publiés seulement (API ccc/), progression du manuel sur l'appareil. Sans `ccc_tools.view` : 403.
+    Route::get('/ccc', CccPageController::class)->middleware('can:ccc_tools.view')->name('ccc');
     // P9-03, P9-04, P9-08 (lot espace-pair) : espace pair, réservé au compte actif détenant `peer_space.access`
     // (EnsurePeerSpaceAccess : RG-03, un·e pair·e en attente de validation reste membre → 403, comme l'API `pair/`).
     // Tableau de bord (KPI, tâches, alertes routées vers moi), collecte hors ligne (boîte d'envoi, `client_uuid`),
