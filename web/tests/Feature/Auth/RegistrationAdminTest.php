@@ -44,7 +44,7 @@ it('prévient les validateurs (cloche) de chaque inscription web : pseudo, type 
     $this->flushSession();
     $this->post('/inscription', R::allyPayload(['pseudo' => 'Maitre_B', 'email' => 'maitre@exemple.bj', 'ally_role' => 'avocat']))->assertRedirect(route('fil'));
 
-    $rows = DatabaseNotification::query()->where('notifiable_id', $admin->id)->orderBy('id')->get();
+    $rows = DatabaseNotification::query()->where('notifiable_id', $admin->id)->get()->sortBy(fn (DatabaseNotification $row): int => str_contains((string) $row->data['body'], 'Awa_S') ? 0 : 1)->values();
     expect($rows)->toHaveCount(2)
         ->and($rows[0]->data['body'])->toContain('Awa_S')->toContain('membre')
         ->and($rows[1]->data['body'])->toContain('Maitre_B')->toContain('allié·e, avocat·e')
