@@ -1,7 +1,7 @@
 # Xomiton — application mobile (Flutter)
 
 SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`
-(454 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
+(511 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
 
 Build Android depuis Windows (SDK, émulateur ou téléphone, API locale `10.0.2.2`, APK debug, clé de
 signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../docs/BUILD_ANDROID_WINDOWS.md).
@@ -195,6 +195,32 @@ seulement si le serveur a déclaré l'espace au compte. Aperçus masqués : titr
 - **Newsletter** : `/newsletter` (Paramètres) — abonnement et centres d'intérêt ; pas de fréquence (le schéma
   n'en a pas, `docs/API.md` §3).
 - Aucune page d'attente : `/soon/:page` n'existe plus.
+
+## Inscription en 3 étapes et compte en attente (décision du client, 11/11/2026)
+
+L'inscription suit la logique de l'ancien formulaire, comme le web : **3 étapes obligatoires, un seul envoi
+à la fin, le compte n'existe qu'au bouton « Créer mon compte »** (aucun appel d'inscription avant ; tout reste
+en mémoire, y compris en revenant en arrière).
+
+- Étape 1 « Informations de base » : prénom, nom, pseudo, e-mail, âge (entier ≥ `min_age` du serveur, jamais
+  codé en dur) ; code d'invitation facultatif (lien `/signup/:invitation`).
+- Étape 2 « Profil & identité » : pronoms, pays (listes du serveur, Bénin en premier), ville, téléphone,
+  département puis commune (`GET zones`, seulement si pays = BJ), « Tu es… » : `membre` ou `allie`.
+- Étape 3 « Détails & sécurité » : membre → orientation, identité de genre (`autre` → précision) et consentement
+  `sensitive_data` ; allié·e → statut (`autre` → précision) ; mot de passe + confirmation (jauge), CGU et
+  confidentialité (liens vers les pages légales).
+- Fichiers : `lib/features/auth/data/registration_form.dart` (modèle, validation par étape, corps du
+  `POST auth/register`), `presentation/signup_page.dart` (assistant), `data/auth_api.dart`
+  (`GET referentials/registration` en cache Hive + ETag, `register`). Textes : `lib/core/l10n/registration_strings.dart`
+  (table des textes en attente, `mobile_register_*` et `mobile_pending_*` : l'ARB est généré par `lang:export`).
+- Erreurs 422 : chaque message sous son champ, l'étape du premier champ fautif se rouvre. Sans réseau à
+  l'envoi : message clair, données conservées. Rien de ce qui est saisi n'est journalisé.
+- **Compte en attente de validation** (`user.pending_validation = true`) : la session s'ouvre puis `/en-attente`
+  (`presentation/pending_page.dart`) : lecture des contenus, SOS, alertes, signalement et profil restent
+  ouverts ; publier, commenter, messages, rejoindre groupes et événements, collecte sont grisés avec
+  explication (`pendingValidationProvider`). Le statut est relu (`GET me`) à la reprise de l'application, au
+  tirer-pour-rafraîchir et au bouton « Vérifier maintenant ». Un 403 dont le code contient `pending` affiche le
+  message du serveur (sinon `mobile_pending_forbidden`) et relit `GET me`.
 
 ## Tests d'intégration (P15-21)
 
