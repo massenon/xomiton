@@ -27,6 +27,7 @@ use App\Livewire\Admin\Maintenance\Index as MaintenanceIndex;
 use App\Livewire\Admin\Moderation\Index as ModerationIndex;
 use App\Livewire\Admin\Network\Index as NetworkIndex;
 use App\Livewire\Admin\Newsletter\Index as NewsletterIndex;
+use App\Livewire\Admin\OnCall\Index as OnCallIndex;
 use App\Livewire\Admin\Registers\Index as RegistersIndex;
 use App\Livewire\Admin\Registrations\Index as RegistrationsIndex;
 use App\Livewire\Admin\Reports\Index as ReportsIndex;
@@ -77,6 +78,8 @@ foreach ($screens as [$uri, $name, $title, $prototype]) {
 // signalements (`alerts.view` ; le composant autorise aussi `viewAny` et applique AlertScope) ------------------
 Route::get('/', DashboardIndex::class)->name('dashboard');
 Route::get('/alertes', AlertsIndex::class)->middleware('can:alerts.view')->name('alertes');
+// Planning de garde (P1-17) : `on_call.manage` (admin et superadmin) ; lu par OnCallRoster pour le routage des SOS et l'escalade.
+Route::get('/garde', OnCallIndex::class)->middleware('can:on_call.manage')->name('garde');
 
 // --- Gestion des données (P11) : un écran = une permission (menu AdminNavigation) ; chaque composant autorise aussi la
 // policy du modèle et applique le scope du compte (CaseRecordScope) ----------------------------------------------------

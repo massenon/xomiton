@@ -380,6 +380,7 @@ return [
             'title' => 'Garde',
             'none' => 'Aucun·e administrateur·rice de garde à ce jour.',
             'now' => 'De garde en ce moment :',
+            'manage' => 'Gérer le planning de garde',
         ],
         'toasts' => [
             'unchanged' => 'Aucune modification à enregistrer.',

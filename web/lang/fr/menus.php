@@ -72,6 +72,7 @@ return [
         ],
         'dashboard' => 'Tableau de bord',
         'alerts' => 'Alertes & signalements',
+        'on_call' => 'Planning de garde',
         'indicators' => 'Indicateurs',
         'reports' => 'Rapports automatisés',
         'registers' => 'Registres numériques',
