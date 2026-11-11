@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Application\Shared\Countries;
 use App\Application\Shared\Referentials;
 use App\Enums\DirectoryRole;
 use App\Models\Category;
@@ -22,7 +23,7 @@ use Illuminate\Support\Str;
  */
 class ReferenceDataSeeder extends Seeder
 {
-    /** @var array<string, list<string>> département => communes (x_zones()) */
+    /** @var array<string, list<string>> département du Bénin (`country_code` BJ) => communes (x_zones()) ; les zones d'autres pays se créent en administration */
     private const ZONES = [
         'Alibori' => ['Kandi', 'Malanville', 'Banikoara'],
         'Atacora' => ['Natitingou', 'Tanguiéta'],
@@ -97,7 +98,7 @@ class ReferenceDataSeeder extends Seeder
 
         foreach (self::ZONES as $zoneName => $communes) {
             $zone = Zone::query()->updateOrCreate(
-                ['slug' => Str::slug($zoneName)],
+                ['country_code' => Countries::BENIN, 'slug' => Str::slug($zoneName)],
                 ['name' => $zoneName, 'position' => ++$zonePosition, 'is_active' => true],
             );
 

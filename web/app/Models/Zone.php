@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Département (référentiel géographique de premier niveau).
+ * Zone (département, région, province… : référentiel géographique de premier niveau), rattachée à un pays
+ * (`country_code`, ISO 3166-1 alpha-2, `BJ` par défaut : décision client du 11/11/2026, zones de tout pays). Le nom et le
+ * slug sont uniques par pays.
  */
 class Zone extends Model
 {
@@ -22,6 +24,7 @@ class Zone extends Model
     protected $fillable = [
         'name',
         'slug',
+        'country_code',
         'position',
         'is_active',
     ];
@@ -81,6 +84,12 @@ class Zone extends Model
     public function scopeActive(Builder $query): void
     {
         $query->where('is_active', true);
+    }
+
+    /** @param  Builder<Zone>  $query */
+    public function scopeInCountry(Builder $query, string $countryCode): void
+    {
+        $query->where('country_code', strtoupper($countryCode));
     }
 
     /** @param  Builder<Zone>  $query */

@@ -38,14 +38,17 @@ final class Referentials
     public const CATEGORIES = 'categories';
 
     /**
-     * Départements actifs avec leurs communes actives.
+     * Zones actives (tous pays : le Bénin d'abord, puis les autres pays par code, chacun dans l'ordre de ses zones) avec leurs
+     * communes actives.
      *
-     * @return list<array{id: int, name: string, slug: string, position: int, communes: list<array{id: int, name: string, slug: string, position: int}>}>
+     * @return list<array{id: int, name: string, slug: string, country_code: string, position: int, communes: list<array{id: int, name: string, slug: string, position: int}>}>
      */
     public function zones(): array
     {
         return $this->remember(self::ZONES, static fn (): array => Zone::query()
             ->active()
+            ->orderByRaw('case when country_code = ? then 0 else 1 end', [Countries::BENIN])
+            ->orderBy('country_code')
             ->ordered()
             ->with(['communes' => static fn ($query) => $query->active()->ordered()])
             ->get()
@@ -53,6 +56,7 @@ final class Referentials
                 'id' => (int) $zone->getKey(),
                 'name' => (string) $zone->name,
                 'slug' => (string) $zone->slug,
+                'country_code' => (string) $zone->country_code,
                 'position' => (int) $zone->position,
                 'communes' => $zone->communes->map(static fn (Commune $commune): array => [
                     'id' => (int) $commune->getKey(),
@@ -63,6 +67,17 @@ final class Referentials
             ])
             ->values()
             ->all());
+    }
+
+    /**
+     * Codes ISO des pays qui ont au moins une zone active (le formulaire d'inscription ne propose zone puis commune que pour
+     * ceux-là), dans l'ordre de `zones()`.
+     *
+     * @return list<string>
+     */
+    public function zoneCountries(): array
+    {
+        return array_values(array_unique(array_column($this->zones(), 'country_code')));
     }
 
     /**
