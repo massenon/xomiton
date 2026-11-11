@@ -205,7 +205,8 @@ en mémoire, y compris en revenant en arrière).
 - Étape 1 « Informations de base » : prénom, nom, pseudo, e-mail, âge (entier ≥ `min_age` du serveur, jamais
   codé en dur) ; code d'invitation facultatif (lien `/signup/:invitation`).
 - Étape 2 « Profil & identité » : pronoms, pays (listes du serveur, Bénin en premier), ville, téléphone,
-  département puis commune (`GET zones`, seulement si pays = BJ), « Tu es… » : `membre` ou `allie`.
+  zone puis commune (`GET zones`, filtrées sur `country_code`, proposées si le pays figure dans `zone_countries` de
+  `referentials/registration` ; changer de pays les efface), « Tu es… » : `membre` ou `allie`.
 - Étape 3 « Détails & sécurité » : membre → orientation, identité de genre (`autre` → précision) et consentement
   `sensitive_data` ; allié·e → statut (`autre` → précision) ; mot de passe + confirmation (jauge), CGU et
   confidentialité (liens vers les pages légales).

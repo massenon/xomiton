@@ -159,11 +159,11 @@ Sanctum SPA (ADR-31, `statefulApi()` dans `bootstrap/app.php`) : une requête do
 
 ### `GET referentials/registration` — listes du formulaire d'inscription
 
-Public, sans session, **ETag + `Cache-Control: public`** comme les autres référentiels (`If-None-Match` → 304 ; liste des pays en cache serveur 24 h). Les départements et communes sont ceux de `GET zones`.
+Public, sans session, **ETag + `Cache-Control: public`** comme les autres référentiels (`If-None-Match` → 304 ; liste des pays en cache serveur 24 h). Les zones et communes sont celles de `GET zones` (filtrer sur `country_code`).
 
-`{ "data": { "min_age": 18, "pronouns": [{value,label}], "member_types": [{"value":"membre","label":"Membre de la communauté"},{"value":"allie","label":"Personne ressource / Allié·e"}], "countries": [{"value":"BJ","label":"Bénin"},…], "ally_roles": [{value,label}], "gender_identities": [{value,label}], "orientations": [{value,label}] } }`
+`{ "data": { "min_age": 18, "pronouns": [{value,label}], "member_types": [{"value":"membre","label":"Membre de la communauté"},{"value":"allie","label":"Personne ressource / Allié·e"}], "countries": [{"value":"BJ","label":"Bénin"},…], "zone_countries": ["BJ","CM"], "ally_roles": [{value,label}], "gender_identities": [{value,label}], "orientations": [{value,label}] } }`
 
-`min_age` vient de `xomiton.accounts.min_age`. `pronouns` : `elle`, `il`, `iel`. `countries` : 249 codes ISO 3166-1 alpha-2, libellés en français, Bénin d'abord puis ordre alphabétique français. `ally_roles` : `professionnel_sante`, `avocat`, `psychologue`, `leader_religieux`, `activiste`, `autre`. `gender_identities` et `orientations` : les clés du profil (`SensitiveProfile`) puis `prefer_not` (« Je préfère ne pas le dire ») ; `autre` exige une précision.
+`min_age` vient de `xomiton.accounts.min_age`. `pronouns` : `elle`, `il`, `iel`. `countries` : 249 codes ISO 3166-1 alpha-2, libellés en français, Bénin d'abord puis ordre alphabétique français. `zone_countries` : codes ISO des pays qui ont au moins une zone **active** (le formulaire ne propose zone puis commune que pour ceux-là ; pas de cascade pour les autres). `ally_roles` : `professionnel_sante`, `avocat`, `psychologue`, `leader_religieux`, `activiste`, `autre`. `gender_identities` et `orientations` : les clés du profil (`SensitiveProfile`) puis `prefer_not` (« Je préfère ne pas le dire ») ; `autre` exige une précision.
 
 ### `POST auth/register` — inscription en 3 étapes, un seul envoi
 
@@ -181,7 +181,7 @@ Corps JSON :
 | `country_code` | requis, code ISO de `referentials/registration` |
 | `city` | facultatif, ≤ 120 |
 | `phone` | facultatif : `PhoneBj` (`+229 01 XX XX XX XX`) si `country_code = BJ`, sinon `+` et 8 à 15 chiffres |
-| `zone_id`, `commune_id` | facultatifs, **Bénin seulement** (ignorés sinon) ; commune dans le département ; `zone_id` requis avec `commune_id` ; routage SOS par zone |
+| `zone_id`, `commune_id` | facultatifs, **pour tout pays** : la zone doit être active et du pays choisi (`country_code`), sinon 422 `zone_id` ; commune active de cette zone (422 `commune_id`) ; `zone_id` requis avec `commune_id` ; routage SOS par zone |
 | `member_type` | requis : `membre` ou `allie` (« pair » → 422) |
 | `gender_identity`, `orientation` | **requis si `membre`** (clés de `referentials/registration`, `prefer_not` accepté) ; ignorés pour `allie` |
 | `gender_identity_other`, `orientation_other` | requis si la valeur est `autre` (≤ 120) |
@@ -450,7 +450,7 @@ Limites assumées : un téléphone **éteint ou sans réseau** ne reçoit l'ordr
 
 | Route | `data[]` |
 |---|---|
-| `GET zones` | `{ id, name, slug, position, communes: [{ id, name, slug, position }] }` (départements et communes actives) |
+| `GET zones` | `{ id, name, slug, country_code, position, communes: [{ id, name, slug, position }] }` (zones actives de **tout pays** et leurs communes actives ; Bénin d'abord, puis les autres pays par code ; `country_code` ISO alpha-2 ajouté le 11/11/2026, contrat inchangé pour le reste) |
 | `GET violence-types` | `{ id, slug, label, icon, description, position }` |
 | `GET needs` | `{ id, slug, label, routed_role, position }` (`routed_role` : rôle d'annuaire qui reçoit l'alerte, ou `null`) |
 

@@ -50,11 +50,11 @@ Identifiants publics (ADR-27) : les contenus exposés par URL portent une colonn
 ## 1. Référentiels
 
 ### `zones` [sans soft delete]
-`id` · `name string(60) unique` · `slug string(60) unique` · `position unsignedTinyInteger` · `is_active boolean default true`.
-Seed : 12 départements (Alibori, Atacora, Atlantique, Borgou, Collines, Couffo, Donga, Littoral, Mono, Ouémé, Plateau, Zou).
+`id` · `name string(60)` · `slug string(60)` · `country_code char(2) default 'BJ'` (ISO 3166-1 alpha-2 : zones de tout pays, décision client du 11/11/2026 ; rattrapage `BJ` des lignes existantes) · `position unsignedTinyInteger` · `is_active boolean default true`. Uniques `(country_code, name)` et `(country_code, slug)` (noms d'index explicites, ≤ 64 caractères) ; index `country_code` et `(country_code, is_active, position)`. Migration `2026_12_02_090000_add_country_code_to_zones_table`.
+Seed : 12 départements du Bénin (country_code `BJ` : Alibori, Atacora, Atlantique, Borgou, Collines, Couffo, Donga, Littoral, Mono, Ouémé, Plateau, Zou) ; les zones d'autres pays se créent en administration (`/admin/referentiels`). Le `slug` est fixé à la création ; une zone ne se supprime que sans commune ni référence (comptes, alertes, dossiers, annuaire, groupes, indicateurs, gardes, invitations).
 
 ### `communes`
-`id` · `zone_id FK zones restrict` · `name string(80)` · `slug string(80)` · `position unsignedTinyInteger` · `is_active boolean default true`. Unique `(zone_id, slug)`. Seed : les 29 communes du prototype (`x_zones()`), extensible aux 77 communes du Bénin (à compléter avec le client).
+`id` · `zone_id FK zones restrict` · `name string(80)` · `slug string(80)` · `position unsignedTinyInteger` · `is_active boolean default true`. Unique `(zone_id, slug)` ; une commune dépend de sa zone, donc du pays de celle-ci. Administrables avec les zones (`/admin/referentiels`) ; `violence_types`, `needs` et `populations` aussi (code fixe, suppression refusée si utilisés : `cases.*_id`, `alerts.category`, `alerts.needs`). Seed : les 29 communes du prototype (`x_zones()`), extensible aux 77 communes du Bénin (à compléter avec le client).
 
 ### `violence_types`
 `id` · `slug string(40) unique` (`physique`, `psychologique`, `sexuelle`, `economique`, `numerique`) · `label string(80)` · `icon string(40)` · `description string(255)` · `position unsignedTinyInteger` · `is_active boolean`.

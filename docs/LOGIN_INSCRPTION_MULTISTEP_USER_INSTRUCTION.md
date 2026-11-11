@@ -36,7 +36,7 @@ Remplace les 4 phases dont une seule obligatoire (D4, P2-03). **Un seul formulai
 | Étape | Champs (tous obligatoires sauf mention) | Validation |
 |---|---|---|
 | 1. Informations de base | Prénom, nom, pseudonyme (règle `Pseudo`), e-mail (unique), âge (numérique ≥ `min_age`, tient lieu de confirmation d'âge) | `users.first_name`, `last_name` ; `name` = « Prénom Nom » ; consentement `age_confirmed` enregistré quand même |
-| 2. Profil et identité | Pronoms (il / elle / iel), pays (ISO, français, Bénin d'abord), ville (facultative), téléphone (facultatif : `PhoneBj` si Bénin, sinon `+` et 8 à 15 chiffres), département → commune (facultatifs, Bénin seulement), « Tu es ? » : `membre` ou `allie` | `profiles.country_code`, `city` ; zone et commune servent au routage SOS |
+| 2. Profil et identité | Pronoms (il / elle / iel), pays (ISO, français, Bénin d'abord), ville (facultative), téléphone (facultatif : `PhoneBj` si Bénin, sinon `+` et 8 à 15 chiffres), zone → commune (facultatives, proposées si le pays choisi a des zones actives et validées contre ce pays : décision du 11/11/2026, zones de tout pays), « Tu es ? » : `membre` ou `allie` | `profiles.country_code`, `city` ; zone et commune servent au routage SOS |
 | 3. Détails et sécurité | Membre : identité de genre et orientation (listes de `SensitiveProfile` ou `prefer_not` ; `autre` + précision), consentement `sensitive_data` obligatoire. Allié·e : statut (professionnel·le de santé, avocat·e, psychologue, leader religieux·se, activiste / féministe, autre + précision). Mot de passe + confirmation (jauge), CGU, confidentialité | Champs sensibles chiffrés (`profiles.gender_identity*`, `orientation*`, `ally_role*`) ; cases **distinctes, jamais pré-cochées**, horodatées |
 
 Règles d'interface :

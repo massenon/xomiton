@@ -97,6 +97,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `sync.resolve_own` (trancher ses propres conflits 409) | | ✅ | | ✅ | ✅ |
 | `device.wipe` (effacement à distance d'un appareil de l'application, P15-11) | | | | ✅ | ✅ |
 | `directory.manage` | | | | ✅ | ✅ |
+| `referentials.manage` (écran `/admin/referentiels` : zones de tout pays et communes, types de violence, besoins, populations ; décision client du 11/11/2026) | | | | ✅ | ✅ |
 | `on_call.manage` (planning de garde `/admin/garde` : admins de garde et points focaux remplaçants, P1-17) | | | | ✅ | ✅ |
 | `newsletter.manage_subscribers`, `newsletter.send` | | | | ✅ | ✅ |
 | `gateways.connect`, `gateways.publish` | | | | ✅ | ✅ |
