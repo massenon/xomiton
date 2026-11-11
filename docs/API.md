@@ -930,7 +930,7 @@ Kit CCC numérisé de l'espace connecté (prototype `ccc.php`, `manuel-pair-anim
 
 **Fiche** (`CccToolResource`) : `key, family` (`manuel`, `boites_images`, `bd`), `title`, `description` (consigne de l'animateur·rice d'une boîte à images, présentation d'un module ou d'une BD ; null si vide), `cover` (adresse de l'image ; **image de remplacement** `assets/images/xomiton/covers/og-default.jpg` quand le fichier manque ; null pour un module). Module du manuel : `duration_minutes` (null possible), `chapters[]` (textes non vides, ordre stocké), `chapters_count`. Boîte à images et BD : `pages[]` = `{position (de 1), image, caption|null, alt}` dans l'ordre de lecture (`alt` jamais vide : à défaut, « titre – n »), `pages_count`. Jamais `id`, `position` d'ordre ni `is_published`.
 
-**Hors API** : la progression du manuel (cases « point vu ») reste **sur l'appareil** (`localStorage`, `xm_ccc_manuel_v1:{id}`) et n'est jamais envoyée ; pas de quiz (aucune source de questions en base). L'application mobile ne lit pas encore ces routes.
+**Hors API** : la progression du manuel (cases « point vu ») reste **sur l'appareil** (`localStorage`, `xm_ccc_manuel_v1:{id}`) et n'est jamais envoyée ; pas de quiz (aucune source de questions en base). L'application mobile lit `GET ccc` (11/11/2026, `mobile/lib/features/ccc`) : contenu complet de chaque outil, donc `GET ccc/{key}` n'y sert pas ; aucune copie hors ligne (`no-store`).
 
 ## 20. Recherche membre `search/*` — `auth:sanctum` (P8-13)
 

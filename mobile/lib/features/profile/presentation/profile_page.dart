@@ -47,6 +47,7 @@ class ProfileTabPage extends ConsumerWidget {
           tile(Icons.search, '/suivi', 'alerts_report_tracking_title'),
           tile(Icons.groups_outlined, '/groupes', 'community_groups_title'),
           tile(Icons.event_outlined, '/evenements', 'community_events_title'),
+          tile(Icons.slideshow_outlined, '/ccc', 'menus_member_ccc', k: const Key('tile-ccc')),
           tile(Icons.smart_toy_outlined, '/assistant', 'assistant_page_title'),
           tile(Icons.phone_in_talk_outlined, '/urgences', 'alerts_emergency_title'),
           const SizedBox(height: XmSpace.s5),

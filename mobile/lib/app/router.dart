@@ -16,6 +16,10 @@ import '../features/alerts/presentation/sos_page.dart';
 import '../features/auth/application/onboarding_provider.dart';
 import '../features/security/application/pin_lock.dart';
 import '../features/security/presentation/pin_setup_page.dart';
+import '../features/ccc/presentation/ccc_comic_page.dart';
+import '../features/ccc/presentation/ccc_manual_page.dart';
+import '../features/ccc/presentation/ccc_page.dart';
+import '../features/ccc/presentation/ccc_show_page.dart';
 import '../features/community/presentation/community_pages.dart';
 import '../features/community/presentation/messages_pages.dart';
 import '../features/feed/presentation/feed_pages.dart';
@@ -354,6 +358,29 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/ressources',
         parentNavigatorKey: rootNavigatorKey,
         builder: (_, _) => const ResourcesPage(),
+      ),
+      // Outils CCC en lecture (docs/API.md §19 bis) : membre et pair, mêmes écrans.
+      GoRoute(
+        path: '/ccc',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, state) => CccPage(tab: state.uri.queryParameters['onglet']),
+        routes: [
+          GoRoute(
+            path: 'manuel/:key',
+            parentNavigatorKey: rootNavigatorKey,
+            builder: (_, state) => CccManualPage(moduleKey: state.pathParameters['key']!),
+          ),
+          GoRoute(
+            path: 'bd/:key',
+            parentNavigatorKey: rootNavigatorKey,
+            builder: (_, state) => CccComicPage(comicKey: state.pathParameters['key']!),
+          ),
+          GoRoute(
+            path: 'animation',
+            parentNavigatorKey: rootNavigatorKey,
+            builder: (_, state) => CccShowPage(boxKey: state.uri.queryParameters['boite']),
+          ),
+        ],
       ),
       GoRoute(
         path: '/notifications',

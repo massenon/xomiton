@@ -1,10 +1,31 @@
 # Xomiton — application mobile (Flutter)
 
 SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`
-(511 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
+(550 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
 
 Build Android depuis Windows (SDK, émulateur ou téléphone, API locale `10.0.2.2`, APK debug, clé de
 signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../docs/BUILD_ANDROID_WINDOWS.md).
+
+## Outils CCC en lecture
+
+`lib/features/ccc/` : `GET ccc` (docs/API.md §19 bis), un seul jeu d'écrans pour le membre et le pair.
+
+- **Routes** : `/ccc` (`?onglet=manuel|images|bd|lois`), `/ccc/manuel/:key`, `/ccc/bd/:key`,
+  `/ccc/animation` (`?boite=` : une boîte, sinon toutes). Entrées : Profil › « Outils CCC interactifs »
+  (membre) ; raccourci « Outils CCC » et tâche « Préparer la prochaine séance » du tableau de bord (pair).
+- **Mode présentation** : compte **actif** avec la permission `peer_space.access` (règle du web,
+  `cccPresentationProvider`). Il affiche le bandeau et la consigne de l'animateur·rice ; hors de ce mode
+  la consigne n'est affichée nulle part (le web la montre dans la grille : écart voulu).
+- **Progression du manuel** (cases « point vu ») : préférences de l'appareil, clé `xm_ccc_manuel_v1:{id du compte}`
+  (comme le web), **jamais envoyée au serveur**. Rangs inconnus ignorés, contenu corrompu = progression vide,
+  écriture refusée = progression en mémoire et message.
+- **Hors ligne** : aucune copie. Le serveur répond `no-store, private` pour que la lecture suive la publication
+  (un outil masqué disparaît) : l'erreur réseau affiche « Réessayer ». Ouvrir un outil sans réseau n'est donc pas possible.
+- **Mode animation** : `SystemChrome` immersif à l'ouverture, `edgeToEdge` rétabli à la fermeture (bouton ou retour) ;
+  glisser ou boutons de 56 dp, retour au début après la dernière image (comme le web).
+- **Lois** : `meta.laws.url` ouvert par `linkLauncherProvider` (https seulement) ; sans adresse valide, carte informative.
+- **Textes** : clés `ccc_*` de l'ARB (source `web/lang/fr/ccc.php`) ; `mobile_ccc_*` dans `lib/core/l10n/ccc_strings.dart`.
+  Pas de quiz (aucune source de questions), pas d'impression du récapitulatif.
 
 ## Notifications push (P15-08) : mise en place de Firebase
 

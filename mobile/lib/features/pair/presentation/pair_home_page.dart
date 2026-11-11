@@ -185,7 +185,7 @@ class _Content extends StatelessWidget {
         const SizedBox(height: XmSpace.s2),
         LinkRow(
           leading: Icons.groups_outlined,
-          onTap: () => context.push('/ressources'),
+          onTap: () => context.push('/ccc?onglet=images'),
           child: Text(
             context.t('peer_home_tasks_session'),
             style: theme.textTheme.titleSmall,
@@ -215,6 +215,7 @@ class _Shortcuts extends StatelessWidget {
         Icons.library_books_outlined,
         '/ressources',
       ),
+      ('peer_home_shortcuts_ccc', Icons.slideshow_outlined, '/ccc'),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
