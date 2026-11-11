@@ -471,11 +471,11 @@ final class Index extends Component
     private function zoneRows(): array
     {
         $zones = Zone::query()->inCountry($this->country)->ordered()->get();
-        $ids = $zones->map(static fn (Zone $zone): int => (int) $zone->getKey())->values()->all();
+        $ids = array_values($zones->map(static fn (Zone $zone): int => (int) $zone->getKey())->all());
         $usage = ReferentialUsage::zones($ids);
         $communes = ReferentialUsage::communeCounts($ids);
 
-        return $zones->map(fn (Zone $zone): array => $this->row((int) $zone->getKey(), (string) $zone->name, (string) $zone->slug, (bool) $zone->is_active, $usage[(int) $zone->getKey()] ?? 0, communes: $communes[(int) $zone->getKey()] ?? 0, country: (string) $zone->country_code))->values()->all();
+        return array_values($zones->map(fn (Zone $zone): array => $this->row((int) $zone->getKey(), (string) $zone->name, (string) $zone->slug, (bool) $zone->is_active, $usage[(int) $zone->getKey()] ?? 0, communes: $communes[(int) $zone->getKey()] ?? 0, country: (string) $zone->country_code))->all());
     }
 
     /**
@@ -490,9 +490,9 @@ final class Index extends Component
         }
 
         $communes = Commune::query()->inZone($zone)->ordered()->get();
-        $usage = ReferentialUsage::communes($communes->map(static fn (Commune $commune): int => (int) $commune->getKey())->values()->all());
+        $usage = ReferentialUsage::communes(array_values($communes->map(static fn (Commune $commune): int => (int) $commune->getKey())->all()));
 
-        return $communes->map(fn (Commune $commune): array => $this->row((int) $commune->getKey(), (string) $commune->name, (string) $commune->slug, (bool) $commune->is_active, $usage[(int) $commune->getKey()] ?? 0, country: (string) $zone->country_code))->values()->all();
+        return array_values($communes->map(fn (Commune $commune): array => $this->row((int) $commune->getKey(), (string) $commune->name, (string) $commune->slug, (bool) $commune->is_active, $usage[(int) $commune->getKey()] ?? 0, country: (string) $zone->country_code))->all());
     }
 
     /**
@@ -503,7 +503,7 @@ final class Index extends Component
         $types = ViolenceType::query()->ordered()->get();
         $usage = ReferentialUsage::violenceTypes($types->values()->all());
 
-        return $types->map(fn (ViolenceType $type): array => $this->row((int) $type->getKey(), (string) $type->label, (string) $type->slug, (bool) $type->is_active, $usage[(int) $type->getKey()] ?? 0, icon: (string) $type->icon, text: (string) $type->description))->values()->all();
+        return array_values($types->map(fn (ViolenceType $type): array => $this->row((int) $type->getKey(), (string) $type->label, (string) $type->slug, (bool) $type->is_active, $usage[(int) $type->getKey()] ?? 0, icon: (string) $type->icon, text: (string) $type->description))->all());
     }
 
     /**
@@ -514,7 +514,7 @@ final class Index extends Component
         $needs = Need::query()->ordered()->get();
         $usage = ReferentialUsage::needs($needs->values()->all());
 
-        return $needs->map(fn (Need $need): array => $this->row((int) $need->getKey(), (string) $need->label, (string) $need->slug, (bool) $need->is_active, $usage[(int) $need->getKey()] ?? 0, role: $need->routed_role?->label()))->values()->all();
+        return array_values($needs->map(fn (Need $need): array => $this->row((int) $need->getKey(), (string) $need->label, (string) $need->slug, (bool) $need->is_active, $usage[(int) $need->getKey()] ?? 0, role: $need->routed_role?->label()))->all());
     }
 
     /**
@@ -525,7 +525,7 @@ final class Index extends Component
         $populations = Population::query()->ordered()->get();
         $usage = ReferentialUsage::populations($populations->values()->all());
 
-        return $populations->map(fn (Population $population): array => $this->row((int) $population->getKey(), (string) $population->label, (string) $population->slug, (bool) $population->is_active, $usage[(int) $population->getKey()] ?? 0))->values()->all();
+        return array_values($populations->map(fn (Population $population): array => $this->row((int) $population->getKey(), (string) $population->label, (string) $population->slug, (bool) $population->is_active, $usage[(int) $population->getKey()] ?? 0))->all());
     }
 
     /**
