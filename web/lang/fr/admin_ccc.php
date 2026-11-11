@@ -71,6 +71,41 @@ return [
         'delete_text' => 'La boîte à images, sa couverture et ses planches seront supprimées définitivement. Cette action est irréversible.',
     ],
 
+    /** Lois et codes du Bénin (onglet « Lois »). */
+    'law' => [
+        'new' => 'Nouveau texte',
+        'edit_open' => 'Modifier',
+        'delete_open' => 'Supprimer',
+        'up' => 'Monter',
+        'down' => 'Descendre',
+        'create_title' => 'Nouveau texte de loi',
+        'edit_title' => 'Modifier le texte : :title',
+        'delete_title' => 'Supprimer le texte « :title » ?',
+        'delete_text' => 'Le texte disparaît définitivement de la page publique « Lois ». Cette action est irréversible.',
+        'intro' => 'Les textes s’affichent sur la page publique « Lois » dans l’ordre de cette liste. Écrivez en texte simple, sans balises.',
+        'list_label' => 'Textes de loi',
+        'order' => 'Position :position sur :total',
+        'moved' => '« :title » est en position :position sur :total.',
+        'no_markup' => 'Ce champ est du texte simple : retirez les balises.',
+        'url_help' => 'Adresse complète (https://…) du texte officiel. Facultatif.',
+        'category_help' => 'Choisissez une catégorie existante ou saisissez-en une nouvelle (:max caractères au plus).',
+        'subtitle_help' => 'Une phrase qui précise le sujet du texte (:max caractères au plus). Facultatif.',
+        'summary_help' => 'Ce que dit le texte, en langage juridique exact (:max caractères au plus).',
+        'simple_help' => 'La même chose en mots simples. Sans version simple, le résumé juridique est repris. Facultatif.',
+        'published_label' => 'Publier le texte',
+        'published_help' => 'Un texte masqué disparaît de la page publique « Lois ».',
+        'create' => 'Créer le texte',
+        'save' => 'Enregistrer',
+        'fields' => [
+            'title' => 'Titre',
+            'subtitle' => 'Sous-titre',
+            'category' => 'Catégorie',
+            'summary' => 'Résumé juridique',
+            'simple_summary' => 'Version simple',
+            'official_url' => 'Lien officiel',
+        ],
+    ],
+
     /** Nom de l'outil dans les messages d'erreur (« Une :tool sans planche… »). */
     'noun' => ['bd' => 'BD', 'boite_images' => 'boîte à images'],
 

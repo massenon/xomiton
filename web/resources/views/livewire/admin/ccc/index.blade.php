@@ -37,11 +37,17 @@
     <x-admin.tab-nav :tabs="$visibleTabs" :current="$tab" :label="__('admin_ccc.tabs_label')" />
 
     @if ($tab === 'lois')
-        <section aria-labelledby="xmCccLawsTitle">
-            <h2 class="h6 fw-bold mb-3" id="xmCccLawsTitle">{{ __('admin_ccc.laws_title') }}</h2>
-            <div class="row g-3">
+        @php($lawTotal = count($this->laws))
+        <section aria-labelledby="xmCccLawsTitle" x-data x-on:xm-ccc-focus.window="$nextTick(() => setTimeout(() => document.getElementById($event.detail.id)?.focus(), 30))">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                <h2 class="h6 fw-bold mb-0" id="xmCccLawsTitle" tabindex="-1">{{ __('admin_ccc.laws_title') }}</h2>
+                <button type="button" class="btn btn-sm btn-primary" wire:click="openLawCreate"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.law.new') }}</button>
+            </div>
+            <p class="small text-secondary">{{ __('admin_ccc.law.intro') }}</p>
+            <div class="visually-hidden" role="status" aria-live="polite">{{ $announce }}</div>
+            <div class="row g-3" role="list" aria-label="{{ __('admin_ccc.law.list_label') }}">
                 @forelse ($this->laws as $law)
-                    <div class="col-md-6 col-xl-4" wire:key="law-{{ $law->id }}">
+                    <div class="col-md-6 col-xl-4" role="listitem" wire:key="law-{{ $law->id }}">
                         <div @class(['card h-100 xm-admin-card', 'opacity-75' => ! $law->is_published])>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between gap-2 mb-2">
@@ -49,12 +55,19 @@
                                     <x-badge :color="$law->is_published ? 'success' : 'neutral'" soft>{{ $law->is_published ? __('admin_ccc.published') : __('admin_ccc.hidden') }}</x-badge>
                                 </div>
                                 <h3 class="h6">{{ $law->title }}</h3>
-                                @if ($law->subtitle)<p class="small text-secondary mb-0">{{ $law->subtitle }}</p>@endif
+                                @if ($law->subtitle)<p class="small text-secondary mb-1">{{ $law->subtitle }}</p>@endif
+                                <p class="small text-secondary mb-0">{{ __('admin_ccc.law.order', ['position' => $loop->iteration, 'total' => $lawTotal]) }}</p>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer d-flex flex-wrap align-items-center gap-2">
                                 <div class="form-check form-switch mb-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="xmLaw{{ $law->id }}" @checked($law->is_published) wire:click="toggleLaw({{ $law->id }})">
                                     <label class="form-check-label small" for="xmLaw{{ $law->id }}">{{ __('admin_ccc.published') }}<span class="visually-hidden"> — {{ $law->title }}</span></label>
+                                </div>
+                                <div class="ms-auto d-flex flex-wrap gap-1">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="xmLawUp{{ $law->id }}" wire:click="moveLaw({{ $law->id }}, -1)" @disabled($loop->first)><i class="bi bi-arrow-up me-1" aria-hidden="true"></i>{{ __('admin_ccc.law.up') }}<span class="visually-hidden"> {{ $law->title }}</span></button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="xmLawDown{{ $law->id }}" wire:click="moveLaw({{ $law->id }}, 1)" @disabled($loop->last)><i class="bi bi-arrow-down me-1" aria-hidden="true"></i>{{ __('admin_ccc.law.down') }}<span class="visually-hidden"> {{ $law->title }}</span></button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" wire:click="openLawEdit({{ $law->id }})"><i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ __('admin_ccc.law.edit_open') }}<span class="visually-hidden"> {{ $law->title }}</span></button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" wire:click="openLawDelete({{ $law->id }})"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('admin_ccc.law.delete_open') }}<span class="visually-hidden"> {{ $law->title }}</span></button>
                                 </div>
                             </div>
                         </div>
@@ -291,6 +304,76 @@
         @error('delete')<div class="alert alert-danger mb-0" role="alert">{{ $message }}</div>@enderror
         <x-slot:footer>
             <button type="button" class="btn btn-danger" wire:click="deleteTool" wire:loading.attr="disabled" wire:target="deleteTool"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('components.modal.delete_action') }}</button>
+        </x-slot:footer>
+    </x-admin.modal>
+
+    {{-- Texte de loi : création et modification --}}
+    @php($lawMax = ['title' => \App\Application\Admin\Content\ManageLaws::TITLE_MAX, 'subtitle' => \App\Application\Admin\Content\ManageLaws::SUBTITLE_MAX, 'category' => \App\Application\Admin\Content\ManageLaws::CATEGORY_MAX, 'summary' => \App\Application\Admin\Content\ManageLaws::SUMMARY_MAX, 'url' => \App\Application\Admin\Content\ManageLaws::URL_MAX])
+    <x-admin.modal id="xmCccLaw" size="lg" heading="h2" :title="$lawId === null ? __('admin_ccc.law.create_title') : __('admin_ccc.law.edit_title', ['title' => $this->openedLaw?->title ?? ''])" x-data="{ opener: null }" x-on:show-bs-modal.dot="opener = document.activeElement" x-on:shown-bs-modal.dot="$el.querySelector('[data-xm-autofocus]')?.focus()" x-on:hidden-bs-modal.dot="$wire.resetModal(); (opener && document.body.contains(opener) ? opener : document.getElementById('xmCccLawsTitle'))?.focus()">
+        <form id="xmCccLawForm" wire:submit="saveLaw" novalidate>
+            @error('law')<div class="alert alert-danger" role="alert">{{ $message }}</div>@enderror
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmLawTitle">{{ __('admin_ccc.law.fields.title') }}</label>
+                <input class="form-control @error('lawTitle') is-invalid @enderror" type="text" id="xmLawTitle" data-xm-autofocus wire:model="lawTitle" maxlength="{{ $lawMax['title'] }}" required autocomplete="off"
+                       @error('lawTitle') aria-invalid="true" aria-describedby="xmLawTitleError" @enderror>
+                @error('lawTitle')<div class="invalid-feedback d-block" id="xmLawTitleError">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmLawSubtitle">{{ __('admin_ccc.law.fields.subtitle') }}</label>
+                <input class="form-control @error('lawSubtitle') is-invalid @enderror" type="text" id="xmLawSubtitle" wire:model="lawSubtitle" maxlength="{{ $lawMax['subtitle'] }}" autocomplete="off"
+                       aria-describedby="xmLawSubtitleHelp @error('lawSubtitle') xmLawSubtitleError @enderror" @error('lawSubtitle') aria-invalid="true" @enderror>
+                <div class="form-text" id="xmLawSubtitleHelp">{{ __('admin_ccc.law.subtitle_help', ['max' => $lawMax['subtitle']]) }}</div>
+                @error('lawSubtitle')<div class="invalid-feedback d-block" id="xmLawSubtitleError">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmLawCategory">{{ __('admin_ccc.law.fields.category') }}</label>
+                <input class="form-control @error('lawCategory') is-invalid @enderror" type="text" id="xmLawCategory" wire:model="lawCategory" list="xmLawCategories" maxlength="{{ $lawMax['category'] }}" required autocomplete="off"
+                       aria-describedby="xmLawCategoryHelp @error('lawCategory') xmLawCategoryError @enderror" @error('lawCategory') aria-invalid="true" @enderror>
+                <datalist id="xmLawCategories">
+                    @foreach ($this->lawCategories as $category)<option value="{{ $category }}"></option>@endforeach
+                </datalist>
+                <div class="form-text" id="xmLawCategoryHelp">{{ __('admin_ccc.law.category_help', ['max' => $lawMax['category']]) }}</div>
+                @error('lawCategory')<div class="invalid-feedback d-block" id="xmLawCategoryError">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmLawSummary">{{ __('admin_ccc.law.fields.summary') }}</label>
+                <textarea class="form-control @error('lawSummary') is-invalid @enderror" id="xmLawSummary" rows="4" wire:model="lawSummary" maxlength="{{ $lawMax['summary'] }}" required
+                          aria-describedby="xmLawSummaryHelp @error('lawSummary') xmLawSummaryError @enderror" @error('lawSummary') aria-invalid="true" @enderror></textarea>
+                <div class="form-text" id="xmLawSummaryHelp">{{ __('admin_ccc.law.summary_help', ['max' => $lawMax['summary']]) }}</div>
+                @error('lawSummary')<div class="invalid-feedback d-block" id="xmLawSummaryError">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmLawSimple">{{ __('admin_ccc.law.fields.simple_summary') }}</label>
+                <textarea class="form-control @error('lawSimple') is-invalid @enderror" id="xmLawSimple" rows="3" wire:model="lawSimple" maxlength="{{ $lawMax['summary'] }}"
+                          aria-describedby="xmLawSimpleHelp @error('lawSimple') xmLawSimpleError @enderror" @error('lawSimple') aria-invalid="true" @enderror></textarea>
+                <div class="form-text" id="xmLawSimpleHelp">{{ __('admin_ccc.law.simple_help') }}</div>
+                @error('lawSimple')<div class="invalid-feedback d-block" id="xmLawSimpleError">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmLawUrl">{{ __('admin_ccc.law.fields.official_url') }}</label>
+                <input class="form-control @error('lawUrl') is-invalid @enderror" type="url" id="xmLawUrl" wire:model="lawUrl" maxlength="{{ $lawMax['url'] }}" autocomplete="off" inputmode="url"
+                       aria-describedby="xmLawUrlHelp @error('lawUrl') xmLawUrlError @enderror" @error('lawUrl') aria-invalid="true" @enderror>
+                <div class="form-text" id="xmLawUrlHelp">{{ __('admin_ccc.law.url_help') }}</div>
+                @error('lawUrl')<div class="invalid-feedback d-block" id="xmLawUrlError">{{ $message }}</div>@enderror
+            </div>
+            <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="xmLawPublished" wire:model="lawPublished"
+                       aria-describedby="xmLawPublishedHelp @error('lawPublished') xmLawPublishedError @enderror" @error('lawPublished') aria-invalid="true" @enderror>
+                <label class="form-check-label fw-semibold" for="xmLawPublished">{{ __('admin_ccc.law.published_label') }}</label>
+                <div class="form-text" id="xmLawPublishedHelp">{{ __('admin_ccc.law.published_help') }}</div>
+                @error('lawPublished')<div class="invalid-feedback d-block" id="xmLawPublishedError">{{ $message }}</div>@enderror
+            </div>
+        </form>
+        <x-slot:footer>
+            <button type="submit" form="xmCccLawForm" class="btn btn-primary" wire:loading.attr="disabled" wire:target="saveLaw"><i class="bi bi-check-lg me-1" aria-hidden="true"></i>{{ $lawId === null ? __('admin_ccc.law.create') : __('admin_ccc.law.save') }}</button>
+        </x-slot:footer>
+    </x-admin.modal>
+
+    {{-- Suppression d'un texte de loi --}}
+    <x-admin.modal id="xmCccLawDelete" type="delete" size="md" heading="h2" :title="__('admin_ccc.law.delete_title', ['title' => $this->openedLaw?->title ?? ''])" static x-data="{ opener: null }" x-on:show-bs-modal.dot="opener = document.activeElement" x-on:shown-bs-modal.dot="$el.querySelector('[data-xm-autofocus]')?.focus()" x-on:hidden-bs-modal.dot="$wire.resetModal(); (opener && document.body.contains(opener) ? opener : document.getElementById('xmCccLawsTitle'))?.focus()">
+        <p>{{ __('admin_ccc.law.delete_text') }}</p>
+        <x-slot:footer>
+            <button type="button" class="btn btn-danger" wire:click="deleteLaw" wire:loading.attr="disabled" wire:target="deleteLaw"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('components.modal.delete_action') }}</button>
         </x-slot:footer>
     </x-admin.modal>
 </div>

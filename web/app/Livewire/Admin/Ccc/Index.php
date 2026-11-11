@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Ccc;
 
 use App\Application\Admin\Content\ManageCccTools;
+use App\Application\Admin\Content\ManageLaws;
 use App\Domain\Content\Exceptions\ContentRefused;
 use App\Enums\CccKind;
 use App\Livewire\Attributes\SafeUrl;
@@ -25,8 +26,9 @@ use Livewire\WithFileUploads;
  * publié / masqué (un outil masqué disparaît des écrans membre et pair, un texte masqué de `/lois`), remplacement de
  * l'image (MediaUploader). Onglets Boîtes à images et BD SSR (même mécanique, le kind est celui de l'onglet à la création,
  * celui de l'outil ensuite) : création, titre, planches (ajout, retrait, légende, texte alternatif, ordre au clavier) et
- * suppression. Permission `ccc_tools.manage` (admin, superadmin) vérifiée à chaque action (jamais seulement à
- * l'affichage) ; l'onglet Lois exige aussi `laws.manage`. Chaque écriture est journalisée par ManageCccTools.
+ * suppression. Onglet Lois : création, modification de tous les champs, ordre (monter / descendre), publié / masqué et
+ * suppression (ManageLaws). Permission `ccc_tools.manage` (admin, superadmin) vérifiée à chaque action (jamais seulement à
+ * l'affichage) ; l'onglet Lois exige aussi `laws.manage`. Chaque écriture est journalisée par ManageCccTools / ManageLaws.
  */
 final class Index extends Component
 {
@@ -73,6 +75,25 @@ final class Index extends Component
      * @var array<int, mixed>
      */
     public array $pageEdits = [];
+
+    /** Texte de loi dont une modale (modification, suppression) est ouverte ; null = création (jamais modifiable depuis le navigateur). */
+    #[Locked]
+    public ?int $lawId = null;
+
+    /** Formulaire « Nouveau texte » / « Modifier le texte ». */
+    public string $lawTitle = '';
+
+    public string $lawSubtitle = '';
+
+    public string $lawCategory = '';
+
+    public string $lawSummary = '';
+
+    public string $lawSimple = '';
+
+    public string $lawUrl = '';
+
+    public bool $lawPublished = false;
 
     /** Phrase lue par les lecteurs d'écran après un déplacement. */
     public string $announce = '';
@@ -124,14 +145,124 @@ final class Index extends Component
         $this->toast((string) __($publish ? 'admin_ccc.toasts.published' : 'admin_ccc.toasts.unpublished', ['title' => $tool->title]), $publish ? 'success' : 'warning');
     }
 
-    public function toggleLaw(int $id, ManageCccTools $manage): void
+    public function toggleLaw(int $id, ManageLaws $manage): void
     {
-        abort_unless($this->actor()->can('laws.manage'), 403);
-        $law = Law::query()->findOrFail($id);
+        $law = $this->law($id);
         $publish = ! $law->is_published;
-        $manage->setLawPublished($law, $publish, $this->actor());
+        $manage->setPublished($law, $publish, $this->actor());
         unset($this->laws, $this->kpis);
         $this->toast((string) __($publish ? 'admin_ccc.toasts.published' : 'admin_ccc.toasts.unpublished', ['title' => $law->title]), $publish ? 'success' : 'warning');
+    }
+
+    public function openLawCreate(): void
+    {
+        $this->authorizeLaws();
+        $this->resetModal();
+        $this->openModal('xmCccLaw');
+    }
+
+    public function openLawEdit(int $id): void
+    {
+        $law = $this->law($id);
+        $this->resetModal();
+        $this->lawId = (int) $law->getKey();
+        $this->lawTitle = $law->title;
+        $this->lawSubtitle = (string) $law->subtitle;
+        $this->lawCategory = $law->category;
+        $this->lawSummary = $law->summary;
+        $this->lawSimple = (string) $law->simple_summary;
+        $this->lawUrl = (string) $law->official_url;
+        $this->lawPublished = $law->is_published;
+        $this->openModal('xmCccLaw');
+    }
+
+    public function openLawDelete(int $id): void
+    {
+        $law = $this->law($id);
+        $this->resetModal();
+        $this->lawId = (int) $law->getKey();
+        $this->openModal('xmCccLawDelete');
+    }
+
+    /** Crée le texte (`lawId` nul) ou enregistre ses modifications. */
+    public function saveLaw(ManageLaws $manage): void
+    {
+        $this->authorizeLaws();
+        $law = $this->lawId === null ? null : ($this->openedLaw() ?? abort(404));
+        $text = ['string', 'not_regex:/<\/?[a-z!][^>]*>/i'];
+        $this->validate([
+            'lawTitle' => ['required', ...$text, 'max:'.ManageLaws::TITLE_MAX],
+            'lawSubtitle' => ['nullable', ...$text, 'max:'.ManageLaws::SUBTITLE_MAX],
+            'lawCategory' => ['required', ...$text, 'max:'.ManageLaws::CATEGORY_MAX],
+            'lawSummary' => ['required', ...$text, 'max:'.ManageLaws::SUMMARY_MAX],
+            'lawSimple' => ['nullable', ...$text, 'max:'.ManageLaws::SUMMARY_MAX],
+            'lawUrl' => ['nullable', 'string', 'url:http,https', 'max:'.ManageLaws::URL_MAX],
+            'lawPublished' => ['boolean'],
+        ], [
+            'not_regex' => (string) __('admin_ccc.law.no_markup'),
+        ], [
+            'lawTitle' => (string) __('admin_ccc.law.fields.title'),
+            'lawSubtitle' => (string) __('admin_ccc.law.fields.subtitle'),
+            'lawCategory' => (string) __('admin_ccc.law.fields.category'),
+            'lawSummary' => (string) __('admin_ccc.law.fields.summary'),
+            'lawSimple' => (string) __('admin_ccc.law.fields.simple_summary'),
+            'lawUrl' => (string) __('admin_ccc.law.fields.official_url'),
+        ]);
+
+        try {
+            $saved = $manage->save($law, [
+                'title' => $this->lawTitle,
+                'subtitle' => $this->lawSubtitle,
+                'category' => $this->lawCategory,
+                'summary' => $this->lawSummary,
+                'simple_summary' => $this->lawSimple,
+                'official_url' => $this->lawUrl,
+                'is_published' => $this->lawPublished,
+            ], $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('law', $refused->userMessage());
+
+            return;
+        }
+
+        $this->closeModal('xmCccLaw');
+        $this->toast((string) __($law === null ? 'admin_ccc.toasts.law_created' : 'admin_ccc.toasts.law_updated', ['title' => $saved->title]));
+        $this->resetModal();
+        unset($this->laws, $this->kpis, $this->counts, $this->lawCategories);
+    }
+
+    /** Monte (−1) ou descend (+1) un texte ; le focus suit son texte. */
+    public function moveLaw(int $id, int $direction, ManageLaws $manage): void
+    {
+        $law = $this->law($id);
+        $direction = $direction < 0 ? -1 : 1;
+
+        try {
+            $target = $manage->move($law, $direction, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->toast($refused->userMessage(), 'error');
+
+            return;
+        }
+
+        unset($this->laws);
+        $total = count($this->laws());
+        $this->announce = (string) __('admin_ccc.law.moved', ['title' => $law->title, 'position' => $target + 1, 'total' => $total]);
+
+        // Au bord de la liste, le focus passe sur l'autre bouton (le premier « Monter » est inactif).
+        $button = $direction < 0 ? ($target === 0 ? 'Down' : 'Up') : ($target === $total - 1 ? 'Up' : 'Down');
+        $this->dispatch('xm-ccc-focus', id: 'xmLaw'.$button.$law->getKey());
+    }
+
+    public function deleteLaw(ManageLaws $manage): void
+    {
+        $this->authorizeLaws();
+        $law = $this->openedLaw() ?? abort(404);
+        $manage->delete($law, $this->actor());
+        $this->closeModal('xmCccLawDelete');
+        $this->toast((string) __('admin_ccc.toasts.law_deleted', ['title' => $law->title]));
+        $this->resetModal();
+        unset($this->laws, $this->kpis, $this->counts, $this->lawCategories);
     }
 
     public function openImage(int $id): void
@@ -181,10 +312,10 @@ final class Index extends Component
 
     public function resetModal(): void
     {
-        $this->reset('toolId', 'removeIndex', 'image', 'title', 'published', 'cover', 'draftPages', 'newImage', 'newCaption', 'newAlt', 'pageEdits', 'announce');
+        $this->reset('lawId', 'lawTitle', 'lawSubtitle', 'lawCategory', 'lawSummary', 'lawSimple', 'lawUrl', 'lawPublished', 'toolId', 'removeIndex', 'image', 'title', 'published', 'cover', 'draftPages', 'newImage', 'newCaption', 'newAlt', 'pageEdits', 'announce');
         $this->resetErrorBag();
         $this->fileInputKey++;
-        unset($this->openedTool, $this->openedPages);
+        unset($this->openedTool, $this->openedPages, $this->openedLaw);
     }
 
     public function saveImage(ManageCccTools $manage): void
@@ -438,6 +569,24 @@ final class Index extends Component
     }
 
     #[Computed]
+    public function openedLaw(): ?Law
+    {
+        return $this->lawId === null ? null : Law::query()->find($this->lawId);
+    }
+
+    /**
+     * Catégories déjà utilisées, proposées à la saisie (liste de suggestions du champ « Catégorie »).
+     *
+     * @return list<string>
+     */
+    #[Computed]
+    public function lawCategories(): array
+    {
+        return Law::query()->orderBy('category')->distinct()->pluck('category')
+            ->map(static fn (mixed $category): string => (string) $category)->values()->all();
+    }
+
+    #[Computed]
     public function openedTool(): ?CccTool
     {
         return $this->toolId === null ? null : CccTool::query()->find($this->toolId);
@@ -554,6 +703,20 @@ final class Index extends Component
         $kind = $this->openedTool()?->kind ?? CccKind::tryFrom($this->tab);
 
         return $kind !== null && ManageCccTools::isPaged($kind) ? $kind : CccKind::Comic;
+    }
+
+    /** Texte de loi désigné par l'identifiant : `laws.manage` en plus de `ccc_tools.manage`, revérifiés à chaque action. */
+    private function law(int $id): Law
+    {
+        $this->authorizeLaws();
+
+        return Law::query()->findOrFail($id);
+    }
+
+    private function authorizeLaws(): void
+    {
+        $this->authorizeManage();
+        abort_unless($this->actor()->can('laws.manage'), 403);
     }
 
     /** La permission est revérifiée à chaque action : un compte dont le rôle change garde l'écran ouvert, pas le droit d'écrire. */

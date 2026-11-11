@@ -8,7 +8,6 @@ use App\Domain\Content\Exceptions\ContentRefused;
 use App\Enums\CccKind;
 use App\Enums\OutboundKind;
 use App\Models\CccTool;
-use App\Models\Law;
 use App\Models\OutboundPost;
 use App\Models\User;
 use App\Support\Audit;
@@ -19,8 +18,8 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 
 /**
- * Outils CCC de l'administration (P12-04, permission `ccc_tools.manage` ; textes de loi : `laws.manage`) : publié / masqué
- * (`is_published`, lu par les écrans membre et pair, P8-12, et par `/lois` pour les textes), remplacement de l'image par
+ * Outils CCC de l'administration (P12-04, permission `ccc_tools.manage` ; les textes de loi sont gérés par ManageLaws) : publié / masqué
+ * (`is_published`, lu par les écrans membre et pair, P8-12), remplacement de l'image par
  * MediaUploader (disque public, ancienne image retirée sauf celles du dépôt `assets/…`), texte alternatif de chaque planche
  * d'une bande dessinée (obligatoire, 200 caractères au plus). Journalisé, sans contenu.
  *
@@ -57,15 +56,6 @@ final class ManageCccTools
         $this->cache->flush();
 
         return $tool;
-    }
-
-    public function setLawPublished(Law $law, bool $published, User $actor): Law
-    {
-        $law->forceFill(['is_published' => $published])->save();
-        Audit::log($published ? 'ccc.law_published' : 'ccc.law_unpublished', $law, $law->title, $actor);
-        $this->cache->flush();
-
-        return $law;
     }
 
     /**
