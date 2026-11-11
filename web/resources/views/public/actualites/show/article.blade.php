@@ -32,7 +32,7 @@
             <p class="lead fs-6">{{ $article->summary }}</p>
         @endif
         @if ($article->body)
-            <div class="xm-prose">{!! $article->body !!}</div>
+            <div class="xm-prose">{!! \App\Support\HeadingOutline::normalize($article->body) !!}</div>
         @endif
 
         <div class="alert alert-info mt-4 mb-0 d-flex gap-2">

@@ -65,7 +65,7 @@
             @if (in_array($resource->kind, [\App\Enums\ResourceKind::Video, \App\Enums\ResourceKind::Audio], true))
                 <h2 class="h5 mt-4">{{ __('pages/ressources.transcript_title') }}</h2>
             @endif
-            <div @class(['xm-prose', 'mt-4' => ! $isMedia])>{!! $resource->body !!}</div>
+            <div @class(['xm-prose', 'mt-4' => ! $isMedia])>{!! \App\Support\HeadingOutline::normalize($resource->body) !!}</div>
         @endif
 
         @if ($showLegalNotice)
