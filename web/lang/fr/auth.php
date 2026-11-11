@@ -162,6 +162,7 @@ return [
             'ally_role_placeholder' => 'Choisir…',
             'ally_role_other' => 'Précise ton statut',
             'password' => 'Mot de passe',
+            'password_hint' => 'Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.',
             'password_confirmation' => 'Confirmation',
             'cgu' => 'J’accepte les :terms et la :charter.',
             'cgu_terms' => 'conditions d’utilisation',

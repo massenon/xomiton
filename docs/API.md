@@ -42,11 +42,12 @@ Taille de page : `?per_page=` borné à `xomiton.api.max_per_page` (50) par `Api
 | `unauthenticated` | 401 | jeton absent, révoqué ou session expirée | `auth.api.unauthenticated` |
 | `forbidden` | 403 | policy ou permission refusée | `auth.api.forbidden` |
 | `email_unverified` | 403 | action réservée aux e-mails confirmés (publier, commenter, écrire, rejoindre un groupe) tant que `email_verified` est faux (Q12 c) | `auth.email_not_verified` — « Confirme ton e-mail pour continuer. » |
+| `account_pending` | 403 | action réservée aux comptes validés (publier, commenter, écrire, rejoindre un groupe ou un événement, collecte) tant que le compte est `en_attente` (inscription en 3 étapes, 11/11/2026) | `auth.pending_restricted` — « Ton compte attend la validation de l'équipe… » |
 | `account_suspended` | 403 | compte suspendu, signalé **après** vérification du mot de passe | `auth.suspended` (avec l'adresse de contact) |
 | `maintenance` | 503 | maintenance active (RG-14), rôle autre qu'admin / superadmin, après vérification du mot de passe | `auth.maintenance` |
 | `registrations_closed` | 403 | inscriptions fermées par l'administration (message configuré) | `auth.registrations_closed` ou texte administré |
 | `consent_required` | 422 | CGU + charte ou confidentialité non acceptées | `auth.consent_required` |
-| `age_confirmation_required` | 422 | case « J'ai 15 ans ou plus » (`age_confirmed`) absente ou fausse à l'inscription (Q68 ; `errors.age_confirmed`) | `auth.age_confirmation_required` |
+| `age_confirmation_required` | 422 | âge saisi sous `min_age` à l'inscription (défense en profondeur : la validation répond d'abord 422 `validation_failed` avec `errors.age`) | `auth.age_confirmation_required` |
 | `invalid_credentials` | 422 | identifiant inconnu **ou** mot de passe faux (message indifférencié, `errors.login`) | `auth.failed` |
 | `otp_invalid` | 422 | code faux, expiré, épuisé (5 essais), adresse inconnue, preuve de réinitialisation invalide (`errors.code` ou `errors.reset_token`) | `auth.otp.invalid` |
 | `otp_too_soon` | 429 | renvoi demandé avant 30 s (`retry_after`) | `auth.otp.too_soon` |
@@ -154,29 +155,49 @@ Sanctum SPA (ADR-31, `statefulApi()` dans `bootstrap/app.php`) : une requête do
 
 ## 2. Authentification `auth/*`
 
-### `POST auth/register` — phase 1 (+ phases 2 à 4 facultatives)
+### `GET referentials/registration` — listes du formulaire d'inscription
 
-Compte **créé et connecté immédiatement** (Q12 c, D4) : code `signup` envoyé par e-mail (`code-verification`) puis e-mail `bienvenue` ; la vérification est différée et non bloquante.
+Public, sans session, **ETag + `Cache-Control: public`** comme les autres référentiels (`If-None-Match` → 304 ; liste des pays en cache serveur 24 h). Les départements et communes sont ceux de `GET zones`.
 
-Corps :
+`{ "data": { "min_age": 15, "pronouns": [{value,label}], "member_types": [{"value":"membre","label":"Membre de la communauté"},{"value":"allie","label":"Personne ressource / Allié·e"}], "countries": [{"value":"BJ","label":"Bénin"},…], "ally_roles": [{value,label}], "gender_identities": [{value,label}], "orientations": [{value,label}] } }`
+
+`min_age` vient de `xomiton.accounts.min_age`. `pronouns` : `elle`, `il`, `iel`. `countries` : 249 codes ISO 3166-1 alpha-2, libellés en français, Bénin d'abord puis ordre alphabétique français. `ally_roles` : `professionnel_sante`, `avocat`, `psychologue`, `leader_religieux`, `activiste`, `autre`. `gender_identities` et `orientations` : les clés du profil (`SensitiveProfile`) puis `prefer_not` (« Je préfère ne pas le dire ») ; `autre` exige une précision.
+
+### `POST auth/register` — inscription en 3 étapes, un seul envoi
+
+**Décision du client du 11/11/2026** : l'ancien formulaire en 3 étapes obligatoires remplace les 4 phases (D4, P2-03). Le compte n'existe qu'à la fin ; il est **créé et connecté immédiatement** (jeton délivré) mais reste `en_attente` de la validation de l'administration (`user.pending_validation = true`). L'e-mail est confirmé **par l'administration** à la validation : **aucun code `signup` ni e-mail `bienvenue`** n'est envoyé. Règles identiques à la page web (`App\Http\Requests\Support\RegistrationRules`).
+
+Corps JSON :
 
 | Champ | Règles |
 |---|---|
-| `pseudo` | requis, 3–40, lettres / chiffres / `_` `.` `-`, unique (casse ignorée) |
+| `first_name`, `last_name` | requis, ≤ 60, lettres (accents), espaces, `'`, `.`, `-` ; `users.name` = « Prénom Nom » |
+| `pseudo` | requis, 3–40, lettres / chiffres / `_` `.` `-`, unique (casse ignorée), filtre de contenus |
 | `email` | requis, e-mail valide, unique (normalisé en minuscules) |
-| `password` | requis, ≥ 10 caractères, majuscule, minuscule, chiffre (Q30 a ; contrôle « compromis » hors test) |
+| `age` | requis, **entier** ≥ `min_age` (`xomiton.accounts.min_age`, 15) et ≤ 99 ; tient lieu de confirmation d'âge (le consentement `age_confirmed` est enregistré). **Plus de `age_confirmed`.** `profiles.age`, `age_range` déduit |
+| `pronouns` | requis : `elle`, `il`, `iel` |
+| `country_code` | requis, code ISO de `referentials/registration` |
+| `city` | facultatif, ≤ 120 |
+| `phone` | facultatif : `PhoneBj` (`+229 01 XX XX XX XX`) si `country_code = BJ`, sinon `+` et 8 à 15 chiffres |
+| `zone_id`, `commune_id` | facultatifs, **Bénin seulement** (ignorés sinon) ; commune dans le département ; `zone_id` requis avec `commune_id` ; routage SOS par zone |
+| `member_type` | requis : `membre` ou `allie` (« pair » → 422) |
+| `gender_identity`, `orientation` | **requis si `membre`** (clés de `referentials/registration`, `prefer_not` accepté) ; ignorés pour `allie` |
+| `gender_identity_other`, `orientation_other` | requis si la valeur est `autre` (≤ 120) |
+| `sensitive_data` | **requis `true` si `membre`** (RGPD : données chiffrées, consentement horodaté) |
+| `ally_role` | **requis si `allie`** : `professionnel_sante`, `avocat`, `psychologue`, `leader_religieux`, `activiste`, `autre` |
+| `ally_role_other` | requis si `ally_role = autre` (≤ 120) |
+| `password`, `password_confirmation` | requis, identiques, ≥ 10 caractères, majuscule, minuscule, chiffre (Q30 a) |
 | `cgu`, `privacy` | requis, `true` chacun (cases distinctes, jamais pré-cochées) |
-| `age_confirmed` | requis, `true` (Q68 : « J'ai 15 ans ou plus », seuil `xomiton.accounts.min_age`) ; aucune date de naissance n'est collectée, seul l'horodatage est gardé (consentement `age_confirmed`). Sinon 422 `age_confirmation_required` |
-| `phone` | facultatif, numéro béninois (`+229 01 XX XX XX XX`) |
-| `invitation` | facultatif (≤ 40) : **code ou lien d'invitation à l'équipe** (pair, admin ; §23.6). L'inscription reste celle d'un membre (mêmes champs, case 15 ans comprise) ; le rôle est donné à la validation du compte (e-mail confirmé, ou approbation si la validation manuelle est active). Une invitation valable ouvre aussi l'inscription fermée au public. Code inconnu, expiré, déjà utilisé, annulé ou lié à une autre adresse → 422 `invitation_invalid` (`errors.invitation`), aucun compte créé |
-| `device_name` | facultatif (≤ 100) : nom du jeton ; sinon navigateur ou « appareil » |
-| `profile` | facultatif (phases 2-3) : `pronouns` (≤ 30), `zone_id` (requis avec `commune_id`), `commune_id` (dans le département), `member_type` (**`membre` seulement** : « pair » est refusé en 422, aucun rôle n'est auto-attribuable), `trusted_contact_phone` (béninois, chiffré), `trusted_contact_name` (≤ 80), `discreet_mode` (bool) |
-| `consents` | facultatif (phase 4) : `sensitive_data` (bool), `newsletter` (bool) — chaque réponse, acceptée ou refusée, est horodatée dans `consents` |
+| `invitation` | facultatif (≤ 40) : code ou lien d'invitation à l'équipe (pair, admin ; §23.6). L'inscription reste celle d'un membre ; le rôle est donné à la validation. Une invitation valable ouvre aussi l'inscription fermée. Code invalide → 422 `invitation_invalid` (`errors.invitation`) |
+| `device_name` | facultatif (≤ 100) : nom du jeton |
 
 Réponses :
 
-- **201** `{ "data": { "token": "1|…", "token_type": "Bearer", "user": {…}, "email_verification_pending": true } }`
-- 422 `{ message, errors }` — par champ ; 403 `registrations_closed` ; 429.
+- **201** `{ "data": { "token": "1|…", "token_type": "Bearer", "user": {…, "pending_validation": true}, "email_verification_pending": false } }` — `email_verification_pending` n'est vrai que si un code `signup` a été envoyé (compte actif d'emblée : réglage `reg_manual_validation = peers`, inscription non signalée).
+- 422 `{ message, code: "validation_failed", errors }` — une clé par champ ci-dessus ; 403 `registrations_closed` ; 429 (5/min).
+- Les validateurs (`users.validate_peers`) reçoivent `peer_pending` (pseudo, type, lien vers Inscriptions) pour toute inscription en attente, web ou API.
+
+**Garde « options limitées »** : tant que le compte est `en_attente`, publier, commenter, écrire un message, créer ou rejoindre un groupe, participer à un événement, s'inscrire à la collecte répondent **403 `account_pending`** (`auth.pending_restricted` : « Ton compte attend la validation de l'équipe… »). Lecture, SOS, alertes, signalements, profil et paramètres restent ouverts.
 
 ### `POST auth/login`
 

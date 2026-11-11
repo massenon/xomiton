@@ -21,7 +21,7 @@ Conséquences :
 - **Retirer** le module M16 et la phase 12 « passerelles » ; **retirer** les tables `social_channels`, `outbound_posts`, `outbound_deliveries` (domaine I de `03`).
 - **Conserver** de simples **boutons de partage par lien** (WhatsApp, Facebook, Telegram, X, copier le lien), sans compte, sans API, sans jeton.
 - L'exigence 3 de `Xomiton.txt` devient « contenus partageables par liens » ; **à faire confirmer par écrit** auprès du bailleur/commanditaire, car l'exigence d'origine parlait de « connecter » la plateforme aux réseaux.
-- **Simplifier l'inscription** (voir `xomiton/pages/authentification.md`) : une seule étape obligatoire, le profil Xomiton devient progressif.
+- **Simplifier l'inscription** (voir `xomiton/pages/authentification.md`) : une seule étape obligatoire, le profil Xomiton devient progressif. **Révisé le 11/11/2026 (décision du client) : l'inscription reprend l'ancien formulaire en 3 étapes obligatoires, un seul envoi à la fin, comptes en attente de validation par l'administration (voir `docs/IMPLEMENTATION_PLAN.md`, fin du §8).**
 
 ## D5 — Palette : validée
 Primaire **`#0433C3`**, secondaire **`#E30E0E`** (adoptées telles quelles).

@@ -18,25 +18,26 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\Support\FeedFixtures as F;
+use Tests\Support\RegistrationFixtures;
 
 /*
- * D-MOB-17 (tranché 2026-10-29) : seules les inscriptions SIGNALÉES (e-mail jetable, inscriptions répétées depuis la même
- * empreinte) attendent la validation de l'équipe ; les autres sont actives dès l'inscription (accès complet après
- * confirmation de l'e-mail). `reg_manual_validation = all` reste l'interrupteur « tout valider ».
+ * D-MOB-17 (tranché 2026-10-29) : en mode `peers`, seules les inscriptions SIGNALÉES (e-mail jetable, inscriptions répétées
+ * depuis la même empreinte) attendent la validation de l'équipe ; les autres sont actives dès l'inscription. Depuis la
+ * décision du 11/11/2026, `reg_manual_validation = all` (« tout valider ») est le DÉFAUT : ce fichier teste donc le mode
+ * `peers`, réglé dans beforeEach, et le défaut dans le dernier test.
  */
 
 beforeEach(function (): void {
     $this->seed([RolesAndPermissionsSeeder::class, EmailTemplatesSeeder::class, SettingsSeeder::class]);
     Mail::fake();
     config(['mail.default' => 'app']);
+    // Mode `peers` : seules les inscriptions signalées attendent (le défaut depuis le 11/11/2026 est `all` : tout le monde attend).
+    Settings::set('reg_manual_validation', 'peers');
 });
 
 function rfData(string $pseudo, string $email, string $ip = '10.0.0.1', string $agent = 'Xomiton/1.0 Pixel'): RegisterData
 {
-    return new RegisterData(
-        pseudo: $pseudo, email: $email, password: 'Xomiton2026!', acceptsTerms: true, acceptsPrivacy: true,
-        ip: $ip, userAgent: $agent, confirmsAge: true,
-    );
+    return RegistrationFixtures::data(['pseudo' => $pseudo, 'email' => $email], $ip, $agent);
 }
 
 it('laisse une inscription ordinaire active, sans signalement', function (): void {
@@ -82,11 +83,11 @@ it('cumule les deux signaux et ne signale rien sans IP', function (): void {
     $both = app(RegisterUser::class)(rfData('Cumul', 'cumul@yopmail.com'));
     expect($both->registration_flags)->toBe('disposable_email,repeated_fingerprint');
 
-    $noIp = app(RegisterUser::class)(new RegisterData(pseudo: 'SansIp', email: 'sansip@exemple.bj', password: 'Xomiton2026!', acceptsTerms: true, acceptsPrivacy: true, confirmsAge: true));
+    $noIp = app(RegisterUser::class)(RegistrationFixtures::data(['pseudo' => 'SansIp', 'email' => 'sansip@exemple.bj'], ip: ''));
     expect($noIp->status)->toBe(UserStatus::Active);
 });
 
-it('garde « tout valider » (reg_manual_validation = all) comme interrupteur : tout le monde attend, signalé ou non', function (): void {
+it('garde « tout valider » (reg_manual_validation = all) : tout le monde attend, signalé ou non', function (): void {
     Settings::set('reg_manual_validation', 'all');
 
     $user = app(RegisterUser::class)(rfData('Tous', 'tous@exemple.bj'));
@@ -110,4 +111,12 @@ it('montre le compte signalé et ses motifs dans la file des inscriptions, que l
     $queue = F::as($admin)->getJson('/api/v1/admin/registrations')->assertOk();
     expect($queue->json('data.0.flags'))->toBe(['disposable_email'])->and($queue->json('data.0.id'))->toBe($second->id);
     expect(User::query()->pending()->count())->toBe(1);
+});
+
+it('attend la validation de l’équipe par défaut : sans réglage enregistré, le mode est « tout valider »', function (): void {
+    App\Models\Setting::query()->where('key', 'reg_manual_validation')->delete();
+    App\Models\Setting::flushCache();
+
+    expect(App\Application\Auth\Support\RegistrationGate::manualValidation())->toBe('all')
+        ->and(app(RegisterUser::class)(rfData('Defaut', 'defaut@exemple.bj'))->status)->toBe(UserStatus::Pending);
 });

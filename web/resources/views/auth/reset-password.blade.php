@@ -12,7 +12,7 @@
             <input type="hidden" name="email" value="{{ $email }}">
             <input type="hidden" name="token" value="{{ $token }}">
         @endif
-        <x-field name="password" type="password" :label="__('auth.reset.password')" :hint="__('auth.register.account.password_hint')" autocomplete="new-password" required autofocus data-password-meter="#pwMeter" aria-describedby="pwMeter-rules" />
+        <x-field name="password" type="password" :label="__('auth.reset.password')" :hint="__('auth.register.details.password_hint')" autocomplete="new-password" required autofocus data-password-meter="#pwMeter" aria-describedby="pwMeter-rules" />
         @include('auth.partials.password-meter', ['id' => 'pwMeter'])
         <div class="mt-3">
             <x-field name="password_confirmation" type="password" :label="__('auth.reset.password_confirmation')" autocomplete="new-password" required />

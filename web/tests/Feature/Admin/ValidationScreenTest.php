@@ -283,7 +283,7 @@ it('enregistre le numéro tel que saisi à l’inscription quand `phone_bj` est 
     $this->seed([EmailTemplatesSeeder::class, SettingsSeeder::class]);
     Mail::fake();
     config(['mail.default' => 'array']);
-    $payload = ['pseudo' => 'Awa_S', 'email' => 'awa@exemple.bj', 'password' => 'Xomiton2026!', 'cgu' => true, 'privacy' => true, 'age_confirmed' => true, 'device_name' => 'Pixel', 'phone' => '01 97 38 88 47'];
+    $payload = Tests\Support\RegistrationFixtures::payload(['device_name' => 'Pixel', 'phone' => '01 97 38 88 47']);
 
     $this->postJson('/api/v1/auth/register', $payload)->assertCreated();
     expect(User::query()->where('email', 'awa@exemple.bj')->value('phone'))->toBe('+229 01 97 38 88 47');

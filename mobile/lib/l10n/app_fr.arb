@@ -3365,6 +3365,41 @@
             }
         }
     },
+    "admin_registrations_details_age": "{age} ans",
+    "@admin_registrations_details_age": {
+        "description": "admin.registrations.details.age",
+        "placeholders": {
+            "age": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_details_ally": "Personne ressource / allié·e",
+    "@admin_registrations_details_ally": {
+        "description": "admin.registrations.details.ally"
+    },
+    "admin_registrations_details_ally_role": "Statut : {role}",
+    "@admin_registrations_details_ally_role": {
+        "description": "admin.registrations.details.ally_role",
+        "placeholders": {
+            "role": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_details_ally_role_other": "({other})",
+    "@admin_registrations_details_ally_role_other": {
+        "description": "admin.registrations.details.ally_role_other",
+        "placeholders": {
+            "other": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_details_member": "Membre de la communauté",
+    "@admin_registrations_details_member": {
+        "description": "admin.registrations.details.member"
+    },
     "admin_registrations_empty": "Aucune demande en attente",
     "@admin_registrations_empty": {
         "description": "admin.registrations.empty"
@@ -3443,7 +3478,7 @@
             }
         }
     },
-    "admin_registrations_invitations_help": "Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (case « 15 ans » comprise) et reçoit le rôle une fois son compte validé.",
+    "admin_registrations_invitations_help": "Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (âge minimal compris) et reçoit le rôle une fois son compte validé.",
     "@admin_registrations_invitations_help": {
         "description": "admin.registrations.invitations.help"
     },
@@ -3519,11 +3554,11 @@
     "@admin_registrations_kpi_week": {
         "description": "admin.registrations.kpi.week"
     },
-    "admin_registrations_manual_all": "Tous les nouveaux comptes",
+    "admin_registrations_manual_all": "Tous les nouveaux comptes (par défaut)",
     "@admin_registrations_manual_all": {
         "description": "admin.registrations.manual.all"
     },
-    "admin_registrations_manual_help": "Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte. Avec « tous », chaque nouveau compte reste en attente jusqu’à votre validation.",
+    "admin_registrations_manual_help": "Par défaut, chaque nouveau compte reste en attente jusqu’à votre validation : vous confirmez alors son adresse e-mail (aucun code n’est envoyé à l’inscription). Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte.",
     "@admin_registrations_manual_help": {
         "description": "admin.registrations.manual.help"
     },
@@ -3531,7 +3566,7 @@
     "@admin_registrations_manual_label": {
         "description": "admin.registrations.manual.label"
     },
-    "admin_registrations_manual_peers": "Pair·es éducateur·rices seulement (par défaut)",
+    "admin_registrations_manual_peers": "Inscriptions signalées et pair·es éducateur·rices seulement",
     "@admin_registrations_manual_peers": {
         "description": "admin.registrations.manual.peers"
     },
@@ -14589,99 +14624,62 @@
     "@auth_pending": {
         "description": "auth.pending"
     },
-    "auth_register_account_age": "J’ai {min_age} ans ou plus.",
-    "@auth_register_account_age": {
-        "description": "auth.register.account.age",
+    "auth_pending_banner_text": "C’est normal et c’est rapide. En attendant, tu peux lire, utiliser le SOS, signaler et compléter ton profil. Publier, commenter, écrire et rejoindre un groupe ou un événement s’ouvriront dès la validation.",
+    "@auth_pending_banner_text": {
+        "description": "auth.pending_banner.text"
+    },
+    "auth_pending_banner_title": "Ton compte attend la validation de l’équipe",
+    "@auth_pending_banner_title": {
+        "description": "auth.pending_banner.title"
+    },
+    "auth_pending_restricted": "Ton compte attend la validation de l’équipe. Cette action s’ouvrira dès qu’il sera validé.",
+    "@auth_pending_restricted": {
+        "description": "auth.pending_restricted"
+    },
+    "auth_register_basic_age": "Âge",
+    "@auth_register_basic_age": {
+        "description": "auth.register.basic.age"
+    },
+    "auth_register_basic_age_hint": "Au moins {min_age} ans, en chiffres.",
+    "@auth_register_basic_age_hint": {
+        "description": "auth.register.basic.age_hint",
         "placeholders": {
             "min_age": {
                 "type": "String"
             }
         }
     },
-    "auth_register_account_cgu": "J’accepte les {terms} et la {charter}.",
-    "@auth_register_account_cgu": {
-        "description": "auth.register.account.cgu",
-        "placeholders": {
-            "charter": {
-                "type": "String"
-            },
-            "terms": {
-                "type": "String"
-            }
-        }
+    "auth_register_basic_email": "Adresse e-mail",
+    "@auth_register_basic_email": {
+        "description": "auth.register.basic.email"
     },
-    "auth_register_account_cgu_charter": "charte de la communauté",
-    "@auth_register_account_cgu_charter": {
-        "description": "auth.register.account.cgu_charter"
+    "auth_register_basic_email_hint": "Pour ton compte. Jamais partagée.",
+    "@auth_register_basic_email_hint": {
+        "description": "auth.register.basic.email_hint"
     },
-    "auth_register_account_cgu_terms": "conditions d’utilisation",
-    "@auth_register_account_cgu_terms": {
-        "description": "auth.register.account.cgu_terms"
+    "auth_register_basic_first_name": "Prénom",
+    "@auth_register_basic_first_name": {
+        "description": "auth.register.basic.first_name"
     },
-    "auth_register_account_continue": "Continuer",
-    "@auth_register_account_continue": {
-        "description": "auth.register.account.continue"
+    "auth_register_basic_heading": "Informations de base",
+    "@auth_register_basic_heading": {
+        "description": "auth.register.basic.heading"
     },
-    "auth_register_account_created": "Ton compte est créé. Bienvenue sur Xomiton !",
-    "@auth_register_account_created": {
-        "description": "auth.register.account.created"
+    "auth_register_basic_last_name": "Nom",
+    "@auth_register_basic_last_name": {
+        "description": "auth.register.basic.last_name"
     },
-    "auth_register_account_email": "Adresse e-mail",
-    "@auth_register_account_email": {
-        "description": "auth.register.account.email"
+    "auth_register_basic_pseudo": "Pseudonyme",
+    "@auth_register_basic_pseudo": {
+        "description": "auth.register.basic.pseudo"
     },
-    "auth_register_account_email_hint": "Pour confirmer ton compte et te renvoyer un code. Jamais partagée.",
-    "@auth_register_account_email_hint": {
-        "description": "auth.register.account.email_hint"
+    "auth_register_basic_pseudo_hint": "3 à 40 : lettres, chiffres, . - _",
+    "@auth_register_basic_pseudo_hint": {
+        "description": "auth.register.basic.pseudo_hint"
     },
-    "auth_register_account_email_hint_short": "Pour ton code de vérification. Jamais partagée.",
-    "@auth_register_account_email_hint_short": {
-        "description": "auth.register.account.email_hint_short"
-    },
-    "auth_register_account_heading": "Qui es-tu ?",
-    "@auth_register_account_heading": {
-        "description": "auth.register.account.heading"
-    },
-    "auth_register_account_password": "Mot de passe",
-    "@auth_register_account_password": {
-        "description": "auth.register.account.password"
-    },
-    "auth_register_account_password_confirmation": "Confirmation",
-    "@auth_register_account_password_confirmation": {
-        "description": "auth.register.account.password_confirmation"
-    },
-    "auth_register_account_password_hint": "Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.",
-    "@auth_register_account_password_hint": {
-        "description": "auth.register.account.password_hint"
-    },
-    "auth_register_account_privacy": "J’ai lu la {policy} et j’accepte le traitement de mes données.",
-    "@auth_register_account_privacy": {
-        "description": "auth.register.account.privacy",
-        "placeholders": {
-            "policy": {
-                "type": "String"
-            }
-        }
-    },
-    "auth_register_account_privacy_policy": "politique de confidentialité",
-    "@auth_register_account_privacy_policy": {
-        "description": "auth.register.account.privacy_policy"
-    },
-    "auth_register_account_pseudo": "Pseudonyme",
-    "@auth_register_account_pseudo": {
-        "description": "auth.register.account.pseudo"
-    },
-    "auth_register_account_pseudo_hint": "3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
-    "@auth_register_account_pseudo_hint": {
-        "description": "auth.register.account.pseudo_hint"
-    },
-    "auth_register_account_pseudo_hint_short": "3 à 40 : lettres, chiffres, . - _",
-    "@auth_register_account_pseudo_hint_short": {
-        "description": "auth.register.account.pseudo_hint_short"
-    },
-    "auth_register_account_submit": "Créer mon compte",
-    "@auth_register_account_submit": {
-        "description": "auth.register.account.submit"
+    "auth_register_client_errors": "Corrige ces champs avant de continuer.",
+    "@auth_register_client_errors": {
+        "description": "auth.register.client_errors"
     },
     "auth_register_closed_newsletter_text": "La newsletter annonce la réouverture des inscriptions, avec les nouvelles ressources et les événements de la communauté.",
     "@auth_register_closed_newsletter_text": {
@@ -14708,33 +14706,211 @@
     "@auth_register_closed_title": {
         "description": "auth.register.closed.title"
     },
-    "auth_register_consents_heading": "Tes consentements",
-    "@auth_register_consents_heading": {
-        "description": "auth.register.consents.heading"
+    "auth_register_created": "Ton compte est créé. Bienvenue sur Xomiton !",
+    "@auth_register_created": {
+        "description": "auth.register.created"
     },
-    "auth_register_consents_intro": "Ces deux accords sont facultatifs. Tu peux les retirer à tout moment depuis tes paramètres.",
-    "@auth_register_consents_intro": {
-        "description": "auth.register.consents.intro"
+    "auth_register_created_pending": "Ton compte est créé. L’équipe Xomiton doit le valider : en attendant, tu peux déjà lire, utiliser le SOS et signaler.",
+    "@auth_register_created_pending": {
+        "description": "auth.register.created_pending"
     },
-    "auth_register_consents_newsletter": "Je veux recevoir la lettre d’information par e-mail.",
-    "@auth_register_consents_newsletter": {
-        "description": "auth.register.consents.newsletter"
+    "auth_register_details_ally_heading": "Pour toi, personne ressource ou allié·e",
+    "@auth_register_details_ally_heading": {
+        "description": "auth.register.details.ally_heading"
     },
-    "auth_register_consents_saved": "Consentements enregistrés.",
-    "@auth_register_consents_saved": {
-        "description": "auth.register.consents.saved"
+    "auth_register_details_ally_role": "Ton statut",
+    "@auth_register_details_ally_role": {
+        "description": "auth.register.details.ally_role"
     },
-    "auth_register_consents_sensitive_data": "J’accepte que Xomiton traite mes données sensibles (identité de genre, orientation) pour adapter les contenus. Elles sont chiffrées et jamais publiques.",
-    "@auth_register_consents_sensitive_data": {
-        "description": "auth.register.consents.sensitive_data"
+    "auth_register_details_ally_role_other": "Précise ton statut",
+    "@auth_register_details_ally_role_other": {
+        "description": "auth.register.details.ally_role_other"
     },
-    "auth_register_done": "Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.",
-    "@auth_register_done": {
-        "description": "auth.register.done"
+    "auth_register_details_ally_role_placeholder": "Choisir…",
+    "@auth_register_details_ally_role_placeholder": {
+        "description": "auth.register.details.ally_role_placeholder"
     },
-    "auth_register_finish": "Terminer",
-    "@auth_register_finish": {
-        "description": "auth.register.finish"
+    "auth_register_details_both_hint": "Remplis seulement le bloc qui correspond à ton choix à l’étape précédente.",
+    "@auth_register_details_both_hint": {
+        "description": "auth.register.details.both_hint"
+    },
+    "auth_register_details_cgu": "J’accepte les {terms} et la {charter}.",
+    "@auth_register_details_cgu": {
+        "description": "auth.register.details.cgu",
+        "placeholders": {
+            "charter": {
+                "type": "String"
+            },
+            "terms": {
+                "type": "String"
+            }
+        }
+    },
+    "auth_register_details_cgu_charter": "charte de la communauté",
+    "@auth_register_details_cgu_charter": {
+        "description": "auth.register.details.cgu_charter"
+    },
+    "auth_register_details_cgu_terms": "conditions d’utilisation",
+    "@auth_register_details_cgu_terms": {
+        "description": "auth.register.details.cgu_terms"
+    },
+    "auth_register_details_choose": "Choisir…",
+    "@auth_register_details_choose": {
+        "description": "auth.register.details.choose"
+    },
+    "auth_register_details_consents": "Consentements",
+    "@auth_register_details_consents": {
+        "description": "auth.register.details.consents"
+    },
+    "auth_register_details_gender_identity": "Identité de genre",
+    "@auth_register_details_gender_identity": {
+        "description": "auth.register.details.gender_identity"
+    },
+    "auth_register_details_heading": "Détails et sécurité",
+    "@auth_register_details_heading": {
+        "description": "auth.register.details.heading"
+    },
+    "auth_register_details_member_heading": "Pour toi, membre de la communauté",
+    "@auth_register_details_member_heading": {
+        "description": "auth.register.details.member_heading"
+    },
+    "auth_register_details_orientation": "Orientation",
+    "@auth_register_details_orientation": {
+        "description": "auth.register.details.orientation"
+    },
+    "auth_register_details_other": "Précise",
+    "@auth_register_details_other": {
+        "description": "auth.register.details.other"
+    },
+    "auth_register_details_password": "Mot de passe",
+    "@auth_register_details_password": {
+        "description": "auth.register.details.password"
+    },
+    "auth_register_details_password_confirmation": "Confirmation",
+    "@auth_register_details_password_confirmation": {
+        "description": "auth.register.details.password_confirmation"
+    },
+    "auth_register_details_password_hint": "Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.",
+    "@auth_register_details_password_hint": {
+        "description": "auth.register.details.password_hint"
+    },
+    "auth_register_details_privacy": "J’ai lu la {policy} et j’accepte le traitement de mes données.",
+    "@auth_register_details_privacy": {
+        "description": "auth.register.details.privacy",
+        "placeholders": {
+            "policy": {
+                "type": "String"
+            }
+        }
+    },
+    "auth_register_details_privacy_policy": "politique de confidentialité",
+    "@auth_register_details_privacy_policy": {
+        "description": "auth.register.details.privacy_policy"
+    },
+    "auth_register_details_sensitive_data": "J’accepte que Xomiton traite ces informations sensibles (identité de genre, orientation) pour adapter les contenus. Elles sont chiffrées et jamais publiques.",
+    "@auth_register_details_sensitive_data": {
+        "description": "auth.register.details.sensitive_data"
+    },
+    "auth_register_errors_age_max": "Cet âge n’est pas possible. Vérifie ce que tu as écrit.",
+    "@auth_register_errors_age_max": {
+        "description": "auth.register.errors.age_max"
+    },
+    "auth_register_errors_age_min": "Tu dois avoir au moins {min_age} ans pour créer un compte.",
+    "@auth_register_errors_age_min": {
+        "description": "auth.register.errors.age_min",
+        "placeholders": {
+            "min_age": {
+                "type": "String"
+            }
+        }
+    },
+    "auth_register_errors_age_number": "Indique ton âge en chiffres, par exemple 17.",
+    "@auth_register_errors_age_number": {
+        "description": "auth.register.errors.age_number"
+    },
+    "auth_register_errors_age_required": "Indique ton âge.",
+    "@auth_register_errors_age_required": {
+        "description": "auth.register.errors.age_required"
+    },
+    "auth_register_errors_ally_role_required": "Choisis ton statut.",
+    "@auth_register_errors_ally_role_required": {
+        "description": "auth.register.errors.ally_role_required"
+    },
+    "auth_register_errors_cgu_required": "Tu dois accepter les conditions d’utilisation et la charte pour continuer.",
+    "@auth_register_errors_cgu_required": {
+        "description": "auth.register.errors.cgu_required"
+    },
+    "auth_register_errors_country_required": "Choisis ton pays.",
+    "@auth_register_errors_country_required": {
+        "description": "auth.register.errors.country_required"
+    },
+    "auth_register_errors_country_unknown": "Ce pays n’est pas dans la liste. Choisis-en un.",
+    "@auth_register_errors_country_unknown": {
+        "description": "auth.register.errors.country_unknown"
+    },
+    "auth_register_errors_email_format": "Cette adresse e-mail n’a pas la bonne forme, par exemple prenom@exemple.bj.",
+    "@auth_register_errors_email_format": {
+        "description": "auth.register.errors.email_format"
+    },
+    "auth_register_errors_email_required": "Indique ton adresse e-mail.",
+    "@auth_register_errors_email_required": {
+        "description": "auth.register.errors.email_required"
+    },
+    "auth_register_errors_first_name_required": "Indique ton prénom.",
+    "@auth_register_errors_first_name_required": {
+        "description": "auth.register.errors.first_name_required"
+    },
+    "auth_register_errors_gender_identity_required": "Choisis une réponse pour l’identité de genre.",
+    "@auth_register_errors_gender_identity_required": {
+        "description": "auth.register.errors.gender_identity_required"
+    },
+    "auth_register_errors_last_name_required": "Indique ton nom.",
+    "@auth_register_errors_last_name_required": {
+        "description": "auth.register.errors.last_name_required"
+    },
+    "auth_register_errors_member_type_required": "Choisis ce qui te correspond.",
+    "@auth_register_errors_member_type_required": {
+        "description": "auth.register.errors.member_type_required"
+    },
+    "auth_register_errors_name_format": "Utilise seulement des lettres, des espaces, des apostrophes et des tirets.",
+    "@auth_register_errors_name_format": {
+        "description": "auth.register.errors.name_format"
+    },
+    "auth_register_errors_orientation_required": "Choisis une réponse pour l’orientation.",
+    "@auth_register_errors_orientation_required": {
+        "description": "auth.register.errors.orientation_required"
+    },
+    "auth_register_errors_other_required": "Écris une précision.",
+    "@auth_register_errors_other_required": {
+        "description": "auth.register.errors.other_required"
+    },
+    "auth_register_errors_password_mismatch": "Les deux mots de passe ne correspondent pas.",
+    "@auth_register_errors_password_mismatch": {
+        "description": "auth.register.errors.password_mismatch"
+    },
+    "auth_register_errors_password_required": "Choisis un mot de passe.",
+    "@auth_register_errors_password_required": {
+        "description": "auth.register.errors.password_required"
+    },
+    "auth_register_errors_phone_format": "Ce numéro n’a pas la bonne forme.",
+    "@auth_register_errors_phone_format": {
+        "description": "auth.register.errors.phone_format"
+    },
+    "auth_register_errors_privacy_required": "Tu dois accepter la politique de confidentialité pour continuer.",
+    "@auth_register_errors_privacy_required": {
+        "description": "auth.register.errors.privacy_required"
+    },
+    "auth_register_errors_pronouns_required": "Choisis tes pronoms.",
+    "@auth_register_errors_pronouns_required": {
+        "description": "auth.register.errors.pronouns_required"
+    },
+    "auth_register_errors_pseudo_required": "Choisis un pseudonyme.",
+    "@auth_register_errors_pseudo_required": {
+        "description": "auth.register.errors.pseudo_required"
+    },
+    "auth_register_errors_sensitive_data_required": "Pour continuer, accepte le traitement de ces informations sensibles.",
+    "@auth_register_errors_sensitive_data_required": {
+        "description": "auth.register.errors.sensitive_data_required"
     },
     "auth_register_heading": "Créer mon compte",
     "@auth_register_heading": {
@@ -14752,6 +14928,14 @@
     "@auth_register_invitation_banner_pair": {
         "description": "auth.register.invitation.banner.pair"
     },
+    "auth_register_next": "Suivant",
+    "@auth_register_next": {
+        "description": "auth.register.next"
+    },
+    "auth_register_previous": "Précédent",
+    "@auth_register_previous": {
+        "description": "auth.register.previous"
+    },
     "auth_register_profile_choose": "Choisir…",
     "@auth_register_profile_choose": {
         "description": "auth.register.profile.choose"
@@ -14760,41 +14944,53 @@
     "@auth_register_profile_choose_zone_first": {
         "description": "auth.register.profile.choose_zone_first"
     },
+    "auth_register_profile_city": "Ville",
+    "@auth_register_profile_city": {
+        "description": "auth.register.profile.city"
+    },
     "auth_register_profile_commune": "Commune",
     "@auth_register_profile_commune": {
         "description": "auth.register.profile.commune"
     },
-    "auth_register_profile_heading": "Ton profil",
+    "auth_register_profile_country": "Pays",
+    "@auth_register_profile_country": {
+        "description": "auth.register.profile.country"
+    },
+    "auth_register_profile_country_placeholder": "Choisir un pays…",
+    "@auth_register_profile_country_placeholder": {
+        "description": "auth.register.profile.country_placeholder"
+    },
+    "auth_register_profile_heading": "Profil et identité",
     "@auth_register_profile_heading": {
         "description": "auth.register.profile.heading"
     },
-    "auth_register_profile_intro": "Ces choix servent à te proposer des contenus adaptés. Tu peux tout modifier plus tard.",
-    "@auth_register_profile_intro": {
-        "description": "auth.register.profile.intro"
+    "auth_register_profile_location_hint": "Pour te mettre en lien avec l’aide la plus proche en cas d’urgence.",
+    "@auth_register_profile_location_hint": {
+        "description": "auth.register.profile.location_hint"
     },
-    "auth_register_profile_member_type": "Type de membre",
+    "auth_register_profile_member_type": "Tu es ?",
     "@auth_register_profile_member_type": {
         "description": "auth.register.profile.member_type"
     },
-    "auth_register_profile_member_type_hint": "Un compte pair éducateur·rice est validé par l’équipe Xomiton avant l’accès à la collecte ; tu gardes l’accès au reste en attendant.",
-    "@auth_register_profile_member_type_hint": {
-        "description": "auth.register.profile.member_type_hint"
+    "auth_register_profile_member_types_allie": "Personne ressource / Allié·e",
+    "@auth_register_profile_member_types_allie": {
+        "description": "auth.register.profile.member_types.allie"
     },
     "auth_register_profile_member_types_membre": "Membre de la communauté",
     "@auth_register_profile_member_types_membre": {
         "description": "auth.register.profile.member_types.membre"
     },
-    "auth_register_profile_member_types_pair": "Pair éducateur·rice",
-    "@auth_register_profile_member_types_pair": {
-        "description": "auth.register.profile.member_types.pair"
+    "auth_register_profile_phone": "Téléphone",
+    "@auth_register_profile_phone": {
+        "description": "auth.register.profile.phone"
+    },
+    "auth_register_profile_phone_hint": "Au Bénin : +229 01 97 38 88 47. Ailleurs : avec l’indicatif, par exemple +33 6 12 34 56 78.",
+    "@auth_register_profile_phone_hint": {
+        "description": "auth.register.profile.phone_hint"
     },
     "auth_register_profile_pronouns": "Pronoms",
     "@auth_register_profile_pronouns": {
         "description": "auth.register.profile.pronouns"
-    },
-    "auth_register_profile_pronouns_options_autre": "Autre",
-    "@auth_register_profile_pronouns_options_autre": {
-        "description": "auth.register.profile.pronouns_options.autre"
     },
     "auth_register_profile_pronouns_options_elle": "Elle",
     "@auth_register_profile_pronouns_options_elle": {
@@ -14808,53 +15004,17 @@
     "@auth_register_profile_pronouns_options_il": {
         "description": "auth.register.profile.pronouns_options.il"
     },
-    "auth_register_profile_pronouns_options_nr": "Je préfère ne pas le dire",
-    "@auth_register_profile_pronouns_options_nr": {
-        "description": "auth.register.profile.pronouns_options.nr"
-    },
     "auth_register_profile_pronouns_placeholder": "Choisir…",
     "@auth_register_profile_pronouns_placeholder": {
         "description": "auth.register.profile.pronouns_placeholder"
-    },
-    "auth_register_profile_saved": "Profil enregistré.",
-    "@auth_register_profile_saved": {
-        "description": "auth.register.profile.saved"
     },
     "auth_register_profile_zone": "Département",
     "@auth_register_profile_zone": {
         "description": "auth.register.profile.zone"
     },
-    "auth_register_security_discreet_mode": "Activer le mode discret",
-    "@auth_register_security_discreet_mode": {
-        "description": "auth.register.security.discreet_mode"
-    },
-    "auth_register_security_discreet_mode_hint": "Titre d’onglet neutre et aperçus masqués sur écran verrouillé.",
-    "@auth_register_security_discreet_mode_hint": {
-        "description": "auth.register.security.discreet_mode_hint"
-    },
-    "auth_register_security_heading": "Sécurise ton compte",
-    "@auth_register_security_heading": {
-        "description": "auth.register.security.heading"
-    },
-    "auth_register_security_intro": "Un contact de confiance peut être prévenu lors d’un SOS. Le mode discret neutralise les titres et les aperçus.",
-    "@auth_register_security_intro": {
-        "description": "auth.register.security.intro"
-    },
-    "auth_register_security_saved": "Réglages de sécurité enregistrés.",
-    "@auth_register_security_saved": {
-        "description": "auth.register.security.saved"
-    },
-    "auth_register_security_trusted_contact_name": "Nom du contact de confiance",
-    "@auth_register_security_trusted_contact_name": {
-        "description": "auth.register.security.trusted_contact_name"
-    },
-    "auth_register_security_trusted_contact_phone": "Téléphone du contact de confiance",
-    "@auth_register_security_trusted_contact_phone": {
-        "description": "auth.register.security.trusted_contact_phone"
-    },
-    "auth_register_security_trusted_contact_phone_hint": "Numéro béninois, par exemple +229 01 97 38 88 47. Chiffré, jamais affiché.",
-    "@auth_register_security_trusted_contact_phone_hint": {
-        "description": "auth.register.security.trusted_contact_phone_hint"
+    "auth_register_sending": "Création du compte…",
+    "@auth_register_sending": {
+        "description": "auth.register.sending"
     },
     "auth_register_side_points_0": "Pseudonyme : ton identité reste protégée",
     "@auth_register_side_points_0": {
@@ -14876,14 +15036,6 @@
     "@auth_register_sign_in": {
         "description": "auth.register.sign_in"
     },
-    "auth_register_skip": "Passer",
-    "@auth_register_skip": {
-        "description": "auth.register.skip"
-    },
-    "auth_register_skip_step": "Passer cette étape",
-    "@auth_register_skip_step": {
-        "description": "auth.register.skip_step"
-    },
     "auth_register_step_of": "Étape {current} sur {total}",
     "@auth_register_step_of": {
         "description": "auth.register.step_of",
@@ -14896,21 +15048,21 @@
             }
         }
     },
-    "auth_register_steps_account": "Compte",
-    "@auth_register_steps_account": {
-        "description": "auth.register.steps.account"
+    "auth_register_steps_basic": "Informations de base",
+    "@auth_register_steps_basic": {
+        "description": "auth.register.steps.basic"
     },
-    "auth_register_steps_consents": "Consentements",
-    "@auth_register_steps_consents": {
-        "description": "auth.register.steps.consents"
+    "auth_register_steps_details": "Détails et sécurité",
+    "@auth_register_steps_details": {
+        "description": "auth.register.steps.details"
     },
-    "auth_register_steps_profile": "Profil",
+    "auth_register_steps_profile": "Profil et identité",
     "@auth_register_steps_profile": {
         "description": "auth.register.steps.profile"
     },
-    "auth_register_steps_security": "Sécurité",
-    "@auth_register_steps_security": {
-        "description": "auth.register.steps.security"
+    "auth_register_submit": "Créer mon compte",
+    "@auth_register_submit": {
+        "description": "auth.register.submit"
     },
     "auth_registrations_closed": "Les inscriptions sont momentanément fermées. Reviens bientôt ou inscris-toi à la newsletter.",
     "@auth_registrations_closed": {
@@ -21147,6 +21299,30 @@
     "@enums_gateways_social_network_tinder": {
         "description": "enums/gateways.social_network.tinder"
     },
+    "enums_identity_ally_role_activiste": "Activiste / féministe",
+    "@enums_identity_ally_role_activiste": {
+        "description": "enums/identity.ally_role.activiste"
+    },
+    "enums_identity_ally_role_autre": "Autre",
+    "@enums_identity_ally_role_autre": {
+        "description": "enums/identity.ally_role.autre"
+    },
+    "enums_identity_ally_role_avocat": "Avocat·e",
+    "@enums_identity_ally_role_avocat": {
+        "description": "enums/identity.ally_role.avocat"
+    },
+    "enums_identity_ally_role_leader_religieux": "Leader religieux·se",
+    "@enums_identity_ally_role_leader_religieux": {
+        "description": "enums/identity.ally_role.leader_religieux"
+    },
+    "enums_identity_ally_role_professionnel_sante": "Professionnel·le de santé",
+    "@enums_identity_ally_role_professionnel_sante": {
+        "description": "enums/identity.ally_role.professionnel_sante"
+    },
+    "enums_identity_ally_role_psychologue": "Psychologue",
+    "@enums_identity_ally_role_psychologue": {
+        "description": "enums/identity.ally_role.psychologue"
+    },
     "enums_identity_ally_status_allie": "Allié·e",
     "@enums_identity_ally_status_allie": {
         "description": "enums/identity.ally_status.allie"
@@ -27100,9 +27276,38 @@
             }
         }
     },
+    "notifications_peer_pending_body_typed": "{name} ({type}) attend votre validation. Ouvrez la file des inscriptions pour répondre.",
+    "@notifications_peer_pending_body_typed": {
+        "description": "notifications.peer_pending.body_typed",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "type": {
+                "type": "String"
+            }
+        }
+    },
     "notifications_peer_pending_discreet": "Nouvelle demande",
     "@notifications_peer_pending_discreet": {
         "description": "notifications.peer_pending.discreet"
+    },
+    "notifications_peer_pending_kind_ally": "allié·e",
+    "@notifications_peer_pending_kind_ally": {
+        "description": "notifications.peer_pending.kind_ally"
+    },
+    "notifications_peer_pending_kind_ally_role": "allié·e, {role}",
+    "@notifications_peer_pending_kind_ally_role": {
+        "description": "notifications.peer_pending.kind_ally_role",
+        "placeholders": {
+            "role": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_peer_pending_kind_member": "membre",
+    "@notifications_peer_pending_kind_member": {
+        "description": "notifications.peer_pending.kind_member"
     },
     "notifications_peer_pending_title": "Inscription à valider",
     "@notifications_peer_pending_title": {
@@ -28462,7 +28667,7 @@
     "@pages_aide_know_communaute_2": {
         "description": "pages/aide.know.communaute.2"
     },
-    "pages_aide_know_compte_0": "Créez votre compte avec un pseudonyme : aucun nom réel n’est exigé.",
+    "pages_aide_know_compte_0": "Créez votre compte en trois étapes : seul votre pseudonyme est visible des autres membres.",
     "@pages_aide_know_compte_0": {
         "description": "pages/aide.know.compte.0"
     },
@@ -28661,7 +28866,7 @@
     "@pages_confidentialite_privacy_0_0": {
         "description": "pages/confidentialite.privacy.0.0"
     },
-    "pages_confidentialite_privacy_0_1": "Pseudonyme, adresse e-mail, zone géographique et, si vous le choisissez, des informations de profil. Aucun nom réel n’est exigé. Pour la sécurité des comptes, l’adresse IP et le navigateur utilisé sont aussi conservés avec vos consentements, les codes de vérification, le journal d’audit et la liste de vos appareils connectés.",
+    "pages_confidentialite_privacy_0_1": "Pseudonyme, prénom et nom, adresse e-mail, âge, pays, pronoms, type de compte (membre ou personne ressource / allié·e) et, si vous le souhaitez, ville, téléphone, département et commune. Un membre indique aussi son identité de genre et son orientation, une personne ressource ou alliée son statut : ces informations sont chiffrées et jamais publiques. Seul le pseudonyme est visible des autres membres. Pour la sécurité des comptes, l’adresse IP et le navigateur utilisé sont aussi conservés avec vos consentements, les codes de vérification, le journal d’audit et la liste de vos appareils connectés.",
     "@pages_confidentialite_privacy_0_1": {
         "description": "pages/confidentialite.privacy.0.1"
     },
@@ -29850,11 +30055,11 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_head_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.head.3"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": "Compte : pseudonyme, adresse e-mail, mot de passe (conservé haché), zone et commune, confirmation d’avoir '{'min_age'}' ans ou plus",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": "Compte : pseudonyme, prénom et nom, adresse e-mail, mot de passe (conservé haché), âge ('{'min_age'}' ans au minimum), pays, pronoms, type de compte (membre ou personne ressource / allié·e)",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.0"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": "Créer et sécuriser votre compte, vous envoyer les codes de vérification",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": "Créer, sécuriser et faire valider votre compte par l’équipe",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.1"
     },
@@ -29862,15 +30067,15 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_2": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.2"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": "Non. Aucun nom réel ni date de naissance n’est exigé",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": "Non. Seul le pseudonyme est visible des autres membres",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.3"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": "Nom, numéro de téléphone du profil",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": "Ville, département et commune, numéro de téléphone",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.0"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": "Vous joindre ou vous reconnaître si vous le choisissez ; SMS de secours",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": "Vous mettre en lien avec l’aide la plus proche ; vous joindre ; SMS de secours",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.1"
     },
@@ -29914,7 +30119,7 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.2.3"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": "Origine, orientation ou identité de genre (données sensibles)",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": "Identité de genre et orientation (membre), statut (personne ressource ou alliée) : données sensibles, chiffrées",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.0"
     },
@@ -29926,7 +30131,7 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_2": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.2"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": "Oui",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": "Non pour un membre à l’inscription (le consentement est demandé) ; vous pouvez le retirer ensuite",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.3"
     },
@@ -30442,7 +30647,7 @@
     "@pages_legal_pages_terms_sections_1_blocks_0_list_0": {
         "description": "pages/legal.pages.terms.sections.1.blocks.0.list.0"
     },
-    "pages_legal_pages_terms_sections_1_blocks_0_list_1": "Vous choisissez un pseudonyme ; vous n’êtes pas obligé·e d’utiliser votre vrai nom.",
+    "pages_legal_pages_terms_sections_1_blocks_0_list_1": "Vous choisissez un pseudonyme : votre prénom et votre nom ne sont jamais montrés aux autres membres.",
     "@pages_legal_pages_terms_sections_1_blocks_0_list_1": {
         "description": "pages/legal.pages.terms.sections.1.blocks.0.list.1"
     },
@@ -34192,7 +34397,7 @@
     "@profile_settings_profile_pseudo": {
         "description": "profile.settings.profile.pseudo"
     },
-    "profile_settings_profile_pseudo_help": "Visible par la communauté. Ton vrai nom n’est jamais demandé.",
+    "profile_settings_profile_pseudo_help": "Visible par la communauté. Ton prénom et ton nom ne le sont jamais.",
     "@profile_settings_profile_pseudo_help": {
         "description": "profile.settings.profile.pseudo_help"
     },
@@ -34758,18 +34963,6 @@
     "@seo_noindex_register_closed": {
         "description": "seo.noindex.register_closed"
     },
-    "seo_noindex_register_step": "Créer mon compte, étape {current} sur {total} – Xomiton",
-    "@seo_noindex_register_step": {
-        "description": "seo.noindex.register_step",
-        "placeholders": {
-            "current": {
-                "type": "String"
-            },
-            "total": {
-                "type": "String"
-            }
-        }
-    },
     "seo_noindex_reset_password": "Nouveau mot de passe – Xomiton",
     "@seo_noindex_reset_password": {
         "description": "seo.noindex.reset_password"
@@ -34850,7 +35043,7 @@
     "@seo_pages_home_title": {
         "description": "seo.pages.home.title"
     },
-    "seo_pages_inscription_description": "Crée ton compte en une étape, avec un pseudonyme et un mot de passe : ton vrai nom n’est jamais demandé. Communauté bienveillante et soutien confidentiel.",
+    "seo_pages_inscription_description": "Crée ton compte en trois étapes, avec un mot de passe fort : seul ton pseudonyme est visible des autres membres. Communauté et soutien confidentiels.",
     "@seo_pages_inscription_description": {
         "description": "seo.pages.inscription.description"
     },
@@ -36543,6 +36736,10 @@
     "@validation_attributes_accuracy": {
         "description": "validation.attributes.accuracy"
     },
+    "validation_attributes_age": "âge",
+    "@validation_attributes_age": {
+        "description": "validation.attributes.age"
+    },
     "validation_attributes_age_confirmed": "confirmation de l’âge",
     "@validation_attributes_age_confirmed": {
         "description": "validation.attributes.age_confirmed"
@@ -36550,6 +36747,14 @@
     "validation_attributes_age_range": "tranche d’âge",
     "@validation_attributes_age_range": {
         "description": "validation.attributes.age_range"
+    },
+    "validation_attributes_ally_role": "statut",
+    "@validation_attributes_ally_role": {
+        "description": "validation.attributes.ally_role"
+    },
+    "validation_attributes_ally_role_other": "précision sur le statut",
+    "@validation_attributes_ally_role_other": {
+        "description": "validation.attributes.ally_role_other"
     },
     "validation_attributes_anonymous": "anonymat",
     "@validation_attributes_anonymous": {
@@ -36574,6 +36779,10 @@
     "validation_attributes_cgu": "conditions d’utilisation",
     "@validation_attributes_cgu": {
         "description": "validation.attributes.cgu"
+    },
+    "validation_attributes_city": "ville",
+    "@validation_attributes_city": {
+        "description": "validation.attributes.city"
     },
     "validation_attributes_client_uuid": "identifiant d’envoi",
     "@validation_attributes_client_uuid": {
@@ -36603,6 +36812,10 @@
     "@validation_attributes_contactable": {
         "description": "validation.attributes.contactable"
     },
+    "validation_attributes_country_code": "pays",
+    "@validation_attributes_country_code": {
+        "description": "validation.attributes.country_code"
+    },
     "validation_attributes_current_password": "mot de passe actuel",
     "@validation_attributes_current_password": {
         "description": "validation.attributes.current_password"
@@ -36627,6 +36840,18 @@
     "@validation_attributes_file": {
         "description": "validation.attributes.file"
     },
+    "validation_attributes_first_name": "prénom",
+    "@validation_attributes_first_name": {
+        "description": "validation.attributes.first_name"
+    },
+    "validation_attributes_gender_identity": "identité de genre",
+    "@validation_attributes_gender_identity": {
+        "description": "validation.attributes.gender_identity"
+    },
+    "validation_attributes_gender_identity_other": "précision sur l’identité de genre",
+    "@validation_attributes_gender_identity_other": {
+        "description": "validation.attributes.gender_identity_other"
+    },
     "validation_attributes_idempotency_key": "clé d’envoi",
     "@validation_attributes_idempotency_key": {
         "description": "validation.attributes.idempotency_key"
@@ -36642,6 +36867,10 @@
     "validation_attributes_kind": "type de dossier",
     "@validation_attributes_kind": {
         "description": "validation.attributes.kind"
+    },
+    "validation_attributes_last_name": "nom",
+    "@validation_attributes_last_name": {
+        "description": "validation.attributes.last_name"
     },
     "validation_attributes_lat": "position",
     "@validation_attributes_lat": {
@@ -36690,6 +36919,14 @@
     "validation_attributes_occurred_on": "date des faits",
     "@validation_attributes_occurred_on": {
         "description": "validation.attributes.occurred_on"
+    },
+    "validation_attributes_orientation": "orientation",
+    "@validation_attributes_orientation": {
+        "description": "validation.attributes.orientation"
+    },
+    "validation_attributes_orientation_other": "précision sur l’orientation",
+    "@validation_attributes_orientation_other": {
+        "description": "validation.attributes.orientation_other"
     },
     "validation_attributes_outcome": "résultat",
     "@validation_attributes_outcome": {
@@ -37804,6 +38041,10 @@
     "validation_phone_bj": "Saisis un numéro béninois valide, par exemple +229 01 97 38 88 47.",
     "@validation_phone_bj": {
         "description": "validation.phone_bj"
+    },
+    "validation_phone_international": "Saisis un numéro avec l’indicatif du pays, par exemple +33 6 12 34 56 78 (8 à 15 chiffres).",
+    "@validation_phone_international": {
+        "description": "validation.phone_international"
     },
     "validation_phone_or_email": "Saisis un numéro béninois (+229 01 97 38 88 47) ou une adresse e-mail valide.",
     "@validation_phone_or_email": {

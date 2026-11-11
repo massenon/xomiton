@@ -20,6 +20,7 @@ use Database\Seeders\SettingsSeeder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
+use Tests\Support\RegistrationFixtures;
 
 /*
  * P12-02 : Inscriptions /admin/inscriptions (Livewire) — `registrations.manage` (admin, superadmin ; 403 pour le
@@ -51,14 +52,7 @@ function regScreen(string $role = 'admin')
 
 function regData(array $overrides = []): RegisterData
 {
-    return new RegisterData(...array_merge([
-        'pseudo' => 'Awa_S',
-        'email' => 'awa@exemple.bj',
-        'password' => 'Xomiton2026!',
-        'acceptsTerms' => true,
-        'acceptsPrivacy' => true,
-        'confirmsAge' => true,
-    ], $overrides));
+    return RegistrationFixtures::data(array_merge(['pseudo' => 'Awa_S', 'email' => 'awa@exemple.bj'], $overrides));
 }
 
 it('sert l’écran à l’admin et au superadmin, le refuse au modérateur, au pair, au membre et aux visiteurs', function (): void {
@@ -180,26 +174,26 @@ it('annonce « hors plage » quand l’interrupteur est ouvert mais la plage fer
     $this->travelBack();
 });
 
-it('crée les comptes en attente quand la validation manuelle vise tous les nouveaux comptes (Q26)', function (): void {
-    expect(RegistrationGate::manualValidation())->toBe('peers');
-
-    $default = app(RegisterUser::class)(regData());
-    expect($default->status)->toBe(UserStatus::Active);
-
-    regScreen()->set('manual', 'all')->call('save')->assertHasNoErrors();
+it('met tous les nouveaux comptes en attente par défaut (11/11/2026) ; le réglage « signalées seulement » reste possible', function (): void {
     expect(RegistrationGate::manualValidation())->toBe('all');
 
-    $manual = app(RegisterUser::class)(regData(['pseudo' => 'Koffi_M', 'email' => 'koffi@exemple.bj']));
-    expect($manual->status)->toBe(UserStatus::Pending);
+    $default = app(RegisterUser::class)(regData());
+    expect($default->status)->toBe(UserStatus::Pending);
 
-    regScreen()->set('manual', 'peers')->call('save');
+    regScreen()->set('manual', 'peers')->call('save')->assertHasNoErrors();
     expect(RegistrationGate::manualValidation())->toBe('peers');
+
+    $peers = app(RegisterUser::class)(regData(['pseudo' => 'Koffi_M', 'email' => 'koffi@exemple.bj']));
+    expect($peers->status)->toBe(UserStatus::Active);
+
+    regScreen()->set('manual', 'all')->call('save');
+    expect(RegistrationGate::manualValidation())->toBe('all');
 });
 
 it('refuse une valeur de validation manuelle inconnue', function (): void {
     regScreen()->set('manual', 'personne')->call('save')->assertHasErrors(['manual']);
 
-    expect(Settings::string('reg_manual_validation', 'peers'))->toBe('peers');
+    expect(Settings::string('reg_manual_validation', 'all'))->toBe('all');
 });
 
 it('liste les demandes en attente et les approuve ou les rejette', function (): void {
@@ -262,7 +256,7 @@ it('compte les inscriptions des huit dernières semaines au fuseau du Bénin', f
 it('lit les réglages par défaut sans erreur', function (): void {
     $current = RegistrationSettings::current();
 
-    expect($current['open'])->toBeTrue()->and($current['manual'])->toBe('peers')->and($current['window_on'])->toBeFalse();
+    expect($current['open'])->toBeTrue()->and($current['manual'])->toBe('all')->and($current['window_on'])->toBeFalse();
 });
 
 it('crée une invitation pair avec département et durée depuis /admin/inscriptions', function (): void {

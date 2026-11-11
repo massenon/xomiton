@@ -260,6 +260,15 @@ describe('XmVerifyBanner', () => {
         expect((form.querySelector('[name="purpose"]') as HTMLInputElement).value).toBe('signup');
     });
 
+    it('compte en attente : « Ton compte attend la validation de l’équipe », sans code à saisir (11/11/2026)', async () => {
+        await mountInertia(page(XmVerifyBanner), { props: memberProps({ auth: { user: { email_verified: false, pending_validation: true } } }) });
+        const banner = $('.xm-verify-banner') as HTMLElement;
+        expect(text(banner)).toContain('Ton compte attend la validation de l’équipe');
+        expect(text(banner)).not.toContain('Confirme ton e-mail');
+        expect($('.xm-verify-banner form')).toBeNull();
+        expect($('.xm-verify-banner a')).toBeNull();
+    });
+
     it('rien une fois l’adresse confirmée', async () => {
         await mountInertia(page(XmVerifyBanner));
         expect($('.xm-verify-banner')).toBeNull();

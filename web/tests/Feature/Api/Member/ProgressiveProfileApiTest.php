@@ -19,7 +19,7 @@ use Tests\Support\FeedFixtures as F;
 beforeEach(function (): void {
     $this->seed(RolesAndPermissionsSeeder::class);
     $this->awa = F::member();
-    $this->awa->profile->forceFill(['pronouns' => null, 'age_range' => null, 'interests' => null, 'progressive_answered' => null])->save();
+    $this->awa->profile->forceFill(['pronouns' => null, 'age_range' => null, 'age' => null, 'country_code' => null, 'interests' => null, 'progressive_answered' => null])->save();
 });
 
 it('refuse identité de genre et orientation sans consentement (422), sans rien enregistrer', function (): void {
