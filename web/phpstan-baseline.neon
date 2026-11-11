@@ -3254,3 +3254,105 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: app/Application/Auth/Listeners/NotifyValidatorsOfPendingAccount.php
+
+		-
+			message: '#^Parameter \#1 \$kind of method App\\Application\\Admin\\Content\\ManageCccTools\:\:action\(\) expects App\\Enums\\CccKind, string given\.$#'
+			identifier: argument.type
+			count: 6
+			path: app/Application/Admin/Content/ManageCccTools.php
+
+		-
+			message: '#^Parameter \#1 \$kind of method App\\Application\\Admin\\Content\\ManageCccTools\:\:noun\(\) expects App\\Enums\\CccKind, string given\.$#'
+			identifier: argument.type
+			count: 4
+			path: app/Application/Admin/Content/ManageCccTools.php
+
+		-
+			message: '#^Parameter \#1 \$kind of method App\\Application\\Admin\\Content\\ManageCccTools\:\:assertPagedKind\(\) expects App\\Enums\\CccKind, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Admin/Content/ManageCccTools.php
+
+		-
+			message: '#^Strict comparison using !== between mixed and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Application/Admin/OnCall/OnCallShiftRules.php
+
+		-
+			message: '#^Cannot call method copy\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Admin/OnCall/OnCallShiftRules.php
+
+		-
+			message: '#^Cannot call method copy\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Admin/OnCall/SaveOnCallShift.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments ''consent_signatory''\|''facts_author''\|''services_note'', array\{''facts_author'', ''services_note'', ''consent_signatory''\} and true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Application/Cases/UpdateCaseForm.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/UpdateCaseForm.php
+
+		-
+			message: '#^Parameter \#1 \$kind of static method App\\Application\\Admin\\Content\\ManageCccTools\:\:isPaged\(\) expects App\\Enums\\CccKind, string given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Livewire/Admin/Ccc/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Admin/Ccc/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\->kind" on left side of \?\? is unnecessary\. Use \-> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Admin/Ccc/Index.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Admin/Forms/Index.php
+
+		-
+			message: '#^Cannot call method lessThanOrEqualTo\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/OnCall/Index.php
+
+		-
+			message: '#^Parameter \#1 \$date of method App\\Livewire\\Admin\\OnCall\\Index\:\:toInput\(\) expects Carbon\\CarbonInterface, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Livewire/Admin/OnCall/Index.php
+
+		-
+			message: '#^Strict comparison using !== between numeric\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Referentials/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Admin/Referentials/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Referentials/Index.php
