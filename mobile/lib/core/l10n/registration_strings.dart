@@ -74,4 +74,21 @@ const Map<String, String> kRegistrationStringsFr = {
   'mobile_pending_action_blocked': 'Cette action sera possible dès que l’équipe aura validé ton compte.',
   'mobile_pending_forbidden': 'Cette action sera possible dès que l’équipe aura validé ton compte.',
   'mobile_pending_see_more': 'Voir ce que tu peux faire',
+  // Textes de l'ancien tunnel retirés de web/lang/fr lors de la refonte de l'inscription (11/11/2026) mais toujours
+  // affichés par l'assistant en 3 étapes ; mêmes formulations que l'inscription web (web/lang/fr/auth.php).
+  'auth_register_account_cgu': 'J’accepte les {terms} et la {charter}.',
+  'auth_register_account_cgu_charter': 'charte de la communauté',
+  'auth_register_account_cgu_terms': 'conditions d’utilisation',
+  'auth_register_account_email': 'Adresse e-mail',
+  'auth_register_account_email_hint': 'Pour ton compte. Jamais partagée.',
+  'auth_register_account_password': 'Mot de passe',
+  'auth_register_account_password_hint': 'Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.',
+  'auth_register_account_privacy': 'J’ai lu la {policy} et j’accepte le traitement de mes données.',
+  'auth_register_account_privacy_policy': 'politique de confidentialité',
+  'auth_register_account_pseudo': 'Pseudonyme',
+  'auth_register_account_pseudo_hint': '3 à 40 caractères\u00a0: lettres, chiffres, point, tiret ou tiret bas.',
+  'auth_register_account_submit': 'Créer mon compte',
+  'auth_register_consents_sensitive_data': 'J’accepte que Xomiton traite ces informations sensibles (identité de genre, orientation) pour adapter les contenus. Elles sont chiffrées et jamais publiques.',
+  'auth_register_profile_member_types_pair': 'Pair éducateur·rice',
+  'auth_register_skip': 'Passer',
 };
