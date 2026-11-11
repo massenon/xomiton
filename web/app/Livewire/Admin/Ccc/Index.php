@@ -23,8 +23,9 @@ use Livewire\WithFileUploads;
 /**
  * Outils CCC `/admin/ccc` (P12-04 ; prototype admin/ccc.php) : onglets Manuel · Boîtes à images · BD SSR · Lois, KPI,
  * publié / masqué (un outil masqué disparaît des écrans membre et pair, un texte masqué de `/lois`), remplacement de
- * l'image (MediaUploader). Onglet BD SSR : création, titre, planches (ajout, retrait, légende, texte alternatif, ordre au
- * clavier) et suppression. Permission `ccc_tools.manage` (admin, superadmin) vérifiée à chaque action (jamais seulement à
+ * l'image (MediaUploader). Onglets Boîtes à images et BD SSR (même mécanique, le kind est celui de l'onglet à la création,
+ * celui de l'outil ensuite) : création, titre, planches (ajout, retrait, légende, texte alternatif, ordre au clavier) et
+ * suppression. Permission `ccc_tools.manage` (admin, superadmin) vérifiée à chaque action (jamais seulement à
  * l'affichage) ; l'onglet Lois exige aussi `laws.manage`. Chaque écriture est journalisée par ManageCccTools.
  */
 final class Index extends Component
@@ -49,7 +50,7 @@ final class Index extends Component
 
     public mixed $image = null;
 
-    /** Formulaire « Nouvelle BD » / « Modifier le titre ». */
+    /** Formulaire « Nouvelle BD » / « Nouvelle boîte à images » / « Modifier le titre ». */
     public string $title = '';
 
     public bool $published = false;
@@ -107,8 +108,8 @@ final class Index extends Component
         $publish = ! $tool->is_published;
 
         try {
-            if ($tool->kind === CccKind::Comic) {
-                $manage->setComicPublished($tool, $publish, $this->actor());
+            if (ManageCccTools::isPaged($tool->kind)) {
+                $manage->setPagedPublished($tool, $publish, $this->actor());
             } else {
                 $manage->setPublished($tool, $publish, $this->actor());
             }
@@ -144,22 +145,23 @@ final class Index extends Component
     public function openCreate(): void
     {
         $this->authorizeManage();
+        $this->createKind();
         $this->resetModal();
-        $this->openModal('xmCccComic');
+        $this->openModal('xmCccPaged');
     }
 
     public function openEdit(int $id): void
     {
-        $tool = $this->comic($id);
+        $tool = $this->paged($id);
         $this->resetModal();
         $this->toolId = (int) $tool->getKey();
         $this->title = $tool->title;
-        $this->openModal('xmCccComic');
+        $this->openModal('xmCccPaged');
     }
 
     public function openPages(int $id, ManageCccTools $manage): void
     {
-        $tool = $this->comic($id);
+        $tool = $this->paged($id);
         $this->resetModal();
         $this->toolId = (int) $tool->getKey();
         $this->pageEdits = array_map(
@@ -171,7 +173,7 @@ final class Index extends Component
 
     public function openDelete(int $id): void
     {
-        $tool = $this->comic($id);
+        $tool = $this->paged($id);
         $this->resetModal();
         $this->toolId = (int) $tool->getKey();
         $this->openModal('xmCccDelete');
@@ -222,34 +224,35 @@ final class Index extends Component
         $this->resetErrorBag();
     }
 
-    /** Crée la BD (`toolId` nul) ou enregistre son titre. */
-    public function saveComic(ManageCccTools $manage): void
+    /** Crée l'outil (`toolId` nul : BD ou boîte à images selon l'onglet) ou enregistre son titre. */
+    public function saveTool(ManageCccTools $manage): void
     {
         $this->authorizeManage();
         $actor = $this->actor();
         $titleRule = ['required', 'string', 'max:'.ManageCccTools::TITLE_MAX];
-        $titleLabel = ['title' => (string) __('admin_ccc.comic.title_label')];
+        $titleLabel = ['title' => (string) __('admin_ccc.form.title_label')];
 
         if ($this->toolId !== null) {
-            $tool = $this->openedComic();
+            $tool = $this->openedPaged();
             $this->validate(['title' => $titleRule], [], $titleLabel);
 
             try {
-                $manage->renameComic($tool, $this->title, $actor);
+                $manage->renameTool($tool, $this->title, $actor);
             } catch (ContentRefused $refused) {
                 $this->addError('title', $refused->userMessage());
 
                 return;
             }
 
-            $this->closeModal('xmCccComic');
-            $this->toast((string) __('admin_ccc.toasts.comic_renamed', ['title' => $tool->title]));
+            $this->closeModal('xmCccPaged');
+            $this->toast((string) __('admin_ccc.toasts.renamed', ['title' => $tool->title]));
             $this->resetModal();
             unset($this->tools);
 
             return;
         }
 
+        $kind = $this->createKind();
         $this->validate([
             'title' => $titleRule,
             'cover' => ['nullable', 'file', 'max:5120'],
@@ -259,7 +262,7 @@ final class Index extends Component
             'draftPages.*.caption' => ['nullable', 'string', 'max:'.ManageCccTools::CAPTION_MAX],
             'draftPages.*.alt' => ['required', 'string', 'max:'.ManageCccTools::ALT_MAX],
         ], [], $titleLabel + [
-            'cover' => (string) __('admin_ccc.comic.cover_label'),
+            'cover' => (string) __('admin_ccc.form.cover_label'),
             'draftPages.*.file' => (string) __('admin_ccc.planches.image'),
             'draftPages.*.caption' => (string) __('admin_ccc.planches.caption'),
             'draftPages.*.alt' => (string) __('admin_ccc.planches.alt'),
@@ -268,15 +271,15 @@ final class Index extends Component
         $cover = $this->cover instanceof UploadedFile ? $this->cover : null;
 
         try {
-            $tool = $manage->createComic($this->title, $cover, $this->draftEntries(), $this->published, $actor);
+            $tool = $manage->createTool($kind, $this->title, $cover, $this->draftEntries(), $this->published, $actor);
         } catch (ContentRefused $refused) {
-            $this->addError($refused->errorCode() === 'comic_empty' ? 'published' : 'comic', $refused->userMessage());
+            $this->addError($refused->errorCode() === 'paged_empty' ? 'published' : 'tool', $refused->userMessage());
 
             return;
         }
 
-        $this->closeModal('xmCccComic');
-        $this->toast((string) __('admin_ccc.toasts.comic_created', ['title' => $tool->title]));
+        $this->closeModal('xmCccPaged');
+        $this->toast((string) __('admin_ccc.toasts.created', ['kind' => $tool->kind->label(), 'title' => $tool->title]));
         $this->resetModal();
         unset($this->tools, $this->kpis, $this->counts);
     }
@@ -284,7 +287,7 @@ final class Index extends Component
     public function addPage(ManageCccTools $manage): void
     {
         $this->authorizeManage();
-        $tool = $this->openedComic();
+        $tool = $this->openedPaged();
         $this->validate([
             'newImage' => ['required', 'file', 'max:5120'],
             'newCaption' => ['nullable', 'string', 'max:'.ManageCccTools::CAPTION_MAX],
@@ -317,7 +320,7 @@ final class Index extends Component
     public function savePages(ManageCccTools $manage): void
     {
         $this->authorizeManage();
-        $tool = $this->openedComic();
+        $tool = $this->openedPaged();
         $this->validate([
             'pageEdits.*.caption' => ['nullable', 'string', 'max:'.ManageCccTools::CAPTION_MAX],
             'pageEdits.*.alt' => ['required', 'string', 'max:'.ManageCccTools::ALT_MAX],
@@ -348,7 +351,7 @@ final class Index extends Component
     public function movePage(int $index, int $direction, ManageCccTools $manage): void
     {
         $this->authorizeManage();
-        $tool = $this->openedComic();
+        $tool = $this->openedPaged();
         $direction = $direction < 0 ? -1 : 1;
 
         try {
@@ -376,7 +379,7 @@ final class Index extends Component
     public function askRemovePage(int $index): void
     {
         $this->authorizeManage();
-        $this->openedComic();
+        $this->openedPaged();
 
         if (isset($this->pageEdits[$index])) {
             $this->removeIndex = $index;
@@ -397,7 +400,7 @@ final class Index extends Component
     public function removePage(ManageCccTools $manage): void
     {
         $this->authorizeManage();
-        $tool = $this->openedComic();
+        $tool = $this->openedPaged();
         $index = $this->removeIndex ?? abort(404);
         $this->removeIndex = null;
 
@@ -415,13 +418,13 @@ final class Index extends Component
         $this->dispatch('xm-ccc-focus', id: 'xmCccPagesList');
     }
 
-    public function deleteComic(ManageCccTools $manage): void
+    public function deleteTool(ManageCccTools $manage): void
     {
         $this->authorizeManage();
-        $tool = $this->openedComic();
+        $tool = $this->openedPaged();
 
         try {
-            $manage->deleteComic($tool, $this->actor());
+            $manage->deleteTool($tool, $this->actor());
         } catch (ContentRefused $refused) {
             $this->addError('delete', $refused->userMessage());
 
@@ -429,7 +432,7 @@ final class Index extends Component
         }
 
         $this->closeModal('xmCccDelete');
-        $this->toast((string) __('admin_ccc.toasts.comic_deleted', ['title' => $tool->title]));
+        $this->toast((string) __('admin_ccc.toasts.deleted', ['kind' => $tool->kind->label(), 'title' => $tool->title]));
         $this->resetModal();
         unset($this->tools, $this->kpis, $this->counts);
     }
@@ -441,7 +444,7 @@ final class Index extends Component
     }
 
     /**
-     * Planches de la BD ouverte, dans l'ordre de lecture.
+     * Planches de l'outil ouvert, dans l'ordre de lecture.
      *
      * @return list<array{image: string, caption: string, alt: string}>
      */
@@ -450,7 +453,7 @@ final class Index extends Component
     {
         $tool = $this->openedTool();
 
-        return $tool === null || $tool->kind !== CccKind::Comic ? [] : app(ManageCccTools::class)->pagesOf($tool);
+        return $tool === null || ! ManageCccTools::isPaged($tool->kind) ? [] : app(ManageCccTools::class)->pagesOf($tool);
     }
 
     /** @return Collection<int, CccTool> */
@@ -518,22 +521,39 @@ final class Index extends Component
         return CccTool::query()->findOrFail($id);
     }
 
-    /** Bande dessinée désignée par l'identifiant ; un outil d'une autre famille n'est jamais modifié par ces actions. */
-    private function comic(int $id): CccTool
+    /** BD ou boîte à images désignée par l'identifiant ; un outil d'une autre famille n'est jamais modifié par ces actions. */
+    private function paged(int $id): CccTool
     {
         $this->authorizeManage();
 
-        return CccTool::query()->ofKind(CccKind::Comic)->findOrFail($id);
+        return CccTool::query()->whereIn('kind', [CccKind::Comic, CccKind::ImageBox])->findOrFail($id);
     }
 
-    /** Bande dessinée dont une modale est ouverte (`toolId` verrouillé). */
-    private function openedComic(): CccTool
+    /** BD ou boîte à images dont une modale est ouverte (`toolId` verrouillé). */
+    private function openedPaged(): CccTool
     {
         $this->authorizeManage();
         $tool = $this->openedTool();
-        abort_unless($tool instanceof CccTool && $tool->kind === CccKind::Comic, 404);
+        abort_unless($tool instanceof CccTool && ManageCccTools::isPaged($tool->kind), 404);
 
         return $tool;
+    }
+
+    /** Famille créée par l'onglet courant : BD SSR ou boîtes à images, jamais une autre. */
+    private function createKind(): CccKind
+    {
+        $kind = CccKind::tryFrom($this->tab);
+        abort_unless($kind !== null && ManageCccTools::isPaged($kind), 404);
+
+        return $kind;
+    }
+
+    /** Famille de l'outil ouvert dans la modale, ou celle de l'onglet pour une création (textes de l'écran). */
+    public function modalKind(): CccKind
+    {
+        $kind = $this->openedTool()?->kind ?? CccKind::tryFrom($this->tab);
+
+        return $kind !== null && ManageCccTools::isPaged($kind) ? $kind : CccKind::Comic;
     }
 
     /** La permission est revérifiée à chaque action : un compte dont le rôle change garde l'écran ouvert, pas le droit d'écrire. */

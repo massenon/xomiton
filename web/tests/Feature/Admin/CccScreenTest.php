@@ -39,7 +39,7 @@ it('réserve /admin/ccc à l’administration : 403 pour le modérateur, le pair
 })->with(['moderateur', 'pair', 'membre']);
 
 it('masque un outil CCC : il disparaît de la liste servie aux membres et aux pair·es, puis se republie', function (): void {
-    $tool = CccTool::factory()->create(['kind' => CccKind::ImageBox, 'key' => 'bi99', 'is_published' => true]);
+    $tool = CccTool::factory()->imageBox()->create(['key' => 'bi99', 'is_published' => true]);
     $this->actingAs(cccUser());
     $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->assertSee($tool->title);
 
@@ -127,7 +127,7 @@ it('crée une BD : clé bd{n} automatique, dernière position, couverture et pla
         ->set('draftPages.0.file', UploadedFile::fake()->image('p1.jpg', 800, 600))
         ->set('draftPages.0.caption', 'Première')
         ->set('draftPages.0.alt', 'Une jeune femme sourit.')
-        ->call('saveComic')->assertHasNoErrors()->assertDispatched('toast');
+        ->call('saveTool')->assertHasNoErrors()->assertDispatched('toast');
 
     $tool = CccTool::query()->where('title', 'Ma nouvelle BD')->firstOrFail();
     expect($tool->key)->toBe('bd8')->and($tool->kind)->toBe(CccKind::Comic)->and($tool->position)->toBe(8)->and($tool->is_published)->toBeTrue()
@@ -143,12 +143,12 @@ it('crée une BD masquée sans image ni planche et refuse une BD publiée sans p
     $this->actingAs(cccUser());
     $screen = Livewire::test(CccScreen::class)->call('setTab', 'bd')->call('openCreate');
 
-    $screen->set('title', '')->call('saveComic')->assertHasErrors(['title' => 'required']);
-    $screen->set('title', str_repeat('t', 201))->call('saveComic')->assertHasErrors(['title' => 'max']);
-    $screen->set('title', 'BD vide')->set('published', true)->call('saveComic')->assertHasErrors(['published']);
+    $screen->set('title', '')->call('saveTool')->assertHasErrors(['title' => 'required']);
+    $screen->set('title', str_repeat('t', 201))->call('saveTool')->assertHasErrors(['title' => 'max']);
+    $screen->set('title', 'BD vide')->set('published', true)->call('saveTool')->assertHasErrors(['published']);
     expect(CccTool::query()->where('title', 'BD vide')->exists())->toBeFalse();
 
-    $screen->set('published', false)->call('saveComic')->assertHasNoErrors();
+    $screen->set('published', false)->call('saveTool')->assertHasNoErrors();
     $tool = CccTool::query()->where('title', 'BD vide')->firstOrFail();
     expect($tool->key)->toBe('bd1')->and($tool->image_path)->toBeNull()->and($tool->pages)->toBe([])->and($tool->is_published)->toBeFalse();
 });
@@ -159,7 +159,7 @@ it('exige un texte alternatif pour chaque planche de départ et ne crée rien en
     Livewire::test(CccScreen::class)->call('setTab', 'bd')->call('openCreate')
         ->set('title', 'BD refusée')->call('addDraftPage')
         ->set('draftPages.0.file', UploadedFile::fake()->image('p1.jpg'))->set('draftPages.0.alt', '')
-        ->call('saveComic')->assertHasErrors(['draftPages.0.alt' => 'required']);
+        ->call('saveTool')->assertHasErrors(['draftPages.0.alt' => 'required']);
 
     expect(CccTool::query()->where('title', 'BD refusée')->exists())->toBeFalse();
 });
@@ -173,7 +173,7 @@ it('refuse un fichier qui n’est pas une image à la création sans laisser de 
         ->call('addDraftPage')
         ->set('draftPages.0.file', UploadedFile::fake()->createWithContent('faux.jpg', 'ce n’est pas une image'))
         ->set('draftPages.0.alt', 'Description')
-        ->call('saveComic')->assertHasErrors(['comic']);
+        ->call('saveTool')->assertHasErrors(['tool']);
 
     expect(CccTool::query()->where('title', 'BD piégée')->exists())->toBeFalse()->and(Storage::disk('public')->allFiles())->toBe([]);
 });
@@ -183,8 +183,8 @@ it('modifie le titre d’une BD sans toucher à sa clé', function (): void {
     $this->actingAs(cccUser());
     $screen = Livewire::test(CccScreen::class)->call('setTab', 'bd')->call('openEdit', $tool->id)->assertSet('title', 'Ancien titre');
 
-    $screen->set('title', '')->call('saveComic')->assertHasErrors(['title']);
-    $screen->set('title', 'Nouveau titre')->call('saveComic')->assertHasNoErrors();
+    $screen->set('title', '')->call('saveTool')->assertHasErrors(['title']);
+    $screen->set('title', 'Nouveau titre')->call('saveTool')->assertHasNoErrors();
 
     expect($tool->fresh()->title)->toBe('Nouveau titre')->and($tool->fresh()->key)->toBe('bd42')
         ->and(AuditLog::query()->where('action', 'ccc.comic_renamed')->exists())->toBeTrue();
@@ -284,7 +284,7 @@ it('supprime une BD avec sa couverture et ses planches', function (): void {
     $other = cccComic(['key' => 'bd88']);
     $this->actingAs(cccUser());
 
-    Livewire::test(CccScreen::class)->call('setTab', 'bd')->call('openDelete', $tool->id)->call('deleteComic')->assertHasNoErrors();
+    Livewire::test(CccScreen::class)->call('setTab', 'bd')->call('openDelete', $tool->id)->call('deleteTool')->assertHasNoErrors();
 
     expect(CccTool::query()->whereKey($tool->id)->exists())->toBeFalse()->and(CccTool::query()->whereKey($other->id)->exists())->toBeTrue();
     Storage::disk('public')->assertMissing($cover);
@@ -296,14 +296,14 @@ it('refuse de supprimer une BD référencée par une publication sortante non en
     $tool = cccComic(['key' => 'bd55']);
     $post = OutboundPost::factory()->create(['kind' => OutboundKind::Bd, 'reference' => 'bd55', 'status' => OutboundStatus::Scheduled]);
     $this->actingAs(cccUser());
-    $screen = Livewire::test(CccScreen::class)->call('setTab', 'bd')->call('openDelete', $tool->id)->call('deleteComic');
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'bd')->call('openDelete', $tool->id)->call('deleteTool');
 
     $screen->assertHasErrors(['delete']);
     expect(CccTool::query()->whereKey($tool->id)->exists())->toBeTrue();
     expect(AuditLog::query()->where('action', 'ccc.comic_deleted')->exists())->toBeFalse();
 
     $post->forceFill(['status' => OutboundStatus::Cancelled])->save();
-    $screen->call('deleteComic')->assertHasNoErrors();
+    $screen->call('deleteTool')->assertHasNoErrors();
     expect(CccTool::query()->whereKey($tool->id)->exists())->toBeFalse();
 });
 
@@ -320,13 +320,13 @@ it('vérifie la permission à chaque action, pas seulement à l’affichage', fu
     $screen->call($action, ...($arguments === [] ? [] : array_map(static fn ($v) => $v === '@id' ? $tool->id : $v, $arguments)))->assertForbidden();
     expect($tool->fresh()->pages)->toHaveCount(3)->and(CccTool::query()->count())->toBe(1);
 })->with([
-    'créer' => ['saveComic', []],
+    'créer' => ['saveTool', []],
     'ouvrir la création' => ['openCreate', []],
     'ajouter une planche' => ['addPage', []],
     'enregistrer les planches' => ['savePages', []],
     'monter' => ['movePage', [1, -1]],
     'retirer' => ['removePage', []],
-    'supprimer' => ['deleteComic', []],
+    'supprimer' => ['deleteTool', []],
     'publier' => ['toggle', ['@id']],
     'ouvrir la suppression' => ['openDelete', ['@id']],
 ]);
@@ -362,7 +362,7 @@ it('sert aux lecteurs membre et pair des BD créées, réordonnées puis supprim
 
     foreach (['Première BD', 'Deuxième BD'] as $title) {
         $screen->call('openCreate')->set('title', $title)->set('published', true)->call('addDraftPage')
-            ->set('draftPages.0.file', UploadedFile::fake()->image('p.jpg'))->set('draftPages.0.alt', 'Planche de '.$title)->call('saveComic')->assertHasNoErrors();
+            ->set('draftPages.0.file', UploadedFile::fake()->image('p.jpg'))->set('draftPages.0.alt', 'Planche de '.$title)->call('saveTool')->assertHasNoErrors();
     }
 
     $served = fn () => CccTool::query()->published()->ofKind(CccKind::Comic)->ordered()->pluck('title')->all();
@@ -372,6 +372,232 @@ it('sert aux lecteurs membre et pair des BD créées, réordonnées puis supprim
     $screen->call('openPages', $first->id)->set('newImage', UploadedFile::fake()->image('p2.jpg'))->set('newAlt', 'Seconde planche')->call('addPage')->call('movePage', 1, -1);
     expect($first->fresh()->pages[0]['alt'])->toBe('Seconde planche')->and($first->fresh()->pagesCount())->toBe(2);
 
-    $screen->call('openDelete', $first->id)->call('deleteComic');
+    $screen->call('openDelete', $first->id)->call('deleteTool');
     expect($served())->toBe(['Deuxième BD']);
+});
+
+/*
+ * Boîtes à images (kind `boite_images`) : même mécanique que les BD, paramétrée par le kind.
+ */
+function cccBox(array $attributes = []): CccTool
+{
+    return CccTool::factory()->imageBox()->create([
+        'pages' => [
+            ['image' => 'a.jpg', 'caption' => 'Un', 'alt' => 'Alt un'],
+            ['image' => 'b.jpg', 'caption' => 'Deux', 'alt' => 'Alt deux'],
+            ['image' => 'c.jpg', 'caption' => 'Trois', 'alt' => 'Alt trois'],
+        ],
+        ...$attributes,
+    ]);
+}
+
+it('crée une boîte à images : clé bi{n}, position propre à la famille, couverture et planches de départ', function (): void {
+    CccTool::factory()->imageBox()->create(['key' => 'bi7', 'position' => 7]);
+    CccTool::factory()->comic()->create(['key' => 'bd30', 'position' => 30]);
+    $this->actingAs($admin = cccUser());
+
+    Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openCreate')
+        ->set('title', '  Ma boîte  ')
+        ->set('cover', UploadedFile::fake()->image('couverture.jpg', 800, 450))
+        ->set('published', true)
+        ->call('addDraftPage')
+        ->set('draftPages.0.file', UploadedFile::fake()->image('p1.jpg', 800, 600))
+        ->set('draftPages.0.caption', 'Que se passe-t-il ?')
+        ->set('draftPages.0.alt', 'Deux personnes discutent.')
+        ->call('saveTool')->assertHasNoErrors()->assertDispatched('toast');
+
+    $tool = CccTool::query()->where('title', 'Ma boîte')->firstOrFail();
+    expect($tool->key)->toBe('bi8')->and($tool->kind)->toBe(CccKind::ImageBox)->and($tool->position)->toBe(8)->and($tool->is_published)->toBeTrue()
+        ->and($tool->pages)->toHaveCount(1)->and($tool->pages[0]['alt'])->toBe('Deux personnes discutent.');
+    Storage::disk('public')->assertExists($tool->image_path);
+    Storage::disk('public')->assertExists($tool->pages[0]['image']);
+
+    $log = AuditLog::query()->where('action', 'ccc.imagebox_created')->firstOrFail();
+    expect($log->detail)->toBe('Ma boîte')->and($log->user_id)->toBe($admin->id)
+        ->and(AuditLog::query()->where('action', 'ccc.comic_created')->exists())->toBeFalse();
+});
+
+it('valide la création d’une boîte à images : titre, publication sans planche, texte alternatif, aucun orphelin', function (): void {
+    $this->actingAs(cccUser());
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openCreate');
+
+    $screen->set('title', '')->call('saveTool')->assertHasErrors(['title' => 'required']);
+    $screen->set('title', str_repeat('t', 201))->call('saveTool')->assertHasErrors(['title' => 'max']);
+    $screen->set('title', 'Boîte vide')->set('published', true)->call('saveTool')->assertHasErrors(['published']);
+    expect(CccTool::query()->where('title', 'Boîte vide')->exists())->toBeFalse();
+
+    $screen->set('published', false)->call('addDraftPage')->set('draftPages.0.file', UploadedFile::fake()->image('p.jpg'))->set('draftPages.0.alt', '')
+        ->call('saveTool')->assertHasErrors(['draftPages.0.alt' => 'required']);
+    expect(CccTool::query()->where('title', 'Boîte vide')->exists())->toBeFalse();
+
+    $screen->set('draftPages.0.file', UploadedFile::fake()->createWithContent('faux.jpg', 'pas une image'))->set('draftPages.0.alt', 'Description')
+        ->call('saveTool')->assertHasErrors(['tool']);
+    expect(CccTool::query()->where('title', 'Boîte vide')->exists())->toBeFalse()->and(Storage::disk('public')->allFiles())->toBe([]);
+
+    $screen->call('removeDraftPage', 0)->call('saveTool')->assertHasNoErrors();
+    $tool = CccTool::query()->where('title', 'Boîte vide')->firstOrFail();
+    expect($tool->key)->toBe('bi1')->and($tool->pages)->toBe([])->and($tool->is_published)->toBeFalse();
+});
+
+it('crée une BD et une boîte à images chacune dans sa famille, selon l’onglet', function (): void {
+    $this->actingAs(cccUser());
+    $screen = Livewire::test(CccScreen::class);
+
+    $screen->call('setTab', 'bd')->call('openCreate')->set('title', 'Une BD')->call('saveTool')->assertHasNoErrors();
+    $screen->call('setTab', 'boite_images')->call('openCreate')->set('title', 'Une boîte')->call('saveTool')->assertHasNoErrors();
+
+    expect(CccTool::query()->where('title', 'Une BD')->value('key'))->toBe('bd1')->and(CccTool::query()->where('title', 'Une boîte')->value('key'))->toBe('bi1');
+    $screen->call('setTab', 'manuel');
+    $screen->call('openCreate')->assertNotFound();
+});
+
+it('modifie le titre d’une boîte à images sans toucher à sa clé', function (): void {
+    $tool = cccBox(['key' => 'bi42', 'title' => 'Ancien titre']);
+    $this->actingAs(cccUser());
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openEdit', $tool->id)->assertSet('title', 'Ancien titre');
+
+    $screen->set('title', '')->call('saveTool')->assertHasErrors(['title']);
+    $screen->set('title', 'Nouveau titre')->call('saveTool')->assertHasNoErrors();
+
+    expect($tool->fresh()->title)->toBe('Nouveau titre')->and($tool->fresh()->key)->toBe('bi42')
+        ->and(AuditLog::query()->where('action', 'ccc.imagebox_renamed')->exists())->toBeTrue();
+});
+
+it('gère les planches d’une boîte à images : ajout, légendes, ordre persistant, retrait avec suppression du média', function (): void {
+    $path = UploadedFile::fake()->image('p.jpg', 400, 300)->store('images', 'public');
+    $tool = cccBox(['pages' => [
+        ['image' => 'assets/images/xomiton/hero-10.jpg', 'caption' => 'Un', 'alt' => 'Alt un'],
+        ['image' => $path, 'caption' => 'Deux', 'alt' => 'Alt deux'],
+    ]]);
+    $this->actingAs(cccUser());
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openPages', $tool->id);
+
+    $screen->set('newImage', UploadedFile::fake()->image('p3.jpg'))->set('newAlt', '')->call('addPage')->assertHasErrors(['newAlt' => 'required']);
+    $screen->set('newAlt', 'Troisième planche')->set('newCaption', 'Trois')->call('addPage')->assertHasNoErrors();
+    expect(cccAlts($tool))->toBe(['Alt un', 'Alt deux', 'Troisième planche']);
+
+    $screen->set('pageEdits.0.alt', '')->call('savePages')->assertHasErrors(['pageEdits.0.alt']);
+    $screen->set('pageEdits.0.alt', 'Un modifié')->call('savePages')->assertHasNoErrors();
+    $screen->call('movePage', 2, -1)->assertHasNoErrors();
+    expect(cccAlts($tool))->toBe(['Un modifié', 'Troisième planche', 'Alt deux']);
+    $screen->call('movePage', 0, -1)->assertHasErrors(['pages']);
+
+    $screen->call('askRemovePage', 2)->call('removePage')->assertHasNoErrors();
+    expect(cccAlts($tool))->toBe(['Un modifié', 'Troisième planche']);
+    Storage::disk('public')->assertMissing($path);
+    expect(AuditLog::query()->where('action', 'like', 'ccc.imagebox_page%')->count())->toBeGreaterThanOrEqual(4);
+});
+
+it('ne publie pas une boîte à images sans planche et lui garde une planche tant qu’elle est publiée', function (): void {
+    $empty = cccBox(['pages' => [], 'is_published' => false]);
+    $one = cccBox(['pages' => [['image' => 'a.jpg', 'caption' => '', 'alt' => 'Seule']], 'is_published' => true]);
+    $this->actingAs(cccUser());
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('toggle', $empty->id);
+
+    expect($empty->fresh()->is_published)->toBeFalse();
+    $screen->call('openPages', $one->id)->call('askRemovePage', 0)->call('removePage')->assertHasErrors(['pages']);
+    expect($one->fresh()->pages)->toHaveCount(1);
+});
+
+it('supprime une boîte à images avec sa couverture et ses planches, sans toucher aux autres', function (): void {
+    $cover = UploadedFile::fake()->image('c.jpg', 400, 300)->store('images', 'public');
+    $page = UploadedFile::fake()->image('p.jpg', 400, 300)->store('images', 'public');
+    $tool = cccBox(['image_path' => $cover, 'pages' => [['image' => $page, 'caption' => '', 'alt' => 'Alt']]]);
+    $other = cccBox(['key' => 'bi88']);
+    $comic = cccComic(['key' => 'bd88']);
+    $this->actingAs(cccUser());
+
+    Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openDelete', $tool->id)->call('deleteTool')->assertHasNoErrors();
+
+    expect(CccTool::query()->whereKey($tool->id)->exists())->toBeFalse()
+        ->and(CccTool::query()->whereKey($other->id)->exists())->toBeTrue()->and(CccTool::query()->whereKey($comic->id)->exists())->toBeTrue();
+    Storage::disk('public')->assertMissing($cover);
+    Storage::disk('public')->assertMissing($page);
+    expect(AuditLog::query()->where('action', 'ccc.imagebox_deleted')->exists())->toBeTrue();
+});
+
+it('refuse de supprimer une boîte à images dont la clé est reprise par une publication sortante planifiée', function (): void {
+    // Aucune interface ne planifie une boîte (seules les BD sont proposées), mais la relation réelle est vérifiée par la clé.
+    $tool = cccBox(['key' => 'bi55']);
+    OutboundPost::factory()->create(['kind' => OutboundKind::Bd, 'reference' => 'bi55', 'status' => OutboundStatus::Scheduled]);
+    $this->actingAs(cccUser());
+
+    Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openDelete', $tool->id)->call('deleteTool')->assertHasErrors(['delete']);
+    expect(CccTool::query()->whereKey($tool->id)->exists())->toBeTrue()->and(AuditLog::query()->where('action', 'ccc.imagebox_deleted')->exists())->toBeFalse();
+});
+
+it('verrouille toolId sur une boîte à images et ne mélange pas les familles', function (): void {
+    $box = cccBox();
+    $manual = CccTool::factory()->create(['key' => 'm96']);
+    $this->actingAs(cccUser());
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openPages', $box->id);
+
+    expect(fn () => $screen->set('toolId', $manual->id))->toThrow(\Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException::class);
+    foreach (['openEdit', 'openPages', 'openDelete'] as $action) {
+        expect(fn () => $screen->call($action, $manual->id))->toThrow(Illuminate\Database\Eloquent\ModelNotFoundException::class);
+    }
+});
+
+it('vérifie la permission à chaque action sur une boîte à images', function (string $action, array $arguments): void {
+    $tool = cccBox();
+    $admin = cccUser();
+    $this->actingAs($admin);
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openPages', $tool->id);
+
+    $admin->syncRoles(['membre']);
+    app(Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+    $screen->call($action, ...array_map(static fn ($v) => $v === '@id' ? $tool->id : $v, $arguments))->assertForbidden();
+    expect($tool->fresh()->pages)->toHaveCount(3)->and(CccTool::query()->count())->toBe(1);
+})->with([
+    'créer' => ['saveTool', []],
+    'ouvrir la création' => ['openCreate', []],
+    'ajouter une planche' => ['addPage', []],
+    'enregistrer les planches' => ['savePages', []],
+    'monter' => ['movePage', [1, -1]],
+    'retirer' => ['removePage', []],
+    'supprimer' => ['deleteTool', []],
+    'publier' => ['toggle', ['@id']],
+    'ouvrir la suppression' => ['openDelete', ['@id']],
+]);
+
+it('journalise une boîte à images sans jamais écrire le texte des planches', function (): void {
+    $tool = cccBox();
+    $this->actingAs(cccUser());
+    Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openPages', $tool->id)
+        ->set('newImage', UploadedFile::fake()->image('p4.jpg'))->set('newCaption', 'LÉGENDE SECRÈTE')->set('newAlt', 'ALT SECRET')->call('addPage')
+        ->set('pageEdits.0.caption', 'AUTRE LÉGENDE SECRÈTE')->set('pageEdits.0.alt', 'AUTRE ALT SECRET')->call('savePages')
+        ->call('movePage', 0, 1);
+
+    $details = AuditLog::query()->where('action', 'like', 'ccc.imagebox_%')->pluck('detail')->implode(' | ');
+    expect(AuditLog::query()->where('action', 'like', 'ccc.imagebox_%')->count())->toBe(3)
+        ->and($details)->not->toContain('SECRET')->and($details)->not->toContain('SECRÈTE');
+});
+
+it('ne remplace pas les planches quand on change l’image d’une boîte à images à plusieurs planches', function (): void {
+    $tool = cccBox(['image_path' => 'a.jpg']);
+    $this->actingAs(cccUser());
+    Livewire::test(CccScreen::class)->call('setTab', 'boite_images')->call('openImage', $tool->id)
+        ->set('image', UploadedFile::fake()->image('nouvelle.jpg', 800, 450))->call('saveImage')->assertHasNoErrors();
+
+    $tool->refresh();
+    expect($tool->image_path)->not->toBe('a.jpg')->and(cccAlts($tool))->toBe(['Alt un', 'Alt deux', 'Alt trois'])->and($tool->pages[0]['image'])->toBe('a.jpg');
+});
+
+it('sert aux lecteurs des boîtes à images créées, réordonnées puis supprimées dans un ordre stable', function (): void {
+    CccTool::query()->delete();
+    $this->actingAs(cccUser());
+    $screen = Livewire::test(CccScreen::class)->call('setTab', 'boite_images');
+
+    foreach (['Première boîte', 'Deuxième boîte'] as $title) {
+        $screen->call('openCreate')->set('title', $title)->set('published', true)->call('addDraftPage')
+            ->set('draftPages.0.file', UploadedFile::fake()->image('p.jpg'))->set('draftPages.0.alt', 'Planche de '.$title)->call('saveTool')->assertHasNoErrors();
+    }
+
+    $served = fn () => CccTool::query()->published()->ofKind(CccKind::ImageBox)->ordered()->pluck('title')->all();
+    expect($served())->toBe(['Première boîte', 'Deuxième boîte']);
+
+    $first = CccTool::query()->where('title', 'Première boîte')->firstOrFail();
+    $screen->call('openDelete', $first->id)->call('deleteTool');
+    expect($served())->toBe(['Deuxième boîte']);
 });

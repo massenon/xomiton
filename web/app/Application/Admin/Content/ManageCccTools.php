@@ -24,10 +24,13 @@ use Throwable;
  * MediaUploader (disque public, ancienne image retirée sauf celles du dépôt `assets/…`), texte alternatif de chaque planche
  * d'une bande dessinée (obligatoire, 200 caractères au plus). Journalisé, sans contenu.
  *
- * Bandes dessinées SSR (kind `bd`) : création (clé publique `bd{n}` générée, jamais modifiée), titre, planches
+ * Outils à planches : bandes dessinées SSR (kind `bd`) et boîtes à images (kind `boite_images`) partagent la même mécanique,
+ * paramétrée par le kind : création (clé publique `bd{n}` / `bi{n}` générée, jamais modifiée), titre, planches
  * (`pages` = liste ordonnée de `{image, caption, alt}` : l'ordre du JSON est l'ordre de lecture ; ajout, retrait, légende,
- * texte alternatif, déplacement) et suppression, refusée tant qu'une publication sortante planifiée la référence.
+ * texte alternatif, déplacement) et suppression, refusée tant qu'une publication sortante planifiée la référence
+ * (seules les BD peuvent l'être : OutboundKind::Bd ; une boîte à images n'a aucune relation de ce type).
  * Le journal ne contient jamais le texte des planches (légende, texte alternatif) : le titre et le rang de la planche seulement.
+ * Actions du journal : `ccc.comic_*` pour une BD, `ccc.imagebox_*` pour une boîte à images.
  */
 final class ManageCccTools
 {
@@ -66,7 +69,8 @@ final class ManageCccTools
     }
 
     /**
-     * Remplace l'image d'un outil. Une boîte à images garde son image unique dans sa planche : la planche suit.
+     * Remplace l'image d'un outil. Une boîte à images dont l'unique planche est cette image (cas du dépôt) la voit suivre ;
+     * avec plusieurs planches, l'image est la couverture seule et les planches ne bougent pas.
      *
      * @throws ContentRefused
      */
@@ -76,12 +80,16 @@ final class ManageCccTools
         $old = $tool->image_path;
         $pages = $tool->pages;
 
-        if ($tool->kind === CccKind::ImageBox && is_array($pages) && isset($pages[0]) && is_array($pages[0])) {
+        if ($tool->kind === CccKind::ImageBox && is_array($pages) && count($pages) === 1 && is_array($pages[0]) && ($pages[0]['image'] ?? null) === $old) {
             $pages[0]['image'] = $path;
         }
 
         $tool->forceFill(['image_path' => $path, 'pages' => $pages])->save();
-        $this->uploads->discard($old, true);
+
+        if ($old !== null && ! $this->usesImage($tool, $old)) {
+            $this->uploads->discard($old, true);
+        }
+
         Audit::log('ccc.tool_image_replaced', $tool, $tool->title, $actor);
         $this->cache->flush();
 
@@ -89,23 +97,25 @@ final class ManageCccTools
     }
 
     /**
-     * Crée une bande dessinée : clé `bd{n}` suivante, dernière position, couverture et planches initiales facultatives.
+     * Crée une BD ou une boîte à images : clé `bd{n}` / `bi{n}` suivante, dernière position de la famille, couverture et
+     * planches initiales facultatives.
      * Les fichiers sont téléversés d'abord et retirés si la création échoue.
      *
      * @param  list<array{file: UploadedFile, caption: string, alt: string}>  $pages
      *
      * @throws ContentRefused
      */
-    public function createComic(string $title, ?UploadedFile $cover, array $pages, bool $published, User $actor): CccTool
+    public function createTool(CccKind $kind, string $title, ?UploadedFile $cover, array $pages, bool $published, User $actor): CccTool
     {
+        $this->assertPagedKind($kind);
         $title = $this->validTitle($title);
 
         if (count($pages) > self::PAGES_MAX) {
-            throw new ContentRefused('pages_max', ['max' => self::PAGES_MAX]);
+            throw new ContentRefused('pages_max', ['max' => self::PAGES_MAX, 'tool' => $this->noun($kind)]);
         }
 
         if ($published && $pages === []) {
-            throw new ContentRefused('comic_empty');
+            throw new ContentRefused('paged_empty', ['tool' => $this->noun($kind)]);
         }
 
         /** @var list<string> $stored */
@@ -131,7 +141,7 @@ final class ManageCccTools
                 ];
             }
 
-            $tool = $this->insertComic($title, $coverPath, $entries, $published);
+            $tool = $this->insertTool($kind, $title, $coverPath, $entries, $published);
         } catch (Throwable $failure) {
             foreach ($stored as $path) {
                 $this->uploads->discard($path, true);
@@ -140,34 +150,34 @@ final class ManageCccTools
             throw $failure;
         }
 
-        Audit::log('ccc.comic_created', $tool, $tool->title, $actor);
+        Audit::log($this->action($kind, 'created'), $tool, $tool->title, $actor);
         $this->cache->flush();
 
         return $tool;
     }
 
     /** @throws ContentRefused */
-    public function renameComic(CccTool $tool, string $title, User $actor): CccTool
+    public function renameTool(CccTool $tool, string $title, User $actor): CccTool
     {
-        $this->assertComic($tool);
+        $this->assertPaged($tool);
         $tool->forceFill(['title' => $this->validTitle($title)])->save();
-        Audit::log('ccc.comic_renamed', $tool, $tool->title, $actor);
+        Audit::log($this->action($tool->kind, 'renamed'), $tool, $tool->title, $actor);
         $this->cache->flush();
 
         return $tool;
     }
 
     /**
-     * Publie ou masque une bande dessinée ; une BD sans planche ne se publie pas (les lecteurs n'auraient rien à afficher).
+     * Publie ou masque une BD ou une boîte à images ; sans planche, elle ne se publie pas (les lecteurs n'auraient rien à afficher).
      *
      * @throws ContentRefused
      */
-    public function setComicPublished(CccTool $tool, bool $published, User $actor): CccTool
+    public function setPagedPublished(CccTool $tool, bool $published, User $actor): CccTool
     {
-        $this->assertComic($tool);
+        $this->assertPaged($tool);
 
         if ($published && $this->pagesOf($tool) === []) {
-            throw new ContentRefused('comic_empty');
+            throw new ContentRefused('paged_empty', ['tool' => $this->noun($tool->kind)]);
         }
 
         return $this->setPublished($tool, $published, $actor);
@@ -180,15 +190,15 @@ final class ManageCccTools
      */
     public function addPage(CccTool $tool, UploadedFile $file, string $caption, string $alt, User $actor): CccTool
     {
-        $this->assertComic($tool);
+        $this->assertPaged($tool);
         $caption = $this->validCaption($caption);
         $alt = $this->validAlt($alt, null);
         $path = $this->uploads->image($file);
 
         try {
-            $locked = $this->mutatePages($tool, function (array $pages) use ($path, $caption, $alt): array {
+            $locked = $this->mutatePages($tool, function (array $pages) use ($path, $caption, $alt, $tool): array {
                 if (count($pages) >= self::PAGES_MAX) {
-                    throw new ContentRefused('pages_max', ['max' => self::PAGES_MAX]);
+                    throw new ContentRefused('pages_max', ['max' => self::PAGES_MAX, 'tool' => $this->noun($tool->kind)]);
                 }
 
                 $pages[] = ['image' => $path, 'caption' => $caption, 'alt' => $alt];
@@ -201,7 +211,7 @@ final class ManageCccTools
             throw $failure;
         }
 
-        Audit::log('ccc.comic_page_added', $locked, $this->pageDetail($locked, count($this->pagesOf($locked))), $actor);
+        Audit::log($this->action($tool->kind, 'page_added'), $locked, $this->pageDetail($locked, count($this->pagesOf($locked))), $actor);
         $this->cache->flush();
 
         return $locked;
@@ -209,13 +219,13 @@ final class ManageCccTools
 
     /**
      * Retire la planche de rang `$index` (0 pour la première) et supprime son média s'il n'est plus utilisé.
-     * Une BD publiée garde au moins une planche.
+     * Un outil publié garde au moins une planche.
      *
      * @throws ContentRefused
      */
     public function removePage(CccTool $tool, int $index, User $actor): CccTool
     {
-        $this->assertComic($tool);
+        $this->assertPaged($tool);
         $removed = null;
 
         $locked = $this->mutatePages($tool, function (array $pages) use ($tool, $index, &$removed): array {
@@ -224,7 +234,7 @@ final class ManageCccTools
             }
 
             if (count($pages) === 1 && $tool->fresh()?->is_published === true) {
-                throw new ContentRefused('last_page_published');
+                throw new ContentRefused('last_page_published', ['tool' => $this->noun($tool->kind)]);
             }
 
             $removed = $pages[$index]['image'];
@@ -237,14 +247,14 @@ final class ManageCccTools
             $this->uploads->discard($removed, true);
         }
 
-        Audit::log('ccc.comic_page_removed', $locked, $this->pageDetail($locked, $index + 1), $actor);
+        Audit::log($this->action($tool->kind, 'page_removed'), $locked, $this->pageDetail($locked, $index + 1), $actor);
         $this->cache->flush();
 
         return $locked;
     }
 
     /**
-     * Légende et texte alternatif de chaque planche, dans l'ordre des planches (même nombre que la BD).
+     * Légende et texte alternatif de chaque planche, dans l'ordre des planches (même nombre que l'outil).
      *
      * @param  list<array{caption: string, alt: string}>  $edits
      *
@@ -252,7 +262,7 @@ final class ManageCccTools
      */
     public function savePages(CccTool $tool, array $edits, User $actor): CccTool
     {
-        $this->assertComic($tool);
+        $this->assertPaged($tool);
 
         $locked = $this->mutatePages($tool, function (array $pages) use ($edits): array {
             if (count($pages) !== count($edits)) {
@@ -267,7 +277,7 @@ final class ManageCccTools
             return $pages;
         });
 
-        Audit::log('ccc.comic_pages_saved', $locked, $locked->title, $actor);
+        Audit::log($this->action($tool->kind, 'pages_saved'), $locked, $locked->title, $actor);
         $this->cache->flush();
 
         return $locked;
@@ -280,7 +290,7 @@ final class ManageCccTools
      */
     public function movePage(CccTool $tool, int $index, int $direction, User $actor): int
     {
-        $this->assertComic($tool);
+        $this->assertPaged($tool);
         $target = $index + ($direction < 0 ? -1 : 1);
 
         $locked = $this->mutatePages($tool, function (array $pages) use ($index, $target): array {
@@ -293,21 +303,21 @@ final class ManageCccTools
             return $pages;
         });
 
-        Audit::log('ccc.comic_page_moved', $locked, $this->pageDetail($locked, $target + 1), $actor);
+        Audit::log($this->action($tool->kind, 'page_moved'), $locked, $this->pageDetail($locked, $target + 1), $actor);
         $this->cache->flush();
 
         return $target;
     }
 
     /**
-     * Supprime la bande dessinée, sa couverture et les médias de ses planches. Refusée tant qu'une publication sortante
-     * planifiée (`outbound_posts.kind = bd`, `reference` = clé de la BD) n'est pas envoyée ou annulée.
+     * Supprime l'outil, sa couverture et les médias de ses planches. Refusée tant qu'une publication sortante planifiée
+     * (`outbound_posts.kind = bd`, `reference` = clé de l'outil) n'est pas envoyée ou annulée.
      *
      * @throws ContentRefused
      */
-    public function deleteComic(CccTool $tool, User $actor): void
+    public function deleteTool(CccTool $tool, User $actor): void
     {
-        $this->assertComic($tool);
+        $this->assertPaged($tool);
         $files = [];
 
         DB::transaction(function () use ($tool, &$files): void {
@@ -315,7 +325,7 @@ final class ManageCccTools
             $scheduled = $this->scheduledPostsCount($locked);
 
             if ($scheduled > 0) {
-                throw new ContentRefused('comic_scheduled', ['count' => $scheduled]);
+                throw new ContentRefused('paged_scheduled', ['count' => $scheduled, 'tool' => $this->noun($locked->kind)]);
             }
 
             $files = array_map(static fn (array $page): string => $page['image'], $this->pagesOf($locked));
@@ -327,18 +337,18 @@ final class ManageCccTools
             $this->uploads->discard($path, true);
         }
 
-        Audit::log('ccc.comic_deleted', $tool, $tool->title, $actor);
+        Audit::log($this->action($tool->kind, 'deleted'), $tool, $tool->title, $actor);
         $this->cache->flush();
     }
 
-    /** Publications sortantes planifiées qui reprennent cette BD. */
+    /** Publications sortantes planifiées qui reprennent cet outil par sa clé. */
     public function scheduledPostsCount(CccTool $tool): int
     {
         return OutboundPost::query()->scheduled()->ofKind(OutboundKind::Bd)->where('reference', $tool->key)->count();
     }
 
     /**
-     * Planches normalisées d'une BD (image, légende, texte alternatif), dans l'ordre de lecture.
+     * Planches normalisées d'un outil à planches (image, légende, texte alternatif), dans l'ordre de lecture.
      *
      * @return list<array{image: string, caption: string, alt: string}>
      */
@@ -362,17 +372,17 @@ final class ManageCccTools
     /**
      * @param  list<array{image: string, caption: string, alt: string}>  $entries
      */
-    private function insertComic(string $title, ?string $coverPath, array $entries, bool $published): CccTool
+    private function insertTool(CccKind $kind, string $title, ?string $coverPath, array $entries, bool $published): CccTool
     {
         for ($attempt = 1; ; $attempt++) {
             try {
                 return DB::transaction(fn (): CccTool => CccTool::query()->create([
-                    'kind' => CccKind::Comic,
-                    'key' => $this->nextComicKey(),
+                    'kind' => $kind,
+                    'key' => $this->nextKey($kind),
                     'title' => $title,
                     'image_path' => $coverPath,
                     'pages' => $entries,
-                    'position' => $this->nextComicPosition(),
+                    'position' => $this->nextPosition($kind),
                     'is_published' => $published,
                 ]));
             } catch (UniqueConstraintViolationException $collision) {
@@ -384,9 +394,9 @@ final class ManageCccTools
         }
     }
 
-    private function nextComicKey(): string
+    private function nextKey(CccKind $kind): string
     {
-        $prefix = CccKind::Comic->keyPrefix();
+        $prefix = $kind->keyPrefix();
         $max = 0;
 
         foreach (CccTool::query()->where('key', 'like', $prefix.'%')->pluck('key') as $key) {
@@ -398,13 +408,13 @@ final class ManageCccTools
         return $prefix.($max + 1);
     }
 
-    private function nextComicPosition(): int
+    private function nextPosition(CccKind $kind): int
     {
-        return min(self::POSITION_MAX, (int) CccTool::query()->ofKind(CccKind::Comic)->max('position') + 1);
+        return min(self::POSITION_MAX, (int) CccTool::query()->ofKind($kind)->max('position') + 1);
     }
 
     /**
-     * Relit la BD verrouillée, applique la modification des planches et enregistre, dans une transaction.
+     * Relit l'outil verrouillé, applique la modification des planches et enregistre, dans une transaction.
      *
      * @param  Closure(array<int, array{image: string, caption: string, alt: string}>): array<int, array{image: string, caption: string, alt: string}>  $change
      */
@@ -440,12 +450,36 @@ final class ManageCccTools
         return $tool->title.' · '.$rank;
     }
 
-    /** @throws ContentRefused */
-    private function assertComic(CccTool $tool): void
+    /** Familles à planches : bandes dessinées et boîtes à images. */
+    public static function isPaged(CccKind $kind): bool
     {
-        if ($tool->kind !== CccKind::Comic) {
-            throw new ContentRefused('not_comic');
+        return $kind === CccKind::Comic || $kind === CccKind::ImageBox;
+    }
+
+    /** @throws ContentRefused */
+    private function assertPaged(CccTool $tool): void
+    {
+        $this->assertPagedKind($tool->kind);
+    }
+
+    /** @throws ContentRefused */
+    private function assertPagedKind(CccKind $kind): void
+    {
+        if (! self::isPaged($kind)) {
+            throw new ContentRefused('not_paged');
         }
+    }
+
+    /** Nom de l'outil dans les messages (« BD », « boîte à images »). */
+    private function noun(CccKind $kind): string
+    {
+        return (string) __('admin_ccc.noun.'.$kind->value);
+    }
+
+    /** Action du journal : `ccc.comic_*` ou `ccc.imagebox_*`. */
+    private function action(CccKind $kind, string $event): string
+    {
+        return 'ccc.'.($kind === CccKind::ImageBox ? 'imagebox' : 'comic').'_'.$event;
     }
 
     /** @throws ContentRefused */
