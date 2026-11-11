@@ -33,7 +33,7 @@ Le public est vulnérable : une fiche Play reste dans l'historique du compte Goo
 3. **Valeur annoncée = le slogan officiel du site, « Espace safe d'apprentissage et d'appui holistique »**, avec l'accroche « Espace sûr · confidentiel · bienveillant » (page d'accueil du site) ; jamais de formulation du type « application pour… » une catégorie de personnes.
 4. **Mode discret** : la fiche écrite dit qu'il existe (icône et nom neutres, aperçus masqués, verrouillage par code) ; elle ne dit pas ce que devient le nom de l'icône. Aucune capture ne le montre tant que les captures de l'application réelle n'existent pas.
 5. **Image de présentation sans personne**, **vrai logo en couleur** (`design-system/logo/logo-couleur.svg` : lettres bleues, rosace et symbole rouges) sur fond clair teinté, vrai slogan « Espace safe d'apprentissage et d'appui holistique » et accroche « Espace sûr · confidentiel · bienveillant », avec une page web et un écran mobile réels du site. Aucun thème sombre.
-6. **Ni l'admin ni l'espace pair ne sont promus.** L'admin d'astreinte est un outil interne, sans intérêt pour le public et dont la présence dans la fiche expose des fonctions de modération. L'espace pair est réservé à des comptes à rôle : le montrer ferait croire qu'il est accessible à tous. Le pair éducateur apparaît quand même, comme **interlocuteur**, dans la capture « Messages » (c'est ce que voit une personne membre). Aucune capture dédiée n'a donc été produite ; à rediscuter seulement si le client veut recruter des pair·es via le Store (mieux vaut le faire hors Store).
+6. **Ni l'admin ni l'espace pair ne sont promus.** L'admin d'astreinte est un outil interne, sans intérêt pour le public et dont la présence dans la fiche expose des fonctions de modération. L'espace pair est réservé à des comptes à rôle : le montrer ferait croire qu'il est accessible à tous. Le pair animateur apparaît quand même, comme **interlocuteur**, dans la capture « Messages » (c'est ce que voit une personne membre). Aucune capture dédiée n'a donc été produite ; à rediscuter seulement si le client veut recruter des pair·es via le Store (mieux vaut le faire hors Store).
 7. **Données de démonstration** : le site est lancé en local sur une base temporaire (jeu de données de démonstration), sans identifiant affiché ni donnée réelle ; le numéro fictif de l'annuaire de démonstration est masqué sur la capture des urgences.
 8. **Écran d'ouverture (splash) non montré** : il contient une photographie avec drapeau ; la capture d'accueil est préférée.
 9. **Tutoiement ou vouvoiement** : les captures montrent l'interface réelle (tutoiement, règle de l'espace connecté) ; les titres ajoutés sont écrits à la forme impersonnelle pour ne mélanger aucun registre ; la description publique vouvoie (site public, règle Q36).
@@ -58,7 +58,7 @@ Images du client : les deux contre-exemples de `design-system/assets/splash/refe
 | Publicités | Aucune |
 | Achats intégrés | Aucun |
 | Langue de la fiche | **Français uniquement** (décision du client) ; le gabarit anglais du §11 est conservé mais **non utilisé** |
-| Versions publiées | **Une seule version Play** : un seul AAB (`app.xomiton.xomiton`) avec des espaces selon le rôle du compte (membre, pair éducateur·rice, admin d'astreinte), voir ci-dessous |
+| Versions publiées | **Une seule version Play** : un seul AAB (`app.xomiton.xomiton`) avec des espaces selon le rôle du compte (membre, pair animateur·rice, admin d'astreinte), voir ci-dessous |
 
 ### Décisions du client (29 octobre 2026)
 

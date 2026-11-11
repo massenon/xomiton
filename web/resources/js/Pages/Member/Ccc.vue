@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Page `/ccc` (lot outils-ccc, P8-12 ; prototype ccc.php), page Inertia `Member/Ccc` dans le gabarit membre (col-lg-9 à
-// côté du sidenav), **une seule implémentation pour le membre et le pair éducateur·rice** (P9-05) : le drapeau
+// côté du sidenav), **une seule implémentation pour le membre et le pair animateur·rice** (P9-05) : le drapeau
 // `presentation` (compte pair actif) ajoute le guide de l'animateur·rice au mode animation. Onglets Manuel · Boîtes à
 // images · BD SSR · Lois (adresse `?onglet=` gardée) : manuel avec cases « point vu » et impression
 // (<CccManual>), boîtes à images et « Mode animation » plein écran (<CccImageBoxes>), lecteur de BD (<CccComics>), carte

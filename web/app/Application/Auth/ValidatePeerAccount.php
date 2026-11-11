@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 /**
- * Validation d'un compte pair éducateur·rice par l'administration (P2-10, RG-03, FR-AUTH-05) : statut actif,
+ * Validation d'un compte pair animateur·rice par l'administration (P2-10, RG-03, FR-AUTH-05) : statut actif,
  * rôle `pair` garanti, puis une seule notification PeerAccountValidated (cloche + e-mail `compte-valide` par template,
  * P3-02) et journal d'audit au nom de l'admin. L'autorisation (`users.validate_peers`) est vérifiée par l'appelant (policy).
  */

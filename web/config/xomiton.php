@@ -70,7 +70,7 @@ return [
         'sms_fallback_after_push_failures' => 2,
         // Au plus N admins de garde reçoivent un SMS de repli par SOS (coût) ; les autres gardent cloche et push.
         'sos_admin_sms_max' => 2,
-        // Destinataires des SOS et alertes (décisions client du 2026-10-29) : les admins ET les pair·es éducateur·rices.
+        // Destinataires des SOS et alertes (décisions client du 2026-10-29) : les admins ET les pair·es animateur·rices.
         // D-MOB-10 (tranché 2026-10-29) : à la création, admins DE GARDE + pair·es DE LA ZONE de l'alerte (`zone`, défaut ;
         // repli sur tous les pair·es s'il n'y en a pas) ; `all` : tous les pair·es. Sans accusé à `escalation.sos.escalate_after_minutes`
         // (5 min, XOMITON_ESCALATION_MINUTES), escalade nationale : tous les admins et tous les pair·es.

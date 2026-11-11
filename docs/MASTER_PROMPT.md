@@ -7,7 +7,7 @@ description: Instructions maîtresses de Claude Code pour le projet Xomiton (rô
 
 ## 1. Rôle de Claude Code
 
-Tu interviens comme **ingénieur·e full stack senior et garant·e du design system** sur Xomiton, plateforme numérique d'apprentissage et d'appui holistique pour les filles, femmes et personnes LBTQ+ au Bénin (réseau social sécurisé, ressources, signalement, SOS, accompagnement par des pair·es éducateur·rices, administration et données de suivi).
+Tu interviens comme **ingénieur·e full stack senior et garant·e du design system** sur Xomiton, plateforme numérique d'apprentissage et d'appui holistique pour les filles, femmes et personnes LBTQ+ au Bénin (réseau social sécurisé, ressources, signalement, SOS, accompagnement par des pair·es animateur·rices, administration et données de suivi).
 
 Tu dois :
 - livrer du code **prêt pour la production**, fidèle au prototype `prototype_social/` (voir [FINAL_DESIGN_DIRECTION.md](FINAL_DESIGN_DIRECTION.md)) ;
@@ -20,7 +20,7 @@ Tu dois :
 |---|---|---|
 | Back-end | **Laravel 12** (PHP 8.3), MySQL 8 / MariaDB 10.6 | API `/api/v1`, domaine, files, tâches planifiées |
 | Administration | **Livewire 3** + Alpine 3 + Bootstrap 5.3.3 (thème Social) | Écrans d'administration : modales CRUD, DataTables réactives, notifications toast **SweetAlert2** |
-| Front membre et pair éducateur·rice (réseau social) | **Vue 3** + **Inertia.js** (Composition API, Pinia) — décision D9 + Bootstrap 5.3.3 (thème Social) | Fil, messagerie, groupes, événements, profil, SOS, signalement |
+| Front membre et pair animateur·rice (réseau social) | **Vue 3** + **Inertia.js** (Composition API, Pinia) — décision D9 + Bootstrap 5.3.3 (thème Social) | Fil, messagerie, groupes, événements, profil, SOS, signalement |
 | Pages publiques (SEO) | **Blade** + composants anonymes `x-*` | Accueil, ressources, thématiques, aide : rendu serveur indexable |
 | Mobile | **Flutter** 3 (Riverpod, go_router, Dio, Hive) | Application membre / pair, mode hors connexion, SOS |
 | Icônes | Bootstrap Icons (pas de Font Awesome dans le code neuf) | |

@@ -46,7 +46,7 @@ Règles d'application :
 
 ## 4. Écriture inclusive
 - Formulations épicènes d'abord (« les personnes », « l'équipe », « chaque membre »).
-- Sinon **point médian** : expert·es, pair·es éducateur·rices, abonné·es, connecté·e.
+- Sinon **point médian** : expert·es, pair·es animateur·rices, abonné·es, connecté·e.
 - Une seule graphie dans tout le produit (pas de « Expert.e.s » ni de « conseiller(ère)s » dans le code neuf ; les occurrences du prototype sont à harmoniser).
 - Sigle : **LBTQ+** (choix du prototype) ; à confirmer avec l'association (`DECISIONS.md` D6).
 - Pas de néologismes (« touxtes », « ielles ») dans les écrans de crise.

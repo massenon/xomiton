@@ -25,7 +25,7 @@ use App\Models\User;
  *  - complétion du profil progressif (`profiles.completion`) ;
  *  - « À la une » : fiches publiées les plus récentes (ListThematiques, ordre de la liste publique) ;
  *  - prochain événement : UpcomingEvents (événements publiés, sans groupe ou d'un groupe public, jamais le lieu) ;
- *  - pair éducateur·rice (`peer_space.access`, compte validé : RG-03 ferme la collecte d'un compte en attente) : 4 KPI de
+ *  - pair animateur·rice (`peer_space.access`, compte validé : RG-03 ferme la collecte d'un compte en attente) : 4 KPI de
  *    l'espace pair (prototype espace-pair.php l.13-18 : collectés, ce mois-ci, en cours, clos — **ses** dossiers
  *    seulement, archivés exclus, jamais ceux des autres même sans dossier) et alertes routées vers ses fiches d'annuaire
  *    (`directory_contacts.user_id`, branche `alerts.view_routed` d'AlertScope : jamais toutes les alertes, même pour un

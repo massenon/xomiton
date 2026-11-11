@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Espace pair éducateur·rice (lot espace-pair, P9-03, P9-04, P9-08 ; prototype espace-pair.php, collecte.php,
+ * Espace pair animateur·rice (lot espace-pair, P9-03, P9-04, P9-08 ; prototype espace-pair.php, collecte.php,
  * admin/suivi.php) : tableau de bord `/espace-pair`, collecte `/collecte`, dossiers `/espace-pair/dossiers`. Espace connecté
  * et espace pair : tutoiement (VOICE_AND_TONE.md §3). Les libellés des natures, statuts et résultats viennent de
  * enums/cases.php. Exporté vers vue-i18n par `php artisan lang:export`.
@@ -18,7 +18,7 @@ return [
 
     'home' => [
         'title' => 'Espace pair',
-        'badge' => 'Pair éducateur·rice',
+        'badge' => 'Pair animateur·rice',
         'greeting' => 'Bonjour :name',
         'intro' => 'Ton tableau de bord de terrain : collecte, orientation, alertes et outils d’animation.',
         'kpi_label' => 'Chiffres de tes dossiers',

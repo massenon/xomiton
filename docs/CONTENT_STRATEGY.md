@@ -24,11 +24,11 @@ description: Stratégie de contenu de Xomiton — objectif de chaque page, parco
 2. **Urgence** : accueil ou lien partagé → SOS / urgences → appel.
 3. **Témoignage** : accueil → « Je veux témoigner ou signaler un abus » → signalement anonyme → code de suivi → (plus tard) création de compte.
 4. **Communauté** : invitation d'une amie → inscription → OTP → fil → premier commentaire → groupe → événement.
-5. **Pair éducateur·rice** : inscription comme pair → validation → espace pair → collecte hors ligne → synchronisation.
+5. **Pair animateur·rice** : inscription comme pair → validation → espace pair → collecte hors ligne → synchronisation.
 
 ## 3. Tunnel
 ```
-Visiteur·se ──► Lecteur·rice (lit 2 pages) ──► Abonné·e newsletter ──► Membre (compte + OTP) ──► Membre actif·ve (1 action / semaine) ──► Pair éducateur·rice
+Visiteur·se ──► Lecteur·rice (lit 2 pages) ──► Abonné·e newsletter ──► Membre (compte + OTP) ──► Membre actif·ve (1 action / semaine) ──► Pair animateur·rice
 ```
 Leviers par étape : contenu utile et sûr → réassurance (anonymat, gratuité) → inscription en 1 étape obligatoire → profil progressif → événements, sondages, groupes → appel à devenir pair (campagne ciblée).
 

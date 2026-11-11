@@ -119,7 +119,7 @@ return [
         'denied' => 'Tu n’as pas la permission de faire cela.',
         'denied_contact' => 'Tu n’as pas la permission de faire cela. Si tu penses qu’il s’agit d’une erreur, contacte l’équipe Xomiton.',
         'members_only' => 'Réservé aux membres connecté·es. Crée un compte ou connecte-toi.',
-        'peer_only' => 'Réservé aux pair·es éducateur·rices validé·es.',
+        'peer_only' => 'Réservé aux pair·es animateur·rices validé·es.',
     ],
 
     'a11y' => [

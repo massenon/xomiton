@@ -3624,7 +3624,7 @@
     "@admin_registrations_role_requests_empty": {
         "description": "admin.registrations.role_requests.empty"
     },
-    "admin_registrations_role_requests_empty_text": "Les membres qui demandent à devenir pair·e éducateur·rice depuis leur profil apparaissent ici.",
+    "admin_registrations_role_requests_empty_text": "Les membres qui demandent à devenir pair·e animateur·rice depuis leur profil apparaissent ici.",
     "@admin_registrations_role_requests_empty_text": {
         "description": "admin.registrations.role_requests.empty_text"
     },
@@ -3644,7 +3644,7 @@
     "@admin_registrations_role_requests_title": {
         "description": "admin.registrations.role_requests.title"
     },
-    "admin_registrations_role_requests_toasts_approved": "{name} est maintenant pair éducateur·rice.",
+    "admin_registrations_role_requests_toasts_approved": "{name} est maintenant pair animateur·rice.",
     "@admin_registrations_role_requests_toasts_approved": {
         "description": "admin.registrations.role_requests.toasts.approved",
         "placeholders": {
@@ -4703,7 +4703,7 @@
     "@admin_users_peer_role_is_not_peer": {
         "description": "admin.users.peer_role.is_not_peer"
     },
-    "admin_users_peer_role_is_peer": "Cette personne est pair éducateur·rice et membre : elle a l’espace pair en plus du réseau social.",
+    "admin_users_peer_role_is_peer": "Cette personne est pair animateur·rice et membre : elle a l’espace pair en plus du réseau social.",
     "@admin_users_peer_role_is_peer": {
         "description": "admin.users.peer_role.is_peer"
     },
@@ -4711,7 +4711,7 @@
     "@admin_users_peer_role_revoke": {
         "description": "admin.users.peer_role.revoke"
     },
-    "admin_users_peer_role_title": "Rôle de pair éducateur·rice",
+    "admin_users_peer_role_title": "Rôle de pair animateur·rice",
     "@admin_users_peer_role_title": {
         "description": "admin.users.peer_role.title"
     },
@@ -4785,7 +4785,7 @@
     "@admin_users_roles_moderateur": {
         "description": "admin.users.roles.moderateur"
     },
-    "admin_users_roles_pair": "Pair éducateur·rice",
+    "admin_users_roles_pair": "Pair animateur·rice",
     "@admin_users_roles_pair": {
         "description": "admin.users.roles.pair"
     },
@@ -4862,7 +4862,7 @@
             }
         }
     },
-    "admin_users_toasts_peer_granted": "{name} est maintenant pair éducateur·rice (et reste membre).",
+    "admin_users_toasts_peer_granted": "{name} est maintenant pair animateur·rice (et reste membre).",
     "@admin_users_toasts_peer_granted": {
         "description": "admin.users.toasts.peer_granted",
         "placeholders": {
@@ -16706,7 +16706,7 @@
     "@auth_register_invitation_banner_admin": {
         "description": "auth.register.invitation.banner.admin"
     },
-    "auth_register_invitation_banner_pair": "Tu as été invité·e à rejoindre l’équipe des pair·es éducateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.",
+    "auth_register_invitation_banner_pair": "Tu as été invité·e à rejoindre l’équipe des pair·es animateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.",
     "@auth_register_invitation_banner_pair": {
         "description": "auth.register.invitation.banner.pair"
     },
@@ -17988,7 +17988,7 @@
             }
         }
     },
-    "ccc_manual_heading": "Manuel du pair éducateur·rice",
+    "ccc_manual_heading": "Manuel du pair animateur·rice",
     "@ccc_manual_heading": {
         "description": "ccc.manual.heading"
     },
@@ -23654,7 +23654,7 @@
     "@enums_identity_member_type_membre": {
         "description": "enums/identity.member_type.membre"
     },
-    "enums_identity_member_type_pair": "Pair éducateur·rice",
+    "enums_identity_member_type_pair": "Pair animateur·rice",
     "@enums_identity_member_type_pair": {
         "description": "enums/identity.member_type.pair"
     },
@@ -27155,7 +27155,7 @@
     "@menus_member_roles_membre": {
         "description": "menus.member_roles.membre"
     },
-    "menus_member_roles_pair": "Pair éducateur·rice",
+    "menus_member_roles_pair": "Pair animateur·rice",
     "@menus_member_roles_pair": {
         "description": "menus.member_roles.pair"
     },
@@ -27846,7 +27846,7 @@
     "@microcopy_permission_members_only": {
         "description": "microcopy.permission.members_only"
     },
-    "microcopy_permission_peer_only": "Réservé aux pair·es éducateur·rices validé·es.",
+    "microcopy_permission_peer_only": "Réservé aux pair·es animateur·rices validé·es.",
     "@microcopy_permission_peer_only": {
         "description": "microcopy.permission.peer_only"
     },
@@ -29795,11 +29795,11 @@
     "@notifications_role_no_reason": {
         "description": "notifications.role.no_reason"
     },
-    "notifications_role_peer_granted_body": "L’équipe Xomiton t’a donné le rôle de pair éducateur·rice. Tu restes membre : l’espace pair s’ajoute à ton compte.",
+    "notifications_role_peer_granted_body": "L’équipe Xomiton t’a donné le rôle de pair animateur·rice. Tu restes membre : l’espace pair s’ajoute à ton compte.",
     "@notifications_role_peer_granted_body": {
         "description": "notifications.role.peer_granted.body"
     },
-    "notifications_role_peer_granted_title": "Tu es pair éducateur·rice",
+    "notifications_role_peer_granted_title": "Tu es pair animateur·rice",
     "@notifications_role_peer_granted_title": {
         "description": "notifications.role.peer_granted.title"
     },
@@ -29824,7 +29824,7 @@
     "@notifications_role_peer_revoked_title": {
         "description": "notifications.role.peer_revoked.title"
     },
-    "notifications_role_requested_body": "{name} demande le rôle de pair éducateur·rice. Ouvrez la file des inscriptions pour répondre.",
+    "notifications_role_requested_body": "{name} demande le rôle de pair animateur·rice. Ouvrez la file des inscriptions pour répondre.",
     "@notifications_role_requested_body": {
         "description": "notifications.role_requested.body",
         "placeholders": {
@@ -31015,7 +31015,7 @@
     "@pages_aide_know_soutien_1": {
         "description": "pages/aide.know.soutien.1"
     },
-    "pages_aide_know_soutien_2": "Les pair·es éducateur·rices peuvent vous accompagner dans vos démarches.",
+    "pages_aide_know_soutien_2": "Les pair·es animateur·rices peuvent vous accompagner dans vos démarches.",
     "@pages_aide_know_soutien_2": {
         "description": "pages/aide.know.soutien.2"
     },
@@ -32590,7 +32590,7 @@
     "@pages_legal_pages_privacy_sections_2_title": {
         "description": "pages/legal.pages.privacy.sections.2.title"
     },
-    "pages_legal_pages_privacy_sections_3_blocks_0_list_0": "L’équipe habilitée de Xomiton (modération, pair·es éducateur·rices, administration), chacune selon son rôle et seulement pour ce qui lui est utile.",
+    "pages_legal_pages_privacy_sections_3_blocks_0_list_0": "L’équipe habilitée de Xomiton (modération, pair·es animateur·rices, administration), chacune selon son rôle et seulement pour ce qui lui est utile.",
     "@pages_legal_pages_privacy_sections_3_blocks_0_list_0": {
         "description": "pages/legal.pages.privacy.sections.3.blocks.0.list.0"
     },
@@ -35118,7 +35118,7 @@
             }
         }
     },
-    "peer_home_badge": "Pair éducateur·rice",
+    "peer_home_badge": "Pair animateur·rice",
     "@peer_home_badge": {
         "description": "peer.home.badge"
     },
@@ -36040,7 +36040,7 @@
     "@profile_progressive_groups_member_type_title": {
         "description": "profile.progressive.groups.member_type.title"
     },
-    "profile_progressive_groups_member_type_why": "Pour adapter ton espace : une personne concernée, une pair·e éducateur·rice, une allié·e ou une personne ressource ne voient pas les mêmes outils.",
+    "profile_progressive_groups_member_type_why": "Pour adapter ton espace : une personne concernée, une pair·e animateur·rice, une allié·e ou une personne ressource ne voient pas les mêmes outils.",
     "@profile_progressive_groups_member_type_why": {
         "description": "profile.progressive.groups.member_type.why"
     },
@@ -36225,7 +36225,7 @@
     "@profile_role_requests_errors_already_decided": {
         "description": "profile.role_requests.errors.already_decided"
     },
-    "profile_role_requests_errors_already_peer": "Tu es déjà pair éducateur·rice.",
+    "profile_role_requests_errors_already_peer": "Tu es déjà pair animateur·rice.",
     "@profile_role_requests_errors_already_peer": {
         "description": "profile.role_requests.errors.already_peer"
     },
@@ -36253,7 +36253,7 @@
     "@profile_roles_moderateur": {
         "description": "profile.roles.moderateur"
     },
-    "profile_roles_pair": "Pair éducateur·rice",
+    "profile_roles_pair": "Pair animateur·rice",
     "@profile_roles_pair": {
         "description": "profile.roles.pair"
     },

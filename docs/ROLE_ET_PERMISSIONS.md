@@ -15,14 +15,14 @@ Implémentation : **spatie/laravel-permission** (rôles + permissions), Policies
 |---|---|---|---|
 | Visiteur·se | (non connecté) | Toute personne | — |
 | Membre | `membre` | Filles, femmes, personnes LBTQ+, allié·es | Inscription libre (si ouverte) : **la seule chose que crée l'inscription publique** |
-| Pair éducateur·rice | `pair` | Animateur·rices formé·es | **Jamais auto-attribué.** Donné à un·e membre existant·e par l'administration (`peers.assign`), **sur demande du membre** (`POST me/role-requests`, décision de l'admin, D-MOB-15) **ou** par invitation à l'équipe (lien / code signé à usage unique, `peers.invite`) puis validation du compte (RG-03) |
+| Pair animateur·rice | `pair` | Animateur·rices formé·es | **Jamais auto-attribué.** Donné à un·e membre existant·e par l'administration (`peers.assign`), **sur demande du membre** (`POST me/role-requests`, décision de l'admin, D-MOB-15) **ou** par invitation à l'équipe (lien / code signé à usage unique, `peers.invite`) puis validation du compte (RG-03) |
 | Modérateur·rice | `moderateur` | Équipe de modération | Attribué par superadmin (`roles.assign_admin`, RG-15), **depuis le site web uniquement** (D-MOB-16) |
 | Administrateur·rice | `admin` | Équipe de coordination | Attribué ou invité par superadmin, **depuis le site web uniquement** (D-MOB-16, tranché 2026-10-29) : l'API mobile répond 403 |
 | Super-administrateur·rice | `superadmin` | Responsable technique / direction | Attribué ou invité par superadmin |
 
 ### 1 bis. Un seul compte, un seul login, rôles cumulables (décisions client du 2026-10-29)
 
-Membre, pair éducateur·rice et admin se connectent par **les mêmes écrans et endpoints** (`/connexion`, `auth/login`, code OTP compris). Les rôles **se cumulent** sur un même compte :
+Membre, pair animateur·rice et admin se connectent par **les mêmes écrans et endpoints** (`/connexion`, `auth/login`, code OTP compris). Les rôles **se cumulent** sur un même compte :
 
 - **`membre` est toujours conservé** : un·e pair·e et un·e admin gardent le réseau social (fil, messages, groupes, événements, forums). Le niveau d'administration (`moderateur`, `admin`, `superadmin`) s'ajoute ; `pair` se conserve quand on devient admin (ses dossiers lui restent) et ne tombe que si l'on repasse à « membre » ou que l'on retire le rôle pair.
 - **Espaces** (`AccountSpaces`, props Inertia `auth.user.spaces` et `GET me` → `spaces`) : `member` (tout compte), `peer` (rôle `pair` + compte actif, RG-03), `admin` (web : `admin.access` ; mobile : `admin_mobile.access`). C'est le sélecteur d'espace du mobile et les menus du web ; **un compte multi-rôle arrive toujours sur le fil** (`/fil`), l'espace pair (`/espace-pair`) et l'administration (`/admin`) s'ouvrent par les menus. Ergonomie seulement : chaque route revérifie permission, policy et scope.

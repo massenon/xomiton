@@ -15,7 +15,7 @@ description: Guide de marque Xomiton — identité, vision, mission, valeurs, pe
 Un Bénin où chaque fille, chaque femme et chaque personne LBTQ+ peut vivre en sécurité, connaître ses droits et trouver du soutien sans peur ni honte.
 
 ## 3. Mission
-Offrir un espace numérique sûr et bienveillant qui informe, relie la communauté, oriente vers des professionnel·les de confiance et permet d'alerter en quelques secondes, tout en donnant aux pair·es éducateur·rices et aux organisations les outils pour accompagner et rendre compte.
+Offrir un espace numérique sûr et bienveillant qui informe, relie la communauté, oriente vers des professionnel·les de confiance et permet d'alerter en quelques secondes, tout en donnant aux pair·es animateur·rices et aux organisations les outils pour accompagner et rendre compte.
 
 ## 4. Valeurs
 | Valeur | Comment elle se voit dans le produit |

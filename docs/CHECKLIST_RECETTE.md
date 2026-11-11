@@ -39,7 +39,7 @@ Parcours commun à tous les rôles.
 | AUT-03 | Lire le code dans le journal, le saisir sur `/code-de-verification` ; essayer d'abord un code faux. | Code faux : message d'erreur et compteur d'essais. Bon code : compte vérifié, arrivée sur `/fil`. « Renvoyer » respecte un délai. | ☐ | |
 | AUT-04 | Se déconnecter, se reconnecter ; tester « Mot de passe oublié » (`/mot-de-passe-oublie`, code du journal, `/nouveau-mot-de-passe`). | Connexion et réinitialisation réussies ; mot de passe faible refusé. | ☐ | |
 | AUT-05 | Se connecter avec `pair.attente@xomiton.app` / `Pair123!`. | Connexion avec un bandeau « en attente de validation » ; compte membre seulement, pas d'accès à `/espace-pair`. | ☐ | |
-| AUT-08 | `/inscription/profil` : chercher un choix « Type de membre / pair éducateur·rice ». | Aucun : l'inscription publique ne crée que des membres (le rôle pair vient d'une invitation ou de l'administration). | ☐ | |
+| AUT-08 | `/inscription/profil` : chercher un choix « Type de membre / pair animateur·rice ». | Aucun : l'inscription publique ne crée que des membres (le rôle pair vient d'une invitation ou de l'administration). | ☐ | |
 | AUT-09 | Se connecter avec `equipe@xomiton.app` / `Equipe123!` (code du journal). | Un seul login ; arrivée sur `/fil` ; les menus mènent à `/espace-pair` et `/admin` ; le réseau social reste utilisable. | ☐ | |
 | AUT-06 | Enchaîner 6 connexions fausses en moins d'une minute. | Page « Trop de tentatives… Nouvelle tentative possible dans N secondes » (429). | ☐ | |
 | AUT-07 | Ouvrir `/connexion`, supprimer les cookies du site (F12 › Application), envoyer le formulaire. | Page « Erreur 419 — Votre session a expiré… » sans perte de contrôle. | ☐ | |
@@ -69,7 +69,7 @@ Utiliser deux fenêtres privées pour les tests à deux.
 | MEM-17 | `/assistant` : cliquer « Comment porter plainte ? ». | Réponse de la base de connaissances (aucun appel externe). | ☐ | |
 | MEM-18 | `/assistant` : écrire « je veux mourir, je ne vois plus d'issue ». | Réponse de crise avec boutons SOS (position GPS), Appeler le 117 / 118, ligne d'écoute, Faire un signalement, Parler à un humain. « Garder cette conversation » est désactivé par défaut. | ☐ | |
 
-## 4. Pair éducateur·rice (`pair@xomiton.app`)
+## 4. Pair animateur·rice (`pair@xomiton.app`)
 
 | Réf. | Action | Résultat attendu | Statut | Commentaire |
 |---|---|---|---|---|
@@ -271,7 +271,7 @@ Liste établie d'après [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) §8 et 
 | 1. Visiteur·se | 12 | | | |
 | 2. Inscription et connexion | 7 | | | |
 | 3. Membre | 18 | | | |
-| 4. Pair éducateur·rice | 6 | | | |
+| 4. Pair animateur·rice | 6 | | | |
 | 5. Modérateur·rice | 4 | | | |
 | 6. Administrateur·rice et super-administrateur·rice | 13 | | | |
 | 7. SOS et alerte | 9 | | | |

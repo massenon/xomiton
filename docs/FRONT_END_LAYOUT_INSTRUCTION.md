@@ -1,6 +1,6 @@
 ---
 name: xomiton-front-end-layout
-description: Gabarits de mise en page de Xomiton (public, membre, pair éducateur·rice, authentification, administration, pages sobres SOS / signalement) avec leurs grilles, conteneurs et zones fixes. À charger avant de créer une page ou un layout Blade / Vue / Livewire.
+description: Gabarits de mise en page de Xomiton (public, membre, pair animateur·rice, authentification, administration, pages sobres SOS / signalement) avec leurs grilles, conteneurs et zones fixes. À charger avant de créer une page ou un layout Blade / Vue / Livewire.
 ---
 
 # Gabarits de mise en page
@@ -32,7 +32,7 @@ modales globales (créer une publication, sondage, événement)
 ```
 Profil (`DECISIONS.md` Q24) : grille 2/3 + 1/3 du prototype (`my-profile.php` l.23, `x_profile_side()`), soit `col-md-8 col-lg-6` contenu + `col-md-4 col-lg-3` colonne (Présentation, Médias, Connexions) après le sidenav. Paramètres : sidenav + `col-lg-9` imbriquant `col-lg-3` / `col-lg-9` (`settings.php` l.115-122).
 
-## 3. Gabarit pair éducateur·rice
+## 3. Gabarit pair animateur·rice
 Même coquille que le membre ; la `sidenav` affiche le groupe « Espace pair » (Espace pair, Collecte) ; le tableau de bord pair occupe `col-lg-9`.
 
 ## 4. Gabarit authentification

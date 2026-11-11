@@ -133,7 +133,7 @@ class DemoAccountsSeeder extends Seeder
                 'zone' => 'Littoral',
                 'commune' => 'Cotonou',
                 'member_type' => MemberType::Peer,
-                'bio' => 'Compte qui cumule membre, pair éducateur·rice et admin : sélecteur d’espace du mobile.',
+                'bio' => 'Compte qui cumule membre, pair animateur·rice et admin : sélecteur d’espace du mobile.',
             ],
         ];
     }

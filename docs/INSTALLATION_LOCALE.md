@@ -194,7 +194,7 @@ Ils n'existent qu'en environnement local, de test ou de préproduction : **jamai
 | Modérateur·rice (et membre) | `moderateur@xomiton.app` | `modo_rose` | `Modo123!` |
 | Membre | `membre@xomiton.app` | `awa_s` | `Membre123!` |
 | Membre (second compte, pour les tests à deux) | `membre2@xomiton.app` | `fatou_k` | `Membre123!` |
-| Pair éducateur·rice (et membre) | `pair@xomiton.app` | `pair_chantal` | `Pair123!` |
+| Pair animateur·rice (et membre) | `pair@xomiton.app` | `pair_chantal` | `Pair123!` |
 | Pair en attente de validation (membre) | `pair.attente@xomiton.app` | `pair_en_attente` | `Pair123!` |
 | Admin + pair + membre (les trois espaces) | `equipe@xomiton.app` | `equipe_xom` | `Equipe123!` |
 

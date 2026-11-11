@@ -236,7 +236,7 @@ Route::middleware(InertiaForMembers::class)->group(function (): void {
     Route::get('/evenements/{event}', [EventsPageController::class, 'show'])->where('event', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('evenements.show');
 });
 
-// --- Espace membre et pair éducateur·rice : Vue + Inertia (P6 à P9) ---------
+// --- Espace membre et pair animateur·rice : Vue + Inertia (P6 à P9) ---------
 // HandleInertiaRequests (P6-02) : props partagées et X-Robots-Tag noindex. Toutes les pages sont Inertia, dans le gabarit
 // membre Vue (P6-03, resources/js/layouts/MemberLayout.vue) : les écrans pas encore livrés sont `Member/Placeholder`
 // ($memberPlaceholder) ; le gabarit les relie par <Link> (Inertia), les pages publiques Blade par un <a> simple.

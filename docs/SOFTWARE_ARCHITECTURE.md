@@ -50,11 +50,11 @@ Règles :
 | Public | Technologie | Pourquoi |
 |---|---|---|
 | Pages publiques (accueil, thématiques, ressources, aide, signalement, SOS) | Blade + composants `x-*` du design system, Alpine pour l'interactivité légère | Rendu serveur, SEO, poids minimal, fonctionne sans JS |
-| Espace membre et pair éducateur·rice (réseau social) | **Vue 3** (Composition API, Pinia) servi par Laravel via **Inertia.js** (D9), HTML du thème Social | Interactions riches (fil, sondages, messagerie, notifications) ; mêmes appels `/api/v1` que Flutter |
+| Espace membre et pair animateur·rice (réseau social) | **Vue 3** (Composition API, Pinia) servi par Laravel via **Inertia.js** (D9), HTML du thème Social | Interactions riches (fil, sondages, messagerie, notifications) ; mêmes appels `/api/v1` que Flutter |
 | Administration | **Livewire 3** + Alpine + Bootstrap Social | CRUD en modales, DataTables réactives, toasts **SweetAlert2**, validation en temps réel |
 | Mobile | **Flutter** | Hors connexion, SOS natif, notifications push |
 
-> **Décision actée D9** (`design-system/DECISIONS.md`) : l'espace membre et pair éducateur·rice est en Vue 3 + Inertia.js. Les composants Vue reproduisent exactement le HTML des composants `x-*` et du prototype (mêmes classes) pour garder un seul design ; les pages publiques restent en Blade, l'administration en Livewire.
+> **Décision actée D9** (`design-system/DECISIONS.md`) : l'espace membre et pair animateur·rice est en Vue 3 + Inertia.js. Les composants Vue reproduisent exactement le HTML des composants `x-*` et du prototype (mêmes classes) pour garder un seul design ; les pages publiques restent en Blade, l'administration en Livewire.
 
 ## 4. API `/api/v1`
 

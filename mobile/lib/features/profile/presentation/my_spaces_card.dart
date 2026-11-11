@@ -12,7 +12,7 @@ import '../data/role_requests_api.dart';
 
 /// Carte « Mes espaces » du profil (maquette 26) : compte à plusieurs
 /// espaces → « Changer d'espace » ; membre seul → « Demander le rôle pair
-/// éducateur·rice » (D-MOB-15), état de la demande en cours ou refusée. Les
+/// animateur·rice » (D-MOB-15), état de la demande en cours ou refusée. Les
 /// espaces viennent du serveur ; la décision reste celle d'un·e admin.
 class MySpacesCard extends ConsumerWidget {
   const MySpacesCard({super.key});

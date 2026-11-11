@@ -217,8 +217,8 @@ return [
     'role' => [
         'no_reason' => 'non précisé',
         'peer_granted' => [
-            'title' => 'Tu es pair éducateur·rice',
-            'body' => 'L’équipe Xomiton t’a donné le rôle de pair éducateur·rice. Tu restes membre : l’espace pair s’ajoute à ton compte.',
+            'title' => 'Tu es pair animateur·rice',
+            'body' => 'L’équipe Xomiton t’a donné le rôle de pair animateur·rice. Tu restes membre : l’espace pair s’ajoute à ton compte.',
         ],
         'peer_revoked' => [
             'title' => 'Ton rôle de pair a été retiré',
@@ -241,7 +241,7 @@ return [
     // Cloche de l'administration (D-MOB-15) : vous. Jamais le motif de la personne.
     'role_requested' => [
         'title' => 'Nouvelle demande de rôle de pair·e',
-        'body' => ':name demande le rôle de pair éducateur·rice. Ouvrez la file des inscriptions pour répondre.',
+        'body' => ':name demande le rôle de pair animateur·rice. Ouvrez la file des inscriptions pour répondre.',
         'discreet' => 'Nouvelle demande',
     ],
 

@@ -115,13 +115,13 @@ Créés uniquement en environnement `local`, `testing` ou `staging` (jamais en p
 | Modérateur·rice (+ membre) | `moderateur@xomiton.app` | `modo_rose` | `Modo123!` | arrive sur le fil ; `/admin` par le menu : modération, utilisateurs (suspension) ; `/espace-pair` refusé (403) |
 | Membre | `membre@xomiton.app` | `awa_s` | `Membre123!` | espace membre ; `/admin`, `/espace-pair`, `/collecte` refusés (403) |
 | Membre (second compte) | `membre2@xomiton.app` | `fatou_k` | `Membre123!` | pour les tests à deux : messages, groupes, événements |
-| Pair éducateur·rice (+ membre) | `pair@xomiton.app` | `pair_chantal` | `Pair123!` | espace membre (réseau social), `/espace-pair`, `/collecte` ; `/admin` refusé |
+| Pair animateur·rice (+ membre) | `pair@xomiton.app` | `pair_chantal` | `Pair123!` | espace membre (réseau social), `/espace-pair`, `/collecte` ; `/admin` refusé |
 | Pair en attente de validation (membre) | `pair.attente@xomiton.app` | `pair_en_attente` | `Pair123!` | se connecte avec un bandeau « en attente » ; n'a que le rôle membre ; à valider dans Administration › Utilisateurs (règle RG-03) |
 | Admin + pair + membre (tous les espaces) | `equipe@xomiton.app` | `equipe_xom` | `Equipe123!` | arrive sur le fil ; menus vers `/espace-pair` et `/admin` ; `GET /api/v1/me` renvoie `spaces: [member, peer, admin]` (sélecteur d'espace du mobile) |
 
 Les permissions détaillées de chaque rôle sont dans [ROLE_ET_PERMISSIONS.md](ROLE_ET_PERMISSIONS.md) §3.
 
-**Un seul compte, un seul login.** Membre, pair éducateur·rice et admin se connectent par les mêmes écrans (`/connexion`, code OTP compris). Les rôles se cumulent : le pair et l'admin restent membres (réseau social), le rôle pair se donne ou se retire à un membre existant (Administration › Utilisateurs) ou s'obtient par un lien d'invitation à usage unique (Administration › Inscriptions › Inviter dans l'équipe) ; l'inscription publique ne crée que des membres.
+**Un seul compte, un seul login.** Membre, pair animateur·rice et admin se connectent par les mêmes écrans (`/connexion`, code OTP compris). Les rôles se cumulent : le pair et l'admin restent membres (réseau social), le rôle pair se donne ou se retire à un membre existant (Administration › Utilisateurs) ou s'obtient par un lien d'invitation à usage unique (Administration › Inscriptions › Inviter dans l'équipe) ; l'inscription publique ne crée que des membres.
 
 **Page d'arrivée après la connexion.** Tous les comptes arrivent sur `/fil` (le menu mène à `/espace-pair` et `/admin` selon les rôles ; le pair en attente voit un bandeau « en attente » et `/espace-pair` lui est refusé tant qu'il n'est pas validé). Ces parcours sont vérifiés par `tests/Feature/Auth/Web/DemoAccountsLoginTest.php` et ont été rejoués par de vraies requêtes HTTP (cookies, jeton CSRF, redirections) sur MariaDB 10.11, avec `localhost` et `127.0.0.1`.
 

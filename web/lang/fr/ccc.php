@@ -40,7 +40,7 @@ return [
     ],
 
     'manual' => [
-        'heading' => 'Manuel du pair éducateur·rice',
+        'heading' => 'Manuel du pair animateur·rice',
         'intro' => 'Coche les points que tu as vus et imprime ton récapitulatif. Ta progression reste sur cet appareil : elle n’est jamais envoyée au serveur.',
         'modules_count' => '{1} 1 module|[2,*] :count modules',
         'duration' => ':minutes min',
