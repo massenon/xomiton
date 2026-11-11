@@ -1022,7 +1022,7 @@ return [
      * des modèles : toute colonne chiffrée ajoutée doit être déclarée ici.
      */
     'encrypted_columns' => [
-        'profiles' => ['gender_identity', 'orientation', 'trusted_contact_phone', 'ally_status'],
+        'profiles' => ['gender_identity', 'gender_identity_other', 'orientation', 'orientation_other', 'trusted_contact_phone', 'ally_status', 'ally_role', 'ally_role_other'],
         'alerts' => ['description', 'lat', 'lng', 'contact'],
         'alert_notes' => ['body'],
         'cases' => ['notes'],

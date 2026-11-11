@@ -33,6 +33,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'pseudo',
+        'first_name',
+        'last_name',
         'name',
         'email',
         'phone',
@@ -54,8 +56,10 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        // name et phone ne sont jamais publics (RG-02) : seul le pseudo est affiché.
+        // name, first_name, last_name et phone ne sont jamais publics (RG-02) : seul le pseudo est affiché.
         'name',
+        'first_name',
+        'last_name',
         'phone',
         'password',
         'remember_token',
@@ -484,6 +488,12 @@ class User extends Authenticatable
     public function isActive(): bool
     {
         return $this->status === UserStatus::Active;
+    }
+
+    /** Compte qui attend la validation de l'équipe (toute inscription depuis le 11/11/2026) : options limitées. */
+    public function isPending(): bool
+    {
+        return $this->status === UserStatus::Pending;
     }
 
     public function isSuspended(): bool

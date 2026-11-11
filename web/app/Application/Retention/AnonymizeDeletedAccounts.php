@@ -99,6 +99,8 @@ final class AnonymizeDeletedAccounts
 
             $user->forceFill([
                 'pseudo' => User::anonymizedPseudo($id),
+                'first_name' => null,
+                'last_name' => null,
                 'name' => null,
                 'email' => User::anonymizedEmail($id),
                 'phone' => null,
@@ -185,8 +187,14 @@ final class AnonymizeDeletedAccounts
 
         $profile->forceFill([
             'pronouns' => null,
+            'age' => null,
+            'age_range' => null,
+            'country_code' => null,
+            'city' => null,
             'gender_identity' => null,
+            'gender_identity_other' => null,
             'orientation' => null,
+            'orientation_other' => null,
             'bio' => null,
             'completion' => 0,
             'avatar_path' => null,
@@ -194,6 +202,8 @@ final class AnonymizeDeletedAccounts
             'trusted_contact_phone' => null,
             'trusted_contact_name' => null,
             'ally_status' => null,
+            'ally_role' => null,
+            'ally_role_other' => null,
             'interests' => null,
             'shared_fields' => null,
             'progressive_answered' => null,

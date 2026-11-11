@@ -32,7 +32,10 @@ class UserFactory extends Factory
         return [
             // userName() est déjà unique et en minuscules ; un suffixe aléatoire pouvait recréer un pseudo existant.
             'pseudo' => Str::limit(fake()->unique()->userName(), 40, ''),
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName('female'),
+            'last_name' => fake()->lastName(),
+            // `name` reste « Prénom Nom » (inscription en 3 étapes, 11/11/2026).
+            'name' => static fn (array $attributes): string => trim($attributes['first_name'].' '.$attributes['last_name']),
             'email' => fake()->unique()->safeEmail(),
             'phone' => '+229 01 '.fake()->numerify('## ## ## ##'),
             'email_verified_at' => now(),

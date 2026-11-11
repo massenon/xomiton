@@ -46,11 +46,13 @@ final class ProgressiveProfileState
             'pronouns' => $profile->pronouns !== null && $profile->pronouns !== '',
             // `member_type` vaut « membre » par défaut : seul un choix explicite (ou « pair ») traite le groupe.
             'member_type' => $hasOtherRole || ($profile->member_type !== null && $profile->member_type !== MemberType::Member),
-            'ally_status' => $profile->ally_status !== null,
+            // Inscription en 3 étapes (11/11/2026) : « Tu es ? » (membre ou allié·e + statut) est répondu à l'inscription.
+            'ally_status' => $profile->ally_status !== null || $profile->ally_role !== null,
             'gender_identity' => $profile->gender_identity !== null,
             'orientation' => $profile->orientation !== null,
-            'age' => $profile->age_range !== null,
-            'location' => $user->zone_id !== null,
+            // L'âge, le pays et la ville saisis à l'inscription comptent comme renseignés (le pays hors Bénin tient lieu de lieu).
+            'age' => $profile->age_range !== null || $profile->age !== null,
+            'location' => $user->zone_id !== null || $profile->country_code !== null,
             'interests' => ! empty($profile->interests),
         ];
     }

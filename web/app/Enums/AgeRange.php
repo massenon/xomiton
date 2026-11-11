@@ -32,6 +32,23 @@ enum AgeRange: string
         };
     }
 
+    /**
+     * Tranche d'un âge saisi à l'inscription ; null sous 10 ans (hors de toute tranche : l'âge minimal d'inscription
+     * est de toute façon plus haut, `xomiton.accounts.min_age`).
+     */
+    public static function fromAge(int $age): ?self
+    {
+        return match (true) {
+            $age < 10 => null,
+            $age <= 14 => self::From10To14,
+            $age <= 17 => self::From15To17,
+            $age <= 24 => self::From18To24,
+            $age <= 34 => self::From25To34,
+            $age <= 49 => self::From35To49,
+            default => self::FiftyPlus,
+        };
+    }
+
     /** Âge le plus bas de la tranche (plausibilité RG-08, Q25 a). */
     public function lowerBound(): int
     {

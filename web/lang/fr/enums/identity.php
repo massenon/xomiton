@@ -27,6 +27,16 @@ return [
         'ressource' => 'Personne ressource',
     ],
 
+    // App\Enums\AllyRole (inscription en 3 étapes, 11/11/2026) : statut d'une personne ressource / allié·e.
+    'ally_role' => [
+        'professionnel_sante' => 'Professionnel·le de santé',
+        'avocat' => 'Avocat·e',
+        'psychologue' => 'Psychologue',
+        'leader_religieux' => 'Leader religieux·se',
+        'activiste' => 'Activiste / féministe',
+        'autre' => 'Autre',
+    ],
+
     'profile_visibility' => [
         'public' => 'Tout le monde',
         'community' => 'Toute la communauté',
