@@ -24,7 +24,7 @@ def build(doc):
     doc.divider(ch_of(7)); C = 7
     doc.section(C, 'diversity', 'Représenter la diversité', 'Representing diversity',
         ['<p class="lead">Montrer la communauté telle qu\'elle est : plurielle.</p>',
-         '<p>Les photographies montrent des personnes de <b>teintes de peau, d\'âges, de morphologies, d\'expressions de genre et de rôles variés</b> : membres, pair·es éducateur·rice·s, professionnel·les, allié·e·s. Aucun stéréotype (tenue, posture, rôle) ; pas de personne unique qui « représente » tout le monde.</p>',
+         '<p>Les photographies montrent des personnes de <b>teintes de peau, d\'âges, de morphologies, d\'expressions de genre et de rôles variés</b> : membres, pair·es animateur·rice·s, professionnel·les, allié·e·s. Aucun stéréotype (tenue, posture, rôle) ; pas de personne unique qui « représente » tout le monde.</p>',
          '<p><b>Consentement écrit et libre</b> pour toute personne reconnaissable, retirable à tout moment. <b>Jamais</b> de photographie identifiable d\'une personne qui a subi des violences, ni de mise en scène de violence.</p>'],
         f'<div style="display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:1fr 1fr;gap:1.2mm;height:100%;padding:1.2mm">{"".join(ph(p, "100%", "100%") for p in PHOTOS)}</div>{NOTE_PH}')
     spec_rows = [('Cadrage', 'Plans rapprochés et moyens, à hauteur d\'yeux ; mains, détails et plans de dos pour protéger les identités'), ('Lumière', 'Naturelle, douce ; pas de flash frontal dur ni de contre-jour sombre sur les visages'),
