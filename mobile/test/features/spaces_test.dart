@@ -181,7 +181,7 @@ void main() {
       final handle = tester.ensureSemantics();
       await pump(tester, TestEnv(api: FakeApi(loginRoutes(peer())), seen: true));
       await signInThroughLogin(tester);
-      expect(find.bySemanticsLabel(RegExp('Pair éducateur·rice\\. Alertes routées')), findsOneWidget);
+      expect(find.bySemanticsLabel(RegExp('Pair animateur·rice\\. Alertes routées')), findsOneWidget);
       expect(find.bySemanticsLabel(RegExp('^Membre\\. Réseau social')), findsOneWidget);
       handle.dispose();
     });
@@ -253,7 +253,7 @@ void main() {
       expect(find.byKey(const ValueKey('space-pill')), findsOneWidget);
       // La pastille annonce l'espace courant.
       final handle = tester.ensureSemantics();
-      expect(find.bySemanticsLabel(S.t('mobile_space_pill_label', {'space': 'Pair éducateur·rice'})), findsOneWidget);
+      expect(find.bySemanticsLabel(S.t('mobile_space_pill_label', {'space': 'Pair animateur·rice'})), findsOneWidget);
       handle.dispose();
     });
   });

@@ -16,7 +16,7 @@ Date de rédaction : 9 novembre 2026. État du dépôt : voir l'historique `git`
 
 ### 1.1 Ce qu'est Xomiton
 
-Xomiton est une plateforme numérique **sûre** (site web et **application mobile unique** pour Android, puis iOS) destinée aux **filles, femmes et personnes LBTQ+ au Bénin**. Elle propose : information (ressources, thématiques), communauté et messagerie, assistant de questions-réponses, signalement de violences et de besoins (avec ou sans compte), annuaire de contacts utiles, **bouton SOS** qui prévient des contacts de confiance et le point focal de la zone, et une newsletter. Elle est gratuite, en français, sans publicité, sans mesure d'audience externe, sans rapport de plantage externe. Trois espaces selon le rôle : membre, pair éducateur·rice, administration d'astreinte. Descriptif : [BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md](BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md), [MODULE_SPECIFICATIONS.md](MODULE_SPECIFICATIONS.md).
+Xomiton est une plateforme numérique **sûre** (site web et **application mobile unique** pour Android, puis iOS) destinée aux **filles, femmes et personnes LBTQ+ au Bénin**. Elle propose : information (ressources, thématiques), communauté et messagerie, assistant de questions-réponses, signalement de violences et de besoins (avec ou sans compte), annuaire de contacts utiles, **bouton SOS** qui prévient des contacts de confiance et le point focal de la zone, et une newsletter. Elle est gratuite, en français, sans publicité, sans mesure d'audience externe, sans rapport de plantage externe. Trois espaces selon le rôle : membre, pair animateur·rice, administration d'astreinte. Descriptif : [BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md](BUSINESS_ANALYSIS_PRODUCT_SPECIFICATION.md), [MODULE_SPECIFICATIONS.md](MODULE_SPECIFICATIONS.md).
 
 ### 1.2 Pourquoi ce dossier est sensible
 
@@ -152,7 +152,7 @@ Références : conditions d'utilisation (section « Contenus » et « Disponibil
 - [ ] F3. Le **filtre minimal de contenus** décidé (insultes, incitations, coordonnées) suffit-il ? Un filtre peut-il engager plus de responsabilité qu'une absence de filtre ?
 - [ ] F4. **Lecture des messages privés** : la modération ne lit que le **message signalé** (Q74) : est-ce licite, proportionné, et comment l'annoncer aux utilisatrices ?
 - [ ] F5. **Signalement et blocage** : quelles garanties de procédure (information de la personne signalée, recours) ?
-- [ ] F6. Responsabilité des **pairs éducateur·rices** et de l'équipe pour les conseils donnés ; mention « informations éducatives, pas un conseil juridique » des ressources du domaine du droit ([web/config/xomiton.php](../web/config/xomiton.php), `legal_notice_categories`).
+- [ ] F6. Responsabilité des **pairs animateur·rices** et de l'équipe pour les conseils donnés ; mention « informations éducatives, pas un conseil juridique » des ressources du domaine du droit ([web/config/xomiton.php](../web/config/xomiton.php), `legal_notice_categories`).
 
 ### G. Déclaration à l'autorité, délégué·e à la protection des données, registre
 

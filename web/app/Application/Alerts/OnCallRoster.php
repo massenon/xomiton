@@ -54,7 +54,7 @@ final class OnCallRoster
     /**
      * Équipe prévenue À LA CRÉATION d'une alerte (D-MOB-10, tranché 2026-10-29) : les admins DE GARDE (plage en cours ;
      * sans planning, repli sur les comptes admin habilités `alerts.take`, cf. adminsOnCall) **et** les pair·es
-     * éducateur·rices DE LA ZONE de l'alerte (`xomiton.alerts.peer_recipients = zone`, défaut ; repli sur tous les
+     * animateur·rices DE LA ZONE de l'alerte (`xomiton.alerts.peer_recipients = zone`, défaut ; repli sur tous les
      * pair·es quand personne n'y est). Au-delà de 5 minutes sans accusé, escalationTeam() prend le relais (tout le
      * monde). Une personne n'apparaît qu'une fois, par identifiant croissant ; l'accusé de l'une arrête l'escalade.
      *
@@ -71,7 +71,7 @@ final class OnCallRoster
 
     /**
      * ESCALADE NATIONALE (D-MOB-10) : sans accusé à `alerts.escalation.sos.escalate_after_minutes` (5 min par défaut),
-     * tous les admins (de garde ou non) et tous les pair·es éducateur·rices actifs sont prévenus, quelle que soit la zone.
+     * tous les admins (de garde ou non) et tous les pair·es animateur·rices actifs sont prévenus, quelle que soit la zone.
      *
      * @return Collection<int, User>
      */
@@ -86,7 +86,7 @@ final class OnCallRoster
     }
 
     /**
-     * Pair·es éducateur·rices à prévenir : comptes actifs de rôle `pair` détenant `alerts.take` (permission des pair·es
+     * Pair·es animateur·rices à prévenir : comptes actifs de rôle `pair` détenant `alerts.take` (permission des pair·es
      * routé·es, ROLE_ET_PERMISSIONS.md §4).
      *
      * @return Collection<int, User>

@@ -1,6 +1,6 @@
 ---
 name: xomiton-module-specifications
-description: Spécifications de chaque module Xomiton, écran par écran et onglet par onglet — site public, espace membre (Vue), espace pair éducateur·rice, administration (Livewire), application mobile (Flutter). Donne pour chaque écran la route, les rôles, les blocs, les KPI, les colonnes et filtres de liste, les modales, les règles et les appels API. À charger avant de développer ou modifier un module.
+description: Spécifications de chaque module Xomiton, écran par écran et onglet par onglet — site public, espace membre (Vue), espace pair animateur·rice, administration (Livewire), application mobile (Flutter). Donne pour chaque écran la route, les rôles, les blocs, les KPI, les colonnes et filtres de liste, les modales, les règles et les appels API. À charger avant de développer ou modifier un module.
 ---
 
 # Spécifications des modules
@@ -76,7 +76,7 @@ Notifications (`notifications.php`) · Assistant (`assistant.php`, garde-fous de
 
 ---
 
-## C. Espace pair éducateur·rice (Vue 3)
+## C. Espace pair animateur·rice (Vue 3)
 
 | Écran | Route | Réf. | Contenu |
 |---|---|---|---|

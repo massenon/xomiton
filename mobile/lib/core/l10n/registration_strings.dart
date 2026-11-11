@@ -89,6 +89,6 @@ const Map<String, String> kRegistrationStringsFr = {
   'mobile_register_pseudo_hint': '3 à 40 caractères\u00a0: lettres, chiffres, point, tiret ou tiret bas.',
   'mobile_register_submit': 'Créer mon compte',
   'mobile_register_sensitive_data': 'J’accepte que Xomiton traite ces informations sensibles (identité de genre, orientation) pour adapter les contenus. Elles sont chiffrées et jamais publiques.',
-  'mobile_register_member_type_pair': 'Pair éducateur·rice',
+  'mobile_register_member_type_pair': 'Pair animateur·rice',
   'mobile_register_skip': 'Passer',
 };

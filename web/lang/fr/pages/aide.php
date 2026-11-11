@@ -70,7 +70,7 @@ return [
         'soutien' => [
             'Consultez l’annuaire pour trouver psychologues, juristes et points focaux.',
             'L’assistant automatique répond 24 h/24 et vous oriente vers le bouton SOS en cas de danger ; pour une réponse humaine sous 24 h, exprimez un besoin depuis la page Signaler.',
-            'Les pair·es éducateur·rices peuvent vous accompagner dans vos démarches.',
+            'Les pair·es animateur·rices peuvent vous accompagner dans vos démarches.',
         ],
         'communaute' => [
             'Rejoignez des groupes, pages et forums selon vos centres d’intérêt.',

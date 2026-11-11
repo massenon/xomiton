@@ -30,7 +30,7 @@ return [
     // P8-07 (lot profil) : en-tête, menu, colonne, onglets du prototype (partials/profile-head.php, x_profile_side()).
     'roles' => [
         'membre' => 'Membre',
-        'pair' => 'Pair éducateur·rice',
+        'pair' => 'Pair animateur·rice',
         'moderateur' => 'Modération',
         'admin' => 'Équipe Xomiton',
         'superadmin' => 'Équipe Xomiton',
@@ -212,7 +212,7 @@ return [
             ],
             'member_type' => [
                 'title' => 'Qui es-tu sur Xomiton ?',
-                'why' => 'Pour adapter ton espace : une personne concernée, une pair·e éducateur·rice, une allié·e ou une personne ressource ne voient pas les mêmes outils.',
+                'why' => 'Pour adapter ton espace : une personne concernée, une pair·e animateur·rice, une allié·e ou une personne ressource ne voient pas les mêmes outils.',
             ],
             'ally_status' => [
                 'title' => 'Allié·e ou personne ressource ?',
@@ -493,7 +493,7 @@ return [
         'errors' => [
             'not_active' => 'Ton compte doit être actif pour demander ce rôle.',
             'email_unverified' => 'Confirme d’abord ton adresse e-mail pour demander ce rôle.',
-            'already_peer' => 'Tu es déjà pair éducateur·rice.',
+            'already_peer' => 'Tu es déjà pair animateur·rice.',
             'request_open' => 'Tu as déjà une demande en cours : l’équipe te répondra bientôt.',
             'already_decided' => 'Cette demande a déjà été traitée.',
         ],

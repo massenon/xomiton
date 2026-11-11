@@ -1,4 +1,4 @@
-// Paquet de l'espace membre et pair éducateur·rice (D9, ADR-18, ADR-30) : Vue 3 + Inertia 2 (sans SSR) + Pinia + vue-i18n.
+// Paquet de l'espace membre et pair animateur·rice (D9, ADR-18, ADR-30) : Vue 3 + Inertia 2 (sans SSR) + Pinia + vue-i18n.
 // Budget : app.ts + imports statiques < 150 Ko gzip (scripts/check-budgets.mjs) — chaque page Vue, le catalogue de
 // messages (resources/js/lang/<locale>.json), la boîte d'envoi (shared/outbox.js) et Chart.js sont des import() à la
 // demande. Bootstrap : import sélectif partagé avec public.js (shared/bootstrap.js), jamais le paquet complet, chargé

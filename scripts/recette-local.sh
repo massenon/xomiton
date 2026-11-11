@@ -184,7 +184,7 @@ cat <<RECAP
   Modérateur·rice             moderateur@xomiton.app       Modo123!
   Membre                      membre@xomiton.app           Membre123!
   Membre (second compte)      membre2@xomiton.app          Membre123!
-  Pair éducateur·rice         pair@xomiton.app             Pair123!
+  Pair animateur·rice         pair@xomiton.app             Pair123!
   Pair en attente (RG-03)     pair.attente@xomiton.app     Pair123!  (connecté avec un bandeau « en attente »)
 
   Code de vérification (OTP) à chaque nouvel appareil, et à chaque connexion admin :

@@ -98,7 +98,7 @@ return [
                     'title' => 'Qui reçoit vos données',
                     'blocks' => [
                         ['list' => [
-                            'L’équipe habilitée de Xomiton (modération, pair·es éducateur·rices, administration), chacune selon son rôle et seulement pour ce qui lui est utile.',
+                            'L’équipe habilitée de Xomiton (modération, pair·es animateur·rices, administration), chacune selon son rôle et seulement pour ce qui lui est utile.',
                             'Les personnes que vous alertez ou ciblez vous-même : vos contacts de confiance, le point focal de votre zone, les membres de l’annuaire que vous choisissez.',
                             'Nos prestataires techniques, qui agissent pour notre compte (section suivante).',
                             'Les autorités, uniquement si la loi nous y oblige.',

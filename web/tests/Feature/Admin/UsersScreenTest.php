@@ -83,7 +83,7 @@ it('liste les comptes avec rôle, statut et département, filtre par rôle, stat
 
     usrScreen($admin)
         ->assertSee(['awa_pair', 'koffi_m', 'Awa Sagbo', 'awa@exemple.bj', 'Atlantique'])
-        ->assertSee('Pair éducateur·rice')
+        ->assertSee('Pair animateur·rice')
         ->set('role', 'pair')
         ->assertSee('awa_pair')
         ->assertDontSee('koffi_m')

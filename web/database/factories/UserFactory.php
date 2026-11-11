@@ -84,7 +84,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Pair éducateur·rice : profil de type « pair ».
+     * Pair animateur·rice : profil de type « pair ».
      */
     public function peer(): static
     {

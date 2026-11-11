@@ -20,7 +20,7 @@ use Tests\Support\FeedFixtures as F;
 use Tests\Support\SosScenario;
 
 /*
- * Décision client du 2026-10-29 : les SOS et alertes préviennent les ADMINS et les PAIRS ÉDUCATEUR·RICES (pas seulement
+ * Décision client du 2026-10-29 : les SOS et alertes préviennent les ADMINS et les PAIRS ANIMATEUR·RICES (pas seulement
  * l'admin de garde). Le pair prévenu peut ouvrir l'alerte, accuser réception et la prendre en charge ; l'accusé arrête
  * l'escalade pour toute l'équipe ; un pair jamais prévenu reste exclu (cloisonnement).
  */

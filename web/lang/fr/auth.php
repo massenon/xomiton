@@ -85,7 +85,7 @@ return [
     'register' => [
         'invitation' => [
             'banner' => [
-                'pair' => 'Tu as été invité·e à rejoindre l’équipe des pair·es éducateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.',
+                'pair' => 'Tu as été invité·e à rejoindre l’équipe des pair·es animateur·rices. Crée ton compte membre : le rôle de pair s’ajoutera à la validation de ton compte.',
                 'admin' => 'Tu as été invité·e à rejoindre l’équipe d’administration. Crée ton compte membre : le rôle s’ajoutera à la validation de ton compte.',
             ],
         ],

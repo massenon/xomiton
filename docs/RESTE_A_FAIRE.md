@@ -20,7 +20,7 @@ Guide pas à pas : [INSTALLATION_LOCALE.md](INSTALLATION_LOCALE.md). Parcours de
 - [ ] **C** Se connecter avec chacun des 8 comptes de démonstration (identifiants dans le guide de recette, à saisir à la main ; code OTP lu dans `storage\logs\laravel.log`, ligne `[otp:log]`).
 
 ### 1.2 Recette humaine du site
-- [ ] **C** Dérouler [CHECKLIST_RECETTE.md](CHECKLIST_RECETTE.md) : visiteur·se, membre, pair éducateur·rice, administrateur·rice, SOS et alertes, e-mails, notifications, accessibilité, sécurité visible.
+- [ ] **C** Dérouler [CHECKLIST_RECETTE.md](CHECKLIST_RECETTE.md) : visiteur·se, membre, pair animateur·rice, administrateur·rice, SOS et alertes, e-mails, notifications, accessibilité, sécurité visible.
 - [ ] **C** Valider ou corriger visuellement : accueil, inscription compacte (étape 1 sans défilement à 1366×768), ruban arc-en-ciel de la connexion et de l'inscription, bandeau d'alerte de l'accueil, modèles d'e-mail (`/admin/emails`).
 - [ ] **C** Trancher la question du **formulaire de newsletter du pied de page** : aujourd'hui un bouton vers `/newsletter` (sûr) à la place du formulaire inline, parce que les pages sans session n'ont pas de jeton CSRF. Un formulaire inline demanderait une exemption avec contrôle d'origine, à valider explicitement.
 - [ ] **C** Lire les pages légales et signaler tout ce qui est faux : confidentialité, conditions, mentions légales, cookies, suppression de compte.

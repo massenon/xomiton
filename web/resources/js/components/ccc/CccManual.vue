@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Manuel du pair éducateur·rice (P8-12 ; prototype manuel-pair-animateur.php) : liste des modules (titre, durée, nombre de
+// Manuel du pair animateur·rice (P8-12 ; prototype manuel-pair-animateur.php) : liste des modules (titre, durée, nombre de
 // points, progression), détail d'un module avec ses chapitres et des cases « point vu », progression par module et
 // globale (barres `role="progressbar"`, annonce `aria-live` à chaque case), impression du récapitulatif (feuille
 // `.xm-ccc-print`, CSS d'impression de resources/css/app/pages/ccc.css). La progression reste sur l'appareil

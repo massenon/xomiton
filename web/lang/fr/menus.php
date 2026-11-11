@@ -194,7 +194,7 @@ return [
     // Rôle affiché sous le pseudo dans le menu avatar (prototype partials/header.php $uRoleLabel).
     'member_roles' => [
         'membre' => 'Membre',
-        'pair' => 'Pair éducateur·rice',
+        'pair' => 'Pair animateur·rice',
         'admin' => 'Administrateur·rice',
         'superadmin' => 'Super-administrateur·rice',
     ],

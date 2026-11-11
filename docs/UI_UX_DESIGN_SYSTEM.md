@@ -119,7 +119,7 @@ Une seule famille de cartes : `.card` + `.card-header` (titre `h2.h6`, actions �
 
 - **Administration** : 7 KPI (nouvelles alertes, SOS actifs, cas ouverts, en cours, clos, utilisateur·rices, taux de synchro), graphiques (cas par mois, type de violence, département, population, sexe × âge), dernières alertes, carte des SOS actifs, raccourcis, état de la plateforme.
 - **Membre** : accès rapides (SOS, Signaler, Assistant, Urgences), créer une publication, à la une, filtres, fil.
-- **Pair éducateur·rice** : KPI de collecte, tâches, alertes routées, raccourcis CCC.
+- **Pair animateur·rice** : KPI de collecte, tâches, alertes routées, raccourcis CCC.
 
 ## 6. États à prévoir pour chaque écran
 

@@ -12,7 +12,7 @@ use Carbon\CarbonInterface;
 
 /**
  * Destinataires d'une alerte routée, d'une réattribution et d'un rappel (NOTIFICATIONS §2 « Alerte routée ») : contact
- * de l'annuaire ciblé (actuel) puis l'équipe (admins et pair·es éducateur·rices, OnCallRoster::alertTeam), une fois par
+ * de l'annuaire ciblé (actuel) puis l'équipe (admins et pair·es animateur·rices, OnCallRoster::alertTeam), une fois par
  * personne, jamais l'auteur·e.
  */
 final class RoutedAlertRecipients

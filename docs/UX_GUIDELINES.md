@@ -56,4 +56,4 @@ description: Principes d'expérience utilisateur de Xomiton — sécurité d'abo
 7. (Admin) Prévisualiser une sauvegarde et la restaurer.
 
 ## 7. Mesure
-Taux de complétion des formulaires, temps jusqu'à la première action, erreurs de validation par champ, recherches sans résultat, abandons d'étape ; tests utilisateurs trimestriels avec des pair·es éducateur·rices.
+Taux de complétion des formulaires, temps jusqu'à la première action, erreurs de validation par champ, recherches sans résultat, abandons d'étape ; tests utilisateurs trimestriels avec des pair·es animateur·rices.

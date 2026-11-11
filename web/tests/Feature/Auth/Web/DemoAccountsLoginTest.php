@@ -30,7 +30,7 @@ dataset('demo-accounts', [
     'membre' => ['membre@xomiton.app', 'Membre123!', '/fil'],
     'membre (pseudo)' => ['awa_s', 'Membre123!', '/fil'],
     'second membre' => ['membre2@xomiton.app', 'Membre123!', '/fil'],
-    'pair éducateur·rice' => ['pair@xomiton.app', 'Pair123!', '/fil'],
+    'pair animateur·rice' => ['pair@xomiton.app', 'Pair123!', '/fil'],
     'pair en attente' => ['pair.attente@xomiton.app', 'Pair123!', '/fil'],
 ]);
 

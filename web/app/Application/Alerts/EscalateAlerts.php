@@ -210,7 +210,7 @@ final class EscalateAlerts
 
     /**
      * Cible de l'escalade : point focal national (garde, puis fiche), sauf s'il est déjà le contact routé ; sinon
-     * l'équipe — admins et pair·es éducateur·rices (OnCallRoster::escalationTeam : tous les admins et tous les pair·es, D-MOB-10).
+     * l'équipe — admins et pair·es animateur·rices (OnCallRoster::escalationTeam : tous les admins et tous les pair·es, D-MOB-10).
      *
      * @return array{0: DirectoryContact|null, 1: list<int>}
      */

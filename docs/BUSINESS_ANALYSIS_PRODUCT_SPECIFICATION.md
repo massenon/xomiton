@@ -20,12 +20,12 @@ Au Bénin, les filles, femmes et personnes LBTQ+ subissent des violences basées
 | OB-1 | Offrir un **espace numérique sûr** d'échange et d'entraide | Membres actif·ves mensuel·les, taux de rétention à 30 jours |
 | OB-2 | **Informer** sur les droits, la santé sexuelle et reproductive, les VBG | Fiches lues, temps de lecture, téléchargements hors ligne |
 | OB-3 | **Alerter et orienter** rapidement (signalement, SOS) | Délai médian de prise en charge d'une alerte, % d'alertes traitées sous 24 h (IND-10) |
-| OB-4 | **Outiller les pair·es éducateur·rices** (collecte, outils CCC, suivi) | Dossiers collectés par pair, % de suivis réalisés (IND-13) |
+| OB-4 | **Outiller les pair·es animateur·rices** (collecte, outils CCC, suivi) | Dossiers collectés par pair, % de suivis réalisés (IND-13) |
 | OB-5 | **Piloter et rendre compte** (indicateurs, rapports automatisés) | Rapports générés, couverture géographique (IND-16) |
 | OB-6 | **Garder le contact** avec la communauté et les partenaires (newsletter) | Taux d'ouverture (IND-09), taux de clic, taux de désabonnement |
 
 ### 1.3 Parties prenantes
-Association porteuse (équipe de coordination), pair·es éducateur·rices, membres, intervenant·es de l'annuaire (points focaux, juristes, psychologues, gynécologues, travailleur·ses sociaux·les), bailleurs, partenaires associatifs.
+Association porteuse (équipe de coordination), pair·es animateur·rices, membres, intervenant·es de l'annuaire (points focaux, juristes, psychologues, gynécologues, travailleur·ses sociaux·les), bailleurs, partenaires associatifs.
 
 ### 1.4 Contraintes métier
 - Budget d'hébergement limité : **cPanel mutualisé** (D7).
@@ -51,7 +51,7 @@ Association porteuse (équipe de coordination), pair·es éducateur·rices, memb
 ### 2.3 Périmètre fonctionnel (version 1)
 1. Site public : accueil, thématiques, ressources, lois, Do Glegbe, aide, signalement anonyme, SOS, contacts d'urgence, newsletter.
 2. Espace membre (Vue) : fil d'actualités (publications, photos, sondages), commentaires, messagerie, groupes, pages, événements, forums, qui suivre, profil progressif, notifications, paramètres et sécurité, assistant.
-3. Espace pair éducateur·rice : collecte de données hors ligne, alertes routées, outils CCC (boîtes à images, BD, manuel), suivi.
+3. Espace pair animateur·rice : collecte de données hors ligne, alertes routées, outils CCC (boîtes à images, BD, manuel), suivi.
 4. Administration (Livewire) : tableau de bord, alertes, indicateurs, rapports, registres, fiches VBG/VDH, suivi des victimes, annuaire, règles de validation, utilisateurs et rôles, inscriptions, contenus, CCC, réseau social, modération, assistant, newsletter, synchronisation, mises à jour et sauvegardes, templates e-mails, paramètres, journal d'audit.
 5. Application mobile Flutter : 30 écrans du simulateur `prototype_mobile/`.
 
@@ -88,7 +88,7 @@ Chaque exigence porte un code, une priorité (**M** obligatoire, **S** souhaité
 | FR-AUTH-02 | Vérification par code à 6 chiffres envoyé **par e-mail** (OTP) pour l'inscription, la connexion et la réinitialisation | M | Un seul écran, paramètre `purpose` ; code valable 10 min, 5 essais, renvoi après 30 s |
 | FR-AUTH-03 | Jauge de solidité du mot de passe (texte + couleur), 10 caractères minimum | M | Le bouton reste actif ; l'erreur s'affiche sous le champ si la solidité est inférieure à « Fort » |
 | FR-AUTH-04 | Mot de passe oublié sans énumération de comptes | M | Même message et même délai que le compte existe ou non |
-| FR-AUTH-05 | Validation manuelle des pair·es éducateur·rices | M | Un compte « pair » reste `en_attente` jusqu'à validation ; e-mail « compte validé » envoyé |
+| FR-AUTH-05 | Validation manuelle des pair·es animateur·rices | M | Un compte « pair » reste `en_attente` jusqu'à validation ; e-mail « compte validé » envoyé |
 | FR-AUTH-06 | Ouverture et fermeture des inscriptions par l'administration | M | Inscriptions fermées : formulaire remplacé par un message |
 | FR-AUTH-07 | Profil progressif facultatif, chaque champ expliqué | S | Barre de complétion, « Pourquoi on demande ça ? » sous chaque groupe |
 
@@ -163,7 +163,7 @@ Chaque exigence porte un code, une priorité (**M** obligatoire, **S** souhaité
 |---|---|
 | RG-01 | Une personne peut toujours signaler et déclencher un SOS **sans compte**. |
 | RG-02 | Le nom réel n'est jamais public ; le pseudonyme est affiché par défaut. |
-| RG-03 | Un compte pair éducateur·rice doit être validé par l'administration avant d'accéder à la collecte. |
+| RG-03 | Un compte pair animateur·rice doit être validé par l'administration avant d'accéder à la collecte. |
 | RG-04 | Une alerte est routée vers un contact **actif** de l'annuaire : rôle demandé dans la zone, sinon point focal de la zone, sinon point focal national, sinon premier contact actif. |
 | RG-05 | Un SOS non accusé sous 5 minutes est escaladé au point focal national. |
 | RG-06 | Le code dossier suit le format `VBG-0000` / `VDH-0000`, unique et non réutilisable. |

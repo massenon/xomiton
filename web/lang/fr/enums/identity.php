@@ -16,7 +16,7 @@ return [
 
     'member_type' => [
         'membre' => 'Membre',
-        'pair' => 'Pair éducateur·rice',
+        'pair' => 'Pair animateur·rice',
         'allie' => 'Allié·e',
         'ressource' => 'Personne ressource',
     ],

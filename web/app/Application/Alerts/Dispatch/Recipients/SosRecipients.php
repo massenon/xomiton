@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
  *  R2 contact routé (`alerts.routed_to`, RG-04 calculé par le lot domaine : jamais rerouté ici) ;
  *  R3 point focal de la zone (garde, sinon fiche), s'il diffère de R2 ;
  *  R4 point focal national, seulement si R2 et R3 manquent (quelqu'un de l'annuaire est toujours prévenu) ;
- *  R5 l'équipe : admins (de garde et habilités `alerts.take`) **et pair·es éducateur·rices** (OnCallRoster::alertTeam).
+ *  R5 l'équipe : admins (de garde et habilités `alerts.take`) **et pair·es animateur·rices** (OnCallRoster::alertTeam).
  * Une personne n'apparaît qu'une fois (un admin lié à une fiche garde le libellé de sa fiche) ; l'auteur·e est exclu·e.
  */
 final class SosRecipients

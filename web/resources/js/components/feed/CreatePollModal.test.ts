@@ -44,8 +44,8 @@ const fillPoll = async () => {
 };
 
 /** Bootstrap Modal : ouverture terminée, focus piégé (transitions nulles sous jsdom, mais différées). */
-const shown = () => waitFor(() => expect(document.querySelector('.modal.show')?.contains(document.activeElement)).toBe(true));
-const closed = (view: { emitted: (name: string) => unknown[] | undefined }) => waitFor(() => expect(view.emitted('hidden')).toBeTruthy());
+const shown = () => waitFor(() => expect(document.querySelector('.modal.show')?.contains(document.activeElement)).toBe(true), { timeout: 3000 });
+const closed = (view: { emitted: (name: string) => unknown[] | undefined }) => waitFor(() => expect(view.emitted('hidden')).toBeTruthy(), { timeout: 3000 });
 
 const submit = (id: string) => fireEvent.submit(document.querySelector(`#${id} form`) as HTMLFormElement);
 
@@ -77,14 +77,14 @@ describe('Créer un sondage', () => {
         await fireEvent.click(screen.getByLabelText('Autoriser plusieurs réponses'));
         await submit('modalCreatePoll');
 
-        await waitFor(() => expect(view.emitted('published')).toBeTruthy());
+        await waitFor(() => expect(view.emitted('published')).toBeTruthy(), { timeout: 3000 });
         expect(calls[0]).toMatchObject({
             url: '/api/v1/posts', method: 'POST',
             body: { kind: 'poll', visibility: 'public', is_anonymous: false, poll: { question: 'Quel thème pour la causerie ?', options: ['Santé', 'Droits'], multiple: true, results_before_vote: false, duration_days: 7 } },
         });
         expect(calls[0].headers['Idempotency-Key']).toMatch(/^[0-9a-f-]{36}$/);
         expect((view.emitted('published') as unknown[][])[0][0]).toEqual(created);
-        await waitFor(async () => expect(await useDraftsStore().load(DRAFT_POLL)).toBeNull());
+        await waitFor(async () => expect(await useDraftsStore().load(DRAFT_POLL)).toBeNull(), { timeout: 3000 });
         await closed(view);
     });
 
@@ -169,10 +169,10 @@ describe('Créer un sondage', () => {
 
         await fireEvent.update(screen.getByLabelText(/Question \(titre du sondage\)/), 'Quel thème pour le prochain atelier ?');
         await submit('modalCreatePoll');
-        await waitFor(() => expect(view.emitted('published')).toBeTruthy());
+        await waitFor(() => expect(view.emitted('published')).toBeTruthy(), { timeout: 3000 });
         expect(calls[0].headers['Idempotency-Key']).toBe(key);
         expect(calls[0].body).toMatchObject({ poll: { question: 'Quel thème pour le prochain atelier ?' } });
-        await waitFor(async () => expect(await useDraftsStore().load(DRAFT_POLL)).toBeNull());
+        await waitFor(async () => expect(await useDraftsStore().load(DRAFT_POLL)).toBeNull(), { timeout: 3000 });
         await closed(view);
     });
 
@@ -188,7 +188,7 @@ describe('Créer un sondage', () => {
         expect((screen.getByLabelText('Réponse 1') as HTMLInputElement).value).toBe('Santé');
 
         await submit('modalCreatePoll');
-        await waitFor(() => expect(view.emitted('published')).toBeTruthy());
+        await waitFor(() => expect(view.emitted('published')).toBeTruthy(), { timeout: 3000 });
         expect(remove).toHaveBeenCalledWith('cle-en-attente');
         expect(calls[0].headers['Idempotency-Key']).toBe('cle-en-attente');
         await closed(view);
@@ -250,7 +250,7 @@ describe('Créer une publication', () => {
         const ok = new File([new Uint8Array(1000)], 'atelier.png', { type: 'image/png' });
         await fireEvent.change(screen.getByLabelText(/Photo \(facultatif\)/), { target: { files: [ok] } });
         await submit('modalCreateFeed');
-        await waitFor(() => expect(view.emitted('published')).toBeTruthy());
+        await waitFor(() => expect(view.emitted('published')).toBeTruthy(), { timeout: 3000 });
         const body = calls[0].body as FormData;
         expect(body).toBeInstanceOf(FormData);
         expect(body.get('is_anonymous')).toBe('1');

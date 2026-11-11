@@ -10,7 +10,7 @@
 
 Une plateforme pour les filles, les femmes et les personnes LBTQ+ au Bénin.
 
-Site web · Application mobile · Alerte et SOS · Outils pour les pair·es éducateur·rices
+Site web · Application mobile · Alerte et SOS · Outils pour les pair·es animateur·rices
 
 </div>
 
@@ -32,7 +32,7 @@ La sécurité de la personne passe avant tout le reste, y compris avant l'esthé
 |---|---|
 | **Visiteur·ses** | Lire des ressources, signaler un abus ou déclencher un SOS **sans créer de compte** |
 | **Membres** | Une communauté sous pseudonyme, des informations fiables, une messagerie, des groupes, un assistant |
-| **Pair·es éducateur·rices** | Collecter des dossiers même sans réseau, les synchroniser, recevoir les alertes qui les concernent |
+| **Pair·es animateur·rices** | Collecter des dossiers même sans réseau, les synchroniser, recevoir les alertes qui les concernent |
 | **Coordination et administration** | Valider les comptes, modérer, suivre des indicateurs, produire des rapports, gérer l'astreinte |
 | **Intervenant·es de l'annuaire** | Recevoir les alertes routées vers leur zone ou leur métier (point focal, juriste, psychologue) |
 
@@ -111,7 +111,7 @@ Le même site sur un téléphone (390 × 844 px) :
 | **Site public** | Accueil, ressources, thématiques, FAQ, actualités, événements, pages légales, newsletter avec double confirmation ; **signalement et SOS accessibles sans compte** |
 | **Espace membre** | Fil d'actualités, messagerie, groupes, pages, événements, forums, assistant à base de connaissances, profil progressif, notifications |
 | **SOS et signalement** | Alerte avec position (partagée uniquement avec accord), routage vers les bonnes personnes, escalade automatique sans accusé de réception, accusé de réception, contacts d'urgence, signalement anonyme possible, fonctionnement hors ligne |
-| **Espace pair éducateur·rice** | Collecte de dossiers hors ligne, synchronisation avec gestion des conflits, alertes routées, outils d'animation |
+| **Espace pair animateur·rice** | Collecte de dossiers hors ligne, synchronisation avec gestion des conflits, alertes routées, outils d'animation |
 | **Administration** | Tableau de bord, validation des inscriptions et des rôles, modération, rapports et indicateurs, e-mails, maintenance, sauvegardes, journal d'audit |
 | **Application mobile unique** | Une seule application Flutter : les espaces membre, pair et admin d'astreinte apparaissent selon le rôle du compte |
 | **Vie privée** | Données minimales, chiffrement des données sensibles, mode discret, code PIN, effacement à distance, âge minimal de 18 ans |

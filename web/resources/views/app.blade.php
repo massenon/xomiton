@@ -1,5 +1,5 @@
 {{--
-    Racine Inertia de l'espace membre et pair éducateur·rice (P6-02, D9, ADR-30 : aucun rendu côté serveur).
+    Racine Inertia de l'espace membre et pair animateur·rice (P6-02, D9, ADR-30 : aucun rendu côté serveur).
     - Titre : « Notes » si user_settings.neutral_tab_title (props partagées ui.neutral_title, aussi appliqué par app.ts à
       chaque visite), sinon le titre de la page (withViewData('title')) ou « Mon espace ». Attribut `inertia` obligatoire :
       le gestionnaire de tête d'Inertia remplace ce <title> à chaque visite (sans lui, il en ajoute un second et le

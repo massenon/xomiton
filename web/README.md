@@ -1,6 +1,6 @@
 # Xomiton — application web (Laravel 12)
 
-Plateforme numérique d'apprentissage et d'appui holistique pour les filles, femmes et personnes LBTQ+ au Bénin. Ce dossier contient l'application Laravel : pages publiques (Blade), espace membre et pair éducateur·rice (Vue 3 + Inertia), administration (Livewire 3) et API `/api/v1` (Flutter).
+Plateforme numérique d'apprentissage et d'appui holistique pour les filles, femmes et personnes LBTQ+ au Bénin. Ce dossier contient l'application Laravel : pages publiques (Blade), espace membre et pair animateur·rice (Vue 3 + Inertia), administration (Livewire 3) et API `/api/v1` (Flutter).
 
 Avant toute tâche, lire `../docs/MASTER_PROMPT.md` puis `../docs/IMPLEMENTATION_PLAN.md` (quoi faire, dans quel ordre).
 
