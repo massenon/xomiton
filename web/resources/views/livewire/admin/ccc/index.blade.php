@@ -3,6 +3,7 @@
     Ordre : introduction · KPI · onglets (Manuel, Boîtes à images, BD SSR, Lois) · cartes · modales (image, outil, planches, suppression).
     Un outil masqué disparaît des écrans membre et pair ; une BD ou une boîte à images se crée, se renomme, se supprime et gère
     ses planches (ajout, retrait, légende, texte alternatif obligatoire, ordre par boutons « Monter » / « Descendre » au clavier).
+    Onglet Manuel : modules (création, titre, description, durée, ordre, suppression) et modale « Chapitres » (partiel modules-modals).
     Focus : à l'ouverture d'une modale il va sur le premier champ (data-xm-autofocus), à la fermeture il revient au bouton qui l'a ouverte.
 --}}
 @php
@@ -23,6 +24,8 @@
     $copy = fn (string $key, array $replace = []) => __('admin_ccc.'.($this->modalKind() === \App\Enums\CccKind::ImageBox ? 'imagebox' : 'comic').'.'.$key, $replace);
     $tabKind = \App\Enums\CccKind::tryFrom($tab);
     $tabCopy = $tabKind === \App\Enums\CccKind::ImageBox ? 'imagebox' : 'comic';
+    $isManualTab = $tab === 'manuel';
+    $moduleTotal = $isManualTab ? count($this->tools) : 0;
 @endphp
 <div class="xm-ccc-admin">
     <p class="text-secondary mb-4 xm-prose">{{ __('admin_ccc.intro') }}</p>
@@ -78,16 +81,22 @@
             </div>
         </section>
     @else
-        <section aria-labelledby="xmCccToolsTitle">
+        <section aria-labelledby="xmCccToolsTitle" x-data x-on:xm-ccc-focus.window="$nextTick(() => setTimeout(() => document.getElementById($event.detail.id)?.focus(), 30))">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
                 <h2 class="h6 fw-bold mb-0" id="xmCccToolsTitle" tabindex="-1">{{ __('admin_ccc.tabs.'.$tab) }}</h2>
-                @if (in_array($tabKind, $pagedKinds, true))
+                @if ($isManualTab)
+                    <button type="button" class="btn btn-sm btn-primary" wire:click="openModuleCreate"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.module.new') }}</button>
+                @elseif (in_array($tabKind, $pagedKinds, true))
                     <button type="button" class="btn btn-sm btn-primary" wire:click="openCreate"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.'.$tabCopy.'.new') }}</button>
                 @endif
             </div>
-            <div class="row g-3">
+            @if ($isManualTab)
+                <p class="small text-secondary">{{ __('admin_ccc.module.intro') }}</p>
+                <div class="visually-hidden" role="status" aria-live="polite">{{ $announce }}</div>
+            @endif
+            <div class="row g-3" @if ($isManualTab) role="list" aria-label="{{ __('admin_ccc.module.list_label') }}" @endif>
                 @forelse ($this->tools as $tool)
-                    <div class="col-md-6 col-xl-4" wire:key="tool-{{ $tool->id }}">
+                    <div class="col-md-6 col-xl-4" wire:key="tool-{{ $tool->id }}" @if ($isManualTab) role="listitem" @endif>
                         <div @class(['card h-100 xm-admin-card', 'opacity-75' => ! $tool->is_published])>
                             <div class="ratio ratio-16x9 bg-body-secondary">
                                 <img src="{{ \App\Support\MediaUrl::resolve($tool->image_path, $fallbackImage) }}" class="object-fit-cover" alt="" loading="lazy" width="640" height="360">
@@ -100,7 +109,9 @@
                                 <h3 class="h6">{{ $tool->title }}</h3>
                                 <p class="small text-secondary mb-0">
                                     @if ($tool->kind === \App\Enums\CccKind::Manual)
-                                        {{ trans_choice('admin_ccc.chapters', count((array) $tool->chapters), ['count' => count((array) $tool->chapters)]) }}@if ($tool->duration_minutes) · {{ __('admin_ccc.minutes', ['count' => $tool->duration_minutes]) }}@endif
+                                        {{ trans_choice('admin_ccc.chapters', count((array) $tool->chapters), ['count' => count((array) $tool->chapters)]) }}@if ($tool->duration_minutes) · {{ __('admin_ccc.minutes', ['count' => $tool->duration_minutes]) }}@endif · {{ __('admin_ccc.form.key', ['key' => $tool->key]) }}
+                                        @if ($tool->description)<br>{{ $tool->description }}@endif
+                                        <br>{{ __('admin_ccc.module.order', ['position' => $loop->iteration, 'total' => $moduleTotal]) }}
                                     @elseif (in_array($tool->kind, $pagedKinds, true))
                                         {{ trans_choice('admin_ccc.pages', $tool->pagesCount(), ['count' => $tool->pagesCount()]) }} · {{ __('admin_ccc.form.key', ['key' => $tool->key]) }}
                                         @if ($tool->description)<br>{{ $tool->description }}@endif
@@ -115,11 +126,20 @@
                                     <label class="form-check-label small" for="xmTool{{ $tool->id }}">{{ __('admin_ccc.published') }}<span class="visually-hidden"> — {{ $tool->title }}</span></label>
                                 </div>
                                 <div class="ms-auto d-flex flex-wrap gap-1">
+                                    @if ($isManualTab)
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="xmModuleUp{{ $tool->id }}" wire:click="moveModule({{ $tool->id }}, -1)" @disabled($loop->first)><i class="bi bi-arrow-up me-1" aria-hidden="true"></i>{{ __('admin_ccc.module.up') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="xmModuleDown{{ $tool->id }}" wire:click="moveModule({{ $tool->id }}, 1)" @disabled($loop->last)><i class="bi bi-arrow-down me-1" aria-hidden="true"></i>{{ __('admin_ccc.module.down') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" wire:click="openModuleChapters({{ $tool->id }})"><i class="bi bi-list-ol me-1" aria-hidden="true"></i>{{ __('admin_ccc.module.chapters_open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="openModuleEdit({{ $tool->id }})"><i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ __('admin_ccc.module.edit_open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                    @endif
                                     @if (in_array($tool->kind, $pagedKinds, true))
                                         <button type="button" class="btn btn-sm btn-outline-primary" wire:click="openPages({{ $tool->id }})"><i class="bi bi-card-text me-1" aria-hidden="true"></i>{{ __('admin_ccc.planches.open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
                                         <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="openEdit({{ $tool->id }})"><i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ __('admin_ccc.form.edit_open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
                                     @endif
                                     <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="openImage({{ $tool->id }})"><i class="bi bi-image me-1" aria-hidden="true"></i>{{ __('admin_ccc.image.open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                    @if ($isManualTab)
+                                        <button type="button" class="btn btn-sm btn-outline-danger" wire:click="openModuleDelete({{ $tool->id }})"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('admin_ccc.module.delete_open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                    @endif
                                     @if (in_array($tool->kind, $pagedKinds, true))
                                         <button type="button" class="btn btn-sm btn-outline-danger" wire:click="openDelete({{ $tool->id }})"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('admin_ccc.delete.open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
                                     @endif
@@ -306,6 +326,8 @@
             <button type="button" class="btn btn-danger" wire:click="deleteTool" wire:loading.attr="disabled" wire:target="deleteTool"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('components.modal.delete_action') }}</button>
         </x-slot:footer>
     </x-admin.modal>
+
+    @include('livewire.admin.ccc.modules-modals')
 
     {{-- Texte de loi : création et modification --}}
     @php($lawMax = ['title' => \App\Application\Admin\Content\ManageLaws::TITLE_MAX, 'subtitle' => \App\Application\Admin\Content\ManageLaws::SUBTITLE_MAX, 'category' => \App\Application\Admin\Content\ManageLaws::CATEGORY_MAX, 'summary' => \App\Application\Admin\Content\ManageLaws::SUMMARY_MAX, 'url' => \App\Application\Admin\Content\ManageLaws::URL_MAX])

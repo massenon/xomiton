@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Ccc;
 
+use App\Application\Admin\Content\ManageCccModules;
 use App\Application\Admin\Content\ManageCccTools;
 use App\Application\Admin\Content\ManageLaws;
 use App\Domain\Content\Exceptions\ContentRefused;
@@ -24,7 +25,8 @@ use Livewire\WithFileUploads;
 /**
  * Outils CCC `/admin/ccc` (P12-04 ; prototype admin/ccc.php) : onglets Manuel · Boîtes à images · BD SSR · Lois, KPI,
  * publié / masqué (un outil masqué disparaît des écrans membre et pair, un texte masqué de `/lois`), remplacement de
- * l'image (MediaUploader). Onglets Boîtes à images et BD SSR (même mécanique, le kind est celui de l'onglet à la création,
+ * l'image (MediaUploader). Onglet Manuel : création, titre, description et durée, chapitres (ajout, texte, retrait, ordre au
+ * clavier), ordre des modules (monter / descendre) et suppression (ManageCccModules). Onglets Boîtes à images et BD SSR (même mécanique, le kind est celui de l'onglet à la création,
  * celui de l'outil ensuite) : création, titre, planches (ajout, retrait, légende, texte alternatif, ordre au clavier) et
  * suppression. Onglet Lois : création, modification de tous les champs, ordre (monter / descendre), publié / masqué et
  * suppression (ManageLaws). Permission `ccc_tools.manage` (admin, superadmin) vérifiée à chaque action (jamais seulement à
@@ -95,6 +97,31 @@ final class Index extends Component
 
     public bool $lawPublished = false;
 
+    /** Module du manuel dont une modale (modification, chapitres, suppression) est ouverte ; null = création (jamais modifiable depuis le navigateur). */
+    #[Locked]
+    public ?int $moduleId = null;
+
+    /** Rang (0 pour le premier) du chapitre dont le retrait attend sa confirmation (jamais modifiable depuis le navigateur). */
+    #[Locked]
+    public ?int $removeChapterIndex = null;
+
+    /** Formulaire « Nouveau module » / « Modifier le module ». */
+    public string $moduleTitle = '';
+
+    public string $moduleDescription = '';
+
+    public string $moduleDuration = '';
+
+    /** Formulaire « Ajouter un chapitre ». */
+    public string $newChapter = '';
+
+    /**
+     * Texte des chapitres du module ouvert, dans l'ordre des chapitres.
+     *
+     * @var array<int, mixed>
+     */
+    public array $chapterEdits = [];
+
     /** Phrase lue par les lecteurs d'écran après un déplacement. */
     public string $announce = '';
 
@@ -129,7 +156,9 @@ final class Index extends Component
         $publish = ! $tool->is_published;
 
         try {
-            if (ManageCccTools::isPaged($tool->kind)) {
+            if (ManageCccModules::isModule($tool)) {
+                app(ManageCccModules::class)->setPublished($tool, $publish, $this->actor());
+            } elseif (ManageCccTools::isPaged($tool->kind)) {
                 $manage->setPagedPublished($tool, $publish, $this->actor());
             } else {
                 $manage->setPublished($tool, $publish, $this->actor());
@@ -265,6 +294,256 @@ final class Index extends Component
         unset($this->laws, $this->kpis, $this->counts, $this->lawCategories);
     }
 
+    public function openModuleCreate(): void
+    {
+        $this->authorizeManage();
+        $this->resetModal();
+        $this->openModal('xmCccModule');
+    }
+
+    public function openModuleEdit(int $id): void
+    {
+        $module = $this->module($id);
+        $this->resetModal();
+        $this->moduleId = (int) $module->getKey();
+        $this->moduleTitle = $module->title;
+        $this->moduleDescription = (string) $module->description;
+        $this->moduleDuration = $module->duration_minutes === null ? '' : (string) $module->duration_minutes;
+        $this->openModal('xmCccModule');
+    }
+
+    public function openModuleChapters(int $id, ManageCccModules $manage): void
+    {
+        $module = $this->module($id);
+        $this->resetModal();
+        $this->moduleId = (int) $module->getKey();
+        $this->chapterEdits = $manage->chaptersOf($module);
+        $this->openModal('xmCccChapters');
+    }
+
+    public function openModuleDelete(int $id): void
+    {
+        $module = $this->module($id);
+        $this->resetModal();
+        $this->moduleId = (int) $module->getKey();
+        $this->openModal('xmCccModuleDelete');
+    }
+
+    /** Crée le module (`moduleId` nul) ou enregistre son titre, sa description et sa durée. */
+    public function saveModule(ManageCccModules $manage): void
+    {
+        $this->authorizeManage();
+        $module = $this->moduleId === null ? null : $this->openedModuleOrFail();
+        $this->validate([
+            'moduleTitle' => ['required', 'string', 'not_regex:/<\/?[a-z!][^>]*>/i', 'max:'.ManageCccModules::TITLE_MAX],
+            'moduleDescription' => ['nullable', 'string', 'not_regex:/<\/?[a-z!][^>]*>/i', 'max:'.ManageCccModules::DESCRIPTION_MAX],
+            'moduleDuration' => ['nullable', 'integer', 'between:'.ManageCccModules::DURATION_MIN.','.ManageCccModules::DURATION_MAX],
+        ], [
+            'not_regex' => (string) __('admin_ccc.module.no_markup'),
+        ], [
+            'moduleTitle' => (string) __('admin_ccc.module.fields.title'),
+            'moduleDescription' => (string) __('admin_ccc.module.fields.description'),
+            'moduleDuration' => (string) __('admin_ccc.module.fields.duration'),
+        ]);
+
+        $duration = trim($this->moduleDuration) === '' ? null : (int) $this->moduleDuration;
+
+        try {
+            $saved = $module === null
+                ? $manage->create($this->moduleTitle, $this->moduleDescription, $duration, $this->actor())
+                : $manage->update($module, $this->moduleTitle, $this->moduleDescription, $duration, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('module', $refused->userMessage());
+
+            return;
+        }
+
+        $this->closeModal('xmCccModule');
+        $this->toast((string) __($module === null ? 'admin_ccc.toasts.module_created' : 'admin_ccc.toasts.module_updated', ['title' => $saved->title]));
+        $this->resetModal();
+        unset($this->tools, $this->kpis, $this->counts);
+    }
+
+    /** Monte (−1) ou descend (+1) un module ; le focus suit son module. */
+    public function moveModule(int $id, int $direction, ManageCccModules $manage): void
+    {
+        $module = $this->module($id);
+        $direction = $direction < 0 ? -1 : 1;
+
+        try {
+            $target = $manage->move($module, $direction, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->toast($refused->userMessage(), 'error');
+
+            return;
+        }
+
+        unset($this->tools);
+        $total = count($this->tools());
+        $this->announce = (string) __('admin_ccc.module.moved', ['title' => $module->title, 'position' => $target + 1, 'total' => $total]);
+
+        // Au bord de la liste, le focus passe sur l'autre bouton (le premier « Monter » est inactif).
+        $button = $direction < 0 ? ($target === 0 ? 'Down' : 'Up') : ($target === $total - 1 ? 'Up' : 'Down');
+        $this->dispatch('xm-ccc-focus', id: 'xmModule'.$button.$module->getKey());
+    }
+
+    public function deleteModule(ManageCccModules $manage): void
+    {
+        $this->authorizeManage();
+        $module = $this->openedModuleOrFail();
+
+        try {
+            $manage->delete($module, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('delete', $refused->userMessage());
+
+            return;
+        }
+
+        $this->closeModal('xmCccModuleDelete');
+        $this->toast((string) __('admin_ccc.toasts.module_deleted', ['title' => $module->title]));
+        $this->resetModal();
+        unset($this->tools, $this->kpis, $this->counts);
+    }
+
+    public function addChapter(ManageCccModules $manage): void
+    {
+        $this->authorizeManage();
+        $module = $this->openedModuleOrFail();
+        $this->validate([
+            'newChapter' => ['required', 'string', 'not_regex:/<\/?[a-z!][^>]*>/i', 'max:'.ManageCccModules::CHAPTER_MAX],
+        ], [
+            'not_regex' => (string) __('admin_ccc.module.no_markup'),
+        ], [
+            'newChapter' => (string) __('admin_ccc.module.chapter_new_label'),
+        ]);
+
+        try {
+            $saved = $manage->addChapter($module, $this->newChapter, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('newChapter', $refused->userMessage());
+
+            return;
+        }
+
+        $chapters = $manage->chaptersOf($saved);
+        $last = array_key_last($chapters);
+
+        if ($last !== null) {
+            $this->chapterEdits[] = $chapters[$last];
+        }
+
+        $this->reset('newChapter');
+        $this->removeChapterIndex = null;
+        unset($this->openedModule, $this->openedChapters, $this->tools);
+        $this->toast((string) __('admin_ccc.toasts.chapter_added', ['title' => $module->title]));
+        $this->dispatch('xm-ccc-focus', id: 'xmCccNewChapter');
+    }
+
+    /** Texte de tous les chapitres. */
+    public function saveChapters(ManageCccModules $manage): void
+    {
+        $this->authorizeManage();
+        $module = $this->openedModuleOrFail();
+        $this->validate([
+            'chapterEdits' => ['array'],
+            'chapterEdits.*' => ['required', 'string', 'not_regex:/<\/?[a-z!][^>]*>/i', 'max:'.ManageCccModules::CHAPTER_MAX],
+        ], [
+            'not_regex' => (string) __('admin_ccc.module.no_markup'),
+        ], [
+            'chapterEdits.*' => (string) __('admin_ccc.module.chapter_label'),
+        ]);
+
+        $texts = [];
+
+        foreach ($this->chapterEdits as $row) {
+            $texts[] = is_string($row) ? $row : '';
+        }
+
+        try {
+            $saved = $manage->saveChapters($module, $texts, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('chapters', $refused->userMessage());
+
+            return;
+        }
+
+        $this->chapterEdits = $manage->chaptersOf($saved);
+        $this->toast((string) __('admin_ccc.toasts.chapters_saved', ['title' => $module->title]));
+        unset($this->openedModule, $this->openedChapters);
+    }
+
+    /** Monte (−1) ou descend (+1) un chapitre ; les textes saisis et pas encore enregistrés suivent leur chapitre. */
+    public function moveChapter(int $index, int $direction, ManageCccModules $manage): void
+    {
+        $this->authorizeManage();
+        $module = $this->openedModuleOrFail();
+        $direction = $direction < 0 ? -1 : 1;
+
+        try {
+            $target = $manage->moveChapter($module, $index, $direction, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('chapters', $refused->userMessage());
+
+            return;
+        }
+
+        if (isset($this->chapterEdits[$index], $this->chapterEdits[$target])) {
+            [$this->chapterEdits[$index], $this->chapterEdits[$target]] = [$this->chapterEdits[$target], $this->chapterEdits[$index]];
+        }
+
+        $this->removeChapterIndex = null;
+        unset($this->openedModule, $this->openedChapters);
+        $total = count($this->openedChapters());
+        $this->announce = (string) __('admin_ccc.module.chapter_moved', ['position' => $target + 1, 'total' => $total]);
+
+        // Le focus suit le chapitre déplacé ; au bord de la liste, il passe sur l'autre bouton (le premier « Monter » est inactif).
+        $button = $direction < 0 ? ($target === 0 ? 'Down' : 'Up') : ($target === $total - 1 ? 'Up' : 'Down');
+        $this->dispatch('xm-ccc-focus', id: 'xmCccChapter'.$button.$target);
+    }
+
+    public function askRemoveChapter(int $index): void
+    {
+        $this->authorizeManage();
+        $this->openedModuleOrFail();
+
+        if (isset($this->chapterEdits[$index])) {
+            $this->removeChapterIndex = $index;
+        }
+    }
+
+    public function cancelRemoveChapter(): void
+    {
+        $this->authorizeManage();
+        $index = $this->removeChapterIndex;
+        $this->removeChapterIndex = null;
+
+        if ($index !== null) {
+            $this->dispatch('xm-ccc-focus', id: 'xmCccChapterRemove'.$index);
+        }
+    }
+
+    public function removeChapter(ManageCccModules $manage): void
+    {
+        $this->authorizeManage();
+        $module = $this->openedModuleOrFail();
+        $index = $this->removeChapterIndex ?? abort(404);
+        $this->removeChapterIndex = null;
+
+        try {
+            $manage->removeChapter($module, $index, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('chapters', $refused->userMessage());
+
+            return;
+        }
+
+        array_splice($this->chapterEdits, $index, 1);
+        unset($this->openedModule, $this->openedChapters, $this->tools);
+        $this->toast((string) __('admin_ccc.toasts.chapter_removed', ['title' => $module->title]));
+        $this->dispatch('xm-ccc-focus', id: 'xmCccChaptersList');
+    }
+
     public function openImage(int $id): void
     {
         $tool = $this->tool($id);
@@ -312,10 +591,10 @@ final class Index extends Component
 
     public function resetModal(): void
     {
-        $this->reset('lawId', 'lawTitle', 'lawSubtitle', 'lawCategory', 'lawSummary', 'lawSimple', 'lawUrl', 'lawPublished', 'toolId', 'removeIndex', 'image', 'title', 'published', 'cover', 'draftPages', 'newImage', 'newCaption', 'newAlt', 'pageEdits', 'announce');
+        $this->reset('lawId', 'lawTitle', 'lawSubtitle', 'lawCategory', 'lawSummary', 'lawSimple', 'lawUrl', 'lawPublished', 'toolId', 'removeIndex', 'image', 'title', 'published', 'cover', 'draftPages', 'newImage', 'newCaption', 'newAlt', 'pageEdits', 'announce', 'moduleId', 'removeChapterIndex', 'moduleTitle', 'moduleDescription', 'moduleDuration', 'newChapter', 'chapterEdits');
         $this->resetErrorBag();
         $this->fileInputKey++;
-        unset($this->openedTool, $this->openedPages, $this->openedLaw);
+        unset($this->openedTool, $this->openedPages, $this->openedLaw, $this->openedModule, $this->openedChapters);
     }
 
     public function saveImage(ManageCccTools $manage): void
@@ -569,6 +848,25 @@ final class Index extends Component
     }
 
     #[Computed]
+    public function openedModule(): ?CccTool
+    {
+        return $this->moduleId === null ? null : CccTool::query()->ofKind(CccKind::Manual)->find($this->moduleId);
+    }
+
+    /**
+     * Chapitres du module ouvert, dans l'ordre de lecture.
+     *
+     * @return list<string>
+     */
+    #[Computed]
+    public function openedChapters(): array
+    {
+        $module = $this->openedModule();
+
+        return $module === null ? [] : app(ManageCccModules::class)->chaptersOf($module);
+    }
+
+    #[Computed]
     public function openedLaw(): ?Law
     {
         return $this->lawId === null ? null : Law::query()->find($this->lawId);
@@ -703,6 +1001,22 @@ final class Index extends Component
         $kind = $this->openedTool()?->kind ?? CccKind::tryFrom($this->tab);
 
         return $kind !== null && ManageCccTools::isPaged($kind) ? $kind : CccKind::Comic;
+    }
+
+    /** Module du manuel désigné par l'identifiant ; un outil d'une autre famille n'est jamais modifié par ces actions. */
+    private function module(int $id): CccTool
+    {
+        $this->authorizeManage();
+
+        return CccTool::query()->ofKind(CccKind::Manual)->findOrFail($id);
+    }
+
+    /** Module dont une modale est ouverte (`moduleId` verrouillé). */
+    private function openedModuleOrFail(): CccTool
+    {
+        $this->authorizeManage();
+
+        return $this->openedModule() ?? abort(404);
     }
 
     /** Texte de loi désigné par l'identifiant : `laws.manage` en plus de `ccc_tools.manage`, revérifiés à chaque action. */
