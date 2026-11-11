@@ -1,5 +1,7 @@
 # Spec — Prototype mobile v2 : navigation, splash plein écran, âge 15 ans
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration.** Cette spec décrit le prototype mobile (historique, non modifié) à la règle de 15 ans ; l'application Flutter et le serveur appliquent désormais 18 ans (`xomiton.accounts.min_age`). Les mentions de 15 ans ci-dessous sont historiques.
+
 Statut : implémenté (2026-10-28) ; reste à valider en recette humaine (`docs/CHECKLIST_RECETTE.md` MOB-02, MOB-11 à MOB-13) et à lever le point « droits d'image » du §6. P1 : dernière slide mémorisée et filtre du menu faits ; P2 non fait. Périmètre : `prototype_mobile/` (HTML) et, pour le splash et l'âge, l'application Flutter `mobile/`.
 
 ## 1. Problème

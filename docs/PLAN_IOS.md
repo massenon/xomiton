@@ -5,6 +5,8 @@ description: Plan pour construire et publier l'application iOS de Xomiton (la m�
 
 # Plan iOS : construire et publier l'application Xomiton sur l'App Store
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration, sans exception ni réglage.** D-IOS-5 : plus d'arbitrage 15 ou 16 ans.
+
 Document du 9 novembre 2026 ; décisions D-IOS-1 à D-IOS-12 tranchées le 10 novembre 2026 (§10). Il complète [PLAN_MOBILE_APP_UNIQUE.md](PLAN_MOBILE_APP_UNIQUE.md) (architecture et lots P15), [PLAN_FINALISATION.md](PLAN_FINALISATION.md) (chantier C22) et [RESTE_A_FAIRE.md](RESTE_A_FAIRE.md) (§3.3), et suit la même logique que [BUILD_ANDROID_WINDOWS.md](BUILD_ANDROID_WINDOWS.md) et [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md). Légende des responsables : **C** = client, **D** = développeur·se, **M** = tâche qui exige un Mac (ou une machine macOS de CI), **J** = conseil juridique.
 
 ## 0. Avertissements et état réel
@@ -563,7 +565,9 @@ L'application **ne remplace pas** les services d'urgence et **n'appelle pas** d'
 - Xomiton utilise **HTTPS** (chiffrement du système, exempté) **et** son propre chiffrement local (AES de Hive, PBKDF2 du PIN, SHA, paquet `crypto`). Ce second usage est **au-delà du chiffrement fourni par le système** : il n'est pas certain qu'il soit « exempté » au sens de la réglementation américaine d'exportation.
 - **Ne pas** mettre `false` par réflexe. **Décision (D-IOS-8, tranchée le 2026-11-10 ; application conditionnée à l'avis du conseil)** : demander l'**avis écrit** du conseil sur la qualification ; en l'attente, répondre à Apple par l'option « utilise le chiffrement… exempté » **si** le conseil le confirme (en pratique : produit grand public, algorithmes standards, avec **auto-classification** déclarée annuellement à l'administration américaine) ; une **pièce justificative** peut être demandée pour certains pays, **dont la France** (à vérifier si la diffusion y est retenue). Clé `ITSAppUsesNonExemptEncryption` posée selon la réponse validée.
 
-### 5.7 Âge, classification et âge minimal de 15 ans
+### 5.7 Âge, classification et âge minimal (15 ans à l'origine, 18 ans depuis le 11/11/2026)
+
+> **Mise à jour du 11/11/2026** : l'âge minimal du produit est de **18 ans**. Le risque « une personne de 15 ans empêchée d'installer l'app par une classification 16+ ou 18+ » disparaît ; les options a / b ci-dessous (maintenir 15 ans ou relever à 16 ans) sont **caduques**. Il reste à **répondre honnêtement** au questionnaire Apple et à faire confirmer par le conseil que la classification obtenue (attendue 18+) est cohérente avec l'âge minimal de 18 ans. Le texte d'origine est conservé pour l'historique.
 
 - **Attention à la grille** : Apple a **remplacé en 2025** les anciens niveaux (4+, 9+, 12+, 17+) par **4+, 9+, 13+, 16+, 18+**, avec un questionnaire plus détaillé (contrôles intégrés à l'app, capacités : messagerie, contenu généré par les utilisateurs, accès web non restreint ; sujets médicaux ou de bien-être ; contenus sexuels ou nus ; violence ; sujets matures). Le texte de cadrage de ce projet parlait de « 17+ probable » : **dans la grille actuelle, le résultat probable est 16+ ou 18+**, **à lire dans App Store Connect** après réponse honnête (à vérifier).
 - **Réponses honnêtes** : contenu généré par les utilisateurs **oui**, messagerie **oui**, accès web non restreint **non**, publicité **non**, thèmes de violences et de sexualité **abordés à titre d'information et de prévention** (violence réelle, sujets de santé sexuelle) : à déclarer comme tels, **sans minorer**.
@@ -837,7 +841,7 @@ Durées en semaines calendaires **à partir de la décision (S0)**, pour **une**
 | Rejet 1.2 (UGC) | Moyenne / élevée | Filtre minimal, signalement et blocage complets, procédure de modération | Réduire la surface UGC de la première version (messages de groupe désactivés) |
 | Rejet 2.1 (démonstration) ou 2.3.1 (fonction cachée) | **Moyenne / élevée** | §5.8 | **Variante « membre » seule** (`SPACES=member`) pour la boutique publique ; pair et admin via distribution privée (TestFlight ou « Apple Business Manager / distribution personnalisée », à vérifier) |
 | Rejet à cause de l'icône ou du nom (« Notes ») | Moyenne / faible | Icône originale, nom Xomiton | Retirer l'icône alternative de la v1 |
-| Classification 18+ ou 16+ gênante pour les 15 ans | Moyenne / moyenne | D-IOS-5 avec le conseil | Aligner l'âge minimal (16) |
+| ~~Classification 18+ ou 16+ gênante pour les 15 ans~~ *(caduc depuis le 11/11/2026 : âge minimal 18 ans)* | — | D-IOS-5 avec le conseil | — |
 | Confidentialité : données sensibles mal décrites | Moyenne / élevée | Étiquettes et manifeste relus par le conseil | Retarder la soumission plutôt que de sous-déclarer |
 | Défaut d'adaptation Dynamic Type (débordements) | Haute / moyenne | Tests XXL/AX5 sur écrans critiques | Plafond de l'échelle sur les écrans critiques |
 | Données d'une personne retrouvées après réinstallation (Keychain) | Moyenne / **haute** | Purge au premier lancement, test de réinstallation | — |
@@ -879,7 +883,7 @@ Durées en semaines calendaires **à partir de la décision (S0)**, pour **une**
 - [ ] Formulation SOS (annexe F) sur l'écran, la fiche, les notes
 - [ ] Étiquettes de confidentialité remplies et relues par le conseil
 - [ ] Chiffrement : réponse validée par écrit (D-IOS-8)
-- [ ] Classification d'âge répondue honnêtement ; lecture du résultat ; arbitrage 15 ans (D-IOS-5)
+- [ ] Classification d'âge répondue honnêtement ; lecture du résultat ; cohérence avec l'âge minimal de 18 ans (D-IOS-5)
 - [ ] **Comptes de démonstration** membre, pair, admin testés **le jour de la soumission** ; OTP restreint ; **SOS de démonstration n'alerte personne**
 - [ ] Notes de revue en anglais (annexe D), contact de revue (nom, téléphone, e-mail)
 - [ ] Politique de confidentialité et suppression de compte **en ligne sous le domaine de production**, lisibles sans connexion
@@ -910,7 +914,7 @@ Durées en semaines calendaires **à partir de la décision (S0)**, pour **une**
 | **D-IOS-2** | Mac | Achat / location / CI seule | **Mac mini + CI macOS** ; jamais la CI seule pour concevoir | Tranché 2026-11-10 (recommandation retenue par le client) |
 | **D-IOS-3** | **Critical Alerts** : demander ou non | Oui / non | **Demander en parallèle, ne pas en dépendre** ; v1 en Time Sensitive ; réservé à l'option « Astreinte » de l'admin, **jamais par défaut pour le pair** | Tranché 2026-11-10 (recommandation retenue par le client) |
 | **D-IOS-4** | Mode discret iOS : nom neutre ou nom « Xomiton » | Icône neutre + nom inchangé / nom neutre fixe | **Icône neutre, nom inchangé**, limite expliquée ; **ne pas imiter « Notes »** | Tranché 2026-11-10 (recommandation retenue par le client) |
-| **D-IOS-5** | Classification d'âge et âge minimal de 15 ans | Classification calculée (16+/18+) et 15 ans / relever à 16 ans | **Classification calculée honnêtement ; 15 ans maintenu** si le conseil l'accepte, sinon 16 ; décision avec le conseil (liée à D-MOB-18) | Tranché 2026-11-10 (recommandation retenue par le client) ; **application conditionnée à l'avis du conseil** |
+| **D-IOS-5** *(âge minimal devenu 18 ans le 11/11/2026 : reste la classification honnête, 18+ attendue, à confirmer par le conseil)* | Classification d'âge et âge minimal de 15 ans | Classification calculée (16+/18+) et 15 ans / relever à 16 ans | **Classification calculée honnêtement ; 15 ans maintenu** si le conseil l'accepte, sinon 16 ; décision avec le conseil (liée à D-MOB-18) | Tranché 2026-11-10 (recommandation retenue par le client) ; **application conditionnée à l'avis du conseil** |
 | **D-IOS-6** | Orientation | Portrait seul / toutes | **Portrait seul** sur iPhone à la v1 | Tranché 2026-11-10 (recommandation retenue par le client) |
 | **D-IOS-7** | Synchro d'arrière-plan | Aucune / `BGAppRefreshTask` | **Aucune à la v1** ; v1.1 pour l'espace pair si besoin | Tranché 2026-11-10 (recommandation retenue par le client) |
 | **D-IOS-8** | Chiffrement à l'exportation | « Exempté » / non exempté | **Avis écrit du conseil** avant de répondre ; ne pas poser `false` par défaut | Tranché 2026-11-10 (recommandation retenue par le client) ; **application conditionnée à l'avis écrit du conseil** |

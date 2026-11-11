@@ -5,6 +5,8 @@ description: Instructions pour la connexion, l'inscription en 3 étapes obligato
 
 # Connexion et inscription multi-étapes
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration, sans exception ni réglage.** Le champ âge de l'étape 1 est refusé sous 18 ans ; les signaux d'inscription suspecte restent enregistrés mais ne changent pas le statut.
+
 Références : `design-system/xomiton/pages/authentification.md` (prime), `prototype_social/sign-in.php`, `sign-up.php`, `forgot-password.php`, simulateur `prototype_mobile/#/signup`, `#/otp`.
 
 ## 1. Parcours
@@ -29,7 +31,7 @@ login ─► forgot ─► otp(purpose=reset) ─► reset ─► login
 Erreur unique et indifférenciée : « Identifiants incorrects. Vérifie ton e-mail et ton mot de passe. » Compte en attente, suspendu ou maintenance : message spécifique **après** vérification du mot de passe. Limite : 5 essais / minute.
 
 ## 4. Inscription en 3 étapes obligatoires (décision du client du 11/11/2026)
-Remplace les 4 phases dont une seule obligatoire (D4, P2-03). **Un seul formulaire, un seul envoi à la fin ; le compte n'existe qu'à la fin.** Il est créé `en_attente` (réglage `reg_manual_validation = all` par défaut) et la session est ouverte aussitôt ; l'administration valide le compte et **confirme alors l'e-mail** (`email_verified_at`, journalisé). Aucun code OTP ni e-mail de bienvenue à l'inscription ; l'OTP reste pour la connexion et la réinitialisation. Âge minimal : `xomiton.accounts.min_age` (15), lu partout.
+Remplace les 4 phases dont une seule obligatoire (D4, P2-03). **Un seul formulaire, un seul envoi à la fin ; le compte n'existe qu'à la fin.** Il est créé `en_attente` (toujours : plus aucun réglage `reg_manual_validation`, plus de mode « pair·es seulement ») et la session est ouverte aussitôt ; l'administration valide le compte et **confirme alors l'e-mail** (`email_verified_at`, journalisé). Aucun code OTP ni e-mail de bienvenue à l'inscription ; l'OTP reste pour la connexion et la réinitialisation. Âge minimal : `xomiton.accounts.min_age` (**18**, décision du 11/11/2026), lu partout.
 
 | Étape | Champs (tous obligatoires sauf mention) | Validation |
 |---|---|---|

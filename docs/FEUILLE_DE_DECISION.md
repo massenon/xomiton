@@ -1,5 +1,7 @@
 # Feuille de décision — les 14 questions qui bloquent la recette (+ 4 juridiques)
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration, sans exception ni réglage.** Les lignes Q68, 8 et D-MOB-18 sont conservées pour l'historique et marquées « remplacée ».
+
 Comment l'utiliser : pour chaque ligne, coche **OK** (on garde la recommandation, c'est déjà le comportement actuel) ou écris ta décision. Sans réponse, la recommandation reste appliquée. Détail des options : `IMPLEMENTATION_PLAN.md` §7, même numéro.
 
 ## A. À trancher en premier (changent le travail à faire)
@@ -30,7 +32,7 @@ Comment l'utiliser : pour chaque ligne, coche **OK** (on garde la recommandation
 
 | Q | Question | Ma recommandation | Ta décision |
 |---|---|---|---|
-| Q68 | Âge minimal d'inscription | **16 ans**, ou 15 ans seulement si le conseil juridique le valide (consentement des mineur·es au Bénin) | **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` |
+| Q68 *(REMPLACÉE le 11/11/2026 : 18 ans)* | Âge minimal d'inscription | **16 ans**, ou 15 ans seulement si le conseil juridique le valide (consentement des mineur·es au Bénin) | **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` |
 | Q67 | Textes légaux (confidentialité, charte, conditions) | **Relecture par un juriste** avant la mise en ligne ; les textes actuels sont des propositions | ☐ OK ☐ ___ |
 | Q9 | Où sauvegarder hors du serveur | **Stockage d'objets compatible S3 chez un autre hébergeur**, chiffré, rétention 30 jours | ☐ OK ☐ ___ |
 | Q57 | E-mails en file stockés en clair | **Chiffrer le corps** de `mail_outbox` ou le purger dès l'envoi (je peux le faire) | **Tranché 2026-10-28** : purge du corps dès l'envoi ; échecs conservés 7 jours au plus |
@@ -54,7 +56,7 @@ Le client a tranché (détail et effets : `PLAN_MOBILE_APP_UNIQUE.md` §10, D-MO
 | 5 | Position d'un SOS | **Arrondie** (environ 1 km) pour les admins, jamais exacte même en intervention (D-MOB-4) | **Tranché 2026-10-29** ; **Tranché 2026-10-29 (recommandation retenue)** pour « jamais exacte » |
 | 6 | Push SOS et alertes | Envoyé aux **admins ET aux pairs éducateurs** : admins de garde + pairs de la zone, puis **escalade nationale à 5 min** sans accusé (D-MOB-10) | **Tranché 2026-10-29** ; **Tranché 2026-10-29 (recommandation retenue)** pour la précision |
 | 7 | Mise en ligne Play | **Une seule version** Play | **Tranché 2026-10-29** |
-| 8 | Fiche Play | Âge minimal **15 ans**, **pas de tarif**, **tous les pays**, tranches d'âge Play « 16-17 » et « 18+ » seulement, **français uniquement** | **Tranché 2026-10-29** |
+| 8 *(âge et tranches REMPLACÉS le 11/11/2026 : 18 ans, tranche « 18 ans et plus » seule)* | Fiche Play | Âge minimal **15 ans**, **pas de tarif**, **tous les pays**, tranches d'âge Play « 16-17 » et « 18+ » seulement, **français uniquement** | **Tranché 2026-10-29** |
 | 9 | Validation | Les **maquettes** (`prototype_mobile/`) sont validées par le client **avant tout code mobile** | **Tranché 2026-10-29** |
 
 Arbitrages D-MOB-15 à D-MOB-18 (proposés par les maquettes) : le client a répondu « ALLONS Y », **recommandation retenue** pour chacun (`PLAN_MOBILE_APP_UNIQUE.md` §10 et `DECISIONS_A_VALIDER.md`).
@@ -64,7 +66,7 @@ Arbitrages D-MOB-15 à D-MOB-18 (proposés par les maquettes) : le client a rép
 | D-MOB-15 | Demande du rôle pair par un membre | Oui, depuis son profil, motif court facultatif, une demande en cours à la fois ; l'admin décide (motif en cas de refus) | **Tranché 2026-10-29 (recommandation retenue)** |
 | D-MOB-16 | Rôle admin | S'attribue **uniquement depuis le site web** (super-admin) | **Tranché 2026-10-29 (recommandation retenue)** |
 | D-MOB-17 | Validation des inscriptions | Seulement les inscriptions **signalées** (e-mail jetable, répétitions) ; « tout valider » reste un réglage | **Tranché 2026-10-29 (recommandation retenue)** |
-| D-MOB-18 | Âge et fiche Play | Conservé : application 15 ans, tranches Play 16-17 et 18+ ; **à valider par le conseil juridique avant publication** | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-18 *(REMPLACÉE le 11/11/2026 : âge minimal 18 ans)* | Âge et fiche Play | Conservé : application 15 ans, tranches Play 16-17 et 18+ ; **à valider par le conseil juridique avant publication** | **Tranché 2026-10-29 (recommandation retenue)** |
 
 ## Ensuite
 Ce que je peux faire dès que tu as répondu : appliquer les décisions qui changent le code (Q61, Q54, Q16, Q57, Q56), consigner le reste dans `design-system/DECISIONS.md`, et préparer le branchement SMS / push (Q7) dès que tu as choisi le fournisseur.

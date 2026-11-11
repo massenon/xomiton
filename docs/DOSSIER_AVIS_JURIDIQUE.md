@@ -1,5 +1,7 @@
 # Dossier à remettre à un·e avocat·e ou conseil en protection des données
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration.** Le seuil passe de 15 à 18 ans (la majorité) : les anciennes questions B1 à B4 (consentement des mineur·es, accord parental, décalage 15 ans / tranches Play, classification Apple pour 15 ans) sont en grande partie **caduques** ; la section B est reformulée ci-dessous avec ce qui reste à valider.
+
 > **Deux lecteurs** : (1) **vous**, représentant·e de l'organisation, qui choisissez le conseil et lui remettez ce dossier ; (2) **le conseil**, qui y trouve le contexte, les questions précises et les pièces. Les §1 à §5 s'adressent surtout au conseil ; le §6 sert à transformer l'avis en modifications du produit ; le §7 aide à choisir le conseil.
 >
 > **Honnêteté** : ce dossier ne contient **aucun texte de loi**, aucun délai légal et aucune conclusion juridique. Les textes de Xomiton ont été **écrits d'après le fonctionnement réel du code** par l'équipe technique, **sans validation juridique**. Pour le Bénin, les seules pistes mentionnées sont celles à confirmer par le conseil : le **Code du numérique du Bénin** et l'**Autorité de protection des données personnelles (APDP)**. Tout point de droit est **à confirmer par le conseil**.
@@ -21,7 +23,7 @@ Xomiton est une plateforme numérique **sûre** (site web et **application mobil
 | Facteur | Détail |
 |---|---|
 | **Public vulnérable** | Personnes exposées à des violences, à la stigmatisation et, selon les pays, à des poursuites. Une fuite de données ou une identification peut mettre en danger des personnes |
-| **Âge** | Âge minimal produit : **15 ans** (case à cocher à l'inscription, aucune date de naissance demandée). Décision client D-MOB-18 : tranches Google Play « 16-17 » et « 18+ » uniquement, **à valider par le conseil** |
+| **Âge** | Âge minimal produit : **18 ans** (décision client du 11/11/2026, qui remplace 15 ans) ; l'inscription demande l'âge (nombre entier, refusé sous 18), aucune date de naissance, aucune vérification. Tranche Google Play « 18 ans et plus » seule, **à valider par le conseil** |
 | **Données sensibles** | **Santé sexuelle** et santé en général (texte libre de signalements et de besoins) ; **violences subies** (récits, notes de suivi) ; **position géographique** au moment d'une alerte SOS ; **orientation sexuelle et identité de genre**, saisies **uniquement si la personne y consent** (consentement distinct, retirable) mais aussi **potentiellement déduites** de l'usage du service lui-même (existence d'un compte, contenus consultés, échanges) |
 | **Contacts de tiers** | Noms et numéros de **contacts de confiance** de la personne (données de personnes qui n'ont pas consenti elles-mêmes) |
 | **Hébergement mutualisé** | Serveur cPanel d'un hébergeur à choisir ; pays à confirmer |
@@ -69,7 +71,7 @@ Source : `web/config/xomiton.php` (sections `retention`, `accounts`, `reports`, 
 1. Le client choisit le conseil (§7) et lui remet ce dossier avec les pièces du §4.
 2. Le conseil répond **question par question** (§3), en indiquant pour chacune : décision, niveau de certitude, texte de référence **à citer par lui** s'il y en a un, et conséquence pratique.
 3. Le client reporte les décisions dans le tableau du §6, qui indique **quel fichier du dépôt** change. L'équipe technique applique les modifications.
-4. Les décisions sont consignées dans [design-system/DECISIONS.md](../design-system/DECISIONS.md) et [DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md) (D-MOB-18, D-IOS-5, D-IOS-8, Q7, Q67, Q68).
+4. Les décisions sont consignées dans [design-system/DECISIONS.md](../design-system/DECISIONS.md) et [DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md) (D-MOB-18 et Q68, remplacées le 11/11/2026 par l'âge minimal de 18 ans ; D-IOS-5, D-IOS-8, Q7, Q67).
 
 ---
 
@@ -90,14 +92,16 @@ Pages : [web/resources/views/public/legal/page.blade.php](../web/resources/views
 - [ ] A7. **Suppression de compte** : la procédure (accès coupé immédiatement, effacement après 30 jours, formulaire par e-mail pour une personne sans accès) répond-elle aux exigences ? La **trace de 90 jours** (empreinte de l'adresse) est-elle justifiée ?
 - [ ] A8. Les textes sont rédigés **en français uniquement** : la validité vis-à-vis d'utilisatrices étrangères est-elle affectée ?
 
-### B. Âge minimal de 15 ans et tranches Google Play / Apple
+### B. Âge minimal de 18 ans et déclarations d'âge Google Play / Apple
 
-Références : D-MOB-18 (Play : tranches 16-17 et 18+, âge produit 15 ans), D-IOS-5 (Apple : classification honnête, 15 ans maintenu si le conseil l'accepte), Q68. Détail : [PLAN_IOS.md](PLAN_IOS.md) §5.7, [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md) §5.
+Références : décision client du 11/11/2026 (âge minimal 18 ans, remplace Q68 et D-MOB-18 ; tous les comptes validés par l'équipe), D-IOS-5 (Apple : classification d'âge honnête). Détail : [PLAN_IOS.md](PLAN_IOS.md) §5.7, [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md) §5.
 
-- [ ] B1. Le **seuil de 15 ans** pour consentir seul·e au traitement de données (y compris sensibles) est-il valable en droit béninois ? Faut-il un accord parental, et sous quelle forme ?
-- [ ] B2. Une **simple case « J'ai 15 ans ou plus »**, sans vérification, est-elle suffisante ? Le client veut éviter de collecter une date de naissance (minimisation).
-- [ ] B3. Le **décalage** entre l'âge produit (15 ans) et les tranches déclarées dans Google Play (16-17 et 18+) est-il acceptable ou trompeur ? Faut-il **relever l'âge à 16 ans** ?
-- [ ] B4. **Apple** : la classification d'âge calculée (16+ ou 18+ selon les réponses) peut empêcher des personnes de 15 ans d'installer l'application ; le conseil confirme-t-il de **maintenir 15 ans** ou d'**aligner à 16 ans** ?
+*Anciennes questions B1 à B4 (seuil de 15 ans, accord parental, décalage 15 ans / 16-17, relèvement à 16 ans, Apple pour 15 ans) : caduques depuis que le seuil est 18 ans. Elles restent dans l'historique du dépôt.* Restent à valider :
+
+- [ ] B1. Le **seuil de 18 ans** correspond-il bien à l'**âge de la majorité au Bénin**, et à celui à partir duquel une personne peut consentir seule au traitement de données, y compris sensibles ? (Sans cela, le seuil ne règle pas la question des mineur·es.)
+- [ ] B2. Un **âge simplement déclaré** à l'inscription (nombre saisi, sans vérification ni date de naissance ; le client veut éviter de collecter une date de naissance, minimisation) a-t-il une **valeur suffisante** ? La **validation de chaque compte par l'équipe** (sans contrôle d'identité ni d'âge) y change-t-elle quelque chose ?
+- [ ] B3. **Google Play** : la tranche « 18 ans et plus » seule, avec un produit à 18 ans minimum, est-elle cohérente et suffisante dans la déclaration de public cible ?
+- [ ] B4. **Apple** (D-IOS-5) : la classification d'âge **18+** retenue pour l'application est-elle la bonne au regard des réponses au questionnaire (contenus générés par les utilisateur·rices, sujets de violence, santé sexuelle) ?
 - [ ] B5. Si un signalement révèle qu'une **personne mineure est en danger**, le texte prévoit une orientation vers les services de protection compétents : la **base et les limites** de cette démarche sont-elles correctes (**secret, obligation de signalement éventuelle**) ?
 
 ### C. Hébergement et transferts de données hors du Bénin
@@ -252,7 +256,7 @@ Remettre les fichiers suivants (l'équipe technique peut produire un dossier com
 | A5 : mentions et juridiction | Libellés exacts, juridiction | `.env` du serveur (`XOMITON_LEGAL_*`, voir [FORMULAIRE_INFORMATIONS_LEGALES.md](FORMULAIRE_INFORMATIONS_LEGALES.md)) ; `web/lang/fr/pages/legal.php` (section `notice`) | ☐ |
 | A6 : cookies sans bandeau | Accepté ou bandeau requis | `web/lang/fr/pages/legal.php` (section `cookies`) ; ajout éventuel d'un composant de consentement | ☐ |
 | A7 : suppression de compte | Procédure et trace acceptées | `web/lang/fr/pages/deletion.php` ; `web/config/xomiton.php` (`accounts`) | ☐ |
-| B1 à B4 : âge minimal, tranches Play et Apple | 15 ans maintenu ou 16 ans ; accord parental | `web/config/xomiton.php` (`accounts.min_age`) ; textes (`{min_age}` repris automatiquement) ; web `lang/fr` et formulaire d'inscription ; mobile (case d'âge) ; fiche Play : [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md) §5 ; classification Apple : [PLAN_IOS.md](PLAN_IOS.md) §5.7 | ☐ |
+| B1 à B4 : âge minimal 18 ans, âge déclaré, déclarations Play et Apple | Seuil = majorité ; valeur d'un âge déclaré ; classification 18+ | `web/config/xomiton.php` (`accounts.min_age`) ; textes (`{min_age}` repris automatiquement) ; web `lang/fr` et formulaire d'inscription ; mobile (champ d'âge) ; fiche Play : [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md) §5 ; classification Apple : [PLAN_IOS.md](PLAN_IOS.md) §5.7 | ☐ |
 | B5 : mineure en danger | Limites de l'orientation | `web/lang/fr/pages/legal.php` (section âge) ; procédure interne ([RUNBOOK.md](RUNBOOK.md)) | ☐ |
 | C1 à C5 : hébergement et transferts | Garanties, pays d'hébergement, contrats | `XOMITON_LEGAL_HOST_*` ; `web/lang/fr/pages/legal.php` (section prestataires) ; choix de l'hébergeur ([GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md) §1) ; `SMS_DRIVER` du `.env` | ☐ |
 | D1 à D5 : chiffrement et exportation | Réponse à Apple et Google | `mobile/ios/Runner/Info.plist` (`ITSAppUsesNonExemptEncryption`) ; [PLAN_IOS.md](PLAN_IOS.md) §5.6 | ☐ |

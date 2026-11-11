@@ -1,5 +1,8 @@
 # Reste à faire : en local, en production sur le web, sur le Play Store
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration (aucun réglage).** L'âge de 15 ans, les tranches Play « 16-17 » et le mode d'inscription « pair·es seulement » ne figurent plus dans les points à faire ci-dessous.
+
+
 Inventaire au 2 novembre 2026, établi sur l'état de la branche `claude/friendly-darwin-abyzn0`. Il complète le [plan de finalisation](PLAN_FINALISATION.md) (priorités, échéancier, risques) avec une vue **par lieu d'exécution**, en cases à cocher. Légende des responsables : **C** = client, **D** = développeur·se, **J** = conseil juridique, **H** = hébergeur.
 
 **Où en est le code** : serveur, site public, espace membre, espace pair et espace admin d'astreinte sont codés et testés (environ 3 040 tests Pest, 790 Vitest, 450 Flutter, tous verts au dernier passage). Ce qui reste n'est presque plus du code : ce sont des **vérifications en conditions réelles**, des **informations et comptes du client** et des **avis**. Rien n'a encore tourné sur un vrai serveur ni sur un vrai téléphone.
@@ -51,7 +54,7 @@ Guides : [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md), [DEPLOIEMENT_CPANEL.md](D
 
 ### 2.1 Avant de toucher au serveur
 - [ ] **C** Fournir les **12 variables légales** `XOMITON_LEGAL_*` (éditeur, forme juridique, enregistrement, adresse, directeur·rice de la publication, téléphone, hébergeur, adresse et pays de l'hébergeur, personne chargée des données et son e-mail, juridiction), le **domaine de production** et l'**e-mail de contact public** (réglage admin `contact_email`, `contact@xomiton.app` par défaut). Tant qu'elles sont vides, les pages légales affichent « À COMPLÉTER PAR LE CLIENT ». Aucune valeur n'est inventée.
-- [ ] **C/J** **Avis juridique** : confidentialité et conditions (Q67), âge de 15 ans, transferts hors Bénin, hébergement, conservation, distribution dans tous les pays (vigilance pour les pays hostiles aux personnes LGBTQ+), conditions d'un éventuel assistant à base de LLM.
+- [ ] **C/J** **Avis juridique** : confidentialité et conditions (Q67), âge minimal de 18 ans (décision du 11/11/2026 : seuil = majorité, valeur d'un âge déclaré sans vérification, classification Apple 18+), transferts hors Bénin, hébergement, conservation, distribution dans tous les pays (vigilance pour les pays hostiles aux personnes LGBTQ+), conditions d'un éventuel assistant à base de LLM.
 - [ ] **C/H/D** **Hébergement sain** : compte cPanel neuf ou assainissement de l'existant, rapport d'incident signé, PHP 8.3 et extensions requises (`php -m` joint au rapport).
 - [ ] **C** Comptes à ouvrir : SMTP réel, supervision (Healthchecks.io ou UptimeRobot), stockage externe des sauvegardes.
 - [ ] **C** Trancher les lignes « Bloquant recette » restantes de [DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md). Par défaut, les décisions D-MOB-6, 7, 8, 9 et 13 sont « recommandation retenue », à confirmer.
@@ -84,10 +87,10 @@ Guides : [GUIDE_DEPLOIEMENT.md](GUIDE_DEPLOIEMENT.md), [DEPLOIEMENT_CPANEL.md](D
 Dossier complet : [playstore/PUBLICATION_PLAY_STORE.md](playstore/PUBLICATION_PLAY_STORE.md) (version Word : `playstore/Fiche-publication-Play-Store-Xomiton.docx`). Visuels déjà produits dans `playstore/assets/` (image de présentation 1024×500, 8 captures 1080×1920, 130 contrôles automatiques verts).
 
 ### 3.1 Décisions prises (rien à refaire)
-Une seule application avec espaces par rôle (membre, pair, admin d'astreinte) ; un seul AAB ; âge minimal de 15 ans ; **gratuite**, **tous les pays**, **français uniquement** ; tranches d'âge Play « 16-17 » et « 18+ » seulement ; nom « Xomiton : écoute et sécurité », sans drapeau ni mot d'identité sur la fiche.
+Une seule application avec espaces par rôle (membre, pair, admin d'astreinte) ; un seul AAB ; âge minimal de **18 ans** (décision du 11/11/2026, remplace 15 ans) ; **gratuite**, **tous les pays**, **français uniquement** ; tranche d'âge Play « 18 ans et plus » seule (décision du 11/11/2026) ; nom « Xomiton : écoute et sécurité », sans drapeau ni mot d'identité sur la fiche.
 
 ### 3.2 À faire
-- [ ] **C** Valider **juridiquement** la cohérence de l'âge : l'application exige 15 ans, la fiche Play ne déclare que 16-17 et 18+ (point signalé D-MOB-18).
+- [ ] **C** Valider **juridiquement** la cohérence de l'âge : l'application exige 18 ans et la fiche Play ne déclare que « 18 ans et plus » : le décalage de D-MOB-18 a disparu (décision du 11/11/2026) ; reste à faire confirmer par le conseil la valeur d'un âge déclaré sans vérification.
 - [ ] **C** Ouvrir le **compte développeur Google Play** (frais uniques). S'il est personnel et récent : **12 testeurs pendant 14 jours** en test fermé avant la production.
 - [ ] **D/C** Générer la **clé de téléversement**, sauvegardée hors dépôt ([BUILD_ANDROID_WINDOWS.md](BUILD_ANDROID_WINDOWS.md) §7) ; activer Play App Signing.
 - [ ] **D** Premier `flutter build appbundle --release` signé, avec l'adresse https de production ; comparer la taille au budget (plafonds de CI à resserrer).

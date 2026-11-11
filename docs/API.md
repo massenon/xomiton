@@ -5,6 +5,8 @@ description: Référence de l'API REST /api/v1 de Xomiton (Sanctum) — conventi
 
 # API `/api/v1`
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans (`min_age`, `GET /referentials/registration`, 422 `validation_failed` sur `age` sous 18) ; tous les nouveaux comptes sont validés par l'administration (`en_attente`), sans exception ni réglage.**
+
 Référence : [SOFTWARE_ARCHITECTURE.md](SOFTWARE_ARCHITECTURE.md) §4, [LOGIN_INSCRPTION_MULTISTEP_USER_INSTRUCTION.md](LOGIN_INSCRPTION_MULTISTEP_USER_INSTRUCTION.md) §9, `prototype_mobile/src/simulateur.html` (charges utiles attendues par Flutter), décisions Q8 c, Q12 c, Q13 b, Q30 a du [plan](IMPLEMENTATION_PLAN.md) §7.
 
 ## 1. Conventions
@@ -159,7 +161,7 @@ Sanctum SPA (ADR-31, `statefulApi()` dans `bootstrap/app.php`) : une requête do
 
 Public, sans session, **ETag + `Cache-Control: public`** comme les autres référentiels (`If-None-Match` → 304 ; liste des pays en cache serveur 24 h). Les départements et communes sont ceux de `GET zones`.
 
-`{ "data": { "min_age": 15, "pronouns": [{value,label}], "member_types": [{"value":"membre","label":"Membre de la communauté"},{"value":"allie","label":"Personne ressource / Allié·e"}], "countries": [{"value":"BJ","label":"Bénin"},…], "ally_roles": [{value,label}], "gender_identities": [{value,label}], "orientations": [{value,label}] } }`
+`{ "data": { "min_age": 18, "pronouns": [{value,label}], "member_types": [{"value":"membre","label":"Membre de la communauté"},{"value":"allie","label":"Personne ressource / Allié·e"}], "countries": [{"value":"BJ","label":"Bénin"},…], "ally_roles": [{value,label}], "gender_identities": [{value,label}], "orientations": [{value,label}] } }`
 
 `min_age` vient de `xomiton.accounts.min_age`. `pronouns` : `elle`, `il`, `iel`. `countries` : 249 codes ISO 3166-1 alpha-2, libellés en français, Bénin d'abord puis ordre alphabétique français. `ally_roles` : `professionnel_sante`, `avocat`, `psychologue`, `leader_religieux`, `activiste`, `autre`. `gender_identities` et `orientations` : les clés du profil (`SensitiveProfile`) puis `prefer_not` (« Je préfère ne pas le dire ») ; `autre` exige une précision.
 
@@ -174,7 +176,7 @@ Corps JSON :
 | `first_name`, `last_name` | requis, ≤ 60, lettres (accents), espaces, `'`, `.`, `-` ; `users.name` = « Prénom Nom » |
 | `pseudo` | requis, 3–40, lettres / chiffres / `_` `.` `-`, unique (casse ignorée), filtre de contenus |
 | `email` | requis, e-mail valide, unique (normalisé en minuscules) |
-| `age` | requis, **entier** ≥ `min_age` (`xomiton.accounts.min_age`, 15) et ≤ 99 ; tient lieu de confirmation d'âge (le consentement `age_confirmed` est enregistré). **Plus de `age_confirmed`.** `profiles.age`, `age_range` déduit |
+| `age` | requis, **entier** ≥ `min_age` (`xomiton.accounts.min_age`, **18** depuis la décision client du 11/11/2026) et ≤ 99 ; tient lieu de confirmation d'âge (le consentement `age_confirmed` est enregistré). **Plus de `age_confirmed`.** `profiles.age`, `age_range` déduit |
 | `pronouns` | requis : `elle`, `il`, `iel` |
 | `country_code` | requis, code ISO de `referentials/registration` |
 | `city` | facultatif, ≤ 120 |
@@ -193,7 +195,7 @@ Corps JSON :
 
 Réponses :
 
-- **201** `{ "data": { "token": "1|…", "token_type": "Bearer", "user": {…, "pending_validation": true}, "email_verification_pending": false } }` — `email_verification_pending` n'est vrai que si un code `signup` a été envoyé (compte actif d'emblée : réglage `reg_manual_validation = peers`, inscription non signalée).
+- **201** `{ "data": { "token": "1|…", "token_type": "Bearer", "user": {…, "pending_validation": true}, "email_verification_pending": false } }` — `email_verification_pending` est **toujours `false`** depuis le 11/11/2026 (aucun code `signup` n'est envoyé : tous les comptes sont `en_attente` et l'administration confirme l'e-mail ; le mode `peers` et le réglage `reg_manual_validation` n'existent plus). La clé est conservée pour la compatibilité du contrat.
 - 422 `{ message, code: "validation_failed", errors }` — une clé par champ ci-dessus ; 403 `registrations_closed` ; 429 (5/min).
 - Les validateurs (`users.validate_peers`) reçoivent `peer_pending` (pseudo, type, lien vers Inscriptions) pour toute inscription en attente, web ou API.
 
@@ -1061,7 +1063,7 @@ API de l'espace **Admin** de l'application mobile unique (alertes et SOS d'astre
 
 | Route | Effet |
 |---|---|
-| `GET admin/registrations?kind=` | comptes `en_attente`, les plus anciens d'abord ; filtre `kind` = `registration` (inscription signalée ou à valider), `peer_request` (demande de pair ou pair·e invité·e), `invited` (pair·e invité·e dont l'inscription attend la validation), autre valeur → 422 ; chaque ligne : compte (§23.4) + `kind` = `peer_request` (demande de rôle pair) ou `registration`, `invited` (booléen : invitation à l'équipe utilisée), et `flags[]` = motifs du **signalement** (`disposable_email`, `repeated_fingerprint`) ; `meta.pending`. **D-MOB-17 (tranché 2026-10-29, recommandation retenue)** : seules les inscriptions signalées attendent ici (le réglage `reg_manual_validation = all` met tout le monde en attente) |
+| `GET admin/registrations?kind=` | comptes `en_attente`, les plus anciens d'abord ; filtre `kind` = `registration` (inscription à valider ; `flags[]` indique les signalements D-MOB-17), `peer_request` (demande de pair ou pair·e invité·e), `invited` (pair·e invité·e dont l'inscription attend la validation), autre valeur → 422 ; chaque ligne : compte (§23.4) + `kind` = `peer_request` (demande de rôle pair) ou `registration`, `invited` (booléen : invitation à l'équipe utilisée), et `flags[]` = motifs du **signalement** (`disposable_email`, `repeated_fingerprint`) ; `meta.pending`. **D-MOB-17 (tranché 2026-10-29, recommandation retenue)** : seules les inscriptions signalées attendent ici (le réglage `reg_manual_validation = all` met tout le monde en attente) |
 | `POST admin/registrations/{user}/approve` | valide : compte actif, notification ; une demande de pair reçoit le rôle `pair` (et reste membre) ; une invitation à l'équipe en attente est honorée ; déjà traité → 422 |
 | `POST admin/registrations/{user}/reject` | `{reason}` (3–200, **écrit pour la personne**, `step-up`) : une **demande de pair** refusée laisse un compte **membre actif**, notifié avec le motif (`RoleNotice`, journal `users.peer_refused`) ; une **inscription** refusée supprime le compte (e-mail `compte-supprime`, journal `users.registration_rejected`) |
 
@@ -1102,7 +1104,7 @@ File des demandes faites par les membres (§23.3 bis ci-dessous, `POST me/role-r
 
 ### 23.6 Invitations à l'équipe — `admin/invitations`
 
-Un lien / code **signé, à usage unique** (7 jours, `xomiton.accounts.team_invitation_days`) mène à l'inscription **ordinaire** (`/inscription?invitation=…` ou champ `invitation` de `POST auth/register`, §2) : la personne crée un compte membre (case 15 ans comprise) et reçoit le rôle **à la validation** de son compte (e-mail confirmé ; ou approbation par l'équipe si la validation manuelle est active) — à condition que la personne qui a invité détienne encore le droit (sinon l'invitation est refusée, jamais d'escalade).
+Un lien / code **signé, à usage unique** (7 jours, `xomiton.accounts.team_invitation_days`) mène à l'inscription **ordinaire** (`/inscription?invitation=…` ou champ `invitation` de `POST auth/register`, §2) : la personne crée un compte membre (âge de 18 ans minimum compris) et reçoit le rôle **à la validation** de son compte (e-mail confirmé ; ou approbation par l'équipe si la validation manuelle est active) — à condition que la personne qui a invité détienne encore le droit (sinon l'invitation est refusée, jamais d'escalade).
 
 | Route | Effet |
 |---|---|
@@ -1155,7 +1157,7 @@ Remise par les canaux `fcm` (jeton d'appareil, `POST me/push-subscriptions`) des
 | `alert_routed` | pair·e (espace pair) prévenu·e d'un SOS, d'une alerte routée, d'un rappel, d'une escalade ou d'un SOS non accusé | **ULID de l'alerte** (`pair/alerts/{ulid}`) | `/pair/alertes/:id` | `duty` (Astreinte) · haute |
 | `duty_sos` | admin (`admin_mobile.access`) de garde, ou après l'escalade nationale à 5 min : SOS et SOS non accusé | **ULID de l'alerte** (`admin/alerts/{ulid}`) | `/admin/alertes/:id` | `duty` · haute |
 | `duty_alert` | admin prévenu d'une alerte routée (signalement, besoin), rappel 24 h, escalade | ULID de l'alerte | `/admin/alertes/:id` | `duty` · haute |
-| `peer_pending` | comptes `users.validate_peers` (inscription signalée D-MOB-17 ou « tout valider », pair·e invité·e) ; comptes `peers.assign` (demande du rôle pair, D-MOB-15) | identifiant du compte (inscription) ou de la demande ; **sans effet sur l'ouverture** | `/admin/inscriptions` (liste « Inscriptions à valider ») | `community` · normale |
+| `peer_pending` | comptes `users.validate_peers` (toute inscription en attente, signalée D-MOB-17 ou non, pair·e invité·e) ; comptes `peers.assign` (demande du rôle pair, D-MOB-15) | identifiant du compte (inscription) ou de la demande ; **sans effet sur l'ouverture** | `/admin/inscriptions` (liste « Inscriptions à valider ») | `community` · normale |
 | `content_reported` | comptes `moderation.manage` **qui ont l'espace Admin mobile** (jamais Web Push, jamais un·e modérateur·rice sans `admin_mobile.access`) | identifiant du signalement (`admin/moderation/reports`) | `/admin/moderation` | `community` · normale (un signalement ne réveille personne la nuit) |
 | `sync` | **silencieux** : le pair dont le dossier a été modifié, archivé, rétabli par quelqu'un d'autre, ou dont un conflit a été tranché par l'administration | `null` (jamais d'identifiant de dossier) | aucune : lancer un cycle `sync/pull` puis `sync/push` | aucun bloc `notification` · normale, regroupé (`collapse_key`) |
 | `rules` | **silencieux** : les pair·es (rôle `pair` actif ayant un jeton FCM) quand l'administration change une règle de validation | `null` | aucune : relire `GET pair/validation-rules` (ETag ; `heartbeat.rules_updated_at` rattrape un push manqué) | aucun bloc `notification` · normale, regroupé |

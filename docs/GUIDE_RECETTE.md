@@ -1,5 +1,7 @@
 # Guide de recette : lancer Xomiton sur votre ordinateur et le tester à la main
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration, sans exception ni réglage.** Les recettes d'inscription attendent donc un compte toujours « en attente ».
+
 Ce guide s'adresse à la personne qui réceptionne Xomiton : aucune connaissance technique n'est requise, il suffit de recopier les commandes. Les parcours à vérifier se trouvent dans la **[checklist de recette](CHECKLIST_RECETTE.md)**, à cocher au fur et à mesure.
 
 Les commandes de ce guide ont été exécutées le 28/10/2026 (PHP 8.3.6, Node 22, base SQLite de démonstration, sans accès à Internet). Ce qui n'a pas pu être vérifié est marqué **(non vérifié)**.
@@ -187,10 +189,10 @@ Sur `/sos` : maintenir le bouton **2 secondes**, puis décompte annulable de **5
 **Qui est prévenu (D-MOB-10, tranché 2026-10-29).** À l'envoi, les admins **de garde** et les pair·es **de la zone** de l'alerte (`XOMITON_PEER_RECIPIENTS=zone`, défaut ; `all` pour tous les pair·es). Sans accusé de réception au bout de **5 minutes** (`XOMITON_ESCALATION_MINUTES`), `alerts:escalate` prévient **tous** les admins et **tous** les pair·es, en plus du point focal national ; l'accusé de n'importe lequel arrête l'escalade. L'admin ne voit jamais la position exacte (arrondie à environ 1 km, D-MOB-4).
 
 ### Inscription : case d'âge minimal
-`/inscription` comporte une case obligatoire de confirmation de l'âge minimal (15 ans, décision Q68), en plus des cases CGU et confidentialité. Sans elle, le compte n'est pas créé. L'application mobile applique la même règle. Les tranches d'âge de la fiche Play (16-17 et 18+) sont conservées et restent à valider par le conseil juridique avant publication (D-MOB-18, tranché 2026-10-29).
+`/inscription` demande l'âge (nombre entier) : l'inscription est refusée sous **18 ans** (décision du 11/11/2026, qui remplace les 15 ans de Q68), en plus des cases CGU et confidentialité. L'application mobile applique la même règle, lue sur le serveur. La fiche Play ne déclare que la tranche « 18 ans et plus » ; elle reste à valider par le conseil juridique avant publication.
 
 ### Inscriptions signalées et demandes de rôle pair (D-MOB-15 et D-MOB-17)
-Seules les inscriptions **signalées** attendent la validation de l'équipe : adresse e-mail d'un domaine jetable (liste `xomiton.accounts.registration_flags.disposable_domains`, ajouts par `XOMITON_DISPOSABLE_DOMAINS`) ou plus de 3 inscriptions en 60 minutes avec la même empreinte (IP + navigateur). Les autres comptes sont actifs après la confirmation de l'e-mail. Essai : s'inscrire avec `test@mailinator.com`, le compte apparaît dans Administration › Inscriptions avec le motif « Adresse e-mail jetable ». Le réglage « Tous les nouveaux comptes » (`reg_manual_validation = all`) remet la validation de tout le monde.
+**Tous** les nouveaux comptes attendent la validation de l'équipe (décision du 11/11/2026, aucun réglage). Les inscriptions **signalées** sont en plus repérées pour éclairer la validation : adresse e-mail d'un domaine jetable (liste `xomiton.accounts.registration_flags.disposable_domains`, ajouts par `XOMITON_DISPOSABLE_DOMAINS`) ou plus de 3 inscriptions en 60 minutes avec la même empreinte (IP + navigateur). Les autres comptes attendent aussi, sans motif affiché. Essai : s'inscrire avec `test@mailinator.com`, le compte apparaît dans Administration › Inscriptions avec le motif « Adresse e-mail jetable ».
 
 Un membre demande le rôle de pair depuis son profil (`POST /api/v1/me/role-requests`, motif court facultatif, une demande à la fois, 3 par jour) ; la demande apparaît dans Administration › Inscriptions › « Demandes du rôle de pair·e » (et dans l'API `admin/role-requests`). L'admin approuve ou refuse avec un motif ; le rôle n'est jamais donné automatiquement. Le rôle admin ne se donne que depuis le site web (D-MOB-16).
 

@@ -1,5 +1,7 @@
 # Décisions à valider — questions Q ouvertes du plan
 
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration, sans exception ni réglage.** Les lignes Q68, Q91, D-MOB-14, D-MOB-17, D-MOB-18 et D-IOS-5 sont conservées pour l'historique et marquées « remplacée ».
+
 Source : `IMPLEMENTATION_PLAN.md` §7 (texte complet de chaque question, options et recommandation). Ce tableau ne recopie pas les textes longs. Le plan ne porte pas de colonne « décision par défaut appliquée » : la décision par défaut est celle de la colonne « Recommandation », marquée « Appliqué (par défaut) » dans le code. Une fois tranchée, une question se consigne dans `design-system/DECISIONS.md` (le plan en est l'index, pas la source).
 
 Qui tranche : **Client** (produit, éditorial, juridique, terrain) ou **Technique** (équipe de développement). Urgence : **Bloquant recette** (empêche de tester ou de faire valider), **Avant production**, **Confort** (peut suivre la mise en production).
@@ -29,7 +31,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 
 | Q | Sujet | Décision par défaut appliquée | Qui | Urgence |
 |---|---|---|---|---|
-| Q68 | Âge minimal d'inscription (15 ans du prototype) — **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` | **Appliqué** : case obligatoire « J'ai 15 ans ou plus » (web + API `age_confirmed` + Flutter), aucune date de naissance, horodatage seul (consentement `age_confirmed`) | Client + conseil juridique | Avant production |
+| Q68 *(REMPLACÉE le 11/11/2026 : 18 ans)* | Âge minimal d'inscription (15 ans du prototype) — **Tranché 2026-10-28** : 15 ans, valeur unique `xomiton.accounts.min_age` | **Appliqué** : case obligatoire « J'ai 15 ans ou plus » (web + API `age_confirmed` + Flutter), aucune date de naissance, horodatage seul (consentement `age_confirmed`) | Client + conseil juridique | Avant production |
 | Q67 | Textes légaux (confidentialité) et vote « utile » du centre d'aide | Textes du lot P4-05 / P4-08 | Client + conseil juridique | Avant production |
 | Q9 | Stockage externe des sauvegardes | Disque configurable `BACKUP_DISK`, mysqldump, JSON en repli | Client (hébergeur), Technique | Avant production |
 | Q57 | Notifications d'alerte : destinataires, SMS, `mail_outbox` en clair — **Tranché 2026-10-28** : purge du corps dès l'envoi ; échecs conservés 7 jours au plus | Appliqué par défaut (références relues à chaque tentative) | Technique | Avant production |
@@ -39,7 +41,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | Q85 | Maintenance : permission dédiée, écart à `ROLE_ET_PERMISSIONS.md` §3 | Permission dédiée, admin en lecture | Technique | Avant production |
 | Q74 | Messagerie : lecture du message signalé par la modération, filtre de mots | Lecture du seul message signalé ; **filtre minimal serveur implémenté (IOS-10, D-IOS-9 révise « pas de filtre ») ; liste de départ à valider par la modération et le conseil** | Client | Avant production |
 | Q94 | Admin système : droits admin / superadmin, résolution des conflits | Admin lit, superadmin écrit ; conflit écrit selon les règles | Technique | Avant production |
-| Q91 | Inscriptions : validation manuelle « tous » sans restriction d'accès | `reg_manual_validation` (`peers` par défaut) ; restrictions à définir (Q26) | Client | Avant production |
+| Q91 | Inscriptions : validation manuelle « tous » sans restriction d'accès | `reg_manual_validation` *(supprimé le 11/11/2026 : tous les comptes sont validés par l'équipe)* ; restrictions d'accès du compte en attente à définir (Q26) | Client | Avant production |
 | Q92 | Registres : archivage logique, dossier créé au nom de l'admin | Appliqué | Client | Avant production |
 | Q93 | Contenu : méta SEO 40 à 50 caractères, modérateur et réseau | Appliqué | Technique | Avant production |
 | Q88 | Espace pair : « de garde », brouillon de collecte | Plage `focal` en cours ; brouillon 1 jour | Client | Avant production |
@@ -79,12 +81,12 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | D-MOB-10 | Push SOS et alertes vers les **admins ET les pairs** : admins de garde + pairs de la zone, puis **escalade nationale à 5 min** sans accusé (tous les admins et tous les pairs) | **Tranché 2026-10-29** ; **Tranché 2026-10-29 (recommandation retenue)** pour la précision (`peer_recipients = zone`, escalade configurable) |
 | D-MOB-11 | **Une seule version** Play | **Tranché 2026-10-29** |
 | D-MOB-12 | Maquettes **validées par le client avant tout code mobile** | **Tranché 2026-10-29** |
-| D-MOB-14 | Fiche Play : âge 15 ans, pas de tarif, tous les pays, tranches « 16-17 » et « 18+ » seulement, français uniquement | **Tranché 2026-10-29** |
+| D-MOB-14 *(âge et tranches REMPLACÉS le 11/11/2026 : 18 ans, tranche « 18 ans et plus » seule)* | Fiche Play : âge 15 ans, pas de tarif, tous les pays, tranches « 16-17 » et « 18+ » seulement, français uniquement | **Tranché 2026-10-29** |
 | D-MOB-6, 7, 8, 9, 13 | PIN obligatoire pair et admin, expiration 14 jours, mode discret par défaut, jeton admin court et confirmation renforcée, nom « Notes » | Recommandation du plan retenue par défaut ; **non contestée** le 29/10/2026, à confirmer au passage des maquettes |
 | D-MOB-15 | Un membre peut **demander** le rôle pair depuis son profil (motif court facultatif, une demande à la fois, décision de l'admin avec motif) | **Tranché 2026-10-29 (recommandation retenue)** |
 | D-MOB-16 | Le rôle **admin** ne s'attribue que depuis le **site web** (super-admin) ; jamais depuis l'API mobile | **Tranché 2026-10-29 (recommandation retenue)** |
-| D-MOB-17 | Valider manuellement **seulement les inscriptions signalées** (e-mail jetable, inscriptions répétées) ; `reg_manual_validation = all` reste l'interrupteur « tout valider » | **Tranché 2026-10-29 (recommandation retenue)** |
-| D-MOB-18 | Âge : **conservé**, application 15 ans, tranches Play 16-17 et 18+, **à valider par le conseil juridique avant publication** ; l'application affiche la règle des 15 ans à l'inscription | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-17 *(REMPLACÉE le 11/11/2026 : tous les comptes sont validés, sans réglage)* | Valider manuellement **seulement les inscriptions signalées** (e-mail jetable, inscriptions répétées) ; `reg_manual_validation = all` reste l'interrupteur « tout valider » | **Tranché 2026-10-29 (recommandation retenue)** |
+| D-MOB-18 *(REMPLACÉE le 11/11/2026 : âge minimal 18 ans)* | Âge : **conservé**, application 15 ans, tranches Play 16-17 et 18+, **à valider par le conseil juridique avant publication** ; l'application affiche la règle des 15 ans à l'inscription | **Tranché 2026-10-29 (recommandation retenue)** |
 
 ## 5. Application iOS : décisions du 10 novembre 2026
 
@@ -96,7 +98,7 @@ Les questions Q1 à Q9, Q11 à Q13, Q15, Q17, Q19 à Q49, Q51, Q52, Q55, Q61 à 
 | D-IOS-2 | Mac mini + CI macOS | **Tranché 2026-11-10 (recommandation retenue par le client)** |
 | D-IOS-3 | Critical Alerts : demander en parallèle sans en dépendre ; v1 en Time Sensitive | **Tranché 2026-11-10 (recommandation retenue par le client)** |
 | D-IOS-4 | Mode discret : icône neutre, nom « Xomiton » inchangé | **Tranché 2026-11-10 (recommandation retenue par le client)** |
-| D-IOS-5 | Classification d'âge calculée honnêtement ; 15 ans maintenu si le conseil l'accepte, sinon 16 — **application conditionnée à l'avis du conseil** | **Tranché 2026-11-10 (recommandation retenue par le client)** |
+| D-IOS-5 *(âge minimal devenu 18 ans le 11/11/2026 : classification 18+ à confirmer par le conseil)* | Classification d'âge calculée honnêtement ; 15 ans maintenu si le conseil l'accepte, sinon 16 — **application conditionnée à l'avis du conseil** | **Tranché 2026-11-10 (recommandation retenue par le client)** |
 | D-IOS-6 | Portrait seul sur iPhone à la v1 | **Tranché 2026-11-10 (recommandation retenue par le client)** |
 | D-IOS-7 | Aucune synchro d'arrière-plan à la v1 ; `BGAppRefreshTask` en v1.1 si besoin | **Tranché 2026-11-10 (recommandation retenue par le client)** |
 | D-IOS-8 | Chiffrement : avis écrit du conseil avant de répondre à Apple — **application conditionnée à cet avis** | **Tranché 2026-11-10 (recommandation retenue par le client)** |

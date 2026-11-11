@@ -114,7 +114,7 @@ Le même site sur un téléphone (390 × 844 px) :
 | **Espace pair éducateur·rice** | Collecte de dossiers hors ligne, synchronisation avec gestion des conflits, alertes routées, outils d'animation |
 | **Administration** | Tableau de bord, validation des inscriptions et des rôles, modération, rapports et indicateurs, e-mails, maintenance, sauvegardes, journal d'audit |
 | **Application mobile unique** | Une seule application Flutter : les espaces membre, pair et admin d'astreinte apparaissent selon le rôle du compte |
-| **Vie privée** | Données minimales, chiffrement des données sensibles, mode discret, code PIN, effacement à distance, âge minimal de 15 ans |
+| **Vie privée** | Données minimales, chiffrement des données sensibles, mode discret, code PIN, effacement à distance, âge minimal de 18 ans |
 | **Accessibilité et design** | Cible WCAG 2.2 AA, navigation au clavier, lecteurs d'écran, thèmes clair et sombre, design system et charte graphique documentés |
 
 ## Architecture en quelques lignes
@@ -146,7 +146,7 @@ Le projet n'est donc **pas encore ouvert au public** : il reste des vérificatio
 
 ## Principes de vie privée et de sécurité
 
-- **Collecter le strict nécessaire** : pseudonyme possible, aucune date de naissance (seule la confirmation d'avoir 15 ans ou plus est conservée).
+- **Collecter le strict nécessaire** : pseudonyme possible, aucune date de naissance (seul l’âge déclaré, 18 ans minimum, est conservé).
 - **Anonymat là où c'est pertinent** : signalement et SOS sans compte.
 - **Position partagée uniquement avec accord**, jamais en continu.
 - **Chiffrement** des données sensibles et journal d'audit des accès.
