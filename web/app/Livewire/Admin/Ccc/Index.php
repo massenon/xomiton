@@ -365,7 +365,7 @@ final class Index extends Component
 
         $this->removeIndex = null;
         unset($this->openedTool, $this->openedPages);
-        $total = count($this->openedPages);
+        $total = count($this->openedPages());
         $this->announce = (string) __('admin_ccc.planches.moved', ['position' => $target + 1, 'total' => $total]);
 
         // Le focus suit la planche déplacée ; au bord de la liste, il passe sur l'autre bouton (le premier « Monter » est inactif).
@@ -448,7 +448,7 @@ final class Index extends Component
     #[Computed]
     public function openedPages(): array
     {
-        $tool = $this->openedTool;
+        $tool = $this->openedTool();
 
         return $tool === null || $tool->kind !== CccKind::Comic ? [] : app(ManageCccTools::class)->pagesOf($tool);
     }
@@ -530,7 +530,7 @@ final class Index extends Component
     private function openedComic(): CccTool
     {
         $this->authorizeManage();
-        $tool = $this->openedTool;
+        $tool = $this->openedTool();
         abort_unless($tool instanceof CccTool && $tool->kind === CccKind::Comic, 404);
 
         return $tool;

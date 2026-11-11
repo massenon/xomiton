@@ -49,12 +49,6 @@ parameters:
 			path: app/Application/Admin/AdminNavigation.php
 
 		-
-			message: '#^Empty array passed to foreach\.$#'
-			identifier: foreach.emptyArray
-			count: 1
-			path: app/Application/Admin/Content/ManageCccTools.php
-
-		-
 			message: '#^Cannot call method hasFile\(\) on string\.$#'
 			identifier: method.nonObject
 			count: 1
