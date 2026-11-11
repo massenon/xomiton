@@ -1,0 +1,3250 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\Relation\:\:withTrashed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Application/Account/PersonalDataExport.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Account/PersonalDataExport.php
+
+		-
+			message: '#^Parameter \#2 \$answered of static method App\\Domain\\Account\\ProgressiveProfile\:\:state\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Account/Profile/ProgressiveProfileState.php
+
+		-
+			message: '#^Parameter \#1 \$fields of static method App\\Domain\\Account\\SensitiveProfile\:\:normalizeShared\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Account/Profile/SensitiveDataConsent.php
+
+		-
+			message: '#^Property App\\Models\\Profile\:\:\$shared_fields \(string\|null\) does not accept list\<string\>\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Account/Profile/SensitiveDataConsent.php
+
+		-
+			message: '#^Property App\\Models\\Profile\:\:\$shared_fields \(string\|null\) does not accept list\<string\>\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Account/Profile/UpdateMemberProfile.php
+
+		-
+			message: '#^Property App\\Models\\Profile\:\:\$visibility \(string\) does not accept App\\Enums\\ProfileVisibility\|bool\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Account/Settings/UpdatePrivacySettings.php
+
+		-
+			message: '#^Offset ''alerts_new''\|''users_pending'' on array\{alerts_new\: ''danger'', users_pending\: ''primary''\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Application/Admin/AdminNavigation.php
+
+		-
+			message: '#^Empty array passed to foreach\.$#'
+			identifier: foreach.emptyArray
+			count: 1
+			path: app/Application/Admin/Content/ManageCccTools.php
+
+		-
+			message: '#^Cannot call method hasFile\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Admin/Content/ManageResources.php
+
+		-
+			message: '#^Parameter \#1 \$kind of static method App\\Application\\Admin\\Content\\ManageResources\:\:assertPublishable\(\) expects App\\Enums\\ResourceKind, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Admin/Content/ManageResources.php
+
+		-
+			message: '#^Property App\\Models\\Resource\:\:\$published_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Admin/Content/ManageResources.php
+
+		-
+			message: '#^Property App\\Models\\Resource\:\:\$status \(string\) does not accept App\\Enums\\ContentStatus\:\:Draft\|App\\Enums\\ContentStatus\:\:Published\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Admin/Content/ManageResources.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Application/Admin/Content/ManageThematiques.php
+
+		-
+			message: '#^Property App\\Models\\Thematique\:\:\$published_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Admin/Content/ManageThematiques.php
+
+		-
+			message: '#^Property App\\Models\\Thematique\:\:\$status \(string\) does not accept App\\Enums\\ContentStatus\:\:Draft\|App\\Enums\\ContentStatus\:\:Published\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Admin/Content/ManageThematiques.php
+
+		-
+			message: '#^Cannot call method isDelivered\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Admin/Gateways/ManageGateways.php
+
+		-
+			message: '#^Method App\\Application\\Admin\\Newsletter\\NewsletterStatistics\:\:byCampaign\(\) should return Illuminate\\Support\\Collection\<int, array\{campaign\: App\\Models\\NewsletterCampaign, sent\: int, delivered\: int, opens\: int, clickers\: int, unsubscribes\: int, bounces\: int, open_rate\: float, \.\.\.\}\> but returns Illuminate\\Support\\Collection\<int, array\{sent\: int, delivered\: int, opens\: int, clickers\: int, unsubscribes\: int, bounces\: int, open_rate\: float, click_rate\: float, \.\.\.\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Admin/Newsletter/NewsletterStatistics.php
+
+		-
+			message: '#^Method App\\Application\\Admin\\Newsletter\\NewsletterStatistics\:\:topLinks\(\) should return Illuminate\\Support\\Collection\<int, object\{url\: string, total\: int, people\: int\}\> but returns Illuminate\\Support\\Collection\<int, object\{url\: string, total\: int, people\: int\}&stdClass\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Admin/Newsletter/NewsletterStatistics.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Setting\:\:\$value\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Application/Admin/Registrations/RegistrationSettings.php
+
+		-
+			message: '#^Anonymous function should return Spatie\\Permission\\Models\\Role but returns Spatie\\Permission\\Contracts\\Role\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Admin/Roles/GrantInvitedRole.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 7
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Parameter \#2 \$query of method App\\Application\\Admin\\Search\\GlobalSearch\:\:group\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\AuditLog\|TModel of Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\AuditLog\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Parameter \#2 \$query of method App\\Application\\Admin\\Search\\GlobalSearch\:\:group\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\CaseRecord\|TModel of Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\CaseRecord\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Parameter \#2 \$query of method App\\Application\\Admin\\Search\\GlobalSearch\:\:group\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\DirectoryContact\|TModel of Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\DirectoryContact\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Parameter \#2 \$query of method App\\Application\\Admin\\Search\\GlobalSearch\:\:group\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Thematique\|TModel of Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Thematique\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Parameter \#2 \$query of method App\\Application\\Admin\\Search\\GlobalSearch\:\:group\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\|TModel of Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Application/Admin/Search/GlobalSearch.php
+
+		-
+			message: '#^Anonymous function should return Spatie\\Permission\\Models\\Role but returns Spatie\\Permission\\Contracts\\Role\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Admin/Users/ChangeUserRole.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Alerts/AcknowledgeAlert.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$acknowledged_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/AcknowledgeAlert.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$cancelled_at \(string\|null\) does not accept Carbon\\CarbonInterface\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/CancelSos.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Alerts/ChangeAlertStatus.php
+
+		-
+			message: '#^Cannot call method canTransitionTo\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/ChangeAlertStatus.php
+
+		-
+			message: '#^Parameter \#1 \$from of class App\\Domain\\Alerts\\Exceptions\\InvalidStatusTransition constructor expects App\\Enums\\AlertStatus, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/ChangeAlertStatus.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$acknowledged_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/ChangeAlertStatus.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Application/Alerts/CreateReport.php
+
+		-
+			message: '#^Parameter \#2 \$used of class App\\Application\\Alerts\\Dispatch\\AdminSmsQuota constructor expects array\<string, true\>, array\<string, bool\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/Dispatch/AdminSmsQuota.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Alerts/Dispatch/AlertDispatcher.php
+
+		-
+			message: '#^Cannot call method isFinal\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 7
+			path: app/Application/Alerts/Dispatch/AlertDispatcher.php
+
+		-
+			message: '#^Parameter \#1 \$stored of static method App\\Application\\Shared\\NotificationPreferences\:\:allows\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/Dispatch/AlertDispatcher.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>error" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Alerts/Dispatch/DeliveryOutcome.php
+
+		-
+			message: '#^PHPDoc tag @var with type App\\Domain\\Notifications\\Contracts\\PoolablePushSender\|App\\Domain\\Notifications\\Contracts\\PoolableSmsSender is not subtype of native type App\\Domain\\Notifications\\Contracts\\FcmSender\|App\\Domain\\Notifications\\Contracts\\PushSender\|App\\Domain\\Notifications\\Contracts\\SmsSender\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: app/Application/Alerts/Dispatch/DeliveryRunner.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/Dispatch/NotificationBuilder.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/Dispatch/NotifiedPeople.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Cannot call method isFinal\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Cannot call method isTerminal\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Method App\\Application\\Alerts\\Dispatch\\RetryAlertNotifications\:\:prepare\(\) never returns App\\Application\\Alerts\\Dispatch\\PlannedDelivery so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Parameter \#1 \$purpose of method App\\Application\\Alerts\\Dispatch\\NotificationBuilder\:\:for\(\) expects App\\Enums\\NotificationPurpose, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$purposes of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\AlertNotification\>\:\:ofPurpose\(\) expects App\\Enums\\NotificationPurpose, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Parameter \#2 \$purpose of method App\\Application\\Alerts\\Dispatch\\DeliveryRecorder\:\:record\(\) expects App\\Enums\\NotificationPurpose, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Parameter \#4 \$purpose of method App\\Application\\Alerts\\Dispatch\\DeliveryRecorder\:\:failed\(\) expects App\\Enums\\NotificationPurpose, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Parameter \#5 \$purpose of method App\\Application\\Alerts\\Dispatch\\AlertDispatcher\:\:sendMail\(\) expects App\\Enums\\NotificationPurpose, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/Dispatch/RetryAlertNotifications.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Application/Alerts/Dispatch/RetryResult.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Application/Alerts/EscalateAlerts.php
+
+		-
+			message: '#^Parameter \#1 \$date of closure expects DateTimeInterface\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 5
+			path: app/Application/Alerts/EscalateAlerts.php
+
+		-
+			message: '#^Parameter \$type of class App\\Domain\\Alerts\\ValueObjects\\EscalationSubject constructor expects App\\Enums\\AlertType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/EscalateAlerts.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$escalated_at \(string\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/EscalateAlerts.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$reminded_at \(string\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/EscalateAlerts.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/Listeners/MarkAlertNotificationsSeen.php
+
+		-
+			message: '#^Cannot call method isOpen\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/MarkSafe.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$safe_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/MarkSafe.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between array\{images\: int, documents\: int, audio\: int\} and array\{\} will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Application/Alerts/Queries/ReportFormOptions.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Alerts/ReassignAlert.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$routing_fallback \(string\|null\) does not accept App\\Enums\\RoutingFallback\:\:Manual\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/ReassignAlert.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Application/Alerts/RequestCallback.php
+
+		-
+			message: '#^Parameter \#1 \$role of method App\\Domain\\Alerts\\ValueObjects\\NeedRoleMap\:\:needFor\(\) expects App\\Enums\\DirectoryRole, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/RequestCallback.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/Results/CreatedAlert.php
+
+		-
+			message: '#^Parameter \$role of class App\\Domain\\Alerts\\ValueObjects\\RoutingCandidate constructor expects App\\Enums\\DirectoryRole, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Alerts/RouteAlert.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Alerts/Support/AlertRecorder.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Alerts/Support/AlertTransitions.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$closed_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/Support/AlertTransitions.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$status \(string\) does not accept App\\Enums\\AlertStatus\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Alerts/Support/AlertTransitions.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Alerts/Support/ReportReplay.php
+
+		-
+			message: '#^Property App\\Models\\Profile\:\:\$age_range \(string\|null\) does not accept App\\Enums\\AgeRange\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Auth/CompleteRegistrationProfile.php
+
+		-
+			message: '#^Property App\\Models\\Profile\:\:\$interests \(string\|null\) does not accept list\<string\>\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Auth/CompleteRegistrationProfile.php
+
+		-
+			message: '#^Property App\\Models\\Profile\:\:\$member_type \(string\) does not accept App\\Enums\\MemberType\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Auth/CompleteRegistrationProfile.php
+
+		-
+			message: '#^Method App\\Application\\Auth\\ConnectedDevices\:\:tokens\(\) should return Illuminate\\Support\\Collection\<int, array\<string, mixed\>\> but returns Illuminate\\Support\\Collection\<int, array\{id\: string, kind\: string, name\: string, ip\: null, current\: bool, last_active_at\: Carbon\\Carbon\|null, created_at\: Carbon\\Carbon\|null\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Auth/ConnectedDevices.php
+
+		-
+			message: '#^Method App\\Application\\Auth\\ConnectedDevices\:\:webSessions\(\) should return Illuminate\\Support\\Collection\<int, array\<string, mixed\>\> but returns Illuminate\\Support\\Collection\<int, array\{id\: string, kind\: string, name\: string, ip\: mixed, current\: bool, last_active_at\: Illuminate\\Support\\Carbon, created_at\: null\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Auth/ConnectedDevices.php
+
+		-
+			message: '#^Method App\\Application\\Auth\\Notifications\\PeerAccountValidated\:\:mailContext\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Application/Auth/Notifications/PeerAccountValidated.php
+
+		-
+			message: '#^Method App\\Application\\Auth\\Notifications\\PeerAccountValidated\:\:mailTemplate\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Application/Auth/Notifications/PeerAccountValidated.php
+
+		-
+			message: '#^Property App\\Models\\OtpCode\:\:\$consumed_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Auth/OtpService.php
+
+		-
+			message: '#^Cannot call method getTimestamp\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Auth/Support/SignedResetToken.php
+
+		-
+			message: '#^Property App\\Models\\CaseRecord\:\:\$archived_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Cases/ArchiveCase.php
+
+		-
+			message: '#^Property App\\Models\\CaseRecord\:\:\$status \(string\) does not accept App\\Enums\\CaseStatus\:\:Archived\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Cases/ArchiveCase.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Cases/CaseFormSheet.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Cases/CaseFormSheet.php
+
+		-
+			message: '#^Method App\\Application\\Cases\\CaseFormSheet\:\:__invoke\(\) should return array\{reference\: string, kind\: string, case_code\: string, created_at\: Illuminate\\Support\\Carbon\|null, author\: string\|null, identification\: array\<string, string\|null\>, facts\: array\<string, string\|null\>, services\: array\{items\: list\<string\>, note\: string\|null\}, \.\.\.\} but returns array\{reference\: string, kind\: mixed, case_code\: string, created_at\: Carbon\\Carbon\|null, author\: string\|null, identification\: array\{pseudo\: string\|null, sex\: string\|null, age\: string\|null, population\: string\|null, zone\: string\|null, commune\: string\|null\}, facts\: array\{date\: mixed, place\: string\|null, type\: string\|null, author\: string\|null, description\: string\}, services\: array\{items\: list\<string\>, note\: string\|null\}, \.\.\.\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Cases/CaseFormSheet.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Cases/CaseFormSheet.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/CaseQuality.php
+
+		-
+			message: '#^Parameter \#1 \$date of static method Carbon\\CarbonImmutable\:\:instance\(\) expects DateTimeInterface, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Cases/CaseQuality.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/CaseRules.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Cases/CaseSheet.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Cases/CaseSheet.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>facts_date" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Cases/CaseSheet.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>facts_description" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Cases/CaseSheet.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>facts_type" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Cases/CaseSheet.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>identification" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Cases/CaseSheet.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>referral_label" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Cases/CaseSheet.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/Data/CaseInput.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Cases/Data/FollowupInput.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Cases/DeleteCaseForm.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/FollowupBoard.php
+
+		-
+			message: '#^Cannot call method isPending\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/FollowupBoard.php
+
+		-
+			message: '#^Parameter \#1 \$from of class App\\Domain\\Cases\\Exceptions\\InvalidCaseTransition constructor expects App\\Enums\\CaseStatus, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Cases/RestoreCase.php
+
+		-
+			message: '#^Property App\\Models\\CaseRecord\:\:\$status \(string\) does not accept App\\Enums\\CaseStatus\:\:Closed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Cases/RestoreCase.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Application/Cases/SaveCaseForm.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/SaveCaseForm.php
+
+		-
+			message: '#^Cannot call method canTransitionTo\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Cases/UpdateCase.php
+
+		-
+			message: '#^Parameter \#1 \$from of class App\\Domain\\Cases\\Exceptions\\InvalidCaseTransition constructor expects App\\Enums\\CaseStatus, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Cases/UpdateCase.php
+
+		-
+			message: '#^Property App\\Models\\CaseRecord\:\:\$archived_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Cases/UpdateCase.php
+
+		-
+			message: '#^Property App\\Models\\CaseRecord\:\:\$status \(string\) does not accept App\\Enums\\CaseStatus\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Cases/UpdateCase.php
+
+		-
+			message: '#^Method App\\Application\\Cases\\ValidationCatalog\:\:params\(\) never returns array\<string, mixed\> so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Application/Cases/ValidationCatalog.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Community/Events/EventStructuredData.php
+
+		-
+			message: '#^Parameter \#1 \$privacy of static method App\\Domain\\Community\\GroupMembershipRules\:\:joinStatus\(\) expects App\\Enums\\GroupPrivacy, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Groups/ManageGroupMembership.php
+
+		-
+			message: '#^Parameter \#2 \$actorRole of static method App\\Domain\\Community\\GroupMembershipRules\:\:canChangeRole\(\) expects App\\Enums\\GroupRole\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Groups/ManageGroupMembership.php
+
+		-
+			message: '#^Parameter \#2 \$actorRole of static method App\\Domain\\Community\\GroupMembershipRules\:\:canManage\(\) expects App\\Enums\\GroupRole\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Groups/ManageGroupMembership.php
+
+		-
+			message: '#^Parameter \#4 \$targetRole of static method App\\Domain\\Community\\GroupMembershipRules\:\:canChangeRole\(\) expects App\\Enums\\GroupRole, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Groups/ManageGroupMembership.php
+
+		-
+			message: '#^Parameter \#4 \$targetRole of static method App\\Domain\\Community\\GroupMembershipRules\:\:canManage\(\) expects App\\Enums\\GroupRole, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Groups/ManageGroupMembership.php
+
+		-
+			message: '#^Parameter \#1 \$status of static method App\\Domain\\Community\\NetworkRules\:\:refusalStillHolds\(\) expects App\\Enums\\InvitationStatus\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Network/ManageInvitations.php
+
+		-
+			message: '#^Parameter \#2 \$respondedAt of static method App\\Domain\\Community\\NetworkRules\:\:refusalStillHolds\(\) expects Carbon\\CarbonInterface\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Network/ManageInvitations.php
+
+		-
+			message: '#^Parameter \#1 \$visibility of static method App\\Domain\\Account\\ProfileAudience\:\:allows\(\) expects App\\Enums\\ProfileVisibility\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Network/NetworkPeople.php
+
+		-
+			message: '#^Parameter \#1 \$visibility of static method App\\Domain\\Community\\NetworkRules\:\:followable\(\) expects App\\Enums\\ProfileVisibility\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Community/Network/NetworkPeople.php
+
+		-
+			message: '#^Method App\\Application\\Community\\Pages\\PageDirectory\:\:followed\(\) should return array\<int, true\> but returns array\<int, bool\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Community/Pages/PageDirectory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>thematiques" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Content/Queries/DoGlegbePage.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Application/Directory/ChangeDirectoryContact.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Directory/SaveDirectoryContact.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Feed/BadWordFilter.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\BadWord\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Application/Feed/BadWordFilter.php
+
+		-
+			message: '#^Parameter \#3 \$callback of static method Illuminate\\Cache\\Repository\:\:remember\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Application/Feed/BadWordFilter.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\BadWord\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Application/Feed/BadWordFilter.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Application/Feed/BadWordFilter.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Application/Feed/BadWordFilter.php
+
+		-
+			message: '#^Return type of call to static method Illuminate\\Cache\\Repository\:\:remember\(\) contains unresolvable type\.$#'
+			identifier: staticMethod.unresolvableReturnType
+			count: 1
+			path: app/Application/Feed/BadWordFilter.php
+
+		-
+			message: '#^Property App\\Models\\Post\:\:\$edited_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Feed/ManagePost.php
+
+		-
+			message: '#^Property App\\Models\\Post\:\:\$tag \(string\) does not accept App\\Enums\\PostTag\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Feed/ManagePost.php
+
+		-
+			message: '#^Property App\\Models\\Post\:\:\$visibility \(string\) does not accept App\\Enums\\PostVisibility\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Feed/ManagePost.php
+
+		-
+			message: '#^Parameter \#1 \$visibility of static method App\\Domain\\Account\\ProfileAudience\:\:allows\(\) expects App\\Enums\\ProfileVisibility\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Feed/Queries/UserPostsQuery.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Application/Gateways/PublishDueDeliveries.php
+
+		-
+			message: '#^Property App\\Models\\Alert\:\:\$acknowledged_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Import/ImportAlerts.php
+
+		-
+			message: '#^Property App\\Models\\BadWord\:\:\$severity \(string\) does not accept App\\Enums\\BadWordSeverity\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Import/ImportBadWords.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>email" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Import/ImportCases.php
+
+		-
+			message: '#^Property App\\Models\\Invitation\:\:\$status \(string\) does not accept App\\Enums\\InvitationStatus\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Import/ImportInvitations.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Setting\:\:\$value\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Application/Import/ImportSettings.php
+
+		-
+			message: '#^Property App\\Models\\User\:\:\$email_verified_at \(string\|null\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Import/ImportUsers.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>completion" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Member/MemberDashboard.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Member/MemberShell.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>completion" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Member/MemberShell.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>discreet_mode" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Member/MemberShell.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>mask_sensitive_notifications" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Member/MemberShell.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>neutral_tab_title" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Member/MemberShell.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>sos_share_gps" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Member/MemberShell.php
+
+		-
+			message: '#^Parameter \#1 \$visibility of static method App\\Domain\\Account\\ProfileAudience\:\:allows\(\) expects App\\Enums\\ProfileVisibility\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Messaging/MessagingContacts.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Application/Moderation/DecideReport.php
+
+		-
+			message: '#^Method App\\Application\\Moderation\\ReadReportedMessage\:\:content\(\) should return array\{author\: string\|null, sent_at\: Illuminate\\Support\\Carbon\|null, body\: string, has_media\: bool\} but returns array\{author\: string\|null, sent_at\: Carbon\\Carbon\|null, body\: string, has_media\: bool\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Moderation/ReadReportedMessage.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Moderation/ReportContent.php
+
+		-
+			message: '#^Property App\\Application\\Moderation\\ReportContent\:\:\$forumCounters is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: app/Application/Moderation/ReportContent.php
+
+		-
+			message: '#^Cannot call method gt\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Newsletter/ConfirmSubscription.php
+
+		-
+			message: '#^Cannot call method lt\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Newsletter/ConfirmSubscription.php
+
+		-
+			message: '#^Cannot call method gte\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Newsletter/SubscribeToNewsletter.php
+
+		-
+			message: '#^Cannot call method lte\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Newsletter/SubscribeToNewsletter.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Application/Newsletter/SubscribeToNewsletter.php
+
+		-
+			message: '#^Called ''slice'' on Laravel collection, but could have been retrieved as a query\.$#'
+			identifier: larastan.noUnnecessaryCollectionCall
+			count: 1
+			path: app/Application/Platform/Backup/BackupService.php
+
+		-
+			message: '#^Cannot call method isDeletable\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Platform/Backup/BackupService.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Platform/Backup/BackupService.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Platform/CancelMaintenanceWindow.php
+
+		-
+			message: '#^Method App\\Application\\Platform\\MaintenanceStatus\:\:notice\(\) never returns array\{id\: int, starts_at\: Illuminate\\Support\\Carbon, ends_at\: Illuminate\\Support\\Carbon, message\: string\|null\} so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Application/Platform/MaintenanceStatus.php
+
+		-
+			message: '#^Method App\\Application\\Platform\\MaintenanceStatus\:\:notice\(\) should return array\{id\: int, starts_at\: Illuminate\\Support\\Carbon, ends_at\: Illuminate\\Support\\Carbon, message\: string\|null\}\|null but returns array\{id\: int, starts_at\: string, ends_at\: string, message\: non\-empty\-string\|null\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Platform/MaintenanceStatus.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>ends_at" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Platform/MaintenanceStatus.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>starts_at" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Platform/MaintenanceStatus.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Setting\:\:\$value\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Application/Platform/Settings/UpdateSettings.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Platform/Updates/AppVersionInfo.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>version" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Application/Platform/Updates/ManageVersions.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Application\\Retention\\PruneSyncData\:\:deleteInChunks\(\) expects Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\SyncOutboxReceipt\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Retention/PruneSyncData.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Application\\Retention\\PruneSyncData\:\:deleteInChunks\(\) expects Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\SyncTombstone\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Retention/PruneSyncData.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Application\\Retention\\PurgeAuditLogs\:\:deleteInChunks\(\) expects Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\AuditLog\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Retention/PurgeAuditLogs.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Application\\Retention\\PurgeExpiredIdempotencyKeys\:\:deleteInChunks\(\) expects Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\IdempotencyKey\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Retention/PurgeExpiredIdempotencyKeys.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Application\\Retention\\PurgeExpiredOtpCodes\:\:deleteInChunks\(\) expects Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\OtpCode\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Retention/PurgeExpiredOtpCodes.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Application\\Retention\\PurgeMailLogs\:\:deleteInChunks\(\) expects Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\MailLog\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Retention/PurgeMailLogs.php
+
+		-
+			message: '#^Method App\\Application\\Search\\MemberSearch\:\:paginate\(\) should return Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\DirectoryContact\>\|Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Resource\>\|Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thematique\>\|Illuminate\\Pagination\\LengthAwarePaginator\<int, App\\Models\\User\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Search/MemberSearch.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between null and null will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: app/Application/Seo/ResourceStructuredData.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Application/Seo/ResourceStructuredData.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<TModel of Illuminate\\Database\\Eloquent\\Model\>\:\:published\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Application/Seo/SitemapBuilder.php
+
+		-
+			message: '#^Offset ''mime'' on array\{0\: int\<0, max\>, 1\: int\<0, max\>, 2\: int, 3\: string, mime\: string, channels\?\: int, bits\?\: int\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Application/Shared/MediaUploader.php
+
+		-
+			message: '#^Call to function is_scalar\(\) with \(int\|string\) will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: app/Application/Shared/NotificationPreferences.php
+
+		-
+			message: '#^Parameter \#1 \$stored of static method App\\Application\\Shared\\NotificationPreferences\:\:allows\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Shared/NotificationPreferences.php
+
+		-
+			message: '#^Parameter \#1 \$stored of static method App\\Application\\Shared\\NotificationPreferences\:\:normalize\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Shared/NotificationPreferences.php
+
+		-
+			message: '#^Property App\\Models\\UserSetting\:\:\$notification_prefs \(string\|null\) does not accept array\<string, array\<string, bool\>\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Application/Shared/NotificationPreferences.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Shared/Referentials.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Need\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Application/Shared/Referentials.php
+
+		-
+			message: '#^Parameter \#2 \$resolver of method App\\Application\\Shared\\Referentials\:\:remember\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Application/Shared/Referentials.php
+
+		-
+			message: '#^Return type of call to method App\\Application\\Shared\\Referentials\:\:remember\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Application/Shared/Referentials.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Need\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Application/Shared/Referentials.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Application/Shared/Referentials.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Application/Shared/Referentials.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Steering/IndicatorBoard.php
+
+		-
+			message: '#^Offset string on array\{\} on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Application/Steering/IndicatorCalculator.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Application/Steering/Reports/FinishReport.php
+
+		-
+			message: '#^Parameter \#1 \$format of method App\\Application\\Steering\\Reports\\FinishReport\:\:writer\(\) expects App\\Enums\\ReportFormat, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Steering/Reports/FinishReport.php
+
+		-
+			message: '#^Parameter \$format of class App\\Application\\Steering\\Reports\\ReportSpec constructor expects App\\Enums\\ReportFormat, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Steering/Reports/FinishReport.php
+
+		-
+			message: '#^Parameter \$kind of class App\\Application\\Steering\\Reports\\ReportSpec constructor expects App\\Enums\\ReportKind, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Steering/Reports/FinishReport.php
+
+		-
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 2
+			path: app/Application/Steering/Reports/FinishReport.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Steering/Reports/ReportDelivery.php
+
+		-
+			message: '#^Cannot call method mimeType\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Steering/Reports/ReportDelivery.php
+
+		-
+			message: '#^Cannot call method extension\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Steering/Reports/ReportStorage.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Steering/Reports/ReportStorage.php
+
+		-
+			message: '#^Cannot call method greaterThan\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Steering/Reports/RunScheduledReports.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Steering/Reports/RunScheduledReports.php
+
+		-
+			message: '#^Parameter \$kind of class App\\Application\\Steering\\Reports\\ReportSpec constructor expects App\\Enums\\ReportKind, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Application/Steering/Reports/RunScheduledReports.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Sync/Conflicts/ApplyCaseChanges.php
+
+		-
+			message: '#^Cannot call method canTransitionTo\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Sync/Conflicts/ApplyCaseChanges.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Application/Sync/Pull/Collections/CaseFollowupsCollection.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Application/Sync/Pull/Collections/CaseFollowupsCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\CaseFollowupsCollection\:\:candidates\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\CaseFollowup\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/CaseFollowupsCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\CaseFollowupsCollection\:\:visible\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\CaseFollowup\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/CaseFollowupsCollection.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: app/Application/Sync/Pull/Collections/CasesCollection.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Sync/Pull/Collections/CasesCollection.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Sync/Pull/Collections/CasesCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\CasesCollection\:\:candidates\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\CaseRecord\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/CasesCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\CasesCollection\:\:visible\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\CaseRecord\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/CasesCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\DirectoryContactsCollection\:\:candidates\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\DirectoryContact\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/DirectoryContactsCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\DirectoryContactsCollection\:\:visible\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\DirectoryContact\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/DirectoryContactsCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\EmergencyContactsCollection\:\:candidates\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\DirectoryContact\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/EmergencyContactsCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\EmergencyContactsCollection\:\:visible\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\DirectoryContact\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/EmergencyContactsCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\RoutedAlertsCollection\:\:candidates\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Alert\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/RoutedAlertsCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\ThematiquesCollection\:\:visible\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Thematique\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/ThematiquesCollection.php
+
+		-
+			message: '#^Method App\\Application\\Sync\\Pull\\Collections\\ValidationRulesCollection\:\:visible\(\) should return Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\> but returns Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\ValidationRule\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Application/Sync/Pull/Collections/ValidationRulesCollection.php
+
+		-
+			message: '#^Property App\\Models\\ValidationRule\:\:\$params \(string\|null\) does not accept array\<mixed, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: app/Application/Validation/ManageValidationRules.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/Backup/RunBackupCommand.php
+
+		-
+			message: '#^Method App\\Console\\Commands\\Platform\\InstallCommand\:\:obtainPassword\(\) never assigns null to &\$generated so it can be removed from the by\-ref type\.$#'
+			identifier: parameterByRef.unusedType
+			count: 1
+			path: app/Console/Commands/Platform/InstallCommand.php
+
+		-
+			message: '#^Dead catch \- Illuminate\\Contracts\\Encryption\\DecryptException is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: app/Console/Commands/Platform/PreflightCommand.php
+
+		-
+			message: '#^Instanceof between Illuminate\\Http\\Exceptions\\ThrottleRequestsException and Symfony\\Component\\HttpKernel\\Exception\\HttpExceptionInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: app/Exceptions/ApiExceptionRenderer.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Controllers/Admin/ReportDownloadController.php
+
+		-
+			message: '#^Cannot call method mimeType\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Admin/ReportDownloadController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/AlertController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\DirectoryContact\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/AlertController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\DirectoryContact\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/AlertController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/AlertController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/AlertController.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Controllers/Api/V1/Admin/MaintenanceController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\MaintenanceWindow\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/MaintenanceController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\MaintenanceWindow\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/MaintenanceController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/MaintenanceController.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Admin/MaintenanceController.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Illuminate\\Contracts\\Pagination\\CursorPaginator\|Illuminate\\Contracts\\Pagination\\LengthAwarePaginator and ''withQueryString'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Http/Controllers/Api/V1/ApiController.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/Auth/OtpVerifyController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/Content/ResourceController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Api/V1/NotificationController.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Controllers/Api/V1/Sync/HeartbeatController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>cover_url" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Web/ActualitesIndexController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Web/Alerts/ReportPageController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Response\:\:withHeaders\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Http/Controllers/Web/Member/Peer/PeerCasesPageController.php
+
+		-
+			message: '#^Cannot call method allowedTransitions\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Web/Member/Peer/PeerCasesPageController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>defaults" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Web/Member/PlaceholderPageController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>sos_share_gps" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Web/SosPageController.php
+
+		-
+			message: '''
+				#^PHPDoc tag @livewireScripts has invalid value \(\(Livewire lit Vite\:\:cspNonce\(\)\), @routes et les scripts en ligne des gabarits\.
+				  'unsafe\-eval' est accordé à script\-src parce qu'Alpine \(Bootstrap \+ Alpine dans public\.js, Alpine embarqué
+				  par Livewire en admin\) évalue ses expressions x\-data / x\-on avec new Function \: décision consignée \(P2\-13\)\.
+				  Aucun 'unsafe\-inline' sur script\-src\. style\-src accepte 'unsafe\-inline' \(SweetAlert2, Quill, Livewire\)\.
+				\- HSTS un an avec sous\-domaines, en production et seulement sur une requête déjà sécurisée\.
+				\- Permissions\-Policy \: la géolocalisation n'est accordée qu'aux pages SOS et signalement\.
+
+				Les en\-têtes déjà posés par une réponse \(par exemple un contrôleur qui a besoin d'une CSP plus souple\) ne sont pas écrasés\.\)\: Unexpected token "lit", expected '\)' at offset 244 on line 6$#
+			'''
+			identifier: phpDoc.parseError
+			count: 1
+			path: app/Http/Middleware/SecurityHeaders.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Resources/Admin/AdminAccountResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Admin/AdminAccountResource.php
+
+		-
+			message: '#^Left side of && is always false\.$#'
+			identifier: booleanAnd.leftAlwaysFalse
+			count: 1
+			path: app/Http/Resources/Admin/AdminAccountResource.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Http/Resources/Admin/AdminAccountResource.php
+
+		-
+			message: '#^Right side of && is always false\.$#'
+			identifier: booleanAnd.rightAlwaysFalse
+			count: 1
+			path: app/Http/Resources/Admin/AdminAccountResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Cannot call method allowedTransitions\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Parameter \#1 \$type of static method App\\Http\\Resources\\Alerts\\AlertResource\:\:apiType\(\) expects App\\Enums\\AlertType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Admin/AdminAlertResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: app/Http/Resources/Admin/AdminDeviceResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Admin/AdminInvitationResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Resources/Admin/AdminReportResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Admin/AdminReportResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Admin/AdminRoleRequestResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Parameter \#1 \$type of static method App\\Http\\Resources\\Alerts\\AlertResource\:\:apiType\(\) expects App\\Enums\\AlertType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Http/Resources/Alerts/AlertTrackingResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Resources/Alerts/AlertTrackingResource.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertTrackingResource.php
+
+		-
+			message: '#^Parameter \#1 \$type of static method App\\Http\\Resources\\Alerts\\AlertResource\:\:apiType\(\) expects App\\Enums\\AlertType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Alerts/AlertTrackingResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertTrackingResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertTrackingResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Alerts/AlertTrackingResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Alerts/EmergencyContactResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Alerts/EmergencyContactResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Resources/Alerts/RoutedAlertResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Resources/Alerts/RoutedAlertResource.php
+
+		-
+			message: '#^Parameter \#1 \$type of static method App\\Http\\Resources\\Alerts\\AlertResource\:\:apiType\(\) expects App\\Enums\\AlertType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Alerts/RoutedAlertResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Alerts/RoutedContactResource.php
+
+		-
+			message: '#^Cannot call method isOpen\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Alerts/SosStatusResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Left side of && is always false\.$#'
+			identifier: booleanAnd.leftAlwaysFalse
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 2
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),App\\Models\\GroupMember\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Parameter \#4 \$targetRole of static method App\\Domain\\Community\\GroupMembershipRules\:\:canChangeRole\(\) expects App\\Enums\\GroupRole, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Parameter \#4 \$targetRole of static method App\\Domain\\Community\\GroupMembershipRules\:\:canManage\(\) expects App\\Enums\\GroupRole, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<\(int\|string\),App\\Models\\GroupMember\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<\(int\|string\),array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Resources/Community/GroupMemberResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Http/Resources/Community/GroupResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Resources/Community/GroupResource.php
+
+		-
+			message: '#^Left side of \|\| is always false\.$#'
+			identifier: booleanOr.leftAlwaysFalse
+			count: 1
+			path: app/Http/Resources/Community/GroupResource.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: app/Http/Resources/Community/GroupResource.php
+
+		-
+			message: '#^Right side of && is always false\.$#'
+			identifier: booleanAnd.rightAlwaysFalse
+			count: 1
+			path: app/Http/Resources/Community/GroupResource.php
+
+		-
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 2
+			path: app/Http/Resources/Community/GroupResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Content/DirectoryContactResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Content/DirectoryContactResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Content/ResourceCardResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Content/ResourceCardResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Content/ResourceCardResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Content/ThematiqueCardResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Content/ThematiqueResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Directory/DirectoryContactResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Directory/DirectoryContactResource.php
+
+		-
+			message: '#^Cannot call method memberBadge\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Directory/DirectoryContactResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Events/EventResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Events/EventResource.php
+
+		-
+			message: '#^Method App\\Http\\Resources\\Events\\EventResource\:\:toArray\(\) should return array\<string, mixed\> but returns array\<int\|string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Resources/Events/EventResource.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: app/Http/Resources/Events/EventResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Feed/PollResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Http/Resources/Feed/PostResource.php
+
+		-
+			message: '#^Cannot call method badge\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Feed/PostResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Feed/PostResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Feed/PostResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Forums/ForumTopicResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 5
+			path: app/Http/Resources/Me/DeviceResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Me/NewsletterResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Me/NewsletterResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Me/PushSubscriptionResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Me/RoleRequestResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Member/DashboardResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Member/MemberProfileResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Member/MemberProfileResource.php
+
+		-
+			message: '#^Parameter \#1 \$fields of static method App\\Domain\\Account\\SensitiveProfile\:\:normalizeShared\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Member/MemberProfileResource.php
+
+		-
+			message: '#^Parameter \#2 \$shared of static method App\\Domain\\Account\\SensitiveProfile\:\:disclosed\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Member/MemberProfileResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>completion" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Resources/Member/MemberProfileResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>interests" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Resources/Member/MemberProfileResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>show_zone" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/Resources/Member/MemberProfileResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>show_zone" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Resources/Member/ProfileConnectionResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Messaging/ConversationResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Messaging/ConversationResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Resources/Messaging/ConversationResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Network/InvitationResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Network/InvitationResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Network/InvitationResource.php
+
+		-
+			message: '#^Parameter \#1 \$visibility of static method App\\Domain\\Community\\NetworkRules\:\:followable\(\) expects App\\Enums\\ProfileVisibility\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Network/NetworkPersonResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Peer/CaseFollowupResource.php
+
+		-
+			message: '#^Cannot call method badge\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Peer/CaseFollowupResource.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Peer/CaseFollowupResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Peer/CaseFollowupResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 5
+			path: app/Http/Resources/Peer/CaseResource.php
+
+		-
+			message: '#^Cannot call method badge\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Peer/CaseResource.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Peer/CaseResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: app/Http/Resources/Peer/CaseResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Peer/CaseResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Cannot call method allowedTransitions\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 5
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Parameter \#1 \$type of static method App\\Http\\Resources\\Alerts\\AlertResource\:\:apiType\(\) expects App\\Enums\\AlertType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\AlertStatusChange\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:values\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: app/Http/Resources/Peer/PeerAlertResource.php
+
+		-
+			message: '#^Cannot call method icon\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Search/SearchHitResource.php
+
+		-
+			message: '#^Cannot call method icon\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Search/SearchSuggestionResource.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/Search/SearchSuggestionResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/Resources/Search/SearchSuggestionResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/Sync/SyncConflictResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/Sync/SyncConflictResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Parameter \#1 \$fields of static method App\\Domain\\Account\\SensitiveProfile\:\:normalizeShared\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between mixed and App\\Enums\\UserStatus\:\:Pending will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Http/Resources/UserResource.php
+
+		-
+			message: '#^Parameter &\$payload by\-ref type of method App\\Infrastructure\\Session\\GuestPrivateDatabaseSessionHandler\:\:addRequestInformation\(\) expects array\<string, mixed\>, array given\.$#'
+			identifier: parameterByRef.type
+			count: 1
+			path: app/Infrastructure/Session/GuestPrivateDatabaseSessionHandler.php
+
+		-
+			message: '#^Cannot call method isFinished\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Jobs/GenerateReport.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Alert\>\:\:getCollection\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Admin/Alerts/Index.php
+
+		-
+			message: '#^Cannot call method allowedTransitions\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Alerts/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 7
+			path: app/Livewire/Admin/Alerts/Index.php
+
+		-
+			message: '#^Parameter \#1 \$type of method App\\Domain\\Alerts\\EscalationPolicy\:\:delaysFor\(\) expects App\\Enums\\AlertType, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Livewire/Admin/Alerts/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: app/Livewire/Admin/Alerts/Index.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Category\>\|Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Faq\>\|Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Resource\>\|Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\Thematique\>\:\:getCollection\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/Admin/Content/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Admin/Content/Index.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<\(int\|string\)\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: app/Livewire/Admin/Content/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Admin/Dashboard/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Admin/Directory/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Directory/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between numeric\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Directory/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Admin/Directory/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between numeric\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Directory/RoutingPreview.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Admin/Emails/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Admin\\Emails\\Index\:\:\$form \(array\{name\: string, slug\: string, category\: string, subject\: string, preheader\: string, body\: string, is_active\: bool\}\) does not accept default value of type array\{\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: app/Livewire/Admin/Emails/Index.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Admin/Followups/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Followups/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Admin/Followups/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Admin\\Gateways\\Index\:\:\$postForm \(array\{kind\: string, reference\: string, message\: string, channels\: list\<int\|string\>, at\: string\}\) does not accept default value of type array\{\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: app/Livewire/Admin/Gateways/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Indicators\\Index\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Indicators/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Indicators\\Index\:\:\$period\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Livewire/Admin/Indicators/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Indicators\\Index\:\:\$rows\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Livewire/Admin/Indicators/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between Carbon\\CarbonImmutable\|null and false will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Indicators/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between numeric\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Indicators/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Maintenance\\Index\:\:\$overview\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Maintenance/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Maintenance\\Index\:\:\$whitelist\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Maintenance/Index.php
+
+		-
+			message: '#^Parameter \#1 \$date of static method App\\Application\\Platform\\MaintenancePage\:\:when\(\) expects Illuminate\\Support\\Carbon, string given\.$#'
+			identifier: argument.type
+			count: 3
+			path: app/Livewire/Admin/Maintenance/Index.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\ModerationReport\>\:\:getCollection\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Livewire/Admin/Moderation/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Admin/Moderation/Index.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Livewire\\Admin\\Network\\Index\:\:paginateQuery\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Event\|App\\Models\\ForumTopic\|App\\Models\\Group\|App\\Models\\Page\|App\\Models\\Post\>, Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Event\>\|Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\ForumTopic\>\|Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Group\>\|Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Page\>\|Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Post\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Livewire/Admin/Network/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Newsletter\\Index\:\:\$tags\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Newsletter/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Livewire/Admin/Newsletter/Index.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Newsletter/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Admin/Newsletter/Index.php
+
+		-
+			message: '#^Cannot call method setTimezone\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Newsletter/Index.php
+
+		-
+			message: '#^Property App\\Livewire\\Admin\\Newsletter\\Index\:\:\$subForm \(array\{email\: string, name\: string, status\: string, tags\: list\<string\>, interests\: list\<string\>, send_confirmation\: bool\}\) does not accept default value of type array\{\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: app/Livewire/Admin/Newsletter/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>email" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Admin/Newsletter/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 8
+			path: app/Livewire/Admin/Registers/Index.php
+
+		-
+			message: '#^Cannot call method allowedTransitions\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Registers/Index.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Admin/Registers/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Livewire/Admin/Registers/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between numeric\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Registers/Index.php
+
+		-
+			message: '#^Unable to resolve the template type T in call to function array_values$#'
+			identifier: argument.templateType
+			count: 1
+			path: app/Livewire/Admin/Registers/Index.php
+
+		-
+			message: '#^Argument of an invalid type Illuminate\\Contracts\\Pagination\\LengthAwarePaginator\<int, App\\Models\\GeneratedReport\> supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: app/Livewire/Admin/Reports/Index.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Livewire/Admin/Reports/Index.php
+
+		-
+			message: '#^Property App\\Models\\ReportSchedule\:\:\$next_run_at \(string\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Livewire/Admin/Reports/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between Carbon\\CarbonImmutable\|null and false will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Reports/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Users\\Index\:\:\$account\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Livewire/Admin/Users/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Users\\Index\:\:\$zones\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Users/Index.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Livewire/Admin/Users/Index.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between numeric\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Livewire/Admin/Users/Index.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\Validation\\Index\:\:\$report\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/Validation/Index.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>label" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Admin/Validation/Index.php
+
+		-
+			message: '#^Method App\\Livewire\\Attributes\\SafeUrl\:\:setValue\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Livewire/Attributes/SafeUrl.php
+
+		-
+			message: '#^Cannot call method isOpen\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Alert.php
+
+		-
+			message: '#^Cannot call method isTerminal\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Alert.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Alert.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Alert.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Models/AlertNotification.php
+
+		-
+			message: '#^Cannot call method isFinal\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/AlertNotification.php
+
+		-
+			message: '#^Parameter \#1 \$object of static method DateTimeImmutable\:\:createFromInterface\(\) expects DateTimeInterface, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Models/AlertNotification.php
+
+		-
+			message: '#^Empty array passed to foreach\.$#'
+			identifier: foreach.emptyArray
+			count: 1
+			path: app/Models/AssistantKb.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>email" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/AuditLog.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Models/Backup.php
+
+		-
+			message: '#^Cannot call method isPending\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/CaseFollowup.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<\(int\|string\)\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: app/Models/CaseForm.php
+
+		-
+			message: '#^Cannot call method isActive\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/CaseRecord.php
+
+		-
+			message: '#^Cannot call method isGroup\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Conversation.php
+
+		-
+			message: '#^Cannot call method isFuture\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/ConversationParticipant.php
+
+		-
+			message: '#^Property App\\Models\\EmailTemplate\:\:\$variables \(string\|null\) does not accept list\<string\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/EmailTemplate.php
+
+		-
+			message: '#^Cannot call method isFuture\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Models/Event.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/Event.php
+
+		-
+			message: '#^Cannot call method countsAsGoing\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/EventRsvp.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/GeneratedReport.php
+
+		-
+			message: '#^Cannot call method isFinished\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/GeneratedReport.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/GeneratedReport.php
+
+		-
+			message: '#^Cannot call method canModerate\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/GroupMember.php
+
+		-
+			message: '#^Property App\\Models\\IndicatorValue\:\:\$computed_at \(string\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/IndicatorValue.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Models/IndicatorValue.php
+
+		-
+			message: '#^Cannot call method copy\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/MaintenanceWindow.php
+
+		-
+			message: '#^Cannot call method gt\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/MaintenanceWindow.php
+
+		-
+			message: '#^Cannot call method lte\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Models/MaintenanceWindow.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pseudo" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Models/ModerationReport.php
+
+		-
+			message: '#^Cannot call method isEditable\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/NewsletterCampaign.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/NewsletterCampaign.php
+
+		-
+			message: '#^Offset ''interests'' does not exist on array\{\}\|string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Models/NewsletterCampaign.php
+
+		-
+			message: '#^Offset ''since'' does not exist on array\{\}\|string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Models/NewsletterCampaign.php
+
+		-
+			message: '#^Offset ''tags'' does not exist on array\{\}\|string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Models/NewsletterCampaign.php
+
+		-
+			message: '#^Offset ''until'' does not exist on array\{\}\|string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Models/NewsletterCampaign.php
+
+		-
+			message: '#^Property App\\Models\\NewsletterClick\:\:\$clicked_at \(string\) does not accept Illuminate\\Support\\Carbon\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/NewsletterClick.php
+
+		-
+			message: '#^Method App\\Models\\NewsletterInterest\:\:subscribers\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterSubscriber, \$this\(App\\Models\\NewsletterInterest\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterSubscriber, \$this\(App\\Models\\NewsletterInterest\), App\\Models\\NewsletterSubscriberInterest, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/NewsletterInterest.php
+
+		-
+			message: '#^Method App\\Models\\NewsletterSubscriber\:\:interestModels\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterInterest, \$this\(App\\Models\\NewsletterSubscriber\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterInterest, \$this\(App\\Models\\NewsletterSubscriber\), App\\Models\\NewsletterSubscriberInterest, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/NewsletterSubscriber.php
+
+		-
+			message: '#^Method App\\Models\\NewsletterSubscriber\:\:tagModels\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterTag, \$this\(App\\Models\\NewsletterSubscriber\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterTag, \$this\(App\\Models\\NewsletterSubscriber\), App\\Models\\NewsletterSubscriberTag, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/NewsletterSubscriber.php
+
+		-
+			message: '#^Method App\\Models\\NewsletterTag\:\:subscribers\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterSubscriber, \$this\(App\\Models\\NewsletterTag\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\Models\\NewsletterSubscriber, \$this\(App\\Models\\NewsletterTag\), App\\Models\\NewsletterSubscriberTag, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/NewsletterTag.php
+
+		-
+			message: '#^Cannot call method greaterThan\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/OnCallShift.php
+
+		-
+			message: '#^Cannot call method lessThanOrEqualTo\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/OnCallShift.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/OtpCode.php
+
+		-
+			message: '#^Cannot call method isDelivered\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/OutboundDelivery.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/OutboundPost.php
+
+		-
+			message: '#^Cannot call method isFuture\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Poll.php
+
+		-
+			message: '#^Property App\\Models\\Profile\:\:\$progressive_answered \(string\|null\) does not accept list\<string\>\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/Profile.php
+
+		-
+			message: '#^Cannot call method hasFile\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Resource.php
+
+		-
+			message: '#^Cannot call method lessThanOrEqualTo\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Resource.php
+
+		-
+			message: '#^Cannot call method isFuture\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/RoleInvitation.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/RoleInvitation.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Setting\:\:\$value\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Setting.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/SocialChannel.php
+
+		-
+			message: '#^Cannot call method isOpen\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/SyncConflict.php
+
+		-
+			message: '#^Cannot call method lessThanOrEqualTo\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Thematique.php
+
+		-
+			message: '#^Method App\\Models\\Thematique\:\:related\(\) should return Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Thematique\> but returns Illuminate\\Database\\Eloquent\\Builder\<static\(App\\Models\\Thematique\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Thematique.php
+
+		-
+			message: '#^Parameter \#1 \$stored of static method App\\Application\\Shared\\NotificationPreferences\:\:allows\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Models/UserSetting.php
+
+		-
+			message: '#^Parameter \#1 \$stored of static method App\\Application\\Shared\\NotificationPreferences\:\:normalize\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Models/UserSetting.php
+
+		-
+			message: '#^Method App\\Notifications\\AlertRouted\:\:mailContext\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/AlertRouted.php
+
+		-
+			message: '#^Method App\\Notifications\\AlertRouted\:\:mailTemplate\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/AlertRouted.php
+
+		-
+			message: '#^Method App\\Notifications\\EventReminder\:\:mailContext\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/EventReminder.php
+
+		-
+			message: '#^Method App\\Notifications\\EventReminder\:\:mailTemplate\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/EventReminder.php
+
+		-
+			message: '#^Method App\\Notifications\\ModerationNotice\:\:subjectId\(\) never returns string so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/ModerationNotice.php
+
+		-
+			message: '#^Method App\\Notifications\\SosCancelled\:\:smsText\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/SosCancelled.php
+
+		-
+			message: '#^Method App\\Notifications\\SosSafe\:\:smsText\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/SosSafe.php
+
+		-
+			message: '#^Method App\\Notifications\\SosTriggered\:\:smsText\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/SosTriggered.php
+
+		-
+			message: '#^Method App\\Notifications\\SosUnacknowledged\:\:mailContext\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/SosUnacknowledged.php
+
+		-
+			message: '#^Method App\\Notifications\\SosUnacknowledged\:\:mailTemplate\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/SosUnacknowledged.php
+
+		-
+			message: '#^Method App\\Notifications\\SosUnacknowledged\:\:smsText\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/SosUnacknowledged.php
+
+		-
+			message: '#^Method App\\Notifications\\UserRegistered\:\:mailContext\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/UserRegistered.php
+
+		-
+			message: '#^Method App\\Notifications\\UserRegistered\:\:mailTemplate\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Notifications/UserRegistered.php
+
+		-
+			message: '#^Parameter \#1 \$stored of static method App\\Application\\Shared\\NotificationPreferences\:\:allows\(\) expects array\<mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Notifications/XomitonNotification.php
+
+		-
+			message: '#^Cannot call method isPublished\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Policies/CommentPolicy.php
+
+		-
+			message: '#^Cannot call method isPublished\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Policies/ForumReplyPolicy.php
+
+		-
+			message: '#^Cannot call method isPublished\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Policies/PostPolicy.php
+
+		-
+			message: '#^Parameter \$visibility of static method App\\Domain\\Feed\\PostAudience\:\:allows\(\) expects App\\Enums\\PostVisibility, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Policies/PostPolicy.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: database/factories/AlertFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/ConversationFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: database/factories/DirectoryContactFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: database/factories/EventFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/GroupFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/IndicatorValueFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/MessageFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: database/factories/ModerationReportFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: database/factories/PostFactory.php
+
+		-
+			message: '#^Property App\\Models\\ReportSchedule\:\:\$next_run_at \(string\|null\) does not accept Carbon\\CarbonImmutable\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: database/factories/ReportScheduleFactory.php
+
+		-
+			message: '#^Call to an undefined method Faker\\Generator\:\:departmentName\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: database/factories/ZoneFactory.php
+
+		-
+			message: '#^Binary operation "\+" between string and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: database/seeders/ContentSeeder.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Setting\:\:\$value\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/SettingsSeeder.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>is_active" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/seeders/SocialChannelsSeeder.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>is_connected" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/seeders/SocialChannelsSeeder.php
+
+		-
+			message: '#^Parameter \#2 \$existing of method Database\\Seeders\\ValidationRulesSeeder\:\:params\(\) expects array\<string, mixed\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: database/seeders/ValidationRulesSeeder.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>is_active" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/seeders/ValidationRulesSeeder.php
+
+		-
+			message: '#^Empty array passed to foreach\.$#'
+			identifier: foreach.emptyArray
+			count: 1
+			path: routes/admin.php
