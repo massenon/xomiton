@@ -693,9 +693,9 @@ return [
         'options_title' => 'Options d’inscription',
         'manual' => [
             'label' => 'Validation par l’équipe',
-            'peers' => 'Pair·es éducateur·rices seulement (par défaut)',
-            'all' => 'Tous les nouveaux comptes',
-            'help' => 'Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte. Avec « tous », chaque nouveau compte reste en attente jusqu’à votre validation.',
+            'peers' => 'Inscriptions signalées et pair·es éducateur·rices seulement',
+            'all' => 'Tous les nouveaux comptes (par défaut)',
+            'help' => 'Par défaut, chaque nouveau compte reste en attente jusqu’à votre validation : vous confirmez alors son adresse e-mail (aucun code n’est envoyé à l’inscription). Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte.',
         ],
         'closed_message' => 'Message affiché quand les inscriptions sont fermées',
         'closed_message_help' => 'Vide : le message par défaut est affiché.',
@@ -713,6 +713,14 @@ return [
         'signups' => 'Inscriptions',
         'week_label' => 'Sem. du :date',
         'pending' => 'Demandes en attente',
+        // Informations utiles à la validation (jamais l'orientation ni l'identité de genre : données sensibles chiffrées).
+        'details' => [
+            'age' => ':age ans',
+            'member' => 'Membre de la communauté',
+            'ally' => 'Personne ressource / allié·e',
+            'ally_role' => 'Statut : :role',
+            'ally_role_other' => '(:other)',
+        ],
         'flags' => [
             'disposable_email' => 'Adresse e-mail jetable',
             'repeated_fingerprint' => 'Inscriptions répétées',
@@ -737,7 +745,7 @@ return [
         'reject_reason' => 'Motif écrit pour la personne (facultatif)',
         'invitations' => [
             'title' => 'Inviter dans l’équipe',
-            'help' => 'Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (case « 15 ans » comprise) et reçoit le rôle une fois son compte validé.',
+            'help' => 'Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (âge minimal compris) et reçoit le rôle une fois son compte validé.',
             'role' => 'Rôle',
             'email' => 'Adresse e-mail (facultative, lie l’invitation)',
             'note' => 'Note interne',

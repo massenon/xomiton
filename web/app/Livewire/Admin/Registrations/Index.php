@@ -38,7 +38,7 @@ final class Index extends Component
 {
     use InteractsWithUi;
 
-    public string $manual = RegistrationSettings::MANUAL_PEERS;
+    public string $manual = RegistrationSettings::MANUAL_ALL;
 
     public string $message = '';
 

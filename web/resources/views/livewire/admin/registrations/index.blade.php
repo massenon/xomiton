@@ -131,11 +131,17 @@
         @else
             <ul class="list-group list-group-flush">
                 @foreach ($this->pending as $request)
+                    @php($summary = \App\Application\Admin\Registrations\RegistrationSummary::of($request))
                     <li class="list-group-item d-flex flex-wrap align-items-center gap-3" wire:key="reg-pending-{{ $request->id }}">
                         <x-avatar :name="$request->pseudo" :src="$request->avatar_url" size="sm" />
                         <div class="flex-grow-1 min-w-0">
-                            <div class="fw-semibold text-break">{{ $request->pseudo }}@if ($request->name) <span class="text-secondary fw-normal">· {{ $request->name }}</span>@endif</div>
-                            <div class="small text-secondary">{{ $request->email }}@if ($request->zone) · {{ $request->zone->name }}@endif · {{ __('admin.users.columns.requested_role', ['role' => $request->profile?->member_type?->label() ?? __('admin.users.roles.membre')]) }} · {{ $format->ago($request->created_at) }}</div>
+                            <div class="fw-semibold text-break">{{ $request->pseudo }}@if ($summary['name'] !== '') <span class="text-secondary fw-normal">· {{ $summary['name'] }}</span>@endif</div>
+                            <div class="small text-secondary text-break">{{ $request->email }}@if ($summary['age'] !== null) · {{ __('admin.registrations.details.age', ['age' => $summary['age']]) }}@endif @if ($summary['place']) · {{ $summary['place'] }}@endif @if ($request->zone) · {{ $request->zone->name }}@endif @if ($summary['phone']) · {{ $summary['phone'] }}@endif</div>
+                            <div class="small mt-1 d-flex flex-wrap align-items-center gap-1">
+                                <x-badge :color="$summary['is_ally'] ? 'info' : 'primary'" soft>{{ $summary['is_ally'] ? __('admin.registrations.details.ally') : __('admin.registrations.details.member') }}</x-badge>
+                                @if ($summary['ally_role'])<span>{{ __('admin.registrations.details.ally_role', ['role' => $summary['ally_role']]) }}@if ($summary['ally_role_other']) {{ __('admin.registrations.details.ally_role_other', ['other' => $summary['ally_role_other']]) }}@endif</span>@endif
+                                <span class="text-secondary">· {{ __('admin.users.columns.requested_role', ['role' => $request->profile?->member_type?->label() ?? __('admin.users.roles.membre')]) }} · {{ $format->ago($request->created_at) }}</span>
+                            </div>
                             @if ($flags = \App\Application\Auth\Support\RegistrationFlags::parse($request->registration_flags))
                                 <div class="mt-1 d-flex flex-wrap gap-1">
                                     @foreach ($flags as $flag)
