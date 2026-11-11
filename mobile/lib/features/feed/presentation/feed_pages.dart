@@ -7,6 +7,8 @@ import '../../../core/l10n/app_strings.dart';
 import '../../../core/network/api_exception.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/dates.dart';
+import '../../auth/application/pending_validation.dart';
+import '../../auth/presentation/pending_widgets.dart';
 import '../application/feed_controller.dart';
 import '../data/feed_api.dart';
 import '../data/feed_models.dart';
@@ -22,15 +24,19 @@ class FeedTabPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(feedRefreshOnOutboxProvider);
     final state = ref.watch(feedProvider);
+    final pending = ref.watch(pendingValidationProvider);
     return Scaffold(
       appBar: AppBar(title: Text(context.t('feed_page_title'))),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: 'fab-feed-new',
-        onPressed: () => context.push('/feed/new'),
+        // Compte en attente de validation : bouton grisé, l'explication est au-dessus du fil.
+        onPressed: pending ? null : () => context.push('/feed/new'),
         icon: const Icon(Icons.edit_outlined),
         label: Text(context.t('feed_compose_label')),
       ),
-      body: state.when(
+      body: Column(children: [
+        if (pending) const PendingNotice(messageKey: 'mobile_pending_action_blocked'),
+        Expanded(child: state.when(
         loading: () => const LoadingView(),
         error: (e, _) =>
             ErrorView(error: e, onRetry: () => ref.invalidate(feedProvider)),
@@ -77,7 +83,8 @@ class FeedTabPage extends ConsumerWidget {
                   },
                 ),
         ),
-      ),
+      )),
+      ]),
     );
   }
 }
@@ -588,6 +595,12 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (ref.watch(pendingValidationProvider)) {
+      return Scaffold(
+        appBar: AppBar(title: Text(context.t('feed_create_title'))),
+        body: const SafeArea(child: PendingNotice()),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(context.t(_poll ? 'feed_poll_title' : 'feed_create_title')),
@@ -857,7 +870,10 @@ class _PostDetailPageState extends ConsumerState<PostDetailPage> {
                             ],
                           ),
                         ),
-                        if (post.canComment) _composer(context),
+                        if (post.canComment)
+                          ref.watch(pendingValidationProvider)
+                              ? const PendingNotice()
+                              : _composer(context),
                       ],
                     )),
       ),

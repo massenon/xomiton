@@ -12,7 +12,9 @@ import '../../../core/outbox/outbox.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/dates.dart';
+import '../../auth/application/pending_validation.dart';
 import '../../auth/application/session_controller.dart';
+import '../../auth/presentation/pending_widgets.dart';
 import '../data/community_api.dart';
 import '../data/community_models.dart';
 
@@ -58,6 +60,14 @@ class _MessagesTabPageState extends ConsumerState<MessagesTabPage> {
   Widget build(BuildContext context) {
     final filter = ref.watch(conversationsFilterProvider);
     final state = ref.watch(conversationsProvider);
+    final pendingAccount = ref.watch(pendingValidationProvider);
+    if (pendingAccount) {
+      // Messages fermés tant que l'équipe n'a pas validé le compte (explication à la place de la liste).
+      return Scaffold(
+        appBar: AppBar(title: Text(context.t('community_messages_title'))),
+        body: const SafeArea(child: PendingNotice()),
+      );
+    }
     return Scaffold(
       appBar: AppBar(title: Text(context.t('community_messages_title'))),
       floatingActionButton: FloatingActionButton.extended(
@@ -236,6 +246,12 @@ class _NewConversationPageState extends ConsumerState<NewConversationPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (ref.watch(pendingValidationProvider)) {
+      return Scaffold(
+        appBar: AppBar(title: Text(context.t('community_messages_new_dialog_title'))),
+        body: const SafeArea(child: PendingNotice()),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(context.t('community_messages_new_dialog_title')),
@@ -683,7 +699,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                       ],
                     ),
                   ),
-                  if (c != null && !c.canSend)
+                  if (ref.watch(pendingValidationProvider))
+                    const PendingNotice()
+                  else if (c != null && !c.canSend)
                     Padding(
                       padding: const EdgeInsets.all(XmSpace.gutter),
                       child: Text(

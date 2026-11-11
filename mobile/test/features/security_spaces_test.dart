@@ -318,6 +318,8 @@ void main() {
       await tester.pump();
       expect(find.byKey(const ValueKey('privacy-cover')), findsNothing);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      // La reprise relit `GET me` (compte en attente de validation) : on laisse la requête finir.
+      await tester.pumpAndSettle();
     });
   });
 

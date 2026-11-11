@@ -64,6 +64,7 @@ String errorMessage(BuildContext context, Object error) {
     case 401:
       return context.t('auth_api_unauthenticated');
     case 403:
+      if (e.isPendingValidation) return server ?? context.t('mobile_pending_forbidden');
       // Compte suspendu, étape de confirmation manquante, appareil ou espace
       // retiré : le serveur sait dire pourquoi (message français), sinon texte générique.
       return server ?? context.t('microcopy_error_forbidden');

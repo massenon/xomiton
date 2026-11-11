@@ -53,6 +53,7 @@ final dioProvider = Provider<Dio>((ref) {
     deviceId: () => prefs.getString(kDeviceUuidPref),
     onUnauthorized: () => ref.read(sessionProvider.notifier).expire(),
     onSpaceForbidden: () => ref.read(sessionProvider.notifier).refresh(),
+    onPendingForbidden: () => ref.read(sessionProvider.notifier).refresh(),
     onDeviceRevoked: () => ref.read(sessionProvider.notifier).expire(),
     deviceRegistered: () => (prefs.getString(kDeviceUuidPref) ?? '').isNotEmpty,
     onMaintenance: (body) => ref.read(maintenanceProvider.notifier).enter(body),

@@ -165,6 +165,7 @@ class ApiErrorInterceptor extends Interceptor {
     required this.onUnauthorized,
     required this.toasts,
     this.onSpaceForbidden,
+    this.onPendingForbidden,
     this.onDeviceRevoked,
     this.deviceRegistered,
     this.onMaintenance,
@@ -177,6 +178,9 @@ class ApiErrorInterceptor extends Interceptor {
   final Future<void> Function() onUnauthorized;
   final ToastBus toasts;
   final Future<void> Function()? onSpaceForbidden;
+
+  /// 403 « compte en attente de validation » : relit `GET me` (l'admin a peut-être validé entre-temps).
+  final Future<void> Function()? onPendingForbidden;
 
   /// 403 `device_revoked` : purge totale (sauf sur `me/devices`, où l'application
   /// génère elle-même un nouvel identifiant d'appareil).
@@ -216,6 +220,11 @@ class ApiErrorInterceptor extends Interceptor {
         isSpaceApiPath(err.requestOptions.path) &&
         onSpaceForbidden != null) {
       unawaited(onSpaceForbidden!());
+    } else if (api.isPendingValidation &&
+        err.requestOptions.headers.containsKey('Authorization') &&
+        err.requestOptions.path.replaceFirst(RegExp(r'^/+'), '') != 'me' &&
+        onPendingForbidden != null) {
+      unawaited(onPendingForbidden!());
     }
     handler.next(
       DioException(

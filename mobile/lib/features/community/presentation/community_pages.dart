@@ -9,7 +9,9 @@ import '../../../core/platform/platform_services.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../alerts/data/alerts_api.dart';
+import '../../auth/application/pending_validation.dart';
 import '../../auth/application/session_controller.dart';
+import '../../auth/presentation/pending_widgets.dart';
 import '../data/community_api.dart';
 import '../data/community_models.dart';
 
@@ -169,9 +171,13 @@ class GroupDetailPage extends ConsumerWidget {
               const SizedBox(height: XmSpace.s4),
               if (g.isRequested)
                 Text(context.t('community_groups_detail_pending')),
+              if (g.canJoin && ref.watch(pendingValidationProvider))
+                const PendingNotice(),
               if (g.canJoin)
                 FilledButton(
-                  onPressed: () => _act(
+                  onPressed: ref.watch(pendingValidationProvider)
+                      ? null
+                      : () => _act(
                     context,
                     ref,
                     () => api.joinGroup(id),
@@ -512,6 +518,7 @@ class _EventDetailPageState extends ConsumerState<EventDetailPage> {
               ),
               const SizedBox(height: XmSpace.s4),
               if (!e.isPast || e.going) ...[
+                if (!e.going && ref.watch(pendingValidationProvider)) const PendingNotice(),
                 if (!e.going)
                   SwitchListTile.adaptive(
                     contentPadding: EdgeInsets.zero,
@@ -530,7 +537,9 @@ class _EventDetailPageState extends ConsumerState<EventDetailPage> {
                         ? Icons.event_busy_outlined
                         : Icons.event_available_outlined,
                   ),
-                  onPressed: _busy ? null : () => _rsvp(e, !e.going),
+                  onPressed: (_busy || (!e.going && ref.watch(pendingValidationProvider)))
+                      ? null
+                      : () => _rsvp(e, !e.going),
                   label: Text(
                     context.t(
                       e.going

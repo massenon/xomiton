@@ -12,6 +12,7 @@ import '../core/security/offline_expiry.dart';
 import '../core/security/screen_security.dart';
 import '../core/sync/sync_providers.dart';
 import '../core/push/push_runner.dart';
+import '../features/auth/application/session_controller.dart';
 import '../features/profile/application/settings_providers.dart';
 import '../features/security/presentation/pin_widgets.dart';
 import 'router.dart';
@@ -29,7 +30,7 @@ class XomitonApp extends ConsumerStatefulWidget {
   ConsumerState<XomitonApp> createState() => _XomitonAppState();
 }
 
-class _XomitonAppState extends ConsumerState<XomitonApp> {
+class _XomitonAppState extends ConsumerState<XomitonApp> with WidgetsBindingObserver {
   StreamSubscription<AppToast>? _sub;
   StreamSubscription<OutboxResult>? _outSub;
 
@@ -58,6 +59,7 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _sub = ref.read(toastBusProvider).stream.listen(_show);
     ref.read(outboxRunnerProvider);
     ref.read(pushRunnerProvider);
@@ -85,8 +87,17 @@ class _XomitonAppState extends ConsumerState<XomitonApp> {
       ..showSnackBar(SnackBar(content: Text(text)));
   }
 
+  /// Reprise de l'application : relit `GET me` (un compte en attente a pu être validé).
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && ref.read(sessionProvider).authenticated) {
+      unawaited(ref.read(sessionProvider.notifier).refresh());
+    }
+  }
+
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _sub?.cancel();
     _outSub?.cancel();
     super.dispose();

@@ -24,6 +24,7 @@ import '../features/auth/data/auth_api.dart';
 import '../features/auth/presentation/login_page.dart';
 import '../features/auth/presentation/otp_page.dart';
 import '../features/auth/presentation/password_pages.dart';
+import '../features/auth/presentation/pending_page.dart';
 import '../features/auth/presentation/signup_page.dart';
 import '../features/auth/presentation/splash_carousel_page.dart';
 import '../features/home/presentation/dashboard_page.dart';
@@ -66,9 +67,9 @@ const _guestOnly = {'/splash', '/login', '/forgot', '/reset'};
 ///
 /// (4 bis) code PIN : `/pin-setup` tant qu'aucun code n'existe pour entrer en Pair ou Admin.
 ///
-/// - session ouverte : jamais sur les écrans invités ; l'inscription (phases
-///   2 à 4) et l'OTP d'inscription restent ouverts, la session existant déjà
-///   après la phase 1 ;
+/// - session ouverte : jamais sur les écrans invités ; l'inscription et l'OTP
+///   d'inscription restent ouverts ; un compte en attente de validation arrive
+///   sur `/en-attente` (inscription du 11/11/2026) ;
 /// - sans session : le carrousel d'abord (une seule fois), puis la connexion.
 ///   Les écrans SOS / signalement / suivi / urgences restent accessibles sans
 ///   compte (RG-01) : voir [kPublicPrefixes]. Le SOS d'un·e membre est l'onglet
@@ -87,6 +88,7 @@ String? appRedirect({
   bool pinSetupNeeded = false,
   bool maintenance = false,
   bool teamAccount = false,
+  bool pendingValidation = false,
 }) {
   final loc = uri.path;
   // Mode maintenance (RG-14) : tout compte hors équipe est ramené à l'écran de
@@ -108,9 +110,13 @@ String? appRedirect({
     final several = spaces.length > 1;
     // Arrivée après connexion : sélecteur d'espace (compte à plusieurs espaces),
     // sinon dernier espace actif s'il est toujours déclaré, sinon Membre.
-    final arrival = several && spaceChoicePending
-        ? '/spaces'
-        : (spaces.contains(activeSpace) ? activeSpace : AppSpace.member).homeRoute;
+    final arrival = pendingValidation
+        ? '/en-attente'
+        : several && spaceChoicePending
+            ? '/spaces'
+            : (spaces.contains(activeSpace) ? activeSpace : AppSpace.member).homeRoute;
+    // Compte validé (ou jamais en attente) : l'écran d'attente n'a plus lieu d'être.
+    if (loc == '/en-attente') return pendingValidation ? null : AppSpace.member.homeRoute;
     if (loc == '/alerte-sos') return '/sos';
     if (_guestOnly.contains(loc)) return arrival;
     if (loc == '/otp' && uri.queryParameters['purpose'] != 'signup') {
@@ -162,6 +168,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         spaceChoicePending: session.spaceChoicePending,
         pinSetupNeeded: pin.ready && !pin.configured,
         maintenance: ref.read(maintenanceProvider).active,
+        pendingValidation: session.user?.pendingValidation ?? false,
         teamAccount: session.user != null &&
             (session.user!.roles.contains('admin') ||
                 session.user!.roles.contains('superadmin') ||
@@ -179,6 +186,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/signup/:invitation',
         builder: (_, state) => SignupPage(invitation: state.pathParameters['invitation']),
       ),
+      GoRoute(path: '/en-attente', builder: (_, _) => const PendingPage()),
       GoRoute(path: '/spaces', builder: (_, _) => const SpaceSelectorPage()),
       GoRoute(
         path: '/pin-setup',

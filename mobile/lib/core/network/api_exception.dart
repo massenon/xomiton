@@ -29,6 +29,11 @@ class ApiException implements Exception {
   bool get isRateLimited => status == 429;
   bool get isValidation => status == 422;
 
+  /// 403 d'un compte dont l'inscription attend la validation de l'équipe
+  /// (inscription du 11/11/2026). Le contrat dit « 403 explicite » sans fixer le
+  /// code : tout code qui contient `pending` convient (ex. `account_pending_validation`).
+  bool get isPendingValidation => status == 403 && (code ?? '').contains('pending');
+
   String? firstError(String field) {
     final list = errors[field];
     return (list == null || list.isEmpty) ? null : list.first;
