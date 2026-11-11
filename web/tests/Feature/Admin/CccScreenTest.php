@@ -127,7 +127,7 @@ it('crée une BD : clé bd{n} automatique, dernière position, couverture et pla
         ->set('draftPages.0.file', UploadedFile::fake()->image('p1.jpg', 800, 600))
         ->set('draftPages.0.caption', 'Première')
         ->set('draftPages.0.alt', 'Une jeune femme sourit.')
-        ->call('saveTool')->assertHasNoErrors()->assertDispatched('toast');
+        ->call('saveTool')->assertHasNoErrors()->assertDispatched('toast', type: 'success', message: "Bande dessinée «\u{00A0}Ma nouvelle BD\u{00A0}» créée.");
 
     $tool = CccTool::query()->where('title', 'Ma nouvelle BD')->firstOrFail();
     expect($tool->key)->toBe('bd8')->and($tool->kind)->toBe(CccKind::Comic)->and($tool->position)->toBe(8)->and($tool->is_published)->toBeTrue()
@@ -404,7 +404,7 @@ it('crée une boîte à images : clé bi{n}, position propre à la famille, couv
         ->set('draftPages.0.file', UploadedFile::fake()->image('p1.jpg', 800, 600))
         ->set('draftPages.0.caption', 'Que se passe-t-il ?')
         ->set('draftPages.0.alt', 'Deux personnes discutent.')
-        ->call('saveTool')->assertHasNoErrors()->assertDispatched('toast');
+        ->call('saveTool')->assertHasNoErrors()->assertDispatched('toast', type: 'success', message: "Boîte à images «\u{00A0}Ma boîte\u{00A0}» créée.");
 
     $tool = CccTool::query()->where('title', 'Ma boîte')->firstOrFail();
     expect($tool->key)->toBe('bi8')->and($tool->kind)->toBe(CccKind::ImageBox)->and($tool->position)->toBe(8)->and($tool->is_published)->toBeTrue()

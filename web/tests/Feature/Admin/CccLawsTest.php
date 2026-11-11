@@ -67,7 +67,7 @@ it('crée un texte de loi : clé dérivée du titre, dernière position, publié
     $this->actingAs($admin = lawAdmin());
     $screen = Livewire::test(CccScreen::class)->call('setTab', 'lois')->call('openLawCreate');
 
-    fillLaw($screen, lawForm(['lawPublished' => true]))->call('saveLaw')->assertHasNoErrors()->assertDispatched('toast');
+    fillLaw($screen, lawForm(['lawPublished' => true]))->call('saveLaw')->assertHasNoErrors()->assertDispatched('toast', type: 'success', message: "Texte «\u{00A0}Loi n° 2026-01 sur la protection\u{00A0}» créé.");
 
     $law = Law::query()->where('title', 'like', 'Loi n° 2026-01%')->firstOrFail();
     expect($law->slug)->toBe('loi-n-2026-01-sur-la-protection')->and($law->position)->toBe(5)->and($law->is_published)->toBeTrue()
