@@ -34,6 +34,9 @@ if (document.querySelector('form[data-xm-faq-feedback]')) import('./public/aide.
 // bouton flottant reste le lien vers /sos (x-sos-fab).
 const lazyModules = [
   ['[x-data^="xmReport"]', () => import('./public/signaler.js')],
+  // Inscription en 3 étapes (11/11/2026) : pas à pas chargé à la demande ; en échec de chargement, le formulaire reste complet
+  // (les trois étapes à la suite, un seul envoi) au lieu d'un pas à pas inerte.
+  ['[x-data^="xmRegister"]', () => import('./public/inscription.js')],
   ['[x-data^="xmSosPage"], [x-data^="xmSosFab"]', () => import('./public/sos.js')],
   // P4-04 : auto-évaluation /violences, recherche et version simple /lois, quiz /do-glegbe (sans réseau ni envoi).
   ['[x-data^="xmSelfCheck"]', () => import('./public/violences.js')],

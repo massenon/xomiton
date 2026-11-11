@@ -5,48 +5,28 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth\Support;
 
 /**
- * Les quatre phases de l'inscription (D4) : seule la première est obligatoire ; les suivantes ont « Passer ».
- * Chaque phase est un écran et une route (`inscription.<phase>`), le stepper affiche « Étape n sur 4 ».
+ * Les trois étapes OBLIGATOIRES de l'inscription (décision client du 11/11/2026), dans UN seul formulaire rendu par le
+ * serveur et envoyé une seule fois : « Informations de base », « Profil et identité », « Détails et sécurité ».
+ * Le stepper affiche « Étape n sur 3 » ; avec Alpine une étape est visible à la fois, sans JavaScript tout est visible.
+ * Chaque champ appartient à une étape : à l'erreur de validation, l'étape du premier champ en erreur est rouverte.
  */
 final class RegistrationSteps
 {
     /** @var list<string> */
-    public const STEPS = ['account', 'profile', 'security', 'consents'];
+    public const STEPS = ['basic', 'profile', 'details'];
 
-    /** @var array<string, string> phase → nom de route */
-    public const ROUTES = [
-        'account' => 'inscription',
-        'profile' => 'inscription.profil',
-        'security' => 'inscription.securite',
-        'consents' => 'inscription.consentements',
+    /** @var array<string, list<string>> étape → champs envoyés (clés de validation) */
+    public const FIELDS = [
+        'basic' => ['first_name', 'last_name', 'pseudo', 'email', 'age'],
+        'profile' => ['pronouns', 'country_code', 'city', 'phone', 'zone_id', 'commune_id', 'member_type'],
+        'details' => ['gender_identity', 'gender_identity_other', 'orientation', 'orientation_other', 'sensitive_data', 'ally_role', 'ally_role_other', 'password', 'password_confirmation', 'cgu', 'privacy'],
     ];
 
     private function __construct() {}
 
-    public static function number(string $step): int
+    public static function count(): int
     {
-        $index = array_search($step, self::STEPS, true);
-
-        return $index === false ? 1 : $index + 1;
-    }
-
-    public static function next(string $step): ?string
-    {
-        $index = array_search($step, self::STEPS, true);
-
-        return $index === false ? null : (self::STEPS[$index + 1] ?? null);
-    }
-
-    public static function previous(string $step): ?string
-    {
-        $index = array_search($step, self::STEPS, true);
-
-        return $index === false || $index === 0 ? null : self::STEPS[$index - 1];
-    }
-
-    public static function isOptional(string $step): bool
-    {
-        return $step !== 'account';
+        return count(self::STEPS);
     }
 
     /** @return list<string> Libellés traduits, dans l'ordre. */
@@ -56,33 +36,33 @@ final class RegistrationSteps
     }
 
     /**
-     * Métadonnées de la phase (lang/fr/seo.php, lot auth-ecrans P4-09) : la phase 1 est la page publique indexée
-     * `/inscription` ; les phases 2 à 4, réservées à la personne connectée, sont en noindex et portent « étape n sur 4 »
-     * dans le titre de l'onglet (WCAG 2.4.2 : un titre par écran).
+     * Numéro (à partir de 1) de l'étape qui porte le premier champ en erreur, dans l'ordre du formulaire ; 1 sans erreur.
+     * Une erreur qui ne vient d'aucun champ connu (invitation) ouvre la première étape.
      *
-     * @return array{title: string, description?: string, index: bool}
+     * @param  list<string>  $errorKeys  clés d'erreur de validation (`pseudo`, `age`…)
      */
-    public static function seo(string $step): array
+    public static function firstInvalid(array $errorKeys): int
     {
-        if (! self::isOptional($step)) {
-            return [
-                'title' => (string) __('seo.pages.inscription.title'),
-                'description' => (string) __('seo.pages.inscription.description'),
-                'index' => true,
-            ];
+        foreach (self::STEPS as $index => $step) {
+            if (array_intersect(self::FIELDS[$step], $errorKeys) !== []) {
+                return $index + 1;
+            }
         }
 
-        return [
-            'title' => (string) __('seo.noindex.register_step', ['current' => self::number($step), 'total' => count(self::STEPS)]),
-            'index' => false,
-        ];
+        return 1;
     }
 
-    /** Route de la phase suivante, ou null quand l'inscription est terminée. */
-    public static function nextRoute(string $step): ?string
+    /**
+     * Métadonnées SEO (lang/fr/seo.php) : `/inscription` est une page publique indexée, une seule URL pour les trois étapes.
+     *
+     * @return array{title: string, description: string, index: bool}
+     */
+    public static function seo(): array
     {
-        $next = self::next($step);
-
-        return $next === null ? null : route(self::ROUTES[$next]);
+        return [
+            'title' => (string) __('seo.pages.inscription.title'),
+            'description' => (string) __('seo.pages.inscription.description'),
+            'index' => true,
+        ];
     }
 }

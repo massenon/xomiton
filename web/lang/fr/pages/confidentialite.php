@@ -39,7 +39,7 @@ return [
     ],
 
     'privacy' => [
-        ['Données collectées', 'Pseudonyme, adresse e-mail, zone géographique et, si vous le choisissez, des informations de profil. Aucun nom réel n’est exigé. Pour la sécurité des comptes, l’adresse IP et le navigateur utilisé sont aussi conservés avec vos consentements, les codes de vérification, le journal d’audit et la liste de vos appareils connectés.'],
+        ['Données collectées', 'Pseudonyme, prénom et nom, adresse e-mail, âge, pays, pronoms, type de compte (membre ou personne ressource / allié·e) et, si vous le souhaitez, ville, téléphone, département et commune. Un membre indique aussi son identité de genre et son orientation, une personne ressource ou alliée son statut : ces informations sont chiffrées et jamais publiques. Seul le pseudonyme est visible des autres membres. Pour la sécurité des comptes, l’adresse IP et le navigateur utilisé sont aussi conservés avec vos consentements, les codes de vérification, le journal d’audit et la liste de vos appareils connectés.'],
         ['Signaler', 'Sans compte, ni identifiant ni adresse IP : seuls le contenu de votre signalement, son code de suivi et, si vous le choisissez, un moyen de vous recontacter sont enregistrés. Connecté·e, vous pouvez rester anonyme ; sinon, le signalement est lié à votre compte et à votre pseudonyme.'],
         ['Localisation GPS', 'Partagée uniquement quand vous déclenchez un SOS ou l’autorisez explicitement ; jamais en arrière-plan.'],
         ['Hors connexion', 'Les saisies en attente sont stockées sur votre appareil, puis transmises de façon sécurisée à la synchronisation.'],

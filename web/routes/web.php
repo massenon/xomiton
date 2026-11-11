@@ -7,9 +7,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\RegistrationConsentsController;
-use App\Http\Controllers\Auth\RegistrationProfileController;
-use App\Http\Controllers\Auth\RegistrationSecurityController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Web\Account\PersonalDataExportController;
 use App\Http\Controllers\Web\ActualitesIndexController;
@@ -213,16 +210,12 @@ Route::middleware('guest')->group(function (): void {
 Route::get('/code-de-verification', [OtpController::class, 'show'])->name('otp');
 Route::post('/code-de-verification', [OtpController::class, 'verify'])->middleware('throttle:20,1')->name('otp.verify');
 Route::post('/code-de-verification/renvoyer', [OtpController::class, 'resend'])->middleware('throttle:otp')->name('otp.resend');
-// Phases 2 à 4 de l'inscription (facultatives, « Passer ») : le compte existe déjà, la session est ouverte (Q12 c).
-Route::middleware('auth')->prefix('inscription')->as('inscription.')->group(function (): void {
-    Route::get('/profil', [RegistrationProfileController::class, 'show'])->name('profil');
-    Route::post('/profil', [RegistrationProfileController::class, 'store'])->name('profil.store');
-    Route::get('/securite', [RegistrationSecurityController::class, 'show'])->name('securite');
-    Route::post('/securite', [RegistrationSecurityController::class, 'store'])->name('securite.store');
-    Route::get('/consentements', [RegistrationConsentsController::class, 'show'])->name('consentements');
-    Route::post('/consentements', [RegistrationConsentsController::class, 'store'])->name('consentements.store');
-    Route::post('/{etape}/passer', [RegisterController::class, 'skip'])->whereIn('etape', ['profile', 'security', 'consents'])->name('passer');
-});
+// Anciennes phases 2 à 4 de l'inscription (tunnel retiré le 11/11/2026 : un seul formulaire en 3 étapes sur /inscription) :
+// leurs adresses redirigent vers le fil (comptes déjà créés et favoris), toutes méthodes confondues.
+Route::redirect('/inscription/profil', '/fil');
+Route::redirect('/inscription/securite', '/fil');
+Route::redirect('/inscription/consentements', '/fil');
+Route::redirect('/inscription/{etape}/passer', '/fil')->whereIn('etape', ['profile', 'security', 'consents']);
 Route::post('/deconnexion', LogoutController::class)->middleware('auth')->name('deconnexion');
 // Lot api-me (P6-06) : export RGPD, lien signé de l'e-mail `export-donnees` ; connexion au même compte exigée.
 // Signature vérifiée par le contrôleur (lien expiré ou altéré : page dédiée « redemande un export »).

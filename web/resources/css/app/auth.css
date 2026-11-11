@@ -12,6 +12,10 @@
   .xm-auth .xm-stepper { gap: var(--xm-space-2, .5rem) 1rem; }
 }
 
+/* ---------- Inscription en 3 étapes : le titre de l'étape reçoit le focus à chaque changement d'étape ---------- */
+.xm-register__step h2:focus { outline: none; }
+.xm-register__step h2:focus-visible { outline: var(--xm-focus-width, 3px) solid var(--xm-focus-ring, var(--bs-primary)); outline-offset: var(--xm-focus-offset, 2px); }
+
 /* ---------- Inscription compacte (design-system/DECISIONS.md : chaque étape tient dans 1280×720 sans défilement de page) ---------- */
 .xm-auth-form--compact { --xm-auth-px: 1rem; }
 @media (min-width: 768px) { .xm-auth-form--compact { --xm-auth-px: 1.5rem; } }

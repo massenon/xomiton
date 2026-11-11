@@ -20,8 +20,8 @@
         {{-- P13-08 : annonce préalable d'une maintenance planifiée (refermable, sans bloquer). --}}
         @include('partials.maintenance-notice')
         @auth
-            @if (! auth()->user()->hasVerifiedEmail())
-                {{-- Q12 c : rappel tant que l'e-mail n'est pas confirmé, avec « Renvoyer le code ». --}}
+            @if (auth()->user()->isPending() || ! auth()->user()->hasVerifiedEmail())
+                {{-- 11/11/2026 : « Ton compte attend la validation de l'équipe » tant que le compte est en attente ; sinon Q12 c : rappel tant que l'e-mail n'est pas confirmé, avec « Renvoyer le code ». --}}
                 <div class="container pt-3">
                     @include('auth.partials.verify-banner', ['user' => auth()->user()])
                 </div>

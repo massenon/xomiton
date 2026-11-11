@@ -7,23 +7,30 @@ namespace App\Http\Controllers\Auth;
 use App\Application\Admin\Roles\TeamInvitations;
 use App\Application\Auth\RegisterUser;
 use App\Application\Auth\Support\RegistrationGate;
+use App\Application\Auth\Support\RegistrationOptions;
+use App\Application\Shared\Referentials;
+use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
 use App\Domain\Auth\Exceptions\AuthException;
+use App\Domain\Auth\Exceptions\ConsentRequired;
 use App\Domain\Auth\Exceptions\InvitationInvalid;
+use App\Enums\UserStatus;
 use App\Http\Controllers\Auth\Support\RegistrationSteps;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\ViewErrorBag;
 
 /**
- * /inscription, phase 1 « Compte » (P2-03, Q12 c) : la seule obligatoire. Le compte est créé et la session ouverte
- * aussitôt ; le code `signup` part en parallèle et la vérification reste différée. Inscriptions fermées par
- * l'administration : message configuré, formulaire newsletter et lien vers la connexion (FR-AUTH-06).
+ * /inscription : UN formulaire en 3 étapes obligatoires, envoyé une seule fois à la fin (décision client du 11/11/2026).
+ * Le compte n'existe qu'à la fin ; il est créé, la session ouverte aussitôt, mais il reste en attente de la validation de
+ * l'administration (bandeau « Ton compte attend la validation de l'équipe »). Inscriptions fermées par l'administration :
+ * message configuré, formulaire newsletter et lien vers la connexion (FR-AUTH-06).
  */
 final class RegisterController extends Controller
 {
-    public function create(Request $request, TeamInvitations $invitations): View
+    public function create(Request $request, TeamInvitations $invitations, Referentials $referentials): View
     {
         $code = $request->query('invitation');
         $invitation = null;
@@ -47,9 +54,7 @@ final class RegisterController extends Controller
             ]);
         }
 
-        return view('auth.register', [
-            'step' => 'account',
-            'steps' => RegistrationSteps::labels(),
+        return view('auth.register', self::formData($request, $referentials) + [
             'invitationCode' => $invitation === null ? null : $code,
             'invitationRole' => $invitation?->role,
         ]);
@@ -60,32 +65,58 @@ final class RegisterController extends Controller
         try {
             $user = $register($request->toRegisterData());
         } catch (AuthException $e) {
-            return redirect()->route('inscription', $e instanceof InvitationInvalid ? [] : array_filter(['invitation' => $request->input('invitation')]))
-                ->withErrors([$e instanceof InvitationInvalid ? 'invitation' : 'pseudo' => $e->userMessage()])
-                ->withInput($request->only(['pseudo', 'email']));
+            $invalidInvitation = $e instanceof InvitationInvalid;
+
+            return redirect()->route('inscription', $invalidInvitation ? [] : array_filter(['invitation' => $request->input('invitation')]))
+                ->withErrors([self::errorField($e) => $e->userMessage()])
+                // Les mots de passe ne sont jamais rejoués dans le formulaire.
+                ->withInput($request->except(['password', 'password_confirmation']));
         }
 
         auth('web')->login($user);
         $request->session()->regenerate();
 
-        return redirect()->route(RegistrationSteps::ROUTES['profile'])
-            ->with('toast', __('auth.register.account.created'))
-            ->with('toast_type', 'success');
+        // Compte en attente (cas général) : message rassurant ; compte actif d'emblée (mode `peers`) : toast de bienvenue.
+        if ($user->status === UserStatus::Pending) {
+            return redirect()->route('fil')->with('status', __('auth.register.created_pending'))->with('status_type', 'info');
+        }
+
+        return redirect()->route('fil')->with('toast', __('auth.register.created'))->with('toast_type', 'success');
     }
 
-    /** POST /inscription/{etape}/passer : « Passer » (phases 2 à 4) — rien n'est enregistré, les données restent. */
-    public function skip(Request $request, string $etape): RedirectResponse
+    /** Champ du formulaire qui porte le message d'une exception du cas d'usage (l'étape fautive est rouverte). */
+    private static function errorField(AuthException $e): string
     {
-        abort_unless(in_array($etape, RegistrationSteps::STEPS, true) && RegistrationSteps::isOptional($etape), 404);
-
-        $next = RegistrationSteps::nextRoute($etape);
-
-        return $next === null ? self::finished() : redirect()->to($next);
+        return match (true) {
+            $e instanceof InvitationInvalid => 'invitation',
+            $e instanceof AgeConfirmationRequired => 'age',
+            $e instanceof ConsentRequired => 'cgu',
+            default => 'pseudo',
+        };
     }
 
-    /** Fin du tunnel (après la phase 4 ou son « Passer ») : retour au fil avec un toast. */
-    public static function finished(): RedirectResponse
+    /**
+     * Listes du formulaire (pays, pronoms, « Vous êtes ? », statuts, identités, orientations, départements → communes) et étape à
+     * ouvrir (la première en erreur après un envoi refusé, sinon la première).
+     *
+     * @return array<string, mixed>
+     */
+    private static function formData(Request $request, Referentials $referentials): array
     {
-        return redirect()->route('fil')->with('toast', __('auth.register.done'))->with('toast_type', 'success');
+        $errors = $request->session()->get('errors');
+        $keys = $errors instanceof ViewErrorBag ? array_keys($errors->getBag('default')->getMessages()) : [];
+
+        $zones = $referentials->zones();
+
+        return [
+            'step' => RegistrationSteps::firstInvalid(array_map('strval', $keys)),
+            'steps' => RegistrationSteps::labels(),
+            'options' => RegistrationOptions::payload(),
+            'zones' => array_map(static fn (array $zone): array => ['id' => $zone['id'], 'name' => $zone['name']], $zones),
+            'communesByZone' => collect($zones)->mapWithKeys(static fn (array $zone): array => [
+                (string) $zone['id'] => array_map(static fn (array $commune): array => ['id' => $commune['id'], 'name' => $commune['name']], $zone['communes']),
+            ])->all(),
+            'minAge' => RegistrationOptions::minAge(),
+        ];
     }
 }
