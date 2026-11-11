@@ -3242,3 +3242,15 @@ parameters:
 			identifier: foreach.emptyArray
 			count: 1
 			path: routes/admin.php
+
+		-
+			message: '#^Cannot call method label\(\) on null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Admin/Registrations/RegistrationSummary.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Application/Auth/Listeners/NotifyValidatorsOfPendingAccount.php
