@@ -106,7 +106,7 @@ PENSÉE POUR LA DISCRÉTION
 • Mode discret : l'icône et le nom de l'application peuvent devenir neutres sur Android.
 • Aperçus masqués : les notifications et les messages n'affichent pas leur contenu à l'écran de verrouillage.
 • Verrouillage par code à l'ouverture de l'application.
-• Inscription simple : un pseudonyme suffit. Aucune date de naissance n'est demandée ; vous déclarez votre âge, 18 ans minimum.
+• Inscription en trois étapes : prénom, nom, pseudonyme, e-mail, âge (18 ans minimum), pays et profil. Aucune date de naissance n'est demandée ; votre compte est validé par l'équipe avant d'accéder à tout l'espace.
 • Vos données vous appartiennent : vous pouvez les exporter, ou supprimer votre compte depuis l'application ou depuis notre site, même sans accès à votre compte.
 
 À SAVOIR
