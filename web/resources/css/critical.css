@@ -8,6 +8,9 @@
  */
 
 /* ---------- Jetons (sous-ensemble de tokens.css) ---------- */
+/* Police de secours aux métriques de Montserrat : le passage de la police système à Montserrat (font-display: swap)
+   ne change plus la hauteur des titres, donc plus de décalage de mise en page (CLS) sous le hero. */
+@font-face { font-family: "Montserrat Fallback"; src: local("Arial"), local("Liberation Sans"), local("Helvetica"); size-adjust: 112.5%; ascent-override: 85%; descent-override: 22%; line-gap-override: 0%; }
 :root {
   --xm-blue-500:#0433C3; --xm-blue-600:#032BA6; --xm-blue-700:#032488; --xm-blue-dark-accent:#7C97FF; --xm-blue-dark-accent-hover:#9DB1FF; --xm-blue-300:#8299E1;
   --xm-red-500:#E30E0E; --xm-red-600:#C10C0C; --xm-red-700:#9F0A0A; --xm-red-dark-accent:#FF6B6B; --xm-red-dark-accent-hover:#FF8787; --xm-red-300:#F18686;
@@ -20,7 +23,7 @@
   --xm-bg: var(--xm-neutral-25); --xm-surface: var(--xm-neutral-0); --xm-surface-muted: var(--xm-neutral-100); --xm-border: var(--xm-neutral-200);
   --xm-text: var(--xm-neutral-900); --xm-text-muted: var(--xm-neutral-600); --xm-focus-ring: var(--xm-blue-500);
   --xm-primary-rgb: 4, 51, 195; --xm-secondary-rgb: 227, 14, 14;
-  --xm-font-heading: "Montserrat", "Segoe UI", Arial, sans-serif; --xm-font-body: Arial, "Liberation Sans", Helvetica, sans-serif;
+  --xm-font-heading: "Montserrat", "Montserrat Fallback", Arial, sans-serif; --xm-font-body: Arial, "Liberation Sans", Helvetica, sans-serif;
   --xm-fs-h1: clamp(2rem, 1.5rem + 2.2vw, 2.75rem); --xm-fs-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.125rem); --xm-fs-body: 1rem;
   --xm-lh-heading: 1.2; --xm-lh-body: 1.6;
   --xm-space-4:16px; --xm-space-5:24px; --xm-radius-md:8px; --xm-radius-lg:16px; --xm-target-min: 44px;

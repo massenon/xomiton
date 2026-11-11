@@ -13,11 +13,11 @@
                 <ul class="list-unstyled d-flex flex-wrap justify-content-lg-end gap-3 mb-0 lp-stores">
                     <li>
                         <img src="{{ asset('assets/images/stores/app-store.svg') }}" width="128" height="40" loading="lazy"
-                             alt="{{ __('pages/accueil.application.app_store_alt') }}" class="lp-store">
+                             alt="{{ __('pages/accueil.application.app_store_alt') }}" title="{{ __('pages/accueil.application.app_store_alt') }}" class="lp-store">
                     </li>
                     <li>
                         <img src="{{ asset('assets/images/stores/google-play.svg') }}" width="128" height="40" loading="lazy"
-                             alt="{{ __('pages/accueil.application.google_play_alt') }}" class="lp-store">
+                             alt="{{ __('pages/accueil.application.google_play_alt') }}" title="{{ __('pages/accueil.application.google_play_alt') }}" class="lp-store">
                     </li>
                 </ul>
             </div>

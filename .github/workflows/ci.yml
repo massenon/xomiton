@@ -64,7 +64,7 @@ jobs:
           DB_DATABASE: database/database.sqlite
 
       - name: Tests (Pest)
-        run: vendor/bin/pest --ci
+        run: vendor/bin/pest
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite

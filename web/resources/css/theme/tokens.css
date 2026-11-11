@@ -78,7 +78,7 @@
   --xm-warning-rgb: 240, 168, 0;
 
   /* ---------- Typographie ---------- */
-  --xm-font-heading: "Montserrat", "Segoe UI", Arial, sans-serif;   /* titres : Montserrat */
+  --xm-font-heading: "Montserrat", "Montserrat Fallback", Arial, sans-serif;   /* titres : Montserrat */
   --xm-font-subtitle: Arial, "Liberation Sans", Helvetica, sans-serif; /* sous-titres : Arial */
   --xm-font-body: Arial, "Liberation Sans", Helvetica, sans-serif;     /* texte courant : Arial (hypothèse, voir DECISIONS) */
 

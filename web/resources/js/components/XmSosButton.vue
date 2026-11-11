@@ -67,6 +67,9 @@ const sos = reactive(xmSos({
 const instance = getCurrentInstance();
 /** Un hôte écoute-t-il `action` ? Sinon l'alerte ne partirait nulle part. */
 const hasHost = () => Boolean(instance?.vnode.props?.onAction);
+// Lien statique de repli (page SOS) : les ancres ne sont jamais sans href, donc toujours explorables par les robots.
+const sosPage = route('sos', undefined, '/sos');
+
 const unhandled = (): SosResult => ({
     state: 'failed',
     title: t('alerts.sos.fab.failed_title'),
@@ -132,8 +135,8 @@ onBeforeUnmount(() => {
                 <div class="d-flex flex-wrap gap-2">
                     <button v-show="sos.confirming || sos.counting" type="button" class="btn btn-dark btn-lg flex-fill" @click="sos.abort()">{{ t('components.sos.cancel') }}</button>
                     <button v-show="sos.confirming" type="button" class="btn btn-secondary btn-lg flex-fill" @click="sos.begin()"><i class="bi bi-broadcast me-1" aria-hidden="true"></i>{{ t('components.sos.send') }}</button>
-                    <a v-show="sos.done && result?.call" class="btn btn-primary flex-fill" :href="result?.call?.href ?? undefined"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i><span>{{ result?.call?.label ?? '' }}</span></a>
-                    <a v-show="sos.done && result?.link" class="btn btn-light flex-fill" :href="result?.link?.href ?? undefined">{{ result?.link?.label ?? '' }}</a>
+                    <a v-show="sos.done && result?.call" class="btn btn-primary flex-fill" :href="result?.call?.href ?? sosPage"><i class="bi bi-telephone-fill me-1" aria-hidden="true"></i><span>{{ result?.call?.label ?? '' }}</span></a>
+                    <a v-show="sos.done && result?.link" class="btn btn-light flex-fill" :href="result?.link?.href ?? sosPage">{{ result?.link?.label ?? '' }}</a>
                     <button v-show="sos.done && !managed" type="button" class="btn btn-primary flex-fill" @click="sos.reset()">{{ t('components.sos.safe') }}</button>
                     <button v-show="sos.done && managed" type="button" class="btn btn-light flex-fill" @click="sos.reset()">{{ t('common.close') }}</button>
                 </div>

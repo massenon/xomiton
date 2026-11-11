@@ -158,3 +158,20 @@ Chiffres du FCP froid : ils restent dominés par la bande passante simulée (CSS
 ### 11.4 Contrôles automatisés
 
 `tests/Feature/Performance/GuestPageCachingTest.php` : en-têtes `Cache-Control` / `ETag` / `Vary` et absence de `Set-Cookie` et de ligne `sessions` sur 13 pages invitées ; 304 (avec `W/` et `-gzip`) sans corps ni CSP ; ETag stable malgré un nonce différent ; jamais `public` avec cookie de session, compte ou `Authorization`, ni sur connexion / signalement / SOS / urgences / newsletter ; borne SQL (≤ 5 à froid, ≤ 2 au chaud, 0 de session) ; invalidation du cache de l'accueil à chaque écriture ; Speculation Rules (JSON, nonce = nonce de la CSP, `moderate` / `conservative`, liste blanche sans aucune route sensible, POST ou nommée SOS / auth / API / admin) ; absence des règles sur connexion / SOS / signalement / urgences ; transitions de vue sous `prefers-reduced-motion: no-preference` ; `.htaccess` ; Debugbar jamais découvert ni chargé hors `local` + `APP_DEBUG=true`. Vitest : `resources/js/shared/prefetch.test.js`. Budgets : `npm run build` (échec au-delà de 60 Ko pour `public.js`).
+
+## Audit SEO et mesures Lighthouse (11/11/2026)
+
+**Garde-fou automatique** : `web/tests/Feature/Seo/SeoAuditTest.php` parcourt les 18 pages publiques indexables et vérifie, pour chacune : langue, viewport, titre (15 à 70 caractères), description (70 à 160), canonical identique à l'URL, `index`, un seul H1 et aucun niveau de titre sauté (H1 → H4), Open Graph et Twitter Card complets et cohérents avec le titre, JSON-LD valide (Organization, WebSite, WebPage, BreadcrumbList à positions continues), `alt` + `title` + `width`/`height` sur chaque image informative (décoratives : `alt=""` + `aria-hidden`), un seul `<main>`, lien d'évitement, aucun lien sans nom ni ancre sans `href`, `rel="noopener"` sur `target="_blank"`, au moins 5 liens internes. `RobotsTest` et `SitemapTest` couvrent robots.txt et sitemap.xml.
+
+**Mesures Lighthouse 12** (mobile, simulation 4G lente, Chromium 141, site servi en local avec compression Brotli et en-têtes de cache identiques à `public/.htaccess`) :
+
+| Page | Perf. | Access. | Bonnes pratiques | SEO | FCP | LCP | CLS |
+|---|---|---|---|---|---|---|---|
+| `/` | 91 | 100 | 100 | 100 | 2,4 s | 3,0 s | 0,001 |
+| `/sos` | 92 | 100 | 100 | 100 | 2,4 s | 2,6 s | 0,018 |
+| `/thematiques` | 99 | 100 | 100 | 100 | 1,4 s | 2,0 s | 0 |
+| `/urgences` | 93 | 100 | 100 | 100 | 2,4 s | 2,7 s | 0 |
+
+Limites : mesure locale sans CDN ni HTTP/2 ; le chargement « sous 2 s » n'est tenu que sur réseau normal (les chiffres ci-dessus sont ceux d'un réseau 4G lent simulé) ; à refaire en production (PageSpeed Insights) après déploiement. Sans compression (serveur de développement `php -S`), le CSS de 457 Ko pèse tout et la performance tombe à 57–66 : la compression du serveur d'hébergement (`mod_deflate` / `mod_brotli`, déjà dans `.htaccess`) est indispensable.
+
+Correctifs de l'audit : `title` manquant sur les badges des boutiques (accueil) ; ancres sans `href` du panneau SOS (`/sos`, liens remplis par Alpine) dotées d'un `href` de repli vers `/sos` ; police de secours `Montserrat Fallback` aux métriques ajustées dans le CSS critique (limite le décalage au changement de police).

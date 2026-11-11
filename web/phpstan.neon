@@ -1,5 +1,8 @@
 includes:
     - vendor/larastan/larastan/extension.neon
+    # Erreurs de niveau 6 existantes au 11/11/2026, figées : toute NOUVELLE erreur fait échouer la CI. À réduire peu à peu
+    # (régénérer avec : vendor/bin/phpstan analyse --generate-baseline=phpstan-baseline.neon).
+    - phpstan-baseline.neon
 
 parameters:
     level: 6

@@ -53,6 +53,9 @@ function registersCase(array $overrides = []): CaseRecord
         'population_id' => Population::query()->orderBy('position')->value('id'),
         'violence_type_id' => ViolenceType::query()->orderBy('position')->value('id'),
         'notes' => REGISTERS_RECIT,
+        // L'horloge du test est figée au 2 novembre 2026 : une date tirée au hasard jusqu'à « maintenant » tombait parfois après
+        // ce jour (donc « dans le futur » pour la validation) et rendait le test instable.
+        'occurred_on' => now()->subDays(10)->format('Y-m-d'),
     ], $overrides));
 }
 
