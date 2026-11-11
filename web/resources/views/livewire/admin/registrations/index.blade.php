@@ -25,7 +25,7 @@
                             @if ($this->state['open'] && ! $this->state['effective'])
                                 {{ __('admin.registrations.state.outside_window', ['start' => $windowStart, 'end' => $windowEnd]) }}
                             @elseif ($this->state['effective'])
-                                {{ $manual === 'all' ? __('admin.registrations.state.open_all') : __('admin.registrations.state.open_peers') }}
+                                {{ __('admin.registrations.state.open_all') }}
                             @else
                                 {{ __('admin.registrations.state.closed') }}
                             @endif
@@ -46,19 +46,6 @@
             <form class="card xm-admin-card mb-4" wire:submit="save" novalidate aria-labelledby="xmRegOptionsTitle">
                 <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmRegOptionsTitle">{{ __('admin.registrations.options_title') }}</h2></div>
                 <div class="card-body row g-3">
-                    <fieldset class="col-12" aria-describedby="xmRegManualHelp">
-                        <legend class="form-label fw-semibold fs-6">{{ __('admin.registrations.manual.label') }}</legend>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="xmRegManualPeers" value="peers" wire:model="manual">
-                            <label class="form-check-label" for="xmRegManualPeers">{{ __('admin.registrations.manual.peers') }}</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="xmRegManualAll" value="all" wire:model="manual">
-                            <label class="form-check-label" for="xmRegManualAll">{{ __('admin.registrations.manual.all') }}</label>
-                        </div>
-                        <div class="form-text" id="xmRegManualHelp">{{ __('admin.registrations.manual.help') }}</div>
-                        @error('manual')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
-                    </fieldset>
                     <div class="col-12">
                         <label class="form-label fw-semibold" for="xmRegMessage">{{ __('admin.registrations.closed_message') }}</label>
                         <textarea class="form-control @error('message') is-invalid @enderror" id="xmRegMessage" rows="3" maxlength="{{ $messageMax }}" wire:model.blur="message"
@@ -131,11 +118,17 @@
         @else
             <ul class="list-group list-group-flush">
                 @foreach ($this->pending as $request)
+                    @php($summary = \App\Application\Admin\Registrations\RegistrationSummary::of($request))
                     <li class="list-group-item d-flex flex-wrap align-items-center gap-3" wire:key="reg-pending-{{ $request->id }}">
                         <x-avatar :name="$request->pseudo" :src="$request->avatar_url" size="sm" />
                         <div class="flex-grow-1 min-w-0">
-                            <div class="fw-semibold text-break">{{ $request->pseudo }}@if ($request->name) <span class="text-secondary fw-normal">· {{ $request->name }}</span>@endif</div>
-                            <div class="small text-secondary">{{ $request->email }}@if ($request->zone) · {{ $request->zone->name }}@endif · {{ __('admin.users.columns.requested_role', ['role' => $request->profile?->member_type?->label() ?? __('admin.users.roles.membre')]) }} · {{ $format->ago($request->created_at) }}</div>
+                            <div class="fw-semibold text-break">{{ $request->pseudo }}@if ($summary['name'] !== '') <span class="text-secondary fw-normal">· {{ $summary['name'] }}</span>@endif</div>
+                            <div class="small text-secondary text-break">{{ $request->email }}@if ($summary['age'] !== null) · {{ __('admin.registrations.details.age', ['age' => $summary['age']]) }}@endif @if ($summary['place']) · {{ $summary['place'] }}@endif @if ($request->zone) · {{ $request->zone->name }}@endif @if ($summary['phone']) · {{ $summary['phone'] }}@endif</div>
+                            <div class="small mt-1 d-flex flex-wrap align-items-center gap-1">
+                                <x-badge :color="$summary['is_ally'] ? 'info' : 'primary'" soft>{{ $summary['is_ally'] ? __('admin.registrations.details.ally') : __('admin.registrations.details.member') }}</x-badge>
+                                @if ($summary['ally_role'])<span>{{ __('admin.registrations.details.ally_role', ['role' => $summary['ally_role']]) }}@if ($summary['ally_role_other']) {{ __('admin.registrations.details.ally_role_other', ['other' => $summary['ally_role_other']]) }}@endif</span>@endif
+                                <span class="text-secondary">· {{ __('admin.users.columns.requested_role', ['role' => $request->profile?->member_type?->label() ?? __('admin.users.roles.membre')]) }} · {{ $format->ago($request->created_at) }}</span>
+                            </div>
                             @if ($flags = \App\Application\Auth\Support\RegistrationFlags::parse($request->registration_flags))
                                 <div class="mt-1 d-flex flex-wrap gap-1">
                                     @foreach ($flags as $flag)

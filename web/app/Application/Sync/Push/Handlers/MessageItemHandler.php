@@ -24,11 +24,19 @@ final class MessageItemHandler implements ItemHandler
     /** = App\Http\Middleware\EnsureEmailIsVerified::CODE */
     public const EMAIL_UNVERIFIED = 'email_unverified';
 
+    /** = App\Http\Middleware\EnsureEmailIsVerified::CODE_PENDING */
+    public const ACCOUNT_PENDING = 'account_pending';
+
     public function __construct(private readonly SendMessage $send) {}
 
     public function handle(PushItem $item, PushContext $context): ItemOutcome
     {
         $draft = $context->decoder->message($item);
+
+        // Compte en attente de validation (11/11/2026) : aucun message, pas même rejoué depuis la boîte d'envoi.
+        if ($context->user->isPending()) {
+            throw new ItemRejected(403, self::ACCOUNT_PENDING, (string) __('auth.pending_restricted'));
+        }
 
         if (! $context->user->hasVerifiedEmail()) {
             throw new ItemRejected(403, self::EMAIL_UNVERIFIED, (string) __('auth.email_not_verified'));

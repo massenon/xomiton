@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Import;
 
+use App\Application\Shared\Countries;
 use App\Enums\DirectoryRole;
 use App\Models\AuditLog;
 use App\Models\CaseRecord;
@@ -456,13 +457,15 @@ final class ImportContext
             return $id;
         }
 
-        $zone = Zone::query()->where('slug', $slug)->orWhere('name', $label)->first();
+        // Les imports historiques (dossiers, annuaire) concernent le Bénin : les zones d'autres pays ne sont ni lues ni créées ici.
+        $zone = Zone::query()->inCountry(Countries::BENIN)->where(static fn ($query) => $query->where('slug', $slug)->orWhere('name', $label))->first();
 
         if ($zone === null) {
             $zone = Zone::query()->create([
                 'name' => $label,
                 'slug' => $slug,
-                'position' => ((int) Zone::query()->max('position')) + 1,
+                'country_code' => Countries::BENIN,
+                'position' => ((int) Zone::query()->inCountry(Countries::BENIN)->max('position')) + 1,
                 'is_active' => true,
             ]);
 

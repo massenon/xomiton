@@ -31,7 +31,7 @@ beforeEach(function (): void {
 it('tire les titres et descriptions des écrans de lang/fr/seo.php : connexion et inscription indexées, au tutoiement', function (): void {
     $nb = "\u{00A0}";
     $loginDescription = 'Connecte-toi à ton espace Xomiton avec ton e-mail ou ton pseudonyme et ton mot de passe'.$nb.': retrouve ton fil, tes messages, tes groupes et tes ressources.';
-    $registerDescription = 'Crée ton compte en une étape, avec un pseudonyme et un mot de passe'.$nb.': ton vrai nom n’est jamais demandé. Communauté bienveillante et soutien confidentiel.';
+    $registerDescription = 'Crée ton compte en trois étapes, avec un mot de passe fort'.$nb.': seul ton pseudonyme est visible des autres membres. Communauté et soutien confidentiels.';
 
     $login = (string) $this->get('/connexion')->assertOk()->getContent();
     expect($login)
@@ -109,32 +109,21 @@ it('abonne à la newsletter depuis la page « inscriptions fermées » (consente
     expect(NewsletterSubscriber::query()->whereEmail('awa@exemple.bj')->exists())->toBeTrue();
 });
 
-it('titre chaque phase de l’inscription « étape n sur 4 » et ne laisse indexer que la phase 1', function (): void {
-    expect(RegistrationSteps::seo('account'))->toMatchArray(['title' => 'Créer un compte'."\u{00A0}".': rejoindre la communauté – Xomiton', 'index' => true])
-        ->and(RegistrationSteps::seo('profile'))->toBe(['title' => 'Créer mon compte, étape 2 sur 4 – Xomiton', 'index' => false])
-        ->and(RegistrationSteps::seo('security')['title'])->toBe('Créer mon compte, étape 3 sur 4 – Xomiton')
-        ->and(RegistrationSteps::seo('consents')['title'])->toBe('Créer mon compte, étape 4 sur 4 – Xomiton');
+it('indexe /inscription, une seule adresse pour les trois étapes, avec le compteur « Étape n sur 3 » (jamais « facultative »)', function (): void {
+    expect(RegistrationSteps::seo())->toBe(['title' => 'Créer un compte'."\u{00A0}".': rejoindre la communauté – Xomiton', 'description' => 'Crée ton compte en trois étapes, avec un mot de passe fort'."\u{00A0}".': seul ton pseudonyme est visible des autres membres. Communauté et soutien confidentiels.', 'index' => true])
+        ->and(RegistrationSteps::count())->toBe(3)
+        ->and(RegistrationSteps::firstInvalid(['password', 'pseudo']))->toBe(1)
+        ->and(RegistrationSteps::firstInvalid(['country_code']))->toBe(2)
+        ->and(RegistrationSteps::firstInvalid(['cgu', 'country_code']))->toBe(2)
+        ->and(RegistrationSteps::firstInvalid(['sensitive_data']))->toBe(3)
+        ->and(RegistrationSteps::firstInvalid([]))->toBe(1);
 
-    $user = User::factory()->create();
-    $user->assignRole('membre');
+    $html = (string) $this->get('/inscription')->assertOk()->getContent();
 
-    foreach (['/inscription/profil' => 2, '/inscription/securite' => 3, '/inscription/consentements' => 4] as $url => $n) {
-        $html = (string) $this->actingAs($user)->get($url)->assertOk()->getContent();
-        expect($html)
-            ->toContain('<title>Créer mon compte, étape '.$n.' sur 4 – Xomiton</title>')
-            ->toContain('<meta name="robots" content="noindex, nofollow">')
-            ->toContain('data-xm-step-counter>Étape '.$n.' sur 4</p>')
-            ->not->toContain('facultative')
-            ->toContain('Passer cette étape');
-    }
-});
-
-it('n’écrit jamais « facultative » dans le compteur ni dans le stepper ; la phase 1 n’a pas de bouton « Passer »', function (): void {
-    $this->get('/inscription')
-        ->assertOk()
-        ->assertSee('data-xm-step-counter>Étape 1 sur 4</p>', false)
-        ->assertDontSee('facultative')
-        ->assertDontSee('Passer cette étape');
+    expect($html)
+        ->toContain('data-xm-step-counter x-text="counter">Étape 1 sur 3</p>')
+        ->not->toContain('facultative')
+        ->not->toContain('Passer cette étape');
 });
 
 it('n’affiche aucun rouge hors erreurs sur la connexion : le lien Urgences est neutre, avec une icône', function (): void {
@@ -202,7 +191,7 @@ it('accepte un code collé d’un bloc dans la première case, avec espaces, tir
     $this->actingAs($user)
         ->post('/code-de-verification', ['purpose' => 'signup', 'code' => [$pasted, '', '', '', '', '']])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('inscription.profil'));
+        ->assertRedirect(route('fil'));
 
     expect($user->fresh()?->email_verified_at)->not->toBeNull();
 })->with(['482 913', '482-913', '482.913', "482\u{00A0}913"]);
@@ -210,7 +199,7 @@ it('accepte un code collé d’un bloc dans la première case, avec espaces, tir
 it('place une espace insécable avant « : ; ? ! » et à l’intérieur des guillemets dans tous les textes du tunnel', function (): void {
     $texts = Arr::dot((array) trans('auth'));
     $texts += ['seo.noindex.forgot_password' => __('seo.noindex.forgot_password'), 'seo.noindex.reset_password' => __('seo.noindex.reset_password'),
-        'seo.noindex.register_step' => __('seo.noindex.register_step'), 'seo.pages.connexion.title' => __('seo.pages.connexion.title'),
+        'seo.pages.connexion.title' => __('seo.pages.connexion.title'),
         'seo.pages.inscription.title' => __('seo.pages.inscription.title')];
 
     foreach ($texts as $key => $text) {

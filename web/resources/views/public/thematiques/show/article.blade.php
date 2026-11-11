@@ -27,7 +27,7 @@
         @endif
 
         @if ($thematique->body)
-            <div class="xm-prose xm-th-body">{!! $thematique->body !!}</div>
+            <div class="xm-prose xm-th-body">{!! \App\Support\HeadingOutline::normalize($thematique->body) !!}</div>
         @endif
 
         @if ($sections !== [])

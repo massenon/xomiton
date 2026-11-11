@@ -256,7 +256,7 @@ return [
             ],
             'age' => [
                 'title' => 'Ton âge',
-                'why' => 'Pour te montrer les contenus de ta tranche d’âge et respecter les règles de protection des mineur·es. Jamais affiché.',
+                'why' => 'Pour te montrer les contenus de ta tranche d’âge. Jamais affiché.',
                 'field' => 'Âge',
                 'range' => 'Tranche d’âge',
             ],
@@ -314,7 +314,7 @@ return [
             // Q81 : facultatif (RG-02, l'inscription ne le demande pas) ; le prototype l'exigeait « visible par tes connexions ».
             'name_help' => 'Facultatif. Jamais affiché : seul ton pseudonyme est visible.',
             'pseudo' => 'Pseudonyme',
-            'pseudo_help' => 'Visible par la communauté. Ton vrai nom n’est jamais demandé.',
+            'pseudo_help' => 'Visible par la communauté. Ton prénom et ton nom ne le sont jamais.',
             'email' => 'E-mail',
             'email_help' => 'Pour te connecter et recevoir tes codes. Jamais partagé.',
             'phone' => 'Téléphone',

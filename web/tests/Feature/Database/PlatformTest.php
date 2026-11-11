@@ -77,7 +77,8 @@ describe('settings', function (): void {
         $this->seed(SettingsSeeder::class);
 
         expect(Setting::query()->count())->toBe($count)
-            ->and($count)->toBeGreaterThanOrEqual(38)
+            ->and($count)->toBeGreaterThanOrEqual(37)
+            ->and(Setting::query()->forKey('reg_manual_validation')->exists())->toBeFalse()
             ->and(Settings::string('site_name'))->toBe('Modifié')
             ->and(Settings::string('timezone'))->toBe('Africa/Porto-Novo')
             ->and(Settings::string('platform_version'))->toBe('1.4.2')

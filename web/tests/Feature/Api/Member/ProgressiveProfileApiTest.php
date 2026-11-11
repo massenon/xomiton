@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domain\Account\MemberAgeRanges;
+use App\Enums\AgeRange;
 use App\Enums\ConsentKind;
 use App\Models\Consent;
 use App\Models\User;
@@ -19,7 +21,7 @@ use Tests\Support\FeedFixtures as F;
 beforeEach(function (): void {
     $this->seed(RolesAndPermissionsSeeder::class);
     $this->awa = F::member();
-    $this->awa->profile->forceFill(['pronouns' => null, 'age_range' => null, 'interests' => null, 'progressive_answered' => null])->save();
+    $this->awa->profile->forceFill(['pronouns' => null, 'age_range' => null, 'age' => null, 'country_code' => null, 'interests' => null, 'progressive_answered' => null])->save();
 });
 
 it('refuse identité de genre et orientation sans consentement (422), sans rien enregistrer', function (): void {
@@ -106,6 +108,29 @@ it('propose un groupe à la fois et ne repropose ni un groupe rempli ni « Je pr
     // « Je préfère ne pas le dire » sur l'âge efface la tranche déjà donnée.
     F::as($this->awa)->patchJson('/api/v1/me/profile', ['age_range' => 'prefer_not'])->assertOk()->assertJsonPath('data.profile.age_range', null);
     expect(User::query()->find($this->awa->id)->profile->completion)->toBeInt();
+});
+
+it('ne propose au membre que les tranches d’âge de 18 ans et plus (10-14 et 15-17 refusées)', function (): void {
+    foreach (['10-14', '15-17', '9', 'inconnue'] as $range) {
+        F::as($this->awa)->patchJson('/api/v1/me/profile', ['age_range' => $range])->assertUnprocessable()->assertJsonValidationErrors('age_range');
+    }
+
+    expect(User::query()->find($this->awa->id)->profile->age_range)->toBeNull();
+
+    foreach (['18-24', '25-34', '35-49', '50+'] as $range) {
+        F::as($this->awa)->patchJson('/api/v1/me/profile', ['age_range' => $range])->assertOk()->assertJsonPath('data.profile.age_range', $range);
+    }
+});
+
+it('MemberAgeRanges filtre sur l’âge minimal sans toucher à l’énumération AgeRange', function (): void {
+    expect(MemberAgeRanges::values(18))->toBe(['18-24', '25-34', '35-49', '50+'])
+        ->and(MemberAgeRanges::values(15))->toBe(['15-17', '18-24', '25-34', '35-49', '50+'])
+        ->and(MemberAgeRanges::values(25))->toBe(['25-34', '35-49', '50+'])
+        ->and(MemberAgeRanges::values(36))->toBe(['35-49', '50+'])
+        ->and(count(AgeRange::cases()))->toBe(6);
+
+    config(['xomiton.accounts.min_age' => 18]);
+    expect(MemberAgeRanges::values())->toBe(['18-24', '25-34', '35-49', '50+']);
 });
 
 it('ne fait jamais compter les données sensibles dans la complétion', function (): void {

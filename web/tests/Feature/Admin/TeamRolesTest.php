@@ -8,16 +8,13 @@ use App\Application\Admin\Users\ChangeUserRole;
 use App\Application\Admin\Users\ReviewRegistration;
 use App\Application\Auth\RegisterData;
 use App\Application\Auth\RegisterUser;
-use App\Application\Auth\VerifyEmail;
 use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Domain\Auth\Exceptions\InvitationInvalid;
 use App\Enums\MemberType;
-use App\Enums\OtpPurpose;
 use App\Enums\UserStatus;
 use App\Livewire\Admin\Registrations\Index as RegistrationsScreen;
 use App\Livewire\Admin\Users\Index as UsersScreen;
 use App\Models\AuditLog;
-use App\Models\OtpCode;
 use App\Models\Profile;
 use App\Models\RoleInvitation;
 use App\Models\User;
@@ -30,6 +27,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
+use Tests\Support\RegistrationFixtures;
 
 /*
  * Un seul compte, rôles cumulables (décisions client du 2026-10-29) : attribuer / retirer le rôle pair à un membre
@@ -53,20 +51,19 @@ function rlUser(array|string $roles, array $attributes = []): User
 
 function rlRegister(array $overrides = []): RegisterData
 {
-    return new RegisterData(...array_merge([
-        'pseudo' => 'Nouvelle_Pair',
-        'email' => 'nouvelle@exemple.bj',
-        'password' => 'Xomiton2026!',
-        'acceptsTerms' => true,
-        'acceptsPrivacy' => true,
-        'confirmsAge' => true,
-    ], $overrides));
+    // Anciennes clés du cas d'usage → champs du formulaire (RegistrationFixtures, inscription en 3 étapes du 11/11/2026).
+    if (isset($overrides['invitationCode'])) {
+        $overrides['invitation'] = $overrides['invitationCode'];
+        unset($overrides['invitationCode']);
+    }
+
+    return RegistrationFixtures::data(array_merge(['pseudo' => 'Nouvelle_Pair', 'email' => 'nouvelle@exemple.bj'], $overrides));
 }
 
-function rlVerify(User $user): void
+function rlApprove(User $user): void
 {
-    OtpCode::query()->forEmail($user->email, OtpPurpose::Signup)->update(['code_hash' => OtpCode::hash('654321')]);
-    app(VerifyEmail::class)($user->fresh(), '654321');
+    // Tout nouveau compte attend l'équipe (décision du 11/11/2026) : le rôle d'une invitation suit la validation.
+    app(ReviewRegistration::class)->approve($user->fresh(), rlUser(['membre', 'admin']));
 }
 
 // --- Rôle pair attribué à un membre existant ------------------------------------------------------------------------
@@ -189,7 +186,7 @@ it('réserve l’invitation d’un·e admin au super-admin et celle d’un·e pa
     expect(app(TeamInvitations::class)->create($super, 'admin')['invitation']->role)->toBe('admin');
 });
 
-it('inscrit la personne invitée comme membre, puis lui donne le rôle pair quand son e-mail est confirmé', function (): void {
+it('inscrit la personne invitée comme membre, puis lui donne le rôle pair quand l’équipe valide son compte', function (): void {
     Notification::fake();
     $admin = rlUser(['membre', 'admin']);
     $created = app(TeamInvitations::class)->create($admin, 'pair');
@@ -202,7 +199,7 @@ it('inscrit la personne invitée comme membre, puis lui donne le rôle pair quan
         ->and($created['invitation']->refresh()->status)->toBe(RoleInvitation::STATUS_REDEEMED)
         ->and($created['invitation']->user_id)->toBe($user->id);
 
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->getRoleNames()->sort()->values()->all())->toBe(['membre', 'pair'])
         ->and($created['invitation']->refresh()->status)->toBe(RoleInvitation::STATUS_ACCEPTED)
@@ -243,7 +240,7 @@ it('ne donne pas le rôle si la personne qui a invité a perdu son droit entre-t
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
 
     $super->syncRoles(['membre']);
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->hasRole('admin'))->toBeFalse()
         ->and($created['invitation']->refresh()->status)->toBe(RoleInvitation::STATUS_REFUSED);
@@ -253,7 +250,7 @@ it('donne le rôle admin par invitation du super-admin, en gardant le rôle memb
     $super = rlUser(['membre', 'superadmin']);
     $created = app(TeamInvitations::class)->create($super, 'admin');
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->getRoleNames()->sort()->values()->all())->toBe(['admin', 'membre'])
         ->and(AuditLog::query()->where('action', 'roles.admin_granted')->exists())->toBeTrue();
@@ -270,42 +267,35 @@ it('ouvre l’inscription fermée au public à qui porte une invitation valable'
         ->assertSee('name="invitation"', false)
         ->assertSee('pair');
 
-    $this->post('/inscription', [
-        'pseudo' => 'Invitee_Web', 'email' => 'invitee@exemple.bj', 'password' => 'Xomiton2026!', 'password_confirmation' => 'Xomiton2026!',
-        'cgu' => '1', 'privacy' => '1', 'age_confirmed' => '1', 'invitation' => $created['code'],
-    ])->assertRedirect();
+    $this->post('/inscription', RegistrationFixtures::payload(['pseudo' => 'Invitee_Web', 'email' => 'invitee@exemple.bj', 'invitation' => $created['code']]))->assertRedirect();
 
     expect(User::query()->where('email', 'invitee@exemple.bj')->firstOrFail()->getRoleNames()->all())->toBe(['membre']);
 
     auth('web')->logout();
     $this->flushSession();
 
-    $this->post('/inscription', [
-        'pseudo' => 'Invitee_Bis', 'email' => 'bis@exemple.bj', 'password' => 'Xomiton2026!', 'password_confirmation' => 'Xomiton2026!',
-        'cgu' => '1', 'privacy' => '1', 'age_confirmed' => '1', 'invitation' => $created['code'],
-    ])->assertSessionHasErrors('invitation');
+    $this->post('/inscription', RegistrationFixtures::payload(['pseudo' => 'Invitee_Bis', 'email' => 'bis@exemple.bj', 'invitation' => $created['code']]))->assertSessionHasErrors('invitation');
 });
 
-it('crée le compte invité par l’API avec la case 15 ans exigée, jamais un rôle d’équipe immédiat', function (): void {
+it('crée le compte invité par l’API avec l’âge saisi exigé, jamais un rôle d’équipe immédiat', function (): void {
+    $this->withoutMiddleware('throttle:login');
     $admin = rlUser(['membre', 'admin']);
     $created = app(TeamInvitations::class)->create($admin, 'pair');
-    $payload = ['pseudo' => 'Invitee_Api', 'email' => 'api@exemple.bj', 'password' => 'Xomiton2026!', 'cgu' => true, 'privacy' => true, 'invitation' => $created['code']];
+    $payload = RegistrationFixtures::payload(['pseudo' => 'Invitee_Api', 'email' => 'api@exemple.bj', 'invitation' => $created['code']]);
 
-    $this->postJson('/api/v1/auth/register', $payload)->assertStatus(422)->assertJsonPath('code', 'age_confirmation_required');
+    $this->postJson('/api/v1/auth/register', ['age' => 12] + $payload)->assertStatus(422)->assertJsonPath('code', 'validation_failed')->assertJsonValidationErrors('age');
 
-    $this->postJson('/api/v1/auth/register', $payload + ['age_confirmed' => true])->assertCreated()
+    $this->postJson('/api/v1/auth/register', $payload)->assertCreated()
         ->assertJsonPath('data.user.roles', ['membre'])
         ->assertJsonPath('data.user.spaces', ['member']);
 
-    $this->postJson('/api/v1/auth/register', ['email' => 'api2@exemple.bj', 'pseudo' => 'Invitee_Api2', 'age_confirmed' => true] + $payload)
+    $this->postJson('/api/v1/auth/register', ['email' => 'api2@exemple.bj', 'pseudo' => 'Invitee_Api2'] + $payload)
         ->assertStatus(422)->assertJsonPath('code', 'invitation_invalid')->assertJsonPath('errors.invitation.0', fn ($m) => is_string($m));
 });
 
-it('n’accorde jamais le rôle pair à l’inscription : le type « pair » du profil est refusé par l’API', function (): void {
-    $this->postJson('/api/v1/auth/register', [
-        'pseudo' => 'Veut_Etre_Pair', 'email' => 'veut@exemple.bj', 'password' => 'Xomiton2026!', 'cgu' => true, 'privacy' => true,
-        'age_confirmed' => true, 'profile' => ['member_type' => 'pair'],
-    ])->assertStatus(422)->assertJsonValidationErrors('profile.member_type');
+it('n’accorde jamais le rôle pair à l’inscription : le type « pair » est refusé par l’API', function (): void {
+    $this->postJson('/api/v1/auth/register', RegistrationFixtures::payload(['pseudo' => 'Veut_Etre_Pair', 'email' => 'veut@exemple.bj', 'member_type' => 'pair']))
+        ->assertStatus(422)->assertJsonValidationErrors('member_type');
 
     expect(User::query()->where('email', 'veut@exemple.bj')->exists())->toBeFalse();
 });
@@ -357,14 +347,12 @@ it('valide un compte pair en attente : rôle pair ajouté au rôle membre', func
         ->and($applicant->getRoleNames()->sort()->values()->all())->toBe(['membre', 'pair']);
 });
 
-it('donne le rôle d’une invitation à l’approbation quand la validation manuelle de tous est active', function (): void {
-    Settings::set('reg_manual_validation', 'all');
+it('donne le rôle d’une invitation à l’approbation par l’équipe (tous les nouveaux comptes attendent)', function (): void {
     $admin = rlUser(['membre', 'admin']);
     $created = app(TeamInvitations::class)->create($admin, 'pair');
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
 
-    expect($user->status)->toBe(UserStatus::Pending);
-    rlVerify($user);
+    expect($user->status)->toBe(UserStatus::Pending)->and($user->email_verified_at)->toBeNull();
     expect($user->refresh()->hasRole('pair'))->toBeFalse();
 
     app(ReviewRegistration::class)->approve($user, $admin);
@@ -383,7 +371,7 @@ it('rattache la personne pair invitée à la zone de l’invitation à la valida
 
     $user = app(RegisterUser::class)(rlRegister(['invitationCode' => $created['code']]));
     expect($user->refresh()->zone_id)->not->toBe($zone->id);
-    rlVerify($user);
+    rlApprove($user);
 
     expect($user->refresh()->zone_id)->toBe($zone->id)->and($user->hasRole('pair'))->toBeTrue();
 });

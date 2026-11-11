@@ -23,9 +23,15 @@ class ZoneFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
+            'country_code' => 'BJ',
             'position' => fake()->numberBetween(1, 99),
             'is_active' => true,
         ];
+    }
+
+    public function inCountry(string $countryCode): static
+    {
+        return $this->state(fn (array $attributes): array => ['country_code' => strtoupper($countryCode)]);
     }
 
     public function inactive(): static

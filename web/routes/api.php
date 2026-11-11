@@ -123,6 +123,8 @@ Route::group([], function (): void {
             Route::get('zones', [ReferentialController::class, 'zones'])->name('zones');
             Route::get('violence-types', [ReferentialController::class, 'violenceTypes'])->name('violence_types');
             Route::get('needs', [ReferentialController::class, 'needs'])->name('needs');
+            // Inscription en 3 étapes (11/11/2026) : âge minimal, pronoms, pays, statuts d'allié·e, identités, orientations.
+            Route::get('referentials/registration', [ReferentialController::class, 'registration'])->name('registration');
         });
 
     // --- Authentification (P2-06, P2-12, LOGIN §9) : partagée par Flutter et l'espace Vue ; login 5/min par identifiant
@@ -324,20 +326,20 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
     });
 
     // --- Groupes (P8-02, docs/API.md §13) : par ULID (ADR-27) ; groupe privé : fiche réduite pour une non-membre,
-    // publications et membres en 404 (FR-SOC-05). Créer exige un e-mail confirmé (`verified`) ; créer, rejoindre,
+    // publications et membres en 404 (FR-SOC-05). Créer, rejoindre et ouvrir la discussion exigent un compte validé et un e-mail confirmé (`verified`, garde « options limitées ») ; créer, rejoindre,
     // quitter et décider d'une demande passent par `community_write` (20/min). Publier : `POST posts` avec `group`.
     Route::prefix('groups')->as('api.groups.')->group(function (): void {
         Route::get('/', [GroupController::class, 'index'])->name('index');
         Route::post('/', [GroupController::class, 'store'])->middleware(['verified', 'throttle:community_write'])->name('store');
         Route::get('{group:ulid}', [GroupController::class, 'show'])->name('show');
-        Route::post('{group:ulid}/join', [GroupMembershipController::class, 'join'])->middleware('throttle:community_write')->name('join');
+        Route::post('{group:ulid}/join', [GroupMembershipController::class, 'join'])->middleware(['verified', 'throttle:community_write'])->name('join');
         Route::post('{group:ulid}/leave', [GroupMembershipController::class, 'leave'])->middleware('throttle:community_write')->name('leave');
         Route::get('{group:ulid}/members', [GroupMembershipController::class, 'index'])->name('members.index');
         Route::post('{group:ulid}/members/{user}/accept', [GroupMembershipController::class, 'accept'])->whereNumber('user')->middleware('throttle:community_write')->name('members.accept');
         Route::patch('{group:ulid}/members/{user}', [GroupMembershipController::class, 'update'])->whereNumber('user')->middleware('throttle:community_write')->name('members.update');
         Route::delete('{group:ulid}/members/{user}', [GroupMembershipController::class, 'destroy'])->whereNumber('user')->middleware('throttle:community_write')->name('members.destroy');
         Route::get('{group:ulid}/posts', [GroupPostController::class, 'index'])->name('posts.index');
-        Route::post('{group:ulid}/conversation', [GroupDiscussionController::class, 'store'])->middleware('throttle:messages_write')->name('conversation');
+        Route::post('{group:ulid}/conversation', [GroupDiscussionController::class, 'store'])->middleware(['verified', 'throttle:messages_write'])->name('conversation');
     });
 
     // --- Pages d'organisations (P8-03, docs/API.md §14) : visibles des autres membres une fois approuvées (P12-05) ;

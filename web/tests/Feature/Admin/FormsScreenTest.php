@@ -243,3 +243,226 @@ it('génère le PDF A4 côté serveur avec le pied « Confidentiel », journalis
 
     $this->actingAs(formsUser('admin'))->get('/admin/fiches/99999/pdf')->assertNotFound();
 });
+
+/*
+ * Modification d'une fiche (UpdateCaseForm) : même modale, mêmes règles, colonnes chiffrées jamais pré-remplies
+ * (vide = inchangé), dossier et référence immuables, journal sans contenu.
+ */
+const FORMS_AUTHOR = 'Voisin du quartier';
+const FORMS_NOTE = 'Deux séances réalisées';
+const FORMS_SIGNATORY = 'A.K.';
+
+function formsStored(array $overrides = []): CaseForm
+{
+    return CaseForm::factory()->create(array_replace([
+        'case_id' => isset($overrides['case_id']) ? $overrides['case_id'] : formsCase()->id,
+        'reference' => 'FR-2026-0001',
+        'identification' => ['pseudo' => 'Awa', 'sexe' => 'femme', 'age' => '18-24', 'population' => 'Femmes', 'zone' => 'Littoral', 'commune' => 'Cotonou'],
+        'facts_date' => '2026-10-20',
+        'facts_place' => 'Cotonou, marché',
+        'facts_author' => FORMS_AUTHOR,
+        'facts_description' => FORMS_FACTS,
+        'services' => CaseForm::normalizeServices(['ecoute' => true]),
+        'services_note' => FORMS_NOTE,
+        'referral_contact_id' => null,
+        'referral_label' => null,
+        'referral_date' => '2026-11-01',
+        'referral_reason' => 'Appui juridique',
+        'referral_urgency' => 'normale',
+        'consent_given' => true,
+        'consent_mode' => 'oral',
+        'consent_sharing' => false,
+        'consent_signatory' => FORMS_SIGNATORY,
+    ], $overrides));
+}
+
+it('ouvre la fiche dans la même modale sans jamais recopier les colonnes chiffrées, ni dans l’état ni dans le HTML', function (): void {
+    $this->actingAs(formsUser('admin'));
+    $form = formsStored();
+
+    $component = Livewire::test(Forms::class)->call('openEdit', $form->id)
+        ->assertSet('editId', $form->id)
+        ->assertSet('form.case_code', 'VBG-0001')
+        ->assertSet('form.pseudo', 'Awa')
+        ->assertSet('form.facts_place', 'Cotonou, marché')
+        ->assertSet('form.facts_date', '2026-10-20')
+        ->assertSet('form.services.ecoute', true)
+        ->assertSet('form.consent_given', true)
+        ->assertSet('form.consent_mode', 'oral')
+        ->assertSet('form.facts_description', '')
+        ->assertSet('form.facts_author', '')
+        ->assertSet('form.services_note', '')
+        ->assertSet('form.consent_signatory', '')
+        ->assertDispatched('xm-modal', id: 'xmFormEditor', action: 'show')
+        ->assertSee('Modifier la fiche FR-2026-0001')
+        ->assertDontSee([FORMS_FACTS, FORMS_AUTHOR, FORMS_NOTE, FORMS_SIGNATORY])
+        ->assertSeeHtml('id="xmFormClearAuthor"');
+
+    expect(json_encode($component->snapshot ?? []))->not->toContain('voisin')->not->toContain('Voisin')->not->toContain('Menaces')->not->toContain('séances');
+    expect(AuditLog::query()->where('action', 'case_forms.viewed')->exists())->toBeFalse();
+
+    // « Nouvelle fiche » repart d'un formulaire vierge.
+    $component->call('openCreate')->assertSet('editId', 0)->assertSet('form.pseudo', '')->assertSet('form.case_code', '');
+});
+
+it('modifie les champs en clair : dossier, référence et auteur·e de la fiche inchangés, colonnes chiffrées conservées', function (): void {
+    $admin = formsUser('admin');
+    $this->actingAs($admin);
+    $form = formsStored();
+    $other = formsCase('VBG-0002');
+
+    Livewire::test(Forms::class)->call('openEdit', $form->id)
+        ->set('form.pseudo', 'Awa K.')
+        ->set('form.facts_place', 'Porto-Novo')
+        ->set('form.facts_date', '2026-10-25')
+        ->set('form.services.psy', true)->set('form.services.ecoute', false)
+        ->set('form.referral_reason', 'Suivi psychologique')->set('form.referral_urgency', 'haute')
+        ->set('form.consent_mode', 'ecrit')->set('form.consent_sharing', true)
+        ->set('form.case_code', 'VBG-0002')
+        ->call('save')->assertHasNoErrors()
+        ->assertDispatched('toast', type: 'success', message: __('admin_data.forms.toasts.updated', ['reference' => 'FR-2026-0001']))
+        ->assertDispatched('xm-modal', id: 'xmFormEditor', action: 'hide')
+        ->assertSet('editId', 0);
+
+    $fresh = $form->fresh();
+    expect($fresh->reference)->toBe('FR-2026-0001')->and($fresh->case_id)->toBe($form->case_id)->and($fresh->case_id)->not->toBe($other->id)
+        ->and($fresh->created_by)->toBe($form->created_by)
+        ->and($fresh->identification)->toMatchArray(['pseudo' => 'Awa K.', 'sexe' => 'femme', 'zone' => 'Littoral', 'commune' => 'Cotonou'])
+        ->and($fresh->facts_place)->toBe('Porto-Novo')->and($fresh->facts_date->format('Y-m-d'))->toBe('2026-10-25')
+        ->and($fresh->services)->toMatchArray(['psy' => true, 'ecoute' => false, 'medical' => false])
+        ->and($fresh->referral_reason)->toBe('Suivi psychologique')->and($fresh->referral_urgency)->toBe('haute')
+        ->and($fresh->consent_mode)->toBe('ecrit')->and($fresh->consent_sharing)->toBeTrue()
+        // Vide = inchangé.
+        ->and($fresh->facts_description)->toBe(FORMS_FACTS)->and($fresh->facts_author)->toBe(FORMS_AUTHOR)
+        ->and($fresh->services_note)->toBe(FORMS_NOTE)->and($fresh->consent_signatory)->toBe(FORMS_SIGNATORY);
+
+    $audit = AuditLog::query()->where('action', 'case_forms.updated')->sole();
+    expect($audit->user_id)->toBe($admin->id)->and($audit->detail)->toStartWith('fiche=FR-2026-0001 ; dossier=VBG-0001 ; champs=')
+        ->and($audit->detail)->toContain('pseudo')->toContain('facts_place')->toContain('services')
+        ->and($audit->detail)->not->toContain('Porto-Novo')->not->toContain('Awa K.')->not->toContain('Suivi psychologique');
+});
+
+it('remplace les colonnes chiffrées quand on les saisit, les efface seulement sur demande, et journalise sans contenu', function (): void {
+    $this->actingAs(formsUser('admin'));
+    $form = formsStored();
+    $component = Livewire::test(Forms::class);
+
+    $component->call('openEdit', $form->id)
+        ->set('form.facts_description', 'Nouveau récit pseudonymisé des faits, mis à jour.')
+        ->set('form.facts_author', 'Collègue de travail')->set('form.services_note', 'Trois séances')->set('form.consent_signatory', 'B.D.')
+        ->call('save')->assertHasNoErrors();
+
+    $fresh = $form->fresh();
+    expect($fresh->facts_description)->toBe('Nouveau récit pseudonymisé des faits, mis à jour.')->and($fresh->facts_author)->toBe('Collègue de travail')
+        ->and($fresh->services_note)->toBe('Trois séances')->and($fresh->consent_signatory)->toBe('B.D.');
+    $raw = DB::table('case_forms')->first();
+    expect($raw->facts_description)->not->toContain('Nouveau récit')->and($raw->facts_author)->not->toContain('Collègue');
+
+    // Effacer : seuls les trois champs facultatifs, jamais le récit.
+    $component->call('openEdit', $form->id)->set('clear.facts_author', true)->set('clear.services_note', true)->set('clear.consent_signatory', true)
+        ->call('save')->assertHasNoErrors();
+    $cleared = $form->fresh();
+    expect($cleared->facts_author)->toBeNull()->and($cleared->services_note)->toBeNull()->and($cleared->consent_signatory)->toBeNull()
+        ->and($cleared->facts_description)->toBe('Nouveau récit pseudonymisé des faits, mis à jour.');
+
+    // Un nom hors liste dans `clear` est ignoré.
+    $component->call('openEdit', $form->id)->set('clear.facts_description', true)->call('save')->assertHasNoErrors();
+    expect($form->fresh()->facts_description)->toBe('Nouveau récit pseudonymisé des faits, mis à jour.');
+
+    $details = AuditLog::query()->where('action', 'case_forms.updated')->pluck('detail')->implode(' | ');
+    expect($details)->toContain('facts_description')->and($details)->not->toContain('Nouveau récit')->not->toContain('Collègue')->not->toContain('Trois séances')->not->toContain('B.D.');
+});
+
+it('ne journalise rien quand la modification ne change rien', function (): void {
+    $this->actingAs(formsUser('admin'));
+    $form = formsStored();
+
+    Livewire::test(Forms::class)->call('openEdit', $form->id)->call('save')->assertHasNoErrors()->assertDispatched('toast', type: 'success');
+
+    expect(AuditLog::query()->where('action', 'case_forms.updated')->exists())->toBeFalse()->and($form->fresh()->facts_description)->toBe(FORMS_FACTS);
+});
+
+it('applique les règles de la création à la modification : consentement, faits, date, listes, contact actif', function (): void {
+    $this->actingAs(formsUser('admin'));
+    $form = formsStored();
+    $component = Livewire::test(Forms::class)->call('openEdit', $form->id);
+
+    $component->set('form.consent_given', false)->set('form.facts_description', 'court')->set('form.facts_date', '2026-12-31')
+        ->set('form.referral_urgency', 'extrême')->set('form.consent_mode', 'tacite')
+        ->call('save')->assertHasErrors(['form.consent_given', 'form.facts_description', 'form.facts_date', 'form.referral_urgency', 'form.consent_mode']);
+
+    $inactive = DirectoryContact::factory()->create(['is_active' => false]);
+    $component->call('openEdit', $form->id)->set('form.referral_contact_id', (string) $inactive->id)->call('save')->assertHasErrors('form.referral_contact_id');
+    $component->call('openEdit', $form->id)->set('form.referral_contact_id', '99999')->call('save')->assertHasErrors('form.referral_contact_id');
+    $component->call('openEdit', $form->id)->set('form.facts_place', str_repeat('x', 121))->call('save')->assertHasErrors('form.facts_place');
+
+    $fresh = $form->fresh();
+    expect($fresh->consent_given)->toBeTrue()->and($fresh->facts_description)->toBe(FORMS_FACTS)->and($fresh->referral_contact_id)->toBeNull()
+        ->and(AuditLog::query()->where('action', 'case_forms.updated')->exists())->toBeFalse();
+});
+
+it('gère l’orientation : nouveau contact actif, contact conservé même désactivé depuis, retrait', function (): void {
+    $this->actingAs(formsUser('admin'));
+    $first = DirectoryContact::factory()->create(['name' => 'Maître Dossou', 'role' => DirectoryRole::Juriste, 'is_active' => true]);
+    $second = DirectoryContact::factory()->create(['name' => 'Docteure Hounkpè', 'role' => DirectoryRole::Juriste, 'is_active' => true]);
+    $form = formsStored(['referral_contact_id' => $first->id, 'referral_label' => 'Maître Dossou — Juriste']);
+    $component = Livewire::test(Forms::class);
+
+    $first->forceFill(['is_active' => false])->save();
+    $component->call('openEdit', $form->id)->assertSet('form.referral_contact_id', (string) $first->id)->set('form.referral_reason', 'Autre motif')->call('save')->assertHasNoErrors();
+    expect($form->fresh()->referral_contact_id)->toBe($first->id)->and($form->fresh()->referral_label)->toBe('Maître Dossou — Juriste');
+
+    $component->call('openEdit', $form->id)->set('form.referral_contact_id', (string) $second->id)->call('save')->assertHasNoErrors();
+    expect($form->fresh()->referral_contact_id)->toBe($second->id)->and($form->fresh()->referral_label)->toContain('Docteure Hounkpè');
+
+    $component->call('openEdit', $form->id)->set('form.referral_contact_id', '')->call('save')->assertHasNoErrors();
+    expect($form->fresh()->referral_contact_id)->toBeNull()->and($form->fresh()->referral_label)->toBeNull();
+});
+
+it('refuse de modifier une fiche dont le dossier est archivé ou anonymisé', function (): void {
+    $this->actingAs(formsUser('admin'));
+    $form = formsStored();
+    $component = Livewire::test(Forms::class)->call('openEdit', $form->id)->set('form.facts_place', 'Ailleurs');
+
+    // Dossier archivé pendant que la modale est ouverte : la fiche sort du périmètre, rien n'est écrit.
+    $form->case->forceFill(['status' => CaseStatus::Archived, 'archived_at' => now()])->save();
+    $component->call('save')->assertDispatched('toast', type: 'error');
+    expect($form->fresh()->facts_place)->toBe('Cotonou, marché')->and(AuditLog::query()->where('action', 'case_forms.updated')->exists())->toBeFalse();
+    $component->call('openEdit', $form->id)->assertDispatched('toast', type: 'error', message: __('admin_data.forms.errors.not_found'));
+
+    // Dossier anonymisé mais non archivé : refusé par la fiche elle-même.
+    $anonymous = formsStored(['reference' => 'FR-2026-0002', 'case_id' => formsCase('VBG-0003', ['anonymized_at' => now()])->id]);
+    $component->call('openEdit', $anonymous->id)->assertDispatched('toast', type: 'error', message: __('admin_data.forms.errors.locked_form'))->assertNotSet('editId', $anonymous->id);
+});
+
+it('ne laisse pas modifier editId depuis le navigateur', function (): void {
+    $this->actingAs(formsUser('admin'));
+    $form = formsStored();
+    $other = formsStored(['reference' => 'FR-2026-0002', 'case_id' => formsCase('VBG-0002')->id]);
+    $component = Livewire::test(Forms::class)->call('openEdit', $form->id);
+
+    expect(fn () => $component->set('editId', $other->id))->toThrow(\Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException::class);
+    $component->set('form.facts_place', 'Lieu')->call('save');
+    expect($form->fresh()->facts_place)->toBe('Lieu')->and($other->fresh()->facts_place)->toBe('Cotonou, marché');
+});
+
+it('revérifie la permission à chaque action de modification', function (string $action): void {
+    $admin = formsUser('admin');
+    $this->actingAs($admin);
+    $form = formsStored();
+    $component = Livewire::test(Forms::class)->call('openEdit', $form->id)->set('form.facts_place', 'Piraté');
+
+    $admin->syncRoles(['membre']);
+    app(Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+    $component->call($action, ...($action === 'openEdit' ? [$form->id] : []))->assertForbidden();
+    expect($form->fresh()->facts_place)->toBe('Cotonou, marché');
+})->with(['openEdit', 'save']);
+
+it('refuse la modification à un compte qui ne lit que ses fiches (policy update)', function (): void {
+    $form = formsStored();
+    $user = formsUser('pair');
+    $user->givePermissionTo('case_forms.view_own');
+
+    expect($user->can('update', $form))->toBeFalse()->and(formsUser('admin')->can('update', $form))->toBeTrue();
+});

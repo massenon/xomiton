@@ -84,12 +84,12 @@ it('confirme l’e-mail avec le bon code et refuse un code faux, expiré ou épu
     $this->actingAs($this->user)->post('/code-de-verification', ['purpose' => 'signup', 'code' => '135790'])->assertSessionHasErrors(['code' => $invalid]);
     expect(OtpCode::query()->forEmail('awa@exemple.bj', OtpPurpose::Signup)->valid()->exists())->toBeFalse();
 
-    // Code correct sur un code frais (renvoi après 30 s) : e-mail confirmé, redirection vers la phase profil (profil vide).
+    // Code correct sur un code frais (renvoi après 30 s) : e-mail confirmé, redirection vers le fil.
     Carbon::setTestNow('2026-10-17 10:12:00');
     $this->otp->issue('awa@exemple.bj', OtpPurpose::Signup);
     webSignupOtp('awa@exemple.bj');
     $this->actingAs($this->user)->post('/code-de-verification', ['purpose' => 'signup', 'code' => '1 3 5 7 9 0'])
-        ->assertRedirect(route('inscription.profil'))
+        ->assertRedirect(route('fil'))
         ->assertSessionHas('toast', 'Ton e-mail est confirmé. Merci !');
     expect($this->user->fresh()?->email_verified_at)->not->toBeNull();
 

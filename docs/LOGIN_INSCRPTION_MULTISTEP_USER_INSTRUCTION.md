@@ -1,9 +1,11 @@
 ---
 name: xomiton-login-signup-multistep
-description: Instructions pour la connexion, l'inscription en plusieurs étapes (4 phases dont une seule obligatoire), la vérification par code e-mail (OTP), le mot de passe oublié et le profil progressif de Xomiton, sur le web (Vue / Blade) et sur mobile (Flutter). À charger pour tout écran ou endpoint d'authentification.
+description: Instructions pour la connexion, l'inscription en 3 étapes obligatoires (décision du client du 11/11/2026), la vérification par code e-mail (OTP), le mot de passe oublié et le profil progressif de Xomiton, sur le web (Vue / Blade) et sur mobile (Flutter). À charger pour tout écran ou endpoint d'authentification.
 ---
 
 # Connexion et inscription multi-étapes
+
+> **Décision client du 11/11/2026 : âge minimal d'inscription 18 ans ; tous les nouveaux comptes sont validés par l'administration, sans exception ni réglage.** Le champ âge de l'étape 1 est refusé sous 18 ans ; les signaux d'inscription suspecte restent enregistrés mais ne changent pas le statut.
 
 Références : `design-system/xomiton/pages/authentification.md` (prime), `prototype_social/sign-in.php`, `sign-up.php`, `forgot-password.php`, simulateur `prototype_mobile/#/signup`, `#/otp`.
 
@@ -11,7 +13,8 @@ Références : `design-system/xomiton/pages/authentification.md` (prime), `proto
 
 ```
 splash ─► login ─► otp(purpose=login) ─► tableau de bord
-   └────► signup (4 phases) ─► otp(purpose=signup) ─► tableau de bord ─► bandeau « Complète ton profil »
+   └────► signup (3 étapes, un seul envoi) ─► fil, compte en attente (bandeau « Ton compte attend la validation de l’équipe »)
+                                              └─► validation par l’admin (e-mail confirmé par l’admin) ─► options complètes
 login ─► forgot ─► otp(purpose=reset) ─► reset ─► login
 ```
 
@@ -27,19 +30,20 @@ login ─► forgot ─► otp(purpose=reset) ─► reset ─► login
 | Mot de passe | `autocomplete="current-password"`, bouton afficher / masquer, **collage autorisé** |
 Erreur unique et indifférenciée : « Identifiants incorrects. Vérifie ton e-mail et ton mot de passe. » Compte en attente, suspendu ou maintenance : message spécifique **après** vérification du mot de passe. Limite : 5 essais / minute.
 
-## 4. Inscription en 4 phases
-| Phase | Obligatoire | Champs | Validation |
-|---|---|---|---|
-| 1. Compte | **Oui** | Pseudonyme (3–40, unique), e-mail (unique), mot de passe + confirmation + **jauge de solidité** | Mot de passe ≥ « Fort » : 10 caractères, majuscule + minuscule, chiffre ; symbole pour « Excellent » |
-| 2. Profil | Non (« Passer ») | Pronoms, département (→ commune), type : membre / **pair éducateur·rice** | Un compte pair est créé `en_attente` (RG-03) |
-| 3. Sécurité | Non (« Passer ») | Contact de confiance (téléphone), mode discret | Téléphone au format béninois |
-| 4. Consentements | **Oui** | CGU + charte (obligatoire), confidentialité (obligatoire), données sensibles (facultatif), newsletter (facultatif) | Cases **distinctes, jamais pré-cochées** ; chaque consentement est horodaté dans `consents` |
+## 4. Inscription en 3 étapes obligatoires (décision du client du 11/11/2026)
+Remplace les 4 phases dont une seule obligatoire (D4, P2-03). **Un seul formulaire, un seul envoi à la fin ; le compte n'existe qu'à la fin.** Il est créé `en_attente` (toujours : plus aucun réglage `reg_manual_validation`, plus de mode « pair·es seulement ») et la session est ouverte aussitôt ; l'administration valide le compte et **confirme alors l'e-mail** (`email_verified_at`, journalisé). Aucun code OTP ni e-mail de bienvenue à l'inscription ; l'OTP reste pour la connexion et la réinitialisation. Âge minimal : `xomiton.accounts.min_age` (**18**, décision du 11/11/2026), lu partout.
+
+| Étape | Champs (tous obligatoires sauf mention) | Validation |
+|---|---|---|
+| 1. Informations de base | Prénom, nom, pseudonyme (règle `Pseudo`), e-mail (unique), âge (numérique ≥ `min_age`, tient lieu de confirmation d'âge) | `users.first_name`, `last_name` ; `name` = « Prénom Nom » ; consentement `age_confirmed` enregistré quand même |
+| 2. Profil et identité | Pronoms (il / elle / iel), pays (ISO, français, Bénin d'abord), ville (facultative), téléphone (facultatif : `PhoneBj` si Bénin, sinon `+` et 8 à 15 chiffres), zone → commune (facultatives, proposées si le pays choisi a des zones actives et validées contre ce pays : décision du 11/11/2026, zones de tout pays), « Tu es ? » : `membre` ou `allie` | `profiles.country_code`, `city` ; zone et commune servent au routage SOS |
+| 3. Détails et sécurité | Membre : identité de genre et orientation (listes de `SensitiveProfile` ou `prefer_not` ; `autre` + précision), consentement `sensitive_data` obligatoire. Allié·e : statut (professionnel·le de santé, avocat·e, psychologue, leader religieux·se, activiste / féministe, autre + précision). Mot de passe + confirmation (jauge), CGU, confidentialité | Champs sensibles chiffrés (`profiles.gender_identity*`, `orientation*`, `ally_role*`) ; cases **distinctes, jamais pré-cochées**, horodatées |
 
 Règles d'interface :
-- Stepper compact « Étape n sur 4 » (`aria-current="step"`), intitulés simples (« Compte », « Profil », « Sécurité », « Consentements ») sans le mot « facultative » ; seule l'étape courante garde son libellé visible. Les étapes 2 à 4 se passent avec le bouton « Passer cette étape » ; l'étape 1 n'en a pas. Bouton Retour toujours présent, données conservées entre les étapes.
-- Chaque étape tient dans 1280×720 sans défilement de page (étape 1 : pseudonyme + e-mail, mot de passe + confirmation côte à côte dès `md`, jauge compacte, trois cases) ; pied d'actions collant avec « Continuer » toujours visible. Voir `design-system/DECISIONS.md` et `docs/captures/inscription/`.
+- Stepper compact « Étape n sur 3 » (`aria-current="step"`) ; formulaire entièrement rendu par le serveur : **sans JavaScript les trois étapes sont visibles à la suite et s'envoient d'un coup** ; avec Alpine (`xmRegister`), une étape à la fois, étape validée avant « Suivant » (mêmes règles que le serveur), « Précédent » toujours présent (à l'étape 1 il ramène à la connexion), focus sur le titre de l'étape, résumé d'erreurs focalisable + message sous chaque champ, données conservées ; à l'erreur serveur, l'étape fautive est rouverte.
 - Jauge : 4 segments + **texte** (« Trop court, Faible, Moyen, Fort, Excellent ») + liste des règles cochées en direct ; couleur jamais seule.
-- Erreurs : résumé focalisable en haut + message sous le champ.
+- Compte en attente : bandeau « Ton compte attend la validation de l'équipe ». Garde « options limitées » (`verified`, 403 `account_pending`) : lecture, SOS, alertes, signalement et profil restent ouverts ; publier, commenter, écrire, rejoindre un groupe ou un événement s'ouvrent à la validation.
+- Les anciennes URLs `/inscription/profil|securite|consentements` et `/inscription/{etape}/passer` redirigent vers le fil.
 - Inscriptions fermées par l'administration : formulaire remplacé par un message et un lien vers la newsletter.
 
 ## 5. Code par e-mail (OTP)

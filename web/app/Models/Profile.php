@@ -30,9 +30,14 @@ class Profile extends Model
         'user_id',
         'pronouns',
         'age_range',
+        'age',
+        'country_code',
+        'city',
         'member_type',
         'gender_identity',
+        'gender_identity_other',
         'orientation',
+        'orientation_other',
         'bio',
         'completion',
         'avatar_path',
@@ -45,6 +50,8 @@ class Profile extends Model
         'show_zone',
         'searchable',
         'ally_status',
+        'ally_role',
+        'ally_role_other',
         'interests',
         'shared_fields',
         'progressive_answered',
@@ -57,10 +64,14 @@ class Profile extends Model
      */
     protected $hidden = [
         'gender_identity',
+        'gender_identity_other',
         'orientation',
+        'orientation_other',
         'trusted_contact_phone',
         'trusted_contact_name',
         'ally_status',
+        'ally_role',
+        'ally_role_other',
     ];
 
     /**
@@ -72,8 +83,14 @@ class Profile extends Model
             'age_range' => AgeRange::class,
             'member_type' => MemberType::class,
             'visibility' => ProfileVisibility::class,
+            'age' => 'integer',
             'gender_identity' => 'encrypted',
             'orientation' => 'encrypted',
+            // Inscription en 3 étapes (11/11/2026) : précisions « autre » et statut d'allié·e, chiffrés comme le reste.
+            'gender_identity_other' => 'encrypted',
+            'orientation_other' => 'encrypted',
+            'ally_role' => 'encrypted',
+            'ally_role_other' => 'encrypted',
             'trusted_contact_phone' => 'encrypted',
             // Q10 c (P6-06) : allié·e / personne ressource, chiffré comme les autres données d'identité.
             'ally_status' => 'encrypted',

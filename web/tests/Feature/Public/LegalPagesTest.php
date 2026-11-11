@@ -85,6 +85,14 @@ it('décrit les données réelles, les durées de la configuration et l’âge m
         ->toContain('Firebase Cloud Messaging')->toContain('Vonage ou Twilio')->toContain('Gemini');
 });
 
+it('dit que la personne indique son âge à l’inscription et que l’accès est refusé sous l’âge minimal (sans « confirmer »)', function (): void {
+    config(['xomiton.accounts.min_age' => 18]);
+    $text = html_entity_decode((string) preg_replace('/\s+/u', ' ', strip_tags((string) $this->get('/politique-de-confidentialite')->getContent())), ENT_QUOTES);
+
+    expect($text)->toContain('vous indiquez votre âge')->toContain('l’accès est refusé en dessous de 18 ans')
+        ->toContain('Nous ne demandons pas de date de naissance')->not->toContain('vous confirmez avoir');
+});
+
 it('annonce Gemini désactivé par défaut et la phrase change si l’équipe l’active', function (): void {
     expect(strip_tags((string) $this->get('/politique-de-confidentialite')->getContent()))
         ->toContain('branché mais désactivé');

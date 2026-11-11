@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Commune rattachée à un département ; le couple (zone_id, slug) est unique.
+ * Commune rattachée à une zone (donc à son pays) ; le couple (zone_id, slug) est unique.
  */
 class Commune extends Model
 {

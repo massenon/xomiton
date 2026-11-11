@@ -35,7 +35,6 @@ return [
     'assistant_enabled' => [Setting::GROUP_ASSISTANT, Setting::TYPE_BOOL, true, true],
     'maintenance' => [Setting::GROUP_MAINTENANCE, Setting::TYPE_BOOL, false, true],
     'registrations_open' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_BOOL, true, true],
-    'manual_validation' => [Setting::GROUP_REGISTRATIONS, Setting::TYPE_BOOL, false, false],
 
     // admin/parametres.php — généraux
     'timezone' => [Setting::GROUP_GENERAL, Setting::TYPE_STRING, 'Africa/Porto-Novo', true],

@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
 /**
  * Ouverture des inscriptions réglée par l'administration (FR-AUTH-06, Q26) : interrupteur `registrations_open`,
  * plage horaire quotidienne facultative (`reg_window_on`, `reg_window_start`, `reg_window_end`), message de fermeture
- * (≤ 300 caractères), date de réouverture (`reg_reopen_at`) et validation manuelle (`reg_manual_validation`, Q26).
+ * (≤ 300 caractères), date de réouverture (`reg_reopen_at`) ; la validation des nouveaux comptes par l'équipe n'est plus un réglage (décision du 11/11/2026).
  * Heures de la plage à l'heure du Bénin (`xomiton.display_timezone`, réglées par P12-02) ; la date de réouverture est affichée telle que saisie.
  */
 final class RegistrationGate
@@ -58,12 +58,6 @@ final class RegistrationGate
         } catch (\Throwable) {
             return null;
         }
-    }
-
-    /** Validation manuelle (Q26) : `peers` (pair·es seulement, par défaut) ou `all` (tous les nouveaux comptes). */
-    public static function manualValidation(): string
-    {
-        return Settings::string('reg_manual_validation', 'peers') === 'all' ? 'all' : 'peers';
     }
 
     private static function timezone(): string

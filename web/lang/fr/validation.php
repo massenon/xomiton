@@ -180,8 +180,10 @@ return [
         'compromised' => 'Ce mot de passe apparaît dans une fuite de données connue. Choisis-en un autre.',
     ],
     'phone_bj' => 'Saisis un numéro béninois valide, par exemple +229 01 97 38 88 47.',
+    'phone_international' => 'Saisis un numéro avec l’indicatif du pays, par exemple +33 6 12 34 56 78 (8 à 15 chiffres).',
     'positive_int' => 'Le champ :attribute doit être un entier positif ou nul, par exemple 12.',
     'commune_in_zone' => 'Cette commune n’appartient pas au département choisi.',
+    'zone_in_country' => 'Cette zone n’appartient pas au pays choisi.',
     'date_not_future' => 'Le champ :attribute ne peut pas être dans le futur.',
     'phone_or_email' => 'Saisis un numéro béninois (+229 01 97 38 88 47) ou une adresse e-mail valide.',
     'case_code' => 'Le code doit respecter le format VBG-0000 ou VDH-0000.',
@@ -196,7 +198,7 @@ return [
             'accepted' => 'Tu dois accepter les conditions d’utilisation et la charte pour continuer.',
         ],
         'age_confirmed' => [
-            'accepted' => 'Pour créer ton compte, confirme que tu as :min_age ans ou plus.',
+            'accepted' => 'Pour créer ton compte, tu dois avoir au moins :min_age ans.',
         ],
         'privacy' => [
             'accepted' => 'Tu dois accepter la politique de confidentialité pour continuer.',
@@ -214,6 +216,17 @@ return [
      */
     'attributes' => [
         'pseudo' => 'pseudonyme',
+        'first_name' => 'prénom',
+        'last_name' => 'nom',
+        'age' => 'âge',
+        'country_code' => 'pays',
+        'city' => 'ville',
+        'gender_identity' => 'identité de genre',
+        'orientation' => 'orientation',
+        'gender_identity_other' => 'précision sur l’identité de genre',
+        'orientation_other' => 'précision sur l’orientation',
+        'ally_role' => 'statut',
+        'ally_role_other' => 'précision sur le statut',
         'login' => 'identifiant',
         'identifier' => 'identifiant',
         'email' => 'adresse e-mail',

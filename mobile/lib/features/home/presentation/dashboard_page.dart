@@ -92,6 +92,14 @@ class _Body extends ConsumerWidget {
             icon: Icons.hourglass_empty,
             tone: context.xm.info,
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+              onPressed: () => context.go('/en-attente'),
+              child: Text(context.t('mobile_pending_see_more')),
+            ),
+          ),
         ],
         if (user != null && !user.emailVerified) ...[
           const SizedBox(height: XmSpace.s3),

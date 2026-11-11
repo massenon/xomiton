@@ -27,6 +27,8 @@ use App\Livewire\Admin\Maintenance\Index as MaintenanceIndex;
 use App\Livewire\Admin\Moderation\Index as ModerationIndex;
 use App\Livewire\Admin\Network\Index as NetworkIndex;
 use App\Livewire\Admin\Newsletter\Index as NewsletterIndex;
+use App\Livewire\Admin\OnCall\Index as OnCallIndex;
+use App\Livewire\Admin\Referentials\Index as ReferentialsIndex;
 use App\Livewire\Admin\Registers\Index as RegistersIndex;
 use App\Livewire\Admin\Registrations\Index as RegistrationsIndex;
 use App\Livewire\Admin\Reports\Index as ReportsIndex;
@@ -77,6 +79,8 @@ foreach ($screens as [$uri, $name, $title, $prototype]) {
 // signalements (`alerts.view` ; le composant autorise aussi `viewAny` et applique AlertScope) ------------------
 Route::get('/', DashboardIndex::class)->name('dashboard');
 Route::get('/alertes', AlertsIndex::class)->middleware('can:alerts.view')->name('alertes');
+// Planning de garde (P1-17) : `on_call.manage` (admin et superadmin) ; lu par OnCallRoster pour le routage des SOS et l'escalade.
+Route::get('/garde', OnCallIndex::class)->middleware('can:on_call.manage')->name('garde');
 
 // --- Gestion des données (P11) : un écran = une permission (menu AdminNavigation) ; chaque composant autorise aussi la
 // policy du modèle et applique le scope du compte (CaseRecordScope) ----------------------------------------------------
@@ -87,6 +91,9 @@ Route::get('/suivi', FollowupsIndex::class)->middleware('can:case_followups.mana
 Route::get('/annuaire', DirectoryIndex::class)->middleware('can:directory.manage')->name('annuaire');
 // Règles de validation : `validation_rules.manage` (catalogue, bac à sable, plausibilité, doublons, rapport de qualité).
 Route::get('/validation', ValidationIndex::class)->middleware('can:validation_rules.manage')->name('validation');
+// Référentiels administrables (décision du 11/11/2026) : `referentials.manage` (zones de tout pays et communes, types de violence,
+// besoins, populations) ; chaque action Livewire revérifie la permission.
+Route::get('/referentiels', ReferentialsIndex::class)->middleware('can:referentials.manage')->name('referentiels');
 Route::get('/fiches', FormsIndex::class)->middleware('can:case_forms.manage')->name('fiches');
 Route::get('/fiches/{form}/pdf', CaseFormPdfController::class)->middleware('can:case_forms.manage')->whereNumber('form')->name('fiches.pdf');
 

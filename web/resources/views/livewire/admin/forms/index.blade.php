@@ -1,6 +1,6 @@
 {{--
     Fiches de référence VBG / VDH (P11-02) : composant App\Livewire\Admin\Forms\Index, gabarit admin. Introduction · carte
-    « liste » (filtres, tableau, pied) · modale « Nouvelle fiche » (cinq sections) · modale « Détail » (lecture, PDF A4,
+    « liste » (filtres, tableau, pied) · modale « Nouvelle fiche » / « Modifier la fiche » (cinq sections, même modale ; en modification les champs chiffrés restent vides : vide = inchangé) · modale « Détail » (lecture, PDF A4,
     suppression). Récit, auteur·e des faits et signataire (chiffrés) ne figurent que dans la modale « Détail » et le PDF.
 --}}
 <div class="xm-forms">
@@ -63,6 +63,9 @@
                             <button type="button" class="btn btn-sm btn-light border" wire:click="openDetail({{ $form->id }})" wire:loading.attr="disabled" wire:target="openDetail({{ $form->id }})" title="{{ __('admin_data.forms.actions.view') }}">
                                 <i class="bi bi-eye" aria-hidden="true"></i><span class="visually-hidden">{{ __('admin_data.forms.actions.view') }} {{ $form->reference }}</span>
                             </button>
+                            <button type="button" class="btn btn-sm btn-light border" wire:click="openEdit({{ $form->id }})" wire:loading.attr="disabled" wire:target="openEdit({{ $form->id }})" title="{{ __('admin_data.forms.actions.edit') }}">
+                                <i class="bi bi-pencil" aria-hidden="true"></i><span class="visually-hidden">{{ __('admin_data.forms.actions.edit') }} {{ $form->reference }}</span>
+                            </button>
                             <a class="btn btn-sm btn-light border" href="{{ route('admin.fiches.pdf', $form) }}" target="_blank" rel="noopener" title="{{ __('admin_data.forms.actions.pdf') }}">
                                 <i class="bi bi-printer" aria-hidden="true"></i><span class="visually-hidden">{{ __('admin_data.forms.actions.pdf') }} {{ $form->reference }}</span>
                             </a>
@@ -89,19 +92,24 @@
     <datalist id="xmFormsCodes">@foreach ($caseCodes as $code)<option value="{{ $code }}">@endforeach</datalist>
 
     {{-- Nouvelle fiche : cinq sections du Module 4 ; le consentement de la personne est obligatoire. --}}
-    <x-admin.modal id="xmFormEditor" size="xl" type="form" heading="h2" :title="__('admin_data.forms.form.title')" :dirty-guard="true">
+    <x-admin.modal id="xmFormEditor" size="xl" type="form" heading="h2" :title="$editId === 0 ? __('admin_data.forms.form.title') : __('admin_data.forms.form.edit_title', ['reference' => $this->editReference() ?? ''])" :dirty-guard="true">
         <form id="xmFormEditorEl" wire:submit="save" novalidate>
             <div class="alert alert-warning small d-flex gap-2" role="note">
                 <i class="bi bi-shield-exclamation" aria-hidden="true"></i>
-                <span>{{ __('admin_data.forms.form.warning') }}</span>
+                <span>{{ $editId === 0 ? __('admin_data.forms.form.warning') : __('admin_data.forms.form.edit_warning') }}</span>
             </div>
 
             <h3 class="h6 text-primary">{{ __('admin_data.forms.sections.identification') }}</h3>
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
                     <label class="form-label" for="xmFormCase">{{ __('admin_data.forms.fields.case_code') }}</label>
+                    @if ($editId === 0)
                     <input class="form-control @error('form.case_code') is-invalid @enderror" id="xmFormCase" list="xmFormsCodes" wire:model.live.debounce.400ms="form.case_code" maxlength="12" autocomplete="off" placeholder="VBG-0000" required
                            @error('form.case_code') aria-invalid="true" aria-describedby="xmFormCaseError" @enderror>
+                    @else
+                    <input class="form-control" id="xmFormCase" value="{{ $this->form['case_code'] ?? '' }}" readonly aria-describedby="xmFormCaseFixed">
+                    <div class="form-text" id="xmFormCaseFixed">{{ __('admin_data.forms.form.case_fixed') }}</div>
+                    @endif
                     @error('form.case_code')<div class="invalid-feedback d-block" id="xmFormCaseError">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-6">
@@ -138,12 +146,18 @@
                     <label class="form-label" for="xmFormFactsAuthor">{{ __('admin_data.forms.fields.facts_author') }}</label>
                     <input class="form-control @error('form.facts_author') is-invalid @enderror" id="xmFormFactsAuthor" wire:model="form.facts_author" maxlength="120" autocomplete="off" placeholder="{{ __('admin_data.forms.form.author_placeholder') }}" @error('form.facts_author') aria-invalid="true" aria-describedby="xmFormFactsAuthorError" @enderror>
                     @error('form.facts_author')<div class="invalid-feedback d-block" id="xmFormFactsAuthorError">{{ $message }}</div>@enderror
+                    @if ($editId !== 0)
+                        <div class="form-check mt-1">
+                            <input class="form-check-input" type="checkbox" id="xmFormClearAuthor" wire:model="clear.facts_author">
+                            <label class="form-check-label small" for="xmFormClearAuthor">{{ __('admin_data.forms.form.clear_author') }}</label>
+                        </div>
+                    @endif
                 </div>
                 <div class="col-12">
                     <label class="form-label" for="xmFormFactsDescription">{{ __('admin_data.forms.fields.facts_description') }}</label>
-                    <textarea class="form-control @error('form.facts_description') is-invalid @enderror" id="xmFormFactsDescription" rows="3" maxlength="3000" wire:model="form.facts_description" required aria-describedby="xmFormFactsDescriptionHint @error('form.facts_description') xmFormFactsDescriptionError @enderror"
+                    <textarea class="form-control @error('form.facts_description') is-invalid @enderror" id="xmFormFactsDescription" rows="3" maxlength="3000" wire:model="form.facts_description" @required($editId === 0) aria-describedby="xmFormFactsDescriptionHint @error('form.facts_description') xmFormFactsDescriptionError @enderror"
                               @error('form.facts_description') aria-invalid="true" @enderror></textarea>
-                    <div class="form-text" id="xmFormFactsDescriptionHint">{{ __('admin_data.forms.form.description_hint', ['min' => \App\Domain\Cases\CaseNotes::MIN_LENGTH]) }}</div>
+                    <div class="form-text" id="xmFormFactsDescriptionHint">{{ __('admin_data.forms.form.description_hint', ['min' => \App\Domain\Cases\CaseNotes::MIN_LENGTH]) }}@if ($editId !== 0) {{ __('admin_data.forms.form.keep_hint') }}@endif</div>
                     @error('form.facts_description')<div class="invalid-feedback d-block" id="xmFormFactsDescriptionError">{{ $message }}</div>@enderror
                 </div>
             </div>
@@ -163,6 +177,12 @@
                 <label class="visually-hidden" for="xmFormServicesNote">{{ __('admin_data.forms.fields.services_note') }}</label>
                 <input class="form-control form-control-sm mt-2 @error('form.services_note') is-invalid @enderror" id="xmFormServicesNote" wire:model="form.services_note" maxlength="1000" placeholder="{{ __('admin_data.forms.form.services_note_placeholder') }}">
                 @error('form.services_note')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                @if ($editId !== 0)
+                    <div class="form-check mt-1">
+                        <input class="form-check-input" type="checkbox" id="xmFormClearServicesNote" wire:model="clear.services_note">
+                        <label class="form-check-label small" for="xmFormClearServicesNote">{{ __('admin_data.forms.form.clear_services_note') }}</label>
+                    </div>
+                @endif
             </fieldset>
 
             <h3 class="h6 text-primary">{{ __('admin_data.forms.sections.referral') }}</h3>
@@ -218,12 +238,18 @@
                         <label class="form-label small mb-1" for="xmFormSignatory">{{ __('admin_data.forms.fields.consent_signatory') }}</label>
                         <input class="form-control form-control-sm @error('form.consent_signatory') is-invalid @enderror" id="xmFormSignatory" wire:model="form.consent_signatory" maxlength="80" autocomplete="off" placeholder="{{ __('admin_data.forms.form.signatory_placeholder') }}">
                         @error('form.consent_signatory')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                        @if ($editId !== 0)
+                            <div class="form-check mt-1">
+                                <input class="form-check-input" type="checkbox" id="xmFormClearSignatory" wire:model="clear.consent_signatory">
+                                <label class="form-check-label small" for="xmFormClearSignatory">{{ __('admin_data.forms.form.clear_signatory') }}</label>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </fieldset>
         </form>
         <x-slot:footer>
-            <button type="submit" form="xmFormEditorEl" class="btn btn-primary" wire:loading.attr="disabled" wire:target="save"><i class="bi bi-save me-1" aria-hidden="true"></i>{{ __('admin_data.forms.form.save') }}</button>
+            <button type="submit" form="xmFormEditorEl" class="btn btn-primary" wire:loading.attr="disabled" wire:target="save"><i class="bi bi-save me-1" aria-hidden="true"></i>{{ $editId === 0 ? __('admin_data.forms.form.save') : __('admin_data.forms.form.save_edit') }}</button>
         </x-slot:footer>
     </x-admin.modal>
 

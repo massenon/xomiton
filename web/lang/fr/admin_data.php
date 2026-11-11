@@ -230,6 +230,7 @@ return [
 
         'actions' => [
             'view' => 'Ouvrir la fiche',
+            'edit' => 'Modifier la fiche',
             'pdf' => 'Imprimer en PDF (A4)',
             'delete' => 'Supprimer la fiche',
         ],
@@ -285,6 +286,14 @@ return [
             'consent_sharing' => 'Elle autorise le partage des informations avec la personne référente.',
             'signatory_placeholder' => 'Initiales ou signature',
             'save' => 'Enregistrer la fiche',
+            'edit_title' => 'Modifier la fiche :reference',
+            'edit_warning' => 'Le dossier et la référence ne changent pas. Par sécurité, le récit, l’auteur·e présumé·e, les précisions et le signataire ne sont pas affichés : laissez un champ vide pour conserver le texte actuel, ou écrivez pour le remplacer.',
+            'case_fixed' => 'Le dossier d’une fiche ne se change pas.',
+            'keep_hint' => 'Laissez vide pour conserver le texte actuel.',
+            'clear_author' => 'Effacer l’auteur·e présumé·e enregistré·e',
+            'clear_services_note' => 'Effacer les précisions enregistrées',
+            'clear_signatory' => 'Effacer le signataire enregistré',
+            'save_edit' => 'Enregistrer les modifications',
         ],
 
         'detail' => [
@@ -317,12 +326,14 @@ return [
 
         'toasts' => [
             'created' => 'Fiche :reference enregistrée.',
+            'updated' => 'Fiche :reference mise à jour.',
             'deleted' => 'Fiche :reference supprimée.',
         ],
 
         'errors' => [
             'case_unknown' => 'Ce code ne correspond à aucun dossier actif de votre périmètre.',
             'locked' => 'Ce dossier est archivé ou anonymisé : il ne reçoit plus de fiche.',
+            'locked_form' => 'Le dossier de cette fiche est archivé ou anonymisé : la fiche ne se modifie plus.',
             'not_found' => 'Cette fiche est introuvable ou hors de votre périmètre.',
         ],
     ],

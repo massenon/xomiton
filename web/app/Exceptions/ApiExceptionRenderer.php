@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
+use App\Domain\Auth\Exceptions\AccountPending;
 use App\Domain\Auth\Exceptions\AccountSuspended;
 use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
 use App\Domain\Auth\Exceptions\AuthException;
@@ -37,7 +38,7 @@ use Throwable;
  * pour tous les statuts (400, 401, 403, 404, 405, 409, 410, 413, 415, 419, 422, 429, 500, 503). Les exceptions métier
  * (App\Domain\Shared\Exceptions\DomainException) portent leur statut, leur `code` stable et leurs `errors` ; celles du
  * tunnel d'authentification (App\Domain\Auth\Exceptions) aussi : `invalid_credentials`, `account_suspended`, `maintenance`,
- * `email_unverified`, `otp_invalid`, `otp_too_soon`, `otp_rate_limited`, `registrations_closed`, `consent_required`, `age_confirmation_required`, `invitation_invalid`.
+ * `email_unverified`, `account_pending`, `otp_invalid`, `otp_too_soon`, `otp_rate_limited`, `registrations_closed`, `consent_required`, `age_confirmation_required`, `invitation_invalid`.
  * Le 422 de validation garde `{ message, errors }` de Laravel et y ajoute `code: validation_failed`. Hors débogage, toute
  * autre exception répond 500 `server_error` sans détail. Textes : lang/fr (auth.api tutoie, errors.api sans registre).
  */
@@ -146,7 +147,8 @@ final class ApiExceptionRenderer
         }
 
         if ($e instanceof AgeConfirmationRequired) {
-            $errors = ['age_confirmed' => [$e->userMessage()]];
+            // Inscription en 3 étapes : l'âge saisi tient lieu de confirmation, la clé d'erreur est le champ `age`.
+            $errors = ['age' => [$e->userMessage()]];
         }
 
         if ($e instanceof InvitationInvalid) {
@@ -171,6 +173,7 @@ final class ApiExceptionRenderer
             $e instanceof AccountSuspended => 'account_suspended',
             $e instanceof MaintenanceActive => 'maintenance',
             $e instanceof EmailNotVerified => 'email_unverified',
+            $e instanceof AccountPending => 'account_pending',
             $e instanceof OtpTooSoon => 'otp_too_soon',
             $e instanceof OtpRateLimited => 'otp_rate_limited',
             $e instanceof OtpInvalid => 'otp_invalid',

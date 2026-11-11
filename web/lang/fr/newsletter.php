@@ -93,6 +93,7 @@ return [
             'stats' => 'Statistiques',
             'subscribers' => 'Abonné·es',
             'campaigns' => 'Campagnes',
+            'taxonomy' => 'Tags et centres d’intérêt',
         ],
         'kpi' => [
             'active' => 'Abonné·es actifs',

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Application\Shared\Countries;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Département (`GET zones`, P3-06) avec ses communes actives. Accepte un modèle Zone ou le tableau mis en cache par
+ * Zone (`GET zones`, P3-06 ; `country_code` : décision du 11/11/2026) avec ses communes actives. Accepte un modèle Zone ou le tableau mis en cache par
  * App\Application\Shared\Referentials (même forme).
  */
 final class ZoneResource extends JsonResource
@@ -25,6 +26,7 @@ final class ZoneResource extends JsonResource
             'id' => (int) ($zone['id'] ?? 0),
             'name' => (string) ($zone['name'] ?? ''),
             'slug' => (string) ($zone['slug'] ?? ''),
+            'country_code' => (string) ($zone['country_code'] ?? Countries::BENIN),
             'position' => (int) ($zone['position'] ?? 0),
             'communes' => CommuneResource::collection(array_values((array) ($zone['communes'] ?? [])))->resolve($request),
         ];

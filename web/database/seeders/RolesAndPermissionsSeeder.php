@@ -75,6 +75,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'alerts.take' => $peerAndAdmin,
             'alerts.close' => $peerAndAdmin,
             'alerts.manage' => $admins,
+            // Planning de garde (P1-17, `on_call_shifts`) : qui est « admin de garde » ou point focal remplaçant (écran /admin/garde).
+            'on_call.manage' => $admins,
 
             // Annuaire dynamique
             'directory.view' => $members,
@@ -82,6 +84,10 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // Règles de validation
             'validation_rules.manage' => $admins,
+
+            // Référentiels administrables : zones (tout pays) et communes, types de violence, besoins, populations
+            // (décision client du 11/11/2026)
+            'referentials.manage' => $admins,
 
             // Indicateurs et rapports automatisés
             'indicators.view_zone' => $peerAndAdmin,

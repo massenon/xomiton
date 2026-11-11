@@ -1,5 +1,7 @@
 # Xomiton : dossier de publication Google Play
 
+> **Décision client du 11/11/2026 : âge minimal 18 ans ; tous les nouveaux comptes sont validés par l'administration.** L'âge minimal du produit passe de 15 à **18 ans** ; la seule tranche d'âge Play à déclarer est **« 18 ans et plus »** (plus de « 16-17 »). L'incohérence 15 ans / 16-17 / 18+ qui figurait dans ce dossier disparaît. Les textes ci-dessous sont mis à jour en conséquence.
+
 Version du dossier 1.2 · 9 novembre 2026 · application `app.xomiton.xomiton`, version 1.0.0 (code 1) · langue de la fiche : français (France), avec gabarit anglais prévu.
 
 Ce dossier réunit tout ce qu'il faut pour remplir la Play Console : textes de la fiche, visuels, formulaire « Sécurité des données », déclarations, checklist de publication et liste de ce qui reste à fournir. Les visuels sont **produits par script** (`build_playstore.py`) à partir de `visuels.json`, du design system et de captures du site réel (thème clair), puis **vérifiés automatiquement** (§10). Sources de vérité : `design-system/DECISIONS.md` > `design-system/xomiton/MASTER.md` > prototype > `docs/`.
@@ -62,7 +64,7 @@ Images du client : les deux contre-exemples de `design-system/assets/splash/refe
 
 | Sujet | Décision | Conséquence dans le dossier |
 |---|---|---|
-| Âge | Âge minimal du produit **15 ans** ; tranches Play **« 16-17 » et « 18+ » uniquement** | §5 |
+| Âge | Âge minimal du produit **18 ans** (décision du 11/11/2026, remplace 15 ans) ; tranche Play **« 18 ans et plus » uniquement** | §5 |
 | Tarif | Aucun, application gratuite | Console : gratuite ; aucun prix dans la fiche |
 | Pays | Tous les pays | Points de vigilance ci-dessous |
 | Langue | Français uniquement | Pas de traduction dans la console |
@@ -104,7 +106,7 @@ PENSÉE POUR LA DISCRÉTION
 • Mode discret : l'icône et le nom de l'application peuvent devenir neutres sur Android.
 • Aperçus masqués : les notifications et les messages n'affichent pas leur contenu à l'écran de verrouillage.
 • Verrouillage par code à l'ouverture de l'application.
-• Inscription simple : un pseudonyme suffit. Aucune date de naissance n'est demandée ; vous confirmez avoir 15 ans ou plus.
+• Inscription en trois étapes : prénom, nom, pseudonyme, e-mail, âge (18 ans minimum), pays et profil. Aucune date de naissance n'est demandée ; votre compte est validé par l'équipe avant d'accéder à tout l'espace.
 • Vos données vous appartiennent : vous pouvez les exporter, ou supprimer votre compte depuis l'application ou depuis notre site, même sans accès à votre compte.
 
 À SAVOIR
@@ -125,7 +127,7 @@ Rédaction (mise à jour du 29 octobre 2026) : la description présente uniqueme
 | Sujet | Réponse proposée | Remarque |
 |---|---|---|
 | Questionnaire de classification (IARC) | Catégorie « Réseaux sociaux / communication ». Contenu généré par les utilisateurs : **oui** (modéré, avec signalement et blocage). Partage de position : **oui** (SOS, facultatif). Violence : aucune représentation ; **sujets de violence traités à titre d'information et de soutien**. Sexualité, drogue, jeu d'argent, langage grossier : non. Achats : non | Répondre honnêtement ; la note finale (probablement 12 ans et plus ou Teen) est calculée par le questionnaire, ne pas la présumer |
-| Public cible et âge | **16-17 ans et 18 ans et plus uniquement** (décision du client, 29 octobre 2026). Âge minimal produit : **15 ans** (Q68, case « J'ai 15 ans ou plus », aucune date de naissance) | **Ne pas cocher « 13-15 »** : la tranche Play commence à 13 ans et classerait l'application comme visant des mineurs (politique Familles, règles durcies) alors que le produit exclut les moins de 15 ans. Les personnes de 15 ans peuvent s'inscrire selon les conditions d'utilisation, mais la fiche ne les cible pas. Cette position est cohérente avec les pages légales (15 ans minimum). Point à faire valider par le conseil juridique (Q67, Q68) |
+| Public cible et âge | **18 ans et plus uniquement** (décision du client du 11/11/2026, qui remplace celle du 29 octobre : 16-17 et 18+). Âge minimal produit : **18 ans** (l'inscription demande l'âge, refusé sous 18 ans, aucune date de naissance) | **Ne cocher ni « 13-15 » ni « 16-17 »** : ces tranches classeraient l'application comme visant des mineurs (politique Familles, règles durcies) alors que le produit exclut les moins de 18 ans. La fiche, les conditions d'utilisation et les pages légales disent la même chose (18 ans minimum, `{min_age}` lu dans la configuration). Point à faire valider par le conseil juridique (Q67, Q68) |
 | Application destinée aux enfants (programme Familles) | Non | Ne pas rejoindre le programme |
 | Contenu sensible | Mentionner violences basées sur le genre, santé sexuelle, soutien psychologique : c'est du contenu **informatif et de soutien** | Voir §9 |
 | Déclaration « Applications de santé » | Répondre que l'application ne propose pas de suivi médical, de diagnostic ni de dispositif médical ; elle oriente vers des ressources | Formulaire obligatoire pour toutes les applications |
@@ -185,7 +187,7 @@ La page de suppression explique la procédure dans l'application (Paramètres > 
 
 ### Contenu de la politique (écrit d'après le code)
 
-La politique couvre : responsable et personne chargée des données ; données collectées (compte, pseudonyme, e-mail, téléphone, profil, données sensibles avec consentement distinct, contacts de confiance, position au moment d'un SOS, signalements, publications et messages, journaux techniques, jeton de notification, newsletter) avec finalité, base légale et caractère facultatif ; destinataires ; prestataires et transferts hors du Bénin (Firebase Cloud Messaging de Google, prestataire SMS Vonage ou Twilio selon la configuration, hébergeur) ; durées de conservation **lues dans la configuration** (compte supprimé 30 jours, journal d'audit 90 jours, journaux d'e-mails 180 jours, codes 24 h, dossiers 5 ans après clôture, appareils inactifs 180 jours) ; droits et manière de les exercer ; sécurité ; âge minimal 15 ans et mineur·es ; cookies ; modifications et contact.
+La politique couvre : responsable et personne chargée des données ; données collectées (compte, pseudonyme, e-mail, téléphone, profil, données sensibles avec consentement distinct, contacts de confiance, position au moment d'un SOS, signalements, publications et messages, journaux techniques, jeton de notification, newsletter) avec finalité, base légale et caractère facultatif ; destinataires ; prestataires et transferts hors du Bénin (Firebase Cloud Messaging de Google, prestataire SMS Vonage ou Twilio selon la configuration, hébergeur) ; durées de conservation **lues dans la configuration** (compte supprimé 30 jours, journal d'audit 90 jours, journaux d'e-mails 180 jours, codes 24 h, dossiers 5 ans après clôture, appareils inactifs 180 jours) ; droits et manière de les exercer ; sécurité ; âge minimal 18 ans (`{min_age}`) ; cookies ; modifications et contact.
 
 - **Assistant et Gemini** : le service Gemini est branché mais **désactivé par défaut** (`ASSISTANT_LLM_ENABLED=false`). La politique le dit tant qu'il est désactivé ; si l'équipe l'active, la phrase change automatiquement (transmission du texte de la question à Google, hors du Bénin) et l'activation exige l'avis juridique prévu (DECISIONS_A_VALIDER.md).
 - **Prestataire SMS** : la phrase suit `SMS_DRIVER` (`vonage`, `twilio`, sinon « tant que ce service n'est pas activé, aucun SMS n'est envoyé »).
@@ -255,7 +257,7 @@ Formulations prudentes à reprendre dans la fiche et dans les réponses aux revu
 | Comportement trompeur | Le mode discret change le **nom et l'icône affichés au lancement** (alias d'activité « Notes ») ; un examinateur peut y voir une usurpation | Fonction activée uniquement par la personne, pour sa sécurité ; l'expliquer dans les notes aux examinateurs (« Instructions d'accès ») ; la fiche, le nom du paquet et la page d'information gardent « Xomiton » ; ne pas imiter l'icône ni le nom d'une application existante de tiers |
 | Suppression de compte | Lien web de suppression obligatoire | Page publique `/supprimer-mon-compte` créée (§7) ; à déclarer dans la console |
 | Métadonnées | Mots promotionnels, classements, répétition, témoignages | Aucun de ces éléments dans les visuels ni les textes (contrôlé par le script) |
-| Âge et mineurs | Tranches d'âge incohérentes avec le produit | Tranches 16-17 et 18+ uniquement (décision du client), voir §5 |
+| Âge et mineurs | Tranches d'âge incohérentes avec le produit | Tranche « 18 ans et plus » seule, alignée sur l'âge minimal de 18 ans (décision du client du 11/11/2026), voir §5 |
 | Distribution mondiale | Lois locales, pays hostiles aux personnes LGBTQ+ | Voir §3 (points de vigilance) ; revue juridique recommandée |
 
 ## 10. Visuels : spécifications, contrôles et texte alternatif
@@ -340,7 +342,7 @@ Délais : la revue d'une nouvelle application peut prendre plusieurs jours, voir
 | Création de la boîte `contact@xomiton.app` | Adresse de contact publique de la fiche |
 | **Vraies captures de l'application** (émulateur Android, 4 à 8) | Les captures actuelles montrent le site web : provisoires, Google exige des captures de l'application |
 | Validation de l'icône 512 (`assets/icon-512.png`) | Produite depuis `icone-appli-bleu.svg`, à faire valider |
-| Validation juridique de l'âge (Q67, Q68) | Décision prise (16-17 et 18+, âge produit 15 ans) ; confirmer avec le conseil |
+| Validation juridique de l'âge (Q67, Q68) | Décision prise le 11/11/2026 (18 ans et plus, âge produit 18 ans : plus de décalage) ; confirmer avec le conseil la valeur d'un âge déclaré sans vérification |
 | Compte de test pour l'examen et vidéo de démonstration de la localisation | Revue Google |
 | Réponses de l'équipe technique aux trois points du §6 | Exactitude de la déclaration |
 | Validation du sigle, des textes et du choix de ne montrer ni admin ni espace pair | Discrétion, §2 |

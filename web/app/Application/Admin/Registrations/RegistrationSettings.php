@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Admin\Registrations;
 
-use App\Application\Auth\Support\RegistrationGate;
 use App\Models\Setting;
 use App\Models\User;
 use App\Support\Audit;
@@ -13,23 +12,18 @@ use Illuminate\Support\Facades\Gate;
 
 /**
  * Réglages des inscriptions (P12-02, FR-AUTH-06, Q26) lus par RegistrationGate (page des inscriptions fermées, P2-03) :
- * `registrations_open` (interrupteur), `reg_manual_validation` (`peers` : pair·es seulement, par défaut ; `all` : tous les
- * nouveaux comptes), `reg_closed_msg` (≤ 300 caractères), `reg_reopen_at` (date de réouverture annoncée, heure du Bénin,
+ * `registrations_open` (interrupteur), `reg_closed_msg` (≤ 300 caractères), `reg_reopen_at` (date de réouverture annoncée, heure du Bénin,
  * informative), plage horaire quotidienne `reg_window_on` / `reg_window_start` / `reg_window_end` (heure du Bénin).
  * Les clés historiques du prototype sont gardées (le plan écrit `registration.open` : plan Q91). Écriture réservée à
  * `registrations.manage` ; chaque changement est journalisé (`registrations.opened`, `registrations.closed`,
- * `registrations.options_updated`). La validation des pair·es (RG-03) reste obligatoire quel que soit le mode.
+ * `registrations.options_updated`). Tous les nouveaux comptes attendent la validation de l'équipe (décision du 11/11/2026) : ce n'est plus un réglage.
  */
 final class RegistrationSettings
 {
     public const MESSAGE_MAX = 300;
 
-    public const MANUAL_PEERS = 'peers';
-
-    public const MANUAL_ALL = 'all';
-
     /**
-     * @return array{open: bool, manual: string, message: string, reopen_at: string, window_on: bool, window_start: string, window_end: string}
+     * @return array{open: bool, message: string, reopen_at: string, window_on: bool, window_start: string, window_end: string}
      */
     public static function current(): array
     {
@@ -37,7 +31,6 @@ final class RegistrationSettings
 
         return [
             'open' => Settings::bool('registrations_open', true),
-            'manual' => RegistrationGate::manualValidation(),
             'message' => Settings::string('reg_closed_msg'),
             'reopen_at' => $raw,
             'window_on' => Settings::bool('reg_window_on', false),
@@ -59,13 +52,12 @@ final class RegistrationSettings
     }
 
     /**
-     * @param  array{manual: string, message: string, reopen_at: string, window_on: bool, window_start: string, window_end: string}  $options
+     * @param  array{message: string, reopen_at: string, window_on: bool, window_start: string, window_end: string}  $options
      */
     public function saveOptions(array $options, User $by): void
     {
         Gate::forUser($by)->authorize('registrations.manage');
 
-        $this->put('reg_manual_validation', Setting::TYPE_STRING, $options['manual'] === self::MANUAL_ALL ? self::MANUAL_ALL : self::MANUAL_PEERS, false, $by);
         $this->put('reg_closed_msg', Setting::TYPE_STRING, mb_substr(trim($options['message']), 0, self::MESSAGE_MAX), true, $by);
         $this->put('reg_reopen_at', Setting::TYPE_STRING, trim($options['reopen_at']) === '' ? null : trim($options['reopen_at']), true, $by);
         $this->put('reg_window_on', Setting::TYPE_BOOL, $options['window_on'], true, $by);
@@ -73,8 +65,7 @@ final class RegistrationSettings
         $this->put('reg_window_end', Setting::TYPE_STRING, $options['window_end'], true, $by);
 
         Audit::log('registrations.options_updated', null, sprintf(
-            'validation=%s ; plage=%s',
-            $options['manual'],
+            'plage=%s',
             $options['window_on'] ? $options['window_start'].'-'.$options['window_end'] : 'non',
         ), $by);
     }

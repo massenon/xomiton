@@ -277,12 +277,12 @@ return [
         // compte (admin_mobile.access : 7 jours ; espace pair : 30 jours ; membre : sans expiration propre). Chaque requête
         // authentifiée par jeton prolonge l'échéance (au plus une écriture par jour et par jeton).
         'mobile_token_days' => ['admin' => 7, 'peer' => 30],
-        // Q68 tranché (2026-10-28) : âge minimal d'inscription = 15 ans. UNE seule valeur, lue par tout code (web, API, mobile
-        // via l'API) ; ne pas confondre avec `age_min` (plausibilité de la tranche d'âge, RG-08).
-        'min_age' => 15,
+        // Décision client du 11/11/2026 (remplace Q68 / D-MOB-17 d'octobre) : âge minimal d'inscription = 18 ans. UNE seule
+        // valeur, lue par tout code (web, API, mobile via l'API) ; ne pas confondre avec `age_min` (plausibilité de la tranche d'âge, RG-08).
+        'min_age' => 18,
         'password_min_length' => 10,
-        // D-MOB-17 (tranché 2026-10-29) : seules les inscriptions SIGNALÉES attendent la validation de l'équipe (le reste est
-        // immédiat après confirmation de l'e-mail ; `reg_manual_validation = all` valide tout). Signaux déterministes :
+        // D-MOB-17 (2026-10-29), précisé le 11/11/2026 : TOUS les nouveaux comptes attendent la validation de l'équipe ; les
+        // inscriptions SIGNALÉES sont seulement notées (`registration_flags`) pour éclairer cette validation. Signaux déterministes :
         //  - `disposable_email` : domaine de l'adresse dans cette liste (XOMITON_DISPOSABLE_DOMAINS, séparés par des virgules,
         //    s'ajoute à la liste ci-dessous ; un sous-domaine du domaine listé compte aussi) ;
         //  - `repeated_fingerprint` : plus de `burst_max` inscriptions en `burst_minutes` minutes avec la même empreinte
@@ -1022,7 +1022,7 @@ return [
      * des modèles : toute colonne chiffrée ajoutée doit être déclarée ici.
      */
     'encrypted_columns' => [
-        'profiles' => ['gender_identity', 'orientation', 'trusted_contact_phone', 'ally_status'],
+        'profiles' => ['gender_identity', 'gender_identity_other', 'orientation', 'orientation_other', 'trusted_contact_phone', 'ally_status', 'ally_role', 'ally_role_other'],
         'alerts' => ['description', 'lat', 'lng', 'contact'],
         'alert_notes' => ['body'],
         'cases' => ['notes'],

@@ -21,6 +21,8 @@ use Illuminate\Support\Str;
 
 /**
  * Demandes de compte en attente (P2-10 livré, P12-01 et P12-02 ; RG-03, Q26) : approuver ou rejeter, `users.validate_peers`.
+ *  - approuver : l'e-mail du compte est confirmé par l'administration (`email_verified_at` posé s'il est nul, journal
+ *    `users.email_verified_by_admin`, décision client du 11/11/2026 : plus de code à l'inscription) ;
  *  - approuver une demande de pair·e : ValidatePeerAccount (statut actif, rôle pair, e-mail `compte-valide`, journal
  *    `users.validate_peer`) ; une autre demande (validation manuelle de tous, Q26) : compte actif, notification
  *    « inscription validée » et journal `users.registration_approved` ;
@@ -48,6 +50,9 @@ final class ReviewRegistration
     {
         $this->guard($account, $by);
 
+        // Décision client du 11/11/2026 : la « vérification de l'e-mail » est faite par l'administration, en validant le compte.
+        $this->verifyEmail($account, $by);
+
         if ($account->profile?->member_type === MemberType::Peer) {
             ($this->validatePeer)($account, $by);
 
@@ -58,6 +63,17 @@ final class ReviewRegistration
         $account->notify(new ModerationNotice(ModerationNotice::APPROVED));
         Audit::log('users.registration_approved', $account, sprintf('pseudo=%s', $account->pseudo), $by);
         ($this->invitedRole)($account);
+    }
+
+    /** Pose `email_verified_at` s'il est nul (journalisé au nom de l'administrateur·rice) : le compte validé a un e-mail confirmé. */
+    private function verifyEmail(User $account, User $by): void
+    {
+        if ($account->email_verified_at !== null) {
+            return;
+        }
+
+        $account->forceFill(['email_verified_at' => now()])->save();
+        Audit::log('users.email_verified_by_admin', $account, sprintf('pseudo=%s', $account->pseudo), $by);
     }
 
     /** La demande en attente vise-t-elle le rôle pair (profil « pair » ou invitation à l'équipe utilisée) ? */

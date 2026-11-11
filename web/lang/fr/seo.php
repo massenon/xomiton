@@ -71,7 +71,7 @@ return [
         ],
         'inscription' => [
             'title' => 'Créer un compte : rejoindre la communauté – Xomiton',
-            'description' => 'Crée ton compte en une étape, avec un pseudonyme et un mot de passe : ton vrai nom n’est jamais demandé. Communauté bienveillante et soutien confidentiel.',
+            'description' => 'Crée ton compte en trois étapes, avec un mot de passe fort : seul ton pseudonyme est visible des autres membres. Communauté et soutien confidentiels.',
         ],
         'actualites' => [
             'title' => 'Actualités de la communauté et des partenaires – Xomiton',
@@ -88,7 +88,7 @@ return [
             ],
             'terms' => [
                 'title' => 'Conditions d’utilisation – Xomiton',
-                'description' => 'Les règles d’utilisation de Xomiton : accès dès 15 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.',
+                'description' => 'Les règles d’utilisation de Xomiton : accès dès 18 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.',
             ],
             'notice' => [
                 'title' => 'Mentions légales – Xomiton',
@@ -120,7 +120,6 @@ return [
         'forgot_password' => 'Mot de passe oublié – Xomiton',
         'reset_password' => 'Nouveau mot de passe – Xomiton',
         'register_closed' => 'Inscriptions momentanément fermées – Xomiton',
-        'register_step' => 'Créer mon compte, étape :current sur :total – Xomiton',
         'search' => 'Résultats de recherche – Xomiton',
         'thanks' => 'Merci – Xomiton',
         'member' => 'Mon espace – Xomiton',

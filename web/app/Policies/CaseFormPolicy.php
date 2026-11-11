@@ -9,7 +9,7 @@ use App\Models\User;
 
 /**
  * Fiches de référence VBG / VDH (ROLE_ET_PERMISSIONS.md §3, ligne « Fiches VBG / VDH ») : l'administration
- * (`case_forms.manage`) les remplit, les lit, les imprime et les supprime ; la pair·e lit celles de **ses** dossiers
+ * (`case_forms.manage`) les remplit, les modifie, les lit, les imprime et les supprime ; la pair·e lit celles de **ses** dossiers
  * (`case_forms.view_own`), jamais plus.
  */
 final class CaseFormPolicy
@@ -34,6 +34,11 @@ final class CaseFormPolicy
     }
 
     public function create(User $user): bool
+    {
+        return $user->can('case_forms.manage');
+    }
+
+    public function update(User $user, CaseForm $form): bool
     {
         return $user->can('case_forms.manage');
     }

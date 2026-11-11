@@ -57,7 +57,7 @@ return [
 
     'know' => [
         'compte' => [
-            'Créez votre compte avec un pseudonyme : aucun nom réel n’est exigé.',
+            'Créez votre compte en trois étapes : seul votre pseudonyme est visible des autres membres.',
             'Protégez-le avec un mot de passe fort : :min caractères au moins, avec des majuscules, des minuscules et des chiffres.',
             'Vous pouvez à tout moment exporter ou supprimer vos données depuis Paramètres.',
         ],

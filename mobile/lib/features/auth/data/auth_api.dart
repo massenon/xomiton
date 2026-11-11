@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/storage/api_cache.dart';
 import '../../../core/storage/token_store.dart';
+import 'registration_form.dart';
 
 enum OtpPurpose { login, signup, reset }
 
@@ -130,30 +131,24 @@ class AuthApi {
     }
   }
 
-  /// Phase 1 : crée le compte et l'ouvre (Q12 c, D4). Les phases 2 à 4 passent
-  /// ensuite par `PATCH me/profile` et `PATCH me/newsletter`.
-  Future<RegisterResult> register({
-    required String pseudo,
-    required String email,
-    required String password,
-    required bool cgu,
-    required bool privacy,
-    required bool ageConfirmed,
-    String? invitation,
-  }) async {
+  /// Inscription en un seul envoi (ancien formulaire en 3 étapes, 11/11/2026) :
+  /// le compte n'existe qu'à cet appel. Réponse 201 : jeton et utilisateur
+  /// (`pending_validation = true`). Le corps contient le mot de passe : il n'est
+  /// jamais journalisé.
+  Future<RegisterResult> register(RegistrationForm form) async {
     final res = await _dio.post<dynamic>('auth/register', data: {
-      'pseudo': pseudo.trim(),
-      'email': email.trim(),
-      'password': password,
-      'cgu': cgu,
-      'privacy': privacy,
-      'age_confirmed': ageConfirmed,
-      if (invitation != null && invitation.trim().isNotEmpty) 'invitation': invitation.trim(),
+      ...form.toPayload(),
       'device_name': _deviceName(),
     });
     final d = _data(res);
     return RegisterResult(
         token: d['token'] as String, user: (d['user'] as Map?)?.cast<String, dynamic>());
+  }
+
+  /// `GET referentials/registration` (public, cache Hive + ETag) : âge minimal et listes.
+  Future<RegistrationReferentials> registrationReferentials() async {
+    final r = await _cache.get('referentials/registration');
+    return RegistrationReferentials.fromJson(Map<String, dynamic>.from(r.data as Map));
   }
 
   Future<void> forgotPassword(String email) async {
@@ -200,10 +195,13 @@ class Commune {
 }
 
 class Zone {
-  const Zone(this.id, this.name, this.communes);
+  const Zone(this.id, this.name, this.communes, [this.countryCode = 'BJ']);
   final int id;
   final String name;
   final List<Commune> communes;
+
+  /// Pays de la zone (ISO 3166-1 alpha-2) ; `BJ` quand le serveur ne l'envoie pas (ancien contrat).
+  final String countryCode;
 
   factory Zone.fromJson(Map<String, dynamic> j) => Zone(
         (j['id'] as num).toInt(),
@@ -211,6 +209,7 @@ class Zone {
         ((j['communes'] as List?) ?? const [])
             .map((c) => Commune((c['id'] as num).toInt(), c['name'] as String))
             .toList(),
+        (j['country_code'] as String?) ?? 'BJ',
       );
 }
 
@@ -219,6 +218,9 @@ final authApiProvider = Provider<AuthApi>((ref) => AuthApi(
       ref.watch(tokenStoreProvider),
       ref.watch(apiCacheProvider),
     ));
+
+final registrationReferentialsProvider = FutureProvider<RegistrationReferentials>(
+    (ref) => ref.watch(authApiProvider).registrationReferentials());
 
 final zonesProvider = FutureProvider<List<Zone>>((ref) => ref.watch(authApiProvider).zones());
 

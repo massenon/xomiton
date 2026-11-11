@@ -65,10 +65,10 @@ return [
                         ['table' => [
                             'head' => ['Donnée', 'Pourquoi', 'Base légale', 'Facultative'],
                             'rows' => [
-                                ['Compte : pseudonyme, adresse e-mail, mot de passe (conservé haché), zone et commune, confirmation d’avoir {min_age} ans ou plus', 'Créer et sécuriser votre compte, vous envoyer les codes de vérification', 'Exécution du service', 'Non. Aucun nom réel ni date de naissance n’est exigé'],
-                                ['Nom, numéro de téléphone du profil', 'Vous joindre ou vous reconnaître si vous le choisissez ; SMS de secours', 'Votre consentement', 'Oui'],
+                                ['Compte : pseudonyme, prénom et nom, adresse e-mail, mot de passe (conservé haché), âge ({min_age} ans au minimum), pays, pronoms, type de compte (membre ou personne ressource / allié·e)', 'Créer, sécuriser et faire valider votre compte par l’équipe', 'Exécution du service', 'Non. Seul le pseudonyme est visible des autres membres'],
+                                ['Ville, département et commune, numéro de téléphone', 'Vous mettre en lien avec l’aide la plus proche ; vous joindre ; SMS de secours', 'Votre consentement', 'Oui'],
                                 ['Profil : biographie, pronoms, photo, centres d’intérêt', 'Personnaliser votre espace', 'Votre consentement', 'Oui'],
-                                ['Origine, orientation ou identité de genre (données sensibles)', 'Adapter le soutien proposé', 'Votre consentement explicite et distinct, retirable à tout moment', 'Oui'],
+                                ['Identité de genre et orientation (membre), statut (personne ressource ou alliée) : données sensibles, chiffrées', 'Adapter le soutien proposé', 'Votre consentement explicite et distinct, retirable à tout moment', 'Non pour un membre à l’inscription (le consentement est demandé) ; vous pouvez le retirer ensuite'],
                                 ['Contacts de confiance (nom, téléphone ou e-mail)', 'Les prévenir en cas d’alerte SOS', 'Votre consentement', 'Oui'],
                                 ['Position au moment d’une alerte SOS', 'Indiquer où vous êtes aux personnes alertées', 'Votre consentement, donné à chaque alerte', 'Oui'],
                                 ['Signalements et besoins : récit, lieu, pièces jointes, moyen de vous recontacter', 'Prendre en charge la situation et vous orienter', 'Votre consentement ; intérêt vital de la personne en danger', 'Oui. Un signalement peut être fait sans compte'],
@@ -180,7 +180,7 @@ return [
                     'id' => 'mineurs',
                     'title' => 'Âge minimum et mineur·es',
                     'blocks' => [
-                        'Xomiton est réservé aux personnes de {min_age} ans ou plus. À l’inscription, vous confirmez avoir {min_age} ans ou plus ; nous ne demandons pas de date de naissance. Si nous apprenons qu’une personne plus jeune a créé un compte, nous le supprimons.',
+                        'Xomiton est réservé aux personnes de {min_age} ans ou plus. À l’inscription, vous indiquez votre âge ; l’accès est refusé en dessous de {min_age} ans. Nous ne demandons pas de date de naissance. Si nous apprenons qu’une personne plus jeune a créé un compte, nous le supprimons.',
                         'Si un signalement révèle qu’une personne mineure est en danger, l’équipe peut l’orienter vers les services de protection compétents, dans l’intérêt de cette personne.',
                     ],
                 ],
@@ -221,7 +221,7 @@ return [
                     'blocks' => [
                         ['list' => [
                             'Il faut avoir {min_age} ans ou plus pour créer un compte.',
-                            'Vous choisissez un pseudonyme ; vous n’êtes pas obligé·e d’utiliser votre vrai nom.',
+                            'Vous choisissez un pseudonyme : votre prénom et votre nom ne sont jamais montrés aux autres membres.',
                             'Vous êtes responsable de la confidentialité de votre mot de passe et de votre appareil. Utilisez un mot de passe fort et ne le partagez pas.',
                             'Les inscriptions peuvent être ouvertes, limitées ou suspendues par l’administration.',
                         ]],

@@ -44,6 +44,8 @@ it('sert /profil : six onglets avec le compteur de publications, menu, colonne e
             ->where('links.settings', route('parametres'))
             ->where('progressive.state.next', 'pronouns')
             ->has('progressive.options.zones')
+            // Âge minimal d'inscription 18 ans (décision du 11/11/2026) : jamais les tranches des personnes accompagnées.
+            ->where('progressive.options.age_ranges', fn ($ranges) => collect($ranges)->pluck('value')->all() === ['18-24', '25-34', '35-49', '50+'])
             ->has('composer'));
 });
 

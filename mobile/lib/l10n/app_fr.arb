@@ -3365,6 +3365,41 @@
             }
         }
     },
+    "admin_registrations_details_age": "{age} ans",
+    "@admin_registrations_details_age": {
+        "description": "admin.registrations.details.age",
+        "placeholders": {
+            "age": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_details_ally": "Personne ressource / allié·e",
+    "@admin_registrations_details_ally": {
+        "description": "admin.registrations.details.ally"
+    },
+    "admin_registrations_details_ally_role": "Statut : {role}",
+    "@admin_registrations_details_ally_role": {
+        "description": "admin.registrations.details.ally_role",
+        "placeholders": {
+            "role": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_details_ally_role_other": "({other})",
+    "@admin_registrations_details_ally_role_other": {
+        "description": "admin.registrations.details.ally_role_other",
+        "placeholders": {
+            "other": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_registrations_details_member": "Membre de la communauté",
+    "@admin_registrations_details_member": {
+        "description": "admin.registrations.details.member"
+    },
     "admin_registrations_empty": "Aucune demande en attente",
     "@admin_registrations_empty": {
         "description": "admin.registrations.empty"
@@ -3443,7 +3478,7 @@
             }
         }
     },
-    "admin_registrations_invitations_help": "Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (case « 15 ans » comprise) et reçoit le rôle une fois son compte validé.",
+    "admin_registrations_invitations_help": "Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (âge minimal compris) et reçoit le rôle une fois son compte validé.",
     "@admin_registrations_invitations_help": {
         "description": "admin.registrations.invitations.help"
     },
@@ -3518,22 +3553,6 @@
     "admin_registrations_kpi_week": "Inscrit·es (7 jours)",
     "@admin_registrations_kpi_week": {
         "description": "admin.registrations.kpi.week"
-    },
-    "admin_registrations_manual_all": "Tous les nouveaux comptes",
-    "@admin_registrations_manual_all": {
-        "description": "admin.registrations.manual.all"
-    },
-    "admin_registrations_manual_help": "Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte. Avec « tous », chaque nouveau compte reste en attente jusqu’à votre validation.",
-    "@admin_registrations_manual_help": {
-        "description": "admin.registrations.manual.help"
-    },
-    "admin_registrations_manual_label": "Validation par l’équipe",
-    "@admin_registrations_manual_label": {
-        "description": "admin.registrations.manual.label"
-    },
-    "admin_registrations_manual_peers": "Pair·es éducateur·rices seulement (par défaut)",
-    "@admin_registrations_manual_peers": {
-        "description": "admin.registrations.manual.peers"
     },
     "admin_registrations_open": "Ouvertes",
     "@admin_registrations_open": {
@@ -3658,10 +3677,6 @@
     "admin_registrations_state_open_all": "Toute personne peut créer un compte, mais chaque nouveau compte doit être validé par l’équipe.",
     "@admin_registrations_state_open_all": {
         "description": "admin.registrations.state.open_all"
-    },
-    "admin_registrations_state_open_peers": "Toute personne peut créer un compte. Seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent la validation de l’équipe ; le rôle de pair·e éducateur·rice est toujours validé.",
-    "@admin_registrations_state_open_peers": {
-        "description": "admin.registrations.state.open_peers"
     },
     "admin_registrations_state_outside_window": "L’interrupteur est sur « ouvertes », mais nous sommes hors de la plage horaire ({start} à {end}, heure du Bénin) : la page affiche le message de fermeture.",
     "@admin_registrations_state_outside_window": {
@@ -4639,6 +4654,10 @@
     "@admin_users_modules_platform": {
         "description": "admin.users.modules.platform"
     },
+    "admin_users_modules_referentials": "Référentiels (zones, types de violence, besoins, populations)",
+    "@admin_users_modules_referentials": {
+        "description": "admin.users.modules.referentials"
+    },
     "admin_users_modules_registrations": "Inscriptions",
     "@admin_users_modules_registrations": {
         "description": "admin.users.modules.registrations"
@@ -5349,41 +5368,6 @@
     "@admin_assistant_toasts_resolved": {
         "description": "admin_assistant.toasts.resolved"
     },
-    "admin_ccc_alts_help": "Décrivez chaque planche en une phrase pour les personnes qui ne la voient pas ({max} caractères au plus).",
-    "@admin_ccc_alts_help": {
-        "description": "admin_ccc.alts.help",
-        "placeholders": {
-            "max": {
-                "type": "String"
-            }
-        }
-    },
-    "admin_ccc_alts_open": "Planches",
-    "@admin_ccc_alts_open": {
-        "description": "admin_ccc.alts.open"
-    },
-    "admin_ccc_alts_page": "Planche {number}",
-    "@admin_ccc_alts_page": {
-        "description": "admin_ccc.alts.page",
-        "placeholders": {
-            "number": {
-                "type": "String"
-            }
-        }
-    },
-    "admin_ccc_alts_save": "Enregistrer",
-    "@admin_ccc_alts_save": {
-        "description": "admin_ccc.alts.save"
-    },
-    "admin_ccc_alts_title": "Textes alternatifs : {title}",
-    "@admin_ccc_alts_title": {
-        "description": "admin_ccc.alts.title",
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
     "admin_ccc_chapters": "{count, plural, =0{Aucun chapitre} =1{1 chapitre} other{{count} chapitres}}",
     "@admin_ccc_chapters": {
         "description": "admin_ccc.chapters",
@@ -5393,6 +5377,61 @@
             }
         }
     },
+    "admin_ccc_comic_create": "Créer la BD",
+    "@admin_ccc_comic_create": {
+        "description": "admin_ccc.comic.create"
+    },
+    "admin_ccc_comic_create_title": "Nouvelle bande dessinée",
+    "@admin_ccc_comic_create_title": {
+        "description": "admin_ccc.comic.create_title"
+    },
+    "admin_ccc_comic_delete_text": "La BD, sa couverture et ses planches seront supprimées définitivement. Cette action est irréversible.",
+    "@admin_ccc_comic_delete_text": {
+        "description": "admin_ccc.comic.delete_text"
+    },
+    "admin_ccc_comic_delete_title": "Supprimer la BD « {title} » ?",
+    "@admin_ccc_comic_delete_title": {
+        "description": "admin_ccc.comic.delete_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_comic_edit_title": "Modifier le titre : {title}",
+    "@admin_ccc_comic_edit_title": {
+        "description": "admin_ccc.comic.edit_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_comic_new": "Nouvelle BD",
+    "@admin_ccc_comic_new": {
+        "description": "admin_ccc.comic.new"
+    },
+    "admin_ccc_comic_published_help": "Une BD ne se publie qu’avec au moins une planche. Sinon, elle reste masquée.",
+    "@admin_ccc_comic_published_help": {
+        "description": "admin_ccc.comic.published_help"
+    },
+    "admin_ccc_comic_published_label": "Publier la BD tout de suite",
+    "@admin_ccc_comic_published_label": {
+        "description": "admin_ccc.comic.published_label"
+    },
+    "admin_ccc_comic_title_help": "{max} caractères au plus. La clé publique (bd1, bd2…) est générée automatiquement et ne change plus.",
+    "@admin_ccc_comic_title_help": {
+        "description": "admin_ccc.comic.title_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_delete_open": "Supprimer",
+    "@admin_ccc_delete_open": {
+        "description": "admin_ccc.delete.open"
+    },
     "admin_ccc_empty": "Aucun outil dans cette section.",
     "@admin_ccc_empty": {
         "description": "admin_ccc.empty"
@@ -5401,11 +5440,65 @@
     "@admin_ccc_empty_laws": {
         "description": "admin_ccc.empty_laws"
     },
+    "admin_ccc_form_cover_help": "JPG, PNG ou WebP, 5 Mo au plus.",
+    "@admin_ccc_form_cover_help": {
+        "description": "admin_ccc.form.cover_help"
+    },
+    "admin_ccc_form_cover_label": "Image de couverture (facultatif)",
+    "@admin_ccc_form_cover_label": {
+        "description": "admin_ccc.form.cover_label"
+    },
+    "admin_ccc_form_draft_add": "Ajouter une planche",
+    "@admin_ccc_form_draft_add": {
+        "description": "admin_ccc.form.draft_add"
+    },
+    "admin_ccc_form_draft_help": "Vous pourrez ajouter, retirer et réordonner les planches plus tard.",
+    "@admin_ccc_form_draft_help": {
+        "description": "admin_ccc.form.draft_help"
+    },
+    "admin_ccc_form_draft_legend": "Planche {number}",
+    "@admin_ccc_form_draft_legend": {
+        "description": "admin_ccc.form.draft_legend",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_form_draft_remove": "Retirer cette planche",
+    "@admin_ccc_form_draft_remove": {
+        "description": "admin_ccc.form.draft_remove"
+    },
+    "admin_ccc_form_draft_title": "Planches de départ (facultatif)",
+    "@admin_ccc_form_draft_title": {
+        "description": "admin_ccc.form.draft_title"
+    },
+    "admin_ccc_form_edit_open": "Titre",
+    "@admin_ccc_form_edit_open": {
+        "description": "admin_ccc.form.edit_open"
+    },
+    "admin_ccc_form_key": "Clé publique : {key}",
+    "@admin_ccc_form_key": {
+        "description": "admin_ccc.form.key",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_form_save": "Enregistrer",
+    "@admin_ccc_form_save": {
+        "description": "admin_ccc.form.save"
+    },
+    "admin_ccc_form_title_label": "Titre",
+    "@admin_ccc_form_title_label": {
+        "description": "admin_ccc.form.title_label"
+    },
     "admin_ccc_hidden": "Masqué",
     "@admin_ccc_hidden": {
         "description": "admin_ccc.hidden"
     },
-    "admin_ccc_image_help": "JPG, PNG ou WebP, 5 Mo au plus. Elle remplace la vignette de l’outil (et la planche d’une boîte à images).",
+    "admin_ccc_image_help": "JPG, PNG ou WebP, 5 Mo au plus. Elle remplace la vignette de l’outil (et l’unique planche d’une boîte à images qui n’en a qu’une).",
     "@admin_ccc_image_help": {
         "description": "admin_ccc.image.help"
     },
@@ -5430,6 +5523,57 @@
             }
         }
     },
+    "admin_ccc_imagebox_create": "Créer la boîte à images",
+    "@admin_ccc_imagebox_create": {
+        "description": "admin_ccc.imagebox.create"
+    },
+    "admin_ccc_imagebox_create_title": "Nouvelle boîte à images",
+    "@admin_ccc_imagebox_create_title": {
+        "description": "admin_ccc.imagebox.create_title"
+    },
+    "admin_ccc_imagebox_delete_text": "La boîte à images, sa couverture et ses planches seront supprimées définitivement. Cette action est irréversible.",
+    "@admin_ccc_imagebox_delete_text": {
+        "description": "admin_ccc.imagebox.delete_text"
+    },
+    "admin_ccc_imagebox_delete_title": "Supprimer la boîte à images « {title} » ?",
+    "@admin_ccc_imagebox_delete_title": {
+        "description": "admin_ccc.imagebox.delete_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_imagebox_edit_title": "Modifier le titre : {title}",
+    "@admin_ccc_imagebox_edit_title": {
+        "description": "admin_ccc.imagebox.edit_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_imagebox_new": "Nouvelle boîte à images",
+    "@admin_ccc_imagebox_new": {
+        "description": "admin_ccc.imagebox.new"
+    },
+    "admin_ccc_imagebox_published_help": "Une boîte à images ne se publie qu’avec au moins une planche. Sinon, elle reste masquée.",
+    "@admin_ccc_imagebox_published_help": {
+        "description": "admin_ccc.imagebox.published_help"
+    },
+    "admin_ccc_imagebox_published_label": "Publier la boîte à images tout de suite",
+    "@admin_ccc_imagebox_published_label": {
+        "description": "admin_ccc.imagebox.published_label"
+    },
+    "admin_ccc_imagebox_title_help": "{max} caractères au plus. La clé publique (bi1, bi2…) est générée automatiquement et ne change plus.",
+    "@admin_ccc_imagebox_title_help": {
+        "description": "admin_ccc.imagebox.title_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
     "admin_ccc_intro": "Manuel du pair animateur, boîtes à images, bandes dessinées SSR et textes de loi. Un outil masqué disparaît des écrans des membres et des pair·es ; vous pouvez remplacer son image et décrire chaque planche pour les personnes qui ne la voient pas.",
     "@admin_ccc_intro": {
         "description": "admin_ccc.intro"
@@ -5450,6 +5594,166 @@
     "@admin_ccc_kpi_total": {
         "description": "admin_ccc.kpi.total"
     },
+    "admin_ccc_law_category_help": "Choisissez une catégorie existante ou saisissez-en une nouvelle ({max} caractères au plus).",
+    "@admin_ccc_law_category_help": {
+        "description": "admin_ccc.law.category_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_law_create": "Créer le texte",
+    "@admin_ccc_law_create": {
+        "description": "admin_ccc.law.create"
+    },
+    "admin_ccc_law_create_title": "Nouveau texte de loi",
+    "@admin_ccc_law_create_title": {
+        "description": "admin_ccc.law.create_title"
+    },
+    "admin_ccc_law_delete_open": "Supprimer",
+    "@admin_ccc_law_delete_open": {
+        "description": "admin_ccc.law.delete_open"
+    },
+    "admin_ccc_law_delete_text": "Le texte disparaît définitivement de la page publique « Lois ». Cette action est irréversible.",
+    "@admin_ccc_law_delete_text": {
+        "description": "admin_ccc.law.delete_text"
+    },
+    "admin_ccc_law_delete_title": "Supprimer le texte « {title} » ?",
+    "@admin_ccc_law_delete_title": {
+        "description": "admin_ccc.law.delete_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_law_down": "Descendre",
+    "@admin_ccc_law_down": {
+        "description": "admin_ccc.law.down"
+    },
+    "admin_ccc_law_edit_open": "Modifier",
+    "@admin_ccc_law_edit_open": {
+        "description": "admin_ccc.law.edit_open"
+    },
+    "admin_ccc_law_edit_title": "Modifier le texte : {title}",
+    "@admin_ccc_law_edit_title": {
+        "description": "admin_ccc.law.edit_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_law_fields_category": "Catégorie",
+    "@admin_ccc_law_fields_category": {
+        "description": "admin_ccc.law.fields.category"
+    },
+    "admin_ccc_law_fields_official_url": "Lien officiel",
+    "@admin_ccc_law_fields_official_url": {
+        "description": "admin_ccc.law.fields.official_url"
+    },
+    "admin_ccc_law_fields_simple_summary": "Version simple",
+    "@admin_ccc_law_fields_simple_summary": {
+        "description": "admin_ccc.law.fields.simple_summary"
+    },
+    "admin_ccc_law_fields_subtitle": "Sous-titre",
+    "@admin_ccc_law_fields_subtitle": {
+        "description": "admin_ccc.law.fields.subtitle"
+    },
+    "admin_ccc_law_fields_summary": "Résumé juridique",
+    "@admin_ccc_law_fields_summary": {
+        "description": "admin_ccc.law.fields.summary"
+    },
+    "admin_ccc_law_fields_title": "Titre",
+    "@admin_ccc_law_fields_title": {
+        "description": "admin_ccc.law.fields.title"
+    },
+    "admin_ccc_law_intro": "Les textes s’affichent sur la page publique « Lois » dans l’ordre de cette liste. Écrivez en texte simple, sans balises.",
+    "@admin_ccc_law_intro": {
+        "description": "admin_ccc.law.intro"
+    },
+    "admin_ccc_law_list_label": "Textes de loi",
+    "@admin_ccc_law_list_label": {
+        "description": "admin_ccc.law.list_label"
+    },
+    "admin_ccc_law_moved": "« {title} » est en position {position} sur {total}.",
+    "@admin_ccc_law_moved": {
+        "description": "admin_ccc.law.moved",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_law_new": "Nouveau texte",
+    "@admin_ccc_law_new": {
+        "description": "admin_ccc.law.new"
+    },
+    "admin_ccc_law_no_markup": "Ce champ est du texte simple : retirez les balises.",
+    "@admin_ccc_law_no_markup": {
+        "description": "admin_ccc.law.no_markup"
+    },
+    "admin_ccc_law_order": "Position {position} sur {total}",
+    "@admin_ccc_law_order": {
+        "description": "admin_ccc.law.order",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_law_published_help": "Un texte masqué disparaît de la page publique « Lois ».",
+    "@admin_ccc_law_published_help": {
+        "description": "admin_ccc.law.published_help"
+    },
+    "admin_ccc_law_published_label": "Publier le texte",
+    "@admin_ccc_law_published_label": {
+        "description": "admin_ccc.law.published_label"
+    },
+    "admin_ccc_law_save": "Enregistrer",
+    "@admin_ccc_law_save": {
+        "description": "admin_ccc.law.save"
+    },
+    "admin_ccc_law_simple_help": "La même chose en mots simples. Sans version simple, le résumé juridique est repris. Facultatif.",
+    "@admin_ccc_law_simple_help": {
+        "description": "admin_ccc.law.simple_help"
+    },
+    "admin_ccc_law_subtitle_help": "Une phrase qui précise le sujet du texte ({max} caractères au plus). Facultatif.",
+    "@admin_ccc_law_subtitle_help": {
+        "description": "admin_ccc.law.subtitle_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_law_summary_help": "Ce que dit le texte, en langage juridique exact ({max} caractères au plus).",
+    "@admin_ccc_law_summary_help": {
+        "description": "admin_ccc.law.summary_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_law_up": "Monter",
+    "@admin_ccc_law_up": {
+        "description": "admin_ccc.law.up"
+    },
+    "admin_ccc_law_url_help": "Adresse complète (https://…) du texte officiel. Facultatif.",
+    "@admin_ccc_law_url_help": {
+        "description": "admin_ccc.law.url_help"
+    },
     "admin_ccc_laws_title": "Lois et codes du Bénin",
     "@admin_ccc_laws_title": {
         "description": "admin_ccc.laws_title"
@@ -5463,6 +5767,14 @@
             }
         }
     },
+    "admin_ccc_noun_bd": "BD",
+    "@admin_ccc_noun_bd": {
+        "description": "admin_ccc.noun.bd"
+    },
+    "admin_ccc_noun_boite_images": "boîte à images",
+    "@admin_ccc_noun_boite_images": {
+        "description": "admin_ccc.noun.boite_images"
+    },
     "admin_ccc_pages": "{count, plural, =0{Aucune planche} =1{1 planche} other{{count} planches}}",
     "@admin_ccc_pages": {
         "description": "admin_ccc.pages",
@@ -5471,6 +5783,126 @@
                 "type": "int"
             }
         }
+    },
+    "admin_ccc_planches_add": "Ajouter la planche",
+    "@admin_ccc_planches_add": {
+        "description": "admin_ccc.planches.add"
+    },
+    "admin_ccc_planches_add_title": "Ajouter une planche",
+    "@admin_ccc_planches_add_title": {
+        "description": "admin_ccc.planches.add_title"
+    },
+    "admin_ccc_planches_alt": "Texte alternatif",
+    "@admin_ccc_planches_alt": {
+        "description": "admin_ccc.planches.alt"
+    },
+    "admin_ccc_planches_alt_help": "Décrivez la planche en une phrase pour les personnes qui ne la voient pas ({max} caractères au plus).",
+    "@admin_ccc_planches_alt_help": {
+        "description": "admin_ccc.planches.alt_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_caption": "Légende (facultatif)",
+    "@admin_ccc_planches_caption": {
+        "description": "admin_ccc.planches.caption"
+    },
+    "admin_ccc_planches_down": "Descendre",
+    "@admin_ccc_planches_down": {
+        "description": "admin_ccc.planches.down"
+    },
+    "admin_ccc_planches_empty": "Aucune planche pour le moment.",
+    "@admin_ccc_planches_empty": {
+        "description": "admin_ccc.planches.empty"
+    },
+    "admin_ccc_planches_image": "Image de la planche",
+    "@admin_ccc_planches_image": {
+        "description": "admin_ccc.planches.image"
+    },
+    "admin_ccc_planches_image_help": "JPG, PNG ou WebP, 5 Mo au plus.",
+    "@admin_ccc_planches_image_help": {
+        "description": "admin_ccc.planches.image_help"
+    },
+    "admin_ccc_planches_intro": "Les planches s’affichent dans l’ordre de cette liste. Le texte alternatif décrit la planche pour les personnes qui ne la voient pas ({max} caractères au plus, obligatoire).",
+    "@admin_ccc_planches_intro": {
+        "description": "admin_ccc.planches.intro",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_legend": "Planche {number} sur {total}",
+    "@admin_ccc_planches_legend": {
+        "description": "admin_ccc.planches.legend",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_list_label": "Planches",
+    "@admin_ccc_planches_list_label": {
+        "description": "admin_ccc.planches.list_label"
+    },
+    "admin_ccc_planches_moved": "Planche déplacée en position {position} sur {total}.",
+    "@admin_ccc_planches_moved": {
+        "description": "admin_ccc.planches.moved",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_open": "Planches",
+    "@admin_ccc_planches_open": {
+        "description": "admin_ccc.planches.open"
+    },
+    "admin_ccc_planches_remove": "Retirer",
+    "@admin_ccc_planches_remove": {
+        "description": "admin_ccc.planches.remove"
+    },
+    "admin_ccc_planches_remove_confirm": "Retirer la planche {number} ? Son image sera supprimée.",
+    "@admin_ccc_planches_remove_confirm": {
+        "description": "admin_ccc.planches.remove_confirm",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_remove_no": "Garder",
+    "@admin_ccc_planches_remove_no": {
+        "description": "admin_ccc.planches.remove_no"
+    },
+    "admin_ccc_planches_remove_yes": "Oui, retirer",
+    "@admin_ccc_planches_remove_yes": {
+        "description": "admin_ccc.planches.remove_yes"
+    },
+    "admin_ccc_planches_save": "Enregistrer les légendes et les textes",
+    "@admin_ccc_planches_save": {
+        "description": "admin_ccc.planches.save"
+    },
+    "admin_ccc_planches_title": "Planches : {title}",
+    "@admin_ccc_planches_title": {
+        "description": "admin_ccc.planches.title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_up": "Monter",
+    "@admin_ccc_planches_up": {
+        "description": "admin_ccc.planches.up"
     },
     "admin_ccc_published": "Publié",
     "@admin_ccc_published": {
@@ -5500,10 +5932,25 @@
     "@admin_ccc_title": {
         "description": "admin_ccc.title"
     },
-    "admin_ccc_toasts_alts": "Textes alternatifs de « {title} » enregistrés.",
-    "@admin_ccc_toasts_alts": {
-        "description": "admin_ccc.toasts.alts",
+    "admin_ccc_toasts_created": "{kind} « {title} » créée.",
+    "@admin_ccc_toasts_created": {
+        "description": "admin_ccc.toasts.created",
         "placeholders": {
+            "kind": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_deleted": "{kind} « {title} » supprimée.",
+    "@admin_ccc_toasts_deleted": {
+        "description": "admin_ccc.toasts.deleted",
+        "placeholders": {
+            "kind": {
+                "type": "String"
+            },
             "title": {
                 "type": "String"
             }
@@ -5518,9 +5965,72 @@
             }
         }
     },
+    "admin_ccc_toasts_law_created": "Texte « {title} » créé.",
+    "@admin_ccc_toasts_law_created": {
+        "description": "admin_ccc.toasts.law_created",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_law_deleted": "Texte « {title} » supprimé.",
+    "@admin_ccc_toasts_law_deleted": {
+        "description": "admin_ccc.toasts.law_deleted",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_law_updated": "Texte « {title} » enregistré.",
+    "@admin_ccc_toasts_law_updated": {
+        "description": "admin_ccc.toasts.law_updated",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_page_added": "Planche ajoutée à « {title} ».",
+    "@admin_ccc_toasts_page_added": {
+        "description": "admin_ccc.toasts.page_added",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_page_removed": "Planche retirée de « {title} ».",
+    "@admin_ccc_toasts_page_removed": {
+        "description": "admin_ccc.toasts.page_removed",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_pages_saved": "Planches de « {title} » enregistrées.",
+    "@admin_ccc_toasts_pages_saved": {
+        "description": "admin_ccc.toasts.pages_saved",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "admin_ccc_toasts_published": "« {title} » est publié.",
     "@admin_ccc_toasts_published": {
         "description": "admin_ccc.toasts.published",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_renamed": "Titre de « {title} » enregistré.",
+    "@admin_ccc_toasts_renamed": {
+        "description": "admin_ccc.toasts.renamed",
         "placeholders": {
             "title": {
                 "type": "String"
@@ -5783,6 +6293,24 @@
             }
         }
     },
+    "admin_content_errors_alt_required": "Le texte alternatif de la planche est obligatoire ({max} caractères au plus).",
+    "@admin_content_errors_alt_required": {
+        "description": "admin_content.errors.alt_required",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_caption_long": "La légende est limitée à {max} caractères.",
+    "@admin_content_errors_caption_long": {
+        "description": "admin_content.errors.caption_long",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
     "admin_content_errors_category_in_use": "Cette catégorie est encore utilisée par des contenus : désactivez-la plutôt que de la supprimer.",
     "@admin_content_errors_category_in_use": {
         "description": "admin_content.errors.category_in_use"
@@ -5820,6 +6348,44 @@
     "@admin_content_errors_kind_without_file": {
         "description": "admin_content.errors.kind_without_file"
     },
+    "admin_content_errors_last_page_published": "Une {tool} publiée garde au moins une planche : masquez-la d’abord.",
+    "@admin_content_errors_last_page_published": {
+        "description": "admin_content.errors.last_page_published",
+        "placeholders": {
+            "tool": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_law_field": "Le champ « {field} » n’est pas valide (texte simple, {max} caractères au plus).",
+    "@admin_content_errors_law_field": {
+        "description": "admin_content.errors.law_field",
+        "placeholders": {
+            "field": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_law_move": "Ce texte ne peut pas être déplacé plus loin : rechargez la liste pour la voir à jour.",
+    "@admin_content_errors_law_move": {
+        "description": "admin_content.errors.law_move"
+    },
+    "admin_content_errors_law_url": "Le lien officiel doit être une adresse complète en https:// ou http://.",
+    "@admin_content_errors_law_url": {
+        "description": "admin_content.errors.law_url"
+    },
+    "admin_content_errors_laws_max": "Vous ne pouvez pas dépasser {max} textes de loi.",
+    "@admin_content_errors_laws_max": {
+        "description": "admin_content.errors.laws_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
     "admin_content_errors_link_missing": "Indiquez l’adresse du lien : sans adresse, la ressource ne peut pas être publiée.",
     "@admin_content_errors_link_missing": {
         "description": "admin_content.errors.link_missing"
@@ -5850,6 +6416,10 @@
     "@admin_content_errors_no_network": {
         "description": "admin_content.errors.no_network"
     },
+    "admin_content_errors_not_paged": "Cette action ne concerne que les bandes dessinées et les boîtes à images.",
+    "@admin_content_errors_not_paged": {
+        "description": "admin_content.errors.not_paged"
+    },
     "admin_content_errors_og_size": "L’image de partage doit mesurer exactement {width} × {height} pixels.",
     "@admin_content_errors_og_size": {
         "description": "admin_content.errors.og_size",
@@ -5858,6 +6428,47 @@
                 "type": "String"
             },
             "width": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_page_missing": "Cette planche n’existe plus : fermez la fenêtre et rouvrez-la pour voir la liste à jour.",
+    "@admin_content_errors_page_missing": {
+        "description": "admin_content.errors.page_missing"
+    },
+    "admin_content_errors_paged_empty": "Une {tool} sans planche ne peut pas être publiée : ajoutez d’abord une planche.",
+    "@admin_content_errors_paged_empty": {
+        "description": "admin_content.errors.paged_empty",
+        "placeholders": {
+            "tool": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_paged_scheduled": "Des publications planifiées ({count}) reprennent encore cette {tool} : annulez-les ou retirez-les d’abord dans les passerelles.",
+    "@admin_content_errors_paged_scheduled": {
+        "description": "admin_content.errors.paged_scheduled",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "tool": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_pages_changed": "Les planches ont changé entre-temps : fermez la fenêtre et rouvrez-la pour voir la liste à jour.",
+    "@admin_content_errors_pages_changed": {
+        "description": "admin_content.errors.pages_changed"
+    },
+    "admin_content_errors_pages_max": "Une {tool} ne peut pas dépasser {max} planches.",
+    "@admin_content_errors_pages_max": {
+        "description": "admin_content.errors.pages_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "tool": {
                 "type": "String"
             }
         }
@@ -5881,6 +6492,15 @@
     "admin_content_errors_subtitles_invalid": "Les sous-titres doivent être un fichier WebVTT (.vtt) de 512 Ko au plus, qui commence par « WEBVTT ».",
     "@admin_content_errors_subtitles_invalid": {
         "description": "admin_content.errors.subtitles_invalid"
+    },
+    "admin_content_errors_title_invalid": "Le titre est obligatoire ({max} caractères au plus).",
+    "@admin_content_errors_title_invalid": {
+        "description": "admin_content.errors.title_invalid",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
     },
     "admin_content_errors_too_many_words": "La réponse ne doit pas dépasser {max} mots.",
     "@admin_content_errors_too_many_words": {
@@ -7378,6 +7998,10 @@
     "@admin_data_forms_actions_delete": {
         "description": "admin_data.forms.actions.delete"
     },
+    "admin_data_forms_actions_edit": "Modifier la fiche",
+    "@admin_data_forms_actions_edit": {
+        "description": "admin_data.forms.actions.edit"
+    },
     "admin_data_forms_actions_pdf": "Imprimer en PDF (A4)",
     "@admin_data_forms_actions_pdf": {
         "description": "admin_data.forms.actions.pdf"
@@ -7469,6 +8093,10 @@
     "@admin_data_forms_errors_locked": {
         "description": "admin_data.forms.errors.locked"
     },
+    "admin_data_forms_errors_locked_form": "Le dossier de cette fiche est archivé ou anonymisé : la fiche ne se modifie plus.",
+    "@admin_data_forms_errors_locked_form": {
+        "description": "admin_data.forms.errors.locked_form"
+    },
     "admin_data_forms_errors_not_found": "Cette fiche est introuvable ou hors de votre périmètre.",
     "@admin_data_forms_errors_not_found": {
         "description": "admin_data.forms.errors.not_found"
@@ -7549,9 +8177,25 @@
     "@admin_data_forms_form_author_placeholder": {
         "description": "admin_data.forms.form.author_placeholder"
     },
+    "admin_data_forms_form_case_fixed": "Le dossier d’une fiche ne se change pas.",
+    "@admin_data_forms_form_case_fixed": {
+        "description": "admin_data.forms.form.case_fixed"
+    },
     "admin_data_forms_form_case_hint": "Saisissez le code d’un dossier : sa description pseudonymisée s’affiche ici.",
     "@admin_data_forms_form_case_hint": {
         "description": "admin_data.forms.form.case_hint"
+    },
+    "admin_data_forms_form_clear_author": "Effacer l’auteur·e présumé·e enregistré·e",
+    "@admin_data_forms_form_clear_author": {
+        "description": "admin_data.forms.form.clear_author"
+    },
+    "admin_data_forms_form_clear_services_note": "Effacer les précisions enregistrées",
+    "@admin_data_forms_form_clear_services_note": {
+        "description": "admin_data.forms.form.clear_services_note"
+    },
+    "admin_data_forms_form_clear_signatory": "Effacer le signataire enregistré",
+    "@admin_data_forms_form_clear_signatory": {
+        "description": "admin_data.forms.form.clear_signatory"
     },
     "admin_data_forms_form_consent_given": "La personne a donné son consentement éclairé à l’enregistrement de cette fiche.",
     "@admin_data_forms_form_consent_given": {
@@ -7565,6 +8209,23 @@
     "@admin_data_forms_form_description_hint": {
         "description": "admin_data.forms.form.description_hint"
     },
+    "admin_data_forms_form_edit_title": "Modifier la fiche {reference}",
+    "@admin_data_forms_form_edit_title": {
+        "description": "admin_data.forms.form.edit_title",
+        "placeholders": {
+            "reference": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_data_forms_form_edit_warning": "Le dossier et la référence ne changent pas. Par sécurité, le récit, l’auteur·e présumé·e, les précisions et le signataire ne sont pas affichés : laissez un champ vide pour conserver le texte actuel, ou écrivez pour le remplacer.",
+    "@admin_data_forms_form_edit_warning": {
+        "description": "admin_data.forms.form.edit_warning"
+    },
+    "admin_data_forms_form_keep_hint": "Laissez vide pour conserver le texte actuel.",
+    "@admin_data_forms_form_keep_hint": {
+        "description": "admin_data.forms.form.keep_hint"
+    },
     "admin_data_forms_form_no_contact": "Aucune orientation",
     "@admin_data_forms_form_no_contact": {
         "description": "admin_data.forms.form.no_contact"
@@ -7576,6 +8237,10 @@
     "admin_data_forms_form_save": "Enregistrer la fiche",
     "@admin_data_forms_form_save": {
         "description": "admin_data.forms.form.save"
+    },
+    "admin_data_forms_form_save_edit": "Enregistrer les modifications",
+    "@admin_data_forms_form_save_edit": {
+        "description": "admin_data.forms.form.save_edit"
     },
     "admin_data_forms_form_services_note_placeholder": "Précisions sur les services (facultatif)",
     "@admin_data_forms_form_services_note_placeholder": {
@@ -7768,6 +8433,15 @@
     "admin_data_forms_toasts_deleted": "Fiche {reference} supprimée.",
     "@admin_data_forms_toasts_deleted": {
         "description": "admin_data.forms.toasts.deleted",
+        "placeholders": {
+            "reference": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_data_forms_toasts_updated": "Fiche {reference} mise à jour.",
+    "@admin_data_forms_toasts_updated": {
+        "description": "admin_data.forms.toasts.updated",
         "placeholders": {
             "reference": {
                 "type": "String"
@@ -9913,6 +10587,1055 @@
     "@admin_newsletter_view": {
         "description": "admin_newsletter.view"
     },
+    "admin_newsletter_taxonomy_actions_delete": "Supprimer",
+    "@admin_newsletter_taxonomy_actions_delete": {
+        "description": "admin_newsletter_taxonomy.actions.delete"
+    },
+    "admin_newsletter_taxonomy_actions_delete_of": "Supprimer « {label} »",
+    "@admin_newsletter_taxonomy_actions_delete_of": {
+        "description": "admin_newsletter_taxonomy.actions.delete_of",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_actions_rename": "Renommer",
+    "@admin_newsletter_taxonomy_actions_rename": {
+        "description": "admin_newsletter_taxonomy.actions.rename"
+    },
+    "admin_newsletter_taxonomy_actions_rename_of": "Renommer « {label} »",
+    "@admin_newsletter_taxonomy_actions_rename_of": {
+        "description": "admin_newsletter_taxonomy.actions.rename_of",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_columns_actions": "Actions",
+    "@admin_newsletter_taxonomy_columns_actions": {
+        "description": "admin_newsletter_taxonomy.columns.actions"
+    },
+    "admin_newsletter_taxonomy_columns_label": "Libellé",
+    "@admin_newsletter_taxonomy_columns_label": {
+        "description": "admin_newsletter_taxonomy.columns.label"
+    },
+    "admin_newsletter_taxonomy_columns_slug": "Identifiant",
+    "@admin_newsletter_taxonomy_columns_slug": {
+        "description": "admin_newsletter_taxonomy.columns.slug"
+    },
+    "admin_newsletter_taxonomy_columns_usage": "Utilisation",
+    "@admin_newsletter_taxonomy_columns_usage": {
+        "description": "admin_newsletter_taxonomy.columns.usage"
+    },
+    "admin_newsletter_taxonomy_delete_confirm": "Supprimer",
+    "@admin_newsletter_taxonomy_delete_confirm": {
+        "description": "admin_newsletter_taxonomy.delete.confirm"
+    },
+    "admin_newsletter_taxonomy_delete_refused": "« {label} » ne peut pas être supprimé : il est utilisé ({usage}). Retirez-le d’abord des abonné·es et des campagnes concernés.",
+    "@admin_newsletter_taxonomy_delete_refused": {
+        "description": "admin_newsletter_taxonomy.delete.refused",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            },
+            "usage": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_delete_text": "« {label} » sera supprimé. Il n’est utilisé nulle part.",
+    "@admin_newsletter_taxonomy_delete_text": {
+        "description": "admin_newsletter_taxonomy.delete.text",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_delete_title": "Supprimer cet élément ?",
+    "@admin_newsletter_taxonomy_delete_title": {
+        "description": "admin_newsletter_taxonomy.delete.title"
+    },
+    "admin_newsletter_taxonomy_empty_text": "Ajoutez-en un pour pouvoir le choisir dans les segments et les fiches d’abonné·es.",
+    "@admin_newsletter_taxonomy_empty_text": {
+        "description": "admin_newsletter_taxonomy.empty_text"
+    },
+    "admin_newsletter_taxonomy_errors_label_empty": "Le libellé doit contenir des lettres ou des chiffres.",
+    "@admin_newsletter_taxonomy_errors_label_empty": {
+        "description": "admin_newsletter_taxonomy.errors.label_empty"
+    },
+    "admin_newsletter_taxonomy_errors_label_length": "Le libellé doit faire entre {min} et {max} caractères.",
+    "@admin_newsletter_taxonomy_errors_label_length": {
+        "description": "admin_newsletter_taxonomy.errors.label_length",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_errors_label_taken": "Ce libellé existe déjà.",
+    "@admin_newsletter_taxonomy_errors_label_taken": {
+        "description": "admin_newsletter_taxonomy.errors.label_taken"
+    },
+    "admin_newsletter_taxonomy_errors_not_found": "Cet élément n’existe plus.",
+    "@admin_newsletter_taxonomy_errors_not_found": {
+        "description": "admin_newsletter_taxonomy.errors.not_found"
+    },
+    "admin_newsletter_taxonomy_fields_label": "Libellé",
+    "@admin_newsletter_taxonomy_fields_label": {
+        "description": "admin_newsletter_taxonomy.fields.label"
+    },
+    "admin_newsletter_taxonomy_form_hint_edit": "Seul le libellé change ; l’identifiant reste le même pour les abonné·es et les segments.",
+    "@admin_newsletter_taxonomy_form_hint_edit": {
+        "description": "admin_newsletter_taxonomy.form.hint_edit"
+    },
+    "admin_newsletter_taxonomy_form_hint_new": "2 à 60 caractères. L’identifiant en sera déduit et ne pourra plus changer.",
+    "@admin_newsletter_taxonomy_form_hint_new": {
+        "description": "admin_newsletter_taxonomy.form.hint_new"
+    },
+    "admin_newsletter_taxonomy_form_save": "Enregistrer",
+    "@admin_newsletter_taxonomy_form_save": {
+        "description": "admin_newsletter_taxonomy.form.save"
+    },
+    "admin_newsletter_taxonomy_intro": "Les tags servent à segmenter les abonné·es (campagnes, filtres, import) ; les centres d’intérêt sont aussi proposés aux membres dans leur profil et sur le formulaire d’inscription. L’identifiant se déduit du libellé à la création et ne change plus. Un élément utilisé ne peut pas être supprimé.",
+    "@admin_newsletter_taxonomy_intro": {
+        "description": "admin_newsletter_taxonomy.intro"
+    },
+    "admin_newsletter_taxonomy_kinds_interest_caption": "Centres d’intérêt des abonné·es",
+    "@admin_newsletter_taxonomy_kinds_interest_caption": {
+        "description": "admin_newsletter_taxonomy.kinds.interest.caption"
+    },
+    "admin_newsletter_taxonomy_kinds_interest_empty": "Aucun centre d’intérêt.",
+    "@admin_newsletter_taxonomy_kinds_interest_empty": {
+        "description": "admin_newsletter_taxonomy.kinds.interest.empty"
+    },
+    "admin_newsletter_taxonomy_kinds_interest_new": "Ajouter un centre d’intérêt",
+    "@admin_newsletter_taxonomy_kinds_interest_new": {
+        "description": "admin_newsletter_taxonomy.kinds.interest.new"
+    },
+    "admin_newsletter_taxonomy_kinds_interest_title": "Centres d’intérêt",
+    "@admin_newsletter_taxonomy_kinds_interest_title": {
+        "description": "admin_newsletter_taxonomy.kinds.interest.title"
+    },
+    "admin_newsletter_taxonomy_kinds_interest_title_edit": "Renommer le centre d’intérêt",
+    "@admin_newsletter_taxonomy_kinds_interest_title_edit": {
+        "description": "admin_newsletter_taxonomy.kinds.interest.title_edit"
+    },
+    "admin_newsletter_taxonomy_kinds_interest_title_new": "Ajouter un centre d’intérêt",
+    "@admin_newsletter_taxonomy_kinds_interest_title_new": {
+        "description": "admin_newsletter_taxonomy.kinds.interest.title_new"
+    },
+    "admin_newsletter_taxonomy_kinds_tag_caption": "Tags de segmentation des abonné·es",
+    "@admin_newsletter_taxonomy_kinds_tag_caption": {
+        "description": "admin_newsletter_taxonomy.kinds.tag.caption"
+    },
+    "admin_newsletter_taxonomy_kinds_tag_empty": "Aucun tag.",
+    "@admin_newsletter_taxonomy_kinds_tag_empty": {
+        "description": "admin_newsletter_taxonomy.kinds.tag.empty"
+    },
+    "admin_newsletter_taxonomy_kinds_tag_new": "Ajouter un tag",
+    "@admin_newsletter_taxonomy_kinds_tag_new": {
+        "description": "admin_newsletter_taxonomy.kinds.tag.new"
+    },
+    "admin_newsletter_taxonomy_kinds_tag_title": "Tags",
+    "@admin_newsletter_taxonomy_kinds_tag_title": {
+        "description": "admin_newsletter_taxonomy.kinds.tag.title"
+    },
+    "admin_newsletter_taxonomy_kinds_tag_title_edit": "Renommer le tag",
+    "@admin_newsletter_taxonomy_kinds_tag_title_edit": {
+        "description": "admin_newsletter_taxonomy.kinds.tag.title_edit"
+    },
+    "admin_newsletter_taxonomy_kinds_tag_title_new": "Ajouter un tag",
+    "@admin_newsletter_taxonomy_kinds_tag_title_new": {
+        "description": "admin_newsletter_taxonomy.kinds.tag.title_new"
+    },
+    "admin_newsletter_taxonomy_toasts_created": "« {label} » ajouté.",
+    "@admin_newsletter_taxonomy_toasts_created": {
+        "description": "admin_newsletter_taxonomy.toasts.created",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_toasts_deleted": "« {label} » supprimé.",
+    "@admin_newsletter_taxonomy_toasts_deleted": {
+        "description": "admin_newsletter_taxonomy.toasts.deleted",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_toasts_in_use": "« {label} » est utilisé : suppression refusée.",
+    "@admin_newsletter_taxonomy_toasts_in_use": {
+        "description": "admin_newsletter_taxonomy.toasts.in_use",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_toasts_updated": "« {label} » renommé.",
+    "@admin_newsletter_taxonomy_toasts_updated": {
+        "description": "admin_newsletter_taxonomy.toasts.updated",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_newsletter_taxonomy_usage_none": "Inutilisé",
+    "@admin_newsletter_taxonomy_usage_none": {
+        "description": "admin_newsletter_taxonomy.usage.none"
+    },
+    "admin_newsletter_taxonomy_usage_summary": "{subscribers} abonné·es · {profiles} profils · {campaigns} campagnes à venir",
+    "@admin_newsletter_taxonomy_usage_summary": {
+        "description": "admin_newsletter_taxonomy.usage.summary",
+        "placeholders": {
+            "campaigns": {
+                "type": "String"
+            },
+            "profiles": {
+                "type": "String"
+            },
+            "subscribers": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_actions_delete": "Supprimer",
+    "@admin_oncall_actions_delete": {
+        "description": "admin_oncall.actions.delete"
+    },
+    "admin_oncall_actions_delete_of": "Supprimer la garde de {label}",
+    "@admin_oncall_actions_delete_of": {
+        "description": "admin_oncall.actions.delete_of",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_actions_edit": "Modifier",
+    "@admin_oncall_actions_edit": {
+        "description": "admin_oncall.actions.edit"
+    },
+    "admin_oncall_actions_edit_of": "Modifier la garde de {label}",
+    "@admin_oncall_actions_edit_of": {
+        "description": "admin_oncall.actions.edit_of",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_columns_actions": "Actions",
+    "@admin_oncall_columns_actions": {
+        "description": "admin_oncall.columns.actions"
+    },
+    "admin_oncall_columns_ends": "Fin",
+    "@admin_oncall_columns_ends": {
+        "description": "admin_oncall.columns.ends"
+    },
+    "admin_oncall_columns_kind": "Type",
+    "@admin_oncall_columns_kind": {
+        "description": "admin_oncall.columns.kind"
+    },
+    "admin_oncall_columns_person": "Personne",
+    "@admin_oncall_columns_person": {
+        "description": "admin_oncall.columns.person"
+    },
+    "admin_oncall_columns_starts": "Début",
+    "@admin_oncall_columns_starts": {
+        "description": "admin_oncall.columns.starts"
+    },
+    "admin_oncall_columns_state": "État",
+    "@admin_oncall_columns_state": {
+        "description": "admin_oncall.columns.state"
+    },
+    "admin_oncall_columns_zone": "Zone",
+    "@admin_oncall_columns_zone": {
+        "description": "admin_oncall.columns.zone"
+    },
+    "admin_oncall_delete_confirm": "Supprimer la garde",
+    "@admin_oncall_delete_confirm": {
+        "description": "admin_oncall.delete.confirm"
+    },
+    "admin_oncall_delete_text": "La garde de {name}, du {from} au {to}, sera supprimée.",
+    "@admin_oncall_delete_text": {
+        "description": "admin_oncall.delete.text",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_delete_title": "Supprimer cette garde ?",
+    "@admin_oncall_delete_title": {
+        "description": "admin_oncall.delete.title"
+    },
+    "admin_oncall_delete_warning_admin_alone": "Cette garde est en cours et c’est la seule : les SOS seront envoyés à tous les comptes admin habilités ({roles}) dès maintenant.",
+    "@admin_oncall_delete_warning_admin_alone": {
+        "description": "admin_oncall.delete.warning_admin_alone",
+        "placeholders": {
+            "roles": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_delete_warning_admin_others": "Cette garde est en cours : {name} ne recevra plus les SOS dès maintenant. Les autres admins de garde restent prévenus.",
+    "@admin_oncall_delete_warning_admin_others": {
+        "description": "admin_oncall.delete.warning_admin_others",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_delete_warning_focal": "Cette garde est en cours : le routage reviendra à la fiche d’annuaire du point focal dès maintenant.",
+    "@admin_oncall_delete_warning_focal": {
+        "description": "admin_oncall.delete.warning_focal"
+    },
+    "admin_oncall_empty": "Aucune garde sur cette période.",
+    "@admin_oncall_empty": {
+        "description": "admin_oncall.empty"
+    },
+    "admin_oncall_empty_text": "Ajoutez une garde pour désigner qui est prévenu·e en premier lors d’un SOS.",
+    "@admin_oncall_empty_text": {
+        "description": "admin_oncall.empty_text"
+    },
+    "admin_oncall_errors_finished": "Cette garde est terminée : elle ne peut plus être modifiée.",
+    "@admin_oncall_errors_finished": {
+        "description": "admin_oncall.errors.finished"
+    },
+    "admin_oncall_errors_invalid_date": "Cette date n’est pas valide.",
+    "@admin_oncall_errors_invalid_date": {
+        "description": "admin_oncall.errors.invalid_date"
+    },
+    "admin_oncall_errors_not_eligible_admin": "Choisissez un compte actif de rôle admin ou super-admin.",
+    "@admin_oncall_errors_not_eligible_admin": {
+        "description": "admin_oncall.errors.not_eligible_admin"
+    },
+    "admin_oncall_errors_not_eligible_focal": "Choisissez un compte actif lié à une fiche d’annuaire active de point focal.",
+    "@admin_oncall_errors_not_eligible_focal": {
+        "description": "admin_oncall.errors.not_eligible_focal"
+    },
+    "admin_oncall_errors_not_found": "Cette garde n’existe plus.",
+    "@admin_oncall_errors_not_found": {
+        "description": "admin_oncall.errors.not_found"
+    },
+    "admin_oncall_errors_order": "La fin doit être après le début.",
+    "@admin_oncall_errors_order": {
+        "description": "admin_oncall.errors.order"
+    },
+    "admin_oncall_errors_overlap_admin": "{name} est déjà de garde du {from} au {to} : cette plage la chevauche.",
+    "@admin_oncall_errors_overlap_admin": {
+        "description": "admin_oncall.errors.overlap_admin",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_errors_overlap_focal": "Un point focal ({name}) est déjà de garde sur cette zone du {from} au {to} : une seule personne peut l’être à la fois.",
+    "@admin_oncall_errors_overlap_focal": {
+        "description": "admin_oncall.errors.overlap_focal",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_errors_past": "La fin de la garde doit être dans le futur.",
+    "@admin_oncall_errors_past": {
+        "description": "admin_oncall.errors.past"
+    },
+    "admin_oncall_errors_too_long": "Une garde dure {days} jours au plus.",
+    "@admin_oncall_errors_too_long": {
+        "description": "admin_oncall.errors.too_long",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_fields_ends_at": "Fin",
+    "@admin_oncall_fields_ends_at": {
+        "description": "admin_oncall.fields.ends_at"
+    },
+    "admin_oncall_fields_kind": "Type de garde",
+    "@admin_oncall_fields_kind": {
+        "description": "admin_oncall.fields.kind"
+    },
+    "admin_oncall_fields_notes": "Note interne (facultatif)",
+    "@admin_oncall_fields_notes": {
+        "description": "admin_oncall.fields.notes"
+    },
+    "admin_oncall_fields_starts_at": "Début",
+    "@admin_oncall_fields_starts_at": {
+        "description": "admin_oncall.fields.starts_at"
+    },
+    "admin_oncall_fields_user_id": "Personne de garde",
+    "@admin_oncall_fields_user_id": {
+        "description": "admin_oncall.fields.user_id"
+    },
+    "admin_oncall_fields_zone_id": "Zone couverte",
+    "@admin_oncall_fields_zone_id": {
+        "description": "admin_oncall.fields.zone_id"
+    },
+    "admin_oncall_form_choose_person": "Choisir une personne",
+    "@admin_oncall_form_choose_person": {
+        "description": "admin_oncall.form.choose_person"
+    },
+    "admin_oncall_form_kind_hint_admin": "Compte admin ou super-admin : prévenu en premier lors d’un SOS, partout au Bénin.",
+    "@admin_oncall_form_kind_hint_admin": {
+        "description": "admin_oncall.form.kind_hint_admin"
+    },
+    "admin_oncall_form_kind_hint_focal": "Compte lié à une fiche d’annuaire active de point focal : remplace le point focal de la zone (ou national) pendant la plage.",
+    "@admin_oncall_form_kind_hint_focal": {
+        "description": "admin_oncall.form.kind_hint_focal"
+    },
+    "admin_oncall_form_save": "Enregistrer",
+    "@admin_oncall_form_save": {
+        "description": "admin_oncall.form.save"
+    },
+    "admin_oncall_form_timezone_hint": "Heures saisies dans le fuseau {timezone}. La fin n’est pas incluse : une garde peut commencer à l’heure exacte où la précédente se termine.",
+    "@admin_oncall_form_timezone_hint": {
+        "description": "admin_oncall.form.timezone_hint",
+        "placeholders": {
+            "timezone": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_form_title_edit": "Modifier la garde",
+    "@admin_oncall_form_title_edit": {
+        "description": "admin_oncall.form.title_edit"
+    },
+    "admin_oncall_form_title_new": "Ajouter une garde",
+    "@admin_oncall_form_title_new": {
+        "description": "admin_oncall.form.title_new"
+    },
+    "admin_oncall_intro": "Ce planning décide qui reçoit les SOS et les alertes routées, puis l’escalade. Sans plage en cours, la plateforme se rabat sur tous les comptes admin habilités (garde admin) ou sur la fiche d’annuaire du point focal. Les heures sont celles du Bénin.",
+    "@admin_oncall_intro": {
+        "description": "admin_oncall.intro"
+    },
+    "admin_oncall_kinds_admin": "Admin de garde",
+    "@admin_oncall_kinds_admin": {
+        "description": "admin_oncall.kinds.admin"
+    },
+    "admin_oncall_kinds_focal": "Point focal remplaçant",
+    "@admin_oncall_kinds_focal": {
+        "description": "admin_oncall.kinds.focal"
+    },
+    "admin_oncall_kpi_next": "Prochaine garde",
+    "@admin_oncall_kpi_next": {
+        "description": "admin_oncall.kpi.next"
+    },
+    "admin_oncall_kpi_now": "De garde en ce moment",
+    "@admin_oncall_kpi_now": {
+        "description": "admin_oncall.kpi.now"
+    },
+    "admin_oncall_kpi_period": "Gardes sur la période",
+    "@admin_oncall_kpi_period": {
+        "description": "admin_oncall.kpi.period"
+    },
+    "admin_oncall_list_title": "Gardes : {range}",
+    "@admin_oncall_list_title": {
+        "description": "admin_oncall.list.title",
+        "placeholders": {
+            "range": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_national": "Nationale",
+    "@admin_oncall_national": {
+        "description": "admin_oncall.national"
+    },
+    "admin_oncall_nav_label": "Période",
+    "@admin_oncall_nav_label": {
+        "description": "admin_oncall.nav.label"
+    },
+    "admin_oncall_nav_next": "Période suivante",
+    "@admin_oncall_nav_next": {
+        "description": "admin_oncall.nav.next"
+    },
+    "admin_oncall_nav_previous": "Période précédente",
+    "@admin_oncall_nav_previous": {
+        "description": "admin_oncall.nav.previous"
+    },
+    "admin_oncall_nav_today": "Aujourd’hui",
+    "@admin_oncall_nav_today": {
+        "description": "admin_oncall.nav.today"
+    },
+    "admin_oncall_new": "Ajouter une garde",
+    "@admin_oncall_new": {
+        "description": "admin_oncall.new"
+    },
+    "admin_oncall_now_next": "Prochaine garde : {name}, à partir du {date}.",
+    "@admin_oncall_now_next": {
+        "description": "admin_oncall.now.next",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_now_no_admin": "Aucun·e admin de garde : les SOS sont envoyés à tous les comptes admin habilités.",
+    "@admin_oncall_now_no_admin": {
+        "description": "admin_oncall.now.no_admin"
+    },
+    "admin_oncall_now_none": "Aucune garde en cours : les SOS sont envoyés à tous les comptes admin habilités.",
+    "@admin_oncall_now_none": {
+        "description": "admin_oncall.now.none"
+    },
+    "admin_oncall_now_title": "En ce moment",
+    "@admin_oncall_now_title": {
+        "description": "admin_oncall.now.title"
+    },
+    "admin_oncall_range_week": "Semaine du {from} au {to}",
+    "@admin_oncall_range_week": {
+        "description": "admin_oncall.range_week",
+        "placeholders": {
+            "from": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_state_active": "En cours",
+    "@admin_oncall_state_active": {
+        "description": "admin_oncall.state.active"
+    },
+    "admin_oncall_state_finished": "Terminée",
+    "@admin_oncall_state_finished": {
+        "description": "admin_oncall.state.finished"
+    },
+    "admin_oncall_state_upcoming": "À venir",
+    "@admin_oncall_state_upcoming": {
+        "description": "admin_oncall.state.upcoming"
+    },
+    "admin_oncall_table_caption": "Gardes de la période : {range}",
+    "@admin_oncall_table_caption": {
+        "description": "admin_oncall.table_caption",
+        "placeholders": {
+            "range": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_title": "Planning de garde",
+    "@admin_oncall_title": {
+        "description": "admin_oncall.title"
+    },
+    "admin_oncall_toasts_created": "Garde ajoutée.",
+    "@admin_oncall_toasts_created": {
+        "description": "admin_oncall.toasts.created"
+    },
+    "admin_oncall_toasts_deleted": "Garde supprimée.",
+    "@admin_oncall_toasts_deleted": {
+        "description": "admin_oncall.toasts.deleted"
+    },
+    "admin_oncall_toasts_deleted_active": "Garde en cours supprimée : le routage des SOS est déjà mis à jour.",
+    "@admin_oncall_toasts_deleted_active": {
+        "description": "admin_oncall.toasts.deleted_active"
+    },
+    "admin_oncall_toasts_updated": "Garde modifiée.",
+    "@admin_oncall_toasts_updated": {
+        "description": "admin_oncall.toasts.updated"
+    },
+    "admin_oncall_until": "jusqu’au {date}",
+    "@admin_oncall_until": {
+        "description": "admin_oncall.until",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_oncall_view_label": "Affichage",
+    "@admin_oncall_view_label": {
+        "description": "admin_oncall.view.label"
+    },
+    "admin_oncall_view_month": "Mois",
+    "@admin_oncall_view_month": {
+        "description": "admin_oncall.view.month"
+    },
+    "admin_oncall_view_week": "Semaine",
+    "@admin_oncall_view_week": {
+        "description": "admin_oncall.view.week"
+    },
+    "admin_referentials_activate": "Activer",
+    "@admin_referentials_activate": {
+        "description": "admin_referentials.activate"
+    },
+    "admin_referentials_columns_commune": "Commune",
+    "@admin_referentials_columns_commune": {
+        "description": "admin_referentials.columns.commune"
+    },
+    "admin_referentials_columns_communes": "Communes",
+    "@admin_referentials_columns_communes": {
+        "description": "admin_referentials.columns.communes"
+    },
+    "admin_referentials_columns_description": "Description",
+    "@admin_referentials_columns_description": {
+        "description": "admin_referentials.columns.description"
+    },
+    "admin_referentials_columns_need": "Besoin",
+    "@admin_referentials_columns_need": {
+        "description": "admin_referentials.columns.need"
+    },
+    "admin_referentials_columns_order": "Ordre",
+    "@admin_referentials_columns_order": {
+        "description": "admin_referentials.columns.order"
+    },
+    "admin_referentials_columns_population": "Population",
+    "@admin_referentials_columns_population": {
+        "description": "admin_referentials.columns.population"
+    },
+    "admin_referentials_columns_role": "Rôle ciblé",
+    "@admin_referentials_columns_role": {
+        "description": "admin_referentials.columns.role"
+    },
+    "admin_referentials_columns_usage": "Utilisations",
+    "@admin_referentials_columns_usage": {
+        "description": "admin_referentials.columns.usage"
+    },
+    "admin_referentials_columns_violence_type": "Type de violence",
+    "@admin_referentials_columns_violence_type": {
+        "description": "admin_referentials.columns.violence_type"
+    },
+    "admin_referentials_columns_zone": "Zone",
+    "@admin_referentials_columns_zone": {
+        "description": "admin_referentials.columns.zone"
+    },
+    "admin_referentials_communes_back": "Zones ({country})",
+    "@admin_referentials_communes_back": {
+        "description": "admin_referentials.communes.back",
+        "placeholders": {
+            "country": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_communes_caption": "Communes de la zone « {zone} », dans leur ordre d’affichage",
+    "@admin_referentials_communes_caption": {
+        "description": "admin_referentials.communes.caption",
+        "placeholders": {
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_communes_edit_title": "Modifier la commune",
+    "@admin_referentials_communes_edit_title": {
+        "description": "admin_referentials.communes.edit_title"
+    },
+    "admin_referentials_communes_empty": "Aucune commune dans cette zone",
+    "@admin_referentials_communes_empty": {
+        "description": "admin_referentials.communes.empty"
+    },
+    "admin_referentials_communes_empty_text": "Ajoutez les communes de la zone : elles sont facultatives à l’inscription.",
+    "@admin_referentials_communes_empty_text": {
+        "description": "admin_referentials.communes.empty_text"
+    },
+    "admin_referentials_communes_help": "Zone « {zone} » ({country}). Une commune dépend de sa zone, donc de son pays.",
+    "@admin_referentials_communes_help": {
+        "description": "admin_referentials.communes.help",
+        "placeholders": {
+            "country": {
+                "type": "String"
+            },
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_communes_new": "Nouvelle commune",
+    "@admin_referentials_communes_new": {
+        "description": "admin_referentials.communes.new"
+    },
+    "admin_referentials_communes_title": "Communes de « {zone} »",
+    "@admin_referentials_communes_title": {
+        "description": "admin_referentials.communes.title",
+        "placeholders": {
+            "zone": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_confirm_delete": "Supprimer « {label} » ? Cette action est définitive.",
+    "@admin_referentials_confirm_delete": {
+        "description": "admin_referentials.confirm_delete",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_countries_other": "Autres pays",
+    "@admin_referentials_countries_other": {
+        "description": "admin_referentials.countries_other"
+    },
+    "admin_referentials_countries_with_zones": "Pays avec des zones",
+    "@admin_referentials_countries_with_zones": {
+        "description": "admin_referentials.countries_with_zones"
+    },
+    "admin_referentials_country": "Pays",
+    "@admin_referentials_country": {
+        "description": "admin_referentials.country"
+    },
+    "admin_referentials_country_help": "Les zones ne sont pas limitées au Bénin : choisissez un pays pour lister ses zones, ou un pays sans zone pour en créer une. Le formulaire d’inscription propose une zone puis une commune pour tout pays qui a au moins une zone active.",
+    "@admin_referentials_country_help": {
+        "description": "admin_referentials.country_help"
+    },
+    "admin_referentials_country_locked": "Le pays ne peut plus changer : cette zone a des communes ou est utilisée (comptes, alertes, dossiers, annuaire…).",
+    "@admin_referentials_country_locked": {
+        "description": "admin_referentials.country_locked"
+    },
+    "admin_referentials_deactivate": "Désactiver",
+    "@admin_referentials_deactivate": {
+        "description": "admin_referentials.deactivate"
+    },
+    "admin_referentials_delete": "Supprimer",
+    "@admin_referentials_delete": {
+        "description": "admin_referentials.delete"
+    },
+    "admin_referentials_down": "Descendre",
+    "@admin_referentials_down": {
+        "description": "admin_referentials.down"
+    },
+    "admin_referentials_edit": "Modifier",
+    "@admin_referentials_edit": {
+        "description": "admin_referentials.edit"
+    },
+    "admin_referentials_errors_country_locked": "Le pays de « {label} » ne peut plus changer : la zone a des communes ou est utilisée. Désactivez-la et créez-en une nouvelle dans le bon pays.",
+    "@admin_referentials_errors_country_locked": {
+        "description": "admin_referentials.errors.country_locked",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_errors_in_use": "« {label} » est utilisé (comptes, alertes, dossiers, gardes, annuaire…) et ne peut pas être supprimé. Désactivez-le : il disparaîtra des listes de saisie mais restera lisible sur l’existant.",
+    "@admin_referentials_errors_in_use": {
+        "description": "admin_referentials.errors.in_use",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_errors_zone_has_communes": "« {label} » a encore des communes. Supprimez-les d’abord, ou désactivez la zone.",
+    "@admin_referentials_errors_zone_has_communes": {
+        "description": "admin_referentials.errors.zone_has_communes",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_fields_country_code": "Pays",
+    "@admin_referentials_fields_country_code": {
+        "description": "admin_referentials.fields.country_code"
+    },
+    "admin_referentials_fields_description": "Description",
+    "@admin_referentials_fields_description": {
+        "description": "admin_referentials.fields.description"
+    },
+    "admin_referentials_fields_icon": "Icône",
+    "@admin_referentials_fields_icon": {
+        "description": "admin_referentials.fields.icon"
+    },
+    "admin_referentials_fields_is_active": "Actif (proposé dans les listes de saisie)",
+    "@admin_referentials_fields_is_active": {
+        "description": "admin_referentials.fields.is_active"
+    },
+    "admin_referentials_fields_label": "Libellé",
+    "@admin_referentials_fields_label": {
+        "description": "admin_referentials.fields.label"
+    },
+    "admin_referentials_fields_routed_role": "Rôle ciblé",
+    "@admin_referentials_fields_routed_role": {
+        "description": "admin_referentials.fields.routed_role"
+    },
+    "admin_referentials_fields_slug": "Code",
+    "@admin_referentials_fields_slug": {
+        "description": "admin_referentials.fields.slug"
+    },
+    "admin_referentials_icon_help": "Nom d’une icône Bootstrap Icons, par exemple bi-phone.",
+    "@admin_referentials_icon_help": {
+        "description": "admin_referentials.icon_help"
+    },
+    "admin_referentials_inactive": "Désactivé",
+    "@admin_referentials_inactive": {
+        "description": "admin_referentials.inactive"
+    },
+    "admin_referentials_intro": "Ces listes alimentent les formulaires du site et de l’application (inscription, signalements, dossiers, annuaire) et le routage des alertes. Un élément désactivé disparaît des listes de saisie mais reste lisible sur l’existant ; un élément utilisé ne peut pas être supprimé.",
+    "@admin_referentials_intro": {
+        "description": "admin_referentials.intro"
+    },
+    "admin_referentials_needs_caption": "Besoins dans leur ordre d’affichage",
+    "@admin_referentials_needs_caption": {
+        "description": "admin_referentials.needs.caption"
+    },
+    "admin_referentials_needs_edit_title": "Modifier le besoin",
+    "@admin_referentials_needs_edit_title": {
+        "description": "admin_referentials.needs.edit_title"
+    },
+    "admin_referentials_needs_empty": "Aucun besoin",
+    "@admin_referentials_needs_empty": {
+        "description": "admin_referentials.needs.empty"
+    },
+    "admin_referentials_needs_empty_text": "Ajoutez les besoins qu’une personne peut exprimer dans une demande d’aide.",
+    "@admin_referentials_needs_empty_text": {
+        "description": "admin_referentials.needs.empty_text"
+    },
+    "admin_referentials_needs_help": "Le rôle ciblé oriente la demande vers un rôle de l’annuaire (juriste, psychologue…) ; sans rôle, elle va au point focal.",
+    "@admin_referentials_needs_help": {
+        "description": "admin_referentials.needs.help"
+    },
+    "admin_referentials_needs_new": "Nouveau besoin",
+    "@admin_referentials_needs_new": {
+        "description": "admin_referentials.needs.new"
+    },
+    "admin_referentials_needs_no_role": "Point focal (aucun rôle ciblé)",
+    "@admin_referentials_needs_no_role": {
+        "description": "admin_referentials.needs.no_role"
+    },
+    "admin_referentials_needs_title": "Besoins",
+    "@admin_referentials_needs_title": {
+        "description": "admin_referentials.needs.title"
+    },
+    "admin_referentials_populations_caption": "Populations dans leur ordre d’affichage",
+    "@admin_referentials_populations_caption": {
+        "description": "admin_referentials.populations.caption"
+    },
+    "admin_referentials_populations_edit_title": "Modifier la population",
+    "@admin_referentials_populations_edit_title": {
+        "description": "admin_referentials.populations.edit_title"
+    },
+    "admin_referentials_populations_empty": "Aucune population",
+    "@admin_referentials_populations_empty": {
+        "description": "admin_referentials.populations.empty"
+    },
+    "admin_referentials_populations_empty_text": "Ajoutez les populations clés suivies dans les dossiers.",
+    "@admin_referentials_populations_empty_text": {
+        "description": "admin_referentials.populations.empty_text"
+    },
+    "admin_referentials_populations_help": "Populations clés suivies dans les dossiers VBG et VDH.",
+    "@admin_referentials_populations_help": {
+        "description": "admin_referentials.populations.help"
+    },
+    "admin_referentials_populations_new": "Nouvelle population",
+    "@admin_referentials_populations_new": {
+        "description": "admin_referentials.populations.new"
+    },
+    "admin_referentials_populations_title": "Populations",
+    "@admin_referentials_populations_title": {
+        "description": "admin_referentials.populations.title"
+    },
+    "admin_referentials_reorder": "Ordre de « {label} »",
+    "@admin_referentials_reorder": {
+        "description": "admin_referentials.reorder",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_role_help": "Rôle de l’annuaire vers lequel la demande est orientée en priorité.",
+    "@admin_referentials_role_help": {
+        "description": "admin_referentials.role_help"
+    },
+    "admin_referentials_save": "Enregistrer",
+    "@admin_referentials_save": {
+        "description": "admin_referentials.save"
+    },
+    "admin_referentials_slug_help_fixed": "Le code ne peut plus être modifié : il sert de clé aux API, aux signalements et aux imports.",
+    "@admin_referentials_slug_help_fixed": {
+        "description": "admin_referentials.slug_help_fixed"
+    },
+    "admin_referentials_slug_help_new": "Code stable utilisé par les API et les imports, en minuscules sans accent. Laissé vide, il est déduit du libellé. Il ne pourra plus être modifié.",
+    "@admin_referentials_slug_help_new": {
+        "description": "admin_referentials.slug_help_new"
+    },
+    "admin_referentials_tabs_needs": "Besoins",
+    "@admin_referentials_tabs_needs": {
+        "description": "admin_referentials.tabs.needs"
+    },
+    "admin_referentials_tabs_populations": "Populations",
+    "@admin_referentials_tabs_populations": {
+        "description": "admin_referentials.tabs.populations"
+    },
+    "admin_referentials_tabs_violence_types": "Types de violence",
+    "@admin_referentials_tabs_violence_types": {
+        "description": "admin_referentials.tabs.violence_types"
+    },
+    "admin_referentials_tabs_zones": "Zones et communes",
+    "@admin_referentials_tabs_zones": {
+        "description": "admin_referentials.tabs.zones"
+    },
+    "admin_referentials_tabs_label": "Référentiels",
+    "@admin_referentials_tabs_label": {
+        "description": "admin_referentials.tabs_label"
+    },
+    "admin_referentials_title": "Référentiels",
+    "@admin_referentials_title": {
+        "description": "admin_referentials.title"
+    },
+    "admin_referentials_toasts_activated": "« {label} » activé.",
+    "@admin_referentials_toasts_activated": {
+        "description": "admin_referentials.toasts.activated",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_toasts_created": "« {label} » créé.",
+    "@admin_referentials_toasts_created": {
+        "description": "admin_referentials.toasts.created",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_toasts_deactivated": "« {label} » désactivé.",
+    "@admin_referentials_toasts_deactivated": {
+        "description": "admin_referentials.toasts.deactivated",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_toasts_deleted": "« {label} » supprimé.",
+    "@admin_referentials_toasts_deleted": {
+        "description": "admin_referentials.toasts.deleted",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_toasts_moved": "« {label} » placé en position {position}.",
+    "@admin_referentials_toasts_moved": {
+        "description": "admin_referentials.toasts.moved",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            },
+            "position": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_toasts_saved": "« {label} » enregistré.",
+    "@admin_referentials_toasts_saved": {
+        "description": "admin_referentials.toasts.saved",
+        "placeholders": {
+            "label": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_referentials_up": "Monter",
+    "@admin_referentials_up": {
+        "description": "admin_referentials.up"
+    },
+    "admin_referentials_violence_types_caption": "Types de violence dans leur ordre d’affichage",
+    "@admin_referentials_violence_types_caption": {
+        "description": "admin_referentials.violence_types.caption"
+    },
+    "admin_referentials_violence_types_edit_title": "Modifier le type de violence",
+    "@admin_referentials_violence_types_edit_title": {
+        "description": "admin_referentials.violence_types.edit_title"
+    },
+    "admin_referentials_violence_types_empty": "Aucun type de violence",
+    "@admin_referentials_violence_types_empty": {
+        "description": "admin_referentials.violence_types.empty"
+    },
+    "admin_referentials_violence_types_empty_text": "Ajoutez les types proposés dans les signalements et les dossiers.",
+    "@admin_referentials_violence_types_empty_text": {
+        "description": "admin_referentials.violence_types.empty_text"
+    },
+    "admin_referentials_violence_types_help": "Proposés dans les signalements et les dossiers. Le code est limité à 20 caractères et ne change plus après la création.",
+    "@admin_referentials_violence_types_help": {
+        "description": "admin_referentials.violence_types.help"
+    },
+    "admin_referentials_violence_types_new": "Nouveau type de violence",
+    "@admin_referentials_violence_types_new": {
+        "description": "admin_referentials.violence_types.new"
+    },
+    "admin_referentials_violence_types_title": "Types de violence",
+    "@admin_referentials_violence_types_title": {
+        "description": "admin_referentials.violence_types.title"
+    },
+    "admin_referentials_zones_caption": "Zones du pays choisi, dans leur ordre d’affichage",
+    "@admin_referentials_zones_caption": {
+        "description": "admin_referentials.zones.caption"
+    },
+    "admin_referentials_zones_edit_title": "Modifier la zone",
+    "@admin_referentials_zones_edit_title": {
+        "description": "admin_referentials.zones.edit_title"
+    },
+    "admin_referentials_zones_empty": "Aucune zone pour ce pays",
+    "@admin_referentials_zones_empty": {
+        "description": "admin_referentials.zones.empty"
+    },
+    "admin_referentials_zones_empty_text": "Créez une première zone : les communes s’y rattachent ensuite, et l’inscription propose la zone aux personnes de ce pays.",
+    "@admin_referentials_zones_empty_text": {
+        "description": "admin_referentials.zones.empty_text"
+    },
+    "admin_referentials_zones_help": "Une zone (département, région, province…) appartient à un pays. Elle sert à orienter les alertes SOS : zone d’abord, puis niveau national.",
+    "@admin_referentials_zones_help": {
+        "description": "admin_referentials.zones.help"
+    },
+    "admin_referentials_zones_manage_communes": "Communes",
+    "@admin_referentials_zones_manage_communes": {
+        "description": "admin_referentials.zones.manage_communes"
+    },
+    "admin_referentials_zones_new": "Nouvelle zone",
+    "@admin_referentials_zones_new": {
+        "description": "admin_referentials.zones.new"
+    },
+    "admin_referentials_zones_title": "Zones",
+    "@admin_referentials_zones_title": {
+        "description": "admin_referentials.zones.title"
+    },
     "admin_search_alert_title": "Alerte n° {id} · {type}",
     "@admin_search_alert_title": {
         "description": "admin_search.alert_title",
@@ -10718,6 +12441,10 @@
     "admin_system_settings_links_title": "Réglages gérés ailleurs",
     "@admin_system_settings_links_title": {
         "description": "admin_system.settings.links.title"
+    },
+    "admin_system_settings_on_call_manage": "Gérer le planning de garde",
+    "@admin_system_settings_on_call_manage": {
+        "description": "admin_system.settings.on_call.manage"
     },
     "admin_system_settings_on_call_none": "Aucun·e administrateur·rice de garde à ce jour.",
     "@admin_system_settings_on_call_none": {
@@ -13940,7 +15667,7 @@
     "@assistant_page_welcome": {
         "description": "assistant.page.welcome"
     },
-    "auth_age_confirmation_required": "Pour créer ton compte, confirme que tu as {min_age} ans ou plus.",
+    "auth_age_confirmation_required": "Pour créer ton compte, tu dois avoir au moins {min_age} ans.",
     "@auth_age_confirmation_required": {
         "description": "auth.age_confirmation_required",
         "placeholders": {
@@ -14285,99 +16012,62 @@
     "@auth_pending": {
         "description": "auth.pending"
     },
-    "auth_register_account_age": "J’ai {min_age} ans ou plus.",
-    "@auth_register_account_age": {
-        "description": "auth.register.account.age",
+    "auth_pending_banner_text": "C’est normal et c’est rapide. En attendant, tu peux lire, utiliser le SOS, signaler et compléter ton profil. Publier, commenter, écrire et rejoindre un groupe ou un événement s’ouvriront dès la validation.",
+    "@auth_pending_banner_text": {
+        "description": "auth.pending_banner.text"
+    },
+    "auth_pending_banner_title": "Ton compte attend la validation de l’équipe",
+    "@auth_pending_banner_title": {
+        "description": "auth.pending_banner.title"
+    },
+    "auth_pending_restricted": "Ton compte attend la validation de l’équipe. Cette action s’ouvrira dès qu’il sera validé.",
+    "@auth_pending_restricted": {
+        "description": "auth.pending_restricted"
+    },
+    "auth_register_basic_age": "Âge",
+    "@auth_register_basic_age": {
+        "description": "auth.register.basic.age"
+    },
+    "auth_register_basic_age_hint": "Au moins {min_age} ans, en chiffres.",
+    "@auth_register_basic_age_hint": {
+        "description": "auth.register.basic.age_hint",
         "placeholders": {
             "min_age": {
                 "type": "String"
             }
         }
     },
-    "auth_register_account_cgu": "J’accepte les {terms} et la {charter}.",
-    "@auth_register_account_cgu": {
-        "description": "auth.register.account.cgu",
-        "placeholders": {
-            "charter": {
-                "type": "String"
-            },
-            "terms": {
-                "type": "String"
-            }
-        }
+    "auth_register_basic_email": "Adresse e-mail",
+    "@auth_register_basic_email": {
+        "description": "auth.register.basic.email"
     },
-    "auth_register_account_cgu_charter": "charte de la communauté",
-    "@auth_register_account_cgu_charter": {
-        "description": "auth.register.account.cgu_charter"
+    "auth_register_basic_email_hint": "Pour ton compte. Jamais partagée.",
+    "@auth_register_basic_email_hint": {
+        "description": "auth.register.basic.email_hint"
     },
-    "auth_register_account_cgu_terms": "conditions d’utilisation",
-    "@auth_register_account_cgu_terms": {
-        "description": "auth.register.account.cgu_terms"
+    "auth_register_basic_first_name": "Prénom",
+    "@auth_register_basic_first_name": {
+        "description": "auth.register.basic.first_name"
     },
-    "auth_register_account_continue": "Continuer",
-    "@auth_register_account_continue": {
-        "description": "auth.register.account.continue"
+    "auth_register_basic_heading": "Informations de base",
+    "@auth_register_basic_heading": {
+        "description": "auth.register.basic.heading"
     },
-    "auth_register_account_created": "Ton compte est créé. Bienvenue sur Xomiton !",
-    "@auth_register_account_created": {
-        "description": "auth.register.account.created"
+    "auth_register_basic_last_name": "Nom",
+    "@auth_register_basic_last_name": {
+        "description": "auth.register.basic.last_name"
     },
-    "auth_register_account_email": "Adresse e-mail",
-    "@auth_register_account_email": {
-        "description": "auth.register.account.email"
+    "auth_register_basic_pseudo": "Pseudonyme",
+    "@auth_register_basic_pseudo": {
+        "description": "auth.register.basic.pseudo"
     },
-    "auth_register_account_email_hint": "Pour confirmer ton compte et te renvoyer un code. Jamais partagée.",
-    "@auth_register_account_email_hint": {
-        "description": "auth.register.account.email_hint"
+    "auth_register_basic_pseudo_hint": "3 à 40 : lettres, chiffres, . - _",
+    "@auth_register_basic_pseudo_hint": {
+        "description": "auth.register.basic.pseudo_hint"
     },
-    "auth_register_account_email_hint_short": "Pour ton code de vérification. Jamais partagée.",
-    "@auth_register_account_email_hint_short": {
-        "description": "auth.register.account.email_hint_short"
-    },
-    "auth_register_account_heading": "Qui es-tu ?",
-    "@auth_register_account_heading": {
-        "description": "auth.register.account.heading"
-    },
-    "auth_register_account_password": "Mot de passe",
-    "@auth_register_account_password": {
-        "description": "auth.register.account.password"
-    },
-    "auth_register_account_password_confirmation": "Confirmation",
-    "@auth_register_account_password_confirmation": {
-        "description": "auth.register.account.password_confirmation"
-    },
-    "auth_register_account_password_hint": "Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.",
-    "@auth_register_account_password_hint": {
-        "description": "auth.register.account.password_hint"
-    },
-    "auth_register_account_privacy": "J’ai lu la {policy} et j’accepte le traitement de mes données.",
-    "@auth_register_account_privacy": {
-        "description": "auth.register.account.privacy",
-        "placeholders": {
-            "policy": {
-                "type": "String"
-            }
-        }
-    },
-    "auth_register_account_privacy_policy": "politique de confidentialité",
-    "@auth_register_account_privacy_policy": {
-        "description": "auth.register.account.privacy_policy"
-    },
-    "auth_register_account_pseudo": "Pseudonyme",
-    "@auth_register_account_pseudo": {
-        "description": "auth.register.account.pseudo"
-    },
-    "auth_register_account_pseudo_hint": "3 à 40 caractères : lettres, chiffres, point, tiret ou tiret bas.",
-    "@auth_register_account_pseudo_hint": {
-        "description": "auth.register.account.pseudo_hint"
-    },
-    "auth_register_account_pseudo_hint_short": "3 à 40 : lettres, chiffres, . - _",
-    "@auth_register_account_pseudo_hint_short": {
-        "description": "auth.register.account.pseudo_hint_short"
-    },
-    "auth_register_account_submit": "Créer mon compte",
-    "@auth_register_account_submit": {
-        "description": "auth.register.account.submit"
+    "auth_register_client_errors": "Corrige ces champs avant de continuer.",
+    "@auth_register_client_errors": {
+        "description": "auth.register.client_errors"
     },
     "auth_register_closed_newsletter_text": "La newsletter annonce la réouverture des inscriptions, avec les nouvelles ressources et les événements de la communauté.",
     "@auth_register_closed_newsletter_text": {
@@ -14404,33 +16094,211 @@
     "@auth_register_closed_title": {
         "description": "auth.register.closed.title"
     },
-    "auth_register_consents_heading": "Tes consentements",
-    "@auth_register_consents_heading": {
-        "description": "auth.register.consents.heading"
+    "auth_register_created": "Ton compte est créé. Bienvenue sur Xomiton !",
+    "@auth_register_created": {
+        "description": "auth.register.created"
     },
-    "auth_register_consents_intro": "Ces deux accords sont facultatifs. Tu peux les retirer à tout moment depuis tes paramètres.",
-    "@auth_register_consents_intro": {
-        "description": "auth.register.consents.intro"
+    "auth_register_created_pending": "Ton compte est créé. L’équipe Xomiton doit le valider : en attendant, tu peux déjà lire, utiliser le SOS et signaler.",
+    "@auth_register_created_pending": {
+        "description": "auth.register.created_pending"
     },
-    "auth_register_consents_newsletter": "Je veux recevoir la lettre d’information par e-mail.",
-    "@auth_register_consents_newsletter": {
-        "description": "auth.register.consents.newsletter"
+    "auth_register_details_ally_heading": "Pour toi, personne ressource ou allié·e",
+    "@auth_register_details_ally_heading": {
+        "description": "auth.register.details.ally_heading"
     },
-    "auth_register_consents_saved": "Consentements enregistrés.",
-    "@auth_register_consents_saved": {
-        "description": "auth.register.consents.saved"
+    "auth_register_details_ally_role": "Ton statut",
+    "@auth_register_details_ally_role": {
+        "description": "auth.register.details.ally_role"
     },
-    "auth_register_consents_sensitive_data": "J’accepte que Xomiton traite mes données sensibles (identité de genre, orientation) pour adapter les contenus. Elles sont chiffrées et jamais publiques.",
-    "@auth_register_consents_sensitive_data": {
-        "description": "auth.register.consents.sensitive_data"
+    "auth_register_details_ally_role_other": "Précise ton statut",
+    "@auth_register_details_ally_role_other": {
+        "description": "auth.register.details.ally_role_other"
     },
-    "auth_register_done": "Bienvenue sur Xomiton ! Tu peux compléter ton profil quand tu veux.",
-    "@auth_register_done": {
-        "description": "auth.register.done"
+    "auth_register_details_ally_role_placeholder": "Choisir…",
+    "@auth_register_details_ally_role_placeholder": {
+        "description": "auth.register.details.ally_role_placeholder"
     },
-    "auth_register_finish": "Terminer",
-    "@auth_register_finish": {
-        "description": "auth.register.finish"
+    "auth_register_details_both_hint": "Remplis seulement le bloc qui correspond à ton choix à l’étape précédente.",
+    "@auth_register_details_both_hint": {
+        "description": "auth.register.details.both_hint"
+    },
+    "auth_register_details_cgu": "J’accepte les {terms} et la {charter}.",
+    "@auth_register_details_cgu": {
+        "description": "auth.register.details.cgu",
+        "placeholders": {
+            "charter": {
+                "type": "String"
+            },
+            "terms": {
+                "type": "String"
+            }
+        }
+    },
+    "auth_register_details_cgu_charter": "charte de la communauté",
+    "@auth_register_details_cgu_charter": {
+        "description": "auth.register.details.cgu_charter"
+    },
+    "auth_register_details_cgu_terms": "conditions d’utilisation",
+    "@auth_register_details_cgu_terms": {
+        "description": "auth.register.details.cgu_terms"
+    },
+    "auth_register_details_choose": "Choisir…",
+    "@auth_register_details_choose": {
+        "description": "auth.register.details.choose"
+    },
+    "auth_register_details_consents": "Consentements",
+    "@auth_register_details_consents": {
+        "description": "auth.register.details.consents"
+    },
+    "auth_register_details_gender_identity": "Identité de genre",
+    "@auth_register_details_gender_identity": {
+        "description": "auth.register.details.gender_identity"
+    },
+    "auth_register_details_heading": "Détails et sécurité",
+    "@auth_register_details_heading": {
+        "description": "auth.register.details.heading"
+    },
+    "auth_register_details_member_heading": "Pour toi, membre de la communauté",
+    "@auth_register_details_member_heading": {
+        "description": "auth.register.details.member_heading"
+    },
+    "auth_register_details_orientation": "Orientation",
+    "@auth_register_details_orientation": {
+        "description": "auth.register.details.orientation"
+    },
+    "auth_register_details_other": "Précise",
+    "@auth_register_details_other": {
+        "description": "auth.register.details.other"
+    },
+    "auth_register_details_password": "Mot de passe",
+    "@auth_register_details_password": {
+        "description": "auth.register.details.password"
+    },
+    "auth_register_details_password_confirmation": "Confirmation",
+    "@auth_register_details_password_confirmation": {
+        "description": "auth.register.details.password_confirmation"
+    },
+    "auth_register_details_password_hint": "Au moins 10 caractères, avec majuscule, minuscule et chiffre. Le collage est autorisé.",
+    "@auth_register_details_password_hint": {
+        "description": "auth.register.details.password_hint"
+    },
+    "auth_register_details_privacy": "J’ai lu la {policy} et j’accepte le traitement de mes données.",
+    "@auth_register_details_privacy": {
+        "description": "auth.register.details.privacy",
+        "placeholders": {
+            "policy": {
+                "type": "String"
+            }
+        }
+    },
+    "auth_register_details_privacy_policy": "politique de confidentialité",
+    "@auth_register_details_privacy_policy": {
+        "description": "auth.register.details.privacy_policy"
+    },
+    "auth_register_details_sensitive_data": "J’accepte que Xomiton traite ces informations sensibles (identité de genre, orientation) pour adapter les contenus. Elles sont chiffrées et jamais publiques.",
+    "@auth_register_details_sensitive_data": {
+        "description": "auth.register.details.sensitive_data"
+    },
+    "auth_register_errors_age_max": "Cet âge n’est pas possible. Vérifie ce que tu as écrit.",
+    "@auth_register_errors_age_max": {
+        "description": "auth.register.errors.age_max"
+    },
+    "auth_register_errors_age_min": "Tu dois avoir au moins {min_age} ans pour créer un compte.",
+    "@auth_register_errors_age_min": {
+        "description": "auth.register.errors.age_min",
+        "placeholders": {
+            "min_age": {
+                "type": "String"
+            }
+        }
+    },
+    "auth_register_errors_age_number": "Indique ton âge en chiffres, par exemple 17.",
+    "@auth_register_errors_age_number": {
+        "description": "auth.register.errors.age_number"
+    },
+    "auth_register_errors_age_required": "Indique ton âge.",
+    "@auth_register_errors_age_required": {
+        "description": "auth.register.errors.age_required"
+    },
+    "auth_register_errors_ally_role_required": "Choisis ton statut.",
+    "@auth_register_errors_ally_role_required": {
+        "description": "auth.register.errors.ally_role_required"
+    },
+    "auth_register_errors_cgu_required": "Tu dois accepter les conditions d’utilisation et la charte pour continuer.",
+    "@auth_register_errors_cgu_required": {
+        "description": "auth.register.errors.cgu_required"
+    },
+    "auth_register_errors_country_required": "Choisis ton pays.",
+    "@auth_register_errors_country_required": {
+        "description": "auth.register.errors.country_required"
+    },
+    "auth_register_errors_country_unknown": "Ce pays n’est pas dans la liste. Choisis-en un.",
+    "@auth_register_errors_country_unknown": {
+        "description": "auth.register.errors.country_unknown"
+    },
+    "auth_register_errors_email_format": "Cette adresse e-mail n’a pas la bonne forme, par exemple prenom@exemple.bj.",
+    "@auth_register_errors_email_format": {
+        "description": "auth.register.errors.email_format"
+    },
+    "auth_register_errors_email_required": "Indique ton adresse e-mail.",
+    "@auth_register_errors_email_required": {
+        "description": "auth.register.errors.email_required"
+    },
+    "auth_register_errors_first_name_required": "Indique ton prénom.",
+    "@auth_register_errors_first_name_required": {
+        "description": "auth.register.errors.first_name_required"
+    },
+    "auth_register_errors_gender_identity_required": "Choisis une réponse pour l’identité de genre.",
+    "@auth_register_errors_gender_identity_required": {
+        "description": "auth.register.errors.gender_identity_required"
+    },
+    "auth_register_errors_last_name_required": "Indique ton nom.",
+    "@auth_register_errors_last_name_required": {
+        "description": "auth.register.errors.last_name_required"
+    },
+    "auth_register_errors_member_type_required": "Choisis ce qui te correspond.",
+    "@auth_register_errors_member_type_required": {
+        "description": "auth.register.errors.member_type_required"
+    },
+    "auth_register_errors_name_format": "Utilise seulement des lettres, des espaces, des apostrophes et des tirets.",
+    "@auth_register_errors_name_format": {
+        "description": "auth.register.errors.name_format"
+    },
+    "auth_register_errors_orientation_required": "Choisis une réponse pour l’orientation.",
+    "@auth_register_errors_orientation_required": {
+        "description": "auth.register.errors.orientation_required"
+    },
+    "auth_register_errors_other_required": "Écris une précision.",
+    "@auth_register_errors_other_required": {
+        "description": "auth.register.errors.other_required"
+    },
+    "auth_register_errors_password_mismatch": "Les deux mots de passe ne correspondent pas.",
+    "@auth_register_errors_password_mismatch": {
+        "description": "auth.register.errors.password_mismatch"
+    },
+    "auth_register_errors_password_required": "Choisis un mot de passe.",
+    "@auth_register_errors_password_required": {
+        "description": "auth.register.errors.password_required"
+    },
+    "auth_register_errors_phone_format": "Ce numéro n’a pas la bonne forme.",
+    "@auth_register_errors_phone_format": {
+        "description": "auth.register.errors.phone_format"
+    },
+    "auth_register_errors_privacy_required": "Tu dois accepter la politique de confidentialité pour continuer.",
+    "@auth_register_errors_privacy_required": {
+        "description": "auth.register.errors.privacy_required"
+    },
+    "auth_register_errors_pronouns_required": "Choisis tes pronoms.",
+    "@auth_register_errors_pronouns_required": {
+        "description": "auth.register.errors.pronouns_required"
+    },
+    "auth_register_errors_pseudo_required": "Choisis un pseudonyme.",
+    "@auth_register_errors_pseudo_required": {
+        "description": "auth.register.errors.pseudo_required"
+    },
+    "auth_register_errors_sensitive_data_required": "Pour continuer, accepte le traitement de ces informations sensibles.",
+    "@auth_register_errors_sensitive_data_required": {
+        "description": "auth.register.errors.sensitive_data_required"
     },
     "auth_register_heading": "Créer mon compte",
     "@auth_register_heading": {
@@ -14448,49 +16316,69 @@
     "@auth_register_invitation_banner_pair": {
         "description": "auth.register.invitation.banner.pair"
     },
+    "auth_register_next": "Suivant",
+    "@auth_register_next": {
+        "description": "auth.register.next"
+    },
+    "auth_register_previous": "Précédent",
+    "@auth_register_previous": {
+        "description": "auth.register.previous"
+    },
     "auth_register_profile_choose": "Choisir…",
     "@auth_register_profile_choose": {
         "description": "auth.register.profile.choose"
     },
-    "auth_register_profile_choose_zone_first": "Choisis d’abord un département",
+    "auth_register_profile_choose_zone_first": "Choisis d’abord un département ou une région",
     "@auth_register_profile_choose_zone_first": {
         "description": "auth.register.profile.choose_zone_first"
+    },
+    "auth_register_profile_city": "Ville",
+    "@auth_register_profile_city": {
+        "description": "auth.register.profile.city"
     },
     "auth_register_profile_commune": "Commune",
     "@auth_register_profile_commune": {
         "description": "auth.register.profile.commune"
     },
-    "auth_register_profile_heading": "Ton profil",
+    "auth_register_profile_country": "Pays",
+    "@auth_register_profile_country": {
+        "description": "auth.register.profile.country"
+    },
+    "auth_register_profile_country_placeholder": "Choisir un pays…",
+    "@auth_register_profile_country_placeholder": {
+        "description": "auth.register.profile.country_placeholder"
+    },
+    "auth_register_profile_heading": "Profil et identité",
     "@auth_register_profile_heading": {
         "description": "auth.register.profile.heading"
     },
-    "auth_register_profile_intro": "Ces choix servent à te proposer des contenus adaptés. Tu peux tout modifier plus tard.",
-    "@auth_register_profile_intro": {
-        "description": "auth.register.profile.intro"
+    "auth_register_profile_location_hint": "Pour te mettre en lien avec l’aide la plus proche en cas d’urgence.",
+    "@auth_register_profile_location_hint": {
+        "description": "auth.register.profile.location_hint"
     },
-    "auth_register_profile_member_type": "Type de membre",
+    "auth_register_profile_member_type": "Tu es ?",
     "@auth_register_profile_member_type": {
         "description": "auth.register.profile.member_type"
     },
-    "auth_register_profile_member_type_hint": "Un compte pair éducateur·rice est validé par l’équipe Xomiton avant l’accès à la collecte ; tu gardes l’accès au reste en attendant.",
-    "@auth_register_profile_member_type_hint": {
-        "description": "auth.register.profile.member_type_hint"
+    "auth_register_profile_member_types_allie": "Personne ressource / Allié·e",
+    "@auth_register_profile_member_types_allie": {
+        "description": "auth.register.profile.member_types.allie"
     },
     "auth_register_profile_member_types_membre": "Membre de la communauté",
     "@auth_register_profile_member_types_membre": {
         "description": "auth.register.profile.member_types.membre"
     },
-    "auth_register_profile_member_types_pair": "Pair éducateur·rice",
-    "@auth_register_profile_member_types_pair": {
-        "description": "auth.register.profile.member_types.pair"
+    "auth_register_profile_phone": "Téléphone",
+    "@auth_register_profile_phone": {
+        "description": "auth.register.profile.phone"
+    },
+    "auth_register_profile_phone_hint": "Au Bénin : +229 01 97 38 88 47. Ailleurs : avec l’indicatif, par exemple +33 6 12 34 56 78.",
+    "@auth_register_profile_phone_hint": {
+        "description": "auth.register.profile.phone_hint"
     },
     "auth_register_profile_pronouns": "Pronoms",
     "@auth_register_profile_pronouns": {
         "description": "auth.register.profile.pronouns"
-    },
-    "auth_register_profile_pronouns_options_autre": "Autre",
-    "@auth_register_profile_pronouns_options_autre": {
-        "description": "auth.register.profile.pronouns_options.autre"
     },
     "auth_register_profile_pronouns_options_elle": "Elle",
     "@auth_register_profile_pronouns_options_elle": {
@@ -14504,53 +16392,17 @@
     "@auth_register_profile_pronouns_options_il": {
         "description": "auth.register.profile.pronouns_options.il"
     },
-    "auth_register_profile_pronouns_options_nr": "Je préfère ne pas le dire",
-    "@auth_register_profile_pronouns_options_nr": {
-        "description": "auth.register.profile.pronouns_options.nr"
-    },
     "auth_register_profile_pronouns_placeholder": "Choisir…",
     "@auth_register_profile_pronouns_placeholder": {
         "description": "auth.register.profile.pronouns_placeholder"
     },
-    "auth_register_profile_saved": "Profil enregistré.",
-    "@auth_register_profile_saved": {
-        "description": "auth.register.profile.saved"
-    },
-    "auth_register_profile_zone": "Département",
+    "auth_register_profile_zone": "Département ou région",
     "@auth_register_profile_zone": {
         "description": "auth.register.profile.zone"
     },
-    "auth_register_security_discreet_mode": "Activer le mode discret",
-    "@auth_register_security_discreet_mode": {
-        "description": "auth.register.security.discreet_mode"
-    },
-    "auth_register_security_discreet_mode_hint": "Titre d’onglet neutre et aperçus masqués sur écran verrouillé.",
-    "@auth_register_security_discreet_mode_hint": {
-        "description": "auth.register.security.discreet_mode_hint"
-    },
-    "auth_register_security_heading": "Sécurise ton compte",
-    "@auth_register_security_heading": {
-        "description": "auth.register.security.heading"
-    },
-    "auth_register_security_intro": "Un contact de confiance peut être prévenu lors d’un SOS. Le mode discret neutralise les titres et les aperçus.",
-    "@auth_register_security_intro": {
-        "description": "auth.register.security.intro"
-    },
-    "auth_register_security_saved": "Réglages de sécurité enregistrés.",
-    "@auth_register_security_saved": {
-        "description": "auth.register.security.saved"
-    },
-    "auth_register_security_trusted_contact_name": "Nom du contact de confiance",
-    "@auth_register_security_trusted_contact_name": {
-        "description": "auth.register.security.trusted_contact_name"
-    },
-    "auth_register_security_trusted_contact_phone": "Téléphone du contact de confiance",
-    "@auth_register_security_trusted_contact_phone": {
-        "description": "auth.register.security.trusted_contact_phone"
-    },
-    "auth_register_security_trusted_contact_phone_hint": "Numéro béninois, par exemple +229 01 97 38 88 47. Chiffré, jamais affiché.",
-    "@auth_register_security_trusted_contact_phone_hint": {
-        "description": "auth.register.security.trusted_contact_phone_hint"
+    "auth_register_sending": "Création du compte…",
+    "@auth_register_sending": {
+        "description": "auth.register.sending"
     },
     "auth_register_side_points_0": "Pseudonyme : ton identité reste protégée",
     "@auth_register_side_points_0": {
@@ -14572,14 +16424,6 @@
     "@auth_register_sign_in": {
         "description": "auth.register.sign_in"
     },
-    "auth_register_skip": "Passer",
-    "@auth_register_skip": {
-        "description": "auth.register.skip"
-    },
-    "auth_register_skip_step": "Passer cette étape",
-    "@auth_register_skip_step": {
-        "description": "auth.register.skip_step"
-    },
     "auth_register_step_of": "Étape {current} sur {total}",
     "@auth_register_step_of": {
         "description": "auth.register.step_of",
@@ -14592,21 +16436,21 @@
             }
         }
     },
-    "auth_register_steps_account": "Compte",
-    "@auth_register_steps_account": {
-        "description": "auth.register.steps.account"
+    "auth_register_steps_basic": "Informations de base",
+    "@auth_register_steps_basic": {
+        "description": "auth.register.steps.basic"
     },
-    "auth_register_steps_consents": "Consentements",
-    "@auth_register_steps_consents": {
-        "description": "auth.register.steps.consents"
+    "auth_register_steps_details": "Détails et sécurité",
+    "@auth_register_steps_details": {
+        "description": "auth.register.steps.details"
     },
-    "auth_register_steps_profile": "Profil",
+    "auth_register_steps_profile": "Profil et identité",
     "@auth_register_steps_profile": {
         "description": "auth.register.steps.profile"
     },
-    "auth_register_steps_security": "Sécurité",
-    "@auth_register_steps_security": {
-        "description": "auth.register.steps.security"
+    "auth_register_submit": "Créer mon compte",
+    "@auth_register_submit": {
+        "description": "auth.register.submit"
     },
     "auth_registrations_closed": "Les inscriptions sont momentanément fermées. Reviens bientôt ou inscris-toi à la newsletter.",
     "@auth_registrations_closed": {
@@ -20843,6 +22687,30 @@
     "@enums_gateways_social_network_tinder": {
         "description": "enums/gateways.social_network.tinder"
     },
+    "enums_identity_ally_role_activiste": "Activiste / féministe",
+    "@enums_identity_ally_role_activiste": {
+        "description": "enums/identity.ally_role.activiste"
+    },
+    "enums_identity_ally_role_autre": "Autre",
+    "@enums_identity_ally_role_autre": {
+        "description": "enums/identity.ally_role.autre"
+    },
+    "enums_identity_ally_role_avocat": "Avocat·e",
+    "@enums_identity_ally_role_avocat": {
+        "description": "enums/identity.ally_role.avocat"
+    },
+    "enums_identity_ally_role_leader_religieux": "Leader religieux·se",
+    "@enums_identity_ally_role_leader_religieux": {
+        "description": "enums/identity.ally_role.leader_religieux"
+    },
+    "enums_identity_ally_role_professionnel_sante": "Professionnel·le de santé",
+    "@enums_identity_ally_role_professionnel_sante": {
+        "description": "enums/identity.ally_role.professionnel_sante"
+    },
+    "enums_identity_ally_role_psychologue": "Psychologue",
+    "@enums_identity_ally_role_psychologue": {
+        "description": "enums/identity.ally_role.psychologue"
+    },
     "enums_identity_ally_status_allie": "Allié·e",
     "@enums_identity_ally_status_allie": {
         "description": "enums/identity.ally_status.allie"
@@ -23967,6 +25835,10 @@
     "@menus_admin_notifications": {
         "description": "menus.admin.notifications"
     },
+    "menus_admin_on_call": "Planning de garde",
+    "@menus_admin_on_call": {
+        "description": "menus.admin.on_call"
+    },
     "menus_admin_online": "En ligne",
     "@menus_admin_online": {
         "description": "menus.admin.online"
@@ -23978,6 +25850,10 @@
     "menus_admin_read": "Lues",
     "@menus_admin_read": {
         "description": "menus.admin.read"
+    },
+    "menus_admin_referentials": "Référentiels",
+    "@menus_admin_referentials": {
+        "description": "menus.admin.referentials"
     },
     "menus_admin_registers": "Registres numériques",
     "@menus_admin_registers": {
@@ -25612,6 +27488,10 @@
     "@newsletter_admin_tabs_subscribers": {
         "description": "newsletter.admin.tabs.subscribers"
     },
+    "newsletter_admin_tabs_taxonomy": "Tags et centres d’intérêt",
+    "@newsletter_admin_tabs_taxonomy": {
+        "description": "newsletter.admin.tabs.taxonomy"
+    },
     "newsletter_admin_title": "Newsletter",
     "@newsletter_admin_title": {
         "description": "newsletter.admin.title"
@@ -26796,9 +28676,38 @@
             }
         }
     },
+    "notifications_peer_pending_body_typed": "{name} ({type}) attend votre validation. Ouvrez la file des inscriptions pour répondre.",
+    "@notifications_peer_pending_body_typed": {
+        "description": "notifications.peer_pending.body_typed",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "type": {
+                "type": "String"
+            }
+        }
+    },
     "notifications_peer_pending_discreet": "Nouvelle demande",
     "@notifications_peer_pending_discreet": {
         "description": "notifications.peer_pending.discreet"
+    },
+    "notifications_peer_pending_kind_ally": "allié·e",
+    "@notifications_peer_pending_kind_ally": {
+        "description": "notifications.peer_pending.kind_ally"
+    },
+    "notifications_peer_pending_kind_ally_role": "allié·e, {role}",
+    "@notifications_peer_pending_kind_ally_role": {
+        "description": "notifications.peer_pending.kind_ally_role",
+        "placeholders": {
+            "role": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_peer_pending_kind_member": "membre",
+    "@notifications_peer_pending_kind_member": {
+        "description": "notifications.peer_pending.kind_member"
     },
     "notifications_peer_pending_title": "Inscription à valider",
     "@notifications_peer_pending_title": {
@@ -27441,6 +29350,26 @@
     "pages_accueil_alerte_title_2": "Alertez en quelques secondes.",
     "@pages_accueil_alerte_title_2": {
         "description": "pages/accueil.alerte.title_2"
+    },
+    "pages_accueil_application_app_store_alt": "App Store : application bientôt disponible",
+    "@pages_accueil_application_app_store_alt": {
+        "description": "pages/accueil.application.app_store_alt"
+    },
+    "pages_accueil_application_badge": "Bientôt disponible",
+    "@pages_accueil_application_badge": {
+        "description": "pages/accueil.application.badge"
+    },
+    "pages_accueil_application_google_play_alt": "Google Play : application bientôt disponible",
+    "@pages_accueil_application_google_play_alt": {
+        "description": "pages/accueil.application.google_play_alt"
+    },
+    "pages_accueil_application_text": "L’application Xomiton sera bientôt disponible sur toutes les plateformes, sur iPhone comme sur Android : alerte et SOS en un geste, fil d’actualité, communauté et ressources, avec les mêmes protections de votre vie privée que sur le site.",
+    "@pages_accueil_application_text": {
+        "description": "pages/accueil.application.text"
+    },
+    "pages_accueil_application_title": "Xomiton arrive sur votre téléphone",
+    "@pages_accueil_application_title": {
+        "description": "pages/accueil.application.title"
     },
     "pages_accueil_cta_free": "Gratuit",
     "@pages_accueil_cta_free": {
@@ -28138,7 +30067,7 @@
     "@pages_aide_know_communaute_2": {
         "description": "pages/aide.know.communaute.2"
     },
-    "pages_aide_know_compte_0": "Créez votre compte avec un pseudonyme : aucun nom réel n’est exigé.",
+    "pages_aide_know_compte_0": "Créez votre compte en trois étapes : seul votre pseudonyme est visible des autres membres.",
     "@pages_aide_know_compte_0": {
         "description": "pages/aide.know.compte.0"
     },
@@ -28337,7 +30266,7 @@
     "@pages_confidentialite_privacy_0_0": {
         "description": "pages/confidentialite.privacy.0.0"
     },
-    "pages_confidentialite_privacy_0_1": "Pseudonyme, adresse e-mail, zone géographique et, si vous le choisissez, des informations de profil. Aucun nom réel n’est exigé. Pour la sécurité des comptes, l’adresse IP et le navigateur utilisé sont aussi conservés avec vos consentements, les codes de vérification, le journal d’audit et la liste de vos appareils connectés.",
+    "pages_confidentialite_privacy_0_1": "Pseudonyme, prénom et nom, adresse e-mail, âge, pays, pronoms, type de compte (membre ou personne ressource / allié·e) et, si vous le souhaitez, ville, téléphone, département et commune. Un membre indique aussi son identité de genre et son orientation, une personne ressource ou alliée son statut : ces informations sont chiffrées et jamais publiques. Seul le pseudonyme est visible des autres membres. Pour la sécurité des comptes, l’adresse IP et le navigateur utilisé sont aussi conservés avec vos consentements, les codes de vérification, le journal d’audit et la liste de vos appareils connectés.",
     "@pages_confidentialite_privacy_0_1": {
         "description": "pages/confidentialite.privacy.0.1"
     },
@@ -29526,11 +31455,11 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_head_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.head.3"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": "Compte : pseudonyme, adresse e-mail, mot de passe (conservé haché), zone et commune, confirmation d’avoir '{'min_age'}' ans ou plus",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": "Compte : pseudonyme, prénom et nom, adresse e-mail, mot de passe (conservé haché), âge ('{'min_age'}' ans au minimum), pays, pronoms, type de compte (membre ou personne ressource / allié·e)",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_0": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.0"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": "Créer et sécuriser votre compte, vous envoyer les codes de vérification",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": "Créer, sécuriser et faire valider votre compte par l’équipe",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_1": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.1"
     },
@@ -29538,15 +31467,15 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_2": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.2"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": "Non. Aucun nom réel ni date de naissance n’est exigé",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": "Non. Seul le pseudonyme est visible des autres membres",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_0_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.0.3"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": "Nom, numéro de téléphone du profil",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": "Ville, département et commune, numéro de téléphone",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_0": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.0"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": "Vous joindre ou vous reconnaître si vous le choisissez ; SMS de secours",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": "Vous mettre en lien avec l’aide la plus proche ; vous joindre ; SMS de secours",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_1_1": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.1.1"
     },
@@ -29590,7 +31519,7 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_2_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.2.3"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": "Origine, orientation ou identité de genre (données sensibles)",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": "Identité de genre et orientation (membre), statut (personne ressource ou alliée) : données sensibles, chiffrées",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_0": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.0"
     },
@@ -29602,7 +31531,7 @@
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_2": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.2"
     },
-    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": "Oui",
+    "pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": "Non pour un membre à l’inscription (le consentement est demandé) ; vous pouvez le retirer ensuite",
     "@pages_legal_pages_privacy_sections_1_blocks_1_table_rows_3_3": {
         "description": "pages/legal.pages.privacy.sections.1.blocks.1.table.rows.3.3"
     },
@@ -30062,7 +31991,7 @@
     "@pages_legal_pages_privacy_sections_7_title": {
         "description": "pages/legal.pages.privacy.sections.7.title"
     },
-    "pages_legal_pages_privacy_sections_8_blocks_0": "Xomiton est réservé aux personnes de '{'min_age'}' ans ou plus. À l’inscription, vous confirmez avoir '{'min_age'}' ans ou plus ; nous ne demandons pas de date de naissance. Si nous apprenons qu’une personne plus jeune a créé un compte, nous le supprimons.",
+    "pages_legal_pages_privacy_sections_8_blocks_0": "Xomiton est réservé aux personnes de '{'min_age'}' ans ou plus. À l’inscription, vous indiquez votre âge ; l’accès est refusé en dessous de '{'min_age'}' ans. Nous ne demandons pas de date de naissance. Si nous apprenons qu’une personne plus jeune a créé un compte, nous le supprimons.",
     "@pages_legal_pages_privacy_sections_8_blocks_0": {
         "description": "pages/legal.pages.privacy.sections.8.blocks.0"
     },
@@ -30118,7 +32047,7 @@
     "@pages_legal_pages_terms_sections_1_blocks_0_list_0": {
         "description": "pages/legal.pages.terms.sections.1.blocks.0.list.0"
     },
-    "pages_legal_pages_terms_sections_1_blocks_0_list_1": "Vous choisissez un pseudonyme ; vous n’êtes pas obligé·e d’utiliser votre vrai nom.",
+    "pages_legal_pages_terms_sections_1_blocks_0_list_1": "Vous choisissez un pseudonyme : votre prénom et votre nom ne sont jamais montrés aux autres membres.",
     "@pages_legal_pages_terms_sections_1_blocks_0_list_1": {
         "description": "pages/legal.pages.terms.sections.1.blocks.0.list.1"
     },
@@ -33071,7 +35000,7 @@
     "@profile_progressive_groups_age_title": {
         "description": "profile.progressive.groups.age.title"
     },
-    "profile_progressive_groups_age_why": "Pour te montrer les contenus de ta tranche d’âge et respecter les règles de protection des mineur·es. Jamais affiché.",
+    "profile_progressive_groups_age_why": "Pour te montrer les contenus de ta tranche d’âge. Jamais affiché.",
     "@profile_progressive_groups_age_why": {
         "description": "profile.progressive.groups.age.why"
     },
@@ -33868,7 +35797,7 @@
     "@profile_settings_profile_pseudo": {
         "description": "profile.settings.profile.pseudo"
     },
-    "profile_settings_profile_pseudo_help": "Visible par la communauté. Ton vrai nom n’est jamais demandé.",
+    "profile_settings_profile_pseudo_help": "Visible par la communauté. Ton prénom et ton nom ne le sont jamais.",
     "@profile_settings_profile_pseudo_help": {
         "description": "profile.settings.profile.pseudo_help"
     },
@@ -34434,18 +36363,6 @@
     "@seo_noindex_register_closed": {
         "description": "seo.noindex.register_closed"
     },
-    "seo_noindex_register_step": "Créer mon compte, étape {current} sur {total} – Xomiton",
-    "@seo_noindex_register_step": {
-        "description": "seo.noindex.register_step",
-        "placeholders": {
-            "current": {
-                "type": "String"
-            },
-            "total": {
-                "type": "String"
-            }
-        }
-    },
     "seo_noindex_reset_password": "Nouveau mot de passe – Xomiton",
     "@seo_noindex_reset_password": {
         "description": "seo.noindex.reset_password"
@@ -34526,7 +36443,7 @@
     "@seo_pages_home_title": {
         "description": "seo.pages.home.title"
     },
-    "seo_pages_inscription_description": "Crée ton compte en une étape, avec un pseudonyme et un mot de passe : ton vrai nom n’est jamais demandé. Communauté bienveillante et soutien confidentiel.",
+    "seo_pages_inscription_description": "Crée ton compte en trois étapes, avec un mot de passe fort : seul ton pseudonyme est visible des autres membres. Communauté et soutien confidentiels.",
     "@seo_pages_inscription_description": {
         "description": "seo.pages.inscription.description"
     },
@@ -34558,7 +36475,7 @@
     "@seo_pages_legal_privacy_title": {
         "description": "seo.pages.legal.privacy.title"
     },
-    "seo_pages_legal_terms_description": "Les règles d’utilisation de Xomiton : accès dès 15 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.",
+    "seo_pages_legal_terms_description": "Les règles d’utilisation de Xomiton : accès dès 18 ans, compte, règles de la communauté, limites du service et responsabilités, en langage clair.",
     "@seo_pages_legal_terms_description": {
         "description": "seo.pages.legal.terms.description"
     },
@@ -36219,6 +38136,10 @@
     "@validation_attributes_accuracy": {
         "description": "validation.attributes.accuracy"
     },
+    "validation_attributes_age": "âge",
+    "@validation_attributes_age": {
+        "description": "validation.attributes.age"
+    },
     "validation_attributes_age_confirmed": "confirmation de l’âge",
     "@validation_attributes_age_confirmed": {
         "description": "validation.attributes.age_confirmed"
@@ -36226,6 +38147,14 @@
     "validation_attributes_age_range": "tranche d’âge",
     "@validation_attributes_age_range": {
         "description": "validation.attributes.age_range"
+    },
+    "validation_attributes_ally_role": "statut",
+    "@validation_attributes_ally_role": {
+        "description": "validation.attributes.ally_role"
+    },
+    "validation_attributes_ally_role_other": "précision sur le statut",
+    "@validation_attributes_ally_role_other": {
+        "description": "validation.attributes.ally_role_other"
     },
     "validation_attributes_anonymous": "anonymat",
     "@validation_attributes_anonymous": {
@@ -36250,6 +38179,10 @@
     "validation_attributes_cgu": "conditions d’utilisation",
     "@validation_attributes_cgu": {
         "description": "validation.attributes.cgu"
+    },
+    "validation_attributes_city": "ville",
+    "@validation_attributes_city": {
+        "description": "validation.attributes.city"
     },
     "validation_attributes_client_uuid": "identifiant d’envoi",
     "@validation_attributes_client_uuid": {
@@ -36279,6 +38212,10 @@
     "@validation_attributes_contactable": {
         "description": "validation.attributes.contactable"
     },
+    "validation_attributes_country_code": "pays",
+    "@validation_attributes_country_code": {
+        "description": "validation.attributes.country_code"
+    },
     "validation_attributes_current_password": "mot de passe actuel",
     "@validation_attributes_current_password": {
         "description": "validation.attributes.current_password"
@@ -36303,6 +38240,18 @@
     "@validation_attributes_file": {
         "description": "validation.attributes.file"
     },
+    "validation_attributes_first_name": "prénom",
+    "@validation_attributes_first_name": {
+        "description": "validation.attributes.first_name"
+    },
+    "validation_attributes_gender_identity": "identité de genre",
+    "@validation_attributes_gender_identity": {
+        "description": "validation.attributes.gender_identity"
+    },
+    "validation_attributes_gender_identity_other": "précision sur l’identité de genre",
+    "@validation_attributes_gender_identity_other": {
+        "description": "validation.attributes.gender_identity_other"
+    },
     "validation_attributes_idempotency_key": "clé d’envoi",
     "@validation_attributes_idempotency_key": {
         "description": "validation.attributes.idempotency_key"
@@ -36318,6 +38267,10 @@
     "validation_attributes_kind": "type de dossier",
     "@validation_attributes_kind": {
         "description": "validation.attributes.kind"
+    },
+    "validation_attributes_last_name": "nom",
+    "@validation_attributes_last_name": {
+        "description": "validation.attributes.last_name"
     },
     "validation_attributes_lat": "position",
     "@validation_attributes_lat": {
@@ -36366,6 +38319,14 @@
     "validation_attributes_occurred_on": "date des faits",
     "@validation_attributes_occurred_on": {
         "description": "validation.attributes.occurred_on"
+    },
+    "validation_attributes_orientation": "orientation",
+    "@validation_attributes_orientation": {
+        "description": "validation.attributes.orientation"
+    },
+    "validation_attributes_orientation_other": "précision sur l’orientation",
+    "@validation_attributes_orientation_other": {
+        "description": "validation.attributes.orientation_other"
     },
     "validation_attributes_outcome": "résultat",
     "@validation_attributes_outcome": {
@@ -36599,7 +38560,7 @@
     "@validation_current_password": {
         "description": "validation.current_password"
     },
-    "validation_custom_age_confirmed_accepted": "Pour créer ton compte, confirme que tu as {min_age} ans ou plus.",
+    "validation_custom_age_confirmed_accepted": "Pour créer ton compte, tu dois avoir au moins {min_age} ans.",
     "@validation_custom_age_confirmed_accepted": {
         "description": "validation.custom.age_confirmed.accepted",
         "placeholders": {
@@ -37481,6 +39442,10 @@
     "@validation_phone_bj": {
         "description": "validation.phone_bj"
     },
+    "validation_phone_international": "Saisis un numéro avec l’indicatif du pays, par exemple +33 6 12 34 56 78 (8 à 15 chiffres).",
+    "@validation_phone_international": {
+        "description": "validation.phone_international"
+    },
     "validation_phone_or_email": "Saisis un numéro béninois (+229 01 97 38 88 47) ou une adresse e-mail valide.",
     "@validation_phone_or_email": {
         "description": "validation.phone_or_email"
@@ -37960,5 +39925,9 @@
                 "type": "String"
             }
         }
+    },
+    "validation_zone_in_country": "Cette zone n’appartient pas au pays choisi.",
+    "@validation_zone_in_country": {
+        "description": "validation.zone_in_country"
     }
 }

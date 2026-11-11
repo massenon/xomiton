@@ -20,6 +20,7 @@ use Database\Seeders\SettingsSeeder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
+use Tests\Support\RegistrationFixtures;
 
 /*
  * P12-02 : Inscriptions /admin/inscriptions (Livewire) — `registrations.manage` (admin, superadmin ; 403 pour le
@@ -51,14 +52,7 @@ function regScreen(string $role = 'admin')
 
 function regData(array $overrides = []): RegisterData
 {
-    return new RegisterData(...array_merge([
-        'pseudo' => 'Awa_S',
-        'email' => 'awa@exemple.bj',
-        'password' => 'Xomiton2026!',
-        'acceptsTerms' => true,
-        'acceptsPrivacy' => true,
-        'confirmsAge' => true,
-    ], $overrides));
+    return RegistrationFixtures::data(array_merge(['pseudo' => 'Awa_S', 'email' => 'awa@exemple.bj'], $overrides));
 }
 
 it('sert l’écran à l’admin et au superadmin, le refuse au modérateur, au pair, au membre et aux visiteurs', function (): void {
@@ -180,26 +174,16 @@ it('annonce « hors plage » quand l’interrupteur est ouvert mais la plage fer
     $this->travelBack();
 });
 
-it('crée les comptes en attente quand la validation manuelle vise tous les nouveaux comptes (Q26)', function (): void {
-    expect(RegistrationGate::manualValidation())->toBe('peers');
+it('met tous les nouveaux comptes en attente, sans réglage possible (décision du 11/11/2026)', function (): void {
+    $user = app(RegisterUser::class)(regData());
+    expect($user->status)->toBe(UserStatus::Pending)->and($user->registration_flags)->toBeNull();
 
-    $default = app(RegisterUser::class)(regData());
-    expect($default->status)->toBe(UserStatus::Active);
+    regScreen()->assertDontSee('Validation par l’équipe');
+    expect(Settings::string('reg_manual_validation', 'absent'))->toBe('absent')
+        ->and(RegistrationSettings::current())->not->toHaveKey('manual');
 
-    regScreen()->set('manual', 'all')->call('save')->assertHasNoErrors();
-    expect(RegistrationGate::manualValidation())->toBe('all');
-
-    $manual = app(RegisterUser::class)(regData(['pseudo' => 'Koffi_M', 'email' => 'koffi@exemple.bj']));
-    expect($manual->status)->toBe(UserStatus::Pending);
-
-    regScreen()->set('manual', 'peers')->call('save');
-    expect(RegistrationGate::manualValidation())->toBe('peers');
-});
-
-it('refuse une valeur de validation manuelle inconnue', function (): void {
-    regScreen()->set('manual', 'personne')->call('save')->assertHasErrors(['manual']);
-
-    expect(Settings::string('reg_manual_validation', 'peers'))->toBe('peers');
+    $flagged = app(RegisterUser::class)(regData(['pseudo' => 'Koffi_M', 'email' => 'koffi@mailinator.com']));
+    expect($flagged->status)->toBe(UserStatus::Pending);
 });
 
 it('liste les demandes en attente et les approuve ou les rejette', function (): void {
@@ -222,7 +206,7 @@ it('liste les demandes en attente et les approuve ou les rejette', function (): 
     $screen->assertSee('Aucune demande en attente');
 });
 
-it('approuve une demande de membre en mode « tous » : compte actif et notification', function (): void {
+it('approuve une demande de membre (tous les comptes attendent) : compte actif et notification', function (): void {
     Notification::fake();
     $member = User::factory()->pending()->create();
     $member->syncRoles(['membre']);
@@ -262,7 +246,7 @@ it('compte les inscriptions des huit dernières semaines au fuseau du Bénin', f
 it('lit les réglages par défaut sans erreur', function (): void {
     $current = RegistrationSettings::current();
 
-    expect($current['open'])->toBeTrue()->and($current['manual'])->toBe('peers')->and($current['window_on'])->toBeFalse();
+    expect($current['open'])->toBeTrue()->and($current)->not->toHaveKey('manual')->and($current['window_on'])->toBeFalse();
 });
 
 it('crée une invitation pair avec département et durée depuis /admin/inscriptions', function (): void {

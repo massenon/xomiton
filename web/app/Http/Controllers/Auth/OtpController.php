@@ -17,7 +17,6 @@ use App\Enums\OtpPurpose;
 use App\Http\Controllers\Auth\Support\LoginRedirect;
 use App\Http\Controllers\Auth\Support\PendingLogin;
 use App\Http\Controllers\Auth\Support\PendingReset;
-use App\Http\Controllers\Auth\Support\RegistrationSteps;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResendOtpRequest;
 use App\Http\Requests\Auth\VerifyOtpRequest;
@@ -146,11 +145,7 @@ final class OtpController extends Controller
 
         $verify($user, $request->code());
 
-        $destination = $user->profile === null || (int) $user->profile->completion === 0
-            ? route(RegistrationSteps::ROUTES['profile'])
-            : route('fil');
-
-        return redirect()->to($destination)->with('toast', __('auth.otp_screen.verified'))->with('toast_type', 'success');
+        return redirect()->route('fil')->with('toast', __('auth.otp_screen.verified'))->with('toast_type', 'success');
     }
 
     /**

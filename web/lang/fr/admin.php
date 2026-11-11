@@ -609,6 +609,7 @@ return [
             'alerts' => 'Alertes et signalements',
             'directory' => 'Annuaire dynamique',
             'validation' => 'Règles de validation',
+            'referentials' => 'Référentiels (zones, types de violence, besoins, populations)',
             'indicators' => 'Indicateurs et rapports',
             'moderation' => 'Modération et réseau social (masquer)',
             'content' => 'Contenus et outils CCC (édition)',
@@ -683,7 +684,6 @@ return [
             'reject' => 'Rejeter la demande de :name ? Le compte sera supprimé.',
         ],
         'state' => [
-            'open_peers' => 'Toute personne peut créer un compte. Seules les inscriptions signalées (e-mail jetable, inscriptions répétées) attendent la validation de l’équipe ; le rôle de pair·e éducateur·rice est toujours validé.',
             'open_all' => 'Toute personne peut créer un compte, mais chaque nouveau compte doit être validé par l’équipe.',
             'closed' => 'La page d’inscription affiche le message de fermeture.',
             'outside_window' => 'L’interrupteur est sur « ouvertes », mais nous sommes hors de la plage horaire (:start à :end, heure du Bénin) : la page affiche le message de fermeture.',
@@ -691,12 +691,6 @@ return [
         'immediate' => 'Effet immédiat sur la page d’inscription.',
         'preview' => 'Voir la page',
         'options_title' => 'Options d’inscription',
-        'manual' => [
-            'label' => 'Validation par l’équipe',
-            'peers' => 'Pair·es éducateur·rices seulement (par défaut)',
-            'all' => 'Tous les nouveaux comptes',
-            'help' => 'Un compte de pair·e éducateur·rice doit toujours être validé avant d’accéder à la collecte. Avec « tous », chaque nouveau compte reste en attente jusqu’à votre validation.',
-        ],
         'closed_message' => 'Message affiché quand les inscriptions sont fermées',
         'closed_message_help' => 'Vide : le message par défaut est affiché.',
         'counter' => ':count / :max caractères',
@@ -713,6 +707,14 @@ return [
         'signups' => 'Inscriptions',
         'week_label' => 'Sem. du :date',
         'pending' => 'Demandes en attente',
+        // Informations utiles à la validation (jamais l'orientation ni l'identité de genre : données sensibles chiffrées).
+        'details' => [
+            'age' => ':age ans',
+            'member' => 'Membre de la communauté',
+            'ally' => 'Personne ressource / allié·e',
+            'ally_role' => 'Statut : :role',
+            'ally_role_other' => '(:other)',
+        ],
         'flags' => [
             'disposable_email' => 'Adresse e-mail jetable',
             'repeated_fingerprint' => 'Inscriptions répétées',
@@ -737,7 +739,7 @@ return [
         'reject_reason' => 'Motif écrit pour la personne (facultatif)',
         'invitations' => [
             'title' => 'Inviter dans l’équipe',
-            'help' => 'Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (case « 15 ans » comprise) et reçoit le rôle une fois son compte validé.',
+            'help' => 'Le lien ou le code est valable une seule fois. La personne crée son compte membre comme tout le monde (âge minimal compris) et reçoit le rôle une fois son compte validé.',
             'role' => 'Rôle',
             'email' => 'Adresse e-mail (facultative, lie l’invitation)',
             'note' => 'Note interne',

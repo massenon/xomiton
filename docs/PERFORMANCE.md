@@ -175,3 +175,21 @@ Chiffres du FCP froid : ils restent dominés par la bande passante simulée (CSS
 Limites : mesure locale sans CDN ni HTTP/2 ; le chargement « sous 2 s » n'est tenu que sur réseau normal (les chiffres ci-dessus sont ceux d'un réseau 4G lent simulé) ; à refaire en production (PageSpeed Insights) après déploiement. Sans compression (serveur de développement `php -S`), le CSS de 457 Ko pèse tout et la performance tombe à 57–66 : la compression du serveur d'hébergement (`mod_deflate` / `mod_brotli`, déjà dans `.htaccess`) est indispensable.
 
 Correctifs de l'audit : `title` manquant sur les badges des boutiques (accueil) ; ancres sans `href` du panneau SOS (`/sos`, liens remplis par Alpine) dotées d'un `href` de repli vers `/sos` ; police de secours `Montserrat Fallback` aux métriques ajustées dans le CSS critique (limite le décalage au changement de police).
+
+### Pages dynamiques (11/11/2026)
+
+`SeoDynamicPagesAuditTest` applique les mêmes contrôles qu'aux pages statiques à une fiche d'actualité, de ressource, de thématique, d'aide et à un événement public (passé ou à venir), plus : schéma Schema.org du type (`NewsArticle` ; `Article` pour ressource et thématique ; `Event` avec dates, statut, mode de participation, lieu **sans adresse exacte**, image, organisateur ; `CollectionPage` sur `/evenements`, `FAQPage` sur `/aide`), fil d'Ariane passant par la liste, titre très long coupé à 70 caractères, brouillons en 404.
+
+Mêmes conditions de mesure que ci-dessus (Lighthouse 12, mobile, 4G lente simulée, Brotli) :
+
+| Page | Perf. | Access. | Bonnes pratiques | SEO | FCP | LCP | CLS |
+|---|---|---|---|---|---|---|---|
+| Actualité | 91 | 100 | 100 | 100 | 2,4 s | 3,1 s | 0 |
+| Ressource | 92 | 100 | 100 | 100 | 2,3 s | 3,0 s | 0 |
+| Thématique | 91 | 100 | 100 | 100 | 2,1 s | 3,2 s | 0,002 |
+| Aide | 93 | 100 | 100 | 100 | 2,3 s | 2,8 s | 0 |
+| Événement | 93 | 100 | 100 | 100 | 2,1 s | 2,9 s | 0,003 |
+
+Défaut trouvé et corrigé : le corps éditorial (profil Purifier `content` : h2, h3, h4) pouvait sauter des niveaux (h1 → h4, ou h2 → h4) sur les trois types de fiches. `App\Support\HeadingOutline::normalize()` ramène à l'affichage chaque intertitre à « au plus un niveau sous le précédent » (le contenu stocké n'est pas modifié ; remonter reste libre).
+
+Non couvert : images téléversées dans le corps (le profil `content` n'autorise pas `img`) et fiches avec médias vidéo/PDF (`/ressources/{slug}/lire`, `/telecharger`), qui ne sont pas des pages HTML indexables.

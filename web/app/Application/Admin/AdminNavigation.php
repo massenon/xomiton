@@ -44,6 +44,7 @@ final class AdminNavigation
         ],
         'cases' => [
             ['alertes', 'bell', 'alerts', 'alerts.view', 'alerts_new'],
+            ['garde', 'calendar-week', 'on_call', 'on_call.manage'],
             ['registres', 'journal-bookmark', 'registers', 'cases.view_all'],
             ['fiches', 'file-earmark-medical', 'forms', 'case_forms.manage'],
             ['suivi', 'person-heart', 'followup', 'case_followups.manage'],
@@ -60,6 +61,7 @@ final class AdminNavigation
         ],
         'data' => [
             ['validation', 'patch-check', 'validation', 'validation_rules.manage'],
+            ['referentiels', 'list-check', 'referentials', 'referentials.manage'],
             ['synchronisation', 'cloud-arrow-up', 'sync', 'sync.manage'],
         ],
         'reports' => [

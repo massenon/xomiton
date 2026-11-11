@@ -9,6 +9,7 @@ use App\Application\Account\Profile\ProgressiveProfileState;
 use App\Application\Feed\FeedComposerOptions;
 use App\Application\Feed\Queries\UserPostsQuery;
 use App\Application\Shared\Referentials;
+use App\Domain\Account\MemberAgeRanges;
 use App\Enums\AgeRange;
 use App\Enums\MemberType;
 use App\Http\Controllers\Controller;
@@ -208,7 +209,7 @@ final class ProfilePageController extends Controller
             ],
             'options' => [
                 'member_types' => array_map(static fn (MemberType $type): array => ['value' => $type->value, 'label' => $type->label()], [MemberType::Member, MemberType::Peer]),
-                'age_ranges' => array_map(static fn (AgeRange $range): array => ['value' => $range->value, 'label' => $range->label()], AgeRange::cases()),
+                'age_ranges' => array_map(static fn (AgeRange $range): array => ['value' => $range->value, 'label' => $range->label()], MemberAgeRanges::cases()),
                 'zones' => array_map(static fn (array $zone): array => [
                     'id' => $zone['id'],
                     'name' => $zone['name'],

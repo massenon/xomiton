@@ -19,7 +19,7 @@ Légende : **fait** = codé, testé, rien à ajouter côté code · **partiel** 
 | P8 Communauté et profil | partiel | P8-01 (filtre de mots), P8-09 (PIN web), P8-12 (médiathèque, `/ccc`, « Mes signalements ») |
 | P9 Espace pair et synchro | partiel | P9-04 précache SW de `/collecte` (lot `pwa-pair`), P9-08 indicateurs pair et appareils synchronisés |
 | P10 Admin socle et pilotage | partiel | P10-01 filtres globaux `saved_filters` ; P10-06 balise de contenu non câblée dans les pages publiques |
-| P11 Admin données | partiel | P11-02 : édition d'une fiche déjà créée (absente du code) |
+| P11 Admin données | fait | édition d'une fiche livrée le 11/11/2026 |
 | P12 Admin plateforme | fait | conformité visuelle non contrôlée en navigateur |
 | P13 Admin système | fait | idem |
 | P14 Communication | recette | P14-04 : transport HTTP réel Facebook / Telegram à écrire ; TikTok sans connecteur |
@@ -54,7 +54,7 @@ Pest 2663 était le dernier chiffre noté dans le plan (26/10) ; 2755 vient du d
 
 ### 4.1 Code (sans dépendance externe)
 1. P3-07 : `notifications:digest` (le réglage `daily` / `weekly` n'a aucun effet) et `alerts:anonymize`.
-2. P11-02 : édition d'une fiche déjà créée.
+2. P11-02 : édition d'une fiche déjà créée (livrée le 11/11/2026, sans reste).
 3. P0-06 : jobs CI `e2e` (Playwright + axe) et `lighthouse` (`lighthouserc.json`) ; `grep fa-` en CI.
 4. P14-04 : transport HTTP réel Graph API / Bot API (sous réserve de Q7 et de jetons).
 5. P10-06 : émettre la balise `POST /evenements-contenu/{type}` depuis les pages publiques (5 lignes du tableau « Contenu » à 0).

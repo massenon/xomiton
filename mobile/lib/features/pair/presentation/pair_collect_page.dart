@@ -8,6 +8,8 @@ import '../../../core/l10n/app_strings.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/dates.dart';
+import '../../auth/application/pending_validation.dart';
+import '../../auth/presentation/pending_widgets.dart';
 import '../application/collect_controller.dart';
 import '../application/collect_logic.dart';
 import '../application/pair_providers.dart';
@@ -61,6 +63,7 @@ class _PairCollectPageState extends ConsumerState<PairCollectPage> {
       title: context.t('peer_collecte_title'),
       child: Builder(
         builder: (context) {
+          if (ref.watch(pendingValidationProvider)) return const PendingNotice();
           if (state.result != null) return _ResultView(result: state.result!, onNotesReset: () => _notes.clear());
           if (rulesA.isLoading || listsA.isLoading) return const LoadingView();
           final rules = rulesA.valueOrNull ?? const ValidationRules();
