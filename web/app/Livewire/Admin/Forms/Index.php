@@ -9,6 +9,7 @@ use App\Application\Cases\CaseFormSheet;
 use App\Application\Cases\Data\CaseFormInput;
 use App\Application\Cases\DeleteCaseForm;
 use App\Application\Cases\SaveCaseForm;
+use App\Application\Cases\UpdateCaseForm;
 use App\Domain\Cases\CaseCode;
 use App\Domain\Cases\Exceptions\CaseLocked;
 use App\Enums\CaseStatus;
@@ -36,8 +37,10 @@ use Livewire\Component;
  * Fiches de référence VBG / VDH `/admin/fiches` (P11-02, prototype admin/fiches.php) : création liée à un dossier
  * existant (SaveCaseForm : référence `FR-AAAA-nnnn`, identification pseudonymisée reprise du dossier), cinq sections
  * (identification, faits, **sept services reçus**, orientation urgente vers l'annuaire, consentement écrit ou oral et
- * partage), lecture (modale), **impression A4 / PDF côté serveur** (CaseFormPdfController, pied « Confidentiel »,
- * ADR-23) et suppression journalisée (DeleteCaseForm). Le consentement de la personne est obligatoire.
+ * partage), **modification dans la même modale** (UpdateCaseForm : dossier et référence immuables ; récit, auteur·e des faits,
+ * précisions et signataire, chiffrés, ne sont jamais recopiés dans le formulaire : champ vide = inchangé, case « effacer »
+ * pour les trois facultatifs), lecture (modale), **impression A4 / PDF côté serveur** (CaseFormPdfController, pied
+ * « Confidentiel », ADR-23) et suppression journalisée (DeleteCaseForm). Le consentement de la personne est obligatoire.
  *
  * Réservé à `case_forms.manage` ; les fiches suivent le périmètre des dossiers (CaseRecordScope) et ne concernent que les
  * dossiers non archivés. La liste n'affiche ni récit, ni auteur·e des faits, ni signataire (colonnes chiffrées) et ne les
@@ -70,6 +73,17 @@ final class Index extends Component
      */
     public array $form = [];
 
+    /** Fiche modifiée dans la modale (0 : création) ; verrouillée, jamais modifiable depuis le navigateur. */
+    #[Locked]
+    public int $editId = 0;
+
+    /**
+     * Modification : champs chiffrés facultatifs à effacer (champ vide = texte actuel conservé), clés de UpdateCaseForm::CLEARABLE.
+     *
+     * @var array<string, bool>
+     */
+    public array $clear = [];
+
     /** Fiche ouverte dans la modale « Détail » ; verrouillée. */
     #[Locked]
     public int $detailId = 0;
@@ -84,6 +98,7 @@ final class Index extends Component
     public function mount(): void
     {
         $this->form = $this->blankForm();
+        $this->clear = $this->blankClear();
     }
 
     protected function sortableColumns(): array
@@ -138,12 +153,66 @@ final class Index extends Component
     {
         $this->authorize('create', CaseForm::class);
         $this->resetErrorBag();
+        $this->editId = 0;
+        $this->clear = $this->blankClear();
         $this->form = $this->blankForm();
         $this->openModal(self::FORM_MODAL);
     }
 
-    public function save(SaveCaseForm $save, CaseFormRules $rules): void
+    /**
+     * Ouvre la fiche dans la même modale. Les colonnes chiffrées (récit, auteur·e des faits, précisions, signataire) ne sont
+     * jamais recopiées : aucune donnée déchiffrée dans l'état de la page ni dans le HTML.
+     */
+    public function openEdit(int $id): void
     {
+        $form = $this->find($id);
+
+        if ($form === null) {
+            return;
+        }
+
+        $this->authorize('update', $form);
+        $case = $form->case;
+
+        if ($case === null || $case->isAnonymized() || $case->status === CaseStatus::Archived) {
+            $this->toast((string) __('admin_data.forms.errors.locked_form'), 'error');
+
+            return;
+        }
+
+        $identification = is_array($form->identification) ? $form->identification : [];
+        $this->resetErrorBag();
+        $this->editId = (int) $form->getKey();
+        $this->clear = $this->blankClear();
+        $this->form = [
+            'case_code' => $case->code,
+            'pseudo' => is_string($identification['pseudo'] ?? null) ? $identification['pseudo'] : '',
+            'facts_date' => $form->facts_date?->format('Y-m-d') ?? '',
+            'facts_place' => (string) $form->facts_place,
+            'facts_author' => '',
+            'facts_description' => '',
+            'services' => CaseFormRules::services((array) $form->services),
+            'services_note' => '',
+            'referral_contact_id' => $form->referral_contact_id === null ? '' : (string) $form->referral_contact_id,
+            'referral_date' => $form->referral_date?->format('Y-m-d') ?? '',
+            'referral_reason' => (string) $form->referral_reason,
+            'referral_urgency' => $form->referral_urgency ?? 'normale',
+            'consent_given' => $form->consent_given,
+            'consent_mode' => $form->consent_mode,
+            'consent_sharing' => $form->consent_sharing,
+            'consent_signatory' => '',
+        ];
+        $this->openModal(self::FORM_MODAL);
+    }
+
+    public function save(SaveCaseForm $save, UpdateCaseForm $update, CaseFormRules $rules): void
+    {
+        if ($this->editId !== 0) {
+            $this->saveEdit($update, $rules);
+
+            return;
+        }
+
         $user = $this->user();
         $data = [];
 
@@ -176,6 +245,43 @@ final class Index extends Component
         $this->resetPage();
         $this->toast((string) __('admin_data.forms.toasts.created', ['reference' => $form->reference]));
         $this->openDetail((int) $form->getKey(), false);
+    }
+
+    /** Enregistre la modification de la fiche ouverte (`editId`) : mêmes règles que la création, vide = inchangé. */
+    private function saveEdit(UpdateCaseForm $update, CaseFormRules $rules): void
+    {
+        $user = $this->user();
+        $form = $this->find($this->editId);
+
+        if ($form === null) {
+            return;
+        }
+
+        $this->authorize('update', $form);
+        $data = [];
+
+        foreach ($this->form as $key => $value) {
+            $data[(string) $key] = is_string($value) ? (trim($value) === '' ? null : trim($value)) : $value;
+        }
+
+        unset($data['case_code']);
+        $validated = $this->validateForm('form', $data, $rules->rules($form), $this->fieldNames());
+        $clear = array_values(array_intersect(array_keys(array_filter($this->clear)), UpdateCaseForm::CLEARABLE));
+
+        try {
+            $update($user, $form, CaseFormInput::fromValidated($validated), $clear);
+        } catch (CaseLocked) {
+            $this->toast((string) __('admin_data.forms.errors.locked_form'), 'error');
+
+            return;
+        }
+
+        $this->closeModal(self::FORM_MODAL);
+        $this->editId = 0;
+        $this->clear = $this->blankClear();
+        $this->form = $this->blankForm();
+        unset($this->detail);
+        $this->toast((string) __('admin_data.forms.toasts.updated', ['reference' => $form->reference]));
     }
 
     public function openDetail(int $id, bool $audit = true): void
@@ -225,6 +331,13 @@ final class Index extends Component
     }
 
     // --- Données de la vue ---------------------------------------------------------------------------------------------
+
+    /** Référence de la fiche modifiée (titre de la modale) ; null en création. */
+    #[Computed]
+    public function editReference(): ?string
+    {
+        return $this->editId === 0 ? null : CaseForm::query()->whereKey($this->editId)->value('reference');
+    }
 
     /**
      * Dossier visé par le formulaire (code saisi) : sa description pseudonymisée, jamais ses notes.
@@ -346,6 +459,14 @@ final class Index extends Component
             ->where('code', $parsed->value())
             ->where('status', '!=', CaseStatus::Archived->value)
             ->first();
+    }
+
+    /**
+     * @return array<string, bool>
+     */
+    private function blankClear(): array
+    {
+        return array_fill_keys(UpdateCaseForm::CLEARABLE, false);
     }
 
     /**
