@@ -5349,47 +5349,121 @@
     "@admin_assistant_toasts_resolved": {
         "description": "admin_assistant.toasts.resolved"
     },
-    "admin_ccc_alts_help": "Décrivez chaque planche en une phrase pour les personnes qui ne la voient pas ({max} caractères au plus).",
-    "@admin_ccc_alts_help": {
-        "description": "admin_ccc.alts.help",
-        "placeholders": {
-            "max": {
-                "type": "String"
-            }
-        }
-    },
-    "admin_ccc_alts_open": "Planches",
-    "@admin_ccc_alts_open": {
-        "description": "admin_ccc.alts.open"
-    },
-    "admin_ccc_alts_page": "Planche {number}",
-    "@admin_ccc_alts_page": {
-        "description": "admin_ccc.alts.page",
-        "placeholders": {
-            "number": {
-                "type": "String"
-            }
-        }
-    },
-    "admin_ccc_alts_save": "Enregistrer",
-    "@admin_ccc_alts_save": {
-        "description": "admin_ccc.alts.save"
-    },
-    "admin_ccc_alts_title": "Textes alternatifs : {title}",
-    "@admin_ccc_alts_title": {
-        "description": "admin_ccc.alts.title",
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
     "admin_ccc_chapters": "{count, plural, =0{Aucun chapitre} =1{1 chapitre} other{{count} chapitres}}",
     "@admin_ccc_chapters": {
         "description": "admin_ccc.chapters",
         "placeholders": {
             "count": {
                 "type": "int"
+            }
+        }
+    },
+    "admin_ccc_comic_cover_help": "JPG, PNG ou WebP, 5 Mo au plus.",
+    "@admin_ccc_comic_cover_help": {
+        "description": "admin_ccc.comic.cover_help"
+    },
+    "admin_ccc_comic_cover_label": "Image de couverture (facultatif)",
+    "@admin_ccc_comic_cover_label": {
+        "description": "admin_ccc.comic.cover_label"
+    },
+    "admin_ccc_comic_create": "Créer la BD",
+    "@admin_ccc_comic_create": {
+        "description": "admin_ccc.comic.create"
+    },
+    "admin_ccc_comic_create_title": "Nouvelle bande dessinée",
+    "@admin_ccc_comic_create_title": {
+        "description": "admin_ccc.comic.create_title"
+    },
+    "admin_ccc_comic_draft_add": "Ajouter une planche",
+    "@admin_ccc_comic_draft_add": {
+        "description": "admin_ccc.comic.draft_add"
+    },
+    "admin_ccc_comic_draft_help": "Vous pourrez ajouter, retirer et réordonner les planches plus tard.",
+    "@admin_ccc_comic_draft_help": {
+        "description": "admin_ccc.comic.draft_help"
+    },
+    "admin_ccc_comic_draft_legend": "Planche {number}",
+    "@admin_ccc_comic_draft_legend": {
+        "description": "admin_ccc.comic.draft_legend",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_comic_draft_remove": "Retirer cette planche",
+    "@admin_ccc_comic_draft_remove": {
+        "description": "admin_ccc.comic.draft_remove"
+    },
+    "admin_ccc_comic_draft_title": "Planches de départ (facultatif)",
+    "@admin_ccc_comic_draft_title": {
+        "description": "admin_ccc.comic.draft_title"
+    },
+    "admin_ccc_comic_edit_open": "Titre",
+    "@admin_ccc_comic_edit_open": {
+        "description": "admin_ccc.comic.edit_open"
+    },
+    "admin_ccc_comic_edit_title": "Modifier le titre : {title}",
+    "@admin_ccc_comic_edit_title": {
+        "description": "admin_ccc.comic.edit_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_comic_key": "Clé publique : {key}",
+    "@admin_ccc_comic_key": {
+        "description": "admin_ccc.comic.key",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_comic_new": "Nouvelle BD",
+    "@admin_ccc_comic_new": {
+        "description": "admin_ccc.comic.new"
+    },
+    "admin_ccc_comic_published_help": "Une BD ne se publie qu’avec au moins une planche. Sinon, elle reste masquée.",
+    "@admin_ccc_comic_published_help": {
+        "description": "admin_ccc.comic.published_help"
+    },
+    "admin_ccc_comic_published_label": "Publier la BD tout de suite",
+    "@admin_ccc_comic_published_label": {
+        "description": "admin_ccc.comic.published_label"
+    },
+    "admin_ccc_comic_save": "Enregistrer",
+    "@admin_ccc_comic_save": {
+        "description": "admin_ccc.comic.save"
+    },
+    "admin_ccc_comic_title_help": "{max} caractères au plus. La clé publique (bd1, bd2…) est générée automatiquement et ne change plus.",
+    "@admin_ccc_comic_title_help": {
+        "description": "admin_ccc.comic.title_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_comic_title_label": "Titre",
+    "@admin_ccc_comic_title_label": {
+        "description": "admin_ccc.comic.title_label"
+    },
+    "admin_ccc_delete_open": "Supprimer",
+    "@admin_ccc_delete_open": {
+        "description": "admin_ccc.delete.open"
+    },
+    "admin_ccc_delete_text": "La BD, sa couverture et ses planches seront supprimées définitivement. Cette action est irréversible.",
+    "@admin_ccc_delete_text": {
+        "description": "admin_ccc.delete.text"
+    },
+    "admin_ccc_delete_title": "Supprimer la BD « {title} » ?",
+    "@admin_ccc_delete_title": {
+        "description": "admin_ccc.delete.title",
+        "placeholders": {
+            "title": {
+                "type": "String"
             }
         }
     },
@@ -5472,6 +5546,126 @@
             }
         }
     },
+    "admin_ccc_planches_add": "Ajouter la planche",
+    "@admin_ccc_planches_add": {
+        "description": "admin_ccc.planches.add"
+    },
+    "admin_ccc_planches_add_title": "Ajouter une planche",
+    "@admin_ccc_planches_add_title": {
+        "description": "admin_ccc.planches.add_title"
+    },
+    "admin_ccc_planches_alt": "Texte alternatif",
+    "@admin_ccc_planches_alt": {
+        "description": "admin_ccc.planches.alt"
+    },
+    "admin_ccc_planches_alt_help": "Décrivez la planche en une phrase pour les personnes qui ne la voient pas ({max} caractères au plus).",
+    "@admin_ccc_planches_alt_help": {
+        "description": "admin_ccc.planches.alt_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_caption": "Légende (facultatif)",
+    "@admin_ccc_planches_caption": {
+        "description": "admin_ccc.planches.caption"
+    },
+    "admin_ccc_planches_down": "Descendre",
+    "@admin_ccc_planches_down": {
+        "description": "admin_ccc.planches.down"
+    },
+    "admin_ccc_planches_empty": "Cette BD n’a pas encore de planche.",
+    "@admin_ccc_planches_empty": {
+        "description": "admin_ccc.planches.empty"
+    },
+    "admin_ccc_planches_image": "Image de la planche",
+    "@admin_ccc_planches_image": {
+        "description": "admin_ccc.planches.image"
+    },
+    "admin_ccc_planches_image_help": "JPG, PNG ou WebP, 5 Mo au plus.",
+    "@admin_ccc_planches_image_help": {
+        "description": "admin_ccc.planches.image_help"
+    },
+    "admin_ccc_planches_intro": "Les planches s’affichent dans l’ordre de cette liste. Le texte alternatif décrit la planche pour les personnes qui ne la voient pas ({max} caractères au plus, obligatoire).",
+    "@admin_ccc_planches_intro": {
+        "description": "admin_ccc.planches.intro",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_legend": "Planche {number} sur {total}",
+    "@admin_ccc_planches_legend": {
+        "description": "admin_ccc.planches.legend",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_list_label": "Planches de la BD",
+    "@admin_ccc_planches_list_label": {
+        "description": "admin_ccc.planches.list_label"
+    },
+    "admin_ccc_planches_moved": "Planche déplacée en position {position} sur {total}.",
+    "@admin_ccc_planches_moved": {
+        "description": "admin_ccc.planches.moved",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_open": "Planches",
+    "@admin_ccc_planches_open": {
+        "description": "admin_ccc.planches.open"
+    },
+    "admin_ccc_planches_remove": "Retirer",
+    "@admin_ccc_planches_remove": {
+        "description": "admin_ccc.planches.remove"
+    },
+    "admin_ccc_planches_remove_confirm": "Retirer la planche {number} ? Son image sera supprimée.",
+    "@admin_ccc_planches_remove_confirm": {
+        "description": "admin_ccc.planches.remove_confirm",
+        "placeholders": {
+            "number": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_remove_no": "Garder",
+    "@admin_ccc_planches_remove_no": {
+        "description": "admin_ccc.planches.remove_no"
+    },
+    "admin_ccc_planches_remove_yes": "Oui, retirer",
+    "@admin_ccc_planches_remove_yes": {
+        "description": "admin_ccc.planches.remove_yes"
+    },
+    "admin_ccc_planches_save": "Enregistrer les légendes et les textes",
+    "@admin_ccc_planches_save": {
+        "description": "admin_ccc.planches.save"
+    },
+    "admin_ccc_planches_title": "Planches : {title}",
+    "@admin_ccc_planches_title": {
+        "description": "admin_ccc.planches.title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_planches_up": "Monter",
+    "@admin_ccc_planches_up": {
+        "description": "admin_ccc.planches.up"
+    },
     "admin_ccc_published": "Publié",
     "@admin_ccc_published": {
         "description": "admin_ccc.published"
@@ -5500,9 +5694,27 @@
     "@admin_ccc_title": {
         "description": "admin_ccc.title"
     },
-    "admin_ccc_toasts_alts": "Textes alternatifs de « {title} » enregistrés.",
-    "@admin_ccc_toasts_alts": {
-        "description": "admin_ccc.toasts.alts",
+    "admin_ccc_toasts_comic_created": "BD « {title} » créée.",
+    "@admin_ccc_toasts_comic_created": {
+        "description": "admin_ccc.toasts.comic_created",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_comic_deleted": "BD « {title} » supprimée.",
+    "@admin_ccc_toasts_comic_deleted": {
+        "description": "admin_ccc.toasts.comic_deleted",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_comic_renamed": "Titre de la BD « {title} » enregistré.",
+    "@admin_ccc_toasts_comic_renamed": {
+        "description": "admin_ccc.toasts.comic_renamed",
         "placeholders": {
             "title": {
                 "type": "String"
@@ -5512,6 +5724,33 @@
     "admin_ccc_toasts_image": "Image de « {title} » remplacée.",
     "@admin_ccc_toasts_image": {
         "description": "admin_ccc.toasts.image",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_page_added": "Planche ajoutée à « {title} ».",
+    "@admin_ccc_toasts_page_added": {
+        "description": "admin_ccc.toasts.page_added",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_page_removed": "Planche retirée de « {title} ».",
+    "@admin_ccc_toasts_page_removed": {
+        "description": "admin_ccc.toasts.page_removed",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_ccc_toasts_pages_saved": "Planches de « {title} » enregistrées.",
+    "@admin_ccc_toasts_pages_saved": {
+        "description": "admin_ccc.toasts.pages_saved",
         "placeholders": {
             "title": {
                 "type": "String"
@@ -5783,6 +6022,24 @@
             }
         }
     },
+    "admin_content_errors_alt_required": "Le texte alternatif de la planche est obligatoire ({max} caractères au plus).",
+    "@admin_content_errors_alt_required": {
+        "description": "admin_content.errors.alt_required",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_caption_long": "La légende est limitée à {max} caractères.",
+    "@admin_content_errors_caption_long": {
+        "description": "admin_content.errors.caption_long",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
     "admin_content_errors_category_in_use": "Cette catégorie est encore utilisée par des contenus : désactivez-la plutôt que de la supprimer.",
     "@admin_content_errors_category_in_use": {
         "description": "admin_content.errors.category_in_use"
@@ -5790,6 +6047,19 @@
     "admin_content_errors_channel_in_use": "Des publications planifiées ({count}) visent encore ce réseau : annulez-les ou retirez-les d’abord.",
     "@admin_content_errors_channel_in_use": {
         "description": "admin_content.errors.channel_in_use",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_comic_empty": "Une BD sans planche ne peut pas être publiée : ajoutez d’abord une planche.",
+    "@admin_content_errors_comic_empty": {
+        "description": "admin_content.errors.comic_empty"
+    },
+    "admin_content_errors_comic_scheduled": "Des publications planifiées ({count}) reprennent encore cette BD : annulez-les ou retirez-les d’abord dans les passerelles.",
+    "@admin_content_errors_comic_scheduled": {
+        "description": "admin_content.errors.comic_scheduled",
         "placeholders": {
             "count": {
                 "type": "String"
@@ -5819,6 +6089,10 @@
     "admin_content_errors_kind_without_file": "Ce type de ressource n’a pas de fichier à téléverser.",
     "@admin_content_errors_kind_without_file": {
         "description": "admin_content.errors.kind_without_file"
+    },
+    "admin_content_errors_last_page_published": "Une BD publiée garde au moins une planche : masquez-la d’abord.",
+    "@admin_content_errors_last_page_published": {
+        "description": "admin_content.errors.last_page_published"
     },
     "admin_content_errors_link_missing": "Indiquez l’adresse du lien : sans adresse, la ressource ne peut pas être publiée.",
     "@admin_content_errors_link_missing": {
@@ -5850,6 +6124,10 @@
     "@admin_content_errors_no_network": {
         "description": "admin_content.errors.no_network"
     },
+    "admin_content_errors_not_comic": "Cette action ne concerne que les bandes dessinées.",
+    "@admin_content_errors_not_comic": {
+        "description": "admin_content.errors.not_comic"
+    },
     "admin_content_errors_og_size": "L’image de partage doit mesurer exactement {width} × {height} pixels.",
     "@admin_content_errors_og_size": {
         "description": "admin_content.errors.og_size",
@@ -5858,6 +6136,23 @@
                 "type": "String"
             },
             "width": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_page_missing": "Cette planche n’existe plus : fermez la fenêtre et rouvrez-la pour voir la liste à jour.",
+    "@admin_content_errors_page_missing": {
+        "description": "admin_content.errors.page_missing"
+    },
+    "admin_content_errors_pages_changed": "Les planches ont changé entre-temps : fermez la fenêtre et rouvrez-la pour voir la liste à jour.",
+    "@admin_content_errors_pages_changed": {
+        "description": "admin_content.errors.pages_changed"
+    },
+    "admin_content_errors_pages_max": "Une BD ne peut pas dépasser {max} planches.",
+    "@admin_content_errors_pages_max": {
+        "description": "admin_content.errors.pages_max",
+        "placeholders": {
+            "max": {
                 "type": "String"
             }
         }
@@ -5881,6 +6176,15 @@
     "admin_content_errors_subtitles_invalid": "Les sous-titres doivent être un fichier WebVTT (.vtt) de 512 Ko au plus, qui commence par « WEBVTT ».",
     "@admin_content_errors_subtitles_invalid": {
         "description": "admin_content.errors.subtitles_invalid"
+    },
+    "admin_content_errors_title_invalid": "Le titre est obligatoire ({max} caractères au plus).",
+    "@admin_content_errors_title_invalid": {
+        "description": "admin_content.errors.title_invalid",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
     },
     "admin_content_errors_too_many_words": "La réponse ne doit pas dépasser {max} mots.",
     "@admin_content_errors_too_many_words": {
@@ -27441,6 +27745,26 @@
     "pages_accueil_alerte_title_2": "Alertez en quelques secondes.",
     "@pages_accueil_alerte_title_2": {
         "description": "pages/accueil.alerte.title_2"
+    },
+    "pages_accueil_application_app_store_alt": "App Store : application bientôt disponible",
+    "@pages_accueil_application_app_store_alt": {
+        "description": "pages/accueil.application.app_store_alt"
+    },
+    "pages_accueil_application_badge": "Bientôt disponible",
+    "@pages_accueil_application_badge": {
+        "description": "pages/accueil.application.badge"
+    },
+    "pages_accueil_application_google_play_alt": "Google Play : application bientôt disponible",
+    "@pages_accueil_application_google_play_alt": {
+        "description": "pages/accueil.application.google_play_alt"
+    },
+    "pages_accueil_application_text": "L’application Xomiton sera bientôt disponible sur toutes les plateformes, sur iPhone comme sur Android : alerte et SOS en un geste, fil d’actualité, communauté et ressources, avec les mêmes protections de votre vie privée que sur le site.",
+    "@pages_accueil_application_text": {
+        "description": "pages/accueil.application.text"
+    },
+    "pages_accueil_application_title": "Xomiton arrive sur votre téléphone",
+    "@pages_accueil_application_title": {
+        "description": "pages/accueil.application.title"
     },
     "pages_accueil_cta_free": "Gratuit",
     "@pages_accueil_cta_free": {

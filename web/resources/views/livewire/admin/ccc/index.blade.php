@@ -1,7 +1,9 @@
 {{--
     Outils CCC (P12-04) : composant App\Livewire\Admin\Ccc\Index, gabarit admin.
-    Ordre : introduction · KPI · onglets (Manuel, Boîtes à images, BD SSR, Lois) · cartes · modales (image, planches).
-    Un outil masqué disparaît des écrans membre et pair ; l'image remplacée garde un texte alternatif par planche.
+    Ordre : introduction · KPI · onglets (Manuel, Boîtes à images, BD SSR, Lois) · cartes · modales (image, BD, planches, suppression).
+    Un outil masqué disparaît des écrans membre et pair ; une BD se crée, se renomme, se supprime et gère ses planches (ajout,
+    retrait, légende, texte alternatif obligatoire, ordre par boutons « Monter » / « Descendre » au clavier).
+    Focus : à l'ouverture d'une modale il va sur le premier champ (data-xm-autofocus), à la fermeture il revient au bouton qui l'a ouverte.
 --}}
 @php
     $tabMeta = [
@@ -59,7 +61,12 @@
         </section>
     @else
         <section aria-labelledby="xmCccToolsTitle">
-            <h2 class="h6 fw-bold mb-3" id="xmCccToolsTitle">{{ __('admin_ccc.tabs.'.$tab) }}</h2>
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <h2 class="h6 fw-bold mb-0" id="xmCccToolsTitle" tabindex="-1">{{ __('admin_ccc.tabs.'.$tab) }}</h2>
+                @if ($tab === 'bd')
+                    <button type="button" class="btn btn-sm btn-primary" wire:click="openCreate"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.comic.new') }}</button>
+                @endif
+            </div>
             <div class="row g-3">
                 @forelse ($this->tools as $tool)
                     <div class="col-md-6 col-xl-4" wire:key="tool-{{ $tool->id }}">
@@ -77,7 +84,7 @@
                                     @if ($tool->kind === \App\Enums\CccKind::Manual)
                                         {{ trans_choice('admin_ccc.chapters', count((array) $tool->chapters), ['count' => count((array) $tool->chapters)]) }}@if ($tool->duration_minutes) · {{ __('admin_ccc.minutes', ['count' => $tool->duration_minutes]) }}@endif
                                     @elseif ($tool->kind === \App\Enums\CccKind::Comic)
-                                        {{ trans_choice('admin_ccc.pages', $tool->pagesCount(), ['count' => $tool->pagesCount()]) }}
+                                        {{ trans_choice('admin_ccc.pages', $tool->pagesCount(), ['count' => $tool->pagesCount()]) }} · {{ __('admin_ccc.comic.key', ['key' => $tool->key]) }}
                                     @else
                                         {{ $tool->description }}
                                     @endif
@@ -90,9 +97,13 @@
                                 </div>
                                 <div class="ms-auto d-flex flex-wrap gap-1">
                                     @if ($tool->kind === \App\Enums\CccKind::Comic)
-                                        <button type="button" class="btn btn-sm btn-outline-primary" wire:click="openAlts({{ $tool->id }})"><i class="bi bi-card-text me-1" aria-hidden="true"></i>{{ __('admin_ccc.alts.open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" wire:click="openPages({{ $tool->id }})"><i class="bi bi-card-text me-1" aria-hidden="true"></i>{{ __('admin_ccc.planches.open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="openEdit({{ $tool->id }})"><i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ __('admin_ccc.comic.edit_open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
                                     @endif
                                     <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="openImage({{ $tool->id }})"><i class="bi bi-image me-1" aria-hidden="true"></i>{{ __('admin_ccc.image.open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                    @if ($tool->kind === \App\Enums\CccKind::Comic)
+                                        <button type="button" class="btn btn-sm btn-outline-danger" wire:click="openDelete({{ $tool->id }})"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('admin_ccc.delete.open') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -104,10 +115,10 @@
         </section>
     @endif
 
-    <x-admin.modal id="xmCccImage" size="md" heading="h2" :title="__('admin_ccc.image.title', ['title' => $this->openedTool?->title ?? ''])" x-data x-on:hidden-bs-modal.dot="$wire.resetModal()">
+    <x-admin.modal id="xmCccImage" size="md" heading="h2" :title="__('admin_ccc.image.title', ['title' => $this->openedTool?->title ?? ''])" x-data="{ opener: null }" x-on:show-bs-modal.dot="opener = document.activeElement" x-on:shown-bs-modal.dot="$el.querySelector('[data-xm-autofocus]')?.focus()" x-on:hidden-bs-modal.dot="$wire.resetModal(); (opener && document.body.contains(opener) ? opener : document.getElementById('xmCccToolsTitle'))?.focus()">
         <form id="xmCccImageForm" wire:submit="saveImage" novalidate>
             <label class="form-label fw-semibold" for="xmCccImageFile">{{ __('admin_ccc.image.label') }}</label>
-            <input class="form-control @error('image') is-invalid @enderror" type="file" id="xmCccImageFile" accept="image/jpeg,image/png,image/webp" wire:model="image" aria-describedby="xmCccImageHelp">
+            <input class="form-control @error('image') is-invalid @enderror" type="file" id="xmCccImageFile" data-xm-autofocus accept="image/jpeg,image/png,image/webp" wire:model="image" aria-describedby="xmCccImageHelp">
             <div class="form-text" id="xmCccImageHelp">{{ __('admin_ccc.image.help') }}</div>
             @error('image')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
             <div wire:loading wire:target="image" class="small text-secondary" role="status">{{ __('admin_content.uploading') }}</div>
@@ -117,20 +128,163 @@
         </x-slot:footer>
     </x-admin.modal>
 
-    <x-admin.modal id="xmCccAlts" size="lg" heading="h2" :title="__('admin_ccc.alts.title', ['title' => $this->openedTool?->title ?? ''])" x-data x-on:hidden-bs-modal.dot="$wire.resetModal()">
-        <form id="xmCccAltsForm" wire:submit="saveAlts" novalidate>
-            <p class="small text-secondary">{{ __('admin_ccc.alts.help', ['max' => \App\Application\Admin\Content\ManageCccTools::ALT_MAX]) }}</p>
-            @error('alts')<div class="alert alert-danger" role="alert">{{ $message }}</div>@enderror
-            @foreach ($this->openedTool?->pages ?? [] as $index => $page)
-                <div class="mb-3" wire:key="alt-{{ $index }}">
-                    <label class="form-label fw-semibold" for="xmCccAlt{{ $index }}">{{ __('admin_ccc.alts.page', ['number' => $index + 1]) }}</label>
-                    @if (! empty($page['caption']))<div class="small text-secondary mb-1">{{ $page['caption'] }}</div>@endif
-                    <input class="form-control" type="text" id="xmCccAlt{{ $index }}" wire:model.blur="alts.{{ $index }}" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::ALT_MAX }}" autocomplete="off">
+    {{-- Nouvelle BD / titre --}}
+    <x-admin.modal id="xmCccComic" size="lg" heading="h2" :title="$toolId === null ? __('admin_ccc.comic.create_title') : __('admin_ccc.comic.edit_title', ['title' => $this->openedTool?->title ?? ''])" x-data="{ opener: null }" x-on:show-bs-modal.dot="opener = document.activeElement" x-on:shown-bs-modal.dot="$el.querySelector('[data-xm-autofocus]')?.focus()" x-on:hidden-bs-modal.dot="$wire.resetModal(); (opener && document.body.contains(opener) ? opener : document.getElementById('xmCccToolsTitle'))?.focus()">
+        <form id="xmCccComicForm" wire:submit="saveComic" novalidate>
+            @error('comic')<div class="alert alert-danger" role="alert">{{ $message }}</div>@enderror
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmCccComicTitle">{{ __('admin_ccc.comic.title_label') }}</label>
+                <input class="form-control @error('title') is-invalid @enderror" type="text" id="xmCccComicTitle" data-xm-autofocus wire:model="title" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::TITLE_MAX }}" required autocomplete="off"
+                       aria-describedby="xmCccComicTitleHelp @error('title') xmCccComicTitleError @enderror" @error('title') aria-invalid="true" @enderror>
+                <div class="form-text" id="xmCccComicTitleHelp">{{ __('admin_ccc.comic.title_help', ['max' => \App\Application\Admin\Content\ManageCccTools::TITLE_MAX]) }}</div>
+                @error('title')<div class="invalid-feedback d-block" id="xmCccComicTitleError">{{ $message }}</div>@enderror
+            </div>
+            @if ($toolId === null)
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="xmCccComicCover">{{ __('admin_ccc.comic.cover_label') }}</label>
+                    <input class="form-control @error('cover') is-invalid @enderror" type="file" id="xmCccComicCover" accept="image/jpeg,image/png,image/webp" wire:model="cover" wire:key="cover-{{ $fileInputKey }}"
+                           aria-describedby="xmCccComicCoverHelp @error('cover') xmCccComicCoverError @enderror" @error('cover') aria-invalid="true" @enderror>
+                    <div class="form-text" id="xmCccComicCoverHelp">{{ __('admin_ccc.comic.cover_help') }}</div>
+                    @error('cover')<div class="invalid-feedback d-block" id="xmCccComicCoverError">{{ $message }}</div>@enderror
+                    <div wire:loading wire:target="cover" class="small text-secondary" role="status">{{ __('admin_content.uploading') }}</div>
                 </div>
-            @endforeach
+                <div class="form-check form-switch mb-4">
+                    <input class="form-check-input" type="checkbox" role="switch" id="xmCccComicPublished" wire:model="published"
+                           aria-describedby="xmCccComicPublishedHelp @error('published') xmCccComicPublishedError @enderror" @error('published') aria-invalid="true" @enderror>
+                    <label class="form-check-label fw-semibold" for="xmCccComicPublished">{{ __('admin_ccc.comic.published_label') }}</label>
+                    <div class="form-text" id="xmCccComicPublishedHelp">{{ __('admin_ccc.comic.published_help') }}</div>
+                    @error('published')<div class="invalid-feedback d-block" id="xmCccComicPublishedError">{{ $message }}</div>@enderror
+                </div>
+                <h3 class="h6 fw-bold" id="xmCccDraftTitle">{{ __('admin_ccc.comic.draft_title') }}</h3>
+                <p class="small text-secondary">{{ __('admin_ccc.comic.draft_help') }}</p>
+                @foreach ($draftPages as $i => $row)
+                    <fieldset class="border rounded p-3 mb-3" wire:key="draft-{{ $i }}">
+                        <legend class="h6 float-none w-auto px-1 mb-2">{{ __('admin_ccc.comic.draft_legend', ['number' => $i + 1]) }}</legend>
+                        <div class="mb-3">
+                            <label class="form-label" for="xmCccDraftFile{{ $i }}">{{ __('admin_ccc.planches.image') }}</label>
+                            <input class="form-control @error('draftPages.'.$i.'.file') is-invalid @enderror" type="file" id="xmCccDraftFile{{ $i }}" accept="image/jpeg,image/png,image/webp" wire:model="draftPages.{{ $i }}.file" required
+                                   @error('draftPages.'.$i.'.file') aria-invalid="true" aria-describedby="xmCccDraftFileError{{ $i }}" @enderror>
+                            @error('draftPages.'.$i.'.file')<div class="invalid-feedback d-block" id="xmCccDraftFileError{{ $i }}">{{ $message }}</div>@enderror
+                            <div wire:loading wire:target="draftPages.{{ $i }}.file" class="small text-secondary" role="status">{{ __('admin_content.uploading') }}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="xmCccDraftCaption{{ $i }}">{{ __('admin_ccc.planches.caption') }}</label>
+                            <input class="form-control @error('draftPages.'.$i.'.caption') is-invalid @enderror" type="text" id="xmCccDraftCaption{{ $i }}" wire:model="draftPages.{{ $i }}.caption" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::CAPTION_MAX }}" autocomplete="off"
+                                   @error('draftPages.'.$i.'.caption') aria-invalid="true" aria-describedby="xmCccDraftCaptionError{{ $i }}" @enderror>
+                            @error('draftPages.'.$i.'.caption')<div class="invalid-feedback d-block" id="xmCccDraftCaptionError{{ $i }}">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="xmCccDraftAlt{{ $i }}">{{ __('admin_ccc.planches.alt') }}</label>
+                            <input class="form-control @error('draftPages.'.$i.'.alt') is-invalid @enderror" type="text" id="xmCccDraftAlt{{ $i }}" wire:model="draftPages.{{ $i }}.alt" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::ALT_MAX }}" required autocomplete="off"
+                                   aria-describedby="xmCccDraftAltHelp{{ $i }} @error('draftPages.'.$i.'.alt') xmCccDraftAltError{{ $i }} @enderror" @error('draftPages.'.$i.'.alt') aria-invalid="true" @enderror>
+                            <div class="form-text" id="xmCccDraftAltHelp{{ $i }}">{{ __('admin_ccc.planches.alt_help', ['max' => \App\Application\Admin\Content\ManageCccTools::ALT_MAX]) }}</div>
+                            @error('draftPages.'.$i.'.alt')<div class="invalid-feedback d-block" id="xmCccDraftAltError{{ $i }}">{{ $message }}</div>@enderror
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger" wire:click="removeDraftPage({{ $i }})"><i class="bi bi-x-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.comic.draft_remove') }}<span class="visually-hidden"> {{ $i + 1 }}</span></button>
+                    </fieldset>
+                @endforeach
+                @if (count($draftPages) < \App\Livewire\Admin\Ccc\Index::DRAFT_PAGES_MAX)
+                    <button type="button" class="btn btn-sm btn-outline-primary" wire:click="addDraftPage"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.comic.draft_add') }}</button>
+                @endif
+            @else
+                <p class="small text-secondary mb-0">{{ __('admin_ccc.comic.key', ['key' => $this->openedTool?->key ?? '']) }}</p>
+            @endif
         </form>
         <x-slot:footer>
-            <button type="submit" form="xmCccAltsForm" class="btn btn-primary" wire:loading.attr="disabled" wire:target="saveAlts"><i class="bi bi-check-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.alts.save') }}</button>
+            <button type="submit" form="xmCccComicForm" class="btn btn-primary" wire:loading.attr="disabled" wire:target="saveComic,cover,draftPages"><i class="bi bi-check-lg me-1" aria-hidden="true"></i>{{ $toolId === null ? __('admin_ccc.comic.create') : __('admin_ccc.comic.save') }}</button>
+        </x-slot:footer>
+    </x-admin.modal>
+
+    {{-- Planches d'une BD : liste ordonnée, ajout, retrait, légende, texte alternatif --}}
+    <x-admin.modal id="xmCccPages" size="xl" heading="h2" :title="__('admin_ccc.planches.title', ['title' => $this->openedTool?->title ?? ''])" x-data="{ opener: null }" x-on:show-bs-modal.dot="opener = document.activeElement" x-on:shown-bs-modal.dot="$el.querySelector('[data-xm-autofocus]')?.focus()" x-on:hidden-bs-modal.dot="$wire.resetModal(); (opener && document.body.contains(opener) ? opener : document.getElementById('xmCccToolsTitle'))?.focus()" x-on:xm-ccc-focus.window="$nextTick(() => setTimeout(() => document.getElementById($event.detail.id)?.focus(), 30))">
+        <p class="small text-secondary">{{ __('admin_ccc.planches.intro', ['max' => \App\Application\Admin\Content\ManageCccTools::ALT_MAX]) }}</p>
+        <div class="visually-hidden" role="status" aria-live="polite">{{ $announce }}</div>
+        @error('pages')<div class="alert alert-danger" role="alert">{{ $message }}</div>@enderror
+        @php($pageCount = count($this->openedPages))
+        <form id="xmCccPagesForm" wire:submit="savePages" novalidate>
+            <ol class="list-unstyled mb-0" id="xmCccPagesList" tabindex="-1" aria-label="{{ __('admin_ccc.planches.list_label') }}">
+                @forelse ($this->openedPages as $index => $page)
+                    <li class="mb-3" wire:key="page-{{ $index }}">
+                        <fieldset class="border rounded p-3">
+                            <legend class="h6 float-none w-auto px-1 mb-2">{{ __('admin_ccc.planches.legend', ['number' => $index + 1, 'total' => $pageCount]) }}</legend>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <img src="{{ \App\Support\MediaUrl::resolve($page['image'], $fallbackImage) }}" class="img-fluid rounded border" alt="" loading="lazy" width="320" height="240">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold" for="xmCccPageCaption{{ $index }}">{{ __('admin_ccc.planches.caption') }}</label>
+                                        <input class="form-control @error('pageEdits.'.$index.'.caption') is-invalid @enderror" type="text" id="xmCccPageCaption{{ $index }}" wire:model.blur="pageEdits.{{ $index }}.caption" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::CAPTION_MAX }}" autocomplete="off"
+                                               @error('pageEdits.'.$index.'.caption') aria-invalid="true" aria-describedby="xmCccPageCaptionError{{ $index }}" @enderror>
+                                        @error('pageEdits.'.$index.'.caption')<div class="invalid-feedback d-block" id="xmCccPageCaptionError{{ $index }}">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div>
+                                        <label class="form-label fw-semibold" for="xmCccPageAlt{{ $index }}">{{ __('admin_ccc.planches.alt') }}</label>
+                                        <input class="form-control @error('pageEdits.'.$index.'.alt') is-invalid @enderror" type="text" id="xmCccPageAlt{{ $index }}" wire:model.blur="pageEdits.{{ $index }}.alt" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::ALT_MAX }}" required autocomplete="off"
+                                               aria-describedby="xmCccPageAltHelp{{ $index }} @error('pageEdits.'.$index.'.alt') xmCccPageAltError{{ $index }} @enderror" @error('pageEdits.'.$index.'.alt') aria-invalid="true" @enderror>
+                                        <div class="form-text" id="xmCccPageAltHelp{{ $index }}">{{ __('admin_ccc.planches.alt_help', ['max' => \App\Application\Admin\Content\ManageCccTools::ALT_MAX]) }}</div>
+                                        @error('pageEdits.'.$index.'.alt')<div class="invalid-feedback d-block" id="xmCccPageAltError{{ $index }}">{{ $message }}</div>@enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="xmCccPageUp{{ $index }}" wire:click="movePage({{ $index }}, -1)" @disabled($index === 0)><i class="bi bi-arrow-up me-1" aria-hidden="true"></i>{{ __('admin_ccc.planches.up') }}<span class="visually-hidden"> {{ __('admin_ccc.planches.legend', ['number' => $index + 1, 'total' => $pageCount]) }}</span></button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="xmCccPageDown{{ $index }}" wire:click="movePage({{ $index }}, 1)" @disabled($index === $pageCount - 1)><i class="bi bi-arrow-down me-1" aria-hidden="true"></i>{{ __('admin_ccc.planches.down') }}<span class="visually-hidden"> {{ __('admin_ccc.planches.legend', ['number' => $index + 1, 'total' => $pageCount]) }}</span></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger ms-auto" id="xmCccPageRemove{{ $index }}" wire:click="askRemovePage({{ $index }})"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('admin_ccc.planches.remove') }}<span class="visually-hidden"> {{ __('admin_ccc.planches.legend', ['number' => $index + 1, 'total' => $pageCount]) }}</span></button>
+                            </div>
+                            @if ($removeIndex === $index)
+                                <div class="alert alert-warning mt-3 mb-0" role="alert" x-data x-init="$nextTick(() => $el.querySelector('[data-xm-confirm]')?.focus())">
+                                    <p class="mb-2">{{ __('admin_ccc.planches.remove_confirm', ['number' => $index + 1]) }}</p>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-sm btn-danger" data-xm-confirm wire:click="removePage" wire:loading.attr="disabled" wire:target="removePage">{{ __('admin_ccc.planches.remove_yes') }}</button>
+                                        <button type="button" class="btn btn-sm btn-light" wire:click="cancelRemovePage">{{ __('admin_ccc.planches.remove_no') }}</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </fieldset>
+                    </li>
+                @empty
+                    <li class="text-secondary mb-3">{{ __('admin_ccc.planches.empty') }}</li>
+                @endforelse
+            </ol>
+        </form>
+
+        <form id="xmCccAddPageForm" class="border rounded p-3 bg-body-tertiary" wire:submit="addPage" novalidate>
+            <h3 class="h6 fw-bold">{{ __('admin_ccc.planches.add_title') }}</h3>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmCccNewImage">{{ __('admin_ccc.planches.image') }}</label>
+                <input class="form-control @error('newImage') is-invalid @enderror" type="file" id="xmCccNewImage" accept="image/jpeg,image/png,image/webp" wire:model="newImage" wire:key="new-image-{{ $fileInputKey }}" required
+                       aria-describedby="xmCccNewImageHelp @error('newImage') xmCccNewImageError @enderror" @error('newImage') aria-invalid="true" @enderror>
+                <div class="form-text" id="xmCccNewImageHelp">{{ __('admin_ccc.planches.image_help') }}</div>
+                @error('newImage')<div class="invalid-feedback d-block" id="xmCccNewImageError">{{ $message }}</div>@enderror
+                <div wire:loading wire:target="newImage" class="small text-secondary" role="status">{{ __('admin_content.uploading') }}</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmCccNewCaption">{{ __('admin_ccc.planches.caption') }}</label>
+                <input class="form-control @error('newCaption') is-invalid @enderror" type="text" id="xmCccNewCaption" wire:model="newCaption" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::CAPTION_MAX }}" autocomplete="off"
+                       @error('newCaption') aria-invalid="true" aria-describedby="xmCccNewCaptionError" @enderror>
+                @error('newCaption')<div class="invalid-feedback d-block" id="xmCccNewCaptionError">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="xmCccNewAlt">{{ __('admin_ccc.planches.alt') }}</label>
+                <input class="form-control @error('newAlt') is-invalid @enderror" type="text" id="xmCccNewAlt" wire:model="newAlt" maxlength="{{ \App\Application\Admin\Content\ManageCccTools::ALT_MAX }}" required autocomplete="off"
+                       aria-describedby="xmCccNewAltHelp @error('newAlt') xmCccNewAltError @enderror" @error('newAlt') aria-invalid="true" @enderror>
+                <div class="form-text" id="xmCccNewAltHelp">{{ __('admin_ccc.planches.alt_help', ['max' => \App\Application\Admin\Content\ManageCccTools::ALT_MAX]) }}</div>
+                @error('newAlt')<div class="invalid-feedback d-block" id="xmCccNewAltError">{{ $message }}</div>@enderror
+            </div>
+            <button type="submit" class="btn btn-outline-primary" wire:loading.attr="disabled" wire:target="addPage,newImage"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.planches.add') }}</button>
+        </form>
+        <x-slot:footer>
+            <button type="submit" form="xmCccPagesForm" class="btn btn-primary" wire:loading.attr="disabled" wire:target="savePages" @disabled($pageCount === 0)><i class="bi bi-check-lg me-1" aria-hidden="true"></i>{{ __('admin_ccc.planches.save') }}</button>
+        </x-slot:footer>
+    </x-admin.modal>
+
+    {{-- Suppression d'une BD --}}
+    <x-admin.modal id="xmCccDelete" type="delete" size="md" heading="h2" :title="__('admin_ccc.delete.title', ['title' => $this->openedTool?->title ?? ''])" static x-data="{ opener: null }" x-on:show-bs-modal.dot="opener = document.activeElement" x-on:shown-bs-modal.dot="$el.querySelector('[data-xm-autofocus]')?.focus()" x-on:hidden-bs-modal.dot="$wire.resetModal(); (opener && document.body.contains(opener) ? opener : document.getElementById('xmCccToolsTitle'))?.focus()">
+        <p>{{ __('admin_ccc.delete.text') }}</p>
+        @error('delete')<div class="alert alert-danger mb-0" role="alert">{{ $message }}</div>@enderror
+        <x-slot:footer>
+            <button type="button" class="btn btn-danger" wire:click="deleteComic" wire:loading.attr="disabled" wire:target="deleteComic"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ __('components.modal.delete_action') }}</button>
         </x-slot:footer>
     </x-admin.modal>
 </div>
