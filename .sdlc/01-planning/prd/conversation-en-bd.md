@@ -77,7 +77,7 @@ Les pair·es animateur·rices n'ont pas de support pour **décomposer une intera
 **Membre**
 - En tant que membre, je veux créer ma propre conversation en choisissant des scènes illustrées et en ajoutant des bulles, pour raconter une situation vécue ou imaginée.
 - En tant que membre, je veux garder ma création privée tant que je le souhaite, pour ne rien exposer sans le vouloir.
-- En tant que membre, je veux proposer ma création à la publication, sous mon pseudonyme ou anonymement, pour aider d'autres personnes.
+- En tant que membre, je veux proposer ma création à la publication, anonymement par défaut ou sous mon pseudonyme si je le choisis, pour aider d'autres personnes.
 - En tant que membre, je veux exporter ma création en PDF ou en PNG.
 - En tant que membre en mode discret, je veux que l'éditeur et mes créations n'apparaissent pas dans un aperçu de partage ni dans un titre d'onglet explicite.
 
