@@ -24776,6 +24776,10 @@
     "@feed_compose_label": {
         "description": "feed.compose.label"
     },
+    "feed_compose_my_videos": "Mes vidéos",
+    "@feed_compose_my_videos": {
+        "description": "feed.compose.my_videos"
+    },
     "feed_compose_photo": "Photo",
     "@feed_compose_photo": {
         "description": "feed.compose.photo"
@@ -24800,6 +24804,10 @@
     "feed_compose_report": "Signaler",
     "@feed_compose_report": {
         "description": "feed.compose.report"
+    },
+    "feed_compose_video": "Vidéo",
+    "@feed_compose_video": {
+        "description": "feed.compose.video"
     },
     "feed_compose_violences": "Violences",
     "@feed_compose_violences": {
@@ -24995,6 +25003,80 @@
     "@feed_filters_temoignage": {
         "description": "feed.filters.temoignage"
     },
+    "feed_gallery_close": "Fermer la visionneuse",
+    "@feed_gallery_close": {
+        "description": "feed.gallery.close"
+    },
+    "feed_gallery_image_fallback": "Photo {n} sur {count} de la publication de {name}",
+    "@feed_gallery_image_fallback": {
+        "description": "feed.gallery.image_fallback",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_label": "Photos de la publication",
+    "@feed_gallery_label": {
+        "description": "feed.gallery.label"
+    },
+    "feed_gallery_next": "Photo suivante",
+    "@feed_gallery_next": {
+        "description": "feed.gallery.next"
+    },
+    "feed_gallery_open": "Agrandir la photo {n} sur {count}",
+    "@feed_gallery_open": {
+        "description": "feed.gallery.open",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_previous": "Photo précédente",
+    "@feed_gallery_previous": {
+        "description": "feed.gallery.previous"
+    },
+    "feed_gallery_viewer_counter": "{current} / {count}",
+    "@feed_gallery_viewer_counter": {
+        "description": "feed.gallery.viewer_counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "current": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_viewer_status": "Photo {current} sur {count}. {alt}",
+    "@feed_gallery_viewer_status": {
+        "description": "feed.gallery.viewer_status",
+        "placeholders": {
+            "alt": {
+                "type": "String"
+            },
+            "count": {
+                "type": "String"
+            },
+            "current": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_viewer_title": "Visionneuse de photos",
+    "@feed_gallery_viewer_title": {
+        "description": "feed.gallery.viewer_title"
+    },
     "feed_list_filters_label": "Filtrer le fil par type",
     "@feed_list_filters_label": {
         "description": "feed.list.filters_label"
@@ -25011,6 +25093,227 @@
     "feed_list_title": "Publications",
     "@feed_list_title": {
         "description": "feed.list.title"
+    },
+    "feed_media_exclusive": "Une publication contient des photos ou une vidéo, pas les deux.",
+    "@feed_media_exclusive": {
+        "description": "feed.media.exclusive"
+    },
+    "feed_media_image_added": "{count, plural, =1{{count} photo ajoutée. Il y en a {total} sur {max}.} other{{count} photos ajoutées. Il y en a {total} sur {max}.}}",
+    "@feed_media_image_added": {
+        "description": "feed.media.image_added",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "max": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_alt_help": "Décris la photo en quelques mots pour les personnes qui ne la voient pas (255 caractères maximum).",
+    "@feed_media_image_alt_help": {
+        "description": "feed.media.image_alt_help"
+    },
+    "feed_media_image_alt_label": "Description de la photo {n}",
+    "@feed_media_image_alt_label": {
+        "description": "feed.media.image_alt_label",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_alt_max": "La description ne peut pas dépasser {max} caractères.",
+    "@feed_media_image_alt_max": {
+        "description": "feed.media.image_alt_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_down": "Descendre la photo {n}",
+    "@feed_media_image_down": {
+        "description": "feed.media.image_down",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_moved": "Photo déplacée : elle est maintenant en position {to} sur {count}.",
+    "@feed_media_image_moved": {
+        "description": "feed.media.image_moved",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_n": "Photo {n}",
+    "@feed_media_image_n": {
+        "description": "feed.media.image_n",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_preview_alt": "Aperçu de la photo {n}",
+    "@feed_media_image_preview_alt": {
+        "description": "feed.media.image_preview_alt",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_remove": "Retirer la photo {n}",
+    "@feed_media_image_remove": {
+        "description": "feed.media.image_remove",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_removed": "Photo retirée. Il en reste {count} sur {max}.",
+    "@feed_media_image_removed": {
+        "description": "feed.media.image_removed",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_up": "Monter la photo {n}",
+    "@feed_media_image_up": {
+        "description": "feed.media.image_up",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_add": "Ajouter des photos",
+    "@feed_media_images_add": {
+        "description": "feed.media.images_add"
+    },
+    "feed_media_images_counter": "{count} / {max}",
+    "@feed_media_images_counter": {
+        "description": "feed.media.images_counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_counter_sr": "{count, plural, =0{Aucune photo sur {max}.} =1{{count} photo sur {max}.} other{{count} photos sur {max}.}}",
+    "@feed_media_images_counter_sr": {
+        "description": "feed.media.images_counter_sr",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_field": "Choisir des photos",
+    "@feed_media_images_field": {
+        "description": "feed.media.images_field"
+    },
+    "feed_media_images_full": "Tu as atteint le nombre maximum de photos ({max}).",
+    "@feed_media_images_full": {
+        "description": "feed.media.images_full",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_help": "JPG, PNG ou WebP, {size} Mo maximum chacune, {max} photos au plus. La première ouvre la publication.",
+    "@feed_media_images_help": {
+        "description": "feed.media.images_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_legend": "Photos (facultatif)",
+    "@feed_media_images_legend": {
+        "description": "feed.media.images_legend"
+    },
+    "feed_media_images_list": "Photos choisies",
+    "@feed_media_images_list": {
+        "description": "feed.media.images_list"
+    },
+    "feed_media_images_locked": "Tu as choisi une vidéo. Retire-la pour ajouter des photos.",
+    "@feed_media_images_locked": {
+        "description": "feed.media.images_locked"
+    },
+    "feed_media_images_max": "Tu peux joindre au plus {max} photos à une publication.",
+    "@feed_media_images_max": {
+        "description": "feed.media.images_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_over_limit": "Seules les {max} premières photos sont gardées.",
+    "@feed_media_images_over_limit": {
+        "description": "feed.media.images_over_limit",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_rejected": "« {name} » : {problem}",
+    "@feed_media_images_rejected": {
+        "description": "feed.media.images_rejected",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "problem": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_needs_network": "Les photos et les vidéos ont besoin du réseau pour partir. Ton brouillon est gardé : réessaie dès que la connexion revient.",
+    "@feed_media_needs_network": {
+        "description": "feed.media.needs_network"
+    },
+    "feed_media_poll_no_video": "Un sondage peut avoir des photos, mais pas de vidéo.",
+    "@feed_media_poll_no_video": {
+        "description": "feed.media.poll_no_video"
+    },
+    "feed_media_sending": "Envoi en cours…",
+    "@feed_media_sending": {
+        "description": "feed.media.sending"
+    },
+    "feed_media_video_locked": "Tu as ajouté des photos. Retire-les pour choisir une vidéo.",
+    "@feed_media_video_locked": {
+        "description": "feed.media.video_locked"
     },
     "feed_moderation_auto_details": "Termes surveillés : {terms}",
     "@feed_moderation_auto_details": {
@@ -25739,6 +26042,38 @@
     "@feed_toasts_updated": {
         "description": "feed.toasts.updated"
     },
+    "feed_video_acknowledge": "J’ai lu cet avertissement et j’ai vérifié ma vidéo.",
+    "@feed_video_acknowledge": {
+        "description": "feed.video.acknowledge"
+    },
+    "feed_video_acknowledge_required": "Coche la case pour confirmer que tu as lu l’avertissement.",
+    "@feed_video_acknowledge_required": {
+        "description": "feed.video.acknowledge_required"
+    },
+    "feed_video_cancel": "Annuler l’envoi",
+    "@feed_video_cancel": {
+        "description": "feed.video.cancel"
+    },
+    "feed_video_cancelled": "Envoi annulé. Ta vidéo n’a pas été envoyée.",
+    "@feed_video_cancelled": {
+        "description": "feed.video.cancelled"
+    },
+    "feed_video_description": "Description de la vidéo",
+    "@feed_video_description": {
+        "description": "feed.video.description"
+    },
+    "feed_video_description_help": "Obligatoire : décris ce qu’on y voit et entend, en {min} à {max} caractères, pour les personnes qui ne peuvent pas la regarder.",
+    "@feed_video_description_help": {
+        "description": "feed.video.description_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
     "feed_video_description_length": "La description de ta vidéo doit faire entre {min} et {max} caractères.",
     "@feed_video_description_length": {
         "description": "feed.video.description_length",
@@ -25755,6 +26090,56 @@
     "@feed_video_description_required": {
         "description": "feed.video.description_required"
     },
+    "feed_video_field": "Choisir une vidéo",
+    "@feed_video_field": {
+        "description": "feed.video.field"
+    },
+    "feed_video_help": "MP4 ou WebM, {max} Mo maximum. Elle est relue par l’équipe avant d’être publiée.",
+    "@feed_video_help": {
+        "description": "feed.video.help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_legend": "Vidéo (facultatif)",
+    "@feed_video_legend": {
+        "description": "feed.video.legend"
+    },
+    "feed_video_mine_empty": "Tu n’as aucune vidéo en attente ou refusée.",
+    "@feed_video_mine_empty": {
+        "description": "feed.video.mine_empty"
+    },
+    "feed_video_mine_error": "Tes vidéos ne se chargent pas pour le moment.",
+    "@feed_video_mine_error": {
+        "description": "feed.video.mine_error"
+    },
+    "feed_video_mine_intro": "Tes vidéos qui ne sont pas encore en ligne : en attente de relecture ou refusées.",
+    "@feed_video_mine_intro": {
+        "description": "feed.video.mine_intro"
+    },
+    "feed_video_mine_loaded": "{count, plural, =0{Aucune vidéo à relire.} =1{{count} vidéo à relire.} other{{count} vidéos à relire.}}",
+    "@feed_video_mine_loaded": {
+        "description": "feed.video.mine_loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "feed_video_mine_loading": "Chargement de tes vidéos…",
+    "@feed_video_mine_loading": {
+        "description": "feed.video.mine_loading"
+    },
+    "feed_video_mine_retry": "Réessayer",
+    "@feed_video_mine_retry": {
+        "description": "feed.video.mine_retry"
+    },
+    "feed_video_mine_title": "Mes vidéos",
+    "@feed_video_mine_title": {
+        "description": "feed.video.mine_title"
+    },
     "feed_video_not_in_poll": "Une vidéo ne peut pas accompagner un sondage.",
     "@feed_video_not_in_poll": {
         "description": "feed.video.not_in_poll"
@@ -25763,15 +26148,53 @@
     "@feed_video_not_with_images": {
         "description": "feed.video.not_with_images"
     },
+    "feed_video_pending_help": "Pour l’instant, tu es la seule personne à la voir.",
+    "@feed_video_pending_help": {
+        "description": "feed.video.pending_help"
+    },
+    "feed_video_player_fallback": "Ton navigateur ne peut pas lire cette vidéo.",
+    "@feed_video_player_fallback": {
+        "description": "feed.video.player_fallback"
+    },
+    "feed_video_player_label": "Vidéo de la publication",
+    "@feed_video_player_label": {
+        "description": "feed.video.player_label"
+    },
     "feed_video_privacy_notice": "Ta vidéo n’est pas retouchée : elle peut contenir des informations cachées, comme le lieu où elle a été filmée. Vérifie-la avant de l’envoyer.",
     "@feed_video_privacy_notice": {
         "description": "feed.video.privacy_notice"
+    },
+    "feed_video_privacy_title": "Avant d’envoyer ta vidéo",
+    "@feed_video_privacy_title": {
+        "description": "feed.video.privacy_title"
+    },
+    "feed_video_progress": "Envoi de la vidéo : {percent} %",
+    "@feed_video_progress": {
+        "description": "feed.video.progress",
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_progress_label": "Progression de l’envoi de la vidéo",
+    "@feed_video_progress_label": {
+        "description": "feed.video.progress_label"
     },
     "feed_video_quota": "Tu as atteint la limite de vidéos envoyées par jour ({max}). Réessaie un peu plus tard.",
     "@feed_video_quota": {
         "description": "feed.video.quota",
         "placeholders": {
             "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_reason_label": "Motif : {reason}",
+    "@feed_video_reason_label": {
+        "description": "feed.video.reason_label",
+        "placeholders": {
+            "reason": {
                 "type": "String"
             }
         }
@@ -25800,9 +26223,29 @@
     "@feed_video_reasons_unreadable": {
         "description": "feed.video.reasons.unreadable"
     },
+    "feed_video_rejected_help": "Ta vidéo n’a pas été publiée.",
+    "@feed_video_rejected_help": {
+        "description": "feed.video.rejected_help"
+    },
+    "feed_video_remove": "Retirer la vidéo",
+    "@feed_video_remove": {
+        "description": "feed.video.remove"
+    },
     "feed_video_review_notice": "L’équipe de modération relit ta vidéo avant de la publier. Tu seras prévenu·e dès qu’elle sera en ligne.",
     "@feed_video_review_notice": {
         "description": "feed.video.review_notice"
+    },
+    "feed_video_selected": "Vidéo choisie : {name} ({size} Mo).",
+    "@feed_video_selected": {
+        "description": "feed.video.selected",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
     },
     "feed_video_states_approved": "Vidéo publiée",
     "@feed_video_states_approved": {
@@ -25819,6 +26262,39 @@
     "feed_video_submitted": "Ta vidéo est bien reçue. L’équipe la relira avant de la publier.",
     "@feed_video_submitted": {
         "description": "feed.video.submitted"
+    },
+    "feed_video_too_large": "Vidéo trop lourde ({max} Mo maximum).",
+    "@feed_video_too_large": {
+        "description": "feed.video.too_large",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_type_error": "Format non pris en charge. Choisis une vidéo MP4 ou WebM.",
+    "@feed_video_type_error": {
+        "description": "feed.video.type_error"
+    },
+    "feed_video_unplayable": "Cette vidéo ne peut pas être lue pour le moment. Recharge la page, puis réessaie.",
+    "@feed_video_unplayable": {
+        "description": "feed.video.unplayable"
+    },
+    "feed_video_withdraw": "Retirer ma vidéo",
+    "@feed_video_withdraw": {
+        "description": "feed.video.withdraw"
+    },
+    "feed_video_withdraw_action": "Retirer",
+    "@feed_video_withdraw_action": {
+        "description": "feed.video.withdraw_action"
+    },
+    "feed_video_withdraw_confirm": "Retirer cette vidéo ? Le fichier est supprimé tout de suite et ne peut pas être récupéré.",
+    "@feed_video_withdraw_confirm": {
+        "description": "feed.video.withdraw_confirm"
+    },
+    "feed_video_withdraw_title": "Retirer ta vidéo",
+    "@feed_video_withdraw_title": {
+        "description": "feed.video.withdraw_title"
     },
     "feed_video_withdrawn": "Ta vidéo est retirée.",
     "@feed_video_withdrawn": {
