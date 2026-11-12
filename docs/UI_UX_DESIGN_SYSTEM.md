@@ -50,8 +50,19 @@ Menu d'administration actuel :
 | Tableau | — | — | `<livewire:admin.datatable>` |
 | Toast | `<x-toast>` | `useToast()` | SweetAlert2 (`$dispatch('toast')`) |
 | SOS | `<x-sos-button>` | `<XmSosButton>` | — |
+| Sélecteur d'émojis | — | `<XmEmojiPicker target="#champ" :maxlength="n">` (§3.1) | — |
 
 Le HTML produit est **le même** dans les trois technologies (mêmes classes Bootstrap Social et `xm-*`), copié du prototype.
+
+### 3.1 `XmEmojiPicker` (Vue) et `EmojiPickerSheet` (Flutter)
+
+Bouton « Ajouter un émoji » (`aria-haspopup="dialog"`, `aria-expanded`) qui ouvre un panneau `role="dialog"` : champ de recherche française sans accents, onglets de catégories (`tablist`, flèches, Début et Fin), grille de vrais boutons dont l'`aria-label` est le nom français (flèches, tabindex itinérant), « Récents » (24, `localStorage`), teinte de peau, annonce `aria-live` « Émoji ajouté : … ».
+
+- Insertion à la position du curseur de la cible (`target` : sélecteur, élément ou fonction), focus et curseur remis après l'émoji ; compte en points de code (comme `max:` de Laravel) et refus annoncé au-delà de `maxlength`. L'élément cible émet `input` : `v-model` suit.
+- Échap ferme le panneau **sans fermer la modale** autour (`stopPropagation`) et rend le focus au bouton ; clic extérieur ferme ; Tab reste dans le panneau. Le panneau n'est pas téléporté (le piège à focus de la modale Bootstrap refuserait un panneau hors d'elle) : position `fixed`, calée dans la fenêtre (352 px au plus, 8 px de marge : tient à 360 px).
+- Cibles de 40 px (44 px au doigt, `pointer: coarse`), jetons `--xm-*` uniquement (clair et sombre), émojis natifs du système (aucune image, police ni CDN). Les onglets défilent horizontalement **dans** leur bande ; la page ne défile jamais horizontalement.
+- Données : `resources/js/emoji/emojis.json` (source unique, chargée à la première ouverture, ≈ 8,5 Ko gzip) ; copie Flutter générée par `scripts/emoji-sync.mjs`. Textes : `lang/fr/emoji.php`. Choix et émojis écartés : `IMPLEMENTATION_PLAN.md`, D-EMOJI-1 à 5.
+- Intégré à : création de publication, de sondage (question et texte), commentaires, messagerie.
 
 ## 4. Cohérence des écrans de gestion (référence)
 

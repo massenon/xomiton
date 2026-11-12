@@ -1,10 +1,32 @@
 # Xomiton — application mobile (Flutter)
 
 SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`
-(603 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
+(619 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
 
 Build Android depuis Windows (SDK, émulateur ou téléphone, API locale `10.0.2.2`, APK debug, clé de
 signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../docs/BUILD_ANDROID_WINDOWS.md).
+
+## Sélecteur d'émojis
+
+`lib/core/emoji/` : `EmojiPickerSheet` (feuille modale) et `EmojiButton` (bouton « Ajouter un émoji », 48 dp, à poser en
+`suffixIcon` d'un champ). Branché sur : créer une publication (texte, 3 000), créer un sondage (question, 200), champ de
+commentaire du fil (1 000), conversation de la messagerie (1 000, limite alignée sur `messaging.body_max_length`).
+
+- **Émojis Unicode natifs** (ceux du téléphone), aucune image ni police ni paquet `emoji_picker` : 536 émojis, 10 catégories,
+  noms français pour la recherche (sans accents : « coeur » = « cœur ») et pour TalkBack / VoiceOver (`Semantics` par émoji).
+- **Source unique** : `web/resources/js/emoji/emojis.json`. `emoji_data.dart` est **généré** (constantes Dart compilées,
+  pas d'asset ni d'entrée dans `pubspec.yaml`, ≈ 32 Ko de source) : ne jamais l'éditer, lancer
+  `cd web && node scripts/emoji-sync.mjs` (`--check` pour vérifier ; `npm run emoji:sync`). Le script contrôle aussi que
+  chaque séquence est un émoji Unicode valide et qu'aucun émoji écarté (`excluded.json`, voir D-EMOJI-2 du plan) n'y figure.
+- **Récents** (24 au plus) et **teinte de peau** : `SharedPreferences` (`xm_emoji_recent_v1`, `xm_emoji_tone_v1`), propres à
+  l'appareil, jamais envoyés au serveur.
+- **Insertion** à la position du curseur du `TextEditingController` (ou remplacement de la sélection), curseur placé après
+  l'émoji ; refus annoncé (région live) si la longueur dépasserait le maximum. La longueur se compte en **points de code**
+  comme le serveur ; `CodePointLimitFormatter` aligne la frappe (le `maxLength` de Flutter compte des graphèmes).
+- Cibles ≥ 48 dp, agrandies avec la taille de police du système ; thème clair et sombre par `ColorScheme`.
+- **Textes** : clés `emoji_*` de l'ARB (source `web/lang/fr/emoji.php`). Aucune clé `mobile_*` ajoutée.
+- Tests : `test/core/emoji_picker_test.dart` (données identiques à la source web, recherche, teintes, insertion, limite,
+  Semantics, récents, grande police, thème sombre). Non vérifié : TalkBack / VoiceOver et rendu sur appareil réel (MOB-EMOJI).
 
 ## Outils CCC en lecture
 

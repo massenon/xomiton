@@ -89,6 +89,10 @@ jobs:
         env:
           LARAVEL_BYPASS_ENV_CHECK: '1'
 
+      # Sélecteur d'émojis : source unique emojis.json valide, copie Dart (mobile/lib/core/emoji) à jour.
+      - name: Émojis (source et copie Dart)
+        run: npm run emoji:check
+
       - name: Tests unitaires Vue
         run: npm test
         env:
