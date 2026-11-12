@@ -6,7 +6,9 @@
 // menu : Enregistrer / Retirer des enregistrés, Signaler cette publication (modale de modération chargée à la demande,
 // RG-16, et renvoi vers /signaler?post=), Masquer (retirée du seul fil de la personne, « Annuler » possible),
 // Supprimer (auteur·rice ou modération ; confirmation <XmModal type="delete"> chargée à la demande). Corps (retours à la
-// ligne gardés), image (lien signé), sondage <XmPoll>, actions : J'aime (optimiste, annulé si l'API refuse, un envoi à
+// ligne gardés), médias <XmMediaGallery> (galerie de photos accessible et visionneuse, lecteur vidéo natif, chargés à la
+// demande : P7-10), état de relecture d'une vidéo pour son auteur·rice (« En attente de relecture » / « Refusée », motif,
+// bouton « Retirer ma vidéo » : DELETE, §8.7), sondage <XmPoll>, actions : J'aime (optimiste, annulé si l'API refuse, un envoi à
 // la fois : un clic pendant l'envoi est ignoré), Commentaires (détail /fil/{ulid}#commentaires), Partager
 // (WhatsApp, Telegram, Facebook, copier : lien neutre /p/{ulid}, Q31 b), champ « Ajouter un commentaire bienveillant… ».
 // post (PostResource), level (niveau du titre, 3), commentForm (champ de commentaire de la carte ; le détail a le sien).
@@ -25,6 +27,7 @@ import { lazyComponent } from '@/feed/lazy';
 import type { Poll, Post } from '@/feed/types';
 import XmAvatar from './XmAvatar.vue';
 import XmBadge from './XmBadge.vue';
+import XmMediaGallery from './XmMediaGallery.vue';
 import XmPoll from './XmPoll.vue';
 
 const reportModal = lazyComponent(() => import('./feed/ReportContentModal.vue'));
@@ -60,7 +63,10 @@ const headingTag = computed(() => `h${Math.min(6, Math.max(2, props.level))}`);
 const authorId = computed(() => `post-${current.value.id}-author`);
 const name = computed(() => current.value.author.pseudo);
 const ago = computed(() => timeAgo(current.value.published_at, t));
-const image = computed(() => current.value.media.find((media) => media.kind === 'image' && media.url) ?? null);
+const hasMedia = computed(() => current.value.media.some((media) => media.url));
+/** Vidéo en relecture ou refusée : visible de son auteur·rice seulement (le serveur la masque aux autres), sans actions. */
+const review = computed(() => (current.value.review_state === 'pending' || current.value.review_state === 'rejected' ? current.value.review_state : null));
+const reviewLabel = computed(() => current.value.review_label || t(`feed.video.states.${review.value ?? 'pending'}`));
 const share = computed(() => shareLinks(current.value.share_url));
 const detailHref = computed(() => `${current.value.url}#commentaires`);
 // Lot profil (P8-07) : l'autrice ou l'auteur d'une publication non anonyme mène à son profil (/membres/{pseudo}, 404 si
@@ -145,7 +151,7 @@ async function remove() {
     try {
         await api.deletePost(current.value.id);
         deleted = true;
-        toast.show(t('feed.toasts.deleted'), 'success');
+        toast.show(review.value ? t('feed.video.withdrawn') : t('feed.toasts.deleted'), 'success');
         confirmDialog.value?.close();
     } catch (cause) {
         unreachable(cause);
@@ -217,7 +223,7 @@ async function openReport() {
                             <component :is="headingTag" :id="authorId" class="nav-item card-title h6 mb-0">
                                 <Link v-if="profileHref" :href="profileHref">{{ name }}</Link><template v-else>{{ name }}</template>
                             </component>
-                            <span class="nav-item small"><time :datetime="current.published_at ?? undefined">{{ ago }}</time></span>
+                            <span v-if="ago" class="nav-item small"><time :datetime="current.published_at ?? undefined">{{ ago }}</time></span>
                         </div>
                         <p class="mb-0 small">
                             <XmBadge :color="current.tag_color || 'secondary'" soft>{{ current.tag_label }}</XmBadge>
@@ -227,7 +233,7 @@ async function openReport() {
                         </p>
                     </div>
                 </div>
-                <div class="dropdown">
+                <div v-if="!review" class="dropdown">
                     <button type="button" class="text-secondary btn btn-secondary-soft-hover py-1 px-2 xm-post-menu-toggle" data-bs-toggle="dropdown" aria-expanded="false" :aria-label="t('feed.post.menu')" :title="t('feed.post.menu')"><i class="bi bi-three-dots" aria-hidden="true"></i></button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><button class="dropdown-item" type="button" @click="toggleSave"><i :class="['bi xm-fw pe-2', current.saved ? 'bi-bookmark-fill' : 'bi-bookmark']" aria-hidden="true"></i>{{ current.saved ? t('feed.post.unsave') : t('feed.post.save') }}</button></li>
@@ -241,11 +247,17 @@ async function openReport() {
         <div class="card-body">
             <p v-if="current.moderated" class="alert alert-warning small"><i class="bi bi-shield-exclamation me-1" aria-hidden="true"></i>{{ t('feed.post.moderated') }}</p>
             <p v-if="current.body && current.body.trim() !== ''" class="xm-post-body">{{ current.body }}</p>
-            <img v-if="image" class="card-img" :src="image.url" :alt="image.alt || t('feed.post.image_alt', { name })" :width="image.width ?? undefined" :height="image.height ?? undefined" loading="lazy" decoding="async">
-            <div v-if="current.poll" :class="{ 'mt-3': image }">
+            <div v-if="review" :class="['alert small', review === 'rejected' ? 'alert-danger' : 'alert-info']" role="status" data-xm-review>
+                <p class="mb-1"><XmBadge :color="review === 'rejected' ? 'danger' : 'warning'" soft><i :class="['bi me-1', review === 'rejected' ? 'bi-x-octagon' : 'bi-hourglass-split']" aria-hidden="true"></i>{{ reviewLabel }}</XmBadge></p>
+                <p class="mb-1">{{ review === 'rejected' ? t('feed.video.rejected_help') : t('feed.video.pending_help') }}</p>
+                <p v-if="review === 'rejected' && current.review_reason" class="mb-1">{{ t('feed.video.reason_label', { reason: current.review_reason }) }}</p>
+                <button type="button" class="btn btn-outline-danger btn-sm mt-1 xm-media-btn" aria-haspopup="dialog" data-xm-withdraw @click="askDelete"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ t('feed.video.withdraw') }}</button>
+            </div>
+            <XmMediaGallery v-if="hasMedia" :media="current.media" :author="name" />
+            <div v-if="current.poll" :class="{ 'mt-3': hasMedia }">
                 <XmPoll :post-id="current.id" :poll="current.poll" :level="level + 1" @update:poll="onPoll" />
             </div>
-            <ul class="nav nav-stack py-3 small xm-post-actions">
+            <ul v-if="!review" class="nav nav-stack py-3 small xm-post-actions">
                 <li class="nav-item">
                     <button type="button" :class="['nav-link', { active: current.liked }]" :aria-pressed="current.liked ? 'true' : 'false'" data-xm-like @click="toggleLike">
                         <i :class="['bi pe-1', current.liked ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up']" aria-hidden="true"></i>{{ t('feed.post.like') }} ({{ current.likes_count }})
@@ -275,8 +287,8 @@ async function openReport() {
             </div>
         </div>
         <component :is="ReportContentModal" v-if="reporting && ReportContentModal" :target="{ post: current.id }" @hidden="reporting = false" />
-        <component :is="ConfirmModal" v-if="confirming && ConfirmModal" ref="confirmDialog" :id="`modalDeletePost-${current.id}`" type="delete" :title="t('microcopy.confirm.delete_title')" :open="true" :busy="deleting" @action="remove" @hidden="onConfirmHidden">
-            <p class="mb-0">{{ t('microcopy.confirm.delete_post') }}</p>
+        <component :is="ConfirmModal" v-if="confirming && ConfirmModal" ref="confirmDialog" :id="`modalDeletePost-${current.id}`" type="delete" :title="review ? t('feed.video.withdraw_title') : t('microcopy.confirm.delete_title')" :action="review ? t('feed.video.withdraw_action') : null" :open="true" :busy="deleting" @action="remove" @hidden="onConfirmHidden">
+            <p class="mb-0">{{ review ? t('feed.video.withdraw_confirm') : t('microcopy.confirm.delete_post') }}</p>
         </component>
     </article>
 </template>

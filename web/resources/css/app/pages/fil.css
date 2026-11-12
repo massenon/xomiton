@@ -22,3 +22,43 @@
   .xm-feed-filters .nav-link,
   .xm-post-menu-toggle { min-height: 44px; display: inline-flex; align-items: center; }
 }
+
+/*
+ * Photos et vidéo des publications (P7-10, Q96) : galerie (1 photo pleine largeur ; 2, 3 ou 4 en grille ; chaque photo
+ * est un <button> de 44 px minimum), visionneuse plein écran, lecteur vidéo, vignettes des composeurs. Jetons uniquement ;
+ * aucune animation (rien à désactiver avec prefers-reduced-motion) ; le fond de la visionneuse est sombre dans les deux
+ * thèmes, son anneau de focus utilise l'accent clair (contraste ≥ 3:1 sur fond sombre).
+ */
+.xm-gallery { display: grid; gap: var(--xm-space-1, .25rem); margin-bottom: var(--xm-space-3, .75rem); overflow: hidden; border-radius: var(--xm-radius-md, .5rem); }
+.xm-gallery-item { display: block; position: relative; padding: 0; border: 0; background: var(--xm-surface-muted); min-height: 44px; min-width: 44px; cursor: zoom-in; overflow: hidden; }
+.xm-gallery-item img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.xm-gallery-1 .xm-gallery-item img { height: auto; max-height: 36rem; }
+.xm-gallery-2, .xm-gallery-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.xm-gallery-2 .xm-gallery-item, .xm-gallery-3 .xm-gallery-item, .xm-gallery-4 .xm-gallery-item { aspect-ratio: 1 / 1; }
+.xm-gallery-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.xm-gallery-3 .xm-gallery-item:first-child { grid-row: span 2; aspect-ratio: auto; }
+
+.xm-video { margin-bottom: var(--xm-space-3, .75rem); }
+.xm-video-el { display: block; width: 100%; max-height: 36rem; aspect-ratio: 16 / 9; border-radius: var(--xm-radius-md, .5rem); background: var(--xm-neutral-d-0); }
+
+.xm-viewer { position: fixed; inset: 0; z-index: 2000; display: flex; flex-direction: column; background: color-mix(in srgb, var(--xm-neutral-d-0) 94%, transparent); color: var(--xm-neutral-d-900); }
+.xm-viewer-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--xm-space-2, .5rem) var(--xm-space-3, .75rem); }
+.xm-viewer-count { font-variant-numeric: tabular-nums; }
+.xm-viewer-stage { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; gap: var(--xm-space-2, .5rem); padding: 0 var(--xm-space-2, .5rem) var(--xm-space-3, .75rem); }
+.xm-viewer-figure { flex: 1 1 auto; min-width: 0; min-height: 0; margin: 0; display: flex; align-items: center; justify-content: center; height: 100%; }
+.xm-viewer-figure img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.xm-viewer-btn { flex: 0 0 auto; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--xm-neutral-d-200); border-radius: 50%; background: var(--xm-neutral-d-100); color: var(--xm-neutral-d-900); }
+.xm-viewer-btn:hover { background: var(--xm-neutral-d-200); }
+.xm-viewer-btn:focus-visible { outline: var(--xm-focus-width, 3px) solid var(--xm-blue-dark-accent); outline-offset: 2px; }
+
+.xm-media-thumb { width: 96px; height: 96px; flex: 0 0 96px; object-fit: cover; }
+.xm-media-btn { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.xm-media-item:focus-visible { outline: var(--xm-focus-width, 3px) solid var(--xm-focus-ring); outline-offset: 2px; }
+.min-w-0 { min-width: 0; }
+
+@media (max-width: 575.98px) {
+  .xm-viewer-prev, .xm-viewer-next { position: absolute; bottom: var(--xm-space-3, .75rem); }
+  .xm-viewer-prev { left: var(--xm-space-3, .75rem); }
+  .xm-viewer-next { right: var(--xm-space-3, .75rem); }
+  .xm-viewer-stage { padding-bottom: calc(44px + var(--xm-space-4, 1rem)); }
+}

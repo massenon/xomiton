@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen, waitFor } from '@testing-library/vue';
 import { defineComponent, h, nextTick, type PropType } from 'vue';
 import { mountInertia, unmountInertia } from '@/test/inertia';
-import { fakeFetch, json, makePoll, makePost } from '@/test/feed';
+import { fakeFetch, json, makePoll, makePost, makeVideo } from '@/test/feed';
 import type { Post } from '@/feed/types';
 import XmPost from './XmPost.vue';
 
@@ -202,8 +202,59 @@ describe('XmPost', () => {
         await nextTick();
         expect(document.querySelector('.xm-poll')).not.toBeNull();
         expect(screen.getByRole('heading', { level: 4, name: 'Quel thème pour la causerie ?' })).toBeTruthy();
-        const image = document.querySelector('img.card-img') as HTMLImageElement;
+        const image = document.querySelector('[data-xm-gallery] img') as HTMLImageElement;
         expect(image.alt).toBe('Illustration de la publication de Awa_S');
         expect(image.getAttribute('width')).toBe('1600');
+        expect(image.getAttribute('loading')).toBe('lazy');
+    });
+});
+
+describe('XmPost : vidéo relue avant parution (P7-10, §8.7)', () => {
+    const pending = (overrides: Partial<Post> = {}) => makePost({
+        is_mine: true, published_at: null, review_state: 'pending', review_label: 'En attente de relecture', media: [makeVideo()],
+        can: { update: false, delete: true, report: false, comment: false }, ...overrides,
+    });
+
+    it('montre à son auteur·rice « En attente de relecture », sans actions de publication, et le lecteur de sa vidéo', async () => {
+        const card = await mount(pending());
+        const review = card.querySelector('[data-xm-review]') as HTMLElement;
+        expect(review.textContent).toContain('En attente de relecture');
+        expect(review.textContent).toContain('Pour l’instant, tu es la seule personne à la voir.');
+        expect(review.getAttribute('role')).toBe('status');
+        expect(screen.getByRole('button', { name: 'Retirer ma vidéo' })).toBeTruthy();
+        expect(screen.queryByRole('button', { name: /J’aime/ })).toBeNull();
+        expect(screen.queryByRole('button', { name: 'Partager' })).toBeNull();
+        expect(screen.queryByLabelText('Ton commentaire')).toBeNull();
+        expect(card.querySelector('time')).toBeNull();
+        await waitFor(() => expect(card.querySelector('video')).not.toBeNull());
+    });
+
+    it('montre « Refusée » avec le motif de la modération, sans lecteur quand le fichier est purgé', async () => {
+        const card = await mount(pending({ review_state: 'rejected', review_label: 'Vidéo refusée', review_reason: 'Vie privée (lieu, visage ou information personnelle visible) — On voit le portail de ta maison.', media: [] }));
+        const review = card.querySelector('[data-xm-review]') as HTMLElement;
+        expect(review.className).toContain('alert-danger');
+        expect(review.textContent).toContain('Vidéo refusée');
+        expect(review.textContent).toContain('Ta vidéo n’a pas été publiée.');
+        expect(review.textContent.replace(/\u00a0/g, ' ')).toContain('Motif : Vie privée (lieu, visage ou information personnelle visible) — On voit le portail de ta maison.');
+        expect(card.querySelector('video')).toBeNull();
+    });
+
+    it('retire la vidéo (DELETE) après confirmation et sort la carte de la liste', async () => {
+        const { calls } = fakeFetch(() => new Response(null, { status: 204 }));
+        await mount(pending());
+        await fireEvent.click(screen.getByRole('button', { name: 'Retirer ma vidéo' }));
+        await shown();
+        expect(document.getElementById('modalDeletePost-01JC0000000000000000000001Title')?.textContent).toBe('Retirer ta vidéo');
+        expect(screen.getByText('Retirer cette vidéo ? Le fichier est supprimé tout de suite et ne peut pas être récupéré.')).toBeTruthy();
+        expect(calls).toHaveLength(0);
+        await fireEvent.click(screen.getByRole('button', { name: 'Retirer' }));
+        await waitFor(() => expect(events.find(([name]) => name === 'removed')?.[1]).toEqual(['01JC0000000000000000000001', 'deleted']));
+        expect(calls[0]).toMatchObject({ method: 'DELETE', url: '/api/v1/posts/01JC0000000000000000000001' });
+    });
+
+    it('une vidéo publiée (review_state approved) est une carte ordinaire avec ses actions', async () => {
+        const card = await mount(makePost({ review_state: 'approved', review_label: 'Vidéo publiée', media: [makeVideo()] }));
+        expect(card.querySelector('[data-xm-review]')).toBeNull();
+        expect(screen.getByRole('button', { name: /J’aime/ })).toBeTruthy();
     });
 });

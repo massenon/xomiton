@@ -6,7 +6,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen, waitFor } from '@testing-library/vue';
 import { mountInertia, unmountInertia } from '@/test/inertia';
-import { fakeFetch, json, makePost } from '@/test/feed';
+import { composerOptions, fakeFetch, json, makePost, makeVideo } from '@/test/feed';
 import { makeProfile, makeProgressive, makeTabs, otherProfile, selfLinks } from '@/test/profile';
 import Profile from './Profile.vue';
 
@@ -128,5 +128,66 @@ describe('Page /profil', () => {
         await fireEvent.click(screen.getByRole('button', { name: 'Plus tard' }));
         await waitFor(() => expect(screen.queryByRole('heading', { name: 'Complète ton profil, c’est facultatif' })).toBeNull());
         expect(window.sessionStorage.getItem('xm_profile_banner_dismissed')).toBe('1');
+    });
+
+    const pendingVideo = makePost({
+        id: '01JC0000000000000000000031', is_mine: true, published_at: null, review_state: 'pending', review_label: 'En attente de relecture', media: [makeVideo()],
+        can: { update: false, delete: true, report: false, comment: false },
+    });
+    const rejectedVideo = makePost({
+        id: '01JC0000000000000000000032', is_mine: true, published_at: null, review_state: 'rejected', review_label: 'Vidéo refusée', media: [],
+        review_reason: 'Vie privée — On voit le portail.', can: { update: false, delete: true, report: false, comment: false },
+    });
+    const selfProps = () => ({
+        title: 'Mon profil', tab: 'posts', tabs: makeTabs('/profil'), profile: makeProfile(), links: selfLinks,
+        panel: { data: [makePost({ body: 'Bonjour la communauté' })], meta: { next_cursor: null } },
+        composer: composerOptions(),
+    });
+
+    it('« Mes vidéos » : section chargée à la demande (GET posts/review), états de relecture et retrait (P7-10)', async () => {
+        const { calls } = fakeFetch((call) => (call.method === 'DELETE' ? new Response(null, { status: 204 }) : json({ data: [pendingVideo, rejectedVideo] })));
+        await mountInertia(Profile, { url: '/profil', pageProps: selfProps() });
+        expect(document.getElementById('mes-videos')).toBeNull();
+        expect(calls).toHaveLength(0);
+
+        const toggle = screen.getByRole('button', { name: 'Mes vidéos' });
+        expect(toggle.getAttribute('aria-expanded')).toBe('false');
+        await fireEvent.click(toggle);
+        await waitFor(() => expect(document.getElementById('mes-videos')).not.toBeNull());
+        expect(toggle.getAttribute('aria-expanded')).toBe('true');
+        await waitFor(() => expect(document.querySelectorAll('#mes-videos [data-xm-review]')).toHaveLength(2));
+        expect(calls[0]).toMatchObject({ method: 'GET', url: '/api/v1/posts/review' });
+        const reviews = [...document.querySelectorAll('#mes-videos [data-xm-review]')].map((el) => el.textContent ?? '');
+        expect(reviews[0]).toContain('En attente de relecture');
+        expect(reviews[1]).toContain('Vidéo refusée');
+        expect(reviews[1].replace(/\u00a0/g, ' ')).toContain('Motif : Vie privée — On voit le portail.');
+
+        // Retirer la vidéo en attente : confirmation, DELETE, la carte disparaît.
+        const withdraw = document.querySelectorAll<HTMLButtonElement>('#mes-videos [data-xm-withdraw]')[0];
+        await fireEvent.click(withdraw);
+        // Ouverture terminée (focus piégé dans la modale) : Bootstrap ignore une fermeture demandée pendant la transition.
+        await waitFor(() => expect(document.querySelector('.modal.show')?.contains(document.activeElement)).toBe(true), { timeout: 3000 });
+        await fireEvent.click(await screen.findByRole('button', { name: 'Retirer' }));
+        await waitFor(() => expect(document.querySelectorAll('#mes-videos [data-xm-review]')).toHaveLength(1), { timeout: 3000 });
+        expect(calls.find((call) => call.method === 'DELETE')?.url).toBe('/api/v1/posts/01JC0000000000000000000031');
+        await new Promise((resolve) => setTimeout(resolve, 400));
+    });
+
+    it('« Mes vidéos » : s’ouvre par l’ancre #mes-videos, dit quand il n’y a rien et propose « Réessayer » en cas d’erreur', async () => {
+        window.location.hash = '#mes-videos';
+        let fail = true;
+        fakeFetch(() => (fail ? json({ message: 'Oups' }, 500) : json({ data: [] })));
+        await mountInertia(Profile, { url: '/profil', pageProps: selfProps() });
+        await waitFor(() => expect(document.getElementById('mes-videos')).not.toBeNull());
+        expect(await screen.findByText('Tes vidéos ne se chargent pas pour le moment.')).toBeTruthy();
+        fail = false;
+        await fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+        expect(await screen.findByText('Tu n’as aucune vidéo en attente ou refusée.')).toBeTruthy();
+        window.location.hash = '';
+    });
+
+    it('« Mes vidéos » n’existe pas sur le profil d’une autre personne', async () => {
+        await mountInertia(Profile, { url: '/membres/Cyd', pageProps: { ...selfProps(), profile: otherProfile(), links: otherLinks, composer: null } });
+        expect(screen.queryByRole('button', { name: 'Mes vidéos' })).toBeNull();
     });
 });
