@@ -1,7 +1,7 @@
 # Xomiton — application mobile (Flutter)
 
 SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`
-(550 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
+(603 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
 
 Build Android depuis Windows (SDK, émulateur ou téléphone, API locale `10.0.2.2`, APK debug, clé de
 signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../docs/BUILD_ANDROID_WINDOWS.md).
@@ -19,8 +19,20 @@ signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../doc
 - **Progression du manuel** (cases « point vu ») : préférences de l'appareil, clé `xm_ccc_manuel_v1:{id du compte}`
   (comme le web), **jamais envoyée au serveur**. Rangs inconnus ignorés, contenu corrompu = progression vide,
   écriture refusée = progression en mémoire et message.
-- **Hors ligne** : aucune copie. Le serveur répond `no-store, private` pour que la lecture suive la publication
-  (un outil masqué disparaît) : l'erreur réseau affiche « Réessayer ». Ouvrir un outil sans réseau n'est donc pas possible.
+- **Hors ligne** (D-MOB-19) : le serveur répond `no-store, private` (la publication prime, `ApiCache` ne garde donc rien),
+  l'application garde sa **propre copie** de la dernière réponse réussie (`CccRepository`, boîte `cache_private`, clé
+  `ccc:v1:{id du compte}`, avec la date de synchronisation). Réseau d'abord ; panne réseau, délai dépassé ou 5xx → copie
+  servie avec le bandeau « Hors ligne · Contenu enregistré le … » et « Actualiser » ; 401 / 403 / 404 → jamais la copie
+  (purgée) ; un succès **remplace** la copie (outil masqué = disparu à la synchro suivante) ; copie de plus de
+  `kCccOfflineRetention` (**30 jours**, `ccc_repository.dart`) non servie (message dédié). Purge à la déconnexion
+  (`LocalDb.clearPrivate`, images via `SessionController.expire`) ; copies séparées par compte.
+- **Images hors ligne** : `CccImageStore` (`data/ccc_image_store.dart`), dossier `ccc_images` de l'application
+  (`path_provider`, déjà présent transitivement : aucun poids ajouté). Bouton « Télécharger pour lire hors ligne » (jamais
+  automatique : pas de réglage « Wi-Fi seulement »), séquentiel, annulable, 5 Mo par image, 100 Mo au total
+  (`kCccImageMaxFileBytes`, `kCccImageMaxTotalBytes`), client Dio **sans jeton** ; fichiers nommés par SHA-256 de
+  l'adresse ; images retirées de la réponse supprimées à chaque synchro réussie ; lues depuis le disque quand elles y sont.
+  Indicateur « Disponible hors ligne » par outil dont toutes les images sont enregistrées. Les tests injectent un
+  disque en mémoire (`test/support/memory_image_disk.dart`) : jamais le vrai dossier.
 - **Mode animation** : `SystemChrome` immersif à l'ouverture, `edgeToEdge` rétabli à la fermeture (bouton ou retour) ;
   glisser ou boutons de 56 dp, retour au début après la dernière image (comme le web).
 - **Lois** : `meta.laws.url` ouvert par `linkLauncherProvider` (https seulement) ; sans adresse valide, carte informative.
