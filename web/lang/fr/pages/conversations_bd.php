@@ -47,6 +47,42 @@ return [
     'seance_open' => 'Ouvrir le mode séance',
     'questions_title' => 'Questions pour en parler',
 
+    // P20-08 : création d'un·e membre (anonyme par défaut, Q99), signalement d'une création publiée.
+    'author_line' => 'Créée par : :name',
+    'member_badge' => 'Création d’un·e membre',
+    'report' => [
+        'title' => 'Signaler cette conversation',
+        'text' => 'Un contenu vous semble choquant, dangereux ou contraire à la charte ? L’équipe de modération le relit.',
+        'reason' => 'Motif',
+        'reason_placeholder' => 'Choisir un motif',
+        'details' => 'Précisions (facultatif)',
+        'submit' => 'Envoyer le signalement',
+        'login' => 'Connectez-vous pour signaler cette conversation.',
+        'login_link' => 'Se connecter',
+        'own' => 'Vous ne pouvez pas signaler votre propre création.',
+        'sent' => 'Merci. Votre signalement est arrivé : l’équipe de modération va le relire.',
+        'already' => 'Vous avez déjà signalé cette conversation. L’équipe de modération va la relire.',
+    ],
+
+    // P20-09 : exports PDF et PNG.
+    'export' => [
+        'title' => 'Télécharger',
+        'text' => 'Gardez la conversation pour la relire, l’imprimer ou l’utiliser en séance.',
+        'pdf' => 'PDF A4 (avec les questions)',
+        'png_panels' => 'Images PNG des cases',
+        'png_strip' => 'Image PNG en bande',
+        'working' => 'Préparation des images…',
+        'done' => 'Images prêtes : le téléchargement a commencé.',
+        'failed' => 'Les images n’ont pas pu être préparées dans ce navigateur. Le PDF reste disponible.',
+        'seance_pdf' => 'PDF à imprimer (avec les questions)',
+    ],
+    'pdf' => [
+        'kicker' => 'Xomiton · Conversation en BD',
+        'footer' => 'Source : Xomiton — :url — exporté le :date',
+        'source' => 'Source : Xomiton, plateforme d’information et d’entraide (Bénin). Conversation en BD à retrouver sur :url. Partage libre, sans modification, en citant la source.',
+        'private' => 'Document privé : cette création n’est pas publiée. Ne la partagez qu’en connaissance de cause.',
+    ],
+
     'viewer' => [
         'region' => 'Cases de la conversation « :title »',
         'roledescription' => 'visionneuse de BD',

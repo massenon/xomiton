@@ -26,6 +26,22 @@ window.Alpine = Alpine;
 // chargement, le formulaire reste un POST classique.
 if (document.querySelector('form[data-xm-faq-feedback]')) import('./public/aide.js').catch(() => {});
 
+// P20-09 : export PNG des conversations en BD, dans le navigateur ; boutons masqués sans JavaScript (le PDF reste), module
+// chargé au premier clic seulement.
+const bdExportButtons = document.querySelectorAll('[data-xm-bd-export]');
+if (bdExportButtons.length > 0) {
+  bdExportButtons.forEach((button) => { button.hidden = false; });
+  document.addEventListener('click', (event) => {
+    const button = event.target instanceof Element ? event.target.closest('[data-xm-bd-export]') : null;
+    if (!button) return;
+    event.preventDefault();
+    import('./public/bd-export.js').then((module) => module.runExport(button)).catch(() => {
+      const status = button.closest('[data-xm-bd-export-box]')?.querySelector('[data-xm-bd-export-status]');
+      if (status) status.textContent = button.dataset.xmBdFailed || '';
+    });
+  });
+}
+
 // Formulaire /signaler et sa confirmation (P5-04) : module chargé à la demande (budget du paquet public), avant le
 // démarrage d'Alpine qui doit connaître xmReport / xmReportSent. Si le chargement échoue (2G, hors ligne sans précache),
 // Alpine démarre quand même mais ignore ces blocs (x-ignore) : la page reste le formulaire complet sans JavaScript,

@@ -261,6 +261,14 @@ return [
             'title' => 'Ton événement n’a pas été publié',
             'body' => 'L’équipe n’a pas publié « :title » : :reason.',
         ],
+        'bd_published' => [
+            'title' => 'Ta conversation en BD est publiée',
+            'body' => '« :title » est en ligne. Tu peux la retirer à tout moment depuis « Mes conversations en BD ».',
+        ],
+        'bd_refused' => [
+            'title' => 'Ta conversation en BD n’a pas été publiée',
+            'body' => 'L’équipe n’a pas publié « :title » : :reason. Tu peux la corriger puis la proposer de nouveau.',
+        ],
     ],
 
     // Cloche de l'administration (D-MOB-15) : vous. Jamais le motif de la personne.

@@ -6,6 +6,7 @@ namespace App\Application\Moderation;
 
 use App\Enums\ModerationKind;
 use App\Enums\ModerationStatus;
+use App\Models\BdConversation;
 use App\Models\Comment;
 use App\Models\ForumReply;
 use App\Models\ForumTopic;
@@ -59,6 +60,12 @@ final class ReportContext
             $subject instanceof ForumReply => $this->topic($subject->topic()->withTrashed()->first()),
             $subject instanceof ForumTopic => ['type' => 'forum', 'title' => $subject->forum?->name, 'excerpt' => null],
             $subject instanceof Post && $subject->group_id !== null => ['type' => 'group', 'title' => $subject->group?->name, 'excerpt' => null],
+            // P20-08 : création publiée — titre, adresse publique (ou statut si elle n'est plus en ligne).
+            $subject instanceof BdConversation => [
+                'type' => 'conversation_bd',
+                'title' => (string) $subject->title,
+                'excerpt' => $subject->isPublished() ? route('conversations-bd.show', ['slug' => $subject->slug]) : ($subject->statusValue()?->label()),
+            ],
             default => null,
         };
     }

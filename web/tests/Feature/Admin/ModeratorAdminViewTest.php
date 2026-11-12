@@ -36,8 +36,8 @@ function modViewScreens(): array
     return $screens;
 }
 
-it('ouvre au modérateur le tableau de bord, la recherche, le réseau social, la modération (signalements et vidéos à relire), le calendrier des événements, la boîte à suggestions (P18-14) et les utilisateurs, et rien d’autre', function (): void {
-    $allowed = ['admin.dashboard', 'admin.recherche', 'admin.reseau', 'admin.moderation', 'admin.moderation.videos', 'admin.evenements', 'admin.suggestions', 'admin.utilisateurs'];
+it('ouvre au modérateur le tableau de bord, la recherche, le réseau social, la modération (signalements, vidéos et conversations en BD à relire), le calendrier des événements, la boîte à suggestions (P18-14) et les utilisateurs, et rien d’autre', function (): void {
+    $allowed = ['admin.dashboard', 'admin.recherche', 'admin.reseau', 'admin.moderation', 'admin.moderation.videos', 'admin.moderation.conversations-bd', 'admin.evenements', 'admin.suggestions', 'admin.utilisateurs'];
     $screens = modViewScreens();
 
     expect(array_keys($screens))->toContain(...$allowed)->and(count($screens))->toBeGreaterThan(20);

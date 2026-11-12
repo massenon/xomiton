@@ -377,6 +377,11 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('community_write', static fn (Request $request): Limit => Limit::perMinute(self::limit('community_write_per_minute'))
             ->by('community_write|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
+        // Conversations en BD (P20-07) : enregistrements automatiques de l'éditeur (anti-rebond côté page), créations,
+        // propositions et retraits, par compte et par minute.
+        RateLimiter::for('bd_editor', static fn (Request $request): Limit => Limit::perMinute(self::limit('bd_editor_per_minute'))
+            ->by('bd_editor|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
         // Qui suivre (P8-06, Q79) : invitations envoyées par compte et par jour (chacune notifie l'autre personne : contre
         // le harcèlement, en plus de community_write) ; `/qui-suivre?invite=<id>` (aperçu d'une personne par identifiant)
         // par compte et par minute, sans limite pour la page sans `invite`.

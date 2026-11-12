@@ -27,6 +27,7 @@ use App\Livewire\Admin\Gateways\Index as GatewaysIndex;
 use App\Livewire\Admin\Indicators\Index as IndicatorsIndex;
 use App\Livewire\Admin\Journal\Index as JournalIndex;
 use App\Livewire\Admin\Maintenance\Index as MaintenanceIndex;
+use App\Livewire\Admin\Moderation\ConversationsBd as ModerationConversationsBd;
 use App\Livewire\Admin\Moderation\Index as ModerationIndex;
 use App\Livewire\Admin\Moderation\Videos as ModerationVideos;
 use App\Livewire\Admin\Network\Index as NetworkIndex;
@@ -139,6 +140,8 @@ Route::get('/inscriptions', RegistrationsIndex::class)->middleware('can:registra
 Route::get('/moderation', ModerationIndex::class)->middleware('can:moderation.manage')->name('moderation');
 // Vidéos à relire (Q96) : même permission, rejouée à chaque action (PostPolicy `review`).
 Route::get('/moderation/videos', ModerationVideos::class)->middleware('can:moderation.manage')->name('moderation.videos');
+// P20-08 : conversations en BD proposées par les membres, à relire avant parution : même permission, rejouée à chaque action.
+Route::get('/moderation/conversations-bd', ModerationConversationsBd::class)->middleware('can:moderation.manage')->name('moderation.conversations-bd');
 
 // --- Administration de la plateforme, partie 2 (P12-03, P12-04, P12-05, P12-07, P12-08) : un écran = une permission (menu
 // AdminNavigation) ; chaque onglet et chaque action rejouent la permission et la policy de leur contenu dans le composant.

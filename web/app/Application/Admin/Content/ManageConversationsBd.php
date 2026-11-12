@@ -92,7 +92,7 @@ final class ManageConversationsBd
      */
     public function move(BdConversation $conversation, int $direction, User $actor): void
     {
-        $ordered = BdConversation::query()->ordered()->get(['id', 'position'])->values();
+        $ordered = BdConversation::query()->where('origin', BdConversationOrigin::Template->value)->ordered()->get(['id', 'position'])->values();
         $index = $ordered->search(fn (BdConversation $row): bool => (int) $row->getKey() === (int) $conversation->getKey());
         $target = is_int($index) ? $index + ($direction < 0 ? -1 : 1) : -1;
 

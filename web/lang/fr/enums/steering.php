@@ -46,6 +46,7 @@ return [
         'utilisateur' => 'Utilisateur·rice',
         'sujet' => 'Sujet de forum',
         'reponse' => 'Réponse de forum',
+        'conversation_bd' => 'Conversation en BD',
     ],
 
     'moderation_status' => [

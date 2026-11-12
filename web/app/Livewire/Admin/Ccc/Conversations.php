@@ -9,6 +9,7 @@ use App\Application\Content\ConversationsBd\ConversationGrammar;
 use App\Application\Content\ConversationsBd\ConversationsBdCatalog;
 use App\Application\Content\ConversationsBd\ImportConversationsBd;
 use App\Domain\Content\Exceptions\ContentRefused;
+use App\Enums\BdConversationOrigin;
 use App\Enums\BubbleTailTarget;
 use App\Enums\BubbleType;
 use App\Livewire\Concerns\InteractsWithUi;
@@ -287,7 +288,8 @@ final class Conversations extends Component
     #[Computed]
     public function conversations(): Collection
     {
-        return BdConversation::query()->ordered()->with('panels.scene')->withCount('panels')->get();
+        // Modèles de l'équipe seulement : les créations des membres se relisent dans /admin/moderation/conversations-bd (P20-08).
+        return BdConversation::query()->where('origin', BdConversationOrigin::Template->value)->ordered()->with('panels.scene')->withCount('panels')->get();
     }
 
     /** Nombre de cases dont l'image manque encore (P20-11). */
@@ -448,7 +450,7 @@ final class Conversations extends Component
     {
         $this->authorizeManage();
 
-        return BdConversation::query()->findOrFail($id);
+        return BdConversation::query()->where('origin', BdConversationOrigin::Template->value)->findOrFail($id);
     }
 
     private function scene(int $id): BdScene

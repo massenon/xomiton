@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Conversation en BD (P20-03, PRD conversation-en-bd, DATABASE_DICTIONARY.md `bd_conversations`) : 3 à 8 cases
  * (`bd_panels`) portant des bulles (`bd_bubbles`). Modèle de l'équipe (`model_key` m01…m12, import) ou création d'un·e
  * membre (lot B : `author_id`, `is_anonymous` vrai par défaut, Q99). Seul le statut `publiee` est public et indexé.
+ * `withdrawn_by` (lot B) : qui a retiré une création publiée (auteur·rice ou modération).
  */
 class BdConversation extends Model
 {
@@ -44,6 +45,7 @@ class BdConversation extends Model
             'author_id' => 'integer',
             'thematique_id' => 'integer',
             'reviewed_by' => 'integer',
+            'withdrawn_by' => 'integer',
             'submitted_at' => 'datetime',
             'reviewed_at' => 'datetime',
             'published_at' => 'datetime',
@@ -88,6 +90,55 @@ class BdConversation extends Model
     public function isPublished(): bool
     {
         return $this->statusValue() === BdConversationStatus::Published;
+    }
+
+    /** Origine lue sans dépendre du cast. */
+    public function originValue(): BdConversationOrigin
+    {
+        $raw = $this->attributes['origin'] ?? null;
+
+        return BdConversationOrigin::tryFrom(is_string($raw) ? $raw : '') ?? BdConversationOrigin::Template;
+    }
+
+    /** Création d'un·e membre (lot B). */
+    public function isMemberCreation(): bool
+    {
+        return $this->originValue() === BdConversationOrigin::Member;
+    }
+
+    /** L'auteur·rice de la création (jamais vrai pour un modèle de l'équipe ni pour un compte supprimé). */
+    public function isAuthoredBy(?User $user): bool
+    {
+        return $user !== null && $this->author_id !== null && (int) $this->author_id === (int) $user->getKey();
+    }
+
+    /**
+     * Statuts où l'auteur·rice peut modifier sa création (P20-07) : brouillon, refusée (corriger puis reproposer) ou retirée.
+     * Une création proposée attend la modération ; publiée, elle doit d'abord être retirée.
+     */
+    public function isEditable(): bool
+    {
+        return in_array($this->statusValue(), [BdConversationStatus::Draft, BdConversationStatus::Refused, BdConversationStatus::Withdrawn], true);
+    }
+
+    /** Retirée par la modération (signalement) et non par son auteur·rice : seule cette retraite peut être annulée par l'équipe. */
+    public function isWithdrawnByModeration(): bool
+    {
+        return $this->statusValue() === BdConversationStatus::Withdrawn
+            && $this->withdrawn_by !== null
+            && (int) $this->withdrawn_by !== (int) ($this->author_id ?? 0);
+    }
+
+    /** Nom affiché sur la page publique : « Anonyme » par défaut (Q99), le pseudonyme si l'auteur·rice l'a choisi. */
+    public function authorLabel(): ?string
+    {
+        if (! $this->isMemberCreation()) {
+            return null;
+        }
+
+        $pseudo = $this->is_anonymous ? null : $this->loadMissing('author:id,pseudo')->author?->pseudo;
+
+        return is_string($pseudo) && trim($pseudo) !== '' ? $pseudo : (string) __('conversations_bd.author.anonymous');
     }
 
     /** @return list<string> */

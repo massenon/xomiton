@@ -156,6 +156,8 @@ return [
         // Groupes et pages (P8-02, P8-03) : créations, adhésions, départs, décisions sur les demandes, abonnements aux
         // pages, par compte et par minute (limiteur `community_write`).
         'community_write_per_minute' => 20,
+        // P20-07 : éditeur des conversations en BD (enregistrement automatique toutes les ~2 s au plus pendant la saisie).
+        'bd_editor_per_minute' => 60,
         // Qui suivre (P8-06, Q79) : invitations envoyées par compte et par jour (limiteur `network_invite`, en plus de
         // `community_write` : chacune notifie l'autre personne), aperçus `/qui-suivre?invite=<id>` par compte et par
         // minute (limiteur `network_preview`).

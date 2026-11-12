@@ -69,11 +69,13 @@ export const LINKS = {
     // P18-12, P18-14 : contributions des membres (file de validation de l'équipe).
     proposer: link('proposer', 'ressources.proposer', '/proposer-une-ressource', 'journal-plus', 'menus.member.propose_resource', member),
     idees: link('idees', 'suggestions', '/boite-a-idees', 'lightbulb', 'menus.member.suggestions', member),
+    // P20-07 : mes conversations en BD (éditeur des membres, créations privées puis proposées à la modération).
+    conversationsBd: link('conversations-bd', 'mes-conversations-bd.index', '/mes-conversations-bd', 'chat-square-quote', 'menus.member.conversations_bd', member),
 } satisfies Record<string, NavLink>;
 
 /** Menus déroulants de l'en-tête, entre « Fil » et « Espace pair » (partials/header.php). */
 export const HEADER_MENUS: HeaderMenu[] = [
-    { id: 'menuApprendre', label: 'menus.member.learn', entries: [LINKS.thematiques, LINKS.ressources, LINKS.violences, LINKS.lois, 'divider', LINKS.ccc, LINKS.proposer] },
+    { id: 'menuApprendre', label: 'menus.member.learn', entries: [LINKS.thematiques, LINKS.ressources, LINKS.violences, LINKS.lois, 'divider', LINKS.ccc, LINKS.conversationsBd, LINKS.proposer] },
     { id: 'menuCommunaute', label: 'menus.member.community', entries: [LINKS.groupes, LINKS.pages, LINKS.evenements, LINKS.forums, LINKS.quiSuivre, 'divider', LINKS.idees] },
     { id: 'menuAide', label: 'menus.member.help_protection', entries: [LINKS.sos, LINKS.signaler, LINKS.urgences, LINKS.annuaire, LINKS.assistant] },
 ];
@@ -81,7 +83,7 @@ export const HEADER_MENUS: HeaderMenu[] = [
 /** Sections du sidenav (partials/sidenav.php) ; le compte (paramètres, aide, administration, déconnexion) suit. */
 export const SIDENAV_SECTIONS: NavSection[] = [
     { id: 'social', title: 'menus.member_sections.social', links: [LINKS.fil, LINKS.profil, LINKS.messages, LINKS.groupes, LINKS.pages, LINKS.evenements, LINKS.forums, { ...LINKS.quiSuivre, label: 'menus.member_more.who_to_follow_full' }] },
-    { id: 'learn', title: 'menus.member_sections.learn', links: [LINKS.thematiques, LINKS.ressources, LINKS.doGlegbe, { ...LINKS.violences, label: 'menus.member_more.violences_short' }, LINKS.ccc] },
+    { id: 'learn', title: 'menus.member_sections.learn', links: [LINKS.thematiques, LINKS.ressources, LINKS.doGlegbe, { ...LINKS.violences, label: 'menus.member_more.violences_short' }, LINKS.ccc, LINKS.conversationsBd] },
     { id: 'help', title: 'menus.member_sections.help', links: [{ ...LINKS.sos, label: 'menus.member_more.sos_full' }, LINKS.signaler, LINKS.urgences, LINKS.annuaire, LINKS.assistant] },
     { id: 'peer', title: 'menus.member_sections.peer', links: [LINKS.espacePair, LINKS.collecte], ability: 'peer_space.access' },
 ];

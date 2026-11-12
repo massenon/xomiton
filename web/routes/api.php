@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\V1\Community\GroupMembershipController;
 use App\Http\Controllers\Api\V1\Community\GroupPostController;
 use App\Http\Controllers\Api\V1\Community\PageController;
 use App\Http\Controllers\Api\V1\Community\SuggestionController;
+use App\Http\Controllers\Api\V1\Content\BdConversationController;
 use App\Http\Controllers\Api\V1\Content\ResourceController;
 use App\Http\Controllers\Api\V1\Content\ResourceProposalController;
 use App\Http\Controllers\Api\V1\Content\ThematiqueController;
@@ -379,6 +380,22 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
     Route::post('resource-proposals', [ResourceProposalController::class, 'store'])->middleware('verified')->name('api.resource_proposals.store');
     Route::get('suggestions/options', [SuggestionController::class, 'options'])->name('api.suggestions.options');
     Route::post('suggestions', [SuggestionController::class, 'store'])->name('api.suggestions.store');
+
+    // --- Conversations en BD des membres (P20-07, P20-08, docs/API.md §11 ter) : éditeur (`social.access`), brouillon privé
+    // par ULID (création d'une autre personne → 404), écritures sous `bd_editor`, signalement d'une création publiée sous
+    // `content_report`.
+    Route::prefix('bd-conversations')->as('api.bd-conversations.')->group(function (): void {
+        $ulid = '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}';
+        Route::get('library', [BdConversationController::class, 'library'])->name('library');
+        Route::get('/', [BdConversationController::class, 'index'])->name('index');
+        Route::post('/', [BdConversationController::class, 'store'])->middleware('throttle:bd_editor')->name('store');
+        Route::get('{ulid}', [BdConversationController::class, 'show'])->where('ulid', $ulid)->name('show');
+        Route::put('{ulid}', [BdConversationController::class, 'update'])->where('ulid', $ulid)->middleware('throttle:bd_editor')->name('update');
+        Route::delete('{ulid}', [BdConversationController::class, 'destroy'])->where('ulid', $ulid)->middleware('throttle:bd_editor')->name('destroy');
+        Route::post('{ulid}/submit', [BdConversationController::class, 'submit'])->where('ulid', $ulid)->middleware('throttle:bd_editor')->name('submit');
+        Route::post('{ulid}/withdraw', [BdConversationController::class, 'withdraw'])->where('ulid', $ulid)->middleware('throttle:bd_editor')->name('withdraw');
+        Route::post('{ulid}/report', [BdConversationController::class, 'report'])->where('ulid', $ulid)->middleware('throttle:content_report')->name('report');
+    });
 
     // --- Forums (P8-05, docs/API.md §16) : 5 forums fixes, sujets par ULID (ADR-27), réponses par id ; sujet invisible
     // (masqué, supprimé, forum fermé, blocage) → 404 ; anonyme → « Membre anonyme » sans identifiant (RG-02). Ouvrir un

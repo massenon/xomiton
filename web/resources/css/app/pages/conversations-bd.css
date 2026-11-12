@@ -60,3 +60,26 @@
   .xm-bdc-seance.is-hiding-thoughts .xm-bdc-thought-line { display: initial; }
   .xm-bdc-panel { break-inside: avoid; page-break-inside: avoid; }
 }
+
+/* Éditeur des membres (P20-07) : poignées des bulles et des pointes de queue par-dessus la case (glisser ou clavier),
+   cibles d'au moins 44 px, focus visible ; boutons tactiles de l'éditeur à 44 px de haut. */
+.xm-bde-touch { min-height: var(--xm-button-min-h, 44px); min-width: 44px; }
+.xm-bde-stage { position: relative; }
+.xm-bde-overlay { position: absolute; top: 0; left: 0; width: 100%; aspect-ratio: 3 / 2; }
+.xm-bde-handle {
+  position: absolute; min-width: 44px; min-height: 44px; padding: 0; border: 2px dashed transparent; border-radius: 12px;
+  background: transparent; cursor: grab; touch-action: none;
+}
+.xm-bde-handle:hover, .xm-bde-handle.is-selected { border-color: var(--bs-primary); background: rgba(4, 51, 195, .06); }
+.xm-bde-handle:focus-visible { outline: 3px solid var(--bs-primary); outline-offset: 2px; }
+.xm-bde-handle:active { cursor: grabbing; }
+.xm-bde-handle-n {
+  position: absolute; top: -10px; left: -10px; display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; background: var(--bs-primary); color: #fff; font-size: .75rem; font-weight: 700;
+}
+.xm-bde-tail {
+  position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; padding: 0; border: 0; border-radius: 50%;
+  background: transparent; cursor: crosshair; touch-action: none;
+}
+.xm-bde-tail span { display: block; width: 18px; height: 18px; margin: 13px; border: 3px solid var(--bs-primary); border-radius: 50%; background: #fff; }
+.xm-bde-tail:focus-visible { outline: 3px solid var(--bs-primary); }

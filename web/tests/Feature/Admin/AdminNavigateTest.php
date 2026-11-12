@@ -130,7 +130,7 @@ it('n’oublie wire:navigate sur aucun lien interne des vues d’administration 
         ]);
 
     // Itinéraires d'administration qui doivent charger la page en entier (fichier, PDF, aperçu).
-    $fullLoadRoutes = ['admin.sauvegardes.telecharger', 'admin.maintenance.preview', 'admin.fiches.pdf', 'admin.export'];
+    $fullLoadRoutes = ['admin.sauvegardes.telecharger', 'admin.maintenance.preview', 'admin.fiches.pdf', 'admin.export', 'mes-conversations-bd.pdf'];
     // Variables qui portent un lien de téléchargement ou de pièce jointe signé.
     $fullLoadVariables = ['$links[', '$attachment['];
     // Itinéraires du site public ou de l'espace membre.

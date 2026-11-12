@@ -17,6 +17,8 @@ return [
             'deconnexion', 'design-system', 'design-system.*',
             // P18-12, P18-14 : contributions des membres.
             'ressources.proposer', 'suggestions',
+            // P20-07 à P20-09 : mes conversations en BD (éditeur) et pages publiques des conversations.
+            'mes-conversations-bd.*', 'conversations-bd.*',
             // Parcours de crise et pages publiques atteintes depuis l'espace connecté.
             'home', 'sos', 'signaler', 'signaler.suivi', 'urgences', 'thematiques.*', 'ressources.index', 'ressources.show',
             'violences', 'lois', 'do-glegbe', 'aide.index', 'aide.show', 'actualites.*', 'confidentialite', 'connexion',

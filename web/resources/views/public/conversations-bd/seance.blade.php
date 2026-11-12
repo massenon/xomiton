@@ -4,6 +4,7 @@
     à la fois, d'abord toutes les bulles sauf les pensées, puis « Révéler les pensées » ; questions d'animation à la fin ;
     plein écran ; clavier et télécommande (→, Page suivante, Espace, Entrée : avancer ; ←, Page précédente : revenir ;
     P : pensées ; F : plein écran ; Début / Fin). Sans JavaScript : toutes les cases, pensées comprises, puis les questions.
+    P20-09 : lien « PDF à imprimer (avec les questions) » pour animer sans projecteur.
     Variables : $conversation, $panels, $names, $seo.
 --}}
 @php
@@ -30,6 +31,7 @@
                 </div>
                 <div class="d-flex flex-wrap gap-2 no-print">
                     <a class="btn btn-sm btn-outline-primary" href="{{ route('conversations-bd.show', ['slug' => $conversation->slug]) }}"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{{ __('pages/conversations_bd.seance.back') }}</a>
+                    <a class="btn btn-sm btn-outline-primary" href="{{ route('conversations-bd.pdf', ['slug' => $conversation->slug]) }}" rel="nofollow" download><i class="bi bi-filetype-pdf me-1" aria-hidden="true"></i>{{ __('pages/conversations_bd.export.seance_pdf') }}</a>
                     <button type="button" class="btn btn-sm btn-outline-primary" x-show="enhanced" x-cloak x-on:click="toggleFullscreen()" x-bind:aria-pressed="fullscreen ? 'true' : 'false'">
                         <i class="bi bi-arrows-fullscreen me-1" aria-hidden="true"></i><span x-text="fullscreen ? @js(__('pages/conversations_bd.seance.exit_fullscreen')) : @js(__('pages/conversations_bd.seance.fullscreen'))">{{ __('pages/conversations_bd.seance.fullscreen') }}</span>
                     </button>

@@ -70,7 +70,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | Modération & contenu | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
 | Contenu : thématiques & ressources (édition) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Outils CCC (édition) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| Conversations en BD (lecture publique et mode séance ; administration : `conversations_bd.manage`) | 👁 | 👁 | 👁 | 👁 | ✅ | ✅ |
+| Conversations en BD (lecture publique, mode séance et export PDF / PNG des publiées ; créations des membres : `social.access` ; relecture : `moderation.manage` ; modèles : `conversations_bd.manage`) | 👁 | 👁 | 👁 | 👁 | ✅ | ✅ |
 | Assistant LLM (base de connaissances) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Newsletter** (abonné·es, campagnes, envoi) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Passerelles réseaux sociaux** (connexion des comptes, file de publication) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
@@ -99,6 +99,8 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `posts.create`, `polls.create`, `comments.create` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `posts.moderate` | | | ✅ | ✅ | ✅ |
 | Relire les vidéos avant parution (Q96, `/admin/moderation/videos`) : **aucune nouvelle permission**, `moderation.manage` (voir aussi `posts.moderate` pour voir la vidéo en attente) ; jamais sa propre vidéo (`PostPolicy::review`) | | | ✅ | ✅ | ✅ |
+| Relire les conversations en BD proposées par les membres (P20-08, `/admin/moderation/conversations-bd`) : publier, ou refuser avec un motif obligatoire ; **aucune nouvelle permission**, `moderation.manage` rejouée à chaque action ; jamais sa propre création ; journal `conversations_bd.member_published\|member_refused` ; PDF d'une création non publiée pour la relecture | | | ✅ | ✅ | ✅ |
+| Créer ses conversations en BD (P20-07, `/mes-conversations-bd`, API `bd-conversations`) : `social.access` ; brouillon privé, proposer (anonyme par défaut), retirer, supprimer, exporter **ses** créations ; signaler une création publiée (motifs du projet) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `moderation.filter` (filtre de contenus : mots, liste blanche, test d'un texte, IOS-10 ; décision client du 2026-11-10) | | | ✅ | ✅ | ✅ |
 | `cases.create`, `cases.update_own` | | ✅ | | ✅ | ✅ |
 | `cases.view_all`, `cases.export` | | | | ✅ | ✅ |

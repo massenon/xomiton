@@ -4,6 +4,8 @@
     (repliée en mode discret pour une personne connectée qui l'a choisi) → fin de lecture : « À retenir » (message clé),
     « Besoin d'aide ? » (Signaler, SOS, urgences, centre d'aide), « Animer une séance » (mode séance, questions) ; colonne :
     autres conversations. Impression : cases seules (no-print sur le reste de l'interface).
+    P20-08 / P20-09 (lot B) : auteur·rice d'une création (« Anonyme » ou pseudonyme), « Télécharger » (PDF serveur, PNG
+    produits dans le navigateur), « Signaler cette conversation » pour une création d'un·e membre.
     Variables : $conversation, $panels, $names, $others, $catalog, $hideImages, $breadcrumb, $seo.
 --}}
 <x-layouts.public :seo="$seo">
@@ -23,6 +25,9 @@
                         <h1 class="h3 mb-0" id="bdc-titre">{{ $conversation->title }}</h1>
                         @if (trim((string) $conversation->summary) !== '')
                             <p class="lead fs-6 mb-0">{{ $conversation->summary }}</p>
+                        @endif
+                        @if ($author = $conversation->authorLabel())
+                            <p class="small mb-0"><x-badge color="secondary" soft icon="person">{{ __('pages/conversations_bd.member_badge') }}</x-badge> <span class="ms-1">{{ __('pages/conversations_bd.author_line', ['name' => $author]) }}</span></p>
                         @endif
                         <p class="small text-secondary mb-0">
                             @if ($conversation->theme){{ __('pages/conversations_bd.theme', ['theme' => $conversation->theme]) }}@endif
@@ -59,6 +64,8 @@
                         </section>
                     @endif
 
+                    @include('public.conversations-bd.export', ['conversation' => $conversation, 'root' => '#conversation'])
+
                     <section class="card border-primary no-print" aria-labelledby="bdc-aide-titre">
                         <div class="card-body vstack gap-2">
                             <h2 class="h5 mb-0" id="bdc-aide-titre">{{ __('pages/conversations_bd.help_title') }}</h2>
@@ -87,6 +94,9 @@
                             <p class="mb-0 mt-1"><a class="btn btn-outline-primary" href="{{ route('conversations-bd.seance', ['slug' => $conversation->slug]) }}" rel="nofollow"><i class="bi bi-easel me-1" aria-hidden="true"></i>{{ __('pages/conversations_bd.seance_open') }}</a></p>
                         </div>
                     </section>
+                    @if ($conversation->isMemberCreation())
+                        @include('public.conversations-bd.report', ['conversation' => $conversation])
+                    @endif
                 </article>
             </div>
 
