@@ -146,7 +146,7 @@ it('transmet aux modales les droits et les bornes de StorePostRequest', function
                 'body_max' => 3000, 'question_min' => 5, 'question_max' => 200, 'options_min' => 2, 'options_max' => 6,
                 'option_max' => 80, 'image_max_kb' => 5120, 'image_types' => ['image/jpeg', 'image/png', 'image/webp'],
                 // Q96 : plusieurs images, vidéo relue avant parution (poids borné par les limites PHP).
-                'max_images' => 4, 'video_max_kb' => \App\Application\Feed\FeedMediaLimits::videoMaxKb(),
+                'max_images' => 4, 'video_max_kb' => App\Application\Feed\FeedMediaLimits::videoMaxKb(),
                 'video_types' => ['video/mp4', 'video/webm'], 'video_description_min' => 5, 'video_description_max' => 500,
             ]));
 });
