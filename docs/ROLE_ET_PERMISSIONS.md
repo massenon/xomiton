@@ -34,6 +34,8 @@ Membre, pair animateur·rice et admin se connectent par **les mêmes écrans et 
 - **Destinataires des alertes** (D-MOB-10, **Tranché 2026-10-29 (recommandation retenue)**) : à la création, admins **de garde** + pair·es **de la zone** de l'alerte ; à 5 minutes sans accusé de réception, **escalade nationale** à tous les admins et tous les pair·es (+ point focal national) ; l'accusé de l'un·e arrête l'escalade. Position du SOS pour l'admin : toujours **arrondie** (D-MOB-4).
 - **Inscriptions** (D-MOB-17, **Tranché 2026-10-29 (recommandation retenue)**) : **remplacée le 11/11/2026** : TOUS les nouveaux comptes attendent la validation `users.validate_peers`, sans réglage (`reg_manual_validation` supprimé) ; les signaux (e-mail jetable, inscriptions répétées) restent notés pour éclairer la décision.
 - **Non-escalade** (tests `tests/Feature/Admin/TeamRolesTest.php`, `tests/Feature/Api/Admin/AdminMobileApiTest.php`, `tests/Feature/Api/Me/RoleRequestsApiTest.php`) : un·e pair·e ne peut pas se donner admin, un membre ne peut pas appeler l'API admin (403 sur chaque route), un·e admin ne peut ni se donner ni donner un rôle d'administration (RG-15).
+- **Bénévoles écoutant·es** (Q97, tranché le 12/11/2026) : **pas de nouveau rôle** ; ce sont les pair·es approuvé·es à l'inscription (rôle `pair`, compte actif). L'écran Utilisateurs les filtre (« Bénévoles écoutant·es (pair·es approuvé·es) », P18-08).
+- **Membre vérifié** (Q97) : badge attribué à la main par l'administration (`badges.manage`, P18-09), pas un rôle ; « Pair animateur·rice » pour un·e pair·e approuvé·e. Aucun badge n'ouvre de droit.
 | Intervenant·e de l'annuaire | (contact, pas un compte obligatoire) | Points focaux, juristes, psychologues… | Fiche annuaire ; peut avoir un compte `pair` ou `admin` |
 
 ## 2. Principes
@@ -73,6 +75,8 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | **Passerelles réseaux sociaux** (connexion des comptes, file de publication) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Templates e-mails** | ❌ | ❌ | ❌ | ❌ | ✅ (sauf suppression système) | ✅ |
 | Utilisateurs (membres, pair·es) | ❌ | ❌ | ❌ | 👁 (suspendre) | ✅ | ✅ |
+| Bannir un compte (P18-06, Q97) ; lever un bannissement | ❌ | ❌ | ❌ | ❌ | ✅ (bannir) | ✅ (bannir, lever) |
+| Badges vérifiés (P18-09, Q97 : « Membre vérifié », « Pair animateur·rice ») | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Inscriptions (ouvrir / fermer) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Rôle pair : donner / retirer, inviter | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Rôles d'administration (attribuer, inviter) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -108,6 +112,11 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `backups.create`, `backups.download` | | | | ✅ | ✅ |
 | `backups.restore`, `backups.delete` | | | | | ✅ |
 | `roles.assign_admin` (attribuer ou inviter modération / admin / super-admin) | | | | | ✅ |
+| `users.suspend` : suspendre, **avec date de fin facultative** (P18-06 : suspension temporaire, levée automatique par la commande planifiée `accounts:lift-suspensions`) | | | ✅ | ✅ | ✅ |
+| `users.ban` (P18-06, Q97 appliqué par défaut : bannir = statut définitif `banni`, motif obligatoire, connexion refusée web / API / application avec un message neutre `account_unavailable`, sessions et jetons révoqués, journal `users.banned` ; jamais un compte d'administration ni soi-même ; depuis `/admin/moderation` et la fiche du compte) | | | | ✅ | ✅ |
+| `users.unban` (lever un bannissement, journal `users.unbanned`) | | | | | ✅ |
+| `badges.manage` (P18-09 : attribuer ou retirer à la main un badge vérifié dans la fiche du compte, jamais sur soi-même ; journal `badges.granted` / `badges.revoked`) | | | | ✅ | ✅ |
+| Réponse validée d'un sujet de forum (P18-03, Q97) : **aucune nouvelle permission** — l'auteur·rice du sujet, ou `posts.moderate` (`ForumTopicPolicy::accept`) ; un geste de la modération est journalisé | | | ✅ | ✅ | ✅ |
 
 ## 5. Règles d'accès aux données
 
