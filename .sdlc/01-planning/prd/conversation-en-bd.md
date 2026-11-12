@@ -26,7 +26,8 @@ target_date: ""
 | Style | **Pas** de dessins simples, de bonshommes bâtons ni de symboles : on garde la **BD illustrée** des BD « violences numériques », avec des **bulles de conversation** |
 | Visibilité | **Publiques et indexées**, comme les BD |
 | Les 12 modèles | Claude **propose et valide** les brouillons → faits (`MODELES.md`) |
-| Personnages | **Pas** les personnages des BD (Afi, Sena, Kossi…) → casting propre de 8 personnages, même style |
+| Personnages | « Oui et non » : on **reprend** les personnages des BD (Afi, Sena, Kossi, Mariam, Tantie Rosine, Nadia) **et** on en ajoute 4 pour les rôles qu'ils ne couvrent pas (Fifamè, adolescente ; Yasmine, en fauteuil roulant ; Ablavi, cheffe de projet ; Joël, sourd) |
+| Créations publiées | **Anonymes par défaut** (la personne peut choisir d'afficher son pseudonyme) |
 | Créations des membres | **Oui, dès la version 1** |
 | Export | **PDF et PNG** |
 | Référence pour les bulles | https://www.mangakoaching.com/tutoriels/anatomie-bulle-de-bd/ |
@@ -127,7 +128,7 @@ Les pair·es animateur·rices n'ont pas de support pour **décomposer une intera
 - *Critères* : [ ] une création ne quitte jamais l'état privé sans action de la personne ; [ ] l'éditeur ne permet aucun import d'image ; [ ] chaque contrôle refuse avec un message clair.
 
 **P0-7 · Publication et modération des créations**
-- « Proposer à la publication » (pseudonyme ou anonyme) → file de modération dans l'admin → publication ou refus motivé ; retrait possible à tout moment par l'auteur·rice.
+- « Proposer à la publication » (**anonyme par défaut**, pseudonyme sur choix) → file de modération dans l'admin → publication ou refus motivé ; retrait possible à tout moment par l'auteur·rice.
 - Signalement d'une conversation publiée (motifs existants du projet), traité dans `/admin/moderation`.
 - *Critères* : [ ] rien n'est public ni indexé avant validation ; [ ] l'auteur·rice est notifié·e de la décision ; [ ] un retrait par l'auteur·rice dépublie immédiatement ; [ ] décisions journalisées.
 
@@ -180,9 +181,7 @@ Mesure : compteurs agrégés et anonymes (pas de suivi individuel), comme les au
 
 | Question | Qui | Bloquante ? |
 |---|---|---|
-| Les créations publiées affichent-elles le pseudonyme par défaut, ou l'anonymat par défaut ? (proposition : anonyme par défaut) | association | non (défaut proposé) |
 | Âge minimal pour créer une conversation | association, juridique | non |
-| Les 60 cases passent-elles avant ou après les 15 BD restantes dans les crédits IA Figma ? (proposition : après) | client | non |
 | Relecture santé de M11 et relecture de sensibilité de M03, M05, M08 avant publication ? | association | non |
 
 ## Timeline Considerations
