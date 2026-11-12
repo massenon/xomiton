@@ -18107,6 +18107,93 @@
             }
         }
     },
+    "ccc_offline_download_cancel": "Annuler le téléchargement",
+    "@ccc_offline_download_cancel": {
+        "description": "ccc.offline.download.cancel"
+    },
+    "ccc_offline_download_cancelled": "Téléchargement annulé. Les images déjà enregistrées restent disponibles.",
+    "@ccc_offline_download_cancelled": {
+        "description": "ccc.offline.download.cancelled"
+    },
+    "ccc_offline_download_cta": "Télécharger pour lire hors ligne",
+    "@ccc_offline_download_cta": {
+        "description": "ccc.offline.download.cta"
+    },
+    "ccc_offline_download_done": "Toutes les images sont enregistrées : tu peux animer sans réseau.",
+    "@ccc_offline_download_done": {
+        "description": "ccc.offline.download.done"
+    },
+    "ccc_offline_download_failed": "{count, plural, =1{1 image n’a pas pu être enregistrée. Réessaie avec un meilleur réseau.} other{{count} images n’ont pas pu être enregistrées. Réessaie avec un meilleur réseau.}}",
+    "@ccc_offline_download_failed": {
+        "description": "ccc.offline.download.failed",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ccc_offline_download_full": "La place réservée aux images est pleine : certaines images ne sont pas enregistrées.",
+    "@ccc_offline_download_full": {
+        "description": "ccc.offline.download.full"
+    },
+    "ccc_offline_download_hint": "Enregistre les images sur ton téléphone pour animer une séance sans réseau. Préfère le Wi-Fi : le téléchargement consomme des données mobiles.",
+    "@ccc_offline_download_hint": {
+        "description": "ccc.offline.download.hint"
+    },
+    "ccc_offline_download_needs_network": "Connecte-toi à Internet pour télécharger les images.",
+    "@ccc_offline_download_needs_network": {
+        "description": "ccc.offline.download.needs_network"
+    },
+    "ccc_offline_download_progress": "Téléchargement des images : {done} sur {total}.",
+    "@ccc_offline_download_progress": {
+        "description": "ccc.offline.download.progress",
+        "placeholders": {
+            "done": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_offline_expired": "La copie enregistrée date de plus de {days} jours : elle n’est plus affichée. Connecte-toi à Internet pour récupérer les outils.",
+    "@ccc_offline_expired": {
+        "description": "ccc.offline.expired",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_offline_notice": "Tu lis la copie enregistrée sur ton téléphone. Les nouveautés et les outils retirés se mettront à jour dès que tu seras de nouveau connecté·e.",
+    "@ccc_offline_notice": {
+        "description": "ccc.offline.notice"
+    },
+    "ccc_offline_refresh": "Actualiser",
+    "@ccc_offline_refresh": {
+        "description": "ccc.offline.refresh"
+    },
+    "ccc_offline_refresh_label": "Actualiser les outils CCC",
+    "@ccc_offline_refresh_label": {
+        "description": "ccc.offline.refresh_label"
+    },
+    "ccc_offline_saved_on": "Contenu enregistré le {date}.",
+    "@ccc_offline_saved_on": {
+        "description": "ccc.offline.saved_on",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_offline_status": "Hors ligne",
+    "@ccc_offline_status": {
+        "description": "ccc.offline.status"
+    },
+    "ccc_offline_tool_available": "Disponible hors ligne",
+    "@ccc_offline_tool_available": {
+        "description": "ccc.offline.tool_available"
+    },
     "ccc_presentation_badge": "Mode présentation",
     "@ccc_presentation_badge": {
         "description": "ccc.presentation.badge"
