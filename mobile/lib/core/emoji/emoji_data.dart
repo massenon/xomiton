@@ -488,6 +488,7 @@ const List<EmojiCategory> kEmojiCategories = [
     EmojiEntry('🧻', 'papier toilette', 'hygiène'),
     EmojiEntry('🩺', 'stéthoscope', 'santé médecin'),
     EmojiEntry('💊', 'pilule', 'médicament santé'),
+    EmojiEntry('💉', 'seringue', 'santé vaccin dépistage prise de sang soin'),
     EmojiEntry('🩹', 'pansement', 'soin'),
     EmojiEntry('🌡️', 'thermomètre', 'fièvre santé'),
     EmojiEntry('🎓', 'chapeau de diplômé', 'études'),

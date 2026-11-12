@@ -506,6 +506,7 @@
         {"c":"🧻","n":"papier toilette","k":"hygiène"},
         {"c":"🩺","n":"stéthoscope","k":"santé médecin"},
         {"c":"💊","n":"pilule","k":"médicament santé"},
+        {"c":"💉","n":"seringue","k":"santé vaccin dépistage prise de sang soin"},
         {"c":"🩹","n":"pansement","k":"soin"},
         {"c":"🌡️","n":"thermomètre","k":"fièvre santé"},
         {"c":"🎓","n":"chapeau de diplômé","k":"études"},
