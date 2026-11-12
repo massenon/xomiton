@@ -4,7 +4,7 @@
     avertissement → sections en accordéon → FAQ ; colonne latérale : contacts publics + « J’ai besoin d’aide »,
     ressource principale, thématiques liées. Grille col-lg-8 / col-lg-4 (gabarit public, sans sidenav membre : Q18).
     Couverture = image LCP préchargée. Variables : $thematique, $category, $breadcrumb, $sections, $contacts, $related,
-    $primaryResource, $resourceSize, $faqItems, $showAssistant, $seo.
+    $primaryResource, $resourceSize, $faqItems, $showAssistant, $comic, $legalReferences, $digital, $seo.
 --}}
 <x-layouts.public :seo="$seo" pub-nav="thematiques">
     <x-slot:head>
@@ -19,6 +19,11 @@
             </div>
             <aside class="col-lg-4" aria-label="{{ __('pages/thematiques.aside_label') }}">
                 <div class="row g-4">
+                    @if ($comic)
+                        <div class="col-sm-6 col-lg-12">
+                            @include('public.thematiques.show.bd')
+                        </div>
+                    @endif
                     <div class="col-sm-6 col-lg-12">
                         @include('public.thematiques.show.aide')
                     </div>

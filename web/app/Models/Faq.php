@@ -24,6 +24,7 @@ class Faq extends Model
     /** @var list<string> */
     protected $fillable = [
         'category_id',
+        'thematique_id',
         'slug',
         'question',
         'answer',
@@ -37,6 +38,7 @@ class Faq extends Model
     {
         return [
             'position' => 'integer',
+            'thematique_id' => 'integer',
             'is_published' => 'boolean',
             'show_on_home' => 'boolean',
         ];

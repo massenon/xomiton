@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Fiche thématique publique identifiée par son slug (DATABASE_DICTIONARY.md §3 `thematiques`). `body` et `sections[].body`
  * sont du HTML nettoyé à l'écriture (profil purifier `content`, DEVELOPMENT_STANDARDS §7) : les vues l'affichent tel quel.
+ * `legal_references` (P19) : références juridiques saisies et validées par l'administration, même nettoyage, jamais
+ * écrasées par l'import des violences numériques.
  */
 class Thematique extends Model
 {
@@ -49,6 +51,7 @@ class Thematique extends Model
         'views_count',
         'meta_title',
         'meta_description',
+        'legal_references',
         'created_by',
     ];
 
@@ -58,6 +61,7 @@ class Thematique extends Model
         return [
             'body' => PurifiedHtml::class,
             'sections' => PurifiedSections::class,
+            'legal_references' => PurifiedHtml::class,
             'related_contact_roles' => 'array',
             'related_ids' => 'array',
             'reading_minutes' => 'integer',
@@ -88,6 +92,26 @@ class Thematique extends Model
     public function resources(): HasMany
     {
         return $this->hasMany(Resource::class);
+    }
+
+    /**
+     * BD liées à la fiche (P19 : `ccc_tools.thematique_id`).
+     *
+     * @return HasMany<CccTool, $this>
+     */
+    public function comics(): HasMany
+    {
+        return $this->hasMany(CccTool::class);
+    }
+
+    /**
+     * Questions propres à la fiche (P19 : `faqs.thematique_id`).
+     *
+     * @return HasMany<Faq, $this>
+     */
+    public function ownFaqs(): HasMany
+    {
+        return $this->hasMany(Faq::class);
     }
 
     /**

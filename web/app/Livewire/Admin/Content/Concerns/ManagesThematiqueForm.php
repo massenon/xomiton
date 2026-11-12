@@ -33,6 +33,7 @@ trait ManagesThematiqueForm
         return [
             'title' => '', 'category_id' => '', 'slug' => '', 'summary' => '', 'body' => '', 'content_warning' => '',
             'reading_minutes' => '3', 'status' => ContentStatus::Draft->value, 'meta_title' => '', 'meta_description' => '',
+            'legal_references' => '',
         ];
     }
 
@@ -55,6 +56,7 @@ trait ManagesThematiqueForm
             'reading_minutes' => (string) $thematique->reading_minutes,
             'status' => $thematique->status === ContentStatus::Published ? ContentStatus::Published->value : ContentStatus::Draft->value,
             'meta_title' => (string) $thematique->meta_title, 'meta_description' => (string) $thematique->meta_description,
+            'legal_references' => (string) $thematique->legal_references,
         ];
         $this->openModal('xmContentThematique');
     }
@@ -80,7 +82,7 @@ trait ManagesThematiqueForm
 
         $data = $this->validateForm(
             'thematiqueForm',
-            $this->blankToNull($this->thematiqueForm, ['slug', 'body', 'content_warning', 'meta_title', 'meta_description']),
+            $this->blankToNull($this->thematiqueForm, ['slug', 'body', 'content_warning', 'meta_title', 'meta_description', 'legal_references']),
             ContentRules::thematique($this->thematiqueId),
             (array) __('admin_content.thematiques.fields'),
         );

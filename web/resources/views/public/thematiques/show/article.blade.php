@@ -34,7 +34,19 @@
             <x-accordion id="fiche-sections" class="mt-3" level="h2" :open="0" :items="$sections" />
         @endif
 
+        @if ($legalReferences)
+            {{-- P19 : références juridiques saisies et validées par l'administration (HTML nettoyé), seulement si remplies. --}}
+            <section class="mt-4" id="fiche-loi" aria-labelledby="fiche-loi-titre">
+                <h2 class="h5" id="fiche-loi-titre"><i class="bi bi-bank text-primary me-2" aria-hidden="true"></i>{{ __('pages/violences_numeriques.legal_title') }}</h2>
+                <div class="xm-prose">{!! \App\Support\HeadingOutline::normalize($legalReferences) !!}</div>
+                <p class="small text-secondary mb-0"><i class="bi bi-patch-check text-success me-1" aria-hidden="true"></i>{{ __('pages/violences_numeriques.legal_validated') }}</p>
+            </section>
+        @endif
+
         <p class="small text-secondary mt-3 mb-0">{{ __('pages/thematiques.legal_notice') }}</p>
+        @if ($digital)
+            <p class="small mt-2 mb-0"><a href="{{ route('violences-numeriques') }}">{{ __('pages/violences_numeriques.hub_link') }}</a></p>
+        @endif
 
         @if ($faqItems !== [])
             @include('public.thematiques.show.faq')

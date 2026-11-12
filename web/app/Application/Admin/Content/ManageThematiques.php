@@ -66,6 +66,8 @@ final class ManageThematiques
                 'reading_minutes' => (int) $data['reading_minutes'],
                 'meta_title' => self::nullable($data['meta_title'] ?? null),
                 'meta_description' => self::nullable($data['meta_description'] ?? null),
+                // P19 : références juridiques saisies par l'administration (HTML nettoyé par le cast, vide → null).
+                ...(array_key_exists('legal_references', $data) ? ['legal_references' => self::nullable($data['legal_references'])] : []),
                 ...$stored,
             ]);
             $thematique->status = $publish ? ContentStatus::Published : ($thematique->status === ContentStatus::Hidden ? ContentStatus::Hidden : ContentStatus::Draft);

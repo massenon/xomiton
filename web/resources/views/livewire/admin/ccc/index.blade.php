@@ -125,6 +125,17 @@
                                     <input class="form-check-input" type="checkbox" role="switch" id="xmTool{{ $tool->id }}" @checked($tool->is_published) wire:click="toggle({{ $tool->id }})">
                                     <label class="form-check-label small" for="xmTool{{ $tool->id }}">{{ __('admin_ccc.published') }}<span class="visually-hidden"> — {{ $tool->title }}</span></label>
                                 </div>
+                                @if ($tool->kind === \App\Enums\CccKind::Comic)
+                                    {{-- P19-04 : BD servie aussi sur la page publique indexable /bd/{key} (Q19). --}}
+                                    <div class="form-check form-switch mb-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="xmToolPublic{{ $tool->id }}" @checked($tool->is_public) wire:click="togglePublic({{ $tool->id }})" aria-describedby="xmToolPublicHelp{{ $tool->id }}">
+                                        <label class="form-check-label small" for="xmToolPublic{{ $tool->id }}">{{ __('admin_ccc.public.label') }}<span class="visually-hidden"> — {{ $tool->title }}</span></label>
+                                        <span class="visually-hidden" id="xmToolPublicHelp{{ $tool->id }}">{{ __('admin_ccc.public.help') }}</span>
+                                    </div>
+                                    @if ($tool->is_public && $tool->is_published)
+                                        <a class="small" href="{{ route('bd.show', ['key' => $tool->key]) }}" target="_blank" rel="noopener">{{ __('admin_ccc.public.view') }}<span class="visually-hidden"> {{ $tool->title }} {{ __('microcopy.a11y.opens_new_tab') }}</span></a>
+                                    @endif
+                                @endif
                                 <div class="ms-auto d-flex flex-wrap gap-1">
                                     @if ($isManualTab)
                                         <button type="button" class="btn btn-sm btn-outline-secondary" id="xmModuleUp{{ $tool->id }}" wire:click="moveModule({{ $tool->id }}, -1)" @disabled($loop->first)><i class="bi bi-arrow-up me-1" aria-hidden="true"></i>{{ __('admin_ccc.module.up') }}<span class="visually-hidden"> {{ $tool->title }}</span></button>

@@ -14,6 +14,8 @@ const SEO_PAGES = [
     '/', '/actualites', '/aide', '/conditions-utilisation', '/confidentialite', '/cookies', '/do-glegbe', '/evenements',
     '/lois', '/mentions-legales', '/newsletter', '/politique-de-confidentialite', '/ressources', '/signaler', '/sos',
     '/thematiques', '/urgences', '/violences',
+    // P19 : carrefour des violences numériques et liste des BD publiques (contenus importés : SeoDynamicPagesAuditTest).
+    '/violences-numeriques', '/bd',
 ];
 
 dataset('seo-pages', SEO_PAGES);

@@ -15,8 +15,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * titre, description (consigne de l'animateur·rice d'une boîte à images, présentation d'un module ou d'une BD), `cover`
  * (adresse de l'image, image de remplacement si le fichier manque). Module du manuel : `duration_minutes` et `chapters`
  * (textes dans l'ordre stocké). Boîte à images et BD : `pages` (`{position, image, caption, alt}` dans l'ordre stocké,
- * `alt` jamais vide : à défaut, le titre). Jamais la position d'ordre ni l'état de publication (seuls les outils publiés
- * sont servis).
+ * `alt` jamais vide : à défaut, le titre). BD : `public_url` (P19-04) = adresse de sa page publique `/bd/{key}` si elle est
+ * publique (`is_public`), sinon null. Jamais la position d'ordre ni l'état de publication (seuls les outils publiés sont servis).
  *
  * @property CccTool $resource
  */
@@ -54,6 +54,10 @@ final class CccToolResource extends JsonResource
         $pages = self::pages($tool, $title);
         $out['pages'] = $pages;
         $out['pages_count'] = count($pages);
+
+        if ($family === 'bd') {
+            $out['public_url'] = $tool->is_public ? route('bd.show', ['key' => (string) $tool->key]) : null;
+        }
 
         return $out;
     }

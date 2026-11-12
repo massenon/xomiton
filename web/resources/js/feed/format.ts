@@ -60,3 +60,41 @@ export function shareLinks(shareUrl: string): ShareLink[] {
         { key: 'facebook', icon: 'facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${url}` },
     ];
 }
+
+export interface BodySegment {
+    text: string;
+    href?: string;
+}
+
+/**
+ * Corps d'une publication découpé en texte et liens (P19-11 : BD annoncée par le compte officiel avec l'adresse de sa page
+ * publique). Seules les adresses http(s) **du site lui-même** (même hôte que `origin`) deviennent des liens : jamais un
+ * lien externe cliquable écrit par un·e membre (hameçonnage). Le texte reste rendu en texte (aucun HTML interprété).
+ */
+export function bodySegments(body: string, origin: string): BodySegment[] {
+    let host = '';
+    try {
+        host = new URL(origin).host;
+    } catch {
+        return [{ text: body }];
+    }
+    const segments: BodySegment[] = [];
+    const pattern = /https?:\/\/[^\s<>"']+/gu;
+    let last = 0;
+    for (const match of body.matchAll(pattern)) {
+        const raw = match[0].replace(/[.,;:!?)»]+$/u, '');
+        const index = match.index ?? 0;
+        let sameSite = false;
+        try {
+            sameSite = new URL(raw).host === host;
+        } catch {
+            sameSite = false;
+        }
+        if (!sameSite) continue;
+        if (index > last) segments.push({ text: body.slice(last, index) });
+        segments.push({ text: raw, href: raw });
+        last = index + raw.length;
+    }
+    if (last < body.length) segments.push({ text: body.slice(last) });
+    return segments.length > 0 ? segments : [{ text: body }];
+}

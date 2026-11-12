@@ -7,6 +7,7 @@ namespace App\Application\Seo;
 use App\Application\Community\Events\EventAccess;
 use App\Application\Content\HelpCenter;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Models\CccTool;
 use App\Models\Event;
 use App\Models\Resource;
 use App\Models\Thematique;
@@ -37,6 +38,7 @@ final class SitemapBuilder
     public const STATIC_ROUTES = [
         'home', 'thematiques.index', 'ressources.index', 'do-glegbe', 'violences', 'lois', 'aide.index', 'urgences',
         'actualites.index', 'confidentialite', 'legal.privacy', 'legal.terms', 'legal.notice', 'legal.cookies', 'account-deletion.show', 'newsletter.show', 'evenements.index', 'signaler', 'sos',
+        'violences-numeriques', 'bd.index',
     ];
 
     /** @var list<string> Premiers segments d'URL jamais exposés. */
@@ -103,6 +105,13 @@ final class SitemapBuilder
         if ($this->isPublicRoute('aide.show')) {
             foreach (app(HelpCenter::class)->faqs()->get(['id', 'slug', 'updated_at']) as $row) {
                 $urls[] = ['loc' => self::absolute('aide.show', $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
+            }
+        }
+
+        // P19-04 : BD publiques (publiées et `is_public`, Q19) ; les fiches des violences numériques sont des thématiques.
+        if ($this->isPublicRoute('bd.show')) {
+            foreach (CccTool::query()->publicComics()->ordered()->get(['id', 'key', 'updated_at']) as $row) {
+                $urls[] = ['loc' => self::absolute('bd.show', (string) $row->key), 'lastmod' => $row->updated_at?->toAtomString()];
             }
         }
 

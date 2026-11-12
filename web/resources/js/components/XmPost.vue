@@ -22,10 +22,9 @@ import { route } from '@/app/routes';
 import { useToast } from '@/app/useToast';
 import { useSessionStore } from '@/stores/session';
 import { feedApi } from '@/feed/api';
-import { VISIBILITY_ICONS, shareLinks, timeAgo } from '@/feed/format';
+import { VISIBILITY_ICONS, bodySegments, shareLinks, timeAgo } from '@/feed/format';
 import { lazyComponent } from '@/feed/lazy';
 import type { Poll, Post } from '@/feed/types';
-import XmVerifiedBadges from '@/components/XmVerifiedBadges.vue';
 import XmAvatar from './XmAvatar.vue';
 import XmBadge from './XmBadge.vue';
 import XmMediaGallery from './XmMediaGallery.vue';
@@ -65,6 +64,8 @@ const authorId = computed(() => `post-${current.value.id}-author`);
 const name = computed(() => current.value.author.pseudo);
 const ago = computed(() => timeAgo(current.value.published_at, t));
 const hasMedia = computed(() => current.value.media.some((media) => media.url));
+// Adresses du site seulement en liens (P19-11 : lien de la BD annoncée par le compte officiel) ; le reste en texte.
+const segments = computed(() => bodySegments(current.value.body ?? '', typeof window === 'undefined' ? '' : window.location.origin));
 /** Vidéo en relecture ou refusée : visible de son auteur·rice seulement (le serveur la masque aux autres), sans actions. */
 const review = computed(() => (current.value.review_state === 'pending' || current.value.review_state === 'rejected' ? current.value.review_state : null));
 const reviewLabel = computed(() => current.value.review_label || t(`feed.video.states.${review.value ?? 'pending'}`));
@@ -224,7 +225,6 @@ async function openReport() {
                             <component :is="headingTag" :id="authorId" class="nav-item card-title h6 mb-0">
                                 <Link v-if="profileHref" :href="profileHref">{{ name }}</Link><template v-else>{{ name }}</template>
                             </component>
-                            <span v-if="current.author.badges?.length" class="nav-item small"><XmVerifiedBadges :badges="current.author.badges" /></span>
                             <span v-if="ago" class="nav-item small"><time :datetime="current.published_at ?? undefined">{{ ago }}</time></span>
                         </div>
                         <p class="mb-0 small">
@@ -248,7 +248,7 @@ async function openReport() {
         </div>
         <div class="card-body">
             <p v-if="current.moderated" class="alert alert-warning small"><i class="bi bi-shield-exclamation me-1" aria-hidden="true"></i>{{ t('feed.post.moderated') }}</p>
-            <p v-if="current.body && current.body.trim() !== ''" class="xm-post-body">{{ current.body }}</p>
+            <p v-if="current.body && current.body.trim() !== ''" class="xm-post-body"><template v-for="(segment, index) in segments" :key="index"><a v-if="segment.href" :href="segment.href">{{ segment.text }}</a><template v-else>{{ segment.text }}</template></template></p>
             <div v-if="review" :class="['alert small', review === 'rejected' ? 'alert-danger' : 'alert-info']" role="status" data-xm-review>
                 <p class="mb-1"><XmBadge :color="review === 'rejected' ? 'danger' : 'warning'" soft><i :class="['bi me-1', review === 'rejected' ? 'bi-x-octagon' : 'bi-hourglass-split']" aria-hidden="true"></i>{{ reviewLabel }}</XmBadge></p>
                 <p class="mb-1">{{ review === 'rejected' ? t('feed.video.rejected_help') : t('feed.video.pending_help') }}</p>

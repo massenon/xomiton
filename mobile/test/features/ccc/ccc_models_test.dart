@@ -13,6 +13,7 @@ void main() {
       'ccc_title', 'ccc_presentation_badge', 'ccc_presentation_notice', 'ccc_tabs_label', 'ccc_empty_hint',
       'ccc_manual_chapter_seen', 'ccc_manual_global_announce', 'ccc_show_announce', 'ccc_comic_page_announce',
       'menus_member_ccc', 'peer_home_shortcuts_ccc', 'mobile_ccc_forbidden', 'mobile_ccc_storage_unavailable',
+      'ccc_comic_public_page', 'mobile_ccc_comic_public_open_failed',
     ];
     for (final k in keys) {
       expect(S.has(k), isTrue, reason: k);
@@ -39,7 +40,16 @@ void main() {
       expect(c.module('m2')?.title, 'Module 2 : Orienter');
       expect(c.imageBox('bi2')?.title, 'La pression des pairs');
       expect(c.comic('bd1')?.title, 'Awa et le centre de santé');
+      expect(c.comic('bd1')?.publicUrl, Uri.parse('https://xomiton.test/bd/bd1'));
       expect(c.module('inconnu'), isNull);
+    });
+
+    test('BD publique (P19-04) : public_url en http(s) seulement, sinon null', () {
+      PagedTool? comic(Object? url) => PagedTool.maybe({'key': 'vn01', 'title': 'BD', 'public_url': url, 'pages': []});
+      expect(comic('https://xomiton.bj/bd/vn01')?.publicUrl, Uri.parse('https://xomiton.bj/bd/vn01'));
+      expect(comic(null)?.publicUrl, isNull);
+      expect(comic('javascript:alert(1)')?.publicUrl, isNull);
+      expect(comic(42)?.publicUrl, isNull);
     });
 
     test('lecture défensive : corps vide, types faux, éléments sans clé ni titre', () {

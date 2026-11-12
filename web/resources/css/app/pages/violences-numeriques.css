@@ -1,0 +1,18 @@
+/*
+ * Violences numériques (P19-03, P19-04) : carrefour `/violences-numeriques`, liste `/bd` et visionneuse `x-comic-viewer`
+ * (`/bd/{key}`). Jetons uniquement. Visionneuse : sans JavaScript, planches à la suite ; avec JavaScript (`.is-enhanced`),
+ * une planche à la fois (les autres en `hidden`) ; impression : toutes les planches, une par page, sans les boutons.
+ */
+.xm-vn-topic { border-inline-start: 3px solid var(--bs-primary); }
+.xm-vn-topic.is-upcoming { border-inline-start-color: var(--bs-border-color); }
+
+.xm-comic-frame { background: var(--bs-tertiary-bg); }
+.xm-comic-stage:focus-visible { outline: 3px solid var(--bs-primary); outline-offset: 4px; border-radius: var(--bs-border-radius-lg); }
+.xm-comic-nav .btn { min-height: var(--xm-button-min-h, 44px); }
+
+@media print {
+  .xm-comic .xm-comic-page[hidden] { display: block !important; }
+  .xm-comic-page { break-inside: avoid; page-break-inside: avoid; }
+  .xm-comic-page + .xm-comic-page { break-before: page; }
+  .xm-comic-help, .xm-comic-nav { display: none !important; }
+}

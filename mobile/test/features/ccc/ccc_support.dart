@@ -82,6 +82,7 @@ Map<String, dynamic> cccBody({
         'title': 'Awa et le centre de santé',
         'description': 'Une histoire courte.',
         'cover': 'https://xomiton.test/storage/ccc/bd1-cover.jpg',
+        'public_url': 'https://xomiton.test/bd/bd1',
         'pages': [
           {'position': 1, 'image': 'https://xomiton.test/storage/ccc/bd1-1.jpg', 'caption': 'Awa hésite devant la porte', 'alt': 'Awa devant un centre de santé'},
           {'position': 2, 'image': 'https://xomiton.test/storage/ccc/bd1-2.jpg', 'caption': null, 'alt': 'Awa parle à une infirmière'},

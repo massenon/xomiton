@@ -59,6 +59,24 @@ final class ManageCccTools
     }
 
     /**
+     * P19-04 : BD lisible aussi sur la page publique indexable `/bd/{key}` (Q19). Réservé aux BD ; journalisé.
+     *
+     * @throws ContentRefused
+     */
+    public function setPublic(CccTool $tool, bool $public, User $actor): CccTool
+    {
+        if ((string) $tool->getRawOriginal('kind') !== CccKind::Comic->value) {
+            throw new ContentRefused('not_paged');
+        }
+
+        $tool->forceFill(['is_public' => $public])->save();
+        Audit::log($public ? 'ccc.tool_made_public' : 'ccc.tool_made_private', $tool, $tool->title, $actor);
+        $this->cache->flush();
+
+        return $tool;
+    }
+
+    /**
      * Remplace l'image d'un outil. Une boîte à images dont l'unique planche est cette image (cas du dépôt) la voit suivre ;
      * avec plusieurs planches, l'image est la couverture seule et les planches ne bougent pas.
      *

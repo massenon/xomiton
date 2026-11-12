@@ -174,6 +174,25 @@ final class Index extends Component
         $this->toast((string) __($publish ? 'admin_ccc.toasts.published' : 'admin_ccc.toasts.unpublished', ['title' => $tool->title]), $publish ? 'success' : 'warning');
     }
 
+    /** P19-04 : BD lisible aussi sur sa page publique `/bd/{key}` (Q19). */
+    public function togglePublic(int $id, ManageCccTools $manage): void
+    {
+        $tool = $this->tool($id);
+        $public = ! $tool->is_public;
+
+        try {
+            $manage->setPublic($tool, $public, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->toast($refused->userMessage(), 'error');
+            unset($this->tools);
+
+            return;
+        }
+
+        unset($this->tools);
+        $this->toast((string) __($public ? 'admin_ccc.toasts.public_on' : 'admin_ccc.toasts.public_off', ['title' => $tool->title]), $public ? 'success' : 'warning');
+    }
+
     public function toggleLaw(int $id, ManageLaws $manage): void
     {
         $law = $this->law($id);

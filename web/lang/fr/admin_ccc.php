@@ -15,6 +15,12 @@ return [
     'kpi' => ['total' => 'Outils numérisés', 'published' => 'Publiés', 'hidden' => 'Masqués', 'images' => 'Images remplacées'],
     'published' => 'Publié',
     'hidden' => 'Masqué',
+    // P19-04 : BD publique (page /bd/{key}, indexable, sans connexion ; Q19).
+    'public' => [
+        'label' => 'Page publique',
+        'help' => 'La BD est aussi lisible sans compte sur sa page publique, indexée par les moteurs de recherche, si elle est publiée.',
+        'view' => 'Voir la page publique',
+    ],
     'empty' => 'Aucun outil dans cette section.',
     'empty_laws' => 'Aucun texte de loi.',
     'laws_title' => 'Lois et codes du Bénin',

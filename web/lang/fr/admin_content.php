@@ -135,11 +135,13 @@ return [
         'minutes' => ':count min de lecture',
         'confirm_delete' => 'Supprimer la thématique « :title » ? Elle disparaîtra du site public.',
         'warning_help' => 'Avertissement affiché avant le contenu sensible.',
+        'legal_help' => 'Références juridiques validées par l’administration (lois, articles, recours). Affichées sur la fiche seulement si ce champ est rempli, avec la mention « Informations validées par l’administration de Xomiton ». HTML simple : paragraphes, listes, liens.',
         'toasts' => ['created' => 'Thématique « :title » créée.', 'saved' => 'Thématique « :title » enregistrée.'],
         'fields' => [
             'title' => 'Titre', 'category_id' => 'Catégorie', 'slug' => 'Adresse', 'summary' => 'Résumé', 'body' => 'Contenu',
             'content_warning' => 'Avertissement de contenu', 'reading_minutes' => 'Temps de lecture (minutes)', 'status' => 'Statut',
             'cover' => 'Couverture', 'meta_title' => 'Titre pour les moteurs de recherche', 'meta_description' => 'Description pour les moteurs de recherche',
+            'legal_references' => 'Références juridiques',
         ],
     ],
 
@@ -182,7 +184,7 @@ return [
         'confirm_delete' => 'Supprimer la catégorie « :label » ?',
         'slug_help' => 'Minuscules, chiffres et tirets. Fixe après la création : les adresses de filtre s’y appuient.',
         'icon_help' => 'Classe d’une icône Bootstrap Icons (par exemple bi-heart-pulse).',
-        'kinds' => ['thematique' => 'Thématiques et ressources', 'resource' => 'Ressources', 'faq' => 'Centre d’aide', 'event' => 'Événements'],
+        'kinds' => ['thematique' => 'Thématiques et ressources', 'resource' => 'Ressources', 'faq' => 'Centre d’aide', 'event' => 'Événements', 'violence_numerique' => 'Violences numériques'],
         'toasts' => ['created' => 'Catégorie « :label » créée.', 'saved' => 'Catégorie « :label » enregistrée.', 'activated' => 'Catégorie « :label » activée.', 'deactivated' => 'Catégorie « :label » désactivée.', 'deleted' => 'Catégorie « :label » supprimée.'],
         'fields' => ['kind' => 'Usage', 'slug' => 'Identifiant', 'label' => 'Libellé', 'icon' => 'Icône', 'color' => 'Couleur', 'is_active' => 'Active'],
     ],

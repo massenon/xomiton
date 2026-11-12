@@ -31,7 +31,9 @@ it('alimente tous les référentiels des lots dans l’ordre et reste idempotent
     expect(Zone::count())->toBe(12)
         ->and(Commune::count())->toBe(29)
         ->and(Role::count())->toBe(5)
-        ->and(Thematique::count())->toBe(29)
+        // 29 thématiques du prototype + 23 sujets des violences numériques (P19 : 8 fiches publiées, 15 brouillons).
+        ->and(Thematique::count())->toBe(29 + 23)
+        ->and(Thematique::query()->published()->count())->toBe(29 + 8)
         ->and(Forum::count())->toBe(5)
         ->and(ValidationRule::count())->toBe(12)
         ->and(Indicator::count())->toBe(16)

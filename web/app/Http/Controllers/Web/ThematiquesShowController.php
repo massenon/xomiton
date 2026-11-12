@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Web;
 use App\Application\Content\Queries\ShowThematique;
 use App\Application\Content\RecordThematiqueView;
 use App\Application\Content\Results\ThematiqueSheet;
+use App\Application\Content\ViolencesNumeriques\ViolencesNumeriquesHub;
 use App\Application\Seo\MetaText;
 use App\Application\Seo\StructuredData;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,7 @@ final class ThematiquesShowController extends Controller
     /** Catégories dont la fiche propose l'assistant aux membres (prototype x_thematique_content() l.132). */
     private const ASSISTANT_CATEGORIES = ['mental', 'esc'];
 
-    public function __invoke(Request $request, string $slug, ShowThematique $show, RecordThematiqueView $recordView): View
+    public function __invoke(Request $request, string $slug, ShowThematique $show, RecordThematiqueView $recordView, ViolencesNumeriquesHub $hub): View
     {
         $sheet = $show($slug);
         $recordView($sheet->thematique, $request);
@@ -34,7 +35,12 @@ final class ThematiquesShowController extends Controller
         $thematique = $sheet->thematique;
         $category = $thematique->category;
         $listUrl = route('thematiques.index');
-        $crumbs = array_values(array_filter([
+        // P19-03 : une fiche des violences numériques remonte vers son carrefour (/violences-numeriques), pas vers la liste.
+        $digital = ViolencesNumeriquesHub::isDigitalViolence($category);
+        $crumbs = $digital ? [
+            [__('pages/violences_numeriques.breadcrumb'), route('violences-numeriques')],
+            [$thematique->title, route('thematiques.show', $thematique)],
+        ] : array_values(array_filter([
             [__('pages/thematiques.title'), $listUrl],
             $sheet->category ? [$sheet->category->label, route('thematiques.index', ['cat' => $sheet->category->slug])] : null,
             [$thematique->title, route('thematiques.show', $thematique)],
@@ -61,6 +67,10 @@ final class ThematiquesShowController extends Controller
                 'a' => '<p class="mb-0">'.e((string) $faq->answer).'</p>',
             ])->values()->all(),
             'showAssistant' => in_array($category?->slug, self::ASSISTANT_CATEGORIES, true),
+            // P19 : BD publique liée (lien BD ↔ fiche), références juridiques de l'administration, lien vers le carrefour.
+            'comic' => $digital ? $hub->comicOf($thematique) : null,
+            'legalReferences' => trim((string) $thematique->legal_references) !== '' ? (string) $thematique->legal_references : null,
+            'digital' => $digital,
             'seo' => $this->seo($sheet, $crumbs),
         ]);
     }
