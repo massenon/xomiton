@@ -19871,6 +19871,35 @@
     "@community_follow_verify_to_invite": {
         "description": "community.follow.verify_to_invite"
     },
+    "community_forums_accepted_badge": "Réponse validée",
+    "@community_forums_accepted_badge": {
+        "description": "community.forums.accepted.badge"
+    },
+    "community_forums_accepted_mark": "Marquer comme réponse validée",
+    "@community_forums_accepted_mark": {
+        "description": "community.forums.accepted.mark"
+    },
+    "community_forums_accepted_marked": "Réponse validée : le sujet est marqué comme résolu.",
+    "@community_forums_accepted_marked": {
+        "description": "community.forums.accepted.marked"
+    },
+    "community_forums_accepted_of": "réponse de {name}",
+    "@community_forums_accepted_of": {
+        "description": "community.forums.accepted.of",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "community_forums_accepted_unmark": "Retirer la validation",
+    "@community_forums_accepted_unmark": {
+        "description": "community.forums.accepted.unmark"
+    },
+    "community_forums_accepted_unmarked": "Validation retirée : le sujet n’est plus marqué comme résolu.",
+    "@community_forums_accepted_unmarked": {
+        "description": "community.forums.accepted.unmarked"
+    },
     "community_forums_all": "Tous les forums",
     "@community_forums_all": {
         "description": "community.forums.all"
@@ -20009,6 +20038,10 @@
     "@community_forums_errors_locked": {
         "description": "community.forums.errors.locked"
     },
+    "community_forums_errors_not_acceptable": "Cette réponse ne peut pas être validée : elle n’est plus visible dans ce sujet.",
+    "@community_forums_errors_not_acceptable": {
+        "description": "community.forums.errors.not_acceptable"
+    },
     "community_forums_errors_not_found": "Ce sujet est introuvable.",
     "@community_forums_errors_not_found": {
         "description": "community.forums.errors.not_found"
@@ -20127,6 +20160,14 @@
     "community_forums_search_label": "Rechercher un sujet",
     "@community_forums_search_label": {
         "description": "community.forums.search_label"
+    },
+    "community_forums_solved": "Résolu",
+    "@community_forums_solved": {
+        "description": "community.forums.solved"
+    },
+    "community_forums_solved_label": "Sujet résolu : une réponse a été validée",
+    "@community_forums_solved_label": {
+        "description": "community.forums.solved_label"
     },
     "community_forums_title": "Forums",
     "@community_forums_title": {

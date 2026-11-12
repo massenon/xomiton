@@ -15,7 +15,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * Sujet de forum tel qu'il sort de l'API (P8-05, docs/API.md §16) : identifiant public ULID (ADR-27), forum, titre,
  * auteur·rice (ForumAuthor : anonyme → « Membre anonyme », **aucun identifiant**, RG-02), `is_mine` pour la personne qui
- * lit seulement, compteurs (réponses, vues), dates, épinglé / fermé, mention `moderated` (son sujet masqué par la
+ * lit seulement, compteurs (réponses, vues), dates, épinglé / fermé, réponse validée (`accepted_reply_id`, `is_solved`,
+ * P18-03), mention `moderated` (son sujet masqué par la
  * modération, à elle seule) et gestes permis (`can`). Le message (`body`) n'est servi que par la fiche (`detailed()`) :
  * la liste du prototype n'affiche que le titre.
  *
@@ -54,6 +55,9 @@ final class ForumTopicResource extends JsonResource
             'is_anonymous' => (bool) $topic->is_anonymous,
             'is_pinned' => (bool) $topic->is_pinned,
             'is_locked' => (bool) $topic->is_locked,
+            // Réponse validée (P18-03) : identifiant de la réponse qui résout le sujet, `is_solved` pour le badge « Résolu ».
+            'accepted_reply_id' => $topic->accepted_reply_id === null ? null : (int) $topic->accepted_reply_id,
+            'is_solved' => $topic->accepted_reply_id !== null,
             'moderated' => $isMine && $topic->status === PostStatus::Hidden,
             'replies_count' => (int) $topic->replies_count,
             'views_count' => (int) $topic->views_count,
@@ -65,6 +69,7 @@ final class ForumTopicResource extends JsonResource
                 'reply' => $viewer !== null && ! $topic->is_locked && ForumTopicPolicy::acceptsReplies($viewer, $topic),
                 'delete' => $viewer !== null && $viewer->can('delete', $topic),
                 'report' => $viewer !== null && ! $isMine,
+                'accept' => $viewer !== null && $viewer->can('accept', $topic),
             ],
         ];
     }

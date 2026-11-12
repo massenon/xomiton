@@ -325,6 +325,17 @@ return [
         'pinned' => 'Épinglé',
         'locked' => 'Fermé',
         'moderated' => 'Sujet masqué en attente de relecture par la modération.',
+        // P18-03 : réponse validée (auteur·rice du sujet ou modération, Q97).
+        'solved' => 'Résolu',
+        'solved_label' => 'Sujet résolu : une réponse a été validée',
+        'accepted' => [
+            'badge' => 'Réponse validée',
+            'mark' => 'Marquer comme réponse validée',
+            'unmark' => 'Retirer la validation',
+            'of' => 'réponse de :name',
+            'marked' => 'Réponse validée : le sujet est marqué comme résolu.',
+            'unmarked' => 'Validation retirée : le sujet n’est plus marqué comme résolu.',
+        ],
         'badges' => [
             'pair' => 'Pair animateur·rice',
             'team' => 'Équipe Xomiton',
@@ -373,6 +384,7 @@ return [
             'not_found' => 'Ce sujet est introuvable.',
             'locked' => 'Ce sujet est fermé : plus de réponse possible.',
             'forum' => 'Ce forum n’existe pas ou n’est plus ouvert.',
+            'not_acceptable' => 'Cette réponse ne peut pas être validée : elle n’est plus visible dans ce sujet.',
         ],
     ],
 

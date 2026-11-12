@@ -376,6 +376,9 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
         Route::post('topics', [ForumController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('topics.store');
         Route::get('topics/{topic:ulid}', [ForumController::class, 'show'])->name('topics.show');
         Route::delete('topics/{topic:ulid}', [ForumController::class, 'destroy'])->name('topics.destroy');
+        // P18-03 : réponse validée (auteur·rice du sujet ou modération, Q97).
+        Route::post('topics/{topic:ulid}/accepted-reply', [ForumController::class, 'accept'])->middleware('throttle:community_write')->name('topics.accept');
+        Route::delete('topics/{topic:ulid}/accepted-reply', [ForumController::class, 'unaccept'])->middleware('throttle:community_write')->name('topics.unaccept');
         Route::post('topics/{topic:ulid}/report', [ForumReportController::class, 'topic'])->middleware('throttle:content_report')->name('topics.report');
         Route::get('topics/{topic:ulid}/replies', [ForumReplyController::class, 'index'])->name('replies.index');
         Route::post('topics/{topic:ulid}/replies', [ForumReplyController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('replies.store');

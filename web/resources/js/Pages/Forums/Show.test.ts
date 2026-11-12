@@ -137,4 +137,34 @@ describe('Page /forums/{ulid}', () => {
         await waitFor(() => expect(visit).toHaveBeenCalledWith('/forums?forum=f3'));
         await waitFor(() => expect(document.querySelector('#modalDeleteForumContent')).toBeNull());
     });
+
+    it('affiche le badge « Résolu » et met la réponse validée en tête avec sa mention (P18-03)', async () => {
+        const first = makeReply(1);
+        const accepted = makeReply(2, { body: 'Va voir l’infirmière scolaire.' });
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ accepted_reply_id: 2, is_solved: true, replies_count: 2 }), replies: replies([first, accepted]) }) });
+
+        expect(screen.getByText('Résolu')).toBeTruthy();
+        const cards = document.querySelectorAll('article[id^="reponse-"]');
+        expect(cards[0]?.id).toBe('reponse-2');
+        expect(cards[0]?.getAttribute('aria-describedby')).toBe('reponse-2-validee');
+        expect(screen.getByText('Réponse validée')).toBeTruthy();
+        expect(screen.queryByRole('button', { name: /Marquer comme réponse validée/ })).toBeNull();
+    });
+
+    it('laisse l’auteur·rice marquer puis retirer la réponse validée', async () => {
+        const { calls } = fakeFetch((call) => call.method === 'POST'
+            ? json({ data: makeTopic({ accepted_reply_id: 1, is_solved: true }) })
+            : json({ data: makeTopic({ accepted_reply_id: null, is_solved: false }) }));
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ is_mine: true, can: { reply: true, delete: true, report: false, accept: true } }) }) });
+
+        await fireEvent.click(screen.getByRole('button', { name: 'Marquer comme réponse validée (réponse de Membre_1)' }));
+        await flushPromises();
+        expect(calls[0]).toMatchObject({ url: `/api/v1/forums/topics/${TOPIC_ID}/accepted-reply`, method: 'POST', body: { reply_id: 1 } });
+        await waitFor(() => expect(screen.getByText('Résolu')).toBeTruthy());
+
+        await fireEvent.click(screen.getByRole('button', { name: 'Retirer la validation (réponse de Membre_1)' }));
+        await flushPromises();
+        expect(calls[1]).toMatchObject({ url: `/api/v1/forums/topics/${TOPIC_ID}/accepted-reply`, method: 'DELETE' });
+        await waitFor(() => expect(screen.queryByText('Résolu')).toBeNull());
+    });
 });

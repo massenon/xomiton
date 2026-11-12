@@ -37,13 +37,17 @@ export interface ForumTopic {
     is_anonymous: boolean;
     is_pinned: boolean;
     is_locked: boolean;
+    /** Réponse validée (P18-03) : identifiant de la réponse qui résout le sujet. */
+    accepted_reply_id?: number | null;
+    /** Badge « Résolu ». */
+    is_solved?: boolean;
     moderated: boolean;
     replies_count: number;
     views_count: number;
     created_at: string | null;
     last_reply_at: string | null;
     url: string;
-    can: { reply: boolean; delete: boolean; report: boolean };
+    can: { reply: boolean; delete: boolean; report: boolean; accept?: boolean };
 }
 
 export interface ForumReply {

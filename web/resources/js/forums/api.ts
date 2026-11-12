@@ -37,6 +37,15 @@ export function forumsApi(api: Api) {
             const { data } = await api.post<Envelope<ForumReply>>(topicUrl(id, '/replies'), body, { silent: true });
             return { reply: data.data, repliesCount: Number(data.meta?.replies_count ?? 0) };
         },
+        /** P18-03 : valider la réponse qui résout le sujet (auteur·rice du sujet ou modération). */
+        async accept(id: string, replyId: number): Promise<ForumTopic> {
+            const { data } = await api.post<Envelope<ForumTopic>>(topicUrl(id, '/accepted-reply'), { reply_id: replyId }, { silent: true });
+            return data.data;
+        },
+        async unaccept(id: string): Promise<ForumTopic> {
+            const { data } = await api.delete<Envelope<ForumTopic>>(topicUrl(id, '/accepted-reply'), undefined, { silent: true });
+            return data.data;
+        },
         async deleteReply(id: number): Promise<void> {
             await api.delete(`${API_BASE}/replies/${id}`);
         },
