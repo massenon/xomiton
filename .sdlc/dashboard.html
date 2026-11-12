@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDLC Kit Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #faf9f5;
+      --white: #ffffff;
+      --bg-secondary: #F5F4EF;
+      --text: #141413;
+      --text-sec: #5c5c5a;
+      --text-muted: #8c8c8a;
+      --accent: #D97757;
+      --accent-hover: #c4684a;
+      --accent-soft: rgba(217, 119, 87, 0.08);
+      --border: #e5e4df;
+      --border-light: #eeeee9;
+      --tab-inactive: #8c8c8a;
+      --fm-bg: #F5F4EF;
+      --code-bg: #F5F4EF;
+      --danger: #b54848;
+      --success: #4f8c5e;
+      --warning: #c98a3e;
+      --shadow: rgba(20, 20, 19, 0.04);
+      --shadow-hover: rgba(20, 20, 19, 0.08);
+    }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; letter-spacing: -0.005em; }
+    /* TOP BAR */
+    header { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 52px; display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+    #project-name { font-weight: 700; font-size: 1.05rem; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #health-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+    #health-dot.warn { background: var(--warning); }
+    #health-dot.err { background: var(--danger); }
+    #btn-open { background: var(--accent); color: #fff; border: 1px solid var(--accent); border-radius: 8px; padding: 8px 18px; font-size: 0.88rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s ease; }
+    #btn-open:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    /* UPDATE BUTTON */
+    #btn-update { position: relative; background: var(--white); color: var(--text-sec); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 0.88rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.15s ease; display: flex; align-items: center; gap: 6px; }
+    #btn-update:hover { background: var(--bg-secondary); color: var(--text); border-color: var(--text-muted); }
+    #btn-update .update-badge { display: none; width: 8px; height: 8px; border-radius: 50%; background: var(--warning); flex-shrink: 0; }
+    #btn-update.has-update .update-badge { display: block; }
+    #btn-update.has-update { border-color: var(--warning); color: var(--text); }
+    /* UPDATE MODAL */
+    #update-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 200; align-items: center; justify-content: center; }
+    #update-overlay.open { display: flex; }
+    #update-modal { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.75rem; max-width: 520px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    #update-modal h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
+    #update-modal .version-row { display: flex; gap: 1.5rem; margin-bottom: 1rem; font-size: 0.88rem; }
+    #update-modal .version-row span { color: var(--text-sec); }
+    #update-modal .version-row strong { color: var(--text); }
+    #update-modal .cmd-block { background: var(--code-bg); border: 1px solid var(--border-light); border-radius: 8px; padding: 0.65rem 1rem; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.84rem; color: var(--text); display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; }
+    #update-modal .cmd-copy { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 0.8rem; font-weight: 500; padding: 2px 6px; border-radius: 4px; transition: all 0.15s; white-space: nowrap; }
+    #update-modal .cmd-copy:hover { background: var(--bg-secondary); color: var(--text); }
+    #update-modal .update-note { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.5; }
+    #update-modal .modal-footer { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+    #update-modal .btn-close { background: var(--bg-secondary); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 7px 18px; font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    #update-modal .btn-close:hover { background: var(--border); }
+    #update-modal .btn-script { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 7px 18px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    #update-modal .btn-script:hover { background: var(--accent-dark, #1a5fc8); }
+    #update-modal .btn-script:disabled { opacity: 0.6; cursor: default; }
+    #update-modal .copy-notice { font-size: 0.8rem; color: var(--text-muted); }
+    /* TABS NAV */
+    nav { background: var(--white); border-bottom: 1px solid var(--border); display: flex; padding: 0 1.5rem; flex-shrink: 0; }
+    .tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 12px 18px; font-size: 0.9rem; font-weight: 500; color: var(--tab-inactive); cursor: pointer; margin-bottom: -1px; transition: color 0.15s ease; }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+    /* MAIN AREA */
+    main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    .tab-panel { display: none; flex: 1; overflow: hidden; }
+    .tab-panel.active { display: flex; }
+    /* PLACEHOLDER PANELS */
+    .placeholder { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; color: var(--text-sec); }
+    .placeholder p { font-size: 1rem; }
+    .placeholder small { font-size: 0.82rem; }
+    /* KANBAN */
+    #tab-tasks { flex-direction: column; overflow: hidden; }
+    .tasks-toolbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0.6rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+    .tasks-toolbar span { font-size: 0.85rem; color: var(--text-sec); }
+    .view-toggle { background: var(--bg-secondary); border: 1px solid transparent; border-radius: 6px; padding: 6px 14px; font-size: 0.82rem; cursor: pointer; color: var(--text-muted); font-weight: 500; transition: all 0.15s ease; }
+    .view-toggle:hover { color: var(--text); }
+    .view-toggle.active { background: var(--white); color: var(--text); box-shadow: 0 1px 3px var(--shadow); }
+    #tasks-view-kanban, #tasks-view-graph { flex: 1; overflow: hidden; }
+    #tasks-view-graph { display: none; }
+    /* KANBAN BOARD */
+    #kanban-board { display: flex; gap: 1.25rem; padding: 1.25rem 1.5rem; height: 100%; overflow-x: auto; align-items: flex-start; }
+    .kanban-col { background: var(--bg-secondary); border: none; border-radius: 12px; width: 300px; min-width: 260px; flex-shrink: 0; display: flex; flex-direction: column; max-height: calc(100% - 1rem); }
+    .kanban-col-header { padding: 1rem 1.1rem; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-sec); display: flex; align-items: center; gap: 0.5rem; }
+    .kanban-col-header .count { background: var(--white); border-radius: 12px; padding: 3px 10px; font-size: 0.72rem; font-weight: 500; color: var(--text-muted); margin-left: auto; }
+    .kanban-col-body { flex: 1; overflow-y: auto; padding: 0 0.75rem 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .kanban-card { background: var(--white); border: 1px solid var(--border-light); border-radius: 8px; padding: 0.75rem 0.9rem; font-size: 0.85rem; cursor: default; box-shadow: 0 1px 2px var(--shadow); transition: box-shadow 0.15s ease, border-color 0.15s ease; }
+    .kanban-card:hover { border-color: var(--border); box-shadow: 0 2px 6px var(--shadow-hover); }
+    .kanban-card .card-title { color: var(--text); line-height: 1.45; margin-bottom: 0.4rem; font-weight: 500; }
+    .kanban-card .card-meta { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .tag-epic { background: var(--accent-soft); color: var(--accent-hover); border-radius: 4px; padding: 2px 7px; font-size: 0.73rem; font-weight: 500; }
+    .tag-branch { background: var(--bg-secondary); color: var(--text-sec); border-radius: 4px; padding: 2px 7px; font-size: 0.73rem; font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace; }
+    .col-backlog .kanban-col-header { color: var(--text-sec); }
+    .col-progress .kanban-col-header { color: var(--warning); }
+    .col-done .kanban-col-header { color: var(--success); }
+    #kanban-empty { display: none; flex: 1; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; color: var(--text-sec); padding: 2rem; text-align: center; }
+    /* BRANCH TREE */
+    #branch-graph-wrap { flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem; font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace; font-size: 0.82rem; }
+    .btree-root { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+    .btree-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .btree-dot.dot-merged { background: var(--success); }
+    .btree-dot.dot-open { background: var(--border); border: 2px solid var(--accent); }
+    .btree-root-label { font-weight: 700; color: var(--text); font-size: 0.88rem; }
+    .btree-group { margin-left: 12px; border-left: 2px solid var(--border-light); padding-left: 0; margin-bottom: 0.25rem; }
+    .btree-group-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0 0.3rem 1rem; color: var(--text-sec); font-size: 0.78rem; cursor: pointer; user-select: none; position: relative; }
+    .btree-group-header::before { content: ''; position: absolute; left: 0; top: 50%; width: 1rem; height: 0; border-top: 2px solid var(--border-light); }
+    .btree-group-header:hover { color: var(--text); }
+    .btree-group-toggle { font-size: 0.7rem; color: var(--text-sec); transition: transform 0.15s; }
+    .btree-group-toggle.open { transform: rotate(90deg); }
+    .btree-group-icon { opacity: 0.6; }
+    .btree-group-name { font-weight: 600; }
+    .btree-group-count { background: var(--bg-secondary); border-radius: 8px; padding: 1px 6px; font-size: 0.72rem; }
+    .btree-leaves { overflow: hidden; }
+    .btree-leaf { display: flex; align-items: center; gap: 0.55rem; padding: 0.28rem 0.5rem 0.28rem 1rem; margin-left: 12px; position: relative; cursor: default; border-radius: 5px; transition: background 0.12s; }
+    .btree-leaf::before { content: ''; position: absolute; left: -12px; top: 50%; width: 12px; height: 0; border-top: 2px solid var(--border-light); }
+    .btree-leaf:hover { background: var(--bg-secondary); }
+    .btree-leaf.status-merged { opacity: 0.55; }
+    .btree-leaf-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--border); border: 2px solid var(--accent); }
+    .btree-leaf-dot.s-in-progress { background: var(--accent); border-color: var(--accent); }
+    .btree-leaf-dot.s-pr { background: #a855f7; border-color: #a855f7; }
+    .btree-leaf-dot.s-merged { background: var(--success); border-color: var(--success); }
+    .btree-leaf-dot.s-closed, .btree-leaf-dot.s-abandoned { background: var(--danger); border-color: var(--danger); }
+    .btree-leaf-name { color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btree-leaf-status { font-size: 0.72rem; color: var(--text-sec); white-space: nowrap; padding: 1px 5px; border-radius: 4px; background: var(--bg-secondary); }
+    .btree-leaf-tasks { font-size: 0.72rem; color: var(--accent); white-space: nowrap; }
+    .btree-leaf-pr { font-size: 0.72rem; color: var(--text-sec); font-style: italic; white-space: nowrap; }
+    #graph-empty { display: none; flex: 1; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; color: var(--text-sec); padding: 2rem; text-align: center; }
+    /* LEGEND */
+    #branch-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem 1rem; padding: 0.6rem 1.5rem; border-bottom: 1px solid var(--border-light); background: var(--bg-secondary); font-size: 0.75rem; color: var(--text-sec); }
+    .blegend-item { display: flex; align-items: center; gap: 0.35rem; }
+    .blegend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .blegend-dot.s-open { background: var(--white); border: 2px solid var(--border); }
+    .blegend-dot.s-in-progress { background: var(--accent); }
+    .blegend-dot.s-pr { background: #a855f7; }
+    .blegend-dot.s-merged { background: var(--success); }
+    .blegend-dot.s-closed { background: var(--danger); }
+    .blegend-sep { color: var(--border); }
+    .blegend-hint { color: var(--text-sec); font-style: italic; }
+    /* EPICOS & MILESTONES */
+    #tab-epicos { flex-direction: row; }
+    #epicos-sidebar { width: 220px; min-width: 160px; background: var(--white); border-right: 1px solid var(--border); overflow-y: auto; flex-shrink: 0; display: flex; flex-direction: column; }
+    #epicos-sidebar-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.8rem; font-weight: 700; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.05em; }
+    .epicos-nav-item { padding: 10px 1rem; font-size: 0.87rem; color: var(--text-sec); cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s ease; }
+    .epicos-nav-item:hover { background: var(--bg-secondary); color: var(--text); }
+    .epicos-nav-item.active { background: var(--accent-soft); color: var(--text); border-left-color: var(--accent); font-weight: 600; }
+    #epicos-content { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg); }
+    #epicos-inner { max-width: 720px; margin: 0 auto; }
+    .rag-green { color: var(--success); }
+    .rag-amber { color: var(--warning); }
+    .rag-red { color: var(--danger); }
+    .epic-card, .milestone-card { background: var(--white); border: 1px solid var(--border-light); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 0.85rem; box-shadow: 0 1px 2px var(--shadow); transition: box-shadow 0.15s ease; }
+    .epic-card:hover, .milestone-card:hover { box-shadow: 0 2px 6px var(--shadow-hover); }
+    .epic-card h3, .milestone-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text); font-weight: 600; }
+    .epic-card .meta, .milestone-card .meta { font-size: 0.83rem; color: var(--text-sec); display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .progress-bar-wrap { background: var(--bg-secondary); border-radius: 4px; height: 6px; margin-top: 0.6rem; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s; }
+    /* DOMAIN TAB */
+    #tab-dominio { flex-direction: row; }
+    #domain-sidebar { width: 220px; min-width: 160px; background: var(--white); border-right: 1px solid var(--border); overflow-y: auto; flex-shrink: 0; display: flex; flex-direction: column; }
+    #domain-sidebar-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.8rem; font-weight: 700; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.05em; }
+    .domain-ctx-item { padding: 10px 1rem; font-size: 0.87rem; color: var(--text-sec); cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s ease; }
+    .domain-ctx-item:hover { background: var(--bg-secondary); color: var(--text); }
+    .domain-ctx-item.active { background: var(--accent-soft); color: var(--text); border-left-color: var(--accent); font-weight: 600; }
+    #domain-content { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg); }
+    #domain-inner { max-width: 800px; margin: 0 auto; }
+    .domain-subtab-bar { display: flex; gap: 0.25rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+    .domain-subtab { background: none; border: none; border-bottom: 2px solid transparent; padding: 8px 14px; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); cursor: pointer; margin-bottom: -1px; transition: color 0.15s; }
+    .domain-subtab:hover { color: var(--text); }
+    .domain-subtab.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+    .domain-term-card { background: var(--white); border: 1px solid var(--border-light); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; box-shadow: 0 1px 2px var(--shadow); }
+    .domain-term-card h4 { font-size: 0.97rem; color: var(--text); font-weight: 700; margin-bottom: 0.5rem; font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace; }
+    .domain-term-card .def { font-size: 0.88rem; color: var(--text); line-height: 1.55; margin-bottom: 0.35rem; }
+    .domain-term-card .syn { font-size: 0.82rem; color: var(--danger); }
+    .domain-term-card .ex { font-size: 0.82rem; color: var(--text-sec); font-style: italic; margin-top: 0.35rem; }
+    .domain-event-card { background: var(--white); border: 1px solid var(--border-light); border-left: 3px solid var(--accent); border-radius: 8px; padding: 0.9rem 1.1rem; margin-bottom: 0.65rem; box-shadow: 0 1px 2px var(--shadow); }
+    .domain-event-card .evt-name { font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace; font-size: 0.88rem; font-weight: 700; color: var(--accent-hover); margin-bottom: 0.4rem; }
+    .domain-event-card .evt-desc { font-size: 0.85rem; color: var(--text); line-height: 1.5; }
+    .domain-event-card .evt-meta { font-size: 0.8rem; color: var(--text-sec); margin-top: 0.35rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .domain-md-wrap { font-size: 0.88rem; line-height: 1.7; }
+    .domain-md-wrap h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.25rem 0 0.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.25rem; }
+    .domain-md-wrap h3 { font-size: 0.93rem; font-weight: 600; color: var(--text); margin: 1rem 0 0.4rem; }
+    .domain-md-wrap table { border-collapse: collapse; width: 100%; margin: 0.5rem 0 1rem; font-size: 0.83rem; }
+    .domain-md-wrap th { background: var(--bg-secondary); color: var(--text-sec); font-weight: 600; text-align: left; padding: 6px 10px; border: 1px solid var(--border-light); }
+    .domain-md-wrap td { padding: 5px 10px; border: 1px solid var(--border-light); color: var(--text); vertical-align: top; }
+    .domain-md-wrap code { font-family: 'JetBrains Mono', Consolas, monospace; background: var(--bg-secondary); padding: 1px 5px; border-radius: 3px; font-size: 0.82em; }
+    .domain-md-wrap li { margin-bottom: 0.2rem; }
+    /* WELCOME SCREEN */
+    #welcome { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1.2rem; padding: 2rem; text-align: center; }
+    #welcome h2 { font-size: 1.5rem; color: var(--text); font-weight: 600; letter-spacing: -0.02em; }
+    #welcome p { color: var(--text-sec); max-width: 440px; line-height: 1.6; }
+    #btn-open-big { background: var(--accent); color: #fff; border: 1px solid var(--accent); border-radius: 8px; padding: 11px 26px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all 0.15s ease; }
+    #btn-open-big:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    #btn-reconnect { background: var(--white); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 22px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.15s ease; }
+    #btn-reconnect:hover { background: var(--bg-secondary); border-color: var(--text-muted); }
+    #reconnect-path { font-size: 0.82rem; color: var(--text-muted); max-width: 380px; word-break: break-all; }
+    /* DOCUMENTOS LAYOUT */
+    #tab-documentos { flex-direction: row; }
+    #sidebar { width: 260px; min-width: 180px; max-width: 380px; background: var(--white); border-right: 1px solid var(--border); overflow-y: auto; flex-shrink: 0; display: flex; flex-direction: column; }
+    #sidebar-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.8rem; font-weight: 700; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.05em; }
+    #file-tree { flex: 1; overflow-y: auto; padding: 0.5rem 0; }
+    .tree-group { margin-bottom: 0.25rem; }
+    .tree-group-label { padding: 4px 1rem; font-size: 0.78rem; font-weight: 700; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.4rem; cursor: pointer; user-select: none; }
+    .tree-group-label:hover { background: var(--bg); }
+    .tree-group-label::before { content: '▾'; font-size: 0.7rem; transition: transform 0.15s; }
+    .tree-group-label.collapsed::before { transform: rotate(-90deg); }
+    .tree-files { }
+    .tree-files.collapsed { display: none; }
+    .tree-file { padding: 5px 1rem 5px 2rem; font-size: 0.85rem; color: var(--text-sec); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 6px; margin: 1px 6px; transition: background 0.12s ease; }
+    .tree-file:hover { background: var(--bg-secondary); color: var(--text); }
+    .tree-file.active { background: var(--accent-soft); color: var(--text); font-weight: 600; }
+    /* CONTENT PANEL */
+    #content { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg); }
+    #content-inner { max-width: 760px; margin: 0 auto; }
+    /* FRONTMATTER CARD */
+    .fm-card { background: var(--fm-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 0.85rem; }
+    .fm-card table { border-collapse: collapse; width: 100%; }
+    .fm-card td { padding: 2px 8px 2px 0; vertical-align: top; color: var(--text); }
+    .fm-card td:first-child { font-weight: 600; color: var(--text-sec); white-space: nowrap; width: 1%; padding-right: 12px; }
+    /* MARKDOWN RENDERED */
+    .md-body { line-height: 1.7; color: var(--text); }
+    .md-body h1 { font-size: 1.7rem; margin: 1.4rem 0 0.7rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+    .md-body h2 { font-size: 1.3rem; margin: 1.2rem 0 0.6rem; }
+    .md-body h3 { font-size: 1.1rem; margin: 1rem 0 0.5rem; }
+    .md-body p { margin: 0.65rem 0; }
+    .md-body ul, .md-body ol { margin: 0.65rem 0 0.65rem 1.5rem; }
+    .md-body li { margin: 0.25rem 0; }
+    .md-body blockquote { border-left: 4px solid var(--border); padding: 0.4rem 1rem; margin: 0.8rem 0; color: var(--text-sec); background: var(--fm-bg); border-radius: 0 4px 4px 0; }
+    .md-body code { background: var(--code-bg); border: 1px solid var(--border-light); border-radius: 4px; padding: 0.12em 0.42em; font-size: 0.86em; font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace; color: var(--accent-hover); }
+    .md-body pre { background: var(--code-bg); border: 1px solid var(--border-light); border-radius: 8px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    .md-body pre code { background: none; border: none; padding: 0; color: var(--text); font-size: 0.86rem; }
+    .md-body hr { border: none; border-top: 1px solid var(--border); margin: 1.2rem 0; }
+    .md-body table { border-collapse: collapse; width: 100%; margin: 0.8rem 0; font-size: 0.9rem; }
+    .md-body th, .md-body td { border: 1px solid var(--border); padding: 6px 12px; text-align: left; }
+    .md-body th { background: var(--fm-bg); font-weight: 600; }
+    .md-body a { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 2px; }
+    .md-body a:hover { color: var(--accent); }
+    .wikilink { color: var(--accent-hover); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; background: none; border: none; padding: 0; font: inherit; }
+    .wikilink:hover { color: var(--accent); }
+    #no-file { color: var(--text-sec); font-size: 0.95rem; padding: 2rem 0; }
+    /* STATUS PROMOTION */
+    .status-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-light); }
+    .status-btn { font-size: 0.8rem; font-weight: 500; padding: 4px 12px; border-radius: 6px; border: 1px solid; cursor: pointer; transition: all 0.15s ease; white-space: nowrap; }
+    .status-btn-accept { color: #16a34a; border-color: #16a34a; background: #f0fdf4; }
+    .status-btn-accept:hover { background: #16a34a; color: #fff; }
+    .status-btn-reject { color: #dc2626; border-color: #dc2626; background: #fef2f2; }
+    .status-btn-reject:hover { background: #dc2626; color: #fff; }
+    .status-btn-neutral { color: var(--accent-hover); border-color: var(--accent-hover); background: var(--accent-soft); }
+    .status-btn-neutral:hover { background: var(--accent-hover); color: #fff; }
+    /* MERMAID */
+    .mermaid { background: var(--white); border: 1px solid var(--border-light); border-radius: 8px; padding: 1rem; margin: 0.8rem 0; overflow-x: auto; text-align: center; }
+    .mermaid-loading { color: var(--text-muted); font-size: 0.85rem; font-style: italic; }
+  </style>
+</head>
+<body>
+
+<header>
+  <span id="project-name">SDLC Vault</span>
+  <span id="health-dot" title="Vault OK"></span>
+  <button id="btn-update" onclick="checkPluginUpdate()" title="Verificar atualizações do plugin">
+    <span class="update-badge"></span>Update
+  </button>
+  <button id="btn-open" onclick="openVault()">Open Vault</button>
+</header>
+
+<div id="update-overlay" onclick="if(event.target===this)closeUpdateModal()">
+  <div id="update-modal">
+    <h3 id="update-modal-title">Verificando atualizações…</h3>
+    <div id="update-modal-body"></div>
+    <div class="modal-footer">
+      <span class="copy-notice" id="update-copy-notice"></span>
+      <div style="display:flex;gap:0.5rem">
+        <button class="btn-script" id="btn-generate-script" style="display:none" onclick="generateUpdateScript()">Gerar script .bat</button>
+        <button class="btn-close" onclick="closeUpdateModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <button class="tab-btn active" data-tab="tab-documentos">Docs</button>
+  <button class="tab-btn" data-tab="tab-tasks">Tasks</button>
+  <button class="tab-btn" data-tab="tab-epicos">Epics &amp; Milestones</button>
+  <button class="tab-btn" data-tab="tab-dominio">Domain</button>
+</nav>
+
+<main>
+  <div id="tab-documentos" class="tab-panel active">
+    <div id="welcome">
+      <h2>Welcome to the SDLC Kit Dashboard</h2>
+      <p>Select your project's <code>.sdlc/</code> folder to browse and explore the vault documentation.</p>
+      <button id="btn-open-big" onclick="openVault()">Open Vault</button>
+      <div id="reconnect-area" style="display:none; flex-direction:column; align-items:center; gap:0.5rem;">
+        <button id="btn-reconnect" onclick="reconnectVault()">Reconnect to vault</button>
+        <span id="reconnect-path"></span>
+        <button id="btn-open-big-alt" onclick="openVault()" style="background:none;border:none;color:var(--accent-hover);font-size:0.85rem;cursor:pointer;text-decoration:underline;text-underline-offset:2px;">Choose another folder</button>
+      </div>
+    </div>
+    <div id="sidebar" style="display:none;">
+      <div id="sidebar-header">Files</div>
+      <div id="file-tree"></div>
+    </div>
+    <div id="content" style="display:none;">
+      <div id="content-inner">
+        <p id="no-file">Select a file from the sidebar.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-tasks" class="tab-panel">
+    <div class="tasks-toolbar">
+      <span id="tasks-file-hint">Open a vault to view the tasks.</span>
+      <button class="view-toggle active" id="btn-kanban-view" onclick="switchTasksView('kanban')">Kanban</button>
+      <button class="view-toggle" id="btn-graph-view" onclick="switchTasksView('graph')">Branches</button>
+    </div>
+    <div id="tasks-view-kanban">
+      <div id="kanban-board">
+        <div class="kanban-col col-backlog">
+          <div class="kanban-col-header">Backlog <span class="count" id="count-backlog">0</span></div>
+          <div class="kanban-col-body" id="col-backlog-body"></div>
+        </div>
+        <div class="kanban-col col-progress">
+          <div class="kanban-col-header">In Progress <span class="count" id="count-progress">0</span></div>
+          <div class="kanban-col-body" id="col-progress-body"></div>
+        </div>
+        <div class="kanban-col col-done">
+          <div class="kanban-col-header">Done <span class="count" id="count-done">0</span></div>
+          <div class="kanban-col-body" id="col-done-body"></div>
+        </div>
+      </div>
+      <div id="kanban-empty">
+        <p>No tasks found.</p>
+        <small>Run <code>/sdlc-kit:task</code> to add tasks to the vault.</small>
+      </div>
+    </div>
+    <div id="tasks-view-graph" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+      <div id="branch-legend">
+        <span class="blegend-item"><span class="blegend-dot s-open"></span>open</span>
+        <span class="blegend-item"><span class="blegend-dot s-in-progress"></span>in-progress</span>
+        <span class="blegend-item"><span class="blegend-dot s-pr"></span>PR aberto</span>
+        <span class="blegend-item"><span class="blegend-dot s-merged"></span>merged</span>
+        <span class="blegend-item"><span class="blegend-dot s-closed"></span>closed</span>
+        <span class="blegend-sep">·</span>
+        <span class="blegend-hint">docs em <code>05-development/</code> · delete o arquivo para remover da árvore</span>
+      </div>
+      <div id="branch-graph-wrap">
+        <div id="graph-empty" style="display:flex;">
+          <p>Nenhuma branch encontrada.</p>
+          <small>Use <code>/sdlc-kit:sync</code> para popular os dados de branches.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-epicos" class="tab-panel">
+    <div id="epicos-sidebar">
+      <div id="epicos-sidebar-header">View</div>
+      <div class="epicos-nav-item active" data-epicos-view="epics" onclick="switchEpicosView('epics')">Epics</div>
+      <div class="epicos-nav-item" data-epicos-view="milestones" onclick="switchEpicosView('milestones')">Milestones</div>
+    </div>
+    <div id="epicos-content">
+      <div id="epicos-inner">
+        <div id="epicos-view-epics">
+          <p style="color:var(--text-sec); font-size:0.95rem;">Open a vault to view the epics.</p>
+        </div>
+        <div id="epicos-view-milestones" style="display:none;">
+          <p style="color:var(--text-sec); font-size:0.95rem;">Open a vault to view the milestones.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-dominio" class="tab-panel">
+    <div id="domain-sidebar">
+      <div id="domain-sidebar-header">Bounded Contexts</div>
+      <div id="domain-context-list"></div>
+    </div>
+    <div id="domain-content">
+      <div id="domain-inner">
+        <p style="color:var(--text-sec)">Open a vault to view the domain model.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+/* =========================================================
+   STATE
+   ========================================================= */
+let rootHandle = null;
+let _branchTasks = [];
+let fileIndex = {}; // stem -> { handle, path, groupName }
+let activeFilePath = null;
+
+/* =========================================================
+   STATUS TRANSITIONS
+   ========================================================= */
+const STATUS_TRANSITIONS = {
+  'adr':              [{ from:'proposed',    to:'accepted',    label:'→ accepted',    cls:'accept'  },
+                       { from:'proposed',    to:'rejected',    label:'→ rejected',    cls:'reject'  },
+                       { from:'accepted',    to:'superseded',  label:'→ superseded',  cls:'neutral' },
+                       { from:'accepted',    to:'deprecated',  label:'→ deprecated',  cls:'neutral' }],
+  'trd':              [{ from:'draft',       to:'approved',    label:'→ approved',    cls:'accept'  },
+                       { from:'approved',    to:'deprecated',  label:'→ deprecated',  cls:'neutral' }],
+  'prd':              [{ from:'draft',       to:'in-review',   label:'→ in-review',   cls:'neutral' },
+                       { from:'in-review',   to:'accepted',    label:'→ accepted',    cls:'accept'  },
+                       { from:'accepted',    to:'active',      label:'→ active',      cls:'neutral' },
+                       { from:'active',      to:'done',        label:'→ done',        cls:'accept'  }],
+  'epic':             [{ from:'planned',     to:'in-progress', label:'→ in-progress', cls:'neutral' },
+                       { from:'in-progress', to:'done',        label:'→ done',        cls:'accept'  },
+                       { from:'in-progress', to:'cancelled',   label:'→ cancelled',   cls:'reject'  }],
+  'spec-requirements':[{ from:'draft',       to:'in-review',   label:'→ in-review',   cls:'neutral' },
+                       { from:'in-review',   to:'accepted',    label:'→ accepted',    cls:'accept'  },
+                       { from:'accepted',    to:'active',      label:'→ active',      cls:'neutral' },
+                       { from:'active',      to:'done',        label:'→ done',        cls:'accept'  }],
+  'spec-design':      [{ from:'draft',       to:'in-review',   label:'→ in-review',   cls:'neutral' },
+                       { from:'in-review',   to:'accepted',    label:'→ accepted',    cls:'accept'  },
+                       { from:'accepted',    to:'active',      label:'→ active',      cls:'neutral' },
+                       { from:'active',      to:'done',        label:'→ done',        cls:'accept'  }],
+  'spec-tasks':       [{ from:'draft',       to:'in-review',   label:'→ in-review',   cls:'neutral' },
+                       { from:'in-review',   to:'accepted',    label:'→ accepted',    cls:'accept'  },
+                       { from:'accepted',    to:'active',      label:'→ active',      cls:'neutral' },
+                       { from:'active',      to:'done',        label:'→ done',        cls:'accept'  }],
+  'worktree':         [{ from:'open',        to:'in-progress', label:'→ in-progress', cls:'neutral' },
+                       { from:'in-progress', to:'merged',      label:'→ merged',      cls:'accept'  },
+                       { from:'in-progress', to:'closed',      label:'→ closed',      cls:'reject'  }],
+  'branch':           [{ from:'open',        to:'in-progress', label:'→ in-progress', cls:'neutral' },
+                       { from:'in-progress', to:'merged',      label:'→ merged',      cls:'accept'  },
+                       { from:'in-progress', to:'closed',      label:'→ closed',      cls:'reject'  }],
+  'retro':            [{ from:'draft',       to:'final',       label:'→ final',       cls:'accept'  }],
+  'review':           [{ from:'draft',       to:'final',       label:'→ final',       cls:'accept'  }],
+  'incident':         [{ from:'open',        to:'resolved',    label:'→ resolved',    cls:'accept'  }],
+  'c4-context':       [{ from:'draft',       to:'approved',    label:'→ approved',    cls:'accept'  },
+                       { from:'approved',    to:'deprecated',  label:'→ deprecated',  cls:'neutral' }],
+  'c4-container':     [{ from:'draft',       to:'approved',    label:'→ approved',    cls:'accept'  },
+                       { from:'approved',    to:'deprecated',  label:'→ deprecated',  cls:'neutral' }],
+  'c4-component':     [{ from:'draft',       to:'approved',    label:'→ approved',    cls:'accept'  },
+                       { from:'approved',    to:'deprecated',  label:'→ deprecated',  cls:'neutral' }],
+};
+
+/* =========================================================
+   INDEXEDDB — persist directory handle
+   ========================================================= */
+const _urlParts = window.location.pathname.split('/').filter(Boolean);
+const _projectSlug = (_urlParts[_urlParts.length - 3] || 'default')
+  .replace(/[^a-zA-Z0-9]/g, '-').toLowerCase().slice(0, 30);
+const DB_NAME = 'sdlc-' + _projectSlug;
+const DB_STORE = 'handles';
+const DB_KEY = 'root';
+
+function openDb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore(DB_STORE);
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+async function saveHandle(handle) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, 'readwrite');
+    tx.objectStore(DB_STORE).put(handle, DB_KEY);
+    tx.oncomplete = () => resolve();
+    tx.onerror = e => reject(e.target.error);
+  });
+}
+
+async function loadHandle() {
+  try {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(DB_STORE, 'readonly');
+      const req = tx.objectStore(DB_STORE).get(DB_KEY);
+      req.onsuccess = e => resolve(e.target.result || null);
+      req.onerror = e => reject(e.target.error);
+    });
+  } catch (_) { return null; }
+}
+
+/* =========================================================
+   VAULT OPEN / RECONNECT
+   ========================================================= */
+async function openVault() {
+  if (!window.showDirectoryPicker) {
+    alert('This browser does not support the File System Access API. Please use an updated version of Chrome or Edge.');
+    return;
+  }
+  try {
+    const handle = await window.showDirectoryPicker({ mode: 'read' });
+    rootHandle = handle;
+    await saveHandle(handle);
+    await loadVault(handle);
+  } catch (err) {
+    if (err.name !== 'AbortError') console.error('openVault error:', err);
+  }
+}
+
+async function reconnectVault() {
+  if (!rootHandle) return;
+  try {
+    const perm = await rootHandle.queryPermission({ mode: 'read' });
+    if (perm === 'granted') {
+      await loadVault(rootHandle);
+    } else {
+      const req = await rootHandle.requestPermission({ mode: 'read' });
+      if (req === 'granted') await loadVault(rootHandle);
+    }
+  } catch (err) {
+    console.error('reconnect error:', err);
+  }
+}
+
+/* =========================================================
+   PLUGIN UPDATE CHECK
+   ========================================================= */
+const PLUGIN_REPO = 'vellus-ai/sdlc-kit';
+const DASHBOARD_VERSION = '0.11.0';
+
+async function readMarkerJson() {
+  if (!rootHandle) return null;
+  try {
+    const kitDir = await rootHandle.getDirectoryHandle('.sdlc-kit');
+    const f = await (await kitDir.getFileHandle('marker.json')).getFile();
+    return JSON.parse(await f.text());
+  } catch (_) { return null; }
+}
+
+async function fetchLatestRelease() {
+  try {
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), 5000);
+    let r;
+    try {
+      r = await fetch(`https://api.github.com/repos/${PLUGIN_REPO}/releases/latest`, { signal: ac.signal });
+    } finally {
+      clearTimeout(timer);
+    }
+    if (!r.ok) return null;
+    const d = await r.json();
+    return d.tag_name ? d.tag_name.replace(/^v/, '') : null;
+  } catch (_) { return null; }
+}
+
+function semverGt(a, b) {
+  const pa = String(a).split('.').map(Number);
+  const pb = String(b).split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    const diff = (pa[i] || 0) - (pb[i] || 0);
+    if (diff !== 0) return diff > 0;
+  }
+  return false;
+}
+
+function closeUpdateModal() {
+  document.getElementById('update-overlay').classList.remove('open');
+}
+
+function copyCmd(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado ✓';
+    setTimeout(() => { btn.textContent = 'Copiar'; }, 2000);
+  });
+}
+
+function renderUpdateModal(latest) {
+  const current = DASHBOARD_VERSION;
+  const title = document.getElementById('update-modal-title');
+  const body = document.getElementById('update-modal-body');
+  const btn = document.getElementById('btn-update');
+
+  const repoName = PLUGIN_REPO.split('/')[1];
+  const cmdCore = `claude plugin install ${repoName}@${repoName}`;
+  const cmdExt  = `claude plugin install ${repoName}-extended@${repoName}`;
+
+  if (!latest) {
+    title.textContent = 'Não foi possível verificar';
+    body.innerHTML = `<p class="update-note">Sem conexão com o GitHub. Verifique manualmente em:<br><a href="https://github.com/${PLUGIN_REPO}/releases" target="_blank" rel="noopener">github.com/${PLUGIN_REPO}/releases</a></p>`;
+    btn.classList.remove('has-update');
+    return;
+  }
+
+  const hasUpdate = semverGt(latest, current);
+  btn.classList.toggle('has-update', hasUpdate);
+
+  const scriptBtn = document.getElementById('btn-generate-script');
+  const copyNotice = document.getElementById('update-copy-notice');
+
+  if (!hasUpdate) {
+    title.textContent = 'Você está na versão mais recente';
+    body.innerHTML = `
+      <div class="version-row">
+        <div><span>Instalado</span><br><strong>v${current || '?'}</strong></div>
+        <div><span>Mais recente</span><br><strong>v${latest}</strong></div>
+      </div>
+      <p class="update-note">Nenhuma ação necessária. Para reinstalar:<br>
+      Execute o comando abaixo no terminal onde usa o Claude Code.</p>
+      ${cmdBlock(cmdCore)}`;
+    if (scriptBtn) scriptBtn.style.display = 'none';
+    if (copyNotice) copyNotice.textContent = '';
+    return;
+  }
+
+  title.textContent = 'Atualização disponível';
+  body.innerHTML = `
+    <div class="version-row">
+      <div><span>Instalado</span><br><strong>v${current}</strong></div>
+      <div><span>Disponível</span><br><strong style="color:var(--warning)">v${latest}</strong></div>
+    </div>
+    <p class="update-note">Execute os comandos abaixo no terminal — ou clique em <strong>Gerar script .bat</strong> para um arquivo que pode ser executado com duplo clique.</p>
+    ${cmdBlock(cmdCore)}
+    ${cmdBlock(cmdExt)}
+    <p class="update-note" style="margin-top:0.5rem">Se não usar o extended, ignore o segundo comando.</p>`;
+
+  if (scriptBtn) scriptBtn.style.display = '';
+  // Auto-copy main command to clipboard
+  navigator.clipboard.writeText(`${cmdCore}\n${cmdExt}`).then(() => {
+    if (copyNotice) { copyNotice.textContent = 'Comandos copiados para o clipboard ✓'; }
+  }).catch(() => {
+    if (copyNotice) copyNotice.textContent = '';
+  });
+}
+
+async function generateUpdateScript() {
+  if (!rootHandle) return;
+  const btn = document.getElementById('btn-generate-script');
+  const notice = document.getElementById('update-copy-notice');
+
+  // Immediate feedback before any async work
+  btn.textContent = 'Gerando…';
+  btn.disabled = true;
+
+  const ok = await ensureWritePermission();
+  if (!ok) {
+    btn.textContent = 'Sem permissão de escrita';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = 'Gerar script .bat'; }, 3000);
+    return;
+  }
+
+  const repoName = PLUGIN_REPO.split('/')[1];
+  const cmdCore = `claude plugin install ${repoName}@${repoName}`;
+  const cmdExt  = `claude plugin install ${repoName}-extended@${repoName}`;
+
+  const rawPath = decodeURIComponent(window.location.pathname)
+    .replace(/^\//, '').replace(/\//g, '\\');
+  const vaultWinPath = rawPath.substring(0, rawPath.lastIndexOf('\\'));
+  const appData = '%USERPROFILE%\\.claude';
+
+  const ps = [
+    `$plugins = Get-Content '${appData}\\plugins\\installed_plugins.json' | ConvertFrom-Json`,
+    `$entry = $plugins.plugins.'${repoName}@${repoName}'[0]`,
+    `$src = Join-Path $entry.installPath 'assets\\vault-tree\\dashboard.html'`,
+    `$dst = '${vaultWinPath}\\dashboard.html'`,
+    `if (Test-Path $src) { Copy-Item $src $dst -Force; Write-Host "dashboard.html atualizado em $dst" } else { Write-Host "AVISO: nao encontrou $src" }`,
+  ].join('; ');
+
+  const lines = [
+    '@echo off',
+    `echo Atualizando plugin ${repoName}...`,
+    cmdCore,
+    cmdExt,
+    'echo.',
+    'echo Copiando dashboard atualizado para o vault...',
+    `powershell -NoProfile -Command "${ps.replace(/"/g, '\\"')}"`,
+    'echo.',
+    'echo Pronto! Recarregue o dashboard.html no browser.',
+    'pause',
+    '',
+  ];
+
+  try {
+    const fileHandle = await rootHandle.getFileHandle('_sdlc-update.bat', { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(lines.join('\r\n'));
+    await writable.close();
+
+    const batUrl = 'file:///' + vaultWinPath.replace(/\\/g, '/') + '/_sdlc-update.bat';
+    btn.textContent = 'Executar script ↗';
+    btn.disabled = false;
+    btn.title = batUrl;
+    btn.onclick = () => {
+      const a = document.createElement('a');
+      a.href = batUrl;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+    if (notice) notice.textContent = 'Script gerado — clique em Executar para rodar';
+  } catch (e) {
+    btn.textContent = 'Erro ao gerar';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = 'Gerar script .bat'; }, 3000);
+  }
+}
+
+function cmdBlock(cmd) {
+  const id = 'cb_' + Math.random().toString(36).slice(2);
+  return `<div class="cmd-block"><code>${escHtml(cmd)}</code><button class="cmd-copy" id="${id}" onclick="copyCmd('${escAttr(cmd)}', this)">Copiar</button></div>`;
+}
+
+async function checkPluginUpdate(showModal = true) {
+  if (showModal) document.getElementById('update-overlay').classList.add('open');
+  const latest = await fetchLatestRelease();
+  if (showModal) renderUpdateModal(latest);
+  // Update badge silently
+  const btn = document.getElementById('btn-update');
+  if (latest && semverGt(latest, DASHBOARD_VERSION)) {
+    btn.classList.add('has-update');
+    btn.title = `Atualização disponível: v${latest}`;
+  }
+}
+
+/* =========================================================
+   WRITE PERMISSION + STATUS PROMOTION
+   ========================================================= */
+async function ensureWritePermission() {
+  if (!rootHandle) return false;
+  let perm = await rootHandle.queryPermission({ mode: 'readwrite' });
+  if (perm === 'granted') return true;
+  perm = await rootHandle.requestPermission({ mode: 'readwrite' });
+  return perm === 'granted';
+}
+
+async function promoteStatus(info, newStatus) {
+  const ok = await ensureWritePermission();
+  if (!ok) { alert('Permissão de escrita necessária para atualizar o status.'); return; }
+  try {
+    const file = await info.handle.getFile();
+    const raw = await file.text();
+    const today = new Date().toISOString().slice(0, 10);
+    // Restrict replacements to the frontmatter block (between the two --- delimiters)
+    const fmEnd = raw.indexOf('\n---', 3);
+    const fm = fmEnd > 0 ? raw.slice(0, fmEnd) : raw;
+    const body = fmEnd > 0 ? raw.slice(fmEnd) : '';
+    const updatedFm = fm
+      .replace(/^(status:\s*).*$/m, `$1${newStatus}`)
+      .replace(/^(updated:\s*).*$/m, `$1${today}`);
+    const updated = updatedFm + body;
+    const writable = await info.handle.createWritable();
+    try {
+      await writable.write(updated);
+    } finally {
+      await writable.close();
+    }
+    renderDocument(updated, info);
+  } catch (err) {
+    alert('Erro ao salvar: ' + err.message);
+  }
+}
+
+async function loadVault(handle) {
+  rootHandle = handle;
+  fileIndex = {};
+  await buildFileIndex(handle);
+  await renderSidebar(handle);
+  await updateProjectName(handle);
+  showVaultUI();
+  // Update badge shown only on explicit user action (btn-update click) — never on vault load
+  // Pre-load delivery data
+  await renderKanban();
+  await renderEpicosTab();
+  await renderDomainTab();
+}
+
+/* =========================================================
+   FILE INDEX
+   ========================================================= */
+async function buildFileIndex(dirHandle, prefix = '') {
+  for await (const [name, entry] of dirHandle.entries()) {
+    if (entry.kind === 'directory') {
+      const newPrefix = prefix ? `${prefix}/${name}` : name;
+      await buildFileIndex(entry, newPrefix);
+    } else if (name.endsWith('.md')) {
+      const stem = name.replace(/\.md$/, '');
+      const path = prefix ? `${prefix}/${name}` : name;
+      const groupName = prefix;
+      const normStem = normalizeStem(stem);
+      const isTemplate = groupName.toLowerCase().includes('_templates');
+      if (!fileIndex[normStem] || !isTemplate) {
+        fileIndex[normStem] = { handle: entry, path, groupName, stem, name };
+      }
+    }
+  }
+}
+
+function normalizeStem(s) {
+  return s.toLowerCase().replace(/[\s_-]+/g, '_');
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+function _makeFileEl(info, paddingLeft) {
+  const el = document.createElement('div');
+  el.className = 'tree-file';
+  if (paddingLeft) el.style.paddingLeft = paddingLeft;
+  el.textContent = info.stem;
+  el.dataset.path = info.path;
+  el.onclick = () => loadFile(info);
+  return el;
+}
+
+function _makeGroupLabel(text, extraStyle) {
+  const el = document.createElement('div');
+  el.className = 'tree-group-label collapsed';
+  el.textContent = text;
+  if (extraStyle) el.style.cssText += extraStyle;
+  return el;
+}
+
+function _makeFilesEl() {
+  const el = document.createElement('div');
+  el.className = 'tree-files collapsed';
+  return el;
+}
+
+async function renderSidebar(dirHandle) {
+  const tree = document.getElementById('file-tree');
+  tree.innerHTML = '';
+
+  // Build two-level hierarchy: phase (01-planning) → sub (epic, c4, …) → files
+  const hierarchy = {};
+  for (const [, info] of Object.entries(fileIndex)) {
+    const parts = info.groupName ? info.groupName.split('/') : [];
+    const phase = parts[0] || '(raiz)';
+    const sub   = parts.slice(1).join('/') || '';
+    if (!hierarchy[phase]) hierarchy[phase] = {};
+    if (!hierarchy[phase][sub]) hierarchy[phase][sub] = [];
+    hierarchy[phase][sub].push(info);
+  }
+
+  for (const phase of Object.keys(hierarchy).sort()) {
+    const subs = hierarchy[phase];
+    const phaseEl = document.createElement('div');
+    phaseEl.className = 'tree-group';
+
+    const phaseLabel = _makeGroupLabel(phase);
+    const phaseContent = _makeFilesEl();
+    phaseLabel.onclick = () => {
+      phaseLabel.classList.toggle('collapsed');
+      phaseContent.classList.toggle('collapsed');
+    };
+
+    // Direct files under phase (sub === '') come first
+    const subKeys = Object.keys(subs).sort((a, b) => {
+      if (a === '') return -1; if (b === '') return 1;
+      return a.localeCompare(b);
+    });
+
+    for (const sub of subKeys) {
+      const files = subs[sub].sort((a, b) => a.name.localeCompare(b.name));
+
+      if (!sub) {
+        files.forEach(f => phaseContent.appendChild(_makeFileEl(f, '1.25rem')));
+      } else {
+        // Skip _templates sub-groups entirely
+        if (sub.toLowerCase().includes('_templates')) continue;
+
+        const subEl = document.createElement('div');
+        subEl.className = 'tree-group';
+
+        const subLabel = _makeGroupLabel(sub.split('/').pop(), 'padding-left:1.5rem;font-size:0.82rem;');
+        const subFiles = _makeFilesEl();
+        subLabel.onclick = e => {
+          e.stopPropagation();
+          subLabel.classList.toggle('collapsed');
+          subFiles.classList.toggle('collapsed');
+        };
+        files.forEach(f => subFiles.appendChild(_makeFileEl(f, '2.5rem')));
+
+        subEl.appendChild(subLabel);
+        subEl.appendChild(subFiles);
+        phaseContent.appendChild(subEl);
+      }
+    }
+
+    phaseEl.appendChild(phaseLabel);
+    phaseEl.appendChild(phaseContent);
+    tree.appendChild(phaseEl);
+  }
+}
+
+/* =========================================================
+   PROJECT NAME from CLAUDE.md
+   ========================================================= */
+async function updateProjectName(dirHandle) {
+  try {
+    let claudeHandle = null;
+    for await (const [name, entry] of dirHandle.entries()) {
+      if (name === 'CLAUDE.md' && entry.kind === 'file') { claudeHandle = entry; break; }
+    }
+    if (!claudeHandle) return;
+    const file = await claudeHandle.getFile();
+    const text = await file.text();
+    const match = text.match(/^#\s+(.+)/m) || text.match(/project[_\s-]*name[:\s]+(.+)/im);
+    if (match) document.getElementById('project-name').textContent = match[1].trim();
+  } catch (_) {}
+}
+
+/* =========================================================
+   LOAD & RENDER FILE
+   ========================================================= */
+async function loadFile(info) {
+  activeFilePath = info.path;
+  // Update sidebar active state
+  document.querySelectorAll('.tree-file').forEach(el => {
+    el.classList.toggle('active', el.dataset.path === info.path);
+  });
+
+  try {
+    const file = await info.handle.getFile();
+    const raw = await file.text();
+    renderDocument(raw, info);
+  } catch (err) {
+    document.getElementById('content-inner').innerHTML = `<p style="color:var(--danger)">Erro ao ler arquivo: ${escHtml(err.message)}</p>`;
+  }
+}
+
+function renderDocument(raw, info) {
+  const { frontmatter, body } = parseFrontmatter(raw);
+  const inner = document.getElementById('content-inner');
+  inner.innerHTML = '';
+
+  if (frontmatter && Object.keys(frontmatter).length > 0) {
+    const card = document.createElement('div');
+    card.className = 'fm-card';
+    const tbl = document.createElement('table');
+    for (const [k, v] of Object.entries(frontmatter)) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${escHtml(k)}</td><td>${escHtml(String(v))}</td>`;
+      tbl.appendChild(tr);
+    }
+    card.appendChild(tbl);
+
+    if (info) {
+      const docType = (frontmatter.type || '').trim().toLowerCase();
+      const currentStatus = (frontmatter.status || '').trim().toLowerCase();
+      const transitions = (STATUS_TRANSITIONS[docType] || []).filter(t => t.from === currentStatus);
+      if (transitions.length > 0) {
+        const actions = document.createElement('div');
+        actions.className = 'status-actions';
+        for (const t of transitions) {
+          const btn = document.createElement('button');
+          btn.className = `status-btn status-btn-${t.cls}`;
+          btn.textContent = t.label;
+          btn.onclick = () => promoteStatus(info, t.to);
+          actions.appendChild(btn);
+        }
+        card.appendChild(actions);
+      }
+    }
+
+    inner.appendChild(card);
+  }
+
+  const mdDiv = document.createElement('div');
+  mdDiv.className = 'md-body';
+  mdDiv.innerHTML = parseMarkdown(body);
+  inner.appendChild(mdDiv);
+
+  // Wire wikilinks
+  inner.querySelectorAll('.wikilink').forEach(btn => {
+    btn.onclick = () => navigateWikilink(btn.dataset.target);
+  });
+}
+
+function navigateWikilink(target) {
+  const norm = normalizeStem(target);
+  const info = fileIndex[norm];
+  if (info) {
+    loadFile(info);
+    // Switch to documentos tab if not already
+    switchTab('tab-documentos');
+  } else {
+    alert(`File not found: [[${target}]]`);
+  }
+}
+
+/* =========================================================
+   MERMAID LAZY LOADER
+   ========================================================= */
+let _mermaidLoading = false;
+let _mermaidReady = false;
+
+function scheduleMermaidRender() {
+  if (_mermaidReady) {
+    // Already loaded — run on unprocessed diagrams only to avoid re-rendering
+    setTimeout(() => {
+      const pending = document.querySelectorAll('.mermaid:not([data-processed])');
+      if (pending.length && window.mermaid) window.mermaid.run({ nodes: Array.from(pending) });
+    }, 0);
+    return;
+  }
+  if (_mermaidLoading) return;
+  _mermaidLoading = true;
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+  script.onload = () => {
+    _mermaidReady = true;
+    // strict: blocks HTML/JS in diagram labels (safe for shared vaults)
+    window.mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'strict' });
+    // Render all unprocessed diagrams currently in the DOM (navigation-safe)
+    const pending = document.querySelectorAll('.mermaid:not([data-processed])');
+    if (pending.length) window.mermaid.run({ nodes: Array.from(pending) });
+  };
+  script.onerror = () => {
+    // Offline fallback: replace .mermaid divs with code blocks
+    document.querySelectorAll('.mermaid').forEach(el => {
+      const pre = document.createElement('pre');
+      pre.innerHTML = `<code class="lang-mermaid">${escHtml(el.textContent)}</code>`;
+      el.replaceWith(pre);
+    });
+  };
+  document.head.appendChild(script);
+}
+
+/* =========================================================
+   FRONTMATTER PARSER
+   ========================================================= */
+function parseFrontmatter(raw) {
+  if (!raw.startsWith('---')) return { frontmatter: null, body: raw };
+  const end = raw.indexOf('\n---', 3);
+  if (end === -1) return { frontmatter: null, body: raw };
+  const yamlStr = raw.slice(4, end);
+  const body = raw.slice(end + 4).replace(/^\n/, '');
+  const fm = {};
+  for (const line of yamlStr.split('\n')) {
+    const idx = line.indexOf(':');
+    if (idx > 0) {
+      const k = line.slice(0, idx).trim();
+      const v = line.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+      if (k) fm[k] = v;
+    }
+  }
+  return { frontmatter: fm, body };
+}
+
+/* =========================================================
+   MARKDOWN PARSER (~100 lines)
+   ========================================================= */
+function parseMarkdown(md) {
+  const lines = md.split('\n');
+  const out = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Fenced code block
+    if (line.trimStart().startsWith('```')) {
+      const lang = line.trimStart().slice(3).trim();
+      const codeLines = [];
+      i++;
+      while (i < lines.length && !lines[i].trimStart().startsWith('```')) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      i++; // consume closing ```
+      if (lang === 'mermaid') {
+        out.push(`<div class="mermaid">${codeLines.join('\n')}</div>`);
+        scheduleMermaidRender();
+      } else {
+        out.push(`<pre><code class="lang-${escHtml(lang)}">${escHtml(codeLines.join('\n'))}</code></pre>`);
+      }
+      continue;
+    }
+
+    // Headings
+    const hm = line.match(/^(#{1,3})\s+(.*)/);
+    if (hm) { const lvl = hm[1].length; out.push(`<h${lvl}>${inlineRender(hm[2])}</h${lvl}>`); i++; continue; }
+
+    // HR
+    if (/^[-*_]{3,}\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
+
+    // Blockquote
+    if (line.startsWith('>')) {
+      const bqLines = [];
+      while (i < lines.length && lines[i].startsWith('>')) {
+        bqLines.push(lines[i].slice(1).trimStart());
+        i++;
+      }
+      out.push(`<blockquote>${parseMarkdown(bqLines.join('\n'))}</blockquote>`);
+      continue;
+    }
+
+    // Unordered list
+    if (/^[-*+]\s/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^[-*+]\s/.test(lines[i])) {
+        items.push(`<li>${inlineRender(lines[i].replace(/^[-*+]\s/, ''))}</li>`);
+        i++;
+      }
+      out.push(`<ul>${items.join('')}</ul>`);
+      continue;
+    }
+
+    // Ordered list
+    if (/^\d+\.\s/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        items.push(`<li>${inlineRender(lines[i].replace(/^\d+\.\s/, ''))}</li>`);
+        i++;
+      }
+      out.push(`<ol>${items.join('')}</ol>`);
+      continue;
+    }
+
+    // Table
+    if (line.includes('|') && lines[i + 1] && /^[\s|:-]+$/.test(lines[i + 1])) {
+      const headers = parseTableRow(line);
+      i += 2; // skip header and separator
+      const rows = [];
+      while (i < lines.length && lines[i].includes('|')) {
+        rows.push(parseTableRow(lines[i]));
+        i++;
+      }
+      const thead = `<tr>${headers.map(h => `<th>${inlineRender(h)}</th>`).join('')}</tr>`;
+      const tbody = rows.map(r => `<tr>${r.map(c => `<td>${inlineRender(c)}</td>`).join('')}</tr>`).join('');
+      out.push(`<table><thead>${thead}</thead><tbody>${tbody}</tbody></table>`);
+      continue;
+    }
+
+    // Blank line
+    if (line.trim() === '') { i++; continue; }
+
+    // Paragraph
+    const paraLines = [];
+    while (i < lines.length && lines[i].trim() !== '' && !lines[i].startsWith('#') && !lines[i].startsWith('>') && !/^[-*+]\s/.test(lines[i]) && !/^\d+\.\s/.test(lines[i]) && !lines[i].trimStart().startsWith('```') && !/^[-*_]{3,}\s*$/.test(lines[i])) {
+      paraLines.push(lines[i]);
+      i++;
+    }
+    if (paraLines.length) out.push(`<p>${inlineRender(paraLines.join(' '))}</p>`);
+  }
+
+  return out.join('\n');
+}
+
+function parseTableRow(line) {
+  return line.split('|').map(c => c.trim()).filter((c, idx, arr) => !(idx === 0 && c === '') && !(idx === arr.length - 1 && c === ''));
+}
+
+function inlineRender(text) {
+  // Wikilinks [[target]] or [[target|label]]
+  text = text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, target, label) => {
+    const display = label || target;
+    return `<button class="wikilink" data-target="${escAttr(target)}">${escHtml(display)}</button>`;
+  });
+  // Bold **text**
+  text = text.replace(/\*\*(.+?)\*\*/g, (_, c) => `<strong>${escHtml(c)}</strong>`);
+  // Italic *text* (not **)
+  text = text.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, (_, c) => `<em>${escHtml(c)}</em>`);
+  // Inline code `code`
+  text = text.replace(/`([^`]+)`/g, (_, c) => `<code>${escHtml(c)}</code>`);
+  // Links [label](url)
+  text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  return text;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function escAttr(s) {
+  return String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+/* =========================================================
+   UI HELPERS
+   ========================================================= */
+function showVaultUI() {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'flex';
+  document.getElementById('content').style.display = 'block';
+  document.getElementById('no-file').style.display = 'block';
+  switchTab('tab-documentos');
+}
+
+function showWelcomeUI() {
+  document.getElementById('welcome').style.display = 'flex';
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('content').style.display = 'none';
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+}
+
+/* =========================================================
+   TAB CLICK HANDLER
+   ========================================================= */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    switchTab(btn.dataset.tab);
+    if (btn.dataset.tab === 'tab-tasks' && rootHandle) renderKanban();
+    if (btn.dataset.tab === 'tab-epicos' && rootHandle) renderEpicosTab();
+    if (btn.dataset.tab === 'tab-dominio' && rootHandle) renderDomainTab();
+  });
+});
+
+/* =========================================================
+   TASKS PARSING HELPERS
+   ========================================================= */
+
+/**
+ * Parse a TASKS.md line into { title, epic, branch, done, inProgress }.
+ * Format: - [ ] [EPIC] Task title #phase @branch
+ *         - [x] Completed task
+ *         - [-] In-progress task   (convention: - [-] means in-progress)
+ */
+function parseTaskLine(line) {
+  const doneMatch = line.match(/^- \[([x\- ])\] (.*)/i);
+  if (!doneMatch) return null;
+  const checkChar = doneMatch[1].toLowerCase();
+  const rest = doneMatch[2];
+  const done = checkChar === 'x';
+  const inProgress = checkChar === '-';
+
+  // Extract [EPIC] prefix
+  let epic = '';
+  let body = rest;
+  const epicMatch = rest.match(/^\[([^\]]+)\]\s*(.*)/);
+  if (epicMatch) { epic = epicMatch[1]; body = epicMatch[2]; }
+
+  // Extract @branch suffix
+  let branch = '';
+  const branchMatch = body.match(/@([\w/._-]+)/);
+  if (branchMatch) { branch = branchMatch[1]; body = body.replace(branchMatch[0], '').trim(); }
+
+  // Remove #phase tag
+  const title = body.replace(/#\S+/g, '').trim();
+
+  return { title, epic, branch, done, inProgress };
+}
+
+async function readFileFromVault(pathParts) {
+  // pathParts: array of directory/file names from vault root
+  // e.g. ['03-development', 'TASKS.md']
+  if (!rootHandle) return null;
+  try {
+    let handle = rootHandle;
+    for (let i = 0; i < pathParts.length - 1; i++) {
+      handle = await handle.getDirectoryHandle(pathParts[i]);
+    }
+    const fileHandle = await handle.getFileHandle(pathParts[pathParts.length - 1]);
+    const file = await fileHandle.getFile();
+    return await file.text();
+  } catch (_) {
+    return null;
+  }
+}
+
+/* =========================================================
+   VAULT SCAN HELPERS
+   ========================================================= */
+
+async function listDirEntries(dirHandle) {
+  const entries = [];
+  for await (const [name, handle] of dirHandle.entries()) {
+    entries.push({ name, handle });
+  }
+  return entries;
+}
+
+async function aggregateSpecTasks() {
+  // Fallback: aggregate task lines from 04-specs/*/tasks.md
+  if (!rootHandle) return null;
+  try {
+    const specsDir = await rootHandle.getDirectoryHandle('04-specs');
+    const entries = await listDirEntries(specsDir);
+    const lines = [];
+    for (const { name, handle } of entries) {
+      if (handle.kind !== 'directory') continue;
+      try {
+        const fh = await handle.getFileHandle('tasks.md');
+        const text = await (await fh.getFile()).text();
+        text.split('\n').forEach(l => { if (/^- \[/.test(l)) lines.push(l); });
+      } catch (_) {}
+    }
+    return lines.length ? lines.join('\n') : null;
+  } catch (_) { return null; }
+}
+
+async function readEpicFiles() {
+  // Fallback: read individual epic files from 01-planning/epic/*.md
+  if (!rootHandle) return [];
+  try {
+    const epicDir = await (await rootHandle.getDirectoryHandle('01-planning'))
+      .getDirectoryHandle('epic');
+    const entries = await listDirEntries(epicDir);
+    const epics = [];
+    for (const { name, handle } of entries) {
+      if (handle.kind !== 'file' || !name.endsWith('.md') || name.startsWith('_')) continue;
+      try {
+        const text = await (await handle.getFile()).text();
+        const { frontmatter, body } = parseFrontmatter(text);
+        if (!frontmatter.title) continue;
+        epics.push({
+          name: frontmatter.title,
+          milestone: frontmatter.milestone || '',
+          description: (body.match(/^>?\s*(.+)/m) || [])[1] || '',
+          created: frontmatter.created || '',
+          progress: '0',
+          status: frontmatter.status || '',
+        });
+      } catch (_) {}
+    }
+    return epics;
+  } catch (_) { return []; }
+}
+
+/* =========================================================
+   KANBAN BOARD
+   ========================================================= */
+async function renderKanban() {
+  const hint = document.getElementById('tasks-file-hint');
+  const board = document.getElementById('kanban-board');
+  const empty = document.getElementById('kanban-empty');
+  const backlogBody = document.getElementById('col-backlog-body');
+  const progressBody = document.getElementById('col-progress-body');
+  const doneBody = document.getElementById('col-done-body');
+
+  backlogBody.innerHTML = '';
+  progressBody.innerHTML = '';
+  doneBody.innerHTML = '';
+
+  if (!rootHandle) { hint.textContent = 'Open a vault to view the tasks.'; return; }
+
+  let text = await readFileFromVault(['03-development', 'TASKS.md']);
+  const taskSource = text ? '03-development/TASKS.md' : '04-specs/*/tasks.md (aggregated)';
+  if (!text) text = await aggregateSpecTasks();
+  if (!text) {
+    hint.textContent = 'TASKS.md not found. Run /sdlc-kit:task to create it.';
+    board.style.display = 'none';
+    empty.style.display = 'flex';
+    return;
+  }
+
+  hint.textContent = taskSource;
+  const tasks = text.split('\n').map(parseTaskLine).filter(Boolean);
+
+  if (tasks.length === 0) {
+    board.style.display = 'none';
+    empty.style.display = 'flex';
+    return;
+  }
+
+  board.style.display = 'flex';
+  empty.style.display = 'none';
+
+  let backlogCount = 0, progressCount = 0, doneCount = 0;
+
+  for (const task of tasks) {
+    const card = buildKanbanCard(task);
+    if (task.done) {
+      doneBody.appendChild(card);
+      doneCount++;
+    } else if (task.inProgress) {
+      progressBody.appendChild(card);
+      progressCount++;
+    } else {
+      backlogBody.appendChild(card);
+      backlogCount++;
+    }
+  }
+
+  document.getElementById('count-backlog').textContent = backlogCount;
+  document.getElementById('count-progress').textContent = progressCount;
+  document.getElementById('count-done').textContent = doneCount;
+
+  // Store tasks for re-render when user switches to Branches tab
+  _branchTasks = tasks;
+  renderBranchGraph(tasks);
+}
+
+function buildKanbanCard(task) {
+  const card = document.createElement('div');
+  card.className = 'kanban-card';
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'card-title';
+  titleEl.textContent = task.title || '(untitled)';
+  card.appendChild(titleEl);
+
+  const meta = document.createElement('div');
+  meta.className = 'card-meta';
+
+  if (task.epic) {
+    const epicTag = document.createElement('span');
+    epicTag.className = 'tag-epic';
+    epicTag.textContent = task.epic;
+    meta.appendChild(epicTag);
+  }
+  if (task.branch) {
+    const branchTag = document.createElement('span');
+    branchTag.className = 'tag-branch';
+    branchTag.textContent = task.branch;
+    meta.appendChild(branchTag);
+  }
+
+  if (meta.children.length > 0) card.appendChild(meta);
+  return card;
+}
+
+/* =========================================================
+   BRANCH TREE
+   ========================================================= */
+
+async function readBranchDocs() {
+  if (!rootHandle) return [];
+  const results = [];
+  try {
+    const devHandle = await rootHandle.getDirectoryHandle('05-development', { create: false });
+    for await (const [name, entry] of devHandle.entries()) {
+      if (entry.kind !== 'file' || !name.endsWith('.md') || name.startsWith('_')) continue;
+      const file = await entry.getFile();
+      const text = await file.text();
+      const fm = parseFrontmatter(text);
+      if (!fm || !fm.frontmatter) continue;
+      const docType = fm.frontmatter.type;
+      if (docType !== 'branch' && docType !== 'worktree') continue;
+      const slug = fm.frontmatter.slug || name.replace(/\.md$/, '');
+      results.push({
+        branch: slug,
+        status: fm.frontmatter.status || 'open',
+        pr: fm.frontmatter.pr || '',
+        ciStatus: fm.frontmatter.ci_status || '',
+      });
+    }
+  } catch (_) { /* 05-development absent or inaccessible */ }
+  return results;
+}
+
+async function renderBranchGraph(tasks) {
+  const wrap = document.getElementById('branch-graph-wrap');
+  const graphEmpty = document.getElementById('graph-empty');
+
+  Array.from(wrap.children).forEach(el => { if (el.id !== 'graph-empty') el.remove(); });
+
+  // Source 1: @branch task annotations  →  { branch: taskCount }
+  const taskCounts = {};
+  for (const task of tasks) {
+    if (!task.branch) continue;
+    taskCounts[task.branch] = (taskCounts[task.branch] || 0) + 1;
+  }
+
+  // Source 2: 05-development/ branch/worktree docs  →  { branch: metadata }
+  const docs = await readBranchDocs();
+  const docMap = {};
+  for (const d of docs) docMap[d.branch] = d;
+
+  const allBranches = new Set([...Object.keys(taskCounts), ...Object.keys(docMap)]);
+  if (allBranches.size === 0) { graphEmpty.style.display = 'flex'; return; }
+  graphEmpty.style.display = 'none';
+
+  // Build 2-level prefix tree: groupPrefix → [ { branch, status, pr, ciStatus, tasks } ]
+  // A branch like "refac/seller-pos/1.1-foo" → group "refac/seller-pos", leaf "1.1-foo"
+  // A branch like "feat/auth" → group "feat", leaf "auth"
+  // A branch like "hotfix" (no slash) → group "(raiz)", leaf "hotfix"
+  const tree = {}; // { groupKey: { branches: [...], label: string } }
+
+  for (const branch of Array.from(allBranches).sort()) {
+    const parts = branch.split('/');
+    let groupKey, leafName;
+    if (parts.length === 1) {
+      groupKey = '(raiz)';
+      leafName = parts[0];
+    } else if (parts.length === 2) {
+      groupKey = parts[0];
+      leafName = parts[1];
+    } else {
+      // e.g. refac/seller-pos/1.1-foo → group = refac/seller-pos
+      groupKey = parts.slice(0, -1).join('/');
+      leafName = parts[parts.length - 1];
+    }
+    if (!tree[groupKey]) tree[groupKey] = { label: groupKey, branches: [] };
+    const doc = docMap[branch] || {};
+    tree[groupKey].branches.push({
+      full: branch,
+      leaf: leafName,
+      status: doc.status || '',
+      pr: doc.pr || '',
+      ciStatus: doc.ciStatus || '',
+      tasks: taskCounts[branch] || 0,
+    });
+  }
+
+  // Render root node (main)
+  const rootEl = document.createElement('div');
+  rootEl.className = 'btree-root';
+  const rootDot = document.createElement('div');
+  rootDot.className = 'btree-dot';
+  const rootLabel = document.createElement('span');
+  rootLabel.className = 'btree-root-label';
+  rootLabel.textContent = 'main';
+  rootEl.appendChild(rootDot);
+  rootEl.appendChild(rootLabel);
+  wrap.insertBefore(rootEl, graphEmpty);
+
+  // Render each group
+  for (const [groupKey, group] of Object.entries(tree).sort(([a], [b]) => a.localeCompare(b))) {
+    const groupWrap = document.createElement('div');
+    groupWrap.className = 'btree-group';
+
+    const header = document.createElement('div');
+    header.className = 'btree-group-header';
+
+    const toggle = document.createElement('span');
+    toggle.className = 'btree-group-toggle open';
+    toggle.textContent = '▶';
+
+    const icon = document.createElement('span');
+    icon.className = 'btree-group-icon';
+    icon.textContent = '⎇';
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'btree-group-name';
+    nameSpan.textContent = group.label === '(raiz)' ? '(branches diretas)' : group.label;
+
+    const countBadge = document.createElement('span');
+    countBadge.className = 'btree-group-count';
+    countBadge.textContent = group.branches.length;
+
+    header.appendChild(toggle);
+    header.appendChild(icon);
+    header.appendChild(nameSpan);
+    header.appendChild(countBadge);
+
+    const leavesWrap = document.createElement('div');
+    leavesWrap.className = 'btree-leaves';
+
+    for (const br of group.branches) {
+      const leaf = document.createElement('div');
+      const statusClass = br.status ? `status-${br.status}` : '';
+      leaf.className = `btree-leaf ${statusClass}`.trim();
+
+      const dot = document.createElement('div');
+      const dotStatus = br.pr ? 's-pr'
+        : br.status === 'in-progress' ? 's-in-progress'
+        : br.status === 'merged' ? 's-merged'
+        : (br.status === 'closed' || br.status === 'abandoned') ? 's-closed'
+        : '';
+      dot.className = `btree-leaf-dot ${dotStatus}`.trim();
+
+      const nameEl = document.createElement('span');
+      nameEl.className = 'btree-leaf-name';
+      nameEl.textContent = br.leaf;
+      nameEl.title = br.full;
+
+      leaf.appendChild(dot);
+      leaf.appendChild(nameEl);
+
+      if (br.status && br.status !== 'open') {
+        const statusBadge = document.createElement('span');
+        statusBadge.className = 'btree-leaf-status';
+        statusBadge.textContent = br.status;
+        leaf.appendChild(statusBadge);
+      }
+
+      if (br.tasks > 0) {
+        const tasksBadge = document.createElement('span');
+        tasksBadge.className = 'btree-leaf-tasks';
+        tasksBadge.textContent = br.tasks + (br.tasks === 1 ? ' task' : ' tasks');
+        leaf.appendChild(tasksBadge);
+      }
+
+      if (br.pr) {
+        const prEl = document.createElement('span');
+        prEl.className = 'btree-leaf-pr';
+        prEl.textContent = 'PR: ' + br.pr;
+        leaf.appendChild(prEl);
+      }
+
+      leavesWrap.appendChild(leaf);
+    }
+
+    // Toggle expand/collapse
+    header.addEventListener('click', () => {
+      const isOpen = leavesWrap.style.display !== 'none';
+      leavesWrap.style.display = isOpen ? 'none' : '';
+      toggle.classList.toggle('open', !isOpen);
+    });
+
+    groupWrap.appendChild(header);
+    groupWrap.appendChild(leavesWrap);
+    wrap.insertBefore(groupWrap, graphEmpty);
+  }
+}
+
+function switchTasksView(view) {
+  const kanban = document.getElementById('tasks-view-kanban');
+  const graph = document.getElementById('tasks-view-graph');
+  const btnK = document.getElementById('btn-kanban-view');
+  const btnG = document.getElementById('btn-graph-view');
+  if (view === 'kanban') {
+    kanban.style.display = '';
+    graph.style.display = 'none';
+    btnK.classList.add('active');
+    btnG.classList.remove('active');
+  } else {
+    kanban.style.display = 'none';
+    graph.style.display = 'flex';
+    btnK.classList.remove('active');
+    btnG.classList.add('active');
+    // Re-read 05-development/ docs on every switch to Branches tab
+    renderBranchGraph(_branchTasks);
+  }
+}
+
+/* =========================================================
+   EPICOS & MILESTONES TAB
+   ========================================================= */
+let epicosCurrentView = 'epics';
+
+function switchEpicosView(view) {
+  epicosCurrentView = view;
+  document.querySelectorAll('.epicos-nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.epicosView === view);
+  });
+  document.getElementById('epicos-view-epics').style.display = view === 'epics' ? '' : 'none';
+  document.getElementById('epicos-view-milestones').style.display = view === 'milestones' ? '' : 'none';
+}
+
+async function renderEpicosTab() {
+  await renderEpics();
+  await renderMilestones();
+}
+
+async function renderEpics() {
+  const container = document.getElementById('epicos-view-epics');
+  container.innerHTML = '';
+
+  if (!rootHandle) {
+    container.innerHTML = '<p style="color:var(--text-sec)">Open a vault to view the epics.</p>';
+    return;
+  }
+
+  const epicText = await readFileFromVault(['03-development', 'EPICS.md']);
+  let epics = [];
+  if (epicText) {
+    const { body } = parseFrontmatter(epicText);
+    epics = parseEpicSections(body);
+  }
+  if (epics.length === 0) epics = await readEpicFiles();
+
+  if (epics.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-sec); font-size:0.92rem;">No epics yet. Run <code>/sdlc-kit:epic</code> to get started.</p>';
+    return;
+  }
+
+  const title = document.createElement('h2');
+  title.style.cssText = 'font-size:1.2rem;margin-bottom:1rem;color:var(--text);';
+  title.textContent = 'Epics';
+  container.appendChild(title);
+
+  for (const epic of epics) {
+    const card = document.createElement('div');
+    card.className = 'epic-card';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = epic.name;
+    card.appendChild(h3);
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+
+    if (epic.milestone) {
+      const ms = document.createElement('span');
+      ms.textContent = 'Milestone: ' + epic.milestone;
+      meta.appendChild(ms);
+    }
+    if (epic.created) {
+      const cr = document.createElement('span');
+      cr.textContent = 'Criado: ' + epic.created;
+      meta.appendChild(cr);
+    }
+    const pct = parseInt(epic.progress) || 0;
+    const prog = document.createElement('span');
+    prog.textContent = 'Progress: ' + pct + '%';
+    meta.appendChild(prog);
+
+    card.appendChild(meta);
+
+    if (epic.description) {
+      const desc = document.createElement('p');
+      desc.style.cssText = 'font-size:0.85rem;color:var(--text-sec);margin-top:0.5rem;';
+      desc.textContent = epic.description;
+      card.appendChild(desc);
+    }
+
+    const barWrap = document.createElement('div');
+    barWrap.className = 'progress-bar-wrap';
+    const barFill = document.createElement('div');
+    barFill.className = 'progress-bar-fill';
+    barFill.style.width = pct + '%';
+    barWrap.appendChild(barFill);
+    card.appendChild(barWrap);
+
+    container.appendChild(card);
+  }
+}
+
+async function renderMilestones() {
+  const container = document.getElementById('epicos-view-milestones');
+  container.innerHTML = '';
+
+  if (!rootHandle) {
+    container.innerHTML = '<p style="color:var(--text-sec)">Open a vault to view the milestones.</p>';
+    return;
+  }
+
+  const text = await readFileFromVault(['03-development', 'MILESTONES.md']);
+  if (!text) {
+    container.innerHTML = '<p style="color:var(--text-sec); font-size:0.92rem;">No milestones yet. Run <code>/sdlc-kit:milestone</code> to get started.</p>';
+    return;
+  }
+
+  const { frontmatter, body } = parseFrontmatter(text);
+  const milestones = parseMilestoneSections(body);
+
+  if (milestones.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-sec); font-size:0.92rem;">No milestones yet. Run <code>/sdlc-kit:milestone</code> to get started.</p>';
+    return;
+  }
+
+  const title = document.createElement('h2');
+  title.style.cssText = 'font-size:1.2rem;margin-bottom:1rem;color:var(--text);';
+  title.textContent = 'Milestones';
+  container.appendChild(title);
+
+  for (const ms of milestones) {
+    const card = document.createElement('div');
+    card.className = 'milestone-card';
+
+    const h3 = document.createElement('h3');
+    const ragSpan = document.createElement('span');
+    ragSpan.style.marginRight = '0.5rem';
+    ragSpan.textContent = ragToEmoji(ms.rag);
+    h3.appendChild(ragSpan);
+    h3.appendChild(document.createTextNode(ms.name));
+    card.appendChild(h3);
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+
+    if (ms.targetDate) {
+      const dt = document.createElement('span');
+      dt.textContent = 'Data-alvo: ' + ms.targetDate;
+      meta.appendChild(dt);
+    }
+    if (ms.epics) {
+      const ep = document.createElement('span');
+      ep.textContent = 'Epics: ' + ms.epics;
+      meta.appendChild(ep);
+    }
+    const pct = parseInt(ms.progress) || 0;
+    const prog = document.createElement('span');
+    const ragClass = ragToClass(ms.rag);
+    if (ragClass) prog.classList.add(ragClass);
+    prog.textContent = 'Progress: ' + pct + '%';
+    meta.appendChild(prog);
+
+    card.appendChild(meta);
+
+    const barWrap = document.createElement('div');
+    barWrap.className = 'progress-bar-wrap';
+    const barFill = document.createElement('div');
+    barFill.className = 'progress-bar-fill';
+    barFill.style.width = pct + '%';
+    if (ms.rag === 'red') barFill.style.background = 'var(--danger)';
+    else if (ms.rag === 'amber') barFill.style.background = 'var(--warning)';
+    else barFill.style.background = 'var(--success)';
+    barWrap.appendChild(barFill);
+    card.appendChild(barWrap);
+
+    container.appendChild(card);
+  }
+}
+
+/* =========================================================
+   EPICS/MILESTONES SECTION PARSERS
+   ========================================================= */
+function parseEpicSections(body) {
+  const epics = [];
+  const lines = body.split('\n');
+  let current = null;
+  for (const line of lines) {
+    if (line.startsWith('## ') && !/^## (Epics|Épicos)\b/.test(line)) {
+      if (current) epics.push(current);
+      current = { name: line.slice(3).trim(), milestone: '', description: '', created: '', progress: '0' };
+    } else if (current) {
+      const milMatch = line.match(/\*\*Milestone:\*\*\s*(.*)/);
+      if (milMatch) current.milestone = milMatch[1].trim();
+      const descMatch = line.match(/\*\*(?:Description|Descrição):\*\*\s*(.*)/);
+      if (descMatch) current.description = descMatch[1].trim();
+      const crMatch = line.match(/\*\*Criado:\*\*\s*(.*)/);
+      if (crMatch) current.created = crMatch[1].trim();
+      const progMatch = line.match(/\*\*(?:Progress|Progresso):\*\*\s*(\d+)%/);
+      if (progMatch) current.progress = progMatch[1];
+    }
+  }
+  if (current) epics.push(current);
+  return epics;
+}
+
+function parseMilestoneSections(body) {
+  const milestones = [];
+  const lines = body.split('\n');
+  let current = null;
+  for (const line of lines) {
+    if (line.startsWith('## ') && !line.startsWith('## Milestones')) {
+      if (current) milestones.push(current);
+      current = { name: line.slice(3).trim(), rag: 'amber', targetDate: '', epics: '', progress: '0' };
+    } else if (current) {
+      const statusMatch = line.match(/\*\*Status:\*\*\s*(.*)/);
+      if (statusMatch) {
+        const st = statusMatch[1].toLowerCase();
+        if (st.includes('green') || st.includes('🟢')) current.rag = 'green';
+        else if (st.includes('red') || st.includes('🔴')) current.rag = 'red';
+        else current.rag = 'amber';
+      }
+      const dtMatch = line.match(/\*\*Data-alvo:\*\*\s*(.*)/);
+      if (dtMatch) current.targetDate = dtMatch[1].trim();
+      const epMatch = line.match(/\*\*(?:Epics|Épicos):\*\*\s*(.*)/);
+      if (epMatch) current.epics = epMatch[1].trim();
+      const progMatch = line.match(/\*\*(?:Progress|Progresso):\*\*\s*(\d+)%/);
+      if (progMatch) current.progress = progMatch[1];
+    }
+  }
+  if (current) milestones.push(current);
+  return milestones;
+}
+
+function ragToEmoji(rag) {
+  if (rag === 'green') return '🟢';
+  if (rag === 'red') return '🔴';
+  return '🟡';
+}
+
+function ragToClass(rag) {
+  if (rag === 'green') return 'rag-green';
+  if (rag === 'red') return 'rag-red';
+  return 'rag-amber';
+}
+
+/* =========================================================
+   INIT — check IndexedDB for saved handle
+   ========================================================= */
+(async function init() {
+  const handle = await loadHandle();
+  if (handle) {
+    rootHandle = handle;
+    try {
+      const perm = await handle.queryPermission({ mode: 'read' });
+      const reconnectArea = document.getElementById('reconnect-area');
+      reconnectArea.style.display = 'flex';
+      document.getElementById('btn-open-big').style.display = 'none';
+      document.getElementById('reconnect-path').textContent = handle.name || '';
+      if (perm === 'granted') {
+        await loadVault(handle);
+      }
+      // else: wait for user to click reconnect
+    } catch (_) {
+      // handle is stale, just show open button
+    }
+  }
+})();
+
+/* =========================================================
+   DOMAIN TAB
+   ========================================================= */
+async function renderDomainTab() {
+  const ctxList = document.getElementById('domain-context-list');
+  const inner = document.getElementById('domain-inner');
+  if (!rootHandle) {
+    inner.innerHTML = '<p style="color:var(--text-sec)">Open a vault to view the domain model.</p>';
+    return;
+  }
+  const contexts = await getDomainContexts();
+  ctxList.innerHTML = '';
+  if (contexts.length === 0) {
+    inner.innerHTML = '<p style="color:var(--text-sec);font-size:0.92rem;">No bounded contexts found. Run <code>/sdlc-kit:domain</code> to get started.</p>';
+    return;
+  }
+  contexts.forEach((ctx, i) => {
+    const item = document.createElement('div');
+    item.className = 'domain-ctx-item' + (i === 0 ? ' active' : '');
+    item.textContent = formatContextName(ctx);
+    item.dataset.ctx = ctx;
+    item.onclick = () => loadDomainContext(ctx);
+    ctxList.appendChild(item);
+  });
+  await loadDomainContext(contexts[0]);
+}
+
+async function getDomainContexts() {
+  try {
+    let archDir, domainDir;
+    // Support both canonical (02-architecture) and legacy vault layouts
+    for (const folder of ['02-architecture', '03-domain', '04-domain']) {
+      try { archDir = await rootHandle.getDirectoryHandle(folder); break; } catch (_) {}
+    }
+    if (!archDir) return [];
+    try { domainDir = await archDir.getDirectoryHandle('domain'); }
+    catch (_) { return []; }
+    const contexts = [];
+    for await (const [name, entry] of domainDir.entries()) {
+      if (entry.kind === 'directory' && !name.startsWith('_') && name !== 'contracts') {
+        contexts.push(name);
+      }
+    }
+    return contexts.sort();
+  } catch (_) { return []; }
+}
+
+function formatContextName(slug) {
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+async function loadDomainContext(ctxName) {
+  document.querySelectorAll('.domain-ctx-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.ctx === ctxName);
+  });
+  const inner = document.getElementById('domain-inner');
+  inner.innerHTML = '';
+
+  const h2 = document.createElement('h2');
+  h2.style.cssText = 'font-size:1.2rem;margin-bottom:1.25rem;color:var(--text);font-weight:700;';
+  h2.textContent = formatContextName(ctxName);
+  inner.appendChild(h2);
+
+  // Sub-tab bar
+  const bar = document.createElement('div');
+  bar.className = 'domain-subtab-bar';
+  const subtabs = [
+    { key: 'lang',   label: 'Language'   },
+    { key: 'events', label: 'Events'     },
+    { key: 'aggs',   label: 'Aggregates' },
+    { key: 'ctxmap', label: 'Context Map'},
+  ];
+  subtabs.forEach(({ key, label }, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'domain-subtab' + (i === 0 ? ' active' : '');
+    btn.textContent = label;
+    btn.dataset.subtab = key;
+    bar.appendChild(btn);
+  });
+  inner.appendChild(bar);
+
+  const wrap = document.createElement('div');
+  wrap.id = 'domain-panel-wrap';
+  inner.appendChild(wrap);
+
+  // Lazy-load panels on tab click
+  let loaded = {};
+  const showPanel = async (key) => {
+    if (!loaded[key]) {
+      loaded[key] = await buildDomainPanel(ctxName, key);
+    }
+    wrap.innerHTML = '';
+    wrap.appendChild(loaded[key]);
+  };
+
+  bar.querySelectorAll('.domain-subtab').forEach(btn => {
+    btn.onclick = async () => {
+      bar.querySelectorAll('.domain-subtab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      await showPanel(btn.dataset.subtab);
+    };
+  });
+
+  await showPanel('lang');
+}
+
+async function buildDomainPanel(ctxName, key) {
+  const baseDir = ['02-architecture', 'domain', ctxName];
+  // Try both vault layouts
+  const altBaseDir = ['03-domain', ctxName];
+  const fileMap = {
+    lang:   'ubiquitous-language.md',
+    events: 'domain-events.md',
+    aggs:   'aggregates.md',
+    ctxmap: 'context-map.md',
+  };
+  let text = await readFileFromVault([...baseDir, fileMap[key]]);
+  if (!text) text = await readFileFromVault([...altBaseDir, fileMap[key]]);
+
+  const panel = document.createElement('div');
+
+  if (!text) {
+    panel.innerHTML = `<p style="color:var(--text-sec);font-size:0.9rem;">No ${fileMap[key]} found for this context.</p>`;
+    return panel;
+  }
+
+  const { body = '' } = parseFrontmatter(text);
+
+  if (key === 'lang')   renderLanguagePanel(body, panel);
+  else if (key === 'events') renderEventsPanel(body, panel);
+  else renderMarkdownPanel(body, panel);
+
+  return panel;
+}
+
+// Wire wikilink buttons inside any element after innerHTML assignment
+function wireWikilinks(el) {
+  el.querySelectorAll('.wikilink').forEach(btn => {
+    btn.onclick = () => navigateWikilink(btn.dataset.target);
+  });
+}
+
+
+function renderLanguagePanel(body, panel) {
+  const sections = body.split(/^### /m).slice(1).filter(s => s.trim());
+  if (!sections.length) {
+    panel.innerHTML = '<p style="color:var(--text-sec)">No terms defined yet.</p>';
+    return;
+  }
+  sections.forEach(sec => {
+    const lines = sec.split('\n');
+    const term = lines[0].trim();
+    const rest = lines.slice(1).join('\n');
+    const def = (rest.match(/\*\*Defini[çc][ãa]o:\*\*\s*(.+)/i) || [])[1] || '';
+    const syn = (rest.match(/\*\*Sin[ôo]nimos proibidos:\*\*\s*(.+)/i) || [])[1] || '';
+    const ex  = (rest.match(/\*\*Exemplo:\*\*\s*(.+)/i) || [])[1] || '';
+    const card = document.createElement('div');
+    card.className = 'domain-term-card';
+    card.innerHTML = `<h4>${escHtml(term)}</h4>` +
+      (def ? `<div class="def">${inlineRender(def)}</div>` : '') +
+      (syn ? `<div class="syn">⊘ ${inlineRender(syn)}</div>` : '') +
+      (ex  ? `<div class="ex">💬 ${inlineRender(ex)}</div>` : '');
+    wireWikilinks(card);
+    panel.appendChild(card);
+  });
+}
+
+function renderEventsPanel(body, panel) {
+  const sections = body.split(/^### /m).slice(1).filter(s => s.trim());
+  if (!sections.length) {
+    panel.innerHTML = '<p style="color:var(--text-sec)">No events defined yet.</p>';
+    return;
+  }
+  sections.forEach(sec => {
+    const lines = sec.split('\n');
+    const name = lines[0].replace(/`/g, '').trim();
+    const rest = lines.slice(1).join('\n');
+    const desc = (rest.match(/\*\*Descri[çc][ãa]o:\*\*\s*(.+)/i) || [])[1] || '';
+    const prod = (rest.match(/\*\*Produtor:\*\*\s*(.+)/i) || [])[1] || '';
+    const cons = (rest.match(/\*\*Consumidores:\*\*\s*(.+)/i) || [])[1] || '';
+    const card = document.createElement('div');
+    card.className = 'domain-event-card';
+    card.innerHTML = `<div class="evt-name">${escHtml(name)}</div>` +
+      (desc ? `<div class="evt-desc">${inlineRender(desc)}</div>` : '') +
+      ((prod || cons) ? `<div class="evt-meta">` +
+        (prod ? `<span>↑ ${inlineRender(prod)}</span>` : '') +
+        (cons ? `<span>↓ ${inlineRender(cons)}</span>` : '') +
+      `</div>` : '');
+    wireWikilinks(card);
+    panel.appendChild(card);
+  });
+}
+
+function renderMarkdownPanel(body, panel) {
+  const div = document.createElement('div');
+  div.className = 'domain-md-wrap';
+  div.innerHTML = parseMarkdown(body);
+  wireWikilinks(div);
+  panel.appendChild(div);
+}
+</script>
+</body>
+</html>

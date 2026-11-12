@@ -3,3 +3,7 @@ Thumbs.db
 *.log
 .idea/
 .vscode/
+
+# SDLC Kit
+.sdlc/.sdlc-kit/db.sqlite
+*-errors.log
