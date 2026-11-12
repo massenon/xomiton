@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Publication sortante planifiée vers un ou plusieurs réseaux (DATABASE_DICTIONARY.md §8 `outbound_posts`).
- * Le détail par réseau (état, identifiant externe) est porté par `outbound_deliveries`.
+ * Le détail par réseau (état, identifiant externe) est porté par `outbound_deliveries`. `is_republish` (P19-11) : seule une
+ * republication explicite peut rediffuser une BD sur un réseau où elle est déjà planifiée ou publiée.
  */
 class OutboundPost extends Model
 {
@@ -40,6 +41,7 @@ class OutboundPost extends Model
         'status',
         'published_at',
         'created_by',
+        'is_republish',
     ];
 
     /**
@@ -52,6 +54,7 @@ class OutboundPost extends Model
             'scheduled_at' => 'datetime',
             'status' => OutboundStatus::class,
             'published_at' => 'datetime',
+            'is_republish' => 'boolean',
         ];
     }
 

@@ -7481,6 +7481,15 @@
     "@admin_content_errors_accessibility_missing": {
         "description": "admin_content.errors.accessibility_missing"
     },
+    "admin_content_errors_already_shared": "Cette BD est déjà planifiée ou publiée sur : {networks}. Cochez « Republier » pour la diffuser de nouveau.",
+    "@admin_content_errors_already_shared": {
+        "description": "admin_content.errors.already_shared",
+        "placeholders": {
+            "networks": {
+                "type": "String"
+            }
+        }
+    },
     "admin_content_errors_alt_invalid": "Le texte alternatif de la planche {page} est obligatoire ({max} caractères au plus).",
     "@admin_content_errors_alt_invalid": {
         "description": "admin_content.errors.alt_invalid",
@@ -7565,6 +7574,10 @@
     "admin_content_errors_event_decided": "Cet événement a déjà été traité.",
     "@admin_content_errors_event_decided": {
         "description": "admin_content.errors.event_decided"
+    },
+    "admin_content_errors_external_id_invalid": "Identifiant de page ou de canal invalide : un nombre (page Facebook, canal Telegram en -100…) ou @nomducanal.",
+    "@admin_content_errors_external_id_invalid": {
+        "description": "admin_content.errors.external_id_invalid"
     },
     "admin_content_errors_file_missing": "Ajoutez d’abord le fichier de la ressource : sans fichier, elle ne peut pas être publiée.",
     "@admin_content_errors_file_missing": {
@@ -7777,6 +7790,22 @@
     "admin_content_errors_reference_missing": "Choisissez le contenu à publier.",
     "@admin_content_errors_reference_missing": {
         "description": "admin_content.errors.reference_missing"
+    },
+    "admin_content_errors_series_empty": "Toutes les BD publiques sont déjà planifiées ou publiées sur les réseaux choisis : rien à ajouter au calendrier.",
+    "@admin_content_errors_series_empty": {
+        "description": "admin_content.errors.series_empty"
+    },
+    "admin_content_errors_series_interval": "L’écart entre deux BD doit être compris entre {min} et {max} jours.",
+    "@admin_content_errors_series_interval": {
+        "description": "admin_content.errors.series_interval",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
     },
     "admin_content_errors_slug_history": "Cette adresse est l’ancienne adresse d’une autre fiche : choisissez-en une autre.",
     "@admin_content_errors_slug_history": {
@@ -10915,6 +10944,14 @@
     "@admin_gateways_connect_account_help": {
         "description": "admin_gateways.connect.account_help"
     },
+    "admin_gateways_connect_external_id": "Identifiant de la page ou du canal",
+    "@admin_gateways_connect_external_id": {
+        "description": "admin_gateways.connect.external_id"
+    },
+    "admin_gateways_connect_external_id_help": "Page Facebook : son identifiant numérique. Canal Telegram : -100… ou @nomducanal. Sans identifiant, l’identifiant du compte est utilisé.",
+    "@admin_gateways_connect_external_id_help": {
+        "description": "admin_gateways.connect.external_id_help"
+    },
     "admin_gateways_connect_help": "Indiquez le compte de l’organisation, jamais un compte personnel.",
     "@admin_gateways_connect_help": {
         "description": "admin_gateways.connect.help"
@@ -10940,13 +10977,66 @@
     "@admin_gateways_connect_token": {
         "description": "admin_gateways.connect.token"
     },
-    "admin_gateways_connect_token_help": "Facultatif tant que le connecteur n’est pas branché. Enregistré chiffré, il ne s’affiche plus ensuite.",
+    "admin_gateways_connect_token_help": "Jeton de page Facebook (longue durée) ou jeton du bot Telegram. Enregistré chiffré, il ne s’affiche plus ensuite ; laissez vide pour garder le jeton actuel.",
     "@admin_gateways_connect_token_help": {
         "description": "admin_gateways.connect.token_help"
+    },
+    "admin_gateways_delivery_errors_already_published": "BD déjà publiée sur ce réseau : non republiée",
+    "@admin_gateways_delivery_errors_already_published": {
+        "description": "admin_gateways.delivery_errors.already_published"
+    },
+    "admin_gateways_delivery_errors_credentials_missing": "Jeton ou identifiant du compte manquant",
+    "@admin_gateways_delivery_errors_credentials_missing": {
+        "description": "admin_gateways.delivery_errors.credentials_missing"
+    },
+    "admin_gateways_delivery_errors_media_unavailable": "Image introuvable ou illisible",
+    "@admin_gateways_delivery_errors_media_unavailable": {
+        "description": "admin_gateways.delivery_errors.media_unavailable"
+    },
+    "admin_gateways_delivery_errors_message_invalid": "Message vide ou trop long",
+    "@admin_gateways_delivery_errors_message_invalid": {
+        "description": "admin_gateways.delivery_errors.message_invalid"
+    },
+    "admin_gateways_delivery_errors_rate_limited": "Limite de débit du réseau atteinte : nouvel essai automatique",
+    "@admin_gateways_delivery_errors_rate_limited": {
+        "description": "admin_gateways.delivery_errors.rate_limited"
+    },
+    "admin_gateways_delivery_errors_rejected": "Publication refusée par le réseau",
+    "@admin_gateways_delivery_errors_rejected": {
+        "description": "admin_gateways.delivery_errors.rejected"
+    },
+    "admin_gateways_delivery_errors_retry_after": "nouvel essai possible dans {seconds} s",
+    "@admin_gateways_delivery_errors_retry_after": {
+        "description": "admin_gateways.delivery_errors.retry_after",
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_gateways_delivery_errors_server_error": "Le réseau est momentanément indisponible : nouvel essai automatique",
+    "@admin_gateways_delivery_errors_server_error": {
+        "description": "admin_gateways.delivery_errors.server_error"
+    },
+    "admin_gateways_delivery_errors_transport_error": "Réseau injoignable : nouvel essai automatique",
+    "@admin_gateways_delivery_errors_transport_error": {
+        "description": "admin_gateways.delivery_errors.transport_error"
+    },
+    "admin_gateways_delivery_errors_unauthorized": "Jeton refusé ou droits insuffisants : reconnectez le compte",
+    "@admin_gateways_delivery_errors_unauthorized": {
+        "description": "admin_gateways.delivery_errors.unauthorized"
+    },
+    "admin_gateways_delivery_errors_unknown": "Échec de la publication",
+    "@admin_gateways_delivery_errors_unknown": {
+        "description": "admin_gateways.delivery_errors.unknown"
     },
     "admin_gateways_disconnect": "Déconnecter",
     "@admin_gateways_disconnect": {
         "description": "admin_gateways.disconnect"
+    },
+    "admin_gateways_last_error": "Le réseau a refusé la dernière publication : vérifiez le jeton et les droits du compte.",
+    "@admin_gateways_last_error": {
+        "description": "admin_gateways.last_error"
     },
     "admin_gateways_manual": "Publication à la main",
     "@admin_gateways_manual": {
@@ -10959,6 +11049,40 @@
     "admin_gateways_notice": "Aucun connecteur automatique n’est encore branché : les publications sont préparées ici, puis publiées à la main sur le compte de l’organisation et marquées « publiées ». Aucune donnée de membre n’est envoyée aux réseaux.",
     "@admin_gateways_notice": {
         "description": "admin_gateways.notice"
+    },
+    "admin_gateways_notice_live": "Facebook et Telegram publient automatiquement à l’heure prévue, avec le jeton du compte de l’organisation. Les autres réseaux restent à publier à la main : copiez le texte, joignez les images, puis marquez la publication « publiée ». Aucune donnée de membre n’est envoyée aux réseaux.",
+    "@admin_gateways_notice_live": {
+        "description": "admin_gateways.notice_live"
+    },
+    "admin_gateways_preview_caption_cut": "Sur Telegram, la légende est limitée à 1 024 caractères : le texte sera raccourci, le lien conservé.",
+    "@admin_gateways_preview_caption_cut": {
+        "description": "admin_gateways.preview.caption_cut"
+    },
+    "admin_gateways_preview_link": "Lien :",
+    "@admin_gateways_preview_link": {
+        "description": "admin_gateways.preview.link"
+    },
+    "admin_gateways_preview_media": "{count, plural, =1{{count} image jointe (texte alternatif quand le réseau le permet) :} other{{count} images jointes, dans cet ordre (texte alternatif quand le réseau le permet) :}}",
+    "@admin_gateways_preview_media": {
+        "description": "admin_gateways.preview.media",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_gateways_preview_no_link": "BD réservée aux membres : aucun lien public ni image ne sont envoyés.",
+    "@admin_gateways_preview_no_link": {
+        "description": "admin_gateways.preview.no_link"
+    },
+    "admin_gateways_preview_title": "Aperçu pour {network}",
+    "@admin_gateways_preview_title": {
+        "description": "admin_gateways.preview.title",
+        "placeholders": {
+            "network": {
+                "type": "String"
+            }
+        }
     },
     "admin_gateways_queue_cancel": "Annuler",
     "@admin_gateways_queue_cancel": {
@@ -10996,6 +11120,10 @@
                 "type": "String"
             }
         }
+    },
+    "admin_gateways_queue_view": "Voir la publication",
+    "@admin_gateways_queue_view": {
+        "description": "admin_gateways.queue.view"
     },
     "admin_gateways_rooms_activate": "Activer",
     "@admin_gateways_rooms_activate": {
@@ -11120,9 +11248,17 @@
     "@admin_gateways_schedule_fields_reference_template": {
         "description": "admin_gateways.schedule.fields.reference_template"
     },
-    "admin_gateways_schedule_message_help": "500 caractères au plus. Obligatoire pour un message personnalisé ; sinon, le titre de la BD ou le texte du modèle est repris.",
+    "admin_gateways_schedule_fields_republish": "Republier",
+    "@admin_gateways_schedule_fields_republish": {
+        "description": "admin_gateways.schedule.fields.republish"
+    },
+    "admin_gateways_schedule_message_help": "500 caractères au plus. Obligatoire pour un message personnalisé ; sinon, le texte de partage de la BD (ou son titre) ou le texte du modèle est repris.",
     "@admin_gateways_schedule_message_help": {
         "description": "admin_gateways.schedule.message_help"
+    },
+    "admin_gateways_schedule_republish_help": "Une BD n’est jamais diffusée deux fois sur le même réseau. Cochez pour la republier volontairement.",
+    "@admin_gateways_schedule_republish_help": {
+        "description": "admin_gateways.schedule.republish_help"
     },
     "admin_gateways_schedule_submit": "Planifier",
     "@admin_gateways_schedule_submit": {
@@ -11131,6 +11267,47 @@
     "admin_gateways_schedule_title": "Planifier une publication",
     "@admin_gateways_schedule_title": {
         "description": "admin_gateways.schedule.title"
+    },
+    "admin_gateways_series_fields_channels": "Réseaux",
+    "@admin_gateways_series_fields_channels": {
+        "description": "admin_gateways.series.fields.channels"
+    },
+    "admin_gateways_series_fields_date": "À partir du",
+    "@admin_gateways_series_fields_date": {
+        "description": "admin_gateways.series.fields.date"
+    },
+    "admin_gateways_series_fields_every": "Une BD tous les (jours)",
+    "@admin_gateways_series_fields_every": {
+        "description": "admin_gateways.series.fields.every"
+    },
+    "admin_gateways_series_fields_time": "Heure",
+    "@admin_gateways_series_fields_time": {
+        "description": "admin_gateways.series.fields.time"
+    },
+    "admin_gateways_series_help": "Planifiez en une fois toutes les BD publiques pas encore diffusées sur les réseaux choisis : une BD tous les N jours, à la même heure. Chaque BD ne vise que les réseaux où elle manque ; chaque publication reste annulable tant qu’elle n’est pas partie.",
+    "@admin_gateways_series_help": {
+        "description": "admin_gateways.series.help"
+    },
+    "admin_gateways_series_plan_title": "{count, plural, =1{{count} BD à planifier} other{{count} BD à planifier}}",
+    "@admin_gateways_series_plan_title": {
+        "description": "admin_gateways.series.plan_title",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_gateways_series_preview": "Prévisualiser le calendrier",
+    "@admin_gateways_series_preview": {
+        "description": "admin_gateways.series.preview"
+    },
+    "admin_gateways_series_submit": "Planifier ce calendrier",
+    "@admin_gateways_series_submit": {
+        "description": "admin_gateways.series.submit"
+    },
+    "admin_gateways_series_title": "Calendrier BD",
+    "@admin_gateways_series_title": {
+        "description": "admin_gateways.series.title"
     },
     "admin_gateways_templates_edit_title": "Modifier le modèle",
     "@admin_gateways_templates_edit_title": {
@@ -11213,6 +11390,15 @@
     "admin_gateways_toasts_scheduled": "Publication planifiée.",
     "@admin_gateways_toasts_scheduled": {
         "description": "admin_gateways.toasts.scheduled"
+    },
+    "admin_gateways_toasts_series_scheduled": "{count, plural, =1{{count} BD planifiée.} other{{count} BD planifiées.}}",
+    "@admin_gateways_toasts_series_scheduled": {
+        "description": "admin_gateways.toasts.series_scheduled",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "admin_gateways_toasts_template_deleted": "Modèle supprimé.",
     "@admin_gateways_toasts_template_deleted": {

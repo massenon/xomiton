@@ -7,9 +7,12 @@ namespace App\Livewire\Admin\Gateways;
 use App\Application\Admin\Gateways\ManageGateways;
 use App\Application\Admin\Gateways\ManageGatewayTemplates;
 use App\Application\Admin\Gateways\ManagePeerRooms;
+use App\Application\Gateways\OutboundContent;
+use App\Application\Gateways\Transport\TelegramBotApi;
 use App\Domain\Content\Exceptions\ContentRefused;
 use App\Enums\CccKind;
 use App\Enums\OutboundKind;
+use App\Enums\SocialNetwork;
 use App\Livewire\Concerns\InteractsWithUi;
 use App\Livewire\Concerns\ValidatesForm;
 use App\Models\CccTool;
@@ -33,9 +36,11 @@ use Livewire\WithPagination;
  * Passerelles `/admin/passerelles` (P12-08, D4-bis, ADR-15 ; prototype admin/passerelles.php) : cartes des six réseaux
  * (connecter / déconnecter le compte de l'organisation), planification d'une publication (BD SSR, message clé,
  * texte personnalisé ≤ 500), file de publication (marquer publié à la main, annuler, retirer), modèles de messages clés et
- * salons de discussion entre pair·es. Aucun connecteur réel avant P14-04 : ManualPublisher prépare le texte, une personne
- * publie puis marque la remise. Comptes : `gateways.connect` (SocialChannelPolicy) ; file, modèles, salons :
- * `gateways.publish` (OutboundPostPolicy). Le jeton saisi n'est jamais relu ni journalisé.
+ * salons de discussion entre pair·es. P19-11 : calendrier BD (une BD publique, ou en lot « une BD tous les N jours à
+ * HH:MM »), aperçu du message (texte, lien UTM, images), republication explicite, erreur lisible de chaque remise ;
+ * Facebook et Telegram publiés par l'API avec le pilote `http`, les autres réseaux à la main (texte et images prêts).
+ * Comptes : `gateways.connect` (SocialChannelPolicy) ; file, calendrier, modèles, salons : `gateways.publish`
+ * (OutboundPostPolicy), revérifiée à chaque action. Le jeton saisi n'est jamais relu ni journalisé.
  */
 final class Index extends Component
 {
@@ -50,8 +55,20 @@ final class Index extends Component
 
     public string $token = '';
 
-    /** @var array{kind: string, reference: string, message: string, channels: list<int|string>, at: string} */
+    public string $externalId = '';
+
+    /** @var array{kind: string, reference: string, message: string, channels: list<int|string>, at: string, republish?: bool} */
     public array $postForm = [];
+
+    /**
+     * Calendrier BD en lot (P19-11).
+     *
+     * @var array{channels: list<int|string>, date: string, time: string, every: string}
+     */
+    public array $seriesForm = [];
+
+    /** Aperçu du calendrier en lot affiché (après « Prévisualiser »). */
+    public bool $seriesPreview = false;
 
     #[Locked]
     public ?int $templateId = null;
@@ -69,6 +86,7 @@ final class Index extends Component
     {
         abort_unless($this->actor()->can('gateways.connect'), 403);
         $this->resetPostForm();
+        $this->resetSeriesForm();
         $this->resetTemplateForm();
         $this->resetRoomForm();
     }
@@ -82,6 +100,7 @@ final class Index extends Component
         $this->connectingId = (int) $channel->getKey();
         $this->account = '';
         $this->token = '';
+        $this->externalId = '';
         $this->resetErrorBag();
         unset($this->connecting);
         $this->openModal('xmGatewayConnect');
@@ -89,7 +108,7 @@ final class Index extends Component
 
     public function resetConnect(): void
     {
-        $this->reset('connectingId', 'account', 'token');
+        $this->reset('connectingId', 'account', 'token', 'externalId');
         $this->resetErrorBag();
         unset($this->connecting);
     }
@@ -101,13 +120,18 @@ final class Index extends Component
         $this->validate([
             'account' => ['required', 'string', 'regex:'.ManageGateways::HANDLE_PATTERN],
             'token' => ['nullable', 'string', 'max:'.ManageGateways::TOKEN_MAX],
-        ], ['account.regex' => (string) __('admin_content.errors.handle_invalid')], [
+            'externalId' => ['nullable', 'string', 'regex:'.ManageGateways::EXTERNAL_ID_PATTERN],
+        ], [
+            'account.regex' => (string) __('admin_content.errors.handle_invalid'),
+            'externalId.regex' => (string) __('admin_content.errors.external_id_invalid'),
+        ], [
             'account' => (string) __('admin_gateways.connect.account'),
             'token' => (string) __('admin_gateways.connect.token'),
+            'externalId' => (string) __('admin_gateways.connect.external_id'),
         ]);
 
         try {
-            $manage->connect($channel, $this->account, $this->token, $this->actor());
+            $manage->connect($channel, $this->account, $this->token, $this->actor(), $this->externalId);
         } catch (ContentRefused $refused) {
             $this->addError('account', $refused->userMessage());
 
@@ -147,6 +171,7 @@ final class Index extends Component
             'message' => '',
             'channels' => [],
             'at' => CarbonImmutable::now($this->timezone())->addDay()->setTime(9, 0)->format('Y-m-d\TH:i'),
+            'republish' => false,
         ];
         $this->resetErrorBag();
     }
@@ -173,15 +198,147 @@ final class Index extends Component
                 'message' => $form['message'],
                 'channel_ids' => array_map('intval', $form['channels']),
                 'scheduled_at' => CarbonImmutable::createFromFormat('Y-m-d\TH:i', $form['at'], $this->timezone())->utc(),
+                'republish' => (bool) ($form['republish'] ?? false),
             ], $this->actor());
         } catch (ContentRefused $refused) {
-            $this->addError('postForm.at', $refused->userMessage());
+            $this->addError($refused->errorCode() === 'already_shared' ? 'postForm.channels' : 'postForm.at', $refused->userMessage());
 
             return;
         }
 
         $this->resetPostForm();
         $this->toast((string) __('admin_gateways.toasts.scheduled'));
+    }
+
+    // --- Calendrier BD (P19-11) -------------------------------------------------------------------------------------
+
+    public function resetSeriesForm(): void
+    {
+        $this->seriesForm = [
+            'channels' => [],
+            'date' => CarbonImmutable::now($this->timezone())->addDay()->format('Y-m-d'),
+            'time' => '10:00',
+            'every' => '7',
+        ];
+        $this->seriesPreview = false;
+        $this->resetErrorBag();
+    }
+
+    public function previewSeries(ManageGateways $manage): void
+    {
+        $this->authorize('create', OutboundPost::class);
+        $this->seriesPreview = false;
+        $data = $this->seriesData();
+
+        try {
+            $manage->planComicSeries($data);
+        } catch (ContentRefused $refused) {
+            $this->addError('seriesForm.date', $refused->userMessage());
+
+            return;
+        }
+
+        $this->seriesPreview = true;
+    }
+
+    public function scheduleSeries(ManageGateways $manage): void
+    {
+        $this->authorize('create', OutboundPost::class);
+        $data = $this->seriesData();
+
+        try {
+            $posts = $manage->scheduleComicSeries($data, $this->actor());
+        } catch (ContentRefused $refused) {
+            $this->addError('seriesForm.date', $refused->userMessage());
+
+            return;
+        }
+
+        $this->resetSeriesForm();
+        $this->toast((string) trans_choice('admin_gateways.toasts.series_scheduled', count($posts), ['count' => count($posts)]));
+    }
+
+    /**
+     * Calendrier proposé, recalculé à chaque rendu tant que l'aperçu est ouvert.
+     *
+     * @return list<array{tool: CccTool, at: CarbonImmutable, channels: \Illuminate\Database\Eloquent\Collection<int, SocialChannel>}>
+     */
+    #[Computed]
+    public function seriesPlan(): array
+    {
+        if (! $this->seriesPreview) {
+            return [];
+        }
+
+        try {
+            return app(ManageGateways::class)->planComicSeries($this->seriesData(false));
+        } catch (ContentRefused|\InvalidArgumentException) {
+            return [];
+        }
+    }
+
+    /**
+     * Aperçu du message d'une BD pour le premier réseau choisi (Facebook par défaut) : texte, lien avec UTM, images.
+     *
+     * @return array{network: string, text: string, link: string|null, media: list<array{url: string, alt: string}>, caption_cut: bool}|null
+     */
+    #[Computed]
+    public function preview(): ?array
+    {
+        if ($this->postForm['kind'] !== OutboundKind::Bd->value || $this->postForm['reference'] === '') {
+            return null;
+        }
+
+        $tool = CccTool::query()->published()->ofKind(CccKind::Comic)->where('key', (string) $this->postForm['reference'])->first();
+
+        if ($tool === null) {
+            return null;
+        }
+
+        $channelIds = array_map('intval', $this->postForm['channels']);
+        $network = $this->channels()->first(fn (SocialChannel $channel): bool => in_array((int) $channel->getKey(), $channelIds, true));
+        $network = $network === null ? SocialNetwork::Facebook : (SocialNetwork::tryFrom((string) ($network->getAttributes()['network'] ?? '')) ?? SocialNetwork::Facebook);
+        $text = trim($this->postForm['message']);
+        $post = new OutboundPost(['kind' => OutboundKind::Bd, 'reference' => (string) $tool->key, 'message' => $text === '' ? ManageGateways::comicMessage($tool) : $text]);
+        $message = app(OutboundContent::class)->for($post, $network);
+
+        return [
+            'network' => $network->label(),
+            'text' => $message->text,
+            'link' => $message->link,
+            'media' => array_map(static fn (array $item): array => ['url' => asset($item['path']), 'alt' => $item['alt']], $message->media),
+            'caption_cut' => $network === SocialNetwork::Telegram && mb_strlen($message->fullText()) > TelegramBotApi::CAPTION_MAX,
+        ];
+    }
+
+    /**
+     * @return array{channel_ids: list<int>, starts_at: CarbonImmutable, every_days: int}
+     */
+    private function seriesData(bool $validate = true): array
+    {
+        $form = $this->seriesForm;
+
+        if ($validate) {
+            $this->validateForm('seriesForm', $form, [
+                'channels' => ['required', 'array', 'min:1'],
+                'channels.*' => ['integer', Rule::exists('social_channels', 'id')->where('is_connected', true)],
+                'date' => ['required', 'date_format:Y-m-d'],
+                'time' => ['required', 'date_format:H:i'],
+                'every' => ['required', 'integer', 'between:'.ManageGateways::SERIES_MIN_DAYS.','.ManageGateways::SERIES_MAX_DAYS],
+            ], (array) __('admin_gateways.series.fields'));
+        }
+
+        $start = CarbonImmutable::createFromFormat('Y-m-d H:i', $form['date'].' '.$form['time'], $this->timezone());
+
+        if (! $start instanceof CarbonImmutable) {
+            throw new \InvalidArgumentException('Date invalide.');
+        }
+
+        return [
+            'channel_ids' => array_values(array_map('intval', $form['channels'])),
+            'starts_at' => $start->utc(),
+            'every_days' => (int) $form['every'],
+        ];
     }
 
     public function markDelivered(int $id, ManageGateways $manage): void
@@ -393,6 +550,7 @@ final class Index extends Component
             'canPublish' => $this->actor()->can('gateways.publish'),
             'manage' => app(ManageGateways::class),
             'maxMessage' => OutboundPost::MESSAGE_MAX_LENGTH,
+            'liveApi' => (string) config('xomiton.gateways.driver', 'log') === 'http',
         ])->layout('components.layouts.admin', [
             'title' => __('admin_gateways.title'),
             'adminPage' => 'passerelles',

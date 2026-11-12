@@ -1,12 +1,13 @@
 {{--
     Passerelles réseaux (P12-08, D4-bis) : composant App\Livewire\Admin\Gateways\Index, gabarit admin.
     Ordre : bandeau d'information · cartes des réseaux · planifier | file de publication · salons entre pair·es | modèles · modales.
-    Aucun connecteur réel avant P14-04 : le texte est prêt à copier, une personne publie puis marque la remise « publiée ».
+    P19-11 : calendrier BD (aperçu du message, planification en lot), erreurs lisibles des remises. Pilote `log` : le texte
+    est prêt à copier, une personne publie puis marque la remise « publiée » ; pilote `http` : Facebook et Telegram par l'API.
 --}}
 <div class="xm-gateways-admin">
     <div class="alert alert-info d-flex gap-2" role="note">
         <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
-        <div>{{ __('admin_gateways.notice') }}</div>
+        <div>{{ $liveApi ? __('admin_gateways.notice_live') : __('admin_gateways.notice') }}</div>
     </div>
 
     <section aria-labelledby="xmGatewayCardsTitle" class="mb-4">
@@ -22,6 +23,7 @@
                         </div>
                         <div class="mb-2"><x-badge :color="$channel->supports_api ? 'info' : 'neutral'" soft class="mx-auto">{{ $channel->supports_api ? __('admin_gateways.api') : __('admin_gateways.manual') }}</x-badge></div>
                         @if ($channel->is_connected && $channel->hasExpiredToken())<div class="small text-danger mb-2">{{ __('admin_gateways.token_expired') }}</div>@endif
+                        @if ($channel->is_connected && $channel->last_error)<div class="small text-danger mb-2 text-break" role="status">{{ __('admin_gateways.last_error') }}</div>@endif
                         <div class="mt-auto">
                             @if ($channel->is_connected)
                                 <button type="button" class="btn btn-sm btn-outline-danger w-100" wire:click="disconnect({{ $channel->id }})" wire:confirm="{{ __('admin_gateways.confirm.disconnect', ['network' => $channel->label]) }}">{{ __('admin_gateways.disconnect') }}<span class="visually-hidden"> {{ $channel->label }}</span></button>
@@ -52,8 +54,11 @@
                         </fieldset>
                         @if ($postForm['kind'] === 'bd')
                             <div class="col-12">
-                                <x-field name="postForm.reference" type="select" :label="__('admin_gateways.schedule.fields.reference_bd')" wire:model="postForm.reference"
+                                <x-field name="postForm.reference" type="select" :label="__('admin_gateways.schedule.fields.reference_bd')" wire:model.live="postForm.reference"
                                          :options="['' => __('admin_content.choose')] + $this->comics->pluck('title', 'key')->all()" />
+                            </div>
+                            <div class="col-12">
+                                <x-field name="postForm.republish" type="switch" :label="__('admin_gateways.schedule.fields.republish')" wire:model="postForm.republish" :hint="__('admin_gateways.schedule.republish_help')" />
                             </div>
                         @elseif ($postForm['kind'] === 'template')
                             <div class="col-12">
@@ -77,6 +82,29 @@
                             </div>
                             @error('postForm.channels')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                         </fieldset>
+                        @if ($this->preview())
+                            @php($preview = $this->preview())
+                            <div class="col-12">
+                                <section class="border rounded p-3 bg-body-tertiary" aria-labelledby="xmGatewayPreviewTitle">
+                                    <h3 class="h6 fw-semibold mb-2" id="xmGatewayPreviewTitle">{{ __('admin_gateways.preview.title', ['network' => $preview['network']]) }}</h3>
+                                    <p class="small mb-2 text-break" style="white-space: pre-line">{{ $preview['text'] }}</p>
+                                    @if ($preview['link'])
+                                        <p class="small mb-2 text-break"><span class="text-secondary">{{ __('admin_gateways.preview.link') }}</span> <a href="{{ $preview['link'] }}" target="_blank" rel="noopener">{{ $preview['link'] }}</a></p>
+                                    @else
+                                        <p class="small text-secondary mb-2">{{ __('admin_gateways.preview.no_link') }}</p>
+                                    @endif
+                                    @if ($preview['media'] !== [])
+                                        <p class="small text-secondary mb-1">{{ trans_choice('admin_gateways.preview.media', count($preview['media']), ['count' => count($preview['media'])]) }}</p>
+                                        <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0">
+                                            @foreach ($preview['media'] as $media)
+                                                <li><img src="{{ $media['url'] }}" alt="{{ $media['alt'] }}" width="72" height="72" class="rounded border object-fit-cover" loading="lazy"></li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                    @if ($preview['caption_cut'])<p class="small text-warning-emphasis mt-2 mb-0">{{ __('admin_gateways.preview.caption_cut') }}</p>@endif
+                                </section>
+                            </div>
+                        @endif
                         <div class="col-md-7">
                             <label class="form-label fw-semibold" for="xmGatewayAt">{{ __('admin_gateways.schedule.fields.at') }}</label>
                             <input class="form-control @error('postForm.at') is-invalid @enderror" type="datetime-local" id="xmGatewayAt" wire:model.blur="postForm.at" aria-describedby="xmGatewayAtHelp">
@@ -108,6 +136,8 @@
                                             <i class="bi {{ $delivery->channel?->icon }}" aria-hidden="true"></i>
                                             <span>{{ $delivery->channel?->label }}</span>
                                             <x-badge :color="$delivery->status->badge()" soft>{{ $delivery->status->label() }}</x-badge>
+                                            @if ($delivery->external_url)<a class="small" href="{{ $delivery->external_url }}" target="_blank" rel="noopener">{{ __('admin_gateways.queue.view') }}<span class="visually-hidden"> {{ $delivery->channel?->label }}</span></a>@endif
+                                            @if ($deliveryError = \App\Application\Admin\Gateways\ManageGateways::deliveryError($delivery))<span class="small text-danger w-100 text-break">{{ $deliveryError }}</span>@endif
                                             @if (! $delivery->status->isDelivered() && $post->status !== \App\Enums\OutboundStatus::Cancelled)
                                                 <button type="button" class="btn btn-sm btn-outline-secondary ms-auto" x-data x-on:click="navigator.clipboard.writeText(@js($manage->copyText($delivery))); $el.textContent = @js(__('admin_gateways.queue.copied'))"><i class="bi bi-clipboard me-1" aria-hidden="true"></i>{{ __('admin_gateways.queue.copy') }}<span class="visually-hidden"> {{ $delivery->channel?->label }}</span></button>
                                                 <button type="button" class="btn btn-sm btn-success" wire:click="markDelivered({{ $delivery->id }})" wire:confirm="{{ __('admin_gateways.confirm.mark', ['network' => $delivery->channel?->label]) }}">{{ __('admin_gateways.queue.mark') }}<span class="visually-hidden"> {{ $delivery->channel?->label }}</span></button>
@@ -138,6 +168,61 @@
                 </section>
             </div>
         </div>
+
+        <section class="card xm-admin-card mb-4" aria-labelledby="xmGatewaySeriesTitle">
+            <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmGatewaySeriesTitle"><i class="bi bi-calendar-week me-2" aria-hidden="true"></i>{{ __('admin_gateways.series.title') }}</h2></div>
+            <form class="card-body row g-3" wire:submit="previewSeries" novalidate>
+                <p class="col-12 small text-secondary mb-0">{{ __('admin_gateways.series.help') }}</p>
+                <fieldset class="col-12">
+                    <legend class="form-label fw-semibold fs-6">{{ __('admin_gateways.series.fields.channels') }} <span class="small text-secondary fw-normal">{{ __('admin_gateways.schedule.connected_only') }}</span></legend>
+                    <div class="d-flex flex-wrap gap-3">
+                        @foreach ($this->channels as $channel)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="xmGatewaySeriesNet{{ $channel->id }}" value="{{ $channel->id }}" wire:model="seriesForm.channels" @disabled(! $channel->is_connected)>
+                                <label @class(['form-check-label', 'text-secondary' => ! $channel->is_connected]) for="xmGatewaySeriesNet{{ $channel->id }}">{{ $channel->label }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    @error('seriesForm.channels')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                </fieldset>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold" for="xmGatewaySeriesDate">{{ __('admin_gateways.series.fields.date') }}</label>
+                    <input class="form-control @error('seriesForm.date') is-invalid @enderror" type="date" id="xmGatewaySeriesDate" wire:model="seriesForm.date">
+                    @error('seriesForm.date')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold" for="xmGatewaySeriesTime">{{ __('admin_gateways.series.fields.time') }}</label>
+                    <input class="form-control @error('seriesForm.time') is-invalid @enderror" type="time" id="xmGatewaySeriesTime" wire:model="seriesForm.time" aria-describedby="xmGatewaySeriesTimeHelp">
+                    <div class="form-text" id="xmGatewaySeriesTimeHelp">{{ __('admin_gateways.schedule.at_help') }}</div>
+                    @error('seriesForm.time')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold" for="xmGatewaySeriesEvery">{{ __('admin_gateways.series.fields.every') }}</label>
+                    <input class="form-control @error('seriesForm.every') is-invalid @enderror" type="number" min="1" max="60" inputmode="numeric" id="xmGatewaySeriesEvery" wire:model="seriesForm.every">
+                    @error('seriesForm.every')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-12 d-flex flex-wrap gap-2 justify-content-end">
+                    <button type="submit" class="btn btn-outline-primary" wire:loading.attr="disabled" wire:target="previewSeries">{{ __('admin_gateways.series.preview') }}</button>
+                </div>
+            </form>
+            @if ($seriesPreview)
+                <div class="card-footer">
+                    @if ($this->seriesPlan() === [])
+                        <p class="small text-secondary mb-0">{{ __('admin_content.errors.series_empty') }}</p>
+                    @else
+                        <h3 class="h6 fw-semibold">{{ trans_choice('admin_gateways.series.plan_title', count($this->seriesPlan()), ['count' => count($this->seriesPlan())]) }}</h3>
+                        <ol class="small mb-3">
+                            @foreach ($this->seriesPlan() as $slot)
+                                <li wire:key="slot-{{ $slot['tool']->key }}"><time datetime="{{ $slot['at']->toIso8601String() }}">{{ $format->tableDateTime($slot['at']) }}</time> — {{ $slot['tool']->title }} <span class="text-secondary">({{ $slot['channels']->pluck('label')->implode(', ') }})</span></li>
+                            @endforeach
+                        </ol>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-primary" wire:click="scheduleSeries" wire:loading.attr="disabled" wire:target="scheduleSeries">{{ __('admin_gateways.series.submit') }}</button>
+                        </div>
+                    @endif
+                </div>
+            @endif
+        </section>
 
         <div class="row g-4">
             <div class="col-xl-5">
@@ -197,6 +282,7 @@
             <x-field name="account" :label="__('admin_gateways.connect.account')" wire:model="account" maxlength="41" :placeholder="'@xomiton.app'" :hint="__('admin_gateways.connect.account_help')" />
             @if ($this->connecting?->supports_api)
                 <x-field name="token" type="password" optional :label="__('admin_gateways.connect.token')" wire:model="token" autocomplete="off" :hint="__('admin_gateways.connect.token_help')" />
+                <x-field name="externalId" optional :label="__('admin_gateways.connect.external_id')" wire:model="externalId" maxlength="65" autocomplete="off" :hint="__('admin_gateways.connect.external_id_help')" />
             @endif
         </form>
         <x-slot:footer>

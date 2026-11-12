@@ -629,9 +629,23 @@ return [
         'message_max_length' => 500,
         'batch_size' => 20,
         'max_attempts' => 5,
-        // P14-04 : transport des connecteurs Facebook / Telegram. `log` (défaut) n'appelle aucun réseau ; un pilote réel
-        // s'ajoute dans GatewayTransports::DRIVERS (voir GatewayTransport).
+        // P14-04 / P19-11 : transport des connecteurs Facebook / Telegram. `log` (défaut) n'appelle aucun réseau ; `http`
+        // appelle la Graph API et la Bot API réelles (GatewayTransports::DRIVERS). Les jetons ne sont jamais ici : ils sont
+        // saisis dans /admin/passerelles et enregistrés chiffrés (`social_channels.access_token`).
         'driver' => env('XOMITON_GATEWAYS_DRIVER', 'log'),
+        // Débit : publications par l'API au plus, par canal et par passage de `gateways:publish` (chaque minute).
+        'per_channel_per_run' => (int) env('XOMITON_GATEWAYS_PER_CHANNEL_PER_RUN', 2),
+        // Délai d'une requête (secondes) : un album de 5 photos est téléversé en une fois.
+        'timeout' => (int) env('XOMITON_GATEWAYS_TIMEOUT', 30),
+        'facebook' => [
+            'base_url' => 'https://graph.facebook.com',
+            'graph_version' => env('XOMITON_FACEBOOK_GRAPH_VERSION', 'v21.0'),
+            // Publication multi-photos (photos non publiées puis `attached_media`) ; false : une photo + lien.
+            'multi_photo' => (bool) env('XOMITON_FACEBOOK_MULTI_PHOTO', true),
+        ],
+        'telegram' => [
+            'base_url' => 'https://api.telegram.org',
+        ],
         // Réseaux sans API de publication : publication manuelle assistée.
         'manual_networks' => ['Roméo', 'GanXo', 'Tinder'],
     ],

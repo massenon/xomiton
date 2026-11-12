@@ -119,6 +119,8 @@ class AppServiceProvider extends ServiceProvider
         $this->registerNotificationDrivers();
         $this->registerAssistantProvider();
         $this->registerDebugbar();
+        // P19-11 : textes et visuels de partage des BD lus une fois par requête ou par exécution de commande.
+        $this->app->scoped(\App\Application\Content\ViolencesNumeriques\ComicShare::class);
     }
 
     /**
