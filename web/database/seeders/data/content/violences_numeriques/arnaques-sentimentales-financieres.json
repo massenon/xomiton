@@ -1,0 +1,94 @@
+{
+  "slug": "arnaques-sentimentales-financieres",
+  "key": "vn07",
+  "category": "arnaques",
+  "title": "Arnaques sentimentales et financières",
+  "summary": "Un faux profil séduisant gagne votre confiance puis demande de l’argent par Mobile Money ou un code. Repérez les signaux, n’envoyez rien et parlez-en sans honte.",
+  "content_warning": "Ce contenu évoque une arnaque sentimentale en ligne et une demande d’argent.",
+  "bd": {
+    "title": "Trop beau pour être vrai",
+    "cover": {
+      "image": "assets/images/violences-numeriques/arnaques-sentimentales-financieres/couverture.webp",
+      "alt": "Afi regarde son téléphone entouré de bulles de discussion avec des cœurs et un triangle d’alerte ; Mariam, devant son stand de réparation, montre l’alerte du doigt."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/arnaques-sentimentales-financieres/planche-1.webp",
+        "caption": "Depuis trois semaines, Afi discute chaque soir avec « Marc », un profil charmant rencontré sur Facebook. Ce soir, le ton change : « Bébé, j’ai un souci à la douane. Envoie-moi 50 000 F par Mobile Money, je te rembourse vite. »",
+        "alt": "Deux scènes : Afi sourit à son téléphone sous un manguier, puis, le soir, elle fronce les sourcils devant un message montrant une pièce et un triangle d’alerte."
+      },
+      {
+        "image": "assets/images/violences-numeriques/arnaques-sentimentales-financieres/planche-2.webp",
+        "caption": "Afi s’arrête. « Marc » n’a jamais accepté d’appel vidéo, et maintenant il réclame de l’argent, puis le code reçu par SMS. Afi n’envoie rien, ne donne aucun code et fait des captures d’écran de toute la conversation.",
+        "alt": "Dans sa chambre, Afi lève la main pour dire stop devant une pièce barrée ; des captures d’écran rejoignent un dossier fermé par un cadenas."
+      },
+      {
+        "image": "assets/images/violences-numeriques/arnaques-sentimentales-financieres/planche-3.webp",
+        "caption": "Afi raconte tout à Mariam, sans honte. Mariam cherche la photo du profil sur internet : « Regarde, cette photo circule sous d’autres noms. Tu n’es pas la seule, et tu as eu raison de te méfier. »",
+        "alt": "Au stand de réparation de Mariam, au marché, Afi s’appuie sur le comptoir pendant que Mariam lui montre une tablette où la même photo de profil apparaît plusieurs fois."
+      },
+      {
+        "image": "assets/images/violences-numeriques/arnaques-sentimentales-financieres/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Afi signale le profil sur Facebook, le bloque et fait un signalement sur Xomiton. « Tu as protégé ton argent et ta confiance. Parles-en autour de toi : ça protège les autres. »",
+        "alt": "Sous un manguier, Afi, assise sur un banc, utilise son téléphone d’où sortent des icônes de drapeau, de blocage et de bouclier ; Nadia montre le bouclier, Mariam lève le pouce."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Une arnaque sentimentale commence souvent par une belle rencontre en ligne : sur Facebook, WhatsApp, Instagram, TikTok ou une application de rencontre. La personne est attentionnée, flatteuse, très vite amoureuse. Elle utilise souvent des photos volées et une histoire inventée.</p><p>Après quelques jours ou quelques semaines arrive une demande : de l’argent par Mobile Money pour une urgence, un billet, des frais de douane ou un « investissement ». Parfois, elle réclame un code reçu par SMS, vos mots de passe ou des photos. Ces arnaques touchent tout le monde, à tout âge. Être trompé·e n’est jamais une honte : la faute revient entièrement à la personne qui ment.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Le profil est récent, a peu d’ami·es ou des photos trop parfaites.</li><li>La personne déclare son amour très vite et veut quitter la plateforme pour WhatsApp ou Telegram.</li><li>Elle refuse les appels vidéo et les rencontres, avec toujours une excuse.</li><li>Elle vit loin : à l’étranger, dans l’armée, sur un chantier, en mission.</li><li>Une urgence surgit : hôpital, douane, compte bloqué, billet d’avion.</li><li>Elle demande de l’argent, un transfert Mobile Money, un code reçu par SMS ou vos mots de passe.</li><li>Elle vous demande de garder le secret ou se fâche si vous hésitez.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>N’envoyez pas d’argent</strong>, même une petite somme, même « pour la dernière fois ».</li><li><strong>Ne donnez jamais un code reçu par SMS</strong>, votre code secret Mobile Money ou un mot de passe. Aucun service sérieux ne vous les demande.</li><li>Gardez les preuves : captures d’écran du profil, des messages, des numéros et des reçus de transfert.</li><li>N’accusez pas la personne et ne la menacez pas : arrêtez simplement de répondre.</li><li>Signalez le profil à la plateforme, puis bloquez-le.</li><li>Si vous avez déjà envoyé de l’argent, contactez vite le service client de votre opérateur avec la référence du transfert. Si vous avez donné un code, changez vos mots de passe.</li><li>Parlez-en à une personne de confiance.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Vérifiez une photo de profil avec une recherche d’image inversée, par exemple Google Lens.</li><li>Proposez un appel vidéo avant de vous attacher : un refus répété est un signal.</li><li>Ne parlez pas de vos revenus, de votre famille ni de votre adresse à une personne rencontrée en ligne.</li><li>Activez la vérification en deux étapes sur WhatsApp et Facebook, et gardez votre code secret pour vous.</li><li>Pour une première rencontre, choisissez un lieu public et prévenez une personne proche.</li><li>Parlez de ces arnaques autour de vous : en parler protège les autres.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Le <a href=\"/aide\">centre d’aide</a> répond aussi aux questions fréquentes.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "J’ai déjà envoyé de l’argent. Est-ce trop tard ?",
+      "answer": "Non. Arrêtez tout nouvel envoi, même si la personne promet de rembourser. Contactez vite le service client de votre opérateur avec la référence du transfert, gardez les reçus et les captures, puis faites un signalement. Le remboursement n’est pas garanti, mais agir vite aide. Vous n’avez pas à avoir honte."
+    },
+    {
+      "question": "Comment savoir si un profil est faux ?",
+      "answer": "Faites une recherche d’image inversée sur la photo, proposez un appel vidéo et regardez l’ancienneté du profil. Un amour déclaré très vite, une vie à l’étranger, une urgence puis une demande d’argent sont des signaux forts. Au moindre doute, n’envoyez rien et parlez-en à une personne de confiance."
+    },
+    {
+      "question": "Pourquoi ne faut-il jamais donner un code reçu par SMS ?",
+      "answer": "Ce code sert à valider une opération ou à ouvrir votre compte, par exemple WhatsApp ou Mobile Money. Le donner, c’est laisser quelqu’un prendre votre compte ou votre argent. Votre opérateur ne vous le demandera jamais par message ni par téléphone."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/arnaques-sentimentales-financieres/partage.webp",
+    "alt": "Afi et Mariam, côte à côte et souriantes ; Afi tend son téléphone devant un grand bouclier bleu marqué d’un cadenas.",
+    "text": "Quelqu’un de charmant t’écrit tous les soirs… puis te demande de l’argent par Mobile Money ou un code reçu par SMS ? ⚠️ C’est peut-être une arnaque. N’envoie rien, ne donne aucun code, garde les preuves et parles-en sans honte : ce n’est jamais ta faute. 💜 Lis la BD « Trop beau pour être vrai » avec Afi et Mariam sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:2",
+      "planche-1": "2:6",
+      "planche-2": "2:11",
+      "planche-3": "2:18",
+      "planche-4": "2:23",
+      "partage": "2:25"
+    }
+  }
+}

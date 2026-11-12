@@ -1,0 +1,94 @@
+{
+  "slug": "sextorsion",
+  "key": "vn02",
+  "category": "images-intimes-violences-sexuelles",
+  "title": "Sextorsion",
+  "summary": "Quelqu’un menace de diffuser des images intimes, vraies ou truquées, pour obtenir de l’argent ? Ne payez pas, gardez les preuves, ne restez pas seul·e, signalez.",
+  "content_warning": "Ce contenu évoque un chantage autour d’images intimes, sans montrer aucune image.",
+  "bd": {
+    "title": "Je ne paierai pas",
+    "cover": {
+      "image": "assets/images/violences-numeriques/sextorsion/couverture.webp",
+      "alt": "Sena, au marché de Cotonou, montre un téléphone affichant un bouclier et un cadenas. À ses côtés, Mariam, bras croisés, sourit devant son stand de réparation."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/sextorsion/planche-1.webp",
+        "caption": "Sena discutait depuis des semaines avec un profil rencontré en ligne. Ce soir, le ton change : « Envoie de l’argent par Mobile Money, sinon je partage tes photos à tous tes contacts. »",
+        "alt": "Sena, assis·e dans une cour au coucher du soleil, regarde son téléphone, surpris·e et inquiet·e. À côté, un écran de messages gris avec une alerte, un cadenas et un portefeuille."
+      },
+      {
+        "image": "assets/images/violences-numeriques/sextorsion/planche-2.webp",
+        "caption": "Sena a peur, mais ne paie pas et ne répond plus. Sena fait des captures du profil, des messages et du numéro de paiement demandé. « Payer ne l’arrêtera pas. Je garde les preuves. »",
+        "alt": "Sena, à une table sur une véranda, fait un geste d’arrêt vers une icône de portefeuille barrée, tandis que des captures d’écran abstraites rejoignent un dossier jaune."
+      },
+      {
+        "image": "assets/images/violences-numeriques/sextorsion/planche-3.webp",
+        "caption": "Sena se confie à Mariam, à son stand de réparation. Mariam écoute sans juger et aide à sécuriser les comptes. « Tu n’as rien à te reprocher. C’est lui qui est en faute. »",
+        "alt": "Au stand de réparation de téléphones de Mariam, au marché, Sena parle. Mariam écoute, une main près de la sienne, et tient un téléphone affichant un bouclier et un cadenas."
+      },
+      {
+        "image": "assets/images/violences-numeriques/sextorsion/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Sena signale le profil au réseau social, le bloque et fait un signalement sur Xomiton. « Ne paie pas, garde les preuves, ne reste pas seul·e, signale. Nous sommes là. »",
+        "alt": "Sena, entre Mariam et Nadia, montre un téléphone avec un bouclier et un symbole de blocage. Nadia désigne un ordinateur affichant un cœur et un cadenas. Tout le monde sourit."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>La sextorsion est un <strong>chantage</strong> : une personne menace de diffuser des images ou des vidéos intimes pour obtenir de l’argent (souvent par Mobile Money), d’autres images, des faveurs ou votre silence.</p><p>Les images peuvent être réelles, volées, enregistrées à votre insu pendant un appel vidéo ou complètement <strong>truquées</strong>. Parfois, la personne n’a même aucune image et bluffe.</p><p>Même si vous avez partagé une image en confiance, <strong>vous n’êtes pas en faute</strong>. La faute revient entièrement à la personne qui fait chanter.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Un nouveau contact très charmeur qui pousse vite vers des appels vidéo ou des photos privées.</li><li>Un profil récent, avec peu d’amis ou des photos qui semblent copiées.</li><li>Une demande d’argent, de transfert Mobile Money ou de recharge, avec un délai très court.</li><li>La menace d’envoyer des images à votre famille, à vos ami·es ou à un groupe WhatsApp.</li><li>Une menace de révéler votre orientation ou votre identité de genre.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne payez pas.</strong> Payer n’arrête presque jamais le chantage : les demandes reviennent souvent, plus fortes.</li><li><strong>Arrêtez l’échange</strong>, n’envoyez rien d’autre et ne négociez pas. N’allez jamais confronter seul·e la personne.</li><li><strong>Gardez les preuves</strong> : captures du profil, du lien, des messages, du numéro de paiement demandé, avec la date. Ne supprimez pas la conversation.</li><li><strong>Ne restez pas seul·e</strong> : parlez-en à une personne de confiance. Si vous avez moins de 18 ans, parlez-en à un·e adulte de confiance.</li><li><strong>Signalez</strong> le compte au réseau social, puis bloquez-le, et faites un signalement sur Xomiton.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Méfiez-vous des personnes rencontrées en ligne qui demandent vite des images ou des appels vidéo intimes.</li><li>Mettez vos comptes en privé et masquez votre liste d’ami·es et de contacts.</li><li>Activez la double vérification sur WhatsApp, Facebook, Instagram et TikTok.</li><li>Protégez votre téléphone par un code et ne le confiez pas déverrouillé.</li><li>Convenez avec vos proches d’une phrase simple pour prévenir si quelqu’un tente de vous faire chanter.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Si je paie une seule fois, est-ce que ça s’arrêtera ?",
+      "answer": "Très rarement. Un premier paiement montre que la menace fonctionne, et les demandes reviennent souvent. Ne payez pas, arrêtez l’échange, gardez les preuves et faites-vous accompagner."
+    },
+    {
+      "question": "J’ai moi-même envoyé la photo. Est-ce ma faute ?",
+      "answer": "Non. Partager une image en confiance n’autorise personne à vous menacer ni à la diffuser. La seule personne en faute est celle qui fait chanter. Vous méritez d’être aidé·e, sans jugement."
+    },
+    {
+      "question": "Et si la personne publie quand même les images ?",
+      "answer": "Signalez chaque publication au réseau social : les grandes plateformes retirent les images intimes partagées sans accord. Gardez des captures comme preuves et faites un signalement sur Xomiton pour être accompagné·e."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/sextorsion/partage.webp",
+    "alt": "Sena et Nadia, souriantes, devant un cercle violet ; Sena montre un téléphone avec un bouclier. Autour, un portefeuille barré, un dossier et un cœur.",
+    "text": "Quelqu’un te menace de diffuser des photos intimes si tu ne paies pas ? Ce n’est pas ta faute. 💜 Ne paie pas, garde les preuves, ne reste pas seul·e, signale. Les équipes de Xomiton peuvent t’accompagner, sans jugement. 🛡️ Découvre l’histoire de Sena dans notre BD « Je ne paierai pas »."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:28",
+      "planche-1": "2:31",
+      "planche-2": "2:34",
+      "planche-3": "2:36",
+      "planche-4": "2:38",
+      "partage": "2:41"
+    }
+  }
+}

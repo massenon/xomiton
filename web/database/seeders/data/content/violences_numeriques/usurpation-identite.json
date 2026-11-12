@@ -1,0 +1,94 @@
+{
+  "slug": "usurpation-identite",
+  "key": "vn06",
+  "category": "identite-donnees",
+  "title": "Usurpation d’identité",
+  "summary": "Un faux profil utilise vos photos pour tromper vos proches ? Gardez des preuves, signalez le faux compte, prévenez vos contacts et faites-vous accompagner.",
+  "content_warning": "Ce contenu évoque un faux profil créé avec les photos d’une personne pour tromper son entourage.",
+  "bd": {
+    "title": "Ce profil n’est pas moi",
+    "cover": {
+      "image": "assets/images/violences-numeriques/usurpation-identite/couverture.webp",
+      "alt": "Sena, sourire déterminé, tient son téléphone près de deux fiches de profil identiques, l’une marquée d’un triangle d’alerte ; Tantie Rosine se tient derrière, bras croisés."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/usurpation-identite/planche-1.webp",
+        "caption": "Tantie Rosine montre son téléphone à Sena : « Tu m’as écrit sur Facebook pour que je t’envoie de l’argent par Mobile Money ? » Sena n’a rien écrit. Quelqu’un a créé un faux profil avec ses photos.",
+        "alt": "Dans la cour, Tantie Rosine, perplexe, tend son téléphone à Sena, surpris·e ; l’écran agrandi montre un profil, des bulles grises, une pièce et un triangle d’alerte."
+      },
+      {
+        "image": "assets/images/violences-numeriques/usurpation-identite/planche-2.webp",
+        "caption": "Sena ne répond pas au faux compte. Iel fait des captures du profil et des messages, copie son lien, puis le signale à la plateforme comme usurpation d’identité. « D’abord les preuves, ensuite le signalement. »",
+        "alt": "Assis·e en tailleur sur un muret, Sena tape sur son téléphone ; des icônes montrent des captures de profil, un lien, un drapeau et une réponse barrée."
+      },
+      {
+        "image": "assets/images/violences-numeriques/usurpation-identite/planche-3.webp",
+        "caption": "Sena en parle à Kossi et à Tantie Rosine. Ensemble, iels préviennent la famille et les ami·es : ne rien envoyer, ne pas répondre, signaler le faux profil. « On te soutient. Chacun·e de nous le signale aussi. »",
+        "alt": "Autour d’une table sous un manguier, Sena parle à Kossi et Tantie Rosine, téléphones en main ; au-dessus, un téléphone envoie un bouclier aux téléphones de proches."
+      },
+      {
+        "image": "assets/images/violences-numeriques/usurpation-identite/planche-4.webp",
+        "caption": "Avec Nadia, Sena signale aussi la situation sur Xomiton pour être accompagné·e. Le faux profil finit par être retiré. « Ton identité t’appartient. Tu as bien agi. » Sena sourit, soulagé·e.",
+        "alt": "Sena, souriant·e, montre un téléphone avec un bouclier validé ; à côté, Nadia désigne un faux profil qui se dissout en confettis, le vrai profil reste lumineux."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>On parle d’usurpation d’identité quand quelqu’un se fait passer pour vous en ligne. Il crée par exemple un faux profil Facebook, WhatsApp, Instagram ou TikTok avec vos photos et votre nom. Il écrit ensuite à vos proches pour demander de l’argent par Mobile Money, répandre des mensonges ou vous nuire.</p><p><strong>Ce n’est pas votre faute</strong> d’avoir publié des photos. La responsabilité revient entièrement à la personne qui vous imite. Vous pouvez agir pour faire supprimer le faux compte et protéger votre entourage.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Un·e proche vous parle d’un message que vous n’avez jamais envoyé.</li><li>Vous recevez une invitation d’un compte qui porte votre nom.</li><li>Vos photos apparaissent sur un profil que vous ne connaissez pas.</li><li>Quelqu’un demande de l’argent, du crédit de communication ou un code en votre nom.</li><li>Des inconnu·es vous contactent au sujet de publications que vous n’avez pas faites.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas au faux compte</strong> et ne le menacez pas : il pourrait effacer les traces ou se venger.</li><li><strong>Gardez des preuves</strong> : captures du profil, des photos et des messages reçus par vos proches, avec la date. Copiez le lien du faux profil.</li><li><strong>Signalez le faux profil à la plateforme</strong> en choisissant le motif d’usurpation d’identité (par exemple « se fait passer pour moi »). Demandez à vos proches de le signaler aussi.</li><li><strong>Prévenez vos contacts</strong> depuis votre vrai compte et dans vos groupes WhatsApp : ne rien envoyer, ne pas répondre, signaler.</li><li><strong>Vérifiez vos propres comptes</strong> : changez vos mots de passe et activez la double authentification.</li><li><strong>Signalez la situation sur Xomiton</strong> pour être accompagné·e.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Réglez la visibilité de vos photos et de votre liste d’ami·es sur « ami·es seulement » quand c’est possible.</li><li>Ne publiez pas vos documents d’identité, votre numéro ou votre adresse.</li><li>Convenez d’une règle avec vos proches : jamais d’envoi d’argent sans vous appeler pour vérifier.</li><li>Cherchez votre nom de temps en temps sur les réseaux sociaux pour repérer un faux profil.</li><li>Protégez vos comptes avec des mots de passe différents et la double authentification.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vos proches peuvent aussi demander conseil. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, même de façon anonyme : une personne formée le lira sous 24 h. Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes près de chez vous. Le <a href=\"/aide\">centre d’aide</a> répond aux questions sur la sécurité de votre compte.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou appelez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "La plateforme n’a pas supprimé le faux profil. Que faire ?",
+      "answer": "Signalez-le de nouveau en choisissant bien le motif d’usurpation d’identité, et demandez à plusieurs proches de le signaler aussi. Certaines plateformes proposent un formulaire dédié pour prouver votre identité. Gardez vos captures et faites un signalement sur Xomiton pour être accompagné·e dans ces démarches."
+    },
+    {
+      "question": "Mes proches ont déjà envoyé de l’argent au faux compte. Que faire ?",
+      "answer": "Ce n’est ni leur faute ni la vôtre. Demandez-leur de garder le reçu et le numéro du destinataire, puis de contacter vite le service client de leur opérateur Mobile Money pour signaler la fraude. Ils ne doivent rien envoyer de plus ni négocier avec la personne."
+    },
+    {
+      "question": "Dois-je supprimer mes photos de mes réseaux ?",
+      "answer": "Ce n’est pas obligatoire : vous avez le droit de vous montrer en ligne. Vous pouvez en revanche limiter qui voit vos photos et votre liste d’ami·es grâce aux réglages de confidentialité. Cela rend la copie plus difficile, sans vous effacer."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/usurpation-identite/partage.webp",
+    "alt": "Sena sourit, téléphone en main avec un bouclier à l’écran ; d’un côté un vrai profil avec un cœur, de l’autre une copie en pointillés marquée d’un drapeau.",
+    "text": "Quelqu’un se fait passer pour toi avec tes photos ? 🛡️ Ne réponds pas au faux compte, fais des captures, signale le profil à la plateforme et préviens tes proches de ne rien envoyer. Tu peux aussi signaler la situation sur Xomiton pour être accompagné·e. Ton identité t’appartient 💜 Lis la BD « Ce profil n’est pas moi » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:26",
+      "planche-1": "2:32",
+      "planche-2": "2:37",
+      "planche-3": "2:43",
+      "planche-4": "2:46",
+      "partage": "2:48"
+    }
+  }
+}

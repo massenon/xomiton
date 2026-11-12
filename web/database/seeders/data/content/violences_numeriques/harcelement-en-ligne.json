@@ -1,0 +1,94 @@
+{
+  "slug": "harcelement-en-ligne",
+  "key": "vn01",
+  "category": "harcelement-en-ligne",
+  "title": "Harcèlement en ligne",
+  "summary": "Messages répétés, insultes ou menaces sur WhatsApp, Facebook ou TikTok : reconnaître le harcèlement en ligne, garder les preuves et trouver de l’aide.",
+  "content_warning": "Ce contenu évoque des messages blessants et répétés reçus en ligne, sans jamais les montrer.",
+  "bd": {
+    "title": "Les messages ne s’arrêtent pas",
+    "cover": {
+      "image": "assets/images/violences-numeriques/harcelement-en-ligne/couverture.webp",
+      "alt": "Afi, sur un campus de Cotonou, appuie sur une icône de bouclier sur son téléphone ; des bulles d’alerte s’éloignent. Sena, derrière elle, pose une main sur son épaule."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/harcelement-en-ligne/planche-1.webp",
+        "caption": "Depuis qu’Afi a publié une vidéo sur TikTok, un compte inconnu lui écrit chaque jour : moqueries, insultes, menaces. « Encore ce compte… Pourquoi moi ? »",
+        "alt": "Afi, assise sur un banc dans une cour sous un manguier, regarde son téléphone, l’air soucieux. À côté, un écran rempli de bulles grises marquées d’alertes."
+      },
+      {
+        "image": "assets/images/violences-numeriques/harcelement-en-ligne/planche-2.webp",
+        "caption": "Afi ne répond pas. Elle fait des captures d’écran avec la date et le nom du compte, puis les range dans un dossier. « Je garde tout. Ce n’est pas ma faute. »",
+        "alt": "Afi, à son bureau près d’une fenêtre, fait des captures d’écran : des vignettes de messages abstraits rejoignent une icône de dossier. Son écran affiche un cadenas."
+      },
+      {
+        "image": "assets/images/violences-numeriques/harcelement-en-ligne/planche-3.webp",
+        "caption": "Sur le campus, elle en parle à Sena et Kossi. Sena l’écoute sans juger. Kossi propose son aide, sans aller provoquer l’auteur des messages. « Tu n’es pas seule. On reste avec toi. »",
+        "alt": "Sous un manguier du campus, Afi parle, son téléphone retourné sur les genoux. Sena, assis·e à côté, l’écoute ; Kossi, debout, se penche avec bienveillance."
+      },
+      {
+        "image": "assets/images/violences-numeriques/harcelement-en-ligne/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Afi signale le compte au réseau social, le bloque et fait un signalement sur Xomiton. « Tu as bien fait d’en parler. La suite, on la construit ensemble. »",
+        "alt": "Afi et Nadia, souriantes, à une table d’un espace d’accueil. Nadia montre l’écran du téléphone d’Afi : un bouclier et un symbole de blocage. Un ordinateur affiche un cœur."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Le harcèlement en ligne, ce sont des messages ou des commentaires <strong>répétés</strong> qui visent à blesser, humilier, faire peur ou faire taire une personne. Il passe par WhatsApp, Facebook, TikTok, Instagram, les SMS ou les appels.</p><p>Il peut venir d’une personne inconnue, d’un faux profil, d’un·e ex ou d’une personne de l’entourage. Les filles, les femmes et les personnes LBTQ+ sont souvent ciblées pour ce qu’elles sont ou ce qu’elles disent.</p><p>Ce que vous vivez est réel, même si « ce n’est qu’Internet ». <strong>Ce n’est jamais votre faute.</strong></p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Des messages insultants, moqueurs ou menaçants qui reviennent malgré votre silence.</li><li>De nouveaux comptes créés pour vous écrire quand vous en bloquez un.</li><li>Des commentaires en groupe sous vos publications, souvent au même moment.</li><li>Des menaces de révéler votre vie privée, votre orientation ou votre identité de genre.</li><li>Vous avez peur d’ouvrir votre téléphone, vous dormez mal, vous évitez certains lieux.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas</strong> et n’allez pas confronter seul·e la personne, en ligne ou en vrai.</li><li><strong>Gardez les preuves</strong> : captures d’écran avec la date, le nom du compte et le lien du profil. Ne supprimez pas les conversations.</li><li><strong>Signalez</strong> les messages et le compte au réseau social, puis bloquez-le.</li><li><strong>Parlez-en</strong> à une personne de confiance : ami·e, proche, pair animateur·rice.</li><li>Si une menace vise votre sécurité physique, mettez-vous en sécurité et demandez de l’aide sans attendre.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Réglez vos comptes en mode privé et limitez qui peut commenter ou vous écrire.</li><li>Activez le filtre des mots offensants et le masquage des commentaires sur TikTok, Facebook et Instagram.</li><li>Sur WhatsApp, choisissez qui peut vous ajouter aux groupes et voir votre photo.</li><li>Évitez de publier votre position, votre école ou votre adresse en direct.</li><li>Activez la double vérification et gardez un mot de passe différent pour chaque compte.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Si je bloque le compte, est-ce que je perds les preuves ?",
+      "answer": "Faites d’abord vos captures d’écran (date, nom du compte, lien du profil), puis signalez et bloquez. Bloquer n’efface pas les messages déjà reçus de votre côté, mais gardez vos captures dans un dossier sûr."
+    },
+    {
+      "question": "Ce ne sont que des mots en ligne. Est-ce vraiment grave ?",
+      "answer": "Oui. Des messages répétés peuvent causer de la peur, de l’anxiété et de l’isolement. Ce que vous ressentez compte. Vous avez le droit d’être protégé·e et accompagné·e, même sans menace physique."
+    },
+    {
+      "question": "Dois-je répondre pour me défendre ?",
+      "answer": "Mieux vaut ne pas répondre : une réponse relance souvent le harcèlement. Gardez les preuves, signalez, bloquez et parlez-en à une personne de confiance ou à l’équipe Xomiton."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/harcelement-en-ligne/partage.webp",
+    "alt": "Afi et Sena, souriantes et confiantes, devant un cercle bleu ; Afi montre un téléphone avec un bouclier, des bulles d’alerte s’éloignent.",
+    "text": "Des messages blessants qui reviennent tous les jours sur ton téléphone ? Ce n’est pas « juste Internet », et ce n’est jamais ta faute. 💜 Ne réponds pas, garde les preuves, signale et bloque le compte, puis parles-en à une personne de confiance. Tu n’es pas seul·e. 🛡️ Découvre l’histoire d’Afi dans notre BD « Les messages ne s’arrêtent pas »."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:3",
+      "planche-1": "2:9",
+      "planche-2": "2:13",
+      "planche-3": "2:14",
+      "planche-4": "2:16",
+      "partage": "2:19"
+    }
+  }
+}

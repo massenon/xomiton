@@ -1,0 +1,94 @@
+{
+  "slug": "partage-force-mots-de-passe",
+  "key": "vn05",
+  "category": "surveillance-controle",
+  "title": "Forcer le partage de mots de passe",
+  "summary": "Exiger vos codes PIN ou vos mots de passe « par amour », c’est du contrôle. Reprenez la main sur vos comptes en sécurité et trouvez du soutien.",
+  "content_warning": "Ce contenu évoque le contrôle exercé dans un couple à travers le téléphone et les comptes en ligne.",
+  "bd": {
+    "title": "Mon code, mon espace",
+    "cover": {
+      "image": "assets/images/violences-numeriques/partage-force-mots-de-passe/couverture.webp",
+      "alt": "Afi, sourire assuré, serre son téléphone contre elle près d’un cadenas et d’un bouclier ; Mariam sourit derrière son stand de réparation de téléphones."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/partage-force-mots-de-passe/planche-1.webp",
+        "caption": "Depuis des semaines, le copain d’Afi insiste par messages : il veut le code de son téléphone, de son WhatsApp et de son compte Mobile Money. « Si tu m’aimes, tu n’as rien à cacher. » Afi se sent mal à l’aise.",
+        "alt": "Assise sur un muret de la cour sous un manguier, Afi regarde son téléphone, perplexe ; l’écran agrandi montre une file de bulles grises, un cœur et un cadenas."
+      },
+      {
+        "image": "assets/images/violences-numeriques/partage-force-mots-de-passe/planche-2.webp",
+        "caption": "Afi ne cède pas. Elle fait des captures des messages puis, dans un endroit calme, change ses codes un par un et active la double authentification. « Mon téléphone, c’est mon espace. »",
+        "alt": "Sur une terrasse du campus, Afi, déterminée, utilise son téléphone ; des icônes montrent une capture, un nouveau cadenas, un bouclier validé et un second téléphone."
+      },
+      {
+        "image": "assets/images/violences-numeriques/partage-force-mots-de-passe/planche-3.webp",
+        "caption": "Au stand de Mariam, Afi se confie. Mariam l’écoute et l’aide à vérifier les appareils connectés à ses comptes. « L’amour, ce n’est pas le contrôle. Tu as eu raison d’en parler. »",
+        "alt": "Au marché, Afi, accoudée au comptoir du stand, écoute Mariam qui lui montre sur un téléphone des réglages avec un cadenas et un bouclier."
+      },
+      {
+        "image": "assets/images/violences-numeriques/partage-force-mots-de-passe/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Afi signale la situation et découvre l’annuaire des personnes qui peuvent l’accompagner. « Tu décides de la suite, à ton rythme. » Afi respire enfin.",
+        "alt": "Dans une cour lumineuse, Afi souriante montre son téléphone avec un bouclier validé ; Nadia, la main sur son épaule, désigne un ordinateur portable."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Un·e partenaire, un·e ex ou un membre de la famille exige vos codes PIN, vos mots de passe ou l’accès à vos comptes : téléphone, WhatsApp, Facebook, TikTok, Mobile Money. Souvent, la demande se présente comme une preuve d’amour ou de confiance.</p><p>Pourtant, <strong>exiger vos accès, c’est du contrôle, pas de l’amour</strong>. Cela permet de lire vos messages, de surveiller vos fréquentations, de prendre votre argent ou de parler à votre place. Vous avez droit à une vie privée, même en couple. Ce n’est jamais votre faute.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>On vous demande vos codes avec insistance, ou on se fâche quand vous refusez.</li><li>On vous dit « si tu m’aimes, tu n’as rien à cacher ».</li><li>On fouille votre téléphone quand vous ne regardez pas.</li><li>Des messages sont lus, envoyés ou supprimés sans vous.</li><li>Votre solde Mobile Money baisse sans explication.</li><li>On vous reproche vos contacts ou on vous pousse à en bloquer certains.</li><li>Vous recevez des codes de connexion que vous n’avez pas demandés.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Votre sécurité d’abord.</strong> Si vous craignez une réaction violente, parlez-en à une personne de confiance ou à un·e professionnel·le avant de changer vos codes. En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a>.</li><li><strong>Gardez des preuves</strong> : captures des messages, dates, retraits Mobile Money suspects. Rangez-les là où la personne ne peut pas les voir.</li><li><strong>Changez vos codes dans un endroit sûr</strong>, depuis votre propre appareil : téléphone, WhatsApp, Facebook, e-mail, Mobile Money. Évitez les codes faciles à deviner, comme votre date de naissance.</li><li><strong>Déconnectez les appareils inconnus</strong> dans les paramètres de vos comptes (sessions actives, appareils associés).</li><li><strong>Activez la double authentification</strong> : un code vous est demandé à chaque nouvelle connexion.</li><li><strong>N’affrontez pas la personne seul·e.</strong> Vous n’avez pas à vous justifier.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Gardez vos codes pour vous, même dans une relation de confiance. Une relation saine respecte vos limites.</li><li>Utilisez un code différent pour votre téléphone et pour Mobile Money.</li><li>Vérifiez régulièrement les appareils connectés à vos comptes.</li><li>Ne laissez pas votre téléphone déverrouillé sans surveillance.</li><li>Si vous pensez que votre téléphone est surveillé, faites-le vérifier par un·e réparateur·rice de confiance.</li><li>Parlez-en tôt : le contrôle a tendance à s’aggraver avec le temps.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Le contrôle n’est jamais une preuve d’amour. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, même de façon anonyme : une personne formée le lira sous 24 h. Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes près de chez vous. Le <a href=\"/aide\">centre d’aide</a> répond aux questions sur la sécurité de votre compte.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou appelez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Mon ou ma partenaire dit que partager nos codes prouve notre confiance. Est-ce vrai ?",
+      "answer": "Non. La confiance ne se prouve pas en donnant accès à tout. Chaque personne a droit à sa vie privée, même en couple. Si on vous met la pression, vous menace ou vous punit quand vous refusez, c’est une forme de contrôle. Vous pouvez dire non sans vous justifier."
+    },
+    {
+      "question": "J’ai déjà donné mes codes. Est-ce trop tard ?",
+      "answer": "Non, il n’est jamais trop tard. Changez vos codes depuis un endroit sûr, déconnectez les appareils inconnus et activez la double authentification. Si vous craignez la réaction de la personne, parlez-en d’abord à quelqu’un de confiance ou faites un signalement sur Xomiton pour préparer ces étapes."
+    },
+    {
+      "question": "Qu’est-ce que la double authentification ?",
+      "answer": "C’est une protection en plus. Quand quelqu’un se connecte à votre compte depuis un nouvel appareil, un code supplémentaire est demandé, souvent envoyé sur votre téléphone. Sans ce code, personne ne peut entrer, même avec votre mot de passe. WhatsApp, Facebook, TikTok et la plupart des e-mails la proposent dans leurs paramètres."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/partage-force-mots-de-passe/partage.webp",
+    "alt": "Afi sourit, téléphone en main, l’écran affiche un cadenas ; autour d’elle flottent un bouclier, une clé, un cœur et un second téléphone.",
+    "text": "Ton code, c’est ton espace 🔒 Si ton ou ta partenaire exige tes mots de passe « par amour », ce n’est pas de l’amour : c’est du contrôle. Garde des preuves, change tes codes dans un endroit sûr, active la double authentification et parles-en à une personne de confiance. Tu n’es pas seul·e 💜 Lis la BD « Mon code, mon espace » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:4",
+      "planche-1": "2:7",
+      "planche-2": "2:12",
+      "planche-3": "2:15",
+      "planche-4": "2:21",
+      "partage": "2:24"
+    }
+  }
+}
