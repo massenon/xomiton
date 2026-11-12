@@ -5193,6 +5193,10 @@
     "@admin_users_modules_alerts": {
         "description": "admin.users.modules.alerts"
     },
+    "admin_users_modules_announcements": "Annonce globale (espace membre et application)",
+    "@admin_users_modules_announcements": {
+        "description": "admin.users.modules.announcements"
+    },
     "admin_users_modules_assistant": "Assistant (base de connaissances)",
     "@admin_users_modules_assistant": {
         "description": "admin.users.modules.assistant"
@@ -5221,6 +5225,10 @@
     "@admin_users_modules_emails": {
         "description": "admin.users.modules.emails"
     },
+    "admin_users_modules_events": "File d’approbation des événements (réglage)",
+    "@admin_users_modules_events": {
+        "description": "admin.users.modules.events"
+    },
     "admin_users_modules_followup": "Suivi des victimes",
     "@admin_users_modules_followup": {
         "description": "admin.users.modules.followup"
@@ -5228,6 +5236,10 @@
     "admin_users_modules_forms": "Fiches VBG / VDH",
     "@admin_users_modules_forms": {
         "description": "admin.users.modules.forms"
+    },
+    "admin_users_modules_forums": "Gestion des forums (créer, ordonner, archiver)",
+    "@admin_users_modules_forums": {
+        "description": "admin.users.modules.forums"
     },
     "admin_users_modules_gateways": "Passerelles réseaux",
     "@admin_users_modules_gateways": {
@@ -5272,6 +5284,10 @@
     "admin_users_modules_social": "Réseau social (fil, messages, groupes, forums)",
     "@admin_users_modules_social": {
         "description": "admin.users.modules.social"
+    },
+    "admin_users_modules_suggestions": "Boîte à suggestions",
+    "@admin_users_modules_suggestions": {
+        "description": "admin.users.modules.suggestions"
     },
     "admin_users_modules_sync": "Hors connexion et synchronisation",
     "@admin_users_modules_sync": {
@@ -5587,6 +5603,200 @@
     "admin_users_you": "vous",
     "@admin_users_you": {
         "description": "admin.users.you"
+    },
+    "admin_announcements_actions_delete": "Supprimer",
+    "@admin_announcements_actions_delete": {
+        "description": "admin_announcements.actions.delete"
+    },
+    "admin_announcements_actions_edit": "Modifier",
+    "@admin_announcements_actions_edit": {
+        "description": "admin_announcements.actions.edit"
+    },
+    "admin_announcements_actions_end": "Terminer",
+    "@admin_announcements_actions_end": {
+        "description": "admin_announcements.actions.end"
+    },
+    "admin_announcements_caption": "Annonces : titre, public, période, état et actions.",
+    "@admin_announcements_caption": {
+        "description": "admin_announcements.caption"
+    },
+    "admin_announcements_columns_audience": "Public",
+    "@admin_announcements_columns_audience": {
+        "description": "admin_announcements.columns.audience"
+    },
+    "admin_announcements_columns_period": "Période",
+    "@admin_announcements_columns_period": {
+        "description": "admin_announcements.columns.period"
+    },
+    "admin_announcements_columns_state": "État",
+    "@admin_announcements_columns_state": {
+        "description": "admin_announcements.columns.state"
+    },
+    "admin_announcements_columns_title": "Annonce",
+    "@admin_announcements_columns_title": {
+        "description": "admin_announcements.columns.title"
+    },
+    "admin_announcements_confirm_delete": "Supprimer « {title} » ? Cette action ne peut pas être annulée.",
+    "@admin_announcements_confirm_delete": {
+        "description": "admin_announcements.confirm_delete",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_announcements_confirm_end": "Terminer « {title} » maintenant ? La bannière disparaît pour tout le monde.",
+    "@admin_announcements_confirm_end": {
+        "description": "admin_announcements.confirm_end",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_announcements_create": "Nouvelle annonce",
+    "@admin_announcements_create": {
+        "description": "admin_announcements.create"
+    },
+    "admin_announcements_create_title": "Nouvelle annonce",
+    "@admin_announcements_create_title": {
+        "description": "admin_announcements.create_title"
+    },
+    "admin_announcements_edit_title": "Modifier l’annonce",
+    "@admin_announcements_edit_title": {
+        "description": "admin_announcements.edit_title"
+    },
+    "admin_announcements_empty": "Aucune annonce",
+    "@admin_announcements_empty": {
+        "description": "admin_announcements.empty"
+    },
+    "admin_announcements_fields_audience": "Public",
+    "@admin_announcements_fields_audience": {
+        "description": "admin_announcements.fields.audience"
+    },
+    "admin_announcements_fields_ends_at": "Fin (facultative)",
+    "@admin_announcements_fields_ends_at": {
+        "description": "admin_announcements.fields.ends_at"
+    },
+    "admin_announcements_fields_level": "Niveau",
+    "@admin_announcements_fields_level": {
+        "description": "admin_announcements.fields.level"
+    },
+    "admin_announcements_fields_link_path": "Lien interne (facultatif)",
+    "@admin_announcements_fields_link_path": {
+        "description": "admin_announcements.fields.link_path"
+    },
+    "admin_announcements_fields_message": "Message",
+    "@admin_announcements_fields_message": {
+        "description": "admin_announcements.fields.message"
+    },
+    "admin_announcements_fields_starts_at": "Début",
+    "@admin_announcements_fields_starts_at": {
+        "description": "admin_announcements.fields.starts_at"
+    },
+    "admin_announcements_fields_title": "Titre court",
+    "@admin_announcements_fields_title": {
+        "description": "admin_announcements.fields.title"
+    },
+    "admin_announcements_from": "Du {date}",
+    "@admin_announcements_from": {
+        "description": "admin_announcements.from",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_announcements_help_audience": "Les pair·es seulement : comptes qui détiennent le rôle pair animateur·rice.",
+    "@admin_announcements_help_audience": {
+        "description": "admin_announcements.help.audience"
+    },
+    "admin_announcements_help_ends_at": "Heure du Bénin. Sans date de fin, l’annonce reste jusqu’à ce que vous la terminiez.",
+    "@admin_announcements_help_ends_at": {
+        "description": "admin_announcements.help.ends_at"
+    },
+    "admin_announcements_help_link_path": "Une adresse de la plateforme qui commence par « / », par exemple /forums ou /evenements. Jamais un site extérieur.",
+    "@admin_announcements_help_link_path": {
+        "description": "admin_announcements.help.link_path"
+    },
+    "admin_announcements_help_message": "{max} caractères au plus, au tutoiement comme le reste de l’espace membre.",
+    "@admin_announcements_help_message": {
+        "description": "admin_announcements.help.message",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_announcements_help_starts_at": "Heure du Bénin.",
+    "@admin_announcements_help_starts_at": {
+        "description": "admin_announcements.help.starts_at"
+    },
+    "admin_announcements_help_title": "{max} caractères au plus.",
+    "@admin_announcements_help_title": {
+        "description": "admin_announcements.help.title",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_announcements_intro": "Une annonce s’affiche en bannière en haut de l’espace membre et de l’application, pendant la période choisie. Elle n’apparaît jamais sur le site public ni pour les visiteur·ses. Chaque personne peut la fermer : elle ne revient plus pour elle. Le bandeau de maintenance reste distinct.",
+    "@admin_announcements_intro": {
+        "description": "admin_announcements.intro"
+    },
+    "admin_announcements_list_title": "Toutes les annonces",
+    "@admin_announcements_list_title": {
+        "description": "admin_announcements.list_title"
+    },
+    "admin_announcements_no_end": "sans date de fin",
+    "@admin_announcements_no_end": {
+        "description": "admin_announcements.no_end"
+    },
+    "admin_announcements_save": "Enregistrer",
+    "@admin_announcements_save": {
+        "description": "admin_announcements.save"
+    },
+    "admin_announcements_states_en_cours": "En cours",
+    "@admin_announcements_states_en_cours": {
+        "description": "admin_announcements.states.en_cours"
+    },
+    "admin_announcements_states_programmee": "Programmée",
+    "@admin_announcements_states_programmee": {
+        "description": "admin_announcements.states.programmee"
+    },
+    "admin_announcements_states_terminee": "Terminée",
+    "@admin_announcements_states_terminee": {
+        "description": "admin_announcements.states.terminee"
+    },
+    "admin_announcements_title": "Annonces",
+    "@admin_announcements_title": {
+        "description": "admin_announcements.title"
+    },
+    "admin_announcements_toasts_created": "Annonce créée.",
+    "@admin_announcements_toasts_created": {
+        "description": "admin_announcements.toasts.created"
+    },
+    "admin_announcements_toasts_deleted": "Annonce supprimée.",
+    "@admin_announcements_toasts_deleted": {
+        "description": "admin_announcements.toasts.deleted"
+    },
+    "admin_announcements_toasts_ended": "Annonce terminée.",
+    "@admin_announcements_toasts_ended": {
+        "description": "admin_announcements.toasts.ended"
+    },
+    "admin_announcements_toasts_saved": "Annonce enregistrée.",
+    "@admin_announcements_toasts_saved": {
+        "description": "admin_announcements.toasts.saved"
+    },
+    "admin_announcements_until": "au {date}",
+    "@admin_announcements_until": {
+        "description": "admin_announcements.until",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
     },
     "admin_assistant_confirm_delete_kb": "Supprimer cette entrée de la base de connaissances ?",
     "@admin_assistant_confirm_delete_kb": {
@@ -7352,9 +7562,17 @@
     "@admin_content_errors_empty_sheet": {
         "description": "admin_content.errors.empty_sheet"
     },
+    "admin_content_errors_event_decided": "Cet événement a déjà été traité.",
+    "@admin_content_errors_event_decided": {
+        "description": "admin_content.errors.event_decided"
+    },
     "admin_content_errors_file_missing": "Ajoutez d’abord le fichier de la ressource : sans fichier, elle ne peut pas être publiée.",
     "@admin_content_errors_file_missing": {
         "description": "admin_content.errors.file_missing"
+    },
+    "admin_content_errors_forum_edge": "Ce forum est déjà au bord de la liste.",
+    "@admin_content_errors_forum_edge": {
+        "description": "admin_content.errors.forum_edge"
     },
     "admin_content_errors_handle_invalid": "Identifiant de compte invalide : 3 à 40 caractères (lettres, chiffres, point, tiret ou souligné).",
     "@admin_content_errors_handle_invalid": {
@@ -7551,6 +7769,10 @@
     "admin_content_errors_post_published": "Une publication déjà publiée reste dans l’historique : elle ne se retire pas.",
     "@admin_content_errors_post_published": {
         "description": "admin_content.errors.post_published"
+    },
+    "admin_content_errors_proposal_decided": "Cette proposition a déjà été traitée.",
+    "@admin_content_errors_proposal_decided": {
+        "description": "admin_content.errors.proposal_decided"
     },
     "admin_content_errors_reference_missing": "Choisissez le contenu à publier.",
     "@admin_content_errors_reference_missing": {
@@ -7761,6 +7983,175 @@
     "@admin_content_none": {
         "description": "admin_content.none"
     },
+    "admin_content_proposals_actions_accept": "Accepter",
+    "@admin_content_proposals_actions_accept": {
+        "description": "admin_content.proposals.actions.accept"
+    },
+    "admin_content_proposals_actions_refuse": "Refuser",
+    "@admin_content_proposals_actions_refuse": {
+        "description": "admin_content.proposals.actions.refuse"
+    },
+    "admin_content_proposals_actions_review": "Relire",
+    "@admin_content_proposals_actions_review": {
+        "description": "admin_content.proposals.actions.review"
+    },
+    "admin_content_proposals_actions_view": "Voir",
+    "@admin_content_proposals_actions_view": {
+        "description": "admin_content.proposals.actions.view"
+    },
+    "admin_content_proposals_all": "Tous les statuts",
+    "@admin_content_proposals_all": {
+        "description": "admin_content.proposals.all"
+    },
+    "admin_content_proposals_back": "Retour au contenu",
+    "@admin_content_proposals_back": {
+        "description": "admin_content.proposals.back"
+    },
+    "admin_content_proposals_caption": "Ressources proposées : titre, auteur·rice, date, statut et actions.",
+    "@admin_content_proposals_caption": {
+        "description": "admin_content.proposals.caption"
+    },
+    "admin_content_proposals_columns_author": "Auteur·rice",
+    "@admin_content_proposals_columns_author": {
+        "description": "admin_content.proposals.columns.author"
+    },
+    "admin_content_proposals_columns_created": "Proposée le",
+    "@admin_content_proposals_columns_created": {
+        "description": "admin_content.proposals.columns.created"
+    },
+    "admin_content_proposals_columns_status": "Statut",
+    "@admin_content_proposals_columns_status": {
+        "description": "admin_content.proposals.columns.status"
+    },
+    "admin_content_proposals_columns_title": "Titre",
+    "@admin_content_proposals_columns_title": {
+        "description": "admin_content.proposals.columns.title"
+    },
+    "admin_content_proposals_credit_line": "Ressource proposée par {name}, membre de la communauté Xomiton.",
+    "@admin_content_proposals_credit_line": {
+        "description": "admin_content.proposals.credit_line",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_proposals_credit_no": "Non",
+    "@admin_content_proposals_credit_no": {
+        "description": "admin_content.proposals.credit_no"
+    },
+    "admin_content_proposals_credit_yes": "Oui, avec son pseudonyme",
+    "@admin_content_proposals_credit_yes": {
+        "description": "admin_content.proposals.credit_yes"
+    },
+    "admin_content_proposals_deleted_account": "Compte supprimé",
+    "@admin_content_proposals_deleted_account": {
+        "description": "admin_content.proposals.deleted_account"
+    },
+    "admin_content_proposals_empty": "Aucune proposition",
+    "@admin_content_proposals_empty": {
+        "description": "admin_content.proposals.empty"
+    },
+    "admin_content_proposals_fields_category": "Catégorie",
+    "@admin_content_proposals_fields_category": {
+        "description": "admin_content.proposals.fields.category"
+    },
+    "admin_content_proposals_fields_credit": "Crédit souhaité",
+    "@admin_content_proposals_fields_credit": {
+        "description": "admin_content.proposals.fields.credit"
+    },
+    "admin_content_proposals_fields_file": "Fichier",
+    "@admin_content_proposals_fields_file": {
+        "description": "admin_content.proposals.fields.file"
+    },
+    "admin_content_proposals_fields_keep_credit": "Créditer {name} dans la ressource",
+    "@admin_content_proposals_fields_keep_credit": {
+        "description": "admin_content.proposals.fields.keep_credit",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_proposals_fields_kind": "Type",
+    "@admin_content_proposals_fields_kind": {
+        "description": "admin_content.proposals.fields.kind"
+    },
+    "admin_content_proposals_fields_link": "Lien",
+    "@admin_content_proposals_fields_link": {
+        "description": "admin_content.proposals.fields.link"
+    },
+    "admin_content_proposals_fields_reason": "Motif du refus",
+    "@admin_content_proposals_fields_reason": {
+        "description": "admin_content.proposals.fields.reason"
+    },
+    "admin_content_proposals_fields_summary": "Résumé",
+    "@admin_content_proposals_fields_summary": {
+        "description": "admin_content.proposals.fields.summary"
+    },
+    "admin_content_proposals_intro": "Les membres proposent des ressources depuis leur espace et l’application. Une proposition n’est jamais publique : « Accepter » crée une ressource en brouillon que vous relisez et publiez dans l’onglet Ressources ; « Refuser » envoie votre motif à son auteur·rice.",
+    "@admin_content_proposals_intro": {
+        "description": "admin_content.proposals.intro"
+    },
+    "admin_content_proposals_link": "Propositions des membres",
+    "@admin_content_proposals_link": {
+        "description": "admin_content.proposals.link"
+    },
+    "admin_content_proposals_modal_title": "Proposition « {title} »",
+    "@admin_content_proposals_modal_title": {
+        "description": "admin_content.proposals.modal_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_proposals_no_category": "Sans catégorie",
+    "@admin_content_proposals_no_category": {
+        "description": "admin_content.proposals.no_category"
+    },
+    "admin_content_proposals_open_file": "Ouvrir le PDF",
+    "@admin_content_proposals_open_file": {
+        "description": "admin_content.proposals.open_file"
+    },
+    "admin_content_proposals_open_resource": "Voir la ressource créée dans l’onglet Ressources",
+    "@admin_content_proposals_open_resource": {
+        "description": "admin_content.proposals.open_resource"
+    },
+    "admin_content_proposals_pending_count": "{count, plural, =0{Aucune proposition en attente} =1{{count} proposition en attente} other{{count} propositions en attente}}",
+    "@admin_content_proposals_pending_count": {
+        "description": "admin_content.proposals.pending_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_content_proposals_reason_help": "Obligatoire pour refuser : ce motif est envoyé à l’auteur·rice, restez bienveillant·e.",
+    "@admin_content_proposals_reason_help": {
+        "description": "admin_content.proposals.reason_help"
+    },
+    "admin_content_proposals_search_placeholder": "Titre…",
+    "@admin_content_proposals_search_placeholder": {
+        "description": "admin_content.proposals.search_placeholder"
+    },
+    "admin_content_proposals_title": "Ressources proposées",
+    "@admin_content_proposals_title": {
+        "description": "admin_content.proposals.title"
+    },
+    "admin_content_proposals_toasts_accepted": "Brouillon « {title} » créé dans l’onglet Ressources.",
+    "@admin_content_proposals_toasts_accepted": {
+        "description": "admin_content.proposals.toasts.accepted",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_proposals_toasts_refused": "Proposition refusée, motif envoyé.",
+    "@admin_content_proposals_toasts_refused": {
+        "description": "admin_content.proposals.toasts.refused"
+    },
     "admin_content_resources_accessibility_help": "Sous-titres et transcription sont obligatoires pour publier une vidéo ou un audio (accessibilité).",
     "@admin_content_resources_accessibility_help": {
         "description": "admin_content.resources.accessibility_help"
@@ -7802,6 +8193,14 @@
     "admin_content_resources_external_help": "Adresse en https uniquement.",
     "@admin_content_resources_external_help": {
         "description": "admin_content.resources.external_help"
+    },
+    "admin_content_resources_feature": "À la une",
+    "@admin_content_resources_feature": {
+        "description": "admin_content.resources.feature"
+    },
+    "admin_content_resources_featured": "À la une",
+    "@admin_content_resources_featured": {
+        "description": "admin_content.resources.featured"
     },
     "admin_content_resources_fields_body": "Contenu",
     "@admin_content_resources_fields_body": {
@@ -10334,6 +10733,142 @@
     "@admin_data_validation_valid_example": {
         "description": "admin_data.validation.valid_example"
     },
+    "admin_events_actions_approve": "Approuver",
+    "@admin_events_actions_approve": {
+        "description": "admin_events.actions.approve"
+    },
+    "admin_events_actions_refuse": "Refuser",
+    "@admin_events_actions_refuse": {
+        "description": "admin_events.actions.refuse"
+    },
+    "admin_events_actions_view": "Voir",
+    "@admin_events_actions_view": {
+        "description": "admin_events.actions.view"
+    },
+    "admin_events_approval_off": "Désactivée : un événement créé par un·e membre est publié aussitôt. La modération peut le masquer ensuite.",
+    "@admin_events_approval_off": {
+        "description": "admin_events.approval.off"
+    },
+    "admin_events_approval_on": "Activée : un événement créé par un·e membre reste en attente, invisible, jusqu’à votre décision. La modération publie directement.",
+    "@admin_events_approval_on": {
+        "description": "admin_events.approval.on"
+    },
+    "admin_events_approval_switch": "Approuver avant publication",
+    "@admin_events_approval_switch": {
+        "description": "admin_events.approval.switch"
+    },
+    "admin_events_approval_title": "File d’approbation",
+    "@admin_events_approval_title": {
+        "description": "admin_events.approval.title"
+    },
+    "admin_events_by": "par {name}",
+    "@admin_events_by": {
+        "description": "admin_events.by",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_events_current": "Ce mois-ci",
+    "@admin_events_current": {
+        "description": "admin_events.current"
+    },
+    "admin_events_empty": "Aucun événement ce mois-ci",
+    "@admin_events_empty": {
+        "description": "admin_events.empty"
+    },
+    "admin_events_fields_reason": "Motif du refus",
+    "@admin_events_fields_reason": {
+        "description": "admin_events.fields.reason"
+    },
+    "admin_events_going": "{count, plural, =0{aucun·e participant·e} =1{{count} participant·e} other{{count} participant·es}}",
+    "@admin_events_going": {
+        "description": "admin_events.going",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_events_intro": "Tous les événements du mois, semaine par semaine (heure du Bénin), avec leur type et leur état. Masquer ou supprimer un événement se fait dans Réseau social, onglet Événements.",
+    "@admin_events_intro": {
+        "description": "admin_events.intro"
+    },
+    "admin_events_nav_label": "Changer de mois",
+    "@admin_events_nav_label": {
+        "description": "admin_events.nav_label"
+    },
+    "admin_events_next": "Mois suivant",
+    "@admin_events_next": {
+        "description": "admin_events.next"
+    },
+    "admin_events_online": "En ligne",
+    "@admin_events_online": {
+        "description": "admin_events.online"
+    },
+    "admin_events_pending_title": "{count, plural, =1{{count} événement en attente} other{{count} événements en attente}}",
+    "@admin_events_pending_title": {
+        "description": "admin_events.pending.title",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_events_previous": "Mois précédent",
+    "@admin_events_previous": {
+        "description": "admin_events.previous"
+    },
+    "admin_events_reason_help": "Obligatoire : ce motif est envoyé à l’organisateur·rice. L’événement reste masqué.",
+    "@admin_events_reason_help": {
+        "description": "admin_events.reason_help"
+    },
+    "admin_events_refuse_title": "Refuser l’événement",
+    "@admin_events_refuse_title": {
+        "description": "admin_events.refuse_title"
+    },
+    "admin_events_title": "Événements",
+    "@admin_events_title": {
+        "description": "admin_events.title"
+    },
+    "admin_events_toasts_approval_off": "File d’approbation désactivée.",
+    "@admin_events_toasts_approval_off": {
+        "description": "admin_events.toasts.approval_off"
+    },
+    "admin_events_toasts_approval_on": "File d’approbation activée.",
+    "@admin_events_toasts_approval_on": {
+        "description": "admin_events.toasts.approval_on"
+    },
+    "admin_events_toasts_approved": "« {title} » est publié.",
+    "@admin_events_toasts_approved": {
+        "description": "admin_events.toasts.approved",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_events_toasts_refused": "Événement refusé, motif envoyé.",
+    "@admin_events_toasts_refused": {
+        "description": "admin_events.toasts.refused"
+    },
+    "admin_events_week": "Semaine du {start} au {end}",
+    "@admin_events_week": {
+        "description": "admin_events.week",
+        "placeholders": {
+            "end": {
+                "type": "String"
+            },
+            "start": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_events_week_empty": "Aucun événement cette semaine.",
+    "@admin_events_week_empty": {
+        "description": "admin_events.week_empty"
+    },
     "admin_gateways_api": "API prévue",
     "@admin_gateways_api": {
         "description": "admin_gateways.api"
@@ -10707,6 +11242,14 @@
     "@admin_network_actions_hide": {
         "description": "admin_network.actions.hide"
     },
+    "admin_network_actions_lock": "Verrouiller",
+    "@admin_network_actions_lock": {
+        "description": "admin_network.actions.lock"
+    },
+    "admin_network_actions_pin": "Épingler",
+    "@admin_network_actions_pin": {
+        "description": "admin_network.actions.pin"
+    },
     "admin_network_actions_show": "Rendre visible",
     "@admin_network_actions_show": {
         "description": "admin_network.actions.show"
@@ -10731,9 +11274,17 @@
     "@admin_network_badges_hidden": {
         "description": "admin_network.badges.hidden"
     },
+    "admin_network_badges_locked": "Verrouillé",
+    "@admin_network_badges_locked": {
+        "description": "admin_network.badges.locked"
+    },
     "admin_network_badges_pending": "En attente",
     "@admin_network_badges_pending": {
         "description": "admin_network.badges.pending"
+    },
+    "admin_network_badges_pinned": "Épinglé",
+    "@admin_network_badges_pinned": {
+        "description": "admin_network.badges.pinned"
     },
     "admin_network_by": "par {name}",
     "@admin_network_by": {
@@ -10916,6 +11467,268 @@
             }
         }
     },
+    "admin_network_manage_actions_archive": "Archiver",
+    "@admin_network_manage_actions_archive": {
+        "description": "admin_network.manage.actions.archive"
+    },
+    "admin_network_manage_actions_down": "Descendre",
+    "@admin_network_manage_actions_down": {
+        "description": "admin_network.manage.actions.down"
+    },
+    "admin_network_manage_actions_edit": "Modifier",
+    "@admin_network_manage_actions_edit": {
+        "description": "admin_network.manage.actions.edit"
+    },
+    "admin_network_manage_actions_restore": "Réactiver",
+    "@admin_network_manage_actions_restore": {
+        "description": "admin_network.manage.actions.restore"
+    },
+    "admin_network_manage_actions_up": "Monter",
+    "@admin_network_manage_actions_up": {
+        "description": "admin_network.manage.actions.up"
+    },
+    "admin_network_manage_caption": "Forums : ordre, nom, sujets, état et actions.",
+    "@admin_network_manage_caption": {
+        "description": "admin_network.manage.caption"
+    },
+    "admin_network_manage_columns_forum": "Forum",
+    "@admin_network_manage_columns_forum": {
+        "description": "admin_network.manage.columns.forum"
+    },
+    "admin_network_manage_columns_order": "Ordre",
+    "@admin_network_manage_columns_order": {
+        "description": "admin_network.manage.columns.order"
+    },
+    "admin_network_manage_columns_state": "État",
+    "@admin_network_manage_columns_state": {
+        "description": "admin_network.manage.columns.state"
+    },
+    "admin_network_manage_columns_topics": "Sujets",
+    "@admin_network_manage_columns_topics": {
+        "description": "admin_network.manage.columns.topics"
+    },
+    "admin_network_manage_confirm_archive": "Archiver « {name} » ? Les sujets restent lisibles, mais personne ne pourra en ouvrir de nouveau.",
+    "@admin_network_manage_confirm_archive": {
+        "description": "admin_network.manage.confirm_archive",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_create": "Créer un forum",
+    "@admin_network_manage_create": {
+        "description": "admin_network.manage.create"
+    },
+    "admin_network_manage_create_title": "Nouveau forum",
+    "@admin_network_manage_create_title": {
+        "description": "admin_network.manage.create_title"
+    },
+    "admin_network_manage_edit_title": "Modifier « {name} »",
+    "@admin_network_manage_edit_title": {
+        "description": "admin_network.manage.edit_title",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_empty": "Aucun forum",
+    "@admin_network_manage_empty": {
+        "description": "admin_network.manage.empty"
+    },
+    "admin_network_manage_fields_description": "Description",
+    "@admin_network_manage_fields_description": {
+        "description": "admin_network.manage.fields.description"
+    },
+    "admin_network_manage_fields_icon": "Icône",
+    "@admin_network_manage_fields_icon": {
+        "description": "admin_network.manage.fields.icon"
+    },
+    "admin_network_manage_fields_name": "Nom",
+    "@admin_network_manage_fields_name": {
+        "description": "admin_network.manage.fields.name"
+    },
+    "admin_network_manage_help_description": "Une phrase, {max} caractères au plus.",
+    "@admin_network_manage_help_description": {
+        "description": "admin_network.manage.help.description",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_help_icon": "Pictogramme affiché sur la carte du forum.",
+    "@admin_network_manage_help_icon": {
+        "description": "admin_network.manage.help.icon"
+    },
+    "admin_network_manage_help_name": "Entre {min} et {max} caractères, visible des membres.",
+    "@admin_network_manage_help_name": {
+        "description": "admin_network.manage.help.name",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_icons_bank": "Bâtiment public",
+    "@admin_network_manage_icons_bank": {
+        "description": "admin_network.manage.icons.bank"
+    },
+    "admin_network_manage_icons_book": "Livre",
+    "@admin_network_manage_icons_book": {
+        "description": "admin_network.manage.icons.book"
+    },
+    "admin_network_manage_icons_briefcase": "Mallette",
+    "@admin_network_manage_icons_briefcase": {
+        "description": "admin_network.manage.icons.briefcase"
+    },
+    "admin_network_manage_icons_chat_heart": "Bulle et cœur",
+    "@admin_network_manage_icons_chat_heart": {
+        "description": "admin_network.manage.icons.chat-heart"
+    },
+    "admin_network_manage_icons_chat_square_text": "Bulle de discussion",
+    "@admin_network_manage_icons_chat_square_text": {
+        "description": "admin_network.manage.icons.chat-square-text"
+    },
+    "admin_network_manage_icons_flower1": "Fleur",
+    "@admin_network_manage_icons_flower1": {
+        "description": "admin_network.manage.icons.flower1"
+    },
+    "admin_network_manage_icons_globe2": "Globe",
+    "@admin_network_manage_icons_globe2": {
+        "description": "admin_network.manage.icons.globe2"
+    },
+    "admin_network_manage_icons_graph_up_arrow": "Courbe montante",
+    "@admin_network_manage_icons_graph_up_arrow": {
+        "description": "admin_network.manage.icons.graph-up-arrow"
+    },
+    "admin_network_manage_icons_heart_pulse": "Cœur et pouls",
+    "@admin_network_manage_icons_heart_pulse": {
+        "description": "admin_network.manage.icons.heart-pulse"
+    },
+    "admin_network_manage_icons_house_heart": "Maison et cœur",
+    "@admin_network_manage_icons_house_heart": {
+        "description": "admin_network.manage.icons.house-heart"
+    },
+    "admin_network_manage_icons_lightbulb": "Ampoule",
+    "@admin_network_manage_icons_lightbulb": {
+        "description": "admin_network.manage.icons.lightbulb"
+    },
+    "admin_network_manage_icons_megaphone": "Mégaphone",
+    "@admin_network_manage_icons_megaphone": {
+        "description": "admin_network.manage.icons.megaphone"
+    },
+    "admin_network_manage_icons_mortarboard": "Toque d’étudiant·e",
+    "@admin_network_manage_icons_mortarboard": {
+        "description": "admin_network.manage.icons.mortarboard"
+    },
+    "admin_network_manage_icons_people": "Personnes",
+    "@admin_network_manage_icons_people": {
+        "description": "admin_network.manage.icons.people"
+    },
+    "admin_network_manage_icons_shield_check": "Bouclier",
+    "@admin_network_manage_icons_shield_check": {
+        "description": "admin_network.manage.icons.shield-check"
+    },
+    "admin_network_manage_icons_stars": "Étoiles",
+    "@admin_network_manage_icons_stars": {
+        "description": "admin_network.manage.icons.stars"
+    },
+    "admin_network_manage_intro": "Créez, renommez et ordonnez les forums. Un forum archivé reste lisible mais n’accepte plus de nouveau sujet. L’ordre choisi ici est celui de la page Forums des membres et de l’application.",
+    "@admin_network_manage_intro": {
+        "description": "admin_network.manage.intro"
+    },
+    "admin_network_manage_key": "Clé : {key} (ne change jamais)",
+    "@admin_network_manage_key": {
+        "description": "admin_network.manage.key",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_list_label": "Ordre des forums",
+    "@admin_network_manage_list_label": {
+        "description": "admin_network.manage.list_label"
+    },
+    "admin_network_manage_moved": "« {name} » est maintenant en position {position} sur {total}.",
+    "@admin_network_manage_moved": {
+        "description": "admin_network.manage.moved",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "position": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_position": "{position} sur {total}",
+    "@admin_network_manage_position": {
+        "description": "admin_network.manage.position",
+        "placeholders": {
+            "position": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_save": "Enregistrer",
+    "@admin_network_manage_save": {
+        "description": "admin_network.manage.save"
+    },
+    "admin_network_manage_states_archived": "Archivé",
+    "@admin_network_manage_states_archived": {
+        "description": "admin_network.manage.states.archived"
+    },
+    "admin_network_manage_states_closed": "Fermé",
+    "@admin_network_manage_states_closed": {
+        "description": "admin_network.manage.states.closed"
+    },
+    "admin_network_manage_states_open": "Ouvert",
+    "@admin_network_manage_states_open": {
+        "description": "admin_network.manage.states.open"
+    },
+    "admin_network_manage_toasts_archived": "Forum « {name} » archivé.",
+    "@admin_network_manage_toasts_archived": {
+        "description": "admin_network.manage.toasts.archived",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_toasts_created": "Forum « {name} » créé.",
+    "@admin_network_manage_toasts_created": {
+        "description": "admin_network.manage.toasts.created",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_toasts_restored": "Forum « {name} » réactivé.",
+    "@admin_network_manage_toasts_restored": {
+        "description": "admin_network.manage.toasts.restored",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_network_manage_toasts_updated": "Forum enregistré.",
+    "@admin_network_manage_toasts_updated": {
+        "description": "admin_network.manage.toasts.updated"
+    },
     "admin_network_no_zone": "Sans zone",
     "@admin_network_no_zone": {
         "description": "admin_network.no_zone"
@@ -10999,9 +11812,13 @@
     "@admin_network_tabs_evenements": {
         "description": "admin_network.tabs.evenements"
     },
-    "admin_network_tabs_forums": "Forums",
+    "admin_network_tabs_forums": "Sujets de forum",
     "@admin_network_tabs_forums": {
         "description": "admin_network.tabs.forums"
+    },
+    "admin_network_tabs_gestion": "Gestion des forums",
+    "@admin_network_tabs_gestion": {
+        "description": "admin_network.tabs.gestion"
     },
     "admin_network_tabs_groupes": "Groupes",
     "@admin_network_tabs_groupes": {
@@ -11044,6 +11861,14 @@
     "@admin_network_toasts_hidden": {
         "description": "admin_network.toasts.hidden"
     },
+    "admin_network_toasts_locked": "Sujet verrouillé : plus de réponse possible.",
+    "@admin_network_toasts_locked": {
+        "description": "admin_network.toasts.locked"
+    },
+    "admin_network_toasts_pinned": "Sujet épinglé en tête de son forum.",
+    "@admin_network_toasts_pinned": {
+        "description": "admin_network.toasts.pinned"
+    },
     "admin_network_toasts_shown": "Rendu visible.",
     "@admin_network_toasts_shown": {
         "description": "admin_network.toasts.shown"
@@ -11060,6 +11885,14 @@
     "admin_network_toasts_unfeatured": "Fin de la mise en avant.",
     "@admin_network_toasts_unfeatured": {
         "description": "admin_network.toasts.unfeatured"
+    },
+    "admin_network_toasts_unlocked": "Sujet déverrouillé.",
+    "@admin_network_toasts_unlocked": {
+        "description": "admin_network.toasts.unlocked"
+    },
+    "admin_network_toasts_unpinned": "Sujet désépinglé.",
+    "@admin_network_toasts_unpinned": {
+        "description": "admin_network.toasts.unpinned"
     },
     "admin_newsletter_actions": "Actions",
     "@admin_newsletter_actions": {
@@ -12835,6 +13668,138 @@
         "description": "admin_search.too_short",
         "placeholders": {
             "min": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_suggestions_actions_open": "Lire",
+    "@admin_suggestions_actions_open": {
+        "description": "admin_suggestions.actions.open"
+    },
+    "admin_suggestions_actions_reply": "Envoyer la réponse",
+    "@admin_suggestions_actions_reply": {
+        "description": "admin_suggestions.actions.reply"
+    },
+    "admin_suggestions_actions_save_status": "Changer le statut",
+    "@admin_suggestions_actions_save_status": {
+        "description": "admin_suggestions.actions.save_status"
+    },
+    "admin_suggestions_all_categories": "Toutes les catégories",
+    "@admin_suggestions_all_categories": {
+        "description": "admin_suggestions.all_categories"
+    },
+    "admin_suggestions_all_statuses": "Tous les statuts",
+    "@admin_suggestions_all_statuses": {
+        "description": "admin_suggestions.all_statuses"
+    },
+    "admin_suggestions_anonymous": "Anonyme",
+    "@admin_suggestions_anonymous": {
+        "description": "admin_suggestions.anonymous"
+    },
+    "admin_suggestions_caption": "Suggestions : message, catégorie, auteur·rice, date, statut et actions.",
+    "@admin_suggestions_caption": {
+        "description": "admin_suggestions.caption"
+    },
+    "admin_suggestions_columns_author": "Auteur·rice",
+    "@admin_suggestions_columns_author": {
+        "description": "admin_suggestions.columns.author"
+    },
+    "admin_suggestions_columns_category": "Catégorie",
+    "@admin_suggestions_columns_category": {
+        "description": "admin_suggestions.columns.category"
+    },
+    "admin_suggestions_columns_created": "Reçue le",
+    "@admin_suggestions_columns_created": {
+        "description": "admin_suggestions.columns.created"
+    },
+    "admin_suggestions_columns_message": "Message",
+    "@admin_suggestions_columns_message": {
+        "description": "admin_suggestions.columns.message"
+    },
+    "admin_suggestions_columns_status": "Statut",
+    "@admin_suggestions_columns_status": {
+        "description": "admin_suggestions.columns.status"
+    },
+    "admin_suggestions_deleted_account": "Compte supprimé",
+    "@admin_suggestions_deleted_account": {
+        "description": "admin_suggestions.deleted_account"
+    },
+    "admin_suggestions_empty": "Aucune suggestion",
+    "@admin_suggestions_empty": {
+        "description": "admin_suggestions.empty"
+    },
+    "admin_suggestions_fields_reply": "Réponse de l’équipe",
+    "@admin_suggestions_fields_reply": {
+        "description": "admin_suggestions.fields.reply"
+    },
+    "admin_suggestions_fields_status": "Statut",
+    "@admin_suggestions_fields_status": {
+        "description": "admin_suggestions.fields.status"
+    },
+    "admin_suggestions_intro": "Les idées des membres, envoyées depuis leur espace et l’application. Une suggestion anonyme n’affiche jamais son compte. Votre réponse est envoyée en notification à la personne : écrivez-la au tutoiement.",
+    "@admin_suggestions_intro": {
+        "description": "admin_suggestions.intro"
+    },
+    "admin_suggestions_list_title": "Boîte à suggestions",
+    "@admin_suggestions_list_title": {
+        "description": "admin_suggestions.list_title"
+    },
+    "admin_suggestions_modal_title": "Suggestion",
+    "@admin_suggestions_modal_title": {
+        "description": "admin_suggestions.modal_title"
+    },
+    "admin_suggestions_new_count": "{count, plural, =0{Aucune nouvelle suggestion} =1{{count} nouvelle suggestion} other{{count} nouvelles suggestions}}",
+    "@admin_suggestions_new_count": {
+        "description": "admin_suggestions.new_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_suggestions_replied": "Réponse envoyée",
+    "@admin_suggestions_replied": {
+        "description": "admin_suggestions.replied"
+    },
+    "admin_suggestions_reply_help": "Envoyée en notification à la personne, même si elle est restée anonyme.",
+    "@admin_suggestions_reply_help": {
+        "description": "admin_suggestions.reply_help"
+    },
+    "admin_suggestions_reply_sent": "Dernière réponse envoyée le {date}. Une nouvelle réponse remplace la précédente et part en notification.",
+    "@admin_suggestions_reply_sent": {
+        "description": "admin_suggestions.reply_sent",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_suggestions_search_placeholder": "Mot du message…",
+    "@admin_suggestions_search_placeholder": {
+        "description": "admin_suggestions.search_placeholder"
+    },
+    "admin_suggestions_sr_row": "suggestion n° {id}",
+    "@admin_suggestions_sr_row": {
+        "description": "admin_suggestions.sr_row",
+        "placeholders": {
+            "id": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_suggestions_title": "Suggestions",
+    "@admin_suggestions_title": {
+        "description": "admin_suggestions.title"
+    },
+    "admin_suggestions_toasts_replied": "Réponse envoyée.",
+    "@admin_suggestions_toasts_replied": {
+        "description": "admin_suggestions.toasts.replied"
+    },
+    "admin_suggestions_toasts_status": "Statut : {status}.",
+    "@admin_suggestions_toasts_status": {
+        "description": "admin_suggestions.toasts.status",
+        "placeholders": {
+            "status": {
                 "type": "String"
             }
         }
@@ -19413,6 +20378,14 @@
     "@common_zone": {
         "description": "common.zone"
     },
+    "community_announcement_close": "Fermer l’annonce",
+    "@community_announcement_close": {
+        "description": "community.announcement.close"
+    },
+    "community_announcement_open": "En savoir plus",
+    "@community_announcement_open": {
+        "description": "community.announcement.open"
+    },
     "community_api_attributes_category": "catégorie",
     "@community_api_attributes_category": {
         "description": "community.api.attributes.category"
@@ -19715,6 +20688,10 @@
     "@community_events_create_place_placeholder": {
         "description": "community.events.create.place_placeholder"
     },
+    "community_events_create_requires_approval": "L’équipe relit chaque nouvel événement : le tien sera visible dès qu’elle l’aura approuvé.",
+    "@community_events_create_requires_approval": {
+        "description": "community.events.create.requires_approval"
+    },
     "community_events_create_starts_future": "Choisis une date et une heure à venir.",
     "@community_events_create_starts_future": {
         "description": "community.events.create.starts_future"
@@ -19748,6 +20725,10 @@
                 "type": "String"
             }
         }
+    },
+    "community_events_create_type": "Type d’événement",
+    "@community_events_create_type": {
+        "description": "community.events.create.type"
     },
     "community_events_detail_add_to_calendar": "Ajouter au calendrier",
     "@community_events_detail_add_to_calendar": {
@@ -19961,6 +20942,10 @@
     "@community_events_past_badge": {
         "description": "community.events.past_badge"
     },
+    "community_events_pending_badge": "En attente d’approbation",
+    "@community_events_pending_badge": {
+        "description": "community.events.pending_badge"
+    },
     "community_events_place_tbd": "Lieu à préciser",
     "@community_events_place_tbd": {
         "description": "community.events.place_tbd"
@@ -20008,6 +20993,10 @@
     "community_events_toasts_created": "Événement créé.",
     "@community_events_toasts_created": {
         "description": "community.events.toasts.created"
+    },
+    "community_events_toasts_created_pending": "Événement envoyé. Il sera visible dès que l’équipe l’aura approuvé.",
+    "@community_events_toasts_created_pending": {
+        "description": "community.events.toasts.created_pending"
     },
     "community_events_toasts_declined": "Participation annulée.",
     "@community_events_toasts_declined": {
@@ -20438,6 +21427,14 @@
     "@community_forums_anonymous": {
         "description": "community.forums.anonymous"
     },
+    "community_forums_archived": "Archivé",
+    "@community_forums_archived": {
+        "description": "community.forums.archived"
+    },
+    "community_forums_archived_help": "Forum archivé : tu peux lire les sujets, mais plus en ouvrir de nouveaux.",
+    "@community_forums_archived_help": {
+        "description": "community.forums.archived_help"
+    },
     "community_forums_badges_pair": "Pair animateur·rice",
     "@community_forums_badges_pair": {
         "description": "community.forums.badges.pair"
@@ -20618,6 +21615,30 @@
     "community_forums_moderated": "Sujet masqué en attente de relecture par la modération.",
     "@community_forums_moderated": {
         "description": "community.forums.moderated"
+    },
+    "community_forums_moderation_lock": "Verrouiller",
+    "@community_forums_moderation_lock": {
+        "description": "community.forums.moderation.lock"
+    },
+    "community_forums_moderation_lock_off": "Sujet déverrouillé.",
+    "@community_forums_moderation_lock_off": {
+        "description": "community.forums.moderation.lock_off"
+    },
+    "community_forums_moderation_lock_on": "Sujet verrouillé : plus de réponse possible.",
+    "@community_forums_moderation_lock_on": {
+        "description": "community.forums.moderation.lock_on"
+    },
+    "community_forums_moderation_pin": "Épingler",
+    "@community_forums_moderation_pin": {
+        "description": "community.forums.moderation.pin"
+    },
+    "community_forums_moderation_pin_off": "Sujet désépinglé.",
+    "@community_forums_moderation_pin_off": {
+        "description": "community.forums.moderation.pin_off"
+    },
+    "community_forums_moderation_pin_on": "Sujet épinglé en tête du forum.",
+    "@community_forums_moderation_pin_on": {
+        "description": "community.forums.moderation.pin_on"
     },
     "community_forums_pinned": "Épinglé",
     "@community_forums_pinned": {
@@ -22021,6 +23042,155 @@
     "community_pages_verified": "Page vérifiée",
     "@community_pages_verified": {
         "description": "community.pages.verified"
+    },
+    "community_proposals_again": "Proposer une autre ressource",
+    "@community_proposals_again": {
+        "description": "community.proposals.again"
+    },
+    "community_proposals_fields_category": "Catégorie",
+    "@community_proposals_fields_category": {
+        "description": "community.proposals.fields.category"
+    },
+    "community_proposals_fields_credit": "Me créditer avec mon pseudonyme",
+    "@community_proposals_fields_credit": {
+        "description": "community.proposals.fields.credit"
+    },
+    "community_proposals_fields_file": "Fichier PDF",
+    "@community_proposals_fields_file": {
+        "description": "community.proposals.fields.file"
+    },
+    "community_proposals_fields_kind": "Type",
+    "@community_proposals_fields_kind": {
+        "description": "community.proposals.fields.kind"
+    },
+    "community_proposals_fields_link": "Lien",
+    "@community_proposals_fields_link": {
+        "description": "community.proposals.fields.link"
+    },
+    "community_proposals_fields_summary": "En quelques mots",
+    "@community_proposals_fields_summary": {
+        "description": "community.proposals.fields.summary"
+    },
+    "community_proposals_fields_title": "Titre",
+    "@community_proposals_fields_title": {
+        "description": "community.proposals.fields.title"
+    },
+    "community_proposals_hints_credit": "Si l’équipe publie la ressource, ton pseudonyme peut apparaître comme source. Tu peux refuser.",
+    "@community_proposals_hints_credit": {
+        "description": "community.proposals.hints.credit"
+    },
+    "community_proposals_hints_file": "Un seul PDF, {max} Mo au plus.",
+    "@community_proposals_hints_file": {
+        "description": "community.proposals.hints.file",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "community_proposals_hints_link": "Adresse qui commence par https://.",
+    "@community_proposals_hints_link": {
+        "description": "community.proposals.hints.link"
+    },
+    "community_proposals_hints_summary": "Ce que la ressource apporte, entre {min} et {max} caractères.",
+    "@community_proposals_hints_summary": {
+        "description": "community.proposals.hints.summary",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "community_proposals_hints_title": "Entre {min} et {max} caractères.",
+    "@community_proposals_hints_title": {
+        "description": "community.proposals.hints.title",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "community_proposals_intro": "Tu connais un guide, une fiche ou un lien utile ? Propose-le : l’équipe le relit avant toute publication. Ta proposition n’est pas visible des autres membres.",
+    "@community_proposals_intro": {
+        "description": "community.proposals.intro"
+    },
+    "community_proposals_no_category": "Je ne sais pas",
+    "@community_proposals_no_category": {
+        "description": "community.proposals.no_category"
+    },
+    "community_proposals_sent": "Merci ! Ta proposition est arrivée. L’équipe te prévient dès qu’elle l’a relue.",
+    "@community_proposals_sent": {
+        "description": "community.proposals.sent"
+    },
+    "community_proposals_sent_toast": "Proposition envoyée.",
+    "@community_proposals_sent_toast": {
+        "description": "community.proposals.sent_toast"
+    },
+    "community_proposals_submit": "Envoyer ma proposition",
+    "@community_proposals_submit": {
+        "description": "community.proposals.submit"
+    },
+    "community_proposals_title": "Proposer une ressource",
+    "@community_proposals_title": {
+        "description": "community.proposals.title"
+    },
+    "community_suggestions_again": "Envoyer une autre idée",
+    "@community_suggestions_again": {
+        "description": "community.suggestions.again"
+    },
+    "community_suggestions_fields_anonymous": "Envoyer de façon anonyme",
+    "@community_suggestions_fields_anonymous": {
+        "description": "community.suggestions.fields.anonymous"
+    },
+    "community_suggestions_fields_category": "Sujet",
+    "@community_suggestions_fields_category": {
+        "description": "community.suggestions.fields.category"
+    },
+    "community_suggestions_fields_message": "Ton message",
+    "@community_suggestions_fields_message": {
+        "description": "community.suggestions.fields.message"
+    },
+    "community_suggestions_hints_anonymous": "L’équipe ne verra pas ton pseudonyme. Tu recevras quand même sa réponse en notification.",
+    "@community_suggestions_hints_anonymous": {
+        "description": "community.suggestions.hints.anonymous"
+    },
+    "community_suggestions_hints_message": "Entre {min} et {max} caractères. N’écris pas d’informations personnelles.",
+    "@community_suggestions_hints_message": {
+        "description": "community.suggestions.hints.message",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "community_suggestions_intro": "Une idée pour améliorer Xomiton ? Une fonctionnalité, un contenu, un point de sécurité ? Écris à l’équipe : elle lit chaque message.",
+    "@community_suggestions_intro": {
+        "description": "community.suggestions.intro"
+    },
+    "community_suggestions_sent": "Merci ! Ton idée est bien arrivée. Si l’équipe te répond, tu recevras une notification.",
+    "@community_suggestions_sent": {
+        "description": "community.suggestions.sent"
+    },
+    "community_suggestions_sent_toast": "Idée envoyée.",
+    "@community_suggestions_sent_toast": {
+        "description": "community.suggestions.sent_toast"
+    },
+    "community_suggestions_submit": "Envoyer mon idée",
+    "@community_suggestions_submit": {
+        "description": "community.suggestions.submit"
+    },
+    "community_suggestions_title": "Boîte à idées",
+    "@community_suggestions_title": {
+        "description": "community.suggestions.title"
     },
     "components_assistant_chips_0": "Comment porter plainte ?",
     "@components_assistant_chips_0": {
@@ -24238,6 +25408,22 @@
     "@enums_community_conversation_kind_private": {
         "description": "enums/community.conversation_kind.private"
     },
+    "enums_community_event_type_atelier": "Atelier",
+    "@enums_community_event_type_atelier": {
+        "description": "enums/community.event_type.atelier"
+    },
+    "enums_community_event_type_autre": "Autre",
+    "@enums_community_event_type_autre": {
+        "description": "enums/community.event_type.autre"
+    },
+    "enums_community_event_type_groupe_parole": "Groupe de parole",
+    "@enums_community_event_type_groupe_parole": {
+        "description": "enums/community.event_type.groupe_parole"
+    },
+    "enums_community_event_type_rencontre": "Rencontre",
+    "@enums_community_event_type_rencontre": {
+        "description": "enums/community.event_type.rencontre"
+    },
     "enums_community_rsvp_status_declined": "Ne participe pas",
     "@enums_community_rsvp_status_declined": {
         "description": "enums/community.rsvp_status.declined"
@@ -24249,6 +25435,38 @@
     "enums_community_rsvp_status_interested": "Intéressé·e",
     "@enums_community_rsvp_status_interested": {
         "description": "enums/community.rsvp_status.interested"
+    },
+    "enums_community_suggestion_category_autre": "Autre",
+    "@enums_community_suggestion_category_autre": {
+        "description": "enums/community.suggestion_category.autre"
+    },
+    "enums_community_suggestion_category_contenu": "Contenu",
+    "@enums_community_suggestion_category_contenu": {
+        "description": "enums/community.suggestion_category.contenu"
+    },
+    "enums_community_suggestion_category_fonctionnalite": "Fonctionnalité",
+    "@enums_community_suggestion_category_fonctionnalite": {
+        "description": "enums/community.suggestion_category.fonctionnalite"
+    },
+    "enums_community_suggestion_category_securite": "Sécurité",
+    "@enums_community_suggestion_category_securite": {
+        "description": "enums/community.suggestion_category.securite"
+    },
+    "enums_community_suggestion_status_ecartee": "Écartée",
+    "@enums_community_suggestion_status_ecartee": {
+        "description": "enums/community.suggestion_status.ecartee"
+    },
+    "enums_community_suggestion_status_en_cours": "En cours",
+    "@enums_community_suggestion_status_en_cours": {
+        "description": "enums/community.suggestion_status.en_cours"
+    },
+    "enums_community_suggestion_status_nouvelle": "Nouvelle",
+    "@enums_community_suggestion_status_nouvelle": {
+        "description": "enums/community.suggestion_status.nouvelle"
+    },
+    "enums_community_suggestion_status_retenue": "Retenue",
+    "@enums_community_suggestion_status_retenue": {
+        "description": "enums/community.suggestion_status.retenue"
     },
     "enums_content_bad_word_category_autre": "Autre",
     "@enums_content_bad_word_category_autre": {
@@ -24306,6 +25524,10 @@
     "@enums_content_content_status_brouillon": {
         "description": "enums/content.content_status.brouillon"
     },
+    "enums_content_content_status_en_attente": "En attente",
+    "@enums_content_content_status_en_attente": {
+        "description": "enums/content.content_status.en_attente"
+    },
     "enums_content_content_status_masque": "Masqué",
     "@enums_content_content_status_masque": {
         "description": "enums/content.content_status.masque"
@@ -24313,6 +25535,18 @@
     "enums_content_content_status_publie": "Publié",
     "@enums_content_content_status_publie": {
         "description": "enums/content.content_status.publie"
+    },
+    "enums_content_proposal_status_acceptee": "Acceptée",
+    "@enums_content_proposal_status_acceptee": {
+        "description": "enums/content.proposal_status.acceptee"
+    },
+    "enums_content_proposal_status_proposee": "Proposée",
+    "@enums_content_proposal_status_proposee": {
+        "description": "enums/content.proposal_status.proposee"
+    },
+    "enums_content_proposal_status_refusee": "Refusée",
+    "@enums_content_proposal_status_refusee": {
+        "description": "enums/content.proposal_status.refusee"
     },
     "enums_content_resource_kind_article": "Article",
     "@enums_content_resource_kind_article": {
@@ -24665,6 +25899,22 @@
     "enums_identity_verified_badge_pair_animateur": "Pair animateur·rice",
     "@enums_identity_verified_badge_pair_animateur": {
         "description": "enums/identity.verified_badge.pair_animateur"
+    },
+    "enums_platform_announcement_audience_membres": "Tous les membres",
+    "@enums_platform_announcement_audience_membres": {
+        "description": "enums/platform.announcement_audience.membres"
+    },
+    "enums_platform_announcement_audience_pairs": "Pair·es seulement",
+    "@enums_platform_announcement_audience_pairs": {
+        "description": "enums/platform.announcement_audience.pairs"
+    },
+    "enums_platform_announcement_level_important": "Important",
+    "@enums_platform_announcement_level_important": {
+        "description": "enums/platform.announcement_level.important"
+    },
+    "enums_platform_announcement_level_info": "Information",
+    "@enums_platform_announcement_level_info": {
+        "description": "enums/platform.announcement_level.info"
     },
     "enums_platform_backup_kind_auto": "Automatique",
     "@enums_platform_backup_kind_auto": {
@@ -28194,6 +29444,10 @@
     "@menus_admin_all_notifications": {
         "description": "menus.admin.all_notifications"
     },
+    "menus_admin_announcements": "Annonces",
+    "@menus_admin_announcements": {
+        "description": "menus.admin.announcements"
+    },
     "menus_admin_assistant": "Assistant LLM",
     "@menus_admin_assistant": {
         "description": "menus.admin.assistant"
@@ -28233,6 +29487,10 @@
     "menus_admin_emails": "Templates e-mails",
     "@menus_admin_emails": {
         "description": "menus.admin.emails"
+    },
+    "menus_admin_events": "Événements",
+    "@menus_admin_events": {
+        "description": "menus.admin.events"
     },
     "menus_admin_followup": "Suivi des victimes",
     "@menus_admin_followup": {
@@ -28390,6 +29648,10 @@
     "@menus_admin_settings": {
         "description": "menus.admin.settings"
     },
+    "menus_admin_suggestions": "Suggestions",
+    "@menus_admin_suggestions": {
+        "description": "menus.admin.suggestions"
+    },
     "menus_admin_sync": "Hors connexion & synchro",
     "@menus_admin_sync": {
         "description": "menus.admin.sync"
@@ -28498,6 +29760,10 @@
     "@menus_member_profile": {
         "description": "menus.member.profile"
     },
+    "menus_member_propose_resource": "Proposer une ressource",
+    "@menus_member_propose_resource": {
+        "description": "menus.member.propose_resource"
+    },
     "menus_member_report": "Signaler",
     "@menus_member_report": {
         "description": "menus.member.report"
@@ -28525,6 +29791,10 @@
     "menus_member_sos": "SOS (position GPS)",
     "@menus_member_sos": {
         "description": "menus.member.sos"
+    },
+    "menus_member_suggestions": "Boîte à idées",
+    "@menus_member_suggestions": {
+        "description": "menus.member.suggestions"
     },
     "menus_member_thematiques": "Thématiques",
     "@menus_member_thematiques": {
@@ -31766,6 +33036,81 @@
                 "type": "String"
             }
         }
+    },
+    "notifications_team_event_approved_body": "L’équipe a approuvé « {title} ». Les membres peuvent maintenant le voir.",
+    "@notifications_team_event_approved_body": {
+        "description": "notifications.team.event_approved.body",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_team_event_approved_title": "Ton événement est en ligne",
+    "@notifications_team_event_approved_title": {
+        "description": "notifications.team.event_approved.title"
+    },
+    "notifications_team_event_refused_body": "L’équipe n’a pas publié « {title} » : {reason}.",
+    "@notifications_team_event_refused_body": {
+        "description": "notifications.team.event_refused.body",
+        "placeholders": {
+            "reason": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_team_event_refused_title": "Ton événement n’a pas été publié",
+    "@notifications_team_event_refused_title": {
+        "description": "notifications.team.event_refused.title"
+    },
+    "notifications_team_no_reason": "non précisé",
+    "@notifications_team_no_reason": {
+        "description": "notifications.team.no_reason"
+    },
+    "notifications_team_proposal_accepted_body": "L’équipe a retenu « {title} ». Elle la relit avant de la publier.",
+    "@notifications_team_proposal_accepted_body": {
+        "description": "notifications.team.proposal_accepted.body",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_team_proposal_accepted_title": "Merci pour ta proposition de ressource",
+    "@notifications_team_proposal_accepted_title": {
+        "description": "notifications.team.proposal_accepted.title"
+    },
+    "notifications_team_proposal_refused_body": "L’équipe n’a pas retenu « {title} » : {reason}.",
+    "@notifications_team_proposal_refused_body": {
+        "description": "notifications.team.proposal_refused.body",
+        "placeholders": {
+            "reason": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_team_proposal_refused_title": "Ta proposition de ressource n’a pas été retenue",
+    "@notifications_team_proposal_refused_title": {
+        "description": "notifications.team.proposal_refused.title"
+    },
+    "notifications_team_suggestion_replied_body": "{reason}",
+    "@notifications_team_suggestion_replied_body": {
+        "description": "notifications.team.suggestion_replied.body",
+        "placeholders": {
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_team_suggestion_replied_title": "L’équipe a répondu à ta suggestion",
+    "@notifications_team_suggestion_replied_title": {
+        "description": "notifications.team.suggestion_replied.title"
     },
     "notifications_video_pending_body": "Une vidéo attend votre relecture avant d’être publiée.",
     "@notifications_video_pending_body": {
@@ -35229,6 +36574,10 @@
                 "type": "String"
             }
         }
+    },
+    "pages_ressources_featured": "À la une",
+    "@pages_ressources_featured": {
+        "description": "pages/ressources.featured"
     },
     "pages_ressources_file_meta": "{kind} · {size} · {category}",
     "@pages_ressources_file_meta": {

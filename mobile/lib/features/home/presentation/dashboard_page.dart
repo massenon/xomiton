@@ -8,6 +8,7 @@ import '../../../core/l10n/app_strings.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../../../core/util/dates.dart';
 import '../../auth/application/session_controller.dart';
+import '../../engagement/presentation/announcement_banner.dart';
 import '../application/home_providers.dart';
 import '../data/home_models.dart';
 import 'theme_card.dart';
@@ -23,6 +24,7 @@ class DashboardPage extends ConsumerWidget {
       child: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(dashboardProvider);
+          ref.invalidate(announcementProvider);
           await ref.read(dashboardProvider.future).catchError((_) => _empty);
         },
         child: dash.when(
@@ -64,6 +66,8 @@ class _Body extends ConsumerWidget {
       children: [
         // Pastille « Membre ▾ » : seulement pour un compte à plusieurs espaces.
         const Align(alignment: Alignment.centerRight, child: SpaceSwitcherPill()),
+        // P18-13 : annonce globale de l'équipe (fermeture mémorisée par compte).
+        const AnnouncementBanner(),
         Row(
           children: [
             Expanded(

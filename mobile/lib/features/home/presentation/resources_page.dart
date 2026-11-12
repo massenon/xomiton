@@ -206,6 +206,19 @@ class _ResourceTileState extends ConsumerState<ResourceTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (r.featured)
+              Padding(
+                padding: const EdgeInsets.only(bottom: XmSpace.s1),
+                child: Row(
+                  key: Key('resource-featured-${r.id}'),
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.star, size: 16),
+                    const SizedBox(width: XmSpace.s1),
+                    Text(context.t('pages_ressources_featured'), style: t.labelMedium),
+                  ],
+                ),
+              ),
             Text(r.title, style: t.titleSmall),
             if (meta.isNotEmpty) Text(meta, style: t.labelSmall),
             if (r.summary case final summary?)

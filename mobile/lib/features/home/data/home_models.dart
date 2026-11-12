@@ -149,12 +149,16 @@ class ResourceCardData {
     this.durationMinutes,
     this.downloadable = false,
     this.externalUrl,
+    this.featured = false,
   });
 
   final int id;
   final String title;
   final String? kind;
   final String? kindLabel;
+
+  /// P18-11 : mise en avant par l'équipe (guides, urgence), servie en tête.
+  final bool featured;
   final String? summary;
   final Category? category;
   final String? coverUrl;
@@ -179,6 +183,7 @@ class ResourceCardData {
         durationMinutes: _int(j['duration_minutes']),
         downloadable: j['downloadable'] == true,
         externalUrl: j['external_url'] as String?,
+        featured: j['is_featured'] == true,
       );
 }
 

@@ -16,6 +16,7 @@ import '../data/feed_api.dart';
 import '../data/feed_models.dart';
 import 'media_widgets.dart';
 import 'verified_badges.dart';
+import '../../engagement/presentation/announcement_banner.dart';
 
 export 'create_post_page.dart' show CreatePostPage;
 export 'my_videos_page.dart' show MyVideosPage;
@@ -54,6 +55,8 @@ class FeedTabPage extends ConsumerWidget {
       ),
       body: Column(children: [
         if (pending) const PendingNotice(messageKey: 'mobile_pending_action_blocked'),
+        // P18-13 : annonce globale de l'équipe, en haut du fil.
+        const AnnouncementBanner(padding: EdgeInsets.fromLTRB(XmSpace.gutter, XmSpace.s2, XmSpace.gutter, 0)),
         Expanded(child: state.when(
         loading: () => const LoadingView(),
         error: (e, _) =>

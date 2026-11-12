@@ -360,6 +360,7 @@ class EventsPage extends ConsumerWidget {
                               title: Text(e.title),
                               subtitle: Text(
                                 [
+                                  if (e.shownType != null) e.shownType!,
                                   if (e.dateLabel != null) e.dateLabel!,
                                   if (e.timeLabel != null) e.timeLabel!,
                                   if (e.locationLabel != null) e.locationLabel!,
@@ -464,6 +465,23 @@ class _EventDetailPageState extends ConsumerState<EventDetailPage> {
             padding: const EdgeInsets.all(XmSpace.gutter),
             children: [
               Text(e.title, style: Theme.of(context).textTheme.headlineSmall),
+              // P18-14 : type de l'événement et attente d'approbation.
+              if (e.shownType != null || e.isPending) ...[
+                const SizedBox(height: XmSpace.s1),
+                Wrap(
+                  spacing: XmSpace.s1,
+                  children: [
+                    if (e.shownType != null)
+                      Chip(key: const Key('event-type'), label: Text(e.shownType!)),
+                    if (e.isPending)
+                      Chip(
+                        key: const Key('event-pending'),
+                        avatar: const Icon(Icons.hourglass_top, size: 18),
+                        label: Text(context.t('community_events_pending_badge')),
+                      ),
+                  ],
+                ),
+              ],
               const SizedBox(height: XmSpace.s2),
               Text(
                 [
