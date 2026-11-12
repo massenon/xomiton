@@ -603,10 +603,11 @@ L'auteur·rice voit toujours sa publication (même masquée par la modération :
 |---|---|
 | `GET feed?tag=&cursor=&per_page=` | **200** liste par curseur (§1.1, 20 par page), plus récentes d'abord ; `meta.tag` ; 422 étiquette inconnue |
 | `GET feed/saved?cursor=` | **200** publications enregistrées encore visibles (P7-06) |
-| `POST posts` | **201** + `Location` ; `verified`, limiteur `feed_write` (10/min par compte) ; `Idempotency-Key` facultative (`idempotent:optional,limit=feed_write`, lot fil-ecrans : publication mise en file hors connexion par la boîte d'envoi, rejouée sans doublon, ADR-32) ; corps ci-dessous ; 403 `forbidden` sans `posts.create` (sondage : `polls.create`), 403 `email_unverified`, 422 `validation_failed` ou `content_blocked` |
-| `GET posts/{ulid}` | **200** publication ; 404 |
-| `PATCH posts/{ulid}` `{body?, tag?, visibility?}` | **200** ; auteur·rice seulement (403), `verified`, `throttle:feed_write` ; étiquette jamais vers ou depuis `sondage` (422) ; anonyme jamais vers `followers` (422) |
-| `DELETE posts/{ulid}` | **204** ; auteur·rice ou `posts.moderate` (journal `post.deleted_by_moderation`) ; statut `supprime` + suppression logique |
+| `POST posts` | **201** + `Location` (publication ou sondage en ligne) ou **202** + `Location` (**vidéo reçue, en relecture** : `data.review_state = "pending"`, §8.7) ; `verified`, limiteur `feed_write` (10/min par compte) ; `Idempotency-Key` facultative (`idempotent:optional,limit=feed_write`, lot fil-ecrans : publication mise en file hors connexion par la boîte d'envoi, rejouée sans doublon, ADR-32) ; corps ci-dessous ; 403 `forbidden` sans `posts.create` (sondage : `polls.create`), 403 `email_unverified`, 422 `validation_failed` ou `content_blocked` |
+| `GET posts/review` | **200** `{ data: [publication…] }` : **mes** vidéos en attente de relecture ou refusées (`review_state`), 50 au plus, les plus récentes d'abord (§8.7) |
+| `GET posts/{ulid}` | **200** publication ; 404 (une vidéo en relecture ou refusée : 404 pour toute autre personne que son auteur·rice et la modération) |
+| `PATCH posts/{ulid}` `{body?, tag?, visibility?, remove_media?: int[]}` | **200** ; auteur·rice seulement (403 ; **403 aussi pour une vidéo en relecture**) ; `remove_media` = positions (0 = première) des **images** à retirer (422 `remove_media` : position inconnue, vidéo, ou publication sans texte qui n'aurait plus aucun média) — les autres gardent leur ordre et sont renumérotées, les fichiers sont supprimés ; il n'y a pas de réordonnancement ni d'ajout après coup, `verified`, `throttle:feed_write` ; étiquette jamais vers ou depuis `sondage` (422) ; anonyme jamais vers `followers` (422) |
+| `DELETE posts/{ulid}` | **204** ; auteur·rice ou `posts.moderate` (journal `post.deleted_by_moderation`) ; statut `supprime` + suppression logique ; **retire une vidéo en attente ou refusée** : son fichier est supprimé tout de suite (journal `post.video_withdrawn`) |
 | `POST · DELETE posts/{ulid}/like` | **200** `{ liked, likes_count, changed }` — idempotent (`changed: false` sur un rejeu) ; cloche regroupée de l'auteur·rice (`ReactionGrouped`) |
 | `POST · DELETE posts/{ulid}/save` | **200** `{ saved, changed }` |
 | `POST · DELETE posts/{ulid}/hide` | **200** `{ hidden, changed }` — « Masquer » : retirée du seul fil de la personne ; `DELETE` = « Annuler » |
@@ -624,7 +625,9 @@ Motifs `reason` (`App\Enums\ContentReportReason`, libellé gardé dans `moderati
 
 ```json
 { "kind": "post", "body": "Merci à toutes…", "tag": "temoignage", "visibility": "public", "is_anonymous": false,
-  "image": <fichier>, "image_alt": "Atelier en plein air" }
+  "images": [<fichier>, <fichier>], "images_alt": ["Atelier en plein air", "Le groupe rassemblé"] }
+{ "kind": "post", "body": "Notre atelier en vidéo.", "video": <fichier mp4 ou webm>,
+  "video_description": "Des femmes assises en cercle qui discutent d'un projet de coopérative." }
 { "kind": "poll", "body": "Aidez-nous à choisir.", "visibility": "followers",
   "poll": { "question": "Quel thème pour la causerie ?", "options": ["Santé", "Droits", "Bien-être"],
             "multiple": false, "results_before_vote": false, "duration_days": 7 } }
@@ -633,11 +636,15 @@ Motifs `reason` (`App\Enums\ContentReportReason`, libellé gardé dans `moderati
 | Champ | Règle |
 |---|---|
 | `kind` | `post` (défaut) ou `poll` |
-| `body` | ≤ 3000 car. ; obligatoire pour `post` sauf image seule ; facultatif pour `poll` |
+| `body` | ≤ 3000 car. ; obligatoire pour `post` sauf média seul (image ou vidéo) ; facultatif pour `poll` |
 | `tag` | `PostTag` sauf `sondage` (défaut `temoignage`) ; `sondage` imposé pour `poll` |
 | `visibility` | `public` (défaut), `followers`, `me` |
 | `group` | ULID d'un groupe (P8-02, §13) où la personne peut publier (membre active ou propriétaire) ; sinon **422** `errors.group` (« Tu dois être membre du groupe pour faire cela. », sans dire si le groupe existe) ; `visibility` alors `public` seulement (422 sinon, au POST comme au PATCH : le groupe est l'audience) ; la publication n'entre pas dans `feed` mais dans `groups/{ulid}/posts` ; `groups.posts_count` suit |
-| `image` | collection `images` de MediaUploader (JPEG, PNG, WebP, 5 Mo) : type réel lu dans le contenu, ré-encodage GD (**EXIF retiré**), WebP + variantes, **disque privé**, servie en lien signé `media.signed` (`xomiton.feed.media_url_minutes`, 60 min au moins), expiration alignée sur une fenêtre de 15 min (`media_url_window_minutes`) : même lien, même ETag, 304 dans la fenêtre |
+| `images[]` | **multipart** : jusqu'à `xomiton.feed.max_images` fichiers (**4** par défaut, `XOMITON_FEED_MAX_IMAGES`), pour une publication **ou un sondage** ; chacun dans la collection `images` de MediaUploader (JPEG, PNG, WebP, 5 Mo) : type réel lu dans le contenu, ré-encodage GD (**EXIF retiré**), WebP + variantes, **disque privé**, servie en lien signé `media.signed` (`xomiton.feed.media_url_minutes`, 60 min au moins), expiration alignée sur une fenêtre de 15 min (`media_url_window_minutes`) : même lien, même ETag, 304 dans la fenêtre. **Ordre conservé** (`position` 0, 1, 2…). Plus que le plafond : **422** `errors.images` |
+| `images_alt[]` | texte alternatif ≤ 255 car. **aligné sur `images[]`** (`images_alt[1]` décrit `images[1]` ; une image sans texte reste sans `alt`) ; une entrée sans image correspondante : 422 `errors.images_alt` ; même filtre de mots que le corps |
+| `image`, `image_alt` | **ancien champ, toujours accepté** : une seule image, comptée comme `images[0]` (puis `images[]` à la suite ; le total respecte le plafond). Rien à changer pour les clients actuels |
+| `video` | **multipart**, un seul fichier **mp4 ou webm** (type réel lu par finfo, **extension cohérente** avec ce type : un `.mp4` qui contient du WebM ou un `.exe` est refusé), poids ≤ `min(xomiton.feed.video_max_mb, upload_max_filesize, post_max_size)` (**30 Mo** par défaut, `XOMITON_FEED_VIDEO_MAX_MB`) ; **jamais avec des images** (`image`, `images[]`) **ni dans un sondage** ; **non ré-encodée** (§8.7) ; la publication part **en relecture** |
+| `video_description` | **obligatoire avec `video`**, 5 à 500 car. : alternative textuelle pour l'accessibilité (devient `media[0].alt`) ; même filtre de mots |
 | `poll.question` | 5 à 200 car. |
 | `poll.options` | 2 à 6 réponses ≤ 80 car., distinctes (casse et accents ignorés) ; réponses vides retirées (comme le prototype) |
 | `poll.duration_days` | 1, 3, 7, 14, 30 ; 0 ou absent = sans fin |
@@ -662,10 +669,14 @@ Publication (`App\Http\Resources\Feed\PostResource`) :
 { "id": "01JC…", "author": { "id": 12, "pseudo": "Awa_S", "avatar_url": "…", "role": "membre", "anonymous": false },
   "is_mine": false, "is_anonymous": false, "body": "…", "tag": "temoignage", "tag_label": "Témoignage", "tag_color": "success",
   "visibility": "public", "visibility_label": "Public", "moderated": false, "likes_count": 3, "comments_count": 1,
-  "liked": true, "saved": false, "media": [{ "kind": "image", "url": "…signature=…", "alt": null, "width": 1600, "height": 1200 }],
+  "liked": true, "saved": false,
+  "media": [{ "kind": "image", "url": "…signature=…", "alt": null, "width": 1600, "height": 1200, "position": 0, "mime": "image/webp", "size": 184233 }],
+  "review_state": null, "review_label": null, "review_reason": null,
   "poll": null, "url": "https://…/fil/01JC…", "share_url": "https://…/p/01JC…", "published_at": "…", "edited": false,
   "can": { "update": false, "delete": false, "report": true, "comment": true } }
 ```
+
+`media[]` : **tableau ordonné** (`position` 0, 1, 2…), un élément par image ou vidéo ; `kind` `image` | `video` ; `url` = lien signé (image : `media.signed`, 60 min ; **vidéo** : lien court propre à la personne qui lit, §8.7) ; `alt` = texte alternatif d'une image (peut être `null`) ou **description** d'une vidéo ; `width` / `height` (images ; `null` pour une vidéo : durée et résolution ne sont pas contrôlées, aucun `ffprobe`) ; `mime` ; `size` en octets. Un média sans fichier (supprimé) est absent du tableau. Il n'y a pas de clé « image unique » : l'ancienne réponse était déjà `media[]` (la première image = `media[0]`).
 
 `tag_color` : variante Bootstrap de l'étiquette (`PostTag::badge()`, couleurs du prototype `inc/render.php` : témoignage `success`, question `warning`, ressource `info`, événement et sondage `primary`, violences `danger`), à afficher en badge doux.
 
@@ -684,6 +695,89 @@ Commentaire (`CommentResource`) : `{ id, parent_id, body, author, is_mine, is_a
 `share_url` = `/p/{ulid}` (route web `p.show`) : page publique **neutre** (titre « Publication partagée depuis Xomiton », invitation à se connecter, aucun contenu ni pseudonyme, `noindex`, `no-store`), **sans lecture en base** : même réponse que la publication existe ou non. Connecté·e : redirection vers `/fil/{ulid}` ; « Se connecter » y ramène par `?next=`.
 
 `polls:close` (toutes les 5 min, `routes/console.php`) : `closed_at` = `ends_at` pour chaque sondage échu (une seule fois), cloche « Sondage terminé » (`PollEnded`) à l'auteur·rice active d'une publication encore publiée. Le vote est refusé dès l'échéance, même avant le passage de la tâche.
+
+### 8.7 Images multiples et vidéos relues avant parution (Q96)
+
+Contrat côté serveur, **à brancher par le web (Vue) et l'application (Flutter) sans lire le code**. Classes : `App\Application\Feed\PublishPost`, `ReviewVideo`, `VideoQuota`, `FeedMediaLimits`, `PostVideoStream` ; écran `/admin/moderation/videos`.
+
+**Plafonds** (lus aussi dans les props Inertia de la modale, `FeedComposerOptions.limits` : `max_images`, `video_max_kb`, `video_types`, `video_description_min`, `video_description_max`) : images `xomiton.feed.max_images` (4) ; vidéo `xomiton.feed.video_max_mb` (30 Mo) **borné par les limites PHP** `upload_max_filesize` et `post_max_size` de l'hébergement (un fichier au-dessus de `upload_max_filesize` est refusé comme « trop lourd », 422 `errors.video` ; une requête entière au-dessus de `post_max_size` est refusée avant toute validation par **413** `ValidatePostSize`) ; description 5 à 500 car. ; `xomiton.feed.video_per_day` (5 vidéos par compte et par 24 h glissantes, **retraits et refus compris**).
+
+**Réponses de `POST posts`**
+
+| Code | Cas |
+|---|---|
+| **201** + `Location` | publication ou sondage en ligne (images comprises) |
+| **202** + `Location` | **vidéo reçue, en relecture** : la publication existe (`data.id`), `review_state: "pending"`, `published_at: null`, invisible pour tout le monde sauf son auteur·rice et la modération. Ne pas confondre avec le **202 d'idempotence** (`data.status: "processing"` + `Retry-After`, requête d'origine encore en cours, ADR-32) : la vidéo porte `data.id` |
+| 401 / 403 | jeton absent ; sans `posts.create` (`forbidden`), e-mail non confirmé (`email_unverified`), compte suspendu : mêmes refus que toute publication |
+| 422 `validation_failed` | `errors.images` (plus que `max_images`, élément non fichier), `errors.images.N` (type réel hors JPEG / PNG / WebP, image illisible ou trop lourde), `errors.images_alt` (entrée sans image, > 255 car.), `errors.video` (type réel ni mp4 ni webm, extension incohérente, plus lourde que la limite, **mélange image + vidéo**, **vidéo dans un sondage**, plusieurs vidéos), `errors.video_description` (absente, < 5 ou > 500 car.), `errors.body` (ni texte ni média) |
+| 422 `content_rejected` | terme bloqué dans le texte, le texte alternatif ou la description (aucun fichier n'est gardé) |
+| 429 `too_many_requests` | quota quotidien de vidéos atteint (`retry_after` en secondes, en-tête `Retry-After`) ou limiteur `feed_write` |
+
+**Vidéo : ce que le serveur ne fait pas.** Aucun ré-encodage (pas de `ffmpeg` : hébergement cPanel) : le fichier est stocké **tel quel** sur le disque privé. Ses **métadonnées (lieu GPS, appareil, date) ne sont donc PAS retirées**, contrairement aux images. Les clients **doivent afficher avant l'envoi** `lang feed.video.privacy_notice` (« Ta vidéo n'est pas retouchée… ») et `feed.video.review_notice` ; la modération dispose du motif de refus « vie privée ». La durée et la résolution ne sont pas contrôlées (`width` / `height` nuls).
+
+**Cycle de vie** (`PostStatus`) : `relecture` → `publie` (approbation : `published_at` = date d'approbation, `review_state: "approved"`, cloche « Ta vidéo a été publiée » à l'auteur·rice) ou `refuse` (`review_state: "rejected"`, cloche avec le motif ; le **fichier est supprimé du disque** après `xomiton.feed.video_rejected_retention_days` jours, 7 par défaut, par `videos:purge-rejected` — `media[]` est alors vide). L'auteur·rice retire sa vidéo en attente ou refusée par `DELETE posts/{ulid}` (204, fichier supprimé tout de suite). Une vidéo en relecture n'apparaît **jamais** dans le fil, `feed/saved`, `users/{id}/posts`, les groupes, la recherche, les compteurs ni les notifications d'abonné·es, et ne se like, ne s'enregistre, ne se commente ni ne se signale pas (404). Aucune notification d'abonné·es n'existe aujourd'hui pour une nouvelle publication : l'approbation déclenche exactement ce que déclenche une publication ordinaire (rien de plus). La visibilité choisie (`public`, `followers`, `me`) s'applique dès l'approbation.
+
+**Champs ajoutés à la publication** : `review_state` (`null` | `pending` | `approved` | `rejected` ; `null` pour une publication ordinaire), `review_label` (« En attente de relecture », « Vidéo publiée », « Vidéo refusée »), `review_reason` (**auteur·rice seulement**, après refus : libellé du motif puis texte libre de la modération, ≤ 300 car.), `published_at` nul tant que la vidéo n'est pas approuvée ; `can.update` faux et `can.report` / `can.comment` faux en relecture. `GET posts/review` liste **mes** vidéos `pending` et `rejected`.
+
+**Lecture de la vidéo** : `media[i].url` d'une vidéo est un lien **signé court** (`xomiton.feed.video_url_minutes`, 15 min, aligné sur une fenêtre de 5 min) vers `GET /media/fil/{ulid}/video?viewer=…&expires=…&signature=…`, **propre à la personne qui lit** (`viewer` fait partie de la signature : l'adresse ne se transmet pas à quelqu'un d'autre) et utilisable **sans jeton** par un `<video src>` ou `video_player`. À chaque requête le serveur revérifie que le compte est actif et **voit la publication** (audience, groupe, blocages, statut) : sinon **404 neutre** (indiscernable d'une vidéo inexistante) ; signature absente, altérée ou expirée : 403 ; la modération voit une vidéo en attente. Le fichier est diffusé avec les **plages `Range`** : `Accept-Ranges: bytes`, **206** + `Content-Range` (iOS Safari et l'avance dans la vidéo), `Content-Type` réel (`video/mp4`, `video/webm`), `Cache-Control: private, no-store`, `X-Robots-Tag: noindex, nofollow`, `X-Content-Type-Options: nosniff`. Jamais publique ni indexable, jamais sans compte. Redemander la publication (`GET posts/{ulid}`) pour obtenir un lien neuf.
+
+**Exemple : plusieurs images** (`POST posts`, multipart `body`, `images[]`, `images_alt[]`) → **201**
+
+```json
+{ "data": { "id": "01M7765CVMV…", "body": "Nos photos de samedi.", "tag": "temoignage", "visibility": "public",
+  "review_state": null, "review_label": null, "review_reason": null, "published_at": "2026-11-12T06:12:17+00:00",
+  "media": [
+    { "kind": "image", "url": "https://…/media/local/images/2026/11/01m7765cvm….webp?expires=…&signature=…", "alt": "Atelier en plein air",
+      "width": 1600, "height": 1200, "position": 0, "mime": "image/webp", "size": 184233 },
+    { "kind": "image", "url": "https://…/media/local/images/2026/11/01m7765d4k….webp?expires=…&signature=…", "alt": "Le groupe rassemblé",
+      "width": 800, "height": 600, "position": 1, "mime": "image/webp", "size": 90412 } ],
+  "poll": null, "is_mine": true, "can": { "update": true, "delete": true, "report": false, "comment": true } } }
+```
+
+**Exemple : vidéo en relecture** (`POST posts` multipart `body`, `video`, `video_description`) → **202**, `Location: https://…/api/v1/posts/01M7765D6R0…`
+
+```json
+{ "data": { "id": "01M7765D6R0BVYR2VK83KCGWRE", "is_mine": true, "body": "Notre atelier en vidéo.", "tag": "temoignage", "visibility": "public",
+  "moderated": false, "review_state": "pending", "review_label": "En attente de relecture", "review_reason": null,
+  "media": [{ "kind": "video", "url": "https://…/media/fil/01M7765D6R0BVYR2VK83KCGWRE/video?expires=1794465000&viewer=1&signature=…",
+              "alt": "Des femmes assises en cercle qui discutent d'un projet de coopérative.",
+              "width": null, "height": null, "position": 0, "mime": "video/mp4", "size": 8192 }],
+  "poll": null, "published_at": null, "edited": false,
+  "can": { "update": false, "delete": true, "report": false, "comment": false } } }
+```
+
+**Exemple : vidéo approuvée** (`GET posts/{ulid}`, par l'auteur·rice ou toute personne qui peut la voir) → **200**
+
+```json
+{ "data": { "id": "01M7765D6R0BVYR2VK83KCGWRE", "review_state": "approved", "review_label": "Vidéo publiée", "review_reason": null,
+  "media": [{ "kind": "video", "url": "https://…/media/fil/01M7765D6R0BVYR2VK83KCGWRE/video?expires=…&viewer=7&signature=…",
+              "alt": "Des femmes assises en cercle qui discutent d'un projet de coopérative.",
+              "width": null, "height": null, "position": 0, "mime": "video/mp4", "size": 8192 }],
+  "published_at": "2026-11-12T06:12:17+00:00", "edited": false,
+  "can": { "update": true, "delete": true, "report": false, "comment": true } } }
+```
+
+**Exemple : vidéo refusée** (auteur·rice seulement ; `media` devient `[]` une fois le fichier purgé)
+
+```json
+{ "data": { "id": "01M7765D7P0A5C9DYW978Y5R0V", "review_state": "rejected", "review_label": "Vidéo refusée",
+  "review_reason": "Vie privée (lieu, visage ou information personnelle visible) — On voit le portail de ta maison.",
+  "media": [], "published_at": null, "can": { "update": false, "delete": true, "report": false, "comment": false } } }
+```
+
+**Exemples d'erreur** (422, forme §1)
+
+```json
+{ "message": "Décris ta vidéo en quelques mots pour les personnes qui ne peuvent pas la regarder.", "code": "validation_failed",
+  "errors": { "video_description": ["Décris ta vidéo en quelques mots pour les personnes qui ne peuvent pas la regarder."] } }
+{ "message": "Une vidéo ne s’ajoute pas à des images : choisis l’une ou les autres.", "code": "validation_failed",
+  "errors": { "video": ["Une vidéo ne s’ajoute pas à des images : choisis l’une ou les autres."] } }
+{ "message": "Tu peux joindre au plus 4 images à une publication.", "code": "validation_failed",
+  "errors": { "images": ["Tu peux joindre au plus 4 images à une publication."] } }
+{ "message": "Tu as atteint la limite de vidéos envoyées par jour (5). Réessaie un peu plus tard.", "code": "too_many_requests", "retry_after": 3412 }
+```
+
+**Modération** : écran `/admin/moderation/videos` (onglet « Vidéos à relire » de la modération, permission `moderation.manage`, rejouée à chaque action ; jamais sa propre vidéo) : lecteur HTML5 natif, description, auteur·rice, date, poids ; **Approuver** ou **Refuser** (motif obligatoire parmi `xomiton.feed.video_reject_reasons` : `privacy` « vie privée », `inappropriate`, `rights`, `unreadable`, `off_topic`, `other`, + texte libre ≤ 300 car., obligatoire pour `other`). Cloche « Vidéo à relire » (`VideoPendingReview`) aux comptes `moderation.manage` à chaque envoi. Journal d'audit **sans contenu** : `post.video_submitted`, `post.video_approved`, `post.video_rejected` (code du motif seulement), `post.video_withdrawn`.
 
 ## 9. Parcours Flutter de référence
 
