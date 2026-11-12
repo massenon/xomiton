@@ -16,7 +16,7 @@ Navigateur en navigation privée, aucun compte connecté.
 | Réf. | Action | Résultat attendu | Statut | Commentaire |
 |---|---|---|---|---|
 | VIS-01 | Ouvrir `/`. | Page d'accueil complète et stylée, menu, bouton SOS visible, section rouge très clair « alerte » (`/#alerte`) ; aucune erreur rouge dans la console (F12). | ☐ | |
-| VIS-02 | Ouvrir `/thematiques`, puis une fiche. | 29 thématiques ; la fiche est lisible, la FAQ s'affiche en bas. | ☐ | |
+| VIS-02 | Ouvrir `/thematiques`, puis une fiche. | 37 thématiques (29 + les 8 fiches des violences numériques, P19) ; la fiche est lisible, la FAQ s'affiche en bas. | ☐ | |
 | VIS-03 | Ouvrir `/ressources`, rechercher un mot, ouvrir une ressource ; ouvrir `/actualites`. | Liste, recherche et détail fonctionnent ; badge « Hors ligne » sur certaines ressources ; 17 ressources publiées. | ☐ | |
 | VIS-04 | Ouvrir `/aide`, déplier plusieurs questions. | 28 questions, réponses lisibles. | ☐ | |
 | VIS-05 | Ouvrir `/urgences`. | Numéros 117, 118 et ligne d'écoute `+229 01 97 38 88 47` ; chaque numéro est un lien `tel:`. | ☐ | |
@@ -27,6 +27,10 @@ Navigateur en navigation privée, aucun compte connecté.
 | VIS-10 | Ouvrir `/suivi`, saisir le code ; puis un code inexistant. | Statut « Nouveau » et message « Reçu… » ; code inexistant : message neutre, sans fuite d'information. | ☐ | |
 | VIS-11 | Ouvrir `/n-importe-quoi` et `/thematiques/x`. | Page « Erreur 404 – Xomiton » avec rappel du SOS et des urgences. | ☐ | |
 | VIS-12 | Ouvrir `/sitemap.xml`. | Réponse 404 : normal en local (indexation interdite hors production). | ☐ | |
+| VIS-13 | P19 : ouvrir `/violences-numeriques` (lien « Violences numériques » du pied de page). | 6 catégories, 23 sujets : 8 avec « Lire la fiche » et « Lire la BD », 15 « Bientôt disponible » **sans lien** ; boutons Signaler, SOS, urgences, « Lire les BD ». | ☐ | |
+| VIS-14 | Ouvrir une fiche depuis le carrefour (ex. « Sextorsion »). | Fil d'Ariane Accueil › Violences numériques › Sextorsion ; avertissement de contenu ; 5 sections en accordéon ; 3 questions fréquentes ; carte « La BD de cette fiche » ; **aucun** bloc « Ce que dit la loi » tant que l'administration ne l'a pas rempli. | ☐ | |
+| VIS-15 | Ouvrir `/bd`, puis une BD (`/bd/vn02`). | 8 BD (jamais bd1 à bd3) ; page de la BD : avertissement, planche 1 sur 4 avec sa légende, boutons « Planche précédente / suivante », flèches ← → du clavier, compteur annoncé ; lien vers la fiche, Signaler, SOS, urgences. Sans JavaScript : les 4 planches à la suite. `Ctrl+P` : les 4 planches, sans boutons. `/bd/bd1` → 404. | ☐ | |
+| VIS-16 | Partager `/bd/vn02` et `/thematiques/sextorsion` (aperçu WhatsApp ou Facebook, ou outil de débogage Open Graph). | Aperçu avec le visuel carré de partage de la BD et le titre de la page. Non vérifiable en local (adresse non publique). | ☐ | |
 
 ## 2. Inscription et connexion
 
@@ -53,6 +57,7 @@ Utiliser deux fenêtres privées pour les tests à deux.
 | MEM-01 | Ouvrir `/fil` et publier un texte avec un thème et une visibilité. | La carte apparaît en haut, le compteur « Publications » augmente. | ☐ | |
 | MEM-02 | Créer un sondage (question, deux réponses, durée) puis voter depuis le second compte. | Résultat affiché ; après l'échéance (planificateur lancé) le vote est refusé. | ☐ | |
 | MEM-03 | Commenter, mettre « J'aime », partager, enregistrer (`/fil/enregistres`), ouvrir le détail `/fil/<id>`. | Chaque action est prise en compte et visible. | ☐ | |
+| MEM-BD | P19 : après `php artisan xomiton:violences-numeriques:import --publish`, ouvrir `/fil` (web) et le fil de l'application ; relancer la commande. | 8 publications du compte « xomiton » (étiquette Ressource, publiques), chacune avec son texte, 4 planches (texte alternatif de chaque image lu) et le lien `/bd/vn0X` cliquable sur le web ; **aucune** notification reçue ; la seconde exécution n'ajoute rien. | ☐ | |
 | MEM-04 | Publier avec « Anonyme » coché. | Le pseudo n'apparaît pas. Signaler une publication (menu ⋯) : elle arrive dans `/admin/moderation`. | ☐ | |
 | MEM-05 | `/messages` › Nouvelle conversation › Message privé › `pair_chantal` ; écrire. | Message affiché ; le second compte reçoit la conversation (cloche et liste). Onglet « Non lues », recherche, groupe. | ☐ | |
 | MEM-06 | `/groupes` › Créer un groupe (nom, description, Privé ou Public, zone). | Redirection vers `/groupes/<id>` et « Groupe créé » ; un autre compte peut rejoindre un groupe public. | ☐ | |
@@ -113,6 +118,7 @@ Un code de vérification est demandé à chaque connexion.
 | ADM-08 | `/admin/sauvegardes` : **Sauvegarder maintenant**. | Archive chiffrée listée et téléchargeable ; avertissement normal « mot de passe d'archive non défini ». | ☐ | |
 | ADM-09 | `/admin/parametres` : saisir une valeur hors bornes ; `/admin/journal` : consulter, filtrer, exporter. | Valeur refusée ; le journal montre vos actions (`auth.otp_verified`, `alerts.sos_triggered`…). | ☐ | |
 | ADM-10 | `/admin/emails` : ouvrir plusieurs modèles, voir l'aperçu, essai d'envoi. | Aperçu dans le gabarit premium, essai visible dans le journal. | ☐ | |
+| ADM-BD | P19 : `/admin/ccc` › BD SSR : interrupteur « Page publique » d'une BD `vn0X` puis de `bd1` ; `/admin/contenu` › Thématiques › « Sextorsion » : remplir « Références juridiques », enregistrer, ouvrir la fiche, puis relancer `php artisan xomiton:violences-numeriques:import`. | BD rendue privée → `/bd/vn0X` en 404, rendue publique → page servie ; références affichées sous « Ce que dit la loi » avec « Informations validées par l’administration de Xomiton. », HTML nettoyé ; l'import ne les efface pas. | ☐ | |
 | ADM-11 | `/admin/passerelles`. | Passerelles sans clés : « publication manuelle » (aucune publication réelle). | ☐ | |
 | ADM-12 | `/admin/maintenance` : activer (motif, durée, case « Je confirme »), vérifier en navigation privée, puis **désactiver**. | Voir la section « Mode maintenance » ci-dessous. | ☐ | |
 | ADM-13 | Comparer avec `moderation@xomiton.app` (admin) : essayer ce qui est réservé au super-admin (restaurer ou supprimer une sauvegarde, rôles d'administration). | Actions réservées refusées ou masquées pour l'admin. | ☐ | |
