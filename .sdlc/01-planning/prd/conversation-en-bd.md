@@ -1,6 +1,6 @@
 ---
 type: prd
-title: "Conversation en BD (bulles, bonshommes et codes couleur)"
+title: "Conversations en BD (bulles de conversation)"
 slug: "conversation-en-bd"
 status: draft
 phase: "01"
@@ -8,141 +8,205 @@ created: 2026-11-12
 updated: 2026-11-12
 generated_by: sdlc-prd
 owner: "Équipe Xomiton"
-tags: [planning, prd, ccc, bd, pedagogie, accessibilite]
+tags: [planning, prd, ccc, bd, bulles, pedagogie, accessibilite]
 stakeholders: []
 target_date: ""
 ---
 
-# Conversation en BD (bulles, bonshommes et codes couleur)
+# Conversations en BD (bulles de conversation)
 
-> Spécification produite avec `/product-management:write-spec` (demande du client du 12/11/2026), rangée dans le vault comme les autres PRD. Rédigée en français comme le reste du projet.
-> Inspiration : les « Comic Strip Conversations » (Carol Gray), outil thérapeutique et pédagogique qui dessine une interaction avec des **bonshommes simples**, des **bulles** (ce qui est dit / ce qui est pensé) et un **code couleur** des émotions, pour rendre visibles les intentions et les ressentis.
+> Spécification produite avec `/product-management:write-spec` (demande du client du 12/11/2026), **révisée le même jour** avec les réponses du client. Rédigée en français comme le reste du projet.
+> Source du plan d'exécution : `docs/IMPLEMENTATION_PLAN.md`, tâches **P20-01 à P20-12**, décisions **Q99**.
+> Annexes : `design-system/bd/conversations/GRAMMAIRE_DES_BULLES.md` (dessin et rendu des bulles, d'après le tutoriel Mangakoaching fourni par le client) et `design-system/bd/conversations/MODELES.md` (casting et 12 conversations modèles, proposés et validés).
+
+## Décisions du client (12/11/2026)
+
+| Question | Décision |
+|---|---|
+| Style | **Pas** de dessins simples, de bonshommes bâtons ni de symboles : on garde la **BD illustrée** des BD « violences numériques », avec des **bulles de conversation** |
+| Visibilité | **Publiques et indexées**, comme les BD |
+| Les 12 modèles | Claude **propose et valide** les brouillons → faits (`MODELES.md`) |
+| Personnages | **Pas** les personnages des BD (Afi, Sena, Kossi…) → casting propre de 8 personnages, même style |
+| Créations des membres | **Oui, dès la version 1** |
+| Export | **PDF et PNG** |
+| Référence pour les bulles | https://www.mangakoaching.com/tutoriels/anatomie-bulle-de-bd/ |
+
+Le code couleur des émotions de la première version de la spécification est **abandonné** : l'émotion passe par le dessin du visage et par la **forme de la bulle** (cri hérissé, peur tremblée, pensée en nuage…), comme dans le tutoriel.
 
 ## Context
 
-Xomiton propose déjà des BD illustrées sur les violences numériques (8 publiées, 15 en production : [[violences-numeriques-contenus-bd]]) et des outils CCC pour les séances des pair·es animateur·rices (manuel, boîtes à images, BD, mode animation, lecture hors ligne).
+Xomiton publie déjà des BD illustrées sur les violences numériques ([[violences-numeriques-contenus-bd]]). Elles racontent une histoire en 4 planches, avec une légende sous chaque image : les personnages n'y **parlent** pas.
 
-Ces BD sont **narratives et figées** : elles racontent une histoire, mais ne permettent pas de **décomposer une conversation** (« qu'a-t-elle dit ? qu'a-t-elle pensé ? qu'a-t-elle ressenti ? »), ni de la **construire avec le groupe** pendant une séance. Or c'est là que se jouent l'emprise, la manipulation, le consentement, le chantage : ce qui est dit n'est pas ce qui est pensé ni ressenti.
-
-La « conversation en BD » répond à ce besoin avec un format volontairement **simple** (bonshommes, bulles, symboles, couleurs), rapide à dessiner, compréhensible par tout le monde y compris les personnes peu lettrées, et utilisable aussi pour vulgariser d'autres sujets (droits, santé, handicap, vie en entreprise).
+La « conversation en BD » met au contraire la **parole** au centre : chaque case montre ce que les personnes **disent** (bulle de parole), **pensent** (bulle de pensée), **crient**, **chuchotent** ou **écrivent** (bulle de message). C'est l'écart entre ce qui est dit et ce qui est pensé qui fait le travail pédagogique : dire « peut-être » en pensant « non », gronder en ayant peur, rester silencieux·se par crainte du groupe. Le format sert aussi à **vulgariser** (double authentification, règles) et à sensibiliser au **handicap** et à la **vie en entreprise**.
 
 ## Problem Statement
 
-Les pair·es animateur·rices et les membres ont du mal à **mettre des mots et des images sur ce qui se passe dans une interaction difficile** : une pression déguisée en affection, un message qui menace sans le dire, un « oui » qui veut dire « non ». Aujourd'hui, la plateforme n'offre aucun outil pour **dessiner ensemble** une conversation et faire apparaître les pensées et émotions cachées. Sans cela, les séances restent verbales, les messages-clés passent mal auprès des publics peu lettrés ou en situation de handicap, et les membres repartent sans support réutilisable.
+Les pair·es animateur·rices n'ont pas de support pour **décomposer une interaction** en séance (consentement, pression du groupe, sexisme, handicap, coming out), et les membres n'ont aucun moyen de **raconter une situation vécue** de façon visuelle et sûre. Les textes longs sont peu lus, en particulier par les personnes peu lettrées ou sur téléphone. Sans ce support, les situations d'emprise ou de pression restent abstraites et les séances reposent sur la seule parole de l'animateur·rice.
 
 ## Goals
 
-1. **Séances** : au moins **60 % des séances CCC** saisies par les pair·es utilisent une conversation en BD dans les 3 mois suivant la mise en ligne (mesure : séances avec une conversation ouverte en mode animation).
-2. **Compréhension** : au moins **75 % des participant·es** disent avoir mieux compris la différence entre « ce qui est dit » et « ce qui est ressenti » (question unique en fin de séance).
-3. **Bibliothèque** : **12 conversations modèles** publiées au lancement, une par catégorie de violences numériques et sur 3 thèmes de vulgarisation (consentement, droits, santé).
-4. **Accessibilité** : 100 % des conversations lisibles **sans la couleur seule** et par lecteur d'écran (contrôle automatique dans les tests).
-5. **Appropriation** (phase 2) : au moins **200 conversations créées par des membres** dans les 6 mois, sans incident de sécurité (aucune donnée identifiante publiée).
+1. **Usage en séance** : 60 % des séances CCC des pair·es utilisent au moins une conversation en BD, 3 mois après la mise en ligne.
+2. **Compréhension** : 75 % des participant·es d'une séance déclarent avoir mieux compris la situation (question en fin de séance, mesure agrégée).
+3. **Audience publique** : les 12 modèles sont indexés et ensemble lus au moins 2 000 fois par mois, 3 mois après la mise en ligne.
+4. **Expression des membres** : 200 conversations créées par des membres dans les 3 premiers mois, dont au moins 30 publiées après modération.
+5. **Accessibilité** : 100 % des conversations lisibles au lecteur d'écran (chaque bulle lue avec son personnage et son type) et au clavier.
 
 ## Non-Goals
 
-- **Pas d'éditeur de dessin libre** (pinceau, formes à main levée) : la force de l'outil est sa simplicité ; un éditeur complet coûte cher et nuit à l'accessibilité.
-- **Pas de génération d'images par IA** dans l'outil : les bonshommes et symboles sont une bibliothèque fixe, sobre et sans visages réalistes (risque de ressemblance avec des personnes réelles, coût des crédits).
-- **Pas d'usage thérapeutique clinique** : Xomiton n'est pas un service de soin ; l'outil est pédagogique et d'écoute, avec orientation vers les professionnel·les de l'annuaire.
-- **Pas de collaboration en temps réel à plusieurs appareils** en v1 : en séance, un seul écran (projeté ou partagé) suffit.
-- **Pas de traduction en langues locales** en v1 (fon, yoruba…) : chantier distinct, mais le format très visuel limite le besoin de texte.
+- **Dessin libre** ou import d'images par les membres : risque de contenus non conformes et de photos de personnes réelles ; les membres composent à partir d'une bibliothèque de scènes validées.
+- **Génération d'images par IA à la demande des membres** : coût des crédits, risque de contenus non conformes, pas de relecture possible avant affichage.
+- **Thérapie clinique** : outil d'éducation et de soutien entre pair·es, pas un soin.
+- **Édition à plusieurs en temps réel** : complexité sans besoin avéré en version 1.
+- **Langues locales** (fon, yoruba…) : chantier distinct ; le format (texte réel dans les bulles) le rendra possible.
 
 ## User Stories
 
-**Pair·e animateur·rice (en séance, souvent hors ligne)**
-- En tant que pair·e animateur·rice, je veux ouvrir une conversation modèle en plein écran et la dérouler case par case pour faire réagir le groupe à chaque étape.
-- En tant que pair·e animateur·rice, je veux construire une conversation **avec le groupe** (choisir les personnages, écrire ce qui est dit et pensé, choisir l'émotion) pour partir de leurs propres situations.
-- En tant que pair·e animateur·rice, je veux **masquer puis révéler** les bulles de pensée et les émotions pour faire deviner au groupe ce que ressent chaque personnage.
-- En tant que pair·e animateur·rice, je veux utiliser l'outil **sans réseau** et retrouver mes conversations sur l'appareil.
-- En tant que pair·e animateur·rice, je veux imprimer ou exporter une conversation en image pour la laisser au groupe.
+**Visiteur·se (non connecté·e)**
+- En tant que visiteur·se, je veux lire une conversation en BD case par case, avec les bulles dans l'image, pour comprendre une situation sans lire un long texte.
+- En tant que visiteur·se qui utilise un lecteur d'écran, je veux entendre chaque bulle avec le nom du personnage et sa nature (dit, pense, crie, chuchote, message), pour suivre la conversation comme les autres.
+- En tant que visiteur·se, je veux télécharger la conversation en PDF ou en PNG pour la garder ou la partager.
+- En tant que visiteur·se, je veux trouver à la fin des liens d'aide (Signaler, SOS, urgences, aide) quand le sujet me concerne.
+
+**Pair·e animateur·rice**
+- En tant que pair·e animateur·rice, je veux projeter une conversation en **mode séance** qui affiche d'abord les paroles puis révèle les pensées, pour faire réfléchir le groupe à l'écart entre ce qui est dit et ce qui est pensé.
+- En tant que pair·e animateur·rice, je veux les questions d'animation de chaque modèle, pour préparer ma séance.
+- En tant que pair·e animateur·rice, je veux imprimer une conversation en PDF A4 avec ses questions, pour animer sans connexion ni projecteur.
+- En tant que pair·e animateur·rice, je veux utiliser les conversations hors ligne dans l'app, pour animer là où le réseau manque.
 
 **Membre**
-- En tant que membre, je veux lire des conversations modèles sur un sujet (sextorsion, emprise…) pour reconnaître une situation que je vis.
-- En tant que membre (phase 2), je veux dessiner une conversation que j'ai vécue, **en privé**, pour mettre des mots sur ce que j'ai ressenti et la montrer, si je le choisis, à une personne de l'annuaire ou à un·e pair·e.
+- En tant que membre, je veux créer ma propre conversation en choisissant des scènes illustrées et en ajoutant des bulles, pour raconter une situation vécue ou imaginée.
+- En tant que membre, je veux garder ma création privée tant que je le souhaite, pour ne rien exposer sans le vouloir.
+- En tant que membre, je veux proposer ma création à la publication, sous mon pseudonyme ou anonymement, pour aider d'autres personnes.
+- En tant que membre, je veux exporter ma création en PDF ou en PNG.
+- En tant que membre en mode discret, je veux que l'éditeur et mes créations n'apparaissent pas dans un aperçu de partage ni dans un titre d'onglet explicite.
 
-**Équipe éditoriale (administration)**
-- En tant qu'administrateur·rice, je veux créer, modifier, publier ou masquer des conversations modèles et les ranger par catégorie et par thème.
-- En tant qu'administrateur·rice, je veux relier une conversation à une fiche de connaissances et à une BD existante.
-
-**Personne malvoyante ou utilisant un lecteur d'écran**
-- En tant que personne aveugle, je veux que chaque case soit lue dans l'ordre (« Afi dit… ; Afi pense… ; Afi ressent : peur ») pour suivre la conversation sans voir les images.
+**Équipe d'administration et de modération**
+- En tant que modérateur·rice, je veux valider ou refuser une création proposée avant qu'elle soit publique, avec un motif, pour qu'aucun contenu nuisible ne soit indexé.
+- En tant qu'administrateur·rice, je veux créer et modifier les conversations modèles (scènes, bulles, questions) dans l'admin, sans développeur.
+- En tant que modérateur·rice, je veux qu'une conversation publiée puisse être signalée, pour réagir vite.
 
 **Cas limites**
-- Conversation vide, case sans bulle, texte trop long, émotion non choisie : messages clairs, rien ne se perd.
-- Une conversation créée par un membre contient un nom, un numéro ou une adresse : avertissement avant tout partage.
+- Une bulle trop longue → l'éditeur propose de la couper en bulles associées.
+- Une création qui contient un mot interdit, un numéro de téléphone ou une adresse → bloquée avant la proposition, avec une explication.
+- Une création refusée → la personne voit le motif et peut la corriger ; rien n'est public.
+- Une case sans bulle → autorisée (silence, regard) ; une conversation sans aucune bulle → refusée.
 
 ## Requirements
 
-### Must-Have (P0) — v1 « lire, animer, créer en séance »
+### P0 — indispensables (version 1)
 
-1. **Format d'une conversation** : 1 à 8 cases ; par case, 1 à 4 personnages (bonshommes bâtons de la bibliothèque, distingués par une couleur de vêtement et une initiale, jamais un visage réaliste) ; pour chaque personnage, une **bulle « dit »** (bord plein) et/ou une **bulle « pense »** (bord en nuage), ≤ 140 caractères chacune ; une **émotion** au plus par personnage et par case ; jusqu'à 3 **symboles** par case (stop, cœur, point d'interrogation, téléphone, cadenas, alerte, écoute).
-   - *Critère* : Étant donné une case avec deux personnages, quand j'ajoute une bulle « pense » à l'un, alors elle s'affiche en nuage et elle est annoncée « pense » au lecteur d'écran.
-2. **Code couleur des émotions accessible** : 6 émotions (joie, tristesse, peur, colère, gêne/honte, calme/confiance), chacune = **couleur des jetons du design system + icône + mot**. Jamais la couleur seule ; contraste AA ; légende toujours visible.
-   - *Critère* : en niveaux de gris, toutes les émotions restent distinguables (test visuel automatisé sur les tokens).
-3. **Lecteur et mode animation** (web Vue + app Flutter) : case par case, plein écran, clavier ← → et balayage, **bouton « révéler les pensées et émotions »** (masquées au départ en mode animation), compteur annoncé, impression de la conversation entière.
-4. **Éditeur simple** (web + app) : ajouter / réordonner / supprimer des cases (boutons « Monter », « Descendre ») ; choisir personnages, bulles, émotion, symboles dans des listes ; **aperçu immédiat** ; entièrement utilisable au clavier et au lecteur d'écran ; brouillon enregistré sur l'appareil.
-5. **Bibliothèque de conversations modèles** gérée dans l'admin (`/admin/ccc`, nouvel onglet « Conversations en BD ») : créer, modifier, publier / masquer, catégorie (les 6 catégories des violences numériques + thèmes de vulgarisation), lien vers une fiche et une BD ; journal d'audit ; permission `ccc_tools.manage`.
-6. **Lecture publique et membres** : les conversations publiées apparaissent dans `/ccc` (onglet « Conversations ») et sur la fiche liée ; pages publiques indexables comme les BD (Q19, Q98) si l'équipe le décide (question ouverte n° 1).
-7. **Hors ligne** : conversations modèles et brouillons du ou de la pair·e lisibles et éditables sans réseau (même mécanisme que la lecture hors ligne des outils CCC, D-MOB-19).
-8. **Texte alternatif généré** : pour chaque case, une description lisible construite à partir du contenu (« Case 2 : Kossi dit “…”. Afi pense “…”. Afi ressent : peur. »), utilisée par les lecteurs d'écran et à l'export.
-9. **Rendu léger** : dessin en **SVG** composé côté client à partir de la bibliothèque (pas d'image générée), poids négligeable, net à toutes les tailles, export PNG à la demande.
+**P0-1 · Format d'une conversation**
+- 3 à 8 cases illustrées (format 3:2) ; titre, résumé, thème, catégorie, public conseillé, message clé, avertissement de contenu facultatif.
+- Bulles des 9 types de la grammaire : `parole`, `pensee`, `cri`, `tremblee`, `chuchote`, `joie`, `message`, `voix_appareil`, `cartouche` ; queue vers le personnage, l'écran ou le bord de la case (hors-champ) ; bulles associées et superposées.
+- Au plus 20 mots par bulle et 4 bulles par case (hors cartouche).
+- *Critères* : [ ] chaque type a la forme décrite dans la grammaire ; [ ] la queue d'une chaîne associée n'est dessinée que sur la dernière bulle ; [ ] les positions sont en pourcentage et le rendu est identique de 320 px à 1600 px de large.
 
-### Nice-to-Have (P1)
+**P0-2 · Rendu des bulles par la plateforme**
+- Les illustrations ne contiennent **aucun texte** ; les bulles sont dessinées en SVG par-dessus, avec du texte réel.
+- *Critères* : [ ] le texte des bulles est présent dans le HTML de la page publique (indexable) ; [ ] corriger une bulle ne demande pas de régénérer l'image ; [ ] contraste du texte ≥ 7:1.
 
-- **Création par les membres, en privé** (phase 2) : mes conversations, visibles par moi seul·e, partage volontaire et révocable avec un·e pair·e ou une fiche de l'annuaire ; détection d'éléments identifiants (numéro, adresse, nom complet) avec avertissement avant partage.
-- **Modèles de départ** (« emprise », « chantage », « dire non », « demander de l'aide ») pour démarrer plus vite.
-- **Questions d'animation** associées à chaque conversation modèle (« Que pense Afi ici ? Que pourrait-elle répondre ? »).
-- **Partage réseaux** d'une conversation modèle via les passerelles (P19-11), en visuel carré.
+**P0-3 · Pages publiques indexées**
+- Liste des conversations publiées et page par conversation (adresse lisible), SEO (titre, description, image de partage, JSON-LD), sitemap.
+- Lecture case par case (boutons, clavier ← →) et lecture de toutes les cases à la suite sans JavaScript.
+- Fin de lecture : message clé, liens d'aide (Signaler, SOS, urgences, aide), autres conversations, lien vers la fiche ou la BD du même thème quand il existe.
+- *Critères* : [ ] audit SEO du projet passé ; [ ] une conversation non publiée renvoie une page introuvable neutre ; [ ] mode discret respecté (titre d'onglet neutre, cases repliées) pour une personne connectée.
 
-### Future Considerations (P2)
+**P0-4 · Accessibilité**
+- Chaque case est une figure avec une description de la scène ; les bulles sont lues dans l'ordre de lecture : « Fifamè pense : … », « Message reçu de … : … ».
+- *Critères* : [ ] parcours complet au clavier ; [ ] lecture correcte avec un lecteur d'écran (NVDA ou TalkBack) ; [ ] la forme de la bulle n'est jamais le seul repère.
 
-- Collaboration à plusieurs appareils en séance (vote du groupe sur l'émotion).
-- Bibliothèque de personnages étendue (âges, handicaps visibles, tenues), toujours sans visages réalistes.
-- Versions audio (lecture des bulles) pour les publics non lecteurs.
-- Traductions en langues locales.
-- Statistiques agrégées d'usage en séance pour le rapport d'activité (sans contenu).
+**P0-5 · Mode séance**
+- Projection plein écran, une case à la fois ; affichage d'abord des bulles dites (tous les types sauf `pensee`), puis bouton « Révéler les pensées » ; questions d'animation à la fin.
+- *Critères* : [ ] utilisable à la télécommande ou au clavier ; [ ] fonctionne hors ligne dans l'app.
+
+**P0-6 · Créations des membres**
+- Éditeur réservé aux membres connecté·es : choix de cases dans une **bibliothèque de scènes** illustrées et validées (cases des modèles et scènes neutres supplémentaires), ajout, déplacement et dimensionnement automatique des bulles d'après leur texte, choix du type et du personnage, orientation de la queue, aperçu.
+- Utilisable au clavier et sur téléphone (glisser ou boutons de position).
+- Création **privée** par défaut, brouillon enregistré automatiquement.
+- Contrôles de la grammaire (§7 de la grammaire), filtre de mots interdits du projet, blocage des numéros de téléphone, adresses e-mail et liens.
+- *Critères* : [ ] une création ne quitte jamais l'état privé sans action de la personne ; [ ] l'éditeur ne permet aucun import d'image ; [ ] chaque contrôle refuse avec un message clair.
+
+**P0-7 · Publication et modération des créations**
+- « Proposer à la publication » (pseudonyme ou anonyme) → file de modération dans l'admin → publication ou refus motivé ; retrait possible à tout moment par l'auteur·rice.
+- Signalement d'une conversation publiée (motifs existants du projet), traité dans `/admin/moderation`.
+- *Critères* : [ ] rien n'est public ni indexé avant validation ; [ ] l'auteur·rice est notifié·e de la décision ; [ ] un retrait par l'auteur·rice dépublie immédiatement ; [ ] décisions journalisées.
+
+**P0-8 · Export PDF et PNG**
+- PNG : une image par case et une image « bande » de toute la conversation (1080 px de large) pour les réseaux.
+- PDF : A4, cases et bulles en vectoriel, titre, message clé, questions d'animation (pour les modèles), mention de la source.
+- Disponible pour les conversations publiées (visiteur·ses) et pour ses propres créations (membre).
+- *Critères* : [ ] le texte du PDF est sélectionnable ; [ ] PNG ≤ 400 Ko par case ; [ ] l'export d'une création privée n'est possible que par son auteur·rice.
+
+**P0-9 · Administration des modèles**
+- Onglet « Conversations en BD » dans `/admin/ccc` : créer, modifier, ordonner, publier ; gestion de la bibliothèque de scènes ; import des 12 modèles depuis les fichiers de données (idempotent, comme l'import des BD).
+- *Critères* : [ ] permission dédiée ; [ ] actions journalisées.
+
+**P0-10 · Les 12 modèles**
+- Les 12 conversations de `MODELES.md`, illustrées (60 cases), importées et publiées.
+- *Critères* : [ ] 60 cases conformes à la bible (aucun texte dans l'image, zone des bulles respectée) ; [ ] WebP ≤ 100 Ko.
+
+### P1 — souhaitables (suivi rapide)
+
+- **Partage** des conversations publiées par les passerelles existantes (Facebook, Telegram) et dans le fil social, avec l'image « bande ».
+- **API et app** : lecture des conversations dans l'app Flutter avec téléchargement hors ligne (le mode séance hors ligne est déjà en P0-5).
+- **Création depuis l'app** (la version 1 crée sur le web).
+- Bibliothèque de scènes enrichie (nouveaux décors : école, marché, transport, hôpital) et poses supplémentaires du casting.
+- Statistiques agrégées : lectures, exports, usages en séance.
+
+### P2 — plus tard (à ne pas empêcher)
+
+- Traductions et langues locales (texte réel dans les bulles, structure prête).
+- Lecture audio des bulles (voix enregistrées).
+- Création à plusieurs et commentaires.
+- Personnages supplémentaires choisis par les membres.
 
 ## Success Metrics
 
-**Indicateurs avancés (2 à 6 semaines)**
-- Taux d'adoption : part des pair·es actif·ves qui ouvrent au moins une conversation en mode animation — cible **50 %** à 30 jours, ambition 70 %.
-- Taux d'achèvement : part des conversations ouvertes en mode animation déroulées jusqu'à la dernière case — cible **70 %**.
-- Temps de création d'une conversation de 4 cases dans l'éditeur — cible **< 5 minutes** (test d'usage avec 5 pair·es).
-- Taux d'erreur : aucune perte de brouillon signalée.
+**Indicateurs avancés (premières semaines)**
+- Taux de lecture jusqu'à la dernière case : ≥ 60 % (pages publiques).
+- Taux d'exports (PDF ou PNG) par lecture : ≥ 5 %.
+- Membres qui ouvrent l'éditeur puis enregistrent une création : ≥ 40 %.
+- Délai médian de modération d'une création proposée : < 48 h.
 
-**Indicateurs retardés (1 à 6 mois)**
-- Part des séances CCC utilisant l'outil — cible **60 %** à 3 mois.
-- Compréhension déclarée en fin de séance — cible **75 %**.
-- Conversations créées par les membres (phase 2) — cible **200** à 6 mois, **0** incident de données identifiantes publiées.
+**Indicateurs de fond (3 mois)**
+- Séances CCC utilisant une conversation : ≥ 60 % (Goal 1).
+- Compréhension déclarée : ≥ 75 % (Goal 2).
+- Créations publiées : ≥ 30 (Goal 4).
+- Lectures publiques : ≥ 2 000 par mois (Goal 3).
 
-Mesure : événements agrégés côté serveur (ouverture, achèvement, création), jamais le contenu des conversations privées.
+Mesure : compteurs agrégés et anonymes (pas de suivi individuel), comme les autres indicateurs du programme.
 
 ## Open Questions
 
-1. **Indexation** : les conversations modèles sont-elles publiques et indexées comme les BD, ou réservées aux membres et pair·es ? — *client* (bloquant pour P0-6)
-2. **Code couleur** : les 6 émotions proposées et leurs couleurs conviennent-elles au public béninois (sens culturel des couleurs) ? — *client, pair·es animateur·rices, design* (bloquant pour P0-2)
-3. **Personnages** : bonshommes bâtons purs, ou silhouettes très simples reprenant les 6 personnages de la bible des BD (Afi, Sena, Kossi, Mariam, Tantie Rosine, Nadia) pour faire le lien ? — *design, client* (non bloquant)
-4. **Création par les membres** (P1) : souhaitée dès la v1 ou en phase 2, vu le risque de données identifiantes ? — *client, juridique* (non bloquant)
-5. **Rédaction des 12 modèles** : qui écrit et valide les conversations (équipe Xomiton, pair·es, conseil juridique pour les sujets de droit) ? — *client* (bloquant pour le lancement)
-6. **Export** : PNG suffit-il, ou faut-il un PDF A4 imprimable pour les séances ? — *pair·es animateur·rices* (non bloquant)
+| Question | Qui | Bloquante ? |
+|---|---|---|
+| Les créations publiées affichent-elles le pseudonyme par défaut, ou l'anonymat par défaut ? (proposition : anonyme par défaut) | association | non (défaut proposé) |
+| Âge minimal pour créer une conversation | association, juridique | non |
+| Les 60 cases passent-elles avant ou après les 15 BD restantes dans les crédits IA Figma ? (proposition : après) | client | non |
+| Relecture santé de M11 et relecture de sensibilité de M03, M05, M08 avant publication ? | association | non |
 
 ## Timeline Considerations
 
-- **Dépendances** : lecture hors ligne CCC (D-MOB-19, fait), design system (tokens de couleur), admin CCC (fait), passerelles P19-11 (en cours) pour le partage P1.
-- **Phasage proposé** :
-  - **Phase 1 (P0)** — format, lecteur et mode animation, éditeur en séance, 12 modèles, admin, hors ligne : environ 3 à 4 semaines de développement après réponse aux questions 1, 2 et 5.
-  - **Phase 2 (P1)** — création privée par les membres, partage volontaire, détection d'éléments identifiants : 2 à 3 semaines, après une revue juridique.
-  - **Phase 3 (P2)** — collaboration, audio, traductions : à replanifier selon l'usage mesuré.
-- Aucune échéance contractuelle connue.
+- **Dépendances** : crédits IA Figma (épuisés jusqu'au 13/11/2026, partagés avec les 15 BD restantes) ; modération existante (`/admin/moderation`) ; filtre de mots interdits existant ; visionneuse `x-comic-viewer` (base de la lecture case par case).
+- **Phase 1 (4 à 5 semaines)** : P0-1 à P0-10.
+  - Semaine 1 : format, rendu SVG des bulles, import et pages publiques des modèles (images provisoires possibles).
+  - Semaines 2 et 3 : éditeur des membres, contrôles, publication et modération.
+  - Semaine 4 : export PDF et PNG, mode séance, administration.
+  - En parallèle dès que les crédits le permettent : 60 illustrations.
+- **Phase 2** : P1 (partage, app, création depuis l'app, statistiques).
 
 ## Linked epics
 
 _(regenerated by the librarian — wikilinks to epics for this initiative)_
 
-- [[violences-numeriques-contenus-bd]] — initiative liée (BD illustrées)
-- [[tableau-de-bord-admin]] — initiative sœur
+- [[violences-numeriques-contenus-bd]] — initiative sœur (BD illustrées)
+- [[tableau-de-bord-admin]] — modération et administration
 
 ## References
 
 - [[_INDEX]] — global index
-- `design-system/bd/BIBLE_PERSONNAGES.md`, `design-system/charte-graphique/CHARTE_GRAPHIQUE.md`, `docs/ACCESSIBILITE.md`, `docs/VOICE_AND_TONE.md`
-- `docs/IMPLEMENTATION_PLAN.md` — P8-12 (outils CCC), P19 (contenus et BD), D-MOB-19 (hors ligne)
+- `design-system/bd/conversations/GRAMMAIRE_DES_BULLES.md`, `design-system/bd/conversations/MODELES.md`
+- `design-system/bd/BIBLE_PERSONNAGES.md` (style et règles non négociables)
+- Tutoriel « Bulle de BD : types, usages et tracé », Mangakoaching : https://www.mangakoaching.com/tutoriels/anatomie-bulle-de-bd/
+- `design-system/charte-graphique/CHARTE_GRAPHIQUE.md` §5 (typographie), §7 (illustration), §12 (interdits)
+- `docs/VOICE_AND_TONE.md`, `docs/IMPLEMENTATION_PLAN.md` (P19, P20)
