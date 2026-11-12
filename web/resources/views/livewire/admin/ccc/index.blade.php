@@ -1,6 +1,6 @@
 {{--
     Outils CCC (P12-04) : composant App\Livewire\Admin\Ccc\Index, gabarit admin.
-    Ordre : introduction · KPI · onglets (Manuel, Boîtes à images, BD SSR, Lois) · cartes · modales (image, outil, planches, suppression).
+    Ordre : introduction · KPI · onglets (Manuel, Boîtes à images, BD SSR, Conversations en BD, Lois) · cartes · modales (image, outil, planches, suppression).
     Un outil masqué disparaît des écrans membre et pair ; une BD ou une boîte à images se crée, se renomme, se supprime et gère
     ses planches (ajout, retrait, légende, texte alternatif obligatoire, ordre par boutons « Monter » / « Descendre » au clavier).
     Onglet Manuel : modules (création, titre, description, durée, ordre, suppression) et modale « Chapitres » (partiel modules-modals).
@@ -11,6 +11,7 @@
         'manuel' => ['label' => __('admin_ccc.tabs.manuel'), 'icon' => 'journal-richtext'],
         'boite_images' => ['label' => __('admin_ccc.tabs.boite_images'), 'icon' => 'images'],
         'bd' => ['label' => __('admin_ccc.tabs.bd'), 'icon' => 'chat-square-text'],
+        'conversations' => ['label' => __('admin_ccc.tabs.conversations'), 'icon' => 'chat-square-quote'],
         'lois' => ['label' => __('admin_ccc.tabs.lois'), 'icon' => 'bank'],
     ];
     $visibleTabs = [];
@@ -39,7 +40,10 @@
 
     <x-admin.tab-nav :tabs="$visibleTabs" :current="$tab" :label="__('admin_ccc.tabs_label')" />
 
-    @if ($tab === 'lois')
+    @if ($tab === 'conversations')
+        {{-- P20 : conversations en BD (publier, ordonner, bulles, bibliothèque de scènes). --}}
+        <livewire:admin.ccc.conversations :key="'ccc-conversations'" />
+    @elseif ($tab === 'lois')
         @php($lawTotal = count($this->laws))
         <section aria-labelledby="xmCccLawsTitle" x-data x-on:xm-ccc-focus.window="$nextTick(() => setTimeout(() => document.getElementById($event.detail.id)?.focus(), 30))">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">

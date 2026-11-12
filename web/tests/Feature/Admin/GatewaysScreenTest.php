@@ -131,7 +131,7 @@ it('planifie une publication sur les seuls réseaux connectés : BD, message cl�
     $screen->set('postForm', ['kind' => 'template', 'reference' => (string) $template->id, 'message' => '', 'channels' => [(string) $telegram->id], 'at' => $future])->call('schedule')->assertHasNoErrors();
 
     $posts = OutboundPost::query()->orderBy('id')->get();
-    expect($posts)->toHaveCount(3)->and($posts[1]->reference)->toBe('bd77')->and($posts[1]->message)->toBe('BD sur le consentement')
+    expect($posts)->toHaveCount(3)->and($posts[1]->reference)->toBe('bd77')->and($posts[1]->message)->toStartWith('BD sur le consentement')
         ->and($posts[2]->message)->toBe($template->body)->and($posts[0]->deliveries()->count())->toBe(1)
         ->and($posts[0]->deliveries()->first()->status)->toBe(GatewayDeliveryStatus::Pending);
     $screen->assertSee('BD sur le consentement')->assertSee('Modèle SOS');
@@ -189,4 +189,103 @@ it('gère les modèles de messages clés et les salons entre pair·es', function
     expect($room->max_members)->toBe(40)->and($room->slug)->not->toBe('');
     $screen->call('toggleRoom', $room->id);
     expect($room->fresh()->is_active)->toBeFalse();
+});
+
+/*
+ * P19-11 : calendrier BD — aperçu du message (texte de partage, lien UTM, images), refus d'une seconde diffusion sur le
+ * même réseau (sauf « Republier »), planification en lot, identifiant de page ou de canal, erreur lisible dans la file,
+ * permission `gateways.publish` revérifiée à chaque action.
+ */
+
+function screenComic(string $key = 'vn02', int $position = 1): CccTool
+{
+    $data = json_decode((string) file_get_contents(database_path('seeders/data/content/violences_numeriques/sextorsion.json')), true);
+
+    return CccTool::factory()->create([
+        'kind' => CccKind::Comic, 'key' => $key, 'title' => $data['bd']['title'], 'description' => $data['summary'], 'pages' => $data['bd']['pages'],
+        'chapters' => null, 'duration_minutes' => null, 'position' => $position, 'is_published' => true, 'is_public' => true,
+    ]);
+}
+
+it('prévisualise le message d’une BD pour le réseau choisi et refuse une seconde diffusion sans « Republier »', function (): void {
+    $telegram = connectedChannel(SocialNetwork::Telegram);
+    screenComic();
+    $future = now()->addDay()->format('Y-m-d\TH:i');
+    $screen = gatewayScreen();
+
+    $screen->set('postForm', ['kind' => 'bd', 'reference' => 'vn02', 'message' => '', 'channels' => [(string) $telegram->id], 'at' => $future, 'republish' => false])
+        ->assertSee('Aperçu pour Telegram')
+        ->assertSee('Quelqu’un te menace de diffuser des photos intimes')
+        ->assertSee('/bd/vn02?utm_source=telegram&amp;utm_medium=social&amp;utm_campaign=bd', false)
+        ->assertSee('assets/images/violences-numeriques/sextorsion/partage.webp', false)
+        ->assertSee('Sena, assis·e dans une cour');
+
+    $screen->call('schedule')->assertHasNoErrors();
+    $post = OutboundPost::query()->sole();
+    expect($post->message)->toStartWith('Quelqu’un te menace')->and($post->is_republish)->toBeFalse();
+
+    $screen->set('postForm', ['kind' => 'bd', 'reference' => 'vn02', 'message' => '', 'channels' => [(string) $telegram->id], 'at' => $future, 'republish' => false])
+        ->call('schedule')->assertHasErrors(['postForm.channels']);
+    expect(OutboundPost::query()->count())->toBe(1);
+
+    $screen->set('postForm.republish', true)->call('schedule')->assertHasNoErrors();
+    expect(OutboundPost::query()->count())->toBe(2)->and(OutboundPost::query()->latest('id')->first()->is_republish)->toBeTrue();
+});
+
+it('planifie le calendrier BD en lot après aperçu, puis n’a plus rien à ajouter', function (): void {
+    $telegram = connectedChannel(SocialNetwork::Telegram);
+    screenComic('vn01', 1);
+    screenComic('vn02', 2);
+    $screen = gatewayScreen();
+    $start = now('Africa/Porto-Novo')->addDays(2)->format('Y-m-d');
+
+    $screen->set('seriesForm', ['channels' => [], 'date' => $start, 'time' => '10:00', 'every' => '3'])->call('previewSeries')->assertHasErrors(['seriesForm.channels']);
+    $screen->set('seriesForm.channels', [(string) $telegram->id])->set('seriesForm.every', '0')->call('previewSeries')->assertHasErrors(['seriesForm.every']);
+    $screen->set('seriesForm.every', '3')->call('previewSeries')->assertHasNoErrors()->assertSet('seriesPreview', true)->assertSee('2 BD à planifier');
+    expect(OutboundPost::query()->count())->toBe(0);
+
+    $screen->call('scheduleSeries')->assertHasNoErrors()->assertSet('seriesPreview', false);
+    $posts = OutboundPost::query()->orderBy('scheduled_at')->get();
+    expect($posts->pluck('reference')->all())->toBe(['vn01', 'vn02'])
+        ->and($posts[0]->scheduled_at->setTimezone('Africa/Porto-Novo')->format('Y-m-d H:i'))->toBe($start.' 10:00')
+        ->and($posts[1]->scheduled_at->diffInDays($posts[0]->scheduled_at, true))->toEqual(3.0);
+
+    $screen->set('seriesForm', ['channels' => [(string) $telegram->id], 'date' => $start, 'time' => '10:00', 'every' => '3'])
+        ->call('scheduleSeries')->assertHasErrors(['seriesForm.date']);
+    expect(OutboundPost::query()->count())->toBe(2);
+});
+
+it('enregistre l’identifiant de la page ou du canal et affiche l’erreur lisible d’une remise', function (): void {
+    config(['xomiton.gateways.driver' => 'http']);
+    $telegram = channel(SocialNetwork::Telegram);
+    $screen = gatewayScreen();
+
+    $screen->call('openConnect', $telegram->id)->set('account', 'xomiton_bj')->set('token', '123:abc')->set('externalId', 'pas un id')->call('connect')->assertHasErrors(['externalId']);
+    $screen->set('externalId', '-1001234567890')->call('connect')->assertHasNoErrors();
+    expect($telegram->fresh()->external_id)->toBe('-1001234567890');
+
+    $post = OutboundPost::factory()->targeting([$telegram->fresh()])->create();
+    $post->deliveries()->update(['status' => GatewayDeliveryStatus::Failed->value, 'error' => 'unauthorized (HTTP 401) : Unauthorized', 'attempts' => 1]);
+
+    $screen->call('$refresh')
+        ->assertSee('Facebook et Telegram publient automatiquement')
+        ->assertSee('reconnectez le compte — HTTP 401 : Unauthorized')
+        ->assertDontSee('123:abc');
+});
+
+it('revérifie gateways.publish à chaque action du calendrier BD', function (): void {
+    $user = User::factory()->create();
+    $user->givePermissionTo('gateways.connect');
+    $telegram = connectedChannel(SocialNetwork::Telegram);
+    screenComic();
+    $this->actingAs($user);
+    $screen = Livewire::test(GatewaysScreen::class)->assertOk()->assertDontSee('Calendrier BD');
+
+    $screen->set('seriesForm', ['channels' => [(string) $telegram->id], 'date' => now()->addDays(2)->format('Y-m-d'), 'time' => '10:00', 'every' => '3'])
+        ->call('scheduleSeries')->assertForbidden();
+    Livewire::test(GatewaysScreen::class)->call('previewSeries')->assertForbidden();
+    Livewire::test(GatewaysScreen::class)
+        ->set('postForm', ['kind' => 'bd', 'reference' => 'vn02', 'message' => '', 'channels' => [(string) $telegram->id], 'at' => now()->addDay()->format('Y-m-d\TH:i'), 'republish' => true])
+        ->call('schedule')->assertForbidden();
+    expect(OutboundPost::query()->count())->toBe(0);
 });

@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
         ThematiqueFaqSeeder::class,
         // P19-06 : fiches, FAQ et BD des violences numériques (aussi en production par xomiton:install).
         ViolencesNumeriquesSeeder::class,
+        // P20-05 : casting, scènes et 12 conversations modèles en BD (publiées seulement si leurs images existent).
+        ConversationsBdSeeder::class,
         ForumsSeeder::class,
         ValidationRulesSeeder::class,
         IndicatorsSeeder::class,

@@ -28,6 +28,7 @@ return [
         'thematiques' => 'Thématiques',
         'ressources' => 'Ressources',
         'propose_resource' => 'Proposer une ressource',
+        'conversations_bd' => 'Mes conversations en BD',
         'suggestions' => 'Boîte à idées',
         'violences' => 'Violences : comprendre',
         'lois' => 'Lois et codes du Bénin',

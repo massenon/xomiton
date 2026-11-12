@@ -1,0 +1,184 @@
+{
+    "key": "m03",
+    "slug": "tantie-il-faut-que-je-te-dise",
+    "title": "Tantie, il faut que je te dise",
+    "summary": "Un adulte du quartier envoie des messages à Fifamè. Elle trouve le courage d’en parler à sa tante, qui l’écoute.",
+    "theme": "demander de l’aide à une personne de confiance",
+    "category": "protection et aide",
+    "audience": "ados et familles",
+    "key_message": "Parler est un acte de courage ; ce n’est jamais la faute de la personne qui se confie.",
+    "content_warning": "Cette conversation évoque des messages déplacés d’un adulte à une adolescente. Des liens d’aide sont proposés à la fin.",
+    "questions": [
+        "En case 3, qu’a dit Tantie Rosine ? Qu’est-ce qu’elle ressentait vraiment ?",
+        "Qu’est-ce qui a changé entre la case 3 et la case 4 ?",
+        "À qui pourriez-vous parler, vous, si quelque chose vous mettait mal à l’aise ?"
+    ],
+    "cases": [
+        {
+            "scene": "m03-case-1",
+            "description": "Cour familiale le soir, lampe allumée ; Tantie Rosine trie des légumes, Fifamè assise à côté, silencieuse, téléphone retourné sur les genoux.",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "fifame",
+                    "texte": "Je dois lui dire… mais elle va se fâcher.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "Tu es bien silencieuse ce soir.",
+                    "position": {
+                        "x": 32.6,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 56.9,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m03-case-2",
+            "description": "Fifamè, les yeux baissés, tend son téléphone (écran abstrait) ; sa tante pose les légumes.",
+            "bulles": [
+                {
+                    "type": "tremblee",
+                    "personnage": "fifame",
+                    "texte": "Tantie… un monsieur du quartier m’envoie des messages.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    }
+                },
+                {
+                    "type": "tremblee",
+                    "personnage": "fifame",
+                    "texte": "Ça me met mal à l’aise.",
+                    "position": {
+                        "x": 31.8,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 27.8,
+                        "y": 26
+                    },
+                    "associee_a": 0
+                }
+            ]
+        },
+        {
+            "scene": "m03-case-3",
+            "description": "Tantie Rosine se lève d’un coup, mains levées (surprise, pas menace) ; Fifamè se recroqueville légèrement.",
+            "bulles": [
+                {
+                    "type": "cri",
+                    "personnage": "rosine",
+                    "texte": "Quoi ? Pourquoi tu lui as donné ton numéro ?",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 40.8
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "fifame",
+                    "texte": "Je savais qu’elle allait me gronder.",
+                    "position": {
+                        "x": 51.8,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 74,
+                        "y": 29.1
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m03-case-4",
+            "description": "Tantie Rosine se rassoit, prend la main de sa nièce ; regard adouci.",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "rosine",
+                    "texte": "Elle a eu le courage de me le dire. Je dois l’écouter.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "Pardon, j’ai eu peur pour toi. Ce n’est pas ta faute.",
+                    "position": {
+                        "x": 39.8,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 35.8,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m03-case-5",
+            "description": "Les deux côte à côte, le téléphone de Tantie Rosine en haut-parleur posé sur la table ; Fifamè soulagée.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "On garde les messages et on demande conseil.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "voix_appareil",
+                    "personnage": "nadia",
+                    "texte": "Vous avez bien fait d’appeler. On voit ensemble les solutions.",
+                    "position": {
+                        "x": 28.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 56,
+                        "y": 28.8
+                    }
+                }
+            ]
+        }
+    ]
+}

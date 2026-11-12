@@ -1,0 +1,18 @@
+{
+    "names": { "fifame": "Fifamè", "rodrigue": "Rodrigue", "rosine": "Tantie Rosine", "grace": "Grâce" },
+    "bubbles": [
+        { "type": "cartouche", "texte": "À la sortie du lycée, à Porto-Novo.", "position": { "x": 1.5, "y": 1.5 } },
+        { "type": "parole", "personnage": "fifame", "texte": "En fait, non. Je ne viendrai pas.", "emphase": ["non"], "position": { "x": 3, "y": 14 }, "queue": { "vers": "personnage", "x": 20, "y": 60 } },
+        { "type": "pensee", "personnage": "fifame", "texte": "Je n'en ai pas envie… mais je ne veux pas le vexer.", "position": { "x": 40, "y": 3 }, "queue": { "vers": "personnage", "x": 30, "y": 55 } },
+        { "type": "pensee", "personnage": "fifame", "texte": "Pourquoi j'ai dit peut-être ?", "position": { "x": 70, "y": 3 }, "queue": null, "associee_a": null },
+        { "type": "cri", "personnage": "rosine", "texte": "Quoi ? Pourquoi tu lui as donné ton numéro ?", "position": { "x": 3, "y": 40 }, "queue": { "vers": "personnage", "x": 15, "y": 85 } },
+        { "type": "tremblee", "personnage": "fifame", "texte": "Euh… je ne sais pas…", "position": { "x": 45, "y": 30 }, "queue": { "vers": "personnage", "x": 60, "y": 70 } },
+        { "type": "chuchote", "personnage": "fifame", "texte": "Tantie… je saigne.", "position": { "x": 70, "y": 30 }, "queue": { "vers": "bord-droit" } },
+        { "type": "joie", "personnage": "rodrigue", "texte": "Super !", "position": { "x": 75, "y": 50 }, "queue": { "vers": "personnage", "x": 90, "y": 90 } },
+        { "type": "message", "texte": "", "masque": true, "position": { "x": 40, "y": 60 }, "queue": { "vers": "ecran", "x": 50, "y": 95 } },
+        { "type": "message", "personnage": "fifame", "texte": "Supprimez la photo, s'il vous plaît.", "position": { "x": 3, "y": 72 }, "queue": { "vers": "personnage", "x": 10, "y": 98 } },
+        { "type": "voix_appareil", "personnage": "grace", "texte": "Merci de m'avoir prévenue.", "position": { "x": 60, "y": 80 }, "queue": { "vers": "ecran", "x": 70, "y": 99 } },
+        { "type": "parole", "personnage": "rosine", "texte": "On garde les messages", "position": { "x": 3, "y": 88 } },
+        { "type": "parole", "personnage": "rosine", "texte": "et on demande conseil.", "position": { "x": 30, "y": 88 }, "queue": { "vers": "personnage", "x": 40, "y": 99 }, "associee_a": 11 }
+    ]
+}

@@ -284,7 +284,10 @@
                     @if ($parent = $context['parent'])
                         <p class="mb-2"><span class="fw-semibold">{{ __('admin.moderation.context.parent.'.$parent['type']) }}</span>
                             @if ($parent['title']) {{ $parent['title'] }}@endif
-                            @if ($parent['excerpt'])<span class="d-block text-secondary text-break">{{ $parent['type'] === 'post' ? '« '.$parent['excerpt'].' »' : $parent['excerpt'] }}</span>@endif
+                            @if ($parent['excerpt'] && $parent['type'] === 'conversation_bd' && str_starts_with($parent['excerpt'], 'http'))
+                                <a class="d-block text-break" href="{{ $parent['excerpt'] }}" target="_blank" rel="noopener">{{ __('admin.moderation.context.open_conversation_bd') }}</a>
+                            @elseif ($parent['excerpt'])<span class="d-block text-secondary text-break">{{ $parent['type'] === 'post' ? '« '.$parent['excerpt'].' »' : $parent['excerpt'] }}</span>
+                            @endif
                         </p>
                     @endif
                     @if ($history = $context['history'])

@@ -9,6 +9,8 @@
 @import './app/pages/admin-alertes.css';
 @import './app/pages/admin-plateforme.css';
 @import './app/pages/admin-systeme.css';
+/* P20 : aperçu des cases de conversation en BD dans l'onglet de /admin/ccc. */
+@import './app/pages/conversations-bd.css';
 
 .swal2-popup { font-family: var(--xm-font-body); border-radius: 16px; }
 .swal2-title { font-family: var(--xm-font-heading); }

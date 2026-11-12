@@ -156,6 +156,8 @@ return [
         // Groupes et pages (P8-02, P8-03) : créations, adhésions, départs, décisions sur les demandes, abonnements aux
         // pages, par compte et par minute (limiteur `community_write`).
         'community_write_per_minute' => 20,
+        // P20-07 : éditeur des conversations en BD (enregistrement automatique toutes les ~2 s au plus pendant la saisie).
+        'bd_editor_per_minute' => 60,
         // Qui suivre (P8-06, Q79) : invitations envoyées par compte et par jour (limiteur `network_invite`, en plus de
         // `community_write` : chacune notifie l'autre personne), aperçus `/qui-suivre?invite=<id>` par compte et par
         // minute (limiteur `network_preview`).
@@ -629,9 +631,23 @@ return [
         'message_max_length' => 500,
         'batch_size' => 20,
         'max_attempts' => 5,
-        // P14-04 : transport des connecteurs Facebook / Telegram. `log` (défaut) n'appelle aucun réseau ; un pilote réel
-        // s'ajoute dans GatewayTransports::DRIVERS (voir GatewayTransport).
+        // P14-04 / P19-11 : transport des connecteurs Facebook / Telegram. `log` (défaut) n'appelle aucun réseau ; `http`
+        // appelle la Graph API et la Bot API réelles (GatewayTransports::DRIVERS). Les jetons ne sont jamais ici : ils sont
+        // saisis dans /admin/passerelles et enregistrés chiffrés (`social_channels.access_token`).
         'driver' => env('XOMITON_GATEWAYS_DRIVER', 'log'),
+        // Débit : publications par l'API au plus, par canal et par passage de `gateways:publish` (chaque minute).
+        'per_channel_per_run' => (int) env('XOMITON_GATEWAYS_PER_CHANNEL_PER_RUN', 2),
+        // Délai d'une requête (secondes) : un album de 5 photos est téléversé en une fois.
+        'timeout' => (int) env('XOMITON_GATEWAYS_TIMEOUT', 30),
+        'facebook' => [
+            'base_url' => 'https://graph.facebook.com',
+            'graph_version' => env('XOMITON_FACEBOOK_GRAPH_VERSION', 'v21.0'),
+            // Publication multi-photos (photos non publiées puis `attached_media`) ; false : une photo + lien.
+            'multi_photo' => (bool) env('XOMITON_FACEBOOK_MULTI_PHOTO', true),
+        ],
+        'telegram' => [
+            'base_url' => 'https://api.telegram.org',
+        ],
         // Réseaux sans API de publication : publication manuelle assistée.
         'manual_networks' => ['Roméo', 'GanXo', 'Tinder'],
     ],

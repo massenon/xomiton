@@ -7,6 +7,7 @@ namespace App\Application\Seo;
 use App\Application\Community\Events\EventAccess;
 use App\Application\Content\HelpCenter;
 use App\Http\Controllers\Web\PlaceholderController;
+use App\Models\BdConversation;
 use App\Models\CccTool;
 use App\Models\Event;
 use App\Models\Resource;
@@ -38,7 +39,7 @@ final class SitemapBuilder
     public const STATIC_ROUTES = [
         'home', 'thematiques.index', 'ressources.index', 'do-glegbe', 'violences', 'lois', 'aide.index', 'urgences',
         'actualites.index', 'confidentialite', 'legal.privacy', 'legal.terms', 'legal.notice', 'legal.cookies', 'account-deletion.show', 'newsletter.show', 'evenements.index', 'signaler', 'sos',
-        'violences-numeriques', 'bd.index',
+        'violences-numeriques', 'bd.index', 'conversations-bd.index',
     ];
 
     /** @var list<string> Premiers segments d'URL jamais exposés. */
@@ -112,6 +113,13 @@ final class SitemapBuilder
         if ($this->isPublicRoute('bd.show')) {
             foreach (CccTool::query()->publicComics()->ordered()->get(['id', 'key', 'updated_at']) as $row) {
                 $urls[] = ['loc' => self::absolute('bd.show', (string) $row->key), 'lastmod' => $row->updated_at?->toAtomString()];
+            }
+        }
+
+        // P20-06 : conversations en BD publiées (le mode séance, jamais indexé, n'y figure pas).
+        if ($this->isPublicRoute('conversations-bd.show')) {
+            foreach (BdConversation::query()->published()->ordered()->get(['id', 'slug', 'updated_at']) as $row) {
+                $urls[] = ['loc' => self::absolute('conversations-bd.show', (string) $row->slug), 'lastmod' => $row->updated_at?->toAtomString()];
             }
         }
 

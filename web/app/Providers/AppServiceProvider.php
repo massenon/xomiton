@@ -119,6 +119,8 @@ class AppServiceProvider extends ServiceProvider
         $this->registerNotificationDrivers();
         $this->registerAssistantProvider();
         $this->registerDebugbar();
+        // P19-11 : textes et visuels de partage des BD lus une fois par requête ou par exécution de commande.
+        $this->app->scoped(\App\Application\Content\ViolencesNumeriques\ComicShare::class);
     }
 
     /**
@@ -374,6 +376,11 @@ class AppServiceProvider extends ServiceProvider
         // Groupes et pages (P8-02, P8-03) : créer, rejoindre, quitter, décider d'une demande, suivre, par compte et par minute.
         RateLimiter::for('community_write', static fn (Request $request): Limit => Limit::perMinute(self::limit('community_write_per_minute'))
             ->by('community_write|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+        // Conversations en BD (P20-07) : enregistrements automatiques de l'éditeur (anti-rebond côté page), créations,
+        // propositions et retraits, par compte et par minute.
+        RateLimiter::for('bd_editor', static fn (Request $request): Limit => Limit::perMinute(self::limit('bd_editor_per_minute'))
+            ->by('bd_editor|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
         // Qui suivre (P8-06, Q79) : invitations envoyées par compte et par jour (chacune notifie l'autre personne : contre
         // le harcèlement, en plus de community_write) ; `/qui-suivre?invite=<id>` (aperçu d'une personne par identifiant)

@@ -174,8 +174,14 @@ GEMINI_TIMEOUT=4
 GEMINI_PER_HOUR=10
 
 # --- Réseaux sociaux (sans clés : "publication manuelle") ----------------------
-# XOMITON_GATEWAYS_DRIVER=log
-FACEBOOK_APP_ID=
+# log (défaut) : aucune publication réelle | http : Facebook et Telegram par l'API (§11.1)
+# Les JETONS ne vont PAS ici : ils se saisissent dans /admin/passerelles (chiffrés en base).
+XOMITON_GATEWAYS_DRIVER=log
+# XOMITON_GATEWAYS_PER_CHANNEL_PER_RUN=2  # publications par réseau et par minute, au plus
+# XOMITON_GATEWAYS_TIMEOUT=30
+# XOMITON_FACEBOOK_GRAPH_VERSION=v21.0
+# XOMITON_FACEBOOK_MULTI_PHOTO=true      # false : une photo + lien au lieu d'un album
+FACEBOOK_APP_ID=                         # réservés, non lus par l'application
 FACEBOOK_APP_SECRET=
 TELEGRAM_BOT_TOKEN=
 TIKTOK_CLIENT_KEY=
@@ -302,8 +308,39 @@ Tout démarre éteint (pilote `log`) ; on active un canal seulement quand son co
 | **SMS de secours** | Compte Vonage **ou** Twilio, `SMS_DRIVER`, clés, `SMS_SENDER` (selon ce que l'opérateur béninois accepte), solde. Facturé par le fournisseur | `$PHP artisan notifications:test-sms +229… --yes` |
 | **Assistant Gemini** | **DESACTIVÉ et à laisser tel quel** : `ASSISTANT_PROVIDER=kb`, `ASSISTANT_LLM_ENABLED=false`. Il enverrait des données sensibles (santé, violences) à un tiers hors de l'Union européenne ; l'activer exige d'abord l'avis juridique ([DECISIONS_A_VALIDER.md](DECISIONS_A_VALIDER.md), Q7). Les messages de crise et de SOS ne lui sont de toute façon jamais envoyés | `$PHP artisan assistant:test-llm --yes` refuse tant que le drapeau est faux |
 | **Web Push navigateur** | Optionnel, non livré (paquet Composer et clés VAPID à ajouter) | |
+| **Réseaux sociaux (Facebook, Telegram)** | Bot Telegram et jeton de page Facebook (§11.1), saisis dans Administration › Passerelles, puis `XOMITON_GATEWAYS_DRIVER=http` et `config:cache`. Roméo, GanXo, Tinder et TikTok restent en publication manuelle assistée | D'abord sur un canal et une page **de test** : [CHECKLIST_RECETTE.md](CHECKLIST_RECETTE.md) ADM-PAS |
 
 Tant qu'un canal reste en `log`, `xomiton:preflight` affiche un avertissement : c'est attendu, mais **le SOS n'a alors aucun canal réel de secours**. Ne l'ouvrez pas au public dans cet état sans décision écrite de la coordination.
+
+### 11.1 Passerelles Facebook et Telegram (P19-11)
+
+Les publications planifiées dans Administration › Passerelles (dont le **Calendrier BD**) partent chaque minute par la tâche `gateways:publish` du cron (§9) : rien d'autre à planifier. **Où sont les secrets** : le jeton de chaque réseau se saisit dans la fenêtre « Connecter » de l'écran Passerelles (permission `gateways.connect`) ; il est enregistré **chiffré** en base (clé `APP_KEY`), ne s'affiche plus jamais, n'est écrit ni dans les journaux ni dans le dépôt. N'envoyez jamais un jeton par e-mail ou messagerie : saisissez-le directement dans l'écran. Le `.env` ne porte que le pilote (`XOMITON_GATEWAYS_DRIVER`) et les réglages de débit.
+
+**Telegram (canal de l'organisation)**
+
+1. Dans Telegram, ouvrir **@BotFather** (compte vérifié, coche bleue), envoyer `/newbot`, choisir un nom (ex. « Xomiton ») et un identifiant finissant par `bot`. BotFather renvoie le **jeton du bot** (`123456789:AA…`) : le garder dans le gestionnaire de mots de passe de l'association.
+2. Ouvrir le canal de l'organisation › Administrateurs › Ajouter un administrateur › chercher le bot › lui laisser seulement **Publier des messages** (aucun autre droit).
+3. Identifiant du canal : `@nomducanal` pour un canal public ; pour un canal privé, le nombre `-100…` (le transférer à un bot d'identification comme @RawDataBot, ou le lire dans l'adresse web du canal).
+4. Administration › Passerelles › Telegram › **Connecter** : identifiant du compte (le nom du canal), jeton du bot, identifiant du canal.
+5. Si le jeton fuit : BotFather › `/revoke`, puis reconnecter avec le nouveau jeton.
+
+**Facebook (page de l'organisation)**
+
+1. Compte développeur Meta de l'association (developers.facebook.com) › **Créer une application** (type « Entreprise »), reliée au Business Manager propriétaire de la page.
+2. Demander les permissions **`pages_manage_posts`** et **`pages_read_engagement`** (et `pages_show_list` pour lister la page). Tant que l'application est en mode développement, seules les personnes ayant un rôle sur l'application peuvent publier : suffisant pour la page de test ; pour la page officielle, passer l'**examen de l'application** par Meta.
+3. Dans l'**Explorateur de l'API Graph**, générer un jeton utilisateur avec ces permissions, l'échanger contre un **jeton longue durée** (`GET /oauth/access_token?grant_type=fb_exchange_token…`), puis appeler `GET /me/accounts` : le `access_token` de la page obtenu ainsi est un **jeton de page sans expiration** tant que le mot de passe et les droits ne changent pas. Variante recommandée : un utilisateur système du Business Manager avec un jeton de page permanent.
+4. Identifiant de la page : le nombre `id` renvoyé par `/me/accounts` (ou « À propos » › Transparence de la page).
+5. Administration › Passerelles › Facebook › **Connecter** : identifiant du compte, jeton de page, identifiant numérique de la page.
+
+**Activer, puis vérifier**
+
+```bash
+# dans .env : XOMITON_GATEWAYS_DRIVER=http
+$PHP artisan config:cache
+$PHP artisan gateways:publish          # lancement manuel d'un passage (sinon chaque minute)
+```
+
+Ce que l'application envoie : Telegram, un album `sendMediaGroup` (visuel de partage 1080 × 1080 puis les 4 planches, converties en JPEG à la volée, légende = texte de partage + lien `/bd/{clé}?utm_source=telegram&utm_medium=social&utm_campaign=bd`, 1 024 caractères au plus, sur la première photo) ; Facebook, les 5 images téléversées non publiées avec leur texte alternatif puis une publication qui les réunit (`attached_media`), ou, si la page refuse, une photo + lien. En cas de refus, la file de l'écran affiche le motif (jeton refusé, limite de débit, refus du réseau) et la publication est retentée automatiquement, 5 fois au plus (la limite de débit ne compte pas). Revenir en arrière : `XOMITON_GATEWAYS_DRIVER=log` puis `config:cache` (tout repasse en publication manuelle).
 
 ## 12. HTTPS, DNS
 

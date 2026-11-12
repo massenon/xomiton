@@ -44,6 +44,11 @@ describe('fonctions pures', () => {
     expect(clamp(7, 4)).toBe(4);
     expect(counterLabel('Planche :n sur :count', 2, 4)).toBe('Planche 2 sur 4');
   });
+
+  it('lit l’ancre d’une conversation en BD (P20-06 : #case-n)', () => {
+    expect(pageFromHash('#case-3', 5, 'case')).toBe(3);
+    expect(pageFromHash('#planche-3', 5, 'case')).toBe(1);
+  });
 });
 
 describe('xmComic', () => {

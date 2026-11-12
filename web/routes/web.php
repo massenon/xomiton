@@ -19,6 +19,11 @@ use App\Http\Controllers\Web\Alerts\ReportPageController;
 use App\Http\Controllers\Web\Alerts\ReportTrackingController;
 use App\Http\Controllers\Web\ConfidentialiteController;
 use App\Http\Controllers\Web\ContentEventController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdExportController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdIndexController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdReportController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdSeanceController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdShowController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\DoGlegbeController;
 use App\Http\Controllers\Web\EventsPageController;
@@ -33,6 +38,7 @@ use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\AssistantPageController;
 use App\Http\Controllers\Web\Member\CccPageController;
 use App\Http\Controllers\Web\Member\ContributePageController;
+use App\Http\Controllers\Web\Member\ConversationsBdPageController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
 use App\Http\Controllers\Web\Member\DirectoryPageController;
 use App\Http\Controllers\Web\Member\FeedPageController;
@@ -127,6 +133,14 @@ Route::get('/lois', LoisController::class)->middleware('guest.page')->name('lois
 Route::get('/violences-numeriques', ViolencesNumeriquesController::class)->middleware('guest.page')->name('violences-numeriques');
 Route::get('/bd', BdIndexController::class)->middleware('guest.page')->name('bd.index');
 Route::get('/bd/{key}', BdShowController::class)->where('key', '[a-z0-9]+(?:-[a-z0-9]+)*')->middleware('guest.page')->name('bd.show');
+// P20-06 / P20-10 : conversations en BD publiées (bulles SVG au texte réel), indexées ; mode séance jamais indexé.
+Route::get('/conversations-bd', ConversationsBdIndexController::class)->middleware('guest.page')->name('conversations-bd.index');
+Route::get('/conversations-bd/{slug}', ConversationsBdShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->middleware('guest.page')->name('conversations-bd.show');
+Route::get('/conversations-bd/{slug}/seance', ConversationsBdSeanceController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->middleware('guest.page')->name('conversations-bd.seance');
+// P20-09 : export PDF (publiées seulement, jamais indexé) ; P20-08 : signaler une création publiée (membre connecté·e).
+Route::get('/conversations-bd/{slug}/pdf', ConversationsBdExportController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('conversations-bd.pdf');
+Route::post('/conversations-bd/{slug}/signaler', ConversationsBdReportController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->middleware(['auth', 'throttle:content_report'])->name('conversations-bd.report');
 Route::get('/do-glegbe', DoGlegbeController::class)->middleware('guest.page')->name('do-glegbe');
 // P4-05 : centre d'aide public et indexable (vous) ; questions du périmètre HelpCenter (catégories `faq`), adressées par
 // slug ; vote « Cet article vous a-t-il aidé·e ? » persisté dans `faq_feedback` (POST + @csrf, limiteur `faq_feedback`).
@@ -293,6 +307,11 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     // P18-12, P18-14 : proposer une ressource (file de validation de l'équipe, jamais publique) et boîte à suggestions.
     Route::get('/proposer-une-ressource', [ContributePageController::class, 'proposal'])->name('ressources.proposer');
     Route::get('/boite-a-idees', [ContributePageController::class, 'suggestion'])->name('suggestions');
+    // P20-07 à P20-09 : mes conversations en BD (créations privées par ULID, éditeur, export PDF de l'auteur·rice et de la
+    // modération) ; création d'une autre personne → 404.
+    Route::get('/mes-conversations-bd', [ConversationsBdPageController::class, 'index'])->name('mes-conversations-bd.index');
+    Route::get('/mes-conversations-bd/{ulid}', [ConversationsBdPageController::class, 'edit'])->where('ulid', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('mes-conversations-bd.edit');
+    Route::get('/mes-conversations-bd/{ulid}/pdf', [ConversationsBdPageController::class, 'pdf'])->where('ulid', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('mes-conversations-bd.pdf');
     // P8-12 (lot outils-ccc) : outils CCC en lecture, une seule implémentation Vue pour le membre et le pair (P9-05 : drapeau
     // `presentation`). Outils publiés seulement (API ccc/), progression du manuel sur l'appareil. Sans `ccc_tools.view` : 403.
     Route::get('/ccc', CccPageController::class)->middleware('can:ccc_tools.view')->name('ccc');

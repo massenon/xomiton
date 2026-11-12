@@ -1,0 +1,192 @@
+{
+    "key": "m02",
+    "slug": "la-photo-de-la-promo",
+    "title": "La photo de la promo",
+    "summary": "Une photo moqueuse de Grâce circule dans le groupe de la promo. Sena hésite, puis demande de la supprimer.",
+    "theme": "pression du groupe, droit à l’image, moquerie en ligne",
+    "category": "vie numérique",
+    "audience": "jeunes",
+    "key_message": "Rire ensemble, oui ; rire de quelqu’un, non. On ne partage pas l’image d’une personne sans son accord.",
+    "content_warning": null,
+    "questions": [
+        "Que pensait Sena en case 2 qu’il ou elle n’a pas écrit ? Qu’est-ce qui l’a aidé·e à oser ?",
+        "Qu’aurait ressenti Grâce en découvrant la photo seule ?",
+        "Que faire si on reçoit une photo comme celle-ci ?"
+    ],
+    "cases": [
+        {
+            "scene": "m02-case-1",
+            "description": "Chambre d’étudiant·e le soir ; Sena, assis·e sur son lit, regarde son téléphone. Le téléphone montre un fil de messages abstraits et un carré gris flouté (la photo, jamais visible).",
+            "bulles": [
+                {
+                    "type": "cartouche",
+                    "texte": "Le soir, dans le groupe de la promo.",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5
+                    }
+                },
+                {
+                    "type": "message",
+                    "personnage": "membre_groupe",
+                    "texte": "Regardez Grâce qui dort en amphi ! Partagez partout !",
+                    "position": {
+                        "x": 33.2,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 50,
+                        "y": 39.2
+                    }
+                },
+                {
+                    "type": "message",
+                    "personnage": "autre_membre",
+                    "texte": "Trop drôle. Je l’envoie à l’autre groupe.",
+                    "position": {
+                        "x": 55.4,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 51.4,
+                        "y": 39.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m02-case-2",
+            "description": "Gros plan sur Sena, sourcils froncés, pouce suspendu au-dessus de l’écran.",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "sena",
+                    "texte": "Elle ne sait sûrement pas. Moi, je détesterais ça.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "sena",
+                    "texte": "Si je dis quelque chose, ils vont se moquer de moi aussi.",
+                    "position": {
+                        "x": 38.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 34.4,
+                        "y": 34.2
+                    },
+                    "associee_a": 0
+                }
+            ]
+        },
+        {
+            "scene": "m02-case-3",
+            "description": "Sena tape sur son téléphone, déterminé·e.",
+            "bulles": [
+                {
+                    "type": "message",
+                    "personnage": "sena",
+                    "texte": "Supprimez la photo, s’il vous plaît. Grâce n’a pas dit oui.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 28.8
+                    }
+                },
+                {
+                    "type": "message",
+                    "personnage": "membre_groupe",
+                    "texte": "Oh, c’est juste pour rire !",
+                    "position": {
+                        "x": 29.1,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 49.9,
+                        "y": 25.4
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m02-case-4",
+            "description": "Même cadrage ; Sena tape encore, un léger sourire apparaît.",
+            "bulles": [
+                {
+                    "type": "message",
+                    "personnage": "sena",
+                    "texte": "Rire ensemble, oui. Rire de quelqu’un, non.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 28.8
+                    }
+                },
+                {
+                    "type": "message",
+                    "personnage": "autre_membre_f",
+                    "texte": "Sena a raison. Je supprime.",
+                    "position": {
+                        "x": 26.2,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 46,
+                        "y": 25.4
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m02-case-5",
+            "description": "Sena au téléphone, bras posé sur un coussin, ton doux ; écran d’appel abstrait.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "sena",
+                    "texte": "Je préfère que tu le saches par moi. On peut signaler la photo ensemble.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 36.8
+                    }
+                },
+                {
+                    "type": "voix_appareil",
+                    "personnage": "grace",
+                    "texte": "Merci de m’avoir prévenue.",
+                    "position": {
+                        "x": 37.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 52.3,
+                        "y": 28.8
+                    }
+                }
+            ]
+        }
+    ]
+}

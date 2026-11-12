@@ -1,0 +1,629 @@
+{
+    "scenes": [
+        {
+            "key": "m01-case-1",
+            "title": "Non, c’est non – case 1",
+            "image": "assets/images/conversations-bd/non-cest-non/case-1.webp",
+            "description": "Sortie du lycée à Porto-Novo, fin d’après-midi, élèves et zémidjans au loin. Rodrigue (à droite) se penche vers Fifamè (à gauche), qui serre la bretelle de son sac.",
+            "personnages": [
+                "rodrigue",
+                "fifame"
+            ],
+            "zone": "tiers supérieur"
+        },
+        {
+            "key": "m01-case-2",
+            "title": "Non, c’est non – case 2",
+            "image": "assets/images/conversations-bd/non-cest-non/case-2.webp",
+            "description": "Plan rapproché : Fifamè sourit d’un sourire forcé, regard fuyant ; Rodrigue lève le pouce.",
+            "personnages": [
+                "fifame",
+                "rodrigue"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m01-case-3",
+            "title": "Non, c’est non – case 3",
+            "image": "assets/images/conversations-bd/non-cest-non/case-3.webp",
+            "description": "Fifamè se redresse, épaules droites, regard franc ; Rodrigue écarte les mains.",
+            "personnages": [
+                "fifame",
+                "rodrigue"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m01-case-4",
+            "title": "Non, c’est non – case 4",
+            "image": "assets/images/conversations-bd/non-cest-non/case-4.webp",
+            "description": "Fifamè, calme et ferme, main levée paume ouverte (geste « stop » doux) ; Rodrigue recule d’un pas, l’air surpris.",
+            "personnages": [
+                "fifame",
+                "rodrigue"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m01-case-5",
+            "title": "Non, c’est non – case 5",
+            "image": "assets/images/conversations-bd/non-cest-non/case-5.webp",
+            "description": "Le lendemain, cercle d’une séance Xomiton sous un manguier ; Nadia parle à Fifamè, souriante.",
+            "personnages": [
+                "nadia",
+                "fifame"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m02-case-1",
+            "title": "La photo de la promo – case 1",
+            "image": "assets/images/conversations-bd/la-photo-de-la-promo/case-1.webp",
+            "description": "Chambre d’étudiant·e le soir ; Sena, assis·e sur son lit, regarde son téléphone. Le téléphone montre un fil de messages abstraits et un carré gris flouté (la photo, jamais visible).",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "moitié gauche et haut"
+        },
+        {
+            "key": "m02-case-2",
+            "title": "La photo de la promo – case 2",
+            "image": "assets/images/conversations-bd/la-photo-de-la-promo/case-2.webp",
+            "description": "Gros plan sur Sena, sourcils froncés, pouce suspendu au-dessus de l’écran.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m02-case-3",
+            "title": "La photo de la promo – case 3",
+            "image": "assets/images/conversations-bd/la-photo-de-la-promo/case-3.webp",
+            "description": "Sena tape sur son téléphone, déterminé·e.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut, bulles orientées vers l’écran"
+        },
+        {
+            "key": "m02-case-4",
+            "title": "La photo de la promo – case 4",
+            "image": "assets/images/conversations-bd/la-photo-de-la-promo/case-4.webp",
+            "description": "Même cadrage ; Sena tape encore, un léger sourire apparaît.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m02-case-5",
+            "title": "La photo de la promo – case 5",
+            "image": "assets/images/conversations-bd/la-photo-de-la-promo/case-5.webp",
+            "description": "Sena au téléphone, bras posé sur un coussin, ton doux ; écran d’appel abstrait.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m03-case-1",
+            "title": "Tantie, il faut que je te dise – case 1",
+            "image": "assets/images/conversations-bd/tantie-il-faut-que-je-te-dise/case-1.webp",
+            "description": "Cour familiale le soir, lampe allumée ; Tantie Rosine trie des légumes, Fifamè assise à côté, silencieuse, téléphone retourné sur les genoux.",
+            "personnages": [
+                "rosine",
+                "fifame"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m03-case-2",
+            "title": "Tantie, il faut que je te dise – case 2",
+            "image": "assets/images/conversations-bd/tantie-il-faut-que-je-te-dise/case-2.webp",
+            "description": "Fifamè, les yeux baissés, tend son téléphone (écran abstrait) ; sa tante pose les légumes.",
+            "personnages": [
+                "fifame"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m03-case-3",
+            "title": "Tantie, il faut que je te dise – case 3",
+            "image": "assets/images/conversations-bd/tantie-il-faut-que-je-te-dise/case-3.webp",
+            "description": "Tantie Rosine se lève d’un coup, mains levées (surprise, pas menace) ; Fifamè se recroqueville légèrement.",
+            "personnages": [
+                "rosine",
+                "fifame"
+            ],
+            "zone": "haut, bulle de cri à gauche"
+        },
+        {
+            "key": "m03-case-4",
+            "title": "Tantie, il faut que je te dise – case 4",
+            "image": "assets/images/conversations-bd/tantie-il-faut-que-je-te-dise/case-4.webp",
+            "description": "Tantie Rosine se rassoit, prend la main de sa nièce ; regard adouci.",
+            "personnages": [
+                "rosine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m03-case-5",
+            "title": "Tantie, il faut que je te dise – case 5",
+            "image": "assets/images/conversations-bd/tantie-il-faut-que-je-te-dise/case-5.webp",
+            "description": "Les deux côte à côte, le téléphone de Tantie Rosine en haut-parleur posé sur la table ; Fifamè soulagée.",
+            "personnages": [
+                "rosine",
+                "fifame"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m04-case-1",
+            "title": "Laisse-moi finir – case 1",
+            "image": "assets/images/conversations-bd/laisse-moi-finir/case-1.webp",
+            "description": "Salle de réunion lumineuse à Cotonou ; Ablavi debout près d’un tableau (formes abstraites), Marc assis au bout de la table qui lève la main, Kossi et une collègue assis.",
+            "personnages": [
+                "ablavi",
+                "marc",
+                "kossi"
+            ],
+            "zone": "haut, bulle d’Ablavi à gauche"
+        },
+        {
+            "key": "m04-case-2",
+            "title": "Laisse-moi finir – case 2",
+            "image": "assets/images/conversations-bd/laisse-moi-finir/case-2.webp",
+            "description": "Plan sur Ablavi, mâchoire serrée, et Kossi qui la regarde, mal à l’aise.",
+            "personnages": [
+                "ablavi",
+                "kossi"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m04-case-3",
+            "title": "Laisse-moi finir – case 3",
+            "image": "assets/images/conversations-bd/laisse-moi-finir/case-3.webp",
+            "description": "Kossi se penche vers la table, voix posée, main ouverte vers Ablavi.",
+            "personnages": [
+                "kossi",
+                "ablavi"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m04-case-4",
+            "title": "Laisse-moi finir – case 4",
+            "image": "assets/images/conversations-bd/laisse-moi-finir/case-4.webp",
+            "description": "Ablavi reprend la parole, calme et ferme ; Marc, gêné, se gratte la nuque.",
+            "personnages": [
+                "ablavi",
+                "marc"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m04-case-5",
+            "title": "Laisse-moi finir – case 5",
+            "image": "assets/images/conversations-bd/laisse-moi-finir/case-5.webp",
+            "description": "Couloir après la réunion ; Kossi et Ablavi marchent côte à côte.",
+            "personnages": [
+                "kossi",
+                "ablavi"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m05-case-1",
+            "title": "Les messages du soir – case 1",
+            "image": "assets/images/conversations-bd/les-messages-du-soir/case-1.webp",
+            "description": "Chambre de Yasmine la nuit, lumière bleutée du téléphone ; elle est dans son fauteuil près du bureau, le téléphone en main.",
+            "personnages": [
+                "yasmine"
+            ],
+            "zone": "moitié droite et haut, bulles vers l’écran"
+        },
+        {
+            "key": "m05-case-2",
+            "title": "Les messages du soir – case 2",
+            "image": "assets/images/conversations-bd/les-messages-du-soir/case-2.webp",
+            "description": "Gros plan sur Yasmine, inquiète puis concentrée ; elle fait une capture d’écran (icône abstraite d’appareil photo).",
+            "personnages": [
+                "yasmine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m05-case-3",
+            "title": "Les messages du soir – case 3",
+            "image": "assets/images/conversations-bd/les-messages-du-soir/case-3.webp",
+            "description": "Le lendemain, open space ; Yasmine s’approche d’Ablavi à son bureau, à voix basse.",
+            "personnages": [
+                "yasmine",
+                "ablavi"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m05-case-4",
+            "title": "Les messages du soir – case 4",
+            "image": "assets/images/conversations-bd/les-messages-du-soir/case-4.webp",
+            "description": "Bureau fermé ; Ablavi, attentive, regarde le téléphone que Yasmine lui montre (écran abstrait).",
+            "personnages": [
+                "ablavi",
+                "yasmine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m05-case-5",
+            "title": "Les messages du soir – case 5",
+            "image": "assets/images/conversations-bd/les-messages-du-soir/case-5.webp",
+            "description": "Les deux penchées sur un carnet et un ordinateur (icônes : bouclier, document) ; posture résolue.",
+            "personnages": [],
+            "zone": "haut"
+        },
+        {
+            "key": "m06-case-1",
+            "title": "C’est à moi qu’il faut parler – case 1",
+            "image": "assets/images/conversations-bd/cest-a-moi-quil-faut-parler/case-1.webp",
+            "description": "Accueil d’un centre de santé ; Yasmine dans son fauteuil devant le comptoir, son frère Rachad debout derrière elle ; l’agent d’accueil regarde Rachad.",
+            "personnages": [
+                "yasmine",
+                "rachad"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m06-case-2",
+            "title": "C’est à moi qu’il faut parler – case 2",
+            "image": "assets/images/conversations-bd/cest-a-moi-quil-faut-parler/case-2.webp",
+            "description": "Rachad recule d’un pas et désigne sa sœur d’un geste ouvert.",
+            "personnages": [
+                "rachad"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m06-case-3",
+            "title": "C’est à moi qu’il faut parler – case 3",
+            "image": "assets/images/conversations-bd/cest-a-moi-quil-faut-parler/case-3.webp",
+            "description": "Yasmine tend sa carte, souriante et assurée ; l’agent, surpris·e, porte la main à sa poitrine.",
+            "personnages": [
+                "yasmine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m06-case-4",
+            "title": "C’est à moi qu’il faut parler – case 4",
+            "image": "assets/images/conversations-bd/cest-a-moi-quil-faut-parler/case-4.webp",
+            "description": "L’agent se penche légèrement pour être à la hauteur des yeux de Yasmine et montre un couloir de plain-pied.",
+            "personnages": [
+                "yasmine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m06-case-5",
+            "title": "C’est à moi qu’il faut parler – case 5",
+            "image": "assets/images/conversations-bd/cest-a-moi-quil-faut-parler/case-5.webp",
+            "description": "Yasmine se dirige vers le cabinet du rez-de-chaussée, Rachad à côté, détendu.",
+            "personnages": [
+                "yasmine",
+                "rachad"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m07-case-1",
+            "title": "Tourne-toi vers moi – case 1",
+            "image": "assets/images/conversations-bd/tourne-toi-vers-moi/case-1.webp",
+            "description": "Réunion animée ; trois collègues parlent en même temps, dont deux de profil ou de dos par rapport à Joël, qui regarde de l’un à l’autre.",
+            "personnages": [
+                "joel"
+            ],
+            "zone": "tout le haut, bulles superposées en cascade"
+        },
+        {
+            "key": "m07-case-2",
+            "title": "Tourne-toi vers moi – case 2",
+            "image": "assets/images/conversations-bd/tourne-toi-vers-moi/case-2.webp",
+            "description": "Joël écrit sur sa tablette et la tourne vers la table (écran abstrait) ; Ablavi se rend compte de la situation.",
+            "personnages": [
+                "joel",
+                "ablavi"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m07-case-3",
+            "title": "Tourne-toi vers moi – case 3",
+            "image": "assets/images/conversations-bd/tourne-toi-vers-moi/case-3.webp",
+            "description": "Ablavi debout près d’un tableau blanc, marqueur en main ; Kossi montre l’écran d’un ordinateur portable (icône de sous-titres, sans texte).",
+            "personnages": [
+                "ablavi",
+                "kossi"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m07-case-4",
+            "title": "Tourne-toi vers moi – case 4",
+            "image": "assets/images/conversations-bd/tourne-toi-vers-moi/case-4.webp",
+            "description": "Tout le monde tourné vers Joël, qui parle en signant d’une main.",
+            "personnages": [
+                "joel"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m07-case-5",
+            "title": "Tourne-toi vers moi – case 5",
+            "image": "assets/images/conversations-bd/tourne-toi-vers-moi/case-5.webp",
+            "description": "Plan large de l’équipe détendue, tableau rempli de formes abstraites.",
+            "personnages": [],
+            "zone": "haut"
+        },
+        {
+            "key": "m08-case-1",
+            "title": "Je voulais te le dire – case 1",
+            "image": "assets/images/conversations-bd/je-voulais-te-le-dire/case-1.webp",
+            "description": "Banc du campus sous un flamboyant ; Sena assis·e, Yasmine dans son fauteuil face à iel, gobelets de bissap à la main.",
+            "personnages": [
+                "sena",
+                "yasmine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m08-case-2",
+            "title": "Je voulais te le dire – case 2",
+            "image": "assets/images/conversations-bd/je-voulais-te-le-dire/case-2.webp",
+            "description": "Sena, mains serrées autour du gobelet, regarde le sol.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m08-case-3",
+            "title": "Je voulais te le dire – case 3",
+            "image": "assets/images/conversations-bd/je-voulais-te-le-dire/case-3.webp",
+            "description": "Yasmine marque un temps, puis sourit avec douceur et pose la main sur le bras de Sena.",
+            "personnages": [
+                "yasmine",
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m08-case-4",
+            "title": "Je voulais te le dire – case 4",
+            "image": "assets/images/conversations-bd/je-voulais-te-le-dire/case-4.webp",
+            "description": "Les deux se regardent, Sena relève la tête.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m08-case-5",
+            "title": "Je voulais te le dire – case 5",
+            "image": "assets/images/conversations-bd/je-voulais-te-le-dire/case-5.webp",
+            "description": "Plan large, complicité, coucher de soleil sur le campus.",
+            "personnages": [],
+            "zone": "haut"
+        },
+        {
+            "key": "m09-case-1",
+            "title": "Ne pas répondre à chaud – case 1",
+            "image": "assets/images/conversations-bd/ne-pas-repondre-a-chaud/case-1.webp",
+            "description": "Sena assis·e par terre contre son lit, le soir, téléphone en main ; à l’écran, une vidéo (forme abstraite) et des commentaires gris floutés.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut et droite"
+        },
+        {
+            "key": "m09-case-2",
+            "title": "Ne pas répondre à chaud – case 2",
+            "image": "assets/images/conversations-bd/ne-pas-repondre-a-chaud/case-2.webp",
+            "description": "Sena se lève d’un bond, téléphone brandi, visage en colère (pas de violence).",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut, bulle de cri débordant légèrement"
+        },
+        {
+            "key": "m09-case-3",
+            "title": "Ne pas répondre à chaud – case 3",
+            "image": "assets/images/conversations-bd/ne-pas-repondre-a-chaud/case-3.webp",
+            "description": "Sena respire, yeux fermés, puis fait une capture d’écran (icône).",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m09-case-4",
+            "title": "Ne pas répondre à chaud – case 4",
+            "image": "assets/images/conversations-bd/ne-pas-repondre-a-chaud/case-4.webp",
+            "description": "Sena au téléphone, plus calme ; l’écran montre des icônes drapeau et bouclier.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m09-case-5",
+            "title": "Ne pas répondre à chaud – case 5",
+            "image": "assets/images/conversations-bd/ne-pas-repondre-a-chaud/case-5.webp",
+            "description": "Sena sourit à son écran, où des cœurs abstraits s’accumulent.",
+            "personnages": [
+                "sena"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m10-case-1",
+            "title": "Le cadenas à deux clés – case 1",
+            "image": "assets/images/conversations-bd/le-cadenas-a-deux-cles/case-1.webp",
+            "description": "Stand de réparation de téléphones de Mariam au marché de Cotonou (sans enseigne lisible) ; Tantie Rosine lui tend son téléphone.",
+            "personnages": [
+                "mariam",
+                "rosine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m10-case-2",
+            "title": "Le cadenas à deux clés – case 2",
+            "image": "assets/images/conversations-bd/le-cadenas-a-deux-cles/case-2.webp",
+            "description": "Mariam montre du doigt le cadenas de la grille de son stand.",
+            "personnages": [
+                "mariam"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m10-case-3",
+            "title": "Le cadenas à deux clés – case 3",
+            "image": "assets/images/conversations-bd/le-cadenas-a-deux-cles/case-3.webp",
+            "description": "Gros plan sur les mains de Mariam : une clé dans une main, le téléphone (icône de cadenas) dans l’autre.",
+            "personnages": [
+                "mariam"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m10-case-4",
+            "title": "Le cadenas à deux clés – case 4",
+            "image": "assets/images/conversations-bd/le-cadenas-a-deux-cles/case-4.webp",
+            "description": "Tantie Rosine éclate de rire, mains sur les hanches ; Mariam lève l’index.",
+            "personnages": [
+                "rosine",
+                "mariam"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m10-case-5",
+            "title": "Le cadenas à deux clés – case 5",
+            "image": "assets/images/conversations-bd/le-cadenas-a-deux-cles/case-5.webp",
+            "description": "Le soir, Tantie Rosine regarde un message sur son téléphone (bulles abstraites, icône d’alerte) et secoue la tête, sûre d’elle.",
+            "personnages": [
+                "rosine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m11-case-1",
+            "title": "Les règles, on en parle – case 1",
+            "image": "assets/images/conversations-bd/les-regles-on-en-parle/case-1.webp",
+            "description": "Fifamè devant la porte fermée de la salle d’eau, à la maison, l’air inquiet, une main sur le ventre (aucune image du corps ni de sang).",
+            "personnages": [
+                "fifame"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m11-case-2",
+            "title": "Les règles, on en parle – case 2",
+            "image": "assets/images/conversations-bd/les-regles-on-en-parle/case-2.webp",
+            "description": "Fifamè s’approche de sa tante dans la cour, se penche à son oreille ; Tantie Rosine pose son ouvrage.",
+            "personnages": [
+                "fifame",
+                "rosine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m11-case-3",
+            "title": "Les règles, on en parle – case 3",
+            "image": "assets/images/conversations-bd/les-regles-on-en-parle/case-3.webp",
+            "description": "Assises sur un banc, Tantie Rosine explique avec des gestes doux.",
+            "personnages": [
+                "rosine"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m11-case-4",
+            "title": "Les règles, on en parle – case 4",
+            "image": "assets/images/conversations-bd/les-regles-on-en-parle/case-4.webp",
+            "description": "Tantie Rosine montre un paquet de serviettes hygiéniques (emballage sans texte) ; Fifamè pose une question.",
+            "personnages": [
+                "rosine",
+                "fifame"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m11-case-5",
+            "title": "Les règles, on en parle – case 5",
+            "image": "assets/images/conversations-bd/les-regles-on-en-parle/case-5.webp",
+            "description": "Fifamè sourit, son sac d’école sur l’épaule, prête à partir ; sa tante lui fait un signe de la main.",
+            "personnages": [
+                "fifame"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m12-case-1",
+            "title": "Les règles du groupe – case 1",
+            "image": "assets/images/conversations-bd/les-regles-du-groupe/case-1.webp",
+            "description": "Cercle de chaises sous un manguier ; Fifamè, Sena et un autre membre parlent en même temps, Yasmine en retrait ; Nadia, debout, sourit.",
+            "personnages": [
+                "fifame",
+                "sena",
+                "yasmine",
+                "nadia"
+            ],
+            "zone": "tout le haut, bulles superposées"
+        },
+        {
+            "key": "m12-case-2",
+            "title": "Les règles du groupe – case 2",
+            "image": "assets/images/conversations-bd/les-regles-du-groupe/case-2.webp",
+            "description": "Nadia lève doucement la main ; le groupe se tourne vers elle.",
+            "personnages": [
+                "nadia"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m12-case-3",
+            "title": "Les règles du groupe – case 3",
+            "image": "assets/images/conversations-bd/les-regles-du-groupe/case-3.webp",
+            "description": "Nadia compte sur ses doigts ; les membres écoutent.",
+            "personnages": [
+                "nadia"
+            ],
+            "zone": "haut, chaîne de 3 bulles associées"
+        },
+        {
+            "key": "m12-case-4",
+            "title": "Les règles du groupe – case 4",
+            "image": "assets/images/conversations-bd/les-regles-du-groupe/case-4.webp",
+            "description": "Yasmine lève timidement la main ; Nadia lui répond avec un sourire.",
+            "personnages": [
+                "yasmine",
+                "nadia"
+            ],
+            "zone": "haut"
+        },
+        {
+            "key": "m12-case-5",
+            "title": "Les règles du groupe – case 5",
+            "image": "assets/images/conversations-bd/les-regles-du-groupe/case-5.webp",
+            "description": "Sena prend la parole, le groupe attentif ; Fifamè regarde Sena avec admiration.",
+            "personnages": [
+                "sena",
+                "fifame"
+            ],
+            "zone": "haut"
+        }
+    ]
+}

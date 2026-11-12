@@ -11,6 +11,8 @@ return [
     'support' => 'Support',
     'do_glegbe' => 'Do Glegbe',
     'resources' => 'Ressources',
+    // P20-06 : conversations en BD publiques.
+    'conversations_bd' => 'Conversations en BD',
     'help_protection' => 'Aide & protection',
     'report' => 'Signaler',
     'emergency' => 'Contacts d’urgence',

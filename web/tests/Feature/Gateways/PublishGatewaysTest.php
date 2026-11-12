@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Gateways\FacebookPublisher;
 use App\Application\Gateways\ManualPublisher;
+use App\Application\Gateways\OutboundMessage;
 use App\Application\Gateways\PublishResult;
 use App\Application\Gateways\SocialPublishers;
 use App\Application\Gateways\TelegramPublisher;
@@ -37,7 +38,7 @@ function bindTransport(?PublishResult $result): void
 
         public function __construct(private ?PublishResult $result) {}
 
-        public function post(SocialNetwork $network, string $token, string $target, string $text): PublishResult
+        public function post(SocialNetwork $network, string $token, string $target, OutboundMessage $message): PublishResult
         {
             return $this->result ?? PublishResult::failed('refus');
         }

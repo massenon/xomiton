@@ -14,6 +14,7 @@ use App\Enums\ModerationKind;
 use App\Enums\ModerationStatus;
 use App\Enums\PostStatus;
 use App\Models\AuditLog;
+use App\Models\BdConversation;
 use App\Models\Comment;
 use App\Models\ForumReply;
 use App\Models\ForumTopic;
@@ -40,6 +41,8 @@ use Throwable;
  *  - l'extrait (255 car.) est figé pour rester lisible si le contenu est supprimé ; il ne sort jamais dans une notification ;
  *  - sujet ou réponse de forum (P8-05) : même règle que le fil (dédoublonnage, RG-16 : masquage au seuil et compteurs
  *    du sujet et du forum recalculés), extrait = titre et message du sujet ;
+ *  - conversation en BD publiée d'un·e membre (P20-08) : même règle que le fil (dédoublonnage, RG-16 : retirée au
+ *    seuil), extrait = titre et résumé ; l'auteur·rice est la personne signalée, même pour une création anonyme ;
  *  - message privé ou personne (P8-01, `confidential()`) : même dédoublonnage, même événement, **sans extrait** (corps
  *    chiffré au repos, `excerpt` en clair, ADR-33) ni compteur ni masquage automatique.
  */
@@ -70,7 +73,7 @@ final class ReportContent
         return new AutoHideRule(max(0, $threshold));
     }
 
-    public function byMember(User $reporter, Post|Comment|ForumTopic|ForumReply $subject, ContentReportReason $reason, ?string $details = null): ReportOutcome
+    public function byMember(User $reporter, Post|Comment|ForumTopic|ForumReply|BdConversation $subject, ContentReportReason $reason, ?string $details = null): ReportOutcome
     {
         return $this->once($reporter, $subject, $reason, $details, function () use ($subject): bool {
             if ($subject instanceof Post) {
@@ -97,7 +100,7 @@ final class ReportContent
      *
      * @param  (callable(): bool)|null  $after
      */
-    private function once(User $reporter, Post|Comment|ForumTopic|ForumReply|Message|User $subject, ContentReportReason $reason, ?string $details, ?callable $after): ReportOutcome
+    private function once(User $reporter, Post|Comment|ForumTopic|ForumReply|BdConversation|Message|User $subject, ContentReportReason $reason, ?string $details, ?callable $after): ReportOutcome
     {
         /** @var array{0: ModerationReport, 1: bool, 2: bool} $result */
         $result = DB::transaction(function () use ($reporter, $subject, $reason, $details, $after): array {
@@ -173,9 +176,10 @@ final class ReportContent
     /**
      * @param  array<string, mixed>  $attributes
      */
-    private function createReport(Post|Comment|ForumTopic|ForumReply|Message|User $subject, array $attributes): ModerationReport
+    private function createReport(Post|Comment|ForumTopic|ForumReply|BdConversation|Message|User $subject, array $attributes): ModerationReport
     {
         $kind = match (true) {
+            $subject instanceof BdConversation => ModerationKind::BdConversation,
             $subject instanceof Post => ModerationKind::Post,
             $subject instanceof Comment => ModerationKind::Comment,
             $subject instanceof ForumTopic => ModerationKind::Topic,
@@ -189,7 +193,11 @@ final class ReportContent
             'subject_type' => $subject->getMorphClass(),
             'subject_id' => $subject->getKey(),
             'excerpt' => $subject instanceof Message || $subject instanceof User ? null : self::excerpt($subject),
-            'reported_user_id' => $subject instanceof User ? $subject->getKey() : $subject->user_id,
+            'reported_user_id' => match (true) {
+                $subject instanceof User => $subject->getKey(),
+                $subject instanceof BdConversation => $subject->author_id,
+                default => $subject->user_id,
+            },
             'status' => ModerationStatus::Pending,
         ]);
 
@@ -199,7 +207,7 @@ final class ReportContent
         return $report;
     }
 
-    private function applyAutoHide(Post|Comment|ForumTopic|ForumReply $subject): bool
+    private function applyAutoHide(Post|Comment|ForumTopic|ForumReply|BdConversation $subject): bool
     {
         $rule = self::autoHideRule();
         $subject->refresh();
@@ -211,7 +219,9 @@ final class ReportContent
         $pending = ModerationReport::query()->forSubject($subject)->pending()
             ->whereNotNull('reporter_user_id')->distinct()->count('reporter_user_id');
 
-        if (! $rule->shouldHide($pending, $subject->status === PostStatus::Published)) {
+        $published = $subject instanceof BdConversation ? $subject->isPublished() : $subject->status === PostStatus::Published;
+
+        if (! $rule->shouldHide($pending, $published)) {
             return false;
         }
 
@@ -233,8 +243,12 @@ final class ReportContent
         );
     }
 
-    private static function excerpt(Post|Comment|ForumTopic|ForumReply $subject): ?string
+    private static function excerpt(Post|Comment|ForumTopic|ForumReply|BdConversation $subject): ?string
     {
+        if ($subject instanceof BdConversation) {
+            return Str::limit(trim((string) $subject->title.' — '.(string) $subject->summary, ' —'), self::EXCERPT_LENGTH);
+        }
+
         $text = trim((string) $subject->body);
 
         if ($subject instanceof ForumTopic) {

@@ -52,6 +52,8 @@ class RolesAndPermissionsSeeder extends Seeder
             // Ressources et outils CCC
             'ccc_tools.view' => $members,
             'ccc_tools.manage' => $admins,
+            // P20 : onglet « Conversations en BD » de /admin/ccc (publier, ordonner, bulles, bibliothèque de scènes).
+            'conversations_bd.manage' => $admins,
 
             // Espace pair (tâches, outils d'animation)
             'peer_space.access' => $peerAndAdmin,

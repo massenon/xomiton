@@ -5,9 +5,9 @@
 // quand le focus est dans la visionneuse, ancre `#planche-n` gardée dans l'adresse (lien partageable, retour arrière
 // respecté). L'impression montre toutes les planches (CSS d'impression). Aucun texte en dur : libellés reçus de Blade.
 
-/** Rang (1…count) lu dans une ancre `#planche-n`, sinon 1. */
-export const pageFromHash = (hash, count) => {
-  const match = /^#planche-(\d+)$/u.exec(String(hash || ''));
+/** Rang (1…count) lu dans une ancre `#planche-n` (ou `#<anchor>-n`), sinon 1. */
+export const pageFromHash = (hash, count, anchor = 'planche') => {
+  const match = new RegExp(`^#${anchor}-(\\d+)$`, 'u').exec(String(hash || ''));
   const n = match ? Number(match[1]) : 1;
 
   return n >= 1 && n <= count ? n : 1;
@@ -22,10 +22,13 @@ export const counterLabel = (template, n, count) => String(template || '')
   .replace(':count', String(count));
 
 /**
- * @param {{ count?: number, texts?: { counter?: string } }} [opts]
+ * P20-06 : la même visionneuse lit les conversations en BD (cases, ancre `#case-n` : `anchor: 'case'`).
+ *
+ * @param {{ count?: number, texts?: { counter?: string }, anchor?: string }} [opts]
  */
 export function xmComic(opts = {}) {
   const texts = opts.texts || {};
+  const anchor = /^[a-z]+$/u.test(String(opts.anchor || '')) ? String(opts.anchor) : 'planche';
 
   return {
     count: Number(opts.count) || 0,
@@ -37,7 +40,7 @@ export function xmComic(opts = {}) {
       if (this.count === 0) return;
       this.enhanced = true;
       this.$root.classList.add('is-enhanced');
-      this.show(pageFromHash(typeof window !== 'undefined' ? window.location.hash : '', this.count), false);
+      this.show(pageFromHash(typeof window !== 'undefined' ? window.location.hash : '', this.count, anchor), false);
     },
 
     pages() {
@@ -62,7 +65,7 @@ export function xmComic(opts = {}) {
       if (target === this.current) return;
       this.show(target);
       try {
-        window.history.replaceState(null, '', `#planche-${target}`);
+        window.history.replaceState(null, '', `#${anchor}-${target}`);
       } catch {
         // Historique indisponible (bac à sable) : la navigation reste possible sans ancre.
       }

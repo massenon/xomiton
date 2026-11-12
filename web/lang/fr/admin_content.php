@@ -32,6 +32,9 @@ return [
     'toasts' => ['published' => '« :title » est publié.', 'unpublished' => '« :title » repasse en brouillon.', 'deleted' => '« :title » est supprimé.'],
 
     'errors' => [
+        // P20 : conversations en BD (ManageConversationsBd).
+        'bd_conversation_invalid' => 'La conversation ne respecte pas la grammaire des bulles. :message',
+        'bd_edge' => 'Cette conversation est déjà au bord de la liste.',
         'forum_edge' => 'Ce forum est déjà au bord de la liste.',
         'proposal_decided' => 'Cette proposition a déjà été traitée.',
         'event_decided' => 'Cet événement a déjà été traité.',
@@ -54,6 +57,10 @@ return [
         'message_short' => 'Le message personnalisé doit contenir au moins :min caractères.',
         'message_long' => 'Le message est limité à :max caractères.',
         'delivery_closed' => 'Cette publication est déjà terminée ou annulée.',
+        'external_id_invalid' => 'Identifiant de page ou de canal invalide : un nombre (page Facebook, canal Telegram en -100…) ou @nomducanal.',
+        'already_shared' => 'Cette BD est déjà planifiée ou publiée sur : :networks. Cochez « Republier » pour la diffuser de nouveau.',
+        'series_empty' => 'Toutes les BD publiques sont déjà planifiées ou publiées sur les réseaux choisis : rien à ajouter au calendrier.',
+        'series_interval' => 'L’écart entre deux BD doit être compris entre :min et :max jours.',
         'post_closed' => 'Seule une publication planifiée peut être annulée.',
         'post_published' => 'Une publication déjà publiée reste dans l’historique : elle ne se retire pas.',
         'alt_invalid' => 'Le texte alternatif de la planche :page est obligatoire (:max caractères au plus).',

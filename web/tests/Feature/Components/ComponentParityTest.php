@@ -79,6 +79,11 @@ function parityCases(): array
         'sos-button' => '<x-sos-button :fixed="false" id="dsSos" />',
         'timeline' => '<x-timeline label="Suivi du dossier" :items="[[\'title\' => \'Entretien d’accueil\', \'date\' => \'12/03/2026\', \'datetime\' => \'2026-03-12\', \'by\' => \'Pair A.\', \'kind\' => \'shared\', \'badge\' => [\'label\' => \'Réalisé\', \'color\' => \'success\'], \'text\' => \'Premier échange.\'], [\'title\' => \'Relance\', \'kind\' => \'internal\', \'next\' => \'20/03/2026\', \'late\' => true], [\'title\' => \'Clôture\', \'date\' => \'25/03/2026\', \'color\' => \'warning\']]" />',
         'timeline-empty' => '<x-timeline :items="[]" />',
+        // P20-04 : case d'une conversation en BD (9 types de bulles, emphase, chaîne associée, bulle masquée, queue hors
+        // de l'image), sans image (repli) puis avec image ; données partagées avec parity.test.ts.
+        'bd-panel' => '<x-bd.panel :bubbles="json_decode(file_get_contents(resource_path(\'js/components/bd/parity-fixture.json\')), true)[\'bubbles\']" :names="json_decode(file_get_contents(resource_path(\'js/components/bd/parity-fixture.json\')), true)[\'names\']" alt="Sortie du lycée à Porto-Novo." :n="2" :count="5" title="Non, c’est non" />',
+        'bd-panel-image' => '<x-bd.panel :bubbles="[[\'type\' => \'parole\', \'personnage\' => \'afi\', \'texte\' => \'Bonjour !\', \'position\' => [\'x\' => 4, \'y\' => 4], \'queue\' => [\'vers\' => \'bord-gauche\']]]" :names="[\'afi\' => \'Afi\']" image="/assets/images/conversations-bd/test/case-1.webp" alt="Afi dans la cour." :n="1" :count="3" title="Test" priority id="case-1" />',
+        'bd-panel-empty' => '<x-bd.panel alt="Un regard silencieux." :n="3" :count="3" title="Test" />',
     ];
 }
 

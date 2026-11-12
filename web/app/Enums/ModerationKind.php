@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Models\BdConversation;
 use App\Models\Comment;
 use App\Models\ForumReply;
 use App\Models\ForumTopic;
@@ -13,7 +14,8 @@ use App\Models\User;
 
 /**
  * Nature du contenu signalé (DATABASE_DICTIONARY.md §7 `moderation_reports.kind`). Le prototype ne connaissait
- * que `publication`, `commentaire`, `utilisateur` ; `message`, `sujet` et `reponse` couvrent la messagerie et les forums.
+ * que `publication`, `commentaire`, `utilisateur` ; `message`, `sujet` et `reponse` couvrent la messagerie et les forums,
+ * `conversation_bd` les créations publiées des membres (P20-08).
  */
 enum ModerationKind: string
 {
@@ -23,6 +25,8 @@ enum ModerationKind: string
     case User = 'utilisateur';
     case Topic = 'sujet';
     case Reply = 'reponse';
+    /** P20-08 : conversation en BD publiée d'un·e membre (création), signalée depuis sa page publique. */
+    case BdConversation = 'conversation_bd';
 
     public function label(): string
     {
@@ -38,6 +42,7 @@ enum ModerationKind: string
             self::User => 'danger',
             self::Topic => 'primary',
             self::Reply => 'info',
+            self::BdConversation => 'violet',
         };
     }
 
@@ -48,7 +53,7 @@ enum ModerationKind: string
     public function priorityWeight(): int
     {
         return match ($this) {
-            self::User, self::Message, self::Post, self::Topic => 10,
+            self::User, self::Message, self::Post, self::Topic, self::BdConversation => 10,
             self::Comment, self::Reply => 5,
         };
     }
@@ -67,6 +72,7 @@ enum ModerationKind: string
             self::User => User::class,
             self::Topic => ForumTopic::class,
             self::Reply => ForumReply::class,
+            self::BdConversation => BdConversation::class,
         };
     }
 

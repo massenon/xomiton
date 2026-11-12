@@ -1,0 +1,189 @@
+{
+    "key": "m10",
+    "slug": "le-cadenas-a-deux-cles",
+    "title": "Le cadenas à deux clés",
+    "summary": "Mariam explique la double vérification à Tantie Rosine avec la grille et le cadenas de son stand.",
+    "theme": "vulgarisation de la double authentification",
+    "category": "vie numérique",
+    "audience": "tout public, parents, personnes âgées",
+    "key_message": "La double vérification protège un compte comme une grille plus un cadenas ; le code reçu ne se donne à personne.",
+    "content_warning": null,
+    "questions": [
+        "Qu’a compris Tantie Rosine grâce à la comparaison avec la grille et le cadenas ?",
+        "Pourquoi le message de la case 5 est-il une arnaque ?",
+        "Qui, autour de vous, pourrait avoir besoin de cette explication ?"
+    ],
+    "cases": [
+        {
+            "scene": "m10-case-1",
+            "description": "Stand de réparation de téléphones de Mariam au marché de Cotonou (sans enseigne lisible) ; Tantie Rosine lui tend son téléphone.",
+            "bulles": [
+                {
+                    "type": "cartouche",
+                    "texte": "Au stand de Mariam, au marché de Cotonou.",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "Mon téléphone me demande un code à six chiffres. C’est quoi, cette affaire ?",
+                    "position": {
+                        "x": 32,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 28,
+                        "y": 47.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m10-case-2",
+            "description": "Mariam montre du doigt le cadenas de la grille de son stand.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "mariam",
+                    "texte": "C’est la double vérification, Tantie. Comme ma grille et mon cadenas.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 36.8
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "rosine",
+                    "texte": "Sa grille ?",
+                    "position": {
+                        "x": 36.1,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 58.5,
+                        "y": 23.9
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m10-case-3",
+            "description": "Gros plan sur les mains de Mariam : une clé dans une main, le téléphone (icône de cadenas) dans l’autre.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "mariam",
+                    "texte": "Le mot de passe, c’est la première clé.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "mariam",
+                    "texte": "Le code reçu sur ton téléphone, c’est la deuxième. Un voleur n’a pas les deux.",
+                    "position": {
+                        "x": 29.6,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 25.6,
+                        "y": 36.8
+                    },
+                    "associee_a": 0
+                }
+            ]
+        },
+        {
+            "scene": "m10-case-4",
+            "description": "Tantie Rosine éclate de rire, mains sur les hanches ; Mariam lève l’index.",
+            "bulles": [
+                {
+                    "type": "joie",
+                    "personnage": "rosine",
+                    "texte": "Ah ! Comme chez moi : le portail et le cadenas !",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "mariam",
+                    "texte": "Exactement ! Et ce code, tu ne le donnes à personne.",
+                    "emphase": [
+                        "personne"
+                    ],
+                    "position": {
+                        "x": 38.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 71.7,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m10-case-5",
+            "description": "Le soir, Tantie Rosine regarde un message sur son téléphone (bulles abstraites, icône d’alerte) et secoue la tête, sûre d’elle.",
+            "bulles": [
+                {
+                    "type": "message",
+                    "personnage": "numero_inconnu",
+                    "texte": "Bonjour Tantie, envoie-moi vite le code que tu viens de recevoir.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 31.5,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "cri",
+                    "personnage": "rosine",
+                    "texte": "Ça, jamais !",
+                    "position": {
+                        "x": 30,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 26,
+                        "y": 26.8
+                    }
+                },
+                {
+                    "type": "cartouche",
+                    "texte": "Un vrai service ne demande jamais votre code par message.",
+                    "position": {
+                        "x": 31.3,
+                        "y": 89.2
+                    }
+                }
+            ]
+        }
+    ]
+}

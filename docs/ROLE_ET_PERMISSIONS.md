@@ -70,6 +70,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | Modération & contenu | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
 | Contenu : thématiques & ressources (édition) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Outils CCC (édition) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Conversations en BD (lecture publique, mode séance et export PDF / PNG des publiées ; créations des membres : `social.access` ; relecture : `moderation.manage` ; modèles : `conversations_bd.manage`) | 👁 | 👁 | 👁 | 👁 | ✅ | ✅ |
 | Assistant LLM (base de connaissances) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Newsletter** (abonné·es, campagnes, envoi) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Passerelles réseaux sociaux** (connexion des comptes, file de publication) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
@@ -98,6 +99,8 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `posts.create`, `polls.create`, `comments.create` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `posts.moderate` | | | ✅ | ✅ | ✅ |
 | Relire les vidéos avant parution (Q96, `/admin/moderation/videos`) : **aucune nouvelle permission**, `moderation.manage` (voir aussi `posts.moderate` pour voir la vidéo en attente) ; jamais sa propre vidéo (`PostPolicy::review`) | | | ✅ | ✅ | ✅ |
+| Relire les conversations en BD proposées par les membres (P20-08, `/admin/moderation/conversations-bd`) : publier, ou refuser avec un motif obligatoire ; **aucune nouvelle permission**, `moderation.manage` rejouée à chaque action ; jamais sa propre création ; journal `conversations_bd.member_published\|member_refused` ; PDF d'une création non publiée pour la relecture | | | ✅ | ✅ | ✅ |
+| Créer ses conversations en BD (P20-07, `/mes-conversations-bd`, API `bd-conversations`) : `social.access` ; brouillon privé, proposer (anonyme par défaut), retirer, supprimer, exporter **ses** créations ; signaler une création publiée (motifs du projet) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `moderation.filter` (filtre de contenus : mots, liste blanche, test d'un texte, IOS-10 ; décision client du 2026-11-10) | | | ✅ | ✅ | ✅ |
 | `cases.create`, `cases.update_own` | | ✅ | | ✅ | ✅ |
 | `cases.view_all`, `cases.export` | | | | ✅ | ✅ |
@@ -123,6 +126,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `users.unban` (lever un bannissement, journal `users.unbanned`) | | | | | ✅ |
 | `badges.manage` (P18-09 : attribuer ou retirer à la main un badge vérifié dans la fiche du compte, jamais sur soi-même ; journal `badges.granted` / `badges.revoked`) | | | | ✅ | ✅ |
 | Réponse validée d'un sujet de forum (P18-03, Q97) : **aucune nouvelle permission** — l'auteur·rice du sujet, ou `posts.moderate` (`ForumTopicPolicy::accept`) ; un geste de la modération est journalisé | | | ✅ | ✅ | ✅ |
+| `conversations_bd.manage` (P20, PRD conversation-en-bd P0-9 : onglet « Conversations en BD » de `/admin/ccc` — publier / dépublier (grammaire des bulles exigée), ordonner, modifier les textes, la description et les bulles d’une case, bibliothèque de scènes ; journal `conversations_bd.*` ; migration `2026_12_08_090100` pour une base déjà semée) | | | | ✅ | ✅ |
 | `forums.manage` (P18-10 : onglet « Gestion des forums » de `/admin/reseau` — créer, renommer, réordonner, archiver / réactiver un forum ; journal `forums.created|updated|moved|archived|restored`) | | | | ✅ | ✅ |
 | Épingler / verrouiller un sujet (P18-11) : **aucune nouvelle permission** — `posts.moderate` (`ForumTopicPolicy::moderate`), depuis `/admin/reseau` (onglet Sujets de forum), la fiche du sujet (web) et l'API `forums/topics/{ulid}/pin|lock` ; journal `forums.topic_pinned|unpinned|locked|unlocked` | | | ✅ | ✅ | ✅ |
 | Mettre une ressource « À la une » (P18-11) : **aucune nouvelle permission** — `resources.manage` (policy `update`) ; journal `content.resource_featured|unfeatured` | | | | ✅ | ✅ |

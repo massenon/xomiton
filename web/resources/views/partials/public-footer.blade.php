@@ -14,6 +14,7 @@
                     <li><a href="{{ route('aide.index') }}">{{ __('footer.support') }}</a></li>
                     <li><a href="{{ route('do-glegbe') }}">{{ __('footer.do_glegbe') }}</a></li>
                     <li><a href="{{ route('ressources.index') }}">{{ __('footer.resources') }}</a></li>
+                    <li><a href="{{ route('conversations-bd.index') }}">{{ __('footer.conversations_bd') }}</a></li>
                 </ul>
             </div>
             <div class="col-6 col-lg-2">

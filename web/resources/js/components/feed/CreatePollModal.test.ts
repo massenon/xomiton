@@ -39,6 +39,11 @@ afterEach(async () => {
 
 const options = composerOptions();
 
+// Runner de CI chargé (≈ 1 000 tests en parallèle) : la fermeture Bootstrap après l'écriture IndexedDB (fake-indexeddb)
+// a dépassé 3 s ; marge large pour les attentes et le test entier, sans changer ce qui est vérifié.
+const WAIT = 10_000;
+vi.setConfig({ testTimeout: 30_000 });
+
 const fillPoll = async () => {
     await fireEvent.update(screen.getByLabelText(/Question \(titre du sondage\)/), 'Quel thème pour la causerie ?');
     await fireEvent.update(screen.getByLabelText('Réponse 1'), 'Santé');
@@ -46,8 +51,8 @@ const fillPoll = async () => {
 };
 
 /** Bootstrap Modal : ouverture terminée, focus piégé (transitions nulles sous jsdom, mais différées). */
-const shown = () => waitFor(() => expect(document.querySelector('.modal.show')?.contains(document.activeElement)).toBe(true), { timeout: 3000 });
-const closed = (view: { emitted: (name: string) => unknown[] | undefined }) => waitFor(() => expect(view.emitted('hidden')).toBeTruthy(), { timeout: 3000 });
+const shown = () => waitFor(() => expect(document.querySelector('.modal.show')?.contains(document.activeElement)).toBe(true), { timeout: WAIT });
+const closed = (view: { emitted: (name: string) => unknown[] | undefined }) => waitFor(() => expect(view.emitted('hidden')).toBeTruthy(), { timeout: WAIT });
 
 const submit = (id: string) => fireEvent.submit(document.querySelector(`#${id} form`) as HTMLFormElement);
 
@@ -140,7 +145,7 @@ describe('Créer un sondage', () => {
         await fillPoll();
         await submit('modalCreatePoll');
 
-        await waitFor(() => expect(add).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(add).toHaveBeenCalledTimes(1), { timeout: WAIT });
         const entry = add.mock.calls[0][0];
         expect(entry).toMatchObject({ type: 'post', url: '/api/v1/posts', method: 'POST', account: 'acct' });
         expect(entry.idempotencyKey).toMatch(/^[0-9a-f-]{36}$/);
@@ -160,7 +165,7 @@ describe('Créer un sondage', () => {
         await startOutbox();
         await fillPoll();
         await submit('modalCreatePoll');
-        await waitFor(() => expect(add).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(add).toHaveBeenCalledTimes(1), { timeout: WAIT });
         const key = add.mock.calls[0][0].idempotencyKey as string;
         await closed(first);
         first.unmount();

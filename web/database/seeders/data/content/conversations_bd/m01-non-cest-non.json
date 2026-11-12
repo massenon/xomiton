@@ -1,0 +1,221 @@
+{
+    "key": "m01",
+    "slug": "non-cest-non",
+    "title": "Non, c’est non",
+    "summary": "Fifamè ne veut pas aller chez Rodrigue. Elle dit d’abord « peut-être », puis ose un non clair, sans se justifier.",
+    "theme": "consentement, dire non",
+    "category": "relations et consentement",
+    "audience": "ados et jeunes (dès 13 ans)",
+    "key_message": "Un non n’a pas besoin de justification ; insister n’est pas du respect.",
+    "content_warning": null,
+    "questions": [
+        "En case 2, qu’a dit Fifamè ? Que pensait-elle vraiment ? Pourquoi cette différence ?",
+        "« Tu me dois bien ça » : est-ce une raison de dire oui ?",
+        "Comment dire non en une seule phrase ? Essayons chacun·e."
+    ],
+    "cases": [
+        {
+            "scene": "m01-case-1",
+            "description": "Sortie du lycée à Porto-Novo, fin d’après-midi, élèves et zémidjans au loin. Rodrigue (à droite) se penche vers Fifamè (à gauche), qui serre la bretelle de son sac.",
+            "bulles": [
+                {
+                    "type": "cartouche",
+                    "texte": "À la sortie du lycée, à Porto-Novo.",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rodrigue",
+                    "texte": "Viens chez moi ce soir. Il n’y aura personne.",
+                    "position": {
+                        "x": 33.2,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 29.2,
+                        "y": 42.6
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "fifame",
+                    "texte": "Je n’en ai pas envie… mais je ne veux pas le vexer.",
+                    "position": {
+                        "x": 59.8,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 74,
+                        "y": 44.6
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m01-case-2",
+            "description": "Plan rapproché : Fifamè sourit d’un sourire forcé, regard fuyant ; Rodrigue lève le pouce.",
+            "bulles": [
+                {
+                    "type": "tremblee",
+                    "personnage": "fifame",
+                    "texte": "Euh… je ne sais pas… peut-être.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 26
+                    }
+                },
+                {
+                    "type": "joie",
+                    "personnage": "rodrigue",
+                    "texte": "Super ! Je t’attends à sept heures !",
+                    "position": {
+                        "x": 24,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 53.7,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "fifame",
+                    "texte": "Pourquoi j’ai dit peut-être ?",
+                    "position": {
+                        "x": 52.2,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 48.2,
+                        "y": 29.1
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m01-case-3",
+            "description": "Fifamè se redresse, épaules droites, regard franc ; Rodrigue écarte les mains.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "fifame",
+                    "texte": "En fait, non. Je ne viendrai pas.",
+                    "emphase": [
+                        "non"
+                    ],
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 27.6
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rodrigue",
+                    "texte": "Allez ! Juste un peu. Tu me dois bien ça.",
+                    "position": {
+                        "x": 28.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 55.3,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m01-case-4",
+            "description": "Fifamè, calme et ferme, main levée paume ouverte (geste « stop » doux) ; Rodrigue recule d’un pas, l’air surpris.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "fifame",
+                    "texte": "Non. Je n’ai pas besoin d’une raison.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "rodrigue",
+                    "texte": "Elle est sérieuse. J’arrête d’insister.",
+                    "position": {
+                        "x": 28.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 60.9,
+                        "y": 34.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m01-case-5",
+            "description": "Le lendemain, cercle d’une séance Xomiton sous un manguier ; Nadia parle à Fifamè, souriante.",
+            "bulles": [
+                {
+                    "type": "cartouche",
+                    "texte": "Le lendemain, à la séance Xomiton.",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "nadia",
+                    "texte": "Tu as dit non deux fois. C’est très courageux.",
+                    "position": {
+                        "x": 27.3,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 42.6
+                    }
+                },
+                {
+                    "type": "joie",
+                    "personnage": "fifame",
+                    "texte": "Je me sens plus forte !",
+                    "position": {
+                        "x": 55.3,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 74,
+                        "y": 39.5
+                    }
+                }
+            ]
+        }
+    ]
+}
