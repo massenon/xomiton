@@ -7,9 +7,11 @@ import '../../../core/l10n/app_strings.dart';
 import '../../../core/network/api_exception.dart';
 import '../../../core/platform/platform_services.dart';
 import '../../../core/ui/xm_widgets.dart';
+import '../application/ccc_offline.dart';
 import '../application/ccc_progress.dart';
 import '../application/ccc_providers.dart';
 import '../data/ccc_models.dart';
+import '../data/ccc_repository.dart';
 import 'ccc_widgets.dart';
 
 /// Onglets de `/ccc` ; le paramètre `onglet` de l'adresse en est la valeur.
@@ -24,15 +26,19 @@ class CccPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final catalog = ref.watch(cccCatalogProvider);
+    final load = ref.watch(cccLoadProvider);
     return Scaffold(
       appBar: AppBar(title: Text(context.t('ccc_title'))),
-      body: catalog.when(
+      body: load.when(
         loading: () => const LoadingView(),
         error: (e, _) => _isForbidden(e)
-            ? _ForbiddenView(onRetry: () => ref.invalidate(cccCatalogProvider))
-            : ErrorView(error: e, onRetry: () => ref.invalidate(cccCatalogProvider)),
-        data: (c) => _CccTabs(catalog: c, initial: kCccTabs.indexOf(tab ?? '').clamp(0, kCccTabs.length - 1)),
+            ? _ForbiddenView(onRetry: () => ref.invalidate(cccLoadProvider))
+            : CccErrorView(error: e, onRetry: () => ref.invalidate(cccLoadProvider)),
+        data: (l) => _CccTabs(
+          load: l,
+          refreshing: load.isRefreshing,
+          initial: kCccTabs.indexOf(tab ?? '').clamp(0, kCccTabs.length - 1),
+        ),
       ),
     );
   }
@@ -69,18 +75,31 @@ class _ForbiddenView extends StatelessWidget {
 }
 
 class _CccTabs extends ConsumerWidget {
-  const _CccTabs({required this.catalog, required this.initial});
-  final CccCatalog catalog;
+  const _CccTabs({required this.load, required this.refreshing, required this.initial});
+  final CccLoad load;
+  final bool refreshing;
   final int initial;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final presentation = ref.watch(cccPresentationProvider);
+    final catalog = load.catalog;
+    // Un seul téléchargement pour tout le kit (boîtes à images et BD) : un seul état « tout est enregistré ».
+    final downloadUrls = cccImageUrls(catalog);
     return DefaultTabController(
       length: kCccTabs.length,
       initialIndex: initial,
       child: Column(
         children: [
+          if (load.fromCopy)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(XmSpace.gutter, XmSpace.s2, XmSpace.gutter, 0),
+              child: CccOfflineBanner(
+                syncedAt: load.syncedAt,
+                refreshing: refreshing,
+                onRefresh: () => ref.invalidate(cccLoadProvider),
+              ),
+            ),
           if (presentation)
             Padding(
               padding: const EdgeInsets.fromLTRB(XmSpace.gutter, XmSpace.s2, XmSpace.gutter, 0),
@@ -109,8 +128,8 @@ class _CccTabs extends ConsumerWidget {
             child: TabBarView(
               children: [
                 _ManualTab(modules: catalog.manual),
-                _ImagesTab(boxes: catalog.imageBoxes, presentation: presentation),
-                _ComicsTab(comics: catalog.comics),
+                _ImagesTab(boxes: catalog.imageBoxes, presentation: presentation, offline: load.fromCopy, downloadUrls: downloadUrls),
+                _ComicsTab(comics: catalog.comics, offline: load.fromCopy, downloadUrls: downloadUrls),
                 _LawsTab(count: catalog.lawsCount, url: catalog.lawsUrl),
               ],
             ),
@@ -285,9 +304,11 @@ class _ModuleCard extends StatelessWidget {
 // ---------------------------------------------------------------- Boîtes à images
 
 class _ImagesTab extends StatelessWidget {
-  const _ImagesTab({required this.boxes, required this.presentation});
+  const _ImagesTab({required this.boxes, required this.presentation, required this.offline, required this.downloadUrls});
   final List<PagedTool> boxes;
   final bool presentation;
+  final bool offline;
+  final Set<String> downloadUrls;
 
   @override
   Widget build(BuildContext context) {
@@ -296,6 +317,7 @@ class _ImagesTab extends StatelessWidget {
     return _tabList([
       CccHeading(context.t('ccc_images_heading'), subtitle: context.t('ccc_images_intro')),
       const SizedBox(height: XmSpace.s3),
+      CccDownloadCard(urls: downloadUrls, offline: offline),
       if (boxes.isEmpty)
         const _EmptyTab('ccc_empty_boites_images')
       else ...[
@@ -330,15 +352,16 @@ class _ImagesTab extends StatelessWidget {
   }
 }
 
-class _BoxCard extends StatelessWidget {
+class _BoxCard extends ConsumerWidget {
   const _BoxCard({required this.box, required this.number, required this.presentation});
   final PagedTool box;
   final int number;
   final bool presentation;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = Theme.of(context).textTheme;
+    final offline = ref.watch(cccImagesProvider.select((s) => cccToolOffline(s, box)));
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -356,6 +379,10 @@ class _BoxCard extends StatelessWidget {
             ),
             const SizedBox(height: XmSpace.s1),
             Text(box.title, style: t.titleSmall),
+            if (offline) ...[
+              const SizedBox(height: XmSpace.s1),
+              CccOfflineBadge(toolKey: box.key),
+            ],
             if (presentation && box.description != null) ...[
               const SizedBox(height: XmSpace.s2),
               Semantics(
@@ -429,16 +456,20 @@ class _TipsCard extends StatelessWidget {
 
 // ---------------------------------------------------------------- BD
 
-class _ComicsTab extends StatelessWidget {
-  const _ComicsTab({required this.comics});
+class _ComicsTab extends ConsumerWidget {
+  const _ComicsTab({required this.comics, required this.offline, required this.downloadUrls});
   final List<PagedTool> comics;
+  final bool offline;
+  final Set<String> downloadUrls;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = Theme.of(context).textTheme;
+    final images = ref.watch(cccImagesProvider);
     return _tabList([
       CccHeading(context.t('ccc_comic_heading'), subtitle: context.t('ccc_comic_intro')),
       const SizedBox(height: XmSpace.s3),
+      CccDownloadCard(urls: downloadUrls, offline: offline),
       if (comics.isEmpty)
         const _EmptyTab('ccc_empty_bd')
       else
@@ -456,6 +487,10 @@ class _ComicsTab extends StatelessWidget {
                   Text(c.title, style: t.titleSmall),
                   Text(context.t('ccc_comic_pages_count', {'count': c.pages.length}),
                       style: t.labelMedium?.copyWith(color: context.xm.textMuted)),
+                  if (cccToolOffline(images, c)) ...[
+                    const SizedBox(height: XmSpace.s1),
+                    CccOfflineBadge(toolKey: c.key),
+                  ],
                   if (c.description != null) ...[
                     const SizedBox(height: XmSpace.s1),
                     Text(c.description!, style: t.bodySmall),

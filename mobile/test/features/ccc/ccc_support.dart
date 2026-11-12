@@ -3,7 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
 import 'package:xomiton/core/platform/platform_services.dart';
+import 'package:xomiton/features/ccc/application/ccc_offline.dart';
+import 'package:xomiton/features/ccc/data/ccc_image_store.dart';
+import 'package:xomiton/features/ccc/data/ccc_models.dart';
+import 'package:xomiton/features/ccc/data/ccc_repository.dart';
 
 import '../../support/fakes.dart';
 import '../../support/harness.dart';
@@ -123,6 +132,11 @@ Future<CccHarness> openCcc(
   Map<String, dynamic>? user,
   String path = '/ccc',
   Map<String, Object> prefs = const {},
+  DateTime? copyAt,
+  Map<String, dynamic>? copyBody,
+  Iterable<String> savedImages = const [],
+  HttpClientAdapter? imageApi,
+  bool diskAvailable = true,
 }) async {
   await initializeDateFormatting('fr');
   final launcher = FakeLauncher();
@@ -132,8 +146,16 @@ Future<CccHarness> openCcc(
     token: 'tok',
     cachedUser: u,
     initialPrefs: prefs,
-    extra: [linkLauncherProvider.overrideWithValue(launcher)],
+    extra: [
+      linkLauncherProvider.overrideWithValue(launcher),
+      if (imageApi != null) cccImageDioProvider.overrideWithValue(Dio()..httpClientAdapter = imageApi),
+    ],
   );
+  env.imageDisk.available = diskAvailable;
+  if (copyAt != null) await env.db.privateCache.put(cccCopyKey(12), cccCopyJson(copyAt, copyBody ?? cccBody()));
+  for (final url in savedImages) {
+    env.imageDisk.files[CccImageStore.nameFor(url)] = [1, 2, 3];
+  }
   usePhone(tester);
   addTearDown(tester.view.reset);
   await tester.pumpWidget(await env.app());
@@ -152,3 +174,33 @@ Future<void> openTab(WidgetTester tester, String key) async {
 
 ProviderContainer container(WidgetTester tester) =>
     ProviderScope.containerOf(tester.element(find.byType(Scaffold).first));
+
+/// Contenu d'une copie locale, tel que l'écrit `CccRepository`.
+String cccCopyJson(DateTime at, Map<String, dynamic> body) =>
+    jsonEncode({'synced_at': at.toUtc().toIso8601String(), 'body': body});
+
+/// Toutes les adresses d'images d'un corps de réponse (couvertures et planches).
+Set<String> bodyImages(Map<String, dynamic> body) =>
+    cccImageUrls(CccCatalog.fromJson(body));
+
+/// Faux serveur d'images : renvoie [bytes] (PNG par défaut) pour chaque adresse, sauf si [handler] décide autrement.
+class FakeImageServer implements HttpClientAdapter {
+  FakeImageServer({this.handler, this.bytes});
+  final FutureOr<ResponseBody> Function(String url)? handler;
+  final List<int>? bytes;
+  final List<String> urls = [];
+
+  @override
+  Future<ResponseBody> fetch(RequestOptions options, Stream<Uint8List>? requestStream, Future<void>? cancelFuture) async {
+    final url = options.uri.toString();
+    urls.add(url);
+    if (handler != null) return handler!(url);
+    return imageBody(bytes ?? const [137, 80, 78, 71, 1, 2, 3, 4]);
+  }
+
+  @override
+  void close({bool force = false}) {}
+}
+
+ResponseBody imageBody(List<int> bytes, {String type = 'image/png', int status = 200}) =>
+    ResponseBody.fromBytes(bytes, status, headers: {Headers.contentTypeHeader: [type]});

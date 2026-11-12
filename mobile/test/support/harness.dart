@@ -9,12 +9,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xomiton/app/app.dart';
 import 'package:xomiton/core/l10n/app_strings.dart';
+import 'package:xomiton/features/ccc/application/ccc_offline.dart';
 import 'package:xomiton/core/providers/core_providers.dart';
 import 'package:xomiton/core/storage/local_db.dart';
 import 'package:xomiton/core/storage/secret_store.dart';
 import 'package:xomiton/core/storage/token_store.dart';
 import 'package:xomiton/core/sync/sync_providers.dart';
 import 'package:xomiton/features/home/application/home_providers.dart';
+import 'memory_image_disk.dart';
 import 'package:xomiton/features/pair/application/pair_providers.dart';
 import 'package:xomiton/features/security/application/pin_lock.dart';
 import 'package:xomiton/features/security/application/pin_service.dart';
@@ -122,6 +124,9 @@ class TestEnv {
   final String? pin;
 
   final secrets = MemorySecretStore();
+
+  /// Disque des images CCC en mémoire (jamais le vrai dossier de l'appareil).
+  final imageDisk = MemoryImageDisk();
   final db = LocalDb.memory();
   late final ToastLog toasts;
 
@@ -133,6 +138,7 @@ class TestEnv {
     httpAdapterProvider.overrideWithValue(api),
     connectivityStreamProvider.overrideWithValue(Stream<bool>.value(online)),
     unreadCountProvider.overrideWith((ref) => Stream.value(unread)),
+    cccImageDiskProvider.overrideWithValue(imageDisk),
     outboxRetryIntervalProvider.overrideWithValue(null),
     syncIntervalProvider.overrideWithValue(null),
     peerPollEnabledProvider.overrideWithValue(false),

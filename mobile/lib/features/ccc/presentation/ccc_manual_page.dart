@@ -23,7 +23,7 @@ class CccManualPage extends ConsumerWidget {
       loading: () => Scaffold(appBar: AppBar(), body: const LoadingView()),
       error: (e, _) => Scaffold(
         appBar: AppBar(title: Text(context.t('ccc_title'))),
-        body: ErrorView(error: e, onRetry: () => ref.invalidate(cccCatalogProvider)),
+        body: CccErrorView(error: e, onRetry: () => ref.invalidate(cccLoadProvider)),
       ),
       data: (c) {
         final module = c.module(moduleKey);
