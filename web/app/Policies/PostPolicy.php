@@ -32,6 +32,11 @@ final class PostPolicy
             return true;
         }
 
+        // Vidéo en relecture ou refusée (Q96) : jamais lisible hors auteur·rice et modération (aucune audience, aucun groupe).
+        if ($post->isUnderReview()) {
+            return $user->can('moderation.manage');
+        }
+
         if (! $user->can('social.access')) {
             return false;
         }
@@ -68,7 +73,17 @@ final class PostPolicy
 
     public function update(User $user, Post $post): bool
     {
-        return $post->user_id === $user->getKey() && $user->can('posts.create');
+        // Une vidéo en relecture ne change pas sous les yeux de la modération : on la retire (`delete`) et on la renvoie.
+        return $post->user_id === $user->getKey() && $user->can('posts.create') && ! $post->isUnderReview();
+    }
+
+    /**
+     * Relire une vidéo (Q96) : `moderation.manage`, vidéo encore en attente, **jamais la sienne** (une autre personne
+     * relit toujours).
+     */
+    public function review(User $user, Post $post): bool
+    {
+        return $user->can('moderation.manage') && $post->isPendingReview() && $post->user_id !== $user->getKey();
     }
 
     public function delete(User $user, Post $post): bool
@@ -83,23 +98,23 @@ final class PostPolicy
 
     public function like(User $user, Post $post): bool
     {
-        return $this->view($user, $post);
+        return ! $post->isUnderReview() && $this->view($user, $post);
     }
 
     public function save(User $user, Post $post): bool
     {
-        return $this->view($user, $post);
+        return ! $post->isUnderReview() && $this->view($user, $post);
     }
 
     /** « Masquer » : retirer la publication de son propre fil. */
     public function hide(User $user, Post $post): bool
     {
-        return $this->view($user, $post);
+        return ! $post->isUnderReview() && $this->view($user, $post);
     }
 
     public function vote(User $user, Post $post): bool
     {
-        return $this->view($user, $post);
+        return ! $post->isUnderReview() && $this->view($user, $post);
     }
 
     /**
@@ -112,12 +127,12 @@ final class PostPolicy
             return false;
         }
 
-        return $user->can('comments.create') && $this->view($user, $post) && $post->status->isPublished();
+        return $user->can('comments.create') && $this->view($user, $post) && $post->isPublished();
     }
 
     public function report(User $user, Post $post): bool
     {
-        return $post->user_id !== $user->getKey() && $this->view($user, $post);
+        return $post->user_id !== $user->getKey() && ! $post->isUnderReview() && $this->view($user, $post);
     }
 
     /**

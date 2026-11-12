@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\Feed;
 
 use App\Application\Feed\PostLinks;
+use App\Application\Feed\ReviewVideo;
 use App\Enums\PostStatus;
 use App\Models\Post;
 use App\Models\PostLike;
@@ -21,6 +22,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * (PollResource), liens de détail et de partage neutre (`/p/{ulid}`, Q31 b), permissions utiles à l'interface (`can`).
  * Le statut et le motif de masquage ne sont jamais renvoyés ; l'auteur·rice d'une publication masquée voit seulement
  * `moderated: true`.
+ *
+ * `media[]` (ordre conservé) : `kind` (image | video), `url` (lien signé ; pour une vidéo, lien court propre à la personne
+ * qui lit, plages Range), `alt` (texte alternatif d'une image ; **description** d'une vidéo), `width`, `height`, `position`
+ * (0 = premier), `mime`, `size` (octets). Vidéo (Q96) : `review_state` = `pending` (en attente de relecture : visible de
+ * l'auteur·rice et de la modération seulement), `approved`, `rejected` (avec `review_reason`, pour l'auteur·rice
+ * seulement), sinon null ; `published_at` reste nul tant que la vidéo n'est pas approuvée.
  *
  * @mixin Post
  */
@@ -49,7 +56,12 @@ final class PostResource extends JsonResource
             'tag_color' => $post->tag->badge(),
             'visibility' => $post->visibility->value,
             'visibility_label' => $post->visibility->label(),
-            'moderated' => $isMine && $post->status === PostStatus::Hidden,
+            'moderated' => $isMine && $post->currentStatus() === PostStatus::Hidden,
+            'review_state' => $post->reviewState(),
+            'review_label' => $post->reviewState() !== null ? (string) __('feed.video.states.'.$post->reviewState()) : null,
+            'review_reason' => $isMine && $post->currentStatus() === PostStatus::Rejected && $post->review_reason !== null
+                ? ReviewVideo::reasonText((string) $post->review_reason, $post->review_note)
+                : null,
             'likes_count' => (int) $post->likes_count,
             'comments_count' => (int) $post->comments_count,
             'liked' => $viewer !== null && $this->flag($post, 'liked_by_viewer', PostLike::class, $viewer),
@@ -57,25 +69,28 @@ final class PostResource extends JsonResource
             'media' => ($post->relationLoaded('media') ? $post->media : $post->media()->get())
                 ->map(static fn (PostMedia $media): array => [
                     'kind' => $media->kind,
-                    'url' => $links->media($media),
+                    'url' => $media->isVideo() ? $links->video($post, $media, $viewer) : $links->media($media),
                     'alt' => $media->alt,
                     'width' => $media->width,
                     'height' => $media->height,
+                    'position' => (int) $media->position,
+                    'mime' => $media->mime,
+                    'size' => $media->size,
                 ])
                 ->filter(static fn (array $media): bool => $media['url'] !== null)
                 ->values()->all(),
             'poll' => $post->isPoll() && $post->poll !== null ? PollResource::make($post->poll)->resolve($request) : null,
             'url' => PostLinks::show($post),
             'share_url' => PostLinks::share($post),
-            'published_at' => $post->published_at?->toIso8601String(),
+            'published_at' => $post->isUnderReview() ? null : $post->published_at?->toIso8601String(),
             'edited' => $post->edited_at !== null,
             // Calculées sans relancer PostPolicy::view (la publication est déjà visible : feed, détail autorisé), pour
             // éviter deux requêtes par publication et par droit dans une page du fil ; la policy reste juge à l'écriture.
             'can' => [
-                'update' => $isMine && $viewer->can('posts.create'),
+                'update' => $isMine && ! $post->isUnderReview() && $viewer->can('posts.create'),
                 'delete' => $isMine || ($viewer?->can('posts.moderate') ?? false),
-                'report' => $viewer !== null && ! $isMine,
-                'comment' => $viewer !== null && $post->status === PostStatus::Published && $viewer->can('comments.create'),
+                'report' => $viewer !== null && ! $isMine && ! $post->isUnderReview(),
+                'comment' => $viewer !== null && $post->isPublished() && $viewer->can('comments.create'),
             ],
         ];
     }

@@ -8,12 +8,15 @@ use App\Enums\PostTag;
 use App\Enums\PostVisibility;
 use App\Http\Requests\Api\Feed\Concerns\FeedRequest;
 use App\Models\Post;
+use App\Models\PostMedia;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 /**
- * PATCH /api/v1/posts/{ulid} (P7-02) : `{body?, tag?, visibility?}` par l'auteur·rice seulement (403 sinon ; 404 si la
+ * PATCH /api/v1/posts/{ulid} (P7-02) : `{body?, tag?, visibility?, remove_media?: int[]}` (positions des **images** à retirer,
+ * les autres gardent leur ordre ; jamais la vidéo : on supprime la publication ; la publication garde un texte ou un média ;
+ * une vidéo en relecture ne se modifie pas : 403) par l'auteur·rice seulement (403 sinon ; 404 si la
  * publication n'est pas visible). Le texte d'une publication reste obligatoire (facultatif pour un sondage) ; l'étiquette
  * ne passe jamais vers ou depuis « sondage » (question et réponses ne se modifient pas après publication) ; une
  * publication anonyme ne passe jamais en « abonné·es » (422, Q72).
@@ -39,6 +42,8 @@ final class UpdatePostRequest extends FormRequest
             'body' => ['sometimes', $isPoll ? 'nullable' : 'required', 'string', 'max:'.(int) config('xomiton.feed.post_max_length', Post::BODY_MAX_LENGTH)],
             'tag' => ['sometimes', 'string', Rule::enum(PostTag::class)],
             'visibility' => ['sometimes', 'string', Rule::enum(PostVisibility::class)],
+            'remove_media' => ['sometimes', 'array', 'max:20'],
+            'remove_media.*' => ['integer', 'min:0'],
         ];
     }
 
@@ -63,6 +68,8 @@ final class UpdatePostRequest extends FormRequest
                 return;
             }
 
+            $this->validateRemovedMedia($validator, $post);
+
             if ($post->is_anonymous && $this->input('visibility') === PostVisibility::Followers->value) {
                 $validator->errors()->add('visibility', (string) __('feed.api.anonymous_followers'));
             }
@@ -85,7 +92,35 @@ final class UpdatePostRequest extends FormRequest
     }
 
     /**
-     * @return array{body?: string|null, tag?: PostTag, visibility?: PostVisibility}
+     * Positions à retirer : des images existantes seulement, et la publication garde un texte ou au moins un média.
+     */
+    private function validateRemovedMedia(Validator $validator, Post $post): void
+    {
+        $positions = $this->input('remove_media');
+
+        if (! is_array($positions) || $positions === []) {
+            return;
+        }
+
+        $images = PostMedia::query()->where('post_id', $post->getKey())->where('kind', PostMedia::KIND_IMAGE)->pluck('position')->map(static fn (mixed $position): int => (int) $position)->all();
+        $wanted = array_values(array_unique(array_map(static fn (mixed $position): int => (int) $position, $positions)));
+
+        if (array_diff($wanted, $images) !== []) {
+            $validator->errors()->add('remove_media', (string) __('feed.api.media_unknown'));
+
+            return;
+        }
+
+        $body = $this->has('body') ? $this->input('body') : $post->body;
+        $remaining = PostMedia::query()->where('post_id', $post->getKey())->count() - count($wanted);
+
+        if ($remaining < 1 && (! is_string($body) || trim($body) === '') && ! $post->isPoll()) {
+            $validator->errors()->add('remove_media', (string) __('feed.api.media_last_required'));
+        }
+    }
+
+    /**
+     * @return array{body?: string|null, tag?: PostTag, visibility?: PostVisibility, remove_media?: list<int>}
      */
     public function changes(): array
     {
@@ -102,6 +137,12 @@ final class UpdatePostRequest extends FormRequest
 
         if (is_string($this->validated('visibility'))) {
             $changes['visibility'] = PostVisibility::from((string) $this->validated('visibility'));
+        }
+
+        $remove = $this->validated('remove_media');
+
+        if (is_array($remove) && $remove !== []) {
+            $changes['remove_media'] = array_values(array_unique(array_map(static fn (mixed $position): int => (int) $position, $remove)));
         }
 
         return $changes;

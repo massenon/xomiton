@@ -49,6 +49,10 @@ class Post extends Model
         'hidden_reason',
         'published_at',
         'edited_at',
+        'reviewed_by',
+        'reviewed_at',
+        'review_reason',
+        'review_note',
     ];
 
     /**
@@ -59,6 +63,9 @@ class Post extends Model
     protected $hidden = [
         'hidden_reason',
         'reports_count',
+        'reviewed_by',
+        'review_reason',
+        'review_note',
     ];
 
     /**
@@ -76,12 +83,14 @@ class Post extends Model
             'reports_count' => 'integer',
             'published_at' => 'datetime',
             'edited_at' => 'datetime',
+            'reviewed_at' => 'datetime',
         ];
     }
 
     protected static function booted(): void
     {
-        // Une publication est datée dès sa création (pas de brouillon côté serveur).
+        // Une publication est datée dès sa création (pas de brouillon côté serveur). Une vidéo en relecture porte la date
+        // d'envoi en attendant : `published_at` est remplacé par la date d'approbation (ReviewVideo), l'API l'expose nul.
         static::creating(function (Post $post): void {
             $post->published_at ??= now();
         });
@@ -170,6 +179,16 @@ class Post extends Model
     }
 
     /**
+     * Vidéos en attente de relecture, les plus anciennes d'abord (file de la modération, Q96).
+     *
+     * @param  Builder<Post>  $query
+     */
+    public function scopeAwaitingReview(Builder $query): void
+    {
+        $query->where('status', PostStatus::Pending)->orderBy('created_at')->orderBy('id');
+    }
+
+    /**
      * @param  Builder<Post>  $query
      */
     public function scopeTagged(Builder $query, PostTag $tag): void
@@ -219,7 +238,42 @@ class Post extends Model
 
     public function isPublished(): bool
     {
-        return $this->status === PostStatus::Published;
+        return $this->currentStatus() === PostStatus::Published;
+    }
+
+    /**
+     * Statut lu dans l'attribut brut : stable pour l'analyse statique (cast d'énumération) et pour une valeur modifiée
+     * en mémoire avant l'enregistrement.
+     */
+    public function currentStatus(): ?PostStatus
+    {
+        return PostStatus::tryFrom((string) ($this->attributes['status'] ?? ''));
+    }
+
+    /** Vidéo en attente de relecture (Q96). */
+    public function isPendingReview(): bool
+    {
+        return $this->currentStatus() === PostStatus::Pending;
+    }
+
+    /** Vidéo en attente de relecture ou refusée : jamais visible hors auteur·rice et modération. */
+    public function isUnderReview(): bool
+    {
+        return $this->currentStatus()?->isUnderReview() ?? false;
+    }
+
+    /**
+     * État de relecture exposé par l'API : `pending`, `rejected`, `approved` (publiée après relecture) ou null (aucune
+     * relecture : publication ordinaire, ou vidéo masquée / supprimée depuis).
+     */
+    public function reviewState(): ?string
+    {
+        return match ($this->currentStatus()) {
+            PostStatus::Pending => 'pending',
+            PostStatus::Rejected => 'rejected',
+            PostStatus::Published => $this->reviewed_at !== null ? 'approved' : null,
+            default => null,
+        };
     }
 
     /**

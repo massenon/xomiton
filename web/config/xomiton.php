@@ -356,6 +356,26 @@ return [
         'poll_option_max_length' => 80,
         'poll_durations_days' => [1, 3, 7, 14, 30, null],
         'image_max_kb' => 5120,
+        // Plusieurs images par publication ou sondage (`images[]`, `images_alt[]` alignés) ; l'ancien champ `image` compte
+        // comme la première (rétrocompatible). Surcharge : XOMITON_FEED_MAX_IMAGES.
+        'max_images' => (int) env('XOMITON_FEED_MAX_IMAGES', 4),
+        // Vidéo (Q96) : 1 par publication (jamais avec des images ni dans un sondage), mp4 ou webm, **relue par la modération
+        // avant parution**, jamais ré-encodée (aucun binaire externe). Poids maximal en Mo, borné par `upload_max_filesize`
+        // et `post_max_size` de PHP (App\Application\Feed\FeedMediaLimits). Alternative textuelle obligatoire.
+        'video_max_mb' => (int) env('XOMITON_FEED_VIDEO_MAX_MB', 30),
+        'video_description_min' => 5,
+        'video_description_max' => 500,
+        // Vidéos envoyées par compte et par 24 h glissantes, retirées ou refusées comprises (429 `too_many_requests`).
+        'video_per_day' => (int) env('XOMITON_FEED_VIDEO_PER_DAY', 5),
+        // Refus : le fichier est supprimé du disque après ce délai (jours) par `videos:purge-rejected` ; le retrait par
+        // l'auteur·rice supprime le fichier tout de suite.
+        'video_rejected_retention_days' => (int) env('XOMITON_FEED_VIDEO_RETENTION_DAYS', 7),
+        // Adresse signée de lecture : durée (minutes) alignée sur une fenêtre fixe, comme les images.
+        'video_url_minutes' => 15,
+        'video_url_window_minutes' => 5,
+        // Motifs de refus proposés à la modération (libellés : lang/fr/feed.php `video.reasons`) ; texte libre ≤ 300 car.
+        'video_reject_reasons' => ['privacy', 'inappropriate', 'rights', 'unreadable', 'off_topic', 'other'],
+        'video_reject_note_max' => 300,
         // Contenus signalés masqués en attendant la modération (RG-16, proposée) : nombre de signalements en attente de
         // personnes distinctes ; 0 désactive. Surcharge par l'administration : Settings `moderation_auto_hide_reports`.
         'auto_hide_after_reports' => (int) env('XOMITON_AUTO_HIDE_REPORTS', 3),

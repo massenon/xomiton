@@ -34,7 +34,7 @@ final class FeedComposerOptions
      *     can_post: bool, can_poll: bool, events_available: bool, event: array<string, mixed>|null,
      *     tags: list<array{value: string, label: string}>, visibilities: list<array{value: string, label: string}>,
      *     durations: list<array{value: int, label: string}>, default_duration: int,
-     *     limits: array{body_max: int, question_min: int, question_max: int, options_min: int, options_max: int, option_max: int, image_max_kb: int, image_types: list<string>}
+     *     limits: array{body_max: int, question_min: int, question_max: int, options_min: int, options_max: int, option_max: int, image_max_kb: int, image_types: list<string>, max_images: int, video_max_kb: int, video_types: list<string>, video_description_min: int, video_description_max: int}
      * }
      */
     public function for(User $user): array
@@ -62,6 +62,12 @@ final class FeedComposerOptions
                 'option_max' => (int) config('xomiton.feed.poll_option_max_length', 80),
                 'image_max_kb' => MediaUploader::maxKb('images'),
                 'image_types' => array_values(MediaUploader::allowedMimes('images')),
+                // Q96 : plusieurs images (`images[]`) ou une vidéo relue avant parution, mêmes bornes que StorePostRequest.
+                'max_images' => FeedMediaLimits::maxImages(),
+                'video_max_kb' => FeedMediaLimits::videoMaxKb(),
+                'video_types' => FeedMediaLimits::videoMimes(),
+                'video_description_min' => FeedMediaLimits::descriptionMin(),
+                'video_description_max' => FeedMediaLimits::descriptionMax(),
             ],
         ];
     }

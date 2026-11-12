@@ -7,9 +7,11 @@ namespace App\Application\Feed;
 use App\Application\Shared\MediaUploader;
 use App\Models\Post;
 use App\Models\PostMedia;
+use App\Models\User;
 use App\Support\MediaUrl;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 /**
  * Adresses d'une publication (ADR-27 : toujours par ULID, jamais par identifiant) : détail dans l'espace membre
@@ -33,6 +35,28 @@ final class PostLinks
     public static function share(Post $post): string
     {
         return Route::has('p.show') ? route('p.show', ['ulid' => $post->ulid]) : url('/p/'.$post->ulid);
+    }
+
+    public const ROUTE_VIDEO = 'media.post_video';
+
+    /**
+     * Adresse de lecture d'une vidéo (Q96) : lien signé **court** et propre à la personne qui lit (`viewer` fait partie de
+     * la signature), servi par PostVideoStreamController avec plages `Range` ; les droits sur la publication et son statut
+     * sont revérifiés à chaque requête. Null sans personne connectée, sans fichier (supprimé après refus ou retrait) ou
+     * sans route. L'expiration suit une fenêtre fixe (`video_url_window_minutes`) : même lien dans la fenêtre, donc même ETag.
+     */
+    public function video(Post $post, PostMedia $media, ?User $viewer): ?string
+    {
+        $path = ltrim((string) $media->path, '/');
+
+        if ($viewer === null || $path === '' || ! Route::has(self::ROUTE_VIDEO) || ! Storage::disk(MediaUploader::privateDisk())->exists($path)) {
+            return null;
+        }
+
+        return URL::temporarySignedRoute(self::ROUTE_VIDEO, MediaUploader::stableExpiry(
+            (int) config('xomiton.feed.video_url_minutes', 15),
+            (int) config('xomiton.feed.video_url_window_minutes', 5),
+        ), ['ulid' => $post->ulid, 'viewer' => $viewer->getKey()]);
     }
 
     public function media(PostMedia $media): ?string

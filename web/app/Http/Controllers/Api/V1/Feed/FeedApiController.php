@@ -47,8 +47,13 @@ abstract class FeedApiController extends ApiController
     {
         $resource = PostResource::make($this->feed->loadViewerState($post, $this->viewer($request)));
 
-        return $status === 201
-            ? $this->created($resource, route('api.posts.show', ['post' => $post->ulid]))
-            : $this->respond($resource, $status);
+        $location = route('api.posts.show', ['post' => $post->ulid]);
+
+        return match ($status) {
+            201 => $this->created($resource, $location),
+            // 202 : vidéo reçue, en attente de relecture (Q96) ; `Location` pointe sur la publication (état `pending`).
+            202 => $this->respond($resource, 202, headers: ['Location' => $location]),
+            default => $this->respond($resource, $status),
+        };
     }
 }

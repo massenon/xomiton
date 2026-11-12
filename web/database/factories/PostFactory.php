@@ -75,6 +75,30 @@ class PostFactory extends Factory
         ]);
     }
 
+    /**
+     * Vidéo en attente de relecture (Q96) : invisible hors auteur·rice et modération. Le média se crée à part
+     * (PostMedia::factory()->video()).
+     */
+    public function awaitingReview(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => PostStatus::Pending,
+        ]);
+    }
+
+    /**
+     * Vidéo refusée à la relecture (Q96), décision datée d'aujourd'hui sauf précision.
+     */
+    public function rejected(string $reason = 'privacy', ?string $note = null, ?\DateTimeInterface $at = null): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => PostStatus::Rejected,
+            'review_reason' => $reason,
+            'review_note' => $note,
+            'reviewed_at' => $at ?? now(),
+        ]);
+    }
+
     public function tagged(PostTag $tag): static
     {
         return $this->state(fn (array $attributes) => [
