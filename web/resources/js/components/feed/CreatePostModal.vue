@@ -16,6 +16,7 @@ import { marks, textParts } from '@/feed/lazy';
 import type { ComposerOptions, Post } from '@/feed/types';
 import XmAlert from '@/components/XmAlert.vue';
 import XmAvatar from '@/components/XmAvatar.vue';
+import XmEmojiPicker from '@/components/XmEmojiPicker.vue';
 import XmErrorSummary from '@/components/XmErrorSummary.vue';
 import XmField from '@/components/XmField.vue';
 import XmModal from '@/components/XmModal.vue';
@@ -89,6 +90,7 @@ onMounted(() => {
             <div class="w-100">
                 <label class="visually-hidden" for="f-body">{{ t('feed.create.text') }}</label>
                 <textarea id="f-body" v-model="form.body" class="form-control pe-4 fs-5 lh-1 border-0" name="body" rows="4" :maxlength="options.limits.body_max" :placeholder="t('feed.create.text_placeholder')" :aria-invalid="errors.body ? 'true' : undefined" :aria-describedby="errors.body ? 'f-body-error' : undefined"></textarea>
+                <XmEmojiPicker target="#f-body" :maxlength="options.limits.body_max" />
                 <div v-if="errors.body" id="f-body-error" class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ errors.body }}</div>
             </div>
         </div>

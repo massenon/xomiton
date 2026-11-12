@@ -15,6 +15,7 @@ import { timeAgo } from '@/feed/format';
 import { lazyComponent } from '@/feed/lazy';
 import type { Comment, CursorPage } from '@/feed/types';
 import XmAvatar from '@/components/XmAvatar.vue';
+import XmEmojiPicker from '@/components/XmEmojiPicker.vue';
 
 const reportModal = lazyComponent(() => import('./ReportContentModal.vue'));
 const ReportContentModal = reportModal.component;
@@ -149,6 +150,7 @@ defineExpose({ focus: () => field.value?.focus() });
                 <XmAvatar class="flex-shrink-0" size="xs" :name="me?.pseudo ?? ''" :src="me?.avatar_url" />
                 <label class="visually-hidden" for="f-comment">{{ t('feed.comments.field_label') }}</label>
                 <textarea id="f-comment" ref="field" v-model="body" class="form-control bg-light flex-grow-1 w-auto" name="body" rows="1" required minlength="2" :maxlength="COMMENT_MAX" :placeholder="t('feed.comments.placeholder')" :aria-invalid="error ? 'true' : undefined" :aria-describedby="error ? 'f-comment-error' : undefined"></textarea>
+                <XmEmojiPicker target="#f-comment" :maxlength="COMMENT_MAX" />
                 <button class="btn btn-primary" type="submit" :disabled="sending" :aria-busy="sending ? 'true' : undefined">{{ t('feed.create.submit') }}</button>
                 <div v-if="error" id="f-comment-error" class="invalid-feedback d-block w-100">{{ error }}</div>
             </form>

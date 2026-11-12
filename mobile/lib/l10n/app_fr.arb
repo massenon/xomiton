@@ -23005,6 +23005,124 @@
     "@directory_urgences": {
         "description": "directory.urgences"
     },
+    "emoji_added": "Émoji ajouté : {name}",
+    "@emoji_added": {
+        "description": "emoji.added",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "emoji_categories_label": "Catégories d’émojis",
+    "@emoji_categories_label": {
+        "description": "emoji.categories_label"
+    },
+    "emoji_close": "Fermer le sélecteur d’émojis",
+    "@emoji_close": {
+        "description": "emoji.close"
+    },
+    "emoji_limit_reached": "Limite de caractères atteinte : l’émoji n’a pas été ajouté.",
+    "@emoji_limit_reached": {
+        "description": "emoji.limit_reached"
+    },
+    "emoji_load_failed": "Impossible de charger les émojis pour le moment.",
+    "@emoji_load_failed": {
+        "description": "emoji.load_failed"
+    },
+    "emoji_loading": "Chargement des émojis…",
+    "@emoji_loading": {
+        "description": "emoji.loading"
+    },
+    "emoji_no_results": "Aucun émoji ne correspond à ta recherche.",
+    "@emoji_no_results": {
+        "description": "emoji.no_results"
+    },
+    "emoji_recents": "Récents",
+    "@emoji_recents": {
+        "description": "emoji.recents"
+    },
+    "emoji_recents_empty": "Les émojis que tu utilises apparaîtront ici.",
+    "@emoji_recents_empty": {
+        "description": "emoji.recents_empty"
+    },
+    "emoji_results": "Résultats de la recherche",
+    "@emoji_results": {
+        "description": "emoji.results"
+    },
+    "emoji_results_count": "{count, plural, =0{Aucun émoji trouvé.} =1{{count} émoji trouvé.} other{{count} émojis trouvés.}}",
+    "@emoji_results_count": {
+        "description": "emoji.results_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "emoji_retry": "Réessayer",
+    "@emoji_retry": {
+        "description": "emoji.retry"
+    },
+    "emoji_search_clear": "Effacer la recherche",
+    "@emoji_search_clear": {
+        "description": "emoji.search_clear"
+    },
+    "emoji_search_label": "Rechercher un émoji",
+    "@emoji_search_label": {
+        "description": "emoji.search_label"
+    },
+    "emoji_search_placeholder": "Par exemple : cœur, soleil…",
+    "@emoji_search_placeholder": {
+        "description": "emoji.search_placeholder"
+    },
+    "emoji_title": "Choisir un émoji",
+    "@emoji_title": {
+        "description": "emoji.title"
+    },
+    "emoji_tone_label": "Teinte de peau",
+    "@emoji_tone_label": {
+        "description": "emoji.tone_label"
+    },
+    "emoji_tones_dark": "Teinte foncée",
+    "@emoji_tones_dark": {
+        "description": "emoji.tones.dark"
+    },
+    "emoji_tones_default": "Teinte par défaut",
+    "@emoji_tones_default": {
+        "description": "emoji.tones.default"
+    },
+    "emoji_tones_light": "Teinte claire",
+    "@emoji_tones_light": {
+        "description": "emoji.tones.light"
+    },
+    "emoji_tones_medium": "Teinte moyenne",
+    "@emoji_tones_medium": {
+        "description": "emoji.tones.medium"
+    },
+    "emoji_tones_medium_dark": "Teinte moyennement foncée",
+    "@emoji_tones_medium_dark": {
+        "description": "emoji.tones.medium_dark"
+    },
+    "emoji_tones_medium_light": "Teinte moyennement claire",
+    "@emoji_tones_medium_light": {
+        "description": "emoji.tones.medium_light"
+    },
+    "emoji_trigger": "Ajouter un émoji",
+    "@emoji_trigger": {
+        "description": "emoji.trigger"
+    },
+    "emoji_with_tone": "{name}, {tone}",
+    "@emoji_with_tone": {
+        "description": "emoji.with_tone",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "tone": {
+                "type": "String"
+            }
+        }
+    },
     "enums_alerts_alert_priority_critique": "Critique",
     "@enums_alerts_alert_priority_critique": {
         "description": "enums/alerts.alert_priority.critique"
@@ -23536,6 +23654,14 @@
     "enums_feed_post_status_publie": "Publié",
     "@enums_feed_post_status_publie": {
         "description": "enums/feed.post_status.publie"
+    },
+    "enums_feed_post_status_refuse": "Refusé",
+    "@enums_feed_post_status_refuse": {
+        "description": "enums/feed.post_status.refuse"
+    },
+    "enums_feed_post_status_relecture": "En attente de relecture",
+    "@enums_feed_post_status_relecture": {
+        "description": "enums/feed.post_status.relecture"
     },
     "enums_feed_post_status_supprime": "Supprimé",
     "@enums_feed_post_status_supprime": {
@@ -24246,6 +24372,22 @@
     "@feed_api_attributes_image_alt": {
         "description": "feed.api.attributes.image_alt"
     },
+    "feed_api_attributes_image_alt_item": "description de l’image",
+    "@feed_api_attributes_image_alt_item": {
+        "description": "feed.api.attributes.image_alt_item"
+    },
+    "feed_api_attributes_image_item": "image",
+    "@feed_api_attributes_image_item": {
+        "description": "feed.api.attributes.image_item"
+    },
+    "feed_api_attributes_images": "images",
+    "@feed_api_attributes_images": {
+        "description": "feed.api.attributes.images"
+    },
+    "feed_api_attributes_images_alt": "descriptions des images",
+    "@feed_api_attributes_images_alt": {
+        "description": "feed.api.attributes.images_alt"
+    },
     "feed_api_attributes_is_anonymous": "pseudonyme",
     "@feed_api_attributes_is_anonymous": {
         "description": "feed.api.attributes.is_anonymous"
@@ -24294,9 +24436,25 @@
     "@feed_api_attributes_reason": {
         "description": "feed.api.attributes.reason"
     },
+    "feed_api_attributes_remove_media": "médias à retirer",
+    "@feed_api_attributes_remove_media": {
+        "description": "feed.api.attributes.remove_media"
+    },
+    "feed_api_attributes_remove_media_item": "média à retirer",
+    "@feed_api_attributes_remove_media_item": {
+        "description": "feed.api.attributes.remove_media_item"
+    },
     "feed_api_attributes_tag": "type de publication",
     "@feed_api_attributes_tag": {
         "description": "feed.api.attributes.tag"
+    },
+    "feed_api_attributes_video": "vidéo",
+    "@feed_api_attributes_video": {
+        "description": "feed.api.attributes.video"
+    },
+    "feed_api_attributes_video_description": "description de la vidéo",
+    "@feed_api_attributes_video_description": {
+        "description": "feed.api.attributes.video_description"
     },
     "feed_api_attributes_visibility": "visibilité",
     "@feed_api_attributes_visibility": {
@@ -24313,6 +24471,27 @@
     "feed_api_group_visibility": "Une publication de groupe est visible par les membres du groupe : sa visibilité ne change pas.",
     "@feed_api_group_visibility": {
         "description": "feed.api.group_visibility"
+    },
+    "feed_api_images_alt_misaligned": "Chaque description d’image doit correspondre à une image envoyée.",
+    "@feed_api_images_alt_misaligned": {
+        "description": "feed.api.images_alt_misaligned"
+    },
+    "feed_api_images_max": "Tu peux joindre au plus {max} images à une publication.",
+    "@feed_api_images_max": {
+        "description": "feed.api.images_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_api_media_last_required": "Une publication sans texte garde au moins un média : écris un message ou garde une image.",
+    "@feed_api_media_last_required": {
+        "description": "feed.api.media_last_required"
+    },
+    "feed_api_media_unknown": "Ce média ne fait pas partie de la publication.",
+    "@feed_api_media_unknown": {
+        "description": "feed.api.media_unknown"
     },
     "feed_api_parent_invalid": "Ce commentaire ne fait pas partie de cette publication.",
     "@feed_api_parent_invalid": {
@@ -25391,6 +25570,91 @@
     "feed_toasts_updated": "Publication modifiée.",
     "@feed_toasts_updated": {
         "description": "feed.toasts.updated"
+    },
+    "feed_video_description_length": "La description de ta vidéo doit faire entre {min} et {max} caractères.",
+    "@feed_video_description_length": {
+        "description": "feed.video.description_length",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_description_required": "Décris ta vidéo en quelques mots pour les personnes qui ne peuvent pas la regarder.",
+    "@feed_video_description_required": {
+        "description": "feed.video.description_required"
+    },
+    "feed_video_not_in_poll": "Une vidéo ne peut pas accompagner un sondage.",
+    "@feed_video_not_in_poll": {
+        "description": "feed.video.not_in_poll"
+    },
+    "feed_video_not_with_images": "Une vidéo ne s’ajoute pas à des images : choisis l’une ou les autres.",
+    "@feed_video_not_with_images": {
+        "description": "feed.video.not_with_images"
+    },
+    "feed_video_privacy_notice": "Ta vidéo n’est pas retouchée : elle peut contenir des informations cachées, comme le lieu où elle a été filmée. Vérifie-la avant de l’envoyer.",
+    "@feed_video_privacy_notice": {
+        "description": "feed.video.privacy_notice"
+    },
+    "feed_video_quota": "Tu as atteint la limite de vidéos envoyées par jour ({max}). Réessaie un peu plus tard.",
+    "@feed_video_quota": {
+        "description": "feed.video.quota",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_reasons_inappropriate": "Contenu inapproprié",
+    "@feed_video_reasons_inappropriate": {
+        "description": "feed.video.reasons.inappropriate"
+    },
+    "feed_video_reasons_off_topic": "Hors sujet",
+    "@feed_video_reasons_off_topic": {
+        "description": "feed.video.reasons.off_topic"
+    },
+    "feed_video_reasons_other": "Autre motif",
+    "@feed_video_reasons_other": {
+        "description": "feed.video.reasons.other"
+    },
+    "feed_video_reasons_privacy": "Vie privée (lieu, visage ou information personnelle visible)",
+    "@feed_video_reasons_privacy": {
+        "description": "feed.video.reasons.privacy"
+    },
+    "feed_video_reasons_rights": "Droits d’auteur ou image d’une autre personne",
+    "@feed_video_reasons_rights": {
+        "description": "feed.video.reasons.rights"
+    },
+    "feed_video_reasons_unreadable": "Vidéo illisible ou de mauvaise qualité",
+    "@feed_video_reasons_unreadable": {
+        "description": "feed.video.reasons.unreadable"
+    },
+    "feed_video_review_notice": "L’équipe de modération relit ta vidéo avant de la publier. Tu seras prévenu·e dès qu’elle sera en ligne.",
+    "@feed_video_review_notice": {
+        "description": "feed.video.review_notice"
+    },
+    "feed_video_states_approved": "Vidéo publiée",
+    "@feed_video_states_approved": {
+        "description": "feed.video.states.approved"
+    },
+    "feed_video_states_pending": "En attente de relecture",
+    "@feed_video_states_pending": {
+        "description": "feed.video.states.pending"
+    },
+    "feed_video_states_rejected": "Vidéo refusée",
+    "@feed_video_states_rejected": {
+        "description": "feed.video.states.rejected"
+    },
+    "feed_video_submitted": "Ta vidéo est bien reçue. L’équipe la relira avant de la publier.",
+    "@feed_video_submitted": {
+        "description": "feed.video.submitted"
+    },
+    "feed_video_withdrawn": "Ta vidéo est retirée.",
+    "@feed_video_withdrawn": {
+        "description": "feed.video.withdrawn"
     },
     "feed_video_modal_notice": "Les vidéos sont relues avant publication afin de protéger les personnes qui apparaissent à l’écran.",
     "@feed_video_modal_notice": {
@@ -30216,6 +30480,42 @@
                 "type": "String"
             }
         }
+    },
+    "notifications_video_pending_body": "Une vidéo attend votre relecture avant d’être publiée.",
+    "@notifications_video_pending_body": {
+        "description": "notifications.video_pending.body"
+    },
+    "notifications_video_pending_title": "Vidéo à relire",
+    "@notifications_video_pending_title": {
+        "description": "notifications.video_pending.title"
+    },
+    "notifications_video_reviewed_approved_body": "L’équipe de modération a relu ta vidéo : elle est maintenant en ligne.",
+    "@notifications_video_reviewed_approved_body": {
+        "description": "notifications.video_reviewed.approved.body"
+    },
+    "notifications_video_reviewed_approved_title": "Ta vidéo a été publiée",
+    "@notifications_video_reviewed_approved_title": {
+        "description": "notifications.video_reviewed.approved.title"
+    },
+    "notifications_video_reviewed_discreet": "Message de l’équipe",
+    "@notifications_video_reviewed_discreet": {
+        "description": "notifications.video_reviewed.discreet"
+    },
+    "notifications_video_reviewed_rejected_body": "L’équipe de modération n’a pas pu publier ta vidéo : {reason}. Le fichier sera supprimé dans {days} jours.",
+    "@notifications_video_reviewed_rejected_body": {
+        "description": "notifications.video_reviewed.rejected.body",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_video_reviewed_rejected_title": "Ta vidéo n’a pas été publiée",
+    "@notifications_video_reviewed_rejected_title": {
+        "description": "notifications.video_reviewed.rejected.title"
     },
     "offline_outbox_close": "Fermer",
     "@offline_outbox_close": {
@@ -38903,6 +39203,10 @@
     "uploads_rejected_corrupt_image": "Cette image est illisible ou abîmée. Choisir une autre image.",
     "@uploads_rejected_corrupt_image": {
         "description": "uploads.rejected.corrupt_image"
+    },
+    "uploads_rejected_extension": "L’extension du fichier ne correspond pas à son contenu. Choisir un fichier MP4 ou WebM.",
+    "@uploads_rejected_extension": {
+        "description": "uploads.rejected.extension"
     },
     "uploads_rejected_not_a_file": "Aucun fichier n’a été reçu.",
     "@uploads_rejected_not_a_file": {

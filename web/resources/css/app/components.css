@@ -77,3 +77,32 @@ a.xm-sos { text-decoration: none; } /* lien de repli sans JavaScript du bouton f
 /* Pilules douces (onglets « Toutes / Non lues », filtres) : l'onglet actif a un fond bleu à 10 % ; Bootstrap y laisse un
    texte blanc (contraste 1,2:1, axe color-contrast). Texte en bleu foncé du jeton, lisible en clair comme en sombre. */
 .nav-pills-soft .nav-link.active, .nav-pills-soft .show > .nav-link { color: var(--xm-primary-subtle-text); }
+
+/* Sélecteur d'émojis (<XmEmojiPicker>) : panneau fixe calé par le composant (haut, gauche, largeur, hauteur en ligne), dans la
+   modale Bootstrap quand il en ouvre une (piège à focus). Émojis natifs du système, aucune police ni image chargée.
+   Cibles de 40 px, 44 px au doigt (ACCESSIBILITE §4). Jetons seulement : thème clair et sombre suivent. */
+.xm-emoji { display: inline-block; position: relative; }
+.xm-emoji__panel { position: fixed; z-index: 1056; display: flex; flex-direction: column; max-width: calc(100vw - 16px); background: var(--xm-surface); color: var(--xm-text); border: 1px solid var(--xm-border); border-radius: var(--xm-radius-lg); box-shadow: 0 .5rem 1.5rem rgb(0 0 0 / .18); overflow: hidden; text-align: start; }
+.xm-emoji__head { display: flex; align-items: center; gap: var(--xm-space-2); padding: var(--xm-space-2); border-bottom: 1px solid var(--xm-border); }
+.xm-emoji__search { position: relative; flex: 1 1 auto; min-width: 0; }
+.xm-emoji__search .form-control { padding-inline-end: 2.75rem; }
+.xm-emoji__clear { position: absolute; inset-block: 0; inset-inline-end: 0; width: 40px; border: 0; background: transparent; color: var(--xm-text-muted); border-radius: var(--xm-radius-md); }
+.xm-emoji__tabs { display: flex; flex: 0 0 auto; gap: 2px; padding: var(--xm-space-1, 4px) var(--xm-space-2); overflow-x: auto; overscroll-behavior-x: contain; border-bottom: 1px solid var(--xm-border); scrollbar-width: thin; }
+.xm-emoji__tab, .xm-emoji__item, .xm-emoji__tone { font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; line-height: 1; border: 0; background: transparent; color: inherit; border-radius: var(--xm-radius-md); display: inline-flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; padding: 0; }
+.xm-emoji__tab { flex: 0 0 auto; font-size: 1.25rem; border-bottom: 3px solid transparent; border-radius: var(--xm-radius-md) var(--xm-radius-md) 0 0; }
+.xm-emoji__tab[aria-selected="true"] { background: var(--xm-primary-subtle); border-bottom-color: var(--xm-primary); }
+.xm-emoji__item { font-size: 1.5rem; }
+.xm-emoji__item:hover, .xm-emoji__tab:hover, .xm-emoji__tone:hover { background: var(--xm-surface-muted); }
+.xm-emoji__tab:focus-visible, .xm-emoji__item:focus-visible, .xm-emoji__tone:focus-visible, .xm-emoji__clear:focus-visible { outline: var(--xm-focus-width) solid var(--xm-focus-ring); outline-offset: var(--xm-focus-offset); }
+.xm-emoji__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: var(--xm-space-2); }
+.xm-emoji__title { font-size: var(--xm-fs-small); font-weight: 700; color: var(--xm-text-muted); margin: 0 0 var(--xm-space-2); }
+.xm-emoji__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 2px; }
+.xm-emoji__empty, .xm-emoji__state { color: var(--xm-text-muted); font-size: var(--xm-fs-small); margin: 0; padding: var(--xm-space-3); text-align: center; }
+.xm-emoji__state { flex: 1 1 auto; }
+.xm-emoji__tones { display: flex; flex: 0 0 auto; justify-content: center; gap: 2px; padding: var(--xm-space-1, 4px) var(--xm-space-2); border-top: 1px solid var(--xm-border); }
+.xm-emoji__tone { font-size: 1.125rem; }
+.xm-emoji__tone[aria-pressed="true"] { background: var(--xm-primary-subtle); box-shadow: inset 0 0 0 2px var(--xm-primary); }
+@media (pointer: coarse) {
+  .xm-emoji__tab, .xm-emoji__item, .xm-emoji__tone, .xm-emoji__clear { min-width: var(--xm-target-min, 44px); min-height: var(--xm-target-min, 44px); }
+  .xm-emoji__grid { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
+}

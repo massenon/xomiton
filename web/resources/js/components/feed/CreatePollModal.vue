@@ -12,6 +12,7 @@ import { DRAFT_POLL, allowedVisibility, emptyPoll, length, validatePoll } from '
 import { useComposer, type RecoveredEntry } from '@/feed/useComposer';
 import type { ComposerOptions, Post } from '@/feed/types';
 import XmAlert from '@/components/XmAlert.vue';
+import XmEmojiPicker from '@/components/XmEmojiPicker.vue';
 import XmErrorSummary from '@/components/XmErrorSummary.vue';
 import XmField from '@/components/XmField.vue';
 import XmModal from '@/components/XmModal.vue';
@@ -110,6 +111,7 @@ async function onSubmit() {
                 <span class="visually-hidden">{{ t('feed.poll.question_count_sr', { count: questionCount, max: limits.question_max }) }}</span>
             </div>
             <p class="visually-hidden" role="status" data-poll-count-live>{{ countAnnounce }}</p>
+            <XmEmojiPicker target="#f-question" :maxlength="limits.question_max" />
             <div v-if="errors.question" class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ errors.question }}</div>
         </div>
 
@@ -127,6 +129,7 @@ async function onSubmit() {
         </fieldset>
 
         <XmField v-model="form.body" name="body" type="textarea" :rows="2" :maxlength="limits.body_max" optional :label="t('feed.poll.text')" :placeholder="t('feed.poll.text_placeholder')" :error="errors.body" />
+        <XmEmojiPicker class="mb-3" target="#f-body" :maxlength="limits.body_max" />
 
         <div class="mb-3">
             <label class="form-label" for="f-image"><i class="bi bi-image-fill text-success me-1" aria-hidden="true"></i>{{ t('feed.poll.image') }} <span class="small text-secondary">{{ t('feed.poll.image_hint', { max: maxMb }) }}</span></label>
