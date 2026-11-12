@@ -129,8 +129,14 @@ async function show() {
     window.addEventListener('scroll', place, true);
     document.addEventListener('pointerdown', onOutside, true);
     await ensureData();
+    chooseStartTab();
     await nextTick();
     focusActiveTab();
+}
+
+/** À chaque ouverture : « Récents » s'il y en a, sinon la première catégorie. */
+function chooseStartTab() {
+    if (data.value) activeTab.value = recents.value.length > 0 ? RECENTS : (data.value.categories[0]?.id ?? RECENTS);
 }
 
 async function ensureData() {
@@ -142,7 +148,6 @@ async function ensureData() {
         index.value = buildIndex(loaded);
         names.value = new Map(loaded.categories.flatMap((category) => category.emojis.map((entry) => [baseKey(entry.c), entry.n] as [string, string])));
         status.value = 'ready';
-        activeTab.value = recents.value.length > 0 ? RECENTS : (loaded.categories[0]?.id ?? RECENTS);
     } catch {
         status.value = 'error';
     }
@@ -151,6 +156,7 @@ async function ensureData() {
 async function retry() {
     status.value = 'idle';
     await ensureData();
+    chooseStartTab();
     await nextTick();
     focusActiveTab();
 }
@@ -171,6 +177,7 @@ function toggle() {
 }
 
 function focusActiveTab() {
+    if (!open.value) return;
     (tabButtons.value[activeTab.value] ?? searchField.value ?? panel.value?.querySelector<HTMLElement>('button'))?.focus();
 }
 

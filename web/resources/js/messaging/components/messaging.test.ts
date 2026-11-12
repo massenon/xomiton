@@ -3,7 +3,7 @@
 // sans promesse « de bout en bout », Q32 b), conversation (bulles, « Vu », horloge grisée d'un message en attente,
 // « non envoyé » avec Réessayer, blocage), zone d'écriture (Entrée envoie, Maj+Entrée non).
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent } from '@testing-library/vue';
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/vue';
 import { renderXm } from '@/test/helpers';
 import ChatPane from './ChatPane.vue';
 import ConversationList from './ConversationList.vue';
@@ -105,6 +105,24 @@ describe('ChatPane', () => {
 
         expect(emitted().send[0]).toEqual(['Bonjour', null]);
         expect(input.value).toBe('');
+    });
+
+    it('utilise le sélecteur d’émojis XmEmojiPicker : insère à la position du curseur et rend le focus à la zone d’écriture', async () => {
+        const { getByLabelText, container } = renderXm(ChatPane, { props: { conversation: conversation(), messages: [], maxLength: 4 } });
+        const input = getByLabelText('Message') as HTMLTextAreaElement;
+        // L'ancienne liste de dix émojis codée en dur a disparu : un seul déclencheur ARIA, pas de menu Bootstrap.
+        expect(container.querySelector('.xm-emoji [data-xm-emoji-trigger]')?.getAttribute('aria-haspopup')).toBe('dialog');
+        expect(container.querySelector('.dropup')).toBeNull();
+
+        await fireEvent.update(input, 'ab');
+        input.setSelectionRange(1, 1);
+        await fireEvent.click(screen.getByRole('button', { name: 'Ajouter un émoji' }));
+        await screen.findByRole('dialog');
+        await waitFor(() => expect(screen.getAllByRole('tab').length).toBeGreaterThan(5));
+        await fireEvent.click(screen.getByRole('button', { name: 'visage rieur' }));
+
+        expect(input.value).toBe('a😀b');
+        expect(document.activeElement).toBe(input);
     });
 
     it('remplace la zone d’écriture par un avis neutre quand on ne peut plus écrire', () => {

@@ -104,6 +104,14 @@ describe('Créer un sondage', () => {
         expect(document.querySelector('#f-options')?.getAttribute('aria-invalid')).toBe('true');
     });
 
+    it('propose le sélecteur d’émojis pour la question et pour le texte, avec leurs limites', async () => {
+        renderXm(CreatePollModal, { props: { options } });
+        await shown();
+        const triggers = document.querySelectorAll('#modalCreatePoll [data-xm-emoji-trigger]');
+        expect(triggers).toHaveLength(2);
+        expect(triggers[0].getAttribute('aria-label')).toBe('Ajouter un émoji');
+    });
+
     it('ajoute jusqu’à 6 réponses et n’en retire jamais sous 2', async () => {
         renderXm(CreatePollModal, { props: { options } });
         await shown();
