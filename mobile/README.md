@@ -1,7 +1,7 @@
 # Xomiton — application mobile (Flutter)
 
 SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`
-(619 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
+(693 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
 
 Build Android depuis Windows (SDK, émulateur ou téléphone, API locale `10.0.2.2`, APK debug, clé de
 signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../docs/BUILD_ANDROID_WINDOWS.md).
@@ -27,6 +27,30 @@ commentaire du fil (1 000), conversation de la messagerie (1 000, limite aligné
 - **Textes** : clés `emoji_*` de l'ARB (source `web/lang/fr/emoji.php`). Aucune clé `mobile_*` ajoutée.
 - Tests : `test/core/emoji_picker_test.dart` (données identiques à la source web, recherche, teintes, insertion, limite,
   Semantics, récents, grande police, thème sombre). Non vérifié : TalkBack / VoiceOver et rendu sur appareil réel (MOB-EMOJI).
+
+## Publier : sondage, images, vidéo ; galerie et lecteur
+
+`lib/features/feed/` (docs/API.md §8.3 et §8.7, plan P7-11, décisions D-IMGA-1 à 12, D-MOB-20).
+
+- **Écran de publication** (`create_post_page.dart`) : bascule publication / sondage ; sondage (question 5–200, 2 à 6 réponses
+  avec ajout et retrait annoncés, durée, choix multiple, résultats avant le vote) ; **images** (jusqu'à 4, texte alternatif
+  par image, Monter / Descendre / Retirer nommés et annoncés dans une région `liveRegion`, compteur « 2 / 4 ») ; **vidéo**
+  (publication seulement, exclusive des images et du sondage, mp4 / webm, 30 Mo, description 5–500 obligatoire, avertissement
+  de vie privée puis confirmation, progression annoncée, annulation, 202 = « vidéo bien reçue », jamais dans le fil).
+  Validation locale : `data/compose_logic.dart` (mêmes bornes que le serveur ; plafonds par défaut `FeedLimits`, le 422 reste juge
+  et chaque erreur `poll.options.N`, `images.N`, `video_description`… est rattachée à son champ).
+- **Hors ligne** : texte et sondage SANS média gardent la boîte d'envoi (rejeu sans doublon). Avec images ou vidéo : envoi direct
+  multipart (`FeedApi.createWithMedia`, `Idempotency-Key` stable tant que le brouillon ne change pas), réseau obligatoire, brouillon
+  conservé, rien en file.
+- **Affichage** (`presentation/media_widgets.dart`) : `PostGallery` (1 image pleine largeur, 2–4 en grille, `alt` en `Semantics`),
+  `ImageViewerPage` (plein écran, glisser, boutons, compteur annoncé), `PostVideoPlayer` (**`video_player`**, aucune lecture
+  automatique, le fichier n'est demandé qu'au premier appui, une seule vidéo à la fois, pause en arrière-plan, contrôleur libéré,
+  description visible), `ReviewPanel` (auteur·rice : « En attente de relecture » / « Vidéo refusée », motif, « Retirer »).
+- **Mes vidéos** : bouton de la barre du Fil, route `/feed/videos` (`GET posts/review`).
+- **Textes** : ARB exporté (`feed_video_*`, `feed_poll_*`, `feed_create_*`) + table `mobile_*` de `lib/core/l10n/feed_strings.dart`.
+- **Tests** : `test/features/feed/` (modèles et JSON de l'API §8.7, validation, multipart réel, composeur sondage / images /
+  vidéo, galerie, lecteur avec moteur factice `FakeVideoEngine`, relecture et « Mes vidéos »). Non vérifié : TalkBack / VoiceOver,
+  lecture réelle d'une vidéo signée, vrai envoi, poids de l'APK (MOB-POLL, MOB-IMG, MOB-VID).
 
 ## Outils CCC en lecture
 
