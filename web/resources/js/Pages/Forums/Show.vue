@@ -24,6 +24,7 @@ import type { Option } from '@/feed/types';
 import { forumsApi } from '@/forums/api';
 import type { ForumReply, ForumTopic, PagedList, ReplyOptions } from '@/forums/types';
 import type { EventItem } from '@/components/XmRightColumn.vue';
+import XmVerifiedBadges from '@/components/XmVerifiedBadges.vue';
 import XmAvatar from '@/components/XmAvatar.vue';
 import XmBreadcrumb from '@/components/XmBreadcrumb.vue';
 import XmModal from '@/components/XmModal.vue';
@@ -217,7 +218,7 @@ async function remove() {
                 <div class="d-flex align-items-center mb-3">
                     <XmAvatar class="me-2" size="xs" :name="current.author.pseudo" :src="current.author.avatar_url" />
                     <div class="small">
-                        <strong>{{ current.author.pseudo }}</strong>{{ sep }}<time :datetime="current.created_at ?? undefined">{{ timeAgo(current.created_at, t) }}</time>{{ sep }}<i class="bi bi-eye" aria-hidden="true"></i> <span aria-hidden="true">{{ current.views_count }}</span><span class="visually-hidden">{{ t('community.forums.views', { count: current.views_count }, current.views_count) }}</span>
+                        <strong>{{ current.author.pseudo }}</strong><XmVerifiedBadges :badges="current.author.badges" />{{ sep }}<time :datetime="current.created_at ?? undefined">{{ timeAgo(current.created_at, t) }}</time>{{ sep }}<i class="bi bi-eye" aria-hidden="true"></i> <span aria-hidden="true">{{ current.views_count }}</span><span class="visually-hidden">{{ t('community.forums.views', { count: current.views_count }, current.views_count) }}</span>
                         <span v-if="current.is_locked" class="badge bg-light text-secondary ms-1"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ t('community.forums.locked') }}</span>
                         <span v-if="current.is_solved" class="badge bg-success bg-opacity-10 text-success ms-1" :title="t('community.forums.solved_label')"><i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{{ t('community.forums.solved') }}<span class="visually-hidden"> — {{ t('community.forums.solved_label') }}</span></span>
                     </div>
@@ -236,7 +237,7 @@ async function remove() {
                 <div class="card-body d-flex gap-3">
                     <XmAvatar class="flex-shrink-0" :name="item.author.pseudo" :src="item.author.avatar_url" />
                     <div class="flex-grow-1 overflow-hidden">
-                        <div class="small mb-1"><strong>{{ item.author.pseudo }}</strong><template v-if="item.author.badge"> <span class="badge bg-primary bg-opacity-10 text-primary">{{ item.author.badge }}</span></template>{{ sep }}<time :datetime="item.created_at ?? undefined">{{ timeAgo(item.created_at, t) }}</time></div>
+                        <div class="small mb-1"><strong>{{ item.author.pseudo }}</strong><XmVerifiedBadges :badges="item.author.badges" /><template v-if="item.author.badge && !item.author.badges?.some((b) => b.key === 'pair_animateur')"> <span class="badge bg-primary bg-opacity-10 text-primary">{{ item.author.badge }}</span></template>{{ sep }}<time :datetime="item.created_at ?? undefined">{{ timeAgo(item.created_at, t) }}</time></div>
                         <p v-if="item.id === acceptedId" :id="`reponse-${item.id}-validee`" class="small text-success fw-semibold mb-1"><i class="bi bi-patch-check-fill me-1" aria-hidden="true"></i>{{ t('community.forums.accepted.badge') }}</p>
                         <p class="mb-0 xm-forum-text">{{ item.body }}</p>
                         <div v-if="item.can.report || item.can.delete || current.can.accept" class="d-flex flex-wrap gap-3 mt-2">

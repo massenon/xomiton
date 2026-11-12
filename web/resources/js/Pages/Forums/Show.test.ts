@@ -167,4 +167,14 @@ describe('Page /forums/{ulid}', () => {
         expect(calls[1]).toMatchObject({ url: `/api/v1/forums/topics/${TOPIC_ID}/accepted-reply`, method: 'DELETE' });
         await waitFor(() => expect(screen.queryByText('Résolu')).toBeNull());
     });
+
+    it('affiche le badge vérifié à côté du pseudo sans doubler le badge de rôle du pair (P18-09)', async () => {
+        const verified = [{ key: 'pair_animateur', label: 'Pair animateur·rice', icon: 'award-fill' }];
+        const peer = makeReply(1, { author: author({ pseudo: 'Kossi_pair', role: 'pair', badge: 'Pair animateur·rice', badges: verified }) });
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ author: author({ badges: [{ key: 'membre_verifie', label: 'Membre vérifié', icon: 'patch-check-fill' }] }) }), replies: replies([peer]) }) });
+
+        expect(screen.getByText('Membre vérifié')).toBeTruthy();
+        expect(screen.getAllByText('Pair animateur·rice')).toHaveLength(1);
+        expect(document.querySelector('#reponse-1 [data-badge="pair_animateur"]')).not.toBeNull();
+    });
 });

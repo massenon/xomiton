@@ -428,6 +428,20 @@ return [
             // Fenêtre (jours) du compteur de blocages affiché dans l'administration.
             'stats_days' => 30,
         ],
+        // P18-07 : détection du spam (fréquence et doublons) sur le fil et les forums, jamais les messages privés. Au
+        // seuil, le contenu est mis en quarantaine (masqué) et signalé à la modération (motif « Spam »). Les comptes de
+        // l'équipe de modération (`posts.moderate`) ne sont pas concernés.
+        'spam' => [
+            'enabled' => (bool) env('XOMITON_SPAM_DETECTION', true),
+            // Fréquence : au moins N contenus (publications, commentaires, sujets, réponses) en M minutes.
+            'window_minutes' => (int) env('XOMITON_SPAM_WINDOW_MINUTES', 10),
+            'max_per_window' => (int) env('XOMITON_SPAM_MAX_PER_WINDOW', 8),
+            // Doublons : le même texte (sans casse, espaces ni ponctuation) publié N fois en H heures.
+            'duplicate_hours' => (int) env('XOMITON_SPAM_DUPLICATE_HOURS', 24),
+            'duplicate_threshold' => (int) env('XOMITON_SPAM_DUPLICATE_THRESHOLD', 3),
+            // Textes plus courts ignorés pour les doublons (« Merci ! », « Courage » répétés restent permis).
+            'duplicate_min_length' => (int) env('XOMITON_SPAM_DUPLICATE_MIN_LENGTH', 15),
+        ],
     ],
 
     'messaging' => [

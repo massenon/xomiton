@@ -12,6 +12,14 @@ return [
         'en_attente' => 'En attente de validation',
         'actif' => 'Actif',
         'suspendu' => 'Suspendu',
+        'banni' => 'Banni',
+    ],
+
+    // P18-09 (Q97) : badges vérifiés par l'administration. Le client a écrit « Pair éducateur » : « Pair animateur·rice »
+    // suit la décision de vocabulaire du 11/11/2026.
+    'verified_badge' => [
+        'membre_verifie' => 'Membre vérifié',
+        'pair_animateur' => 'Pair animateur·rice',
     ],
 
     'member_type' => [

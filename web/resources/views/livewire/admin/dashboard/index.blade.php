@@ -85,6 +85,11 @@
         <x-admin.kpi id="xmDashKpis" cols="col-6 col-md-4 col-xl-3" :items="$kpis" />
     @endif
 
+    {{-- P18-01 à P18-03 : indicateurs communautaires (composant enfant, sondage propre de 60 s, agrégats en cache). --}}
+    @if ($canCommunity)
+        <livewire:admin.dashboard.community />
+    @endif
+
     @if ($charts !== [])
         <div wire:ignore data-xm-needs="chart" data-xm-dashboard-charts>
             <script type="application/json" id="xmDashboardCharts">@json(['charts' => $charts, 'maskedLabel' => __('admin.kpi.masked')])</script>

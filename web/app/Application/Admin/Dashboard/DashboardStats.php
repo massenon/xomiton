@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\Admin\Dashboard;
 
+use App\Application\Moderation\ReportQueue;
+use App\Domain\Moderation\ReportPriority;
 use App\Enums\AgeRange;
 use App\Enums\AlertStatus;
 use App\Enums\CaseStatus;
@@ -11,6 +13,9 @@ use App\Enums\Sex;
 use App\Enums\UserStatus;
 use App\Models\Alert;
 use App\Models\CaseRecord;
+use App\Models\ForumReply;
+use App\Models\ForumTopic;
+use App\Models\Message;
 use App\Models\Population;
 use App\Models\SyncDevice;
 use App\Models\User;
@@ -20,6 +25,7 @@ use App\Support\LocaleFormatter;
 use App\Support\SmallCellMask;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -37,6 +43,14 @@ final class DashboardStats
     public const CHARTS_CACHE_KEY = 'admin:dashboard:charts';
 
     public const CHARTS_TTL = 60;
+
+    /** P18-01 : indicateurs communautaires (cache 60 s, rafraîchis par le sondage du tableau de bord). */
+    public const COMMUNITY_CACHE_KEY = 'admin:dashboard:community';
+
+    public const COMMUNITY_TTL = 60;
+
+    /** Rétention à 30 jours : cohorte inscrite il y a 30 à 60 jours, active (`last_seen_at`) dans les 30 derniers jours. */
+    public const RETENTION_DAYS = 30;
 
     /** Mois affichés par le graphique « cas par mois ». */
     public const MONTHS = 12;
@@ -109,6 +123,71 @@ final class DashboardStats
         return [
             'users' => (int) ($rows[UserStatus::Active->value] ?? 0),
             'pending' => (int) ($rows[UserStatus::Pending->value] ?? 0),
+        ];
+    }
+
+    /**
+     * Indicateurs communautaires (P18-01, P18-03), **comptages agrégés uniquement** (aucun contenu, aucun identifiant,
+     * jamais le texte d'un message privé), mis en cache 60 s : le sondage du tableau de bord (60 s) lit le cache et ne
+     * relance pas les comptages à chaque passage. Jours et semaines dans le fuseau d'affichage (`xomiton.display_timezone`,
+     * heure du Bénin) : « aujourd'hui » part de minuit local, « 7 jours » couvre aujourd'hui et les 6 jours précédents.
+     *
+     *  - membres : comptes non anonymisés, nouveaux du jour, rétention à 30 jours = part de la cohorte inscrite entre
+     *    J-60 et J-30 (bornes : [maintenant − 60 j ; maintenant − 30 j[) vue (`last_seen_at`) depuis maintenant − 30 j ;
+     *    `null` sans cohorte ;
+     *  - échanges : sujets de forum, réponses de forum, messages privés créés (aujourd'hui, 7 jours) ;
+     *  - signalements en attente (un contenu = une ligne, ReportQueue) dont priorité haute (score ≥ ReportPriority::HIGH) ;
+     *  - résolution : sujets publiés ayant une réponse validée / sujets publiés (P18-03), `null` sans sujet.
+     *
+     * @return array{members: array{total: int, today: int, retention: array{rate: float, cohort: int, retained: int}|null}, exchanges: array{topics: array{today: int, week: int}, replies: array{today: int, week: int}, messages: array{today: int, week: int}}, reports: array{pending: int, high: int}, resolution: array{rate: float, solved: int, topics: int}|null, computed_at: string}
+     */
+    public function community(): array
+    {
+        /** @var array{members: array{total: int, today: int, retention: array{rate: float, cohort: int, retained: int}|null}, exchanges: array{topics: array{today: int, week: int}, replies: array{today: int, week: int}, messages: array{today: int, week: int}}, reports: array{pending: int, high: int}, resolution: array{rate: float, solved: int, topics: int}|null, computed_at: string} */
+        return Cache::remember(self::COMMUNITY_CACHE_KEY, self::COMMUNITY_TTL, fn (): array => $this->computeCommunity());
+    }
+
+    /**
+     * @return array{members: array{total: int, today: int, retention: array{rate: float, cohort: int, retained: int}|null}, exchanges: array{topics: array{today: int, week: int}, replies: array{today: int, week: int}, messages: array{today: int, week: int}}, reports: array{pending: int, high: int}, resolution: array{rate: float, solved: int, topics: int}|null, computed_at: string}
+     */
+    public function computeCommunity(): array
+    {
+        $timezone = (string) config('xomiton.display_timezone', 'UTC');
+        $now = now();
+        $today = Carbon::now($timezone)->startOfDay()->utc();
+        $week = Carbon::now($timezone)->startOfDay()->subDays(6)->utc();
+
+        $count = static fn (Builder $query, Carbon $since): int => (clone $query)->where('created_at', '>=', $since)->count();
+        $window = static fn (Builder $query): array => ['today' => $count($query, $today), 'week' => $count($query, $week)];
+
+        $cohortQuery = User::query()->notAnonymized()
+            ->where('created_at', '>=', $now->copy()->subDays(2 * self::RETENTION_DAYS))
+            ->where('created_at', '<', $now->copy()->subDays(self::RETENTION_DAYS));
+        $cohort = (clone $cohortQuery)->count();
+        $retained = $cohort === 0 ? 0 : (clone $cohortQuery)->where('last_seen_at', '>=', $now->copy()->subDays(self::RETENTION_DAYS))->count();
+
+        $pending = app(ReportQueue::class)->pendingGroups();
+        $topics = ForumTopic::query()->published()->count();
+        $solved = $topics === 0 ? 0 : ForumTopic::query()->published()->solved()->count();
+
+        return [
+            'members' => [
+                'total' => User::query()->notAnonymized()->count(),
+                'today' => User::query()->notAnonymized()->where('created_at', '>=', $today)->count(),
+                'retention' => $cohort === 0 ? null : ['rate' => round($retained / $cohort * 100, 1), 'cohort' => $cohort, 'retained' => $retained],
+            ],
+            'exchanges' => [
+                'topics' => $window(ForumTopic::query()),
+                'replies' => $window(ForumReply::query()),
+                // Comptage seul : aucune colonne du message n'est lue (corps chiffré au repos, ADR-33).
+                'messages' => $window(Message::query()),
+            ],
+            'reports' => [
+                'pending' => (clone $pending)->toBase()->count(),
+                'high' => (clone $pending)->where('priority', '>=', ReportPriority::HIGH)->toBase()->count(),
+            ],
+            'resolution' => $topics === 0 ? null : ['rate' => round($solved / $topics * 100, 1), 'solved' => $solved, 'topics' => $topics],
+            'computed_at' => $now->toIso8601String(),
         ];
     }
 

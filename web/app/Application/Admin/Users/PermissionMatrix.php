@@ -51,6 +51,8 @@ final class PermissionMatrix
         'gateways' => ['gateways.connect', 'gateways.publish'],
         'emails' => ['email_templates.manage', 'email_templates.delete_system'],
         'users' => ['users.view', 'users.suspend', 'users.manage', 'users.validate_peers', 'peers.assign', 'peers.invite'],
+        'users_ban' => ['users.ban', 'users.unban'],
+        'badges' => ['badges.manage'],
         'registrations' => ['registrations.manage'],
         'admin_roles' => ['roles.assign_admin'],
         'sync' => ['sync.view_own', 'sync.resolve_own', 'sync.manage', 'device.wipe'],

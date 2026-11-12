@@ -6,6 +6,7 @@ namespace App\Application\Community\Forums;
 
 use App\Application\Feed\BadWordFilter;
 use App\Application\Moderation\ReportContent;
+use App\Application\Moderation\SpamDetector;
 use App\Domain\Community\Exceptions\TopicLocked;
 use App\Domain\Feed\Exceptions\ContentBlocked;
 use App\Enums\PostStatus;
@@ -27,6 +28,7 @@ final class ReplyToTopic
         private readonly ForumCounters $counters,
         private readonly ReportContent $reports,
         private readonly ForumReplyNotifier $notifier,
+        private readonly SpamDetector $spam,
     ) {}
 
     /**
@@ -67,6 +69,9 @@ final class ReplyToTopic
         if ($verdict->needsReview()) {
             $this->reports->automatic($reply, $verdict);
         }
+
+        // P18-07 : fréquence et doublons → quarantaine (masqué) et signalement « Spam ».
+        $this->spam->inspect($reply, $author);
 
         $reply->setRelation('topic', $topic)->setRelation('user', $author);
         $this->notifier->replied($topic, $reply, $author);

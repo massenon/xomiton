@@ -140,6 +140,16 @@ Schedule::command('polls:close')
     ->description('Clôt les sondages arrivés à échéance et envoie « Sondage terminé » à leur auteur·rice');
 
 /*
+ * Suspensions temporaires (P18-06) : réactivation des comptes dont la date de fin est passée (`users.suspended_until`),
+ * notification et journal. Cinq minutes de précision suffisent (la date de fin est un jour inclus).
+ */
+Schedule::command('accounts:lift-suspensions')
+    ->everyFiveMinutes()
+    ->timezone($timezone)
+    ->withoutOverlapping(10)
+    ->description('Réactive les comptes dont la suspension temporaire est arrivée à échéance');
+
+/*
  * Événements (P8-04) : rappel de la veille aux participant·es confirmé·es (cloche, push, e-mail `rappel-evenement`),
  * une seule fois par événement (`events.reminder_sent_at`). Un quart d'heure de précision suffit pour « demain ».
  */

@@ -25,6 +25,7 @@ import { feedApi } from '@/feed/api';
 import { VISIBILITY_ICONS, shareLinks, timeAgo } from '@/feed/format';
 import { lazyComponent } from '@/feed/lazy';
 import type { Poll, Post } from '@/feed/types';
+import XmVerifiedBadges from '@/components/XmVerifiedBadges.vue';
 import XmAvatar from './XmAvatar.vue';
 import XmBadge from './XmBadge.vue';
 import XmMediaGallery from './XmMediaGallery.vue';
@@ -223,6 +224,7 @@ async function openReport() {
                             <component :is="headingTag" :id="authorId" class="nav-item card-title h6 mb-0">
                                 <Link v-if="profileHref" :href="profileHref">{{ name }}</Link><template v-else>{{ name }}</template>
                             </component>
+                            <span v-if="current.author.badges?.length" class="nav-item small"><XmVerifiedBadges :badges="current.author.badges" /></span>
                             <span v-if="ago" class="nav-item small"><time :datetime="current.published_at ?? undefined">{{ ago }}</time></span>
                         </div>
                         <p class="mb-0 small">

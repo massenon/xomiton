@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Feed;
 
 use App\Application\Moderation\ReportContent;
+use App\Application\Moderation\SpamDetector;
 use App\Domain\Feed\Exceptions\ContentBlocked;
 use App\Enums\PostStatus;
 use App\Models\Comment;
@@ -26,6 +27,7 @@ final class ManageComments
         private readonly FeedCounters $counters,
         private readonly ReactionNotifier $notifier,
         private readonly ReportContent $reports,
+        private readonly SpamDetector $spam,
     ) {}
 
     /**
@@ -54,6 +56,9 @@ final class ManageComments
         if ($verdict->needsReview()) {
             $this->reports->automatic($comment, $verdict);
         }
+
+        // P18-07 : fréquence et doublons → quarantaine (masqué) et signalement « Spam ».
+        $this->spam->inspect($comment, $author);
 
         $comment->setRelation('post', $post);
         $this->notifier->commented($post, $comment, $author);

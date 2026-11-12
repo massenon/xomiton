@@ -6,7 +6,7 @@
 --}}
 @php
     $kindIcon = ['publication' => 'card-text', 'commentaire' => 'chat-left-text', 'message' => 'envelope', 'utilisateur' => 'person-exclamation', 'sujet' => 'chat-square-text', 'reponse' => 'chat-left-dots'];
-    $actionColor = ['aucune' => 'neutral', 'masque' => 'info', 'avertissement' => 'warning', 'suspension' => 'danger', 'supprime' => 'danger'];
+    $actionColor = ['aucune' => 'neutral', 'approuve' => 'success', 'masque' => 'info', 'avertissement' => 'warning', 'suspension' => 'danger', 'bannissement' => 'danger', 'supprime' => 'danger'];
 @endphp
 <div class="xm-moderation">
     @include('livewire.admin.moderation.partials.tabs', ['active' => 'reports', 'pending' => $videosPending])
@@ -47,6 +47,7 @@
                 </div>
 
                 <x-admin.table id="xmModTable" :caption="__('admin.moderation.table_caption')" :sort="$sortKey" :direction="$sortDirection" :empty="$rows->isEmpty()" :target="$this->dataTableTargets()" :columns="[
+                    ['key' => 'priorite', 'label' => __('admin.moderation.columns.priority'), 'sortable' => true, 'width' => '7rem'],
                     ['key' => 'contenu', 'label' => __('admin.moderation.columns.content')],
                     ['key' => 'motif', 'label' => __('admin.moderation.columns.reason'), 'sortable' => true],
                     ['key' => 'date', 'label' => __('admin.moderation.columns.date'), 'sortable' => true, 'width' => '9rem'],
@@ -61,8 +62,14 @@
                             $pending = $report->isPending();
                             $protected = $author !== null && $author->can('admin.access');
                             $strikes = $author ? ($warnings[$author->id] ?? 0) : 0;
+                            $level = $report->priorityLevel();
+                            $authorStatus = $author?->getRawOriginal('status');
                         @endphp
                         <tr wire:key="report-{{ $report->id }}">
+                            <td data-label="{{ __('admin.moderation.columns.priority') }}">
+                                <x-badge :color="\App\Domain\Moderation\ReportPriority::badge($level)" :soft="$level !== 'haute'" :icon="$level === 'haute' ? 'exclamation-octagon' : null">{{ __('admin.moderation.priority.'.$level) }}</x-badge>
+                                <div class="small text-secondary mt-1" title="{{ __('admin.moderation.priority.help') }}">{{ __('admin.moderation.priority.score', ['score' => (int) $report->priority]) }}</div>
+                            </td>
                             <td data-label="{{ __('admin.moderation.columns.content') }}">
                                 <div class="d-flex gap-2 min-w-0">
                                     <i class="bi bi-{{ $kindIcon[$report->kind->value] ?? 'flag' }} fs-5 text-primary" aria-hidden="true"></i>
@@ -78,7 +85,8 @@
                                         <div class="text-break">{{ $report->excerpt ?: ($report->kind === \App\Enums\ModerationKind::Message ? __('admin.moderation.message_excerpt') : __('admin.moderation.no_excerpt')) }}</div>
                                         <div class="small text-secondary mt-1">
                                             {{ __('admin.moderation.author') }} <strong>{{ $author?->pseudo ?? __('admin.moderation.unknown_author') }}</strong>
-                                            @if ($author?->status === \App\Enums\UserStatus::Suspended)<x-badge color="danger" soft>{{ __('admin.moderation.suspended') }}</x-badge>@endif
+                                            @if ($authorStatus === 'suspendu')<x-badge color="danger" soft>{{ __('admin.moderation.suspended') }}</x-badge>@endif
+                                            @if ($authorStatus === 'banni')<x-badge color="danger">{{ __('admin.moderation.banned') }}</x-badge>@endif
                                             @if ($strikes > 0) · {{ trans_choice('admin.moderation.warnings', $strikes, ['count' => $strikes]) }}@endif
                                             · {{ __('admin.moderation.reported_by_label') }}
                                             @if ($group && $group['people'] > 1){{ trans_choice('admin.moderation.reported_by', $group['people'], ['count' => $group['people']]) }}
@@ -100,6 +108,9 @@
                                         @if ($report->kind === \App\Enums\ModerationKind::Message && $subject)
                                             <button type="button" class="btn btn-sm btn-outline-primary" wire:click="openRead({{ $report->id }})" wire:loading.attr="disabled" wire:target="openRead({{ $report->id }})"><i class="bi bi-envelope-open me-1" aria-hidden="true"></i>{{ __('admin.moderation.read_message') }}</button>
                                         @endif
+                                        @if ($subject && ! $subject instanceof \App\Models\User)
+                                            <button type="button" class="btn btn-sm btn-outline-success" wire:click="openDecision({{ $report->id }}, 'approve')">{{ __('admin.moderation.actions.approve') }}<span class="visually-hidden"> {{ __('admin.moderation.sr_report', ['id' => $report->id]) }}</span></button>
+                                        @endif
                                         <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="openDecision({{ $report->id }}, 'dismiss')">{{ __('admin.moderation.actions.dismiss') }}<span class="visually-hidden"> {{ __('admin.moderation.sr_report', ['id' => $report->id]) }}</span></button>
                                         @if (\App\Application\Moderation\ContentVisibility::hideable($subject) && ! $hidden)
                                             <button type="button" class="btn btn-sm btn-outline-info" wire:click="openDecision({{ $report->id }}, 'hide')">{{ __('admin.moderation.actions.hide') }}<span class="visually-hidden"> {{ __('admin.moderation.sr_report', ['id' => $report->id]) }}</span></button>
@@ -108,8 +119,13 @@
                                             <button type="button" class="btn btn-sm btn-outline-warning" wire:click="openDecision({{ $report->id }}, 'warn')">{{ __('admin.moderation.actions.warn') }}<span class="visually-hidden"> {{ __('admin.moderation.sr_report', ['id' => $report->id]) }}</span></button>
                                             @if ($protected)
                                                 <span class="btn btn-sm btn-outline-danger disabled" aria-disabled="true" title="{{ __('admin.moderation.errors.admin_target') }}"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ __('admin.moderation.actions.suspend') }}</span>
-                                            @elseif ($author->status !== \App\Enums\UserStatus::Suspended)
-                                                <button type="button" class="btn btn-sm btn-outline-danger" wire:click="openDecision({{ $report->id }}, 'suspend')">{{ __('admin.moderation.actions.suspend') }}<span class="visually-hidden"> {{ __('admin.moderation.sr_report', ['id' => $report->id]) }}</span></button>
+                                            @else
+                                                @if (! in_array($authorStatus, ['suspendu', 'banni'], true))
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" wire:click="openDecision({{ $report->id }}, 'suspend')">{{ __('admin.moderation.actions.suspend') }}<span class="visually-hidden"> {{ __('admin.moderation.sr_report', ['id' => $report->id]) }}</span></button>
+                                                @endif
+                                                @if ($authorStatus !== 'banni' && $canBan($author))
+                                                    <button type="button" class="btn btn-sm btn-danger" wire:click="openDecision({{ $report->id }}, 'ban')">{{ __('admin.moderation.actions.ban') }}<span class="visually-hidden"> {{ __('admin.moderation.sr_report', ['id' => $report->id]) }}</span></button>
+                                                @endif
                                             @endif
                                         @endif
                                     @else
@@ -260,18 +276,57 @@
             </div>
             <p class="text-break mb-2">{{ $report->excerpt ?: __('admin.moderation.no_excerpt') }}</p>
             <p class="small text-secondary">{{ __('admin.moderation.author') }} <strong>{{ $report->reportedUser?->pseudo ?? __('admin.moderation.unknown_author') }}</strong></p>
-            <x-alert :type="$decision === 'suspend' ? 'danger' : 'info'" class="small">{{ __('admin.moderation.decide.effect.'.$decision) }}</x-alert>
-            @if (in_array($decision, ['warn', 'suspend'], true))
+            @php($context = $this->context)
+            @if ($context && ($context['parent'] || $context['history']))
+                {{-- Contexte (P18-05) : fil et historique de l'auteur·rice ; jamais pour un message privé au-delà du message signalé. --}}
+                <section class="border rounded p-3 mb-3 small" aria-labelledby="xmModContextTitle">
+                    <h3 class="h6 fw-semibold mb-2" id="xmModContextTitle">{{ __('admin.moderation.context.title') }}</h3>
+                    @if ($parent = $context['parent'])
+                        <p class="mb-2"><span class="fw-semibold">{{ __('admin.moderation.context.parent.'.$parent['type']) }}</span>
+                            @if ($parent['title']) {{ $parent['title'] }}@endif
+                            @if ($parent['excerpt'])<span class="d-block text-secondary text-break">{{ $parent['type'] === 'post' ? '« '.$parent['excerpt'].' »' : $parent['excerpt'] }}</span>@endif
+                        </p>
+                    @endif
+                    @if ($history = $context['history'])
+                        <p class="mb-1 fw-semibold">{{ __('admin.moderation.context.history') }}</p>
+                        <ul class="list-unstyled mb-0">
+                            <li>{{ trans_choice('admin.moderation.context.warnings', $history['warnings'], ['count' => $history['warnings']]) }} · {{ trans_choice('admin.moderation.context.reports', $history['reports'], ['count' => $history['reports']]) }}</li>
+                            @if ($history['sanctions'] !== [])
+                                <li>{{ __('admin.moderation.context.sanctions') }}
+                                    @foreach ($history['sanctions'] as $action => $count){{ $loop->first ? '' : ', ' }}{{ __('admin.moderation.action_labels.'.$action) }} × {{ $count }}@endforeach
+                                </li>
+                            @else
+                                <li>{{ __('admin.moderation.context.no_sanction') }}</li>
+                            @endif
+                            @if ($history['banned'])<li class="text-danger">{{ __('admin.moderation.context.banned') }}</li>@elseif ($history['suspended'])<li class="text-danger">{{ __('admin.moderation.context.suspended') }}</li>@endif
+                            @foreach ($history['recent'] as $past)
+                                <li class="text-secondary">{{ $past['at'] ? $format->shortDate($past['at']) : '—' }} · {{ \App\Enums\ModerationKind::tryFrom($past['kind'])?->label() }} · {{ $past['action'] ? __('admin.moderation.action_labels.'.$past['action']) : '—' }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </section>
+            @endif
+            <x-alert :type="in_array($decision, ['suspend', 'ban'], true) ? 'danger' : 'info'" class="small">{{ __('admin.moderation.decide.effect.'.$decision) }}</x-alert>
+            @if (in_array($decision, \App\Application\Moderation\DecideReport::NEEDS_REASON, true))
                 <form id="xmModerationDecideForm" wire:submit="decide" novalidate>
                     <label class="form-label fw-semibold" for="xmModReason">{{ __('admin.moderation.reason_label.'.$decision) }}</label>
                     <textarea class="form-control @error('reason') is-invalid @enderror" id="xmModReason" rows="3" maxlength="{{ \App\Application\Moderation\DecideReport::REASON_MAX }}" wire:model="reason"
                               aria-describedby="xmModReasonHelp @error('reason') xmModReasonError @enderror" @error('reason') aria-invalid="true" @enderror></textarea>
                     <div class="form-text" id="xmModReasonHelp">{{ __('admin.moderation.decide.reason_help') }}</div>
                     @error('reason')<div class="invalid-feedback d-block" id="xmModReasonError">{{ $message }}</div>@enderror
+                    @if ($decision === 'suspend')
+                        {{-- P18-06 : suspension temporaire, levée automatiquement (accounts:lift-suspensions). --}}
+                        <label class="form-label fw-semibold mt-3" for="xmModUntil">{{ __('admin.moderation.decide.until') }}</label>
+                        <input type="date" class="form-control @error('suspendUntil') is-invalid @enderror" id="xmModUntil" wire:model="suspendUntil"
+                               min="{{ now(config('xomiton.display_timezone', 'UTC'))->addDay()->toDateString() }}" max="{{ now(config('xomiton.display_timezone', 'UTC'))->addDays(\App\Application\Admin\Users\AccountSuspension::MAX_DAYS)->toDateString() }}"
+                               aria-describedby="xmModUntilHelp @error('suspendUntil') xmModUntilError @enderror" @error('suspendUntil') aria-invalid="true" @enderror>
+                        <div class="form-text" id="xmModUntilHelp">{{ __('admin.moderation.decide.until_help') }}</div>
+                        @error('suspendUntil')<div class="invalid-feedback d-block" id="xmModUntilError">{{ $message }}</div>@enderror
+                    @endif
                 </form>
             @endif
             <x-slot:footer>
-                <button type="button" @class(['btn', 'btn-danger' => $decision === 'suspend', 'btn-primary' => $decision !== 'suspend']) wire:click="decide" wire:loading.attr="disabled" wire:target="decide">
+                <button type="button" @class(['btn', 'btn-danger' => in_array($decision, ['suspend', 'ban'], true), 'btn-primary' => ! in_array($decision, ['suspend', 'ban'], true)]) wire:click="decide" wire:loading.attr="disabled" wire:target="decide">
                     {{ __('admin.moderation.decide.confirm.'.$decision) }}
                 </button>
             </x-slot:footer>

@@ -272,6 +272,14 @@ return [
             'title' => 'Ton compte est suspendu',
             'body' => 'Ton compte est suspendu : :reason. Écris-nous si tu penses à une erreur.',
         ],
+        'suspended_until' => [
+            'title' => 'Ton compte est suspendu temporairement',
+            'body' => 'Ton compte est suspendu jusqu’au :date inclus : :reason. Il sera réactivé automatiquement ensuite. Écris-nous si tu penses à une erreur.',
+        ],
+        'banned' => [
+            'title' => 'Ton compte est fermé',
+            'body' => 'L’équipe de modération a fermé ton compte : :reason. Écris-nous si tu penses à une erreur.',
+        ],
         'reactivated' => [
             'title' => 'Ton compte est réactivé',
             'body' => 'L’équipe a réactivé ton compte. Tu peux de nouveau t’en servir.',

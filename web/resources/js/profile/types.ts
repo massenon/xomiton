@@ -1,6 +1,7 @@
 // Contrat de la page `Member/Profile` (lot profil, P8-07, P8-08) : props de ProfilePageController et réponses de l'API
 // `members/{pseudo}…`, `me/activity`, `me/profile` (docs/API.md §3 et §18). Le pseudonyme est la seule identité (RG-02).
 import type { EventItem } from '@/events/types';
+import type { VerifiedBadge } from '@/feed/types';
 
 export type ProfileTab = 'posts' | 'about' | 'connections' | 'media' | 'events' | 'activity';
 
@@ -28,6 +29,8 @@ export interface MemberProfile {
     role: string | null;
     role_label: string;
     verified: boolean;
+    /** P18-09 : badges vérifiés par l'administration (Membre vérifié, Pair animateur·rice). */
+    badges?: VerifiedBadge[];
     member_type: string | null;
     member_type_label: string | null;
     pronouns: string | null;

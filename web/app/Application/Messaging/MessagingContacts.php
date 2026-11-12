@@ -27,7 +27,7 @@ final class MessagingContacts
 {
     public function reachable(User $user): bool
     {
-        return $user->status !== UserStatus::Suspended && ! $user->isAnonymized();
+        return ! $user->isBlocked() && ! $user->isAnonymized();
     }
 
     public function blockedBetween(User|int $a, User|int $b): bool
@@ -107,7 +107,7 @@ final class MessagingContacts
         $query = User::query()
             ->with('profile')
             ->whereKeyNot($id)
-            ->where('status', '!=', UserStatus::Suspended)
+            ->whereNotIn('status', UserStatus::withoutAccess())
             ->notAnonymized()
             ->permission('social.access')
             ->whereNotIn('users.id', UserBlock::query()->select('blocked_user_id')->where('user_id', $id))

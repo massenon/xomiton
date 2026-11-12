@@ -1,7 +1,7 @@
 // Contrat des écrans des forums (lot forums, P8-05) : objets de l'API /api/v1/forums (docs/API.md §16 :
 // App\Http\Resources\Forums\ForumResource, ForumTopicResource, ForumReplyResource) et props Inertia de
 // App\Http\Controllers\Web\Member\ForumsPageController (premières pages sous la forme de l'API).
-import type { Option } from '@/feed/types';
+import type { Option, VerifiedBadge } from '@/feed/types';
 
 export interface Forum {
     /** Clé courte du prototype (`f1`…), `?forum=` des listes. */
@@ -24,6 +24,8 @@ export interface ForumAuthor {
     role: string | null;
     anonymous: boolean;
     badge: string | null;
+    /** P18-09 : badges vérifiés par l'administration. */
+    badges?: VerifiedBadge[];
 }
 
 export interface ForumTopic {

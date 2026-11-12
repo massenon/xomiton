@@ -126,6 +126,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'users.suspend' => $moderators,
             'users.manage' => $admins,
             'users.validate_peers' => $admins,
+            // P18-06 (Q97) : bannir (statut définitif `banni`) ; lever un bannissement est réservé au superadmin.
+            'users.ban' => $admins,
+            'users.unban' => $superOnly,
+            // P18-09 (Q97) : badges vérifiés par l'administration (« Membre vérifié », « Pair animateur·rice »), à la main.
+            'badges.manage' => $admins,
             'registrations.manage' => $admins,
 
             // Rôles d'administration

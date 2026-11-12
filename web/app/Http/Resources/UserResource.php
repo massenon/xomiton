@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use App\Application\Account\Profile\ProgressiveProfileState;
 use App\Application\Admin\Users\AdminRoles;
+use App\Application\Admin\Users\VerifiedBadges;
 use App\Application\Member\AccountSpaces;
 use App\Domain\Account\SensitiveProfile;
 use App\Enums\AllyStatus;
@@ -86,6 +87,8 @@ final class UserResource extends JsonResource
                 'spaces' => AccountSpaces::for($user, AccountSpaces::SURFACE_MOBILE),
                 'settings' => $this->settings($user->settings),
                 'last_login_at' => $user->last_login_at?->toIso8601String(),
+                // P18-09 : badges vérifiés par l'administration (affichés sur son profil dans l'application).
+                'badges' => VerifiedBadges::for($user),
             ];
         }
 

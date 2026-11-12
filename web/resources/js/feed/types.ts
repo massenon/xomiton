@@ -3,12 +3,21 @@
 // App\Http\Controllers\Web\Member\FeedPageController (première page sous la même forme que l'API).
 import type { EventCreateOptions } from '@/events/types';
 
+/** Badge vérifié par l'administration (P18-09) : `membre_verifie` ou `pair_animateur`. */
+export interface VerifiedBadge {
+    key: string;
+    label: string;
+    icon: string;
+}
+
 export interface FeedAuthor {
     id: number | null;
     pseudo: string;
     avatar_url: string | null;
     role: string | null;
     anonymous: boolean;
+    /** P18-09 : badges vérifiés (vide pour un contenu anonyme). */
+    badges?: VerifiedBadge[];
 }
 
 export interface PollOption {

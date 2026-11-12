@@ -6331,6 +6331,18 @@
     "@admin_ccc_planches_up": {
         "description": "admin_ccc.planches.up"
     },
+    "admin_ccc_public_help": "La BD est aussi lisible sans compte sur sa page publique, indexée par les moteurs de recherche, si elle est publiée.",
+    "@admin_ccc_public_help": {
+        "description": "admin_ccc.public.help"
+    },
+    "admin_ccc_public_label": "Page publique",
+    "@admin_ccc_public_label": {
+        "description": "admin_ccc.public.label"
+    },
+    "admin_ccc_public_view": "Voir la page publique",
+    "@admin_ccc_public_view": {
+        "description": "admin_ccc.public.view"
+    },
     "admin_ccc_published": "Publié",
     "@admin_ccc_published": {
         "description": "admin_ccc.published"
@@ -6651,6 +6663,10 @@
     "admin_content_categories_kinds_thematique": "Thématiques et ressources",
     "@admin_content_categories_kinds_thematique": {
         "description": "admin_content.categories.kinds.thematique"
+    },
+    "admin_content_categories_kinds_violence_numerique": "Violences numériques",
+    "@admin_content_categories_kinds_violence_numerique": {
+        "description": "admin_content.categories.kinds.violence_numerique"
     },
     "admin_content_categories_new": "Nouvelle catégorie",
     "@admin_content_categories_new": {
@@ -7563,6 +7579,10 @@
     "@admin_content_thematiques_fields_cover": {
         "description": "admin_content.thematiques.fields.cover"
     },
+    "admin_content_thematiques_fields_legal_references": "Références juridiques",
+    "@admin_content_thematiques_fields_legal_references": {
+        "description": "admin_content.thematiques.fields.legal_references"
+    },
     "admin_content_thematiques_fields_meta_description": "Description pour les moteurs de recherche",
     "@admin_content_thematiques_fields_meta_description": {
         "description": "admin_content.thematiques.fields.meta_description"
@@ -7590,6 +7610,10 @@
     "admin_content_thematiques_fields_title": "Titre",
     "@admin_content_thematiques_fields_title": {
         "description": "admin_content.thematiques.fields.title"
+    },
+    "admin_content_thematiques_legal_help": "Références juridiques validées par l’administration (lois, articles, recours). Affichées sur la fiche seulement si ce champ est rempli, avec la mention « Informations validées par l’administration de Xomiton ». HTML simple : paragraphes, listes, liens.",
+    "@admin_content_thematiques_legal_help": {
+        "description": "admin_content.thematiques.legal_help"
     },
     "admin_content_thematiques_minutes": "{count} min de lecture",
     "@admin_content_thematiques_minutes": {
@@ -17945,6 +17969,10 @@
     "@ccc_comic_progress": {
         "description": "ccc.comic.progress"
     },
+    "ccc_comic_public_page": "Voir la page publique de la BD",
+    "@ccc_comic_public_page": {
+        "description": "ccc.comic.public_page"
+    },
     "ccc_comic_read": "Lire la BD",
     "@ccc_comic_read": {
         "description": "ccc.comic.read"
@@ -26394,6 +26422,10 @@
     "@footer_delete_account": {
         "description": "footer.delete_account"
     },
+    "footer_digital_violence": "Violences numériques",
+    "@footer_digital_violence": {
+        "description": "footer.digital_violence"
+    },
     "footer_do_glegbe": "Do Glegbe",
     "@footer_do_glegbe": {
         "description": "footer.do_glegbe"
@@ -32157,6 +32189,223 @@
     "@pages_aide_title": {
         "description": "pages/aide.title"
     },
+    "pages_bd_after_fiche": "Lire la fiche « {title} »",
+    "@pages_bd_after_fiche": {
+        "description": "pages/bd.after_fiche",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_after_text": "La fiche vous explique les signes, les bons réflexes et où trouver de l’aide.",
+    "@pages_bd_after_text": {
+        "description": "pages/bd.after_text"
+    },
+    "pages_bd_after_title": "Et maintenant ?",
+    "@pages_bd_after_title": {
+        "description": "pages/bd.after_title"
+    },
+    "pages_bd_all_comics": "Toutes les BD",
+    "@pages_bd_all_comics": {
+        "description": "pages/bd.all_comics"
+    },
+    "pages_bd_count": "{count, plural, =0{Aucune BD pour l’instant.} =1{{count} bande dessinée} other{{count} bandes dessinées}}",
+    "@pages_bd_count": {
+        "description": "pages/bd.count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_bd_cover_alt": "Couverture de la BD « {title} »",
+    "@pages_bd_cover_alt": {
+        "description": "pages/bd.cover_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_discreet_show": "Afficher la BD",
+    "@pages_bd_discreet_show": {
+        "description": "pages/bd.discreet_show"
+    },
+    "pages_bd_discreet_text": "Les planches sont masquées tant que vous ne choisissez pas de les afficher.",
+    "@pages_bd_discreet_text": {
+        "description": "pages/bd.discreet_text"
+    },
+    "pages_bd_discreet_title": "Mode discret activé",
+    "@pages_bd_discreet_title": {
+        "description": "pages/bd.discreet_title"
+    },
+    "pages_bd_empty": "Les bandes dessinées arrivent bientôt.",
+    "@pages_bd_empty": {
+        "description": "pages/bd.empty"
+    },
+    "pages_bd_h1": "Bandes dessinées : comprendre les violences numériques",
+    "@pages_bd_h1": {
+        "description": "pages/bd.h1"
+    },
+    "pages_bd_help_emergency": "Numéros d’urgence",
+    "@pages_bd_help_emergency": {
+        "description": "pages/bd.help_emergency"
+    },
+    "pages_bd_help_report": "Faire un signalement",
+    "@pages_bd_help_report": {
+        "description": "pages/bd.help_report"
+    },
+    "pages_bd_help_sos": "Alerte SOS",
+    "@pages_bd_help_sos": {
+        "description": "pages/bd.help_sos"
+    },
+    "pages_bd_help_title": "Besoin d’aide ?",
+    "@pages_bd_help_title": {
+        "description": "pages/bd.help_title"
+    },
+    "pages_bd_kicker": "BD Xomiton",
+    "@pages_bd_kicker": {
+        "description": "pages/bd.kicker"
+    },
+    "pages_bd_lead": "Des histoires courtes, en quatre planches, pour reconnaître une situation, savoir quoi faire et trouver de l’aide. À lire seul·e, en groupe ou à partager.",
+    "@pages_bd_lead": {
+        "description": "pages/bd.lead"
+    },
+    "pages_bd_list_label": "Liste des bandes dessinées",
+    "@pages_bd_list_label": {
+        "description": "pages/bd.list_label"
+    },
+    "pages_bd_meta_description": "Des bandes dessinées courtes pour reconnaître le harcèlement en ligne, la sextorsion, la traque ou les arnaques, réagir et trouver de l’aide au Bénin.",
+    "@pages_bd_meta_description": {
+        "description": "pages/bd.meta_description"
+    },
+    "pages_bd_meta_description_filler": "Bande dessinée Xomiton à lire en ligne et à partager, avec la fiche « reconnaître, réagir, se faire aider ».",
+    "@pages_bd_meta_description_filler": {
+        "description": "pages/bd.meta_description_filler"
+    },
+    "pages_bd_meta_title": "BD sur les violences numériques à lire et partager",
+    "@pages_bd_meta_title": {
+        "description": "pages/bd.meta_title"
+    },
+    "pages_bd_meta_title_show": "BD « {title} » : {topic}",
+    "@pages_bd_meta_title_show": {
+        "description": "pages/bd.meta_title_show",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            },
+            "topic": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_official_account_bio": "Compte officiel de la plateforme Xomiton : actualités, BD et fiches pour s’informer et se protéger.",
+    "@pages_bd_official_account_bio": {
+        "description": "pages/bd.official_account_bio"
+    },
+    "pages_bd_others_title": "D’autres BD",
+    "@pages_bd_others_title": {
+        "description": "pages/bd.others_title"
+    },
+    "pages_bd_pages_count": "{count, plural, =1{{count} planche} other{{count} planches}}",
+    "@pages_bd_pages_count": {
+        "description": "pages/bd.pages_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_bd_print": "Imprimer la BD",
+    "@pages_bd_print": {
+        "description": "pages/bd.print"
+    },
+    "pages_bd_read": "Lire la BD",
+    "@pages_bd_read": {
+        "description": "pages/bd.read"
+    },
+    "pages_bd_title": "Bandes dessinées",
+    "@pages_bd_title": {
+        "description": "pages/bd.title"
+    },
+    "pages_bd_topic": "Sujet : {title}",
+    "@pages_bd_topic": {
+        "description": "pages/bd.topic",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_viewer_alt_fallback": "{title} – planche {n}",
+    "@pages_bd_viewer_alt_fallback": {
+        "description": "pages/bd.viewer.alt_fallback",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_viewer_counter": "Planche {n} sur {count}",
+    "@pages_bd_viewer_counter": {
+        "description": "pages/bd.viewer.counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_viewer_keyboard_help": "Utilisez les boutons ou les flèches gauche et droite du clavier pour changer de planche.",
+    "@pages_bd_viewer_keyboard_help": {
+        "description": "pages/bd.viewer.keyboard_help"
+    },
+    "pages_bd_viewer_next": "Planche suivante",
+    "@pages_bd_viewer_next": {
+        "description": "pages/bd.viewer.next"
+    },
+    "pages_bd_viewer_page_title": "Planche {n} sur {count} – {title}",
+    "@pages_bd_viewer_page_title": {
+        "description": "pages/bd.viewer.page_title",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_viewer_previous": "Planche précédente",
+    "@pages_bd_viewer_previous": {
+        "description": "pages/bd.viewer.previous"
+    },
+    "pages_bd_viewer_region": "Planches de la BD « {title} »",
+    "@pages_bd_viewer_region": {
+        "description": "pages/bd.viewer.region",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_bd_viewer_roledescription": "visionneuse de BD",
+    "@pages_bd_viewer_roledescription": {
+        "description": "pages/bd.viewer.roledescription"
+    },
+    "pages_bd_warning_sos_link": "Alerte SOS",
+    "@pages_bd_warning_sos_link": {
+        "description": "pages/bd.warning_sos_link"
+    },
     "pages_confidentialite_charte_intro": "Xomiton est un espace sûr. En l’utilisant, je m’engage à :",
     "@pages_confidentialite_charte_intro": {
         "description": "pages/confidentialite.charte.intro"
@@ -35535,6 +35784,149 @@
     "pages_violences_title": "Comprendre les violences",
     "@pages_violences_title": {
         "description": "pages/violences.title"
+    },
+    "pages_violences_numeriques_action_comics": "Lire les BD",
+    "@pages_violences_numeriques_action_comics": {
+        "description": "pages/violences_numeriques.action_comics"
+    },
+    "pages_violences_numeriques_action_emergency": "Numéros d’urgence",
+    "@pages_violences_numeriques_action_emergency": {
+        "description": "pages/violences_numeriques.action_emergency"
+    },
+    "pages_violences_numeriques_action_report": "Faire un signalement",
+    "@pages_violences_numeriques_action_report": {
+        "description": "pages/violences_numeriques.action_report"
+    },
+    "pages_violences_numeriques_action_sos": "Alerte SOS",
+    "@pages_violences_numeriques_action_sos": {
+        "description": "pages/violences_numeriques.action_sos"
+    },
+    "pages_violences_numeriques_actions_text": "Un signalement est lu par une personne formée. En danger immédiat, utilisez le SOS ou appelez les numéros d’urgence.",
+    "@pages_violences_numeriques_actions_text": {
+        "description": "pages/violences_numeriques.actions_text"
+    },
+    "pages_violences_numeriques_actions_title": "Besoin d’aide maintenant ?",
+    "@pages_violences_numeriques_actions_title": {
+        "description": "pages/violences_numeriques.actions_title"
+    },
+    "pages_violences_numeriques_breadcrumb": "Violences numériques",
+    "@pages_violences_numeriques_breadcrumb": {
+        "description": "pages/violences_numeriques.breadcrumb"
+    },
+    "pages_violences_numeriques_categories_label": "Les formes de violences numériques",
+    "@pages_violences_numeriques_categories_label": {
+        "description": "pages/violences_numeriques.categories_label"
+    },
+    "pages_violences_numeriques_comics_link": "Voir toutes les BD",
+    "@pages_violences_numeriques_comics_link": {
+        "description": "pages/violences_numeriques.comics_link"
+    },
+    "pages_violences_numeriques_comics_text": "Des histoires courtes, en quatre planches, qui finissent toujours sur une solution et sur l’aide disponible.",
+    "@pages_violences_numeriques_comics_text": {
+        "description": "pages/violences_numeriques.comics_text"
+    },
+    "pages_violences_numeriques_comics_title": "Les BD à lire et à partager",
+    "@pages_violences_numeriques_comics_title": {
+        "description": "pages/violences_numeriques.comics_title"
+    },
+    "pages_violences_numeriques_empty": "Les fiches arrivent bientôt.",
+    "@pages_violences_numeriques_empty": {
+        "description": "pages/violences_numeriques.empty"
+    },
+    "pages_violences_numeriques_fiche_comic_link": "Lire la BD « {title} »",
+    "@pages_violences_numeriques_fiche_comic_link": {
+        "description": "pages/violences_numeriques.fiche_comic_link",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_numeriques_fiche_comic_text": "Découvrez l’histoire en quatre planches, puis partagez-la autour de vous.",
+    "@pages_violences_numeriques_fiche_comic_text": {
+        "description": "pages/violences_numeriques.fiche_comic_text"
+    },
+    "pages_violences_numeriques_fiche_comic_title": "La BD de cette fiche",
+    "@pages_violences_numeriques_fiche_comic_title": {
+        "description": "pages/violences_numeriques.fiche_comic_title"
+    },
+    "pages_violences_numeriques_h1": "Violences numériques : reconnaître, réagir, se faire aider",
+    "@pages_violences_numeriques_h1": {
+        "description": "pages/violences_numeriques.h1"
+    },
+    "pages_violences_numeriques_hub_link": "Toutes les violences numériques",
+    "@pages_violences_numeriques_hub_link": {
+        "description": "pages/violences_numeriques.hub_link"
+    },
+    "pages_violences_numeriques_lead": "Harcèlement, chantage aux images intimes, surveillance, faux profils, deepfakes… Ces violences sont réelles, même en ligne. Pour chaque situation, une BD courte et une fiche claire vous aident à reconnaître les signes, à réagir et à trouver de l’aide.",
+    "@pages_violences_numeriques_lead": {
+        "description": "pages/violences_numeriques.lead"
+    },
+    "pages_violences_numeriques_legal_title": "Ce que dit la loi",
+    "@pages_violences_numeriques_legal_title": {
+        "description": "pages/violences_numeriques.legal_title"
+    },
+    "pages_violences_numeriques_legal_validated": "Informations validées par l’administration de Xomiton.",
+    "@pages_violences_numeriques_legal_validated": {
+        "description": "pages/violences_numeriques.legal_validated"
+    },
+    "pages_violences_numeriques_meta_description": "Harcèlement en ligne, sextorsion, photos intimes partagées, traque, deepfakes : des BD et des fiches pour reconnaître les violences numériques et réagir.",
+    "@pages_violences_numeriques_meta_description": {
+        "description": "pages/violences_numeriques.meta_description"
+    },
+    "pages_violences_numeriques_meta_description_filler": "Fiche Xomiton sur les violences numériques, pour les filles, femmes et personnes LBTQ+ au Bénin.",
+    "@pages_violences_numeriques_meta_description_filler": {
+        "description": "pages/violences_numeriques.meta_description_filler"
+    },
+    "pages_violences_numeriques_meta_title": "Violences numériques : reconnaître, réagir et agir",
+    "@pages_violences_numeriques_meta_title": {
+        "description": "pages/violences_numeriques.meta_title"
+    },
+    "pages_violences_numeriques_og_alt": "Couverture de la BD « {title} »",
+    "@pages_violences_numeriques_og_alt": {
+        "description": "pages/violences_numeriques.og_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_violences_numeriques_reassurance": "Ce qui vous arrive n’est pas de votre faute. Vous pouvez être accompagné·e, avec ou sans compte, de façon anonyme si vous le souhaitez.",
+    "@pages_violences_numeriques_reassurance": {
+        "description": "pages/violences_numeriques.reassurance"
+    },
+    "pages_violences_numeriques_schema_section": "Violences numériques",
+    "@pages_violences_numeriques_schema_section": {
+        "description": "pages/violences_numeriques.schema_section"
+    },
+    "pages_violences_numeriques_title": "Violences numériques",
+    "@pages_violences_numeriques_title": {
+        "description": "pages/violences_numeriques.title"
+    },
+    "pages_violences_numeriques_topic_comic": "Lire la BD",
+    "@pages_violences_numeriques_topic_comic": {
+        "description": "pages/violences_numeriques.topic_comic"
+    },
+    "pages_violences_numeriques_topic_read": "Lire la fiche",
+    "@pages_violences_numeriques_topic_read": {
+        "description": "pages/violences_numeriques.topic_read"
+    },
+    "pages_violences_numeriques_topic_upcoming": "Bientôt disponible",
+    "@pages_violences_numeriques_topic_upcoming": {
+        "description": "pages/violences_numeriques.topic_upcoming"
+    },
+    "pages_violences_numeriques_topic_upcoming_help": "Fiche et BD en préparation.",
+    "@pages_violences_numeriques_topic_upcoming_help": {
+        "description": "pages/violences_numeriques.topic_upcoming_help"
+    },
+    "pages_violences_numeriques_topics_count": "{count, plural, =0{Aucun sujet} =1{{count} sujet} other{{count} sujets}}",
+    "@pages_violences_numeriques_topics_count": {
+        "description": "pages/violences_numeriques.topics_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "peer_alerts_accuracy": "précision {meters} m",
     "@peer_alerts_accuracy": {

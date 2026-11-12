@@ -72,7 +72,7 @@ final class GroupMembersQuery
         return User::query()->select('users.id')
             ->where(static function (Builder $q) use ($id, $following): void {
                 $q->whereKey($id)->orWhere(static function (Builder $r) use ($id, $following): void {
-                    $r->where('users.status', '!=', UserStatus::Suspended)
+                    $r->whereNotIn('users.status', UserStatus::withoutAccess())
                         ->notAnonymized()
                         ->whereNotIn('users.id', UserBlock::query()->select('blocked_user_id')->where('user_id', $id))
                         ->whereNotIn('users.id', UserBlock::query()->select('user_id')->where('blocked_user_id', $id))

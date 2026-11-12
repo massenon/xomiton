@@ -49,6 +49,7 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
         'notifications:retry' => '* * * * *',
         'heartbeat:ping' => '* * * * *',
         'polls:close' => '*/5 * * * *',
+        'accounts:lift-suspensions' => '*/5 * * * *',
         'events:remind' => '*/15 * * * *',
         'backups:run' => '0 2 * * *',
         'otp:purge' => '0 3 * * *',

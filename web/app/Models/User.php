@@ -48,6 +48,10 @@ class User extends Authenticatable
         'last_seen_at',
         'suspended_at',
         'suspension_reason',
+        'suspended_until',
+        'banned_at',
+        'banned_by',
+        'ban_reason',
     ];
 
     /**
@@ -64,6 +68,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'suspension_reason',
+        'ban_reason',
     ];
 
     /**
@@ -79,6 +84,9 @@ class User extends Authenticatable
             'last_login_at' => 'datetime',
             'last_seen_at' => 'datetime',
             'suspended_at' => 'datetime',
+            'suspended_until' => 'datetime',
+            'banned_at' => 'datetime',
+            'banned_by' => 'integer',
             'password' => 'hashed',
         ];
     }
@@ -449,6 +457,16 @@ class User extends Authenticatable
         return $this->hasOne(NewsletterSubscriber::class);
     }
 
+    /**
+     * Badges vérifiés par l'administration (P18-09).
+     *
+     * @return HasMany<UserBadge, $this>
+     */
+    public function badges(): HasMany
+    {
+        return $this->hasMany(UserBadge::class);
+    }
+
     // -- Scopes et état -----------------------------------------------------------------------
 
     /**
@@ -476,6 +494,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Comptes bannis (P18-06).
+     *
+     * @param  Builder<User>  $query
+     */
+    public function scopeBanned(Builder $query): void
+    {
+        $query->where('status', UserStatus::Banned);
+    }
+
+    /**
+     * Comptes sans accès : suspendus ou bannis (exclus des contacts, membres de groupe, envois).
+     *
+     * @param  Builder<User>  $query
+     */
+    public function scopeWithoutAccess(Builder $query): void
+    {
+        $query->whereIn('status', UserStatus::withoutAccess());
+    }
+
+    /**
      * Comptes d'une zone (département) donnée.
      *
      * @param  Builder<User>  $query
@@ -499,6 +537,18 @@ class User extends Authenticatable
     public function isSuspended(): bool
     {
         return $this->status === UserStatus::Suspended;
+    }
+
+    /** P18-06 (Q97) : compte banni, statut définitif levé seulement par un·e superadmin (`users.unban`). */
+    public function isBanned(): bool
+    {
+        return $this->getRawOriginal('status') === UserStatus::Banned->value;
+    }
+
+    /** Compte sans accès (suspendu ou banni) : connexion refusée, absent des contacts et des suggestions. */
+    public function isBlocked(): bool
+    {
+        return $this->isSuspended() || $this->isBanned();
     }
 
     /** Q12 c : e-mail confirmé par le code OTP d'inscription (vérification différée, non bloquante). */

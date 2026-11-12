@@ -14,6 +14,7 @@ import { feedApi } from '@/feed/api';
 import { timeAgo } from '@/feed/format';
 import { lazyComponent } from '@/feed/lazy';
 import type { Comment, CursorPage } from '@/feed/types';
+import XmVerifiedBadges from '@/components/XmVerifiedBadges.vue';
 import XmAvatar from '@/components/XmAvatar.vue';
 import XmEmojiPicker from '@/components/XmEmojiPicker.vue';
 
@@ -132,7 +133,7 @@ defineExpose({ focus: () => field.value?.focus() });
                     <XmAvatar class="flex-shrink-0" size="xs" :name="comment.author.pseudo" :src="comment.author.avatar_url" />
                     <div class="bg-light rounded p-2 px-3 flex-grow-1">
                         <div class="d-flex justify-content-between gap-2">
-                            <strong class="small">{{ comment.author.pseudo }}</strong>
+                            <span><strong class="small">{{ comment.author.pseudo }}</strong><XmVerifiedBadges :badges="comment.author.badges" /></span>
                             <span class="small text-secondary"><time :datetime="comment.created_at ?? undefined">{{ timeAgo(comment.created_at, t) }}</time></span>
                         </div>
                         <p class="small mb-0 xm-comment-body">{{ comment.body }}</p>

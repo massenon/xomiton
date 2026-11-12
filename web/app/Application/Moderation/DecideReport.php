@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Moderation;
 
+use App\Application\Admin\Users\AccountBan;
 use App\Application\Admin\Users\AccountSuspension;
 use App\Domain\Moderation\Exceptions\ModerationRefused;
 use App\Enums\ModerationStatus;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Models\UserWarning;
 use App\Notifications\ModerationNotice;
 use App\Support\Audit;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
@@ -26,7 +28,10 @@ use Illuminate\Support\Str;
  *  - avertir : une ligne `user_warnings` (compteur de l'auteur·rice) et une notification, motif obligatoire (≤ 200) ;
  *  - suspendre : compte suspendu (AccountSuspension), **jamais un compte d'administration** (`admin.access`), motif
  *    obligatoire ; sessions et jetons fermés.
- * Chaque décision est journalisée (`moderation.dismissed|hidden|warned|suspended`, sans l'extrait du contenu) ; rouvrir
+ * P18-06 : « approuver » (contenu conforme, distinct d'« ignorer » : signalements rejetés avec l'action `approuve` et
+ * contenu rendu visible, quel que soit ce qui l'a masqué), suspension **temporaire** (date de fin facultative, levée par
+ * `accounts:lift-suspensions`) et **bannir** (`users.ban`, AccountBan : statut définitif `banni`, motif obligatoire).
+ * Chaque décision est journalisée (`moderation.dismissed|approved|hidden|warned|suspended|banned`, sans l'extrait du contenu) ; rouvrir
  * (`moderation.reopened`) remet le signalement en attente sans défaire l'avertissement ni la suspension ; « rendre
  * visible » (`moderation.unhidden`) est une action distincte. Toute la décision tient dans une transaction.
  */
@@ -40,19 +45,32 @@ final class DecideReport
 
     public const SUSPEND = 'suspend';
 
+    /** P18-06 : le contenu est conforme (distinct d'« ignorer ») ; il est rendu visible s'il était masqué. */
+    public const APPROVE = 'approve';
+
+    /** P18-06 (Q97) : bannissement du compte (statut définitif `banni`, AccountBan). */
+    public const BAN = 'ban';
+
     /** Décision => valeur de `moderation_reports.action`. */
     public const ACTIONS = [
         self::DISMISS => ModerationReport::ACTION_NONE,
+        self::APPROVE => ModerationReport::ACTION_APPROVE,
         self::HIDE => ModerationReport::ACTION_HIDE,
         self::WARN => ModerationReport::ACTION_WARN,
         self::SUSPEND => ModerationReport::ACTION_SUSPEND,
+        self::BAN => ModerationReport::ACTION_BAN,
     ];
+
+    /** Décisions qui demandent un motif écrit pour la personne. */
+    public const NEEDS_REASON = [self::WARN, self::SUSPEND, self::BAN];
 
     public const REASON_MAX = 200;
 
     public function __construct(
         private readonly ContentVisibility $visibility,
         private readonly AccountSuspension $suspension,
+        private readonly AccountBan $ban,
+        private readonly ReportPrioritizer $prioritizer,
     ) {}
 
     /**
@@ -60,7 +78,7 @@ final class DecideReport
      *
      * @throws ModerationRefused
      */
-    public function __invoke(ModerationReport $report, string $decision, User $by, ?string $reason = null): int
+    public function __invoke(ModerationReport $report, string $decision, User $by, ?string $reason = null, ?CarbonInterface $until = null): int
     {
         Gate::forUser($by)->authorize('handle', $report);
 
@@ -78,7 +96,7 @@ final class DecideReport
         $author = $report->reportedUser;
         $subject = $report->subject;
 
-        if (in_array($decision, [self::WARN, self::SUSPEND], true)) {
+        if (in_array($decision, self::NEEDS_REASON, true)) {
             if ($author === null) {
                 throw new ModerationRefused('no_author');
             }
@@ -88,20 +106,35 @@ final class DecideReport
             }
         }
 
-        if ($decision === self::SUSPEND && $author?->can('admin.access')) {
-            throw new ModerationRefused('admin_target');
+        if (in_array($decision, [self::SUSPEND, self::BAN], true) && $author?->can('admin.access')) {
+            throw new ModerationRefused($decision === self::BAN ? 'admin_target_ban' : 'admin_target');
+        }
+
+        if ($decision === self::BAN && $author !== null && ! Gate::forUser($by)->allows('ban', $author)) {
+            throw new ModerationRefused('ban_forbidden');
+        }
+
+        if ($until !== null && $decision !== self::SUSPEND) {
+            $until = null;
         }
 
         if ($decision === self::HIDE && ! ContentVisibility::hideable($subject)) {
             throw new ModerationRefused('not_hideable');
         }
 
-        $closed = DB::transaction(function () use ($report, $decision, $by, $reason, $author, $subject): int {
+        $closed = DB::transaction(function () use ($report, $decision, $by, $reason, $author, $subject, $until): int {
             $notice = null;
 
             switch ($decision) {
                 case self::DISMISS:
                     if ($subject !== null && ContentVisibility::isHidden($subject) && ! $this->hiddenByDecision($report)) {
+                        $this->visibility->show($subject);
+                    }
+
+                    break;
+                case self::APPROVE:
+                    // Relu et jugé conforme : visible de nouveau, qu'il ait été masqué par RG-16, le filtre ou la détection de spam.
+                    if ($subject !== null && ContentVisibility::isHidden($subject)) {
                         $this->visibility->show($subject);
                     }
 
@@ -122,8 +155,13 @@ final class DecideReport
 
                     break;
                 case self::SUSPEND:
-                    // La suspension notifie elle-même la personne.
-                    $this->suspension->suspend($author, $by, $reason);
+                    // La suspension notifie elle-même la personne (avec sa date de fin si elle est temporaire).
+                    $this->suspension->suspend($author, $by, $reason, $until);
+
+                    break;
+                case self::BAN:
+                    // Le bannissement notifie la personne, ferme ses accès et se journalise lui-même (`users.banned`).
+                    $this->ban->ban($author, $by, $reason);
 
                     break;
             }
@@ -133,7 +171,7 @@ final class DecideReport
                 ->where('subject_id', $report->subject_id)
                 ->pending()
                 ->update([
-                    'status' => $decision === self::DISMISS ? ModerationStatus::Rejected : ModerationStatus::Handled,
+                    'status' => in_array($decision, [self::DISMISS, self::APPROVE], true) ? ModerationStatus::Rejected : ModerationStatus::Handled,
                     'action' => self::ACTIONS[$decision],
                     'handled_by' => $by->getKey(),
                     'handled_at' => now(),
@@ -148,21 +186,29 @@ final class DecideReport
         });
 
         Audit::log('moderation.'.self::AUDIT[$decision], $report, sprintf(
-            'rapport=%d ; nature=%s ; signalements=%d%s',
+            'rapport=%d ; nature=%s ; signalements=%d%s%s',
             $report->getKey(),
-            $report->kind->value,
+            $report->getRawOriginal('kind'),
             $closed,
             $reason === '' ? '' : ' ; motif='.$reason,
+            $until === null ? '' : ' ; fin='.$until->toIso8601String(),
         ), $by);
+
+        // P18-04 : la récidive de l'auteur·rice a pu changer, ses autres contenus en attente sont renotés.
+        if ($author !== null) {
+            $this->prioritizer->refreshAuthor((int) $author->getKey());
+        }
 
         return $closed;
     }
 
     private const AUDIT = [
         self::DISMISS => 'dismissed',
+        self::APPROVE => 'approved',
         self::HIDE => 'hidden',
         self::WARN => 'warned',
         self::SUSPEND => 'suspended',
+        self::BAN => 'banned',
     ];
 
     /**

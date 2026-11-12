@@ -9,6 +9,8 @@ return [
     'throttle' => 'Trop de tentatives. Réessaie dans :seconds secondes.',
     'pending' => 'Ton compte est en attente de validation par l’équipe Xomiton.',
     'suspended' => 'Ce compte est suspendu. Contacte-nous : :email',
+    // P18-06 (Q97) : compte banni, message neutre (ni le statut ni le motif).
+    'unavailable' => 'Connexion impossible avec ce compte. Pour toute question, contacte-nous : :email',
     'maintenance' => 'La plateforme est en maintenance. Réessaie dans quelques instants.',
     // Lot admin-socle (Q30, P13-04) : session fermée après la durée d'inactivité (EnforceIdleTimeout).
     'session_idle' => 'Ta session a été fermée après une période d’inactivité. Reconnecte-toi.',

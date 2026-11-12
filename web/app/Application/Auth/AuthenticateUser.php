@@ -6,6 +6,7 @@ namespace App\Application\Auth;
 
 use App\Application\Auth\Support\MaintenanceMode;
 use App\Domain\Auth\Exceptions\AccountSuspended;
+use App\Domain\Auth\Exceptions\AccountUnavailable;
 use App\Domain\Auth\Exceptions\AuthFailed;
 use App\Domain\Auth\Exceptions\MaintenanceActive;
 use App\Domain\Auth\Exceptions\OtpTooSoon;
@@ -38,11 +39,18 @@ final class AuthenticateUser
     ) {}
 
     /**
-     * @throws AuthFailed|AccountSuspended|MaintenanceActive
+     * @throws AuthFailed|AccountSuspended|AccountUnavailable|MaintenanceActive
      */
     public function __invoke(LoginData $data): LoginResult
     {
         $user = $this->checkCredentials($data);
+
+        // P18-06 (Q97) : compte banni, message neutre (ni le statut ni le motif), après le mot de passe comme la suspension.
+        if ($user->isBanned()) {
+            Audit::log('auth.refused_banned', $user, null, null);
+
+            throw new AccountUnavailable(Settings::string('contact_email', (string) config('mail.from.address', '')));
+        }
 
         if ($user->isSuspended()) {
             Audit::log('auth.refused_suspended', $user, null, null);
