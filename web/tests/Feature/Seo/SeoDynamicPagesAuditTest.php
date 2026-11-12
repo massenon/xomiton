@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__.'/seo-helpers.php';
 
+use App\Application\Content\ViolencesNumeriques\ImportViolencesNumeriques;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Faq;
@@ -236,4 +237,51 @@ it('sert un événement public passé avec les mêmes garanties SEO', function (
 
     dynAssertCommon('/evenements/'.$event->ulid);
     expect(dynNode('/evenements/'.$event->ulid, 'Event'))->toHaveKeys(['name', 'startDate', 'eventStatus']);
+});
+
+it('audite les pages des violences numériques une fois le pilote importé : carrefour, liste et page des BD, fiche', function (): void {
+    app(ImportViolencesNumeriques::class)();
+
+    // Carrefour et liste : pages à URL fixe, mêmes règles que SeoAuditTest, plus un alt court (≤ 150 octets) sur chaque image.
+    foreach (['/violences-numeriques', '/bd'] as $url) {
+        [$doc, $x] = seoDom($url);
+        expect($x->query('//h1')->length)->toBe(1, "$url : un seul H1");
+        $levels = [];
+        foreach ($x->query('//h1|//h2|//h3|//h4|//h5|//h6') as $h) {
+            if ($x->query('ancestor::*[contains(@class,"modal") or contains(@class,"offcanvas") or @hidden or @aria-hidden="true"]', $h)->length === 0) {
+                $levels[] = (int) substr($h->nodeName, 1);
+            }
+        }
+        for ($i = 1; $i < count($levels); $i++) {
+            expect($levels[$i] - $levels[$i - 1])->toBeLessThanOrEqual(1, "$url : saut de niveau H{$levels[$i - 1]} → H{$levels[$i]}");
+        }
+        foreach ($x->query('//img') as $img) {
+            /** @var DOMElement $img */
+            expect($img->getAttribute('alt'))->not->toBe('', "$url : couverture sans alt")
+                ->and(strlen($img->getAttribute('alt')))->toBeLessThanOrEqual(150, "$url : alt trop long")
+                ->and($img->getAttribute('title'))->not->toBeEmpty()
+                ->and($img->hasAttribute('width') && $img->hasAttribute('height'))->toBeTrue();
+        }
+        expect(collect(dynGraph($x))->pluck('@type')->all())->toContain('CollectionPage', 'BreadcrumbList');
+        expect(mb_strlen(trim($doc->getElementsByTagName('title')->item(0)->textContent)))->toBeBetween(50, 60);
+        expect(mb_strlen((string) seoMeta($x, 'name', 'description')))->toBeBetween(140, 160);
+    }
+
+    // Page d'une BD : CreativeWork, image de partage 1080 × 1080 en og:image, fil d'Ariane Accueil › BD › titre.
+    dynAssertCommon('/bd/vn02');
+    $work = dynNode('/bd/vn02', 'CreativeWork');
+    expect($work)->toHaveKeys(['name', 'description', 'image', 'publisher', 'mainEntityOfPage', 'inLanguage', 'about']);
+    [, $x] = seoDom('/bd/vn02');
+    expect(seoMeta($x, 'property', 'og:image'))->toEndWith('/assets/images/violences-numeriques/sextorsion/partage.webp')
+        ->and(seoMeta($x, 'property', 'og:type'))->toBe('article');
+
+    // Fiche d'un sujet : Article + FAQPage (ses 3 questions), fil d'Ariane par le carrefour, méta 50–60 / 140–160.
+    dynAssertCommon('/thematiques/sextorsion');
+    expect(dynNode('/thematiques/sextorsion', 'Article'))->toHaveKeys(['headline', 'image', 'publisher', 'mainEntityOfPage']);
+    expect(dynNode('/thematiques/sextorsion', 'FAQPage')['mainEntity'])->toHaveCount(3);
+    $crumb = dynNode('/thematiques/sextorsion', 'BreadcrumbList');
+    expect($crumb['itemListElement'][1]['item'])->toBe(route('violences-numeriques'));
+    [$doc, $x] = seoDom('/thematiques/sextorsion');
+    expect(mb_strlen(trim($doc->getElementsByTagName('title')->item(0)->textContent)))->toBeBetween(50, 60)
+        ->and(seoMeta($x, 'property', 'og:image'))->toEndWith('/sextorsion/partage.webp');
 });

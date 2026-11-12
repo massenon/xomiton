@@ -14,6 +14,7 @@ return [
     'help_protection' => 'Aide & protection',
     'report' => 'Signaler',
     'emergency' => 'Contacts d’urgence',
+    'digital_violence' => 'Violences numériques',
     'help_center' => 'Centre d’aide',
     'privacy_terms' => 'Confidentialité & conditions',
     'newsletter' => 'Newsletter',

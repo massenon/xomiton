@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Catégorie typée par `kind` (thematique, resource, faq, event) ; (kind, slug) unique.
+ * Catégorie typée par `kind` (thematique, resource, faq, event, violence_numerique) ; (kind, slug) unique.
  */
 class Category extends Model
 {
@@ -26,12 +26,16 @@ class Category extends Model
 
     public const KIND_EVENT = 'event';
 
+    /** P19 : catégories des violences numériques, regroupées sous le carrefour `/violences-numeriques`. */
+    public const KIND_DIGITAL_VIOLENCE = 'violence_numerique';
+
     /** @var list<string> */
     public const KINDS = [
         self::KIND_THEMATIQUE,
         self::KIND_RESOURCE,
         self::KIND_FAQ,
         self::KIND_EVENT,
+        self::KIND_DIGITAL_VIOLENCE,
     ];
 
     /** @var list<string> */

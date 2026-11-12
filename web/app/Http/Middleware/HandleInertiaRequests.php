@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Application\Member\MemberShell;
 use App\Application\Offline\OutboxAccount;
+use App\Application\Platform\Announcements\Announcements;
 use App\Application\Platform\MaintenancePage;
 use App\Application\Search\MemberSearch;
 use App\Http\Requests\Search\SearchRequest;
@@ -49,7 +50,10 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
-    public function __construct(private readonly MemberShell $shell) {}
+    public function __construct(
+        private readonly MemberShell $shell,
+        private readonly Announcements $announcements,
+    ) {}
 
     public function version(Request $request): ?string
     {
@@ -94,6 +98,9 @@ class HandleInertiaRequests extends Middleware
             ],
             // P13-08 : annonce préalable d'une maintenance planifiée (bandeau refermable du gabarit membre), null sinon.
             'maintenance_notice' => fn (): ?array => MaintenancePage::notice(),
+            // P18-13 (Q97) : annonce globale de l'espace membre (bannière refermable, fermeture mémorisée par compte) ; null
+            // sans compte : jamais pour un·e visiteur·se, jamais sur le site public (pages Blade sans ce middleware).
+            'announcement' => fn (): ?array => $user !== null ? $this->announcements->activeFor($user) : null,
             'lang' => [
                 'locale' => Locales::current(),
                 'fallback' => Locales::default(),

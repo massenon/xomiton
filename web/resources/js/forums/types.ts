@@ -1,7 +1,7 @@
 // Contrat des écrans des forums (lot forums, P8-05) : objets de l'API /api/v1/forums (docs/API.md §16 :
 // App\Http\Resources\Forums\ForumResource, ForumTopicResource, ForumReplyResource) et props Inertia de
 // App\Http\Controllers\Web\Member\ForumsPageController (premières pages sous la forme de l'API).
-import type { Option } from '@/feed/types';
+import type { Option, VerifiedBadge } from '@/feed/types';
 
 export interface Forum {
     /** Clé courte du prototype (`f1`…), `?forum=` des listes. */
@@ -13,6 +13,8 @@ export interface Forum {
     icon: string;
     topics_count: number;
     posts_count: number;
+    /** P18-10 : forum archivé, lisible sans nouveau sujet. */
+    is_archived?: boolean;
     url: string;
 }
 
@@ -24,6 +26,8 @@ export interface ForumAuthor {
     role: string | null;
     anonymous: boolean;
     badge: string | null;
+    /** P18-09 : badges vérifiés par l'administration. */
+    badges?: VerifiedBadge[];
 }
 
 export interface ForumTopic {
@@ -37,13 +41,17 @@ export interface ForumTopic {
     is_anonymous: boolean;
     is_pinned: boolean;
     is_locked: boolean;
+    /** Réponse validée (P18-03) : identifiant de la réponse qui résout le sujet. */
+    accepted_reply_id?: number | null;
+    /** Badge « Résolu ». */
+    is_solved?: boolean;
     moderated: boolean;
     replies_count: number;
     views_count: number;
     created_at: string | null;
     last_reply_at: string | null;
     url: string;
-    can: { reply: boolean; delete: boolean; report: boolean };
+    can: { reply: boolean; delete: boolean; report: boolean; accept?: boolean; moderate?: boolean };
 }
 
 export interface ForumReply {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\Events;
 
 use App\Application\Community\Data\EventDraft;
+use App\Enums\EventType;
 use App\Http\Requests\Api\Events\Concerns\EventRequest;
 use App\Models\Category;
 use App\Models\Event;
@@ -63,6 +64,8 @@ final class StoreEventRequest extends FormRequest
             'description' => ['sometimes', 'nullable', 'string', 'max:'.(int) config('xomiton.events.description_max', 2000)],
             'group' => ['sometimes', 'nullable', 'string', 'size:26'],
             'is_public' => ['sometimes', 'boolean'],
+            // P18-14 : type (groupe de parole, atelier, rencontre, autre) ; absent → « Autre ».
+            'type' => ['sometimes', 'nullable', Rule::enum(EventType::class)],
         ];
     }
 
@@ -150,6 +153,7 @@ final class StoreEventRequest extends FormRequest
             description: $string('description'),
             groupId: $this->group()?->getKey() !== null ? (int) $this->group()->getKey() : null,
             isPublic: $this->boolean('is_public'),
+            type: EventType::fromRaw($this->validated('type')),
         );
     }
 

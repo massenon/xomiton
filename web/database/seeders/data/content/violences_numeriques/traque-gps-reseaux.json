@@ -1,0 +1,94 @@
+{
+  "slug": "traque-gps-reseaux",
+  "key": "vn04",
+  "category": "surveillance-controle",
+  "title": "Traque via GPS ou médias sociaux",
+  "summary": "Quelqu’un sait toujours où vous êtes et surgit sans prévenir ? Le suivi peut passer par votre téléphone ou vos réseaux. Voici comment le repérer et vous protéger.",
+  "content_warning": "Ce contenu évoque une situation de surveillance et de contrôle par le téléphone et les réseaux sociaux.",
+  "bd": {
+    "title": "Sena reprend sa route",
+    "cover": {
+      "image": "assets/images/violences-numeriques/traque-gps-reseaux/couverture.webp",
+      "alt": "Au stand de réparation de téléphones de Mariam, Sena sourit et montre son téléphone, qui affiche une épingle de localisation barrée et un bouclier."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/traque-gps-reseaux/planche-1.webp",
+        "caption": "Depuis la rupture, l’ex de Sena surgit partout où iel va : au maquis, au campus, au marché. Aujourd’hui encore, une moto s’arrête près du mur. « Comment sait-il toujours où je suis ? »",
+        "alt": "Assis·e à une table de maquis sous un manguier, Sena regarde, surpris·e, son téléphone d’où sortent des épingles de localisation."
+      },
+      {
+        "image": "assets/images/violences-numeriques/traque-gps-reseaux/planche-2.webp",
+        "caption": "Sena ne confronte pas son ex et ne lui parle pas de ses soupçons. Le soir, iel note chaque arrivée soudaine : date, heure, lieu. Iel garde aussi les captures des messages où il cite ses déplacements.",
+        "alt": "Assis·e en tailleur sur son lit, Sena écrit dans un carnet orné d’épingles de localisation ; son téléphone repose à côté."
+      },
+      {
+        "image": "assets/images/violences-numeriques/traque-gps-reseaux/planche-3.webp",
+        "caption": "Iel en parle à Mariam, qui répare des téléphones au marché. Ensemble, iels vérifient la localisation partagée, les appareils connectés et une appli inconnue. « On ne supprime rien sans plan : ta sécurité d’abord. »",
+        "alt": "Au stand de Mariam, celle-ci montre à Sena les réglages de son téléphone : une épingle, un interrupteur et une alerte."
+      },
+      {
+        "image": "assets/images/violences-numeriques/traque-gps-reseaux/planche-4.webp",
+        "caption": "Avec Nadia et son ami Kossi, Sena prépare un plan de sécurité : trajets variés, personnes à prévenir, bouton SOS prêt. Puis iel signale la situation sur Xomiton. « Ta liberté d’aller et venir compte. On est là. »",
+        "alt": "Sous un manguier, Nadia présente un plan dessiné en icônes à Sena et Kossi, qui sourient, téléphone en main."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>La traque numérique, c’est quand une personne suit vos déplacements sans votre accord grâce à la technologie. Elle peut utiliser le partage de position de Google Maps ou de WhatsApp, une application espion installée sur votre téléphone, un compte dont elle connaît le mot de passe, ou simplement vos publications et stories sur Facebook, Instagram ou TikTok.</p><p>Cela arrive souvent dans un couple ou après une rupture. Le but est de contrôler et de faire peur. <strong>Être suivi·e n’est jamais une preuve d’amour</strong>, et ce n’est pas votre faute.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>La personne apparaît là où vous êtes, alors que vous ne l’avez pas prévenue.</li><li>Elle cite des lieux, des trajets ou des rencontres dont vous n’avez pas parlé.</li><li>Votre batterie se vide vite, votre téléphone chauffe ou consomme plus de données sans raison.</li><li>Une application inconnue apparaît, ou des réglages changent sans vous.</li><li>Votre position est partagée avec un contact dans Google Maps, WhatsApp ou Snapchat.</li><li>On vous a offert un téléphone déjà configuré, ou on l’a « réparé » pour vous.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Si vous êtes en danger maintenant</strong>, rejoignez un lieu fréquenté et utilisez la <a href=\"/sos\">page SOS</a> ou les <a href=\"/urgences\">numéros d’urgence</a>.</li><li><strong>Ne confrontez pas la personne</strong> et ne lui dites pas ce que vous avez découvert.</li><li><strong>Notez les faits</strong> : date, heure et lieu de chaque arrivée soudaine, captures des messages qui révèlent vos déplacements.</li><li><strong>Vérifiez vos réglages</strong> avec une personne de confiance : partage de position, appareils connectés à WhatsApp et à votre compte Google ou Apple, applications inconnues qui ont accès à la localisation.</li><li><strong>Attention</strong> : couper un suivi peut alerter la personne. Si vous craignez sa réaction, préparez d’abord un plan de sécurité.</li><li><a href=\"/signaler\">Signalez la situation sur Xomiton</a>, de façon anonyme si vous le souhaitez.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Utilisez un code de verrouillage que vous êtes seul·e à connaître, et changez vos mots de passe depuis un appareil sûr.</li><li>Activez la validation en deux étapes sur WhatsApp, Facebook et votre messagerie.</li><li>Publiez photos et stories après avoir quitté un lieu, et désactivez la localisation de vos publications.</li><li>Variez vos trajets et prévenez une personne de confiance quand vous vous déplacez.</li><li>Préparez un plan de sécurité : lieux sûrs, contacts à appeler, mot code convenu avec vos proches.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. <a href=\"/signaler\">Faites un signalement</a>, anonyme si vous le souhaitez : une personne formée le lira sous 24 h. Si vous êtes en danger, utilisez la <a href=\"/sos\">page SOS</a> ou consultez les <a href=\"/urgences\">numéros d’urgence</a>. Si vous êtes membre de Xomiton, l’<a href=\"/annuaire\">annuaire</a> vous met en lien avec des juristes, des psychologues et des points focaux. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Comment savoir si une application espion est installée ?",
+      "answer": "Regardez la liste complète de vos applications et celles qui ont accès à la localisation, au micro ou à l’administration de l’appareil. Une application au nom vague ou inconnu doit alerter. En cas de doute, faites vérifier le téléphone par une personne de confiance, jamais par la personne qui vous surveille."
+    },
+    {
+      "question": "Faut-il supprimer l’application ou couper la localisation tout de suite ?",
+      "answer": "Pas forcément. Couper le suivi peut alerter la personne et augmenter le risque. Gardez d’abord des preuves, parlez-en à une personne de confiance et préparez un plan de sécurité. Ensuite, vous pourrez désactiver le suivi ou réinitialiser le téléphone au moment le plus sûr."
+    },
+    {
+      "question": "Partager ma position avec mon ou ma partenaire, c’est normal ?",
+      "answer": "Partager sa position peut être un choix libre, utile pour se rassurer. Ce n’est plus normal si on vous l’impose, si vous ne pouvez pas l’arrêter sans conflit ou si cela sert à vous contrôler. Vous avez le droit de refuser et de changer d’avis."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/traque-gps-reseaux/partage.webp",
+    "alt": "Sena sourit et montre son téléphone verrouillé ; au-dessus flottent une épingle de localisation barrée et un bouclier bleu.",
+    "text": "Ton ex sait toujours où tu es et débarque sans prévenir ? Ce n’est pas de l’amour, c’est du contrôle 💜 Vérifie ta localisation partagée et les applis inconnues, note chaque arrivée soudaine et prépare un plan de sécurité avec une personne de confiance. Sur Xomiton, tu peux signaler en toute confidentialité 🛡️ Lis la BD « Sena reprend sa route » pour découvrir comment iel s’est protégé·e."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:27",
+      "planche-1": "2:30",
+      "planche-2": "2:33",
+      "planche-3": "2:39",
+      "planche-4": "2:42",
+      "partage": "2:44"
+    }
+  }
+}

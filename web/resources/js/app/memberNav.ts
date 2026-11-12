@@ -66,12 +66,15 @@ export const LINKS = {
     parametres: link('parametres', 'parametres', '/parametres', 'gear', 'menus.member.settings', member),
     aide: link('aide', 'aide.index', '/aide', 'life-preserver', 'menus.member.help_center'),
     notifications: link('notifications', 'notifications', '/notifications', 'bell', 'menus.member.notifications', member),
+    // P18-12, P18-14 : contributions des membres (file de validation de l'équipe).
+    proposer: link('proposer', 'ressources.proposer', '/proposer-une-ressource', 'journal-plus', 'menus.member.propose_resource', member),
+    idees: link('idees', 'suggestions', '/boite-a-idees', 'lightbulb', 'menus.member.suggestions', member),
 } satisfies Record<string, NavLink>;
 
 /** Menus déroulants de l'en-tête, entre « Fil » et « Espace pair » (partials/header.php). */
 export const HEADER_MENUS: HeaderMenu[] = [
-    { id: 'menuApprendre', label: 'menus.member.learn', entries: [LINKS.thematiques, LINKS.ressources, LINKS.violences, LINKS.lois, 'divider', LINKS.ccc] },
-    { id: 'menuCommunaute', label: 'menus.member.community', entries: [LINKS.groupes, LINKS.pages, LINKS.evenements, LINKS.forums, LINKS.quiSuivre] },
+    { id: 'menuApprendre', label: 'menus.member.learn', entries: [LINKS.thematiques, LINKS.ressources, LINKS.violences, LINKS.lois, 'divider', LINKS.ccc, LINKS.proposer] },
+    { id: 'menuCommunaute', label: 'menus.member.community', entries: [LINKS.groupes, LINKS.pages, LINKS.evenements, LINKS.forums, LINKS.quiSuivre, 'divider', LINKS.idees] },
     { id: 'menuAide', label: 'menus.member.help_protection', entries: [LINKS.sos, LINKS.signaler, LINKS.urgences, LINKS.annuaire, LINKS.assistant] },
 ];
 

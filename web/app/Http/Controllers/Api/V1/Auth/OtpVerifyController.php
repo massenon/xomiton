@@ -12,6 +12,7 @@ use App\Application\Auth\Support\SignedResetToken;
 use App\Application\Auth\VerifyEmail;
 use App\Application\Auth\VerifyLoginOtp;
 use App\Domain\Auth\Exceptions\AccountSuspended;
+use App\Domain\Auth\Exceptions\AccountUnavailable;
 use App\Domain\Auth\Exceptions\MaintenanceActive;
 use App\Domain\Auth\Exceptions\OtpInvalid;
 use App\Enums\OtpPurpose;
@@ -62,6 +63,12 @@ final class OtpVerifyController extends ApiController
     private function login(User $user, OtpVerifyRequest $request): JsonResponse
     {
         ($this->verifyLogin)($user, $request->code());
+
+        if ($user->isBanned()) {
+            Audit::log('auth.refused_banned', $user, 'etape=otp', null);
+
+            throw new AccountUnavailable(Settings::string('contact_email', (string) config('mail.from.address', '')));
+        }
 
         if ($user->isSuspended()) {
             Audit::log('auth.refused_suspended', $user, 'etape=otp', null);

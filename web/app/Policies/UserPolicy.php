@@ -49,6 +49,27 @@ final class UserPolicy
         return $this->suspend($user, $target);
     }
 
+    /**
+     * Bannir (P18-06, Q97) : `users.ban` (admin, superadmin), jamais soi-même ni — sans `roles.assign_admin` — un compte
+     * d'administration ; jamais un compte d'administration depuis la modération (DecideReport le refuse aussi).
+     */
+    public function ban(User $user, User $target): bool
+    {
+        return $user->can('users.ban') && $this->mayActOn($user, $target);
+    }
+
+    /** Lever un bannissement : `users.unban`, réservé au superadmin (Q97). */
+    public function unban(User $user, User $target): bool
+    {
+        return $user->can('users.unban') && ! $user->is($target);
+    }
+
+    /** Badges vérifiés (P18-09, Q97) : `badges.manage`, jamais sur son propre compte. */
+    public function manageBadges(User $user, User $target): bool
+    {
+        return $user->can('badges.manage') && ! $user->is($target);
+    }
+
     public function validatePeer(User $user, User $target): bool
     {
         return $user->can('users.validate_peers') && ! $user->is($target);

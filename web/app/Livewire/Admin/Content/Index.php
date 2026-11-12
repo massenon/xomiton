@@ -19,6 +19,7 @@ use App\Livewire\Concerns\WithDataTable;
 use App\Models\Category;
 use App\Models\Faq;
 use App\Models\Resource;
+use App\Models\ResourceProposal;
 use App\Models\Thematique;
 use App\Models\User;
 use App\Support\LocaleFormatter;
@@ -140,6 +141,13 @@ final class Index extends Component
     }
 
     // --- Données -----------------------------------------------------------------------------------------------------
+
+    /** P18-12 : propositions de ressources en attente (lien vers la file de validation). */
+    #[Computed]
+    public function pendingProposals(): int
+    {
+        return ResourceProposal::query()->pending()->count();
+    }
 
     /**
      * @return list<array{label: string, value: string, icon: string, variant: string}>

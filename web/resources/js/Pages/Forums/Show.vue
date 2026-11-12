@@ -6,6 +6,8 @@
 // plus » (API `GET forums/topics/{ulid}/replies?page=`), formulaire « Ta réponse » (≥ 2 car. vérifié avant l'envoi,
 // interrupteur anonyme ; `POST …/replies`, réponse ajoutée et annoncée), sujet fermé → message à la place du
 // formulaire. Signaler (modale du fil chargée à la demande, cibles `topic` / `reply`) et supprimer (confirmation).
+// P18-03 : badge « Résolu », réponse validée en tête avec sa mention, bouton « Marquer comme réponse validée » /
+// « Retirer la validation » (auteur·rice du sujet ou modération, `can.accept`, API `…/accepted-reply`).
 // Props : ForumsPageController::show (title, topic, replies, reply, report_reasons, events).
 import { computed, nextTick, ref, watch } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
@@ -22,6 +24,7 @@ import type { Option } from '@/feed/types';
 import { forumsApi } from '@/forums/api';
 import type { ForumReply, ForumTopic, PagedList, ReplyOptions } from '@/forums/types';
 import type { EventItem } from '@/components/XmRightColumn.vue';
+import XmVerifiedBadges from '@/components/XmVerifiedBadges.vue';
 import XmAvatar from '@/components/XmAvatar.vue';
 import XmBreadcrumb from '@/components/XmBreadcrumb.vue';
 import XmModal from '@/components/XmModal.vue';
@@ -58,6 +61,7 @@ const removing = ref<{ kind: 'topic' } | { kind: 'reply'; reply: ForumReply } | 
 const deleting = ref(false);
 const confirmDialog = ref<InstanceType<typeof XmModal> | null>(null);
 const lockedNotice = ref<HTMLElement | null>(null);
+const accepting = ref(false);
 
 const reportModal = lazyComponent(() => import('@/components/feed/ReportContentModal.vue'));
 const ReportContentModal = reportModal.component;
@@ -141,6 +145,52 @@ async function send() {
     }
 }
 
+// P18-03 : réponse validée (auteur·rice du sujet ou modération, Q97). Une seule par sujet ; le sujet renvoyé par l'API fait foi.
+const acceptedId = computed(() => current.value.accepted_reply_id ?? null);
+const sortedItems = computed(() => {
+    const accepted = items.value.find((item) => item.id === acceptedId.value);
+    return accepted ? [accepted, ...items.value.filter((item) => item.id !== accepted.id)] : items.value;
+});
+
+async function toggleAccepted(item: ForumReply) {
+    if (accepting.value) return;
+    accepting.value = true;
+    const unmark = acceptedId.value === item.id;
+    try {
+        const topic = unmark ? await api.unaccept(current.value.id) : await api.accept(current.value.id, item.id);
+        current.value = { ...current.value, accepted_reply_id: topic.accepted_reply_id ?? null, is_solved: topic.is_solved ?? false };
+        const message = unmark ? t('community.forums.accepted.unmarked') : t('community.forums.accepted.marked');
+        toast.show(message, 'success');
+        announce.value = message;
+    } catch (cause) {
+        if (cause instanceof ApiError && cause.status === 0) toast.show(t('microcopy.error.unreachable'), 'warning');
+        else if (cause instanceof ApiError && cause.status >= 400 && cause.status < 500 && ![419, 429].includes(cause.status)) toast.show(cause.message, 'warning');
+        else toast.show(t('microcopy.error.generic'), 'warning');
+    } finally {
+        accepting.value = false;
+    }
+}
+
+// P18-11 : épingler et verrouiller depuis la fiche (modération, `can.moderate`, API `…/pin`, `…/lock`).
+const flagging = ref(false);
+async function toggleFlag(flag: 'pin' | 'lock') {
+    if (flagging.value) return;
+    flagging.value = true;
+    const on = flag === 'pin' ? !current.value.is_pinned : !current.value.is_locked;
+    try {
+        const topic = await api.flag(current.value.id, flag, on);
+        current.value = { ...current.value, is_pinned: topic.is_pinned, is_locked: topic.is_locked, can: { ...current.value.can, reply: topic.can.reply } };
+        const message = t(`community.forums.moderation.${flag}_${on ? 'on' : 'off'}`);
+        toast.show(message, 'success');
+        announce.value = message;
+    } catch (cause) {
+        if (cause instanceof ApiError && cause.status === 0) toast.show(t('microcopy.error.unreachable'), 'warning');
+        else toast.show(t('microcopy.error.generic'), 'warning');
+    } finally {
+        flagging.value = false;
+    }
+}
+
 async function openReport(target: ReportTarget) {
     reporting.value = target;
     if (!(await reportModal.load())) {
@@ -188,12 +238,17 @@ async function remove() {
                 <div class="d-flex align-items-center mb-3">
                     <XmAvatar class="me-2" size="xs" :name="current.author.pseudo" :src="current.author.avatar_url" />
                     <div class="small">
-                        <strong>{{ current.author.pseudo }}</strong>{{ sep }}<time :datetime="current.created_at ?? undefined">{{ timeAgo(current.created_at, t) }}</time>{{ sep }}<i class="bi bi-eye" aria-hidden="true"></i> <span aria-hidden="true">{{ current.views_count }}</span><span class="visually-hidden">{{ t('community.forums.views', { count: current.views_count }, current.views_count) }}</span>
+                        <strong>{{ current.author.pseudo }}</strong><XmVerifiedBadges :badges="current.author.badges" />{{ sep }}<time :datetime="current.created_at ?? undefined">{{ timeAgo(current.created_at, t) }}</time>{{ sep }}<i class="bi bi-eye" aria-hidden="true"></i> <span aria-hidden="true">{{ current.views_count }}</span><span class="visually-hidden">{{ t('community.forums.views', { count: current.views_count }, current.views_count) }}</span>
                         <span v-if="current.is_locked" class="badge bg-light text-secondary ms-1"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ t('community.forums.locked') }}</span>
+                        <span v-if="current.is_solved" class="badge bg-success bg-opacity-10 text-success ms-1" :title="t('community.forums.solved_label')"><i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{{ t('community.forums.solved') }}<span class="visually-hidden"> — {{ t('community.forums.solved_label') }}</span></span>
                     </div>
                 </div>
                 <p class="mb-0 xm-forum-text">{{ current.body }}</p>
-                <div v-if="current.can.report || current.can.delete" class="d-flex gap-3 mt-3">
+                <div v-if="current.can.report || current.can.delete || current.can.moderate" class="d-flex flex-wrap gap-3 mt-3">
+                    <template v-if="current.can.moderate">
+                        <button class="btn btn-link btn-sm p-0 small" type="button" :aria-pressed="current.is_pinned ? 'true' : 'false'" :disabled="flagging" @click="toggleFlag('pin')"><i class="bi bi-pin-angle me-1" aria-hidden="true"></i>{{ t('community.forums.moderation.pin') }}</button>
+                        <button class="btn btn-link btn-sm p-0 small" type="button" :aria-pressed="current.is_locked ? 'true' : 'false'" :disabled="flagging" @click="toggleFlag('lock')"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ t('community.forums.moderation.lock') }}</button>
+                    </template>
                     <button v-if="current.can.report" class="btn btn-link btn-sm p-0 small text-secondary" type="button" aria-haspopup="dialog" @click="openReport({ topic: current.id })"><i class="bi bi-flag me-1" aria-hidden="true"></i>{{ t('community.forums.detail.report_topic') }}</button>
                     <button v-if="current.can.delete" class="btn btn-link btn-sm p-0 small text-danger" type="button" aria-haspopup="dialog" @click="removing = { kind: 'topic' }"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ t('community.forums.detail.delete_topic') }}</button>
                 </div>
@@ -202,13 +257,15 @@ async function remove() {
 
         <section class="vstack gap-4" aria-labelledby="reponses">
             <h2 id="reponses" class="h6 mb-0">{{ t('community.forums.replies', { count: current.replies_count }, current.replies_count) }}</h2>
-            <article v-for="item in items" :id="`reponse-${item.id}`" :key="item.id" class="card">
+            <article v-for="item in sortedItems" :id="`reponse-${item.id}`" :key="item.id" :class="['card', { 'border-success': item.id === acceptedId }]" :aria-describedby="item.id === acceptedId ? `reponse-${item.id}-validee` : undefined">
                 <div class="card-body d-flex gap-3">
                     <XmAvatar class="flex-shrink-0" :name="item.author.pseudo" :src="item.author.avatar_url" />
                     <div class="flex-grow-1 overflow-hidden">
-                        <div class="small mb-1"><strong>{{ item.author.pseudo }}</strong><template v-if="item.author.badge"> <span class="badge bg-primary bg-opacity-10 text-primary">{{ item.author.badge }}</span></template>{{ sep }}<time :datetime="item.created_at ?? undefined">{{ timeAgo(item.created_at, t) }}</time></div>
+                        <div class="small mb-1"><strong>{{ item.author.pseudo }}</strong><XmVerifiedBadges :badges="item.author.badges" /><template v-if="item.author.badge && !item.author.badges?.some((b) => b.key === 'pair_animateur')"> <span class="badge bg-primary bg-opacity-10 text-primary">{{ item.author.badge }}</span></template>{{ sep }}<time :datetime="item.created_at ?? undefined">{{ timeAgo(item.created_at, t) }}</time></div>
+                        <p v-if="item.id === acceptedId" :id="`reponse-${item.id}-validee`" class="small text-success fw-semibold mb-1"><i class="bi bi-patch-check-fill me-1" aria-hidden="true"></i>{{ t('community.forums.accepted.badge') }}</p>
                         <p class="mb-0 xm-forum-text">{{ item.body }}</p>
-                        <div v-if="item.can.report || item.can.delete" class="d-flex gap-3 mt-2">
+                        <div v-if="item.can.report || item.can.delete || current.can.accept" class="d-flex flex-wrap gap-3 mt-2">
+                            <button v-if="current.can.accept" class="btn btn-link btn-sm p-0 small text-success" type="button" :disabled="accepting" @click="toggleAccepted(item)"><i :class="['bi', item.id === acceptedId ? 'bi-x-circle' : 'bi-check2-circle', 'me-1']" aria-hidden="true"></i>{{ item.id === acceptedId ? t('community.forums.accepted.unmark') : t('community.forums.accepted.mark') }}<span class="visually-hidden"> ({{ t('community.forums.accepted.of', { name: item.author.pseudo }) }})</span></button>
                             <button v-if="item.can.report" class="btn btn-link btn-sm p-0 small text-secondary" type="button" aria-haspopup="dialog" @click="openReport({ reply: item.id })">{{ t('community.forums.detail.report_reply') }}</button>
                             <button v-if="item.can.delete" class="btn btn-link btn-sm p-0 small text-danger" type="button" aria-haspopup="dialog" @click="removing = { kind: 'reply', reply: item }">{{ t('community.forums.detail.delete_reply') }}</button>
                         </div>

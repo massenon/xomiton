@@ -85,6 +85,7 @@ final class FeedQuery
             ->with([
                 'user.profile',
                 'user.roles',
+                'user.badges',
                 'parent' => static fn (BelongsTo $parent) => $parent->select(['id', 'status'])->where('status', PostStatus::Published),
             ]);
 
@@ -141,6 +142,7 @@ final class FeedQuery
             ->with([
                 'user.profile',
                 'user.roles',
+                'user.badges',
                 'media',
                 'poll.options',
                 'poll.votes' => static fn (HasMany $votes) => $votes->where('user_id', $id),

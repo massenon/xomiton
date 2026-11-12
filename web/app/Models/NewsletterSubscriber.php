@@ -155,7 +155,7 @@ class NewsletterSubscriber extends Model
             $users->selectRaw('1')->from('users')
                 ->whereColumn('users.id', 'newsletter_subscribers.user_id')
                 ->where(static function ($blocked): void {
-                    $blocked->where('users.status', \App\Enums\UserStatus::Suspended->value)
+                    $blocked->whereIn('users.status', \App\Enums\UserStatus::withoutAccess())
                         ->orWhereNotNull('users.deleted_at')
                         ->orWhere('users.email', 'like', '%@anonyme.invalid');
                 });

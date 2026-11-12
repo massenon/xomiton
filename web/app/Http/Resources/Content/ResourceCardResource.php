@@ -43,6 +43,8 @@ final class ResourceCardResource extends JsonResource
             'file_size_label' => $downloadable && $size !== null ? LocaleFormatter::make()->fileSize($size) : null,
             'duration_minutes' => $resource->duration_minutes,
             'is_offline_available' => (bool) $resource->is_offline_available,
+            // P18-11 : ressource mise en avant (guides, urgence), servie en tête de liste.
+            'is_featured' => (bool) $resource->is_featured,
             'downloadable' => $downloadable,
             'playable' => $resource->isPlayable(),
             'external_url' => $resource->isExternal() ? $resource->external_url : null,

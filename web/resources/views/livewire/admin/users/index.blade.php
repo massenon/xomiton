@@ -12,6 +12,7 @@
         ['label' => __('admin.users.kpi.active'), 'value' => $format->number($this->stats['active']), 'icon' => 'person-check', 'variant' => 'success'],
         ['label' => __('admin.users.kpi.pending'), 'value' => $format->number($this->stats['pending']), 'icon' => 'hourglass-split', 'variant' => 'warning'],
         ['label' => __('admin.users.kpi.suspended'), 'value' => $format->number($this->stats['suspended']), 'icon' => 'person-slash', 'variant' => 'danger'],
+        ['label' => __('admin.users.kpi.banned'), 'value' => $format->number($this->stats['banned']), 'icon' => 'slash-circle', 'variant' => 'danger'],
     ]" />
 
     @can('users.validate_peers')
@@ -71,6 +72,8 @@
                         @foreach (\App\Application\Admin\Users\AdminRoles::ALL as $roleKey)
                             <option value="{{ $roleKey }}">{{ \App\Application\Admin\Users\AdminRoles::label($roleKey) }}</option>
                         @endforeach
+                        {{-- Q97 : « bénévoles écoutant·es » = pair·es approuvé·es à l'inscription (rôle pair, compte actif), pas un rôle à part. --}}
+                        <option value="{{ \App\Livewire\Admin\Users\Index::VOLUNTEERS }}">{{ __('admin.users.filters.volunteers') }}</option>
                     </select>
                 </div>
                 <div class="col-6 col-lg-2">
@@ -90,6 +93,24 @@
                             <option value="{{ $z['id'] }}">{{ $z['name'] }}</option>
                         @endforeach
                     </select>
+                </div>
+                {{-- P18-08 : niveau d'activité (dernière visite) et plage de dates d'inscription (heure du Bénin, bornes incluses). --}}
+                <div class="col-12 col-sm-4 col-lg-2">
+                    <label class="visually-hidden" for="xmUsersActivity">{{ __('admin.users.filters.activity') }}</label>
+                    <select class="form-select form-select-sm" id="xmUsersActivity" wire:model.live="activity">
+                        <option value="">{{ __('admin.users.filters.all_activity') }}</option>
+                        @foreach (\App\Livewire\Admin\Users\Index::ACTIVITY_LEVELS as $level)
+                            <option value="{{ $level }}">{{ __('admin.users.filters.activity_levels.'.$level) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label class="visually-hidden" for="xmUsersJoinedFrom">{{ __('admin.users.filters.joined_from') }}</label>
+                    <input class="form-control form-control-sm" type="date" id="xmUsersJoinedFrom" wire:model.live="joinedFrom" title="{{ __('admin.users.filters.joined_from') }}">
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <label class="visually-hidden" for="xmUsersJoinedTo">{{ __('admin.users.filters.joined_to') }}</label>
+                    <input class="form-control form-control-sm" type="date" id="xmUsersJoinedTo" wire:model.live="joinedTo" title="{{ __('admin.users.filters.joined_to') }}">
                 </div>
             </x-admin.filters>
         </div>
@@ -186,6 +207,7 @@
             @php($isMe = $me->is($account))
             <div class="d-flex flex-wrap gap-2 mb-3">
                 <x-badge :color="$account->status->badge()" soft>{{ $account->status->label() }}</x-badge>
+                @foreach (\App\Application\Admin\Users\VerifiedBadges::for($account) as $verified)<x-badge color="primary" soft :icon="$verified['icon']">{{ $verified['label'] }}</x-badge>@endforeach
                 <x-badge :color="\App\Application\Admin\Users\AdminRoles::isAdministration($facts['role']) ? 'violet' : 'neutral'" soft>{{ \App\Application\Admin\Users\AdminRoles::label($facts['role']) }}</x-badge>
                 @if ($facts['warnings'] > 0)<x-badge color="warning" soft icon="exclamation-triangle">{{ trans_choice('admin.users.detail.warnings', $facts['warnings'], ['count' => $facts['warnings']]) }}</x-badge>@endif
             </div>
@@ -201,6 +223,10 @@
                 <dt class="col-sm-4">{{ __('admin.users.detail.reports') }}</dt><dd class="col-sm-8">{{ $format->number($facts['reports']) }}</dd>
                 @if ($account->suspension_reason && $account->status === \App\Enums\UserStatus::Suspended)
                     <dt class="col-sm-4">{{ __('admin.users.detail.suspension') }}</dt><dd class="col-sm-8 text-break">{{ $account->suspension_reason }}@if ($account->suspended_at) <span class="text-secondary">· {{ $format->shortDate($account->suspended_at) }}</span>@endif</dd>
+                    <dt class="col-sm-4">{{ __('admin.users.detail.suspended_until') }}</dt><dd class="col-sm-8">{{ $account->suspended_until ? $format->longDate($account->suspended_until) : __('admin.users.detail.no_end') }}</dd>
+                @endif
+                @if ($account->isBanned())
+                    <dt class="col-sm-4">{{ __('admin.users.detail.ban') }}</dt><dd class="col-sm-8 text-break">{{ $account->ban_reason ?: '—' }}@if ($account->banned_at) <span class="text-secondary">· {{ $format->shortDate($account->banned_at) }}</span>@endif</dd>
                 @endif
             </dl>
 
@@ -259,12 +285,63 @@
                                   aria-describedby="xmUserSuspendHelp @error('suspendReason') xmUserSuspendError @enderror" @error('suspendReason') aria-invalid="true" @enderror></textarea>
                         <div class="form-text" id="xmUserSuspendHelp">{{ __('admin.users.suspend_help') }}</div>
                         @error('suspendReason')<div class="invalid-feedback d-block" id="xmUserSuspendError">{{ $message }}</div>@enderror
+                        <label class="form-label small fw-semibold mt-2" for="xmUserSuspendUntil">{{ __('admin.users.suspend_until') }}</label>
+                        <input type="date" class="form-control form-control-sm @error('suspendUntil') is-invalid @enderror" id="xmUserSuspendUntil" wire:model="suspendUntil"
+                               min="{{ now(config('xomiton.display_timezone', 'UTC'))->addDay()->toDateString() }}" max="{{ now(config('xomiton.display_timezone', 'UTC'))->addDays(\App\Application\Admin\Users\AccountSuspension::MAX_DAYS)->toDateString() }}"
+                               aria-describedby="xmUserSuspendUntilHelp @error('suspendUntil') xmUserSuspendUntilError @enderror" @error('suspendUntil') aria-invalid="true" @enderror>
+                        <div class="form-text" id="xmUserSuspendUntilHelp">{{ __('admin.users.suspend_until_help') }}</div>
+                        @error('suspendUntil')<div class="invalid-feedback d-block" id="xmUserSuspendUntilError">{{ $message }}</div>@enderror
                         <button type="submit" class="btn btn-sm btn-outline-danger mt-2" wire:loading.attr="disabled" wire:target="suspend"><i class="bi bi-pause-circle me-1" aria-hidden="true"></i>{{ __('admin.users.suspend') }}</button>
                     </form>
                 @endcan
             @endif
 
+            {{-- P18-06 (Q97) : bannissement définitif, motif obligatoire ; levée réservée au superadmin. --}}
+            @if (! $isMe && ! $account->isBanned() && ! $account->isPending())
+                @can('ban', $account)
+                    <form class="border border-danger-subtle rounded p-3 mb-3" wire:submit="ban" novalidate>
+                        <label class="form-label small fw-semibold" for="xmUserBanReason">{{ __('admin.users.ban_reason') }}</label>
+                        <textarea class="form-control form-control-sm @error('banReason') is-invalid @enderror" id="xmUserBanReason" rows="2" maxlength="{{ \App\Application\Admin\Users\AccountBan::REASON_MAX }}" wire:model="banReason"
+                                  aria-describedby="xmUserBanHelp @error('banReason') xmUserBanError @enderror" @error('banReason') aria-invalid="true" @enderror></textarea>
+                        <div class="form-text" id="xmUserBanHelp">{{ __('admin.users.ban_help') }}</div>
+                        @error('banReason')<div class="invalid-feedback d-block" id="xmUserBanError">{{ $message }}</div>@enderror
+                        <button type="submit" class="btn btn-sm btn-danger mt-2" wire:confirm="{{ __('admin.users.confirm.ban', ['name' => $account->pseudo]) }}" wire:loading.attr="disabled" wire:target="ban"><i class="bi bi-slash-circle me-1" aria-hidden="true"></i>{{ __('admin.users.ban') }}</button>
+                    </form>
+                @endcan
+            @endif
+
+            {{-- P18-09 (Q97) : badges vérifiés attribués à la main ; jamais de classement. --}}
+            @if (! $isMe)
+                @can('manageBadges', $account)
+                    <div class="border rounded p-3 mb-3">
+                        <div class="small fw-semibold mb-1">{{ __('admin.users.badges.title') }}</div>
+                        <p class="small text-secondary mb-2">{{ __('admin.users.badges.help') }}</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (\App\Enums\VerifiedBadge::cases() as $badgeCase)
+                                @if (isset($facts['badges'][$badgeCase->value]))
+                                    <button type="button" class="btn btn-sm btn-outline-danger" wire:click="revokeBadge('{{ $badgeCase->value }}')" wire:confirm="{{ __('admin.users.badges.confirm_revoke', ['badge' => $badgeCase->label(), 'name' => $account->pseudo]) }}" wire:loading.attr="disabled" wire:target="revokeBadge">
+                                        <i class="bi bi-x-circle me-1" aria-hidden="true"></i>{{ __('admin.users.badges.revoke', ['badge' => $badgeCase->label()]) }}
+                                    </button>
+                                @elseif (in_array($badgeCase, $facts['eligible_badges'], true))
+                                    <button type="button" class="btn btn-sm btn-outline-primary" wire:click="grantBadge('{{ $badgeCase->value }}')" wire:loading.attr="disabled" wire:target="grantBadge">
+                                        <i class="bi bi-{{ $badgeCase->icon() }} me-1" aria-hidden="true"></i>{{ __('admin.users.badges.grant', ['badge' => $badgeCase->label()]) }}
+                                    </button>
+                                @endif
+                            @endforeach
+                            @if ($facts['eligible_badges'] === [] && $facts['badges'] === [])
+                                <span class="small text-secondary">{{ __('admin.users.badges.none_eligible') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                @endcan
+            @endif
+
             <div class="d-flex flex-wrap gap-2">
+                @if ($account->isBanned())
+                    @can('unban', $account)
+                        <button type="button" class="btn btn-sm btn-success" wire:click="unban" wire:confirm="{{ __('admin.users.confirm.unban', ['name' => $account->pseudo]) }}" wire:loading.attr="disabled"><i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i>{{ __('admin.users.unban') }}</button>
+                    @endcan
+                @endif
                 @if ($account->status === \App\Enums\UserStatus::Suspended)
                     @can('users.manage')
                         @can('reactivate', $account)

@@ -52,6 +52,7 @@ class Resource extends Model
         'downloads_count',
         'views_count',
         'is_offline_available',
+        'is_featured',
         'meta_title',
         'meta_description',
         'created_by',
@@ -70,6 +71,7 @@ class Resource extends Model
             'downloads_count' => 'integer',
             'views_count' => 'integer',
             'is_offline_available' => 'boolean',
+            'is_featured' => 'boolean',
             'published_at' => 'datetime',
         ];
     }

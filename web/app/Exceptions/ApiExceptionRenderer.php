@@ -6,6 +6,7 @@ namespace App\Exceptions;
 
 use App\Domain\Auth\Exceptions\AccountPending;
 use App\Domain\Auth\Exceptions\AccountSuspended;
+use App\Domain\Auth\Exceptions\AccountUnavailable;
 use App\Domain\Auth\Exceptions\AgeConfirmationRequired;
 use App\Domain\Auth\Exceptions\AuthException;
 use App\Domain\Auth\Exceptions\AuthFailed;
@@ -171,6 +172,7 @@ final class ApiExceptionRenderer
         return match (true) {
             $e instanceof AuthFailed => 'invalid_credentials',
             $e instanceof AccountSuspended => 'account_suspended',
+            $e instanceof AccountUnavailable => 'account_unavailable',
             $e instanceof MaintenanceActive => 'maintenance',
             $e instanceof EmailNotVerified => 'email_unverified',
             $e instanceof AccountPending => 'account_pending',

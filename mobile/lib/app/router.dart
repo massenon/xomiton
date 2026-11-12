@@ -22,6 +22,8 @@ import '../features/ccc/presentation/ccc_page.dart';
 import '../features/ccc/presentation/ccc_show_page.dart';
 import '../features/community/presentation/community_pages.dart';
 import '../features/community/presentation/messages_pages.dart';
+import '../features/engagement/presentation/contribute_pages.dart';
+import '../features/engagement/presentation/forums_page.dart';
 import '../features/feed/presentation/feed_pages.dart';
 import '../features/auth/application/session_controller.dart';
 import '../features/auth/data/auth_api.dart';
@@ -471,6 +473,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         ('/securite', const SecurityPage()),
         ('/newsletter', const NewsletterPage()),
         ('/appareils', const DevicesPage()),
+        // P18-10, P18-12, P18-14 : forums, proposer une ressource, boîte à idées.
+        ('/forums', const ForumsPage()),
+        ('/proposer-une-ressource', const ResourceProposalPage()),
+        ('/boite-a-idees', const SuggestionPage()),
       ])
         GoRoute(
           path: r.$1,

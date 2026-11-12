@@ -120,7 +120,7 @@ final class OtpController extends Controller
         $user = $this->pendingLogin->user();
 
         // Compte suspendu entre le mot de passe et le code : la connexion repart de zéro et affichera le bon message.
-        if ($user === null || $user->isSuspended()) {
+        if ($user === null || $user->isBlocked()) {
             $this->pendingLogin->forget();
 
             return redirect()->route('connexion')->withErrors(['identifier' => __('auth.login.otp_expired')]);

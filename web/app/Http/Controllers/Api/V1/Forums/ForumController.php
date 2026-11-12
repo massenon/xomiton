@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Forums;
 
+use App\Application\Admin\Network\ModerateNetwork;
+use App\Application\Community\Forums\AcceptForumReply;
 use App\Application\Community\Forums\ForumDirectory;
 use App\Application\Community\Forums\ForumLinks;
 use App\Application\Community\Forums\RecordTopicView;
 use App\Application\Community\Forums\RemoveForumContent;
 use App\Application\Community\Forums\StartTopic;
+use App\Domain\Community\Exceptions\ReplyNotAcceptable;
 use App\Http\Controllers\Api\V1\Community\CommunityApiController;
 use App\Http\Requests\Api\Forums\ListTopicsRequest;
 use App\Http\Requests\Api\Forums\StoreTopicRequest;
 use App\Http\Resources\Forums\ForumResource;
 use App\Http\Resources\Forums\ForumTopicResource;
+use App\Models\ForumReply;
 use App\Models\ForumTopic;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -76,6 +81,70 @@ final class ForumController extends CommunityApiController
         $remove->topic($topic, $viewer);
 
         return $this->noContent();
+    }
+
+    /**
+     * Valider la réponse qui résout le sujet (P18-03, Q97) : auteur·rice du sujet ou modération ; `reply_id` doit être
+     * une réponse publiée du sujet (sinon 422 `reply_not_acceptable`). Rend le sujet à jour.
+     */
+    public function accept(Request $request, ForumTopic $topic, AcceptForumReply $accept): JsonResponse
+    {
+        $viewer = $this->viewer($request);
+        $this->visible($request, $topic);
+        abort_unless($viewer->can('accept', $topic), 403);
+
+        $data = $request->validate(['reply_id' => ['required', 'integer', 'min:1']]);
+        $reply = ForumReply::query()->whereKey((int) $data['reply_id'])->where('topic_id', $topic->getKey())->first();
+
+        if ($reply === null) {
+            throw new ReplyNotAcceptable;
+        }
+
+        $accept->accept($topic, $reply, $viewer);
+        $topic->loadMissing(['forum', 'user.profile', 'user.roles']);
+
+        return $this->respond(ForumTopicResource::make($topic)->detailed());
+    }
+
+    /** Retirer la réponse validée (auteur·rice du sujet ou modération) ; idempotent. */
+    public function unaccept(Request $request, ForumTopic $topic, AcceptForumReply $accept): JsonResponse
+    {
+        $viewer = $this->viewer($request);
+        $this->visible($request, $topic);
+        abort_unless($viewer->can('accept', $topic), 403);
+
+        $accept->unaccept($topic, $viewer);
+        $topic->loadMissing(['forum', 'user.profile', 'user.roles']);
+
+        return $this->respond(ForumTopicResource::make($topic)->detailed());
+    }
+
+    /**
+     * Épingler / désépingler (P18-11, modération `posts.moderate`) : `POST` épingle, `DELETE` désépingle ; idempotent.
+     */
+    public function pin(Request $request, ForumTopic $topic, ModerateNetwork $network): JsonResponse
+    {
+        return $this->flag($request, $topic, fn (User $viewer): bool => $network->pin($topic, $request->isMethod('post'), $viewer));
+    }
+
+    /** Verrouiller / déverrouiller (P18-11) : plus de réponse, le sujet reste lisible ; idempotent. */
+    public function lock(Request $request, ForumTopic $topic, ModerateNetwork $network): JsonResponse
+    {
+        return $this->flag($request, $topic, fn (User $viewer): bool => $network->lock($topic, $request->isMethod('post'), $viewer));
+    }
+
+    /**
+     * @param  callable(User): bool  $change
+     */
+    private function flag(Request $request, ForumTopic $topic, callable $change): JsonResponse
+    {
+        $viewer = $this->viewer($request);
+        $this->visible($request, $topic);
+        abort_unless($viewer->can('moderate', $topic), 403);
+        $change($viewer);
+        $topic->loadMissing(['forum', 'user.profile', 'user.roles']);
+
+        return $this->respond(ForumTopicResource::make($topic)->detailed());
     }
 
     /**

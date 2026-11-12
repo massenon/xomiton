@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/xm_tokens.dart';
 import '../../../core/l10n/app_strings.dart';
+import '../../../core/platform/platform_services.dart';
 import '../../../core/ui/xm_widgets.dart';
 import '../application/ccc_providers.dart';
 import '../data/ccc_models.dart';
@@ -77,7 +78,7 @@ class _ReaderState extends State<_Reader> {
       ),
       body: SafeArea(
         child: _finished
-            ? _Done(onRestart: () => setState(() {
+            ? _Done(publicUrl: comic.publicUrl, onRestart: () => setState(() {
                   _finished = false;
                   _index = 0;
                 }), onBack: _back)
@@ -176,13 +177,16 @@ class _ReaderState extends State<_Reader> {
   }
 }
 
-class _Done extends StatelessWidget {
-  const _Done({required this.onRestart, required this.onBack});
+class _Done extends ConsumerWidget {
+  const _Done({required this.onRestart, required this.onBack, this.publicUrl});
   final VoidCallback onRestart;
   final VoidCallback onBack;
 
+  /// BD publique (P19-04) : page `/bd/{key}` à ouvrir ou partager depuis le navigateur.
+  final Uri? publicUrl;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = Theme.of(context).textTheme;
     return ListView(
       key: const ValueKey('ccc-comic-done'),
@@ -214,6 +218,21 @@ class _Done extends StatelessWidget {
           icon: const Icon(Icons.replay),
           label: Text(context.t('ccc_comic_restart')),
         ),
+        if (publicUrl != null) ...[
+          const SizedBox(height: XmSpace.s2),
+          OutlinedButton.icon(
+            key: const ValueKey('ccc-comic-public'),
+            style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+            onPressed: () async {
+              final ok = await ref.read(linkLauncherProvider).open(publicUrl!);
+              if (!ok && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.t('mobile_ccc_comic_public_open_failed'))));
+              }
+            },
+            icon: const Icon(Icons.open_in_new),
+            label: Text(context.t('ccc_comic_public_page')),
+          ),
+        ],
         const SizedBox(height: XmSpace.s2),
         OutlinedButton.icon(
           style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),

@@ -36,6 +36,8 @@ use Throwable;
  * Chaque bloc est conditionné par la permission de son écran d'origine (le modérateur n'en voit presque aucun) :
  * alertes `alerts.view` (périmètre AlertScope), dossiers `cases.view_all`, comptes `users.view`, synchro `sync.manage`,
  * état de la plateforme `settings.view`. Actualisation toutes les 30 s (le 10 s est réservé à l'écran des alertes, D7).
+ * P18-01 à P18-03 : indicateurs communautaires dans le composant enfant App\Livewire\Admin\Dashboard\Community
+ * (`users.view` ou `moderation.manage`), qui se rafraîchit seul toutes les 60 s sur des agrégats en cache.
  */
 final class Index extends Component
 {
@@ -121,6 +123,8 @@ final class Index extends Component
             'userCounts' => $user->can('users.view') ? $stats->userCounts() : null,
             'syncRate' => $user->can('sync.manage') ? $stats->syncRate() : null,
             'canSync' => $user->can('sync.manage'),
+            // P18-01 : indicateurs communautaires (App\Livewire\Admin\Dashboard\Community, sondage propre de 60 s).
+            'canCommunity' => $user->can('users.view') || $user->can('moderation.manage'),
             'platform' => $user->can('settings.view') ? $this->platformStatus() : null,
             'shortcuts' => $this->shortcuts($user),
             'escalationMinutes' => EscalationPolicyFactory::fromConfig()->delaysFor(AlertType::Sos)->escalateAfterMinutes,

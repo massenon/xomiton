@@ -21,6 +21,7 @@ const { t } = useI18n();
                 <span class="position-absolute top-0 start-0 m-2 bg-body rounded text-center px-2 py-1 shadow-sm"><span class="d-block h5 mb-0 lh-1">{{ event.day }}</span><small class="text-uppercase">{{ event.month_short }}</small></span>
             </Link>
             <div class="card-body">
+                <span v-if="event.type_label && event.type !== 'autre'" class="xm-chip mb-2 me-1" data-xm-event-type>{{ event.type_label }}</span>
                 <span v-if="event.category" class="xm-chip mb-2">{{ event.category.label }}</span>
                 <h2 :id="`event-${event.id}`" class="h6 mb-2"><Link :href="event.url">{{ event.title }}</Link></h2>
                 <p class="small mb-1"><time :datetime="event.starts_at"><i class="bi bi-clock me-1" aria-hidden="true"></i><span class="visually-hidden">{{ event.date_label }}, </span>{{ event.time_label }}</time> {{ t('common.separator') }} <i class="bi bi-geo-alt me-1" aria-hidden="true"></i>{{ event.location_label }}</p>

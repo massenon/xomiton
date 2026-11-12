@@ -145,6 +145,8 @@ return [
             'Quelles ressources de l’annuaire pouvaient l’aider ?',
         ],
         'restart' => 'Relire depuis le début',
+        // P19-04 : BD publique, page /bd/{key} ouverte dans le navigateur (lecture et partage).
+        'public_page' => 'Voir la page publique de la BD',
     ],
 
     'laws' => [

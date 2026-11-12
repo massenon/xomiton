@@ -31,6 +31,7 @@ class Forum extends Model
         'topics_count',
         'posts_count',
         'is_active',
+        'archived_at',
     ];
 
     /**
@@ -43,6 +44,7 @@ class Forum extends Model
             'topics_count' => 'integer',
             'posts_count' => 'integer',
             'is_active' => 'boolean',
+            'archived_at' => 'datetime',
         ];
     }
 
@@ -60,6 +62,24 @@ class Forum extends Model
     public function scopeActive(Builder $query): void
     {
         $query->where('is_active', true);
+    }
+
+    /**
+     * Forum archivé (P18-10) : lisible, sans nouveau sujet.
+     */
+    public function isArchived(): bool
+    {
+        return ($this->getAttributes()['archived_at'] ?? null) !== null;
+    }
+
+    /**
+     * Forums ouverts aux nouveaux sujets : actifs et non archivés.
+     *
+     * @param  Builder<Forum>  $query
+     */
+    public function scopeOpen(Builder $query): void
+    {
+        $query->where('is_active', true)->whereNull('archived_at');
     }
 
     /**

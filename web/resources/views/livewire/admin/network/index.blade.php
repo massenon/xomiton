@@ -11,6 +11,10 @@
         'forums' => ['label' => __('admin_network.tabs.forums'), 'icon' => 'chat-square-text'],
         'publications' => ['label' => __('admin_network.tabs.publications'), 'icon' => 'card-text'],
     ];
+    // P18-10 : gestion des forums (créer, renommer, réordonner, archiver), `forums.manage`.
+    if ($canManageForums) {
+        $tabMeta['gestion'] = ['label' => __('admin_network.tabs.gestion'), 'icon' => 'sliders'];
+    }
     $counts = $this->counts;
     $tabs = [];
     foreach ($tabMeta as $key => $meta) {
@@ -26,6 +30,9 @@
 
     <section class="card xm-admin-card" aria-labelledby="xmNetTitle">
         <div class="card-header"><h2 class="h6 fw-bold mb-0" id="xmNetTitle">{{ __('admin_network.tabs.'.$tab) }}</h2></div>
+        @if ($tab === 'gestion')
+            <livewire:admin.network.forums :key="'network-forums'" />
+        @else
         <div class="card-body border-bottom">
             <x-admin.filters id="xmNetFilters" :active="$this->activeFilterCount()" :placeholder="__('admin_network.'.$tab.'.search_placeholder')" :search-help="__('admin_network.search_help')">
                 <div class="col-6 col-lg-3">
@@ -183,10 +190,18 @@
                         </td>
                         <td data-label="{{ __('admin_network.columns.replies') }}" class="text-end">{{ $format->number((int) $topic->replies_count) }}</td>
                         <td data-label="{{ __('admin_network.columns.date') }}" class="text-nowrap small">{{ $format->tableDateTime($topic->created_at) }}</td>
-                        <td data-label="{{ __('admin_network.columns.state') }}"><x-badge :color="$topic->status->badge()" soft>{{ $topic->status->label() }}</x-badge></td>
+                        <td data-label="{{ __('admin_network.columns.state') }}">
+                            <div class="d-flex flex-wrap gap-1">
+                                <x-badge :color="$topic->status->badge()" soft>{{ $topic->status->label() }}</x-badge>
+                                @if ($topic->is_pinned)<x-badge color="primary" soft icon="pin-angle">{{ __('admin_network.badges.pinned') }}</x-badge>@endif
+                                @if ($topic->is_locked)<x-badge color="secondary" soft icon="lock">{{ __('admin_network.badges.locked') }}</x-badge>@endif
+                            </div>
+                        </td>
                         <td data-label="{{ __('admin.datatable.actions') }}" class="text-end xm-table__actions">
                             <div class="d-flex flex-wrap gap-1 justify-content-end">
                                 <a class="btn btn-sm btn-outline-secondary" href="{{ route('forums.show', $topic->ulid) }}" target="_blank" rel="noopener noreferrer"><i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i>{{ __('admin_network.actions.view') }}<span class="visually-hidden"> {{ $topic->title }} {{ __('microcopy.a11y.opens_new_tab') }}</span></a>
+                                <button type="button" @class(['btn btn-sm', 'btn-primary' => $topic->is_pinned, 'btn-outline-secondary' => ! $topic->is_pinned]) wire:click="pin({{ $topic->id }}, {{ $topic->is_pinned ? 'false' : 'true' }})" aria-pressed="{{ $topic->is_pinned ? 'true' : 'false' }}"><i class="bi bi-pin-angle me-1" aria-hidden="true"></i>{{ __('admin_network.actions.pin') }}<span class="visually-hidden"> {{ $topic->title }}</span></button>
+                                <button type="button" @class(['btn btn-sm', 'btn-secondary' => $topic->is_locked, 'btn-outline-secondary' => ! $topic->is_locked]) wire:click="lock({{ $topic->id }}, {{ $topic->is_locked ? 'false' : 'true' }})" aria-pressed="{{ $topic->is_locked ? 'true' : 'false' }}"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ __('admin_network.actions.lock') }}<span class="visually-hidden"> {{ $topic->title }}</span></button>
                                 @if ($hidden)
                                     <button type="button" class="btn btn-sm btn-outline-success" wire:click="show('topic', {{ $topic->id }})">{{ __('admin_network.actions.show') }}<span class="visually-hidden"> {{ $topic->title }}</span></button>
                                 @else
@@ -235,6 +250,7 @@
                 <x-slot:emptyState><x-admin.empty icon="card-text" :filtered="$this->activeFilterCount() > 0" :title="__('admin_network.publications.empty')" /></x-slot:emptyState>
                 <x-slot:footer><x-admin.pagination id="xmNetPager" :paginator="$rows" /></x-slot:footer>
             </x-admin.table>
+        @endif
         @endif
     </section>
 </div>

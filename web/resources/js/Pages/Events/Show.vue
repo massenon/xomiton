@@ -57,7 +57,9 @@ const onReminder = (event: Event) => { void setReminder(current.value, (event.ta
             <div class="xm-event-cover"><img class="xm-img-cover" :src="current.image_url" :alt="t('community.events.image_alt', { title: current.title })" decoding="async" fetchpriority="high" width="1200" height="675"></div>
             <div class="card-body">
                 <div class="d-flex flex-wrap gap-2 mb-2">
+                    <span v-if="current.type_label && current.type !== 'autre'" class="xm-chip" data-xm-event-type>{{ current.type_label }}</span>
                     <span v-if="current.category" class="xm-chip">{{ current.category.label }}</span>
+                    <span v-if="current.is_pending" class="badge bg-warning bg-opacity-10 text-warning-emphasis align-self-center" data-xm-event-pending><i class="bi bi-hourglass-split me-1" aria-hidden="true"></i>{{ t('community.events.pending_badge') }}</span>
                     <span v-if="current.is_public" class="badge bg-info bg-opacity-10 text-info align-self-center"><i class="bi bi-globe2 me-1" aria-hidden="true"></i>{{ t('community.events.public_badge') }}</span>
                     <Link v-if="current.group" class="badge bg-primary bg-opacity-10 text-primary align-self-center" :href="current.group.url"><i class="bi bi-people me-1" aria-hidden="true"></i>{{ t('community.events.group_badge', { name: current.group.name }) }}</Link>
                 </div>

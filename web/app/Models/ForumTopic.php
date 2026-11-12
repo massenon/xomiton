@@ -40,6 +40,9 @@ class ForumTopic extends Model
         'is_pinned',
         'is_locked',
         'status',
+        'accepted_reply_id',
+        'accepted_by',
+        'accepted_at',
     ];
 
     /**
@@ -55,6 +58,9 @@ class ForumTopic extends Model
             'is_pinned' => 'boolean',
             'is_locked' => 'boolean',
             'status' => PostStatus::class,
+            'accepted_reply_id' => 'integer',
+            'accepted_by' => 'integer',
+            'accepted_at' => 'datetime',
         ];
     }
 
@@ -80,6 +86,32 @@ class ForumTopic extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(ForumReply::class, 'topic_id')->orderBy('created_at')->orderBy('id');
+    }
+
+    /**
+     * Réponse validée (P18-03) : l'auteur·rice du sujet ou la modération l'a marquée comme la réponse qui résout le sujet.
+     *
+     * @return BelongsTo<ForumReply, $this>
+     */
+    public function acceptedReply(): BelongsTo
+    {
+        return $this->belongsTo(ForumReply::class, 'accepted_reply_id');
+    }
+
+    /** Sujet résolu : une réponse validée est désignée. */
+    public function isSolved(): bool
+    {
+        return $this->accepted_reply_id !== null;
+    }
+
+    /**
+     * Sujets résolus (réponse validée, P18-03).
+     *
+     * @param  Builder<ForumTopic>  $query
+     */
+    public function scopeSolved(Builder $query): void
+    {
+        $query->whereNotNull('accepted_reply_id');
     }
 
     /**

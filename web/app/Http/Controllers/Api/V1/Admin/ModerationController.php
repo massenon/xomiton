@@ -29,7 +29,9 @@ final class ModerationController extends AdminApiController
         Gate::forUser($user)->authorize('viewAny', ModerationReport::class);
         $state = $request->validate(['state' => ['sometimes', 'string', 'in:pending,handled,rejected,all']])['state'] ?? 'pending';
 
-        $page = $queue->forState($state)->where('kind', '!=', ModerationKind::Message->value)->with(['reportedUser:id,pseudo', 'subject'])->orderByDesc('id')->paginate($this->perPage($request));
+        $query = $queue->forState($state)->where('kind', '!=', ModerationKind::Message->value)->with(['reportedUser:id,pseudo', 'subject']);
+        // P18-04 : la file « à traiter » suit le score de priorité ; les historiques restent du plus récent au plus ancien.
+        $page = ($state === 'pending' ? $query->byPriority() : $query->orderByDesc('id'))->paginate($this->perPage($request));
         $siblings = $queue->siblings($page->getCollection());
 
         return $this->page(

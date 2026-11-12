@@ -181,6 +181,9 @@ return [
         'directory_callback_per_hour' => 10,
         // Demande du rôle pair depuis le profil (D-MOB-15, limiteur `role_request`) : par compte et par jour.
         'role_request_per_day' => 3,
+        // P18-12 : ressources proposées par compte et par jour ; P18-14 : suggestions par compte et par jour.
+        'resource_proposals_per_day' => 5,
+        'suggestions_per_day' => 5,
         // Synchronisation (P9-06) : lots `POST sync/push` par compte et par minute (limiteur `sync_push`, rejeux non
         // comptés) ; un lot qui porte un SOS n'est jamais limité (RG-01).
         'sync_push_per_minute' => 20,
@@ -427,6 +430,20 @@ return [
             'min_spaced_letters' => 3,
             // Fenêtre (jours) du compteur de blocages affiché dans l'administration.
             'stats_days' => 30,
+        ],
+        // P18-07 : détection du spam (fréquence et doublons) sur le fil et les forums, jamais les messages privés. Au
+        // seuil, le contenu est mis en quarantaine (masqué) et signalé à la modération (motif « Spam »). Les comptes de
+        // l'équipe de modération (`posts.moderate`) ne sont pas concernés.
+        'spam' => [
+            'enabled' => (bool) env('XOMITON_SPAM_DETECTION', true),
+            // Fréquence : au moins N contenus (publications, commentaires, sujets, réponses) en M minutes.
+            'window_minutes' => (int) env('XOMITON_SPAM_WINDOW_MINUTES', 10),
+            'max_per_window' => (int) env('XOMITON_SPAM_MAX_PER_WINDOW', 8),
+            // Doublons : le même texte (sans casse, espaces ni ponctuation) publié N fois en H heures.
+            'duplicate_hours' => (int) env('XOMITON_SPAM_DUPLICATE_HOURS', 24),
+            'duplicate_threshold' => (int) env('XOMITON_SPAM_DUPLICATE_THRESHOLD', 3),
+            // Textes plus courts ignorés pour les doublons (« Merci ! », « Courage » répétés restent permis).
+            'duplicate_min_length' => (int) env('XOMITON_SPAM_DUPLICATE_MIN_LENGTH', 15),
         ],
     ],
 

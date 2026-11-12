@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Admin\Moderation;
 
+use App\Application\Admin\Users\AccountSuspension;
 use App\Application\Feed\BadWordFilter;
 use App\Application\Moderation\DecideReport;
 use App\Application\Moderation\ReadReportedMessage;
+use App\Application\Moderation\ReportContext;
 use App\Application\Moderation\ReportQueue;
+use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Domain\Moderation\Exceptions\ModerationRefused;
 use App\Enums\BadWordCategory;
 use App\Enums\BadWordSeverity;
@@ -28,6 +31,7 @@ use App\Support\Audit;
 use App\Support\LocaleFormatter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -38,7 +42,9 @@ use Livewire\Component;
 /**
  * Modération `/admin/moderation` (P12-06, P12-09, FR-SOC-06, RG-16, Q74 ; prototype admin/moderation.php) : KPI, file des
  * contenus signalés (publications, commentaires, sujets et réponses de forum, messages privés, comptes) — **un contenu = une
- * ligne** dans « À traiter », quel que soit le nombre de signalements —, décisions ignorer · masquer · avertir · suspendre
+ * ligne** dans « À traiter », quel que soit le nombre de signalements, triée par score de priorité (P18-04, badge haute ·
+ * moyenne · basse) —, décisions ignorer · approuver · masquer · avertir · suspendre (avec date de fin facultative) · bannir
+ * (`users.ban`) (P18-06), contexte dans la modale (fil, historique de l'auteur·rice, P18-05)
  * dans une modale (motif obligatoire pour avertir et suspendre), rouvrir un signalement traité, rendre visible un contenu
  * masqué (RG-16 ou décision), lecture du seul message privé signalé (Q74, journalisée), mots interdits (bloquer / signaler),
  * charte de bienveillance et suspensions récentes. Permission `moderation.manage` (admin, modérateur·rice, superadmin) ;
@@ -69,6 +75,9 @@ final class Index extends Component
 
     public string $reason = '';
 
+    /** P18-06 : fin d'une suspension temporaire (AAAA-MM-JJ, jour inclus, fuseau d'affichage) ; vide = sans date de fin. */
+    public string $suspendUntil = '';
+
     public string $wordText = '';
 
     public string $wordSeverity = 'signaler';
@@ -91,7 +100,7 @@ final class Index extends Component
 
     protected function sortableColumns(): array
     {
-        return ['date' => 'created_at', 'motif' => 'reason', 'nature' => 'kind'];
+        return ['priorite' => 'priority', 'date' => 'created_at', 'motif' => 'reason', 'nature' => 'kind'];
     }
 
     protected function searchableColumns(): array
@@ -99,9 +108,10 @@ final class Index extends Component
         return ['excerpt', 'reason', 'reporter_label'];
     }
 
+    /** P18-04 : file triée par score de priorité (le plus urgent d'abord). */
     protected function defaultSort(): array
     {
-        return ['date', 'desc'];
+        return ['priorite', 'desc'];
     }
 
     protected function filterProperties(): array
@@ -156,9 +166,29 @@ final class Index extends Component
     }
 
     /**
+     * Contexte de la décision (P18-05) : fil (publication parente, sujet, forum) et historique de modération de
+     * l'auteur·rice ; rien pour un message privé (seule la lecture journalisée du message signalé, Q74).
+     *
+     * @return array<string, mixed>|null
+     */
+    #[Computed]
+    public function context(): ?array
+    {
+        $report = $this->report();
+
+        return $report === null ? null : app(ReportContext::class)->for($report);
+    }
+
+    /** La personne peut-elle bannir l'auteur·rice d'un signalement (`users.ban`, P18-06) ? Jamais une action Livewire. */
+    private function mayBan(?User $author): bool
+    {
+        return $author !== null && (bool) auth()->user()?->can('ban', $author);
+    }
+
+    /**
      * Message privé ouvert en lecture (Q74) : relu sans nouvelle ligne au journal (l'ouverture a été journalisée).
      *
-     * @return array{author: ?string, sent_at: \Illuminate\Support\Carbon|null, body: string, has_media: bool}|null
+     * @return array{author: ?string, sent_at: Carbon|null, body: string, has_media: bool}|null
      */
     #[Computed]
     public function message(): ?array
@@ -190,6 +220,7 @@ final class Index extends Component
             'warnings' => $this->warningCounts($rows->getCollection()),
             'charter' => (array) __('admin.moderation.charter.items'),
             'videosPending' => Post::query()->where('status', PostStatus::Pending)->count(),
+            'canBan' => fn (?User $author): bool => $this->mayBan($author),
         ])->layout('components.layouts.admin', [
             'title' => __('admin.moderation.title'),
             'adminPage' => 'moderation',
@@ -207,33 +238,51 @@ final class Index extends Component
             return;
         }
 
+        if ($decision === DecideReport::BAN && ! $this->mayBan($report->reportedUser)) {
+            $this->toast((string) __('admin.moderation.errors.ban_forbidden'), 'error');
+
+            return;
+        }
+
         $this->reportId = (int) $report->getKey();
         $this->decision = $decision;
         $this->reason = '';
+        $this->suspendUntil = '';
         $this->resetErrorBag();
-        unset($this->report);
+        unset($this->report, $this->context);
         $this->openModal('xmModerationDecide');
     }
 
     public function closeDecision(): void
     {
-        $this->reset('reportId', 'decision', 'reason');
+        $this->reset('reportId', 'decision', 'reason', 'suspendUntil');
         $this->resetErrorBag();
-        unset($this->report);
+        unset($this->report, $this->context);
     }
 
     public function decide(DecideReport $decide): void
     {
         $report = $this->currentReport();
+        $this->authorize('handle', $report);
 
-        if (in_array($this->decision, [DecideReport::WARN, DecideReport::SUSPEND], true)) {
+        if (in_array($this->decision, DecideReport::NEEDS_REASON, true)) {
             $this->validate(['reason' => ['required', 'string', 'min:3', 'max:'.DecideReport::REASON_MAX]], [], ['reason' => (string) __('admin.moderation.reason_label.'.$this->decision)]);
+        }
+
+        $until = null;
+
+        if ($this->decision === DecideReport::SUSPEND && trim($this->suspendUntil) !== '') {
+            $timezone = (string) config('xomiton.display_timezone', 'UTC');
+            $this->validate([
+                'suspendUntil' => ['date_format:Y-m-d', 'after:'.now($timezone)->toDateString(), 'before_or_equal:'.now($timezone)->addDays(AccountSuspension::MAX_DAYS)->toDateString()],
+            ], [], ['suspendUntil' => (string) __('admin.moderation.decide.until')]);
+            $until = Carbon::createFromFormat('Y-m-d', $this->suspendUntil, $timezone)?->endOfDay()->utc();
         }
 
         $closed = 0;
 
-        if (! $this->attempt(function () use ($decide, $report, &$closed): void {
-            $closed = $decide($report, $this->decision, $this->actor(), $this->reason);
+        if (! $this->attempt(function () use ($decide, $report, $until, &$closed): void {
+            $closed = $decide($report, $this->decision, $this->actor(), $this->reason, $until);
         })) {
             return;
         }
@@ -242,7 +291,7 @@ final class Index extends Component
         $this->closeModal('xmModerationDecide');
         $this->closeDecision();
         $this->afterChange();
-        $this->toast(trans_choice('admin.moderation.toasts.'.$decision, $closed, ['count' => $closed]), $decision === DecideReport::DISMISS ? 'info' : 'success');
+        $this->toast(trans_choice('admin.moderation.toasts.'.$decision, $closed, ['count' => $closed]), in_array($decision, [DecideReport::DISMISS, DecideReport::APPROVE], true) ? 'info' : 'success');
     }
 
     public function reopen(int $id, DecideReport $decide): void
@@ -393,7 +442,7 @@ final class Index extends Component
     {
         try {
             $action();
-        } catch (ModerationRefused $refused) {
+        } catch (ModerationRefused|AccountActionRefused $refused) {
             $this->toast($refused->userMessage(), 'error');
 
             return false;
@@ -404,7 +453,7 @@ final class Index extends Component
 
     private function afterChange(): void
     {
-        unset($this->stats, $this->suspended, $this->report, $this->message);
+        unset($this->stats, $this->suspended, $this->report, $this->message, $this->context);
         $this->resetPage();
     }
 

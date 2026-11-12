@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Users;
 
 use App\Application\Admin\Roles\ManagePeerRole;
+use App\Application\Admin\Users\AccountBan;
 use App\Application\Admin\Users\AccountSuspension;
 use App\Application\Admin\Users\AdminRoles;
 use App\Application\Admin\Users\ChangeUserRole;
@@ -14,14 +15,17 @@ use App\Application\Admin\Users\NewAccountData;
 use App\Application\Admin\Users\PermissionMatrix;
 use App\Application\Admin\Users\ReviewRegistration;
 use App\Application\Admin\Users\SendPasswordReset;
+use App\Application\Admin\Users\VerifiedBadges;
 use App\Application\Shared\Referentials;
 use App\Domain\Account\Exceptions\AccountActionRefused;
 use App\Enums\UserStatus;
+use App\Enums\VerifiedBadge;
 use App\Livewire\Attributes\SafeUrl;
 use App\Livewire\Concerns\InteractsWithUi;
 use App\Livewire\Concerns\WithDataTable;
 use App\Models\ModerationReport;
 use App\Models\User;
+use App\Models\UserBadge;
 use App\Models\UserWarning;
 use App\Rules\PhoneBj;
 use App\Rules\Pseudo;
@@ -29,14 +33,18 @@ use App\Support\LocaleFormatter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use Throwable;
 
 /**
  * Utilisateurs & rôles `/admin/utilisateurs` (P12-01, P12-09 ; prototype admin/utilisateurs.php) : KPI, comptes à valider
- * (validation des pair·es P2-10 réutilisée), liste filtrable (recherche sur les colonnes en clair, rôle, statut, département),
+ * (validation des pair·es P2-10 réutilisée), liste filtrable (recherche sur les colonnes en clair, rôle — dont « bénévoles
+ * écoutant·es » = pair·es approuvé·es, Q97 —, statut dont banni, département, plage d'inscription et niveau d'activité,
+ * P18-08), suspension temporaire et bannissement (P18-06), badges vérifiés attribués à la main (P18-09),
  * modale du compte (rôle, suspension, réactivation, réinitialisation du mot de passe par e-mail, suppression), création d'un
  * compte, export CSV, matrice des permissions en lecture. Lecture `users.view` (la vue du modérateur : liste sans e-mail
  * ni téléphone, seule action « Suspendre »). Chaque action rejoue sa policy (UserPolicy, RG-15) et son service
@@ -56,6 +64,17 @@ final class Index extends Component
     #[SafeUrl(as: 'zone', except: '')]
     public string $zone = '';
 
+    /** P18-08 : plage de dates d'inscription (AAAA-MM-JJ, fuseau d'affichage, bornes incluses). */
+    #[SafeUrl(as: 'du', except: '')]
+    public string $joinedFrom = '';
+
+    #[SafeUrl(as: 'au', except: '')]
+    public string $joinedTo = '';
+
+    /** P18-08 : niveau d'activité d'après `last_seen_at` (ACTIVITY_LEVELS). */
+    #[SafeUrl(as: 'act', except: '')]
+    public string $activity = '';
+
     /** Compte ouvert dans la modale (jamais modifiable depuis le navigateur). */
     #[Locked]
     public ?int $accountId = null;
@@ -63,6 +82,18 @@ final class Index extends Component
     public string $roleChoice = 'membre';
 
     public string $suspendReason = '';
+
+    /** P18-06 : fin facultative d'une suspension temporaire (AAAA-MM-JJ, jour inclus). */
+    public string $suspendUntil = '';
+
+    /** P18-06 : motif du bannissement (écrit pour la personne). */
+    public string $banReason = '';
+
+    /** Filtre « Bénévoles écoutant·es » (Q97) : pair·es approuvé·es à l'inscription, rôle `pair` et compte actif. */
+    public const VOLUNTEERS = 'benevoles';
+
+    /** Niveaux d'activité (P18-08) : vu·e il y a moins de 7 jours, moins de 30 jours, inactif·ve (30 jours et plus ou jamais). */
+    public const ACTIVITY_LEVELS = ['7j', '30j', 'inactif'];
 
     // --- Création d'un compte (modale) ---
     public string $newName = '';
@@ -104,7 +135,7 @@ final class Index extends Component
 
     protected function filterProperties(): array
     {
-        return ['role', 'status', 'zone'];
+        return ['role', 'status', 'zone', 'joinedFrom', 'joinedTo', 'activity'];
     }
 
     public function export(): void
@@ -159,7 +190,7 @@ final class Index extends Component
     // --- Données de la vue -------------------------------------------------------------------------------------------
 
     /**
-     * @return array{total: int, active: int, pending: int, suspended: int}
+     * @return array{total: int, active: int, pending: int, suspended: int, banned: int}
      */
     #[Computed]
     public function stats(): array
@@ -171,6 +202,7 @@ final class Index extends Component
             'active' => (int) ($rows[UserStatus::Active->value] ?? 0),
             'pending' => (int) ($rows[UserStatus::Pending->value] ?? 0),
             'suspended' => (int) ($rows[UserStatus::Suspended->value] ?? 0),
+            'banned' => (int) ($rows[UserStatus::Banned->value] ?? 0),
         ];
     }
 
@@ -192,7 +224,7 @@ final class Index extends Component
     #[Computed]
     public function account(): ?User
     {
-        return $this->accountId === null ? null : User::query()->with(['roles', 'profile', 'zone'])->find($this->accountId);
+        return $this->accountId === null ? null : User::query()->with(['roles', 'profile', 'zone', 'badges'])->find($this->accountId);
     }
 
     /**
@@ -211,6 +243,9 @@ final class Index extends Component
             'role' => AdminRoles::of($account),
             'warnings' => UserWarning::query()->forUser($account)->count(),
             'reports' => ModerationReport::query()->againstUser($account)->count(),
+            // P18-09 : badges vérifiés détenus (clé => vrai) et badges que ce compte peut recevoir.
+            'badges' => $account->badges->mapWithKeys(static fn (UserBadge $badge): array => [(string) $badge->getRawOriginal('badge') => true])->all(),
+            'eligible_badges' => array_values(array_filter(VerifiedBadge::cases(), static fn (VerifiedBadge $badge): bool => VerifiedBadges::eligible($account, $badge))),
         ];
     }
 
@@ -257,6 +292,8 @@ final class Index extends Component
         $this->accountId = (int) $account->getKey();
         $this->roleChoice = AdminRoles::of($account);
         $this->suspendReason = '';
+        $this->suspendUntil = '';
+        $this->banReason = '';
         $this->resetErrorBag();
         unset($this->account, $this->accountFacts);
         $this->openModal('xmUserDetail');
@@ -264,7 +301,7 @@ final class Index extends Component
 
     public function closeDetail(): void
     {
-        $this->reset('accountId', 'suspendReason');
+        $this->reset('accountId', 'suspendReason', 'suspendUntil', 'banReason');
         $this->resetErrorBag();
         unset($this->account, $this->accountFacts);
     }
@@ -305,11 +342,73 @@ final class Index extends Component
         $account = $this->target();
         $this->authorize('suspend', $account);
         $this->validate(['suspendReason' => ['required', 'string', 'min:3', 'max:'.AccountSuspension::REASON_MAX]], [], ['suspendReason' => (string) __('admin.users.suspend_reason')]);
+        $until = null;
 
-        if ($this->attempt(fn () => $suspension->suspend($account, $this->actor(), $this->suspendReason))) {
+        if (trim($this->suspendUntil) !== '') {
+            $timezone = $this->timezone();
+            $this->validate([
+                'suspendUntil' => ['date_format:Y-m-d', 'after:'.now($timezone)->toDateString(), 'before_or_equal:'.now($timezone)->addDays(AccountSuspension::MAX_DAYS)->toDateString()],
+            ], [], ['suspendUntil' => (string) __('admin.users.suspend_until')]);
+            $until = Carbon::createFromFormat('Y-m-d', $this->suspendUntil, $timezone)?->endOfDay()->utc();
+        }
+
+        if ($this->attempt(fn () => $suspension->suspend($account, $this->actor(), $this->suspendReason, $until))) {
             $this->suspendReason = '';
+            $this->suspendUntil = '';
             $this->refreshAfter();
             $this->toast((string) __('admin.users.toasts.suspended', ['name' => $account->pseudo]), 'warning');
+        }
+    }
+
+    /** P18-06 (Q97) : bannir (statut définitif `banni`), motif obligatoire ; `users.ban`. */
+    public function ban(AccountBan $ban): void
+    {
+        $account = $this->target();
+        $this->authorize('ban', $account);
+        $this->validate(['banReason' => ['required', 'string', 'min:3', 'max:'.AccountBan::REASON_MAX]], [], ['banReason' => (string) __('admin.users.ban_reason')]);
+
+        if ($this->attempt(fn () => $ban->ban($account, $this->actor(), $this->banReason))) {
+            $this->banReason = '';
+            $this->refreshAfter();
+            $this->toast((string) __('admin.users.toasts.banned', ['name' => $account->pseudo]), 'warning');
+        }
+    }
+
+    /** Lever un bannissement : `users.unban`, superadmin seulement (Q97). */
+    public function unban(AccountBan $ban): void
+    {
+        $account = $this->target();
+        $this->authorize('unban', $account);
+
+        if ($this->attempt(fn () => $ban->unban($account, $this->actor()))) {
+            $this->refreshAfter();
+            $this->toast((string) __('admin.users.toasts.unbanned', ['name' => $account->pseudo]));
+        }
+    }
+
+    /** P18-09 : attribuer un badge vérifié (`badges.manage`, à la main). */
+    public function grantBadge(string $badge, VerifiedBadges $badges): void
+    {
+        $account = $this->target();
+        $kind = VerifiedBadge::tryFrom($badge) ?? abort(404);
+        $this->authorize('manageBadges', $account);
+
+        if ($this->attempt(fn () => $badges->grant($account, $kind, $this->actor()))) {
+            $this->refreshAfter();
+            $this->toast((string) __('admin.users.toasts.badge_granted', ['name' => $account->pseudo, 'badge' => $kind->label()]));
+        }
+    }
+
+    /** P18-09 : retirer un badge vérifié. */
+    public function revokeBadge(string $badge, VerifiedBadges $badges): void
+    {
+        $account = $this->target();
+        $kind = VerifiedBadge::tryFrom($badge) ?? abort(404);
+        $this->authorize('manageBadges', $account);
+
+        if ($this->attempt(fn () => $badges->revoke($account, $kind, $this->actor()))) {
+            $this->refreshAfter();
+            $this->toast((string) __('admin.users.toasts.badge_revoked', ['name' => $account->pseudo, 'badge' => $kind->label()]), 'info');
         }
     }
 
@@ -456,6 +555,9 @@ final class Index extends Component
 
         if (in_array($this->role, AdminRoles::ALL, true)) {
             $query->role($this->role);
+        } elseif ($this->role === self::VOLUNTEERS) {
+            // Q97 : « bénévoles écoutant·es » = pair·es approuvé·es (rôle `pair`, compte actif) ; pas de rôle à part.
+            $query->role('pair')->where('status', UserStatus::Active->value);
         }
 
         if (UserStatus::tryFrom($this->status) !== null) {
@@ -466,7 +568,45 @@ final class Index extends Component
             $query->where('zone_id', (int) $this->zone);
         }
 
+        // P18-08 : plage d'inscription (jours du fuseau d'affichage, bornes incluses ; valeur mal formée ignorée).
+        if (($from = $this->day($this->joinedFrom)) !== null) {
+            $query->where('created_at', '>=', $from->copy()->startOfDay()->utc());
+        }
+
+        if (($to = $this->day($this->joinedTo)) !== null) {
+            $query->where('created_at', '<=', $to->copy()->endOfDay()->utc());
+        }
+
+        // P18-08 : niveau d'activité d'après la dernière visite (`last_seen_at`).
+        match ($this->activity) {
+            '7j' => $query->where('last_seen_at', '>=', now()->subDays(7)),
+            '30j' => $query->where('last_seen_at', '>=', now()->subDays(30)),
+            'inactif' => $query->where(fn (Builder $inactive) => $inactive->whereNull('last_seen_at')->orWhere('last_seen_at', '<', now()->subDays(30))),
+            default => null,
+        };
+
         return $query;
+    }
+
+    /** Jour AAAA-MM-JJ dans le fuseau d'affichage ; null si vide ou mal formé. */
+    private function day(string $value): ?Carbon
+    {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) !== 1) {
+            return null;
+        }
+
+        try {
+            $day = Carbon::createFromFormat('Y-m-d', $value, $this->timezone());
+        } catch (Throwable) {
+            return null;
+        }
+
+        return $day instanceof Carbon && $day->format('Y-m-d') === $value ? $day : null;
+    }
+
+    private function timezone(): string
+    {
+        return (string) config('xomiton.display_timezone', 'UTC');
     }
 
     private function seesContacts(): bool

@@ -54,6 +54,7 @@ final class ReportContent
         private readonly FeedCounters $counters,
         private readonly ForumCounters $forumCounters,
         private readonly ContentVisibility $visibility,
+        private readonly ReportPrioritizer $prioritizer,
     ) {}
 
     public static function autoHideRule(): AutoHideRule
@@ -150,6 +151,26 @@ final class ReportContent
     }
 
     /**
+     * Signalement ouvert par la détection du spam (P18-07, SpamDetector) : motif « Spam », contenu mis en quarantaine
+     * (masqué, ContentVisibility) en attendant la relecture ; le détail dit le signal (fréquence ou doublons) et le
+     * nombre, jamais le texte. Jamais pour un message privé (la détection ne les lit pas).
+     */
+    public function spam(Post|Comment|ForumTopic|ForumReply $subject, string $signal, int $count): ModerationReport
+    {
+        $report = $this->createReport($subject, [
+            'reporter_user_id' => null,
+            'reporter_label' => (string) __('feed.moderation.spam_reporter'),
+            'reason' => ContentReportReason::Spam->label(),
+            'details' => Str::limit((string) __('feed.moderation.spam_details.'.$signal, ['count' => $count]), 500, ''),
+        ]);
+
+        $this->visibility->hide($subject, (string) __('feed.moderation.spam_hidden_reason'));
+        $this->dispatch($report, null);
+
+        return $report;
+    }
+
+    /**
      * @param  array<string, mixed>  $attributes
      */
     private function createReport(Post|Comment|ForumTopic|ForumReply|Message|User $subject, array $attributes): ModerationReport
@@ -163,7 +184,7 @@ final class ReportContent
             default => ModerationKind::User,
         };
 
-        return ModerationReport::query()->create($attributes + [
+        $report = ModerationReport::query()->create($attributes + [
             'kind' => $kind,
             'subject_type' => $subject->getMorphClass(),
             'subject_id' => $subject->getKey(),
@@ -171,6 +192,11 @@ final class ReportContent
             'reported_user_id' => $subject instanceof User ? $subject->getKey() : $subject->user_id,
             'status' => ModerationStatus::Pending,
         ]);
+
+        // P18-04 : score de priorité de tous les signalements en attente du contenu (motif, personnes, nature, récidive).
+        $report->forceFill(['priority' => $this->prioritizer->refresh((string) $report->subject_type, (int) $report->subject_id)])->syncOriginal();
+
+        return $report;
     }
 
     private function applyAutoHide(Post|Comment|ForumTopic|ForumReply $subject): bool

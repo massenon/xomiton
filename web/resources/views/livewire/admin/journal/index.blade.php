@@ -34,6 +34,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-12 col-sm-4 col-lg-3">
+                    <label class="visually-hidden" for="xmJournalModerator">{{ __('admin.audit.filters.moderator') }}</label>
+                    <select class="form-select form-select-sm" id="xmJournalModerator" wire:model.live="moderator">
+                        <option value="">{{ __('admin.audit.filters.all_moderators') }}</option>
+                        @foreach ($this->moderators as $member)
+                            <option value="{{ $member['id'] }}">{{ $member['pseudo'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="col-6 col-sm-4 col-lg-2">
                     <label class="visually-hidden" for="xmJournalFrom">{{ __('admin.audit.filters.from') }}</label>
                     <input class="form-control form-control-sm @if ($periodError) is-invalid @endif" type="date" id="xmJournalFrom" wire:model.live="from" title="{{ __('admin.audit.filters.from') }}"

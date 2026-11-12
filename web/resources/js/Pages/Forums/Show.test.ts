@@ -137,4 +137,67 @@ describe('Page /forums/{ulid}', () => {
         await waitFor(() => expect(visit).toHaveBeenCalledWith('/forums?forum=f3'));
         await waitFor(() => expect(document.querySelector('#modalDeleteForumContent')).toBeNull());
     });
+
+    it('affiche le badge « Résolu » et met la réponse validée en tête avec sa mention (P18-03)', async () => {
+        const first = makeReply(1);
+        const accepted = makeReply(2, { body: 'Va voir l’infirmière scolaire.' });
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ accepted_reply_id: 2, is_solved: true, replies_count: 2 }), replies: replies([first, accepted]) }) });
+
+        expect(screen.getByText('Résolu')).toBeTruthy();
+        const cards = document.querySelectorAll('article[id^="reponse-"]');
+        expect(cards[0]?.id).toBe('reponse-2');
+        expect(cards[0]?.getAttribute('aria-describedby')).toBe('reponse-2-validee');
+        expect(screen.getByText('Réponse validée')).toBeTruthy();
+        expect(screen.queryByRole('button', { name: /Marquer comme réponse validée/ })).toBeNull();
+    });
+
+    it('laisse l’auteur·rice marquer puis retirer la réponse validée', async () => {
+        const { calls } = fakeFetch((call) => call.method === 'POST'
+            ? json({ data: makeTopic({ accepted_reply_id: 1, is_solved: true }) })
+            : json({ data: makeTopic({ accepted_reply_id: null, is_solved: false }) }));
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ is_mine: true, can: { reply: true, delete: true, report: false, accept: true } }) }) });
+
+        await fireEvent.click(screen.getByRole('button', { name: 'Marquer comme réponse validée (réponse de Membre_1)' }));
+        await flushPromises();
+        expect(calls[0]).toMatchObject({ url: `/api/v1/forums/topics/${TOPIC_ID}/accepted-reply`, method: 'POST', body: { reply_id: 1 } });
+        await waitFor(() => expect(screen.getByText('Résolu')).toBeTruthy());
+
+        await fireEvent.click(screen.getByRole('button', { name: 'Retirer la validation (réponse de Membre_1)' }));
+        await flushPromises();
+        expect(calls[1]).toMatchObject({ url: `/api/v1/forums/topics/${TOPIC_ID}/accepted-reply`, method: 'DELETE' });
+        await waitFor(() => expect(screen.queryByText('Résolu')).toBeNull());
+    });
+
+    it('affiche le badge vérifié à côté du pseudo sans doubler le badge de rôle du pair (P18-09)', async () => {
+        const verified = [{ key: 'pair_animateur', label: 'Pair animateur·rice', icon: 'award-fill' }];
+        const peer = makeReply(1, { author: author({ pseudo: 'Kossi_pair', role: 'pair', badge: 'Pair animateur·rice', badges: verified }) });
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ author: author({ badges: [{ key: 'membre_verifie', label: 'Membre vérifié', icon: 'patch-check-fill' }] }) }), replies: replies([peer]) }) });
+
+        expect(screen.getByText('Membre vérifié')).toBeTruthy();
+        expect(screen.getAllByText('Pair animateur·rice')).toHaveLength(1);
+        expect(document.querySelector('#reponse-1 [data-badge="pair_animateur"]')).not.toBeNull();
+    });
+
+    it('laisse la modération épingler puis verrouiller le sujet (P18-11), jamais un·e membre', async () => {
+        const { calls } = fakeFetch((call) => json({ data: makeTopic({ is_pinned: call.url.endsWith('/pin'), is_locked: call.url.endsWith('/lock'), can: { reply: !call.url.endsWith('/lock'), delete: true, report: false, moderate: true } }) }));
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ can: { reply: true, delete: true, report: false, moderate: true } }) }) });
+
+        const pin = screen.getByRole('button', { name: /Épingler/ });
+        expect(pin.getAttribute('aria-pressed')).toBe('false');
+        await fireEvent.click(pin);
+        await flushPromises();
+        expect(calls.at(-1)).toMatchObject({ method: 'POST', url: `/api/v1/forums/topics/${TOPIC_ID}/pin` });
+        expect(screen.getByRole('button', { name: /Épingler/ }).getAttribute('aria-pressed')).toBe('true');
+
+        await fireEvent.click(screen.getByRole('button', { name: /Verrouiller/ }));
+        await flushPromises();
+        expect(calls.at(-1)).toMatchObject({ method: 'POST', url: `/api/v1/forums/topics/${TOPIC_ID}/lock` });
+        expect(screen.getByRole('button', { name: /Verrouiller/ }).getAttribute('aria-pressed')).toBe('true');
+        expect(document.querySelector('.alert.alert-info .bi-lock')).not.toBeNull();
+    });
+
+    it('ne montre pas les gestes de modération à un·e membre', async () => {
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps() });
+        expect(screen.queryByRole('button', { name: /Épingler/ })).toBeNull();
+    });
 });

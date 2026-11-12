@@ -35,6 +35,7 @@ const form = reactive({
     is_online: false,
     online_url: '',
     category: '',
+    type: 'autre',
     group_id: props.group && props.options.groups.some((option) => option.value === props.group) ? props.group : '',
     description: '',
     is_public: false,
@@ -95,6 +96,7 @@ async function onSubmit() {
             is_online: form.is_online,
             online_url: form.is_online ? optional(form.online_url) : null,
             category_id: form.category === '' ? null : Number(form.category.slice(1)),
+            type: form.type,
             description: optional(form.description),
             group: form.group_id === '' ? null : form.group_id,
             is_public: props.options.can_publish_public && form.is_public,
@@ -119,6 +121,7 @@ async function onSubmit() {
     <XmModal ref="modal" id="modalCreateEvent" :title="t('community.events.create.title')" type="form" form :open="true" :action="t('community.events.create.submit')" :busy="busy" :dirty="dirty" @submit="onSubmit" @hidden="emit('hidden')">
         <XmErrorSummary :messages="errors" :title="t('feed.create.errors_title')" />
         <XmAlert v-if="failure" type="danger" class="small">{{ failure }}</XmAlert>
+        <XmAlert v-if="options.requires_approval" type="info" class="small" data-xm-event-approval>{{ t('community.events.create.requires_approval') }}</XmAlert>
         <XmField v-model="form.title" name="title" :label="t('community.events.create.name')" :placeholder="t('community.events.create.name_placeholder')" :maxlength="options.limits.title_max" :error="errors.title" required :minlength="options.limits.title_min" />
         <div class="row g-3">
             <div class="col-sm-6"><XmField v-model="form.date" name="date" type="date" :label="t('community.events.create.date')" :error="errors.date" required :min="today" /></div>
@@ -129,6 +132,7 @@ async function onSubmit() {
         <XmField v-model="form.address" name="address" optional :label="t('community.events.create.address')" :placeholder="t('community.events.create.address_placeholder')" :hint="t('community.events.create.address_help')" :maxlength="options.limits.address_max" :error="errors.address" autocomplete="off" />
         <XmField v-model="form.is_online" name="is_online" type="switch" :label="t('community.events.create.is_online')" :error="errors.is_online" />
         <XmField v-if="form.is_online" v-model="form.online_url" name="online_url" type="url" inputmode="url" :label="t('community.events.create.online_url')" :placeholder="t('community.events.create.online_url_placeholder')" :hint="t('community.events.create.online_url_help')" :maxlength="500" :error="errors.online_url" autocomplete="off" />
+        <XmField v-if="options.types?.length" v-model="form.type" name="type" type="select" :label="t('community.events.create.type')" :options="options.types" :error="errors.type" />
         <div class="row g-3">
             <div v-if="options.categories.length" class="col-sm-6"><XmField v-model="form.category" name="category" type="select" :label="t('community.events.create.category')" :options="categories" :error="errors.category" /></div>
             <div v-if="options.groups.length" class="col-sm-6"><XmField v-model="form.group_id" name="group_id" type="select" :label="t('community.events.create.group')" :options="groups" :hint="t('community.events.create.group_help')" :error="errors.group_id" /></div>

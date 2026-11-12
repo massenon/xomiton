@@ -41,7 +41,7 @@ final class UserPostsQuery
         $allowed = ProfileAudience::allows(
             $owner->profile?->visibility,
             $isSelf,
-            isReachable: ! $owner->isSuspended() && ! $owner->isAnonymized(),
+            isReachable: ! $owner->isBlocked() && ! $owner->isAnonymized(),
             followsOwner: ! $isSelf && Follow::query()->where('follower_id', $viewer->getKey())->where('followed_id', $owner->getKey())->exists(),
             blocked: ! $isSelf && $this->blocked($viewer, $owner),
         );

@@ -45,6 +45,9 @@ final class AdminReportResource extends JsonResource
             'status' => $report->status->value,
             'action' => $report->action,
             'hidden' => $hidden,
+            // P18-04 : score de priorité (0 à 110) et niveau (`haute`, `moyenne`, `basse`).
+            'priority' => (int) $report->priority,
+            'priority_level' => $report->priorityLevel(),
             'reports' => $this->siblings['reports'] ?? 1,
             'people' => $this->siblings['people'] ?? 1,
             'created_at' => $report->created_at?->toIso8601String(),

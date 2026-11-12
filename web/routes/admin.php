@@ -11,13 +11,16 @@ use App\Http\Controllers\Admin\ReportDownloadController;
 use App\Http\Controllers\Web\PlaceholderController;
 use App\Http\Middleware\ForgetSearchTerms;
 use App\Livewire\Admin\Alerts\Index as AlertsIndex;
+use App\Livewire\Admin\Announcements\Index as AnnouncementsIndex;
 use App\Livewire\Admin\Assistant\Index as AssistantIndex;
 use App\Livewire\Admin\Backups\Index as BackupsIndex;
 use App\Livewire\Admin\Ccc\Index as CccIndex;
 use App\Livewire\Admin\Content\Index as ContentIndex;
+use App\Livewire\Admin\Content\Proposals as ContentProposals;
 use App\Livewire\Admin\Dashboard\Index as DashboardIndex;
 use App\Livewire\Admin\Directory\Index as DirectoryIndex;
 use App\Livewire\Admin\Emails\Index as EmailsIndex;
+use App\Livewire\Admin\Events\Index as EventsIndex;
 use App\Livewire\Admin\Followups\Index as FollowupsIndex;
 use App\Livewire\Admin\Forms\Index as FormsIndex;
 use App\Livewire\Admin\Gateways\Index as GatewaysIndex;
@@ -35,6 +38,7 @@ use App\Livewire\Admin\Registrations\Index as RegistrationsIndex;
 use App\Livewire\Admin\Reports\Index as ReportsIndex;
 use App\Livewire\Admin\Search\Index as SearchIndex;
 use App\Livewire\Admin\Settings\Index as SettingsIndex;
+use App\Livewire\Admin\Suggestions\Index as SuggestionsIndex;
 use App\Livewire\Admin\Sync\Index as SyncIndex;
 use App\Livewire\Admin\Updates\Index as UpdatesIndex;
 use App\Livewire\Admin\Users\Index as UsersIndex;
@@ -140,10 +144,17 @@ Route::get('/moderation/videos', ModerationVideos::class)->middleware('can:moder
 // AdminNavigation) ; chaque onglet et chaque action rejouent la permission et la policy de leur contenu dans le composant.
 // Contenu : `thematiques.manage` (onglets Ressources `resources.manage`, FAQ `faqs.manage`).
 Route::get('/contenu', ContentIndex::class)->middleware('can:thematiques.manage')->name('contenu');
+// P18-12 : file de validation des ressources proposées par les membres (`resources.manage`, rejouée à chaque action).
+Route::get('/contenu/propositions', ContentProposals::class)->middleware('can:resources.manage')->name('contenu.propositions');
 // Outils CCC : `ccc_tools.manage` (onglet Lois : `laws.manage` en plus).
 Route::get('/ccc', CccIndex::class)->middleware('can:ccc_tools.manage')->name('ccc');
 // Réseau social : `posts.moderate` (modérateur·rice, admin, superadmin) ; approuver et mettre en avant : `moderation.manage` (PagePolicy).
 Route::get('/reseau', NetworkIndex::class)->middleware('can:posts.moderate')->name('reseau');
+// P18-14 : calendrier des événements (lecture `posts.moderate` ; approuver / refuser `moderation.manage` ; réglage de la file
+// d'approbation `events.manage`) et boîte à suggestions (`suggestions.manage`). P18-13 : annonce globale (`announcements.manage`).
+Route::get('/evenements', EventsIndex::class)->middleware('can:posts.moderate')->name('evenements');
+Route::get('/suggestions', SuggestionsIndex::class)->middleware('can:suggestions.manage')->name('suggestions');
+Route::get('/annonces', AnnouncementsIndex::class)->middleware('can:announcements.manage')->name('annonces');
 // Assistant LLM : `assistant_kb.manage` (base de connaissances, consigne, garde-fous, conversations signalées).
 Route::get('/assistant', AssistantIndex::class)->middleware('can:assistant_kb.manage')->name('assistant');
 // Passerelles : `gateways.connect` (comptes) ; file, modèles et salons rejouent `gateways.publish` (OutboundPostPolicy).

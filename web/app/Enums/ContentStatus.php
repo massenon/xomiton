@@ -6,13 +6,15 @@ namespace App\Enums;
 
 /**
  * Statut éditorial des contenus publiés par slug (thématiques, ressources) et des événements
- * (DATABASE_DICTIONARY.md §3). « masque » = retiré de l'affichage sans suppression.
+ * (DATABASE_DICTIONARY.md §3). « masque » = retiré de l'affichage sans suppression. « en_attente » (P18-14) : événement
+ * créé par un·e membre quand la file d'approbation est activée, invisible jusqu'à la décision de la modération.
  */
 enum ContentStatus: string
 {
     case Draft = 'brouillon';
     case Published = 'publie';
     case Hidden = 'masque';
+    case Pending = 'en_attente';
 
     public function label(): string
     {
@@ -25,6 +27,7 @@ enum ContentStatus: string
             self::Draft => 'secondary',
             self::Published => 'success',
             self::Hidden => 'warning',
+            self::Pending => 'info',
         };
     }
 

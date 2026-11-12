@@ -136,7 +136,7 @@ function onCreated(topic: ForumTopic) {
                     <div class="d-flex gap-3">
                         <span class="xm-feature-icon"><i :class="`bi bi-${item.icon} fs-4 text-primary`" aria-hidden="true"></i></span>
                         <div>
-                            <h2 class="h6 mb-1">{{ item.name }}</h2>
+                            <h2 class="h6 mb-1">{{ item.name }}<span v-if="item.is_archived" class="badge bg-light text-secondary ms-1" :title="t('community.forums.archived_help')"><i class="bi bi-archive me-1" aria-hidden="true"></i>{{ t('community.forums.archived') }}</span></h2>
                             <p class="small text-secondary mb-1">{{ item.description }}</p>
                             <p class="small mb-0">{{ t('community.forums.topics', { count: item.topics_count }, item.topics_count) }} {{ t('common.separator') }} {{ t('community.forums.messages', { count: item.posts_count }, item.posts_count) }}</p>
                         </div>
@@ -167,6 +167,7 @@ function onCreated(topic: ForumTopic) {
                             <div class="fw-bold text-break">
                                 {{ topic.title }}
                                 <span v-if="topic.is_pinned" class="badge bg-primary bg-opacity-10 text-primary ms-1"><i class="bi bi-pin-angle me-1" aria-hidden="true"></i>{{ t('community.forums.pinned') }}</span>
+                                <span v-if="topic.is_solved" class="badge bg-success bg-opacity-10 text-success ms-1"><i class="bi bi-check2-circle me-1" aria-hidden="true"></i>{{ t('community.forums.solved') }}</span>
                                 <span v-if="topic.is_locked" class="badge bg-light text-secondary ms-1"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ t('community.forums.locked') }}</span>
                             </div>
                             <div class="small text-secondary">{{ meta(topic) }}</div>

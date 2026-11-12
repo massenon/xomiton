@@ -67,7 +67,7 @@ final class OtpSendController extends ApiController
     /** Un code `login` ne s'obtient jamais sans mot de passe : seul un code encore valable peut être renouvelé. */
     private function resendLogin(?User $user, ?string $ip): void
     {
-        if ($user === null || $user->isSuspended() || $this->otp->currentCode($user->email, OtpPurpose::Login) === null) {
+        if ($user === null || $user->isBlocked() || $this->otp->currentCode($user->email, OtpPurpose::Login) === null) {
             return;
         }
 

@@ -124,7 +124,8 @@ async function openCreate() {
 }
 
 function onCreated(event: EventItem) {
-    toast.show(t('community.events.toasts.created'), 'success');
+    // P18-14 : file d'approbation active → l'événement attend la modération (visible de son organisateur·rice seulement).
+    toast.show(t(event.is_pending ? 'community.events.toasts.created_pending' : 'community.events.toasts.created'), 'success');
     router.visit(event.url);
 }
 </script>

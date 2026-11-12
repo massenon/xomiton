@@ -54,6 +54,18 @@ export interface MaintenanceNotice {
     ends_at: string;
 }
 
+/** Annonce globale (P18-13, Announcements::payload) : espace membre seulement, fermeture mémorisée par compte. */
+export interface Announcement {
+    id: number;
+    title: string;
+    message: string;
+    level: 'info' | 'important';
+    /** Chemin interne facultatif (`/forums`…), jamais une adresse externe. */
+    link: string | null;
+    starts_at: string | null;
+    ends_at: string | null;
+}
+
 export interface SharedProps {
     [key: string]: unknown;
     auth: { user: SharedUser | null };
@@ -63,6 +75,7 @@ export interface SharedProps {
     flash: { toast: FlashMessage | null; status: FlashMessage | null };
     lang: { locale: string; fallback: string };
     maintenance_notice?: MaintenanceNotice | null;
+    announcement?: Announcement | null;
     ui: {
         neutral_title: boolean;
         neutral_label: string;

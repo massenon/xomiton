@@ -13,7 +13,7 @@
             </div>
             <div class="col-md-4">
                 <x-field name="thematiqueForm.category_id" type="select" :label="__('admin_content.thematiques.fields.category_id')" wire:model.blur="thematiqueForm.category_id"
-                         :options="['' => __('admin_content.choose')] + $this->categoryOptions->where('kind', 'thematique')->pluck('label', 'id')->all()" />
+                         :options="['' => __('admin_content.choose')] + $this->categoryOptions->whereIn('kind', [\App\Models\Category::KIND_THEMATIQUE, \App\Models\Category::KIND_DIGITAL_VIOLENCE])->pluck('label', 'id')->all()" />
             </div>
             <div class="col-12">
                 <x-field name="thematiqueForm.summary" type="textarea" :label="__('admin_content.thematiques.fields.summary')" wire:model.blur="thematiqueForm.summary" rows="3" maxlength="500" />
@@ -26,6 +26,9 @@
             </div>
             <div class="col-md-4">
                 <x-field name="thematiqueForm.reading_minutes" type="number" :label="__('admin_content.thematiques.fields.reading_minutes')" wire:model.blur="thematiqueForm.reading_minutes" inputmode="numeric" />
+            </div>
+            <div class="col-12">
+                <x-field name="thematiqueForm.legal_references" type="textarea" optional :label="__('admin_content.thematiques.fields.legal_references')" wire:model.blur="thematiqueForm.legal_references" rows="5" :hint="__('admin_content.thematiques.legal_help')" />
             </div>
             <div class="col-12">
                 <label class="form-label fw-semibold" for="xmThematiqueCover">{{ __('admin_content.thematiques.fields.cover') }} <span class="small text-secondary fw-normal">{{ __('components.field.optional') }}</span></label>

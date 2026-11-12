@@ -43,6 +43,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'polls.create' => $members,
             'comments.create' => $members,
             'posts.moderate' => $moderators,
+            // P18-10 : forums (créer, renommer, réordonner, archiver) ; P18-14 : réglage de la file d'approbation des
+            // événements ; boîte à suggestions (lecture, statut, réponse de l'équipe).
+            'forums.manage' => $admins,
+            'events.manage' => $admins,
+            'suggestions.manage' => $moderators,
 
             // Ressources et outils CCC
             'ccc_tools.view' => $members,
@@ -104,6 +109,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'resources.manage' => $admins,
             'faqs.manage' => $admins,
             'laws.manage' => $admins,
+            // P18-13 (Q97) : annonce globale de l'espace membre et de l'application (jamais le site public).
+            'announcements.manage' => $admins,
 
             // Assistant (base de connaissances)
             'assistant_kb.manage' => $admins,
@@ -126,6 +133,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'users.suspend' => $moderators,
             'users.manage' => $admins,
             'users.validate_peers' => $admins,
+            // P18-06 (Q97) : bannir (statut définitif `banni`) ; lever un bannissement est réservé au superadmin.
+            'users.ban' => $admins,
+            'users.unban' => $superOnly,
+            // P18-09 (Q97) : badges vérifiés par l'administration (« Membre vérifié », « Pair animateur·rice »), à la main.
+            'badges.manage' => $admins,
             'registrations.manage' => $admins,
 
             // Rôles d'administration

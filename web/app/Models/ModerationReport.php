@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domain\Moderation\ReportPriority;
 use App\Enums\ModerationKind;
 use App\Enums\ModerationStatus;
 use Database\Factories\ModerationReportFactory;
@@ -34,8 +35,14 @@ class ModerationReport extends Model
 
     public const ACTION_NONE = 'aucune';
 
+    /** P18-06 : le contenu a été relu et jugé conforme (distinct de « aucune » = signalement ignoré, classé sans suite). */
+    public const ACTION_APPROVE = 'approuve';
+
+    /** P18-06 : compte banni (statut définitif `banni`, Q97). */
+    public const ACTION_BAN = 'bannissement';
+
     /** @var list<string> */
-    public const ACTIONS = [self::ACTION_HIDE, self::ACTION_DELETE, self::ACTION_WARN, self::ACTION_SUSPEND, self::ACTION_NONE];
+    public const ACTIONS = [self::ACTION_HIDE, self::ACTION_DELETE, self::ACTION_WARN, self::ACTION_SUSPEND, self::ACTION_BAN, self::ACTION_APPROVE, self::ACTION_NONE];
 
     /**
      * @var list<string>
@@ -54,6 +61,7 @@ class ModerationReport extends Model
         'action',
         'handled_by',
         'handled_at',
+        'priority',
     ];
 
     /**
@@ -66,6 +74,7 @@ class ModerationReport extends Model
             'subject_id' => 'integer',
             'status' => ModerationStatus::class,
             'handled_at' => 'datetime',
+            'priority' => 'integer',
         ];
     }
 
@@ -169,6 +178,22 @@ class ModerationReport extends Model
     public function reporterLabel(): string
     {
         return $this->reporter?->pseudo ?? $this->reporter_label ?? 'Anonyme';
+    }
+
+    /** Niveau de priorité (P18-04) : `haute`, `moyenne` ou `basse` d'après le score rangé. */
+    public function priorityLevel(): string
+    {
+        return ReportPriority::level((int) $this->priority);
+    }
+
+    /**
+     * Tri de la file (P18-04) : score de priorité décroissant, puis le plus ancien d'abord.
+     *
+     * @param  Builder<ModerationReport>  $query
+     */
+    public function scopeByPriority(Builder $query): void
+    {
+        $query->orderByDesc('priority')->orderBy('created_at')->orderBy('id');
     }
 
     public function isPending(): bool

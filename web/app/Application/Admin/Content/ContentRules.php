@@ -55,11 +55,13 @@ final class ContentRules
     {
         return [
             'title' => ['required', 'string', 'min:5', 'max:200'],
-            'category_id' => ['required', 'integer', Rule::exists('categories', 'id')->where('kind', Category::KIND_THEMATIQUE)],
+            // P19 : une fiche peut appartenir à une catégorie des violences numériques (carrefour /violences-numeriques).
+            'category_id' => ['required', 'integer', Rule::exists('categories', 'id')->whereIn('kind', [Category::KIND_THEMATIQUE, Category::KIND_DIGITAL_VIOLENCE])],
             'slug' => ['nullable', 'string', 'max:120', 'regex:'.self::SLUG_PATTERN, Rule::unique('thematiques', 'slug')->ignore($id), self::slugAvailable(SlugRedirect::TYPE_THEMATIQUE, $id)],
             'summary' => ['required', 'string', 'min:20', 'max:500'],
             'body' => ['nullable', 'string', 'max:200000'],
             'content_warning' => ['nullable', 'string', 'max:255'],
+            'legal_references' => ['nullable', 'string', 'max:20000'],
             'reading_minutes' => ['required', 'integer', 'between:1,120'],
             'status' => ['required', Rule::in([ContentStatus::Draft->value, ContentStatus::Published->value])],
             ...self::meta('thematiques', $id),

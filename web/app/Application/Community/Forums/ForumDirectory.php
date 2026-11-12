@@ -66,7 +66,7 @@ final class ForumDirectory
             ->published()
             ->whereIn('forum_topics.forum_id', Forum::query()->active()->select('id'))
             ->when($forum !== null, static fn (Builder $q) => $q->where('forum_topics.forum_id', $forum?->getKey()))
-            ->with(['forum', 'user.profile', 'user.roles']);
+            ->with(['forum', 'user.profile', 'user.roles', 'user.badges']);
 
         if ($search !== '') {
             $pattern = LikePattern::contains($search);
@@ -85,7 +85,7 @@ final class ForumDirectory
         $query = ForumReply::query()
             ->where('topic_id', $topic->getKey())
             ->where('status', PostStatus::Published)
-            ->with(['user.profile', 'user.roles']);
+            ->with(['user.profile', 'user.roles', 'user.badges']);
 
         return $this->feed->withoutBlocked($query, $viewer)->orderBy('created_at')->orderBy('id')->paginate($perPage);
     }

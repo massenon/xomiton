@@ -13,6 +13,7 @@ use App\Models\DirectoryContact;
 use App\Models\Faq;
 use App\Models\Resource;
 use App\Models\Thematique;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
@@ -30,7 +31,8 @@ use Illuminate\Support\Collection;
  *     colonnes d'une carte (résumé compris) et catégorie chargée seulement si elle est un filtre de la liste ;
  *   - ressource principale : décision par défaut (plan §7) — la ressource publiée la plus récente rattachée à la fiche,
  *     hors actualités (`kind = article`, Q1), faute de colonne dédiée ;
- *   - FAQ : décision par défaut (plan §7) — questions publiées de la catégorie de la fiche, 3 à 5, sinon aucune.
+ *   - FAQ : questions publiées propres à la fiche (`faqs.thematique_id`, P19) si elles sont au moins 3, sinon décision par
+ *     défaut (plan §7) — questions publiées de la catégorie de la fiche, 3 à 5, sinon aucune.
  */
 final class ShowThematique
 {
@@ -154,13 +156,21 @@ final class ShowThematique
     /** @return Collection<int, Faq> */
     private function faqs(Thematique $thematique): Collection
     {
-        $faqs = Faq::query()
-            ->published()
-            ->where('category_id', $thematique->category_id)
-            ->ordered()
-            ->limit(max(0, (int) config('xomiton.content.faq_max', 5)))
-            ->get(['id', 'question', 'answer']);
+        $min = (int) config('xomiton.content.faq_min', 3);
+        $max = max(0, (int) config('xomiton.content.faq_max', 5));
 
-        return $faqs->count() < (int) config('xomiton.content.faq_min', 3) ? collect() : $faqs;
+        // P19 : questions propres à la fiche (`faqs.thematique_id`) d'abord, sinon celles de sa catégorie ; une seule
+        // requête pour les deux (peu de questions par catégorie), partagées ensuite.
+        [$own, $category] = Faq::query()
+            ->published()
+            ->where(static fn (Builder $query): Builder => $query->where('thematique_id', $thematique->getKey())
+                ->orWhere(static fn (Builder $q): Builder => $q->whereNull('thematique_id')->where('category_id', $thematique->category_id)))
+            ->ordered()
+            ->get(['id', 'thematique_id', 'question', 'answer'])
+            ->partition(static fn (Faq $faq): bool => $faq->thematique_id !== null);
+
+        $faqs = ($own->count() >= $min ? $own : $category)->take($max)->values();
+
+        return $faqs->count() < $min ? collect() : $faqs;
     }
 }

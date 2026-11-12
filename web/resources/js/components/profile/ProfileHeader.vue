@@ -16,6 +16,7 @@ import { useToast } from '@/app/useToast';
 import { profileApi, type ProfileImages } from '@/profile/api';
 import type { MemberProfile, ProfileLinks, ProfileTab, ProfileTabLink } from '@/profile/types';
 import XmAvatar from '@/components/XmAvatar.vue';
+import XmVerifiedBadges from '@/components/XmVerifiedBadges.vue';
 
 const props = defineProps<{
     profile: MemberProfile;
@@ -118,6 +119,7 @@ async function remove(kind: 'avatar' | 'cover') {
                         {{ profile.pseudo }}
                         <i v-if="profile.verified" class="bi bi-patch-check-fill text-primary small" role="img" :aria-label="t('profile.verified_role', { role: profile.role_label })" :title="t('profile.verified_role', { role: profile.role_label })"></i>
                     </h1>
+                    <p v-if="profile.badges?.length" class="mb-1"><XmVerifiedBadges :badges="profile.badges" /></p>
                     <p class="mb-0 text-secondary">
                         <span v-if="profile.pronouns">{{ profile.pronouns }} · </span>{{ t('profile.pseudo', { pseudo: profile.pseudo }) }} · {{ t('profile.connections', { count: stats.connections }, stats.connections) }}
                     </p>

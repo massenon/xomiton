@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
         RolesAndPermissionsSeeder::class,
         ContentSeeder::class,
         ThematiqueFaqSeeder::class,
+        // P19-06 : fiches, FAQ et BD des violences numériques (aussi en production par xomiton:install).
+        ViolencesNumeriquesSeeder::class,
         ForumsSeeder::class,
         ValidationRulesSeeder::class,
         IndicatorsSeeder::class,

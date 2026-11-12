@@ -29,6 +29,8 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <!-- P18-07 : détection du spam coupée par défaut (de nombreux tests publient vite ou le même texte) ; ses tests la rallument. -->
+        <env name="XOMITON_SPAM_DETECTION" value="false"/>
         <!-- Les tests décrivent la production (robots.txt, sitemap) : indépendants du SEO_ALLOW_INDEXING=false de .env.example. -->
         <env name="SEO_ALLOW_INDEXING" value="true"/>
         <env name="PULSE_ENABLED" value="false"/>

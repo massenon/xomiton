@@ -42,6 +42,8 @@ const lazyModules = [
   ['[x-data^="xmSelfCheck"]', () => import('./public/violences.js')],
   ['[x-data^="xmLaws"]', () => import('./public/lois.js')],
   ['[x-data^="xmQuiz"]', () => import('./public/do-glegbe.js')],
+  // P19-04 : visionneuse de BD publique /bd/{key} (sans JavaScript : toutes les planches à la suite).
+  ['[x-data^="xmComic"]', () => import('./public/comic-viewer.js')],
 ].filter(([selector]) => document.querySelector(selector));
 
 if (lazyModules.length > 0) {

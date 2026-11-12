@@ -15,6 +15,8 @@ return [
             'fil', 'fil.*', 'messages', 'groupes.*', 'pages.*', 'evenements.*', 'forums.*', 'qui-suivre', 'profil', 'membres.show',
             'parametres', 'notifications', 'assistant', 'annuaire', 'recherche', 'medias', 'ccc', 'espace-pair', 'espace-pair.*', 'collecte',
             'deconnexion', 'design-system', 'design-system.*',
+            // P18-12, P18-14 : contributions des membres.
+            'ressources.proposer', 'suggestions',
             // Parcours de crise et pages publiques atteintes depuis l'espace connecté.
             'home', 'sos', 'signaler', 'signaler.suivi', 'urgences', 'thematiques.*', 'ressources.index', 'ressources.show',
             'violences', 'lois', 'do-glegbe', 'aide.index', 'aide.show', 'actualites.*', 'confidentialite', 'connexion',

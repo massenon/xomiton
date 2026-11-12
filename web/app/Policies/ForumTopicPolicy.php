@@ -76,6 +76,17 @@ final class ForumTopicPolicy
         return ($topic->user_id !== null && $topic->user_id === $user->getKey()) || $user->can('posts.moderate');
     }
 
+    /**
+     * Valider (ou retirer) la réponse qui résout le sujet (P18-03, Q97) : l'auteur·rice du sujet — même anonyme : le
+     * compte reste lié au sujet — ou la modération (`posts.moderate`). Le sujet doit être visible de la personne.
+     */
+    public function accept(User $user, ForumTopic $topic): bool
+    {
+        $isAuthor = $topic->user_id !== null && $topic->user_id === $user->getKey();
+
+        return ($isAuthor || $user->can('posts.moderate')) && $user->can('social.access') && ! $topic->trashed();
+    }
+
     public function moderate(User $user, ForumTopic $topic): bool
     {
         return $user->can('posts.moderate');

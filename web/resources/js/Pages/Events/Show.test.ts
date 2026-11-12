@@ -74,4 +74,17 @@ describe('Fiche /evenements/{ulid}', () => {
         expect(screen.getByText('Événement passé')).toBeTruthy();
         expect(screen.queryByRole('button', { name: /Je participe/ })).toBeNull();
     });
+
+    it('affiche le type de l’événement et l’attente d’approbation (P18-14), jamais « Autre »', async () => {
+        const event = makeEvent({ type: 'groupe_parole', type_label: 'Groupe de parole', is_pending: true });
+        await mountInertia(Show, { url: `/evenements/${event.id}`, pageProps: { title: event.title, event, others: [] } });
+        expect(document.querySelector('[data-xm-event-type]')?.textContent).toBe('Groupe de parole');
+        expect(document.querySelector('[data-xm-event-pending]')?.textContent).toContain('En attente d’approbation');
+        unmountInertia();
+
+        const other = makeEvent({ type: 'autre', type_label: 'Autre', is_pending: false });
+        await mountInertia(Show, { url: `/evenements/${other.id}`, pageProps: { title: other.title, event: other, others: [] } });
+        expect(document.querySelector('[data-xm-event-type]')).toBeNull();
+        expect(document.querySelector('[data-xm-event-pending]')).toBeNull();
+    });
 });

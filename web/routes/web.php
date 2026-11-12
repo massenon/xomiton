@@ -32,6 +32,7 @@ use App\Http\Controllers\Web\Legal\LegalPageController;
 use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\AssistantPageController;
 use App\Http\Controllers\Web\Member\CccPageController;
+use App\Http\Controllers\Web\Member\ContributePageController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
 use App\Http\Controllers\Web\Member\DirectoryPageController;
 use App\Http\Controllers\Web\Member\FeedPageController;
@@ -68,6 +69,9 @@ use App\Http\Controllers\Web\ThematiquesShowController;
 use App\Http\Controllers\Web\UniversalLinkFallbackController;
 use App\Http\Controllers\Web\UrgencesController;
 use App\Http\Controllers\Web\ViolencesController;
+use App\Http\Controllers\Web\ViolencesNumeriques\BdIndexController;
+use App\Http\Controllers\Web\ViolencesNumeriques\BdShowController;
+use App\Http\Controllers\Web\ViolencesNumeriques\ViolencesNumeriquesController;
 use App\Http\Middleware\EnsureNotInMaintenance;
 use App\Http\Middleware\EnsurePeerSpaceAccess;
 use App\Http\Middleware\ForgetSearchTerms;
@@ -118,6 +122,11 @@ Route::get('/ressources/{slug}/lire', RessourceStreamController::class)->where('
 // (/do-glegbe) entièrement dans le navigateur, sans requête réseau.
 Route::get('/violences', ViolencesController::class)->middleware('guest.page')->name('violences');
 Route::get('/lois', LoisController::class)->middleware('guest.page')->name('lois');
+// P19-03 / P19-04 : carrefour des violences numériques (fiches = /thematiques/{slug}) et BD publiques (`is_public`, Q19 ;
+// BD masquée, réservée aux membres ou inconnue → 404). Publiques et indexables, vous.
+Route::get('/violences-numeriques', ViolencesNumeriquesController::class)->middleware('guest.page')->name('violences-numeriques');
+Route::get('/bd', BdIndexController::class)->middleware('guest.page')->name('bd.index');
+Route::get('/bd/{key}', BdShowController::class)->where('key', '[a-z0-9]+(?:-[a-z0-9]+)*')->middleware('guest.page')->name('bd.show');
 Route::get('/do-glegbe', DoGlegbeController::class)->middleware('guest.page')->name('do-glegbe');
 // P4-05 : centre d'aide public et indexable (vous) ; questions du périmètre HelpCenter (catégories `faq`), adressées par
 // slug ; vote « Cet article vous a-t-il aidé·e ? » persisté dans `faq_feedback` (POST + @csrf, limiteur `faq_feedback`).
@@ -281,6 +290,9 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     // Sans `directory.view` : 403, comme l'API.
     Route::get('/annuaire', DirectoryPageController::class)->middleware('can:directory.view')->name('annuaire');
     $memberPlaceholder('/medias', 'medias', 'medias', 'albums.php');
+    // P18-12, P18-14 : proposer une ressource (file de validation de l'équipe, jamais publique) et boîte à suggestions.
+    Route::get('/proposer-une-ressource', [ContributePageController::class, 'proposal'])->name('ressources.proposer');
+    Route::get('/boite-a-idees', [ContributePageController::class, 'suggestion'])->name('suggestions');
     // P8-12 (lot outils-ccc) : outils CCC en lecture, une seule implémentation Vue pour le membre et le pair (P9-05 : drapeau
     // `presentation`). Outils publiés seulement (API ccc/), progression du manuel sur l'appareil. Sans `ccc_tools.view` : 403.
     Route::get('/ccc', CccPageController::class)->middleware('can:ccc_tools.view')->name('ccc');

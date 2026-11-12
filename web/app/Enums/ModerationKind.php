@@ -42,6 +42,18 @@ enum ModerationKind: string
     }
 
     /**
+     * Poids de la nature du contenu dans le score de priorité (P18-04) : un compte, un message privé (adressé à une
+     * personne), une publication ou un sujet (largement vus) pèsent plus qu'un commentaire ou une réponse.
+     */
+    public function priorityWeight(): int
+    {
+        return match ($this) {
+            self::User, self::Message, self::Post, self::Topic => 10,
+            self::Comment, self::Reply => 5,
+        };
+    }
+
+    /**
      * Classe Eloquent de la cible (`subject_type`), pour construire ou valider le signalement.
      *
      * @return class-string

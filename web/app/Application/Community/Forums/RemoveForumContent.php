@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\DB;
 /**
  * Supprimer un sujet ou une réponse (P8-05) : par son auteur·rice, ou par la modération (`posts.moderate`, journalisé
  * `forum.*_deleted_by_moderation` sans le texte). Statut `supprime` + suppression douce (export RGPD et file de
- * modération gardent la trace), compteurs du sujet et du forum recalculés dans la transaction.
+ * modération gardent la trace), compteurs du sujet et du forum recalculés dans la transaction ; une réponse validée
+ * supprimée n'est plus la réponse validée du sujet (P18-03).
  */
 final class RemoveForumContent
 {
@@ -38,6 +39,7 @@ final class RemoveForumContent
         DB::transaction(function () use ($reply): void {
             $reply->forceFill(['status' => PostStatus::Deleted])->save();
             $reply->delete();
+            AcceptForumReply::forgetReply($reply);
 
             if ($reply->topic !== null) {
                 $this->counters->afterReplyChange($reply->topic);

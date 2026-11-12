@@ -299,7 +299,7 @@ void main() {
   group('BD', () {
     testWidgets('liste puis lecteur : progression, légende, alt par planche en Semantics, fin et discussion', (tester) async {
       final sem = tester.ensureSemantics();
-      await openCcc(tester, path: '/ccc?onglet=bd');
+      final h = await openCcc(tester, path: '/ccc?onglet=bd');
       expect(find.text(S.t('ccc_comic_pages_count', {'count': 3})), findsOneWidget);
       await tester.tap(find.byKey(const ValueKey('ccc-read-bd1')));
       await tester.pumpAndSettle();
@@ -333,6 +333,12 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(S.t('ccc_comic_done_title')), findsOneWidget);
       expect(find.textContaining(S.t('ccc_comic_discuss_items_0')), findsOneWidget);
+      // P19-04 : BD publique → page publique ouverte dans le navigateur.
+      await tester.ensureVisible(find.byKey(const ValueKey('ccc-comic-public')));
+      await tester.tap(find.byKey(const ValueKey('ccc-comic-public')));
+      await tester.pumpAndSettle();
+      expect(h.launcher.opened, [Uri.parse('https://xomiton.test/bd/bd1')]);
+      await tester.ensureVisible(find.byKey(const ValueKey('ccc-comic-restart')));
       await tester.tap(find.byKey(const ValueKey('ccc-comic-restart')));
       await tester.pumpAndSettle();
       expect(counter(), S.t('ccc_comic_page_counter', {'current': 1, 'total': 3}));

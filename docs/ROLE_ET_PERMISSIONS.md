@@ -34,6 +34,8 @@ Membre, pair animateur·rice et admin se connectent par **les mêmes écrans et 
 - **Destinataires des alertes** (D-MOB-10, **Tranché 2026-10-29 (recommandation retenue)**) : à la création, admins **de garde** + pair·es **de la zone** de l'alerte ; à 5 minutes sans accusé de réception, **escalade nationale** à tous les admins et tous les pair·es (+ point focal national) ; l'accusé de l'un·e arrête l'escalade. Position du SOS pour l'admin : toujours **arrondie** (D-MOB-4).
 - **Inscriptions** (D-MOB-17, **Tranché 2026-10-29 (recommandation retenue)**) : **remplacée le 11/11/2026** : TOUS les nouveaux comptes attendent la validation `users.validate_peers`, sans réglage (`reg_manual_validation` supprimé) ; les signaux (e-mail jetable, inscriptions répétées) restent notés pour éclairer la décision.
 - **Non-escalade** (tests `tests/Feature/Admin/TeamRolesTest.php`, `tests/Feature/Api/Admin/AdminMobileApiTest.php`, `tests/Feature/Api/Me/RoleRequestsApiTest.php`) : un·e pair·e ne peut pas se donner admin, un membre ne peut pas appeler l'API admin (403 sur chaque route), un·e admin ne peut ni se donner ni donner un rôle d'administration (RG-15).
+- **Bénévoles écoutant·es** (Q97, tranché le 12/11/2026) : **pas de nouveau rôle** ; ce sont les pair·es approuvé·es à l'inscription (rôle `pair`, compte actif). L'écran Utilisateurs les filtre (« Bénévoles écoutant·es (pair·es approuvé·es) », P18-08).
+- **Membre vérifié** (Q97) : badge attribué à la main par l'administration (`badges.manage`, P18-09), pas un rôle ; « Pair animateur·rice » pour un·e pair·e approuvé·e. Aucun badge n'ouvre de droit.
 | Intervenant·e de l'annuaire | (contact, pas un compte obligatoire) | Points focaux, juristes, psychologues… | Fiche annuaire ; peut avoir un compte `pair` ou `admin` |
 
 ## 2. Principes
@@ -73,6 +75,14 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | **Passerelles réseaux sociaux** (connexion des comptes, file de publication) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Templates e-mails** | ❌ | ❌ | ❌ | ❌ | ✅ (sauf suppression système) | ✅ |
 | Utilisateurs (membres, pair·es) | ❌ | ❌ | ❌ | 👁 (suspendre) | ✅ | ✅ |
+| Bannir un compte (P18-06, Q97) ; lever un bannissement | ❌ | ❌ | ❌ | ❌ | ✅ (bannir) | ✅ (bannir, lever) |
+| Badges vérifiés (P18-09, Q97 : « Membre vérifié », « Pair animateur·rice ») | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Forums : gérer (créer, renommer, réordonner, archiver ; P18-10) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Forums : épingler / verrouiller un sujet (P18-11) | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Ressources proposées : proposer / valider (P18-12) | ❌ | ✅ (proposer) | ✅ (proposer) | ✅ (proposer) | ✅ (valider) | ✅ |
+| Annonce globale (P18-13, espace membre et application seulement) | ❌ (jamais affichée) | 👁 | 👁 | 👁 | ✅ | ✅ |
+| Événements : calendrier, file d'approbation (P18-14) | ❌ | ❌ | ❌ | ✅ (calendrier, décider) | ✅ (+ réglage de la file) | ✅ |
+| Boîte à suggestions : écrire / traiter (P18-14) | ❌ | ✅ (écrire) | ✅ (écrire) | ✅ (traiter) | ✅ | ✅ |
 | Inscriptions (ouvrir / fermer) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Rôle pair : donner / retirer, inviter | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Rôles d'administration (attribuer, inviter) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -108,6 +118,22 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `backups.create`, `backups.download` | | | | ✅ | ✅ |
 | `backups.restore`, `backups.delete` | | | | | ✅ |
 | `roles.assign_admin` (attribuer ou inviter modération / admin / super-admin) | | | | | ✅ |
+| `users.suspend` : suspendre, **avec date de fin facultative** (P18-06 : suspension temporaire, levée automatique par la commande planifiée `accounts:lift-suspensions`) | | | ✅ | ✅ | ✅ |
+| `users.ban` (P18-06, Q97 appliqué par défaut : bannir = statut définitif `banni`, motif obligatoire, connexion refusée web / API / application avec un message neutre `account_unavailable`, sessions et jetons révoqués, journal `users.banned` ; jamais un compte d'administration ni soi-même ; depuis `/admin/moderation` et la fiche du compte) | | | | ✅ | ✅ |
+| `users.unban` (lever un bannissement, journal `users.unbanned`) | | | | | ✅ |
+| `badges.manage` (P18-09 : attribuer ou retirer à la main un badge vérifié dans la fiche du compte, jamais sur soi-même ; journal `badges.granted` / `badges.revoked`) | | | | ✅ | ✅ |
+| Réponse validée d'un sujet de forum (P18-03, Q97) : **aucune nouvelle permission** — l'auteur·rice du sujet, ou `posts.moderate` (`ForumTopicPolicy::accept`) ; un geste de la modération est journalisé | | | ✅ | ✅ | ✅ |
+| `forums.manage` (P18-10 : onglet « Gestion des forums » de `/admin/reseau` — créer, renommer, réordonner, archiver / réactiver un forum ; journal `forums.created|updated|moved|archived|restored`) | | | | ✅ | ✅ |
+| Épingler / verrouiller un sujet (P18-11) : **aucune nouvelle permission** — `posts.moderate` (`ForumTopicPolicy::moderate`), depuis `/admin/reseau` (onglet Sujets de forum), la fiche du sujet (web) et l'API `forums/topics/{ulid}/pin|lock` ; journal `forums.topic_pinned|unpinned|locked|unlocked` | | | ✅ | ✅ | ✅ |
+| Mettre une ressource « À la une » (P18-11) : **aucune nouvelle permission** — `resources.manage` (policy `update`) ; journal `content.resource_featured|unfeatured` | | | | ✅ | ✅ |
+| Proposer une ressource (P18-12) : `social.access` + e-mail confirmé, limiteur `resource_proposal` (5 par compte et par jour) ; jamais publique. File de validation `/admin/contenu/propositions` : `resources.manage` (journal `resource_proposals.submitted|accepted|refused`) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `announcements.manage` (P18-13, Q97 : annonce globale `/admin/annonces`, bannière de l'espace membre et de l'application seulement ; journal `announcements.created|updated|ended|deleted`) | | | | ✅ | ✅ |
+| Événements (P18-14) : calendrier `/admin/evenements` en lecture avec `posts.moderate` ; approuver / refuser un événement en attente : `moderation.manage` (journal `event.approved|refused`) | | | ✅ | ✅ | ✅ |
+| `events.manage` (P18-14 : activer / couper la file d'approbation des événements, réglage `events.require_approval`, **coupée par défaut** ; journal `settings.events_approval`) | | | | ✅ | ✅ |
+| Boîte à suggestions (P18-14) : écrire `social.access`, limiteur `suggestion` (5 par compte et par jour), anonyme possible | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `suggestions.manage` (P18-14 : inbox `/admin/suggestions`, statuts, réponse de l'équipe envoyée en notification ; jamais le compte d'une suggestion anonyme ; journal `suggestions.*`) | | | ✅ | ✅ | ✅ |
+
+Base déjà en production : `forums.manage`, `announcements.manage`, `events.manage` (admin, superadmin) et `suggestions.manage` (modération, admin, superadmin) sont posées par la migration de rattrapage idempotente `2026_12_06_100600_grant_p18_community_permissions` ; base neuve : `RolesAndPermissionsSeeder`. Chaque action Livewire revérifie sa permission (identifiant de l'élément ouvert en `#[Locked]`).
 
 ## 5. Règles d'accès aux données
 

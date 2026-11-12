@@ -6,6 +6,7 @@ namespace App\Application\Feed;
 
 use App\Application\Feed\Data\PostDraft;
 use App\Application\Moderation\ReportContent;
+use App\Application\Moderation\SpamDetector;
 use App\Application\Shared\MediaUploader;
 use App\Application\Shared\StoredMedia;
 use App\Domain\Feed\Exceptions\ContentBlocked;
@@ -39,6 +40,7 @@ final class PublishPost
         private readonly ReportContent $reports,
         private readonly VideoQuota $quota,
         private readonly ReviewVideo $review,
+        private readonly SpamDetector $spam,
     ) {}
 
     /**
@@ -93,6 +95,9 @@ final class PublishPost
         if ($verdict->needsReview()) {
             $this->reports->automatic($post, $verdict);
         }
+
+        // P18-07 : fréquence et doublons → quarantaine (masqué) et signalement « Spam » (une vidéo en relecture n'est pas publiée : ignorée).
+        $this->spam->inspect($post, $author);
 
         if ($storedVideo !== null) {
             $this->review->submitted($post);

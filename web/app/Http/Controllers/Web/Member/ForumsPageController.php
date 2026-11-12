@@ -57,7 +57,8 @@ final class ForumsPageController extends Controller
             'topics' => fn (): array => $this->topics($request, $viewer, $forum, $search),
             'create' => fn (): array => [
                 'can' => $viewer->can('create', ForumTopic::class),
-                'forums' => $forums->map(static fn (Forum $item): array => ['value' => (string) $item->key, 'label' => (string) $item->name])->values()->all(),
+                // P18-10 : un forum archivé reste listé mais n'accepte plus de sujet.
+                'forums' => $forums->reject(static fn (Forum $item): bool => $item->isArchived())->map(static fn (Forum $item): array => ['value' => (string) $item->key, 'label' => (string) $item->name])->values()->all(),
                 'limits' => self::topicLimits(),
             ],
             'events' => fn (): array => $this->highlights->events(),

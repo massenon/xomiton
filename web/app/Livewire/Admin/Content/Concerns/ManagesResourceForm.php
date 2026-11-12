@@ -134,6 +134,18 @@ trait ManagesResourceForm
         $this->toast((string) __($publish ? 'admin_content.toasts.published' : 'admin_content.toasts.unpublished', ['title' => $resource->title]));
     }
 
+    /** P18-11 : mettre en avant / retirer (tête du catalogue `/ressources`), policy `update` rejouée. */
+    public function featureResource(int $id, ManageResources $manage): void
+    {
+        $resource = Resource::query()->findOrFail($id);
+        $this->authorize('update', $resource);
+        $featured = ! $resource->is_featured;
+
+        if ($manage->feature($resource, $featured, $this->actor())) {
+            $this->toast((string) __($featured ? 'admin_content.resources.toasts.featured' : 'admin_content.resources.toasts.unfeatured', ['title' => $resource->title]));
+        }
+    }
+
     public function deleteResource(int $id, ManageResources $manage): void
     {
         $resource = Resource::query()->findOrFail($id);

@@ -36,7 +36,7 @@ final class Index extends Component
     use InteractsWithUi;
     use WithDataTable;
 
-    public const TABS = ['groupes', 'pages', 'evenements', 'forums', 'publications'];
+    public const TABS = ['groupes', 'pages', 'evenements', 'forums', 'publications', 'gestion'];
 
     /** Filtres d'état : '' (tous), visible, hidden, pending (pages non approuvées). */
     public const STATES = ['visible', 'hidden', 'pending'];
@@ -51,14 +51,15 @@ final class Index extends Component
     {
         abort_unless($this->actor()->can('posts.moderate'), 403);
 
-        if (! in_array($this->tab, self::TABS, true)) {
+        if (! in_array($this->tab, self::TABS, true) || ($this->tab === 'gestion' && ! $this->actor()->can('forums.manage'))) {
             $this->tab = 'groupes';
         }
     }
 
     public function setTab(string $tab): void
     {
-        if (! in_array($tab, self::TABS, true)) {
+        // P18-10 : « Gestion des forums » exige `forums.manage` (composant enfant Admin\Network\Forums, revérifiée à chaque action).
+        if (! in_array($tab, self::TABS, true) || ($tab === 'gestion' && ! $this->actor()->can('forums.manage'))) {
             return;
         }
 
@@ -140,7 +141,7 @@ final class Index extends Component
 
     public function render(): View
     {
-        $rows = $this->paginateQuery(match ($this->tab) {
+        $rows = $this->tab === 'gestion' ? null : $this->paginateQuery(match ($this->tab) {
             'pages' => $this->pageQuery(),
             'evenements' => $this->eventQuery(),
             'forums' => $this->topicQuery(),
@@ -155,6 +156,7 @@ final class Index extends Component
             'sortDirection' => $sortDirection,
             'format' => $this->formatter(),
             'canCurate' => $this->actor()->can('moderation.manage'),
+            'canManageForums' => $this->actor()->can('forums.manage'),
         ])->layout('components.layouts.admin', [
             'title' => __('admin_network.title'),
             'adminPage' => 'reseau',
@@ -245,6 +247,28 @@ final class Index extends Component
         $network->approve($page, $approved, $this->actor());
         unset($this->kpis, $this->counts);
         $this->toast((string) __($approved ? 'admin_network.toasts.approved' : 'admin_network.toasts.unapproved', ['name' => $page->name]), $approved ? 'success' : 'warning');
+    }
+
+    /** P18-11 : épingler / désépingler un sujet (ForumTopicPolicy `moderate`, rejouée ici). */
+    public function pin(int $id, bool $pinned, ModerateNetwork $network): void
+    {
+        $topic = ForumTopic::query()->findOrFail($id);
+        $this->authorize('moderate', $topic);
+
+        if ($network->pin($topic, $pinned, $this->actor())) {
+            $this->toast((string) __($pinned ? 'admin_network.toasts.pinned' : 'admin_network.toasts.unpinned'));
+        }
+    }
+
+    /** P18-11 : verrouiller / déverrouiller un sujet (plus de réponse ; le sujet reste lisible). */
+    public function lock(int $id, bool $locked, ModerateNetwork $network): void
+    {
+        $topic = ForumTopic::query()->findOrFail($id);
+        $this->authorize('moderate', $topic);
+
+        if ($network->lock($topic, $locked, $this->actor())) {
+            $this->toast((string) __($locked ? 'admin_network.toasts.locked' : 'admin_network.toasts.unlocked'), $locked ? 'warning' : 'success');
+        }
     }
 
     public function feature(string $type, int $id, ModerateNetwork $network): void

@@ -21,6 +21,7 @@
                 <ul class="list-unstyled small mb-0 xm-flinks">
                     <li><a href="{{ route('signaler') }}">{{ __('footer.report') }}</a></li>
                     <li><a href="{{ route('urgences') }}">{{ __('footer.emergency') }}</a></li>
+                    <li><a href="{{ route('violences-numeriques') }}">{{ __('footer.digital_violence') }}</a></li>
                     <li><a href="{{ route('aide.index') }}">{{ __('footer.help_center') }}</a></li>
                     <li><a href="{{ route('confidentialite') }}">{{ __('footer.privacy_terms') }}</a></li>
                 </ul>

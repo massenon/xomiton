@@ -18,4 +18,15 @@ return [
         'resolu' => 'Résolu',
     ],
 
+    // P18-13 : annonce globale.
+    'announcement_level' => [
+        'info' => 'Information',
+        'important' => 'Important',
+    ],
+
+    'announcement_audience' => [
+        'membres' => 'Tous les membres',
+        'pairs' => 'Pair·es seulement',
+    ],
+
 ];

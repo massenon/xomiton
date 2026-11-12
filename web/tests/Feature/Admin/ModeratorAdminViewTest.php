@@ -36,8 +36,8 @@ function modViewScreens(): array
     return $screens;
 }
 
-it('ouvre au modérateur le tableau de bord, la recherche, le réseau social, la modération (signalements et vidéos à relire) et les utilisateurs, et rien d’autre', function (): void {
-    $allowed = ['admin.dashboard', 'admin.recherche', 'admin.reseau', 'admin.moderation', 'admin.moderation.videos', 'admin.utilisateurs'];
+it('ouvre au modérateur le tableau de bord, la recherche, le réseau social, la modération (signalements et vidéos à relire), le calendrier des événements, la boîte à suggestions (P18-14) et les utilisateurs, et rien d’autre', function (): void {
+    $allowed = ['admin.dashboard', 'admin.recherche', 'admin.reseau', 'admin.moderation', 'admin.moderation.videos', 'admin.evenements', 'admin.suggestions', 'admin.utilisateurs'];
     $screens = modViewScreens();
 
     expect(array_keys($screens))->toContain(...$allowed)->and(count($screens))->toBeGreaterThan(20);
@@ -59,7 +59,7 @@ it('filtre le menu du modérateur par permission : Pilotage, Réseau social et U
     $groups = collect(app(AdminNavigation::class)->groups($this->moderator));
     $items = $groups->flatMap(fn (array $group): array => array_column($group['items'], 'key'))->all();
 
-    expect($items)->toBe(['dashboard', 'recherche', 'reseau', 'moderation', 'utilisateurs'])
+    expect($items)->toBe(['dashboard', 'recherche', 'reseau', 'moderation', 'evenements', 'suggestions', 'utilisateurs'])
         ->and($groups->pluck('key')->all())->toBe(['steering', 'social', 'system']);
 
     $html = $this->actingAs($this->moderator)->get(route('admin.dashboard'))->assertOk()->getContent();
@@ -68,7 +68,7 @@ it('filtre le menu du modérateur par permission : Pilotage, Réseau social et U
         expect($html)->toContain('data-xm-nav="'.$key.'"');
     }
 
-    foreach (['alertes', 'registres', 'journal', 'parametres', 'inscriptions', 'maintenance', 'passerelles', 'rapports'] as $key) {
+    foreach (['alertes', 'registres', 'journal', 'parametres', 'inscriptions', 'maintenance', 'passerelles', 'rapports', 'annonces'] as $key) {
         expect($html)->not->toContain('data-xm-nav="'.$key.'"');
     }
 });

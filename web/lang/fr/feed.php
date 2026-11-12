@@ -433,6 +433,13 @@ return [
         'filter_hidden_reason' => 'Masqué par le filtre de contenus, en attente de relecture.',
         'auto_reporter' => 'Filtre automatique',
         'auto_details' => 'Termes surveillés : :terms',
+        // P18-07 : détection du spam (fréquence, doublons) ; détail sans texte du contenu.
+        'spam_reporter' => 'Détection automatique du spam',
+        'spam_hidden_reason' => 'Mis en quarantaine : spam présumé, en attente de relecture.',
+        'spam_details' => [
+            'frequence' => 'Fréquence : :count contenus publiés en quelques minutes par la même personne.',
+            'doublons' => 'Doublons : le même texte publié :count fois par la même personne.',
+        ],
     ],
 
     'sidebar' => [

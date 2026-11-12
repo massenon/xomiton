@@ -12,6 +12,7 @@ return [
         'brouillon' => 'Brouillon',
         'publie' => 'Publié',
         'masque' => 'Masqué',
+        'en_attente' => 'En attente',
     ],
 
     'resource_kind' => [
@@ -44,6 +45,13 @@ return [
         'coordonnees' => 'Coordonnées personnelles',
         'lien' => 'Lien suspect',
         'autre' => 'Autre',
+    ],
+
+    // P18-12 : ressources proposées par les membres.
+    'proposal_status' => [
+        'proposee' => 'Proposée',
+        'acceptee' => 'Acceptée',
+        'refusee' => 'Refusée',
     ],
 
 ];

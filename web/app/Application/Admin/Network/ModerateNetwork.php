@@ -109,6 +109,38 @@ final class ModerateNetwork
         $this->cache->flush();
     }
 
+    /**
+     * Épingler (tête de son forum) ou désépingler un sujet (P18-11) ; sans effet si l'état ne change pas. Journal
+     * `forums.topic_pinned` / `forums.topic_unpinned`, sans titre.
+     */
+    public function pin(ForumTopic $topic, bool $pinned, User $actor): bool
+    {
+        if ((bool) $topic->is_pinned === $pinned) {
+            return false;
+        }
+
+        $topic->forceFill(['is_pinned' => $pinned])->save();
+        Audit::log($pinned ? 'forums.topic_pinned' : 'forums.topic_unpinned', $topic, null, $actor);
+
+        return true;
+    }
+
+    /**
+     * Verrouiller (plus de réponse, le sujet reste lisible) ou déverrouiller un sujet (P18-11). Journal
+     * `forums.topic_locked` / `forums.topic_unlocked`, sans titre.
+     */
+    public function lock(ForumTopic $topic, bool $locked, User $actor): bool
+    {
+        if ((bool) $topic->is_locked === $locked) {
+            return false;
+        }
+
+        $topic->forceFill(['is_locked' => $locked])->save();
+        Audit::log($locked ? 'forums.topic_locked' : 'forums.topic_unlocked', $topic, null, $actor);
+
+        return true;
+    }
+
     public function delete(Model $subject, User $actor): void
     {
         match (true) {
@@ -136,7 +168,8 @@ final class ModerateNetwork
     private function setEventStatus(Event $event, ContentStatus $status): bool
     {
         // Un événement en brouillon n'est ni masqué ni publié par la modération.
-        if ($event->status === $status || $event->status === ContentStatus::Draft) {
+        // Un événement en attente d'approbation (P18-14) se décide dans le calendrier (approuver / refuser, notification).
+        if ($event->status === $status || $event->status === ContentStatus::Draft || $event->isPending()) {
             return false;
         }
 

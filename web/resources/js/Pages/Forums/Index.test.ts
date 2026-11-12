@@ -104,4 +104,14 @@ describe('Page /forums', () => {
         await mountInertia(Index, { url: '/forums', pageProps: pageProps({ create: createOptions({ can: false }) }) });
         expect(screen.queryByRole('button', { name: 'Nouveau sujet' })).toBeNull();
     });
+
+    it('signale un forum archivé (lisible, sans nouveau sujet) sur sa carte (P18-10)', async () => {
+        fakeFetch(() => json({}));
+        const forums = makeForums().map((forum) => (forum.key === 'f2' ? { ...forum, is_archived: true } : forum));
+        await mountInertia(Index, { url: '/forums', pageProps: pageProps({ forums }) });
+
+        const archived = screen.getAllByText('Archivé');
+        expect(archived).toHaveLength(1);
+        expect(archived[0].closest('a')?.getAttribute('href')).toBe('/forums?forum=f2');
+    });
 });

@@ -1,0 +1,94 @@
+{
+  "slug": "photos-privees-partagees",
+  "key": "vn03",
+  "category": "images-intimes-violences-sexuelles",
+  "title": "Photos privées partagées",
+  "summary": "Après une rupture, un·e ex menace de publier vos photos intimes pour vous humilier ou vous contrôler ? Ce n’est jamais votre faute. Voici comment réagir.",
+  "content_warning": "Ce contenu évoque des menaces de diffusion de photos intimes après une rupture, sans aucune image explicite.",
+  "bd": {
+    "title": "Afi garde la main",
+    "cover": {
+      "image": "assets/images/violences-numeriques/photos-privees-partagees/couverture.webp",
+      "alt": "Afi, l’air déterminé, montre son téléphone qui affiche un bouclier et un cadenas ; Sena, derrière elle, pose une main sur son épaule."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/photos-privees-partagees/planche-1.webp",
+        "caption": "Quelques semaines après la rupture, l’ex d’Afi lui écrit : « Si tu ne reviens pas, tout le monde verra tes photos. » Afi sent la colère monter. Elle ne répond pas.",
+        "alt": "Assise sur un banc sous un manguier, Afi fronce les sourcils devant son téléphone, qui affiche un triangle d’alerte."
+      },
+      {
+        "image": "assets/images/violences-numeriques/photos-privees-partagees/planche-2.webp",
+        "caption": "Afi ne cède pas, ne négocie pas et ne paie rien. Elle fait des captures d’écran du message, du profil et de la date, puis les range dans un dossier protégé. « Ces preuves, c’est moi qui les garde. »",
+        "alt": "À une table près d’une fenêtre, Afi enregistre des captures d’écran verrouillées sur son ordinateur, son téléphone en main."
+      },
+      {
+        "image": "assets/images/violences-numeriques/photos-privees-partagees/planche-3.webp",
+        "caption": "Le lendemain, sur le campus, elle se confie à Sena. « J’ai tellement honte… » Sena la rassure : « Tu n’as rien fait de mal. C’est lui qui commet une violence. Je reste avec toi. »",
+        "alt": "Sur un banc du campus, Afi parle à Sena, qui l’écoute avec attention, une main posée sur son bras."
+      },
+      {
+        "image": "assets/images/violences-numeriques/photos-privees-partagees/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Afi signale la menace, demande aux plateformes de retirer tout contenu publié et bloque son ex. « Tu n’es pas seule. On avance ensemble, à ton rythme. »",
+        "alt": "Afi, Sena et Nadia autour d’un ordinateur qui affiche un bouclier et un drapeau ; Afi montre son téléphone, Sena lève le pouce."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Dans une relation, il arrive de partager des photos ou des vidéos intimes en toute confiance. Après une rupture, certaines personnes s’en servent comme d’une arme : elles menacent de les publier, les envoient à vos proches ou les diffusent sur WhatsApp, Facebook ou TikTok.</p><p>Le but est de vous humilier, de vous faire revenir ou de vous contrôler. Diffuser une image intime sans votre accord est une violence. <strong>La faute n’est jamais la vôtre</strong>, même si vous aviez envoyé ces photos vous-même.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Votre ex menace de « tout montrer » si vous refusez de revenir, de le ou la revoir ou d’obéir.</li><li>On vous demande de l’argent, par exemple par Mobile Money, pour ne pas publier.</li><li>Des proches vous disent avoir reçu des images de vous.</li><li>Un faux compte à votre nom apparaît sur un réseau social.</li><li>La personne a encore accès à votre téléphone, à votre galerie ou à votre sauvegarde en ligne.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas aux menaces et ne payez pas.</strong> Céder ne garantit rien, et la pression revient souvent.</li><li><strong>Gardez les preuves</strong> : captures d’écran des messages, du profil, des liens et des dates. Rangez-les en lieu sûr, par exemple chez une personne de confiance.</li><li><strong>Demandez le retrait</strong> : sur chaque publication ou compte, utilisez le bouton de signalement de la plateforme et choisissez le motif lié à la nudité ou aux images intimes partagées sans accord.</li><li><strong>Bloquez la personne</strong> après avoir gardé les preuves, puis changez vos mots de passe.</li><li><strong>Parlez-en</strong> à une personne de confiance et <a href=\"/signaler\">signalez la situation sur Xomiton</a>.</li><li>Ne confrontez jamais seul·e la personne. Si vous vous sentez en danger, utilisez la <a href=\"/sos\">page SOS</a>.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Verrouillez votre téléphone avec un code que vous êtes seul·e à connaître, et ne le prêtez pas.</li><li>Vérifiez les appareils connectés à vos comptes (WhatsApp Web, Google, iCloud) et déconnectez ceux que vous ne reconnaissez pas.</li><li>Désactivez la sauvegarde automatique de vos photos sur un compte partagé.</li><li>Vous avez le droit de refuser d’envoyer une photo et de changer d’avis à tout moment.</li><li>Si vous choisissez de partager une image, évitez qu’on puisse y reconnaître votre visage, un tatouage ou votre chambre.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. <a href=\"/signaler\">Faites un signalement</a>, anonyme si vous le souhaitez : une personne formée le lira sous 24 h. Si vous êtes en danger, utilisez la <a href=\"/sos\">page SOS</a> ou consultez les <a href=\"/urgences\">numéros d’urgence</a>. Si vous êtes membre de Xomiton, l’<a href=\"/annuaire\">annuaire</a> vous met en lien avec des juristes, des psychologues et des points focaux. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "J’ai envoyé ces photos moi-même : est-ce ma faute ?",
+      "answer": "Non. Envoyer une photo à une personne en qui vous aviez confiance n’autorise personne à la diffuser. La seule personne responsable est celle qui menace ou publie. Vous méritez écoute et soutien, sans jugement."
+    },
+    {
+      "question": "Faut-il supprimer les messages de menace ?",
+      "answer": "Pas tout de suite. Faites d’abord des captures d’écran avec la date, le nom du compte et les liens, et gardez-les en lieu sûr. Ensuite, vous pouvez bloquer la personne. Ces preuves serviront pour vos signalements et pour toute démarche future."
+    },
+    {
+      "question": "Les plateformes retirent-elles vraiment les images ?",
+      "answer": "La plupart des réseaux sociaux interdisent les images intimes partagées sans accord et acceptent les demandes de retrait. Signalez chaque publication et chaque compte, et gardez une trace de vos demandes. Si cela tarde, faites un signalement sur Xomiton pour être accompagné·e."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/photos-privees-partagees/partage.webp",
+    "alt": "Afi sourit, son téléphone contre elle sous un bouclier à cadenas ; Nadia, à ses côtés, la tient par l’épaule.",
+    "text": "Ton ex menace de publier tes photos intimes ? Ce n’est pas ta faute, et tu n’es pas seul·e 💜 Ne paie pas, ne réponds pas, garde les preuves, demande le retrait aux plateformes et parles-en à une personne de confiance. Sur Xomiton, tu peux signaler en toute confidentialité 🛡️ Lis la BD « Afi garde la main » pour découvrir comment elle a repris le contrôle."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:5",
+      "planche-1": "2:8",
+      "planche-2": "2:10",
+      "planche-3": "2:17",
+      "planche-4": "2:20",
+      "partage": "2:22"
+    }
+  }
+}

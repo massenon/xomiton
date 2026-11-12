@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Member;
 
+use App\Application\Admin\Users\VerifiedBadges;
 use App\Application\Auth\CompleteRegistrationProfile;
 use App\Domain\Account\SensitiveProfile;
 use App\Enums\AllyStatus;
@@ -89,6 +90,8 @@ final class MemberProfileResource extends JsonResource
             'role' => $role,
             'role_label' => (string) __('profile.roles.'.($role ?? 'membre')),
             'verified' => in_array($role, self::VERIFIED_ROLES, true) && $user->status === UserStatus::Active,
+            // P18-09 : badges vérifiés par l'administration (Membre vérifié, Pair animateur·rice), jamais de classement.
+            'badges' => VerifiedBadges::for($user),
             'member_type' => $memberType?->value,
             'member_type_label' => $memberType?->label(),
             'pronouns' => $profile?->pronouns,

@@ -108,9 +108,10 @@ it('calcule les taux et signale ceux du mauvais côté de leur cible', function 
 });
 
 it('liste, filtre et recherche les abonné·es', function (): void {
-    NewsletterSubscriber::factory()->create(['email' => 'alpha@exemple.bj']);
-    NewsletterSubscriber::factory()->pending()->create(['email' => 'beta@exemple.bj']);
-    NewsletterSubscriber::factory()->create(['email' => 'gamma@exemple.bj'])->syncTags(['presse']);
+    // Noms fixés : la recherche porte aussi sur le nom, et un nom tiré au hasard (« Alphonse ») faisait apparaître gamma.
+    NewsletterSubscriber::factory()->create(['email' => 'alpha@exemple.bj', 'name' => 'Awa Dossou']);
+    NewsletterSubscriber::factory()->pending()->create(['email' => 'beta@exemple.bj', 'name' => 'Bintou Houngbo']);
+    NewsletterSubscriber::factory()->create(['email' => 'gamma@exemple.bj', 'name' => 'Grâce Sossa'])->syncTags(['presse']);
 
     nlScreen('admin', 'abonnes')->assertSee('alpha@exemple.bj')->assertSee('beta@exemple.bj')
         ->set('status', 'en_attente')->assertSee('beta@exemple.bj')->assertDontSee('alpha@exemple.bj')

@@ -9,6 +9,7 @@ use App\Livewire\Attributes\SafeUrl;
 use App\Livewire\Concerns\InteractsWithUi;
 use App\Livewire\Concerns\WithDataTable;
 use App\Models\AuditLog;
+use App\Models\User;
 use App\Support\Audit;
 use App\Support\LocaleFormatter;
 use Carbon\Exceptions\InvalidFormatException;
@@ -24,7 +25,7 @@ use Livewire\Component;
 /**
  * Journal d'audit `/admin/journal` (P13-05, prototype admin/journal.php ; écran témoin de WithDataTable, P10-02) :
  * KPI (cache 60 s, oubliés après une purge), recherche (compte, action, détail : colonnes en clair, le détail étant
- * masqué à l'écriture par Audit), filtres action et période dans l'URL (`?q=&ac=&du=&au=`, valeurs mal formées
+ * masqué à l'écriture par Audit), filtres action, période et modérateur·rice (P18-07) dans l'URL (`?q=&ac=&du=&au=&mod=`, valeurs mal formées
  * ignorées), tri, pagination serveur, export CSV des filtres actifs (lien signé, journalisé ; aucune colonne sensible),
  * purge des entrées de plus de N jours (7 à 3650) **réservée au superadmin** (`audit_logs.purge`, modale rouge avec
  * saisie de « PURGER » vérifiée côté serveur, purge journalisée). Lecture : `audit_logs.view` (admin, superadmin).
@@ -42,11 +43,18 @@ final class Index extends Component
 
     public const ACTIONS_CACHE_KEY = 'admin:journal:actions';
 
+    /** Rôles de l'équipe de modération (filtre « par modérateur·rice », P18-07). */
+    public const MODERATION_ROLES = ['moderateur', 'admin', 'superadmin'];
+
     #[SafeUrl(as: 'ac', except: '')]
     public string $action = '';
 
     #[SafeUrl(as: 'du', except: '')]
     public string $from = '';
+
+    /** P18-07 : filtre « par modérateur·rice » (identifiant d'un compte de l'équipe de modération, `?mod=`). */
+    #[SafeUrl(as: 'mod', except: '')]
+    public string $moderator = '';
 
     #[SafeUrl(as: 'au', except: '')]
     public string $until = '';
@@ -82,7 +90,7 @@ final class Index extends Component
 
     protected function filterProperties(): array
     {
-        return ['action', 'from', 'until'];
+        return ['action', 'from', 'until', 'moderator'];
     }
 
     /** Export CSV des filtres actifs (WithDataTable : lien signé, diffusion par paquets, ligne d'audit). */
@@ -183,6 +191,19 @@ final class Index extends Component
             ->toBase()->distinct()->orderBy('action')->pluck('action')->map(static fn (mixed $a): string => (string) $a)->all());
     }
 
+    /**
+     * Comptes de l'équipe de modération (modérateur·rice, admin, superadmin) proposés au filtre « par modérateur·rice ».
+     *
+     * @return list<array{id: int, pseudo: string}>
+     */
+    #[Computed]
+    public function moderators(): array
+    {
+        return User::query()->role(self::MODERATION_ROLES)->orderBy('pseudo')->limit(200)->get(['id', 'pseudo'])
+            ->map(static fn (User $user): array => ['id' => (int) $user->getKey(), 'pseudo' => (string) $user->pseudo])
+            ->values()->all();
+    }
+
     public function render(): View
     {
         $rows = $this->paginateQuery($this->filtered()->with('user:id,pseudo'));
@@ -268,6 +289,10 @@ final class Index extends Component
 
         if ($this->action !== '') {
             $query->ofAction($this->action);
+        }
+
+        if ($this->moderator !== '' && ctype_digit($this->moderator)) {
+            $query->where('user_id', (int) $this->moderator);
         }
 
         if (($from = $this->day($this->from)) !== null) {

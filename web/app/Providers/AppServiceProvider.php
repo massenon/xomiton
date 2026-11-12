@@ -404,6 +404,14 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('role_request', static fn (Request $request): Limit => Limit::perDay(self::limit('role_request_per_day'))
             ->by('role_request|'.($request->user('sanctum')?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
             ->response($tooMany));
+        // P18-12, P18-14 : ressources proposées et boîte à suggestions, par compte et par jour (consommés après validation par
+        // NamedRateLimit : un formulaire refusé ne brûle pas la tentative).
+        RateLimiter::for('resource_proposal', static fn (Request $request): Limit => Limit::perDay(self::limit('resource_proposals_per_day'))
+            ->by('resource_proposal|'.($request->user('sanctum')?->getAuthIdentifier() ?? $request->user()?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
+        RateLimiter::for('suggestion', static fn (Request $request): Limit => Limit::perDay(self::limit('suggestions_per_day'))
+            ->by('suggestion|'.($request->user('sanctum')?->getAuthIdentifier() ?? $request->user()?->getAuthIdentifier() ?? KeyedHash::make((string) $request->ip())))
+            ->response($tooMany));
         // Synchronisation (P9-06) : lots `sync/push` par compte (`idempotent:required,limit=sync_push` : un rejeu ne compte
         // pas) ; seul un lot fait uniquement de SOS n'est jamais limité (RG-01, comme POST sos) : un SOS rejoué ne fait pas
         // passer les autres éléments. Chaque message et signalement d'un lot compte en plus sur `messages_write` / `report`

@@ -54,6 +54,14 @@ describe('XmPost', () => {
         expect(screen.getByLabelText('Ton commentaire')).toBeTruthy();
     });
 
+    it('rend les adresses du site en liens et laisse les autres en texte (P19-11 : BD annoncée)', async () => {
+        const own = `${window.location.origin}/bd/vn01`;
+        const card = await mount(makePost({ body: `Découvre la BD.\n\n${own} et https://exemple.test/piege` }));
+        const links = [...card.querySelectorAll('.xm-post-body a')];
+        expect(links.map((a) => a.getAttribute('href'))).toEqual([own]);
+        expect(card.querySelector('.xm-post-body')?.textContent).toBe(`Découvre la BD.\n\n${own} et https://exemple.test/piege`);
+    });
+
     it('n’identifie jamais l’auteur·rice d’une publication anonyme, même pour elle-même', async () => {
         await mount(makePost({ is_mine: true, is_anonymous: true, author: { id: null, pseudo: 'Membre anonyme', avatar_url: '/assets/images/personnage-1.png', role: null, anonymous: true } }));
         const heading = screen.getByRole('heading', { level: 3 });

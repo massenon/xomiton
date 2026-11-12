@@ -158,6 +158,9 @@ class EventItem {
     this.going = false,
     this.reminder = true,
     this.categoryLabel,
+    this.type = 'autre',
+    this.typeLabel,
+    this.isPending = false,
   });
   final String id;
   final String title;
@@ -179,6 +182,15 @@ class EventItem {
   final bool going;
   final bool reminder;
   final String? categoryLabel;
+
+  /// P18-14 : type (groupe de parole, atelier, rencontre, autre ; libellé du
+  /// serveur) et file d'approbation facultative (visible de l'organisateur·rice).
+  final String type;
+  final String? typeLabel;
+  final bool isPending;
+
+  /// Libellé de type à afficher : jamais « Autre » (valeur par défaut).
+  String? get shownType => type == 'autre' ? null : typeLabel;
 
   factory EventItem.fromJson(Map<String, dynamic> j) {
     final rsvp = j['rsvp'] is Map ? _map(j['rsvp']) : null;
@@ -202,6 +214,9 @@ class EventItem {
       going: rsvp != null && rsvp['status'] == 'going',
       reminder: rsvp?['reminder'] != false,
       categoryLabel: cat?['label'] as String?,
+      type: '${j['type'] ?? 'autre'}',
+      typeLabel: j['type_label'] as String?,
+      isPending: j['is_pending'] == true,
     );
   }
 }

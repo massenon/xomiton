@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 /// défensive : un élément sans clé ou sans titre est ignoré, un champ de mauvais
 /// type devient « absent », jamais une exception. Aucun champ n'est inventé :
 /// ce sont ceux de `CccToolResource` (`key, family, title, description, cover,
-/// duration_minutes, chapters, pages{position, image, caption, alt}`).
+/// duration_minutes, chapters, pages{position, image, caption, alt}`, et pour une
+/// BD `public_url` : page publique `/bd/{key}` si elle est publique, P19-04).
 
 String? _text(Object? v) {
   if (v is! String) return null;
@@ -95,10 +96,14 @@ class PagedTool {
     required this.pages,
     this.description,
     this.cover,
+    this.publicUrl,
   });
 
   final String key;
   final String title;
+
+  /// BD publique (P19-04) : adresse de sa page publique `/bd/{key}` (http(s) seulement), sinon `null`.
+  final Uri? publicUrl;
 
   /// Boîte à images : consigne de l'animateur·rice (affichée en mode présentation seulement) ;
   /// BD : présentation de l'histoire.
@@ -120,6 +125,7 @@ class PagedTool {
       title: title,
       description: _text(j['description']),
       cover: _webUrl(j['cover']),
+      publicUrl: switch (_webUrl(j['public_url'])) { final String url => Uri.parse(url), null => null },
       pages: pages,
     );
   }

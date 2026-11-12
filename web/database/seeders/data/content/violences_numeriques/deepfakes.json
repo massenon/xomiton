@@ -1,0 +1,94 @@
+{
+  "slug": "deepfakes",
+  "key": "vn08",
+  "category": "ia-faux-contenus",
+  "title": "Deepfakes et manipulation d’images par IA",
+  "summary": "Une fausse image ou vidéo truquée par IA circule pour vous humilier ? Ce n’est pas votre faute. Gardez les preuves, signalez et demandez le retrait.",
+  "content_warning": "Ce contenu évoque la diffusion d’images truquées par intelligence artificielle pour humilier une personne.",
+  "bd": {
+    "title": "Ce n’est pas moi",
+    "cover": {
+      "image": "assets/images/violences-numeriques/deepfakes/couverture.webp",
+      "alt": "Sur un campus, Sena tend un téléphone affichant un bouclier face à un grand écran brouillé de pixels ; Kossi, à ses côtés, pose une main sur son épaule."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/deepfakes/planche-1.webp",
+        "caption": "Sur le campus, les téléphones vibrent. Une image de Sena circule dans les groupes WhatsApp et sur TikTok. Sena ne l’a jamais prise : elle a été fabriquée avec une application d’intelligence artificielle. « Ce n’est pas moi… »",
+        "alt": "Sous les manguiers du campus, Sena fixe son téléphone, surpris·e ; autour, des écrans montrent la même image brouillée en pixels, avec des flèches de partage et des alertes."
+      },
+      {
+        "image": "assets/images/violences-numeriques/deepfakes/planche-2.webp",
+        "caption": "Sena respire. Iel ne répond pas aux messages et ne cherche pas l’auteur. Iel fait des captures d’écran, note les liens, les dates et les comptes qui partagent, puis range tout dans un dossier protégé.",
+        "alt": "À son bureau, Sena, calme, enregistre sur son ordinateur des captures d’écran et des liens dans un dossier fermé par un cadenas ; son téléphone affiche une notification coupée."
+      },
+      {
+        "image": "assets/images/violences-numeriques/deepfakes/planche-3.webp",
+        "caption": "Sena en parle à Tantie Rosine et à Kossi. « Ce n’est pas ta faute, Sena. La personne qui a fabriqué ça est la seule responsable. » Kossi a signalé la publication et demande à ses ami·es de ne pas la partager.",
+        "alt": "Dans une cour, Sena parle, assis·e sur un banc ; Tantie Rosine l’écoute, une main posée sur son bras ; Kossi, debout, montre son téléphone affichant une coche."
+      },
+      {
+        "image": "assets/images/violences-numeriques/deepfakes/planche-4.webp",
+        "caption": "Avec Nadia, Sena signale l’image à chaque plateforme, demande son retrait et fait un signalement sur Xomiton. « Tu n’es pas seul·e. On avance ensemble, à ton rythme. »",
+        "alt": "Dans une salle lumineuse, Sena, souriant·e, utilise un ordinateur d’où sortent des icônes de drapeau, de corbeille et de bouclier ; Nadia montre le bouclier du doigt."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Un deepfake (ou hypertrucage) est une image, une vidéo ou un son modifié par intelligence artificielle. À partir de quelques photos prises sur un profil, des applications peuvent coller un visage sur un autre corps, déshabiller une photo ou faire « dire » à une personne ce qu’elle n’a jamais dit.</p><p>Ces faux contenus servent à humilier, à salir une réputation, à faire chanter ou à exposer une orientation sexuelle réelle ou supposée. Ils circulent vite sur WhatsApp, Facebook ou TikTok. Même si l’image semble vraie, <strong>ce n’est pas votre faute</strong> : la seule personne responsable est celle qui l’a fabriquée ou partagée.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Des proches vous parlent d’une photo ou d’une vidéo de vous que vous n’avez jamais faite.</li><li>L’image a des détails étranges : peau trop lisse, mains déformées, contours flous, lumière incohérente, voix décalée.</li><li>Vos photos publiques sont reprises par un compte inconnu.</li><li>Quelqu’un menace de diffuser une « photo de vous » si vous ne payez pas ou n’obéissez pas.</li><li>Des messages moqueurs ou des demandes d’ami·es inhabituelles arrivent d’un coup.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li>Respirez. Ce n’est pas votre faute, et vous n’avez rien à prouver aux personnes qui se moquent.</li><li>Ne répondez pas aux attaques et ne payez jamais en cas de chantage.</li><li>Gardez les preuves : captures d’écran avec la date, liens des publications, noms des comptes. Ne transférez pas l’image vous-même.</li><li>Signalez le contenu à chaque plateforme (Facebook, TikTok, Instagram, WhatsApp) en précisant qu’il s’agit d’une image truquée.</li><li>Demandez le retrait aux administrateur·rices des groupes et aux personnes qui l’ont partagé, au besoin par une personne de confiance.</li><li>Parlez-en à une personne de confiance et faites un signalement sur Xomiton.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Limitez qui peut voir et télécharger vos photos : passez vos comptes en privé.</li><li>Évitez de publier beaucoup de photos de votre visage en haute définition sur des comptes publics.</li><li>Recherchez de temps en temps votre nom et vos photos pour repérer un faux compte.</li><li>Si vous recevez un contenu humiliant sur quelqu’un, ne le partagez jamais, même pour vous indigner : signalez-le.</li><li>Rappelez autour de vous que ces images peuvent être fausses : cela freine leur diffusion.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h et pourra vous orienter, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Le <a href=\"/aide\">centre d’aide</a> répond aussi aux questions fréquentes.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Et si personne ne croit que l’image est fausse ?",
+      "answer": "Vous n’avez pas à vous justifier auprès de tout le monde. Expliquez calmement à vos proches qu’il s’agit d’un trucage par IA, et demandez-leur de ne pas partager et de signaler. Vos preuves et les détails incohérents de l’image aideront. Une personne de confiance peut parler pour vous si c’est trop lourd."
+    },
+    {
+      "question": "Les plateformes retirent-elles ces contenus ?",
+      "answer": "Les grandes plateformes ont des règles contre les images intimes non consenties et le harcèlement. Signalez chaque publication, plusieurs fois si besoin, et demandez à vos proches de signaler aussi. Le délai de réponse varie : gardez vos preuves en attendant."
+    },
+    {
+      "question": "Et si l’on me demande de l’argent pour ne pas diffuser l’image ?",
+      "answer": "Ne payez pas et ne négociez pas : payer n’arrête pas le chantage. Faites vos captures, puis bloquez le compte et faites un signalement. Si vous vous sentez en danger, utilisez la page SOS. Vous n’êtes pas responsable de ce chantage."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/deepfakes/partage.webp",
+    "alt": "Sena, souriant·e, tient un grand bouclier bleu marqué d’un cadenas devant des carrés de pixels qui s’effacent ; Kossi, derrière, lève le pouce.",
+    "text": "Une fausse photo ou vidéo de toi, fabriquée par IA, circule ? 💜 Ce n’est pas ta faute. Ne réponds pas, garde les preuves (captures, liens, dates), signale à chaque plateforme et demande le retrait. Et si tu reçois ce genre d’image, ne la partage jamais : signale-la. 🛡️ Lis la BD « Ce n’est pas moi » avec Sena sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-12",
+    "figma_nodes": {
+      "couverture": "2:29",
+      "planche-1": "2:35",
+      "planche-2": "2:40",
+      "planche-3": "2:45",
+      "planche-4": "2:47",
+      "partage": "2:49"
+    }
+  }
+}
