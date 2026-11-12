@@ -1,0 +1,192 @@
+{
+    "key": "m11",
+    "slug": "les-regles-on-en-parle",
+    "title": "Les règles, on en parle",
+    "summary": "Fifamè a ses premières règles et a peur. Sa tante lui explique simplement, sans honte, ce qui se passe.",
+    "theme": "vulgarisation santé, premières règles",
+    "category": "santé et corps",
+    "audience": "préados, ados, familles",
+    "key_message": "Les règles sont naturelles ; en parler tôt évite la peur et la honte.",
+    "content_warning": null,
+    "questions": [
+        "Que pensait Fifamè en case 1 ? Pourquoi a-t-elle chuchoté en case 2 ?",
+        "Pourquoi les règles sont-elles souvent un sujet tabou ?",
+        "Comment aider une amie qui a ses règles à l’école ?"
+    ],
+    "cases": [
+        {
+            "scene": "m11-case-1",
+            "description": "Fifamè devant la porte fermée de la salle d’eau, à la maison, l’air inquiet, une main sur le ventre (aucune image du corps ni de sang).",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "fifame",
+                    "texte": "Du sang… Je suis malade ?",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 29.1
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m11-case-2",
+            "description": "Fifamè s’approche de sa tante dans la cour, se penche à son oreille ; Tantie Rosine pose son ouvrage.",
+            "bulles": [
+                {
+                    "type": "chuchote",
+                    "personnage": "fifame",
+                    "texte": "Tantie… je saigne. J’ai peur.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 22,
+                        "y": 29.8
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "Viens, ma chérie. Ce n’est pas une maladie.",
+                    "position": {
+                        "x": 20.5,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 52.5,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m11-case-3",
+            "description": "Assises sur un banc, Tantie Rosine explique avec des gestes doux.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "Ce sont les règles. Chaque mois, le corps se prépare…",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "… et ça veut dire que tu grandis.",
+                    "position": {
+                        "x": 34.8,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 30.8,
+                        "y": 27.6
+                    },
+                    "associee_a": 0
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "fifame",
+                    "texte": "Pourquoi personne ne m’en a parlé avant ?",
+                    "position": {
+                        "x": 61.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 74,
+                        "y": 34.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m11-case-4",
+            "description": "Tantie Rosine montre un paquet de serviettes hygiéniques (emballage sans texte) ; Fifamè pose une question.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "Voici des serviettes. On les change plusieurs fois par jour.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "fifame",
+                    "texte": "Et si j’ai mal au ventre ?",
+                    "position": {
+                        "x": 37.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 61.7,
+                        "y": 27.6
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rosine",
+                    "texte": "Une bouillotte aide. Si la douleur est très forte, on va au centre de santé.",
+                    "position": {
+                        "x": 60.2,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 56.2,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m11-case-5",
+            "description": "Fifamè sourit, son sac d’école sur l’épaule, prête à partir ; sa tante lui fait un signe de la main.",
+            "bulles": [
+                {
+                    "type": "joie",
+                    "personnage": "fifame",
+                    "texte": "Je n’aurai plus honte !",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 29.1
+                    }
+                },
+                {
+                    "type": "cartouche",
+                    "texte": "Les règles sont naturelles. En parler tôt évite la peur et la honte.",
+                    "position": {
+                        "x": 31.3,
+                        "y": 85.7
+                    }
+                }
+            ]
+        }
+    ]
+}

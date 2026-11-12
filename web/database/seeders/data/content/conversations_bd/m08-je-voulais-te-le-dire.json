@@ -1,0 +1,192 @@
+{
+    "key": "m08",
+    "slug": "je-voulais-te-le-dire",
+    "title": "Je voulais te le dire",
+    "summary": "Sena confie à Yasmine qu’iel est non binaire. Yasmine remercie, demande les bons mots et garde la confidence.",
+    "theme": "coming out, soutien d’un·e ami·e, confidentialité",
+    "category": "identités LBTQ+",
+    "audience": "jeunes, familles",
+    "key_message": "Accueillir une confidence, c’est remercier, demander et se taire ; une confidence appartient à la personne qui la fait.",
+    "content_warning": null,
+    "questions": [
+        "Que craignait Sena en case 1 ? Pourquoi est-ce si difficile de se confier ?",
+        "Yasmine ne connaissait pas bien le mot. Qu’a-t-elle fait de juste malgré tout ?",
+        "Pourquoi est-il important de ne rien répéter sans l’accord de la personne ?"
+    ],
+    "cases": [
+        {
+            "scene": "m08-case-1",
+            "description": "Banc du campus sous un flamboyant ; Sena assis·e, Yasmine dans son fauteuil face à iel, gobelets de bissap à la main.",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "sena",
+                    "texte": "Si je lui dis, va-t-elle rester mon amie ?",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "yasmine",
+                    "texte": "Tu as l’air ailleurs. Tout va bien ?",
+                    "position": {
+                        "x": 31.2,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 59.3,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m08-case-2",
+            "description": "Sena, mains serrées autour du gobelet, regarde le sol.",
+            "bulles": [
+                {
+                    "type": "tremblee",
+                    "personnage": "sena",
+                    "texte": "Je voulais te dire…",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    }
+                },
+                {
+                    "type": "tremblee",
+                    "personnage": "sena",
+                    "texte": "… je ne suis ni un garçon ni une fille. Je suis non binaire.",
+                    "position": {
+                        "x": 21.8,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 29.9
+                    },
+                    "associee_a": 0
+                }
+            ]
+        },
+        {
+            "scene": "m08-case-3",
+            "description": "Yasmine marque un temps, puis sourit avec douceur et pose la main sur le bras de Sena.",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "yasmine",
+                    "texte": "Je ne connais pas bien ce mot. Mais je connais Sena.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "yasmine",
+                    "texte": "Merci de me faire confiance.",
+                    "position": {
+                        "x": 39.8,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 35.8,
+                        "y": 27.6
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m08-case-4",
+            "description": "Les deux se regardent, Sena relève la tête.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "yasmine",
+                    "texte": "Comment veux-tu que je parle de toi ? Quels mots j’utilise ?",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "joie",
+                    "personnage": "sena",
+                    "texte": "Sena, comme toujours. Et « iel ».",
+                    "position": {
+                        "x": 36.1,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 60,
+                        "y": 34.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m08-case-5",
+            "description": "Plan large, complicité, coucher de soleil sur le campus.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "yasmine",
+                    "texte": "Je garde ça pour moi, sauf si tu me dis le contraire.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "sena",
+                    "texte": "Je me sens plus léger·e.",
+                    "position": {
+                        "x": 34.8,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 63,
+                        "y": 29.1
+                    }
+                },
+                {
+                    "type": "cartouche",
+                    "texte": "Une confidence appartient à la personne qui la fait.",
+                    "position": {
+                        "x": 31.3,
+                        "y": 89.2
+                    }
+                }
+            ]
+        }
+    ]
+}

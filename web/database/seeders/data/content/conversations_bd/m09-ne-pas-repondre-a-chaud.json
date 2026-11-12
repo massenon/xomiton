@@ -1,0 +1,186 @@
+{
+    "key": "m09",
+    "slug": "ne-pas-repondre-a-chaud",
+    "title": "Ne pas répondre à chaud",
+    "summary": "Sena reçoit des commentaires haineux sous sa vidéo. Iel a envie de répondre, puis fait des captures et signale.",
+    "theme": "commentaires haineux en ligne",
+    "category": "vie numérique",
+    "audience": "jeunes, créateur·rices de contenu",
+    "key_message": "Ne pas répondre, garder les preuves, signaler et bloquer ; s’appuyer sur sa communauté.",
+    "content_warning": "Cette conversation évoque des commentaires haineux en ligne (jamais reproduits). Des liens d’aide sont proposés à la fin.",
+    "questions": [
+        "En case 2, Sena crie ce qu’iel ressent. Est-ce normal d’être en colère ?",
+        "Qu’est-ce qui l’a aidé·e à ne pas répondre ?",
+        "Quelles sont les trois étapes après un commentaire haineux ?"
+    ],
+    "cases": [
+        {
+            "scene": "m09-case-1",
+            "description": "Sena assis·e par terre contre son lit, le soir, téléphone en main ; à l’écran, une vidéo (forme abstraite) et des commentaires gris floutés.",
+            "bulles": [
+                {
+                    "type": "cartouche",
+                    "texte": "Sena a publié une vidéo sur la mode.",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5
+                    }
+                },
+                {
+                    "type": "message",
+                    "texte": "",
+                    "position": {
+                        "x": 33.2,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 50,
+                        "y": 35.8
+                    },
+                    "masque": true
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "sena",
+                    "texte": "Encore des insultes…",
+                    "position": {
+                        "x": 52.9,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 48.9,
+                        "y": 39.5
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m09-case-2",
+            "description": "Sena se lève d’un bond, téléphone brandi, visage en colère (pas de violence).",
+            "bulles": [
+                {
+                    "type": "cri",
+                    "personnage": "sena",
+                    "texte": "J’ai envie de leur répondre et de tout leur dire !",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 40.8
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m09-case-3",
+            "description": "Sena respire, yeux fermés, puis fait une capture d’écran (icône).",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "sena",
+                    "texte": "Attends. Répondre, c’est leur donner ce qu’ils veulent.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "sena",
+                    "texte": "D’abord, je fais des captures.",
+                    "position": {
+                        "x": 36.9,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 32.9,
+                        "y": 29.1
+                    },
+                    "associee_a": 0
+                }
+            ]
+        },
+        {
+            "scene": "m09-case-4",
+            "description": "Sena au téléphone, plus calme ; l’écran montre des icônes drapeau et bouclier.",
+            "bulles": [
+                {
+                    "type": "voix_appareil",
+                    "personnage": "nadia",
+                    "texte": "Tu as bien fait de ne pas répondre. On signale les comptes ensemble.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 33.5,
+                        "y": 28.8
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "sena",
+                    "texte": "Et je masque les commentaires qui contiennent ces mots.",
+                    "position": {
+                        "x": 32,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 28,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m09-case-5",
+            "description": "Sena sourit à son écran, où des cœurs abstraits s’accumulent.",
+            "bulles": [
+                {
+                    "type": "message",
+                    "personnage": "abonne",
+                    "texte": "Ta vidéo est super, continue !",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "ecran",
+                        "x": 20.9,
+                        "y": 28.8
+                    }
+                },
+                {
+                    "type": "joie",
+                    "personnage": "sena",
+                    "texte": "Mes vrais abonné·es me soutiennent !",
+                    "position": {
+                        "x": 19.4,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "cartouche",
+                    "texte": "Captures, signalement, blocage : la haine en ligne se signale aussi sur Xomiton.",
+                    "position": {
+                        "x": 28.4,
+                        "y": 85.7
+                    }
+                }
+            ]
+        }
+    ]
+}

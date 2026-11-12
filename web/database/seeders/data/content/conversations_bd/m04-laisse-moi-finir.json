@@ -1,0 +1,193 @@
+{
+    "key": "m04",
+    "slug": "laisse-moi-finir",
+    "title": "Laisse-moi finir",
+    "summary": "En réunion, Marc coupe la parole d’Ablavi avec une remarque sexiste. Kossi décide de réagir, en allié.",
+    "theme": "sexisme au travail, être allié·e",
+    "category": "vie professionnelle",
+    "audience": "adultes, entreprises",
+    "key_message": "Interrompre et rabaisser une femme en réunion n’est pas anodin ; un·e allié·e qui parle change la situation.",
+    "content_warning": null,
+    "questions": [
+        "Que pensait Kossi en case 2 ? Qu’est-ce qui peut empêcher quelqu’un de réagir ?",
+        "Comment Ablavi a-t-elle répondu sans crier ? Qu’en pensez-vous ?",
+        "Quelles phrases simples peut-on utiliser pour soutenir une collègue ?"
+    ],
+    "cases": [
+        {
+            "scene": "m04-case-1",
+            "description": "Salle de réunion lumineuse à Cotonou ; Ablavi debout près d’un tableau (formes abstraites), Marc assis au bout de la table qui lève la main, Kossi et une collègue assis.",
+            "bulles": [
+                {
+                    "type": "cartouche",
+                    "texte": "Réunion d’équipe, dans une entreprise de Cotonou.",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "ablavi",
+                    "texte": "Pour le projet, je propose de…",
+                    "position": {
+                        "x": 36.7,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 32.7,
+                        "y": 38
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "marc",
+                    "texte": "Bon, on laisse les hommes parler chiffres.",
+                    "position": {
+                        "x": 52.2,
+                        "y": 20.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 74,
+                        "y": 49.6
+                    },
+                    "superpose": true
+                }
+            ]
+        },
+        {
+            "scene": "m04-case-2",
+            "description": "Plan sur Ablavi, mâchoire serrée, et Kossi qui la regarde, mal à l’aise.",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "ablavi",
+                    "texte": "Encore. C’est moi qui pilote ce projet.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 34.2
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "kossi",
+                    "texte": "Ce n’est pas normal. Je dis quelque chose ?",
+                    "position": {
+                        "x": 32.6,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 68,
+                        "y": 34.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m04-case-3",
+            "description": "Kossi se penche vers la table, voix posée, main ouverte vers Ablavi.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "kossi",
+                    "texte": "Ablavi n’avait pas fini. Et c’est elle qui pilote le projet.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m04-case-4",
+            "description": "Ablavi reprend la parole, calme et ferme ; Marc, gêné, se gratte la nuque.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "ablavi",
+                    "texte": "Merci. Je reprends : je propose de lancer en mars.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "ablavi",
+                    "texte": "Et je préfère qu’on ne dise plus « les hommes parlent chiffres ».",
+                    "position": {
+                        "x": 33.5,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 29.5,
+                        "y": 32.2
+                    },
+                    "associee_a": 0
+                },
+                {
+                    "type": "tremblee",
+                    "personnage": "marc",
+                    "texte": "Euh… d’accord. Continue.",
+                    "position": {
+                        "x": 66.6,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 74,
+                        "y": 26
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m04-case-5",
+            "description": "Couloir après la réunion ; Kossi et Ablavi marchent côte à côte.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "kossi",
+                    "texte": "Si ça recommence, je suis témoin.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 27.6
+                    }
+                },
+                {
+                    "type": "joie",
+                    "personnage": "ablavi",
+                    "texte": "Merci. Ça change tout de ne pas être seule.",
+                    "position": {
+                        "x": 29.6,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 63.6,
+                        "y": 34.2
+                    }
+                }
+            ]
+        }
+    ]
+}

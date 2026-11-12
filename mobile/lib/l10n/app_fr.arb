@@ -7058,6 +7058,10 @@
     "@admin_ccc_tabs_boite_images": {
         "description": "admin_ccc.tabs.boite_images"
     },
+    "admin_ccc_tabs_conversations": "Conversations en BD",
+    "@admin_ccc_tabs_conversations": {
+        "description": "admin_ccc.tabs.conversations"
+    },
     "admin_ccc_tabs_lois": "Lois",
     "@admin_ccc_tabs_lois": {
         "description": "admin_ccc.tabs.lois"
@@ -7510,6 +7514,19 @@
                 "type": "String"
             }
         }
+    },
+    "admin_content_errors_bd_conversation_invalid": "La conversation ne respecte pas la grammaire des bulles. {message}",
+    "@admin_content_errors_bd_conversation_invalid": {
+        "description": "admin_content.errors.bd_conversation_invalid",
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_content_errors_bd_edge": "Cette conversation est déjà au bord de la liste.",
+    "@admin_content_errors_bd_edge": {
+        "description": "admin_content.errors.bd_edge"
     },
     "admin_content_errors_caption_long": "La légende est limitée à {max} caractères.",
     "@admin_content_errors_caption_long": {
@@ -8613,6 +8630,432 @@
     "admin_content_uploading": "Téléversement en cours…",
     "@admin_content_uploading": {
         "description": "admin_content.uploading"
+    },
+    "admin_conversations_bd_activate": "Activer",
+    "@admin_conversations_bd_activate": {
+        "description": "admin_conversations_bd.activate"
+    },
+    "admin_conversations_bd_active": "Active",
+    "@admin_conversations_bd_active": {
+        "description": "admin_conversations_bd.active"
+    },
+    "admin_conversations_bd_add_bubble": "Ajouter une bulle",
+    "@admin_conversations_bd_add_bubble": {
+        "description": "admin_conversations_bd.add_bubble"
+    },
+    "admin_conversations_bd_bubble": "Bulle {n}",
+    "@admin_conversations_bd_bubble": {
+        "description": "admin_conversations_bd.bubble",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_close": "Fermer l’éditeur",
+    "@admin_conversations_bd_close": {
+        "description": "admin_conversations_bd.close"
+    },
+    "admin_conversations_bd_columns_actions": "Actions",
+    "@admin_conversations_bd_columns_actions": {
+        "description": "admin_conversations_bd.columns.actions"
+    },
+    "admin_conversations_bd_columns_description": "Description (texte alternatif)",
+    "@admin_conversations_bd_columns_description": {
+        "description": "admin_conversations_bd.columns.description"
+    },
+    "admin_conversations_bd_columns_image": "Image",
+    "@admin_conversations_bd_columns_image": {
+        "description": "admin_conversations_bd.columns.image"
+    },
+    "admin_conversations_bd_columns_order": "Ordre",
+    "@admin_conversations_bd_columns_order": {
+        "description": "admin_conversations_bd.columns.order"
+    },
+    "admin_conversations_bd_columns_panels": "Cases",
+    "@admin_conversations_bd_columns_panels": {
+        "description": "admin_conversations_bd.columns.panels"
+    },
+    "admin_conversations_bd_columns_scene": "Scène",
+    "@admin_conversations_bd_columns_scene": {
+        "description": "admin_conversations_bd.columns.scene"
+    },
+    "admin_conversations_bd_columns_status": "Statut",
+    "@admin_conversations_bd_columns_status": {
+        "description": "admin_conversations_bd.columns.status"
+    },
+    "admin_conversations_bd_columns_title": "Titre",
+    "@admin_conversations_bd_columns_title": {
+        "description": "admin_conversations_bd.columns.title"
+    },
+    "admin_conversations_bd_deactivate": "Désactiver",
+    "@admin_conversations_bd_deactivate": {
+        "description": "admin_conversations_bd.deactivate"
+    },
+    "admin_conversations_bd_edit": "Modifier",
+    "@admin_conversations_bd_edit": {
+        "description": "admin_conversations_bd.edit"
+    },
+    "admin_conversations_bd_edit_title": "Modifier « {title} »",
+    "@admin_conversations_bd_edit_title": {
+        "description": "admin_conversations_bd.edit_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_empty": "Aucune conversation. Lancez l’import des modèles (php artisan xomiton{conversations}-bd{import}).",
+    "@admin_conversations_bd_empty": {
+        "description": "admin_conversations_bd.empty",
+        "placeholders": {
+            "conversations": {
+                "type": "String"
+            },
+            "import": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_fields_audience": "Public conseillé",
+    "@admin_conversations_bd_fields_audience": {
+        "description": "admin_conversations_bd.fields.audience"
+    },
+    "admin_conversations_bd_fields_category": "Catégorie",
+    "@admin_conversations_bd_fields_category": {
+        "description": "admin_conversations_bd.fields.category"
+    },
+    "admin_conversations_bd_fields_character": "Personnage",
+    "@admin_conversations_bd_fields_character": {
+        "description": "admin_conversations_bd.fields.character"
+    },
+    "admin_conversations_bd_fields_content_warning": "Avertissement de contenu (facultatif)",
+    "@admin_conversations_bd_fields_content_warning": {
+        "description": "admin_conversations_bd.fields.content_warning"
+    },
+    "admin_conversations_bd_fields_emphasis": "Mots en gras (séparés par des virgules)",
+    "@admin_conversations_bd_fields_emphasis": {
+        "description": "admin_conversations_bd.fields.emphasis"
+    },
+    "admin_conversations_bd_fields_key_message": "Message clé",
+    "@admin_conversations_bd_fields_key_message": {
+        "description": "admin_conversations_bd.fields.key_message"
+    },
+    "admin_conversations_bd_fields_linked": "Associée à la bulle n°",
+    "@admin_conversations_bd_fields_linked": {
+        "description": "admin_conversations_bd.fields.linked"
+    },
+    "admin_conversations_bd_fields_masked": "Masquée (insulte non reproduite)",
+    "@admin_conversations_bd_fields_masked": {
+        "description": "admin_conversations_bd.fields.masked"
+    },
+    "admin_conversations_bd_fields_overlap": "Superposée (interruption)",
+    "@admin_conversations_bd_fields_overlap": {
+        "description": "admin_conversations_bd.fields.overlap"
+    },
+    "admin_conversations_bd_fields_questions": "Questions d’animation",
+    "@admin_conversations_bd_fields_questions": {
+        "description": "admin_conversations_bd.fields.questions"
+    },
+    "admin_conversations_bd_fields_scene_description": "Description de la scène",
+    "@admin_conversations_bd_fields_scene_description": {
+        "description": "admin_conversations_bd.fields.scene_description"
+    },
+    "admin_conversations_bd_fields_summary": "Résumé",
+    "@admin_conversations_bd_fields_summary": {
+        "description": "admin_conversations_bd.fields.summary"
+    },
+    "admin_conversations_bd_fields_tail": "Queue",
+    "@admin_conversations_bd_fields_tail": {
+        "description": "admin_conversations_bd.fields.tail"
+    },
+    "admin_conversations_bd_fields_tail_x": "Pointe x (%)",
+    "@admin_conversations_bd_fields_tail_x": {
+        "description": "admin_conversations_bd.fields.tail_x"
+    },
+    "admin_conversations_bd_fields_tail_y": "Pointe y (%)",
+    "@admin_conversations_bd_fields_tail_y": {
+        "description": "admin_conversations_bd.fields.tail_y"
+    },
+    "admin_conversations_bd_fields_text": "Texte (20 mots au plus)",
+    "@admin_conversations_bd_fields_text": {
+        "description": "admin_conversations_bd.fields.text"
+    },
+    "admin_conversations_bd_fields_theme": "Thème",
+    "@admin_conversations_bd_fields_theme": {
+        "description": "admin_conversations_bd.fields.theme"
+    },
+    "admin_conversations_bd_fields_title": "Titre",
+    "@admin_conversations_bd_fields_title": {
+        "description": "admin_conversations_bd.fields.title"
+    },
+    "admin_conversations_bd_fields_type": "Type de bulle",
+    "@admin_conversations_bd_fields_type": {
+        "description": "admin_conversations_bd.fields.type"
+    },
+    "admin_conversations_bd_fields_x": "Position x (%)",
+    "@admin_conversations_bd_fields_x": {
+        "description": "admin_conversations_bd.fields.x"
+    },
+    "admin_conversations_bd_fields_y": "Position y (%)",
+    "@admin_conversations_bd_fields_y": {
+        "description": "admin_conversations_bd.fields.y"
+    },
+    "admin_conversations_bd_grammar_ok": "Conforme à la grammaire des bulles.",
+    "@admin_conversations_bd_grammar_ok": {
+        "description": "admin_conversations_bd.grammar_ok"
+    },
+    "admin_conversations_bd_image_missing": "À produire",
+    "@admin_conversations_bd_image_missing": {
+        "description": "admin_conversations_bd.image_missing"
+    },
+    "admin_conversations_bd_image_ok": "Présente",
+    "@admin_conversations_bd_image_ok": {
+        "description": "admin_conversations_bd.image_ok"
+    },
+    "admin_conversations_bd_images_missing": "{count, plural, =1{{count} image manquante} other{{count} images manquantes}}",
+    "@admin_conversations_bd_images_missing": {
+        "description": "admin_conversations_bd.images_missing",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_conversations_bd_inactive": "Inactive",
+    "@admin_conversations_bd_inactive": {
+        "description": "admin_conversations_bd.inactive"
+    },
+    "admin_conversations_bd_intro": "Les conversations en BD sont des cases illustrées sans texte, sur lesquelles la plateforme dessine les bulles. Une conversation n’est visible du public qu’une fois publiée. Les 12 modèles sont importés en brouillon tant que leurs images manquent.",
+    "@admin_conversations_bd_intro": {
+        "description": "admin_conversations_bd.intro"
+    },
+    "admin_conversations_bd_issues_label": "Contrôles de la grammaire des bulles",
+    "@admin_conversations_bd_issues_label": {
+        "description": "admin_conversations_bd.issues_label"
+    },
+    "admin_conversations_bd_list_title": "Conversations",
+    "@admin_conversations_bd_list_title": {
+        "description": "admin_conversations_bd.list_title"
+    },
+    "admin_conversations_bd_member": "Création d’un·e membre",
+    "@admin_conversations_bd_member": {
+        "description": "admin_conversations_bd.member"
+    },
+    "admin_conversations_bd_model": "Modèle {key}",
+    "@admin_conversations_bd_model": {
+        "description": "admin_conversations_bd.model",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_move_down": "Descendre « {title} »",
+    "@admin_conversations_bd_move_down": {
+        "description": "admin_conversations_bd.move_down",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_move_up": "Monter « {title} »",
+    "@admin_conversations_bd_move_up": {
+        "description": "admin_conversations_bd.move_up",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_moved_down": "« {title} » a été descendue.",
+    "@admin_conversations_bd_moved_down": {
+        "description": "admin_conversations_bd.moved_down",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_moved_up": "« {title} » a été montée.",
+    "@admin_conversations_bd_moved_up": {
+        "description": "admin_conversations_bd.moved_up",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_no_character": "— Aucun (cartouche, message masqué)",
+    "@admin_conversations_bd_no_character": {
+        "description": "admin_conversations_bd.no_character"
+    },
+    "admin_conversations_bd_no_markup": "Le texte ne doit pas contenir de balises HTML.",
+    "@admin_conversations_bd_no_markup": {
+        "description": "admin_conversations_bd.no_markup"
+    },
+    "admin_conversations_bd_no_tail": "— Sans queue",
+    "@admin_conversations_bd_no_tail": {
+        "description": "admin_conversations_bd.no_tail"
+    },
+    "admin_conversations_bd_panel": "Case {n}",
+    "@admin_conversations_bd_panel": {
+        "description": "admin_conversations_bd.panel",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_panels_title": "Cases et bulles",
+    "@admin_conversations_bd_panels_title": {
+        "description": "admin_conversations_bd.panels_title"
+    },
+    "admin_conversations_bd_pick_panel": "Choisissez une case pour modifier sa description et ses bulles.",
+    "@admin_conversations_bd_pick_panel": {
+        "description": "admin_conversations_bd.pick_panel"
+    },
+    "admin_conversations_bd_positions_help": "Positions en % de la case : x et y = coin haut gauche de la bulle ; pointe de la queue vers la bouche du personnage, l’écran ou un bord. Bulle associée : numéro de la bulle précédente de la chaîne (seule la dernière garde sa queue). Ordre de lecture = ordre de la liste.",
+    "@admin_conversations_bd_positions_help": {
+        "description": "admin_conversations_bd.positions_help"
+    },
+    "admin_conversations_bd_preview": "Aperçu",
+    "@admin_conversations_bd_preview": {
+        "description": "admin_conversations_bd.preview"
+    },
+    "admin_conversations_bd_publish": "Publier",
+    "@admin_conversations_bd_publish": {
+        "description": "admin_conversations_bd.publish"
+    },
+    "admin_conversations_bd_questions_help": "Une question par ligne (8 au plus). Elles s’affichent à la fin du mode séance.",
+    "@admin_conversations_bd_questions_help": {
+        "description": "admin_conversations_bd.questions_help"
+    },
+    "admin_conversations_bd_remove_bubble": "Retirer la bulle {n}",
+    "@admin_conversations_bd_remove_bubble": {
+        "description": "admin_conversations_bd.remove_bubble",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_save": "Enregistrer",
+    "@admin_conversations_bd_save": {
+        "description": "admin_conversations_bd.save"
+    },
+    "admin_conversations_bd_save_panel": "Enregistrer la case",
+    "@admin_conversations_bd_save_panel": {
+        "description": "admin_conversations_bd.save_panel"
+    },
+    "admin_conversations_bd_save_texts": "Enregistrer les textes",
+    "@admin_conversations_bd_save_texts": {
+        "description": "admin_conversations_bd.save_texts"
+    },
+    "admin_conversations_bd_scene_help": "Scène de la bibliothèque : {key}. Cette description sert de texte alternatif et s’affiche tant que l’image manque.",
+    "@admin_conversations_bd_scene_help": {
+        "description": "admin_conversations_bd.scene_help",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_scenes_help": "Scènes illustrées validées, sans texte. Une scène inactive ne sera plus proposée aux membres (éditeur à venir) ; les cases qui l’utilisent restent lisibles.",
+    "@admin_conversations_bd_scenes_help": {
+        "description": "admin_conversations_bd.scenes_help"
+    },
+    "admin_conversations_bd_scenes_title": "Bibliothèque de scènes",
+    "@admin_conversations_bd_scenes_title": {
+        "description": "admin_conversations_bd.scenes_title"
+    },
+    "admin_conversations_bd_sections_conversations": "Conversations",
+    "@admin_conversations_bd_sections_conversations": {
+        "description": "admin_conversations_bd.sections.conversations"
+    },
+    "admin_conversations_bd_sections_scenes": "Bibliothèque de scènes",
+    "@admin_conversations_bd_sections_scenes": {
+        "description": "admin_conversations_bd.sections.scenes"
+    },
+    "admin_conversations_bd_sections_label": "Sections des conversations en BD",
+    "@admin_conversations_bd_sections_label": {
+        "description": "admin_conversations_bd.sections_label"
+    },
+    "admin_conversations_bd_texts_title": "Textes de la conversation",
+    "@admin_conversations_bd_texts_title": {
+        "description": "admin_conversations_bd.texts_title"
+    },
+    "admin_conversations_bd_toasts_panel_saved": "Case {n} enregistrée.",
+    "@admin_conversations_bd_toasts_panel_saved": {
+        "description": "admin_conversations_bd.toasts.panel_saved",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_toasts_published": "« {title} » publiée.",
+    "@admin_conversations_bd_toasts_published": {
+        "description": "admin_conversations_bd.toasts.published",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_toasts_saved": "Textes de « {title} » enregistrés.",
+    "@admin_conversations_bd_toasts_saved": {
+        "description": "admin_conversations_bd.toasts.saved",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_toasts_scene_off": "Scène {key} désactivée.",
+    "@admin_conversations_bd_toasts_scene_off": {
+        "description": "admin_conversations_bd.toasts.scene_off",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_toasts_scene_on": "Scène {key} activée.",
+    "@admin_conversations_bd_toasts_scene_on": {
+        "description": "admin_conversations_bd.toasts.scene_on",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_toasts_scene_saved": "Scène {key} enregistrée.",
+    "@admin_conversations_bd_toasts_scene_saved": {
+        "description": "admin_conversations_bd.toasts.scene_saved",
+        "placeholders": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_toasts_unpublished": "« {title} » dépubliée.",
+    "@admin_conversations_bd_toasts_unpublished": {
+        "description": "admin_conversations_bd.toasts.unpublished",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_conversations_bd_unpublish": "Dépublier",
+    "@admin_conversations_bd_unpublish": {
+        "description": "admin_conversations_bd.unpublish"
+    },
+    "admin_conversations_bd_view": "Voir",
+    "@admin_conversations_bd_view": {
+        "description": "admin_conversations_bd.view"
     },
     "admin_data_directory_actions_delete": "Supprimer le contact",
     "@admin_data_directory_actions_delete": {
@@ -24009,6 +24452,362 @@
     "@components_urgency_prefix": {
         "description": "components.urgency.prefix"
     },
+    "conversations_bd_grammar_caption_tail": "un cartouche n’a pas de queue.",
+    "@conversations_bd_grammar_caption_tail": {
+        "description": "conversations_bd.grammar.caption_tail"
+    },
+    "conversations_bd_grammar_crowd": "plus de 3 bulles superposées : effet de brouhaha, à réserver à cet usage.",
+    "@conversations_bd_grammar_crowd": {
+        "description": "conversations_bd.grammar.crowd"
+    },
+    "conversations_bd_grammar_empty": "la bulle est vide.",
+    "@conversations_bd_grammar_empty": {
+        "description": "conversations_bd.grammar.empty"
+    },
+    "conversations_bd_grammar_link": "la bulle associée doit suivre une bulle précédente de la même case.",
+    "@conversations_bd_grammar_link": {
+        "description": "conversations_bd.grammar.link"
+    },
+    "conversations_bd_grammar_no_bubble": "la conversation n’a aucune bulle.",
+    "@conversations_bd_grammar_no_bubble": {
+        "description": "conversations_bd.grammar.no_bubble"
+    },
+    "conversations_bd_grammar_order": "ordre de lecture à vérifier : la bulle est placée plus haut et plus à gauche que la précédente.",
+    "@conversations_bd_grammar_order": {
+        "description": "conversations_bd.grammar.order"
+    },
+    "conversations_bd_grammar_outside": "la bulle sort de la case (seul le cri peut déborder un peu).",
+    "@conversations_bd_grammar_outside": {
+        "description": "conversations_bd.grammar.outside"
+    },
+    "conversations_bd_grammar_overlap": "la bulle chevauche la bulle {other} sans être marquée « superposée ».",
+    "@conversations_bd_grammar_overlap": {
+        "description": "conversations_bd.grammar.overlap",
+        "placeholders": {
+            "other": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_grammar_panel_count": "une conversation compte de {min} à {max} cases ({count} actuellement).",
+    "@conversations_bd_grammar_panel_count": {
+        "description": "conversations_bd.grammar.panel_count",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_grammar_tail_inside": "la pointe de la queue est dans la bulle.",
+    "@conversations_bd_grammar_tail_inside": {
+        "description": "conversations_bd.grammar.tail_inside"
+    },
+    "conversations_bd_grammar_tail_missing": "la queue manque : elle indique qui parle.",
+    "@conversations_bd_grammar_tail_missing": {
+        "description": "conversations_bd.grammar.tail_missing"
+    },
+    "conversations_bd_grammar_tail_outside": "la pointe de la queue sort de la case.",
+    "@conversations_bd_grammar_tail_outside": {
+        "description": "conversations_bd.grammar.tail_outside"
+    },
+    "conversations_bd_grammar_tail_point": "la pointe de la queue doit avoir une position.",
+    "@conversations_bd_grammar_tail_point": {
+        "description": "conversations_bd.grammar.tail_point"
+    },
+    "conversations_bd_grammar_tail_target": "cible de la queue inconnue.",
+    "@conversations_bd_grammar_tail_target": {
+        "description": "conversations_bd.grammar.tail_target"
+    },
+    "conversations_bd_grammar_too_long": "{count} mots : {max} au plus. Coupez-la en bulles associées.",
+    "@conversations_bd_grammar_too_long": {
+        "description": "conversations_bd.grammar.too_long",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_grammar_too_many": "{count} bulles hors cartouche : {max} au plus par case.",
+    "@conversations_bd_grammar_too_many": {
+        "description": "conversations_bd.grammar.too_many",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_grammar_type": "type de bulle inconnu.",
+    "@conversations_bd_grammar_type": {
+        "description": "conversations_bd.grammar.type"
+    },
+    "conversations_bd_grammar_where_bubble": "Case {panel}, bulle {bubble} :",
+    "@conversations_bd_grammar_where_bubble": {
+        "description": "conversations_bd.grammar.where_bubble",
+        "placeholders": {
+            "bubble": {
+                "type": "String"
+            },
+            "panel": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_grammar_where_panel": "Case {panel} :",
+    "@conversations_bd_grammar_where_panel": {
+        "description": "conversations_bd.grammar.where_panel",
+        "placeholders": {
+            "panel": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_panel_counter": "Case {n} sur {count}",
+    "@conversations_bd_panel_counter": {
+        "description": "conversations_bd.panel.counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_panel_image_pending": "Illustration à venir",
+    "@conversations_bd_panel_image_pending": {
+        "description": "conversations_bd.panel.image_pending"
+    },
+    "conversations_bd_panel_no_bubble": "Case sans parole.",
+    "@conversations_bd_panel_no_bubble": {
+        "description": "conversations_bd.panel.no_bubble"
+    },
+    "conversations_bd_panel_scene": "Scène : {description}",
+    "@conversations_bd_panel_scene": {
+        "description": "conversations_bd.panel.scene",
+        "placeholders": {
+            "description": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_panel_title": "Case {n} sur {count} – {title}",
+    "@conversations_bd_panel_title": {
+        "description": "conversations_bd.panel.title",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_panel_transcript": "Texte de la case",
+    "@conversations_bd_panel_transcript": {
+        "description": "conversations_bd.panel.transcript"
+    },
+    "conversations_bd_sr_device": "Voix au téléphone, {name} : {text}",
+    "@conversations_bd_sr_device": {
+        "description": "conversations_bd.sr.device",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "text": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_sr_line": "{name} {verb} : {text}",
+    "@conversations_bd_sr_line": {
+        "description": "conversations_bd.sr.line",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "text": {
+                "type": "String"
+            },
+            "verb": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_sr_line_offscreen": "{name} {verb}, hors de l’image : {text}",
+    "@conversations_bd_sr_line_offscreen": {
+        "description": "conversations_bd.sr.line_offscreen",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "text": {
+                "type": "String"
+            },
+            "verb": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_sr_masked": "Un message insultant, masqué : il n’est pas reproduit.",
+    "@conversations_bd_sr_masked": {
+        "description": "conversations_bd.sr.masked"
+    },
+    "conversations_bd_sr_message_received": "Message reçu de {name} : {text}",
+    "@conversations_bd_sr_message_received": {
+        "description": "conversations_bd.sr.message_received",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "text": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_sr_message_sent": "Message envoyé par {name} : {text}",
+    "@conversations_bd_sr_message_sent": {
+        "description": "conversations_bd.sr.message_sent",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "text": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_sr_narration": "Narration : {text}",
+    "@conversations_bd_sr_narration": {
+        "description": "conversations_bd.sr.narration",
+        "placeholders": {
+            "text": {
+                "type": "String"
+            }
+        }
+    },
+    "conversations_bd_sr_someone": "Quelqu’un",
+    "@conversations_bd_sr_someone": {
+        "description": "conversations_bd.sr.someone"
+    },
+    "conversations_bd_sr_verbs_chuchote": "chuchote",
+    "@conversations_bd_sr_verbs_chuchote": {
+        "description": "conversations_bd.sr.verbs.chuchote"
+    },
+    "conversations_bd_sr_verbs_cri": "crie",
+    "@conversations_bd_sr_verbs_cri": {
+        "description": "conversations_bd.sr.verbs.cri"
+    },
+    "conversations_bd_sr_verbs_joie": "dit avec joie",
+    "@conversations_bd_sr_verbs_joie": {
+        "description": "conversations_bd.sr.verbs.joie"
+    },
+    "conversations_bd_sr_verbs_parole": "dit",
+    "@conversations_bd_sr_verbs_parole": {
+        "description": "conversations_bd.sr.verbs.parole"
+    },
+    "conversations_bd_sr_verbs_pensee": "pense",
+    "@conversations_bd_sr_verbs_pensee": {
+        "description": "conversations_bd.sr.verbs.pensee"
+    },
+    "conversations_bd_sr_verbs_tremblee": "dit, mal à l’aise",
+    "@conversations_bd_sr_verbs_tremblee": {
+        "description": "conversations_bd.sr.verbs.tremblee"
+    },
+    "conversations_bd_status_brouillon": "Brouillon",
+    "@conversations_bd_status_brouillon": {
+        "description": "conversations_bd.status.brouillon"
+    },
+    "conversations_bd_status_proposee": "Proposée",
+    "@conversations_bd_status_proposee": {
+        "description": "conversations_bd.status.proposee"
+    },
+    "conversations_bd_status_publiee": "Publiée",
+    "@conversations_bd_status_publiee": {
+        "description": "conversations_bd.status.publiee"
+    },
+    "conversations_bd_status_refusee": "Refusée",
+    "@conversations_bd_status_refusee": {
+        "description": "conversations_bd.status.refusee"
+    },
+    "conversations_bd_status_retiree": "Retirée",
+    "@conversations_bd_status_retiree": {
+        "description": "conversations_bd.status.retiree"
+    },
+    "conversations_bd_tail_targets_bord_bas": "Hors de l’image, en bas",
+    "@conversations_bd_tail_targets_bord_bas": {
+        "description": "conversations_bd.tail_targets.bord-bas"
+    },
+    "conversations_bd_tail_targets_bord_droit": "Hors de l’image, à droite",
+    "@conversations_bd_tail_targets_bord_droit": {
+        "description": "conversations_bd.tail_targets.bord-droit"
+    },
+    "conversations_bd_tail_targets_bord_gauche": "Hors de l’image, à gauche",
+    "@conversations_bd_tail_targets_bord_gauche": {
+        "description": "conversations_bd.tail_targets.bord-gauche"
+    },
+    "conversations_bd_tail_targets_bord_haut": "Hors de l’image, en haut",
+    "@conversations_bd_tail_targets_bord_haut": {
+        "description": "conversations_bd.tail_targets.bord-haut"
+    },
+    "conversations_bd_tail_targets_ecran": "Vers l’écran ou l’appareil",
+    "@conversations_bd_tail_targets_ecran": {
+        "description": "conversations_bd.tail_targets.ecran"
+    },
+    "conversations_bd_tail_targets_personnage": "Vers le personnage",
+    "@conversations_bd_tail_targets_personnage": {
+        "description": "conversations_bd.tail_targets.personnage"
+    },
+    "conversations_bd_types_cartouche": "Cartouche (narration)",
+    "@conversations_bd_types_cartouche": {
+        "description": "conversations_bd.types.cartouche"
+    },
+    "conversations_bd_types_chuchote": "Chuchotement",
+    "@conversations_bd_types_chuchote": {
+        "description": "conversations_bd.types.chuchote"
+    },
+    "conversations_bd_types_cri": "Cri",
+    "@conversations_bd_types_cri": {
+        "description": "conversations_bd.types.cri"
+    },
+    "conversations_bd_types_joie": "Joie",
+    "@conversations_bd_types_joie": {
+        "description": "conversations_bd.types.joie"
+    },
+    "conversations_bd_types_message": "Message écrit",
+    "@conversations_bd_types_message": {
+        "description": "conversations_bd.types.message"
+    },
+    "conversations_bd_types_parole": "Parole",
+    "@conversations_bd_types_parole": {
+        "description": "conversations_bd.types.parole"
+    },
+    "conversations_bd_types_pensee": "Pensée",
+    "@conversations_bd_types_pensee": {
+        "description": "conversations_bd.types.pensee"
+    },
+    "conversations_bd_types_tremblee": "Voix tremblée",
+    "@conversations_bd_types_tremblee": {
+        "description": "conversations_bd.types.tremblee"
+    },
+    "conversations_bd_types_voix_appareil": "Voix d’un appareil",
+    "@conversations_bd_types_voix_appareil": {
+        "description": "conversations_bd.types.voix_appareil"
+    },
     "dates_days_1": "lundi",
     "@dates_days_1": {
         "description": "dates.days.1"
@@ -28380,6 +29179,10 @@
     "footer_contact": "Contact",
     "@footer_contact": {
         "description": "footer.contact"
+    },
+    "footer_conversations_bd": "Conversations en BD",
+    "@footer_conversations_bd": {
+        "description": "footer.conversations_bd"
     },
     "footer_cookies": "Cookies",
     "@footer_cookies": {
@@ -34685,6 +35488,307 @@
                 "type": "String"
             }
         }
+    },
+    "pages_conversations_bd_all_conversations": "Toutes les conversations en BD",
+    "@pages_conversations_bd_all_conversations": {
+        "description": "pages/conversations_bd.all_conversations"
+    },
+    "pages_conversations_bd_audience": "Public conseillé : {audience}",
+    "@pages_conversations_bd_audience": {
+        "description": "pages/conversations_bd.audience",
+        "placeholders": {
+            "audience": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_comics_link": "Les BD sur les violences numériques",
+    "@pages_conversations_bd_comics_link": {
+        "description": "pages/conversations_bd.comics_link"
+    },
+    "pages_conversations_bd_count": "{count, plural, =0{Aucune conversation pour l’instant.} =1{{count} conversation} other{{count} conversations}}",
+    "@pages_conversations_bd_count": {
+        "description": "pages/conversations_bd.count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_conversations_bd_cover_alt": "Première case de la conversation « {title} »",
+    "@pages_conversations_bd_cover_alt": {
+        "description": "pages/conversations_bd.cover_alt",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_discreet_show": "Afficher la conversation",
+    "@pages_conversations_bd_discreet_show": {
+        "description": "pages/conversations_bd.discreet_show"
+    },
+    "pages_conversations_bd_discreet_text": "Les cases sont masquées tant que vous ne choisissez pas de les afficher.",
+    "@pages_conversations_bd_discreet_text": {
+        "description": "pages/conversations_bd.discreet_text"
+    },
+    "pages_conversations_bd_discreet_title": "Mode discret activé",
+    "@pages_conversations_bd_discreet_title": {
+        "description": "pages/conversations_bd.discreet_title"
+    },
+    "pages_conversations_bd_empty": "Les conversations en BD arrivent bientôt.",
+    "@pages_conversations_bd_empty": {
+        "description": "pages/conversations_bd.empty"
+    },
+    "pages_conversations_bd_genre": "Bande dessinée",
+    "@pages_conversations_bd_genre": {
+        "description": "pages/conversations_bd.genre"
+    },
+    "pages_conversations_bd_h1": "Conversations en BD : ce qui se dit, ce qui se pense",
+    "@pages_conversations_bd_h1": {
+        "description": "pages/conversations_bd.h1"
+    },
+    "pages_conversations_bd_help_center": "Centre d’aide",
+    "@pages_conversations_bd_help_center": {
+        "description": "pages/conversations_bd.help_center"
+    },
+    "pages_conversations_bd_help_emergency": "Numéros d’urgence",
+    "@pages_conversations_bd_help_emergency": {
+        "description": "pages/conversations_bd.help_emergency"
+    },
+    "pages_conversations_bd_help_report": "Faire un signalement",
+    "@pages_conversations_bd_help_report": {
+        "description": "pages/conversations_bd.help_report"
+    },
+    "pages_conversations_bd_help_sos": "Alerte SOS",
+    "@pages_conversations_bd_help_sos": {
+        "description": "pages/conversations_bd.help_sos"
+    },
+    "pages_conversations_bd_help_text": "Si cette situation vous concerne, vous n’êtes pas seul·e. Une personne formée peut vous écouter.",
+    "@pages_conversations_bd_help_text": {
+        "description": "pages/conversations_bd.help_text"
+    },
+    "pages_conversations_bd_help_title": "Besoin d’aide ?",
+    "@pages_conversations_bd_help_title": {
+        "description": "pages/conversations_bd.help_title"
+    },
+    "pages_conversations_bd_key_message_title": "À retenir",
+    "@pages_conversations_bd_key_message_title": {
+        "description": "pages/conversations_bd.key_message_title"
+    },
+    "pages_conversations_bd_kicker": "Conversation en BD",
+    "@pages_conversations_bd_kicker": {
+        "description": "pages/conversations_bd.kicker"
+    },
+    "pages_conversations_bd_lead": "Des histoires courtes en cases illustrées, où les personnages parlent, pensent, crient ou chuchotent dans des bulles. L’écart entre ce qui est dit et ce qui est pensé aide à comprendre une situation et à oser en parler.",
+    "@pages_conversations_bd_lead": {
+        "description": "pages/conversations_bd.lead"
+    },
+    "pages_conversations_bd_list_label": "Liste des conversations en BD",
+    "@pages_conversations_bd_list_label": {
+        "description": "pages/conversations_bd.list_label"
+    },
+    "pages_conversations_bd_meta_description": "Des BD où les personnages parlent en bulles : consentement, pression du groupe, travail, handicap, coming out. À lire seul·e ou en séance, avec des liens d’aide.",
+    "@pages_conversations_bd_meta_description": {
+        "description": "pages/conversations_bd.meta_description"
+    },
+    "pages_conversations_bd_meta_description_filler": "Conversation en BD Xomiton à lire en ligne, seul·e ou en séance, avec des liens d’aide au Bénin.",
+    "@pages_conversations_bd_meta_description_filler": {
+        "description": "pages/conversations_bd.meta_description_filler"
+    },
+    "pages_conversations_bd_meta_title": "Conversations en BD : dire, penser, oser parler",
+    "@pages_conversations_bd_meta_title": {
+        "description": "pages/conversations_bd.meta_title"
+    },
+    "pages_conversations_bd_meta_title_show": "Conversation en BD « {title} »",
+    "@pages_conversations_bd_meta_title_show": {
+        "description": "pages/conversations_bd.meta_title_show",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_others_title": "D’autres conversations",
+    "@pages_conversations_bd_others_title": {
+        "description": "pages/conversations_bd.others_title"
+    },
+    "pages_conversations_bd_panels_count": "{count, plural, =1{{count} case} other{{count} cases}}",
+    "@pages_conversations_bd_panels_count": {
+        "description": "pages/conversations_bd.panels_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "pages_conversations_bd_questions_title": "Questions pour en parler",
+    "@pages_conversations_bd_questions_title": {
+        "description": "pages/conversations_bd.questions_title"
+    },
+    "pages_conversations_bd_read": "Lire la conversation",
+    "@pages_conversations_bd_read": {
+        "description": "pages/conversations_bd.read"
+    },
+    "pages_conversations_bd_seance_back": "Revenir à la conversation",
+    "@pages_conversations_bd_seance_back": {
+        "description": "pages/conversations_bd.seance.back"
+    },
+    "pages_conversations_bd_seance_counter": "Case {n} sur {count}",
+    "@pages_conversations_bd_seance_counter": {
+        "description": "pages/conversations_bd.seance.counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_seance_exit_fullscreen": "Quitter le plein écran",
+    "@pages_conversations_bd_seance_exit_fullscreen": {
+        "description": "pages/conversations_bd.seance.exit_fullscreen"
+    },
+    "pages_conversations_bd_seance_fullscreen": "Plein écran",
+    "@pages_conversations_bd_seance_fullscreen": {
+        "description": "pages/conversations_bd.seance.fullscreen"
+    },
+    "pages_conversations_bd_seance_hide": "Masquer les pensées",
+    "@pages_conversations_bd_seance_hide": {
+        "description": "pages/conversations_bd.seance.hide"
+    },
+    "pages_conversations_bd_seance_key_message": "Message clé : {message}",
+    "@pages_conversations_bd_seance_key_message": {
+        "description": "pages/conversations_bd.seance.key_message",
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_seance_keyboard_help": "Clavier ou télécommande : flèche droite, Page suivante, Espace ou Entrée pour avancer (les pensées d’abord) ; flèche gauche ou Page précédente pour revenir ; P pour les pensées ; F pour le plein écran.",
+    "@pages_conversations_bd_seance_keyboard_help": {
+        "description": "pages/conversations_bd.seance.keyboard_help"
+    },
+    "pages_conversations_bd_seance_kicker": "Mode séance",
+    "@pages_conversations_bd_seance_kicker": {
+        "description": "pages/conversations_bd.seance.kicker"
+    },
+    "pages_conversations_bd_seance_meta_title": "Mode séance – {title}",
+    "@pages_conversations_bd_seance_meta_title": {
+        "description": "pages/conversations_bd.seance.meta_title",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_seance_next": "Suivant",
+    "@pages_conversations_bd_seance_next": {
+        "description": "pages/conversations_bd.seance.next"
+    },
+    "pages_conversations_bd_seance_no_questions": "Pas de questions pour cette conversation : laissez le groupe réagir librement.",
+    "@pages_conversations_bd_seance_no_questions": {
+        "description": "pages/conversations_bd.seance.no_questions"
+    },
+    "pages_conversations_bd_seance_previous": "Précédent",
+    "@pages_conversations_bd_seance_previous": {
+        "description": "pages/conversations_bd.seance.previous"
+    },
+    "pages_conversations_bd_seance_questions": "Questions",
+    "@pages_conversations_bd_seance_questions": {
+        "description": "pages/conversations_bd.seance.questions"
+    },
+    "pages_conversations_bd_seance_questions_counter": "Questions d’animation",
+    "@pages_conversations_bd_seance_questions_counter": {
+        "description": "pages/conversations_bd.seance.questions_counter"
+    },
+    "pages_conversations_bd_seance_questions_title": "Questions d’animation",
+    "@pages_conversations_bd_seance_questions_title": {
+        "description": "pages/conversations_bd.seance.questions_title"
+    },
+    "pages_conversations_bd_seance_restart": "Recommencer",
+    "@pages_conversations_bd_seance_restart": {
+        "description": "pages/conversations_bd.seance.restart"
+    },
+    "pages_conversations_bd_seance_reveal": "Révéler les pensées",
+    "@pages_conversations_bd_seance_reveal": {
+        "description": "pages/conversations_bd.seance.reveal"
+    },
+    "pages_conversations_bd_seance_revealed": "Pensées révélées.",
+    "@pages_conversations_bd_seance_revealed": {
+        "description": "pages/conversations_bd.seance.revealed"
+    },
+    "pages_conversations_bd_seance_thoughts_hidden": "Les pensées sont masquées : faites d’abord parler le groupe sur ce qui est dit.",
+    "@pages_conversations_bd_seance_thoughts_hidden": {
+        "description": "pages/conversations_bd.seance.thoughts_hidden"
+    },
+    "pages_conversations_bd_seance_open": "Ouvrir le mode séance",
+    "@pages_conversations_bd_seance_open": {
+        "description": "pages/conversations_bd.seance_open"
+    },
+    "pages_conversations_bd_seance_text": "Pour les pair·es animateur·rices : projetez la conversation case par case, révélez les pensées puis lancez la discussion.",
+    "@pages_conversations_bd_seance_text": {
+        "description": "pages/conversations_bd.seance_text"
+    },
+    "pages_conversations_bd_seance_title": "Animer une séance",
+    "@pages_conversations_bd_seance_title": {
+        "description": "pages/conversations_bd.seance_title"
+    },
+    "pages_conversations_bd_theme": "Thème : {theme}",
+    "@pages_conversations_bd_theme": {
+        "description": "pages/conversations_bd.theme",
+        "placeholders": {
+            "theme": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_title": "Conversations en BD",
+    "@pages_conversations_bd_title": {
+        "description": "pages/conversations_bd.title"
+    },
+    "pages_conversations_bd_viewer_counter": "Case {n} sur {count}",
+    "@pages_conversations_bd_viewer_counter": {
+        "description": "pages/conversations_bd.viewer.counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_viewer_keyboard_help": "Utilisez les boutons ou les flèches gauche et droite du clavier pour changer de case.",
+    "@pages_conversations_bd_viewer_keyboard_help": {
+        "description": "pages/conversations_bd.viewer.keyboard_help"
+    },
+    "pages_conversations_bd_viewer_next": "Case suivante",
+    "@pages_conversations_bd_viewer_next": {
+        "description": "pages/conversations_bd.viewer.next"
+    },
+    "pages_conversations_bd_viewer_previous": "Case précédente",
+    "@pages_conversations_bd_viewer_previous": {
+        "description": "pages/conversations_bd.viewer.previous"
+    },
+    "pages_conversations_bd_viewer_region": "Cases de la conversation « {title} »",
+    "@pages_conversations_bd_viewer_region": {
+        "description": "pages/conversations_bd.viewer.region",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "pages_conversations_bd_viewer_roledescription": "visionneuse de BD",
+    "@pages_conversations_bd_viewer_roledescription": {
+        "description": "pages/conversations_bd.viewer.roledescription"
+    },
+    "pages_conversations_bd_warning_sos_link": "Alerte SOS",
+    "@pages_conversations_bd_warning_sos_link": {
+        "description": "pages/conversations_bd.warning_sos_link"
     },
     "pages_deletion_back_home": "Retour à l’accueil",
     "@pages_deletion_back_home": {

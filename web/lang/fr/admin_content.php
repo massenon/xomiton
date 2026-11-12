@@ -32,6 +32,9 @@ return [
     'toasts' => ['published' => '« :title » est publié.', 'unpublished' => '« :title » repasse en brouillon.', 'deleted' => '« :title » est supprimé.'],
 
     'errors' => [
+        // P20 : conversations en BD (ManageConversationsBd).
+        'bd_conversation_invalid' => 'La conversation ne respecte pas la grammaire des bulles. :message',
+        'bd_edge' => 'Cette conversation est déjà au bord de la liste.',
         'forum_edge' => 'Ce forum est déjà au bord de la liste.',
         'proposal_decided' => 'Cette proposition a déjà été traitée.',
         'event_decided' => 'Cet événement a déjà été traité.',

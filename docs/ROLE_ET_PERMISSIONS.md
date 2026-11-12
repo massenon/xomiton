@@ -70,6 +70,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | Modération & contenu | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
 | Contenu : thématiques & ressources (édition) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Outils CCC (édition) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Conversations en BD (lecture publique et mode séance ; administration : `conversations_bd.manage`) | 👁 | 👁 | 👁 | 👁 | ✅ | ✅ |
 | Assistant LLM (base de connaissances) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Newsletter** (abonné·es, campagnes, envoi) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | **Passerelles réseaux sociaux** (connexion des comptes, file de publication) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
@@ -123,6 +124,7 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `users.unban` (lever un bannissement, journal `users.unbanned`) | | | | | ✅ |
 | `badges.manage` (P18-09 : attribuer ou retirer à la main un badge vérifié dans la fiche du compte, jamais sur soi-même ; journal `badges.granted` / `badges.revoked`) | | | | ✅ | ✅ |
 | Réponse validée d'un sujet de forum (P18-03, Q97) : **aucune nouvelle permission** — l'auteur·rice du sujet, ou `posts.moderate` (`ForumTopicPolicy::accept`) ; un geste de la modération est journalisé | | | ✅ | ✅ | ✅ |
+| `conversations_bd.manage` (P20, PRD conversation-en-bd P0-9 : onglet « Conversations en BD » de `/admin/ccc` — publier / dépublier (grammaire des bulles exigée), ordonner, modifier les textes, la description et les bulles d’une case, bibliothèque de scènes ; journal `conversations_bd.*` ; migration `2026_12_08_090100` pour une base déjà semée) | | | | ✅ | ✅ |
 | `forums.manage` (P18-10 : onglet « Gestion des forums » de `/admin/reseau` — créer, renommer, réordonner, archiver / réactiver un forum ; journal `forums.created|updated|moved|archived|restored`) | | | | ✅ | ✅ |
 | Épingler / verrouiller un sujet (P18-11) : **aucune nouvelle permission** — `posts.moderate` (`ForumTopicPolicy::moderate`), depuis `/admin/reseau` (onglet Sujets de forum), la fiche du sujet (web) et l'API `forums/topics/{ulid}/pin|lock` ; journal `forums.topic_pinned|unpinned|locked|unlocked` | | | ✅ | ✅ | ✅ |
 | Mettre une ressource « À la une » (P18-11) : **aucune nouvelle permission** — `resources.manage` (policy `update`) ; journal `content.resource_featured|unfeatured` | | | | ✅ | ✅ |

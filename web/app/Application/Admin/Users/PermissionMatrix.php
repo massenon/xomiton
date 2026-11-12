@@ -49,7 +49,7 @@ final class PermissionMatrix
         'forums' => ['forums.manage'],
         'events' => ['events.manage'],
         'suggestions' => ['suggestions.manage'],
-        'content' => ['thematiques.manage', 'resources.manage', 'faqs.manage', 'laws.manage', 'ccc_tools.manage'],
+        'content' => ['thematiques.manage', 'resources.manage', 'faqs.manage', 'laws.manage', 'ccc_tools.manage', 'conversations_bd.manage'],
         'announcements' => ['announcements.manage'],
         'assistant' => ['assistant_kb.manage'],
         'newsletter' => ['newsletter.manage_subscribers', 'newsletter.manage_campaigns', 'newsletter.send'],

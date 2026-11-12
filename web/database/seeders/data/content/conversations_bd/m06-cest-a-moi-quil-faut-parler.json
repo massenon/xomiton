@@ -1,0 +1,190 @@
+{
+    "key": "m06",
+    "slug": "cest-a-moi-quil-faut-parler",
+    "title": "C’est à moi qu’il faut parler",
+    "summary": "À l’accueil d’un centre de santé, l’agent parle au frère de Yasmine plutôt qu’à elle. Rachad lui rend la parole.",
+    "theme": "handicap, autonomie, respect",
+    "category": "handicap et inclusion",
+    "audience": "tout public, personnels d’accueil",
+    "key_message": "Une personne handicapée décide pour elle-même ; on s’adresse à elle et on lui demande ce dont elle a besoin.",
+    "content_warning": null,
+    "questions": [
+        "Que ressentait Yasmine en case 1 ? Cela vous est-il déjà arrivé, à vous ou à un·e proche ?",
+        "Qu’a fait Rachad de juste ?",
+        "Comment demander à quelqu’un s’il ou elle a besoin d’aide, sans décider à sa place ?"
+    ],
+    "cases": [
+        {
+            "scene": "m06-case-1",
+            "description": "Accueil d’un centre de santé ; Yasmine dans son fauteuil devant le comptoir, son frère Rachad debout derrière elle ; l’agent d’accueil regarde Rachad.",
+            "bulles": [
+                {
+                    "type": "cartouche",
+                    "texte": "Au centre de santé.",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "agent_accueil",
+                    "texte": "Qu’est-ce qu’elle a ? Elle a sa carte ?",
+                    "position": {
+                        "x": 20.3,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 42.6
+                    }
+                },
+                {
+                    "type": "pensee",
+                    "personnage": "yasmine",
+                    "texte": "Encore… comme si je n’étais pas là.",
+                    "position": {
+                        "x": 46.9,
+                        "y": 13.4
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 74,
+                        "y": 39.5
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m06-case-2",
+            "description": "Rachad recule d’un pas et désigne sa sœur d’un geste ouvert.",
+            "bulles": [
+                {
+                    "type": "pensee",
+                    "personnage": "rachad",
+                    "texte": "Ce n’est pas à moi de répondre.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 29.1
+                    }
+                },
+                {
+                    "type": "parole",
+                    "personnage": "rachad",
+                    "texte": "Demandez-lui directement.",
+                    "position": {
+                        "x": 31.2,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 27.2,
+                        "y": 27.6
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m06-case-3",
+            "description": "Yasmine tend sa carte, souriante et assurée ; l’agent, surpris·e, porte la main à sa poitrine.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "yasmine",
+                    "texte": "Bonjour. C’est moi qui ai rendez-vous. Voici ma carte.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "tremblee",
+                    "personnage": "agent_accueil",
+                    "texte": "Oh… pardon, madame.",
+                    "position": {
+                        "x": 36.1,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 54.2,
+                        "y": 26
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m06-case-4",
+            "description": "L’agent se penche légèrement pour être à la hauteur des yeux de Yasmine et montre un couloir de plain-pied.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "agent_accueil",
+                    "texte": "Le cabinet est à l’étage. Vous préférez qu’on vous reçoive en bas ?",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "joie",
+                    "personnage": "yasmine",
+                    "texte": "Oui. Merci de me le demander !",
+                    "position": {
+                        "x": 40,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 69.7,
+                        "y": 29.1
+                    }
+                }
+            ]
+        },
+        {
+            "scene": "m06-case-5",
+            "description": "Yasmine se dirige vers le cabinet du rez-de-chaussée, Rachad à côté, détendu.",
+            "bulles": [
+                {
+                    "type": "parole",
+                    "personnage": "yasmine",
+                    "texte": "Me demander, c’est déjà m’aider.",
+                    "position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "queue": {
+                        "vers": "personnage",
+                        "x": 24,
+                        "y": 32.2
+                    }
+                },
+                {
+                    "type": "cartouche",
+                    "texte": "On s’adresse à la personne elle-même et on lui demande ce dont elle a besoin.",
+                    "position": {
+                        "x": 27.8,
+                        "y": 85.7
+                    }
+                }
+            ]
+        }
+    ]
+}

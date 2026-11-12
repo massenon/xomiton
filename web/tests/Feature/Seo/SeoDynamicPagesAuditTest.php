@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 require_once __DIR__.'/seo-helpers.php';
 
+use App\Application\Content\ConversationsBd\ImportConversationsBd;
 use App\Application\Content\ViolencesNumeriques\ImportViolencesNumeriques;
+use App\Models\BdConversation;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Faq;
@@ -284,4 +286,29 @@ it('audite les pages des violences numériques une fois le pilote importé : car
     [$doc, $x] = seoDom('/thematiques/sextorsion');
     expect(mb_strlen(trim($doc->getElementsByTagName('title')->item(0)->textContent)))->toBeBetween(50, 60)
         ->and(seoMeta($x, 'property', 'og:image'))->toEndWith('/sextorsion/partage.webp');
+});
+
+it('audite les conversations en BD une fois les modèles importés et publiés : liste et page d’une conversation', function (): void {
+    app(ImportConversationsBd::class)();
+    BdConversation::query()->update(['status' => 'publiee', 'published_at' => now()]);
+
+    // Liste : page à URL fixe, méta 50–60 / 140–160, CollectionPage, une hiérarchie de titres sans saut.
+    [$doc, $x] = seoDom('/conversations-bd');
+    expect($x->query('//h1')->length)->toBe(1);
+    expect(collect(dynGraph($x))->pluck('@type')->all())->toContain('CollectionPage', 'BreadcrumbList');
+    expect(mb_strlen(trim($doc->getElementsByTagName('title')->item(0)->textContent)))->toBeBetween(50, 60);
+    expect(mb_strlen((string) seoMeta($x, 'name', 'description')))->toBeBetween(140, 160);
+
+    // Page d'une conversation : contrôles communs, CreativeWork, fil d'Ariane Accueil › Conversations en BD › titre.
+    foreach (BdConversation::query()->pluck('slug') as $slug) {
+        dynAssertCommon('/conversations-bd/'.$slug);
+    }
+    $work = dynNode('/conversations-bd/non-cest-non', 'CreativeWork');
+    expect($work)->toHaveKeys(['name', 'description', 'image', 'publisher', 'mainEntityOfPage', 'inLanguage', 'genre', 'datePublished'])
+        ->and($work['genre'])->toBe('Bande dessinée');
+    $crumb = dynNode('/conversations-bd/non-cest-non', 'BreadcrumbList');
+    expect($crumb['itemListElement'][1]['item'])->toBe(route('conversations-bd.index'));
+    [, $x] = seoDom('/conversations-bd/non-cest-non');
+    expect(seoMeta($x, 'property', 'og:type'))->toBe('article');
+    expect(mb_strlen((string) seoMeta($x, 'name', 'description')))->toBeBetween(140, 160);
 });

@@ -11,6 +11,7 @@ use App\Domain\Content\Exceptions\ContentRefused;
 use App\Enums\CccKind;
 use App\Livewire\Attributes\SafeUrl;
 use App\Livewire\Concerns\InteractsWithUi;
+use App\Models\BdConversation;
 use App\Models\CccTool;
 use App\Models\Law;
 use App\Models\User;
@@ -29,7 +30,8 @@ use Livewire\WithFileUploads;
  * clavier), ordre des modules (monter / descendre) et suppression (ManageCccModules). Onglets Boîtes à images et BD SSR (même mécanique, le kind est celui de l'onglet à la création,
  * celui de l'outil ensuite) : création, titre, planches (ajout, retrait, légende, texte alternatif, ordre au clavier) et
  * suppression. Onglet Lois : création, modification de tous les champs, ordre (monter / descendre), publié / masqué et
- * suppression (ManageLaws). Permission `ccc_tools.manage` (admin, superadmin) vérifiée à chaque action (jamais seulement à
+ * suppression (ManageLaws). Onglet Conversations en BD (P20) : composant enfant Admin\Ccc\Conversations, permission
+ * `conversations_bd.manage` en plus. Permission `ccc_tools.manage` (admin, superadmin) vérifiée à chaque action (jamais seulement à
  * l'affichage) ; l'onglet Lois exige aussi `laws.manage`. Chaque écriture est journalisée par ManageCccTools / ManageLaws.
  */
 final class Index extends Component
@@ -37,7 +39,7 @@ final class Index extends Component
     use InteractsWithUi;
     use WithFileUploads;
 
-    public const TABS = ['manuel', 'boite_images', 'bd', 'lois'];
+    public const TABS = ['manuel', 'boite_images', 'bd', 'conversations', 'lois'];
 
     #[SafeUrl(as: 'onglet', except: 'manuel')]
     public string $tab = 'manuel';
@@ -140,7 +142,18 @@ final class Index extends Component
     /** @return list<string> */
     public function tabs(): array
     {
-        return $this->actor()->can('laws.manage') ? self::TABS : array_values(array_diff(self::TABS, ['lois']));
+        $hidden = [];
+
+        if (! $this->actor()->can('laws.manage')) {
+            $hidden[] = 'lois';
+        }
+
+        // P20 : onglet « Conversations en BD » (composant Admin\Ccc\Conversations), permission dédiée.
+        if (! $this->actor()->can('conversations_bd.manage')) {
+            $hidden[] = 'conversations';
+        }
+
+        return array_values(array_diff(self::TABS, $hidden));
     }
 
     public function setTab(string $tab): void
@@ -950,6 +963,7 @@ final class Index extends Component
             'manuel' => (int) ($byKind[CccKind::Manual->value] ?? 0),
             'boite_images' => (int) ($byKind[CccKind::ImageBox->value] ?? 0),
             'bd' => (int) ($byKind[CccKind::Comic->value] ?? 0),
+            'conversations' => BdConversation::query()->count(),
             'lois' => Law::query()->count(),
         ];
     }

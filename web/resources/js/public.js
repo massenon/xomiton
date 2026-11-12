@@ -44,6 +44,8 @@ const lazyModules = [
   ['[x-data^="xmQuiz"]', () => import('./public/do-glegbe.js')],
   // P19-04 : visionneuse de BD publique /bd/{key} (sans JavaScript : toutes les planches à la suite).
   ['[x-data^="xmComic"]', () => import('./public/comic-viewer.js')],
+  // P20-10 : mode séance d'une conversation en BD (sans JavaScript : toutes les cases, pensées comprises, et les questions).
+  ['[x-data^="xmBdSeance"]', () => import('./public/bd-seance.js')],
 ].filter(([selector]) => document.querySelector(selector));
 
 if (lazyModules.length > 0) {

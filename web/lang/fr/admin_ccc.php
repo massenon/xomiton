@@ -11,7 +11,7 @@ return [
     'title' => 'Outils CCC',
     'intro' => 'Manuel du pair animateur, boîtes à images, bandes dessinées SSR et textes de loi. Un outil masqué disparaît des écrans des membres et des pair·es ; vous pouvez remplacer son image et décrire chaque planche pour les personnes qui ne la voient pas.',
     'tabs_label' => 'Types d’outils',
-    'tabs' => ['manuel' => 'Manuel', 'boite_images' => 'Boîtes à images', 'bd' => 'BD SSR', 'lois' => 'Lois'],
+    'tabs' => ['manuel' => 'Manuel', 'boite_images' => 'Boîtes à images', 'bd' => 'BD SSR', 'conversations' => 'Conversations en BD', 'lois' => 'Lois'],
     'kpi' => ['total' => 'Outils numérisés', 'published' => 'Publiés', 'hidden' => 'Masqués', 'images' => 'Images remplacées'],
     'published' => 'Publié',
     'hidden' => 'Masqué',

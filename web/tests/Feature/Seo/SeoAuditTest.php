@@ -16,6 +16,8 @@ const SEO_PAGES = [
     '/thematiques', '/urgences', '/violences',
     // P19 : carrefour des violences numériques et liste des BD publiques (contenus importés : SeoDynamicPagesAuditTest).
     '/violences-numeriques', '/bd',
+    // P20 : liste des conversations en BD (conversations importées et publiées : SeoDynamicPagesAuditTest).
+    '/conversations-bd',
 ];
 
 dataset('seo-pages', SEO_PAGES);

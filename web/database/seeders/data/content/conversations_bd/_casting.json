@@ -1,0 +1,170 @@
+{
+    "characters": [
+        {
+            "key": "afi",
+            "name": "Afi",
+            "pronoun": "elle",
+            "role": "étudiante, 20 ans (bible des BD)",
+            "description": "20-year-old West African woman, dark brown skin, natural hair in a high afro puff, mustard-yellow top, blue jeans, round gold earrings",
+            "secondary": false
+        },
+        {
+            "key": "sena",
+            "name": "Sena",
+            "pronoun": "iel",
+            "role": "étudiant·e non binaire, 19 ans (bible des BD)",
+            "description": "19-year-old non-binary person, light brown skin, short teal-dyed hair, violet hoodie (#6F2C91) over a white t-shirt",
+            "secondary": false
+        },
+        {
+            "key": "kossi",
+            "name": "Kossi",
+            "pronoun": "il",
+            "role": "jeune homme allié, 23 ans ; collègue d’Ablavi et de Joël en entreprise (bible des BD)",
+            "description": "23-year-old young man, ally, dark brown skin, very short hair, short beard, royal-blue shirt (#0433C3) with rolled sleeves",
+            "secondary": false
+        },
+        {
+            "key": "mariam",
+            "name": "Mariam",
+            "pronoun": "elle",
+            "role": "réparatrice de téléphones au marché, 26 ans (bible des BD)",
+            "description": "26-year-old woman wearing a rose hijab (#C2255C) and an orange tunic (#B84B00), confident smile, works at a phone repair stall",
+            "secondary": false
+        },
+        {
+            "key": "rosine",
+            "name": "Tantie Rosine",
+            "pronoun": "elle",
+            "role": "tante de Fifamè, 45 ans (bible des BD)",
+            "description": "45-year-old woman, wax-print wrap dress in blue and orange patterns, matching headwrap, reading glasses",
+            "secondary": false
+        },
+        {
+            "key": "nadia",
+            "name": "Nadia",
+            "pronoun": "elle",
+            "role": "pair animatrice Xomiton, 32 ans (bible des BD)",
+            "description": "32-year-old Xomiton peer facilitator (pair animatrice), dark brown skin, long box braids tied back, violet cardigan with a small heart pin, warm smile",
+            "secondary": false
+        },
+        {
+            "key": "fifame",
+            "name": "Fifamè",
+            "pronoun": "elle",
+            "role": "lycéenne, 16 ans, nièce de Tantie Rosine, Porto-Novo",
+            "description": "16-year-old West African girl, dark brown skin, hair in two braided puffs, Benin school uniform (khaki shirt and skirt), small backpack",
+            "secondary": false
+        },
+        {
+            "key": "yasmine",
+            "name": "Yasmine",
+            "pronoun": "elle",
+            "role": "étudiante en droit, stagiaire, 24 ans, en fauteuil roulant",
+            "description": "24-year-old woman, medium-dark skin, short natural curls, teal blouse, uses a sleek manual wheelchair, confident posture",
+            "secondary": false
+        },
+        {
+            "key": "ablavi",
+            "name": "Ablavi",
+            "pronoun": "elle",
+            "role": "cheffe de projet dans une entreprise de Cotonou, 38 ans",
+            "description": "38-year-old woman, dark skin, short tapered natural hair, rectangular glasses, royal-blue blazer (#0433C3) over a wax-print top",
+            "secondary": false
+        },
+        {
+            "key": "joel",
+            "name": "Joël",
+            "pronoun": "il",
+            "role": "comptable, sourd, lit sur les lèvres et signe, 31 ans",
+            "description": "31-year-old man, deep brown skin, shaved head, visible hearing aid on the left ear, mustard-yellow polo shirt",
+            "secondary": false
+        },
+        {
+            "key": "rodrigue",
+            "name": "Rodrigue",
+            "pronoun": "il",
+            "role": "lycéen (M01)",
+            "secondary": true
+        },
+        {
+            "key": "grace",
+            "name": "Grâce",
+            "pronoun": "elle",
+            "role": "étudiante, seulement au téléphone (M02)",
+            "secondary": true
+        },
+        {
+            "key": "marc",
+            "name": "Marc",
+            "pronoun": "il",
+            "role": "chef de service (M04)",
+            "secondary": true
+        },
+        {
+            "key": "responsable_stage",
+            "name": "Le responsable de stage",
+            "pronoun": "il",
+            "role": "jamais montré : seulement ses messages (M05)",
+            "secondary": true
+        },
+        {
+            "key": "rachad",
+            "name": "Rachad",
+            "pronoun": "il",
+            "role": "frère de Yasmine (M06)",
+            "secondary": true
+        },
+        {
+            "key": "agent_accueil",
+            "name": "L’agent d’accueil",
+            "role": "accueil d’un centre de santé (M06)",
+            "secondary": true
+        },
+        {
+            "key": "collegue_f",
+            "name": "Une collègue",
+            "pronoun": "elle",
+            "role": "collègue (M07)",
+            "secondary": true
+        },
+        {
+            "key": "collegue_h",
+            "name": "Un collègue",
+            "pronoun": "il",
+            "role": "collègue (M07)",
+            "secondary": true
+        },
+        {
+            "key": "membre_groupe",
+            "name": "Un membre du groupe",
+            "role": "membre d’un groupe de discussion ou de parole",
+            "secondary": true
+        },
+        {
+            "key": "autre_membre",
+            "name": "Un autre membre",
+            "role": "membre du groupe de la promo (M02)",
+            "secondary": true
+        },
+        {
+            "key": "autre_membre_f",
+            "name": "Une autre membre",
+            "pronoun": "elle",
+            "role": "membre du groupe de la promo (M02)",
+            "secondary": true
+        },
+        {
+            "key": "abonne",
+            "name": "Un·e abonné·e",
+            "role": "abonné·e de Sena (M09)",
+            "secondary": true
+        },
+        {
+            "key": "numero_inconnu",
+            "name": "Numéro inconnu",
+            "role": "arnaqueur au code (M10)",
+            "secondary": true
+        }
+    ]
+}

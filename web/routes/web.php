@@ -19,6 +19,9 @@ use App\Http\Controllers\Web\Alerts\ReportPageController;
 use App\Http\Controllers\Web\Alerts\ReportTrackingController;
 use App\Http\Controllers\Web\ConfidentialiteController;
 use App\Http\Controllers\Web\ContentEventController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdIndexController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdSeanceController;
+use App\Http\Controllers\Web\ConversationsBd\ConversationsBdShowController;
 use App\Http\Controllers\Web\DesignSystemController;
 use App\Http\Controllers\Web\DoGlegbeController;
 use App\Http\Controllers\Web\EventsPageController;
@@ -127,6 +130,10 @@ Route::get('/lois', LoisController::class)->middleware('guest.page')->name('lois
 Route::get('/violences-numeriques', ViolencesNumeriquesController::class)->middleware('guest.page')->name('violences-numeriques');
 Route::get('/bd', BdIndexController::class)->middleware('guest.page')->name('bd.index');
 Route::get('/bd/{key}', BdShowController::class)->where('key', '[a-z0-9]+(?:-[a-z0-9]+)*')->middleware('guest.page')->name('bd.show');
+// P20-06 / P20-10 : conversations en BD publiées (bulles SVG au texte réel), indexées ; mode séance jamais indexé.
+Route::get('/conversations-bd', ConversationsBdIndexController::class)->middleware('guest.page')->name('conversations-bd.index');
+Route::get('/conversations-bd/{slug}', ConversationsBdShowController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->middleware('guest.page')->name('conversations-bd.show');
+Route::get('/conversations-bd/{slug}/seance', ConversationsBdSeanceController::class)->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->middleware('guest.page')->name('conversations-bd.seance');
 Route::get('/do-glegbe', DoGlegbeController::class)->middleware('guest.page')->name('do-glegbe');
 // P4-05 : centre d'aide public et indexable (vous) ; questions du périmètre HelpCenter (catégories `faq`), adressées par
 // slug ; vote « Cet article vous a-t-il aidé·e ? » persisté dans `faq_feedback` (POST + @csrf, limiteur `faq_feedback`).

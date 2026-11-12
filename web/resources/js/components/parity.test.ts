@@ -32,6 +32,8 @@ import XmTabs from './XmTabs.vue';
 import XmTimeline from './XmTimeline.vue';
 import XmToast from './XmToast.vue';
 import XmUrgency from './XmUrgency.vue';
+import XmBdPanel from './bd/XmBdPanel.vue';
+import bdFixture from './bd/parity-fixture.json';
 
 interface ParityCase {
     component: Component;
@@ -99,6 +101,10 @@ const CASES: Record<string, ParityCase> = {
         { title: 'Clôture', date: '25/03/2026', color: 'warning' },
     ] } },
     'timeline-empty': { component: XmTimeline, props: { items: [] } },
+    // P20-04 : case d'une conversation en BD (mêmes données que ComponentParityTest).
+    'bd-panel': { component: XmBdPanel, props: { bubbles: bdFixture.bubbles, names: bdFixture.names, alt: 'Sortie du lycée à Porto-Novo.', n: 2, count: 5, title: 'Non, c’est non' } },
+    'bd-panel-image': { component: XmBdPanel, props: { bubbles: [{ type: 'parole', personnage: 'afi', texte: 'Bonjour !', position: { x: 4, y: 4 }, queue: { vers: 'bord-gauche' } }], names: { afi: 'Afi' }, image: '/assets/images/conversations-bd/test/case-1.webp', alt: 'Afi dans la cour.', n: 1, count: 3, title: 'Test', priority: true, id: 'case-1' } },
+    'bd-panel-empty': { component: XmBdPanel, props: { alt: 'Un regard silencieux.', n: 3, count: 3, title: 'Test' } },
 };
 
 const FIXTURES = import.meta.glob<string>('./__parity__/*.html', { query: '?raw', import: 'default', eager: true });
