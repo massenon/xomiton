@@ -7,22 +7,42 @@ int _int(Object? v, [int d = 0]) =>
     v is num ? v.toInt() : int.tryParse('$v') ?? d;
 DateTime? _date(Object? v) => v is String ? DateTime.tryParse(v) : null;
 
+/// Badge vérifié par l'administration (P18-09, Q97) : `membre_verifie`
+/// (« Membre vérifié ») ou `pair_animateur` (« Pair animateur·rice »),
+/// attribué à la main par l'équipe ; libellé fourni par le serveur.
+class VerifiedBadge {
+  const VerifiedBadge({required this.key, required this.label});
+  final String key;
+  final String label;
+
+  static List<VerifiedBadge> listFrom(Object? v) => [
+    for (final b in _list(v))
+      if ('${b['key'] ?? ''}'.isNotEmpty && '${b['label'] ?? ''}'.isNotEmpty)
+        VerifiedBadge(key: '${b['key']}', label: '${b['label']}'),
+  ];
+}
+
 class Author {
   const Author({
     this.id,
     required this.pseudo,
     this.avatarUrl,
     this.anonymous = false,
+    this.badges = const [],
   });
   final int? id;
   final String pseudo;
   final String? avatarUrl;
   final bool anonymous;
+
+  /// P18-09 : badges vérifiés (toujours vide pour un contenu anonyme).
+  final List<VerifiedBadge> badges;
   factory Author.fromJson(Map<String, dynamic> j) => Author(
     id: j['id'] is num ? (j['id'] as num).toInt() : null,
     pseudo: '${j['pseudo'] ?? ''}',
     avatarUrl: j['avatar_url'] as String?,
     anonymous: j['anonymous'] == true,
+    badges: j['anonymous'] == true ? const [] : VerifiedBadge.listFrom(j['badges']),
   );
 }
 

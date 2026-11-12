@@ -18,6 +18,7 @@ class AppUser {
     this.roles = const ['membre'],
     this.permissions = const [],
     this.spaces = const [AppSpace.member],
+    this.badges = const [],
     this.raw = const {},
   });
 
@@ -37,6 +38,10 @@ class AppUser {
 
   /// Espaces proposés par le serveur (`member` toujours présent), ordre stable.
   final List<AppSpace> spaces;
+
+  /// P18-09 : libellés des badges vérifiés par l'administration (« Membre
+  /// vérifié », « Pair animateur·rice »), fournis par le serveur (`GET me`).
+  final List<String> badges;
   final Map<String, dynamic> raw;
 
   bool get isPeer => roles.contains('pair');
@@ -72,6 +77,10 @@ class AppUser {
       roles: roles.toList(),
       permissions: strings(j['permissions']),
       spaces: spaces,
+      badges: [
+        for (final b in (j['badges'] is List ? j['badges'] as List : const []))
+          if (b is Map && b['label'] is String) b['label'] as String,
+      ],
       raw: j,
     );
   }

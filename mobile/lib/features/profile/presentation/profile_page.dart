@@ -7,6 +7,8 @@ import '../../../core/l10n/app_strings.dart';
 import '../../auth/application/session_controller.dart';
 import 'my_spaces_card.dart';
 import 'settings_page.dart';
+import '../../feed/data/feed_models.dart';
+import '../../feed/presentation/verified_badges.dart';
 
 /// Onglet Profil : accès à mon profil, aux paramètres, à la sécurité et aux
 /// parcours de sécurité (accessibles aussi sans code PIN).
@@ -29,6 +31,15 @@ class ProfileTabPage extends ConsumerWidget {
         padding: const EdgeInsets.all(XmSpace.gutter),
         children: [
           Text(user?.pseudo ?? context.t('menus_mobile_profile'), style: Theme.of(context).textTheme.headlineMedium),
+          // P18-09 : badges vérifiés par l'administration (libellés du serveur).
+          if (user != null && user.badges.isNotEmpty) ...[
+            const SizedBox(height: XmSpace.s1),
+            VerifiedBadges(
+              badges: [
+                for (final (i, label) in user.badges.indexed) VerifiedBadge(key: 'me-$i', label: label),
+              ],
+            ),
+          ],
           const SizedBox(height: XmSpace.s2),
           if (user != null) ...[
             Text(context.t('profile_progressive_banner_progress', {'percent': user.completion})),

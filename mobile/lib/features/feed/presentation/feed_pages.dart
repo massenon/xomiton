@@ -15,6 +15,7 @@ import '../application/feed_controller.dart';
 import '../data/feed_api.dart';
 import '../data/feed_models.dart';
 import 'media_widgets.dart';
+import 'verified_badges.dart';
 
 export 'create_post_page.dart' show CreatePostPage;
 export 'my_videos_page.dart' show MyVideosPage;
@@ -142,6 +143,7 @@ class PostCard extends ConsumerWidget {
                           name,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
+                        if (a.badges.isNotEmpty) VerifiedBadges(badges: a.badges),
                         if (post.publishedAt != null)
                           Text(
                             relativeTime(context, post.publishedAt!),
@@ -666,7 +668,14 @@ class _PostDetailPageState extends ConsumerState<PostDetailPage> {
       ),
       child: ListTile(
         contentPadding: EdgeInsets.zero,
-        title: Text(name, style: Theme.of(context).textTheme.titleSmall),
+        title: Wrap(
+          spacing: XmSpace.s1,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(name, style: Theme.of(context).textTheme.titleSmall),
+            if (c.author.badges.isNotEmpty) VerifiedBadges(badges: c.author.badges),
+          ],
+        ),
         subtitle: Text(c.body),
         trailing: PopupMenuButton<String>(
           onSelected: (v) async {
