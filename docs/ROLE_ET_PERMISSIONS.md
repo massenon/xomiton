@@ -77,6 +77,12 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | Utilisateurs (membres, pair·es) | ❌ | ❌ | ❌ | 👁 (suspendre) | ✅ | ✅ |
 | Bannir un compte (P18-06, Q97) ; lever un bannissement | ❌ | ❌ | ❌ | ❌ | ✅ (bannir) | ✅ (bannir, lever) |
 | Badges vérifiés (P18-09, Q97 : « Membre vérifié », « Pair animateur·rice ») | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Forums : gérer (créer, renommer, réordonner, archiver ; P18-10) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Forums : épingler / verrouiller un sujet (P18-11) | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Ressources proposées : proposer / valider (P18-12) | ❌ | ✅ (proposer) | ✅ (proposer) | ✅ (proposer) | ✅ (valider) | ✅ |
+| Annonce globale (P18-13, espace membre et application seulement) | ❌ (jamais affichée) | 👁 | 👁 | 👁 | ✅ | ✅ |
+| Événements : calendrier, file d'approbation (P18-14) | ❌ | ❌ | ❌ | ✅ (calendrier, décider) | ✅ (+ réglage de la file) | ✅ |
+| Boîte à suggestions : écrire / traiter (P18-14) | ❌ | ✅ (écrire) | ✅ (écrire) | ✅ (traiter) | ✅ | ✅ |
 | Inscriptions (ouvrir / fermer) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Rôle pair : donner / retirer, inviter | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
 | Rôles d'administration (attribuer, inviter) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -117,6 +123,17 @@ Légende : ✅ accès complet · 👁 lecture / accès limité · ❌ aucun acc�
 | `users.unban` (lever un bannissement, journal `users.unbanned`) | | | | | ✅ |
 | `badges.manage` (P18-09 : attribuer ou retirer à la main un badge vérifié dans la fiche du compte, jamais sur soi-même ; journal `badges.granted` / `badges.revoked`) | | | | ✅ | ✅ |
 | Réponse validée d'un sujet de forum (P18-03, Q97) : **aucune nouvelle permission** — l'auteur·rice du sujet, ou `posts.moderate` (`ForumTopicPolicy::accept`) ; un geste de la modération est journalisé | | | ✅ | ✅ | ✅ |
+| `forums.manage` (P18-10 : onglet « Gestion des forums » de `/admin/reseau` — créer, renommer, réordonner, archiver / réactiver un forum ; journal `forums.created|updated|moved|archived|restored`) | | | | ✅ | ✅ |
+| Épingler / verrouiller un sujet (P18-11) : **aucune nouvelle permission** — `posts.moderate` (`ForumTopicPolicy::moderate`), depuis `/admin/reseau` (onglet Sujets de forum), la fiche du sujet (web) et l'API `forums/topics/{ulid}/pin|lock` ; journal `forums.topic_pinned|unpinned|locked|unlocked` | | | ✅ | ✅ | ✅ |
+| Mettre une ressource « À la une » (P18-11) : **aucune nouvelle permission** — `resources.manage` (policy `update`) ; journal `content.resource_featured|unfeatured` | | | | ✅ | ✅ |
+| Proposer une ressource (P18-12) : `social.access` + e-mail confirmé, limiteur `resource_proposal` (5 par compte et par jour) ; jamais publique. File de validation `/admin/contenu/propositions` : `resources.manage` (journal `resource_proposals.submitted|accepted|refused`) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `announcements.manage` (P18-13, Q97 : annonce globale `/admin/annonces`, bannière de l'espace membre et de l'application seulement ; journal `announcements.created|updated|ended|deleted`) | | | | ✅ | ✅ |
+| Événements (P18-14) : calendrier `/admin/evenements` en lecture avec `posts.moderate` ; approuver / refuser un événement en attente : `moderation.manage` (journal `event.approved|refused`) | | | ✅ | ✅ | ✅ |
+| `events.manage` (P18-14 : activer / couper la file d'approbation des événements, réglage `events.require_approval`, **coupée par défaut** ; journal `settings.events_approval`) | | | | ✅ | ✅ |
+| Boîte à suggestions (P18-14) : écrire `social.access`, limiteur `suggestion` (5 par compte et par jour), anonyme possible | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `suggestions.manage` (P18-14 : inbox `/admin/suggestions`, statuts, réponse de l'équipe envoyée en notification ; jamais le compte d'une suggestion anonyme ; journal `suggestions.*`) | | | ✅ | ✅ | ✅ |
+
+Base déjà en production : `forums.manage`, `announcements.manage`, `events.manage` (admin, superadmin) et `suggestions.manage` (modération, admin, superadmin) sont posées par la migration de rattrapage idempotente `2026_12_06_100600_grant_p18_community_permissions` ; base neuve : `RolesAndPermissionsSeeder`. Chaque action Livewire revérifie sa permission (identifiant de l'élément ouvert en `#[Locked]`).
 
 ## 5. Règles d'accès aux données
 
