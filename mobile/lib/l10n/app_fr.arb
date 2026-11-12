@@ -2927,6 +2927,18 @@
     "@admin_moderation_errors_reason_required": {
         "description": "admin.moderation.errors.reason_required"
     },
+    "admin_moderation_errors_video_not_pending": "Cette vidéo n’est plus en attente de relecture : une décision a déjà été prise ou elle a été retirée.",
+    "@admin_moderation_errors_video_not_pending": {
+        "description": "admin.moderation.errors.video_not_pending"
+    },
+    "admin_moderation_errors_video_note_required": "Précisez le motif du refus dans le texte libre.",
+    "@admin_moderation_errors_video_note_required": {
+        "description": "admin.moderation.errors.video_note_required"
+    },
+    "admin_moderation_errors_video_reason_invalid": "Ce motif de refus n’existe pas.",
+    "@admin_moderation_errors_video_reason_invalid": {
+        "description": "admin.moderation.errors.video_reason_invalid"
+    },
     "admin_moderation_filter_label": "Statut des signalements",
     "@admin_moderation_filter_label": {
         "description": "admin.moderation.filter_label"
@@ -3098,6 +3110,22 @@
     "@admin_moderation_table_caption": {
         "description": "admin.moderation.table_caption"
     },
+    "admin_moderation_tabs_label": "Sections de la modération",
+    "@admin_moderation_tabs_label": {
+        "description": "admin.moderation.tabs.label"
+    },
+    "admin_moderation_tabs_reports": "Signalements",
+    "@admin_moderation_tabs_reports": {
+        "description": "admin.moderation.tabs.reports"
+    },
+    "admin_moderation_tabs_videos": "Vidéos à relire",
+    "@admin_moderation_tabs_videos": {
+        "description": "admin.moderation.tabs.videos"
+    },
+    "admin_moderation_tabs_videos_pending": "en attente",
+    "@admin_moderation_tabs_videos_pending": {
+        "description": "admin.moderation.tabs.videos_pending"
+    },
     "admin_moderation_test_help": "Applique les règles en vigueur sans rien enregistrer ni journaliser.",
     "@admin_moderation_test_help": {
         "description": "admin.moderation.test.help"
@@ -3205,6 +3233,146 @@
     "admin_moderation_unknown_author": "inconnu·e",
     "@admin_moderation_unknown_author": {
         "description": "admin.moderation.unknown_author"
+    },
+    "admin_moderation_video_actions_approve": "Approuver",
+    "@admin_moderation_video_actions_approve": {
+        "description": "admin.moderation.video.actions.approve"
+    },
+    "admin_moderation_video_actions_reject": "Refuser",
+    "@admin_moderation_video_actions_reject": {
+        "description": "admin.moderation.video.actions.reject"
+    },
+    "admin_moderation_video_anonymous": "Publication anonyme",
+    "@admin_moderation_video_anonymous": {
+        "description": "admin.moderation.video.anonymous"
+    },
+    "admin_moderation_video_approve_effect": "La vidéo est publiée tout de suite selon la visibilité choisie par la personne, et elle en est prévenue.",
+    "@admin_moderation_video_approve_effect": {
+        "description": "admin.moderation.video.approve_effect"
+    },
+    "admin_moderation_video_approve_title": "Approuver la vidéo",
+    "@admin_moderation_video_approve_title": {
+        "description": "admin.moderation.video.approve_title"
+    },
+    "admin_moderation_video_card_title": "Vidéo de {pseudo}",
+    "@admin_moderation_video_card_title": {
+        "description": "admin.moderation.video.card_title",
+        "placeholders": {
+            "pseudo": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_description": "Description fournie",
+    "@admin_moderation_video_description": {
+        "description": "admin.moderation.video.description"
+    },
+    "admin_moderation_video_empty": "Aucune vidéo à relire",
+    "@admin_moderation_video_empty": {
+        "description": "admin.moderation.video.empty"
+    },
+    "admin_moderation_video_empty_text": "Les vidéos envoyées par les membres apparaissent ici avant leur parution.",
+    "@admin_moderation_video_empty_text": {
+        "description": "admin.moderation.video.empty_text"
+    },
+    "admin_moderation_video_file_missing": "Le fichier de cette vidéo est introuvable. Vous pouvez la refuser.",
+    "@admin_moderation_video_file_missing": {
+        "description": "admin.moderation.video.file_missing"
+    },
+    "admin_moderation_video_intro": "Ces vidéos sont invisibles pour les autres membres tant que vous ne les avez pas approuvées. Regardez-les en entier, lisez la description, puis approuvez ou refusez avec un motif.",
+    "@admin_moderation_video_intro": {
+        "description": "admin.moderation.video.intro"
+    },
+    "admin_moderation_video_kpi_pending": "À relire",
+    "@admin_moderation_video_kpi_pending": {
+        "description": "admin.moderation.video.kpi.pending"
+    },
+    "admin_moderation_video_kpi_rejected": "Refusées",
+    "@admin_moderation_video_kpi_rejected": {
+        "description": "admin.moderation.video.kpi.rejected"
+    },
+    "admin_moderation_video_mb": "Mo",
+    "@admin_moderation_video_mb": {
+        "description": "admin.moderation.video.mb"
+    },
+    "admin_moderation_video_metadata_warning": "Les vidéos ne sont pas retouchées à l’envoi : elles peuvent contenir des informations cachées, comme le lieu du tournage. En cas de doute sur la vie privée de la personne, refusez avec le motif « Vie privée ».",
+    "@admin_moderation_video_metadata_warning": {
+        "description": "admin.moderation.video.metadata_warning"
+    },
+    "admin_moderation_video_no_player": "Votre navigateur ne sait pas lire cette vidéo.",
+    "@admin_moderation_video_no_player": {
+        "description": "admin.moderation.video.no_player"
+    },
+    "admin_moderation_video_note": "Précisions pour la personne (facultatif)",
+    "@admin_moderation_video_note": {
+        "description": "admin.moderation.video.note"
+    },
+    "admin_moderation_video_note_help": "Écrit pour la personne ({max} caractères au plus), sans nom ni information sur d’autres membres.",
+    "@admin_moderation_video_note_help": {
+        "description": "admin.moderation.video.note_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_own": "Votre propre vidéo : une autre personne de l’équipe doit la relire.",
+    "@admin_moderation_video_own": {
+        "description": "admin.moderation.video.own"
+    },
+    "admin_moderation_video_reason": "Motif du refus",
+    "@admin_moderation_video_reason": {
+        "description": "admin.moderation.video.reason"
+    },
+    "admin_moderation_video_reason_placeholder": "Choisir un motif",
+    "@admin_moderation_video_reason_placeholder": {
+        "description": "admin.moderation.video.reason_placeholder"
+    },
+    "admin_moderation_video_reject_effect": "La personne reçoit le motif dans ses notifications. Le fichier est supprimé du serveur au bout de {days} jours.",
+    "@admin_moderation_video_reject_effect": {
+        "description": "admin.moderation.video.reject_effect",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_reject_title": "Refuser la vidéo",
+    "@admin_moderation_video_reject_title": {
+        "description": "admin.moderation.video.reject_title"
+    },
+    "admin_moderation_video_sent_at": "Envoyée le",
+    "@admin_moderation_video_sent_at": {
+        "description": "admin.moderation.video.sent_at"
+    },
+    "admin_moderation_video_size": "Poids",
+    "@admin_moderation_video_size": {
+        "description": "admin.moderation.video.size"
+    },
+    "admin_moderation_video_sr_video": "la vidéo de {pseudo}",
+    "@admin_moderation_video_sr_video": {
+        "description": "admin.moderation.video.sr_video",
+        "placeholders": {
+            "pseudo": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_text": "Message accompagnant la vidéo",
+    "@admin_moderation_video_text": {
+        "description": "admin.moderation.video.text"
+    },
+    "admin_moderation_video_title": "Vidéos à relire",
+    "@admin_moderation_video_title": {
+        "description": "admin.moderation.video.title"
+    },
+    "admin_moderation_video_toasts_approved": "Vidéo approuvée et publiée.",
+    "@admin_moderation_video_toasts_approved": {
+        "description": "admin.moderation.video.toasts.approved"
+    },
+    "admin_moderation_video_toasts_rejected": "Vidéo refusée, la personne en est prévenue.",
+    "@admin_moderation_video_toasts_rejected": {
+        "description": "admin.moderation.video.toasts.rejected"
     },
     "admin_moderation_warnings": "{count, plural, =1{{count} avertissement} other{{count} avertissements}}",
     "@admin_moderation_warnings": {
@@ -24485,7 +24653,7 @@
             }
         }
     },
-    "feed_api_media_last_required": "Une publication sans texte garde au moins un média : écris un message ou garde une image.",
+    "feed_api_media_last_required": "Une publication sans texte garde au moins un média : écris un message ou garde une image.",
     "@feed_api_media_last_required": {
         "description": "feed.api.media_last_required"
     },
@@ -25591,11 +25759,11 @@
     "@feed_video_not_in_poll": {
         "description": "feed.video.not_in_poll"
     },
-    "feed_video_not_with_images": "Une vidéo ne s’ajoute pas à des images : choisis l’une ou les autres.",
+    "feed_video_not_with_images": "Une vidéo ne s’ajoute pas à des images : choisis l’une ou les autres.",
     "@feed_video_not_with_images": {
         "description": "feed.video.not_with_images"
     },
-    "feed_video_privacy_notice": "Ta vidéo n’est pas retouchée : elle peut contenir des informations cachées, comme le lieu où elle a été filmée. Vérifie-la avant de l’envoyer.",
+    "feed_video_privacy_notice": "Ta vidéo n’est pas retouchée : elle peut contenir des informations cachées, comme le lieu où elle a été filmée. Vérifie-la avant de l’envoyer.",
     "@feed_video_privacy_notice": {
         "description": "feed.video.privacy_notice"
     },
@@ -30489,7 +30657,7 @@
     "@notifications_video_pending_title": {
         "description": "notifications.video_pending.title"
     },
-    "notifications_video_reviewed_approved_body": "L’équipe de modération a relu ta vidéo : elle est maintenant en ligne.",
+    "notifications_video_reviewed_approved_body": "L’équipe de modération a relu ta vidéo : elle est maintenant en ligne.",
     "@notifications_video_reviewed_approved_body": {
         "description": "notifications.video_reviewed.approved.body"
     },
@@ -30501,7 +30669,7 @@
     "@notifications_video_reviewed_discreet": {
         "description": "notifications.video_reviewed.discreet"
     },
-    "notifications_video_reviewed_rejected_body": "L’équipe de modération n’a pas pu publier ta vidéo : {reason}. Le fichier sera supprimé dans {days} jours.",
+    "notifications_video_reviewed_rejected_body": "L’équipe de modération n’a pas pu publier ta vidéo : {reason}. Le fichier sera supprimé dans {days} jours.",
     "@notifications_video_reviewed_rejected_body": {
         "description": "notifications.video_reviewed.rejected.body",
         "placeholders": {

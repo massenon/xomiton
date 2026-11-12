@@ -16,6 +16,7 @@ return [
         'corrupt_image' => 'Cette image est illisible ou abîmée. Choisir une autre image.',
         'too_many_pixels' => 'Cette image est trop grande (:width × :height px). Réduire ses dimensions avant de la téléverser.',
         'not_a_file' => 'Aucun fichier n’a été reçu.',
+        'extension' => 'L’extension du fichier ne correspond pas à son contenu. Choisir un fichier MP4 ou WebM.',
     ],
 
     // Libellés courts des types MIME acceptés (liste « Formats acceptés »).

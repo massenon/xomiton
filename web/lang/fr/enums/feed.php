@@ -27,6 +27,8 @@ return [
         'publie' => 'Publié',
         'masque' => 'Masqué',
         'supprime' => 'Supprimé',
+        'relecture' => 'En attente de relecture',
+        'refuse' => 'Refusé',
     ],
 
     // App\Enums\ContentReportReason (P7-02) : motifs d'un signalement de contenu, gardés tels quels en base (reason).
