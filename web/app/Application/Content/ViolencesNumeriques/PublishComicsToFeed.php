@@ -76,7 +76,8 @@ final class PublishComicsToFeed
         $body = trim($text) === '' ? (string) $tool->title : trim($text);
         $body = Str::limit($body, 3000 - mb_strlen($url) - 2, '…')."\n\n".$url;
         $max = max(1, (int) config('xomiton.feed.max_images', 4));
-        $pages = array_slice(array_values(array_filter((array) $tool->pages, 'is_array')), 0, $max);
+        $raw = $tool->getAttribute('pages');
+        $pages = array_slice(array_values(array_filter(is_array($raw) ? $raw : [], 'is_array')), 0, $max);
 
         DB::transaction(function () use ($tool, $body, $authorId, $pages): void {
             $post = new Post;

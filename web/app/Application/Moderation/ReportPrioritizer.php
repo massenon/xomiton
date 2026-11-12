@@ -9,6 +9,7 @@ use App\Enums\ContentReportReason;
 use App\Enums\ModerationKind;
 use App\Models\ModerationReport;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Calcule et range le score de priorité (P18-04, App\Domain\Moderation\ReportPriority) dans
@@ -89,12 +90,13 @@ final class ReportPrioritizer
     private function sanctions(int $userId, string $subjectType, int $subjectId): int
     {
         // Paires (nature, identifiant) distinctes, sans concaténation SQL propre à un moteur (SQLite en test, MySQL en production).
-        return ModerationReport::query()->toBase()
+        $pairs = ModerationReport::query()->toBase()
             ->where('reported_user_id', $userId)
             ->whereIn('action', self::SANCTIONS)
             ->where(fn (Builder $query) => $query->where('subject_type', '!=', $subjectType)->orWhere('subject_id', '!=', $subjectId))
             ->distinct()
-            ->get(['subject_type', 'subject_id'])
-            ->count();
+            ->select(['subject_type', 'subject_id']);
+
+        return DB::query()->fromSub($pairs, 'sanctioned')->count();
     }
 }

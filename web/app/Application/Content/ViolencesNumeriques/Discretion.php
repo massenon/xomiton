@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Content\ViolencesNumeriques;
 
 use App\Application\Member\MemberShell;
+use App\Models\Profile;
 use App\Models\User;
 
 /**
@@ -24,7 +25,9 @@ final class Discretion
 
     public function hidesImages(?User $user): bool
     {
-        return (bool) ($user?->profile?->discreet_mode ?? false);
+        $profile = $user?->getRelationValue('profile');
+
+        return $profile instanceof Profile && (bool) $profile->discreet_mode;
     }
 
     /**

@@ -33,7 +33,7 @@ final class ReportContext
     public const HISTORY_LIMIT = 5;
 
     /**
-     * @return array{parent: array{type: string, title: string|null, excerpt: string|null}|null, history: array{warnings: int, reports: int, sanctions: array<string, int>, suspended: bool, banned: bool, recent: list<array{at: Carbon|null, kind: string, action: string|null}>}|null}
+     * @return array{parent: array{type: string, title: string|null, excerpt: string|null}|null, history: array{warnings: int, reports: int, sanctions: array<string, int>, suspended: bool, banned: bool, recent: list<array{at: Carbon|string|null, kind: string, action: string|null}>}|null}
      */
     public function for(ModerationReport $report): array
     {
@@ -86,7 +86,7 @@ final class ReportContext
     }
 
     /**
-     * @return array{warnings: int, reports: int, sanctions: array<string, int>, suspended: bool, banned: bool, recent: list<array{at: Carbon|null, kind: string, action: string|null}>}
+     * @return array{warnings: int, reports: int, sanctions: array<string, int>, suspended: bool, banned: bool, recent: list<array{at: Carbon|string|null, kind: string, action: string|null}>}
      */
     private function history(ModerationReport $report, User $author): array
     {
@@ -108,6 +108,7 @@ final class ReportContext
                 'kind' => (string) $past->getRawOriginal('kind'),
                 'action' => $past->action,
             ])->values()->all();
+        $recent = array_values($recent);
 
         return [
             'warnings' => UserWarning::query()->forUser($author)->count(),
