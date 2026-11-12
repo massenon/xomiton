@@ -51,6 +51,7 @@ Menu d'administration actuel :
 | Toast | `<x-toast>` | `useToast()` | SweetAlert2 (`$dispatch('toast')`) |
 | SOS | `<x-sos-button>` | `<XmSosButton>` | — |
 | Sélecteur d'émojis | — | `<XmEmojiPicker target="#champ" :maxlength="n">` (§3.1) | — |
+| Photos et vidéo d'une publication | — | `<XmMediaGallery :media :author>` → `<XmImageViewer>`, `<XmVideoPlayer>` (§3.2) ; composeurs `<ComposerImages>`, `<ComposerVideo>` | — |
 
 Le HTML produit est **le même** dans les trois technologies (mêmes classes Bootstrap Social et `xm-*`), copié du prototype.
 
@@ -63,6 +64,17 @@ Bouton « Ajouter un émoji » (`aria-haspopup="dialog"`, `aria-expanded`) qui o
 - Cibles de 40 px (44 px au doigt, `pointer: coarse`), jetons `--xm-*` uniquement (clair et sombre), émojis natifs du système (aucune image, police ni CDN). Les onglets défilent horizontalement **dans** leur bande ; la page ne défile jamais horizontalement.
 - Données : `resources/js/emoji/emojis.json` (source unique, chargée à la première ouverture, ≈ 8,5 Ko gzip) ; copie Flutter générée par `scripts/emoji-sync.mjs`. Textes : `lang/fr/emoji.php`. Choix et émojis écartés : `IMPLEMENTATION_PLAN.md`, D-EMOJI-1 à 5.
 - Intégré à : création de publication, de sondage (question et texte), commentaires, messagerie.
+
+### 3.2 Photos et vidéo des publications : `XmMediaGallery`, `XmImageViewer`, `XmVideoPlayer` (Vue)
+
+Rendus par `XmPost` à partir de `media[]` (docs/API.md §8.4) : fil, détail, profil, groupes, enregistrées. La visionneuse, le lecteur et les composeurs sont des **morceaux chargés à la demande** (`lazyComponent`, jamais `defineAsyncComponent` dans une page : budget du JS membre, 150 Ko).
+
+- **`XmMediaGallery`** (`media`, `author`) : 1 photo pleine largeur ; 2, 3 ou 4 en grille responsive (`.xm-gallery-n`, 2 colonnes, cases carrées ; la première photo occupe deux rangées pour 3). Chaque photo est un vrai `<button>` (cible ≥ 44 px, focus visible, `aria-haspopup="dialog"`) qui contient l'`<img>` avec son `alt` (repli : « Photo 2 sur 4 de la publication de … ») et `loading="lazy"` ; le groupe porte `role="group"` et `aria-label`. Aucun défilement horizontal de 360 à 430 px.
+- **`XmImageViewer`** (`images`, `start` ; émet `close`) : `role="dialog"` + `aria-modal`, focus d'abord sur « Fermer », **focus piégé** (Tab et Maj+Tab bouclent), ← / → (en boucle), Début, Fin, Échap, clic sur le fond ; boutons Précédente / Suivante de 44 px (en bas de l'écran sous 576 px), compteur « 2 / 4 » visible, photo courante annoncée (`role="status"`), défilement de la page figé, **focus rendu** à la photo qui l'a ouverte. Fond sombre dans les deux thèmes (`--xm-neutral-d-*`), anneau de focus `--xm-blue-dark-accent`. Aucune animation (rien à désactiver avec `prefers-reduced-motion`).
+- **`XmVideoPlayer`** (`media`) : `<video controls preload="metadata" playsinline>` natif, source = lien signé court (`media.url`), **jamais de lecture automatique**, ni `muted`, ni `loop`. La description (`media.alt`) est l'`aria-label` du lecteur et la légende visible ; si le fichier ne se lit pas (lien expiré, format), un message remplace le lecteur et la description reste lue. Pas de sous-titres ni de vignette (le serveur n'en produit pas, D-IMGW-9).
+- **États de relecture** (`XmPost`, auteur·rice seulement) : `review_state` `pending` → alerte `role="status"` « En attente de relecture » (« Pour l'instant, tu es la seule personne à la voir ») ; `rejected` → « Vidéo refusée », motif `review_reason`, pas de lecteur si le fichier est purgé ; bouton « Retirer ma vidéo » (confirmation puis `DELETE posts/{ulid}`). Ni actions (J'aime, partage, commentaire) ni menu pendant la relecture. Section « Mes vidéos » : profil, ancre `#mes-videos`.
+- **Composeurs** : `ComposerImages` (sélection multiple, compteur, vignette + champ de texte alternatif par photo, Monter / Descendre / Retirer, région `aria-live` pour les changements, erreurs `images.N` et `images_alt.N` liées au champ par `aria-describedby` et `aria-invalid`) ; `ComposerVideo` (fichier, description obligatoire, avertissement de vie privée `role="note"`, case obligatoire, barre `role="progressbar"` + texte annoncé par paliers de 25 %, bouton Annuler). Photos et vidéo sont exclusives ; un sondage n'a que des photos. Hors connexion, un média n'est jamais mis en file (D-IMGW-2).
+- Textes : `lang/fr/feed.php` (`feed.media.*`, `feed.gallery.*`, `feed.video.*`), tutoiement, espaces insécables avant `: ; ! ? %` et dans « ».
 
 ## 4. Cohérence des écrans de gestion (référence)
 
