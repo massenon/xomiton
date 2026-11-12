@@ -3126,7 +3126,7 @@ parameters:
 		-
 			message: '#^Cannot call method isPublished\(\) on string\.$#'
 			identifier: method.nonObject
-			count: 2
+			count: 1
 			path: app/Policies/PostPolicy.php
 
 		-
