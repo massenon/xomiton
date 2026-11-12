@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/xm_tokens.dart';
+import '../../../core/emoji/emoji_logic.dart';
+import '../../../core/emoji/emoji_picker_sheet.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/network/api_exception.dart';
 import '../../../core/ui/xm_widgets.dart';
@@ -638,9 +640,11 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
               TextField(
                 controller: _question,
                 maxLength: 200,
+                inputFormatters: const [CodePointLimitFormatter(200)],
                 decoration: InputDecoration(
                   labelText: context.t('feed_poll_question'),
                   hintText: context.t('feed_poll_question_placeholder'),
+                  suffixIcon: EmojiButton(controller: _question, maxLength: 200),
                 ),
               ),
               for (var i = 0; i < _options.length; i++)
@@ -692,7 +696,9 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
               minLines: 4,
               maxLines: 8,
               maxLength: 3000,
+              inputFormatters: const [CodePointLimitFormatter(3000)],
               decoration: InputDecoration(
+                suffixIcon: EmojiButton(controller: _body, maxLength: 3000),
                 labelText: context.t(
                   _poll ? 'feed_poll_text' : 'feed_create_text',
                 ),
@@ -953,7 +959,9 @@ class _PostDetailPageState extends ConsumerState<PostDetailPage> {
           child: TextField(
             controller: _text,
             maxLength: 1000,
+            inputFormatters: const [CodePointLimitFormatter(1000)],
             decoration: InputDecoration(
+              suffixIcon: EmojiButton(controller: _text, maxLength: 1000),
               counterText: '',
               labelText: context.t('feed_comments_field_label'),
               hintText: context.t('feed_comments_placeholder'),
