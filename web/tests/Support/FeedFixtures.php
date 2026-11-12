@@ -77,4 +77,38 @@ final class FeedFixtures
 
         return substr($jpeg, 0, 2).$segment.substr($jpeg, 2);
     }
+
+    /**
+     * Vidéo MP4 minimale (boîte `ftyp` « isom » : type réel `video/mp4` pour finfo), complétée à `$bytes` octets.
+     */
+    public static function mp4(int $bytes = 4096): string
+    {
+        $head = pack('N', 24).'ftypisom'.pack('N', 512).'isomiso2mp41'.pack('N', 8).'free';
+
+        return $head.str_repeat("\0", max(0, $bytes - strlen($head)));
+    }
+
+    /**
+     * Vidéo WebM minimale (en-tête EBML, DocType « webm » : type réel `video/webm`), complétée à `$bytes` octets.
+     */
+    public static function webm(int $bytes = 4096): string
+    {
+        $body = "\x42\x86\x81\x01\x42\xF7\x81\x01\x42\xF2\x81\x04\x42\xF3\x81\x08\x42\x82\x84webm\x42\x87\x81\x04\x42\x85\x81\x02";
+        $head = "\x1A\x45\xDF\xA3".chr(0x80 | strlen($body)).$body;
+
+        return $head.str_repeat("\0", max(0, $bytes - strlen($head)));
+    }
+
+    /** PNG opaque fabriqué avec GD. */
+    public static function png(int $width = 120, int $height = 80, int $red = 30): string
+    {
+        $image = imagecreatetruecolor($width, $height);
+        imagefilledrectangle($image, 0, 0, $width - 1, $height - 1, (int) imagecolorallocate($image, $red, 90, 160));
+        ob_start();
+        imagepng($image);
+        $png = (string) ob_get_clean();
+        imagedestroy($image);
+
+        return $png;
+    }
 }
