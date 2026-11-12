@@ -9,6 +9,8 @@
     $actionColor = ['aucune' => 'neutral', 'masque' => 'info', 'avertissement' => 'warning', 'suspension' => 'danger', 'supprime' => 'danger'];
 @endphp
 <div class="xm-moderation">
+    @include('livewire.admin.moderation.partials.tabs', ['active' => 'reports', 'pending' => $videosPending])
+
     <p class="text-secondary mb-4 xm-prose">{{ __('admin.moderation.intro') }}</p>
 
     <x-admin.kpi id="xmModKpis" :items="[

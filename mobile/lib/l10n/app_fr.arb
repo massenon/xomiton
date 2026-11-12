@@ -2927,6 +2927,18 @@
     "@admin_moderation_errors_reason_required": {
         "description": "admin.moderation.errors.reason_required"
     },
+    "admin_moderation_errors_video_not_pending": "Cette vidéo n’est plus en attente de relecture : une décision a déjà été prise ou elle a été retirée.",
+    "@admin_moderation_errors_video_not_pending": {
+        "description": "admin.moderation.errors.video_not_pending"
+    },
+    "admin_moderation_errors_video_note_required": "Précisez le motif du refus dans le texte libre.",
+    "@admin_moderation_errors_video_note_required": {
+        "description": "admin.moderation.errors.video_note_required"
+    },
+    "admin_moderation_errors_video_reason_invalid": "Ce motif de refus n’existe pas.",
+    "@admin_moderation_errors_video_reason_invalid": {
+        "description": "admin.moderation.errors.video_reason_invalid"
+    },
     "admin_moderation_filter_label": "Statut des signalements",
     "@admin_moderation_filter_label": {
         "description": "admin.moderation.filter_label"
@@ -3098,6 +3110,22 @@
     "@admin_moderation_table_caption": {
         "description": "admin.moderation.table_caption"
     },
+    "admin_moderation_tabs_label": "Sections de la modération",
+    "@admin_moderation_tabs_label": {
+        "description": "admin.moderation.tabs.label"
+    },
+    "admin_moderation_tabs_reports": "Signalements",
+    "@admin_moderation_tabs_reports": {
+        "description": "admin.moderation.tabs.reports"
+    },
+    "admin_moderation_tabs_videos": "Vidéos à relire",
+    "@admin_moderation_tabs_videos": {
+        "description": "admin.moderation.tabs.videos"
+    },
+    "admin_moderation_tabs_videos_pending": "en attente",
+    "@admin_moderation_tabs_videos_pending": {
+        "description": "admin.moderation.tabs.videos_pending"
+    },
     "admin_moderation_test_help": "Applique les règles en vigueur sans rien enregistrer ni journaliser.",
     "@admin_moderation_test_help": {
         "description": "admin.moderation.test.help"
@@ -3205,6 +3233,146 @@
     "admin_moderation_unknown_author": "inconnu·e",
     "@admin_moderation_unknown_author": {
         "description": "admin.moderation.unknown_author"
+    },
+    "admin_moderation_video_actions_approve": "Approuver",
+    "@admin_moderation_video_actions_approve": {
+        "description": "admin.moderation.video.actions.approve"
+    },
+    "admin_moderation_video_actions_reject": "Refuser",
+    "@admin_moderation_video_actions_reject": {
+        "description": "admin.moderation.video.actions.reject"
+    },
+    "admin_moderation_video_anonymous": "Publication anonyme",
+    "@admin_moderation_video_anonymous": {
+        "description": "admin.moderation.video.anonymous"
+    },
+    "admin_moderation_video_approve_effect": "La vidéo est publiée tout de suite selon la visibilité choisie par la personne, et elle en est prévenue.",
+    "@admin_moderation_video_approve_effect": {
+        "description": "admin.moderation.video.approve_effect"
+    },
+    "admin_moderation_video_approve_title": "Approuver la vidéo",
+    "@admin_moderation_video_approve_title": {
+        "description": "admin.moderation.video.approve_title"
+    },
+    "admin_moderation_video_card_title": "Vidéo de {pseudo}",
+    "@admin_moderation_video_card_title": {
+        "description": "admin.moderation.video.card_title",
+        "placeholders": {
+            "pseudo": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_description": "Description fournie",
+    "@admin_moderation_video_description": {
+        "description": "admin.moderation.video.description"
+    },
+    "admin_moderation_video_empty": "Aucune vidéo à relire",
+    "@admin_moderation_video_empty": {
+        "description": "admin.moderation.video.empty"
+    },
+    "admin_moderation_video_empty_text": "Les vidéos envoyées par les membres apparaissent ici avant leur parution.",
+    "@admin_moderation_video_empty_text": {
+        "description": "admin.moderation.video.empty_text"
+    },
+    "admin_moderation_video_file_missing": "Le fichier de cette vidéo est introuvable. Vous pouvez la refuser.",
+    "@admin_moderation_video_file_missing": {
+        "description": "admin.moderation.video.file_missing"
+    },
+    "admin_moderation_video_intro": "Ces vidéos sont invisibles pour les autres membres tant que vous ne les avez pas approuvées. Regardez-les en entier, lisez la description, puis approuvez ou refusez avec un motif.",
+    "@admin_moderation_video_intro": {
+        "description": "admin.moderation.video.intro"
+    },
+    "admin_moderation_video_kpi_pending": "À relire",
+    "@admin_moderation_video_kpi_pending": {
+        "description": "admin.moderation.video.kpi.pending"
+    },
+    "admin_moderation_video_kpi_rejected": "Refusées",
+    "@admin_moderation_video_kpi_rejected": {
+        "description": "admin.moderation.video.kpi.rejected"
+    },
+    "admin_moderation_video_mb": "Mo",
+    "@admin_moderation_video_mb": {
+        "description": "admin.moderation.video.mb"
+    },
+    "admin_moderation_video_metadata_warning": "Les vidéos ne sont pas retouchées à l’envoi : elles peuvent contenir des informations cachées, comme le lieu du tournage. En cas de doute sur la vie privée de la personne, refusez avec le motif « Vie privée ».",
+    "@admin_moderation_video_metadata_warning": {
+        "description": "admin.moderation.video.metadata_warning"
+    },
+    "admin_moderation_video_no_player": "Votre navigateur ne sait pas lire cette vidéo.",
+    "@admin_moderation_video_no_player": {
+        "description": "admin.moderation.video.no_player"
+    },
+    "admin_moderation_video_note": "Précisions pour la personne (facultatif)",
+    "@admin_moderation_video_note": {
+        "description": "admin.moderation.video.note"
+    },
+    "admin_moderation_video_note_help": "Écrit pour la personne ({max} caractères au plus), sans nom ni information sur d’autres membres.",
+    "@admin_moderation_video_note_help": {
+        "description": "admin.moderation.video.note_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_own": "Votre propre vidéo : une autre personne de l’équipe doit la relire.",
+    "@admin_moderation_video_own": {
+        "description": "admin.moderation.video.own"
+    },
+    "admin_moderation_video_reason": "Motif du refus",
+    "@admin_moderation_video_reason": {
+        "description": "admin.moderation.video.reason"
+    },
+    "admin_moderation_video_reason_placeholder": "Choisir un motif",
+    "@admin_moderation_video_reason_placeholder": {
+        "description": "admin.moderation.video.reason_placeholder"
+    },
+    "admin_moderation_video_reject_effect": "La personne reçoit le motif dans ses notifications. Le fichier est supprimé du serveur au bout de {days} jours.",
+    "@admin_moderation_video_reject_effect": {
+        "description": "admin.moderation.video.reject_effect",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_reject_title": "Refuser la vidéo",
+    "@admin_moderation_video_reject_title": {
+        "description": "admin.moderation.video.reject_title"
+    },
+    "admin_moderation_video_sent_at": "Envoyée le",
+    "@admin_moderation_video_sent_at": {
+        "description": "admin.moderation.video.sent_at"
+    },
+    "admin_moderation_video_size": "Poids",
+    "@admin_moderation_video_size": {
+        "description": "admin.moderation.video.size"
+    },
+    "admin_moderation_video_sr_video": "la vidéo de {pseudo}",
+    "@admin_moderation_video_sr_video": {
+        "description": "admin.moderation.video.sr_video",
+        "placeholders": {
+            "pseudo": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_moderation_video_text": "Message accompagnant la vidéo",
+    "@admin_moderation_video_text": {
+        "description": "admin.moderation.video.text"
+    },
+    "admin_moderation_video_title": "Vidéos à relire",
+    "@admin_moderation_video_title": {
+        "description": "admin.moderation.video.title"
+    },
+    "admin_moderation_video_toasts_approved": "Vidéo approuvée et publiée.",
+    "@admin_moderation_video_toasts_approved": {
+        "description": "admin.moderation.video.toasts.approved"
+    },
+    "admin_moderation_video_toasts_rejected": "Vidéo refusée, la personne en est prévenue.",
+    "@admin_moderation_video_toasts_rejected": {
+        "description": "admin.moderation.video.toasts.rejected"
     },
     "admin_moderation_warnings": "{count, plural, =1{{count} avertissement} other{{count} avertissements}}",
     "@admin_moderation_warnings": {
@@ -18107,6 +18275,93 @@
             }
         }
     },
+    "ccc_offline_download_cancel": "Annuler le téléchargement",
+    "@ccc_offline_download_cancel": {
+        "description": "ccc.offline.download.cancel"
+    },
+    "ccc_offline_download_cancelled": "Téléchargement annulé. Les images déjà enregistrées restent disponibles.",
+    "@ccc_offline_download_cancelled": {
+        "description": "ccc.offline.download.cancelled"
+    },
+    "ccc_offline_download_cta": "Télécharger pour lire hors ligne",
+    "@ccc_offline_download_cta": {
+        "description": "ccc.offline.download.cta"
+    },
+    "ccc_offline_download_done": "Toutes les images sont enregistrées : tu peux animer sans réseau.",
+    "@ccc_offline_download_done": {
+        "description": "ccc.offline.download.done"
+    },
+    "ccc_offline_download_failed": "{count, plural, =1{1 image n’a pas pu être enregistrée. Réessaie avec un meilleur réseau.} other{{count} images n’ont pas pu être enregistrées. Réessaie avec un meilleur réseau.}}",
+    "@ccc_offline_download_failed": {
+        "description": "ccc.offline.download.failed",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "ccc_offline_download_full": "La place réservée aux images est pleine : certaines images ne sont pas enregistrées.",
+    "@ccc_offline_download_full": {
+        "description": "ccc.offline.download.full"
+    },
+    "ccc_offline_download_hint": "Enregistre les images sur ton téléphone pour animer une séance sans réseau. Préfère le Wi-Fi : le téléchargement consomme des données mobiles.",
+    "@ccc_offline_download_hint": {
+        "description": "ccc.offline.download.hint"
+    },
+    "ccc_offline_download_needs_network": "Connecte-toi à Internet pour télécharger les images.",
+    "@ccc_offline_download_needs_network": {
+        "description": "ccc.offline.download.needs_network"
+    },
+    "ccc_offline_download_progress": "Téléchargement des images : {done} sur {total}.",
+    "@ccc_offline_download_progress": {
+        "description": "ccc.offline.download.progress",
+        "placeholders": {
+            "done": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_offline_expired": "La copie enregistrée date de plus de {days} jours : elle n’est plus affichée. Connecte-toi à Internet pour récupérer les outils.",
+    "@ccc_offline_expired": {
+        "description": "ccc.offline.expired",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_offline_notice": "Tu lis la copie enregistrée sur ton téléphone. Les nouveautés et les outils retirés se mettront à jour dès que tu seras de nouveau connecté·e.",
+    "@ccc_offline_notice": {
+        "description": "ccc.offline.notice"
+    },
+    "ccc_offline_refresh": "Actualiser",
+    "@ccc_offline_refresh": {
+        "description": "ccc.offline.refresh"
+    },
+    "ccc_offline_refresh_label": "Actualiser les outils CCC",
+    "@ccc_offline_refresh_label": {
+        "description": "ccc.offline.refresh_label"
+    },
+    "ccc_offline_saved_on": "Contenu enregistré le {date}.",
+    "@ccc_offline_saved_on": {
+        "description": "ccc.offline.saved_on",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "ccc_offline_status": "Hors ligne",
+    "@ccc_offline_status": {
+        "description": "ccc.offline.status"
+    },
+    "ccc_offline_tool_available": "Disponible hors ligne",
+    "@ccc_offline_tool_available": {
+        "description": "ccc.offline.tool_available"
+    },
     "ccc_presentation_badge": "Mode présentation",
     "@ccc_presentation_badge": {
         "description": "ccc.presentation.badge"
@@ -22918,6 +23173,124 @@
     "@directory_urgences": {
         "description": "directory.urgences"
     },
+    "emoji_added": "Émoji ajouté : {name}",
+    "@emoji_added": {
+        "description": "emoji.added",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "emoji_categories_label": "Catégories d’émojis",
+    "@emoji_categories_label": {
+        "description": "emoji.categories_label"
+    },
+    "emoji_close": "Fermer le sélecteur d’émojis",
+    "@emoji_close": {
+        "description": "emoji.close"
+    },
+    "emoji_limit_reached": "Limite de caractères atteinte : l’émoji n’a pas été ajouté.",
+    "@emoji_limit_reached": {
+        "description": "emoji.limit_reached"
+    },
+    "emoji_load_failed": "Impossible de charger les émojis pour le moment.",
+    "@emoji_load_failed": {
+        "description": "emoji.load_failed"
+    },
+    "emoji_loading": "Chargement des émojis…",
+    "@emoji_loading": {
+        "description": "emoji.loading"
+    },
+    "emoji_no_results": "Aucun émoji ne correspond à ta recherche.",
+    "@emoji_no_results": {
+        "description": "emoji.no_results"
+    },
+    "emoji_recents": "Récents",
+    "@emoji_recents": {
+        "description": "emoji.recents"
+    },
+    "emoji_recents_empty": "Les émojis que tu utilises apparaîtront ici.",
+    "@emoji_recents_empty": {
+        "description": "emoji.recents_empty"
+    },
+    "emoji_results": "Résultats de la recherche",
+    "@emoji_results": {
+        "description": "emoji.results"
+    },
+    "emoji_results_count": "{count, plural, =0{Aucun émoji trouvé.} =1{{count} émoji trouvé.} other{{count} émojis trouvés.}}",
+    "@emoji_results_count": {
+        "description": "emoji.results_count",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "emoji_retry": "Réessayer",
+    "@emoji_retry": {
+        "description": "emoji.retry"
+    },
+    "emoji_search_clear": "Effacer la recherche",
+    "@emoji_search_clear": {
+        "description": "emoji.search_clear"
+    },
+    "emoji_search_label": "Rechercher un émoji",
+    "@emoji_search_label": {
+        "description": "emoji.search_label"
+    },
+    "emoji_search_placeholder": "Par exemple : cœur, soleil…",
+    "@emoji_search_placeholder": {
+        "description": "emoji.search_placeholder"
+    },
+    "emoji_title": "Choisir un émoji",
+    "@emoji_title": {
+        "description": "emoji.title"
+    },
+    "emoji_tone_label": "Teinte de peau",
+    "@emoji_tone_label": {
+        "description": "emoji.tone_label"
+    },
+    "emoji_tones_dark": "Teinte foncée",
+    "@emoji_tones_dark": {
+        "description": "emoji.tones.dark"
+    },
+    "emoji_tones_default": "Teinte par défaut",
+    "@emoji_tones_default": {
+        "description": "emoji.tones.default"
+    },
+    "emoji_tones_light": "Teinte claire",
+    "@emoji_tones_light": {
+        "description": "emoji.tones.light"
+    },
+    "emoji_tones_medium": "Teinte moyenne",
+    "@emoji_tones_medium": {
+        "description": "emoji.tones.medium"
+    },
+    "emoji_tones_medium_dark": "Teinte moyennement foncée",
+    "@emoji_tones_medium_dark": {
+        "description": "emoji.tones.medium_dark"
+    },
+    "emoji_tones_medium_light": "Teinte moyennement claire",
+    "@emoji_tones_medium_light": {
+        "description": "emoji.tones.medium_light"
+    },
+    "emoji_trigger": "Ajouter un émoji",
+    "@emoji_trigger": {
+        "description": "emoji.trigger"
+    },
+    "emoji_with_tone": "{name}, {tone}",
+    "@emoji_with_tone": {
+        "description": "emoji.with_tone",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "tone": {
+                "type": "String"
+            }
+        }
+    },
     "enums_alerts_alert_priority_critique": "Critique",
     "@enums_alerts_alert_priority_critique": {
         "description": "enums/alerts.alert_priority.critique"
@@ -23449,6 +23822,14 @@
     "enums_feed_post_status_publie": "Publié",
     "@enums_feed_post_status_publie": {
         "description": "enums/feed.post_status.publie"
+    },
+    "enums_feed_post_status_refuse": "Refusé",
+    "@enums_feed_post_status_refuse": {
+        "description": "enums/feed.post_status.refuse"
+    },
+    "enums_feed_post_status_relecture": "En attente de relecture",
+    "@enums_feed_post_status_relecture": {
+        "description": "enums/feed.post_status.relecture"
     },
     "enums_feed_post_status_supprime": "Supprimé",
     "@enums_feed_post_status_supprime": {
@@ -24159,6 +24540,22 @@
     "@feed_api_attributes_image_alt": {
         "description": "feed.api.attributes.image_alt"
     },
+    "feed_api_attributes_image_alt_item": "description de l’image",
+    "@feed_api_attributes_image_alt_item": {
+        "description": "feed.api.attributes.image_alt_item"
+    },
+    "feed_api_attributes_image_item": "image",
+    "@feed_api_attributes_image_item": {
+        "description": "feed.api.attributes.image_item"
+    },
+    "feed_api_attributes_images": "images",
+    "@feed_api_attributes_images": {
+        "description": "feed.api.attributes.images"
+    },
+    "feed_api_attributes_images_alt": "descriptions des images",
+    "@feed_api_attributes_images_alt": {
+        "description": "feed.api.attributes.images_alt"
+    },
     "feed_api_attributes_is_anonymous": "pseudonyme",
     "@feed_api_attributes_is_anonymous": {
         "description": "feed.api.attributes.is_anonymous"
@@ -24207,9 +24604,25 @@
     "@feed_api_attributes_reason": {
         "description": "feed.api.attributes.reason"
     },
+    "feed_api_attributes_remove_media": "médias à retirer",
+    "@feed_api_attributes_remove_media": {
+        "description": "feed.api.attributes.remove_media"
+    },
+    "feed_api_attributes_remove_media_item": "média à retirer",
+    "@feed_api_attributes_remove_media_item": {
+        "description": "feed.api.attributes.remove_media_item"
+    },
     "feed_api_attributes_tag": "type de publication",
     "@feed_api_attributes_tag": {
         "description": "feed.api.attributes.tag"
+    },
+    "feed_api_attributes_video": "vidéo",
+    "@feed_api_attributes_video": {
+        "description": "feed.api.attributes.video"
+    },
+    "feed_api_attributes_video_description": "description de la vidéo",
+    "@feed_api_attributes_video_description": {
+        "description": "feed.api.attributes.video_description"
     },
     "feed_api_attributes_visibility": "visibilité",
     "@feed_api_attributes_visibility": {
@@ -24226,6 +24639,27 @@
     "feed_api_group_visibility": "Une publication de groupe est visible par les membres du groupe : sa visibilité ne change pas.",
     "@feed_api_group_visibility": {
         "description": "feed.api.group_visibility"
+    },
+    "feed_api_images_alt_misaligned": "Chaque description d’image doit correspondre à une image envoyée.",
+    "@feed_api_images_alt_misaligned": {
+        "description": "feed.api.images_alt_misaligned"
+    },
+    "feed_api_images_max": "Tu peux joindre au plus {max} images à une publication.",
+    "@feed_api_images_max": {
+        "description": "feed.api.images_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_api_media_last_required": "Une publication sans texte garde au moins un média : écris un message ou garde une image.",
+    "@feed_api_media_last_required": {
+        "description": "feed.api.media_last_required"
+    },
+    "feed_api_media_unknown": "Ce média ne fait pas partie de la publication.",
+    "@feed_api_media_unknown": {
+        "description": "feed.api.media_unknown"
     },
     "feed_api_parent_invalid": "Ce commentaire ne fait pas partie de cette publication.",
     "@feed_api_parent_invalid": {
@@ -24342,6 +24776,10 @@
     "@feed_compose_label": {
         "description": "feed.compose.label"
     },
+    "feed_compose_my_videos": "Mes vidéos",
+    "@feed_compose_my_videos": {
+        "description": "feed.compose.my_videos"
+    },
     "feed_compose_photo": "Photo",
     "@feed_compose_photo": {
         "description": "feed.compose.photo"
@@ -24366,6 +24804,10 @@
     "feed_compose_report": "Signaler",
     "@feed_compose_report": {
         "description": "feed.compose.report"
+    },
+    "feed_compose_video": "Vidéo",
+    "@feed_compose_video": {
+        "description": "feed.compose.video"
     },
     "feed_compose_violences": "Violences",
     "@feed_compose_violences": {
@@ -24561,6 +25003,80 @@
     "@feed_filters_temoignage": {
         "description": "feed.filters.temoignage"
     },
+    "feed_gallery_close": "Fermer la visionneuse",
+    "@feed_gallery_close": {
+        "description": "feed.gallery.close"
+    },
+    "feed_gallery_image_fallback": "Photo {n} sur {count} de la publication de {name}",
+    "@feed_gallery_image_fallback": {
+        "description": "feed.gallery.image_fallback",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_label": "Photos de la publication",
+    "@feed_gallery_label": {
+        "description": "feed.gallery.label"
+    },
+    "feed_gallery_next": "Photo suivante",
+    "@feed_gallery_next": {
+        "description": "feed.gallery.next"
+    },
+    "feed_gallery_open": "Agrandir la photo {n} sur {count}",
+    "@feed_gallery_open": {
+        "description": "feed.gallery.open",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_previous": "Photo précédente",
+    "@feed_gallery_previous": {
+        "description": "feed.gallery.previous"
+    },
+    "feed_gallery_viewer_counter": "{current} / {count}",
+    "@feed_gallery_viewer_counter": {
+        "description": "feed.gallery.viewer_counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "current": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_viewer_status": "Photo {current} sur {count}. {alt}",
+    "@feed_gallery_viewer_status": {
+        "description": "feed.gallery.viewer_status",
+        "placeholders": {
+            "alt": {
+                "type": "String"
+            },
+            "count": {
+                "type": "String"
+            },
+            "current": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_gallery_viewer_title": "Visionneuse de photos",
+    "@feed_gallery_viewer_title": {
+        "description": "feed.gallery.viewer_title"
+    },
     "feed_list_filters_label": "Filtrer le fil par type",
     "@feed_list_filters_label": {
         "description": "feed.list.filters_label"
@@ -24577,6 +25093,227 @@
     "feed_list_title": "Publications",
     "@feed_list_title": {
         "description": "feed.list.title"
+    },
+    "feed_media_exclusive": "Une publication contient des photos ou une vidéo, pas les deux.",
+    "@feed_media_exclusive": {
+        "description": "feed.media.exclusive"
+    },
+    "feed_media_image_added": "{count, plural, =1{{count} photo ajoutée. Il y en a {total} sur {max}.} other{{count} photos ajoutées. Il y en a {total} sur {max}.}}",
+    "@feed_media_image_added": {
+        "description": "feed.media.image_added",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "max": {
+                "type": "String"
+            },
+            "total": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_alt_help": "Décris la photo en quelques mots pour les personnes qui ne la voient pas (255 caractères maximum).",
+    "@feed_media_image_alt_help": {
+        "description": "feed.media.image_alt_help"
+    },
+    "feed_media_image_alt_label": "Description de la photo {n}",
+    "@feed_media_image_alt_label": {
+        "description": "feed.media.image_alt_label",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_alt_max": "La description ne peut pas dépasser {max} caractères.",
+    "@feed_media_image_alt_max": {
+        "description": "feed.media.image_alt_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_down": "Descendre la photo {n}",
+    "@feed_media_image_down": {
+        "description": "feed.media.image_down",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_moved": "Photo déplacée : elle est maintenant en position {to} sur {count}.",
+    "@feed_media_image_moved": {
+        "description": "feed.media.image_moved",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "to": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_n": "Photo {n}",
+    "@feed_media_image_n": {
+        "description": "feed.media.image_n",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_preview_alt": "Aperçu de la photo {n}",
+    "@feed_media_image_preview_alt": {
+        "description": "feed.media.image_preview_alt",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_remove": "Retirer la photo {n}",
+    "@feed_media_image_remove": {
+        "description": "feed.media.image_remove",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_removed": "Photo retirée. Il en reste {count} sur {max}.",
+    "@feed_media_image_removed": {
+        "description": "feed.media.image_removed",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_image_up": "Monter la photo {n}",
+    "@feed_media_image_up": {
+        "description": "feed.media.image_up",
+        "placeholders": {
+            "n": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_add": "Ajouter des photos",
+    "@feed_media_images_add": {
+        "description": "feed.media.images_add"
+    },
+    "feed_media_images_counter": "{count} / {max}",
+    "@feed_media_images_counter": {
+        "description": "feed.media.images_counter",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_counter_sr": "{count, plural, =0{Aucune photo sur {max}.} =1{{count} photo sur {max}.} other{{count} photos sur {max}.}}",
+    "@feed_media_images_counter_sr": {
+        "description": "feed.media.images_counter_sr",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_field": "Choisir des photos",
+    "@feed_media_images_field": {
+        "description": "feed.media.images_field"
+    },
+    "feed_media_images_full": "Tu as atteint le nombre maximum de photos ({max}).",
+    "@feed_media_images_full": {
+        "description": "feed.media.images_full",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_help": "JPG, PNG ou WebP, {size} Mo maximum chacune, {max} photos au plus. La première ouvre la publication.",
+    "@feed_media_images_help": {
+        "description": "feed.media.images_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_legend": "Photos (facultatif)",
+    "@feed_media_images_legend": {
+        "description": "feed.media.images_legend"
+    },
+    "feed_media_images_list": "Photos choisies",
+    "@feed_media_images_list": {
+        "description": "feed.media.images_list"
+    },
+    "feed_media_images_locked": "Tu as choisi une vidéo. Retire-la pour ajouter des photos.",
+    "@feed_media_images_locked": {
+        "description": "feed.media.images_locked"
+    },
+    "feed_media_images_max": "Tu peux joindre au plus {max} photos à une publication.",
+    "@feed_media_images_max": {
+        "description": "feed.media.images_max",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_over_limit": "Seules les {max} premières photos sont gardées.",
+    "@feed_media_images_over_limit": {
+        "description": "feed.media.images_over_limit",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_images_rejected": "« {name} » : {problem}",
+    "@feed_media_images_rejected": {
+        "description": "feed.media.images_rejected",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "problem": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_media_needs_network": "Les photos et les vidéos ont besoin du réseau pour partir. Ton brouillon est gardé : réessaie dès que la connexion revient.",
+    "@feed_media_needs_network": {
+        "description": "feed.media.needs_network"
+    },
+    "feed_media_poll_no_video": "Un sondage peut avoir des photos, mais pas de vidéo.",
+    "@feed_media_poll_no_video": {
+        "description": "feed.media.poll_no_video"
+    },
+    "feed_media_sending": "Envoi en cours…",
+    "@feed_media_sending": {
+        "description": "feed.media.sending"
+    },
+    "feed_media_video_locked": "Tu as ajouté des photos. Retire-les pour choisir une vidéo.",
+    "@feed_media_video_locked": {
+        "description": "feed.media.video_locked"
     },
     "feed_moderation_auto_details": "Termes surveillés : {terms}",
     "@feed_moderation_auto_details": {
@@ -25304,6 +26041,264 @@
     "feed_toasts_updated": "Publication modifiée.",
     "@feed_toasts_updated": {
         "description": "feed.toasts.updated"
+    },
+    "feed_video_acknowledge": "J’ai lu cet avertissement et j’ai vérifié ma vidéo.",
+    "@feed_video_acknowledge": {
+        "description": "feed.video.acknowledge"
+    },
+    "feed_video_acknowledge_required": "Coche la case pour confirmer que tu as lu l’avertissement.",
+    "@feed_video_acknowledge_required": {
+        "description": "feed.video.acknowledge_required"
+    },
+    "feed_video_cancel": "Annuler l’envoi",
+    "@feed_video_cancel": {
+        "description": "feed.video.cancel"
+    },
+    "feed_video_cancelled": "Envoi annulé. Ta vidéo n’a pas été envoyée.",
+    "@feed_video_cancelled": {
+        "description": "feed.video.cancelled"
+    },
+    "feed_video_description": "Description de la vidéo",
+    "@feed_video_description": {
+        "description": "feed.video.description"
+    },
+    "feed_video_description_help": "Obligatoire : décris ce qu’on y voit et entend, en {min} à {max} caractères, pour les personnes qui ne peuvent pas la regarder.",
+    "@feed_video_description_help": {
+        "description": "feed.video.description_help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_description_length": "La description de ta vidéo doit faire entre {min} et {max} caractères.",
+    "@feed_video_description_length": {
+        "description": "feed.video.description_length",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            },
+            "min": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_description_required": "Décris ta vidéo en quelques mots pour les personnes qui ne peuvent pas la regarder.",
+    "@feed_video_description_required": {
+        "description": "feed.video.description_required"
+    },
+    "feed_video_field": "Choisir une vidéo",
+    "@feed_video_field": {
+        "description": "feed.video.field"
+    },
+    "feed_video_help": "MP4 ou WebM, {max} Mo maximum. Elle est relue par l’équipe avant d’être publiée.",
+    "@feed_video_help": {
+        "description": "feed.video.help",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_legend": "Vidéo (facultatif)",
+    "@feed_video_legend": {
+        "description": "feed.video.legend"
+    },
+    "feed_video_mine_empty": "Tu n’as aucune vidéo en attente ou refusée.",
+    "@feed_video_mine_empty": {
+        "description": "feed.video.mine_empty"
+    },
+    "feed_video_mine_error": "Tes vidéos ne se chargent pas pour le moment.",
+    "@feed_video_mine_error": {
+        "description": "feed.video.mine_error"
+    },
+    "feed_video_mine_intro": "Tes vidéos qui ne sont pas encore en ligne : en attente de relecture ou refusées.",
+    "@feed_video_mine_intro": {
+        "description": "feed.video.mine_intro"
+    },
+    "feed_video_mine_loaded": "{count, plural, =0{Aucune vidéo à relire.} =1{{count} vidéo à relire.} other{{count} vidéos à relire.}}",
+    "@feed_video_mine_loaded": {
+        "description": "feed.video.mine_loaded",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "feed_video_mine_loading": "Chargement de tes vidéos…",
+    "@feed_video_mine_loading": {
+        "description": "feed.video.mine_loading"
+    },
+    "feed_video_mine_retry": "Réessayer",
+    "@feed_video_mine_retry": {
+        "description": "feed.video.mine_retry"
+    },
+    "feed_video_mine_title": "Mes vidéos",
+    "@feed_video_mine_title": {
+        "description": "feed.video.mine_title"
+    },
+    "feed_video_not_in_poll": "Une vidéo ne peut pas accompagner un sondage.",
+    "@feed_video_not_in_poll": {
+        "description": "feed.video.not_in_poll"
+    },
+    "feed_video_not_with_images": "Une vidéo ne s’ajoute pas à des images : choisis l’une ou les autres.",
+    "@feed_video_not_with_images": {
+        "description": "feed.video.not_with_images"
+    },
+    "feed_video_pending_help": "Pour l’instant, tu es la seule personne à la voir.",
+    "@feed_video_pending_help": {
+        "description": "feed.video.pending_help"
+    },
+    "feed_video_player_fallback": "Ton navigateur ne peut pas lire cette vidéo.",
+    "@feed_video_player_fallback": {
+        "description": "feed.video.player_fallback"
+    },
+    "feed_video_player_label": "Vidéo de la publication",
+    "@feed_video_player_label": {
+        "description": "feed.video.player_label"
+    },
+    "feed_video_privacy_notice": "Ta vidéo n’est pas retouchée : elle peut contenir des informations cachées, comme le lieu où elle a été filmée. Vérifie-la avant de l’envoyer.",
+    "@feed_video_privacy_notice": {
+        "description": "feed.video.privacy_notice"
+    },
+    "feed_video_privacy_title": "Avant d’envoyer ta vidéo",
+    "@feed_video_privacy_title": {
+        "description": "feed.video.privacy_title"
+    },
+    "feed_video_progress": "Envoi de la vidéo : {percent} %",
+    "@feed_video_progress": {
+        "description": "feed.video.progress",
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_progress_label": "Progression de l’envoi de la vidéo",
+    "@feed_video_progress_label": {
+        "description": "feed.video.progress_label"
+    },
+    "feed_video_quota": "Tu as atteint la limite de vidéos envoyées par jour ({max}). Réessaie un peu plus tard.",
+    "@feed_video_quota": {
+        "description": "feed.video.quota",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_reason_label": "Motif : {reason}",
+    "@feed_video_reason_label": {
+        "description": "feed.video.reason_label",
+        "placeholders": {
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_reasons_inappropriate": "Contenu inapproprié",
+    "@feed_video_reasons_inappropriate": {
+        "description": "feed.video.reasons.inappropriate"
+    },
+    "feed_video_reasons_off_topic": "Hors sujet",
+    "@feed_video_reasons_off_topic": {
+        "description": "feed.video.reasons.off_topic"
+    },
+    "feed_video_reasons_other": "Autre motif",
+    "@feed_video_reasons_other": {
+        "description": "feed.video.reasons.other"
+    },
+    "feed_video_reasons_privacy": "Vie privée (lieu, visage ou information personnelle visible)",
+    "@feed_video_reasons_privacy": {
+        "description": "feed.video.reasons.privacy"
+    },
+    "feed_video_reasons_rights": "Droits d’auteur ou image d’une autre personne",
+    "@feed_video_reasons_rights": {
+        "description": "feed.video.reasons.rights"
+    },
+    "feed_video_reasons_unreadable": "Vidéo illisible ou de mauvaise qualité",
+    "@feed_video_reasons_unreadable": {
+        "description": "feed.video.reasons.unreadable"
+    },
+    "feed_video_rejected_help": "Ta vidéo n’a pas été publiée.",
+    "@feed_video_rejected_help": {
+        "description": "feed.video.rejected_help"
+    },
+    "feed_video_remove": "Retirer la vidéo",
+    "@feed_video_remove": {
+        "description": "feed.video.remove"
+    },
+    "feed_video_review_notice": "L’équipe de modération relit ta vidéo avant de la publier. Tu seras prévenu·e dès qu’elle sera en ligne.",
+    "@feed_video_review_notice": {
+        "description": "feed.video.review_notice"
+    },
+    "feed_video_selected": "Vidéo choisie : {name} ({size} Mo).",
+    "@feed_video_selected": {
+        "description": "feed.video.selected",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "size": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_states_approved": "Vidéo publiée",
+    "@feed_video_states_approved": {
+        "description": "feed.video.states.approved"
+    },
+    "feed_video_states_pending": "En attente de relecture",
+    "@feed_video_states_pending": {
+        "description": "feed.video.states.pending"
+    },
+    "feed_video_states_rejected": "Vidéo refusée",
+    "@feed_video_states_rejected": {
+        "description": "feed.video.states.rejected"
+    },
+    "feed_video_submitted": "Ta vidéo est bien reçue. L’équipe la relira avant de la publier.",
+    "@feed_video_submitted": {
+        "description": "feed.video.submitted"
+    },
+    "feed_video_too_large": "Vidéo trop lourde ({max} Mo maximum).",
+    "@feed_video_too_large": {
+        "description": "feed.video.too_large",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_video_type_error": "Format non pris en charge. Choisis une vidéo MP4 ou WebM.",
+    "@feed_video_type_error": {
+        "description": "feed.video.type_error"
+    },
+    "feed_video_unplayable": "Cette vidéo ne peut pas être lue pour le moment. Recharge la page, puis réessaie.",
+    "@feed_video_unplayable": {
+        "description": "feed.video.unplayable"
+    },
+    "feed_video_withdraw": "Retirer ma vidéo",
+    "@feed_video_withdraw": {
+        "description": "feed.video.withdraw"
+    },
+    "feed_video_withdraw_action": "Retirer",
+    "@feed_video_withdraw_action": {
+        "description": "feed.video.withdraw_action"
+    },
+    "feed_video_withdraw_confirm": "Retirer cette vidéo ? Le fichier est supprimé tout de suite et ne peut pas être récupéré.",
+    "@feed_video_withdraw_confirm": {
+        "description": "feed.video.withdraw_confirm"
+    },
+    "feed_video_withdraw_title": "Retirer ta vidéo",
+    "@feed_video_withdraw_title": {
+        "description": "feed.video.withdraw_title"
+    },
+    "feed_video_withdrawn": "Ta vidéo est retirée.",
+    "@feed_video_withdrawn": {
+        "description": "feed.video.withdrawn"
     },
     "feed_video_modal_notice": "Les vidéos sont relues avant publication afin de protéger les personnes qui apparaissent à l’écran.",
     "@feed_video_modal_notice": {
@@ -30129,6 +31124,42 @@
                 "type": "String"
             }
         }
+    },
+    "notifications_video_pending_body": "Une vidéo attend votre relecture avant d’être publiée.",
+    "@notifications_video_pending_body": {
+        "description": "notifications.video_pending.body"
+    },
+    "notifications_video_pending_title": "Vidéo à relire",
+    "@notifications_video_pending_title": {
+        "description": "notifications.video_pending.title"
+    },
+    "notifications_video_reviewed_approved_body": "L’équipe de modération a relu ta vidéo : elle est maintenant en ligne.",
+    "@notifications_video_reviewed_approved_body": {
+        "description": "notifications.video_reviewed.approved.body"
+    },
+    "notifications_video_reviewed_approved_title": "Ta vidéo a été publiée",
+    "@notifications_video_reviewed_approved_title": {
+        "description": "notifications.video_reviewed.approved.title"
+    },
+    "notifications_video_reviewed_discreet": "Message de l’équipe",
+    "@notifications_video_reviewed_discreet": {
+        "description": "notifications.video_reviewed.discreet"
+    },
+    "notifications_video_reviewed_rejected_body": "L’équipe de modération n’a pas pu publier ta vidéo : {reason}. Le fichier sera supprimé dans {days} jours.",
+    "@notifications_video_reviewed_rejected_body": {
+        "description": "notifications.video_reviewed.rejected.body",
+        "placeholders": {
+            "days": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_video_reviewed_rejected_title": "Ta vidéo n’a pas été publiée",
+    "@notifications_video_reviewed_rejected_title": {
+        "description": "notifications.video_reviewed.rejected.title"
     },
     "offline_outbox_close": "Fermer",
     "@offline_outbox_close": {
@@ -38816,6 +39847,10 @@
     "uploads_rejected_corrupt_image": "Cette image est illisible ou abîmée. Choisir une autre image.",
     "@uploads_rejected_corrupt_image": {
         "description": "uploads.rejected.corrupt_image"
+    },
+    "uploads_rejected_extension": "L’extension du fichier ne correspond pas à son contenu. Choisir un fichier MP4 ou WebM.",
+    "@uploads_rejected_extension": {
+        "description": "uploads.rejected.extension"
     },
     "uploads_rejected_not_a_file": "Aucun fichier n’a été reçu.",
     "@uploads_rejected_not_a_file": {

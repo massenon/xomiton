@@ -76,7 +76,7 @@ class _CccShowPageState extends ConsumerState<CccShowPage> {
             loading: () => const LoadingView(),
             error: (e, _) => Column(children: [
               _closeBar(context, c, null, 0),
-              Expanded(child: ErrorView(error: e, onRetry: () => ref.invalidate(cccCatalogProvider))),
+              Expanded(child: CccErrorView(error: e, onRetry: () => ref.invalidate(cccLoadProvider))),
             ]),
             data: (cat) => _body(context, cat, presentation, c),
           ),

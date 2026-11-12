@@ -22,7 +22,7 @@ class CccComicPage extends ConsumerWidget {
       loading: () => Scaffold(appBar: AppBar(), body: const LoadingView()),
       error: (e, _) => Scaffold(
         appBar: AppBar(title: Text(context.t('ccc_comic_heading'))),
-        body: ErrorView(error: e, onRetry: () => ref.invalidate(cccCatalogProvider)),
+        body: CccErrorView(error: e, onRetry: () => ref.invalidate(cccLoadProvider)),
       ),
       data: (c) {
         final comic = c.comic(comicKey);

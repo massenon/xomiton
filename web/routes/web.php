@@ -53,6 +53,7 @@ use App\Http\Controllers\Web\Newsletter\NewsletterConfirmationController;
 use App\Http\Controllers\Web\Newsletter\NewsletterController;
 use App\Http\Controllers\Web\Newsletter\NewsletterTrackingController;
 use App\Http\Controllers\Web\Newsletter\NewsletterUnsubscribeController;
+use App\Http\Controllers\Web\PostVideoStreamController;
 use App\Http\Controllers\Web\RessourceDownloadController;
 use App\Http\Controllers\Web\RessourcesIndexController;
 use App\Http\Controllers\Web\RessourcesShowController;
@@ -305,6 +306,11 @@ Route::middleware([ForgetSearchTerms::class, 'auth', 'throttle:search', HandleIn
 
 // --- Catalogue vivant du design system (P0-10) : local et recette seulement, 404 ailleurs ----
 Route::get('/design-system', DesignSystemController::class)->name('design-system');
+
+// --- Vidéo d'une publication (Q96) : lien signé court propre à la personne qui lit, plages `Range`, droits et statut
+// revérifiés ; déclarée AVANT la route générique ci-dessous (`/media/{disk}/{path}` la capterait) ----
+Route::get('/media/fil/{ulid}/video', PostVideoStreamController::class)
+    ->where('ulid', '[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}')->name('media.post_video');
 
 // --- Fichiers privés (P3-04) : lien temporaire signé produit par MediaUploader::signedUrl() ----
 Route::get('/media/{disk}/{path}', SignedMediaController::class)->where('path', '.*')->name('media.signed');

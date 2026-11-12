@@ -6,6 +6,7 @@ namespace App\Http\Requests\Api\Feed;
 
 use App\Application\Feed\Data\PollDraft;
 use App\Application\Feed\Data\PostDraft;
+use App\Application\Feed\FeedMediaLimits;
 use App\Enums\PostTag;
 use App\Enums\PostVisibility;
 use App\Http\Requests\Api\Feed\Concerns\FeedRequest;
@@ -20,10 +21,14 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 /**
- * POST /api/v1/posts (P7-02, FR-SOC-01, FR-SOC-02 ; prototype post-create.php) — JSON ou multipart (image) :
- *  - publication : `{kind?: "post", body, tag?, visibility?, is_anonymous?, image?, image_alt?}` — texte obligatoire sauf
- *    image seule, ≤ 3000 car. ; étiquette par défaut « témoignage », jamais « sondage » ;
- *  - sondage : `{kind: "poll", body?, visibility?, is_anonymous?, image?, poll: {question, options[], multiple?,
+ * POST /api/v1/posts (P7-02, FR-SOC-01, FR-SOC-02 ; prototype post-create.php) — JSON ou multipart (images, vidéo) :
+ *  - publication : `{kind?: "post", body, tag?, visibility?, is_anonymous?, images[]?, images_alt[]?, video?,
+ *    video_description?}` — texte obligatoire sauf média seul, ≤ 3000 car. ; étiquette par défaut « témoignage », jamais
+ *    « sondage » ; `image` / `image_alt` (une seule image) restent acceptés et comptent comme `images[0]` ;
+ *  - images : jusqu'à `feed.max_images` (4), `images_alt[i]` aligné sur `images[i]` (≤ 255 car.), ordre conservé ;
+ *  - vidéo (Q96) : **une seule**, mp4 ou webm, jamais avec des images ni dans un sondage, poids ≤ FeedMediaLimits::videoMaxKb(),
+ *    `video_description` obligatoire (5 à 500 car.) ; la publication part en relecture (202, invisible jusqu'à l'approbation) ;
+ *  - sondage : `{kind: "poll", body?, visibility?, is_anonymous?, images[]?, images_alt[]?, poll: {question, options[], multiple?,
  *    results_before_vote?, duration_days?}}` — question 5–200 car., 2 à 6 réponses distinctes (casse et accents
  *    ignorés, réponses vides retirées comme le prototype), ≤ 80 car., durée 1, 3, 7, 14, 30 jours ou 0 / null (sans fin).
  * `posts.create` (403 sinon), `polls.create` pour un sondage ; e-mail confirmé (middleware `verified`, Q12 c).
@@ -72,12 +77,18 @@ final class StorePostRequest extends FormRequest
         return [
             'kind' => ['sometimes', 'string', Rule::in([self::KIND_POST, self::KIND_POLL])],
             'group' => ['sometimes', 'nullable', 'string', 'size:26'],
-            'body' => [$poll ? 'nullable' : 'required_without:image', 'nullable', 'string', 'max:'.(int) config('xomiton.feed.post_max_length', Post::BODY_MAX_LENGTH)],
+            'body' => [$poll ? 'nullable' : 'required_without_all:image,images,video', 'nullable', 'string', 'max:'.(int) config('xomiton.feed.post_max_length', Post::BODY_MAX_LENGTH)],
             'tag' => ['sometimes', 'nullable', 'string', Rule::enum(PostTag::class)],
             'visibility' => ['sometimes', 'string', Rule::enum(PostVisibility::class)],
             'is_anonymous' => ['sometimes', 'boolean'],
             'image' => ['nullable', 'file', new UploadAllowed('images')],
             'image_alt' => ['nullable', 'string', 'max:255'],
+            'images' => ['sometimes', 'nullable', 'array', 'max:'.FeedMediaLimits::maxImages()],
+            'images.*' => ['file', new UploadAllowed('images')],
+            'images_alt' => ['sometimes', 'nullable', 'array'],
+            'images_alt.*' => ['nullable', 'string', 'max:255'],
+            'video' => ['nullable', 'file', new UploadAllowed('video', FeedMediaLimits::videoMaxKb(), strictExtension: true)],
+            'video_description' => ['required_with:video', 'nullable', 'string', 'min:'.FeedMediaLimits::descriptionMin(), 'max:'.FeedMediaLimits::descriptionMax()],
             'poll' => [$poll ? 'required' : 'prohibited', 'array'],
             'poll.question' => [$poll ? 'required' : 'nullable', 'string', 'min:'.(int) config('xomiton.feed.poll_question_min', 5), 'max:'.(int) config('xomiton.feed.poll_question_max', 200)],
             'poll.options' => [$poll ? 'required' : 'nullable', 'array', 'min:'.Poll::MIN_OPTIONS, 'max:'.Poll::MAX_OPTIONS],
@@ -98,7 +109,11 @@ final class StorePostRequest extends FormRequest
         $count = ['min' => Poll::MIN_OPTIONS, 'max' => Poll::MAX_OPTIONS];
 
         return [
-            'body.required_without' => (string) __('feed.errors.text_required'),
+            'body.required_without_all' => (string) __('feed.errors.text_required'),
+            'images.max' => (string) __('feed.api.images_max', ['max' => FeedMediaLimits::maxImages()]),
+            'video_description.required_with' => (string) __('feed.video.description_required'),
+            'video_description.min' => (string) __('feed.video.description_length', ['min' => FeedMediaLimits::descriptionMin(), 'max' => FeedMediaLimits::descriptionMax()]),
+            'video_description.max' => (string) __('feed.video.description_length', ['min' => FeedMediaLimits::descriptionMin(), 'max' => FeedMediaLimits::descriptionMax()]),
             'poll.question.min' => (string) __('feed.poll.question_error', ['min' => $min, 'max' => $max]),
             'poll.question.max' => (string) __('feed.poll.question_error', ['min' => $min, 'max' => $max]),
             'poll.options.min' => (string) __('feed.poll.options_count_error', $count),
@@ -122,6 +137,8 @@ final class StorePostRequest extends FormRequest
                 }
             }
 
+            $this->validateMedia($validator);
+
             if (! $this->isPoll() && $this->input('tag') === PostTag::Poll->value) {
                 $validator->errors()->add('tag', (string) __('feed.api.tag_poll'));
             }
@@ -141,6 +158,58 @@ final class StorePostRequest extends FormRequest
                 }
             }
         }];
+    }
+
+    /**
+     * Images (total avec l'ancien champ `image`), alignement des textes alternatifs et exclusions de la vidéo.
+     */
+    private function validateMedia(Validator $validator): void
+    {
+        $files = $this->imageFiles();
+
+        if (count($files) + ($this->file('image') instanceof UploadedFile ? 1 : 0) > FeedMediaLimits::maxImages()) {
+            $validator->errors()->add('images', (string) __('feed.api.images_max', ['max' => FeedMediaLimits::maxImages()]));
+        }
+
+        $alts = $this->input('images_alt');
+
+        if (is_array($alts) && array_diff(array_keys($alts), array_keys($files)) !== []) {
+            $validator->errors()->add('images_alt', (string) __('feed.api.images_alt_misaligned'));
+        }
+
+        if (! $this->file('video') instanceof UploadedFile) {
+            return;
+        }
+
+        if ($this->isPoll()) {
+            $validator->errors()->add('video', (string) __('feed.video.not_in_poll'));
+        } elseif ($files !== [] || $this->file('image') instanceof UploadedFile) {
+            $validator->errors()->add('video', (string) __('feed.video.not_with_images'));
+        }
+    }
+
+    /**
+     * Fichiers de `images[]` par clé d'origine (la clé aligne `images_alt`), sans les éléments qui ne sont pas des fichiers.
+     *
+     * @return array<int|string, UploadedFile>
+     */
+    private function imageFiles(): array
+    {
+        $files = $this->file('images');
+
+        if ($files instanceof UploadedFile) {
+            return [0 => $files];
+        }
+
+        $uploaded = [];
+
+        foreach (is_array($files) ? $files : [] as $key => $file) {
+            if ($file instanceof UploadedFile) {
+                $uploaded[$key] = $file;
+            }
+        }
+
+        return $uploaded;
     }
 
     /**
@@ -181,8 +250,10 @@ final class StorePostRequest extends FormRequest
         }
 
         $tag = $this->validated('tag');
-        $image = $this->file('image');
         $group = $this->group();
+        [$images, $imagesAlt] = $this->imagesWithAlt();
+        $video = $this->file('video');
+        $description = $this->validated('video_description');
         $body = $this->validated('body');
 
         return new PostDraft(
@@ -190,10 +261,41 @@ final class StorePostRequest extends FormRequest
             tag: $poll !== null ? PostTag::Poll : (is_string($tag) && $tag !== '' ? PostTag::from($tag) : PostTag::Testimony),
             visibility: PostVisibility::tryFrom((string) $this->validated('visibility', PostVisibility::Public->value)) ?? PostVisibility::Public,
             anonymous: $this->boolean('is_anonymous'),
-            image: $image instanceof UploadedFile ? $image : null,
-            imageAlt: is_string($this->validated('image_alt')) ? $this->validated('image_alt') : null,
+            images: $images,
+            imagesAlt: $imagesAlt,
             poll: $poll,
             groupId: $group !== null ? (int) $group->getKey() : null,
+            video: $video instanceof UploadedFile ? $video : null,
+            videoDescription: $video instanceof UploadedFile && is_string($description) ? trim($description) : null,
         );
+    }
+
+    /**
+     * Images dans l'ordre d'envoi : l'ancien champ `image` d'abord (il compte comme `images[0]`), puis `images[]` ; texte
+     * alternatif aligné (`image_alt` pour la première, `images_alt[clé]` pour les suivantes), vide → null.
+     *
+     * @return array{0: list<UploadedFile>, 1: list<string|null>}
+     */
+    private function imagesWithAlt(): array
+    {
+        $images = [];
+        $alts = [];
+        $legacy = $this->file('image');
+
+        if ($legacy instanceof UploadedFile) {
+            $alt = $this->validated('image_alt');
+            $images[] = $legacy;
+            $alts[] = is_string($alt) && trim($alt) !== '' ? trim($alt) : null;
+        }
+
+        $altInput = (array) $this->validated('images_alt', []);
+
+        foreach ($this->imageFiles() as $key => $file) {
+            $alt = $altInput[$key] ?? null;
+            $images[] = $file;
+            $alts[] = is_string($alt) && trim($alt) !== '' ? trim($alt) : null;
+        }
+
+        return [$images, $alts];
     }
 }

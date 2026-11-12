@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Média d'une publication (image, vidéo ou audio).
+ * Média d'une publication (image, vidéo ou audio), ordonné par `position` (0 = premier). Une publication porte jusqu'à
+ * `xomiton.feed.max_images` images, ou une seule vidéo. `alt` : texte alternatif d'une image, description d'une vidéo.
+ * Un fichier supprimé du disque après refus garde sa ligne avec un `path` vide.
  */
 class PostMedia extends Model
 {
@@ -38,6 +40,7 @@ class PostMedia extends Model
         'post_id',
         'kind',
         'path',
+        'mime',
         'alt',
         'width',
         'height',
@@ -85,5 +88,10 @@ class PostMedia extends Model
     public function isImage(): bool
     {
         return $this->kind === self::KIND_IMAGE;
+    }
+
+    public function isVideo(): bool
+    {
+        return $this->kind === self::KIND_VIDEO;
     }
 }

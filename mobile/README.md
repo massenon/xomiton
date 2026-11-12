@@ -1,10 +1,56 @@
 # Xomiton — application mobile (Flutter)
 
 SDK : Flutter stable (Dart ^3.13). `flutter pub get`, `flutter analyze`, `flutter test`
-(550 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
+(693 tests, dont `test/integration/` : scénarios de bout en bout contre une API simulée).
 
 Build Android depuis Windows (SDK, émulateur ou téléphone, API locale `10.0.2.2`, APK debug, clé de
 signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../docs/BUILD_ANDROID_WINDOWS.md).
+
+## Sélecteur d'émojis
+
+`lib/core/emoji/` : `EmojiPickerSheet` (feuille modale) et `EmojiButton` (bouton « Ajouter un émoji », 48 dp, à poser en
+`suffixIcon` d'un champ). Branché sur : créer une publication (texte, 3 000), créer un sondage (question, 200), champ de
+commentaire du fil (1 000), conversation de la messagerie (1 000, limite alignée sur `messaging.body_max_length`).
+
+- **Émojis Unicode natifs** (ceux du téléphone), aucune image ni police ni paquet `emoji_picker` : 536 émojis, 10 catégories,
+  noms français pour la recherche (sans accents : « coeur » = « cœur ») et pour TalkBack / VoiceOver (`Semantics` par émoji).
+- **Source unique** : `web/resources/js/emoji/emojis.json`. `emoji_data.dart` est **généré** (constantes Dart compilées,
+  pas d'asset ni d'entrée dans `pubspec.yaml`, ≈ 32 Ko de source) : ne jamais l'éditer, lancer
+  `cd web && node scripts/emoji-sync.mjs` (`--check` pour vérifier ; `npm run emoji:sync`). Le script contrôle aussi que
+  chaque séquence est un émoji Unicode valide et qu'aucun émoji écarté (`excluded.json`, voir D-EMOJI-2 du plan) n'y figure.
+- **Récents** (24 au plus) et **teinte de peau** : `SharedPreferences` (`xm_emoji_recent_v1`, `xm_emoji_tone_v1`), propres à
+  l'appareil, jamais envoyés au serveur.
+- **Insertion** à la position du curseur du `TextEditingController` (ou remplacement de la sélection), curseur placé après
+  l'émoji ; refus annoncé (région live) si la longueur dépasserait le maximum. La longueur se compte en **points de code**
+  comme le serveur ; `CodePointLimitFormatter` aligne la frappe (le `maxLength` de Flutter compte des graphèmes).
+- Cibles ≥ 48 dp, agrandies avec la taille de police du système ; thème clair et sombre par `ColorScheme`.
+- **Textes** : clés `emoji_*` de l'ARB (source `web/lang/fr/emoji.php`). Aucune clé `mobile_*` ajoutée.
+- Tests : `test/core/emoji_picker_test.dart` (données identiques à la source web, recherche, teintes, insertion, limite,
+  Semantics, récents, grande police, thème sombre). Non vérifié : TalkBack / VoiceOver et rendu sur appareil réel (MOB-EMOJI).
+
+## Publier : sondage, images, vidéo ; galerie et lecteur
+
+`lib/features/feed/` (docs/API.md §8.3 et §8.7, plan P7-11, décisions D-IMGA-1 à 12, D-MOB-20).
+
+- **Écran de publication** (`create_post_page.dart`) : bascule publication / sondage ; sondage (question 5–200, 2 à 6 réponses
+  avec ajout et retrait annoncés, durée, choix multiple, résultats avant le vote) ; **images** (jusqu'à 4, texte alternatif
+  par image, Monter / Descendre / Retirer nommés et annoncés dans une région `liveRegion`, compteur « 2 / 4 ») ; **vidéo**
+  (publication seulement, exclusive des images et du sondage, mp4 / webm, 30 Mo, description 5–500 obligatoire, avertissement
+  de vie privée puis confirmation, progression annoncée, annulation, 202 = « vidéo bien reçue », jamais dans le fil).
+  Validation locale : `data/compose_logic.dart` (mêmes bornes que le serveur ; plafonds par défaut `FeedLimits`, le 422 reste juge
+  et chaque erreur `poll.options.N`, `images.N`, `video_description`… est rattachée à son champ).
+- **Hors ligne** : texte et sondage SANS média gardent la boîte d'envoi (rejeu sans doublon). Avec images ou vidéo : envoi direct
+  multipart (`FeedApi.createWithMedia`, `Idempotency-Key` stable tant que le brouillon ne change pas), réseau obligatoire, brouillon
+  conservé, rien en file.
+- **Affichage** (`presentation/media_widgets.dart`) : `PostGallery` (1 image pleine largeur, 2–4 en grille, `alt` en `Semantics`),
+  `ImageViewerPage` (plein écran, glisser, boutons, compteur annoncé), `PostVideoPlayer` (**`video_player`**, aucune lecture
+  automatique, le fichier n'est demandé qu'au premier appui, une seule vidéo à la fois, pause en arrière-plan, contrôleur libéré,
+  description visible), `ReviewPanel` (auteur·rice : « En attente de relecture » / « Vidéo refusée », motif, « Retirer »).
+- **Mes vidéos** : bouton de la barre du Fil, route `/feed/videos` (`GET posts/review`).
+- **Textes** : ARB exporté (`feed_video_*`, `feed_poll_*`, `feed_create_*`) + table `mobile_*` de `lib/core/l10n/feed_strings.dart`.
+- **Tests** : `test/features/feed/` (modèles et JSON de l'API §8.7, validation, multipart réel, composeur sondage / images /
+  vidéo, galerie, lecteur avec moteur factice `FakeVideoEngine`, relecture et « Mes vidéos »). Non vérifié : TalkBack / VoiceOver,
+  lecture réelle d'une vidéo signée, vrai envoi, poids de l'APK (MOB-POLL, MOB-IMG, MOB-VID).
 
 ## Outils CCC en lecture
 
@@ -19,8 +65,20 @@ signature, AAB, Firebase, dépannage) : [`docs/BUILD_ANDROID_WINDOWS.md`](../doc
 - **Progression du manuel** (cases « point vu ») : préférences de l'appareil, clé `xm_ccc_manuel_v1:{id du compte}`
   (comme le web), **jamais envoyée au serveur**. Rangs inconnus ignorés, contenu corrompu = progression vide,
   écriture refusée = progression en mémoire et message.
-- **Hors ligne** : aucune copie. Le serveur répond `no-store, private` pour que la lecture suive la publication
-  (un outil masqué disparaît) : l'erreur réseau affiche « Réessayer ». Ouvrir un outil sans réseau n'est donc pas possible.
+- **Hors ligne** (D-MOB-19) : le serveur répond `no-store, private` (la publication prime, `ApiCache` ne garde donc rien),
+  l'application garde sa **propre copie** de la dernière réponse réussie (`CccRepository`, boîte `cache_private`, clé
+  `ccc:v1:{id du compte}`, avec la date de synchronisation). Réseau d'abord ; panne réseau, délai dépassé ou 5xx → copie
+  servie avec le bandeau « Hors ligne · Contenu enregistré le … » et « Actualiser » ; 401 / 403 / 404 → jamais la copie
+  (purgée) ; un succès **remplace** la copie (outil masqué = disparu à la synchro suivante) ; copie de plus de
+  `kCccOfflineRetention` (**30 jours**, `ccc_repository.dart`) non servie (message dédié). Purge à la déconnexion
+  (`LocalDb.clearPrivate`, images via `SessionController.expire`) ; copies séparées par compte.
+- **Images hors ligne** : `CccImageStore` (`data/ccc_image_store.dart`), dossier `ccc_images` de l'application
+  (`path_provider`, déjà présent transitivement : aucun poids ajouté). Bouton « Télécharger pour lire hors ligne » (jamais
+  automatique : pas de réglage « Wi-Fi seulement »), séquentiel, annulable, 5 Mo par image, 100 Mo au total
+  (`kCccImageMaxFileBytes`, `kCccImageMaxTotalBytes`), client Dio **sans jeton** ; fichiers nommés par SHA-256 de
+  l'adresse ; images retirées de la réponse supprimées à chaque synchro réussie ; lues depuis le disque quand elles y sont.
+  Indicateur « Disponible hors ligne » par outil dont toutes les images sont enregistrées. Les tests injectent un
+  disque en mémoire (`test/support/memory_image_disk.dart`) : jamais le vrai dossier.
 - **Mode animation** : `SystemChrome` immersif à l'ouverture, `edgeToEdge` rétabli à la fermeture (bouton ou retour) ;
   glisser ou boutons de 56 dp, retour au début après la dernière image (comme le web).
 - **Lois** : `meta.laws.url` ouvert par `linkLauncherProvider` (https seulement) ; sans adresse valide, carte informative.

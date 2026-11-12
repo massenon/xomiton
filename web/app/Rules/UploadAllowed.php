@@ -15,10 +15,20 @@ use Illuminate\Http\UploadedFile;
  * dans le contenu, poids maximal, image lisible. Le message vient de MediaUploader (lang/fr/uploads.php).
  *
  *   'preuve' => ['nullable', 'file', new UploadAllowed('images')]
+ *
+ * `$maxKb` : plafond plus strict que la collection ; `$strictExtension` : l'extension déclarée doit correspondre au type
+ * réel (vidéo mp4 / webm du fil : un `.mp4` qui contient du WebM, ou un `.exe`, est refusé).
  */
 final class UploadAllowed implements ValidationRule
 {
-    public function __construct(private readonly string $collection) {}
+    /** Extension attendue par type réel, quand l'extension déclarée doit être cohérente. */
+    private const EXTENSIONS = ['video/mp4' => ['mp4', 'm4v'], 'video/webm' => ['webm']];
+
+    public function __construct(
+        private readonly string $collection,
+        private readonly ?int $maxKb = null,
+        private readonly bool $strictExtension = false,
+    ) {}
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -29,7 +39,11 @@ final class UploadAllowed implements ValidationRule
         }
 
         try {
-            app(MediaUploader::class)->inspect($value, $this->collection);
+            $mime = app(MediaUploader::class)->inspect($value, $this->collection, $this->maxKb);
+
+            if ($this->strictExtension && ! in_array(strtolower($value->getClientOriginalExtension()), self::EXTENSIONS[$mime] ?? [], true)) {
+                $fail((string) __('uploads.rejected.extension'));
+            }
         } catch (MediaRejected $rejected) {
             $fail($rejected->getMessage());
         }

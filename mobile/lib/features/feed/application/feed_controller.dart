@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/outbox/outbox.dart';
 import '../../../core/providers/core_providers.dart';
 import '../../auth/application/session_controller.dart';
+import '../data/compose_logic.dart';
 import '../data/feed_api.dart';
 import '../data/feed_models.dart';
 
@@ -149,8 +151,34 @@ class FeedController extends AsyncNotifier<FeedState> {
     }
   }
 
+  /// Retire une vidéo en attente ou refusée (`DELETE posts/{ulid}` : le fichier est supprimé tout de
+  /// suite) puis recharge « Mes vidéos ».
+  Future<void> withdraw(Post post) async {
+    await delete(post);
+    ref.invalidate(myReviewProvider);
+  }
+
   void bumpComments(String id, int count) =>
       _patch(id, (p) => p.copyWith(comments: count));
+
+  /// Publication ou sondage **avec** images ou vidéo : envoi direct (réseau obligatoire, rien
+  /// n'est mis en file). Une vidéo reçue (202) n'entre pas dans le fil : elle est en relecture.
+  Future<CreatedPost> publishWithMedia(
+    ComposeInput input, {
+    String? idempotencyKey,
+    CancelToken? cancel,
+    void Function(int sent, int total)? onProgress,
+  }) async {
+    final r = await _api.createWithMedia(
+      input,
+      idempotencyKey: idempotencyKey,
+      cancel: cancel,
+      onProgress: onProgress,
+    );
+    if (!r.inReview && !r.processing) ref.invalidateSelf();
+    ref.invalidate(myReviewProvider);
+    return r;
+  }
 
   /// Publie (ou met en file hors connexion). `true` : en ligne ; `false` : en attente.
   Future<bool> publish(Map<String, dynamic> payload) async {
@@ -189,4 +217,10 @@ final feedRefreshOnOutboxProvider = Provider<void>((ref) {
       ref.invalidate(feedProvider);
     }
   });
+});
+
+/// Mes vidéos en attente de relecture ou refusées (`GET posts/review`).
+final myReviewProvider = FutureProvider.autoDispose<List<Post>>((ref) {
+  ref.watch(sessionProvider.select((s) => s.user?.id));
+  return ref.watch(feedApiProvider).myReview();
 });

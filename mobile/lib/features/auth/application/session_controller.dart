@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../../ccc/application/ccc_offline.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/auth_spaces/app_space.dart';
@@ -121,6 +122,10 @@ class SessionController extends Notifier<SessionState> {
     await tokens.clear();
     await tokens.clearDeviceToken();
     await ref.read(localDbProvider).clearPrivate();
+    // Outils CCC : la copie JSON part avec `clearPrivate` ; les images enregistrées sur disque, ici.
+    try {
+      await ref.read(cccImagesProvider.notifier).clear();
+    } catch (_) {}
     await ref.read(pinServiceProvider).clear();
     await ref.read(pushRegistrarProvider).wipeLocal();
     final prefs = ref.read(sharedPreferencesProvider);

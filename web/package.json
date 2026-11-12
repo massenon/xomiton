@@ -8,6 +8,8 @@
         "budgets": "node scripts/check-budgets.mjs",
         "dev": "vite",
         "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+        "emoji:sync": "node scripts/emoji-sync.mjs",
+        "emoji:check": "node scripts/emoji-sync.mjs --check",
         "test": "vitest run",
         "test:watch": "vitest",
         "e2e": "playwright test"

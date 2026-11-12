@@ -58,9 +58,9 @@ final class MediaUploader
      * @throws MediaRejected si le fichier est refusé (type, poids, image illisible)
      * @throws InvalidArgumentException si la collection n'existe pas dans config/xomiton.php
      */
-    public function upload(UploadedFile $file, string $collection, bool $public = false): StoredMedia
+    public function upload(UploadedFile $file, string $collection, bool $public = false, ?int $maxKb = null): StoredMedia
     {
-        $mime = $this->inspect($file, $collection);
+        $mime = $this->inspect($file, $collection, $maxKb);
         $disk = $public ? self::publicDisk() : self::privateDisk();
         $directory = $collection.'/'.now()->format('Y/m');
         $ulid = strtolower((string) Str::ulid());
@@ -82,14 +82,15 @@ final class MediaUploader
     }
 
     /**
-     * Contrôle sans rien écrire (utilisé par App\Rules\UploadAllowed) et renvoie le type MIME réel.
+     * Contrôle sans rien écrire (utilisé par App\Rules\UploadAllowed) et renvoie le type MIME réel. `$maxKb` : plafond
+     * plus strict que celui de la collection (jamais plus large), p. ex. les vidéos du fil (Q96).
      *
      * @throws MediaRejected
      */
-    public function inspect(UploadedFile $file, string $collection): string
+    public function inspect(UploadedFile $file, string $collection, ?int $maxKb = null): string
     {
         $allowed = self::allowedMimes($collection);
-        $maxKb = self::maxKb($collection);
+        $maxKb = $maxKb === null ? self::maxKb($collection) : max(1, min($maxKb, self::maxKb($collection)));
 
         if (! $file->isValid()) {
             throw in_array($file->getError(), [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)

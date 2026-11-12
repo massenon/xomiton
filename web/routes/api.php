@@ -270,6 +270,8 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
         // P7-04 (lot fil-ecrans) : publication mise en file hors connexion (store outbox) → Idempotency-Key facultative,
         // limiteur `feed_write` par `limit=` (un rejeu ne consomme pas le quota, ADR-32).
         Route::post('/', [PostController::class, 'store'])->middleware(['verified', 'idempotent:optional,limit=feed_write'])->name('store');
+        // Q96 : mes vidéos en attente de relecture ou refusées (déclarée avant `{post:ulid}`).
+        Route::get('review', [PostController::class, 'review'])->name('review');
         Route::get('{post:ulid}', [PostController::class, 'show'])->name('show');
         Route::patch('{post:ulid}', [PostController::class, 'update'])->middleware(['verified', 'throttle:feed_write'])->name('update');
         Route::delete('{post:ulid}', [PostController::class, 'destroy'])->name('destroy');

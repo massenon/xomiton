@@ -3,34 +3,36 @@
 // assets/js/xomiton.js [data-poll-create]), chargée à la demande. Question 5 à 200 caractères avec compteur (lu avec
 // le champ ; annoncé seulement à 20 caractères de la limite, une fois la frappe posée),
 // 2 à 6 réponses (ajout, retrait, numérotées ; vides retirées, doublons refusés casse et accents ignorés), texte
-// d'accompagnement, image facultative (5 Mo, aperçu), durée (1 j à 1 mois, ou sans fin), visibilité, interrupteurs
+// d'accompagnement, photos facultatives (<ComposerImages> : jusqu'à `max_images`, texte alternatif par photo, retrait,
+// Monter / Descendre ; jamais de vidéo, P7-10), durée (1 j à 1 mois, ou sans fin), visibilité, interrupteurs
 // « plusieurs réponses », « résultats avant le vote », « pseudonyme », mention de confidentialité des votes (RG-09).
 // Plein écran sous 576 px (modal-fullscreen-sm-down). Brouillon, envoi, hors connexion : feed/useComposer.ts.
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { DRAFT_POLL, allowedVisibility, emptyPoll, length, validatePoll } from '@/feed/composer';
+import { DRAFT_POLL, allowedVisibility, emptyPoll, length, mediaLimits, validatePoll } from '@/feed/composer';
 import { useComposer, type RecoveredEntry } from '@/feed/useComposer';
 import type { ComposerOptions, Post } from '@/feed/types';
 import XmAlert from '@/components/XmAlert.vue';
+import XmEmojiPicker from '@/components/XmEmojiPicker.vue';
 import XmErrorSummary from '@/components/XmErrorSummary.vue';
 import XmField from '@/components/XmField.vue';
 import XmModal from '@/components/XmModal.vue';
+import ComposerImages from './ComposerImages.vue';
 
 const props = withDefaults(defineProps<{ options: ComposerOptions; recovered?: RecoveredEntry | null }>(), { recovered: null });
 const emit = defineEmits<{ published: [post: Post]; hidden: [] }>();
 
 const { t } = useI18n();
 const modal = ref<InstanceType<typeof XmModal> | null>(null);
-const fileInput = ref<HTMLInputElement | null>(null);
 const limits = computed(() => props.options.limits);
 
-const { form, preview, errors, failure, busy, restored, waiting, setImage, submit } = useComposer({
+const { form, images, announcement, errors, failure, busy, restored, waiting, addImages, removeImage, moveImage, setAlt, submit } = useComposer({
     kind: 'poll',
     recovered: props.recovered,
     draft: DRAFT_POLL,
     options: props.options,
     initial: () => emptyPoll(props.options.default_duration),
-    validate: (value, image) => validatePoll(value, image, props.options.limits, t),
+    validate: (value, media) => validatePoll(value, media, props.options.limits, t),
     onPublished: (post) => emit('published', post),
     close: () => modal.value?.close(),
 });
@@ -61,6 +63,7 @@ const duration = computed({
 const visibilities = computed(() => Object.fromEntries(props.options.visibilities
     .filter((option) => !(form.is_anonymous && option.value === 'followers'))
     .map((option) => [option.value, option.label])));
+const maxImages = computed(() => mediaLimits(limits.value).maxImages);
 const maxMb = computed(() => Math.floor(limits.value.image_max_kb / 1024));
 const accept = computed(() => limits.value.image_types.join(','));
 
@@ -76,17 +79,6 @@ function removeOption(index: number) {
     if (form.options.length <= limits.value.options_min) return;
     form.options.splice(index, 1);
     nextTick(() => document.querySelector<HTMLInputElement>(`#f-option-${Math.max(0, index - 1)}`)?.focus());
-}
-
-function onFile(event: Event) {
-    const input = event.target as HTMLInputElement;
-    setImage(input.files?.[0] ?? null);
-    if (!input.files?.[0] || errors.value.image) input.value = '';
-}
-
-function clearPhoto() {
-    setImage(null);
-    if (fileInput.value) fileInput.value.value = '';
 }
 
 async function onSubmit() {
@@ -110,6 +102,7 @@ async function onSubmit() {
                 <span class="visually-hidden">{{ t('feed.poll.question_count_sr', { count: questionCount, max: limits.question_max }) }}</span>
             </div>
             <p class="visually-hidden" role="status" data-poll-count-live>{{ countAnnounce }}</p>
+            <XmEmojiPicker target="#f-question" :maxlength="limits.question_max" />
             <div v-if="errors.question" class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ errors.question }}</div>
         </div>
 
@@ -127,15 +120,11 @@ async function onSubmit() {
         </fieldset>
 
         <XmField v-model="form.body" name="body" type="textarea" :rows="2" :maxlength="limits.body_max" optional :label="t('feed.poll.text')" :placeholder="t('feed.poll.text_placeholder')" :error="errors.body" />
+        <XmEmojiPicker class="mb-3" target="#f-body" :maxlength="limits.body_max" />
 
         <div class="mb-3">
-            <label class="form-label" for="f-image"><i class="bi bi-image-fill text-success me-1" aria-hidden="true"></i>{{ t('feed.poll.image') }} <span class="small text-secondary">{{ t('feed.poll.image_hint', { max: maxMb }) }}</span></label>
-            <input id="f-image" ref="fileInput" class="form-control form-control-sm" type="file" name="image" :accept="accept" :aria-invalid="errors.image ? 'true' : undefined" @change="onFile">
-            <div v-if="errors.image" class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1" aria-hidden="true"></i>{{ errors.image }}</div>
-            <div v-if="preview" class="mt-2">
-                <img :src="preview" class="img-fluid rounded xm-poll-preview" :alt="t('feed.poll.image_alt')">
-                <div><button type="button" class="btn btn-link btn-sm px-0" @click="clearPhoto"><i class="bi bi-x-lg me-1" aria-hidden="true"></i>{{ t('feed.create.photo_remove') }}</button></div>
-            </div>
+            <ComposerImages :images="images" :max="maxImages" :accept="accept" :max-mb="maxMb" :errors="errors" :announcement="announcement" @add="addImages" @remove="removeImage" @move="moveImage" @alt="setAlt" />
+            <p class="form-text mb-0">{{ t('feed.media.poll_no_video') }}</p>
         </div>
 
         <div class="row g-2 mb-2">

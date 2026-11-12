@@ -36,8 +36,8 @@ function modViewScreens(): array
     return $screens;
 }
 
-it('ouvre au modérateur le tableau de bord, la recherche, le réseau social, la modération et les utilisateurs, et rien d’autre', function (): void {
-    $allowed = ['admin.dashboard', 'admin.recherche', 'admin.reseau', 'admin.moderation', 'admin.utilisateurs'];
+it('ouvre au modérateur le tableau de bord, la recherche, le réseau social, la modération (signalements et vidéos à relire) et les utilisateurs, et rien d’autre', function (): void {
+    $allowed = ['admin.dashboard', 'admin.recherche', 'admin.reseau', 'admin.moderation', 'admin.moderation.videos', 'admin.utilisateurs'];
     $screens = modViewScreens();
 
     expect(array_keys($screens))->toContain(...$allowed)->and(count($screens))->toBeGreaterThan(20);

@@ -134,7 +134,7 @@ final class Index extends Component
             'pages' => Page::query()->where('is_approved', false)->count(),
             'evenements' => Event::query()->count(),
             'forums' => ForumTopic::query()->count(),
-            'publications' => Post::query()->count(),
+            'publications' => Post::query()->whereNotIn('status', [PostStatus::Pending, PostStatus::Rejected])->count(),
         ];
     }
 
@@ -196,7 +196,9 @@ final class Index extends Component
     /** @return Builder<Post> */
     private function postQuery(): Builder
     {
+        // Les vidéos en relecture ou refusées (Q96) se traitent dans « Vidéos à relire », jamais ici.
         return Post::query()->with(['user:id,pseudo', 'group:id,name', 'page:id,name'])
+            ->whereNotIn('status', [PostStatus::Pending, PostStatus::Rejected])
             ->when($this->state === 'hidden', fn (Builder $q) => $q->where('status', PostStatus::Hidden))
             ->when($this->state === 'visible', fn (Builder $q) => $q->where('status', PostStatus::Published));
     }

@@ -38,12 +38,21 @@ export interface Poll {
 }
 
 export interface PostMedia {
+    /** `image` ou `video` (docs/API.md §8.4). */
     kind: string;
+    /** Lien signé : image 60 min ; vidéo, lien court propre à la personne qui lit (§8.7). */
     url: string;
+    /** Texte alternatif d'une image (peut être nul) ou description d'une vidéo. */
     alt: string | null;
     width: number | null;
     height: number | null;
+    position?: number;
+    mime?: string;
+    size?: number;
 }
+
+/** Relecture d'une vidéo (§8.7) : nul pour une publication ordinaire. */
+export type ReviewState = 'pending' | 'approved' | 'rejected';
 
 export interface Post {
     id: string;
@@ -63,6 +72,10 @@ export interface Post {
     liked: boolean;
     saved: boolean;
     media: PostMedia[];
+    /** Relecture d'une vidéo avant parution (Q96) ; `review_reason` : auteur·rice seulement, après un refus. */
+    review_state?: ReviewState | null;
+    review_label?: string | null;
+    review_reason?: string | null;
     poll: Poll | null;
     url: string;
     share_url: string;
@@ -113,6 +126,12 @@ export interface ComposerOptions {
         option_max: number;
         image_max_kb: number;
         image_types: string[];
+        /** Q96 (docs/API.md §8.7) : absents d'une ancienne page, repli sur les valeurs par défaut du serveur. */
+        max_images?: number;
+        video_max_kb?: number;
+        video_types?: string[];
+        video_description_min?: number;
+        video_description_max?: number;
     };
 }
 

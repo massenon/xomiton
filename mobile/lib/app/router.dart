@@ -419,6 +419,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, _) => const CreatePostPage(),
       ),
       GoRoute(
+        path: '/feed/videos',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (_, _) => const MyVideosPage(),
+      ),
+      GoRoute(
         path: '/feed/:id',
         parentNavigatorKey: rootNavigatorKey,
         builder: (_, state) => PostDetailPage(id: state.pathParameters['id']!),

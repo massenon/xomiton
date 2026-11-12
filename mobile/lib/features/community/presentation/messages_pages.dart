@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../app/theme/xm_tokens.dart';
+import '../../../core/emoji/emoji_logic.dart';
+import '../../../core/emoji/emoji_picker_sheet.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/network/api_exception.dart';
 import '../../../core/outbox/outbox.dart';
@@ -727,7 +729,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                               controller: _text,
                               minLines: 1,
                               maxLines: 4,
+                              inputFormatters: const [CodePointLimitFormatter(1000)],
                               decoration: InputDecoration(
+                                suffixIcon: EmojiButton(controller: _text, maxLength: 1000),
                                 labelText: context.t(
                                   'community_messages_compose_label',
                                 ),

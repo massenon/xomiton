@@ -2,6 +2,7 @@
 // api.comments.*) : un seul endroit pour les adresses (/api/v1, hors Ziggy : seul le groupe « member » est écrit dans
 // la page). Chaque fonction reçoit le client useApi() (XSRF, 419, 429, toasts) et rend l'objet utile, sans enveloppe.
 import type { Api, ApiOptions } from '@/app/useApi';
+import { uploadPost } from './upload';
 import type { Comment, CursorPage, Poll, Post } from './types';
 
 export const API_BASE = '/api/v1';
@@ -66,10 +67,22 @@ export function feedApi(api: Api) {
         async deletePost(id: string): Promise<void> {
             await api.delete(postUrl(id));
         },
-        /** Publication ou sondage (201) ; JSON, ou multipart avec une image ; clé rejouable (ADR-32). */
-        async create(body: FormData | Record<string, unknown>, idempotencyKey: string): Promise<Post> {
-            const { data } = await api.post<Envelope<Post>>(POSTS_URL, body, { idempotencyKey, silent: true });
+        /** Mes vidéos en attente de relecture ou refusées (`GET posts/review`, §8.7), 50 au plus, les plus récentes d'abord. */
+        async review(): Promise<Post[]> {
+            const { data } = await api.get<Envelope<Post[]>>(`${POSTS_URL}/review`);
             return data.data;
+        },
+        /**
+         * Publication ou sondage : 201 (en ligne) ou 202 (vidéo reçue, en relecture, §8.7) ; JSON ou multipart ; clé
+         * rejouable (ADR-32). Avec `onProgress` (vidéo), l'envoi passe par XMLHttpRequest (progression, annulation).
+         */
+        async create(body: FormData | Record<string, unknown>, idempotencyKey: string, options: { onProgress?: (percent: number) => void; signal?: AbortSignal; maxMb?: number } = {}): Promise<{ post: Post; status: number }> {
+            if (body instanceof FormData && options.onProgress) {
+                const response = await uploadPost<Envelope<Post>>(POSTS_URL, body, { idempotencyKey, ...options });
+                return { post: response.data.data, status: response.status };
+            }
+            const { data, status } = await api.post<Envelope<Post>>(POSTS_URL, body, { idempotencyKey, silent: true, signal: options.signal });
+            return { post: data.data, status };
         },
     };
 }

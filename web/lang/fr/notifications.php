@@ -282,6 +282,23 @@ return [
         ],
     ],
 
+    // Vidéos relues avant parution (Q96) : à l'équipe (vous) et à la personne qui a publié (tu).
+    'video_pending' => [
+        'title' => 'Vidéo à relire',
+        'body' => 'Une vidéo attend votre relecture avant d’être publiée.',
+    ],
+    'video_reviewed' => [
+        'discreet' => 'Message de l’équipe',
+        'approved' => [
+            'title' => 'Ta vidéo a été publiée',
+            'body' => 'L’équipe de modération a relu ta vidéo : elle est maintenant en ligne.',
+        ],
+        'rejected' => [
+            'title' => 'Ta vidéo n’a pas été publiée',
+            'body' => 'L’équipe de modération n’a pas pu publier ta vidéo : :reason. Le fichier sera supprimé dans :days jours.',
+        ],
+    ],
+
     // Limiteur `sos` en mode observateur (P2-08, App\Application\Shared\SosBurstWatch) : aucun SOS n'est bloqué.
     'sos_burst' => [
         'title' => 'SOS répétés depuis une même adresse',

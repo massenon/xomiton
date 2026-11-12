@@ -1,7 +1,7 @@
 // Données de test des écrans du fil (lot fil-ecrans) : publication, sondage et réponses JSON de l'API au format de
 // PostResource / PollResource (docs/API.md §8.4), et faux `fetch` enregistrant les appels.
 import { vi } from 'vitest';
-import type { ComposerOptions, Poll, Post } from '@/feed/types';
+import type { ComposerOptions, Poll, Post, PostMedia } from '@/feed/types';
 
 export function makePoll(overrides: Partial<Poll> = {}): Poll {
     return {
@@ -45,6 +45,9 @@ export function makePost(overrides: Partial<Post> = {}): Post {
         liked: false,
         saved: false,
         media: [],
+        review_state: null,
+        review_label: null,
+        review_reason: null,
         poll: null,
         url: `http://localhost/fil/${id}`,
         share_url: `http://localhost/p/${id}`,
@@ -55,6 +58,14 @@ export function makePost(overrides: Partial<Post> = {}): Post {
     };
 }
 
+export const makeImage = (n = 1, overrides: Partial<PostMedia> = {}): PostMedia => ({
+    kind: 'image', url: `https://xomiton.test/media/local/images/2026/11/photo-${n}.webp?signature=x${n}`, alt: `Photo ${n}`, width: 1600, height: 1200, position: n - 1, mime: 'image/webp', size: 184233, ...overrides,
+});
+
+export const makeVideo = (overrides: Partial<PostMedia> = {}): PostMedia => ({
+    kind: 'video', url: 'https://xomiton.test/media/fil/01JC0000000000000000000001/video?expires=1&viewer=7&signature=abc', alt: 'Des femmes assises en cercle qui discutent d’un projet.', width: null, height: null, position: 0, mime: 'video/mp4', size: 8192, ...overrides,
+});
+
 export function composerOptions(overrides: Partial<ComposerOptions> = {}): ComposerOptions {
     return {
         can_post: true,
@@ -64,7 +75,9 @@ export function composerOptions(overrides: Partial<ComposerOptions> = {}): Compo
         visibilities: [{ value: 'public', label: 'Communauté' }, { value: 'followers', label: 'Abonné·es' }, { value: 'me', label: 'Moi seulement' }],
         durations: [1, 3, 7, 14, 30, 0].map((value) => ({ value, label: `${value} j` })),
         default_duration: 7,
-        limits: { body_max: 3000, question_min: 5, question_max: 200, options_min: 2, options_max: 6, option_max: 80, image_max_kb: 5120, image_types: ['image/jpeg', 'image/png', 'image/webp'] },
+        limits: { body_max: 3000, question_min: 5, question_max: 200, options_min: 2, options_max: 6, option_max: 80, image_max_kb: 5120, image_types: ['image/jpeg', 'image/png', 'image/webp'],
+            max_images: 4, video_max_kb: 30 * 1024, video_types: ['video/mp4', 'video/webm'], video_description_min: 5, video_description_max: 500,
+        },
         ...overrides,
     };
 }

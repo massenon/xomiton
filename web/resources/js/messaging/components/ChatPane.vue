@@ -4,18 +4,17 @@
 // défilante focusable (bulles « moi » / « elle·lui », auteur·rice dans un groupe, « Vu », message supprimé, pièce
 // jointe) ; seule une région live dédiée annonce les messages **entrants** (jamais l'historique au chargement) ;
 // messages en attente avec horloge grisée jusqu'à confirmation du serveur, « non envoyé » avec Réessayer (masqué si la
-// pièce jointe n'a pas survécu au rechargement) / Retirer, et zone d'écriture (émojis du prototype, pièce jointe par un
+// pièce jointe n'a pas survécu au rechargement) / Retirer, et zone d'écriture (sélecteur d'émojis XmEmojiPicker, pièce jointe par un
 // vrai bouton — clavier, WCAG 2.1.1 —, 1000 caractères, Entrée envoie, Maj+Entrée = ligne).
 import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import XmAvatar from '@/components/XmAvatar.vue';
+import XmEmojiPicker from '@/components/XmEmojiPicker.vue';
 import XmEmptyState from '@/components/XmEmptyState.vue';
 import { dayLabel, groupByDay, timeLabel } from '../thread';
 import type { ChatMessage, Conversation } from '../types';
 
 export type PaneAction = 'report' | 'block' | 'unblock' | 'unmute' | 'leave' | `mute:${string}`;
-
-const EMOJIS = ['😊', '💜', '🌈', '🙏', '👍', '😢', '🤗', '💪', '🔒', '✨'];
 
 const props = withDefaults(defineProps<{
     conversation: Conversation | null;
@@ -56,7 +55,8 @@ const subtitle = computed(() => {
     return c.muted ? t('community.messages.muted_label') : '';
 });
 const canSend = computed(() => Boolean(props.conversation?.can_send));
-const remaining = computed(() => props.maxLength - draft.value.length);
+// Points de code, comme la validation serveur (max: de Laravel) et l'insertion du sélecteur d'émojis.
+const remaining = computed(() => props.maxLength - Array.from(draft.value).length);
 
 function submit() {
     const body = draft.value.trim();
@@ -72,11 +72,6 @@ function onKeydown(event: KeyboardEvent) {
         event.preventDefault();
         submit();
     }
-}
-
-function addEmoji(emoji: string) {
-    draft.value = `${draft.value}${emoji}`.slice(0, props.maxLength);
-    input.value?.focus();
 }
 
 function openFilePicker() {
@@ -223,14 +218,7 @@ const bubbleClass = (m: ChatMessage) => ['xm-bubble', m.mine ? 'me' : 'them', { 
                     <button type="button" class="btn btn-link btn-sm p-0" @click="clearFile">{{ t('community.messages.attachment_remove') }}</button>
                 </div>
                 <div class="d-flex align-items-end gap-2">
-                    <div class="dropup">
-                        <button class="btn btn-light xm-btn-icon" type="button" data-bs-toggle="dropdown" :aria-label="t('community.messages.emoji')" aria-expanded="false"><i class="bi bi-emoji-smile" aria-hidden="true"></i></button>
-                        <div class="dropdown-menu p-2">
-                            <div class="d-flex flex-wrap gap-1">
-                                <button v-for="emoji in EMOJIS" :key="emoji" type="button" class="btn btn-light btn-sm fs-5" :aria-label="emoji" @click="addEmoji(emoji)">{{ emoji }}</button>
-                            </div>
-                        </div>
-                    </div>
+                    <XmEmojiPicker target="#chatInput" :maxlength="maxLength" />
                     <button class="btn btn-light xm-btn-icon" type="button" :title="t('community.messages.attach')" data-xm-attach @click="openFilePicker">
                         <i class="bi bi-paperclip" aria-hidden="true"></i><span class="visually-hidden">{{ t('community.messages.attach') }} ({{ t('community.messages.attachment_hint') }})</span>
                     </button>

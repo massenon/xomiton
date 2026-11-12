@@ -39,6 +39,28 @@ return [
         'failed' => 'Image indisponible pour le moment.',
     ],
 
+    // Lecture hors ligne (application mobile) : copie locale de la dernière réponse réussie, images sur disque.
+    'offline' => [
+        'status' => 'Hors ligne',
+        'saved_on' => 'Contenu enregistré le :date.',
+        'notice' => 'Tu lis la copie enregistrée sur ton téléphone. Les nouveautés et les outils retirés se mettront à jour dès que tu seras de nouveau connecté·e.',
+        'refresh' => 'Actualiser',
+        'refresh_label' => 'Actualiser les outils CCC',
+        'expired' => 'La copie enregistrée date de plus de :days jours : elle n’est plus affichée. Connecte-toi à Internet pour récupérer les outils.',
+        'tool_available' => 'Disponible hors ligne',
+        'download' => [
+            'cta' => 'Télécharger pour lire hors ligne',
+            'hint' => 'Enregistre les images sur ton téléphone pour animer une séance sans réseau. Préfère le Wi-Fi : le téléchargement consomme des données mobiles.',
+            'progress' => 'Téléchargement des images : :done sur :total.',
+            'cancel' => 'Annuler le téléchargement',
+            'cancelled' => 'Téléchargement annulé. Les images déjà enregistrées restent disponibles.',
+            'done' => 'Toutes les images sont enregistrées : tu peux animer sans réseau.',
+            'failed' => '{1} 1 image n’a pas pu être enregistrée. Réessaie avec un meilleur réseau.|[2,*] :count images n’ont pas pu être enregistrées. Réessaie avec un meilleur réseau.',
+            'full' => 'La place réservée aux images est pleine : certaines images ne sont pas enregistrées.',
+            'needs_network' => 'Connecte-toi à Internet pour télécharger les images.',
+        ],
+    ],
+
     'manual' => [
         'heading' => 'Manuel du pair animateur·rice',
         'intro' => 'Coche les points que tu as vus et imprime ton récapitulatif. Ta progression reste sur cet appareil : elle n’est jamais envoyée au serveur.',

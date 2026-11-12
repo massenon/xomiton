@@ -62,6 +62,7 @@ it('planifie les commandes attendues aux bonnes fréquences', function (): void 
         'content-events:purge' => '0 3 * * *',
         'reports:purge' => '30 3 * * *',
         'cache:purge-expired' => '30 3 * * *',
+        'videos:purge-rejected' => '30 3 * * *',
         'accounts:purge-exports' => '30 3 * * *',
         'indicators:snapshot' => '0 4 1 * *',
         'reports:generate' => '15 4 * * *',

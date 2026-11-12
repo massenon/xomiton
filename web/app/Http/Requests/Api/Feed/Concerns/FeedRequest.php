@@ -22,7 +22,9 @@ trait FeedRequest
     {
         $fields = [
             'kind' => 'kind', 'body' => 'body', 'tag' => 'tag', 'visibility' => 'visibility', 'is_anonymous' => 'is_anonymous',
-            'image' => 'image', 'image_alt' => 'image_alt', 'poll' => 'poll', 'poll.question' => 'poll_question',
+            'image' => 'image', 'image_alt' => 'image_alt', 'images' => 'images', 'images.*' => 'image_item', 'images_alt' => 'images_alt',
+            'images_alt.*' => 'image_alt_item', 'video' => 'video', 'video_description' => 'video_description', 'remove_media' => 'remove_media',
+            'remove_media.*' => 'remove_media_item', 'poll' => 'poll', 'poll.question' => 'poll_question',
             'poll.options' => 'poll_options', 'poll.options.*' => 'poll_option', 'poll.multiple' => 'poll_multiple',
             'poll.results_before_vote' => 'poll_results_before_vote', 'poll.duration_days' => 'poll_duration_days',
             'choices' => 'choices', 'choices.*' => 'choice', 'reason' => 'reason', 'details' => 'details',

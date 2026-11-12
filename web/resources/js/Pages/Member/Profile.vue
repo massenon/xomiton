@@ -6,9 +6,12 @@
 // membres. En-tête <ProfileHeader> (six onglets en <Link>, données de l'onglet seulement : `panel`), colonne
 // <ProfileSide>. Publications : invite « Partage tes pensées… » sur son profil (modale du fil à la demande), cartes
 // <XmPost>, « Charger plus » (API `GET users/{id}/posts`). Bandeau du profil progressif (P8-08) chargé à la demande sur
-// son profil tant qu'un groupe reste à traiter ; « Plus tard » le masque pour la session.
+// son profil tant qu'un groupe reste à traiter ; « Plus tard » le masque pour la session. Sur son propre profil,
+// bouton « Mes vidéos » (P7-10) : section chargée à la demande <MyVideos> (`GET posts/review` : vidéos en attente de
+// relecture ou refusées, bouton Retirer), ouverte par l'ancre `#mes-videos` (lien de la carte du fil) ou après l'envoi
+// d'une vidéo depuis la modale (202).
 // Props : ProfilePageController (title, tab, tabs, profile, panel, side, composer, report_reasons, progressive, links).
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { ApiError, useApi } from '@/app/useApi';
@@ -64,6 +67,10 @@ const bannerHidden = ref(readDismissed());
 
 const postModal = lazyComponent(() => import('@/components/feed/CreatePostModal.vue'));
 const CreatePostModal = postModal.component;
+const videosSection = lazyComponent(() => import('@/components/feed/MyVideos.vue'));
+const MyVideos = videosSection.component;
+const videosOpen = ref(false);
+const videosRef = ref<{ reload: () => void } | null>(null);
 const banner = lazyComponent(() => import('@/components/profile/ProgressiveProfileBanner.vue'));
 const ProgressiveProfileBanner = banner.component;
 
@@ -147,6 +154,32 @@ async function write() {
     }
 }
 
+/** Ouvre (ou ferme) « Mes vidéos » ; `focus` : la section reçoit le focus (arrivée par l'ancre, après un envoi). */
+async function showVideos(open = !videosOpen.value, focus = false) {
+    if (!open) {
+        videosOpen.value = false;
+        return;
+    }
+    videosOpen.value = true;
+    if (!(await videosSection.load())) {
+        videosOpen.value = false;
+        toast.show(t('microcopy.error.unreachable'), 'warning');
+        return;
+    }
+    if (focus) await nextTick(() => document.getElementById('mes-videos')?.focus());
+}
+
+/** Vidéo reçue (202) : jamais ajoutée aux publications, mais visible dans « Mes vidéos », relue à l'ouverture. */
+const onSubmitted = async () => {
+    const wasOpen = videosOpen.value;
+    await showVideos(true, true);
+    if (wasOpen) videosRef.value?.reload();
+};
+
+onMounted(() => {
+    if (current.value.is_self && props.tab === 'posts' && window.location.hash === '#mes-videos') void showVideos(true, true);
+});
+
 const onPublished = (post: Post) => {
     posts.value = [post, ...posts.value.filter((item) => item.id !== post.id)];
     current.value = { ...current.value, stats: { ...current.value.stats, posts: current.value.stats.posts + 1 } };
@@ -172,6 +205,10 @@ const tabLinks = computed(() => props.tabs.map((tab) => (tab.key === 'posts' ? {
                     <button class="form-control text-start text-secondary border-0 bg-light" type="button" aria-haspopup="dialog" @click="write" @pointerenter="postModal.load()" @focus="postModal.load()">{{ t('profile.composer_prompt', { name: current.pseudo }) }}</button>
                 </div>
             </div>
+            <div v-if="current.is_self" class="d-flex">
+                <button class="btn btn-primary-soft btn-sm xm-media-btn" type="button" aria-controls="mes-videos" :aria-expanded="videosOpen ? 'true' : 'false'" @click="showVideos()" @pointerenter="videosSection.load()" @focus="videosSection.load()"><i class="bi bi-collection-play me-1" aria-hidden="true"></i>{{ t('feed.video.mine_title') }}</button>
+            </div>
+            <component :is="MyVideos" v-if="videosOpen && MyVideos" ref="videosRef" />
             <div class="vstack gap-4" :aria-busy="loading ? 'true' : 'false'">
                 <XmPost v-for="post in posts" :key="post.id" :post="post" @update:post="replacePost" @removed="onRemoved" />
                 <div v-if="posts.length === 0" class="card card-body text-center text-secondary">
@@ -194,5 +231,5 @@ const tabLinks = computed(() => props.tabs.map((tab) => (tab.key === 'posts' ? {
 
     <ProfileSideColumn :profile="current" :side="side" :tabs="tabLinks" />
 
-    <component :is="CreatePostModal" v-if="writing && CreatePostModal && composer" :options="composer" :focus="null" @published="onPublished" @hidden="writing = false" />
+    <component :is="CreatePostModal" v-if="writing && CreatePostModal && composer" :options="composer" :focus="null" @published="onPublished" @submitted="onSubmitted" @hidden="writing = false" />
 </template>

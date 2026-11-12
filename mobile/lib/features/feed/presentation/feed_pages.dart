@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/xm_tokens.dart';
+import '../../../core/emoji/emoji_logic.dart';
+import '../../../core/emoji/emoji_picker_sheet.dart';
 import '../../../core/l10n/app_strings.dart';
 import '../../../core/network/api_exception.dart';
 import '../../../core/ui/xm_widgets.dart';
@@ -12,6 +14,10 @@ import '../../auth/presentation/pending_widgets.dart';
 import '../application/feed_controller.dart';
 import '../data/feed_api.dart';
 import '../data/feed_models.dart';
+import 'media_widgets.dart';
+
+export 'create_post_page.dart' show CreatePostPage;
+export 'my_videos_page.dart' show MyVideosPage;
 
 void _toast(BuildContext c, String text) =>
     ScaffoldMessenger.of(c).showSnackBar(SnackBar(content: Text(text)));
@@ -26,7 +32,18 @@ class FeedTabPage extends ConsumerWidget {
     final state = ref.watch(feedProvider);
     final pending = ref.watch(pendingValidationProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(context.t('feed_page_title'))),
+      appBar: AppBar(
+        title: Text(context.t('feed_page_title')),
+        actions: [
+          // Vidéos envoyées, en attente de relecture ou refusées (docs/API.md §8.7).
+          IconButton(
+            key: const Key('feed-my-videos'),
+            tooltip: context.t('mobile_myvideos_title'),
+            icon: const Icon(Icons.video_library_outlined),
+            onPressed: () => context.push('/feed/videos'),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: 'fab-feed-new',
         // Compte en attente de validation : bouton grisé, l'explication est au-dessus du fil.
@@ -188,8 +205,29 @@ class PostCard extends ConsumerWidget {
                   overflow: detail ? null : TextOverflow.ellipsis,
                 ),
               ],
+              if (post.inReview && post.isMine)
+                ReviewPanel(
+                  post: post,
+                  onWithdraw: () async {
+                    try {
+                      await ctrl.withdraw(post);
+                      if (context.mounted) {
+                        _toast(context, context.t('feed_video_withdrawn'));
+                        if (detail) context.pop();
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        _toast(context, errorMessage(context, e));
+                      }
+                    }
+                  },
+                ),
+              if (post.images.isNotEmpty) PostGallery(images: post.images),
+              if (post.video != null)
+                PostVideoPlayer(postId: post.id, media: post.video!),
               if (post.poll != null) PollView(post: post),
               const SizedBox(height: XmSpace.s2),
+              if (!post.inReview)
               Wrap(
                 children: [
                   TextButton.icon(
@@ -479,269 +517,6 @@ Future<void> showReportDialog(
   }
 }
 
-/// Publication ou sondage ; hors connexion, elle part par la boîte d'envoi.
-class CreatePostPage extends ConsumerStatefulWidget {
-  const CreatePostPage({super.key});
-
-  @override
-  ConsumerState<CreatePostPage> createState() => _CreatePostPageState();
-}
-
-class _CreatePostPageState extends ConsumerState<CreatePostPage> {
-  final _scroll = ScrollController();
-  final _body = TextEditingController();
-  final _question = TextEditingController();
-  final _options = [TextEditingController(), TextEditingController()];
-  bool _poll = false;
-  bool _anonymous = false;
-  bool _multiple = false;
-  int _duration = 7;
-  String _visibility = 'public';
-  String? _error;
-  bool _busy = false;
-
-  @override
-  void dispose() {
-    _scroll.dispose();
-    _body.dispose();
-    _question.dispose();
-    for (final o in _options) {
-      o.dispose();
-    }
-    super.dispose();
-  }
-
-  void _toTop() {
-    if (_scroll.hasClients) {
-      _scroll.animateTo(
-        0,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
-  Future<void> _submit() async {
-    final body = _body.text.trim();
-    final opts = _options
-        .map((o) => o.text.trim())
-        .where((t) => t.isNotEmpty)
-        .toList();
-    String? err;
-    if (_poll) {
-      final q = _question.text.trim();
-      if (q.length < 5 || q.length > 200) {
-        err = context.t('feed_poll_question_error', {'min': 5, 'max': 200});
-      } else if (opts.length < 2) {
-        err = context.t('feed_poll_options_error', {'min': 2});
-      } else if (opts.map((o) => o.toLowerCase()).toSet().length !=
-          opts.length) {
-        err = context.t('feed_poll_options_duplicate');
-      }
-    } else if (body.isEmpty) {
-      err = context.t('feed_create_text');
-    }
-    if (_anonymous && _visibility == 'followers') {
-      err = context.t('feed_create_anonymous_followers');
-    }
-    if (err != null) {
-      setState(() => _error = err);
-      _toTop();
-      return;
-    }
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-    final payload = <String, dynamic>{
-      'kind': _poll ? 'poll' : 'post',
-      if (body.isNotEmpty) 'body': body,
-      'visibility': _visibility,
-      'is_anonymous': _anonymous,
-      if (_poll)
-        'poll': {
-          'question': _question.text.trim(),
-          'options': opts,
-          'multiple': _multiple,
-          'results_before_vote': false,
-          'duration_days': _duration,
-        },
-    };
-    try {
-      final online = await ref.read(feedProvider.notifier).publish(payload);
-      if (!mounted) return;
-      _toast(
-        context,
-        context.t(
-          online
-              ? (_poll ? 'feed_toasts_poll_published' : 'feed_toasts_published')
-              : 'microcopy_offline_queued',
-        ),
-      );
-      context.pop();
-    } catch (e) {
-      if (!mounted) return;
-      final api = ApiException.from(e);
-      setState(
-        () => _error = api.code == 'content_blocked'
-            ? context.t('feed_create_bad_words')
-            : errorMessage(context, e),
-      );
-      _toTop();
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (ref.watch(pendingValidationProvider)) {
-      return Scaffold(
-        appBar: AppBar(title: Text(context.t('feed_create_title'))),
-        body: const SafeArea(child: PendingNotice()),
-      );
-    }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.t(_poll ? 'feed_poll_title' : 'feed_create_title')),
-      ),
-      body: SafeArea(
-        child: ListView(
-          controller: _scroll,
-          padding: const EdgeInsets.all(XmSpace.gutter),
-          children: [
-            SegmentedButton<bool>(
-              segments: [
-                ButtonSegment(
-                  value: false,
-                  label: Text(context.t('feed_create_title')),
-                ),
-                ButtonSegment(
-                  value: true,
-                  label: Text(context.t('feed_compose_poll')),
-                ),
-              ],
-              selected: {_poll},
-              onSelectionChanged: (s) => setState(() => _poll = s.first),
-            ),
-            const SizedBox(height: XmSpace.s3),
-            Text(
-              context.t('feed_create_help_notice'),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: XmSpace.s3),
-            if (_error != null) ...[
-              XmAlert(_error!),
-              const SizedBox(height: XmSpace.s3),
-            ],
-            if (_poll) ...[
-              TextField(
-                controller: _question,
-                maxLength: 200,
-                decoration: InputDecoration(
-                  labelText: context.t('feed_poll_question'),
-                  hintText: context.t('feed_poll_question_placeholder'),
-                ),
-              ),
-              for (var i = 0; i < _options.length; i++)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: XmSpace.s2),
-                  child: TextField(
-                    controller: _options[i],
-                    maxLength: 80,
-                    decoration: InputDecoration(
-                      labelText: context.t('feed_poll_option_label', {
-                        'n': i + 1,
-                      }),
-                      counterText: '',
-                    ),
-                  ),
-                ),
-              if (_options.length < 6)
-                TextButton.icon(
-                  icon: const Icon(Icons.add),
-                  label: Text(context.t('feed_poll_option_add')),
-                  onPressed: () =>
-                      setState(() => _options.add(TextEditingController())),
-                ),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                value: _multiple,
-                title: Text(context.t('feed_poll_multiple')),
-                onChanged: (v) => setState(() => _multiple = v),
-              ),
-              DropdownButtonFormField<int>(
-                isExpanded: true,
-                initialValue: _duration,
-                decoration: InputDecoration(
-                  labelText: context.t('feed_poll_duration'),
-                ),
-                items: [
-                  for (final d in const [1, 3, 7, 14, 30, 0])
-                    DropdownMenuItem(
-                      value: d,
-                      child: Text(context.t('feed_poll_durations_$d')),
-                    ),
-                ],
-                onChanged: (v) => setState(() => _duration = v ?? 7),
-              ),
-              const SizedBox(height: XmSpace.s3),
-            ],
-            TextField(
-              controller: _body,
-              minLines: 4,
-              maxLines: 8,
-              maxLength: 3000,
-              decoration: InputDecoration(
-                labelText: context.t(
-                  _poll ? 'feed_poll_text' : 'feed_create_text',
-                ),
-                hintText: context.t(
-                  _poll
-                      ? 'feed_poll_text_placeholder'
-                      : 'feed_create_text_placeholder',
-                ),
-              ),
-            ),
-            DropdownButtonFormField<String>(
-              isExpanded: true,
-              initialValue: _visibility,
-              decoration: InputDecoration(
-                labelText: context.t('feed_create_visibility'),
-              ),
-              items: [
-                for (final v in const ['public', 'followers', 'me'])
-                  DropdownMenuItem(
-                    value: v,
-                    child: Text(context.t('feed_create_visibility_options_$v')),
-                  ),
-              ],
-              onChanged: (v) => setState(() => _visibility = v ?? 'public'),
-            ),
-            SwitchListTile.adaptive(
-              contentPadding: EdgeInsets.zero,
-              value: _anonymous,
-              title: Text(context.t('feed_create_anonymous')),
-              subtitle: Text(context.t('feed_create_anonymous_help')),
-              onChanged: (v) => setState(() => _anonymous = v),
-            ),
-            const SizedBox(height: XmSpace.s3),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-              ),
-              onPressed: _busy ? null : _submit,
-              child: Text(
-                context.t(_poll ? 'feed_poll_submit' : 'feed_create_submit'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 /// Détail d'une publication et ses commentaires.
 class PostDetailPage extends ConsumerStatefulWidget {
   const PostDetailPage({super.key, required this.id});
@@ -953,7 +728,9 @@ class _PostDetailPageState extends ConsumerState<PostDetailPage> {
           child: TextField(
             controller: _text,
             maxLength: 1000,
+            inputFormatters: const [CodePointLimitFormatter(1000)],
             decoration: InputDecoration(
+              suffixIcon: EmojiButton(controller: _text, maxLength: 1000),
               counterText: '',
               labelText: context.t('feed_comments_field_label'),
               hintText: context.t('feed_comments_placeholder'),

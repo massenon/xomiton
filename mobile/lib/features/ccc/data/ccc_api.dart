@@ -2,22 +2,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/core_providers.dart';
-import 'ccc_models.dart';
+import '../../auth/application/session_controller.dart';
+import 'ccc_repository.dart';
 
-/// Lecture des outils CCC (docs/API.md §19 bis). Le serveur répond
-/// `Cache-Control: no-store, private` : la lecture suit toujours l'état de
-/// publication choisi par l'équipe, donc rien n'est gardé hors ligne (pas de
-/// passage par `ApiCache`, qui ne garde d'ailleurs pas les réponses `no-store`).
-/// `GET ccc` renvoie déjà le contenu complet de chaque outil : `GET ccc/{key}`
-/// n'est pas nécessaire aux écrans.
-class CccApi {
-  CccApi(this._dio);
-  final Dio _dio;
-
-  Future<CccCatalog> catalog() async {
-    final res = await _dio.get<dynamic>('ccc');
-    return CccCatalog.fromJson(res.data);
-  }
-}
-
-final cccApiProvider = Provider<CccApi>((ref) => CccApi(ref.watch(dioProvider)));
+/// Lecture des outils CCC (docs/API.md §19 bis) par [CccRepository] : le serveur
+/// répond `Cache-Control: no-store, private` (la publication prime), donc la
+/// lecture hors ligne passe par une copie locale propre à l'application, jamais
+/// par `ApiCache`. `GET ccc` renvoie le contenu complet de chaque outil.
+final cccRepositoryProvider = Provider<CccRepository>((ref) {
+  final Dio dio = ref.watch(dioProvider);
+  final account = ref.watch(sessionProvider.select((s) => s.user?.id));
+  return CccRepository(dio: dio, box: ref.watch(localDbProvider).privateCache, account: account);
+});

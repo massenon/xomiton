@@ -1,8 +1,9 @@
 // Logique des modales « Créer une publication » et « Créer un sondage » (lot fil-ecrans, P7-04 ; prototype
 // partials/modals.php, assets/js/xomiton.js) sans composant : validation (mêmes bornes que StorePostRequest, reçues
-// en props `composer.limits`), corps de `POST /api/v1/posts` (JSON, ou multipart avec l'image), corps de la boîte
-// d'envoi hors connexion (shared/outbox.js : { form: [[nom, valeur | Blob]] } ou objet JSON), brouillon sans fichier et
-// erreurs 422 du serveur ramenées aux champs de la modale.
+// en props `composer.limits`), corps de `POST /api/v1/posts` (JSON, ou multipart avec `images[]` + `images_alt[]` alignés,
+// ou `video` + `video_description`, docs/API.md §8.3 et §8.7), corps de la boîte d'envoi hors connexion (JSON : texte et
+// sondage seulement, jamais de média), brouillon sans fichier et erreurs 422 du serveur ramenées aux champs de la
+// modale (`images.N` et `images_alt.N` : l'image de même rang).
 import type { ComposerOptions } from './types';
 
 type Translate = (key: string, named?: Record<string, unknown>) => string;
@@ -17,7 +18,42 @@ export interface PostForm {
     tag: string;
     visibility: string;
     is_anonymous: boolean;
-    image_alt: string;
+}
+
+/** Image choisie : fichier, texte alternatif et aperçu (URL objet libérée au retrait). Jamais dans le brouillon. */
+export interface ImageItem {
+    id: number;
+    file: File;
+    alt: string;
+    preview: string | null;
+}
+
+/** Vidéo choisie : description (obligatoire) et prise de connaissance de l'avertissement de vie privée. */
+export interface VideoItem {
+    file: File;
+    description: string;
+    acknowledged: boolean;
+}
+
+export interface ComposerMedia {
+    images: ImageItem[];
+    video: VideoItem | null;
+}
+
+export const noMedia = (): ComposerMedia => ({ images: [], video: null });
+
+export const hasMedia = (media: ComposerMedia): boolean => media.images.length > 0 || media.video !== null;
+
+/** Plafonds de média avec les valeurs par défaut du serveur (docs/API.md §8.7) pour une page qui ne les enverrait pas. */
+export function mediaLimits(limits: Limits) {
+    return {
+        maxImages: Math.max(1, limits.max_images ?? 4),
+        videoMaxKb: limits.video_max_kb ?? 30 * 1024,
+        videoTypes: limits.video_types?.length ? limits.video_types : ['video/mp4', 'video/webm'],
+        descriptionMin: limits.video_description_min ?? 5,
+        descriptionMax: limits.video_description_max ?? 500,
+        altMax: 255,
+    };
 }
 
 export interface PollForm {
@@ -33,7 +69,7 @@ export interface PollForm {
 
 export type FormErrors = Record<string, string>;
 
-export const emptyPost = (tag = 'temoignage'): PostForm => ({ body: '', tag, visibility: 'public', is_anonymous: false, image_alt: '' });
+export const emptyPost = (tag = 'temoignage'): PostForm => ({ body: '', tag, visibility: 'public', is_anonymous: false });
 
 export const emptyPoll = (duration = 7): PollForm => ({
     question: '', options: ['', ''], body: '', duration_days: duration, visibility: 'public', multiple: false, results_before_vote: false, is_anonymous: false,
@@ -56,17 +92,52 @@ export function imageError(file: File | null, limits: Limits, t: Translate): str
     return null;
 }
 
-export function validatePost(form: PostForm, image: File | null, limits: Limits, t: Translate): FormErrors {
+/** Vidéo : type (mp4 ou webm, l'extension fait foi si le navigateur ne donne pas de type) et poids (`video_max_kb`). */
+export function videoError(file: File | null, limits: Limits, t: Translate): string | null {
+    if (!file) return null;
+    const { videoTypes, videoMaxKb } = mediaLimits(limits);
+    const byExtension = /\.(mp4|webm)$/i.test(file.name) && file.type === '';
+    if (!videoTypes.includes(file.type) && !byExtension) return t('feed.video.type_error');
+    if (file.size > videoMaxKb * 1024) return t('feed.video.too_large', { max: Math.floor(videoMaxKb / 1024) });
+    return null;
+}
+
+/** Poids lisible en Mo (une décimale, virgule française), pour « Vidéo choisie : … ». */
+export const megabytes = (bytes: number): string => (Math.round((bytes / (1024 * 1024)) * 10) / 10).toString().replace('.', ',');
+
+/** Photos : plafond, poids et type de chacune, texte alternatif ≤ 255 (mêmes règles que StorePostRequest) ; erreurs par rang. */
+function imagesErrors(images: ImageItem[], limits: Limits, t: Translate): FormErrors {
     const errors: FormErrors = {};
-    const body = form.body.trim();
-    if (body === '' && !image) errors.body = t('feed.errors.text_required');
-    else if (length(form.body) > limits.body_max) errors.body = t('feed.create.text_max', { max: limits.body_max });
-    const photo = imageError(image, limits, t);
-    if (photo) errors.image = photo;
+    const { maxImages, altMax } = mediaLimits(limits);
+    if (images.length > maxImages) errors.images = t('feed.media.images_max', { max: maxImages });
+    images.forEach((item, index) => {
+        const problem = imageError(item.file, limits, t);
+        if (problem) errors[`images.${index}`] = problem;
+        if (length(item.alt) > altMax) errors[`images_alt.${index}`] = t('feed.media.image_alt_max', { max: altMax });
+    });
     return errors;
 }
 
-export function validatePoll(form: PollForm, image: File | null, limits: Limits, t: Translate): FormErrors {
+export function validatePost(form: PostForm, media: ComposerMedia, limits: Limits, t: Translate): FormErrors {
+    const errors: FormErrors = {};
+    const body = form.body.trim();
+    if (body === '' && !hasMedia(media)) errors.body = t('feed.errors.text_required');
+    else if (length(form.body) > limits.body_max) errors.body = t('feed.create.text_max', { max: limits.body_max });
+    Object.assign(errors, imagesErrors(media.images, limits, t));
+    if (media.video) {
+        const { descriptionMin, descriptionMax } = mediaLimits(limits);
+        const description = length(media.video.description.trim());
+        const file = videoError(media.video.file, limits, t);
+        if (media.images.length > 0) errors.video = t('feed.video.not_with_images');
+        else if (file) errors.video = file;
+        if (description === 0) errors.video_description = t('feed.video.description_required');
+        else if (description < descriptionMin || description > descriptionMax) errors.video_description = t('feed.video.description_length', { min: descriptionMin, max: descriptionMax });
+        if (!media.video.acknowledged) errors.video_ack = t('feed.video.acknowledge_required');
+    }
+    return errors;
+}
+
+export function validatePoll(form: PollForm, media: ComposerMedia, limits: Limits, t: Translate): FormErrors {
     const errors: FormErrors = {};
     const question = length(form.question.trim());
     if (question < limits.question_min || question > limits.question_max) {
@@ -79,8 +150,8 @@ export function validatePoll(form: PollForm, image: File | null, limits: Limits,
     else if (distinct.size !== filled.length) errors.options = t('feed.poll.options_duplicate');
     else if (filled.some((option) => length(option) > limits.option_max)) errors.options = t('feed.create.text_max', { max: limits.option_max });
     if (length(form.body) > limits.body_max) errors.body = t('feed.create.text_max', { max: limits.body_max });
-    const photo = imageError(image, limits, t);
-    if (photo) errors.image = photo;
+    Object.assign(errors, imagesErrors(media.images, limits, t));
+    if (media.video) errors.video = t('feed.video.not_in_poll');
     return errors;
 }
 
@@ -122,14 +193,23 @@ export function jsonBody(kind: 'post' | 'poll', form: PostForm | PollForm): Reco
     return body;
 }
 
-/** Corps de l'envoi : objet JSON, ou FormData avec l'image (et sa description). */
-export function requestBody(kind: 'post' | 'poll', form: PostForm | PollForm, image: File | null): FormData | Record<string, unknown> {
-    if (!image) return jsonBody(kind, form);
+/**
+ * Corps de l'envoi : objet JSON sans média, sinon FormData : `images[]` et `images_alt[]` **alignés** (une entrée par
+ * image, vide si elle n'a pas de texte : l'ordre des fichiers est l'ordre de publication), ou `video` et
+ * `video_description` (docs/API.md §8.3).
+ */
+export function requestBody(kind: 'post' | 'poll', form: PostForm | PollForm, media: ComposerMedia = noMedia()): FormData | Record<string, unknown> {
+    if (!hasMedia(media)) return jsonBody(kind, form);
     const data = new FormData();
     fields(kind, form).forEach(([name, value]) => data.append(name, value));
-    data.append('image', image, image.name);
-    const alt = kind === 'post' ? (form as PostForm).image_alt.trim() : '';
-    if (alt !== '') data.append('image_alt', alt);
+    media.images.forEach((item) => {
+        data.append('images[]', item.file, item.file.name);
+        data.append('images_alt[]', item.alt.trim());
+    });
+    if (media.video && kind === 'post') {
+        data.append('video', media.video.file, media.video.file.name);
+        data.append('video_description', media.video.description.trim());
+    }
     return data;
 }
 
@@ -142,14 +222,13 @@ export function withGroup<B extends FormData | Record<string, unknown> | { form:
     return body;
 }
 
-/** Corps pour la boîte d'envoi (shared/outbox.js) : multipart rejouable `{ form }` ou objet JSON. */
-export function outboxBody(kind: 'post' | 'poll', form: PostForm | PollForm, image: File | null): { form: Array<[string, string | Blob]> } | Record<string, unknown> {
-    if (!image) return jsonBody(kind, form);
-    const pairs: Array<[string, string | Blob]> = fields(kind, form);
-    pairs.push(['image', image]);
-    const alt = kind === 'post' ? (form as PostForm).image_alt.trim() : '';
-    if (alt !== '') pairs.push(['image_alt', alt]);
-    return { form: pairs };
+/**
+ * Corps pour la boîte d'envoi (shared/outbox.js) : objet JSON. Seuls un texte et un sondage **sans média** partent hors
+ * connexion (les fichiers ne sont pas rejoués : 30 Mo de vidéo n'ont rien à faire dans IndexedDB) ; avec des photos ou une
+ * vidéo, l'envoi exige le réseau (feed.media.needs_network) et le brouillon reste.
+ */
+export function outboxBody(kind: 'post' | 'poll', form: PostForm | PollForm): Record<string, unknown> {
+    return jsonBody(kind, form);
 }
 
 /** Erreurs 422 (`errors` de l'API, première par champ) ramenées aux champs de la modale. */

@@ -1,0 +1,38 @@
+---
+type: moc
+phase: 01
+title: Planning
+updated: 2026-11-12
+---
+
+# Planning
+
+> Product initiatives, epics and milestones — WHAT we will deliver and FOR WHOM.
+
+## Purpose
+
+This folder houses product artifacts that define scope and value: PRDs (initiatives), epics (large deliverables with stories as bullets) and milestones (markers with RAG status). NOT here: testable requirements (EARS) — those live in `04-specs/<feature>/requirements.md`.
+
+## Subfolders
+
+- `prd/` — Product Requirements Documents, one per initiative.
+- `epics/` — epics decomposed from the PRD, with `## Stories` section as bullets.
+- `milestones/` — delivery milestones with target date and aggregated status.
+
+## Artifacts
+
+| Document | Type | Status | Updated |
+|----------|------|--------|---------|
+| [[violences-numeriques-contenus-bd]] | prd | draft | 2026-11-12 |
+| [[tableau-de-bord-admin]] | prd | draft | 2026-11-12 |
+
+## Available templates
+
+- `_templates/prd.md.tpl` — PRD with context, KPIs and risks.
+- `_templates/epic.md.tpl` — epic with stories as bullets.
+- `_templates/milestone.md.tpl` — milestone with RAG status.
+
+## Useful wikilinks
+
+- [[CLAUDE]] — vault doctrine
+- [[_INDEX]] — global index

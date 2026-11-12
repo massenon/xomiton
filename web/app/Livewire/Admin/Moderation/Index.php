@@ -13,6 +13,7 @@ use App\Enums\BadWordCategory;
 use App\Enums\BadWordSeverity;
 use App\Enums\ModerationKind;
 use App\Enums\ModerationStatus;
+use App\Enums\PostStatus;
 use App\Livewire\Attributes\SafeUrl;
 use App\Livewire\Concerns\InteractsWithUi;
 use App\Livewire\Concerns\WithDataTable;
@@ -20,6 +21,7 @@ use App\Models\AuditLog;
 use App\Models\BadWord;
 use App\Models\ContentFilterAllowedPhrase;
 use App\Models\ModerationReport;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\UserWarning;
 use App\Support\Audit;
@@ -187,6 +189,7 @@ final class Index extends Component
             'siblings' => $this->siblings($rows->getCollection()),
             'warnings' => $this->warningCounts($rows->getCollection()),
             'charter' => (array) __('admin.moderation.charter.items'),
+            'videosPending' => Post::query()->where('status', PostStatus::Pending)->count(),
         ])->layout('components.layouts.admin', [
             'title' => __('admin.moderation.title'),
             'adminPage' => 'moderation',

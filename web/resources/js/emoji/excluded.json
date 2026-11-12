@@ -1,0 +1,12 @@
+{
+  "note": "Émojis volontairement absents du sélecteur (espace sûr pour des personnes victimes de violences). Contrôlé par scripts/emoji-sync.mjs et emoji.test.ts : aucun ne doit figurer dans emojis.json.",
+  "groups": [
+    { "reason": "Armes et objets utilisés pour frapper ou menacer", "emojis": ["🔪", "🗡️", "⚔️", "🔫", "💣", "🧨", "🪓", "🏹", "🔨", "⛏️", "🪚"] },
+    { "reason": "Contrainte, mort, sang, blessure", "emojis": ["⛓️", "💀", "☠️", "🪦", "⚰️", "⚱️", "🩸", "🏴‍☠️"] },
+    { "reason": "Violence physique et agressivité", "emojis": ["👊", "🤛", "🤜", "🥊", "🤺", "💥", "💢", "🤬", "😈", "👿", "👹", "👺"] },
+    { "reason": "Alcool (déclencheur fréquent dans les violences conjugales)", "emojis": ["🍺", "🍻", "🍷", "🥃", "🍸", "🍹", "🍾", "🥂"] },
+    { "reason": "Connotation sexuelle", "emojis": ["🍆", "🍑", "💦", "👅", "🔞", "👙"] },
+    { "reason": "Forces de l’ordre (peur de la police chez les personnes LBTQ+ et les victimes)", "emojis": ["🚓", "🚔", "👮"] },
+    { "reason": "Animaux et cible évoquant la menace ou la chasse", "emojis": ["🐍", "🦂", "🕷️", "🦈", "🐊", "🎯"] }
+  ]
+}
