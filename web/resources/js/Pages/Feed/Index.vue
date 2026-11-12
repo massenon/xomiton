@@ -61,7 +61,7 @@ const toast = useToast();
 const outbox = useOutboxStore();
 const { items, loading, hasMore, finished, announce, reset, loadMore, remove, replace, prepend } = useFeedList('feed', props.feed, () => props.tag ?? null);
 const filtering = ref(false);
-const modal = ref<{ kind: 'post' | 'poll' | 'event'; focus: 'photo' | null } | null>(null);
+const modal = ref<{ kind: 'post' | 'poll' | 'event'; focus: 'photo' | 'video' | null } | null>(null);
 const recovered = ref<RecoveredEntry | null>(null);
 const drafts = useDraftsStore();
 provideReportReasons(props.report_reasons);
@@ -89,7 +89,7 @@ function filter(event: MouseEvent, value: string) {
 
 const loaderOf = (kind: 'post' | 'poll' | 'event') => (kind === 'poll' ? pollModal : kind === 'event' ? eventModal : postModal);
 
-async function open(kind: 'post' | 'poll' | 'event', focus: 'photo' | null) {
+async function open(kind: 'post' | 'poll' | 'event', focus: 'photo' | 'video' | null) {
     if (kind === 'poll' && !props.composer.can_poll) return;
     if (kind === 'event' && !props.composer.event) return;
     modal.value = { kind, focus };

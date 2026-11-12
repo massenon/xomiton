@@ -155,4 +155,14 @@ describe('Page /fil', () => {
         // Le résumé d'erreurs prend le focus avant la fin de l'ouverture : la transition Bootstrap se termine avant le démontage.
         await new Promise((resolve) => setTimeout(resolve, 50));
     });
+
+    it('propose les pastilles Photo et Vidéo (modale avec le bon champ en avant) et le lien « Mes vidéos » vers le profil (P7-10)', async () => {
+        await mount();
+        expect(screen.getByRole('link', { name: 'Mes vidéos' }).getAttribute('href')).toBe('/profil#mes-videos');
+        await fireEvent.click(screen.getByRole('button', { name: 'Vidéo' }));
+        await waitFor(() => expect(document.getElementById('modalCreateFeed')).not.toBeNull());
+        await waitFor(() => expect(document.activeElement?.id).toBe('f-video'), { timeout: 3000 });
+        expect((document.querySelector('#f-video') as HTMLInputElement).accept).toBe('video/mp4,video/webm');
+        await new Promise((resolve) => setTimeout(resolve, 400));
+    });
 });

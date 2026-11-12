@@ -26,7 +26,9 @@ beforeEach(() => {
     setDraftOpener(() => openDB(dbName, 1, { upgrade(db) { db.createObjectStore(DRAFT_STORE); } }));
 });
 
-afterEach(() => {
+afterEach(async () => {
+    // Fermeture Bootstrap en cours à la destruction : elle se termine avant que le DOM de test soit retiré.
+    await new Promise((resolve) => setTimeout(resolve, 350));
     cleanup();
     setDraftOpener(null);
     vi.unstubAllGlobals();
@@ -227,24 +229,7 @@ describe('Créer un sondage', () => {
 });
 
 describe('Créer une publication', () => {
-    it('refuse une image de plus de 5 Mo et montre l’aperçu d’une image valide', async () => {
-        vi.stubGlobal('URL', Object.assign(URL, { createObjectURL: vi.fn(() => 'blob:apercu'), revokeObjectURL: vi.fn() }));
-        renderXm(CreatePostModal, { props: { options } });
-        await shown();
-        const input = screen.getByLabelText(/Photo \(facultatif\)/) as HTMLInputElement;
-        const big = new File([new Uint8Array(5 * 1024 * 1024 + 1)], 'grande.jpg', { type: 'image/jpeg' });
-        await fireEvent.change(input, { target: { files: [big] } });
-        expect(screen.getAllByText('Image trop lourde (5 Mo maximum).')).not.toHaveLength(0);
-        expect(document.querySelector('img[src="blob:apercu"]')).toBeNull();
-
-        const ok = new File([new Uint8Array(1000)], 'atelier.png', { type: 'image/png' });
-        await fireEvent.change(input, { target: { files: [ok] } });
-        expect((document.querySelector('img[src="blob:apercu"]') as HTMLImageElement).alt).toBe('Aperçu de l’image');
-        expect(screen.getByLabelText(/Description de la photo/)).toBeTruthy();
-    });
-
-    it('retire « Abonné·es » en anonyme et envoie la photo en multipart', async () => {
-        vi.stubGlobal('URL', Object.assign(URL, { createObjectURL: vi.fn(() => 'blob:apercu'), revokeObjectURL: vi.fn() }));
+    it('retire « Abonné·es » en anonyme et envoie le texte en JSON (les photos et la vidéo : CreatePostMedia.test.ts)', async () => {
         const { calls } = fakeFetch(() => json({ data: makePost() }, 201));
         const view = renderXm(CreatePostModal, { props: { options } });
         await shown();
@@ -254,17 +239,22 @@ describe('Créer une publication', () => {
         await waitFor(() => expect([...visibility.options].map((o) => o.value)).toEqual(['public', 'me']));
         expect(visibility.value).toBe('public');
 
-        await fireEvent.update(screen.getByLabelText('Ton message'), 'Avec une photo');
-        const ok = new File([new Uint8Array(1000)], 'atelier.png', { type: 'image/png' });
-        await fireEvent.change(screen.getByLabelText(/Photo \(facultatif\)/), { target: { files: [ok] } });
+        await fireEvent.update(screen.getByLabelText('Ton message'), 'Un texte');
         await submit('modalCreateFeed');
         await waitFor(() => expect(view.emitted('published')).toBeTruthy(), { timeout: 3000 });
-        const body = calls[0].body as FormData;
-        expect(body).toBeInstanceOf(FormData);
-        expect(body.get('is_anonymous')).toBe('1');
-        expect(body.get('visibility')).toBe('public');
-        expect((body.get('image') as File).name).toBe('atelier.png');
+        expect(calls[0].body).toMatchObject({ kind: 'post', body: 'Un texte', is_anonymous: true, visibility: 'public', tag: 'temoignage' });
         expect(await useDraftsStore().load(DRAFT_POST)).toBeNull();
         await closed(view);
+    });
+
+    it('relit un ancien brouillon (avec `image_alt`) sans le renvoyer au serveur', async () => {
+        await useDraftsStore().save(DRAFT_POST, { body: 'Ancien brouillon', tag: 'temoignage', visibility: 'public', is_anonymous: false, image_alt: 'ancienne photo' });
+        const { calls } = fakeFetch(() => json({ data: makePost() }, 201));
+        const view = renderXm(CreatePostModal, { props: { options } });
+        await shown();
+        await waitFor(() => expect((screen.getByLabelText('Ton message') as HTMLTextAreaElement).value).toBe('Ancien brouillon'));
+        await submit('modalCreateFeed');
+        await waitFor(() => expect(view.emitted('published')).toBeTruthy(), { timeout: 3000 });
+        expect(JSON.stringify(calls[0].body)).not.toContain('ancienne photo');
     });
 });
