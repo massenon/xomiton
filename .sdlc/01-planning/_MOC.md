@@ -24,6 +24,7 @@ This folder houses product artifacts that define scope and value: PRDs (initiati
 | Document | Type | Status | Updated |
 |----------|------|--------|---------|
 | [[violences-numeriques-contenus-bd]] | prd | draft | 2026-11-12 |
+| [[conversation-en-bd]] | prd | draft | 2026-11-12 |
 | [[tableau-de-bord-admin]] | prd | draft | 2026-11-12 |
 
 ## Available templates
