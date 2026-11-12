@@ -24,6 +24,9 @@
         </a>
         <div class="card-body d-flex flex-column">
             <div class="d-flex flex-wrap gap-1 mb-2">
+                @if ($resource->is_featured)
+                    <x-badge color="warning" icon="star-fill">{{ __('pages/ressources.featured') }}</x-badge>
+                @endif
                 @if ($cardCategory)
                     <x-badge :color="$categoryColor" soft :icon="$cardCategory->icon ? \Illuminate\Support\Str::after($cardCategory->icon, 'bi-') : null">{{ $cardCategory->label }}</x-badge>
                 @endif

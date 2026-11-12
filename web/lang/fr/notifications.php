@@ -238,6 +238,31 @@ return [
         ],
     ],
 
+    // P18-12, P18-14 : réponse de l'équipe à une contribution (ressource proposée, suggestion, événement en attente). Tu.
+    'team' => [
+        'no_reason' => 'non précisé',
+        'proposal_accepted' => [
+            'title' => 'Merci pour ta proposition de ressource',
+            'body' => 'L’équipe a retenu « :title ». Elle la relit avant de la publier.',
+        ],
+        'proposal_refused' => [
+            'title' => 'Ta proposition de ressource n’a pas été retenue',
+            'body' => 'L’équipe n’a pas retenu « :title » : :reason.',
+        ],
+        'suggestion_replied' => [
+            'title' => 'L’équipe a répondu à ta suggestion',
+            'body' => ':reason',
+        ],
+        'event_approved' => [
+            'title' => 'Ton événement est en ligne',
+            'body' => 'L’équipe a approuvé « :title ». Les membres peuvent maintenant le voir.',
+        ],
+        'event_refused' => [
+            'title' => 'Ton événement n’a pas été publié',
+            'body' => 'L’équipe n’a pas publié « :title » : :reason.',
+        ],
+    ],
+
     // Cloche de l'administration (D-MOB-15) : vous. Jamais le motif de la personne.
     'role_requested' => [
         'title' => 'Nouvelle demande de rôle de pair·e',

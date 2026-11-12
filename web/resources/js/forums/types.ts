@@ -13,6 +13,8 @@ export interface Forum {
     icon: string;
     topics_count: number;
     posts_count: number;
+    /** P18-10 : forum archivé, lisible sans nouveau sujet. */
+    is_archived?: boolean;
     url: string;
 }
 
@@ -49,7 +51,7 @@ export interface ForumTopic {
     created_at: string | null;
     last_reply_at: string | null;
     url: string;
-    can: { reply: boolean; delete: boolean; report: boolean; accept?: boolean };
+    can: { reply: boolean; delete: boolean; report: boolean; accept?: boolean; moderate?: boolean };
 }
 
 export interface ForumReply {

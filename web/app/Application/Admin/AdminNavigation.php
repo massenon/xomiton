@@ -71,6 +71,10 @@ final class AdminNavigation
         'social' => [
             ['reseau', 'diagram-3', 'network', 'posts.moderate'],
             ['moderation', 'shield-check', 'moderation', 'moderation.manage'],
+            // P18-13, P18-14
+            ['evenements', 'calendar3', 'events', 'posts.moderate'],
+            ['annonces', 'megaphone', 'announcements', 'announcements.manage'],
+            ['suggestions', 'lightbulb', 'suggestions', 'suggestions.manage'],
             ['passerelles', 'share', 'gateways', 'gateways.connect'],
         ],
         'system' => [

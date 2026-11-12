@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Community\Events;
 
 use App\Application\Shared\Referentials;
+use App\Enums\EventType;
 use App\Enums\MembershipStatus;
 use App\Models\Event;
 use App\Models\Group;
@@ -28,6 +29,7 @@ final class EventCreateOptions
      * @return array{
      *     can: bool, can_publish_public: bool, default_time: string,
      *     categories: list<array{value: string, label: string}>, groups: list<array{value: string, label: string}>,
+     *     types: list<array{value: string, label: string}>, requires_approval: bool,
      *     limits: array{title_min: int, title_max: int, place_max: int, address_max: int, description_max: int, max_duration_days: int}
      * }
      */
@@ -44,6 +46,9 @@ final class EventCreateOptions
                 'label' => $category['label'],
             ], $this->referentials->categories('event')),
             'groups' => $can ? $this->groups($user) : [],
+            // P18-14 : types d'événement ; file d'approbation active pour ce compte (la modération publie directement).
+            'types' => EventType::options(),
+            'requires_approval' => $can && EventApproval::required() && ! $user->can('moderation.manage'),
             'limits' => self::limits(),
         ];
     }

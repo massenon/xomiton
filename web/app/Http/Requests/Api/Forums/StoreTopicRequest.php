@@ -30,7 +30,7 @@ final class StoreTopicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'forum' => ['required', 'string', 'max:10', Rule::exists('forums', 'key')->where('is_active', true)],
+            'forum' => ['required', 'string', 'max:10', Rule::exists('forums', 'key')->where('is_active', true)->whereNull('archived_at')],
             'title' => ['required', 'string', 'min:'.self::limit('title_min', 5), 'max:'.self::limit('title_max', 140)],
             'body' => ['required', 'string', 'min:'.self::limit('body_min', 10), 'max:'.self::limit('body_max', 5000)],
             'is_anonymous' => ['sometimes', 'boolean'],
@@ -67,7 +67,7 @@ final class StoreTopicRequest extends FormRequest
     public function toDraft(): TopicDraft
     {
         return new TopicDraft(
-            forum: Forum::query()->active()->forKey((string) $this->validated('forum'))->firstOrFail(),
+            forum: Forum::query()->open()->forKey((string) $this->validated('forum'))->firstOrFail(),
             title: (string) $this->validated('title'),
             body: (string) $this->validated('body'),
             anonymous: $this->boolean('is_anonymous'),

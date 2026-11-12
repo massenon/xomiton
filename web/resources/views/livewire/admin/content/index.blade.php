@@ -28,6 +28,8 @@
             <h2 class="h6 fw-bold mb-0" id="xmContentTitle">{{ __('admin_content.'.$langGroup.'.title') }}</h2>
             <div class="d-flex flex-wrap gap-2">
                 @if ($tab === 'ressources')
+                    {{-- P18-12 : file des ressources proposées par les membres --}}
+                    <a class="btn btn-outline-primary btn-sm" href="{{ route('admin.contenu.propositions') }}" wire:navigate><i class="bi bi-inbox me-1" aria-hidden="true"></i>{{ __('admin_content.proposals.link') }}@if ($this->pendingProposals > 0)<span class="badge text-bg-primary ms-1">{{ $this->pendingProposals }}</span>@endif</a>
                     @can('create', \App\Models\Resource::class)<button type="button" class="btn btn-primary btn-sm" wire:click="newResource"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_content.resources.new') }}</button>@endcan
                 @elseif ($tab === 'thematiques')
                     @can('create', \App\Models\Thematique::class)<button type="button" class="btn btn-primary btn-sm" wire:click="newThematique"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>{{ __('admin_content.thematiques.new') }}</button>@endcan
@@ -107,6 +109,7 @@
                             <div class="d-flex flex-wrap gap-1 mt-1">
                                 <x-badge :color="$resource->kind->badge()" soft :icon="str_replace('bi-', '', $resource->kind->icon())">{{ $resource->kind->label() }}</x-badge>
                                 @if ($resource->category)<x-badge color="neutral" soft>{{ $resource->category->label }}</x-badge>@endif
+                                @if ($resource->is_featured)<x-badge color="warning" icon="star-fill">{{ __('admin_content.resources.featured') }}</x-badge>@endif
                                 @if ($resource->kind->hasFile() && ! $resource->isDownloadable())<x-badge color="warning" soft icon="exclamation-triangle">{{ __('admin_content.resources.no_file') }}</x-badge>@endif
                                 @if (in_array($resource->kind, [\App\Enums\ResourceKind::Video, \App\Enums\ResourceKind::Audio], true) && ((string) $resource->subtitles_path === '' || trim((string) $resource->transcript) === ''))
                                     <x-badge color="warning" soft icon="badge-cc">{{ __('admin_content.resources.no_subtitles') }}</x-badge>
@@ -120,6 +123,7 @@
                         <td data-label="{{ __('admin.datatable.actions') }}" class="text-end xm-table__actions">
                             <div class="d-flex flex-wrap gap-1 justify-content-end">
                                 <button type="button" class="btn btn-sm btn-outline-primary" wire:click="editResource({{ $resource->id }})"><i class="bi bi-pencil me-1" aria-hidden="true"></i>{{ __('admin_content.actions.edit') }}<span class="visually-hidden"> {{ $resource->title }}</span></button>
+                                @can('update', $resource)<button type="button" @class(['btn btn-sm', 'btn-warning' => $resource->is_featured, 'btn-outline-secondary' => ! $resource->is_featured]) wire:click="featureResource({{ $resource->id }})" aria-pressed="{{ $resource->is_featured ? 'true' : 'false' }}"><i class="bi bi-star{{ $resource->is_featured ? '-fill' : '' }} me-1" aria-hidden="true"></i>{{ __('admin_content.resources.feature') }}<span class="visually-hidden"> {{ $resource->title }}</span></button>@endcan
                                 <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="toggleResource({{ $resource->id }})" wire:loading.attr="disabled" wire:target="toggleResource({{ $resource->id }})">{{ $resource->status === \App\Enums\ContentStatus::Published ? __('admin_content.actions.unpublish') : __('admin_content.actions.publish') }}<span class="visually-hidden"> {{ $resource->title }}</span></button>
                                 <button type="button" class="btn btn-sm btn-outline-danger" wire:click="deleteResource({{ $resource->id }})" wire:confirm="{{ __('admin_content.resources.confirm_delete', ['title' => $resource->title]) }}"><i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">{{ __('admin_content.actions.delete') }} {{ $resource->title }}</span></button>
                             </div>

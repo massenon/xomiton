@@ -10,8 +10,9 @@ use Illuminate\Support\Str;
 
 /**
  * Forums du lot 5, repris du prototype (prototype_social/inc/data.php : x_forums()).
- * Idempotent : la clé courte `f1`…`f5` identifie chaque forum ; nom, description, icône et position
- * sont réalignés à chaque exécution, les compteurs (recalculés par les actions) ne sont pas touchés.
+ * Idempotent : la clé courte `f1`…`f5` identifie chaque forum ; un forum absent est créé, un forum existant n'est
+ * **jamais** réécrit (P18-10 : l'administration renomme, réordonne, ferme et archive les forums dans /admin/reseau, un
+ * nouveau déploiement ne doit pas défaire ses choix). Les compteurs (recalculés par les actions) ne sont pas touchés.
  */
 class ForumsSeeder extends Seeder
 {
@@ -27,7 +28,7 @@ class ForumsSeeder extends Seeder
     public function run(): void
     {
         foreach (self::FORUMS as $position => [$key, $name, $description, $icon]) {
-            Forum::query()->updateOrCreate(
+            Forum::query()->firstOrCreate(
                 ['key' => $key],
                 [
                     'name' => $name,

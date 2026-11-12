@@ -46,6 +46,14 @@ export function forumsApi(api: Api) {
             const { data } = await api.delete<Envelope<ForumTopic>>(topicUrl(id, '/accepted-reply'), undefined, { silent: true });
             return data.data;
         },
+        /** P18-11 : épingler / verrouiller (modération) ; `on` pose, sinon retire. */
+        async flag(id: string, flag: 'pin' | 'lock', on: boolean): Promise<ForumTopic> {
+            const url = topicUrl(id, `/${flag}`);
+            const { data } = on
+                ? await api.post<Envelope<ForumTopic>>(url, {}, { silent: true })
+                : await api.delete<Envelope<ForumTopic>>(url, undefined, { silent: true });
+            return data.data;
+        },
         async deleteReply(id: number): Promise<void> {
             await api.delete(`${API_BASE}/replies/${id}`);
         },

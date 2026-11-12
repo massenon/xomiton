@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 /**
  * Catalogue public `/ressources` (P4-03, prototype ressources.php) : ressources publiées hors actualités (Q1), filtres
  * catégorie (slug), type (`ResourceKind` hors `article`) et recherche sur le titre et le résumé (jokers neutralisés),
- * tri `published_at` décroissant puis `id`, « Charger plus » par la limite. Lecture seule (ADR-29).
+ * tri : mises en avant d'abord (P18-11, `is_featured`), puis `published_at` décroissant puis `id`, « Charger plus » par la limite. Lecture seule (ADR-29).
  *
  * Catégories (décision par défaut, plan §7) : catégories actives des types `thematique` et `resource` (toutes admissibles
  * comme `resources.category_id` ; le prototype filtrait par catégories de thématiques), lues dans le référentiel en cache
@@ -30,7 +30,7 @@ use Illuminate\Support\Collection;
 final class ListResources
 {
     /** @var list<string> colonnes lues pour une carte */
-    private const CARD_COLUMNS = ['id', 'category_id', 'thematique_id', 'slug', 'title', 'kind', 'summary', 'file_path', 'file_size', 'external_url', 'image_path', 'duration_minutes', 'is_offline_available', 'published_at'];
+    private const CARD_COLUMNS = ['id', 'category_id', 'thematique_id', 'slug', 'title', 'kind', 'summary', 'file_path', 'file_size', 'external_url', 'image_path', 'duration_minutes', 'is_offline_available', 'is_featured', 'published_at'];
 
     public function __construct(private readonly Referentials $referentials) {}
 
@@ -55,6 +55,7 @@ final class ListResources
         };
 
         $resources = $total === 0 ? new Collection : $query
+            ->orderByDesc('is_featured') // P18-11 : ressources mises en avant (guides, urgence) en tête
             ->orderByDesc('published_at')
             ->orderBy('id')
             ->limit($limit)
@@ -91,6 +92,7 @@ final class ListResources
 
         [, $chips, $category] = $context;
         $paginator = $this->filtered($category, $kind, $search)
+            ->orderByDesc('is_featured') // P18-11 : ressources mises en avant (guides, urgence) en tête
             ->orderByDesc('published_at')
             ->orderBy('id')
             ->paginate(max(1, $perPage), self::CARD_COLUMNS, 'page', max(1, $page));
@@ -223,6 +225,7 @@ final class ListResources
             ->whereNotNull('file_path')
             ->where('file_path', '!=', '')
             ->with('category:id,slug,label')
+            ->orderByDesc('is_featured') // P18-11 : ressources mises en avant (guides, urgence) en tête
             ->orderByDesc('published_at')
             ->orderBy('id')
             ->limit(max(0, (int) config('xomiton.content.ressources_files_count', 6)))

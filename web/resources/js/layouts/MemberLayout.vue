@@ -11,12 +11,15 @@
 // sur place. La disposition visuelle ne change pas (la page reste une suite de colonnes de la rangée).
 // P13-08 : bandeau d'annonce préalable d'une maintenance planifiée (prop partagée `maintenance_notice`, textes neutres
 // composés par le serveur), refermable sans bloquer, fermé pour la session de l'onglet (même clé sessionStorage que les
-// gabarits Blade, shared/dismissible.js).
+// gabarits Blade, shared/dismissible.js). P18-13 : annonce globale (prop partagée `announcement`, jamais sur le site public),
+// bannière refermable dont la fermeture est mémorisée par compte côté serveur (API `announcements/{id}/dismiss`) : elle ne
+// revient ni sur le web ni dans l'application ; lien interne facultatif (visite Inertia).
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { pathOf } from '@/app/memberNav';
-import type { MaintenanceNotice } from '@/app/types';
+import type { Announcement, MaintenanceNotice } from '@/app/types';
+import { useApi } from '@/app/useApi';
 import XmAlert from '@/components/XmAlert.vue';
 import XmFlashStatus from '@/components/XmFlashStatus.vue';
 import XmHeader from '@/components/XmHeader.vue';
@@ -72,6 +75,21 @@ function dismissNotice(key: string) {
     }
 }
 
+const api = useApi();
+const closedAnnouncements = ref<number[]>([]);
+const announcement = computed(() => {
+    const value = (page.props as { announcement?: Announcement | null }).announcement ?? null;
+    return value && !closedAnnouncements.value.includes(value.id) ? value : null;
+});
+async function dismissAnnouncement(id: number) {
+    closedAnnouncements.value = [...closedAnnouncements.value, id];
+    try {
+        await api.post(`/api/v1/announcements/${id}/dismiss`, {}, { silent: true });
+    } catch {
+        // Hors connexion : fermée pour cette visite, l'annonce reviendra au prochain chargement.
+    }
+}
+
 let visiting = false;
 let lastPath = pathOf(page.url ?? '/');
 const offs: Array<() => void> = [];
@@ -99,6 +117,10 @@ onBeforeUnmount(() => offs.splice(0).forEach((off) => off()));
             <XmAlert v-if="notice" :key="notice.key" type="warning" role="status" icon="megaphone" :title="notice.title" dismissible class="mb-4" data-xm-maintenance-notice @dismiss="notice && dismissNotice(notice.key)">
                 <p class="mb-0">{{ notice.text }}</p>
                 <p v-if="notice.message" class="mb-0 mt-1 small">{{ notice.message }}</p>
+            </XmAlert>
+            <XmAlert v-if="announcement" :key="`announcement-${announcement.id}`" :type="announcement.level === 'important' ? 'warning' : 'info'" role="status" icon="megaphone" :title="announcement.title" dismissible class="mb-4" data-xm-announcement @dismiss="announcement && dismissAnnouncement(announcement.id)">
+                <p class="mb-0">{{ announcement.message }}</p>
+                <p v-if="announcement.link" class="mb-0 mt-1"><Link :href="announcement.link" class="alert-link">{{ t('community.announcement.open') }}</Link></p>
             </XmAlert>
             <XmVerifyBanner class="mb-4" />
             <div ref="row" class="row g-4">

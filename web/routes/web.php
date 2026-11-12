@@ -32,6 +32,7 @@ use App\Http\Controllers\Web\Legal\LegalPageController;
 use App\Http\Controllers\Web\LoisController;
 use App\Http\Controllers\Web\Member\AssistantPageController;
 use App\Http\Controllers\Web\Member\CccPageController;
+use App\Http\Controllers\Web\Member\ContributePageController;
 use App\Http\Controllers\Web\Member\DesignSystemVueController;
 use App\Http\Controllers\Web\Member\DirectoryPageController;
 use App\Http\Controllers\Web\Member\FeedPageController;
@@ -289,6 +290,9 @@ Route::middleware(['auth', HandleInertiaRequests::class])->group(function () use
     // Sans `directory.view` : 403, comme l'API.
     Route::get('/annuaire', DirectoryPageController::class)->middleware('can:directory.view')->name('annuaire');
     $memberPlaceholder('/medias', 'medias', 'medias', 'albums.php');
+    // P18-12, P18-14 : proposer une ressource (file de validation de l'équipe, jamais publique) et boîte à suggestions.
+    Route::get('/proposer-une-ressource', [ContributePageController::class, 'proposal'])->name('ressources.proposer');
+    Route::get('/boite-a-idees', [ContributePageController::class, 'suggestion'])->name('suggestions');
     // P8-12 (lot outils-ccc) : outils CCC en lecture, une seule implémentation Vue pour le membre et le pair (P9-05 : drapeau
     // `presentation`). Outils publiés seulement (API ccc/), progression du manuel sur l'appareil. Sans `ccc_tools.view` : 403.
     Route::get('/ccc', CccPageController::class)->middleware('can:ccc_tools.view')->name('ccc');

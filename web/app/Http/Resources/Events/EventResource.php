@@ -95,6 +95,10 @@ final class EventResource extends JsonResource
             'is_public' => (bool) $event->is_public,
             'is_past' => ! $upcoming,
             'status' => $event->status->value,
+            // P18-14 : type (groupe de parole, atelier, rencontre, autre) et file d'approbation facultative.
+            'type' => $event->eventType()->value,
+            'type_label' => $event->eventType()->label(),
+            'is_pending' => $event->isPending(),
             'url' => EventLinks::show($event),
             'rsvp' => $going ? ['status' => $rsvp->status->value, 'reminder' => (bool) $rsvp->reminder_opt_in] : null,
             'reminder_available' => $event->reminderAvailable(),

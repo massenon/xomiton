@@ -171,6 +171,26 @@ async function toggleAccepted(item: ForumReply) {
     }
 }
 
+// P18-11 : épingler et verrouiller depuis la fiche (modération, `can.moderate`, API `…/pin`, `…/lock`).
+const flagging = ref(false);
+async function toggleFlag(flag: 'pin' | 'lock') {
+    if (flagging.value) return;
+    flagging.value = true;
+    const on = flag === 'pin' ? !current.value.is_pinned : !current.value.is_locked;
+    try {
+        const topic = await api.flag(current.value.id, flag, on);
+        current.value = { ...current.value, is_pinned: topic.is_pinned, is_locked: topic.is_locked, can: { ...current.value.can, reply: topic.can.reply } };
+        const message = t(`community.forums.moderation.${flag}_${on ? 'on' : 'off'}`);
+        toast.show(message, 'success');
+        announce.value = message;
+    } catch (cause) {
+        if (cause instanceof ApiError && cause.status === 0) toast.show(t('microcopy.error.unreachable'), 'warning');
+        else toast.show(t('microcopy.error.generic'), 'warning');
+    } finally {
+        flagging.value = false;
+    }
+}
+
 async function openReport(target: ReportTarget) {
     reporting.value = target;
     if (!(await reportModal.load())) {
@@ -224,7 +244,11 @@ async function remove() {
                     </div>
                 </div>
                 <p class="mb-0 xm-forum-text">{{ current.body }}</p>
-                <div v-if="current.can.report || current.can.delete" class="d-flex gap-3 mt-3">
+                <div v-if="current.can.report || current.can.delete || current.can.moderate" class="d-flex flex-wrap gap-3 mt-3">
+                    <template v-if="current.can.moderate">
+                        <button class="btn btn-link btn-sm p-0 small" type="button" :aria-pressed="current.is_pinned ? 'true' : 'false'" :disabled="flagging" @click="toggleFlag('pin')"><i class="bi bi-pin-angle me-1" aria-hidden="true"></i>{{ t('community.forums.moderation.pin') }}</button>
+                        <button class="btn btn-link btn-sm p-0 small" type="button" :aria-pressed="current.is_locked ? 'true' : 'false'" :disabled="flagging" @click="toggleFlag('lock')"><i class="bi bi-lock me-1" aria-hidden="true"></i>{{ t('community.forums.moderation.lock') }}</button>
+                    </template>
                     <button v-if="current.can.report" class="btn btn-link btn-sm p-0 small text-secondary" type="button" aria-haspopup="dialog" @click="openReport({ topic: current.id })"><i class="bi bi-flag me-1" aria-hidden="true"></i>{{ t('community.forums.detail.report_topic') }}</button>
                     <button v-if="current.can.delete" class="btn btn-link btn-sm p-0 small text-danger" type="button" aria-haspopup="dialog" @click="removing = { kind: 'topic' }"><i class="bi bi-trash me-1" aria-hidden="true"></i>{{ t('community.forums.detail.delete_topic') }}</button>
                 </div>

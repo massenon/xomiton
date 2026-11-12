@@ -70,6 +70,8 @@ final class ForumTopicResource extends JsonResource
                 'delete' => $viewer !== null && $viewer->can('delete', $topic),
                 'report' => $viewer !== null && ! $isMine,
                 'accept' => $viewer !== null && $viewer->can('accept', $topic),
+                // P18-11 : épingler et verrouiller (modération, `posts.moderate`).
+                'moderate' => $viewer !== null && $viewer->can('moderate', $topic),
             ],
         ];
     }

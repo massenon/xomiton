@@ -159,6 +159,23 @@ final class ManageResources
         return $resource;
     }
 
+    /**
+     * Mettre en avant (P18-11) : la ressource passe en tête du catalogue `/ressources` et de l'API (badge « À la une ») —
+     * guides et ressources d'urgence. Sans effet si l'état ne change pas. Journal `content.resource_featured|unfeatured`.
+     */
+    public function feature(Resource $resource, bool $featured, User $actor): bool
+    {
+        if ((bool) $resource->is_featured === $featured) {
+            return false;
+        }
+
+        $resource->forceFill(['is_featured' => $featured])->save();
+        Audit::log($featured ? 'content.resource_featured' : 'content.resource_unfeatured', $resource, null, $actor);
+        $this->cache->flush();
+
+        return true;
+    }
+
     public function delete(Resource $resource, User $actor): void
     {
         $resource->delete();

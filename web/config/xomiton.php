@@ -181,6 +181,9 @@ return [
         'directory_callback_per_hour' => 10,
         // Demande du rôle pair depuis le profil (D-MOB-15, limiteur `role_request`) : par compte et par jour.
         'role_request_per_day' => 3,
+        // P18-12 : ressources proposées par compte et par jour ; P18-14 : suggestions par compte et par jour.
+        'resource_proposals_per_day' => 5,
+        'suggestions_per_day' => 5,
         // Synchronisation (P9-06) : lots `POST sync/push` par compte et par minute (limiteur `sync_push`, rejeux non
         // comptés) ; un lot qui porte un SOS n'est jamais limité (RG-01).
         'sync_push_per_minute' => 20,

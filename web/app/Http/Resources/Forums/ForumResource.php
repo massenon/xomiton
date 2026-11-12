@@ -33,6 +33,8 @@ final class ForumResource extends JsonResource
             'icon' => (string) preg_replace('/^bi-/', '', (string) $forum->icon),
             'topics_count' => (int) $forum->topics_count,
             'posts_count' => (int) $forum->posts_count,
+            // P18-10 : forum archivé — lisible, sans nouveau sujet.
+            'is_archived' => $forum->isArchived(),
             'url' => ForumLinks::index($forum),
         ];
     }

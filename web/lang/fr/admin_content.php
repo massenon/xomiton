@@ -32,6 +32,9 @@ return [
     'toasts' => ['published' => '« :title » est publié.', 'unpublished' => '« :title » repasse en brouillon.', 'deleted' => '« :title » est supprimé.'],
 
     'errors' => [
+        'forum_edge' => 'Ce forum est déjà au bord de la liste.',
+        'proposal_decided' => 'Cette proposition a déjà été traitée.',
+        'event_decided' => 'Cet événement a déjà été traité.',
         'og_size' => 'L’image de partage doit mesurer exactement :width × :height pixels.',
         'upload_rejected' => 'Fichier refusé : :message',
         'kind_without_file' => 'Ce type de ressource n’a pas de fichier à téléverser.',
@@ -105,6 +108,8 @@ return [
         'empty' => 'Aucune ressource',
         'empty_text' => 'Créez une ressource avec « Nouvelle ressource », ou modifiez les filtres.',
         'no_file' => 'Fichier manquant',
+        'featured' => 'À la une',
+        'feature' => 'À la une',
         'no_subtitles' => 'Sous-titres ou transcription manquants',
         'confirm_delete' => 'Supprimer la ressource « :title » ? Elle disparaîtra du site public.',
         'external_help' => 'Adresse en https uniquement.',
@@ -189,4 +194,35 @@ return [
         'fields' => ['kind' => 'Usage', 'slug' => 'Identifiant', 'label' => 'Libellé', 'icon' => 'Icône', 'color' => 'Couleur', 'is_active' => 'Active'],
     ],
 
+    // P18-12 : ressources proposées par les membres (file de validation). Vous.
+    'proposals' => [
+        'link' => 'Propositions des membres',
+        'title' => 'Ressources proposées',
+        'back' => 'Retour au contenu',
+        'intro' => 'Les membres proposent des ressources depuis leur espace et l’application. Une proposition n’est jamais publique : « Accepter » crée une ressource en brouillon que vous relisez et publiez dans l’onglet Ressources ; « Refuser » envoie votre motif à son auteur·rice.',
+        'pending_count' => '{0} Aucune proposition en attente|{1} :count proposition en attente|[2,*] :count propositions en attente',
+        'search_placeholder' => 'Titre…',
+        'all' => 'Tous les statuts',
+        'caption' => 'Ressources proposées : titre, auteur·rice, date, statut et actions.',
+        'empty' => 'Aucune proposition',
+        'deleted_account' => 'Compte supprimé',
+        'no_category' => 'Sans catégorie',
+        'modal_title' => 'Proposition « :title »',
+        'open_file' => 'Ouvrir le PDF',
+        'open_resource' => 'Voir la ressource créée dans l’onglet Ressources',
+        'credit_yes' => 'Oui, avec son pseudonyme',
+        'credit_no' => 'Non',
+        'credit_line' => 'Ressource proposée par :name, membre de la communauté Xomiton.',
+        'reason_help' => 'Obligatoire pour refuser : ce motif est envoyé à l’auteur·rice, restez bienveillant·e.',
+        'columns' => ['title' => 'Titre', 'author' => 'Auteur·rice', 'created' => 'Proposée le', 'status' => 'Statut'],
+        'fields' => [
+            'kind' => 'Type', 'category' => 'Catégorie', 'summary' => 'Résumé', 'link' => 'Lien', 'file' => 'Fichier',
+            'credit' => 'Crédit souhaité', 'keep_credit' => 'Créditer :name dans la ressource', 'reason' => 'Motif du refus',
+        ],
+        'actions' => ['review' => 'Relire', 'view' => 'Voir', 'accept' => 'Accepter', 'refuse' => 'Refuser'],
+        'toasts' => [
+            'accepted' => 'Brouillon « :title » créé dans l’onglet Ressources.',
+            'refused' => 'Proposition refusée, motif envoyé.',
+        ],
+    ],
 ];

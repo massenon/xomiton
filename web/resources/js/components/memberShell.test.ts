@@ -54,8 +54,10 @@ describe('XmHeader', () => {
         expect(fil.className).toContain('active');
         expect($$('.dropdown-toggle').map(text)).toEqual(['Apprendre', 'Communauté', 'Aide & protection']);
         const learn = $$('[aria-labelledby="menuApprendre"] li');
-        expect(learn.map(text)).toEqual(['Thématiques', 'Ressources', 'Violences : comprendre', 'Lois et codes du Bénin', '', 'Outils CCC interactifs']);
+        expect(learn.map(text)).toEqual(['Thématiques', 'Ressources', 'Violences : comprendre', 'Lois et codes du Bénin', '', 'Outils CCC interactifs', 'Proposer une ressource']);
         expect(learn[4].className).toBe('dropdown-divider');
+        // P18-14 : la boîte à idées ferme le menu « Communauté », après un séparateur.
+        expect(text($$('[aria-labelledby="menuCommunaute"] li').at(-1) as HTMLElement)).toBe('Boîte à idées');
         const sos = $('[aria-labelledby="menuAide"] a.dropdown-item') as HTMLElement;
         expect([text(sos), sos.getAttribute('href'), sos.className.includes('text-danger')]).toEqual(['SOS (position GPS)', '/sos', true]);
         expect($('#memberNavbar a[href="/espace-pair"]')).toBeNull();

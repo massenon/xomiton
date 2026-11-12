@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ContentStatus;
+use App\Enums\EventType;
 use App\Enums\RsvpStatus;
 use App\Models\Concerns\HasUlid;
 use Database\Factories\EventFactory;
@@ -52,6 +53,7 @@ class Event extends Model
         'page_id',
         'going_count',
         'status',
+        'type',
         'is_public',
         'reminder_sent_at',
     ];
@@ -228,6 +230,18 @@ class Event extends Model
     public function isPublished(): bool
     {
         return $this->status === ContentStatus::Published;
+    }
+
+    /** En attente d'approbation (P18-14, file facultative `events.require_approval`). */
+    public function isPending(): bool
+    {
+        return $this->getRawOriginal('status') === ContentStatus::Pending->value || $this->status === ContentStatus::Pending;
+    }
+
+    /** Type (P18-14) lu depuis la valeur brute : colonne absente ou inconnue → « Autre ». */
+    public function eventType(): EventType
+    {
+        return EventType::fromRaw($this->getAttributes()['type'] ?? null);
     }
 
     /**

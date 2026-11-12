@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Forums;
 
+use App\Application\Admin\Network\ModerateNetwork;
 use App\Application\Community\Forums\AcceptForumReply;
 use App\Application\Community\Forums\ForumDirectory;
 use App\Application\Community\Forums\ForumLinks;
@@ -18,6 +19,7 @@ use App\Http\Resources\Forums\ForumResource;
 use App\Http\Resources\Forums\ForumTopicResource;
 use App\Models\ForumReply;
 use App\Models\ForumTopic;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -112,6 +114,34 @@ final class ForumController extends CommunityApiController
         abort_unless($viewer->can('accept', $topic), 403);
 
         $accept->unaccept($topic, $viewer);
+        $topic->loadMissing(['forum', 'user.profile', 'user.roles']);
+
+        return $this->respond(ForumTopicResource::make($topic)->detailed());
+    }
+
+    /**
+     * Épingler / désépingler (P18-11, modération `posts.moderate`) : `POST` épingle, `DELETE` désépingle ; idempotent.
+     */
+    public function pin(Request $request, ForumTopic $topic, ModerateNetwork $network): JsonResponse
+    {
+        return $this->flag($request, $topic, fn (User $viewer): bool => $network->pin($topic, $request->isMethod('post'), $viewer));
+    }
+
+    /** Verrouiller / déverrouiller (P18-11) : plus de réponse, le sujet reste lisible ; idempotent. */
+    public function lock(Request $request, ForumTopic $topic, ModerateNetwork $network): JsonResponse
+    {
+        return $this->flag($request, $topic, fn (User $viewer): bool => $network->lock($topic, $request->isMethod('post'), $viewer));
+    }
+
+    /**
+     * @param  callable(User): bool  $change
+     */
+    private function flag(Request $request, ForumTopic $topic, callable $change): JsonResponse
+    {
+        $viewer = $this->viewer($request);
+        $this->visible($request, $topic);
+        abort_unless($viewer->can('moderate', $topic), 403);
+        $change($viewer);
         $topic->loadMissing(['forum', 'user.profile', 'user.roles']);
 
         return $this->respond(ForumTopicResource::make($topic)->detailed());

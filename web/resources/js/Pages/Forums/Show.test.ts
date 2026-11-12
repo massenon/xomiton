@@ -177,4 +177,27 @@ describe('Page /forums/{ulid}', () => {
         expect(screen.getAllByText('Pair animateur·rice')).toHaveLength(1);
         expect(document.querySelector('#reponse-1 [data-badge="pair_animateur"]')).not.toBeNull();
     });
+
+    it('laisse la modération épingler puis verrouiller le sujet (P18-11), jamais un·e membre', async () => {
+        const { calls } = fakeFetch((call) => json({ data: makeTopic({ is_pinned: call.url.endsWith('/pin'), is_locked: call.url.endsWith('/lock'), can: { reply: !call.url.endsWith('/lock'), delete: true, report: false, moderate: true } }) }));
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps({ topic: makeTopic({ can: { reply: true, delete: true, report: false, moderate: true } }) }) });
+
+        const pin = screen.getByRole('button', { name: /Épingler/ });
+        expect(pin.getAttribute('aria-pressed')).toBe('false');
+        await fireEvent.click(pin);
+        await flushPromises();
+        expect(calls.at(-1)).toMatchObject({ method: 'POST', url: `/api/v1/forums/topics/${TOPIC_ID}/pin` });
+        expect(screen.getByRole('button', { name: /Épingler/ }).getAttribute('aria-pressed')).toBe('true');
+
+        await fireEvent.click(screen.getByRole('button', { name: /Verrouiller/ }));
+        await flushPromises();
+        expect(calls.at(-1)).toMatchObject({ method: 'POST', url: `/api/v1/forums/topics/${TOPIC_ID}/lock` });
+        expect(screen.getByRole('button', { name: /Verrouiller/ }).getAttribute('aria-pressed')).toBe('true');
+        expect(document.querySelector('.alert.alert-info .bi-lock')).not.toBeNull();
+    });
+
+    it('ne montre pas les gestes de modération à un·e membre', async () => {
+        await mountInertia(Show, { url: `/forums/${TOPIC_ID}`, pageProps: pageProps() });
+        expect(screen.queryByRole('button', { name: /Épingler/ })).toBeNull();
+    });
 });

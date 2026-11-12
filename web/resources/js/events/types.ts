@@ -35,6 +35,10 @@ export interface EventItem {
     is_public: boolean;
     is_past: boolean;
     status: string;
+    /** P18-14 : type (groupe de parole, atelier, rencontre, autre) et file d'approbation facultative. */
+    type?: string;
+    type_label?: string;
+    is_pending?: boolean;
     url: string;
     rsvp: EventRsvp | null;
     /** Le rappel de la veille n'est pas encore parti (faux une fois envoyé ou l'événement commencé). */
@@ -54,6 +58,9 @@ export interface EventCreateOptions {
     default_time: string;
     categories: EventOption[];
     groups: EventOption[];
+    /** P18-14 : types proposés ; file d'approbation active pour ce compte. */
+    types?: EventOption[];
+    requires_approval?: boolean;
     limits: { title_min: number; title_max: number; place_max: number; address_max: number; description_max: number; max_duration_days: number };
 }
 
@@ -87,4 +94,6 @@ export interface EventDraftBody {
     description: string | null;
     group: string | null;
     is_public: boolean;
+    /** P18-14 : groupe_parole | atelier | rencontre | autre. */
+    type?: string;
 }

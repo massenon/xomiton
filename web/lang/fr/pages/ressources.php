@@ -10,6 +10,9 @@ declare(strict_types=1);
  */
 return [
 
+    // P18-11 : ressource mise en avant par l'équipe (guides, urgence), en tête du catalogue.
+    'featured' => 'À la une',
+
     'title' => 'Ressources',
     'intro' => 'Articles, fiches pratiques et outils à lire, à enregistrer et à partager.',
     'aside_label' => 'Compléments et aide',

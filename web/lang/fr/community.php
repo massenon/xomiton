@@ -11,6 +11,58 @@ declare(strict_types=1);
  */
 return [
 
+    // P18-12 : proposer une ressource (web et application). Tu.
+    'proposals' => [
+        'title' => 'Proposer une ressource',
+        'intro' => 'Tu connais un guide, une fiche ou un lien utile ? Propose-le : l’équipe le relit avant toute publication. Ta proposition n’est pas visible des autres membres.',
+        'no_category' => 'Je ne sais pas',
+        'submit' => 'Envoyer ma proposition',
+        'sent' => 'Merci ! Ta proposition est arrivée. L’équipe te prévient dès qu’elle l’a relue.',
+        'sent_toast' => 'Proposition envoyée.',
+        'again' => 'Proposer une autre ressource',
+        'fields' => [
+            'title' => 'Titre',
+            'kind' => 'Type',
+            'summary' => 'En quelques mots',
+            'category' => 'Catégorie',
+            'link' => 'Lien',
+            'file' => 'Fichier PDF',
+            'credit' => 'Me créditer avec mon pseudonyme',
+        ],
+        'hints' => [
+            'title' => 'Entre :min et :max caractères.',
+            'summary' => 'Ce que la ressource apporte, entre :min et :max caractères.',
+            'link' => 'Adresse qui commence par https://.',
+            'file' => 'Un seul PDF, :max Mo au plus.',
+            'credit' => 'Si l’équipe publie la ressource, ton pseudonyme peut apparaître comme source. Tu peux refuser.',
+        ],
+    ],
+
+    // P18-14 : boîte à idées (web et application). Tu.
+    'suggestions' => [
+        'title' => 'Boîte à idées',
+        'intro' => 'Une idée pour améliorer Xomiton ? Une fonctionnalité, un contenu, un point de sécurité ? Écris à l’équipe : elle lit chaque message.',
+        'submit' => 'Envoyer mon idée',
+        'sent' => 'Merci ! Ton idée est bien arrivée. Si l’équipe te répond, tu recevras une notification.',
+        'sent_toast' => 'Idée envoyée.',
+        'again' => 'Envoyer une autre idée',
+        'fields' => [
+            'category' => 'Sujet',
+            'message' => 'Ton message',
+            'anonymous' => 'Envoyer de façon anonyme',
+        ],
+        'hints' => [
+            'message' => 'Entre :min et :max caractères. N’écris pas d’informations personnelles.',
+            'anonymous' => 'L’équipe ne verra pas ton pseudonyme. Tu recevras quand même sa réponse en notification.',
+        ],
+    ],
+
+    // P18-13 : annonce globale (bannière de l'espace membre et de l'application).
+    'announcement' => [
+        'open' => 'En savoir plus',
+        'close' => 'Fermer l’annonce',
+    ],
+
     'groups' => [
         'title' => 'Groupes',
         'intro' => 'Des cercles d’entraide pour échanger en toute sécurité.',
@@ -199,6 +251,7 @@ return [
         'reminder_date' => ':date à :time',
         'past_badge' => 'Événement passé',
         'public_badge' => 'Ouvert à tout le monde',
+        'pending_badge' => 'En attente d’approbation',
         'group_badge' => 'Groupe :name',
         'going' => 'Je participe',
         'going_ask' => 'Je participe ?',
@@ -232,6 +285,8 @@ return [
             'online_url_required' => 'Indique le lien de connexion ou la ville.',
             'category' => 'Catégorie',
             'category_none' => 'Sans catégorie',
+            'type' => 'Type d’événement',
+            'requires_approval' => 'L’équipe relit chaque nouvel événement : le tien sera visible dès qu’elle l’aura approuvé.',
             'group' => 'Groupe',
             'group_none' => 'Toute la communauté',
             'group_help' => 'Les membres du groupe sont prévenu·es ; un événement d’un groupe privé n’est visible que de ses membres.',
@@ -264,6 +319,7 @@ return [
         ],
         'toasts' => [
             'created' => 'Événement créé.',
+            'created_pending' => 'Événement envoyé. Il sera visible dès que l’équipe l’aura approuvé.',
             'attending' => 'Inscription confirmée. Un rappel t’est envoyé la veille.',
             'attending_no_reminder' => 'Inscription confirmée.',
             'interested' => 'Marqué comme intéressé·e.',
@@ -324,6 +380,17 @@ return [
         'last_reply' => 'Dernière réponse :ago',
         'pinned' => 'Épinglé',
         'locked' => 'Fermé',
+        'archived' => 'Archivé',
+        'archived_help' => 'Forum archivé : tu peux lire les sujets, mais plus en ouvrir de nouveaux.',
+        // P18-11 : gestes de modération sur la fiche d'un sujet.
+        'moderation' => [
+            'pin' => 'Épingler',
+            'lock' => 'Verrouiller',
+            'pin_on' => 'Sujet épinglé en tête du forum.',
+            'pin_off' => 'Sujet désépinglé.',
+            'lock_on' => 'Sujet verrouillé : plus de réponse possible.',
+            'lock_off' => 'Sujet déverrouillé.',
+        ],
         'moderated' => 'Sujet masqué en attente de relecture par la modération.',
         // P18-03 : réponse validée (auteur·rice du sujet ou modération, Q97).
         'solved' => 'Résolu',

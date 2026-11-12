@@ -45,7 +45,12 @@ final class PermissionMatrix
         'indicators' => ['indicators.view_zone', 'indicators.view', 'indicators.manage', 'reports.generate'],
         'moderation' => ['moderation.manage', 'posts.moderate'],
         'moderation_filter' => ['moderation.filter'],
+        // P18-10, P18-13, P18-14
+        'forums' => ['forums.manage'],
+        'events' => ['events.manage'],
+        'suggestions' => ['suggestions.manage'],
         'content' => ['thematiques.manage', 'resources.manage', 'faqs.manage', 'laws.manage', 'ccc_tools.manage'],
+        'announcements' => ['announcements.manage'],
         'assistant' => ['assistant_kb.manage'],
         'newsletter' => ['newsletter.manage_subscribers', 'newsletter.manage_campaigns', 'newsletter.send'],
         'gateways' => ['gateways.connect', 'gateways.publish'],

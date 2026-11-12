@@ -31,7 +31,9 @@ use App\Http\Controllers\Api\V1\Community\GroupDiscussionController;
 use App\Http\Controllers\Api\V1\Community\GroupMembershipController;
 use App\Http\Controllers\Api\V1\Community\GroupPostController;
 use App\Http\Controllers\Api\V1\Community\PageController;
+use App\Http\Controllers\Api\V1\Community\SuggestionController;
 use App\Http\Controllers\Api\V1\Content\ResourceController;
+use App\Http\Controllers\Api\V1\Content\ResourceProposalController;
 use App\Http\Controllers\Api\V1\Content\ThematiqueController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\Directory\DirectoryController;
@@ -71,6 +73,7 @@ use App\Http\Controllers\Api\V1\Peer\CaseFollowupController;
 use App\Http\Controllers\Api\V1\Peer\CollectOptionsController;
 use App\Http\Controllers\Api\V1\Peer\RoutedAlertController;
 use App\Http\Controllers\Api\V1\Peer\ValidationRuleController;
+use App\Http\Controllers\Api\V1\Platform\AnnouncementController;
 use App\Http\Controllers\Api\V1\Platform\AppVersionController;
 use App\Http\Controllers\Api\V1\Platform\StatusController;
 use App\Http\Controllers\Api\V1\ReferentialController;
@@ -366,6 +369,17 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
         Route::post('{event:ulid}/rsvp', [EventController::class, 'rsvp'])->middleware('throttle:community_write')->name('rsvp');
     });
 
+    // --- Annonce globale (P18-13, docs/API.md §5 bis, Q97) : connecté·e seulement, jamais pour un·e visiteur·se.
+    Route::get('announcements/active', [AnnouncementController::class, 'active'])->name('api.announcements.active');
+    Route::post('announcements/{announcement}/dismiss', [AnnouncementController::class, 'dismiss'])->whereNumber('announcement')->middleware('throttle:community_write')->name('api.announcements.dismiss');
+
+    // --- Ressources proposées et boîte à suggestions (P18-12, P18-14, docs/API.md §11 bis, §16 bis) : `social.access`,
+    // limiteurs `resource_proposal` et `suggestion` par compte et par jour (comptés après validation).
+    Route::get('resource-proposals/options', [ResourceProposalController::class, 'options'])->name('api.resource_proposals.options');
+    Route::post('resource-proposals', [ResourceProposalController::class, 'store'])->middleware('verified')->name('api.resource_proposals.store');
+    Route::get('suggestions/options', [SuggestionController::class, 'options'])->name('api.suggestions.options');
+    Route::post('suggestions', [SuggestionController::class, 'store'])->name('api.suggestions.store');
+
     // --- Forums (P8-05, docs/API.md §16) : 5 forums fixes, sujets par ULID (ADR-27), réponses par id ; sujet invisible
     // (masqué, supprimé, forum fermé, blocage) → 404 ; anonyme → « Membre anonyme » sans identifiant (RG-02). Ouvrir un
     // sujet et répondre exigent un e-mail confirmé (`verified`) et passent par `feed_write` (10/min), signaler par
@@ -379,6 +393,9 @@ Route::middleware(['auth:sanctum', SlideMobileTokenExpiry::class, EnsureDeviceNo
         // P18-03 : réponse validée (auteur·rice du sujet ou modération, Q97).
         Route::post('topics/{topic:ulid}/accepted-reply', [ForumController::class, 'accept'])->middleware('throttle:community_write')->name('topics.accept');
         Route::delete('topics/{topic:ulid}/accepted-reply', [ForumController::class, 'unaccept'])->middleware('throttle:community_write')->name('topics.unaccept');
+        // P18-11 : épingler et verrouiller (modération `posts.moderate`) ; POST pose, DELETE retire.
+        Route::match(['post', 'delete'], 'topics/{topic:ulid}/pin', [ForumController::class, 'pin'])->middleware('throttle:community_write')->name('topics.pin');
+        Route::match(['post', 'delete'], 'topics/{topic:ulid}/lock', [ForumController::class, 'lock'])->middleware('throttle:community_write')->name('topics.lock');
         Route::post('topics/{topic:ulid}/report', [ForumReportController::class, 'topic'])->middleware('throttle:content_report')->name('topics.report');
         Route::get('topics/{topic:ulid}/replies', [ForumReplyController::class, 'index'])->name('replies.index');
         Route::post('topics/{topic:ulid}/replies', [ForumReplyController::class, 'store'])->middleware(['verified', 'throttle:feed_write'])->name('replies.store');

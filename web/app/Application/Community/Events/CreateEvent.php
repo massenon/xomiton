@@ -46,6 +46,10 @@ final class CreateEvent
             'address' => $draft->address,
         ], 'event');
 
+        // P18-14 : file d'approbation facultative (réglage `events.require_approval`, coupé par défaut) — l'événement d'un·e
+        // membre attend la modération, invisible ; la modération publie toujours directement.
+        $pending = EventApproval::required() && ! $organizer->can('moderation.manage');
+
         $event = Event::query()->create([
             'title' => trim($draft->title),
             'slug' => UniqueSlug::for(Event::class, $draft->title, 200),
@@ -60,16 +64,32 @@ final class CreateEvent
             'organizer_id' => $organizer->getKey(),
             'group_id' => $draft->groupId,
             'going_count' => 0,
-            'status' => ContentStatus::Published,
+            'status' => $pending ? ContentStatus::Pending : ContentStatus::Published,
+            'type' => $draft->type->value,
             'is_public' => $draft->isPublic,
         ]);
 
-        Audit::log('event.created', $event, null, $organizer);
+        Audit::log('event.created', $event, $pending ? 'status=en_attente' : null, $organizer);
 
         if ($verdict->needsReview()) {
             Audit::log('event.words_flagged', $event, (string) __('feed.moderation.auto_details', ['terms' => implode(', ', $verdict->reviewTerms())]), $organizer);
         }
 
+        if ($pending) {
+            return $event;
+        }
+
+        $this->announce($event, $organizer);
+
+        return $event;
+    }
+
+    /**
+     * Mise en ligne : plan du site (événement ouvert aux visiteur·ses) et cloche du groupe. Rejouée par ReviewEvent à
+     * l'approbation d'un événement en attente.
+     */
+    public function announce(Event $event, User $organizer): void
+    {
         if ($event->is_public) {
             SitemapBuilder::flush();
         }
@@ -77,8 +97,6 @@ final class CreateEvent
         if ($event->group_id !== null) {
             $this->notifyGroup($event, $organizer);
         }
-
-        return $event;
     }
 
     private function notifyGroup(Event $event, User $organizer): void

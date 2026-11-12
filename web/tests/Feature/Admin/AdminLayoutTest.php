@@ -39,7 +39,7 @@ function navGroups(string $html): array
     return array_map('html_entity_decode', $m[1]);
 }
 
-it('range les 24 écrans et le mode maintenance dans les 8 groupes de Q14, sans écran oublié ni inventé', function (): void {
+it('range les 27 écrans et le mode maintenance (P18-13, P18-14 : événements, annonces, suggestions) dans les 8 groupes de Q14, sans écran oublié ni inventé', function (): void {
     $mapped = collect(AdminNavigation::GROUPS)->flatten(1)->pluck(0)->all();
     $screens = collect(Route::getRoutes()->getRoutes())
         ->map(fn ($route): string => (string) $route->getName())
@@ -49,7 +49,7 @@ it('range les 24 écrans et le mode maintenance dans les 8 groupes de Q14, sans 
         ->values()->all();
 
     expect(array_keys(AdminNavigation::GROUPS))->toBe(['steering', 'cases', 'directory', 'content', 'data', 'reports', 'social', 'system'])
-        ->and($mapped)->toHaveCount(28)
+        ->and($mapped)->toHaveCount(31)
         ->and(array_diff($screens, $mapped))->toBe([])
         ->and(array_diff($mapped, $screens))->toBe([]);
 });
