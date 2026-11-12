@@ -815,9 +815,17 @@
     "@admin_audit_filters_all_actions": {
         "description": "admin.audit.filters.all_actions"
     },
+    "admin_audit_filters_all_moderators": "Tous les comptes",
+    "@admin_audit_filters_all_moderators": {
+        "description": "admin.audit.filters.all_moderators"
+    },
     "admin_audit_filters_from": "Du",
     "@admin_audit_filters_from": {
         "description": "admin.audit.filters.from"
+    },
+    "admin_audit_filters_moderator": "Modérateur·rice",
+    "@admin_audit_filters_moderator": {
+        "description": "admin.audit.filters.moderator"
     },
     "admin_audit_filters_search_help": "La recherche porte sur le compte, le code de l’action et le détail (texte déjà masqué à l’écriture).",
     "@admin_audit_filters_search_help": {
@@ -1225,6 +1233,106 @@
         "description": "admin.dashboard.chart_table",
         "placeholders": {
             "title": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_dashboard_community_high": "{count, plural, =0{aucun en priorité haute} =1{{count} en priorité haute} other{{count} en priorité haute}}",
+    "@admin_dashboard_community_high": {
+        "description": "admin.dashboard.community.high",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_dashboard_community_members": "Comptes",
+    "@admin_dashboard_community_members": {
+        "description": "admin.dashboard.community.members"
+    },
+    "admin_dashboard_community_messages": "Messages privés (aujourd’hui)",
+    "@admin_dashboard_community_messages": {
+        "description": "admin.dashboard.community.messages"
+    },
+    "admin_dashboard_community_new_today": "{count, plural, =0{aucun nouveau compte aujourd’hui} =1{{count} nouveau compte aujourd’hui} other{{count} nouveaux comptes aujourd’hui}}",
+    "@admin_dashboard_community_new_today": {
+        "description": "admin.dashboard.community.new_today",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_dashboard_community_privacy": "Comptages seulement, sans aucun contenu des échanges. Actualisé toutes les {seconds} secondes.",
+    "@admin_dashboard_community_privacy": {
+        "description": "admin.dashboard.community.privacy",
+        "placeholders": {
+            "seconds": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_dashboard_community_replies": "Réponses de forum (aujourd’hui)",
+    "@admin_dashboard_community_replies": {
+        "description": "admin.dashboard.community.replies"
+    },
+    "admin_dashboard_community_reports": "Signalements en attente",
+    "@admin_dashboard_community_reports": {
+        "description": "admin.dashboard.community.reports"
+    },
+    "admin_dashboard_community_resolution": "Sujets résolus",
+    "@admin_dashboard_community_resolution": {
+        "description": "admin.dashboard.community.resolution"
+    },
+    "admin_dashboard_community_resolution_none": "Aucun sujet publié",
+    "@admin_dashboard_community_resolution_none": {
+        "description": "admin.dashboard.community.resolution_none"
+    },
+    "admin_dashboard_community_resolution_sub": "{solved} sujets avec une réponse validée sur {topics}",
+    "@admin_dashboard_community_resolution_sub": {
+        "description": "admin.dashboard.community.resolution_sub",
+        "placeholders": {
+            "solved": {
+                "type": "String"
+            },
+            "topics": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_dashboard_community_retention": "Rétention à 30 jours",
+    "@admin_dashboard_community_retention": {
+        "description": "admin.dashboard.community.retention"
+    },
+    "admin_dashboard_community_retention_none": "Aucun compte inscrit il y a 30 à 60 jours",
+    "@admin_dashboard_community_retention_none": {
+        "description": "admin.dashboard.community.retention_none"
+    },
+    "admin_dashboard_community_retention_sub": "{retained} comptes actifs sur {cohort} inscrits il y a 30 à 60 jours",
+    "@admin_dashboard_community_retention_sub": {
+        "description": "admin.dashboard.community.retention_sub",
+        "placeholders": {
+            "cohort": {
+                "type": "String"
+            },
+            "retained": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_dashboard_community_title": "Communauté",
+    "@admin_dashboard_community_title": {
+        "description": "admin.dashboard.community.title"
+    },
+    "admin_dashboard_community_topics": "Sujets de forum (aujourd’hui)",
+    "@admin_dashboard_community_topics": {
+        "description": "admin.dashboard.community.topics"
+    },
+    "admin_dashboard_community_week": "{count} sur 7 jours",
+    "@admin_dashboard_community_week": {
+        "description": "admin.dashboard.community.week",
+        "placeholders": {
+            "count": {
                 "type": "String"
             }
         }
@@ -2655,6 +2763,10 @@
             }
         }
     },
+    "admin_moderation_action_labels_approuve": "Approuvé",
+    "@admin_moderation_action_labels_approuve": {
+        "description": "admin.moderation.action_labels.approuve"
+    },
     "admin_moderation_action_labels_aucune": "Ignoré",
     "@admin_moderation_action_labels_aucune": {
         "description": "admin.moderation.action_labels.aucune"
@@ -2662,6 +2774,10 @@
     "admin_moderation_action_labels_avertissement": "Avertissement",
     "@admin_moderation_action_labels_avertissement": {
         "description": "admin.moderation.action_labels.avertissement"
+    },
+    "admin_moderation_action_labels_bannissement": "Bannissement",
+    "@admin_moderation_action_labels_bannissement": {
+        "description": "admin.moderation.action_labels.bannissement"
     },
     "admin_moderation_action_labels_masque": "Masqué",
     "@admin_moderation_action_labels_masque": {
@@ -2674,6 +2790,14 @@
     "admin_moderation_action_labels_suspension": "Suspension",
     "@admin_moderation_action_labels_suspension": {
         "description": "admin.moderation.action_labels.suspension"
+    },
+    "admin_moderation_actions_approve": "Approuver",
+    "@admin_moderation_actions_approve": {
+        "description": "admin.moderation.actions.approve"
+    },
+    "admin_moderation_actions_ban": "Bannir",
+    "@admin_moderation_actions_ban": {
+        "description": "admin.moderation.actions.ban"
     },
     "admin_moderation_actions_dismiss": "Ignorer",
     "@admin_moderation_actions_dismiss": {
@@ -2726,6 +2850,10 @@
     "admin_moderation_author": "Auteur·e :",
     "@admin_moderation_author": {
         "description": "admin.moderation.author"
+    },
+    "admin_moderation_banned": "banni·e",
+    "@admin_moderation_banned": {
+        "description": "admin.moderation.banned"
     },
     "admin_moderation_charter_items_0_icon": "heart",
     "@admin_moderation_charter_items_0_icon": {
@@ -2819,6 +2947,10 @@
     "@admin_moderation_columns_kind": {
         "description": "admin.moderation.columns.kind"
     },
+    "admin_moderation_columns_priority": "Priorité",
+    "@admin_moderation_columns_priority": {
+        "description": "admin.moderation.columns.priority"
+    },
     "admin_moderation_columns_reason": "Motif",
     "@admin_moderation_columns_reason": {
         "description": "admin.moderation.columns.reason"
@@ -2830,6 +2962,72 @@
     "admin_moderation_confirm_unhide": "Rendre ce contenu de nouveau visible ?",
     "@admin_moderation_confirm_unhide": {
         "description": "admin.moderation.confirm.unhide"
+    },
+    "admin_moderation_context_banned": "Compte banni.",
+    "@admin_moderation_context_banned": {
+        "description": "admin.moderation.context.banned"
+    },
+    "admin_moderation_context_history": "Historique de modération de l’auteur·e",
+    "@admin_moderation_context_history": {
+        "description": "admin.moderation.context.history"
+    },
+    "admin_moderation_context_no_sanction": "Aucune sanction sur d’autres contenus.",
+    "@admin_moderation_context_no_sanction": {
+        "description": "admin.moderation.context.no_sanction"
+    },
+    "admin_moderation_context_parent_forum": "Forum :",
+    "@admin_moderation_context_parent_forum": {
+        "description": "admin.moderation.context.parent.forum"
+    },
+    "admin_moderation_context_parent_group": "Groupe :",
+    "@admin_moderation_context_parent_group": {
+        "description": "admin.moderation.context.parent.group"
+    },
+    "admin_moderation_context_parent_post": "Publication commentée, de",
+    "@admin_moderation_context_parent_post": {
+        "description": "admin.moderation.context.parent.post"
+    },
+    "admin_moderation_context_parent_topic": "Sujet :",
+    "@admin_moderation_context_parent_topic": {
+        "description": "admin.moderation.context.parent.topic"
+    },
+    "admin_moderation_context_reports": "{count, plural, =0{aucun signalement reçu} =1{{count} signalement reçu} other{{count} signalements reçus}}",
+    "@admin_moderation_context_reports": {
+        "description": "admin.moderation.context.reports",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_moderation_context_sanctions": "Sanctions sur d’autres contenus :",
+    "@admin_moderation_context_sanctions": {
+        "description": "admin.moderation.context.sanctions"
+    },
+    "admin_moderation_context_suspended": "Compte actuellement suspendu.",
+    "@admin_moderation_context_suspended": {
+        "description": "admin.moderation.context.suspended"
+    },
+    "admin_moderation_context_title": "Contexte",
+    "@admin_moderation_context_title": {
+        "description": "admin.moderation.context.title"
+    },
+    "admin_moderation_context_warnings": "{count, plural, =0{Aucun avertissement} =1{{count} avertissement} other{{count} avertissements}}",
+    "@admin_moderation_context_warnings": {
+        "description": "admin.moderation.context.warnings",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_moderation_decide_confirm_approve": "Approuver",
+    "@admin_moderation_decide_confirm_approve": {
+        "description": "admin.moderation.decide.confirm.approve"
+    },
+    "admin_moderation_decide_confirm_ban": "Bannir le compte",
+    "@admin_moderation_decide_confirm_ban": {
+        "description": "admin.moderation.decide.confirm.ban"
     },
     "admin_moderation_decide_confirm_dismiss": "Ignorer",
     "@admin_moderation_decide_confirm_dismiss": {
@@ -2847,7 +3045,15 @@
     "@admin_moderation_decide_confirm_warn": {
         "description": "admin.moderation.decide.confirm.warn"
     },
-    "admin_moderation_decide_effect_dismiss": "Les signalements en attente sur ce contenu sont rejetés. Un contenu masqué automatiquement est rendu visible.",
+    "admin_moderation_decide_effect_approve": "Vous avez relu ce contenu et il respecte la charte : les signalements en attente sont rejetés et le contenu est rendu visible s’il était masqué.",
+    "@admin_moderation_decide_effect_approve": {
+        "description": "admin.moderation.decide.effect.approve"
+    },
+    "admin_moderation_decide_effect_ban": "Le compte est banni définitivement : connexion refusée sur le site et l’application, accès fermés tout de suite. Seul·e un·e super-admin peut lever un bannissement.",
+    "@admin_moderation_decide_effect_ban": {
+        "description": "admin.moderation.decide.effect.ban"
+    },
+    "admin_moderation_decide_effect_dismiss": "Les signalements en attente sur ce contenu sont classés sans suite. Un contenu masqué automatiquement est rendu visible.",
     "@admin_moderation_decide_effect_dismiss": {
         "description": "admin.moderation.decide.effect.dismiss"
     },
@@ -2867,6 +3073,14 @@
     "@admin_moderation_decide_reason_help": {
         "description": "admin.moderation.decide.reason_help"
     },
+    "admin_moderation_decide_title_approve": "Approuver le contenu",
+    "@admin_moderation_decide_title_approve": {
+        "description": "admin.moderation.decide.title.approve"
+    },
+    "admin_moderation_decide_title_ban": "Bannir l’auteur·e",
+    "@admin_moderation_decide_title_ban": {
+        "description": "admin.moderation.decide.title.ban"
+    },
     "admin_moderation_decide_title_dismiss": "Ignorer le signalement",
     "@admin_moderation_decide_title_dismiss": {
         "description": "admin.moderation.decide.title.dismiss"
@@ -2883,6 +3097,14 @@
     "@admin_moderation_decide_title_warn": {
         "description": "admin.moderation.decide.title.warn"
     },
+    "admin_moderation_decide_until": "Fin de la suspension (facultatif)",
+    "@admin_moderation_decide_until": {
+        "description": "admin.moderation.decide.until"
+    },
+    "admin_moderation_decide_until_help": "Jour inclus, heure du Bénin. Le compte est réactivé automatiquement le lendemain. Sans date : suspendu jusqu’à réactivation par l’équipe.",
+    "@admin_moderation_decide_until_help": {
+        "description": "admin.moderation.decide.until_help"
+    },
     "admin_moderation_empty": "Rien à modérer ici",
     "@admin_moderation_empty": {
         "description": "admin.moderation.empty"
@@ -2895,9 +3117,17 @@
     "@admin_moderation_errors_admin_target": {
         "description": "admin.moderation.errors.admin_target"
     },
+    "admin_moderation_errors_admin_target_ban": "Un compte d’administration ne peut pas être banni depuis la modération.",
+    "@admin_moderation_errors_admin_target_ban": {
+        "description": "admin.moderation.errors.admin_target_ban"
+    },
     "admin_moderation_errors_already_handled": "Ce signalement a déjà été traité.",
     "@admin_moderation_errors_already_handled": {
         "description": "admin.moderation.errors.already_handled"
+    },
+    "admin_moderation_errors_ban_forbidden": "Vous n’avez pas le droit de bannir ce compte.",
+    "@admin_moderation_errors_ban_forbidden": {
+        "description": "admin.moderation.errors.ban_forbidden"
     },
     "admin_moderation_errors_invalid_decision": "Cette décision n’existe pas.",
     "@admin_moderation_errors_invalid_decision": {
@@ -3011,6 +3241,31 @@
     "@admin_moderation_no_excerpt": {
         "description": "admin.moderation.no_excerpt"
     },
+    "admin_moderation_priority_basse": "Basse",
+    "@admin_moderation_priority_basse": {
+        "description": "admin.moderation.priority.basse"
+    },
+    "admin_moderation_priority_haute": "Haute",
+    "@admin_moderation_priority_haute": {
+        "description": "admin.moderation.priority.haute"
+    },
+    "admin_moderation_priority_help": "Score de priorité : gravité du motif, nombre de personnes qui signalent, nature du contenu et sanctions déjà prononcées contre l’auteur·e.",
+    "@admin_moderation_priority_help": {
+        "description": "admin.moderation.priority.help"
+    },
+    "admin_moderation_priority_moyenne": "Moyenne",
+    "@admin_moderation_priority_moyenne": {
+        "description": "admin.moderation.priority.moyenne"
+    },
+    "admin_moderation_priority_score": "Score {score}",
+    "@admin_moderation_priority_score": {
+        "description": "admin.moderation.priority.score",
+        "placeholders": {
+            "score": {
+                "type": "String"
+            }
+        }
+    },
     "admin_moderation_queue_title": "File de modération",
     "@admin_moderation_queue_title": {
         "description": "admin.moderation.queue_title"
@@ -3042,6 +3297,10 @@
     "admin_moderation_read_message": "Lire le message",
     "@admin_moderation_read_message": {
         "description": "admin.moderation.read_message"
+    },
+    "admin_moderation_reason_label_ban": "Motif du bannissement",
+    "@admin_moderation_reason_label_ban": {
+        "description": "admin.moderation.reason_label.ban"
     },
     "admin_moderation_reason_label_suspend": "Motif de la suspension",
     "@admin_moderation_reason_label_suspend": {
@@ -3173,6 +3432,24 @@
     "admin_moderation_toasts_allow_removed": "Expression retirée de la liste blanche.",
     "@admin_moderation_toasts_allow_removed": {
         "description": "admin.moderation.toasts.allow_removed"
+    },
+    "admin_moderation_toasts_approve": "{count, plural, =1{Contenu approuvé.} other{Contenu approuvé, {count} signalements rejetés.}}",
+    "@admin_moderation_toasts_approve": {
+        "description": "admin.moderation.toasts.approve",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "admin_moderation_toasts_ban": "{count, plural, =1{Compte banni.} other{Compte banni, {count} signalements clos.}}",
+    "@admin_moderation_toasts_ban": {
+        "description": "admin.moderation.toasts.ban",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "admin_moderation_toasts_dismiss": "{count, plural, =1{Signalement ignoré.} other{{count} signalements ignorés.}}",
     "@admin_moderation_toasts_dismiss": {
@@ -4427,6 +4704,60 @@
             }
         }
     },
+    "admin_users_badges_confirm_revoke": "Retirer le badge « {badge} » de {name} ?",
+    "@admin_users_badges_confirm_revoke": {
+        "description": "admin.users.badges.confirm_revoke",
+        "placeholders": {
+            "badge": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_badges_grant": "Attribuer « {badge} »",
+    "@admin_users_badges_grant": {
+        "description": "admin.users.badges.grant",
+        "placeholders": {
+            "badge": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_badges_help": "Attribués à la main par l’équipe et affichés à côté du pseudo (profil, fil, forums). « Membre vérifié » pour un·e membre, « Pair animateur·rice » pour un·e pair·e approuvé·e. Aucun classement.",
+    "@admin_users_badges_help": {
+        "description": "admin.users.badges.help"
+    },
+    "admin_users_badges_none_eligible": "Aucun badge possible : le compte doit être actif.",
+    "@admin_users_badges_none_eligible": {
+        "description": "admin.users.badges.none_eligible"
+    },
+    "admin_users_badges_revoke": "Retirer « {badge} »",
+    "@admin_users_badges_revoke": {
+        "description": "admin.users.badges.revoke",
+        "placeholders": {
+            "badge": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_badges_title": "Badges vérifiés",
+    "@admin_users_badges_title": {
+        "description": "admin.users.badges.title"
+    },
+    "admin_users_ban": "Bannir",
+    "@admin_users_ban": {
+        "description": "admin.users.ban"
+    },
+    "admin_users_ban_help": "Écrit pour la personne (200 caractères au plus). Le bannissement est définitif : connexion refusée sur le site et l’application, accès fermés tout de suite. Seul·e un·e super-admin peut le lever.",
+    "@admin_users_ban_help": {
+        "description": "admin.users.ban_help"
+    },
+    "admin_users_ban_reason": "Motif du bannissement",
+    "@admin_users_ban_reason": {
+        "description": "admin.users.ban_reason"
+    },
     "admin_users_columns_account": "Compte",
     "@admin_users_columns_account": {
         "description": "admin.users.columns.account"
@@ -4459,6 +4790,15 @@
     "admin_users_columns_zone": "Département",
     "@admin_users_columns_zone": {
         "description": "admin.users.columns.zone"
+    },
+    "admin_users_confirm_ban": "Bannir définitivement le compte de {name} ? Seul·e un·e super-admin pourra lever le bannissement.",
+    "@admin_users_confirm_ban": {
+        "description": "admin.users.confirm.ban",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     },
     "admin_users_confirm_delete": "Supprimer le compte de {name} ? Ses accès sont fermés tout de suite et ses données effacées après le délai légal.",
     "@admin_users_confirm_delete": {
@@ -4496,6 +4836,15 @@
             }
         }
     },
+    "admin_users_confirm_unban": "Lever le bannissement de {name} ? Le compte redevient actif.",
+    "@admin_users_confirm_unban": {
+        "description": "admin.users.confirm.unban",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "admin_users_create": "Créer un compte",
     "@admin_users_create": {
         "description": "admin.users.create"
@@ -4516,9 +4865,17 @@
     "@admin_users_delete": {
         "description": "admin.users.delete"
     },
+    "admin_users_detail_ban": "Motif du bannissement",
+    "@admin_users_detail_ban": {
+        "description": "admin.users.detail.ban"
+    },
     "admin_users_detail_fallback": "Compte",
     "@admin_users_detail_fallback": {
         "description": "admin.users.detail.fallback"
+    },
+    "admin_users_detail_no_end": "Sans date de fin",
+    "@admin_users_detail_no_end": {
+        "description": "admin.users.detail.no_end"
     },
     "admin_users_detail_pending_help": "Demande de compte en attente de validation.",
     "@admin_users_detail_pending_help": {
@@ -4535,6 +4892,10 @@
     "admin_users_detail_self": "C’est votre compte : vous ne pouvez ni changer votre rôle, ni vous suspendre, ni vous supprimer.",
     "@admin_users_detail_self": {
         "description": "admin.users.detail.self"
+    },
+    "admin_users_detail_suspended_until": "Fin de la suspension",
+    "@admin_users_detail_suspended_until": {
+        "description": "admin.users.detail.suspended_until"
     },
     "admin_users_detail_suspension": "Motif de la suspension",
     "@admin_users_detail_suspension": {
@@ -4566,6 +4927,23 @@
     "@admin_users_empty_text": {
         "description": "admin.users.empty_text"
     },
+    "admin_users_errors_admin_ban": "Un compte d’administration ne peut pas être banni : retirez-lui d’abord son rôle.",
+    "@admin_users_errors_admin_ban": {
+        "description": "admin.users.errors.admin_ban"
+    },
+    "admin_users_errors_badge_not_eligible": "Ce compte ne peut pas recevoir le badge « {badge} » : compte actif requis, « Pair animateur·rice » pour un·e pair·e approuvé·e et « Membre vérifié » pour les autres membres.",
+    "@admin_users_errors_badge_not_eligible": {
+        "description": "admin.users.errors.badge_not_eligible",
+        "placeholders": {
+            "badge": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_errors_banned_account": "Ce compte est banni : seul·e un·e super-admin peut lever le bannissement.",
+    "@admin_users_errors_banned_account": {
+        "description": "admin.users.errors.banned_account"
+    },
     "admin_users_errors_email_unverified": "L’adresse e-mail de ce compte n’est pas encore confirmée.",
     "@admin_users_errors_email_unverified": {
         "description": "admin.users.errors.email_unverified"
@@ -4585,6 +4963,15 @@
     "admin_users_errors_invalid_role": "Ce rôle n’existe pas ou ne peut pas être attribué avec vos droits.",
     "@admin_users_errors_invalid_role": {
         "description": "admin.users.errors.invalid_role"
+    },
+    "admin_users_errors_invalid_suspension_end": "La fin de la suspension doit être une date future, à {max} jours au plus.",
+    "@admin_users_errors_invalid_suspension_end": {
+        "description": "admin.users.errors.invalid_suspension_end",
+        "placeholders": {
+            "max": {
+                "type": "String"
+            }
+        }
     },
     "admin_users_errors_invalid_zone": "Ce département n’existe pas ou n’est plus actif.",
     "@admin_users_errors_invalid_zone": {
@@ -4606,6 +4993,10 @@
     "@admin_users_errors_not_active": {
         "description": "admin.users.errors.not_active"
     },
+    "admin_users_errors_not_banned": "Ce compte n’est pas banni.",
+    "@admin_users_errors_not_banned": {
+        "description": "admin.users.errors.not_banned"
+    },
     "admin_users_errors_not_found": "Compte introuvable.",
     "@admin_users_errors_not_found": {
         "description": "admin.users.errors.not_found"
@@ -4613,6 +5004,10 @@
     "admin_users_errors_not_pending": "Cette demande a déjà été traitée.",
     "@admin_users_errors_not_pending": {
         "description": "admin.users.errors.not_pending"
+    },
+    "admin_users_errors_own_ban": "Vous ne pouvez pas bannir votre propre compte.",
+    "@admin_users_errors_own_ban": {
+        "description": "admin.users.errors.own_ban"
     },
     "admin_users_errors_own_delete": "Vous ne pouvez pas supprimer votre propre compte.",
     "@admin_users_errors_own_delete": {
@@ -4682,6 +5077,26 @@
     "@admin_users_fields_zone": {
         "description": "admin.users.fields.zone"
     },
+    "admin_users_filters_activity": "Activité",
+    "@admin_users_filters_activity": {
+        "description": "admin.users.filters.activity"
+    },
+    "admin_users_filters_activity_levels_30j": "Actif·ve depuis moins de 30 jours",
+    "@admin_users_filters_activity_levels_30j": {
+        "description": "admin.users.filters.activity_levels.30j"
+    },
+    "admin_users_filters_activity_levels_7j": "Actif·ve depuis moins de 7 jours",
+    "@admin_users_filters_activity_levels_7j": {
+        "description": "admin.users.filters.activity_levels.7j"
+    },
+    "admin_users_filters_activity_levels_inactif": "Inactif·ve (30 jours et plus)",
+    "@admin_users_filters_activity_levels_inactif": {
+        "description": "admin.users.filters.activity_levels.inactif"
+    },
+    "admin_users_filters_all_activity": "Toute activité",
+    "@admin_users_filters_all_activity": {
+        "description": "admin.users.filters.all_activity"
+    },
     "admin_users_filters_all_roles": "Tous les rôles",
     "@admin_users_filters_all_roles": {
         "description": "admin.users.filters.all_roles"
@@ -4693,6 +5108,14 @@
     "admin_users_filters_all_zones": "Tous les départements",
     "@admin_users_filters_all_zones": {
         "description": "admin.users.filters.all_zones"
+    },
+    "admin_users_filters_joined_from": "Inscrit·e à partir du",
+    "@admin_users_filters_joined_from": {
+        "description": "admin.users.filters.joined_from"
+    },
+    "admin_users_filters_joined_to": "Inscrit·e jusqu’au",
+    "@admin_users_filters_joined_to": {
+        "description": "admin.users.filters.joined_to"
     },
     "admin_users_filters_search_help": "Recherche dans le nom et le pseudonyme (et l’e-mail pour l’administration).",
     "@admin_users_filters_search_help": {
@@ -4706,6 +5129,10 @@
     "@admin_users_filters_search_placeholder_moderator": {
         "description": "admin.users.filters.search_placeholder_moderator"
     },
+    "admin_users_filters_volunteers": "Bénévoles écoutant·es (pair·es approuvé·es)",
+    "@admin_users_filters_volunteers": {
+        "description": "admin.users.filters.volunteers"
+    },
     "admin_users_intro": "Les comptes de la plateforme : validation des demandes de pair·es, rôles, suspension et création de comptes. La matrice des permissions en bas de page est en lecture seule.",
     "@admin_users_intro": {
         "description": "admin.users.intro"
@@ -4717,6 +5144,10 @@
     "admin_users_kpi_active": "Actifs",
     "@admin_users_kpi_active": {
         "description": "admin.users.kpi.active"
+    },
+    "admin_users_kpi_banned": "Bannis",
+    "@admin_users_kpi_banned": {
+        "description": "admin.users.kpi.banned"
     },
     "admin_users_kpi_pending": "En attente",
     "@admin_users_kpi_pending": {
@@ -4765,6 +5196,10 @@
     "admin_users_modules_assistant": "Assistant (base de connaissances)",
     "@admin_users_modules_assistant": {
         "description": "admin.users.modules.assistant"
+    },
+    "admin_users_modules_badges": "Badges vérifiés (Membre vérifié, Pair animateur·rice)",
+    "@admin_users_modules_badges": {
+        "description": "admin.users.modules.badges"
     },
     "admin_users_modules_ccc_read": "Outils CCC (lecture)",
     "@admin_users_modules_ccc_read": {
@@ -4845,6 +5280,10 @@
     "admin_users_modules_users": "Utilisateurs",
     "@admin_users_modules_users": {
         "description": "admin.users.modules.users"
+    },
+    "admin_users_modules_users_ban": "Bannissement (lever un bannissement : super-admin)",
+    "@admin_users_modules_users_ban": {
+        "description": "admin.users.modules.users_ban"
     },
     "admin_users_modules_validation": "Règles de validation",
     "@admin_users_modules_validation": {
@@ -4977,6 +5416,14 @@
     "@admin_users_suspend_reason": {
         "description": "admin.users.suspend_reason"
     },
+    "admin_users_suspend_until": "Fin de la suspension (facultatif)",
+    "@admin_users_suspend_until": {
+        "description": "admin.users.suspend_until"
+    },
+    "admin_users_suspend_until_help": "Jour inclus, heure du Bénin : le compte est réactivé automatiquement le lendemain. Sans date, il reste suspendu jusqu’à réactivation.",
+    "@admin_users_suspend_until_help": {
+        "description": "admin.users.suspend_until_help"
+    },
     "admin_users_table_caption": "Comptes de la plateforme : pseudonyme, rôle, statut, département et date d’inscription.",
     "@admin_users_table_caption": {
         "description": "admin.users.table_caption"
@@ -4988,6 +5435,39 @@
     "admin_users_toasts_approved": "Compte de {name} validé.",
     "@admin_users_toasts_approved": {
         "description": "admin.users.toasts.approved",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_toasts_badge_granted": "Badge « {badge} » attribué à {name}.",
+    "@admin_users_toasts_badge_granted": {
+        "description": "admin.users.toasts.badge_granted",
+        "placeholders": {
+            "badge": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_toasts_badge_revoked": "Badge « {badge} » retiré à {name}.",
+    "@admin_users_toasts_badge_revoked": {
+        "description": "admin.users.toasts.badge_revoked",
+        "placeholders": {
+            "badge": {
+                "type": "String"
+            },
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_toasts_banned": "Compte de {name} banni.",
+    "@admin_users_toasts_banned": {
+        "description": "admin.users.toasts.banned",
         "placeholders": {
             "name": {
                 "type": "String"
@@ -5086,6 +5566,19 @@
                 "type": "String"
             }
         }
+    },
+    "admin_users_toasts_unbanned": "Bannissement de {name} levé.",
+    "@admin_users_toasts_unbanned": {
+        "description": "admin.users.toasts.unbanned",
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "admin_users_unban": "Lever le bannissement",
+    "@admin_users_unban": {
+        "description": "admin.users.unban"
     },
     "admin_users_validate": "Valider",
     "@admin_users_validate": {
@@ -17108,6 +17601,15 @@
             }
         }
     },
+    "auth_unavailable": "Connexion impossible avec ce compte. Pour toute question, contacte-nous : {email}",
+    "@auth_unavailable": {
+        "description": "auth.unavailable",
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "auth_universal_link_alert": "Ouvrez ce lien dans l’application Xomiton, ou connectez-vous ici pour accéder à votre espace.",
     "@auth_universal_link_alert": {
         "description": "auth.universal_link.alert"
@@ -24144,6 +24646,10 @@
     "@enums_identity_user_status_actif": {
         "description": "enums/identity.user_status.actif"
     },
+    "enums_identity_user_status_banni": "Banni",
+    "@enums_identity_user_status_banni": {
+        "description": "enums/identity.user_status.banni"
+    },
     "enums_identity_user_status_en_attente": "En attente de validation",
     "@enums_identity_user_status_en_attente": {
         "description": "enums/identity.user_status.en_attente"
@@ -24151,6 +24657,14 @@
     "enums_identity_user_status_suspendu": "Suspendu",
     "@enums_identity_user_status_suspendu": {
         "description": "enums/identity.user_status.suspendu"
+    },
+    "enums_identity_verified_badge_membre_verifie": "Membre vérifié",
+    "@enums_identity_verified_badge_membre_verifie": {
+        "description": "enums/identity.verified_badge.membre_verifie"
+    },
+    "enums_identity_verified_badge_pair_animateur": "Pair animateur·rice",
+    "@enums_identity_verified_badge_pair_animateur": {
+        "description": "enums/identity.verified_badge.pair_animateur"
     },
     "enums_platform_backup_kind_auto": "Automatique",
     "@enums_platform_backup_kind_auto": {
@@ -25409,6 +25923,32 @@
     "feed_moderation_filter_hidden_reason": "Masqué par le filtre de contenus, en attente de relecture.",
     "@feed_moderation_filter_hidden_reason": {
         "description": "feed.moderation.filter_hidden_reason"
+    },
+    "feed_moderation_spam_details_doublons": "Doublons : le même texte publié {count} fois par la même personne.",
+    "@feed_moderation_spam_details_doublons": {
+        "description": "feed.moderation.spam_details.doublons",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_moderation_spam_details_frequence": "Fréquence : {count} contenus publiés en quelques minutes par la même personne.",
+    "@feed_moderation_spam_details_frequence": {
+        "description": "feed.moderation.spam_details.frequence",
+        "placeholders": {
+            "count": {
+                "type": "String"
+            }
+        }
+    },
+    "feed_moderation_spam_hidden_reason": "Mis en quarantaine : spam présumé, en attente de relecture.",
+    "@feed_moderation_spam_hidden_reason": {
+        "description": "feed.moderation.spam_hidden_reason"
+    },
+    "feed_moderation_spam_reporter": "Détection automatique du spam",
+    "@feed_moderation_spam_reporter": {
+        "description": "feed.moderation.spam_reporter"
     },
     "feed_offline_failed": "Ta publication mise en attente n’a pas pu partir. Vérifie son contenu, puis publie-la à nouveau.",
     "@feed_offline_failed": {
@@ -30350,6 +30890,19 @@
     "@notifications_moderation_approved_title": {
         "description": "notifications.moderation.approved.title"
     },
+    "notifications_moderation_banned_body": "L’équipe de modération a fermé ton compte : {reason}. Écris-nous si tu penses à une erreur.",
+    "@notifications_moderation_banned_body": {
+        "description": "notifications.moderation.banned.body",
+        "placeholders": {
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_moderation_banned_title": "Ton compte est fermé",
+    "@notifications_moderation_banned_title": {
+        "description": "notifications.moderation.banned.title"
+    },
     "notifications_moderation_content_hidden_body": "L’équipe de modération a masqué un de tes contenus, car il ne respecte pas la charte. Tu peux nous écrire si tu penses à une erreur.",
     "@notifications_moderation_content_hidden_body": {
         "description": "notifications.moderation.content_hidden.body"
@@ -30386,6 +30939,22 @@
     "notifications_moderation_suspended_title": "Ton compte est suspendu",
     "@notifications_moderation_suspended_title": {
         "description": "notifications.moderation.suspended.title"
+    },
+    "notifications_moderation_suspended_until_body": "Ton compte est suspendu jusqu’au {date} inclus : {reason}. Il sera réactivé automatiquement ensuite. Écris-nous si tu penses à une erreur.",
+    "@notifications_moderation_suspended_until_body": {
+        "description": "notifications.moderation.suspended_until.body",
+        "placeholders": {
+            "date": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_moderation_suspended_until_title": "Ton compte est suspendu temporairement",
+    "@notifications_moderation_suspended_until_title": {
+        "description": "notifications.moderation.suspended_until.title"
     },
     "notifications_moderation_warning_body": "L’équipe de modération t’adresse un avertissement : {reason}. Relis la charte pour que la communauté reste un espace sûr.",
     "@notifications_moderation_warning_body": {
