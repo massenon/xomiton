@@ -249,8 +249,8 @@ final class MemberConversations
             'refusal_reason' => $status === BdConversationStatus::Refused ? (string) $conversation->refusal_reason : null,
             'panels_count' => (int) ($conversation->getAttribute('panels_count') ?? $conversation->panels()->count()),
             'updated_at' => $conversation->updated_at?->toIso8601String(),
-            'submitted_at' => $conversation->submitted_at?->toIso8601String(),
-            'published_at' => $status === BdConversationStatus::Published ? $conversation->published_at?->toIso8601String() : null,
+            'submitted_at' => self::iso($conversation->getAttribute('submitted_at')),
+            'published_at' => $status === BdConversationStatus::Published ? self::iso($conversation->getAttribute('published_at')) : null,
             'public_url' => $status === BdConversationStatus::Published ? route('conversations-bd.show', ['slug' => $conversation->slug]) : null,
             'editor_url' => route('mes-conversations-bd.edit', ['ulid' => $conversation->ulid]),
             'pdf_url' => route('mes-conversations-bd.pdf', ['ulid' => $conversation->ulid]),
@@ -261,7 +261,7 @@ final class MemberConversations
 
             foreach ($conversation->panels()->with(['scene', 'bubbles'])->get() as $panel) {
                 $data['panels'][] = [
-                    'scene' => (string) ($panel->scene?->key ?? ''),
+                    'scene' => ($scene = $panel->getRelationValue('scene')) instanceof BdScene ? (string) $scene->key : '',
                     'bubbles' => $panel->bubbles->map(static fn (BdBubble $bubble): array => $bubble->toGrammar())->values()->all(),
                 ];
             }
@@ -522,5 +522,10 @@ final class MemberConversations
         }
 
         return $out;
+    }
+
+    private static function iso(mixed $value): ?string
+    {
+        return $value instanceof \DateTimeInterface ? $value->format(\DateTimeInterface::ATOM) : null;
     }
 }

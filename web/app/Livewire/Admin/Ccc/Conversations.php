@@ -352,7 +352,7 @@ final class Conversations extends Component
     {
         return view('livewire.admin.ccc.conversations', [
             'preview' => $this->preview(app(ManageConversationsBd::class), app(ConversationsBdCatalog::class)),
-            'missing' => $this->section === 'conversations' ? $this->conversations->mapWithKeys(static fn (BdConversation $c): array => [(int) $c->getKey() => self::missingImages($c)])->all() : [],
+            'missing' => $this->section === 'conversations' ? $this->conversations()->mapWithKeys(static fn (BdConversation $c): array => [(int) $c->getKey() => self::missingImages($c)])->all() : [],
             'types' => BubbleType::cases(),
             'targets' => BubbleTailTarget::cases(),
         ]);

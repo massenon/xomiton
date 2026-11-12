@@ -71,7 +71,7 @@ final class ManageConversationsBd
             ]);
         } else {
             // Un modèle redevient un brouillon ; une création de membre (lot B) est retirée.
-            $member = $conversation->origin === BdConversationOrigin::Member;
+            $member = BdConversationOrigin::tryFrom((string) $conversation->getRawOriginal('origin')) === BdConversationOrigin::Member;
             $conversation->forceFill([
                 'status' => $member ? BdConversationStatus::Withdrawn : BdConversationStatus::Draft,
                 'withdrawn_at' => $member ? now() : null,

@@ -58,14 +58,14 @@ final class Index extends Component
     public string $externalId = '';
 
     /** @var array{kind: string, reference: string, message: string, channels: list<int|string>, at: string, republish?: bool} */
-    public array $postForm = [];
+    public array $postForm = ['kind' => '', 'reference' => '', 'message' => '', 'channels' => [], 'at' => ''];
 
     /**
      * Calendrier BD en lot (P19-11).
      *
      * @var array{channels: list<int|string>, date: string, time: string, every: string}
      */
-    public array $seriesForm = [];
+    public array $seriesForm = ['channels' => [], 'date' => '', 'time' => '', 'every' => ''];
 
     /** Aperçu du calendrier en lot affiché (après « Prévisualiser »). */
     public bool $seriesPreview = false;
