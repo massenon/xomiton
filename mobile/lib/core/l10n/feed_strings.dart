@@ -1,0 +1,90 @@
+/// Textes propres à l'application pour la publication (sondage, images, vidéo), la galerie, le lecteur
+/// vidéo et « Mes vidéos » : absents de `web/lang/fr/feed.php` (clés `mobile_*` seulement, règle
+/// testée par `strings_test`). Les textes partagés avec le web (vie privée, relecture, états, erreurs)
+/// viennent de l'ARB exporté. ` ` : espace insécable avant « : », « ? », « ! » et dans « » (typographie française).
+const Map<String, String> kFeedStringsFr = {
+  // Contrôle local du formulaire.
+  'mobile_compose_body_too_long': 'Ton message dépasse {max} caractères.',
+  'mobile_compose_option_too_long': 'Une réponse ne peut pas dépasser {max} caractères.',
+  'mobile_compose_alt_too_long': 'La description d’une image ne peut pas dépasser {max} caractères.',
+  'mobile_compose_video_type': 'Choisis une vidéo au format MP4 ou WebM.',
+  'mobile_compose_video_too_big': 'Cette vidéo est trop lourde ({max} Mo maximum).',
+  'mobile_compose_media_needs_network':
+      'Pas de réseau : les images et les vidéos ne partent qu’en ligne. Ton brouillon est conservé, réessaie dès que la connexion revient.',
+  'mobile_compose_processing': 'Ton envoi est en cours de traitement. Patiente un instant, puis vérifie ton fil.',
+  // Sondage.
+  'mobile_compose_poll_max_reached': 'Tu as atteint le maximum de {max} réponses.',
+  'mobile_compose_poll_option_added': 'Réponse {n} ajoutée. {count} réponses sur {max}.',
+  'mobile_compose_poll_option_removed': 'Réponse retirée. Il reste {count} réponses.',
+  // Images.
+  'mobile_compose_images_title': 'Images',
+  'mobile_compose_images_help': 'JPG, PNG ou WebP, {max} Mo maximum chacune. Décris chaque image pour les personnes qui ne la voient pas.',
+  'mobile_compose_images_add': 'Ajouter des images',
+  'mobile_compose_images_counter': '{count} / {max}',
+  'mobile_compose_images_counter_sr': '{count} images sur {max}',
+  'mobile_compose_images_full': 'Tu as atteint le maximum de {max} images.',
+  'mobile_compose_images_trimmed': 'Tu ne peux joindre que {max} images : les autres n’ont pas été ajoutées.',
+  'mobile_compose_images_excl_video': 'Pour ajouter des images, retire d’abord la vidéo.',
+  'mobile_compose_image_added': '{count, plural, =0{Aucune image ajoutée.} =1{1 image ajoutée.} other{{count} images ajoutées.}}',
+  'mobile_compose_image_position': 'Image {n} sur {total}',
+  'mobile_compose_image_preview': 'Aperçu de l’image {n} : {name}',
+  'mobile_compose_image_alt_label': 'Description de l’image {n}',
+  'mobile_compose_image_move_up': 'Monter l’image {n}',
+  'mobile_compose_image_move_down': 'Descendre l’image {n}',
+  'mobile_compose_image_remove': 'Retirer l’image {n}',
+  'mobile_compose_image_moved': 'Image déplacée : elle est maintenant en position {pos} sur {total}.',
+  'mobile_compose_image_removed': 'Image retirée. Il en reste {count} sur {max}.',
+  // Vidéo.
+  'mobile_compose_video_title': 'Vidéo',
+  'mobile_compose_video_help':
+      'MP4 ou WebM, {max} Mo maximum. Une vidéo ne s’ajoute ni à des images ni à un sondage, et elle est relue avant de paraître.',
+  'mobile_compose_video_pick': 'Choisir une vidéo',
+  'mobile_compose_video_change': 'Changer de vidéo',
+  'mobile_compose_video_remove': 'Retirer la vidéo',
+  'mobile_compose_video_selected': 'Vidéo choisie : {name} ({size})',
+  'mobile_compose_video_description': 'Description de la vidéo',
+  'mobile_compose_video_description_help':
+      'Obligatoire, de {min} à {max} caractères. Décris ce qu’on y voit, pour les personnes qui ne peuvent pas la regarder.',
+  'mobile_compose_video_excl_images': 'Pour ajouter une vidéo, retire d’abord les images.',
+  'mobile_compose_video_picked': 'Vidéo ajoutée.',
+  'mobile_compose_video_removed': 'Vidéo retirée.',
+  'mobile_compose_video_removed_for_poll': 'La vidéo a été retirée : un sondage ne peut pas en contenir.',
+  'mobile_compose_privacy_title': 'Avant d’envoyer ta vidéo',
+  'mobile_compose_privacy_confirm': 'Envoyer la vidéo',
+  'mobile_compose_upload_progress': 'Envoi : {percent} %',
+  'mobile_compose_upload_cancel': 'Annuler l’envoi',
+  'mobile_compose_upload_cancelled': 'Envoi annulé. Ton brouillon est conservé.',
+  // Galerie.
+  'mobile_gallery_label': '{count, plural, =1{1 image} other{{count} images}}',
+  'mobile_gallery_image_alt_missing': 'Image {n} sur {total}, sans description',
+  'mobile_gallery_open_hint': 'Ouvrir en plein écran',
+  'mobile_gallery_counter': '{n} / {total}',
+  'mobile_gallery_viewer_title': 'Image {n} sur {total}',
+  'mobile_gallery_prev': 'Image précédente',
+  'mobile_gallery_next': 'Image suivante',
+  'mobile_gallery_swipe_hint': 'Glisse pour changer d’image',
+  'mobile_gallery_load_failed': 'Cette image n’est pas disponible.',
+  // Lecteur vidéo.
+  'mobile_video_play': 'Lire la vidéo',
+  'mobile_video_pause': 'Mettre la vidéo en pause',
+  'mobile_video_fullscreen': 'Plein écran',
+  'mobile_video_exit_fullscreen': 'Quitter le plein écran',
+  'mobile_video_seek': 'Position dans la vidéo',
+  'mobile_video_position': '{position} sur {duration}',
+  'mobile_video_spoken': '{minutes} min {seconds} s',
+  'mobile_video_loading': 'Chargement de la vidéo…',
+  'mobile_video_playing': 'Lecture en cours.',
+  'mobile_video_paused': 'Vidéo en pause.',
+  'mobile_video_error': 'Impossible de lire cette vidéo pour le moment. Son lien a peut-être expiré : réessaie.',
+  'mobile_video_region': 'Vidéo : {description}',
+  // Relecture (auteur·rice) et « Mes vidéos ».
+  'mobile_review_pending_help': 'Pour l’instant, elle n’est visible que par toi et l’équipe de modération.',
+  'mobile_review_rejected_help': 'Tu peux la retirer. Elle sera de toute façon supprimée après quelques jours.',
+  'mobile_review_remove': 'Retirer',
+  'mobile_review_remove_confirm_title': 'Retirer cette vidéo ?',
+  'mobile_review_remove_confirm_body':
+      'Elle sera supprimée et ne sera jamais publiée. Elle compte quand même dans ta limite de vidéos par jour.',
+  'mobile_myvideos_title': 'Mes vidéos',
+  'mobile_myvideos_intro': 'Les vidéos que tu as envoyées et qui ne sont pas encore en ligne : en attente de relecture ou refusées.',
+  'mobile_myvideos_empty': 'Aucune vidéo en attente ni refusée.',
+};

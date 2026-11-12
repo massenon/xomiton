@@ -163,6 +163,50 @@ class Poll {
   }
 }
 
+/// Un média de `media[]` (docs/API.md §8.4) : image ou vidéo, dans l'ordre (`position`).
+/// `alt` : texte alternatif d'une image (peut être nul) ou description d'une vidéo.
+class PostMedia {
+  const PostMedia({
+    required this.kind,
+    required this.url,
+    this.alt,
+    this.width,
+    this.height,
+    this.position = 0,
+    this.mime,
+    this.size,
+  });
+  final String kind;
+  final String url;
+  final String? alt;
+  final int? width;
+  final int? height;
+  final int position;
+  final String? mime;
+  final int? size;
+
+  bool get isVideo => kind == 'video';
+  bool get isImage => kind == 'image';
+
+  factory PostMedia.fromJson(Map<String, dynamic> j) => PostMedia(
+    kind: '${j['kind'] ?? 'image'}',
+    url: '${j['url'] ?? ''}',
+    alt: j['alt'] is String && (j['alt'] as String).trim().isNotEmpty
+        ? j['alt'] as String
+        : null,
+    width: j['width'] is num ? (j['width'] as num).toInt() : null,
+    height: j['height'] is num ? (j['height'] as num).toInt() : null,
+    position: _int(j['position']),
+    mime: j['mime'] as String?,
+    size: j['size'] is num ? (j['size'] as num).toInt() : null,
+  );
+}
+
+/// États de relecture d'une vidéo (`review_state`, docs/API.md §8.7).
+const kReviewPending = 'pending';
+const kReviewApproved = 'approved';
+const kReviewRejected = 'rejected';
+
 class Post {
   const Post({
     required this.id,
@@ -179,8 +223,11 @@ class Post {
     required this.canReport,
     this.poll,
     this.publishedAt,
-    this.imageUrl,
+    this.media = const [],
     this.moderated = false,
+    this.reviewState,
+    this.reviewLabel,
+    this.reviewReason,
   });
   final String id;
   final Author author;
@@ -196,12 +243,27 @@ class Post {
   final bool canReport;
   final Poll? poll;
   final DateTime? publishedAt;
-  final String? imageUrl;
+  final List<PostMedia> media;
   final bool moderated;
+
+  /// `null` (publication ordinaire), `pending`, `approved` ou `rejected`.
+  final String? reviewState;
+  final String? reviewLabel;
+
+  /// Motif du refus : visible de l'auteur·rice seulement.
+  final String? reviewReason;
+
+  /// Première image (ancien champ « image unique »).
+  String? get imageUrl => media.where((m) => m.isImage).firstOrNull?.url;
+  List<PostMedia> get images => media.where((m) => m.isImage).toList();
+  PostMedia? get video => media.where((m) => m.isVideo).firstOrNull;
+
+  /// Vidéo en attente ou refusée : jamais dans le fil, seulement chez son auteur·rice.
+  bool get inReview =>
+      reviewState == kReviewPending || reviewState == kReviewRejected;
 
   factory Post.fromJson(Map<String, dynamic> j) {
     final can = _map(j['can']);
-    final media = _list(j['media']);
     return Post(
       id: '${j['id']}',
       author: Author.fromJson(_map(j['author'])),
@@ -217,8 +279,18 @@ class Post {
       canReport: can['report'] == true,
       poll: j['poll'] is Map ? Poll.fromJson(_map(j['poll'])) : null,
       publishedAt: _date(j['published_at']),
-      imageUrl: media.isEmpty ? null : media.first['url'] as String?,
+      media: _list(j['media']).map(PostMedia.fromJson).toList()
+        ..sort((a, b) => a.position.compareTo(b.position)),
       moderated: j['moderated'] == true,
+      reviewState: j['review_state'] is String
+          ? j['review_state'] as String
+          : null,
+      reviewLabel: j['review_label'] is String
+          ? j['review_label'] as String
+          : null,
+      reviewReason: j['review_reason'] is String
+          ? j['review_reason'] as String
+          : null,
     );
   }
 
@@ -237,8 +309,11 @@ class Post {
     canReport: canReport,
     poll: poll ?? this.poll,
     publishedAt: publishedAt,
-    imageUrl: imageUrl,
+    media: media,
     moderated: moderated,
+    reviewState: reviewState,
+    reviewLabel: reviewLabel,
+    reviewReason: reviewReason,
   );
 }
 
