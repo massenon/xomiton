@@ -1,0 +1,101 @@
+{
+  "slug": "diffamation-en-ligne",
+  "key": "vn12",
+  "category": "harcelement-en-ligne",
+  "title": "Diffamation en ligne",
+  "summary": "Des mensonges sur vous circulent dans des groupes, des statuts ou des commentaires ? Ne pas répondre à chaud, garder les preuves, signaler et se faire accompagner.",
+  "content_warning": "Ce contenu évoque des rumeurs et des mensonges diffusés en ligne pour nuire à la réputation d’une personne.",
+  "bd": {
+    "title": "Ce qu’on dit de Mariam",
+    "cover": {
+      "image": "assets/images/violences-numeriques/diffamation-en-ligne/couverture.webp",
+      "alt": "Au marché, Mariam montre fièrement un téléphone affichant un bouclier, Tantie Rosine à ses côtés ; des nuages gris marqués d’alertes s’éloignent."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/diffamation-en-ligne/planche-1.webp",
+        "caption": "Un matin, une cliente montre à Mariam une publication dans un groupe Facebook du quartier : on y raconte qu’elle vole les pièces des téléphones. Le message est partagé dans des statuts. « Ce n’est pas vrai… Qui a écrit ça ? »",
+        "alt": "Au stand de réparation, Mariam regarde son téléphone, choquée. Une bulle montre une publication abstraite partagée de flèche en flèche, avec des alertes. Des passant·es chuchotent."
+      },
+      {
+        "image": "assets/images/violences-numeriques/diffamation-en-ligne/planche-2.webp",
+        "caption": "Mariam a envie de répondre, mais elle attend. Elle fait des captures de la publication et des partages, copie les liens et note les dates. « Je ne réponds pas sous la colère. Je garde les preuves. »",
+        "alt": "Le soir, assise à son stand, Mariam fait des captures sur son téléphone : des icônes d’appareil photo, de calendrier et de lien rejoignent un dossier jaune."
+      },
+      {
+        "image": "assets/images/violences-numeriques/diffamation-en-ligne/planche-3.webp",
+        "caption": "Elle se confie à Tantie Rosine autour d’un thé. Rosine l’écoute et la croit. « Ceux qui te connaissent savent qui tu es. On va s’en occuper ensemble, sans aller provoquer personne. »",
+        "alt": "Dans une cour sous un manguier, Mariam parle, la main ouverte, assise sur un banc près de Tantie Rosine, qui pose la main sur son bras. Une théière sur une petite table."
+      },
+      {
+        "image": "assets/images/violences-numeriques/diffamation-en-ligne/planche-4.webp",
+        "caption": "Au stand, Nadia, pair animatrice de Xomiton, aide Mariam à signaler la publication au réseau social et à faire un signalement sur Xomiton. La publication est retirée, et une cliente fidèle revient. « La vérité a du poids. »",
+        "alt": "Au stand, Mariam et Nadia sourient. Mariam montre un téléphone avec un bouclier validé ; Nadia désigne un ordinateur avec un drapeau et un bouclier. Au fond, une cliente salue."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>La diffamation en ligne, c’est le fait de <strong>répandre des mensonges</strong> sur une personne pour salir sa réputation : publications dans des groupes Facebook ou WhatsApp, statuts, vidéos TikTok, faux témoignages ou commentaires.</p><p>Ces rumeurs peuvent toucher votre travail, vos études, votre famille ou votre sécurité. Elles visent souvent les femmes et les personnes LBTQ+, par exemple sur leur vie privée ou leur honnêteté. Elles se partagent vite, mais <strong>vous n’êtes pas responsable de ce que d’autres inventent</strong>.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Des proches ou des client·es vous parlent d’une publication à votre sujet.</li><li>Des inconnu·es vous regardent ou vous écrivent après une rumeur.</li><li>Votre nom ou votre photo apparaît dans des groupes où vous n’êtes pas.</li><li>Un faux compte publie des « révélations » sur vous.</li><li>Les mêmes accusations reviennent dans plusieurs statuts ou commentaires.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas à chaud</strong> et n’allez pas confronter seul·e la personne qui publie.</li><li><strong>Gardez les preuves</strong> : captures avec la date, le nom du compte, le nom du groupe et le lien. Demandez à une personne de confiance de capturer ce que vous ne voyez pas.</li><li><strong>Notez</strong> les conséquences : client·es perdu·es, messages reçus, menaces.</li><li><strong>Signalez</strong> la publication et le compte au réseau social, et demandez son retrait.</li><li><strong>Parlez-en</strong> à une personne de confiance et faites un signalement sur Xomiton.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Limitez qui peut voir vos photos et vos informations personnelles.</li><li>Sur WhatsApp et Facebook, choisissez qui peut vous ajouter aux groupes.</li><li>Gardez une trace de vos échanges importants (paiements, accords) pour pouvoir rétablir les faits.</li><li>Entourez-vous de personnes qui peuvent témoigner de votre sérieux.</li><li>Prenez soin de vous : une rumeur pèse lourd, vous avez le droit d’être soutenu·e.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Faut-il répondre publiquement pour démentir ?",
+      "answer": "Pas à chaud. Une réponse peut relancer la rumeur et attirer d’autres attaques. Gardez d’abord les preuves et signalez. Plus tard, si vous le souhaitez, un message court et calme peut rétablir les faits, idéalement après en avoir parlé à une personne de confiance."
+    },
+    {
+      "question": "La publication a été supprimée. Est-ce que j’ai encore des preuves ?",
+      "answer": "Si vous ou un·e proche avez fait des captures avant, oui : gardez-les avec la date et le lien. C’est pour cela qu’il faut capturer dès que possible. Notez aussi les noms des personnes qui ont vu la publication."
+    },
+    {
+      "question": "Je connais la personne qui ment sur moi. Dois-je aller la voir ?",
+      "answer": "N’y allez pas seul·e et pas sous le coup de la colère : la situation pourrait s’aggraver. Gardez les preuves, parlez-en à une personne de confiance et faites-vous accompagner, par exemple grâce au signalement sur Xomiton."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/diffamation-en-ligne/partage.webp",
+    "alt": "Mariam, souriante devant un cercle bleu à son stand, montre un téléphone avec un drapeau et un bouclier ; Tantie Rosine pose la main sur son épaule. Des nuages gris se dissipent.",
+    "text": "Des mensonges sur toi circulent dans un groupe ou des statuts ? Ta réputation compte 💜 Ne réponds pas à chaud : garde des captures avec les dates et les liens, signale la publication et parles-en à une personne de confiance. Tu n’as pas à porter ça seul·e 🛡️ Lis notre BD « Ce qu’on dit de Mariam » pour voir comment elle a fait face."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": {
+      "couverture": "2026-11-12",
+      "planche-1": "2026-11-12",
+      "planche-2": "2026-11-12",
+      "planche-3": "2026-11-12",
+      "planche-4": "2026-11-13",
+      "partage": "2026-11-13"
+    },
+    "figma_nodes": {
+      "couverture": "3:4",
+      "planche-1": "3:9",
+      "planche-2": "3:13",
+      "planche-3": "3:18",
+      "planche-4": "4:9",
+      "partage": "4:36"
+    }
+  }
+}

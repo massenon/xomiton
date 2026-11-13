@@ -1,0 +1,101 @@
+{
+  "slug": "surveillance-suivi-non-consenti",
+  "key": "vn16",
+  "category": "surveillance-controle",
+  "title": "Surveillance et suivi non consenti",
+  "summary": "Quelqu’un lit vos messages ou connaît vos conversations ? Un logiciel espion ou un accès à vos comptes peut en être la cause. Repérer les signes et agir sans danger.",
+  "content_warning": "Ce contenu évoque la surveillance d’un téléphone et de messages privés dans le couple.",
+  "bd": {
+    "title": "Qui lit mes messages ?",
+    "cover": {
+      "image": "assets/images/violences-numeriques/surveillance-suivi-non-consenti/couverture.webp",
+      "alt": "Dans une cour de Porto-Novo, Tantie Rosine tient son téléphone avec assurance ; autour d’elle flottent un œil barré, un cadenas et un bouclier."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/surveillance-suivi-non-consenti/planche-1.webp",
+        "caption": "Ce soir, le mari de Tantie Rosine lui répète mot pour mot ce qu’elle a écrit à sa sœur dans l’après-midi. Elle ne lui a rien montré. « Comment peut-il savoir ? Quelqu’un lit mes messages… »",
+        "alt": "Dans une cour de Porto-Novo, Tantie Rosine, assise sur un banc près d’une porte ouverte, regarde son téléphone, soucieuse. Une petite bulle montre un œil."
+      },
+      {
+        "image": "assets/images/violences-numeriques/surveillance-suivi-non-consenti/planche-2.webp",
+        "caption": "Rosine ne dit rien et ne supprime rien. Elle observe : batterie qui se vide vite, téléphone qui chauffe, une appli qu’elle ne connaît pas. Elle note tout dans un carnet qu’elle garde en lieu sûr.",
+        "alt": "À une table près d’une fenêtre, Tantie Rosine écrit dans un carnet. À côté de son téléphone flottent une alerte, une batterie faible, un signe de chaleur et une appli inconnue."
+      },
+      {
+        "image": "assets/images/violences-numeriques/surveillance-suivi-non-consenti/planche-3.webp",
+        "caption": "Au marché, elle se confie à Mariam, qui répare des téléphones. « Ne supprime rien tout de suite, ça pourrait l’alerter. Plan d’abord. On cherchera de l’aide depuis un appareil sûr. »",
+        "alt": "Au stand de réparation de Mariam, Tantie Rosine parle, la main sur le comptoir. Mariam, attentive, explique d’un geste. Un bouclier flotte entre elles."
+      },
+      {
+        "image": "assets/images/violences-numeriques/surveillance-suivi-non-consenti/planche-4.webp",
+        "caption": "Depuis le téléphone de Mariam, Rosine appelle Nadia, pair animatrice de Xomiton. Ensemble, elles préparent un plan de sécurité, puis Rosine fait un signalement. « Votre vie privée vous appartient. On avance à votre rythme. »",
+        "alt": "Au stand, Tantie Rosine tient le téléphone de Mariam, en appel avec Nadia. Mariam est à ses côtés. Une tablette montre un bouclier, un cadenas, un cœur et un drapeau."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>La surveillance non consentie, c’est quand une personne <strong>accède à votre téléphone, vos messages ou vos comptes sans votre accord</strong>. Elle peut utiliser un logiciel espion, WhatsApp Web ouvert sur un autre appareil, un compte Google ou iCloud dont elle connaît le mot de passe, ou votre code de verrouillage.</p><p>Cela arrive souvent dans le couple ou la famille. Le but est de contrôler : savoir à qui vous parlez, ce que vous dites, où vous allez. <strong>Ce n’est pas de l’amour ni de l’inquiétude, c’est du contrôle.</strong> Vous n’y êtes pour rien.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>La personne connaît le contenu de vos conversations privées.</li><li>Votre batterie se vide vite, le téléphone chauffe ou consomme beaucoup de données.</li><li>Une application inconnue apparaît, ou des réglages changent sans vous.</li><li>WhatsApp affiche des « appareils connectés » que vous ne reconnaissez pas.</li><li>On vous a « offert » ou « réparé » votre téléphone, ou on exige votre code.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Si vous êtes en danger</strong>, utilisez la <a href=\"/sos\">page SOS</a> ou les <a href=\"/urgences\">numéros d’urgence</a>.</li><li><strong>Ne supprimez rien tout de suite</strong> et ne confrontez pas la personne : couper la surveillance peut l’alerter.</li><li><strong>Notez les signes</strong> dans un carnet ou sur un appareil sûr : dates, faits, phrases qui révèlent vos messages.</li><li><strong>Utilisez un appareil sûr</strong> (celui d’une personne de confiance) pour chercher de l’aide.</li><li><strong>Préparez un plan de sécurité</strong> avant de changer vos mots de passe ou de réinitialiser le téléphone.</li><li><a href=\"/signaler\">Signalez la situation sur Xomiton</a>, anonymement si vous le souhaitez.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Gardez un code de verrouillage que vous êtes seul·e à connaître.</li><li>Vérifiez régulièrement les appareils connectés à WhatsApp, Google ou iCloud.</li><li>Activez la validation en deux étapes et changez vos mots de passe depuis un appareil sûr.</li><li>Faites contrôler votre téléphone par une personne de confiance, jamais par celle qui vous surveille.</li><li>Convenez d’un mot code avec un·e proche pour demander de l’aide discrètement.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Comment savoir si mon téléphone est espionné ?",
+      "answer": "Aucun signe n’est une preuve à lui seul, mais plusieurs ensemble doivent alerter : batterie, chaleur, appli inconnue, appareils connectés et surtout une personne qui connaît vos messages. Faites vérifier le téléphone par une personne de confiance, depuis un lieu sûr."
+    },
+    {
+      "question": "Pourquoi ne pas tout supprimer tout de suite ?",
+      "answer": "Parce que la personne pourrait s’en rendre compte et réagir avec colère. Supprimer efface aussi des preuves. Préparez d’abord un plan de sécurité avec une personne de confiance, puis choisissez le bon moment pour sécuriser le téléphone."
+    },
+    {
+      "question": "Mon mari dit qu’il a le droit de lire mes messages. Est-ce vrai ?",
+      "answer": "Non. Être en couple ne donne pas le droit de lire vos messages sans votre accord ni d’exiger vos codes. Votre vie privée vous appartient. Vous pouvez en parler à une personne formée de façon confidentielle."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/surveillance-suivi-non-consenti/partage.webp",
+    "alt": "Tantie Rosine, sereine devant un cercle bleu dans une cour, tient son téléphone contre elle ; au-dessus flottent un œil barré, un cadenas et un bouclier.",
+    "text": "Quelqu’un connaît le contenu de tes messages sans que tu les lui aies montrés ? Ce n’est pas de l’amour, c’est du contrôle 💜 Ne supprime rien dans la précipitation : note les signes, cherche de l’aide depuis un appareil sûr et prépare un plan de sécurité avec une personne de confiance 🛡️ Lis notre BD « Qui lit mes messages ? » pour suivre Tantie Rosine."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": {
+      "couverture": "2026-11-12",
+      "planche-1": "2026-11-12",
+      "planche-2": "2026-11-12",
+      "planche-3": "2026-11-12",
+      "planche-4": "2026-11-13",
+      "partage": "2026-11-13"
+    },
+    "figma_nodes": {
+      "couverture": "3:7",
+      "planche-1": "3:11",
+      "planche-2": "3:16",
+      "planche-3": "3:19",
+      "planche-4": "4:19",
+      "partage": "4:23"
+    }
+  }
+}

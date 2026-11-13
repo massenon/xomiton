@@ -1,0 +1,101 @@
+{
+  "slug": "refus-services-acces-bloques",
+  "key": "vn19",
+  "category": "surveillance-controle",
+  "title": "Refus de services ou accès bloqués",
+  "summary": "Mobile Money bloqué, mots de passe changés, comptes communs fermés lors d’un conflit ? Garder les preuves, récupérer vos accès en agence officielle et vous protéger.",
+  "content_warning": "Ce contenu évoque un conflit dans lequel une personne coupe l’accès de sa compagne à son argent et à ses comptes.",
+  "bd": {
+    "title": "Mes accès, ma liberté",
+    "cover": {
+      "image": "assets/images/violences-numeriques/refus-services-acces-bloques/couverture.webp",
+      "alt": "Dans une cour de Porto-Novo, Mariam montre un téléphone avec un cadenas ouvert ; autour flottent une clé, un bouclier, un portefeuille et une maison. Tantie Rosine sourit derrière elle."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/refus-services-acces-bloques/planche-1.webp",
+        "caption": "Après une dispute, le compagnon de Mariam a changé ses mots de passe. Son portefeuille Mobile Money est bloqué, sa messagerie et leurs comptes communs inaccessibles. « Tout est fermé… Comment je fais pour mes clients ? »",
+        "alt": "À son stand, Mariam regarde son téléphone, inquiète. Une bulle montre trois lignes : un portefeuille, une messagerie et une clé, chacune avec un cadenas et une alerte."
+      },
+      {
+        "image": "assets/images/violences-numeriques/refus-services-acces-bloques/planche-2.webp",
+        "caption": "Mariam ne supplie pas et ne paie personne. Elle fait des captures des messages d’erreur et note les dates. Puis elle va au kiosque officiel de son opérateur, avec sa pièce d’identité, pour récupérer sa ligne et son portefeuille.",
+        "alt": "À gauche, Mariam fait des captures ; une icône de caméra, un calendrier et un dossier flottent. À droite, elle tend sa pièce d’identité à une agente souriante dans un kiosque."
+      },
+      {
+        "image": "assets/images/violences-numeriques/refus-services-acces-bloques/planche-3.webp",
+        "caption": "Chez Tantie Rosine, elles dressent un plan de sécurité : nouveaux codes gardés secrets, argent mis à l’abri, lieu où dormir, personnes à prévenir. « Ton argent et tes comptes, c’est ton autonomie. »",
+        "alt": "À une table sous un manguier, Mariam et Tantie Rosine discutent devant une feuille où figurent des icônes cochées : bouclier, clé, maison, cœur et téléphone."
+      },
+      {
+        "image": "assets/images/violences-numeriques/refus-services-acces-bloques/planche-4.webp",
+        "caption": "Accès retrouvés, Mariam souffle. Avec Nadia, pair animatrice de Xomiton, elle fait un signalement et découvre l’annuaire pour être accompagnée. « Personne n’a le droit de te couper du monde. »",
+        "alt": "À une table ombragée, Mariam, soulagée, montre un téléphone avec un bouclier validé et une clé. Nadia, souriante, désigne un ordinateur affichant un drapeau et un cœur."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Le refus de services, c’est quand une personne <strong>vous coupe l’accès</strong> à des comptes, des outils ou des services essentiels : portefeuille Mobile Money, carte SIM, messagerie, réseaux sociaux, compte bancaire, téléphone ou Internet de la maison.</p><p>Cela arrive souvent pendant un conflit dans le couple ou la famille. La personne change les mots de passe, garde votre téléphone ou vos papiers, ou ferme des comptes communs. Le but est de vous isoler et de vous rendre dépendant·e. <strong>C’est une forme de violence et de contrôle</strong>, pas une simple dispute.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Vos mots de passe ou codes ne fonctionnent plus du jour au lendemain.</li><li>Votre portefeuille Mobile Money ou votre carte SIM est bloqué sans explication.</li><li>On garde votre téléphone, votre pièce d’identité ou votre carte SIM.</li><li>On vous exclut des comptes communs ou on les vide.</li><li>On vous coupe Internet ou le crédit pour vous empêcher de joindre vos proches.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Si vous êtes en danger</strong>, utilisez la <a href=\"/sos\">page SOS</a> ou les <a href=\"/urgences\">numéros d’urgence</a>.</li><li><strong>Ne payez personne</strong> et ne donnez aucun code pour « débloquer » vos comptes.</li><li><strong>Gardez les preuves</strong> : captures des messages d’erreur, dates, messages reçus.</li><li><strong>Récupérez vos accès</strong> par les voies officielles : agence ou kiosque de votre opérateur avec votre pièce d’identité, procédure de récupération du réseau social.</li><li><strong>Préparez un plan de sécurité</strong> avec une personne de confiance : où aller, qui prévenir.</li><li><a href=\"/signaler\">Signalez la situation sur Xomiton</a>.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Gardez un code PIN et des mots de passe que vous êtes seul·e à connaître.</li><li>Ajoutez à vos comptes un e-mail et un numéro de récupération qui vous appartiennent.</li><li>Gardez une copie de vos papiers chez une personne de confiance.</li><li>Mettez un peu d’argent de côté dans un endroit sûr.</li><li>Notez les numéros importants sur papier, au cas où vous perdriez votre téléphone.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Mon compagnon a changé le code de mon Mobile Money. Puis-je le récupérer ?",
+      "answer": "Rendez-vous dans une agence officielle de l’opérateur avec votre pièce d’identité pour expliquer la situation. N’utilisez jamais un intermédiaire qui demande de l’argent. Gardez vos preuves et faites-vous accompagner si besoin."
+    },
+    {
+      "question": "Il garde mon téléphone et mes papiers. Que faire ?",
+      "answer": "Ne tentez pas de les reprendre seul·e si cela vous met en danger. Demandez de l’aide à une personne de confiance, notez les faits et faites un signalement. Une agence peut souvent bloquer votre SIM et vous en délivrer une nouvelle."
+    },
+    {
+      "question": "Est-ce vraiment une violence s’il ne me frappe pas ?",
+      "answer": "Oui. Couper l’accès à votre argent, vos comptes ou vos proches est une forme de contrôle qui peut vous isoler et vous rendre dépendant·e. Vous avez le droit d’être accompagné·e, même sans violence physique."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/refus-services-acces-bloques/partage.webp",
+    "alt": "Mariam, souriante devant un cercle bleu dans une cour, montre un téléphone avec un cadenas ouvert ; autour flottent un portefeuille, une clé, un bouclier et un cœur.",
+    "text": "Ton Mobile Money bloqué, tes mots de passe changés, tes comptes fermés pendant une dispute ? Ce n’est pas une simple querelle, c’est du contrôle 💜 Garde des captures, ne paie personne, récupère tes accès en agence officielle avec ta pièce d’identité et prépare un plan de sécurité 🛡️ Lis notre BD « Mes accès, ma liberté » pour suivre Mariam."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": {
+      "couverture": "2026-11-12",
+      "planche-1": "2026-11-12",
+      "planche-2": "2026-11-12",
+      "planche-3": "2026-11-12",
+      "planche-4": "2026-11-13",
+      "partage": "2026-11-13"
+    },
+    "figma_nodes": {
+      "couverture": "3:5",
+      "planche-1": "3:8",
+      "planche-2": "3:15",
+      "planche-3": "3:22",
+      "planche-4": "4:26",
+      "partage": "4:29"
+    }
+  }
+}
