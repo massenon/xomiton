@@ -1,0 +1,94 @@
+{
+  "slug": "controle-des-appareils",
+  "key": "vn17",
+  "category": "surveillance-controle",
+  "title": "Contrôle des appareils",
+  "summary": "Une caméra, un micro ou un objet connecté sert à vous surveiller chez vous ? Gardez votre calme, notez tout et préparez un plan avant de reprendre le contrôle.",
+  "content_warning": "Ce contenu évoque la surveillance d’une personne à son domicile par des appareils connectés.",
+  "bd": {
+    "title": "Chez moi, c’est chez moi",
+    "cover": {
+      "image": "assets/images/violences-numeriques/controle-des-appareils/couverture.webp",
+      "alt": "Dans son salon à Cotonou, Mariam sourit et montre un téléphone avec un cadenas ; Kossi tient un routeur Wi-Fi. Sur l’étagère, une caméra est couverte d’un tissu."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/controle-des-appareils/planche-1.webp",
+        "caption": "Depuis la rupture, l’ex de Mariam lui envoie des messages sur ce qu’elle fait chez elle : ses visites, ses horaires. Un soir, elle remarque la petite caméra Wi-Fi qu’il avait installée « pour la sécurité ». « Il me regarde encore ? »",
+        "alt": "Dans son salon à Cotonou, Mariam, surprise, lève les yeux vers une petite caméra blanche sur une étagère ; son téléphone affiche des bulles grises, un œil et des alertes."
+      },
+      {
+        "image": "assets/images/violences-numeriques/controle-des-appareils/planche-2.webp",
+        "caption": "Mariam ne débranche rien sous le coup de la colère : cela pourrait alerter son ex. Sur son balcon, hors du champ de la caméra, elle note les heures des messages et garde des captures. « D’abord comprendre, ensuite agir. »",
+        "alt": "Sur son balcon, Mariam écrit calmement dans un carnet orné d’horloges ; son téléphone montre une capture rangée dans un dossier verrouillé. Au fond, la caméra est restée en place."
+      },
+      {
+        "image": "assets/images/violences-numeriques/controle-des-appareils/planche-3.webp",
+        "caption": "À son stand du marché, Mariam en parle à son ami Kossi. Ensemble, ils dressent la liste de tous les objets connectés de l’appartement : caméra, routeur, télévision, enceinte, tablette. « Chaque appareil compte. »",
+        "alt": "Au stand de réparation de Mariam, au marché, elle et Kossi cochent une liste dessinée en pictogrammes : caméra, routeur, télévision, enceinte, téléphone, tablette."
+      },
+      {
+        "image": "assets/images/violences-numeriques/controle-des-appareils/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Mariam prépare un plan de sécurité et fait un signalement. Puis Kossi réinitialise le routeur, la caméra est débranchée et tous les mots de passe changent. « Chez moi, je suis libre. »",
+        "alt": "Dans le salon lumineux, Nadia montre à Mariam une tablette avec un plan en icônes ; Kossi appuie sur le bouton du routeur. La caméra est débranchée, son câble enroulé."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Le contrôle des appareils, c’est quand une personne utilise des objets connectés pour vous surveiller ou vous faire peur : caméra Wi-Fi, babyphone, enceinte connectée, télévision, routeur, téléphone ou ordinateur. Elle peut regarder, écouter, couper Internet ou allumer des appareils à distance.</p><p>Souvent, c’est un·e partenaire ou un·e ex qui a installé l’appareil ou qui connaît encore les mots de passe. <strong>Votre domicile doit rester un lieu sûr</strong>. Être surveillé·e chez soi n’est jamais normal, et ce n’est jamais votre faute.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>La personne sait ce que vous faites ou dites chez vous sans y être.</li><li>Une caméra, une enceinte ou un objet que vous n’avez pas choisi est installé chez vous.</li><li>Un voyant s’allume, un appareil bouge ou fait du bruit sans raison.</li><li>Le Wi-Fi est coupé ou son mot de passe change sans vous.</li><li>Vous recevez des alertes de connexion que vous ne comprenez pas.</li><li>Des applications de contrôle d’appareils sont installées sur votre téléphone.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Votre sécurité d’abord.</strong> Ne débranchez rien sous le coup de la colère : la personne pourrait le remarquer et réagir. Préparez un plan avec une personne de confiance.</li><li><strong>N’affrontez pas la personne seul·e.</strong></li><li><strong>Gardez des preuves</strong> : notez les dates, heures et ce que la personne semble savoir ; faites des captures de ses messages.</li><li><strong>Faites la liste</strong> de tous les appareils connectés du logement et des comptes qui les commandent.</li><li><strong>Au moment le plus sûr</strong>, réinitialisez le routeur et les appareils, changez tous les mots de passe depuis un téléphone sûr et retirez les accès partagés.</li><li>Pour parler librement, sortez de la pièce surveillée ou utilisez un autre téléphone.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Choisissez vous-même les objets connectés de votre logement et gardez les mots de passe pour vous.</li><li>Changez le mot de passe du Wi-Fi et du routeur après une séparation ou un déménagement.</li><li>Activez la double authentification sur les applications qui commandent vos appareils.</li><li>Vérifiez régulièrement quels comptes et quels téléphones ont accès à vos appareils.</li><li>Couvrez ou débranchez les caméras dont vous n’avez pas besoin, quand c’est sans danger.</li><li>En cas de doute, faites vérifier par un·e réparateur·rice de confiance.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, anonyme si vous le souhaitez : une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes pour préparer un plan de sécurité. Le <a href=\"/aide\">centre d’aide</a> répond aux questions sur la sécurité de vos comptes.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou consultez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Pourquoi ne pas débrancher la caméra tout de suite ?",
+      "answer": "Parce que la personne qui vous surveille pourrait le remarquer et réagir. Mieux vaut d’abord garder des preuves, en parler à une personne de confiance et préparer un plan de sécurité. Ensuite, vous débranchez ou réinitialisez au moment le plus sûr pour vous."
+    },
+    {
+      "question": "Comment savoir quels appareils sont connectés chez moi ?",
+      "answer": "Faites le tour du logement et notez tout ce qui se branche à Internet : caméra, routeur, télévision, enceinte, tablette. Dans l’application ou la page du routeur, la liste des appareils connectés montre aussi ce qui utilise votre Wi-Fi. Faites-vous aider par une personne de confiance."
+    },
+    {
+      "question": "Réinitialiser le routeur, c’est suffisant ?",
+      "answer": "C’est une étape importante, mais pas la seule. Changez aussi les mots de passe des applications qui commandent vos appareils et de vos comptes en ligne, activez la double authentification et retirez les accès partagés. Faites-le depuis un téléphone sûr."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/controle-des-appareils/partage.webp",
+    "alt": "Mariam sourit devant une maison dessinée avec un cœur ; elle tient un téléphone avec un cadenas. Autour : une caméra barrée, un Wi-Fi verrouillé, une clé et un bouclier.",
+    "text": "Ton ex sait ce que tu fais chez toi alors qu’il n’est pas là ? Une caméra ou un objet connecté peut servir à surveiller 🏠 Ne débranche rien sous le coup de la colère : note tout, fais la liste de tes appareils et prépare un plan avec une personne de confiance avant de tout réinitialiser. Chez toi, tu as le droit d’être libre 💜 Lis la BD « Chez moi, c’est chez moi » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:28",
+      "planche-1": "4:33",
+      "planche-2": "4:39",
+      "planche-3": "4:43",
+      "planche-4": "4:45",
+      "partage": "4:47"
+    }
+  }
+}

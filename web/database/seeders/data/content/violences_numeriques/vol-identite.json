@@ -1,0 +1,94 @@
+{
+  "slug": "vol-identite",
+  "key": "vn21",
+  "category": "identite-donnees",
+  "title": "Vol d’identité",
+  "summary": "Une ligne, un prêt ou un compte ouvert à votre nom sans votre accord ? Ne payez rien, gardez les preuves et contestez en agence officielle.",
+  "content_warning": "Ce contenu évoque l’utilisation des papiers d’identité d’une personne pour ouvrir une ligne et emprunter de l’argent à son nom.",
+  "bd": {
+    "title": "Une ligne à mon nom",
+    "cover": {
+      "image": "assets/images/violences-numeriques/vol-identite/couverture.webp",
+      "alt": "Devant un stand de réparation de téléphones, Tantie Rosine tient une carte d’identité protégée par un bouclier coché ; Mariam, bras croisés, sourit à côté d’elle."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/vol-identite/planche-1.webp",
+        "caption": "Tantie Rosine reçoit un SMS : on lui réclame le remboursement d’un prêt sur une ligne Mobile Money qu’elle n’a jamais ouverte. Elle repense à la photocopie de sa carte d’identité laissée il y a quelques mois…",
+        "alt": "Dans son salon, Tantie Rosine regarde son téléphone, surprise ; l’écran agrandi montre des pièces, une carte SIM et un triangle d’alerte. Sur la table, la photocopie d’une carte d’identité."
+      },
+      {
+        "image": "assets/images/violences-numeriques/vol-identite/planche-2.webp",
+        "caption": "Rosine ne paie rien et ne rappelle pas le numéro du SMS. Elle fait une capture et garde le message. « Cette dette n’est pas la mienne. Je ne paierai pas ce que je n’ai pas emprunté. »",
+        "alt": "Assise sur un banc dans sa cour, Tantie Rosine tend la main pour dire non ; au-dessus, des pièces barrées, une icône de capture d’écran et un dossier verrouillé."
+      },
+      {
+        "image": "assets/images/violences-numeriques/vol-identite/planche-3.webp",
+        "caption": "Au stand, Mariam lui explique : « Va à l’agence officielle de l’opérateur avec ta carte d’identité et le SMS. Demande la fermeture de la ligne et un reçu de ta réclamation. » Rosine retient chaque étape.",
+        "alt": "Au stand de réparation de téléphones, Mariam explique avec les mains ; Tantie Rosine écoute. Au-dessus : une carte d’identité, un bâtiment officiel et un document coché, reliés par des flèches."
+      },
+      {
+        "image": "assets/images/violences-numeriques/vol-identite/planche-4.webp",
+        "caption": "La ligne est fermée. Avec Nadia, Rosine fait un signalement sur Xomiton. Désormais, elle barre chaque photocopie de sa carte et y note à qui elle la donne. « Ton identité, c’est toi qui décides où elle va. »",
+        "alt": "Sur une véranda, Tantie Rosine trace un trait sur la photocopie d’une carte d’identité ; Nadia désigne un ordinateur avec un drapeau et un cœur. Au-dessus, une carte SIM verrouillée."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>On parle de vol d’identité quand quelqu’un utilise vos données personnelles (carte d’identité, photo, numéro, date de naissance) pour ouvrir une ligne téléphonique, un compte Mobile Money, un compte en ligne ou obtenir un prêt à votre nom. Une simple photocopie ou une photo de votre carte peut suffire.</p><p><strong>Vous n’êtes pas responsable</strong> de ce que quelqu’un a fait avec vos papiers. Une dette contractée par une autre personne à votre insu peut être contestée.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Vous recevez un SMS ou un appel pour un prêt, une ligne ou un abonnement que vous n’avez jamais demandé.</li><li>On vous réclame de l’argent pour une dette inconnue.</li><li>Vous recevez des codes de confirmation que vous n’avez pas demandés.</li><li>Une agence vous dit qu’un compte existe déjà à votre nom.</li><li>Vos papiers ou une photocopie ont disparu ou ont été laissés quelque part.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne payez rien</strong>, même une petite somme « pour régler le problème ».</li><li><strong>Ne rappelez pas</strong> les numéros indiqués dans le message et ne donnez aucun code.</li><li><strong>Gardez des preuves</strong> : captures des SMS, dates, numéros, noms de services.</li><li><strong>Rendez-vous dans une agence officielle</strong> de l’opérateur concerné, avec votre pièce d’identité et vos captures. Demandez la fermeture de la ligne ou du compte et un reçu de votre réclamation.</li><li><strong>Demandez quelles autres lignes</strong> sont enregistrées à votre nom.</li><li><strong>Signalez la situation sur Xomiton</strong> pour être accompagné·e.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Sur chaque photocopie de votre carte, tracez un trait et notez à la main à qui et pour quoi vous la donnez, avec la date.</li><li>N’envoyez pas la photo de vos papiers par WhatsApp à des inconnu·es.</li><li>Ne publiez jamais vos documents d’identité sur les réseaux.</li><li>Rangez vos papiers en lieu sûr et reprenez vos photocopies quand c’est possible.</li><li>Vérifiez de temps en temps les lignes enregistrées à votre nom.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Un·e proche peut aussi vous accompagner en agence. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, même de façon anonyme : une personne formée le lira sous 24 h, et la page <a href=\"/suivi\">suivi</a> vous permet de voir où en est votre demande. Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes près de chez vous. Le <a href=\"/aide\">centre d’aide</a> répond aux questions sur la sécurité de vos comptes.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou appelez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Le service me menace si je ne rembourse pas. Dois-je payer pour être tranquille ?",
+      "answer": "Non. Payer peut être compris comme une reconnaissance de la dette. Gardez les messages, ne discutez pas par téléphone et allez contester en agence officielle avec votre pièce d’identité. Un·e juriste de l’annuaire peut vous conseiller sur la suite."
+    },
+    {
+      "question": "L’agence refuse de fermer la ligne. Que faire ?",
+      "answer": "Demandez un reçu ou une trace écrite de votre réclamation, avec la date. Revenez avec un·e proche si besoin, et faites un signalement sur Xomiton : une personne formée peut vous orienter vers les bons interlocuteurs."
+    },
+    {
+      "question": "Comment éviter que ma photocopie soit réutilisée ?",
+      "answer": "Tracez un trait en travers de la copie et notez à la main l’usage prévu, le nom de l’organisme et la date. Une copie annotée est plus difficile à réutiliser ailleurs."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/vol-identite/partage.webp",
+    "alt": "Tantie Rosine et Mariam sourient devant un grand bouclier bleu ; Rosine tient une carte d’identité, un cadenas et un cœur flottent autour d’elles.",
+    "text": "Un SMS te réclame un prêt que tu n’as jamais fait ? 🛡️ Ne paie rien, ne rappelle pas le numéro, garde le message et va contester en agence officielle avec ta pièce d’identité. Et sur chaque photocopie de ta carte, note à qui tu la donnes. Lis la BD « Une ligne à mon nom » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:31",
+      "planche-1": "4:32",
+      "planche-2": "4:35",
+      "planche-3": "4:37",
+      "planche-4": "4:40",
+      "partage": "4:41"
+    }
+  }
+}

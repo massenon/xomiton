@@ -1,0 +1,94 @@
+{
+  "slug": "revenge-porn",
+  "key": "vn14",
+  "category": "images-intimes-violences-sexuelles",
+  "title": "Revenge porn",
+  "summary": "Des images intimes de vous circulent sans votre accord, ou vous en recevez d’une autre personne ? Ne rien relayer, faire retirer les contenus et trouver de l’aide.",
+  "content_warning": "Ce contenu évoque la diffusion d’images intimes sans consentement, sans jamais en montrer aucune.",
+  "bd": {
+    "title": "Pas un partage de plus",
+    "cover": {
+      "image": "assets/images/violences-numeriques/revenge-porn/couverture.webp",
+      "alt": "Sur un campus de Cotonou, Sena tient un téléphone affichant un bouclier à cadenas ; Kossi, à ses côtés, montre une flèche de partage barrée. Un bouclier arrête une file de partages."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/revenge-porn/planche-1.webp",
+        "caption": "Dans un groupe WhatsApp de la fac, quelqu’un publie un contenu intime de Sena, diffusé par son ex pour se venger. Les transferts s’enchaînent. Kossi ne l’ouvre pas. « Non. Ça, je ne le regarde pas et je ne le partage pas. »",
+        "alt": "Sur le campus, sous un manguier, Kossi regarde son téléphone, l’air choqué : l’écran montre un rectangle gris masqué par un triangle d’alerte, entouré de flèches de transfert."
+      },
+      {
+        "image": "assets/images/violences-numeriques/revenge-porn/planche-2.webp",
+        "caption": "Kossi ne transfère rien et n’enregistre pas le contenu. Il note le nom du groupe, l’expéditeur et l’heure, signale le message à WhatsApp et demande à l’administrateur de le supprimer. « Ce n’est pas à moi de décider pour Sena. Je dois l’avertir. »",
+        "alt": "Assis sur un muret du campus, Kossi écrit dans un carnet ; son téléphone affiche une flèche de transfert barrée et un drapeau de signalement."
+      },
+      {
+        "image": "assets/images/violences-numeriques/revenge-porn/planche-3.webp",
+        "caption": "Il retrouve Sena dans un endroit calme et lui parle avec délicatesse, sans rien lui montrer. « Je ne l’ai pas partagé. Tu n’as rien fait de mal. De quoi as-tu besoin ? » C’est Sena qui décide de la suite.",
+        "alt": "Dans une cour calme, sous un manguier, Kossi parle doucement à Sena, une main sur le cœur ; Sena, assis·e bien droit, l’écoute en tenant un verre d’eau."
+      },
+      {
+        "image": "assets/images/violences-numeriques/revenge-porn/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Sena demande le retrait du contenu à chaque plateforme, garde la trace de ses demandes et fait un signalement sur Xomiton. Kossi reste à ses côtés. « Ton image t’appartient. On avance ensemble. »",
+        "alt": "Dans un espace d’accueil, Sena tape sur un ordinateur qui affiche trois drapeaux validés et un bouclier à cadenas ; Nadia, souriante, montre l’écran, Kossi se tient derrière."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>On parle de « revenge porn » quand une personne diffuse des photos ou des vidéos intimes de quelqu’un <strong>sans son accord</strong>, pour l’humilier, se venger ou lui nuire. Les contenus circulent vite : groupes WhatsApp, Facebook, TikTok, Telegram, sites pour adultes.</p><p>Que les images aient été prises avec votre accord, envoyées par vous ou volées, leur diffusion sans votre consentement est une violence. <strong>La faute est du côté de celles et ceux qui diffusent</strong>, jamais du vôtre. Et chaque personne qui reçoit ces contenus peut casser la chaîne.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Des proches vous préviennent qu’une image de vous circule dans un groupe.</li><li>Vous recevez des messages moqueurs, des avances ou des insultes de personnes inconnues.</li><li>Un compte ou une page publie des contenus qui vous concernent, parfois à votre nom.</li><li>Un·e ex ou une autre personne a gardé des images de vous et vous en veut.</li><li>Vous recevez vous-même le contenu intime de quelqu’un d’autre, transféré « pour rire ».</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Si c’est vous</strong> : entourez-vous d’une personne de confiance. Ce n’est pas votre faute, et vous n’avez pas à gérer cela seul·e.</li><li><strong>Gardez des preuves sans repartager</strong> : notez les liens, les noms des comptes et des groupes, les dates. Une personne de confiance peut faire les captures pour vous. Ne transférez jamais le contenu lui-même.</li><li><strong>Demandez le retrait</strong> : sur chaque publication, utilisez le signalement de la plateforme et choisissez le motif lié aux images intimes partagées sans accord. Gardez la trace de chaque demande.</li><li><strong>Si vous recevez un tel contenu</strong> : ne l’ouvrez pas, ne le transférez pas, signalez-le, demandez à l’administrateur du groupe de le supprimer, puis effacez-le de votre téléphone. Prévenez la personne concernée avec délicatesse.</li><li>Ne payez rien et ne confrontez pas seul·e la personne qui diffuse. <a href=\"/signaler\">Signalez la situation sur Xomiton</a>.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Vérifiez les appareils connectés à vos comptes (WhatsApp Web, Google, iCloud) et déconnectez ceux que vous ne reconnaissez pas.</li><li>Changez vos mots de passe et activez la double vérification.</li><li>Désactivez l’enregistrement automatique des médias reçus sur WhatsApp.</li><li>Vous avez le droit de refuser d’envoyer une image et de demander qu’on supprime celles qu’on a de vous.</li><li>Autour de vous, rappelez une règle simple : un contenu intime reçu, on ne le regarde pas, on ne le partage pas, on le signale.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Des images de moi ont déjà beaucoup circulé. Est-il trop tard ?",
+      "answer": "Non. Chaque retrait compte. Signalez chaque publication et chaque compte, gardez la trace de vos demandes et demandez à des proches de vous indiquer les nouvelles copies. Avec un signalement sur Xomiton, vous pouvez être accompagné·e dans ces démarches."
+    },
+    {
+      "question": "J’ai reçu ce contenu dans un groupe. Dois-je le garder comme preuve ?",
+      "answer": "Non, ne gardez pas et ne transférez pas le contenu lui-même. Notez le nom du groupe, l’expéditeur, la date et l’heure, signalez le message, puis effacez-le. Prévenez la personne concernée avec délicatesse : c’est à elle de décider de la suite."
+    },
+    {
+      "question": "Quelle différence avec les menaces d’un·e ex ?",
+      "answer": "Les menaces de publication après une rupture sont traitées dans la fiche « Photos privées partagées ». Ici, les images sont déjà diffusées et passent de téléphone en téléphone. La priorité : faire retirer les contenus et casser la chaîne de partage."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/revenge-porn/partage.webp",
+    "alt": "Sena sourit, un téléphone avec un bouclier à cadenas contre la poitrine ; Nadia pose une main sur son épaule et Kossi se tient à ses côtés, sous un grand bouclier.",
+    "text": "Le contenu intime de quelqu’un arrive dans ton groupe ? Ne l’ouvre pas, ne le partage pas, signale-le. 🛡️ Et si c’est toi qu’on expose : ce n’est jamais ta faute. Note les liens, demande le retrait aux plateformes et entoure-toi de personnes de confiance. 💜 Lis la BD « Pas un partage de plus » pour voir comment Kossi a cassé la chaîne."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:46",
+      "planche-1": "4:49",
+      "planche-2": "4:53",
+      "planche-3": "4:57",
+      "planche-4": "4:60",
+      "partage": "4:64"
+    }
+  }
+}

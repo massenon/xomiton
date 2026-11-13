@@ -1,0 +1,101 @@
+{
+  "slug": "cyberharcelement-pollupostage",
+  "key": "vn09",
+  "category": "harcelement-en-ligne",
+  "title": "Cyberharcèlement et pollupostage",
+  "summary": "Des dizaines de comptes qui vous inondent de messages, de commentaires ou d’appels : reconnaître le pollupostage, garder les preuves, se protéger et trouver de l’aide.",
+  "content_warning": "Ce contenu évoque une avalanche de messages hostiles reçus en ligne, sans jamais les montrer.",
+  "bd": {
+    "title": "Mariam coupe le flot",
+    "cover": {
+      "image": "assets/images/violences-numeriques/cyberharcelement-pollupostage/couverture.webp",
+      "alt": "Au stand de réparation de Mariam, au marché, celle-ci touche un bouclier sur son téléphone : une nuée de bulles grises est repoussée. Kossi, derrière elle, lève le pouce."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/cyberharcelement-pollupostage/planche-1.webp",
+        "caption": "Depuis qu’une vidéo de son stand circule, le téléphone de Mariam ne s’arrête plus : des dizaines de comptes inconnus envoient messages, commentaires et appels, jour et nuit. « Mais qui sont tous ces gens ? »",
+        "alt": "Mariam, à son stand de réparation de téléphones au marché, fixe son téléphone, l’air soucieux. Au-dessus, un flot de bulles grises et d’avatars anonymes."
+      },
+      {
+        "image": "assets/images/violences-numeriques/cyberharcelement-pollupostage/planche-2.webp",
+        "caption": "Mariam ne répond à aucun message. Elle coupe les notifications, fait des captures d’écran et les range dans un dossier verrouillé. Dans un carnet, elle note les comptes, les dates et les heures. « Je garde tout, au calme. »",
+        "alt": "Derrière son comptoir, Mariam touche son téléphone : une cloche barrée, des captures qui rejoignent un dossier jaune à cadenas. Un carnet ouvert est posé devant elle."
+      },
+      {
+        "image": "assets/images/violences-numeriques/cyberharcelement-pollupostage/planche-3.webp",
+        "caption": "Le soir, sous le manguier, elle en parle à Tantie Rosine et à Kossi. Rosine la rassure. Kossi lui montre comment filtrer les commentaires et choisir qui peut lui écrire. « Ce n’est pas ta faute. On est avec toi. »",
+        "alt": "Dans une cour sous un manguier, Mariam est assise sur un banc près de Tantie Rosine, qui pose la main sur son épaule. Kossi, accroupi, montre un téléphone avec un bouclier."
+      },
+      {
+        "image": "assets/images/violences-numeriques/cyberharcelement-pollupostage/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Mariam signale les comptes au réseau social, les bloque et fait un signalement sur Xomiton. « Tu as repris la main. La suite, on la construit ensemble. »",
+        "alt": "Au stand, Mariam et Nadia sourient côte à côte. Mariam tient son téléphone : un drapeau de signalement, un symbole de blocage et un bouclier vert validé. Nadia le montre du doigt."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Le cyberharcèlement, ce sont des attaques <strong>répétées</strong> pour blesser, humilier ou faire peur. On parle de <strong>pollupostage</strong> quand votre espace numérique est inondé : des dizaines de messages, de commentaires, d’appels ou de demandes d’ajout, souvent venant de nombreux comptes en même temps.</p><p>Cela peut partir d’une vidéo devenue virale, d’une dispute ou d’une personne qui pousse d’autres à vous attaquer. Les filles, les femmes et les personnes LBTQ+ sont souvent visées. Le but est de vous épuiser et de vous faire taire. <strong>Ce n’est jamais votre faute.</strong></p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Votre téléphone reçoit soudain beaucoup plus de messages, d’appels ou de commentaires que d’habitude.</li><li>Les messages viennent de comptes inconnus, récents, souvent sans photo.</li><li>Les mêmes moqueries ou insultes reviennent sous plusieurs publications.</li><li>Quand vous bloquez un compte, d’autres apparaissent.</li><li>On vous ajoute sans votre accord à des groupes WhatsApp ou Facebook.</li><li>Vous avez peur d’allumer votre téléphone, vous dormez mal.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas</strong>, même pour vous défendre : une réponse relance souvent le flot.</li><li><strong>Coupez les notifications</strong> pour respirer, sans supprimer les messages.</li><li><strong>Gardez les preuves</strong> : captures avec la date, le nom des comptes et les liens. Notez-les dans un carnet ou un dossier sûr.</li><li><strong>Signalez</strong> les comptes et les commentaires au réseau social, puis bloquez-les.</li><li><strong>Parlez-en</strong> à une personne de confiance, qui peut aussi vous aider à trier les messages.</li><li>Si une menace vise votre sécurité physique, mettez-vous à l’abri et demandez de l’aide.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Réglez vos comptes en mode privé et limitez qui peut commenter ou vous écrire.</li><li>Activez les filtres de mots et le masquage des commentaires sur TikTok, Facebook et Instagram.</li><li>Sur WhatsApp, choisissez qui peut vous ajouter aux groupes et coupez les appels de numéros inconnus.</li><li>Pour une activité professionnelle, utilisez un compte ou un numéro séparé de votre vie privée.</li><li>Activez la validation en deux étapes et un mot de passe différent pour chaque compte.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Tous ces comptes sont-ils de vraies personnes ?",
+      "answer": "Pas toujours. Une seule personne peut créer plusieurs faux comptes, ou en faire agir d’autres. Que les comptes soient vrais ou faux, le harcèlement est réel. Gardez les preuves, signalez chaque compte et parlez-en à une personne de confiance."
+    },
+    {
+      "question": "Dois-je fermer mon compte ou changer de numéro ?",
+      "answer": "C’est votre choix, pas une obligation. Faites d’abord vos captures. Vous pouvez aussi passer votre compte en privé pour un temps, filtrer les messages et bloquer les comptes. Si vous changez de numéro, donnez le nouveau seulement à des personnes de confiance."
+    },
+    {
+      "question": "Je ne peux pas tout capturer, il y a trop de messages. Que faire ?",
+      "answer": "Vous n’avez pas à tout garder. Capturez des exemples, avec les dates et le nom des comptes, et notez combien de messages arrivent par jour. Une personne de confiance peut vous aider à trier, pour que vous n’ayez pas à tout relire seul·e."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/cyberharcelement-pollupostage/partage.webp",
+    "alt": "Mariam, souriante, devant un cercle bleu au marché, montre un téléphone affichant un bouclier ; autour d’elle, des bulles grises et des avatars se dissolvent.",
+    "text": "Des dizaines de comptes qui t’inondent de messages et de commentaires ? Tu n’as pas à subir ce flot 💜 Ne réponds pas, coupe les notifications, garde des captures, puis signale et bloque les comptes. Parles-en à une personne de confiance : tu n’es pas seul·e 🛡️ Découvre comment Mariam a repris la main dans notre BD « Mariam coupe le flot »."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": {
+      "couverture": "2026-11-12",
+      "planche-1": "2026-11-12",
+      "planche-2": "2026-11-12",
+      "planche-3": "2026-11-12",
+      "planche-4": "2026-11-13",
+      "partage": "2026-11-13"
+    },
+    "figma_nodes": {
+      "couverture": "3:3",
+      "planche-1": "3:12",
+      "planche-2": "3:17",
+      "planche-3": "3:20",
+      "planche-4": "4:2",
+      "partage": "4:6"
+    }
+  }
+}

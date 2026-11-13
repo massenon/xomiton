@@ -21,16 +21,15 @@ beforeEach(function (): void {
     app(ImportViolencesNumeriques::class)();
 });
 
-it('sert le carrefour : 6 catégories, 23 sujets, les sujets à venir sans lien mort', function (): void {
+it('sert le carrefour : 6 catégories, 23 sujets, tous reliés à leur fiche', function (): void {
     $html = (string) $this->get('/violences-numeriques')->assertOk()->getContent();
 
     expect(substr_count($html, 'id="vn-cat-'))->toBe(6)
         ->and(substr_count($html, 'class="card h-100 xm-vn-topic'))->toBe(23)
-        ->and(substr_count($html, 'is-upcoming'))->toBe(15);
+        ->and(substr_count($html, 'is-upcoming'))->toBe(0);
     expect($html)->toContain(route('thematiques.show', ['slug' => 'sextorsion']))
         ->toContain(route('bd.show', ['key' => 'vn02']))
-        ->toContain('Revenge porn')
-        ->not->toContain(route('thematiques.show', ['slug' => 'revenge-porn']))
+        ->toContain(route('thematiques.show', ['slug' => 'revenge-porn']))
         ->toContain(route('signaler'))->toContain(route('sos'))->toContain(route('urgences'))->toContain(route('bd.index'));
 });
 
@@ -114,8 +113,8 @@ it('ajoute le carrefour, la liste des BD, les BD publiques et les fiches au plan
     $locs = collect(app(SitemapBuilder::class)->urls())->pluck('loc');
     $root = rtrim((string) config('app.url'), '/');
 
-    expect($locs)->toContain($root.'/violences-numeriques', $root.'/bd', $root.'/bd/vn01', $root.'/thematiques/sextorsion')
-        ->not->toContain($root.'/bd/bd1', $root.'/thematiques/revenge-porn');
+    expect($locs)->toContain($root.'/violences-numeriques', $root.'/bd', $root.'/bd/vn01', $root.'/thematiques/sextorsion', $root.'/bd/vn23')
+        ->not->toContain($root.'/bd/bd1');
 });
 
 it('relie le carrefour depuis le pied de page public', function (): void {

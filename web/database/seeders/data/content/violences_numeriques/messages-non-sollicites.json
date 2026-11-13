@@ -1,0 +1,101 @@
+{
+  "slug": "messages-non-sollicites",
+  "key": "vn13",
+  "category": "images-intimes-violences-sexuelles",
+  "title": "Messages non sollicités",
+  "summary": "Recevoir des photos sexuelles, des vidéos ou des propos déplacés sans l’avoir demandé n’est pas normal. Comment réagir, garder des traces, bloquer et signaler.",
+  "content_warning": "Ce contenu évoque la réception de messages et d’images à caractère sexuel non désirés, sans jamais les montrer.",
+  "bd": {
+    "title": "Je n’ai rien demandé",
+    "cover": {
+      "image": "assets/images/violences-numeriques/messages-non-sollicites/couverture.webp",
+      "alt": "Au marché, Mariam montre un téléphone affichant un cadenas et un symbole de blocage. Tantie Rosine, souriante, pose la main sur son épaule."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/messages-non-sollicites/planche-1.webp",
+        "caption": "Un client a gardé le numéro de Mariam après une réparation. Depuis, il lui envoie des photos et des messages déplacés qu’elle n’a jamais demandés. « Je répare des téléphones, je n’ai rien demandé de tout ça ! »",
+        "alt": "À son stand de réparation, Mariam, contrariée, tient son téléphone à bout de bras : l’écran ne montre qu’un triangle d’alerte et une zone floutée."
+      },
+      {
+        "image": "assets/images/violences-numeriques/messages-non-sollicites/planche-2.webp",
+        "caption": "Mariam ne répond pas et ne transfère rien à personne. Elle capture seulement le numéro, le nom du profil et les dates, sans garder les images, et range tout dans un dossier verrouillé. « Stop. Je garde les traces, pas le contenu. »",
+        "alt": "Mariam lève la main en signe de stop, téléphone dans l’autre main. Autour d’elle flottent une icône de capture, un dossier à cadenas et une flèche de transfert barrée."
+      },
+      {
+        "image": "assets/images/violences-numeriques/messages-non-sollicites/planche-3.webp",
+        "caption": "Le soir, elle en parle à Tantie Rosine autour d’un thé. Rosine ne la juge pas. « Ce n’est pas toi qui as mal fait. C’est lui qui t’a manqué de respect. »",
+        "alt": "Dans une cour éclairée par des lanternes, Mariam et Tantie Rosine sont assises sur un banc, une tasse à la main, et se parlent avec complicité."
+      },
+      {
+        "image": "assets/images/violences-numeriques/messages-non-sollicites/planche-4.webp",
+        "caption": "Avec Rosine et Nadia, pair animatrice de Xomiton, Mariam signale le compte à la messagerie, le bloque et fait un signalement sur Xomiton. « Ton téléphone, c’est ton espace. Tu as le droit de le protéger. »",
+        "alt": "Au stand, Mariam montre son téléphone avec un cadenas et un symbole de blocage. Tantie Rosine lève le pouce ; Nadia désigne un ordinateur affichant un bouclier et un drapeau."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Les messages non sollicités, ce sont des <strong>photos ou vidéos sexuelles, des propos obscènes ou des avances</strong> envoyés sans votre accord : sur WhatsApp, Messenger, Instagram, TikTok, par SMS ou par AirDrop et Bluetooth.</p><p>L’expéditeur peut être un inconnu, un client, un collègue ou une connaissance qui a récupéré votre numéro. Ces envois peuvent choquer, mettre mal à l’aise ou faire peur. Ce n’est ni un compliment ni une blague : <strong>c’est une violence</strong>. Vous n’avez rien provoqué.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Vous recevez des images ou des propos sexuels que vous n’avez pas demandés.</li><li>La personne continue malgré votre silence ou votre refus.</li><li>Elle change de numéro ou de compte pour reprendre contact.</li><li>Elle utilise votre numéro professionnel ou un groupe pour vous écrire.</li><li>Les messages deviennent insistants, menaçants ou parlent de vous voir.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas</strong> et n’entrez pas dans la discussion.</li><li><strong>Ne transférez pas</strong> les images, même pour demander conseil : les montrer peut faire du tort à d’autres personnes.</li><li><strong>Gardez des traces</strong> : capturez le numéro, le nom du profil, la date et l’heure, sans ouvrir ni conserver les images si vous préférez.</li><li><strong>Signalez</strong> le compte à la messagerie ou au réseau social, puis <strong>bloquez-le</strong>.</li><li><strong>Parlez-en</strong> à une personne de confiance.</li><li>Si la personne vous menace ou sait où vous trouver, pensez d’abord à votre sécurité.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Sur WhatsApp, réglez qui peut voir votre photo et vous ajouter aux groupes, et coupez le téléchargement automatique des médias.</li><li>Masquez les messages de numéros inconnus sur Instagram, Messenger et TikTok.</li><li>Laissez AirDrop et Bluetooth fermés dans les lieux publics.</li><li>Pour votre activité, utilisez un numéro professionnel séparé si possible.</li><li>Convenez avec vos proches d’un réflexe commun : on ne transfère jamais ce genre d’images.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Je n’ai pas osé dire non clairement. Est-ce ma faute ?",
+      "answer": "Non. Vous n’avez pas à dire non pour que ce soit inacceptable : personne n’a le droit de vous envoyer des images sexuelles sans votre accord. Le silence n’est pas un consentement. La responsabilité est entièrement du côté de l’expéditeur."
+    },
+    {
+      "question": "Dois-je garder les images comme preuves ?",
+      "answer": "Ce n’est pas obligatoire. Une capture de la conversation montrant le numéro, le profil, la date et l’heure suffit souvent. Ne les transférez à personne. Si vous les gardez, rangez-les dans un dossier verrouillé et parlez-en à une personne formée."
+    },
+    {
+      "question": "Et si c’est quelqu’un que je connais ?",
+      "answer": "C’est tout aussi inacceptable, et parfois plus difficile. Vous pouvez bloquer la personne sans vous justifier. Évitez de la confronter seul·e. Gardez des traces, parlez-en à une personne de confiance et faites un signalement si vous le souhaitez."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/messages-non-sollicites/partage.webp",
+    "alt": "Mariam et Nadia, souriantes, sous un grand bouclier bleu ; Mariam montre un téléphone avec un cadenas et un symbole de blocage.",
+    "text": "Des photos ou des messages sexuels que tu n’as jamais demandés ? Ce n’est pas un compliment, et tu n’y es pour rien 💜 Ne réponds pas, ne transfère rien, capture le numéro et la date, puis bloque et signale le compte. Parles-en à une personne de confiance 🛡️ Découvre comment Mariam a protégé son espace dans notre BD « Je n’ai rien demandé »."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": {
+      "couverture": "2026-11-12",
+      "planche-1": "2026-11-12",
+      "planche-2": "2026-11-12",
+      "planche-3": "2026-11-12",
+      "planche-4": "2026-11-12",
+      "partage": "2026-11-13"
+    },
+    "figma_nodes": {
+      "couverture": "3:2",
+      "planche-1": "3:6",
+      "planche-2": "3:10",
+      "planche-3": "3:14",
+      "planche-4": "3:21",
+      "partage": "4:14"
+    }
+  }
+}

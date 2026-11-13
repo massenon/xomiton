@@ -63,6 +63,8 @@ use App\Support\KeyedHash;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Events\MigrationsEnded;
+use Illuminate\Database\Events\MigrationsStarted;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Channels\DatabaseChannel;
@@ -145,6 +147,15 @@ class AppServiceProvider extends ServiceProvider
     {
         // P16-02 : toute relation chargée paresseusement (N+1) lève une exception hors production (tests compris).
         Model::preventLazyLoading(! $this->app->isProduction());
+        // Les migrations de rattrapage des permissions (givePermissionTo sur des rôles déjà présents) chargent la
+        // relation `permissions` de spatie paresseusement : sur une base existante (poste local, recette), la garde
+        // N+1 ci-dessus les faisait échouer. Elle est suspendue le temps des migrations puis rétablie.
+        Event::listen(MigrationsStarted::class, static function (): void {
+            Model::preventLazyLoading(false);
+        });
+        Event::listen(MigrationsEnded::class, function (): void {
+            Model::preventLazyLoading(! $this->app->isProduction());
+        });
 
         $this->registerAuthorization();
         $this->registerRateLimiters();

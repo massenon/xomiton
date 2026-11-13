@@ -1,0 +1,94 @@
+{
+  "slug": "manipulation-psychologique",
+  "key": "vn18",
+  "category": "surveillance-controle",
+  "title": "Manipulation psychologique",
+  "summary": "Votre partenaire contrôle vos messages, vous éloigne de vos proches ou bloque vos contacts ? C’est de l’emprise. Gardez le lien et trouvez du soutien.",
+  "content_warning": "Ce contenu évoque l’isolement et le contrôle des communications dans une relation de couple.",
+  "bd": {
+    "title": "Garder le lien",
+    "cover": {
+      "image": "assets/images/violences-numeriques/manipulation-psychologique/couverture.webp",
+      "alt": "Dans une cour sous un manguier, Afi et Sena sourient, leurs téléphones reliés par un fil de cœurs ; Tantie Rosine les entoure de ses bras."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/manipulation-psychologique/planche-1.webp",
+        "caption": "Afi ne reçoit plus de nouvelles de Sena ni de sa mère. En regardant son téléphone, elle découvre que leurs numéros sont bloqués. C’est son copain qui l’a fait, « pour ton bien, ils te montent la tête ».",
+        "alt": "Sur un banc du campus, sous un flamboyant, Afi fronce les sourcils devant son téléphone ; l’écran agrandi montre deux contacts grisés et bloqués, et un lien coupé."
+      },
+      {
+        "image": "assets/images/violences-numeriques/manipulation-psychologique/planche-2.webp",
+        "caption": "Afi repense à ses phrases : « Tu n’as besoin que de moi », « Ta mère est jalouse ». Elle ne le confronte pas. En silence, elle note ce qui se passe et garde des captures dans un dossier protégé.",
+        "alt": "À la bibliothèque, Afi, pensive, écrit dans un carnet orné d’icônes d’alerte ; au-dessus d’elle, trois bulles grises tirent sur un cœur. Sa tablette range une capture dans un dossier verrouillé."
+      },
+      {
+        "image": "assets/images/violences-numeriques/manipulation-psychologique/planche-3.webp",
+        "caption": "Chez Tantie Rosine, Afi retrouve Sena. Ensemble, iels choisissent un mot code pour dire « j’ai besoin d’aide » et des heures d’appel régulières. « Quoi qu’il dise, notre porte reste ouverte. »",
+        "alt": "Dans la cour de Tantie Rosine, sous un manguier, Afi parle à Sena et Rosine autour d’un thé ; Rosine montre une carte avec une étoile, une horloge et un téléphone."
+      },
+      {
+        "image": "assets/images/violences-numeriques/manipulation-psychologique/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Afi met un nom sur ce qu’elle vit : de l’emprise. Elle fait un signalement et garde le contact par le téléphone de Sena. « Tu n’es pas seule. On reste là. »",
+        "alt": "Dans une salle lumineuse, Afi sourit entre Sena, qui lui tend son téléphone affichant un cœur, et Nadia, qui désigne un ordinateur avec un drapeau, un bouclier et un cœur."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>La manipulation psychologique par le numérique, c’est quand un·e partenaire ou un·e proche utilise votre téléphone et vos comptes pour vous contrôler et vous isoler : bloquer vos ami·es ou votre famille, lire ou supprimer vos messages, décider à qui vous parlez, vous reprocher chaque appel.</p><p>Elle se cache souvent derrière des mots doux ou inquiets : « c’est pour te protéger », « eux ne t’aiment pas comme moi ». Peu à peu, vous vous retrouvez seul·e face à cette personne. <strong>C’est de l’emprise, pas de l’amour</strong>. Ce n’est jamais votre faute.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Des contacts importants sont bloqués ou supprimés sans votre accord.</li><li>On vous dit que vos proches sont jaloux ou veulent vous séparer.</li><li>On exige de savoir à qui vous écrivez et on fouille vos conversations.</li><li>On se fâche ou on boude quand vous appelez votre famille ou vos ami·es.</li><li>Vous évitez de parler à certaines personnes pour ne pas créer de dispute.</li><li>Vous doutez de vous et de ce que vous ressentez.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Votre sécurité d’abord.</strong> Ne confrontez pas la personne seul·e, surtout si vous craignez sa réaction.</li><li><strong>Gardez des preuves</strong> discrètement : captures des messages, contacts bloqués, dates. Rangez-les là où la personne ne peut pas les voir, ou confiez-les à quelqu’un de sûr.</li><li><strong>Gardez le lien</strong> avec au moins une personne de confiance, même par un autre téléphone.</li><li><strong>Convenez d’un mot code</strong> qui veut dire « j’ai besoin d’aide » et d’heures d’appel régulières.</li><li><strong>Débloquez vos contacts</strong> seulement quand c’est sans danger pour vous.</li><li>Parlez-en à un·e professionnel·le pour préparer la suite à votre rythme.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Retenez par cœur un ou deux numéros de proches.</li><li>Gardez vos codes et mots de passe pour vous, et vérifiez les appareils connectés à vos comptes.</li><li>Entretenez vos amitiés et vos activités, même quand on vous en décourage.</li><li>Une relation saine vous laisse libre de parler à qui vous voulez.</li><li>Si un·e ami·e s’éloigne soudainement, gardez la porte ouverte sans juger.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, anonyme si vous le souhaitez : une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou consultez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Mon copain dit qu’il bloque mes proches pour me protéger. Est-ce normal ?",
+      "answer": "Non. Une personne qui vous aime ne choisit pas à votre place qui vous avez le droit de voir ou d’appeler. Vous éloigner de vos proches, c’est une façon de vous contrôler. Vous pouvez en parler à quelqu’un de confiance ou faire un signalement sur Xomiton."
+    },
+    {
+      "question": "Un·e ami·e ne répond plus depuis qu’iel est en couple. Que faire ?",
+      "answer": "Gardez la porte ouverte sans juger ni critiquer son ou sa partenaire. Envoyez de petits messages réguliers, proposez un moment ensemble et rappelez-lui que vous êtes là. Si vous êtes inquiet·e, vous pouvez faire un signalement sur Xomiton pour être conseillé·e."
+    },
+    {
+      "question": "À quoi sert un mot code ?",
+      "answer": "C’est un mot ou une phrase banale, choisi à l’avance avec une personne de confiance. Si vous l’écrivez ou le dites, elle sait que vous avez besoin d’aide, sans que l’autre le comprenne. Décidez ensemble de ce qu’elle fera : appeler, venir vous chercher, prévenir quelqu’un."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/manipulation-psychologique/partage.webp",
+    "alt": "Afi et Sena se sourient devant un cercle violet ; leurs téléphones sont reliés par un fil de cœurs. Autour flottent un cœur, un téléphone, une étoile et un bouclier.",
+    "text": "Ton ou ta partenaire bloque tes proches « pour ton bien » et veut savoir à qui tu parles ? Ce n’est pas de l’amour, c’est de l’emprise 💜 Garde des preuves en sécurité, convenez d’un mot code avec une personne de confiance et ne coupe pas le lien avec ceux qui t’aiment. Tu n’es pas seul·e 🛡️ Lis la BD « Garder le lien » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:51",
+      "planche-1": "4:55",
+      "planche-2": "4:59",
+      "planche-3": "4:61",
+      "planche-4": "4:62",
+      "partage": "4:66"
+    }
+  }
+}
