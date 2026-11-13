@@ -18,17 +18,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bad_words', function (Blueprint $table): void {
-            $table->string('category', 20)->default('autre')->after('word');
-        });
+        // Rejouable : MySQL ne revient pas sur un ALTER TABLE quand la migration échoue plus loin (une première
+        // tentative interrompue a pu laisser la colonne ou la table en place).
+        if (! Schema::hasColumn('bad_words', 'category')) {
+            Schema::table('bad_words', function (Blueprint $table): void {
+                $table->string('category', 20)->default('autre')->after('word');
+            });
+        }
 
-        Schema::create('content_filter_allowlist', function (Blueprint $table): void {
-            $table->id();
-            $table->string('phrase', 80);
-            $table->timestamps();
+        if (! Schema::hasTable('content_filter_allowlist')) {
+            Schema::create('content_filter_allowlist', function (Blueprint $table): void {
+                $table->id();
+                $table->string('phrase', 80);
+                $table->timestamps();
 
-            $table->unique('phrase', 'cf_allowlist_phrase_unique');
-        });
+                $table->unique('phrase', 'cf_allowlist_phrase_unique');
+            });
+        }
 
         $roles = Role::query()->where('guard_name', 'web')->whereIn('name', ['admin', 'superadmin'])->get();
 
@@ -47,9 +53,11 @@ return new class extends Migration
     {
         Schema::dropIfExists('content_filter_allowlist');
 
-        Schema::table('bad_words', function (Blueprint $table): void {
-            $table->dropColumn('category');
-        });
+        if (Schema::hasColumn('bad_words', 'category')) {
+            Schema::table('bad_words', function (Blueprint $table): void {
+                $table->dropColumn('category');
+            });
+        }
 
         Permission::query()->where('guard_name', 'web')->where('name', 'moderation.filter')->first()?->delete();
         app(PermissionRegistrar::class)->forgetCachedPermissions();
