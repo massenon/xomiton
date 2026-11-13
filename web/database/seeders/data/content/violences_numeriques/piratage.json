@@ -1,0 +1,94 @@
+{
+  "slug": "piratage",
+  "key": "vn20",
+  "category": "identite-donnees",
+  "title": "Piratage",
+  "summary": "Votre compte WhatsApp ou Facebook vous échappe après un code demandé par message ? Récupérez-le depuis un appareil sûr, prévenez vos proches et protégez vos accès.",
+  "content_warning": "Ce contenu évoque le piratage d’un compte de messagerie et des demandes d’argent envoyées en son nom.",
+  "bd": {
+    "title": "Le code de Tantie Rosine",
+    "cover": {
+      "image": "assets/images/violences-numeriques/piratage/couverture.webp",
+      "alt": "Dans une cour sous un manguier, Tantie Rosine, souriante, montre un téléphone avec un cadenas dans un bouclier ; Kossi lève le pouce, un ordinateur portable à la main."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/piratage/planche-1.webp",
+        "caption": "Tantie Rosine reçoit un message d’une « amie » : « Je t’ai envoyé un code par erreur, renvoie-le-moi. » Elle le transmet. Peu après, son WhatsApp se déconnecte et ses contacts reçoivent des demandes d’argent en son nom.",
+        "alt": "Assise dans sa cour, Tantie Rosine fronce les sourcils devant son téléphone ; l’écran agrandi montre une bulle grise, des cases de code, un cadenas ouvert et un triangle d’alerte."
+      },
+      {
+        "image": "assets/images/violences-numeriques/piratage/planche-2.webp",
+        "caption": "Rosine ne paie rien et ne discute pas avec le pirate. Elle note l’heure, garde les captures envoyées par ses proches et la trace du faux message. « Mon compte, je vais le récupérer. Mais d’abord, je garde tout. »",
+        "alt": "Sur sa véranda, Tantie Rosine écrit calmement dans un carnet ; au-dessus, des icônes de capture d’écran et de calendrier, une bulle barrée et une pièce barrée."
+      },
+      {
+        "image": "assets/images/violences-numeriques/piratage/planche-3.webp",
+        "caption": "Kossi l’aide depuis son propre ordinateur, un appareil sûr. Ensemble, ils récupèrent le compte, activent la vérification en deux étapes, changent les mots de passe et préviennent les contacts. « Un code reçu par SMS, on ne le donne jamais. »",
+        "alt": "Sur un banc sous le manguier, Kossi montre son ordinateur à Tantie Rosine : une clé et un bouclier coché ; au-dessus, un téléphone envoie des boucliers à trois autres téléphones."
+      },
+      {
+        "image": "assets/images/violences-numeriques/piratage/planche-4.webp",
+        "caption": "Avec Nadia, Rosine signale aussi la situation sur Xomiton et vérifie les appareils connectés à ses comptes. « Tu as repris la main, Tantie. » Rosine sourit : son compte est de nouveau à elle, et protégé.",
+        "alt": "Sur une véranda, Nadia désigne un ordinateur affichant un drapeau du Bénin et un cœur ; Tantie Rosine, soulagée, montre un téléphone avec un bouclier coché ; Kossi sourit derrière."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>On parle de piratage quand quelqu’un entre sans votre accord dans vos comptes (WhatsApp, Facebook, messagerie, Mobile Money) ou dans votre téléphone. Souvent, la personne vous pousse à lui donner un code reçu par SMS, en se faisant passer pour un·e proche ou pour un service officiel. Elle peut ensuite lire vos messages, demander de l’argent à vos contacts ou publier en votre nom.</p><p><strong>Ce n’est pas votre faute.</strong> Ces pièges sont conçus pour tromper tout le monde. Vous pouvez reprendre la main sur vos comptes.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Quelqu’un vous demande de lui renvoyer un code « reçu par erreur ».</li><li>Vous êtes déconnecté·e de votre compte sans raison.</li><li>Vos proches reçoivent des messages ou des demandes d’argent que vous n’avez pas envoyés.</li><li>Votre mot de passe ne fonctionne plus.</li><li>Vous recevez des alertes de connexion depuis un appareil inconnu.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne payez rien</strong> et ne négociez pas avec la personne qui a pris votre compte.</li><li><strong>Gardez des preuves</strong> : captures du faux message, des messages reçus par vos proches, heure et date.</li><li><strong>Utilisez un appareil sûr</strong> pour agir, et récupérez votre compte : sur WhatsApp, réinstallez l’application et reconnectez votre numéro avec le code reçu par SMS.</li><li><strong>Changez vos mots de passe</strong>, en commençant par votre adresse e-mail, puis activez la vérification en deux étapes.</li><li><strong>Prévenez vos contacts</strong> : ne rien envoyer, ne pas répondre aux messages suspects.</li><li><strong>Déconnectez les appareils inconnus</strong> dans les réglages de vos comptes.</li><li>Si votre ligne téléphonique elle-même ne fonctionne plus, rendez-vous en agence de votre opérateur avec votre pièce d’identité.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Ne donnez jamais un code reçu par SMS, même à un·e proche ou à un « agent ».</li><li>Activez la vérification en deux étapes sur WhatsApp, Facebook et votre e-mail.</li><li>Utilisez un mot de passe différent pour chaque compte.</li><li>Verrouillez votre téléphone avec un code que vous seul·e connaissez.</li><li>Convenez avec vos proches d’appeler pour vérifier avant tout envoi d’argent.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vos proches peuvent aussi demander conseil. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, même de façon anonyme : une personne formée le lira sous 24 h, et la page <a href=\"/suivi\">suivi</a> vous permet de voir où en est votre demande. Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes près de chez vous. Le <a href=\"/aide\">centre d’aide</a> répond aux questions sur la sécurité de vos comptes.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou appelez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Le pirate a activé un code à ma place et je ne peux plus entrer. Que faire ?",
+      "answer": "Ne payez rien. Demandez la récupération du compte via l’aide officielle de l’application, depuis un appareil sûr. Sur certaines applications, il faut patienter quelques jours avant de pouvoir vous reconnecter. Gardez vos preuves et faites-vous accompagner sur Xomiton."
+    },
+    {
+      "question": "Mes contacts ont envoyé de l’argent au pirate. Que faire ?",
+      "answer": "Ce n’est ni leur faute ni la vôtre. Demandez-leur de garder le reçu et le numéro du destinataire, puis de contacter vite le service client de leur opérateur Mobile Money. Ils ne doivent rien envoyer de plus."
+    },
+    {
+      "question": "Comment savoir si quelqu’un est encore connecté à mon compte ?",
+      "answer": "Dans les réglages de sécurité de vos applications, regardez la liste des appareils connectés. Déconnectez ceux que vous ne reconnaissez pas, puis changez votre mot de passe et activez la vérification en deux étapes."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/piratage/partage.webp",
+    "alt": "Tantie Rosine sourit, téléphone serré contre elle ; derrière elle, un grand bouclier bleu avec un cadenas blanc et une petite clé dorée.",
+    "text": "Quelqu’un te demande de renvoyer un code « reçu par erreur » ? 🔐 Ne le donne jamais : c’est la clé de ton compte. Si ton compte t’échappe, ne paie rien, garde les preuves, récupère-le depuis un appareil sûr, active la vérification en deux étapes et préviens tes proches. Lis la BD « Le code de Tantie Rosine » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:5",
+      "planche-1": "4:10",
+      "planche-2": "4:13",
+      "planche-3": "4:16",
+      "planche-4": "4:18",
+      "partage": "4:21"
+    }
+  }
+}

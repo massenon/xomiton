@@ -1,0 +1,94 @@
+{
+  "slug": "doxing",
+  "key": "vn22",
+  "category": "identite-donnees",
+  "title": "Doxing et distribution malveillante",
+  "summary": "Votre adresse, votre numéro ou vos photos publiés pour vous exposer ? Mettez-vous d’abord en sécurité, entourez-vous, gardez les preuves et demandez le retrait.",
+  "content_warning": "Ce contenu évoque la publication de l’adresse et de photos d’une personne LBTQ+ pour l’exposer et la mettre en danger.",
+  "bd": {
+    "title": "Ma sécurité d’abord",
+    "cover": {
+      "image": "assets/images/violences-numeriques/doxing/couverture.webp",
+      "alt": "Dans une cour à Porto-Novo, Afi, déterminée, montre un téléphone avec une épingle de localisation barrée ; Kossi et Tantie Rosine posent une main sur ses épaules."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/doxing/planche-1.webp",
+        "caption": "Afi découvre une publication partagée en boucle : son adresse, son numéro et des photos d’une rencontre de son association LBTQ+ à Porto-Novo. Sans son accord, quelqu’un l’expose et la met en danger.",
+        "alt": "Près d’un muret, Afi regarde son téléphone, en alerte ; l’écran agrandi montre une publication avec une épingle, une maison, un téléphone et une photo floue, entourée de flèches de partage."
+      },
+      {
+        "image": "assets/images/violences-numeriques/doxing/planche-2.webp",
+        "caption": "Afi ne répond pas et ne cherche pas l’auteur. Elle fait des captures avec les liens et les dates, puis appelle Kossi, qui arrive aussitôt. « Tu ne restes pas seule ce soir. On s’occupe d’abord de ta sécurité. »",
+        "alt": "Assise sur son lit, Afi fait des captures sur son téléphone ; des icônes de capture, de lien, de calendrier et une réponse barrée flottent. Kossi arrive à la porte, casque à la main."
+      },
+      {
+        "image": "assets/images/violences-numeriques/doxing/planche-3.webp",
+        "caption": "Chez Tantie Rosine, ils font un plan de sécurité : où dormir quelques jours, qui prévenir, un mot code pour dire « viens me chercher ». Les autres personnes sur les photos sont prévenues discrètement.",
+        "alt": "Dans un salon, Afi, Tantie Rosine et Kossi préparent un plan dessiné en icônes ; au-dessus : une maison avec un cœur, trois silhouettes et un cadenas avec un cœur."
+      },
+      {
+        "image": "assets/images/violences-numeriques/doxing/planche-4.webp",
+        "caption": "Avec Nadia, Afi signale la publication à la plateforme et sur Xomiton, et demande son retrait. La page SOS reste à portée de main. « Tu as eu raison de t’entourer. » La publication disparaît ; Afi respire.",
+        "alt": "Sur une véranda, Nadia montre un ordinateur où une publication se dissout en confettis ; Afi, soulagée, tient un téléphone affichant un bouton rose avec un bouclier."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Le doxing, c’est publier ou faire circuler sans votre accord des informations personnelles : adresse, numéro de téléphone, lieu de travail ou d’études, photos, nom de vos proches. Le but est de vous intimider, de vous exposer ou de pousser d’autres personnes à vous nuire. Pour les personnes LBTQ+, cela peut aussi révéler une orientation ou une identité que l’on n’avait pas choisi de partager.</p><p><strong>Votre sécurité passe avant tout.</strong> Vous n’êtes pas responsable de ce que quelqu’un a publié.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Vos informations personnelles apparaissent dans une publication, un statut ou un groupe.</li><li>Vous recevez soudain des appels ou des messages d’inconnu·es.</li><li>Quelqu’un menace de « tout révéler » sur vous.</li><li>Des personnes passent devant chez vous ou parlent de votre adresse.</li><li>Des photos d’un événement privé circulent sans accord.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Mettez-vous en sécurité</strong> : si vous vous sentez menacé·e, ne restez pas seul·e et allez chez une personne de confiance.</li><li><strong>Ne répondez pas</strong> et ne cherchez pas à confronter l’auteur.</li><li><strong>Gardez des preuves</strong> : captures avec le lien, la date et le nom du compte. Demandez à vos proches de signaler la publication, pas de la partager.</li><li><strong>Signalez la publication</strong> à la plateforme en choisissant le motif d’informations personnelles ou de harcèlement, et demandez son retrait.</li><li><strong>Faites un plan de sécurité</strong> : où dormir, qui prévenir, un mot code.</li><li><strong>Prévenez avec discrétion</strong> les autres personnes visibles sur les photos.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Limitez qui peut voir votre numéro, vos photos et votre liste d’ami·es.</li><li>Désactivez la localisation automatique sur vos publications et vos photos.</li><li>Lors d’événements, convenez à l’avance qu’aucune photo n’est publiée sans l’accord de chacun·e.</li><li>Variez vos trajets habituels quelque temps si vous êtes visé·e.</li><li>Gardez un mot code avec vos proches.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Votre association ou vos proches peuvent aussi vous soutenir. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, même de façon anonyme : une personne formée le lira sous 24 h, et la page <a href=\"/suivi\">suivi</a> vous permet de voir où en est votre demande. Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes près de chez vous. Le <a href=\"/aide\">centre d’aide</a> répond aux questions sur la sécurité de vos comptes.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou appelez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Dois-je quitter mon logement ?",
+      "answer": "Pas forcément, mais si vous vous sentez en danger, dormez quelques jours chez une personne de confiance. Préparez un sac avec vos papiers, un chargeur et un peu d’argent. Un plan de sécurité fait avec Nadia ou une personne formée vous aide à décider."
+    },
+    {
+      "question": "La publication a été copiée dans plusieurs groupes. Que faire ?",
+      "answer": "Signalez chaque copie que vous trouvez et gardez une capture de chacune. Demandez à quelques proches de confiance de vous aider à repérer et signaler les copies, sans jamais les partager. Faites un signalement sur Xomiton pour être accompagné·e."
+    },
+    {
+      "question": "J’ai peur d’être exposé·e comme LBTQ+. À qui en parler ?",
+      "answer": "Choisissez une personne de confiance qui vous respecte. Sur Xomiton, vous pouvez faire un signalement anonyme ; avec un compte, l’annuaire vous oriente vers des personnes formées et bienveillantes. Vous n’avez pas à vous justifier."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/doxing/partage.webp",
+    "alt": "Afi, sereine, tient son téléphone devant un grand bouclier bleu avec un cadenas, une épingle de localisation et une maison avec un cœur.",
+    "text": "Quelqu’un a publié ton adresse, ton numéro ou tes photos pour t’exposer ? 💜 Ta sécurité d’abord : ne reste pas seul·e, ne réponds pas, garde les preuves et demande le retrait de la publication. Un plan de sécurité avec des proches aide beaucoup. Lis la BD « Ma sécurité d’abord » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:48",
+      "planche-1": "4:50",
+      "planche-2": "4:52",
+      "planche-3": "4:54",
+      "planche-4": "4:56",
+      "partage": "4:58"
+    }
+  }
+}

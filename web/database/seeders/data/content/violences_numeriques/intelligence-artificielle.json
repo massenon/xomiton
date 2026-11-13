@@ -1,0 +1,94 @@
+{
+  "slug": "intelligence-artificielle",
+  "key": "vn23",
+  "category": "ia-faux-contenus",
+  "title": "Intelligence artificielle malveillante",
+  "summary": "Des dizaines de commentaires identiques envahissent vos publications ? Des comptes automatisés peuvent harceler en masse. Apprenez à les repérer et à les signaler.",
+  "content_warning": "Ce contenu évoque un harcèlement en ligne mené par des comptes automatisés.",
+  "bd": {
+    "title": "Mille copies, une seule voix",
+    "cover": {
+      "image": "assets/images/violences-numeriques/intelligence-artificielle/couverture.webp",
+      "alt": "Sur un campus, Afi et Sena sourient, téléphone en main, derrière un bouclier coché ; autour d’eux, des engrenages, des carrés copiés et une loupe."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/intelligence-artificielle/planche-1.webp",
+        "caption": "Afi publie sur TikTok une vidéo de ses sacs en wax. En une heure, des centaines de commentaires identiques arrivent, tous moqueurs, postés par des comptes qui se ressemblent. « Comment autant de gens écrivent-ils exactement la même chose ? »",
+        "alt": "Assise sur un muret du campus, Afi regarde son téléphone, étonnée ; l’écran agrandi montre une vidéo d’un sac en wax et une longue colonne de bulles grises identiques."
+      },
+      {
+        "image": "assets/images/violences-numeriques/intelligence-artificielle/planche-2.webp",
+        "caption": "Afi ne répond à aucun commentaire. Elle fait des captures, copie les liens des comptes et note l’heure. « Si je réponds, je leur donne de l’attention. Je garde les preuves. »",
+        "alt": "À son bureau, devant une machine à coudre et des tissus, Afi tient son téléphone sans écrire ; à côté flottent une réponse barrée, une capture, un lien et un dossier verrouillé."
+      },
+      {
+        "image": "assets/images/violences-numeriques/intelligence-artificielle/planche-3.webp",
+        "caption": "Sena lui montre les indices : des comptes créés il y a quelques jours, sans photo, qui publient le même message à la même minute. « Ce sont des comptes automatisés, pas l’avis des gens. On peut les signaler. »",
+        "alt": "Sur un banc du campus, Sena explique à Afi ; une grande loupe examine un avatar vide, un calendrier avec une étoile et trois bulles identiques, entourés d’engrenages."
+      },
+      {
+        "image": "assets/images/violences-numeriques/intelligence-artificielle/planche-4.webp",
+        "caption": "Avec Nadia, Afi signale les comptes à la plateforme et sur Xomiton, puis active le filtre de commentaires. Ses vraies clientes reviennent avec des cœurs. « Ta voix compte plus que mille copies. »",
+        "alt": "Sur une véranda, Nadia montre un ordinateur où un entonnoir filtre des bulles identiques ; Afi sourit, son téléphone affiche des bulles colorées avec des cœurs ; Sena lève le pouce."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>L’intelligence artificielle peut être utilisée pour nuire. Certaines personnes s’en servent pour fabriquer de fausses images, écrire des messages blessants en grande quantité ou faire fonctionner des comptes automatisés, appelés « robots » ou « bots ». Ces comptes publient le même commentaire des centaines de fois pour humilier quelqu’un, salir sa réputation ou le faire taire.</p><p><strong>Ces commentaires ne reflètent pas l’avis des gens.</strong> Ils sont produits en série. Vous pouvez les signaler et les filtrer.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Beaucoup de commentaires identiques ou presque arrivent en très peu de temps.</li><li>Les comptes sont récents, sans photo ou avec une photo générique.</li><li>Leurs noms se ressemblent, souvent suivis de chiffres.</li><li>Ils n’ont presque aucune publication personnelle.</li><li>Vous recevez des messages privés qui semblent écrits par une machine, toujours sur le même ton.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas</strong> : les réponses font remonter la publication et encouragent l’attaque.</li><li><strong>Gardez des preuves</strong> : captures des commentaires, liens des comptes, heure et date.</li><li><strong>Signalez les comptes</strong> à la plateforme comme spam, faux compte ou harcèlement.</li><li><strong>Activez les filtres</strong> : mots-clés interdits, commentaires limités à vos abonné·es ou désactivés pendant quelque temps.</li><li><strong>Bloquez ou restreignez</strong> les comptes les plus actifs après avoir gardé les preuves.</li><li><strong>Signalez la situation sur Xomiton</strong> pour être accompagné·e.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Préparez une liste de mots à filtrer dans vos réglages de commentaires.</li><li>Choisissez qui peut commenter, vous identifier ou vous écrire en privé.</li><li>Protégez vos comptes avec la vérification en deux étapes.</li><li>Entourez-vous de personnes de confiance qui peuvent vous aider à signaler.</li><li>Si une fausse image de vous circule, consultez aussi notre fiche sur les deepfakes.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Un·e ami·e peut aussi vous aider à trier et signaler les commentaires. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, même de façon anonyme : une personne formée le lira sous 24 h, et la page <a href=\"/suivi\">suivi</a> vous permet de voir où en est votre demande. Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes près de chez vous. Le <a href=\"/aide\">centre d’aide</a> répond aux questions sur la sécurité de vos comptes.</p><p>En cas de danger immédiat, utilisez le <a href=\"/sos\">bouton SOS</a> ou appelez les <a href=\"/urgences\">numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Comment être sûr·e que ce sont des comptes automatisés ?",
+      "answer": "On ne peut pas toujours en être certain·e. Mais des comptes récents, sans photo, qui publient le même texte à la même minute sont un signe fort. Dans le doute, traitez-les de la même façon : ne répondez pas, gardez les preuves, signalez."
+    },
+    {
+      "question": "Dois-je supprimer ma vidéo ?",
+      "answer": "Ce n’est pas obligatoire. Vous pouvez la garder et limiter ou désactiver les commentaires quelque temps. Si vous préférez la retirer, faites d’abord des captures : elles serviront pour vos signalements."
+    },
+    {
+      "question": "Les commentaires disent des choses fausses sur moi. Que faire ?",
+      "answer": "Ne cherchez pas à vous justifier sous la publication. Gardez les preuves, signalez les commentaires et prévenez vos proches ou vos client·es par vos propres canaux. Faites un signalement sur Xomiton pour être accompagné·e."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/intelligence-artificielle/partage.webp",
+    "alt": "Afi et Sena sourient devant un grand bouclier bleu ; Afi tient une loupe qui révèle une rangée de bulles grises identiques, un cœur flotte au-dessus.",
+    "text": "Des centaines de commentaires identiques sous ta vidéo ? 🔍 Ce sont souvent des comptes automatisés, pas l’avis des gens. Ne réponds pas, garde des captures, signale les comptes et active le filtre de commentaires. Ta voix compte plus que mille copies 💜 Lis la BD « Mille copies, une seule voix » sur Xomiton."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:63",
+      "planche-1": "4:65",
+      "planche-2": "4:67",
+      "planche-3": "4:68",
+      "planche-4": "4:69",
+      "partage": "4:70"
+    }
+  }
+}
