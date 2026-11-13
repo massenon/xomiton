@@ -1,5 +1,7 @@
 # BD « violences numériques » — lot 2 (15 sujets) : état et reprise
 
+> **Terminé le 13/11/2026** : les 69 images restantes ont été générées à la remise à zéro des crédits (1 régénérée), les 15 JSON écrits et les sujets passés en `pilote` (23/23). Ce fichier reste comme trace des scénarios retenus.
+
 Demande du client du 12/11/2026 : générer les BD des 15 sujets restants (P19). Production arrêtée le 12/11/2026 : **crédits IA Figma épuisés** (« Insufficient Figma AI credits for this operation », remise à zéro annoncée le **13/11/2026 à 00:00 UTC**).
 
 Méthode identique au pilote : `design-system/bd/BIBLE_PERSONNAGES.md` (style, personnages, règles), connecteur Figma `generate_image` (`gpt-image-2.5-flare`), fichier Figma « Xomiton — BD violences numériques ». Images WebP ≤ 100 Ko dans `web/public/assets/images/violences-numeriques/<slug>/`. Un sujet n'est publié qu'avec son JSON complet et le statut `pilote` + sa clé dans `_categories.json` : les images partielles ci-dessous ne sont référencées nulle part.

@@ -11,6 +11,7 @@ use App\Models\Faq;
 use App\Models\Thematique;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\ViolencesNumeriquesSeeder;
+use Tests\Support\ViolencesNumeriquesFixtures;
 
 /*
  * P19-06 : import idempotent des contenus des violences numériques (commande xomiton:violences-numeriques:import et
@@ -30,10 +31,10 @@ function vnCounts(): array
     ];
 }
 
-it('importe 6 catégories, 8 fiches publiées, 15 sujets à venir en brouillon, 24 questions et 8 BD publiques', function (): void {
+it('importe 6 catégories, 23 fiches publiées, 69 questions et 23 BD publiques', function (): void {
     $this->artisan('xomiton:violences-numeriques:import')->assertSuccessful();
 
-    expect(vnCounts())->toBe(['categories' => 6, 'thematiques' => 23, 'published' => 8, 'faqs' => 24, 'comics' => 8]);
+    expect(vnCounts())->toBe(['categories' => 6, 'thematiques' => 23, 'published' => 23, 'faqs' => 69, 'comics' => 23]);
 
     $fiche = Thematique::query()->where('slug', 'sextorsion')->firstOrFail();
     expect($fiche->category?->kind)->toBe(Category::KIND_DIGITAL_VIOLENCE)
@@ -55,7 +56,13 @@ it('importe 6 catégories, 8 fiches publiées, 15 sujets à venir en brouillon, 
         ->and($comic->thematique_id)->toBe($fiche->id)
         ->and($comic->pages)->toHaveCount(4)
         ->and(collect($comic->pages)->every(fn (array $page): bool => $page['alt'] !== '' && $page['caption'] !== ''))->toBeTrue();
+});
 
+it('importe un sujet à venir en brouillon vide, sans BD ni questions', function (): void {
+    ViolencesNumeriquesFixtures::withUpcoming('revenge-porn');
+    $this->artisan('xomiton:violences-numeriques:import')->assertSuccessful();
+
+    expect(vnCounts())->toBe(['categories' => 6, 'thematiques' => 23, 'published' => 22, 'faqs' => 66, 'comics' => 22]);
     $upcoming = Thematique::query()->where('slug', 'revenge-porn')->firstOrFail();
     expect($upcoming->getRawOriginal('status'))->toBe(ContentStatus::Draft->value)->and($upcoming->published_at)->toBeNull();
 });
@@ -64,8 +71,8 @@ it('donne des méta SEO uniques à chaque fiche', function (): void {
     app(ImportViolencesNumeriques::class)();
     $fiches = Thematique::query()->published()->get();
 
-    expect($fiches->pluck('meta_title')->unique())->toHaveCount(8)
-        ->and($fiches->pluck('meta_description')->unique())->toHaveCount(8);
+    expect($fiches->pluck('meta_title')->unique())->toHaveCount(23)
+        ->and($fiches->pluck('meta_description')->unique())->toHaveCount(23);
 });
 
 it('est rejouable : mêmes lignes, textes réalignés, références juridiques et choix de l’administration préservés', function (): void {
@@ -96,6 +103,7 @@ it('est rejouable : mêmes lignes, textes réalignés, références juridiques e
 });
 
 it('ne réaligne plus un sujet à venir que l’équipe a rédigé', function (): void {
+    ViolencesNumeriquesFixtures::withUpcoming('revenge-porn');
     $import = app(ImportViolencesNumeriques::class);
     $import();
     Thematique::query()->where('slug', 'revenge-porn')->update(['title' => 'Revenge porn : fiche rédigée', 'body' => '<p>Contenu rédigé.</p>']);

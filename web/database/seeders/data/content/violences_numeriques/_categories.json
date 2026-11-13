@@ -3,38 +3,38 @@
   "categories": [
     {"slug": "harcelement-en-ligne", "label": "Harcèlement et attaques en ligne", "icon": "chat-left-dots", "topics": [
       {"slug": "harcelement-en-ligne", "title": "Harcèlement en ligne", "summary": "Messages répétés, insultes, intimidation ou menaces via réseaux sociaux et messageries", "status": "pilote", "key": "vn01"},
-      {"slug": "cyberharcelement-pollupostage", "title": "Cyberharcèlement et pollupostage", "summary": "Attaques répétées ou massives visant à intimider, insulter ou envahir votre espace numérique", "status": "a_venir"},
-      {"slug": "trolling-raids-numeriques", "title": "Trolling et raids numériques", "summary": "Attaques coordonnées par un groupe pour harceler massivement une personne", "status": "a_venir"},
-      {"slug": "forums-groupes-de-haine", "title": "Forums ou groupes de haine", "summary": "Diffusion de propos sexistes, humiliants ou incitant à la violence", "status": "a_venir"},
-      {"slug": "diffamation-en-ligne", "title": "Diffamation en ligne", "summary": "Répandre des mensonges pour détruire votre réputation", "status": "a_venir"}
+      {"slug": "cyberharcelement-pollupostage", "title": "Cyberharcèlement et pollupostage", "summary": "Attaques répétées ou massives visant à intimider, insulter ou envahir votre espace numérique", "status": "pilote", "key": "vn09"},
+      {"slug": "trolling-raids-numeriques", "title": "Trolling et raids numériques", "summary": "Attaques coordonnées par un groupe pour harceler massivement une personne", "status": "pilote", "key": "vn10"},
+      {"slug": "forums-groupes-de-haine", "title": "Forums ou groupes de haine", "summary": "Diffusion de propos sexistes, humiliants ou incitant à la violence", "status": "pilote", "key": "vn11"},
+      {"slug": "diffamation-en-ligne", "title": "Diffamation en ligne", "summary": "Répandre des mensonges pour détruire votre réputation", "status": "pilote", "key": "vn12"}
     ]},
     {"slug": "images-intimes-violences-sexuelles", "label": "Images intimes et violences sexuelles en ligne", "icon": "shield-lock", "topics": [
-      {"slug": "messages-non-sollicites", "title": "Messages non sollicités", "summary": "Envoi de photos sexuelles, vidéos ou propos offensants sans consentement", "status": "a_venir"},
+      {"slug": "messages-non-sollicites", "title": "Messages non sollicités", "summary": "Envoi de photos sexuelles, vidéos ou propos offensants sans consentement", "status": "pilote", "key": "vn13"},
       {"slug": "sextorsion", "title": "Sextorsion", "summary": "Chantage utilisant des contenus intimes pour obtenir argent, faveurs ou obéissance", "status": "pilote", "key": "vn02"},
-      {"slug": "revenge-porn", "title": "Revenge porn", "summary": "Partage non consenti d'images ou vidéos intimes pour humilier ou se venger", "status": "a_venir"},
+      {"slug": "revenge-porn", "title": "Revenge porn", "summary": "Partage non consenti d'images ou vidéos intimes pour humilier ou se venger", "status": "pilote", "key": "vn14"},
       {"slug": "photos-privees-partagees", "title": "Photos privées partagées", "summary": "Dans une relation intime, en cas de rupture, l'agresseur publie ou menace de publier des photos intimes pour humilier et contrôler", "status": "pilote", "key": "vn03"},
-      {"slug": "sollicitation-sexuelle-technologies", "title": "Sollicitation sexuelle via technologies", "summary": "Demande insistante d'actes ou conversations sexuelles en ligne", "status": "a_venir"}
+      {"slug": "sollicitation-sexuelle-technologies", "title": "Sollicitation sexuelle via technologies", "summary": "Demande insistante d'actes ou conversations sexuelles en ligne", "status": "pilote", "key": "vn15"}
     ]},
     {"slug": "surveillance-controle", "label": "Surveillance et contrôle", "icon": "eye-slash", "topics": [
-      {"slug": "surveillance-suivi-non-consenti", "title": "Surveillance et suivi non consenti", "summary": "Logiciels espions, accès aux messages, suivi GPS ou surveillance sur les réseaux sociaux", "status": "a_venir"},
+      {"slug": "surveillance-suivi-non-consenti", "title": "Surveillance et suivi non consenti", "summary": "Logiciels espions, accès aux messages, suivi GPS ou surveillance sur les réseaux sociaux", "status": "pilote", "key": "vn16"},
       {"slug": "traque-gps-reseaux", "title": "Traque via GPS ou médias sociaux", "summary": "Localisation ou arrivées soudaines grâce au suivi numérique", "status": "pilote", "key": "vn04"},
-      {"slug": "controle-des-appareils", "title": "Contrôle des appareils", "summary": "Prise de contrôle de caméras, micros ou appareils connectés à distance", "status": "a_venir"},
+      {"slug": "controle-des-appareils", "title": "Contrôle des appareils", "summary": "Prise de contrôle de caméras, micros ou appareils connectés à distance", "status": "pilote", "key": "vn17"},
       {"slug": "partage-force-mots-de-passe", "title": "Forcer le partage de mots de passe", "summary": "Exiger vos codes PIN, mots de passe ou accès à vos comptes", "status": "pilote", "key": "vn05"},
-      {"slug": "manipulation-psychologique", "title": "Manipulation psychologique", "summary": "Contrôle des communications, isolement numérique, blocage de contacts importants", "status": "a_venir"},
-      {"slug": "refus-services-acces-bloques", "title": "Refus de services ou accès bloqués", "summary": "Couper votre accès à des comptes, outils ou services essentiels lors d'un conflit", "status": "a_venir"}
+      {"slug": "manipulation-psychologique", "title": "Manipulation psychologique", "summary": "Contrôle des communications, isolement numérique, blocage de contacts importants", "status": "pilote", "key": "vn18"},
+      {"slug": "refus-services-acces-bloques", "title": "Refus de services ou accès bloqués", "summary": "Couper votre accès à des comptes, outils ou services essentiels lors d'un conflit", "status": "pilote", "key": "vn19"}
     ]},
     {"slug": "identite-donnees", "label": "Identité et données personnelles", "icon": "person-badge", "topics": [
-      {"slug": "piratage", "title": "Piratage", "summary": "Intrusion dans vos comptes, appareils ou données personnelles", "status": "a_venir"},
+      {"slug": "piratage", "title": "Piratage", "summary": "Intrusion dans vos comptes, appareils ou données personnelles", "status": "pilote", "key": "vn20"},
       {"slug": "usurpation-identite", "title": "Usurpation d'identité", "summary": "Utilisation de vos informations pour tromper, manipuler ou nuire", "status": "pilote", "key": "vn06"},
-      {"slug": "vol-identite", "title": "Vol d'identité", "summary": "Utilisation de vos données personnelles pour créer des comptes ou obtenir des avantages", "status": "a_venir"},
-      {"slug": "doxing", "title": "Doxing et distribution malveillante", "summary": "Publication d'informations personnelles (adresse, numéro, photos) pour vous mettre en danger", "status": "a_venir"}
+      {"slug": "vol-identite", "title": "Vol d'identité", "summary": "Utilisation de vos données personnelles pour créer des comptes ou obtenir des avantages", "status": "pilote", "key": "vn21"},
+      {"slug": "doxing", "title": "Doxing et distribution malveillante", "summary": "Publication d'informations personnelles (adresse, numéro, photos) pour vous mettre en danger", "status": "pilote", "key": "vn22"}
     ]},
     {"slug": "arnaques", "label": "Arnaques", "icon": "exclamation-diamond", "topics": [
       {"slug": "arnaques-sentimentales-financieres", "title": "Arnaques sentimentales et financières", "summary": "Manipulation émotionnelle via faux profils pour obtenir argent ou informations", "status": "pilote", "key": "vn07"}
     ]},
     {"slug": "ia-faux-contenus", "label": "IA et faux contenus", "icon": "cpu", "topics": [
       {"slug": "deepfakes", "title": "Deepfakes et manipulation d'images par IA", "summary": "Création de fausses vidéos ou images réalistes pour nuire ou humilier", "status": "pilote", "key": "vn08"},
-      {"slug": "intelligence-artificielle", "title": "Intelligence artificielle malveillante", "summary": "Fausses images, harcèlement automatisé par des robots conversationnels, atteintes à la réputation", "status": "a_venir"}
+      {"slug": "intelligence-artificielle", "title": "Intelligence artificielle malveillante", "summary": "Fausses images, harcèlement automatisé par des robots conversationnels, atteintes à la réputation", "status": "pilote", "key": "vn23"}
     ]}
   ]
 }

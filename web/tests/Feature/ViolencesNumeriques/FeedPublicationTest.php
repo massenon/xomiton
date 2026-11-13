@@ -32,7 +32,7 @@ it('publie chaque BD une seule fois depuis le compte officiel, avec 4 images et 
         ->and($official->getRoleNames()->all())->toBe([])
         ->and($official->email)->toEndWith('.invalid');
 
-    expect(Post::query()->count())->toBe(8);
+    expect(Post::query()->count())->toBe(23);
     $tool = CccTool::query()->where('key', 'vn02')->firstOrFail();
     $post = Post::query()->with('media')->findOrFail($tool->feed_post_id);
 
@@ -53,18 +53,19 @@ it('ne republie pas une BD dont la publication a été supprimée, ni une BD non
     CccTool::query()->where('key', 'vn03')->update(['is_public' => false]);
 
     $this->artisan('xomiton:violences-numeriques:import', ['--publish' => true])->assertSuccessful();
-    expect(Post::query()->count())->toBe(7);
+    expect(Post::query()->count())->toBe(22);
 
     Post::query()->findOrFail(CccTool::query()->where('key', 'vn01')->value('feed_post_id'))->delete();
     $this->artisan('xomiton:violences-numeriques:import', ['--publish' => true])->assertSuccessful();
 
-    expect(Post::query()->withTrashed()->count())->toBe(7)
+    expect(Post::query()->withTrashed()->count())->toBe(22)
         ->and(CccTool::query()->where('key', 'vn03')->value('feed_post_id'))->toBeNull();
 });
 
 it('montre la publication dans le fil d’un membre avec ses 4 images et leur texte alternatif', function (): void {
     $this->artisan('xomiton:violences-numeriques:import', ['--publish' => true])->assertSuccessful();
-    $ulid = Post::query()->findOrFail(CccTool::query()->where('key', 'vn01')->value('feed_post_id'))->ulid;
+    // 23 BD publiées : la plus récente est en tête du fil (la première page de 20 ne contient pas forcément vn01).
+    $ulid = Post::query()->orderByDesc('id')->firstOrFail()->ulid;
 
     $item = collect(FeedFixtures::as(FeedFixtures::member())->getJson('/api/v1/feed?per_page=20')->assertOk()->json('data'))
         ->firstWhere('id', $ulid);
