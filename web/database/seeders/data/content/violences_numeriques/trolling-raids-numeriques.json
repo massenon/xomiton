@@ -1,0 +1,94 @@
+{
+  "slug": "trolling-raids-numeriques",
+  "key": "vn10",
+  "category": "harcelement-en-ligne",
+  "title": "Trolling et raids numériques",
+  "summary": "Des dizaines de comptes vous attaquent en même temps après une publication ? Reconnaître un raid numérique, se protéger, garder les preuves et trouver de l’aide.",
+  "content_warning": "Ce contenu évoque une vague de messages hostiles envoyés par un groupe, sans jamais les montrer.",
+  "bd": {
+    "title": "Sena face à la vague",
+    "cover": {
+      "image": "assets/images/violences-numeriques/trolling-raids-numeriques/couverture.webp",
+      "alt": "Dans une cour de Porto-Novo, Sena montre un téléphone affichant un bouclier ; une vague de bulles grises se brise sur un grand bouclier bleu. Afi et Kossi l’entourent."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/trolling-raids-numeriques/planche-1.webp",
+        "caption": "Sena, militant·e d’une association LBTQ+ de Porto-Novo, a publié une vidéo sur ses droits. Le soir même, des centaines de commentaires hostiles arrivent d’un coup, de comptes inconnus. « Ils se sont donné le mot… »",
+        "alt": "Sur un banc, sous un manguier, Sena regarde son téléphone, surpris·e : une nuée de bulles grises, d’alertes et d’avatars sans visage en jaillit. Un drapeau arc-en-ciel orne le mur."
+      },
+      {
+        "image": "assets/images/violences-numeriques/trolling-raids-numeriques/planche-2.webp",
+        "caption": "Sena ne répond à personne. Iel limite les commentaires, coupe les notifications et enregistre des captures avec les dates et les noms des comptes. « Je ne nourris pas la vague. Je garde les preuves. »",
+        "alt": "La nuit, dans sa chambre, Sena range des captures de messages abstraits dans un dossier verrouillé sur son ordinateur ; son téléphone affiche des notifications coupées."
+      },
+      {
+        "image": "assets/images/violences-numeriques/trolling-raids-numeriques/planche-3.webp",
+        "caption": "Le lendemain, Afi et Kossi viennent l’écouter. Pas question de contre-attaquer ni de chercher les auteurs. Kossi montre comment signaler les comptes ; Afi propose de surveiller les commentaires à sa place. « On est là. Tu n’es pas seul·e. »",
+        "alt": "Sous un manguier, Sena parle, son téléphone retourné sur les genoux. Afi, à côté, pose une main sur son bras ; Kossi, en face, montre un écran avec un drapeau et un bouclier."
+      },
+      {
+        "image": "assets/images/violences-numeriques/trolling-raids-numeriques/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Sena signale le raid à la plateforme, qui retire des commentaires et suspend des comptes. Iel fait aussi un signalement sur Xomiton. « Ta voix compte. On la protège ensemble. »",
+        "alt": "Dans un espace d’accueil, Sena et Nadia sourient devant un ordinateur qui affiche un drapeau et un bouclier validé ; les bulles s’effacent. Afi, debout, lève le pouce."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Un raid numérique, c’est une attaque <strong>coordonnée</strong> : un groupe de personnes, ou de faux comptes, se donne le mot pour inonder une personne de commentaires, de messages ou de signalements abusifs, souvent en quelques heures. Le trolling, c’est provoquer et humilier pour faire réagir.</p><p>Ces attaques visent souvent les femmes, les militant·es et les personnes LBTQ+ qui prennent la parole sur TikTok, Facebook, Instagram ou dans les groupes WhatsApp. Le but est de faire taire. <strong>Ce n’est jamais votre faute</strong>, et vous avez le droit de vous exprimer en sécurité.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Des dizaines de commentaires hostiles arrivent d’un coup sous une même publication.</li><li>Les messages se ressemblent et viennent de comptes récents, sans photo ou inconnus.</li><li>Votre publication est partagée dans un groupe ou une page qui appelle à « s’occuper de vous ».</li><li>Vos comptes reçoivent des signalements abusifs ou sont bloqués sans raison.</li><li>Des messages privés arrivent aussi, parfois avec des menaces ou des informations sur vous.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne répondez pas</strong> : chaque réponse donne de la visibilité au raid. Ne cherchez pas à identifier ni à confronter les auteurs.</li><li><strong>Limitez l’accès</strong> : désactivez ou filtrez les commentaires, passez le compte en privé, coupez les notifications le temps de souffler.</li><li><strong>Gardez les preuves</strong> : captures d’écran avec la date, le nom des comptes et le lien de la publication. Un·e ami·e peut les faire à votre place.</li><li><strong>Signalez</strong> les commentaires et les comptes à la plateforme, puis bloquez-les.</li><li>Si votre adresse est publiée ou si une menace vise votre sécurité, mettez-vous à l’abri et demandez de l’aide sans attendre.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Choisissez qui peut commenter, vous mentionner, vous écrire ou vous ajouter à des groupes.</li><li>Activez les filtres de mots et le masquage automatique des commentaires offensants.</li><li>Préparez avec vos proches un « plan raid » : qui surveille, qui fait les captures, qui reste avec vous.</li><li>Ne publiez pas en direct votre position ni le lieu de vos activités associatives.</li><li>Activez la double vérification pour qu’on ne vole pas vos comptes pendant l’attaque.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Faut-il supprimer ma publication ?",
+      "answer": "C’est votre choix. Avant tout, faites des captures de la publication et des commentaires. Vous pouvez aussi la garder et simplement fermer ou filtrer les commentaires. Dans tous les cas, la responsabilité est du côté des personnes qui attaquent."
+    },
+    {
+      "question": "Mes ami·es veulent répondre aux trolls. Est-ce une bonne idée ?",
+      "answer": "Mieux vaut éviter : les réponses relancent souvent le raid et exposent vos proches. Ils et elles peuvent vous aider autrement : faire des captures, signaler les comptes, publier un message de soutien sans viser personne et rester à vos côtés."
+    },
+    {
+      "question": "La plateforme ne réagit pas à mes signalements. Que faire ?",
+      "answer": "Signalez chaque compte et chaque commentaire, gardez une trace de vos demandes et demandez à des proches de signaler aussi. Faites un signalement sur Xomiton : l’équipe peut vous accompagner et vous orienter."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/trolling-raids-numeriques/partage.webp",
+    "alt": "Sena, Afi et Kossi, souriant·es, devant un cercle bleu sous un grand bouclier ; Sena tend un téléphone avec un bouclier, des bulles grises s’éloignent.",
+    "text": "Des centaines de commentaires hostiles d’un coup, juste parce que tu as pris la parole ? C’est un raid, et ce n’est pas ta faute. 💜 Ne réponds pas, ferme ou filtre les commentaires, garde les preuves, signale les comptes et entoure-toi de personnes de confiance. Ta voix compte. 🛡️ Lis la BD « Sena face à la vague » pour voir comment Sena a tenu bon."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:4",
+      "planche-1": "4:8",
+      "planche-2": "4:11",
+      "planche-3": "4:15",
+      "planche-4": "4:20",
+      "partage": "4:24"
+    }
+  }
+}

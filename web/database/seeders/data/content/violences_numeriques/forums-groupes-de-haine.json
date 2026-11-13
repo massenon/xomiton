@@ -1,0 +1,94 @@
+{
+  "slug": "forums-groupes-de-haine",
+  "key": "vn11",
+  "category": "harcelement-en-ligne",
+  "title": "Forums ou groupes de haine",
+  "summary": "Ajouté·e à un groupe qui diffuse des propos sexistes, humiliants ou violents ? Reconnaître un groupe de haine, ne rien relayer, garder les preuves et signaler.",
+  "content_warning": "Ce contenu évoque des groupes en ligne qui diffusent des propos sexistes et humiliants, sans jamais les montrer.",
+  "bd": {
+    "title": "Kossi quitte le groupe",
+    "cover": {
+      "image": "assets/images/violences-numeriques/forums-groupes-de-haine/couverture.webp",
+      "alt": "Dans une rue de Cotonou, Kossi tient un téléphone affichant une porte de sortie et tourne le dos à un nuage gris d’alertes ; Afi arrive en souriant et le salue."
+    },
+    "pages": [
+      {
+        "image": "assets/images/violences-numeriques/forums-groupes-de-haine/planche-1.webp",
+        "caption": "Un ami a ajouté Kossi à un grand groupe WhatsApp. On y partage des « blagues » humiliantes sur les femmes et on se moque d’une étudiante du quartier. Certains appellent à la « remettre à sa place ». « Ça, ce n’est pas de l’humour. »",
+        "alt": "Assis sur un banc devant un kiosque de Cotonou, Kossi fronce les sourcils devant son téléphone ; au-dessus, une colonne de bulles grises marquées d’alertes et d’avatars sans visage."
+      },
+      {
+        "image": "assets/images/violences-numeriques/forums-groupes-de-haine/planche-2.webp",
+        "caption": "Kossi ne rit pas, ne transfère rien et ne répond pas à chaud. Il fait des captures : nom du groupe, administrateurs, dates, messages qui appellent à nuire. « Je ne relaie pas. Je garde les preuves. »",
+        "alt": "Dans sa chambre, Kossi lève la main en signe de refus ; son téléphone montre une flèche de partage barrée et des captures qui rejoignent un dossier verrouillé."
+      },
+      {
+        "image": "assets/images/violences-numeriques/forums-groupes-de-haine/planche-3.webp",
+        "caption": "Il en parle à Tantie Rosine et à Afi. Rosine l’approuve : « Tu as raison de ne pas suivre. Mais ne va pas les affronter seul. » Afi pense à l’étudiante visée : la prévenir avec délicatesse et lui proposer de l’aide, si elle le souhaite.",
+        "alt": "Dans une cour sous un manguier, Kossi explique, les mains ouvertes ; Tantie Rosine, assise, l’écoute avec attention ; Afi, debout, bras croisés, approuve."
+      },
+      {
+        "image": "assets/images/violences-numeriques/forums-groupes-de-haine/planche-4.webp",
+        "caption": "Avec Nadia, pair animatrice de Xomiton, Kossi signale le groupe et les messages à WhatsApp, quitte le groupe et fait un signalement sur Xomiton. « Refuser de relayer la haine, c’est déjà protéger quelqu’un. »",
+        "alt": "Dans un espace d’accueil, Kossi montre son téléphone avec un drapeau et une porte de sortie ; Nadia désigne un ordinateur affichant un bouclier validé et un cœur. Afi sourit derrière."
+      }
+    ]
+  },
+  "fiche": {
+    "sections": [
+      {
+        "title": "De quoi s’agit-il ?",
+        "body": "<p>Certains groupes WhatsApp ou Telegram, pages Facebook, forums ou comptes TikTok servent à diffuser des propos <strong>sexistes, homophobes, transphobes ou humiliants</strong>. On y partage des « blagues » dégradantes, des photos de personnes prises sans leur accord, et parfois des appels à harceler ou à faire du mal.</p><p>Vous pouvez y être ajouté·e sans l’avoir demandé, être la cible des messages ou en être témoin. Dans tous les cas, ce n’est pas « juste de l’humour ». <strong>Rien ne justifie la haine</strong>, et vous avez le droit de dire non.</p>"
+      },
+      {
+        "title": "Les signes qui doivent alerter",
+        "body": "<ul><li>Des messages qui rabaissent les femmes ou les personnes LBTQ+, et que tout le monde « like ».</li><li>Des photos, des noms ou des numéros de personnes réelles partagés pour se moquer d’elles.</li><li>Des appels à « donner une leçon », à harceler ou à retrouver quelqu’un.</li><li>Des membres qui insistent pour que vous participiez, ou qui vous menacent si vous partez.</li><li>Vous découvrez que vous êtes vous-même le sujet des messages d’un groupe.</li></ul>"
+      },
+      {
+        "title": "Que faire tout de suite ?",
+        "body": "<ol><li><strong>Ne relayez rien</strong> : ne transférez pas, ne likez pas, ne commentez pas.</li><li><strong>Gardez les preuves</strong> : captures du nom du groupe, des administrateurs, des messages et des dates. Ne repartagez jamais les photos des personnes visées.</li><li><strong>Signalez</strong> le groupe et les messages à la plateforme, puis quittez le groupe.</li><li>Si une personne est visée, prévenez-la avec délicatesse, sans lui montrer les contenus blessants, et proposez-lui de l’aide.</li><li>Ne confrontez pas seul·e les membres du groupe. En cas de menace précise, mettez-vous en sécurité et demandez de l’aide.</li></ol>"
+      },
+      {
+        "title": "Se protéger à l’avenir",
+        "body": "<ul><li>Sur WhatsApp, réglez qui peut vous ajouter aux groupes sur « Mes contacts » ou une liste choisie.</li><li>Masquez votre photo, votre statut et votre dernière connexion aux personnes inconnues.</li><li>Sur Facebook et TikTok, limitez qui peut vous identifier ou vous mentionner.</li><li>Parlez de ces groupes autour de vous : refuser ensemble de relayer, c’est casser la chaîne.</li><li>Faites confiance à votre malaise : vous n’avez pas à justifier votre départ d’un groupe.</li></ul>"
+      },
+      {
+        "title": "Où trouver de l’aide",
+        "body": "<p>Vous n’avez pas à affronter cela seul·e. Vous pouvez <a href=\"/signaler\">faire un signalement sur Xomiton</a>, avec ou sans compte, de façon anonyme si vous le souhaitez. Une personne formée le lira sous 24 h, et un code vous permet d’en <a href=\"/suivi\">suivre la suite</a>.</p><p>Avec un compte, <a href=\"/annuaire\">l’annuaire</a> vous met en lien avec des points focaux, des psychologues et des juristes. <a href=\"/inscription\">Créer un compte</a> est gratuit et confidentiel. Retrouvez d’autres repères dans le <a href=\"/aide\">centre d’aide</a>.</p><p>Si vous êtes en danger immédiat, utilisez <a href=\"/sos\">le bouton SOS</a> ou consultez <a href=\"/urgences\">les numéros d’urgence</a>.</p>"
+      }
+    ],
+    "legal": null
+  },
+  "faq": [
+    {
+      "question": "Si je quitte le groupe, est-ce que je perds les preuves ?",
+      "answer": "Faites vos captures avant de partir : nom du groupe, membres, messages, dates. Selon l’application, les messages restent parfois visibles de votre côté après votre départ, mais gardez vos captures en lieu sûr pour ne dépendre de rien."
+    },
+    {
+      "question": "Un groupe parle de moi, mais je n’en fais pas partie. Que faire ?",
+      "answer": "Ne cherchez pas à y entrer. Si une personne de confiance vous a prévenu·e, elle peut garder des captures pour vous, sans vous montrer plus que nécessaire. Signalez la situation sur Xomiton : l’équipe peut vous aider à décider des suites, à votre rythme."
+    },
+    {
+      "question": "Ce n’est que de l’humour, non ?",
+      "answer": "Une « blague » qui rabaisse les femmes ou les personnes LBTQ+ banalise la violence et prépare souvent le harcèlement. Vous avez le droit de ne pas rire, de quitter le groupe et de le signaler."
+    }
+  ],
+  "share": {
+    "image": "assets/images/violences-numeriques/forums-groupes-de-haine/partage.webp",
+    "alt": "Kossi et Afi, souriant·es, devant un cercle violet ; Kossi tend un téléphone avec une porte de sortie, Afi lève une main ornée d’un cœur ; des bulles grises s’éloignent.",
+    "text": "Ajouté·e à un groupe où l’on se moque des femmes ou des personnes LBTQ+ ? Ce n’est pas « juste de l’humour ». 💜 Ne relaie rien, garde les preuves, signale le groupe et quitte-le. Si quelqu’un est visé, préviens cette personne avec délicatesse et propose ton aide. Refuser de relayer la haine, c’est déjà protéger. 🛡️ Lis la BD « Kossi quitte le groupe »."
+  },
+  "images_meta": {
+    "tool": "Figma generate_image",
+    "model": "gpt-image-2.5-flare",
+    "generated_at": "2026-11-13",
+    "figma_nodes": {
+      "couverture": "4:27",
+      "planche-1": "4:30",
+      "planche-2": "4:34",
+      "planche-3": "4:38",
+      "planche-4": "4:42",
+      "partage": "4:44"
+    }
+  }
+}
