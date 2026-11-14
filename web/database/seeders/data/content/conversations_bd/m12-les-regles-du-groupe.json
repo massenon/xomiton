@@ -31,13 +31,13 @@
                     "personnage": "membre_groupe",
                     "texte": "Moi, je pense que…",
                     "position": {
-                        "x": 39.1,
-                        "y": 13.4
+                        "x": 4,
+                        "y": 13
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 35.1,
-                        "y": 38
+                        "x": 16,
+                        "y": 52
                     }
                 },
                 {
@@ -45,13 +45,13 @@
                     "personnage": "sena",
                     "texte": "Non, mais attends !",
                     "position": {
-                        "x": 52.8,
-                        "y": 20.4
+                        "x": 22,
+                        "y": 18
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 70.6,
-                        "y": 45
+                        "x": 31,
+                        "y": 49
                     },
                     "superpose": true
                 },
@@ -60,12 +60,12 @@
                     "personnage": "fifame",
                     "texte": "Je peux parler ?",
                     "position": {
-                        "x": 62.8,
-                        "y": 27.4
+                        "x": 38,
+                        "y": 22
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 58.8,
+                        "x": 46,
                         "y": 52
                     },
                     "superpose": true
@@ -81,13 +81,13 @@
                     "personnage": "nadia",
                     "texte": "On s’arrête une minute. Pour que chacun·e soit écouté·e, on se donne des règles.",
                     "position": {
-                        "x": 3,
+                        "x": 24,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 36.8
+                        "x": 17,
+                        "y": 32
                     }
                 }
             ]
@@ -101,7 +101,7 @@
                     "personnage": "nadia",
                     "texte": "Un : ce qui se dit ici reste ici.",
                     "position": {
-                        "x": 3,
+                        "x": 2,
                         "y": 3
                     }
                 },
@@ -110,8 +110,8 @@
                     "personnage": "nadia",
                     "texte": "Deux : une personne parle à la fois.",
                     "position": {
-                        "x": 25.8,
-                        "y": 3
+                        "x": 25,
+                        "y": 6
                     },
                     "associee_a": 0
                 },
@@ -120,13 +120,13 @@
                     "personnage": "nadia",
                     "texte": "Trois : on a le droit de ne pas parler.",
                     "position": {
-                        "x": 51.1,
-                        "y": 3
+                        "x": 50,
+                        "y": 9
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 47.1,
-                        "y": 32.2
+                        "x": 20,
+                        "y": 42
                     },
                     "associee_a": 1
                 }
@@ -141,13 +141,13 @@
                     "personnage": "yasmine",
                     "texte": "Je peux juste écouter aujourd’hui ?",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 28,
+                        "y": 6
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 23.3,
-                        "y": 29.9
+                        "x": 28,
+                        "y": 46
                     }
                 },
                 {
@@ -155,13 +155,13 @@
                     "personnage": "nadia",
                     "texte": "Bien sûr. Tu es la bienvenue, même en silence.",
                     "position": {
-                        "x": 21.8,
+                        "x": 46,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 51.2,
-                        "y": 32.2
+                        "x": 68,
+                        "y": 44
                     }
                 },
                 {
@@ -169,13 +169,13 @@
                     "personnage": "yasmine",
                     "texte": "Ouf. Je me sens en sécurité.",
                     "position": {
-                        "x": 49.7,
-                        "y": 3
+                        "x": 2,
+                        "y": 16
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 45.7,
-                        "y": 29.1
+                        "x": 18,
+                        "y": 32
                     }
                 }
             ]
@@ -189,13 +189,13 @@
                     "personnage": "sena",
                     "texte": "Alors je commence. Cette semaine, j’ai osé dire non.",
                     "position": {
-                        "x": 3,
+                        "x": 18,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 25,
+                        "y": 40
                     }
                 },
                 {
@@ -203,13 +203,13 @@
                     "personnage": "fifame",
                     "texte": "Moi aussi, un jour, je raconterai.",
                     "position": {
-                        "x": 32.2,
-                        "y": 3
+                        "x": 62,
+                        "y": 6
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 57.5,
-                        "y": 34.2
+                        "x": 82,
+                        "y": 32
                     }
                 },
                 {

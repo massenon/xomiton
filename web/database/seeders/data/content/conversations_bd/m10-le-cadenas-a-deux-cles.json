@@ -31,13 +31,13 @@
                     "personnage": "rosine",
                     "texte": "Mon téléphone me demande un code à six chiffres. C’est quoi, cette affaire ?",
                     "position": {
-                        "x": 32,
-                        "y": 13.4
+                        "x": 31,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
                         "x": 28,
-                        "y": 47.2
+                        "y": 43
                     }
                 }
             ]
@@ -51,13 +51,13 @@
                     "personnage": "mariam",
                     "texte": "C’est la double vérification, Tantie. Comme ma grille et mon cadenas.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 22,
+                        "y": 2
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 36.8
+                        "x": 35.5,
+                        "y": 42
                     }
                 },
                 {
@@ -65,13 +65,13 @@
                     "personnage": "rosine",
                     "texte": "Sa grille ?",
                     "position": {
-                        "x": 36.1,
-                        "y": 3
+                        "x": 60,
+                        "y": 6
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 58.5,
-                        "y": 23.9
+                        "x": 71,
+                        "y": 43
                     }
                 }
             ]
@@ -85,8 +85,8 @@
                     "personnage": "mariam",
                     "texte": "Le mot de passe, c’est la première clé.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 12,
+                        "y": 2
                     }
                 },
                 {
@@ -94,13 +94,13 @@
                     "personnage": "mariam",
                     "texte": "Le code reçu sur ton téléphone, c’est la deuxième. Un voleur n’a pas les deux.",
                     "position": {
-                        "x": 29.6,
+                        "x": 45,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 25.6,
-                        "y": 36.8
+                        "x": 40,
+                        "y": 48
                     },
                     "associee_a": 0
                 }
@@ -115,13 +115,13 @@
                     "personnage": "rosine",
                     "texte": "Ah ! Comme chez moi : le portail et le cadenas !",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 6,
+                        "y": 5
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 34.2
+                        "x": 27.5,
+                        "y": 43.5
                     }
                 },
                 {
@@ -132,13 +132,13 @@
                         "personne"
                     ],
                     "position": {
-                        "x": 38.4,
-                        "y": 3
+                        "x": 50,
+                        "y": 8
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 71.7,
-                        "y": 32.2
+                        "x": 68,
+                        "y": 47
                     }
                 }
             ]
@@ -152,13 +152,13 @@
                     "personnage": "numero_inconnu",
                     "texte": "Bonjour Tantie, envoie-moi vite le code que tu viens de recevoir.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 5,
+                        "y": 5
                     },
                     "queue": {
                         "vers": "ecran",
-                        "x": 31.5,
-                        "y": 32.2
+                        "x": 40,
+                        "y": 46
                     }
                 },
                 {
@@ -166,13 +166,13 @@
                     "personnage": "rosine",
                     "texte": "Ça, jamais !",
                     "position": {
-                        "x": 30,
-                        "y": 3
+                        "x": 38,
+                        "y": 6
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 26,
-                        "y": 26.8
+                        "x": 69,
+                        "y": 49
                     }
                 },
                 {
