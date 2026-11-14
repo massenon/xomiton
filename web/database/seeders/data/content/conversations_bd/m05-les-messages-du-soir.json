@@ -23,13 +23,13 @@
                     "personnage": "responsable_stage",
                     "texte": "Tu étais très belle aujourd’hui.",
                     "position": {
-                        "x": 50,
-                        "y": 3
+                        "x": 48,
+                        "y": 8
                     },
                     "queue": {
                         "vers": "ecran",
-                        "x": 68.8,
-                        "y": 28.8
+                        "x": 40.5,
+                        "y": 50
                     }
                 },
                 {
@@ -37,13 +37,13 @@
                     "personnage": "responsable_stage",
                     "texte": "Dîner avec moi demain ? Ça aiderait pour ton stage.",
                     "position": {
-                        "x": 67.3,
-                        "y": 3
+                        "x": 52,
+                        "y": 23
                     },
                     "queue": {
                         "vers": "ecran",
-                        "x": 70,
-                        "y": 28.8
+                        "x": 41,
+                        "y": 51
                     }
                 }
             ]
@@ -57,8 +57,8 @@
                     "personnage": "yasmine",
                     "texte": "Si je refuse, je perds mon stage ?",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 16,
+                        "y": 2
                     }
                 },
                 {
@@ -66,13 +66,13 @@
                     "personnage": "yasmine",
                     "texte": "Je ne réponds pas tout de suite. Je fais des captures.",
                     "position": {
-                        "x": 32.6,
-                        "y": 3
+                        "x": 47,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 28.6,
-                        "y": 34.2
+                        "x": 46,
+                        "y": 30
                     },
                     "associee_a": 0
                 }
@@ -87,13 +87,13 @@
                     "personnage": "yasmine",
                     "texte": "Je peux te parler en privé ? C’est au sujet de mon responsable.",
                     "position": {
-                        "x": 3,
+                        "x": 36,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 29.8
+                        "x": 46.5,
+                        "y": 46
                     }
                 },
                 {
@@ -101,13 +101,13 @@
                     "personnage": "ablavi",
                     "texte": "Bien sûr. Viens dans mon bureau.",
                     "position": {
-                        "x": 31.5,
+                        "x": 63,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 58.4,
-                        "y": 27.6
+                        "x": 65.5,
+                        "y": 47
                     }
                 }
             ]
@@ -121,13 +121,13 @@
                     "personnage": "ablavi",
                     "texte": "Ce qu’il fait, c’est du harcèlement. Ton stage ne dépend pas de ça.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 36,
+                        "y": 2
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 36,
+                        "y": 44.5
                     }
                 },
                 {
@@ -135,13 +135,13 @@
                     "personnage": "yasmine",
                     "texte": "Quelqu’un me croit.",
                     "position": {
-                        "x": 40,
+                        "x": 76,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 63.9,
-                        "y": 29.1
+                        "x": 79,
+                        "y": 23
                     }
                 }
             ]
@@ -155,13 +155,13 @@
                     "personnage": "yasmine",
                     "texte": "J’ai gardé tous les messages, avec les dates.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 10,
+                        "y": 1
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 35.5,
+                        "y": 34
                     }
                 },
                 {
@@ -169,13 +169,13 @@
                     "personnage": "ablavi",
                     "texte": "Alors on prépare un signalement écrit, ensemble.",
                     "position": {
-                        "x": 32.2,
-                        "y": 3
+                        "x": 64,
+                        "y": 2
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 62.9,
-                        "y": 32.2
+                        "x": 61,
+                        "y": 36.5
                     }
                 },
                 {

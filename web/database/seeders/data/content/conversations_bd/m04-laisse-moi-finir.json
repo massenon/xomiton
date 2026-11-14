@@ -31,13 +31,13 @@
                     "personnage": "ablavi",
                     "texte": "Pour le projet, je propose de…",
                     "position": {
-                        "x": 36.7,
-                        "y": 13.4
+                        "x": 28,
+                        "y": 12
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 32.7,
-                        "y": 38
+                        "x": 27,
+                        "y": 37.5
                     }
                 },
                 {
@@ -45,13 +45,13 @@
                     "personnage": "marc",
                     "texte": "Bon, on laisse les hommes parler chiffres.",
                     "position": {
-                        "x": 52.2,
-                        "y": 20.4
+                        "x": 46,
+                        "y": 20
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 74,
-                        "y": 49.6
+                        "x": 91.5,
+                        "y": 55
                     },
                     "superpose": true
                 }
@@ -66,13 +66,13 @@
                     "personnage": "ablavi",
                     "texte": "Encore. C’est moi qui pilote ce projet.",
                     "position": {
-                        "x": 3,
+                        "x": 33,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 34.2
+                        "x": 30.5,
+                        "y": 33
                     }
                 },
                 {
@@ -80,13 +80,13 @@
                     "personnage": "kossi",
                     "texte": "Ce n’est pas normal. Je dis quelque chose ?",
                     "position": {
-                        "x": 32.6,
-                        "y": 3
+                        "x": 66,
+                        "y": 5
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 68,
-                        "y": 34.2
+                        "x": 73.5,
+                        "y": 41
                     }
                 }
             ]
@@ -100,13 +100,13 @@
                     "personnage": "kossi",
                     "texte": "Ablavi n’avait pas fini. Et c’est elle qui pilote le projet.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 28,
+                        "y": 6
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 28.5,
+                        "y": 47.5
                     }
                 }
             ]
@@ -121,7 +121,7 @@
                     "texte": "Merci. Je reprends : je propose de lancer en mars.",
                     "position": {
                         "x": 3,
-                        "y": 3
+                        "y": 2
                     }
                 },
                 {
@@ -129,13 +129,13 @@
                     "personnage": "ablavi",
                     "texte": "Et je préfère qu’on ne dise plus « les hommes parlent chiffres ».",
                     "position": {
-                        "x": 33.5,
-                        "y": 3
+                        "x": 33,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 29.5,
-                        "y": 32.2
+                        "x": 23.5,
+                        "y": 35
                     },
                     "associee_a": 0
                 },
@@ -144,13 +144,13 @@
                     "personnage": "marc",
                     "texte": "Euh… d’accord. Continue.",
                     "position": {
-                        "x": 66.6,
-                        "y": 3
+                        "x": 52,
+                        "y": 24
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 74,
-                        "y": 26
+                        "x": 75.5,
+                        "y": 61.5
                     }
                 }
             ]
@@ -164,13 +164,13 @@
                     "personnage": "kossi",
                     "texte": "Si ça recommence, je suis témoin.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 4,
+                        "y": 8
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 27.6
+                        "x": 35,
+                        "y": 41
                     }
                 },
                 {
@@ -178,13 +178,13 @@
                     "personnage": "ablavi",
                     "texte": "Merci. Ça change tout de ne pas être seule.",
                     "position": {
-                        "x": 29.6,
-                        "y": 3
+                        "x": 66,
+                        "y": 5
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 63.6,
-                        "y": 34.2
+                        "x": 62,
+                        "y": 45.5
                     }
                 }
             ]
