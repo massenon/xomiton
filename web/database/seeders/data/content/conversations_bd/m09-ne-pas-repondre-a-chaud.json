@@ -22,7 +22,7 @@
                     "type": "cartouche",
                     "texte": "Sena a publié une vidéo sur la mode.",
                     "position": {
-                        "x": 1.5,
+                        "x": 21,
                         "y": 1.5
                     }
                 },
@@ -30,13 +30,13 @@
                     "type": "message",
                     "texte": "",
                     "position": {
-                        "x": 33.2,
-                        "y": 13.4
+                        "x": 52,
+                        "y": 8
                     },
                     "queue": {
                         "vers": "ecran",
-                        "x": 50,
-                        "y": 35.8
+                        "x": 43,
+                        "y": 44
                     },
                     "masque": true
                 },
@@ -45,13 +45,13 @@
                     "personnage": "sena",
                     "texte": "Encore des insultes…",
                     "position": {
-                        "x": 52.9,
-                        "y": 13.4
+                        "x": 23,
+                        "y": 11.5
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 48.9,
-                        "y": 39.5
+                        "x": 31,
+                        "y": 26.5
                     }
                 }
             ]
@@ -65,13 +65,13 @@
                     "personnage": "sena",
                     "texte": "J’ai envie de leur répondre et de tout leur dire !",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 5,
+                        "y": -2
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 40.8
+                        "x": 40.5,
+                        "y": 41
                     }
                 }
             ]
@@ -94,13 +94,13 @@
                     "personnage": "sena",
                     "texte": "D’abord, je fais des captures.",
                     "position": {
-                        "x": 36.9,
+                        "x": 68,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 32.9,
-                        "y": 29.1
+                        "x": 66,
+                        "y": 17
                     },
                     "associee_a": 0
                 }
@@ -115,13 +115,13 @@
                     "personnage": "nadia",
                     "texte": "Tu as bien fait de ne pas répondre. On signale les comptes ensemble.",
                     "position": {
-                        "x": 3,
+                        "x": 14,
                         "y": 3
                     },
                     "queue": {
                         "vers": "ecran",
-                        "x": 33.5,
-                        "y": 28.8
+                        "x": 46.5,
+                        "y": 43
                     }
                 },
                 {
@@ -129,13 +129,13 @@
                     "personnage": "sena",
                     "texte": "Et je masque les commentaires qui contiennent ces mots.",
                     "position": {
-                        "x": 32,
+                        "x": 42,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 28,
-                        "y": 32.2
+                        "x": 51.5,
+                        "y": 36
                     }
                 }
             ]
@@ -149,13 +149,13 @@
                     "personnage": "abonne",
                     "texte": "Ta vidéo est super, continue !",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 68,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "ecran",
-                        "x": 20.9,
-                        "y": 28.8
+                        "x": 64.5,
+                        "y": 48
                     }
                 },
                 {
@@ -163,13 +163,13 @@
                     "personnage": "sena",
                     "texte": "Mes vrais abonné·es me soutiennent !",
                     "position": {
-                        "x": 19.4,
-                        "y": 3
+                        "x": 29,
+                        "y": 12
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 34.2
+                        "x": 50.5,
+                        "y": 38
                     }
                 },
                 {
@@ -177,7 +177,7 @@
                     "texte": "Captures, signalement, blocage : la haine en ligne se signale aussi sur Xomiton.",
                     "position": {
                         "x": 28.4,
-                        "y": 85.7
+                        "y": 87
                     }
                 }
             ]

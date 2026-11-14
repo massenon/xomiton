@@ -28,8 +28,8 @@
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 34.2
+                        "x": 27,
+                        "y": 27
                     }
                 },
                 {
@@ -37,13 +37,13 @@
                     "personnage": "yasmine",
                     "texte": "Tu as l’air ailleurs. Tout va bien ?",
                     "position": {
-                        "x": 31.2,
-                        "y": 3
+                        "x": 40,
+                        "y": 8
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 59.3,
-                        "y": 32.2
+                        "x": 57.5,
+                        "y": 40
                     }
                 }
             ]
@@ -57,8 +57,8 @@
                     "personnage": "sena",
                     "texte": "Je voulais te dire…",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 47,
+                        "y": 10
                     }
                 },
                 {
@@ -66,13 +66,13 @@
                     "personnage": "sena",
                     "texte": "… je ne suis ni un garçon ni une fille. Je suis non binaire.",
                     "position": {
-                        "x": 21.8,
-                        "y": 3
+                        "x": 58,
+                        "y": 22
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 29.9
+                        "x": 46.5,
+                        "y": 43
                     },
                     "associee_a": 0
                 }
@@ -88,12 +88,12 @@
                     "texte": "Je ne connais pas bien ce mot. Mais je connais Sena.",
                     "position": {
                         "x": 3,
-                        "y": 3
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 34.2
+                        "x": 26,
+                        "y": 25.5
                     }
                 },
                 {
@@ -101,13 +101,13 @@
                     "personnage": "yasmine",
                     "texte": "Merci de me faire confiance.",
                     "position": {
-                        "x": 39.8,
-                        "y": 3
+                        "x": 39,
+                        "y": 15
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 35.8,
-                        "y": 27.6
+                        "x": 38.5,
+                        "y": 39
                     }
                 }
             ]
@@ -122,12 +122,12 @@
                     "texte": "Comment veux-tu que je parle de toi ? Quels mots j’utilise ?",
                     "position": {
                         "x": 3,
-                        "y": 3
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 35,
+                        "y": 37
                     }
                 },
                 {
@@ -135,13 +135,13 @@
                     "personnage": "sena",
                     "texte": "Sena, comme toujours. Et « iel ».",
                     "position": {
-                        "x": 36.1,
-                        "y": 3
+                        "x": 40,
+                        "y": 18
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 60,
-                        "y": 34.2
+                        "x": 65,
+                        "y": 41
                     }
                 }
             ]
@@ -155,13 +155,13 @@
                     "personnage": "yasmine",
                     "texte": "Je garde ça pour moi, sauf si tu me dis le contraire.",
                     "position": {
-                        "x": 3,
+                        "x": 10,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 36.5,
+                        "y": 43
                     }
                 },
                 {
@@ -169,13 +169,13 @@
                     "personnage": "sena",
                     "texte": "Je me sens plus léger·e.",
                     "position": {
-                        "x": 34.8,
-                        "y": 3
+                        "x": 50,
+                        "y": 8
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 63,
-                        "y": 29.1
+                        "x": 53,
+                        "y": 38
                     }
                 },
                 {
