@@ -1,5 +1,9 @@
 # Conversations en BD — illustrations (P20-11) : état et reprise
 
+> **Terminé le 14/11/2026** : les 60 cases ont été générées à la remise à zéro des crédits (61 appels, 1 régénération : M06 case 2, mauvais personnage d'accueil), converties en WebP ≤ 100 Kio et les bulles repositionnées sur les images. L'import publie les 12 modèles.
+>
+> Petits défauts relevés (non bloquants) : de profil, les deux macarons de Fifamè ressemblent à un chignon (M01 et M03, cases 3 et 4) ; quelques queues de bulles frôlent un visage (M02 c3–c4, M04 c2, M05 c5) ; M11 c4 : la queue de la 3ᵉ bulle croise celle de Fifamè ; M09 c4 : Sena tient le téléphone à l'oreille plutôt qu'en haut-parleur ; M05 c1 : chambre assez claire pour une scène de nuit.
+
 Demande du client du 13/11/2026 : générer les 60 illustrations des 12 conversations modèles. Production arrêtée le 13/11/2026 : **crédits IA Figma épuisés** après le lot 2 des BD « violences numériques » (« Insufficient Figma AI credits for this operation », remise à zéro annoncée le **14/11/2026 à 00:00 UTC**).
 
 ## État au 13/11/2026

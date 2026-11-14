@@ -9,6 +9,7 @@ use App\Models\BdConversation;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\UserSetting;
+use Tests\Support\ConversationsBdFixtures;
 
 if (! function_exists('bdcNb')) {
     /** Typographie des fichiers de lang et des données : espace insécable avant « : ! ? ». */
@@ -25,7 +26,13 @@ if (! function_exists('bdcNb')) {
  * repérables, questions), mode discret, plan du site, pied de page.
  */
 
+afterEach(function (): void {
+    ConversationsBdFixtures::cleanup();
+});
+
 beforeEach(function (): void {
+    // Images absentes : les modèles restent des brouillons (les tests publient eux-mêmes ce qu'il faut).
+    ConversationsBdFixtures::source();
     app(ImportConversationsBd::class)();
     // Les illustrations n'existent pas encore : l'import crée des brouillons ; on publie ici m01 à m11.
     BdConversation::query()->where('model_key', '!=', 'm12')->update(['status' => BdConversationStatus::Published->value, 'published_at' => now()]);

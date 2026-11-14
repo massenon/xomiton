@@ -13,6 +13,7 @@ use App\Models\BdScene;
 use Database\Seeders\ConversationsBdSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\Facades\File;
+use Tests\Support\ConversationsBdFixtures;
 
 if (! function_exists('bdcNb')) {
     /** Typographie des fichiers de lang et des données : espace insécable avant « : ! ? ». */
@@ -29,44 +30,22 @@ if (! function_exists('bdcNb')) {
  * dans l'administration jamais réalignés, grammaire des bulles vérifiée avant toute écriture.
  */
 
-/** Copie des données dans un dossier temporaire (les images des scènes de m01 pointent vers un fichier existant). */
+/** Copie des données : images absentes, sauf celles de m01 si demandé (cycle de vie d'un brouillon). */
 function bdcTempData(bool $m01Images = false, ?callable $alter = null): string
 {
-    $dir = sys_get_temp_dir().'/bdc-'.uniqid();
-    File::copyDirectory(database_path('seeders/data/content/conversations_bd'), $dir);
-
-    if ($m01Images) {
-        $scenes = json_decode((string) file_get_contents($dir.'/_scenes.json'), true);
-        foreach ($scenes['scenes'] as &$scene) {
-            if (str_starts_with($scene['key'], 'm01-')) {
-                $scene['image'] = 'assets/images/xomiton/covers/og-default.jpg';
-            }
-        }
-        file_put_contents($dir.'/_scenes.json', json_encode($scenes, JSON_UNESCAPED_UNICODE));
-    }
-
-    if ($alter !== null) {
-        $alter($dir);
-    }
-
-    app()->instance(ConversationsBdSource::class, new ConversationsBdSource($dir));
-    app()->forgetInstance(ImportConversationsBd::class);
-
-    return $dir;
+    return ConversationsBdFixtures::source($m01Images ? ['m01'] : [], $alter);
 }
 
 afterEach(function (): void {
-    foreach (glob(sys_get_temp_dir().'/bdc-*') ?: [] as $dir) {
-        File::deleteDirectory($dir);
-    }
+    ConversationsBdFixtures::cleanup();
 });
 
-it('importe le casting, 60 scènes et 12 modèles de 5 cases, rejouable sans doublon', function (): void {
+it('importe le casting, 60 scènes et 12 modèles de 5 cases illustrés et publiés, rejouable sans doublon', function (): void {
     $first = app(ImportConversationsBd::class)();
     $counts = [BdCharacter::query()->count(), BdScene::query()->count(), BdConversation::query()->count(), BdPanel::query()->count(), BdBubble::query()->count()];
     $second = app(ImportConversationsBd::class)();
 
-    expect($first)->toMatchArray(['characters' => 23, 'scenes' => 60, 'conversations' => 12, 'created' => 12, 'drafts' => 12, 'published' => 0])
+    expect($first)->toMatchArray(['characters' => 23, 'scenes' => 60, 'conversations' => 12, 'created' => 12, 'drafts' => 0, 'published' => 12])
         ->and($second)->toMatchArray(['created' => 0, 'updated' => 12])
         ->and([BdCharacter::query()->count(), BdScene::query()->count(), BdConversation::query()->count(), BdPanel::query()->count(), BdBubble::query()->count()])->toBe($counts)
         ->and($counts[3])->toBe(60)
@@ -75,7 +54,7 @@ it('importe le casting, 60 scènes et 12 modèles de 5 cases, rejouable sans dou
     $m01 = BdConversation::query()->where('model_key', 'm01')->firstOrFail();
     expect($m01->slug)->toBe('non-cest-non')
         ->and($m01->title)->toBe('Non, c’est non')
-        ->and($m01->statusValue())->toBe(BdConversationStatus::Draft)
+        ->and($m01->statusValue())->toBe(BdConversationStatus::Published)
         ->and($m01->is_anonymous)->toBeTrue()
         ->and($m01->author_id)->toBeNull()
         ->and($m01->ulid)->not->toBeEmpty()

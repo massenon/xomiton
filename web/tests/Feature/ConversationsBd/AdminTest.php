@@ -14,6 +14,7 @@ use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Permission;
+use Tests\Support\ConversationsBdFixtures;
 
 /*
  * P20 (PRD P0-9) : onglet « Conversations en BD » de /admin/ccc — permission `conversations_bd.manage` (admin,
@@ -21,7 +22,13 @@ use Spatie\Permission\Models\Permission;
  * (contrôles de la grammaire, aperçu), bibliothèque de scènes ; chaque écriture journalisée et marquée pour l'import.
  */
 
+afterEach(function (): void {
+    ConversationsBdFixtures::cleanup();
+});
+
 beforeEach(function (): void {
+    // Images absentes : les modèles restent des brouillons (les tests publient eux-mêmes ce qu'il faut).
+    ConversationsBdFixtures::source();
     $this->seed(RolesAndPermissionsSeeder::class);
     app(ImportConversationsBd::class)();
 });

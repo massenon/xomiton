@@ -10,6 +10,7 @@ use App\Models\BdConversation;
 use App\Models\BdScene;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Tests\Support\ConversationsBdFixtures;
 
 /*
  * P20-09 : exports. PDF (serveur, dompdf, A4) : réponse, type MIME, nom de fichier, droits (publiée → tout le monde ;
@@ -19,7 +20,13 @@ use Database\Seeders\RolesAndPermissionsSeeder;
  * et les données qu'ils lisent.
  */
 
+afterEach(function (): void {
+    ConversationsBdFixtures::cleanup();
+});
+
 beforeEach(function (): void {
+    // Images absentes : les modèles restent des brouillons (les tests publient eux-mêmes ce qu'il faut).
+    ConversationsBdFixtures::source();
     $this->seed(RolesAndPermissionsSeeder::class);
     app(ImportConversationsBd::class)();
     BdConversation::query()->where('model_key', 'm01')->update(['status' => BdConversationStatus::Published->value, 'published_at' => now()]);
