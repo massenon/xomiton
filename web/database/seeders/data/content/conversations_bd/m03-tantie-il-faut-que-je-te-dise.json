@@ -23,13 +23,13 @@
                     "personnage": "fifame",
                     "texte": "Je dois lui dire… mais elle va se fâcher.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 28,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 34.2
+                        "x": 31,
+                        "y": 42
                     }
                 },
                 {
@@ -37,13 +37,13 @@
                     "personnage": "rosine",
                     "texte": "Tu es bien silencieuse ce soir.",
                     "position": {
-                        "x": 32.6,
-                        "y": 3
+                        "x": 57,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 56.9,
-                        "y": 32.2
+                        "x": 65,
+                        "y": 41
                     }
                 }
             ]
@@ -66,13 +66,13 @@
                     "personnage": "fifame",
                     "texte": "Ça me met mal à l’aise.",
                     "position": {
-                        "x": 31.8,
+                        "x": 36,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 27.8,
-                        "y": 26
+                        "x": 34,
+                        "y": 40
                     },
                     "associee_a": 0
                 }
@@ -87,13 +87,13 @@
                     "personnage": "rosine",
                     "texte": "Quoi ? Pourquoi tu lui as donné ton numéro ?",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 30,
+                        "y": 2
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 40.8
+                        "x": 31,
+                        "y": 33
                     }
                 },
                 {
@@ -101,13 +101,13 @@
                     "personnage": "fifame",
                     "texte": "Je savais qu’elle allait me gronder.",
                     "position": {
-                        "x": 51.8,
-                        "y": 3
+                        "x": 44,
+                        "y": 30
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 74,
-                        "y": 29.1
+                        "x": 73,
+                        "y": 42
                     }
                 }
             ]
@@ -121,13 +121,13 @@
                     "personnage": "rosine",
                     "texte": "Elle a eu le courage de me le dire. Je dois l’écouter.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 2,
+                        "y": 2
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 34.2
+                        "x": 26,
+                        "y": 24
                     }
                 },
                 {
@@ -135,13 +135,13 @@
                     "personnage": "rosine",
                     "texte": "Pardon, j’ai eu peur pour toi. Ce n’est pas ta faute.",
                     "position": {
-                        "x": 39.8,
-                        "y": 3
+                        "x": 40,
+                        "y": 2
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 35.8,
-                        "y": 32.2
+                        "x": 39,
+                        "y": 36
                     }
                 }
             ]
@@ -160,8 +160,8 @@
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 28,
+                        "y": 28
                     }
                 },
                 {
@@ -169,13 +169,13 @@
                     "personnage": "nadia",
                     "texte": "Vous avez bien fait d’appeler. On voit ensemble les solutions.",
                     "position": {
-                        "x": 28.4,
+                        "x": 42,
                         "y": 3
                     },
                     "queue": {
                         "vers": "ecran",
-                        "x": 56,
-                        "y": 28.8
+                        "x": 48.5,
+                        "y": 80
                     }
                 }
             ]

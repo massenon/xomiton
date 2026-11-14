@@ -31,13 +31,13 @@
                     "personnage": "rodrigue",
                     "texte": "Viens chez moi ce soir. Il n’y aura personne.",
                     "position": {
-                        "x": 33.2,
-                        "y": 13.4
+                        "x": 33,
+                        "y": 11
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 29.2,
-                        "y": 42.6
+                        "x": 39.5,
+                        "y": 40
                     }
                 },
                 {
@@ -45,13 +45,13 @@
                     "personnage": "fifame",
                     "texte": "Je n’en ai pas envie… mais je ne veux pas le vexer.",
                     "position": {
-                        "x": 59.8,
-                        "y": 13.4
+                        "x": 60,
+                        "y": 6
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 74,
-                        "y": 44.6
+                        "x": 66,
+                        "y": 31
                     }
                 }
             ]
@@ -65,13 +65,13 @@
                     "personnage": "fifame",
                     "texte": "Euh… je ne sais pas… peut-être.",
                     "position": {
-                        "x": 3,
+                        "x": 14,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 26
+                        "x": 25,
+                        "y": 29
                     }
                 },
                 {
@@ -79,13 +79,13 @@
                     "personnage": "rodrigue",
                     "texte": "Super ! Je t’attends à sept heures !",
                     "position": {
-                        "x": 24,
+                        "x": 44,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 53.7,
-                        "y": 34.2
+                        "x": 62,
+                        "y": 27
                     }
                 },
                 {
@@ -93,13 +93,13 @@
                     "personnage": "fifame",
                     "texte": "Pourquoi j’ai dit peut-être ?",
                     "position": {
-                        "x": 52.2,
-                        "y": 3
+                        "x": 2,
+                        "y": 17
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 48.2,
-                        "y": 29.1
+                        "x": 20,
+                        "y": 32
                     }
                 }
             ]
@@ -116,13 +116,13 @@
                         "non"
                     ],
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 36,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 27.6
+                        "x": 35,
+                        "y": 35
                     }
                 },
                 {
@@ -130,13 +130,13 @@
                     "personnage": "rodrigue",
                     "texte": "Allez ! Juste un peu. Tu me dois bien ça.",
                     "position": {
-                        "x": 28.4,
+                        "x": 74,
                         "y": 3
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 55.3,
-                        "y": 32.2
+                        "x": 76,
+                        "y": 27
                     }
                 }
             ]
@@ -150,13 +150,13 @@
                     "personnage": "fifame",
                     "texte": "Non. Je n’ai pas besoin d’une raison.",
                     "position": {
-                        "x": 3,
-                        "y": 3
+                        "x": 30,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 32.2
+                        "x": 30,
+                        "y": 32
                     }
                 },
                 {
@@ -164,13 +164,13 @@
                     "personnage": "rodrigue",
                     "texte": "Elle est sérieuse. J’arrête d’insister.",
                     "position": {
-                        "x": 28.4,
-                        "y": 3
+                        "x": 54,
+                        "y": 4
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 60.9,
-                        "y": 34.2
+                        "x": 75,
+                        "y": 29
                     }
                 }
             ]
@@ -192,13 +192,13 @@
                     "personnage": "nadia",
                     "texte": "Tu as dit non deux fois. C’est très courageux.",
                     "position": {
-                        "x": 27.3,
-                        "y": 13.4
+                        "x": 27,
+                        "y": 9
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 24,
-                        "y": 42.6
+                        "x": 37,
+                        "y": 33
                     }
                 },
                 {
@@ -206,13 +206,13 @@
                     "personnage": "fifame",
                     "texte": "Je me sens plus forte !",
                     "position": {
-                        "x": 55.3,
-                        "y": 13.4
+                        "x": 57,
+                        "y": 8
                     },
                     "queue": {
                         "vers": "personnage",
-                        "x": 74,
-                        "y": 39.5
+                        "x": 62,
+                        "y": 41
                     }
                 }
             ]
